@@ -1,0 +1,3770 @@
+{
+ "Components": [
+  {
+   "component_id": "comp-adder4",
+   "kind": "circuit",
+   "bit_width": 4,
+   "description": "4-bit ripple-carry adder from 4 full adders."
+  },
+  {
+   "component_id": "comp-add4",
+   "kind": "circuit",
+   "bit_width": 4,
+   "description": "4-bit adder op (adder4 with carry-in tied to 0)."
+  },
+  {
+   "component_id": "comp-sub4",
+   "kind": "circuit",
+   "bit_width": 4,
+   "description": "4-bit two's-complement subtractor (adder4 + NOT on B, cin=1)."
+  },
+  {
+   "component_id": "comp-mul4",
+   "kind": "circuit",
+   "bit_width": 4,
+   "description": "4x4 unsigned array multiplier (4 shift-and-add rows)."
+  },
+  {
+   "component_id": "comp-mux2",
+   "kind": "circuit",
+   "bit_width": null,
+   "description": "1-bit 2:1 multiplexer: out = sel ? d1 : d0."
+  },
+  {
+   "component_id": "comp-adder5",
+   "kind": "circuit",
+   "bit_width": 5,
+   "description": "5-bit ripple-carry adder from 5 full adders."
+  },
+  {
+   "component_id": "comp-sub5",
+   "kind": "circuit",
+   "bit_width": 5,
+   "description": "5-bit two's-complement subtractor (adder5 + NOT on B, cin=1)."
+  },
+  {
+   "component_id": "comp-div4",
+   "kind": "circuit",
+   "bit_width": 4,
+   "description": "4-bit restoring divider -> 4-bit quotient + remainder."
+  }
+ ],
+ "ComponentPins": [
+  {
+   "pin_id": "comp-adder4--in--a0",
+   "component_id": "comp-adder4",
+   "direction": "in",
+   "pin_name": "a0",
+   "bit_index": 0,
+   "description": "Operand A bit 0"
+  },
+  {
+   "pin_id": "comp-adder4--in--b0",
+   "component_id": "comp-adder4",
+   "direction": "in",
+   "pin_name": "b0",
+   "bit_index": 0,
+   "description": "Operand B bit 0"
+  },
+  {
+   "pin_id": "comp-adder4--out--s0",
+   "component_id": "comp-adder4",
+   "direction": "out",
+   "pin_name": "s0",
+   "bit_index": 0,
+   "description": "Sum bit 0"
+  },
+  {
+   "pin_id": "comp-adder4--in--a1",
+   "component_id": "comp-adder4",
+   "direction": "in",
+   "pin_name": "a1",
+   "bit_index": 1,
+   "description": "Operand A bit 1"
+  },
+  {
+   "pin_id": "comp-adder4--in--b1",
+   "component_id": "comp-adder4",
+   "direction": "in",
+   "pin_name": "b1",
+   "bit_index": 1,
+   "description": "Operand B bit 1"
+  },
+  {
+   "pin_id": "comp-adder4--out--s1",
+   "component_id": "comp-adder4",
+   "direction": "out",
+   "pin_name": "s1",
+   "bit_index": 1,
+   "description": "Sum bit 1"
+  },
+  {
+   "pin_id": "comp-adder4--in--a2",
+   "component_id": "comp-adder4",
+   "direction": "in",
+   "pin_name": "a2",
+   "bit_index": 2,
+   "description": "Operand A bit 2"
+  },
+  {
+   "pin_id": "comp-adder4--in--b2",
+   "component_id": "comp-adder4",
+   "direction": "in",
+   "pin_name": "b2",
+   "bit_index": 2,
+   "description": "Operand B bit 2"
+  },
+  {
+   "pin_id": "comp-adder4--out--s2",
+   "component_id": "comp-adder4",
+   "direction": "out",
+   "pin_name": "s2",
+   "bit_index": 2,
+   "description": "Sum bit 2"
+  },
+  {
+   "pin_id": "comp-adder4--in--a3",
+   "component_id": "comp-adder4",
+   "direction": "in",
+   "pin_name": "a3",
+   "bit_index": 3,
+   "description": "Operand A bit 3"
+  },
+  {
+   "pin_id": "comp-adder4--in--b3",
+   "component_id": "comp-adder4",
+   "direction": "in",
+   "pin_name": "b3",
+   "bit_index": 3,
+   "description": "Operand B bit 3"
+  },
+  {
+   "pin_id": "comp-adder4--out--s3",
+   "component_id": "comp-adder4",
+   "direction": "out",
+   "pin_name": "s3",
+   "bit_index": 3,
+   "description": "Sum bit 3"
+  },
+  {
+   "pin_id": "comp-adder4--in--cin",
+   "component_id": "comp-adder4",
+   "direction": "in",
+   "pin_name": "cin",
+   "bit_index": null,
+   "description": "Carry-in"
+  },
+  {
+   "pin_id": "comp-adder4--out--cout",
+   "component_id": "comp-adder4",
+   "direction": "out",
+   "pin_name": "cout",
+   "bit_index": null,
+   "description": "Carry-out"
+  },
+  {
+   "pin_id": "comp-add4--in--a0",
+   "component_id": "comp-add4",
+   "direction": "in",
+   "pin_name": "a0",
+   "bit_index": 0,
+   "description": "Operand A bit 0"
+  },
+  {
+   "pin_id": "comp-add4--in--b0",
+   "component_id": "comp-add4",
+   "direction": "in",
+   "pin_name": "b0",
+   "bit_index": 0,
+   "description": "Operand B bit 0"
+  },
+  {
+   "pin_id": "comp-add4--out--s0",
+   "component_id": "comp-add4",
+   "direction": "out",
+   "pin_name": "s0",
+   "bit_index": 0,
+   "description": "Sum bit 0"
+  },
+  {
+   "pin_id": "comp-add4--in--a1",
+   "component_id": "comp-add4",
+   "direction": "in",
+   "pin_name": "a1",
+   "bit_index": 1,
+   "description": "Operand A bit 1"
+  },
+  {
+   "pin_id": "comp-add4--in--b1",
+   "component_id": "comp-add4",
+   "direction": "in",
+   "pin_name": "b1",
+   "bit_index": 1,
+   "description": "Operand B bit 1"
+  },
+  {
+   "pin_id": "comp-add4--out--s1",
+   "component_id": "comp-add4",
+   "direction": "out",
+   "pin_name": "s1",
+   "bit_index": 1,
+   "description": "Sum bit 1"
+  },
+  {
+   "pin_id": "comp-add4--in--a2",
+   "component_id": "comp-add4",
+   "direction": "in",
+   "pin_name": "a2",
+   "bit_index": 2,
+   "description": "Operand A bit 2"
+  },
+  {
+   "pin_id": "comp-add4--in--b2",
+   "component_id": "comp-add4",
+   "direction": "in",
+   "pin_name": "b2",
+   "bit_index": 2,
+   "description": "Operand B bit 2"
+  },
+  {
+   "pin_id": "comp-add4--out--s2",
+   "component_id": "comp-add4",
+   "direction": "out",
+   "pin_name": "s2",
+   "bit_index": 2,
+   "description": "Sum bit 2"
+  },
+  {
+   "pin_id": "comp-add4--in--a3",
+   "component_id": "comp-add4",
+   "direction": "in",
+   "pin_name": "a3",
+   "bit_index": 3,
+   "description": "Operand A bit 3"
+  },
+  {
+   "pin_id": "comp-add4--in--b3",
+   "component_id": "comp-add4",
+   "direction": "in",
+   "pin_name": "b3",
+   "bit_index": 3,
+   "description": "Operand B bit 3"
+  },
+  {
+   "pin_id": "comp-add4--out--s3",
+   "component_id": "comp-add4",
+   "direction": "out",
+   "pin_name": "s3",
+   "bit_index": 3,
+   "description": "Sum bit 3"
+  },
+  {
+   "pin_id": "comp-add4--out--cout",
+   "component_id": "comp-add4",
+   "direction": "out",
+   "pin_name": "cout",
+   "bit_index": null,
+   "description": "Carry-out"
+  },
+  {
+   "pin_id": "comp-sub4--in--a0",
+   "component_id": "comp-sub4",
+   "direction": "in",
+   "pin_name": "a0",
+   "bit_index": 0,
+   "description": "Operand A bit 0"
+  },
+  {
+   "pin_id": "comp-sub4--in--b0",
+   "component_id": "comp-sub4",
+   "direction": "in",
+   "pin_name": "b0",
+   "bit_index": 0,
+   "description": "Operand B bit 0"
+  },
+  {
+   "pin_id": "comp-sub4--out--s0",
+   "component_id": "comp-sub4",
+   "direction": "out",
+   "pin_name": "s0",
+   "bit_index": 0,
+   "description": "Difference bit 0"
+  },
+  {
+   "pin_id": "comp-sub4--in--a1",
+   "component_id": "comp-sub4",
+   "direction": "in",
+   "pin_name": "a1",
+   "bit_index": 1,
+   "description": "Operand A bit 1"
+  },
+  {
+   "pin_id": "comp-sub4--in--b1",
+   "component_id": "comp-sub4",
+   "direction": "in",
+   "pin_name": "b1",
+   "bit_index": 1,
+   "description": "Operand B bit 1"
+  },
+  {
+   "pin_id": "comp-sub4--out--s1",
+   "component_id": "comp-sub4",
+   "direction": "out",
+   "pin_name": "s1",
+   "bit_index": 1,
+   "description": "Difference bit 1"
+  },
+  {
+   "pin_id": "comp-sub4--in--a2",
+   "component_id": "comp-sub4",
+   "direction": "in",
+   "pin_name": "a2",
+   "bit_index": 2,
+   "description": "Operand A bit 2"
+  },
+  {
+   "pin_id": "comp-sub4--in--b2",
+   "component_id": "comp-sub4",
+   "direction": "in",
+   "pin_name": "b2",
+   "bit_index": 2,
+   "description": "Operand B bit 2"
+  },
+  {
+   "pin_id": "comp-sub4--out--s2",
+   "component_id": "comp-sub4",
+   "direction": "out",
+   "pin_name": "s2",
+   "bit_index": 2,
+   "description": "Difference bit 2"
+  },
+  {
+   "pin_id": "comp-sub4--in--a3",
+   "component_id": "comp-sub4",
+   "direction": "in",
+   "pin_name": "a3",
+   "bit_index": 3,
+   "description": "Operand A bit 3"
+  },
+  {
+   "pin_id": "comp-sub4--in--b3",
+   "component_id": "comp-sub4",
+   "direction": "in",
+   "pin_name": "b3",
+   "bit_index": 3,
+   "description": "Operand B bit 3"
+  },
+  {
+   "pin_id": "comp-sub4--out--s3",
+   "component_id": "comp-sub4",
+   "direction": "out",
+   "pin_name": "s3",
+   "bit_index": 3,
+   "description": "Difference bit 3"
+  },
+  {
+   "pin_id": "comp-sub4--out--borrow",
+   "component_id": "comp-sub4",
+   "direction": "out",
+   "pin_name": "borrow",
+   "bit_index": null,
+   "description": "Borrow-out (1 => A < B)"
+  },
+  {
+   "pin_id": "comp-mul4--in--a0",
+   "component_id": "comp-mul4",
+   "direction": "in",
+   "pin_name": "a0",
+   "bit_index": 0,
+   "description": "Operand A bit 0"
+  },
+  {
+   "pin_id": "comp-mul4--in--b0",
+   "component_id": "comp-mul4",
+   "direction": "in",
+   "pin_name": "b0",
+   "bit_index": 0,
+   "description": "Operand B bit 0"
+  },
+  {
+   "pin_id": "comp-mul4--in--a1",
+   "component_id": "comp-mul4",
+   "direction": "in",
+   "pin_name": "a1",
+   "bit_index": 1,
+   "description": "Operand A bit 1"
+  },
+  {
+   "pin_id": "comp-mul4--in--b1",
+   "component_id": "comp-mul4",
+   "direction": "in",
+   "pin_name": "b1",
+   "bit_index": 1,
+   "description": "Operand B bit 1"
+  },
+  {
+   "pin_id": "comp-mul4--in--a2",
+   "component_id": "comp-mul4",
+   "direction": "in",
+   "pin_name": "a2",
+   "bit_index": 2,
+   "description": "Operand A bit 2"
+  },
+  {
+   "pin_id": "comp-mul4--in--b2",
+   "component_id": "comp-mul4",
+   "direction": "in",
+   "pin_name": "b2",
+   "bit_index": 2,
+   "description": "Operand B bit 2"
+  },
+  {
+   "pin_id": "comp-mul4--in--a3",
+   "component_id": "comp-mul4",
+   "direction": "in",
+   "pin_name": "a3",
+   "bit_index": 3,
+   "description": "Operand A bit 3"
+  },
+  {
+   "pin_id": "comp-mul4--in--b3",
+   "component_id": "comp-mul4",
+   "direction": "in",
+   "pin_name": "b3",
+   "bit_index": 3,
+   "description": "Operand B bit 3"
+  },
+  {
+   "pin_id": "comp-mul4--out--p0",
+   "component_id": "comp-mul4",
+   "direction": "out",
+   "pin_name": "p0",
+   "bit_index": 0,
+   "description": "Product bit 0"
+  },
+  {
+   "pin_id": "comp-mul4--out--p1",
+   "component_id": "comp-mul4",
+   "direction": "out",
+   "pin_name": "p1",
+   "bit_index": 1,
+   "description": "Product bit 1"
+  },
+  {
+   "pin_id": "comp-mul4--out--p2",
+   "component_id": "comp-mul4",
+   "direction": "out",
+   "pin_name": "p2",
+   "bit_index": 2,
+   "description": "Product bit 2"
+  },
+  {
+   "pin_id": "comp-mul4--out--p3",
+   "component_id": "comp-mul4",
+   "direction": "out",
+   "pin_name": "p3",
+   "bit_index": 3,
+   "description": "Product bit 3"
+  },
+  {
+   "pin_id": "comp-mul4--out--p4",
+   "component_id": "comp-mul4",
+   "direction": "out",
+   "pin_name": "p4",
+   "bit_index": 4,
+   "description": "Product bit 4"
+  },
+  {
+   "pin_id": "comp-mul4--out--p5",
+   "component_id": "comp-mul4",
+   "direction": "out",
+   "pin_name": "p5",
+   "bit_index": 5,
+   "description": "Product bit 5"
+  },
+  {
+   "pin_id": "comp-mul4--out--p6",
+   "component_id": "comp-mul4",
+   "direction": "out",
+   "pin_name": "p6",
+   "bit_index": 6,
+   "description": "Product bit 6"
+  },
+  {
+   "pin_id": "comp-mul4--out--p7",
+   "component_id": "comp-mul4",
+   "direction": "out",
+   "pin_name": "p7",
+   "bit_index": 7,
+   "description": "Product bit 7"
+  },
+  {
+   "pin_id": "comp-mux2--in--d0",
+   "component_id": "comp-mux2",
+   "direction": "in",
+   "pin_name": "d0",
+   "bit_index": null,
+   "description": "input selected when sel=0"
+  },
+  {
+   "pin_id": "comp-mux2--in--d1",
+   "component_id": "comp-mux2",
+   "direction": "in",
+   "pin_name": "d1",
+   "bit_index": null,
+   "description": "input selected when sel=1"
+  },
+  {
+   "pin_id": "comp-mux2--in--sel",
+   "component_id": "comp-mux2",
+   "direction": "in",
+   "pin_name": "sel",
+   "bit_index": null,
+   "description": "select"
+  },
+  {
+   "pin_id": "comp-mux2--out--out",
+   "component_id": "comp-mux2",
+   "direction": "out",
+   "pin_name": "out",
+   "bit_index": null,
+   "description": "selected bit"
+  },
+  {
+   "pin_id": "comp-adder5--in--a0",
+   "component_id": "comp-adder5",
+   "direction": "in",
+   "pin_name": "a0",
+   "bit_index": 0,
+   "description": "Operand A bit 0"
+  },
+  {
+   "pin_id": "comp-adder5--in--b0",
+   "component_id": "comp-adder5",
+   "direction": "in",
+   "pin_name": "b0",
+   "bit_index": 0,
+   "description": "Operand B bit 0"
+  },
+  {
+   "pin_id": "comp-adder5--out--s0",
+   "component_id": "comp-adder5",
+   "direction": "out",
+   "pin_name": "s0",
+   "bit_index": 0,
+   "description": "Sum bit 0"
+  },
+  {
+   "pin_id": "comp-adder5--in--a1",
+   "component_id": "comp-adder5",
+   "direction": "in",
+   "pin_name": "a1",
+   "bit_index": 1,
+   "description": "Operand A bit 1"
+  },
+  {
+   "pin_id": "comp-adder5--in--b1",
+   "component_id": "comp-adder5",
+   "direction": "in",
+   "pin_name": "b1",
+   "bit_index": 1,
+   "description": "Operand B bit 1"
+  },
+  {
+   "pin_id": "comp-adder5--out--s1",
+   "component_id": "comp-adder5",
+   "direction": "out",
+   "pin_name": "s1",
+   "bit_index": 1,
+   "description": "Sum bit 1"
+  },
+  {
+   "pin_id": "comp-adder5--in--a2",
+   "component_id": "comp-adder5",
+   "direction": "in",
+   "pin_name": "a2",
+   "bit_index": 2,
+   "description": "Operand A bit 2"
+  },
+  {
+   "pin_id": "comp-adder5--in--b2",
+   "component_id": "comp-adder5",
+   "direction": "in",
+   "pin_name": "b2",
+   "bit_index": 2,
+   "description": "Operand B bit 2"
+  },
+  {
+   "pin_id": "comp-adder5--out--s2",
+   "component_id": "comp-adder5",
+   "direction": "out",
+   "pin_name": "s2",
+   "bit_index": 2,
+   "description": "Sum bit 2"
+  },
+  {
+   "pin_id": "comp-adder5--in--a3",
+   "component_id": "comp-adder5",
+   "direction": "in",
+   "pin_name": "a3",
+   "bit_index": 3,
+   "description": "Operand A bit 3"
+  },
+  {
+   "pin_id": "comp-adder5--in--b3",
+   "component_id": "comp-adder5",
+   "direction": "in",
+   "pin_name": "b3",
+   "bit_index": 3,
+   "description": "Operand B bit 3"
+  },
+  {
+   "pin_id": "comp-adder5--out--s3",
+   "component_id": "comp-adder5",
+   "direction": "out",
+   "pin_name": "s3",
+   "bit_index": 3,
+   "description": "Sum bit 3"
+  },
+  {
+   "pin_id": "comp-adder5--in--a4",
+   "component_id": "comp-adder5",
+   "direction": "in",
+   "pin_name": "a4",
+   "bit_index": 4,
+   "description": "Operand A bit 4"
+  },
+  {
+   "pin_id": "comp-adder5--in--b4",
+   "component_id": "comp-adder5",
+   "direction": "in",
+   "pin_name": "b4",
+   "bit_index": 4,
+   "description": "Operand B bit 4"
+  },
+  {
+   "pin_id": "comp-adder5--out--s4",
+   "component_id": "comp-adder5",
+   "direction": "out",
+   "pin_name": "s4",
+   "bit_index": 4,
+   "description": "Sum bit 4"
+  },
+  {
+   "pin_id": "comp-adder5--in--cin",
+   "component_id": "comp-adder5",
+   "direction": "in",
+   "pin_name": "cin",
+   "bit_index": null,
+   "description": "Carry-in"
+  },
+  {
+   "pin_id": "comp-adder5--out--cout",
+   "component_id": "comp-adder5",
+   "direction": "out",
+   "pin_name": "cout",
+   "bit_index": null,
+   "description": "Carry-out"
+  },
+  {
+   "pin_id": "comp-sub5--in--a0",
+   "component_id": "comp-sub5",
+   "direction": "in",
+   "pin_name": "a0",
+   "bit_index": 0,
+   "description": "Operand A bit 0"
+  },
+  {
+   "pin_id": "comp-sub5--in--b0",
+   "component_id": "comp-sub5",
+   "direction": "in",
+   "pin_name": "b0",
+   "bit_index": 0,
+   "description": "Operand B bit 0"
+  },
+  {
+   "pin_id": "comp-sub5--out--s0",
+   "component_id": "comp-sub5",
+   "direction": "out",
+   "pin_name": "s0",
+   "bit_index": 0,
+   "description": "Difference bit 0"
+  },
+  {
+   "pin_id": "comp-sub5--in--a1",
+   "component_id": "comp-sub5",
+   "direction": "in",
+   "pin_name": "a1",
+   "bit_index": 1,
+   "description": "Operand A bit 1"
+  },
+  {
+   "pin_id": "comp-sub5--in--b1",
+   "component_id": "comp-sub5",
+   "direction": "in",
+   "pin_name": "b1",
+   "bit_index": 1,
+   "description": "Operand B bit 1"
+  },
+  {
+   "pin_id": "comp-sub5--out--s1",
+   "component_id": "comp-sub5",
+   "direction": "out",
+   "pin_name": "s1",
+   "bit_index": 1,
+   "description": "Difference bit 1"
+  },
+  {
+   "pin_id": "comp-sub5--in--a2",
+   "component_id": "comp-sub5",
+   "direction": "in",
+   "pin_name": "a2",
+   "bit_index": 2,
+   "description": "Operand A bit 2"
+  },
+  {
+   "pin_id": "comp-sub5--in--b2",
+   "component_id": "comp-sub5",
+   "direction": "in",
+   "pin_name": "b2",
+   "bit_index": 2,
+   "description": "Operand B bit 2"
+  },
+  {
+   "pin_id": "comp-sub5--out--s2",
+   "component_id": "comp-sub5",
+   "direction": "out",
+   "pin_name": "s2",
+   "bit_index": 2,
+   "description": "Difference bit 2"
+  },
+  {
+   "pin_id": "comp-sub5--in--a3",
+   "component_id": "comp-sub5",
+   "direction": "in",
+   "pin_name": "a3",
+   "bit_index": 3,
+   "description": "Operand A bit 3"
+  },
+  {
+   "pin_id": "comp-sub5--in--b3",
+   "component_id": "comp-sub5",
+   "direction": "in",
+   "pin_name": "b3",
+   "bit_index": 3,
+   "description": "Operand B bit 3"
+  },
+  {
+   "pin_id": "comp-sub5--out--s3",
+   "component_id": "comp-sub5",
+   "direction": "out",
+   "pin_name": "s3",
+   "bit_index": 3,
+   "description": "Difference bit 3"
+  },
+  {
+   "pin_id": "comp-sub5--in--a4",
+   "component_id": "comp-sub5",
+   "direction": "in",
+   "pin_name": "a4",
+   "bit_index": 4,
+   "description": "Operand A bit 4"
+  },
+  {
+   "pin_id": "comp-sub5--in--b4",
+   "component_id": "comp-sub5",
+   "direction": "in",
+   "pin_name": "b4",
+   "bit_index": 4,
+   "description": "Operand B bit 4"
+  },
+  {
+   "pin_id": "comp-sub5--out--s4",
+   "component_id": "comp-sub5",
+   "direction": "out",
+   "pin_name": "s4",
+   "bit_index": 4,
+   "description": "Difference bit 4"
+  },
+  {
+   "pin_id": "comp-sub5--out--borrow",
+   "component_id": "comp-sub5",
+   "direction": "out",
+   "pin_name": "borrow",
+   "bit_index": null,
+   "description": "Borrow-out (1 => A < B)"
+  },
+  {
+   "pin_id": "comp-div4--in--a0",
+   "component_id": "comp-div4",
+   "direction": "in",
+   "pin_name": "a0",
+   "bit_index": 0,
+   "description": "Dividend bit 0"
+  },
+  {
+   "pin_id": "comp-div4--in--b0",
+   "component_id": "comp-div4",
+   "direction": "in",
+   "pin_name": "b0",
+   "bit_index": 0,
+   "description": "Divisor bit 0"
+  },
+  {
+   "pin_id": "comp-div4--out--q0",
+   "component_id": "comp-div4",
+   "direction": "out",
+   "pin_name": "q0",
+   "bit_index": 0,
+   "description": "Quotient bit 0"
+  },
+  {
+   "pin_id": "comp-div4--out--r0",
+   "component_id": "comp-div4",
+   "direction": "out",
+   "pin_name": "r0",
+   "bit_index": 0,
+   "description": "Remainder bit 0"
+  },
+  {
+   "pin_id": "comp-div4--in--a1",
+   "component_id": "comp-div4",
+   "direction": "in",
+   "pin_name": "a1",
+   "bit_index": 1,
+   "description": "Dividend bit 1"
+  },
+  {
+   "pin_id": "comp-div4--in--b1",
+   "component_id": "comp-div4",
+   "direction": "in",
+   "pin_name": "b1",
+   "bit_index": 1,
+   "description": "Divisor bit 1"
+  },
+  {
+   "pin_id": "comp-div4--out--q1",
+   "component_id": "comp-div4",
+   "direction": "out",
+   "pin_name": "q1",
+   "bit_index": 1,
+   "description": "Quotient bit 1"
+  },
+  {
+   "pin_id": "comp-div4--out--r1",
+   "component_id": "comp-div4",
+   "direction": "out",
+   "pin_name": "r1",
+   "bit_index": 1,
+   "description": "Remainder bit 1"
+  },
+  {
+   "pin_id": "comp-div4--in--a2",
+   "component_id": "comp-div4",
+   "direction": "in",
+   "pin_name": "a2",
+   "bit_index": 2,
+   "description": "Dividend bit 2"
+  },
+  {
+   "pin_id": "comp-div4--in--b2",
+   "component_id": "comp-div4",
+   "direction": "in",
+   "pin_name": "b2",
+   "bit_index": 2,
+   "description": "Divisor bit 2"
+  },
+  {
+   "pin_id": "comp-div4--out--q2",
+   "component_id": "comp-div4",
+   "direction": "out",
+   "pin_name": "q2",
+   "bit_index": 2,
+   "description": "Quotient bit 2"
+  },
+  {
+   "pin_id": "comp-div4--out--r2",
+   "component_id": "comp-div4",
+   "direction": "out",
+   "pin_name": "r2",
+   "bit_index": 2,
+   "description": "Remainder bit 2"
+  },
+  {
+   "pin_id": "comp-div4--in--a3",
+   "component_id": "comp-div4",
+   "direction": "in",
+   "pin_name": "a3",
+   "bit_index": 3,
+   "description": "Dividend bit 3"
+  },
+  {
+   "pin_id": "comp-div4--in--b3",
+   "component_id": "comp-div4",
+   "direction": "in",
+   "pin_name": "b3",
+   "bit_index": 3,
+   "description": "Divisor bit 3"
+  },
+  {
+   "pin_id": "comp-div4--out--q3",
+   "component_id": "comp-div4",
+   "direction": "out",
+   "pin_name": "q3",
+   "bit_index": 3,
+   "description": "Quotient bit 3"
+  },
+  {
+   "pin_id": "comp-div4--out--r3",
+   "component_id": "comp-div4",
+   "direction": "out",
+   "pin_name": "r3",
+   "bit_index": 3,
+   "description": "Remainder bit 3"
+  }
+ ],
+ "ComponentInstances": [
+  {
+   "instance_id": "comp-adder4--inst--fa0",
+   "component_id": "comp-adder4",
+   "instance_name": "fa0",
+   "instance_kind": "component",
+   "gate_type_id": null,
+   "sub_component_id": "comp-full-adder"
+  },
+  {
+   "instance_id": "comp-adder4--inst--fa1",
+   "component_id": "comp-adder4",
+   "instance_name": "fa1",
+   "instance_kind": "component",
+   "gate_type_id": null,
+   "sub_component_id": "comp-full-adder"
+  },
+  {
+   "instance_id": "comp-adder4--inst--fa2",
+   "component_id": "comp-adder4",
+   "instance_name": "fa2",
+   "instance_kind": "component",
+   "gate_type_id": null,
+   "sub_component_id": "comp-full-adder"
+  },
+  {
+   "instance_id": "comp-adder4--inst--fa3",
+   "component_id": "comp-adder4",
+   "instance_name": "fa3",
+   "instance_kind": "component",
+   "gate_type_id": null,
+   "sub_component_id": "comp-full-adder"
+  },
+  {
+   "instance_id": "comp-add4--inst--add",
+   "component_id": "comp-add4",
+   "instance_name": "add",
+   "instance_kind": "component",
+   "gate_type_id": null,
+   "sub_component_id": "comp-adder4"
+  },
+  {
+   "instance_id": "comp-sub4--inst--notb0",
+   "component_id": "comp-sub4",
+   "instance_name": "notb0",
+   "instance_kind": "gate",
+   "gate_type_id": "gate-not",
+   "sub_component_id": null
+  },
+  {
+   "instance_id": "comp-sub4--inst--notb1",
+   "component_id": "comp-sub4",
+   "instance_name": "notb1",
+   "instance_kind": "gate",
+   "gate_type_id": "gate-not",
+   "sub_component_id": null
+  },
+  {
+   "instance_id": "comp-sub4--inst--notb2",
+   "component_id": "comp-sub4",
+   "instance_name": "notb2",
+   "instance_kind": "gate",
+   "gate_type_id": "gate-not",
+   "sub_component_id": null
+  },
+  {
+   "instance_id": "comp-sub4--inst--notb3",
+   "component_id": "comp-sub4",
+   "instance_name": "notb3",
+   "instance_kind": "gate",
+   "gate_type_id": "gate-not",
+   "sub_component_id": null
+  },
+  {
+   "instance_id": "comp-sub4--inst--add",
+   "component_id": "comp-sub4",
+   "instance_name": "add",
+   "instance_kind": "component",
+   "gate_type_id": null,
+   "sub_component_id": "comp-adder4"
+  },
+  {
+   "instance_id": "comp-sub4--inst--borrow_not",
+   "component_id": "comp-sub4",
+   "instance_name": "borrow_not",
+   "instance_kind": "gate",
+   "gate_type_id": "gate-not",
+   "sub_component_id": null
+  },
+  {
+   "instance_id": "comp-mul4--inst--pp_0_0",
+   "component_id": "comp-mul4",
+   "instance_name": "pp_0_0",
+   "instance_kind": "gate",
+   "gate_type_id": "gate-and",
+   "sub_component_id": null
+  },
+  {
+   "instance_id": "comp-mul4--inst--pp_0_1",
+   "component_id": "comp-mul4",
+   "instance_name": "pp_0_1",
+   "instance_kind": "gate",
+   "gate_type_id": "gate-and",
+   "sub_component_id": null
+  },
+  {
+   "instance_id": "comp-mul4--inst--pp_0_2",
+   "component_id": "comp-mul4",
+   "instance_name": "pp_0_2",
+   "instance_kind": "gate",
+   "gate_type_id": "gate-and",
+   "sub_component_id": null
+  },
+  {
+   "instance_id": "comp-mul4--inst--pp_0_3",
+   "component_id": "comp-mul4",
+   "instance_name": "pp_0_3",
+   "instance_kind": "gate",
+   "gate_type_id": "gate-and",
+   "sub_component_id": null
+  },
+  {
+   "instance_id": "comp-mul4--inst--pp_1_0",
+   "component_id": "comp-mul4",
+   "instance_name": "pp_1_0",
+   "instance_kind": "gate",
+   "gate_type_id": "gate-and",
+   "sub_component_id": null
+  },
+  {
+   "instance_id": "comp-mul4--inst--pp_1_1",
+   "component_id": "comp-mul4",
+   "instance_name": "pp_1_1",
+   "instance_kind": "gate",
+   "gate_type_id": "gate-and",
+   "sub_component_id": null
+  },
+  {
+   "instance_id": "comp-mul4--inst--pp_1_2",
+   "component_id": "comp-mul4",
+   "instance_name": "pp_1_2",
+   "instance_kind": "gate",
+   "gate_type_id": "gate-and",
+   "sub_component_id": null
+  },
+  {
+   "instance_id": "comp-mul4--inst--pp_1_3",
+   "component_id": "comp-mul4",
+   "instance_name": "pp_1_3",
+   "instance_kind": "gate",
+   "gate_type_id": "gate-and",
+   "sub_component_id": null
+  },
+  {
+   "instance_id": "comp-mul4--inst--pp_2_0",
+   "component_id": "comp-mul4",
+   "instance_name": "pp_2_0",
+   "instance_kind": "gate",
+   "gate_type_id": "gate-and",
+   "sub_component_id": null
+  },
+  {
+   "instance_id": "comp-mul4--inst--pp_2_1",
+   "component_id": "comp-mul4",
+   "instance_name": "pp_2_1",
+   "instance_kind": "gate",
+   "gate_type_id": "gate-and",
+   "sub_component_id": null
+  },
+  {
+   "instance_id": "comp-mul4--inst--pp_2_2",
+   "component_id": "comp-mul4",
+   "instance_name": "pp_2_2",
+   "instance_kind": "gate",
+   "gate_type_id": "gate-and",
+   "sub_component_id": null
+  },
+  {
+   "instance_id": "comp-mul4--inst--pp_2_3",
+   "component_id": "comp-mul4",
+   "instance_name": "pp_2_3",
+   "instance_kind": "gate",
+   "gate_type_id": "gate-and",
+   "sub_component_id": null
+  },
+  {
+   "instance_id": "comp-mul4--inst--pp_3_0",
+   "component_id": "comp-mul4",
+   "instance_name": "pp_3_0",
+   "instance_kind": "gate",
+   "gate_type_id": "gate-and",
+   "sub_component_id": null
+  },
+  {
+   "instance_id": "comp-mul4--inst--pp_3_1",
+   "component_id": "comp-mul4",
+   "instance_name": "pp_3_1",
+   "instance_kind": "gate",
+   "gate_type_id": "gate-and",
+   "sub_component_id": null
+  },
+  {
+   "instance_id": "comp-mul4--inst--pp_3_2",
+   "component_id": "comp-mul4",
+   "instance_name": "pp_3_2",
+   "instance_kind": "gate",
+   "gate_type_id": "gate-and",
+   "sub_component_id": null
+  },
+  {
+   "instance_id": "comp-mul4--inst--pp_3_3",
+   "component_id": "comp-mul4",
+   "instance_name": "pp_3_3",
+   "instance_kind": "gate",
+   "gate_type_id": "gate-and",
+   "sub_component_id": null
+  },
+  {
+   "instance_id": "comp-mul4--inst--addrow1",
+   "component_id": "comp-mul4",
+   "instance_name": "addrow1",
+   "instance_kind": "component",
+   "gate_type_id": null,
+   "sub_component_id": "comp-adder4"
+  },
+  {
+   "instance_id": "comp-mul4--inst--addrow2",
+   "component_id": "comp-mul4",
+   "instance_name": "addrow2",
+   "instance_kind": "component",
+   "gate_type_id": null,
+   "sub_component_id": "comp-adder4"
+  },
+  {
+   "instance_id": "comp-mul4--inst--addrow3",
+   "component_id": "comp-mul4",
+   "instance_name": "addrow3",
+   "instance_kind": "component",
+   "gate_type_id": null,
+   "sub_component_id": "comp-adder4"
+  },
+  {
+   "instance_id": "comp-mux2--inst--nsel",
+   "component_id": "comp-mux2",
+   "instance_name": "nsel",
+   "instance_kind": "gate",
+   "gate_type_id": "gate-not",
+   "sub_component_id": null
+  },
+  {
+   "instance_id": "comp-mux2--inst--a0",
+   "component_id": "comp-mux2",
+   "instance_name": "a0",
+   "instance_kind": "gate",
+   "gate_type_id": "gate-and",
+   "sub_component_id": null
+  },
+  {
+   "instance_id": "comp-mux2--inst--a1",
+   "component_id": "comp-mux2",
+   "instance_name": "a1",
+   "instance_kind": "gate",
+   "gate_type_id": "gate-and",
+   "sub_component_id": null
+  },
+  {
+   "instance_id": "comp-mux2--inst--orr",
+   "component_id": "comp-mux2",
+   "instance_name": "orr",
+   "instance_kind": "gate",
+   "gate_type_id": "gate-or",
+   "sub_component_id": null
+  },
+  {
+   "instance_id": "comp-adder5--inst--fa0",
+   "component_id": "comp-adder5",
+   "instance_name": "fa0",
+   "instance_kind": "component",
+   "gate_type_id": null,
+   "sub_component_id": "comp-full-adder"
+  },
+  {
+   "instance_id": "comp-adder5--inst--fa1",
+   "component_id": "comp-adder5",
+   "instance_name": "fa1",
+   "instance_kind": "component",
+   "gate_type_id": null,
+   "sub_component_id": "comp-full-adder"
+  },
+  {
+   "instance_id": "comp-adder5--inst--fa2",
+   "component_id": "comp-adder5",
+   "instance_name": "fa2",
+   "instance_kind": "component",
+   "gate_type_id": null,
+   "sub_component_id": "comp-full-adder"
+  },
+  {
+   "instance_id": "comp-adder5--inst--fa3",
+   "component_id": "comp-adder5",
+   "instance_name": "fa3",
+   "instance_kind": "component",
+   "gate_type_id": null,
+   "sub_component_id": "comp-full-adder"
+  },
+  {
+   "instance_id": "comp-adder5--inst--fa4",
+   "component_id": "comp-adder5",
+   "instance_name": "fa4",
+   "instance_kind": "component",
+   "gate_type_id": null,
+   "sub_component_id": "comp-full-adder"
+  },
+  {
+   "instance_id": "comp-sub5--inst--notb0",
+   "component_id": "comp-sub5",
+   "instance_name": "notb0",
+   "instance_kind": "gate",
+   "gate_type_id": "gate-not",
+   "sub_component_id": null
+  },
+  {
+   "instance_id": "comp-sub5--inst--notb1",
+   "component_id": "comp-sub5",
+   "instance_name": "notb1",
+   "instance_kind": "gate",
+   "gate_type_id": "gate-not",
+   "sub_component_id": null
+  },
+  {
+   "instance_id": "comp-sub5--inst--notb2",
+   "component_id": "comp-sub5",
+   "instance_name": "notb2",
+   "instance_kind": "gate",
+   "gate_type_id": "gate-not",
+   "sub_component_id": null
+  },
+  {
+   "instance_id": "comp-sub5--inst--notb3",
+   "component_id": "comp-sub5",
+   "instance_name": "notb3",
+   "instance_kind": "gate",
+   "gate_type_id": "gate-not",
+   "sub_component_id": null
+  },
+  {
+   "instance_id": "comp-sub5--inst--notb4",
+   "component_id": "comp-sub5",
+   "instance_name": "notb4",
+   "instance_kind": "gate",
+   "gate_type_id": "gate-not",
+   "sub_component_id": null
+  },
+  {
+   "instance_id": "comp-sub5--inst--add",
+   "component_id": "comp-sub5",
+   "instance_name": "add",
+   "instance_kind": "component",
+   "gate_type_id": null,
+   "sub_component_id": "comp-adder5"
+  },
+  {
+   "instance_id": "comp-sub5--inst--borrow_not",
+   "component_id": "comp-sub5",
+   "instance_name": "borrow_not",
+   "instance_kind": "gate",
+   "gate_type_id": "gate-not",
+   "sub_component_id": null
+  },
+  {
+   "instance_id": "comp-div4--inst--st0_sub",
+   "component_id": "comp-div4",
+   "instance_name": "st0_sub",
+   "instance_kind": "component",
+   "gate_type_id": null,
+   "sub_component_id": "comp-sub5"
+  },
+  {
+   "instance_id": "comp-div4--inst--st0_q",
+   "component_id": "comp-div4",
+   "instance_name": "st0_q",
+   "instance_kind": "gate",
+   "gate_type_id": "gate-not",
+   "sub_component_id": null
+  },
+  {
+   "instance_id": "comp-div4--inst--st0_mux0",
+   "component_id": "comp-div4",
+   "instance_name": "st0_mux0",
+   "instance_kind": "component",
+   "gate_type_id": null,
+   "sub_component_id": "comp-mux2"
+  },
+  {
+   "instance_id": "comp-div4--inst--st0_mux1",
+   "component_id": "comp-div4",
+   "instance_name": "st0_mux1",
+   "instance_kind": "component",
+   "gate_type_id": null,
+   "sub_component_id": "comp-mux2"
+  },
+  {
+   "instance_id": "comp-div4--inst--st0_mux2",
+   "component_id": "comp-div4",
+   "instance_name": "st0_mux2",
+   "instance_kind": "component",
+   "gate_type_id": null,
+   "sub_component_id": "comp-mux2"
+  },
+  {
+   "instance_id": "comp-div4--inst--st0_mux3",
+   "component_id": "comp-div4",
+   "instance_name": "st0_mux3",
+   "instance_kind": "component",
+   "gate_type_id": null,
+   "sub_component_id": "comp-mux2"
+  },
+  {
+   "instance_id": "comp-div4--inst--st0_mux4",
+   "component_id": "comp-div4",
+   "instance_name": "st0_mux4",
+   "instance_kind": "component",
+   "gate_type_id": null,
+   "sub_component_id": "comp-mux2"
+  },
+  {
+   "instance_id": "comp-div4--inst--st1_sub",
+   "component_id": "comp-div4",
+   "instance_name": "st1_sub",
+   "instance_kind": "component",
+   "gate_type_id": null,
+   "sub_component_id": "comp-sub5"
+  },
+  {
+   "instance_id": "comp-div4--inst--st1_q",
+   "component_id": "comp-div4",
+   "instance_name": "st1_q",
+   "instance_kind": "gate",
+   "gate_type_id": "gate-not",
+   "sub_component_id": null
+  },
+  {
+   "instance_id": "comp-div4--inst--st1_mux0",
+   "component_id": "comp-div4",
+   "instance_name": "st1_mux0",
+   "instance_kind": "component",
+   "gate_type_id": null,
+   "sub_component_id": "comp-mux2"
+  },
+  {
+   "instance_id": "comp-div4--inst--st1_mux1",
+   "component_id": "comp-div4",
+   "instance_name": "st1_mux1",
+   "instance_kind": "component",
+   "gate_type_id": null,
+   "sub_component_id": "comp-mux2"
+  },
+  {
+   "instance_id": "comp-div4--inst--st1_mux2",
+   "component_id": "comp-div4",
+   "instance_name": "st1_mux2",
+   "instance_kind": "component",
+   "gate_type_id": null,
+   "sub_component_id": "comp-mux2"
+  },
+  {
+   "instance_id": "comp-div4--inst--st1_mux3",
+   "component_id": "comp-div4",
+   "instance_name": "st1_mux3",
+   "instance_kind": "component",
+   "gate_type_id": null,
+   "sub_component_id": "comp-mux2"
+  },
+  {
+   "instance_id": "comp-div4--inst--st1_mux4",
+   "component_id": "comp-div4",
+   "instance_name": "st1_mux4",
+   "instance_kind": "component",
+   "gate_type_id": null,
+   "sub_component_id": "comp-mux2"
+  },
+  {
+   "instance_id": "comp-div4--inst--st2_sub",
+   "component_id": "comp-div4",
+   "instance_name": "st2_sub",
+   "instance_kind": "component",
+   "gate_type_id": null,
+   "sub_component_id": "comp-sub5"
+  },
+  {
+   "instance_id": "comp-div4--inst--st2_q",
+   "component_id": "comp-div4",
+   "instance_name": "st2_q",
+   "instance_kind": "gate",
+   "gate_type_id": "gate-not",
+   "sub_component_id": null
+  },
+  {
+   "instance_id": "comp-div4--inst--st2_mux0",
+   "component_id": "comp-div4",
+   "instance_name": "st2_mux0",
+   "instance_kind": "component",
+   "gate_type_id": null,
+   "sub_component_id": "comp-mux2"
+  },
+  {
+   "instance_id": "comp-div4--inst--st2_mux1",
+   "component_id": "comp-div4",
+   "instance_name": "st2_mux1",
+   "instance_kind": "component",
+   "gate_type_id": null,
+   "sub_component_id": "comp-mux2"
+  },
+  {
+   "instance_id": "comp-div4--inst--st2_mux2",
+   "component_id": "comp-div4",
+   "instance_name": "st2_mux2",
+   "instance_kind": "component",
+   "gate_type_id": null,
+   "sub_component_id": "comp-mux2"
+  },
+  {
+   "instance_id": "comp-div4--inst--st2_mux3",
+   "component_id": "comp-div4",
+   "instance_name": "st2_mux3",
+   "instance_kind": "component",
+   "gate_type_id": null,
+   "sub_component_id": "comp-mux2"
+  },
+  {
+   "instance_id": "comp-div4--inst--st2_mux4",
+   "component_id": "comp-div4",
+   "instance_name": "st2_mux4",
+   "instance_kind": "component",
+   "gate_type_id": null,
+   "sub_component_id": "comp-mux2"
+  },
+  {
+   "instance_id": "comp-div4--inst--st3_sub",
+   "component_id": "comp-div4",
+   "instance_name": "st3_sub",
+   "instance_kind": "component",
+   "gate_type_id": null,
+   "sub_component_id": "comp-sub5"
+  },
+  {
+   "instance_id": "comp-div4--inst--st3_q",
+   "component_id": "comp-div4",
+   "instance_name": "st3_q",
+   "instance_kind": "gate",
+   "gate_type_id": "gate-not",
+   "sub_component_id": null
+  },
+  {
+   "instance_id": "comp-div4--inst--st3_mux0",
+   "component_id": "comp-div4",
+   "instance_name": "st3_mux0",
+   "instance_kind": "component",
+   "gate_type_id": null,
+   "sub_component_id": "comp-mux2"
+  },
+  {
+   "instance_id": "comp-div4--inst--st3_mux1",
+   "component_id": "comp-div4",
+   "instance_name": "st3_mux1",
+   "instance_kind": "component",
+   "gate_type_id": null,
+   "sub_component_id": "comp-mux2"
+  },
+  {
+   "instance_id": "comp-div4--inst--st3_mux2",
+   "component_id": "comp-div4",
+   "instance_name": "st3_mux2",
+   "instance_kind": "component",
+   "gate_type_id": null,
+   "sub_component_id": "comp-mux2"
+  },
+  {
+   "instance_id": "comp-div4--inst--st3_mux3",
+   "component_id": "comp-div4",
+   "instance_name": "st3_mux3",
+   "instance_kind": "component",
+   "gate_type_id": null,
+   "sub_component_id": "comp-mux2"
+  },
+  {
+   "instance_id": "comp-div4--inst--st3_mux4",
+   "component_id": "comp-div4",
+   "instance_name": "st3_mux4",
+   "instance_kind": "component",
+   "gate_type_id": null,
+   "sub_component_id": "comp-mux2"
+  }
+ ],
+ "ComponentConnections": [
+  {
+   "connection_id": "comp-adder4--conn--a0--to--fa0.a",
+   "component_id": "comp-adder4",
+   "from_node": "",
+   "from_port": "a0",
+   "to_node": "fa0",
+   "to_port": "a"
+  },
+  {
+   "connection_id": "comp-adder4--conn--b0--to--fa0.b",
+   "component_id": "comp-adder4",
+   "from_node": "",
+   "from_port": "b0",
+   "to_node": "fa0",
+   "to_port": "b"
+  },
+  {
+   "connection_id": "comp-adder4--conn--cin--to--fa0.cin",
+   "component_id": "comp-adder4",
+   "from_node": "",
+   "from_port": "cin",
+   "to_node": "fa0",
+   "to_port": "cin"
+  },
+  {
+   "connection_id": "comp-adder4--conn--fa0.sum--to--s0",
+   "component_id": "comp-adder4",
+   "from_node": "fa0",
+   "from_port": "sum",
+   "to_node": "",
+   "to_port": "s0"
+  },
+  {
+   "connection_id": "comp-adder4--conn--a1--to--fa1.a",
+   "component_id": "comp-adder4",
+   "from_node": "",
+   "from_port": "a1",
+   "to_node": "fa1",
+   "to_port": "a"
+  },
+  {
+   "connection_id": "comp-adder4--conn--b1--to--fa1.b",
+   "component_id": "comp-adder4",
+   "from_node": "",
+   "from_port": "b1",
+   "to_node": "fa1",
+   "to_port": "b"
+  },
+  {
+   "connection_id": "comp-adder4--conn--fa0.carry--to--fa1.cin",
+   "component_id": "comp-adder4",
+   "from_node": "fa0",
+   "from_port": "carry",
+   "to_node": "fa1",
+   "to_port": "cin"
+  },
+  {
+   "connection_id": "comp-adder4--conn--fa1.sum--to--s1",
+   "component_id": "comp-adder4",
+   "from_node": "fa1",
+   "from_port": "sum",
+   "to_node": "",
+   "to_port": "s1"
+  },
+  {
+   "connection_id": "comp-adder4--conn--a2--to--fa2.a",
+   "component_id": "comp-adder4",
+   "from_node": "",
+   "from_port": "a2",
+   "to_node": "fa2",
+   "to_port": "a"
+  },
+  {
+   "connection_id": "comp-adder4--conn--b2--to--fa2.b",
+   "component_id": "comp-adder4",
+   "from_node": "",
+   "from_port": "b2",
+   "to_node": "fa2",
+   "to_port": "b"
+  },
+  {
+   "connection_id": "comp-adder4--conn--fa1.carry--to--fa2.cin",
+   "component_id": "comp-adder4",
+   "from_node": "fa1",
+   "from_port": "carry",
+   "to_node": "fa2",
+   "to_port": "cin"
+  },
+  {
+   "connection_id": "comp-adder4--conn--fa2.sum--to--s2",
+   "component_id": "comp-adder4",
+   "from_node": "fa2",
+   "from_port": "sum",
+   "to_node": "",
+   "to_port": "s2"
+  },
+  {
+   "connection_id": "comp-adder4--conn--a3--to--fa3.a",
+   "component_id": "comp-adder4",
+   "from_node": "",
+   "from_port": "a3",
+   "to_node": "fa3",
+   "to_port": "a"
+  },
+  {
+   "connection_id": "comp-adder4--conn--b3--to--fa3.b",
+   "component_id": "comp-adder4",
+   "from_node": "",
+   "from_port": "b3",
+   "to_node": "fa3",
+   "to_port": "b"
+  },
+  {
+   "connection_id": "comp-adder4--conn--fa2.carry--to--fa3.cin",
+   "component_id": "comp-adder4",
+   "from_node": "fa2",
+   "from_port": "carry",
+   "to_node": "fa3",
+   "to_port": "cin"
+  },
+  {
+   "connection_id": "comp-adder4--conn--fa3.sum--to--s3",
+   "component_id": "comp-adder4",
+   "from_node": "fa3",
+   "from_port": "sum",
+   "to_node": "",
+   "to_port": "s3"
+  },
+  {
+   "connection_id": "comp-adder4--conn--fa3.carry--to--cout",
+   "component_id": "comp-adder4",
+   "from_node": "fa3",
+   "from_port": "carry",
+   "to_node": "",
+   "to_port": "cout"
+  },
+  {
+   "connection_id": "comp-add4--conn--a0--to--add.a0",
+   "component_id": "comp-add4",
+   "from_node": "",
+   "from_port": "a0",
+   "to_node": "add",
+   "to_port": "a0"
+  },
+  {
+   "connection_id": "comp-add4--conn--b0--to--add.b0",
+   "component_id": "comp-add4",
+   "from_node": "",
+   "from_port": "b0",
+   "to_node": "add",
+   "to_port": "b0"
+  },
+  {
+   "connection_id": "comp-add4--conn--add.s0--to--s0",
+   "component_id": "comp-add4",
+   "from_node": "add",
+   "from_port": "s0",
+   "to_node": "",
+   "to_port": "s0"
+  },
+  {
+   "connection_id": "comp-add4--conn--a1--to--add.a1",
+   "component_id": "comp-add4",
+   "from_node": "",
+   "from_port": "a1",
+   "to_node": "add",
+   "to_port": "a1"
+  },
+  {
+   "connection_id": "comp-add4--conn--b1--to--add.b1",
+   "component_id": "comp-add4",
+   "from_node": "",
+   "from_port": "b1",
+   "to_node": "add",
+   "to_port": "b1"
+  },
+  {
+   "connection_id": "comp-add4--conn--add.s1--to--s1",
+   "component_id": "comp-add4",
+   "from_node": "add",
+   "from_port": "s1",
+   "to_node": "",
+   "to_port": "s1"
+  },
+  {
+   "connection_id": "comp-add4--conn--a2--to--add.a2",
+   "component_id": "comp-add4",
+   "from_node": "",
+   "from_port": "a2",
+   "to_node": "add",
+   "to_port": "a2"
+  },
+  {
+   "connection_id": "comp-add4--conn--b2--to--add.b2",
+   "component_id": "comp-add4",
+   "from_node": "",
+   "from_port": "b2",
+   "to_node": "add",
+   "to_port": "b2"
+  },
+  {
+   "connection_id": "comp-add4--conn--add.s2--to--s2",
+   "component_id": "comp-add4",
+   "from_node": "add",
+   "from_port": "s2",
+   "to_node": "",
+   "to_port": "s2"
+  },
+  {
+   "connection_id": "comp-add4--conn--a3--to--add.a3",
+   "component_id": "comp-add4",
+   "from_node": "",
+   "from_port": "a3",
+   "to_node": "add",
+   "to_port": "a3"
+  },
+  {
+   "connection_id": "comp-add4--conn--b3--to--add.b3",
+   "component_id": "comp-add4",
+   "from_node": "",
+   "from_port": "b3",
+   "to_node": "add",
+   "to_port": "b3"
+  },
+  {
+   "connection_id": "comp-add4--conn--add.s3--to--s3",
+   "component_id": "comp-add4",
+   "from_node": "add",
+   "from_port": "s3",
+   "to_node": "",
+   "to_port": "s3"
+  },
+  {
+   "connection_id": "comp-add4--conn--const.0--to--add.cin",
+   "component_id": "comp-add4",
+   "from_node": "const",
+   "from_port": "0",
+   "to_node": "add",
+   "to_port": "cin"
+  },
+  {
+   "connection_id": "comp-add4--conn--add.cout--to--cout",
+   "component_id": "comp-add4",
+   "from_node": "add",
+   "from_port": "cout",
+   "to_node": "",
+   "to_port": "cout"
+  },
+  {
+   "connection_id": "comp-sub4--conn--b0--to--notb0.in",
+   "component_id": "comp-sub4",
+   "from_node": "",
+   "from_port": "b0",
+   "to_node": "notb0",
+   "to_port": "in"
+  },
+  {
+   "connection_id": "comp-sub4--conn--notb0.out--to--add.b0",
+   "component_id": "comp-sub4",
+   "from_node": "notb0",
+   "from_port": "out",
+   "to_node": "add",
+   "to_port": "b0"
+  },
+  {
+   "connection_id": "comp-sub4--conn--a0--to--add.a0",
+   "component_id": "comp-sub4",
+   "from_node": "",
+   "from_port": "a0",
+   "to_node": "add",
+   "to_port": "a0"
+  },
+  {
+   "connection_id": "comp-sub4--conn--add.s0--to--s0",
+   "component_id": "comp-sub4",
+   "from_node": "add",
+   "from_port": "s0",
+   "to_node": "",
+   "to_port": "s0"
+  },
+  {
+   "connection_id": "comp-sub4--conn--b1--to--notb1.in",
+   "component_id": "comp-sub4",
+   "from_node": "",
+   "from_port": "b1",
+   "to_node": "notb1",
+   "to_port": "in"
+  },
+  {
+   "connection_id": "comp-sub4--conn--notb1.out--to--add.b1",
+   "component_id": "comp-sub4",
+   "from_node": "notb1",
+   "from_port": "out",
+   "to_node": "add",
+   "to_port": "b1"
+  },
+  {
+   "connection_id": "comp-sub4--conn--a1--to--add.a1",
+   "component_id": "comp-sub4",
+   "from_node": "",
+   "from_port": "a1",
+   "to_node": "add",
+   "to_port": "a1"
+  },
+  {
+   "connection_id": "comp-sub4--conn--add.s1--to--s1",
+   "component_id": "comp-sub4",
+   "from_node": "add",
+   "from_port": "s1",
+   "to_node": "",
+   "to_port": "s1"
+  },
+  {
+   "connection_id": "comp-sub4--conn--b2--to--notb2.in",
+   "component_id": "comp-sub4",
+   "from_node": "",
+   "from_port": "b2",
+   "to_node": "notb2",
+   "to_port": "in"
+  },
+  {
+   "connection_id": "comp-sub4--conn--notb2.out--to--add.b2",
+   "component_id": "comp-sub4",
+   "from_node": "notb2",
+   "from_port": "out",
+   "to_node": "add",
+   "to_port": "b2"
+  },
+  {
+   "connection_id": "comp-sub4--conn--a2--to--add.a2",
+   "component_id": "comp-sub4",
+   "from_node": "",
+   "from_port": "a2",
+   "to_node": "add",
+   "to_port": "a2"
+  },
+  {
+   "connection_id": "comp-sub4--conn--add.s2--to--s2",
+   "component_id": "comp-sub4",
+   "from_node": "add",
+   "from_port": "s2",
+   "to_node": "",
+   "to_port": "s2"
+  },
+  {
+   "connection_id": "comp-sub4--conn--b3--to--notb3.in",
+   "component_id": "comp-sub4",
+   "from_node": "",
+   "from_port": "b3",
+   "to_node": "notb3",
+   "to_port": "in"
+  },
+  {
+   "connection_id": "comp-sub4--conn--notb3.out--to--add.b3",
+   "component_id": "comp-sub4",
+   "from_node": "notb3",
+   "from_port": "out",
+   "to_node": "add",
+   "to_port": "b3"
+  },
+  {
+   "connection_id": "comp-sub4--conn--a3--to--add.a3",
+   "component_id": "comp-sub4",
+   "from_node": "",
+   "from_port": "a3",
+   "to_node": "add",
+   "to_port": "a3"
+  },
+  {
+   "connection_id": "comp-sub4--conn--add.s3--to--s3",
+   "component_id": "comp-sub4",
+   "from_node": "add",
+   "from_port": "s3",
+   "to_node": "",
+   "to_port": "s3"
+  },
+  {
+   "connection_id": "comp-sub4--conn--const.1--to--add.cin",
+   "component_id": "comp-sub4",
+   "from_node": "const",
+   "from_port": "1",
+   "to_node": "add",
+   "to_port": "cin"
+  },
+  {
+   "connection_id": "comp-sub4--conn--add.cout--to--borrow_not.in",
+   "component_id": "comp-sub4",
+   "from_node": "add",
+   "from_port": "cout",
+   "to_node": "borrow_not",
+   "to_port": "in"
+  },
+  {
+   "connection_id": "comp-sub4--conn--borrow_not.out--to--borrow",
+   "component_id": "comp-sub4",
+   "from_node": "borrow_not",
+   "from_port": "out",
+   "to_node": "",
+   "to_port": "borrow"
+  },
+  {
+   "connection_id": "comp-mul4--conn--a0--to--pp_0_0.left",
+   "component_id": "comp-mul4",
+   "from_node": "",
+   "from_port": "a0",
+   "to_node": "pp_0_0",
+   "to_port": "left"
+  },
+  {
+   "connection_id": "comp-mul4--conn--b0--to--pp_0_0.right",
+   "component_id": "comp-mul4",
+   "from_node": "",
+   "from_port": "b0",
+   "to_node": "pp_0_0",
+   "to_port": "right"
+  },
+  {
+   "connection_id": "comp-mul4--conn--a1--to--pp_0_1.left",
+   "component_id": "comp-mul4",
+   "from_node": "",
+   "from_port": "a1",
+   "to_node": "pp_0_1",
+   "to_port": "left"
+  },
+  {
+   "connection_id": "comp-mul4--conn--b0--to--pp_0_1.right",
+   "component_id": "comp-mul4",
+   "from_node": "",
+   "from_port": "b0",
+   "to_node": "pp_0_1",
+   "to_port": "right"
+  },
+  {
+   "connection_id": "comp-mul4--conn--a2--to--pp_0_2.left",
+   "component_id": "comp-mul4",
+   "from_node": "",
+   "from_port": "a2",
+   "to_node": "pp_0_2",
+   "to_port": "left"
+  },
+  {
+   "connection_id": "comp-mul4--conn--b0--to--pp_0_2.right",
+   "component_id": "comp-mul4",
+   "from_node": "",
+   "from_port": "b0",
+   "to_node": "pp_0_2",
+   "to_port": "right"
+  },
+  {
+   "connection_id": "comp-mul4--conn--a3--to--pp_0_3.left",
+   "component_id": "comp-mul4",
+   "from_node": "",
+   "from_port": "a3",
+   "to_node": "pp_0_3",
+   "to_port": "left"
+  },
+  {
+   "connection_id": "comp-mul4--conn--b0--to--pp_0_3.right",
+   "component_id": "comp-mul4",
+   "from_node": "",
+   "from_port": "b0",
+   "to_node": "pp_0_3",
+   "to_port": "right"
+  },
+  {
+   "connection_id": "comp-mul4--conn--a0--to--pp_1_0.left",
+   "component_id": "comp-mul4",
+   "from_node": "",
+   "from_port": "a0",
+   "to_node": "pp_1_0",
+   "to_port": "left"
+  },
+  {
+   "connection_id": "comp-mul4--conn--b1--to--pp_1_0.right",
+   "component_id": "comp-mul4",
+   "from_node": "",
+   "from_port": "b1",
+   "to_node": "pp_1_0",
+   "to_port": "right"
+  },
+  {
+   "connection_id": "comp-mul4--conn--a1--to--pp_1_1.left",
+   "component_id": "comp-mul4",
+   "from_node": "",
+   "from_port": "a1",
+   "to_node": "pp_1_1",
+   "to_port": "left"
+  },
+  {
+   "connection_id": "comp-mul4--conn--b1--to--pp_1_1.right",
+   "component_id": "comp-mul4",
+   "from_node": "",
+   "from_port": "b1",
+   "to_node": "pp_1_1",
+   "to_port": "right"
+  },
+  {
+   "connection_id": "comp-mul4--conn--a2--to--pp_1_2.left",
+   "component_id": "comp-mul4",
+   "from_node": "",
+   "from_port": "a2",
+   "to_node": "pp_1_2",
+   "to_port": "left"
+  },
+  {
+   "connection_id": "comp-mul4--conn--b1--to--pp_1_2.right",
+   "component_id": "comp-mul4",
+   "from_node": "",
+   "from_port": "b1",
+   "to_node": "pp_1_2",
+   "to_port": "right"
+  },
+  {
+   "connection_id": "comp-mul4--conn--a3--to--pp_1_3.left",
+   "component_id": "comp-mul4",
+   "from_node": "",
+   "from_port": "a3",
+   "to_node": "pp_1_3",
+   "to_port": "left"
+  },
+  {
+   "connection_id": "comp-mul4--conn--b1--to--pp_1_3.right",
+   "component_id": "comp-mul4",
+   "from_node": "",
+   "from_port": "b1",
+   "to_node": "pp_1_3",
+   "to_port": "right"
+  },
+  {
+   "connection_id": "comp-mul4--conn--a0--to--pp_2_0.left",
+   "component_id": "comp-mul4",
+   "from_node": "",
+   "from_port": "a0",
+   "to_node": "pp_2_0",
+   "to_port": "left"
+  },
+  {
+   "connection_id": "comp-mul4--conn--b2--to--pp_2_0.right",
+   "component_id": "comp-mul4",
+   "from_node": "",
+   "from_port": "b2",
+   "to_node": "pp_2_0",
+   "to_port": "right"
+  },
+  {
+   "connection_id": "comp-mul4--conn--a1--to--pp_2_1.left",
+   "component_id": "comp-mul4",
+   "from_node": "",
+   "from_port": "a1",
+   "to_node": "pp_2_1",
+   "to_port": "left"
+  },
+  {
+   "connection_id": "comp-mul4--conn--b2--to--pp_2_1.right",
+   "component_id": "comp-mul4",
+   "from_node": "",
+   "from_port": "b2",
+   "to_node": "pp_2_1",
+   "to_port": "right"
+  },
+  {
+   "connection_id": "comp-mul4--conn--a2--to--pp_2_2.left",
+   "component_id": "comp-mul4",
+   "from_node": "",
+   "from_port": "a2",
+   "to_node": "pp_2_2",
+   "to_port": "left"
+  },
+  {
+   "connection_id": "comp-mul4--conn--b2--to--pp_2_2.right",
+   "component_id": "comp-mul4",
+   "from_node": "",
+   "from_port": "b2",
+   "to_node": "pp_2_2",
+   "to_port": "right"
+  },
+  {
+   "connection_id": "comp-mul4--conn--a3--to--pp_2_3.left",
+   "component_id": "comp-mul4",
+   "from_node": "",
+   "from_port": "a3",
+   "to_node": "pp_2_3",
+   "to_port": "left"
+  },
+  {
+   "connection_id": "comp-mul4--conn--b2--to--pp_2_3.right",
+   "component_id": "comp-mul4",
+   "from_node": "",
+   "from_port": "b2",
+   "to_node": "pp_2_3",
+   "to_port": "right"
+  },
+  {
+   "connection_id": "comp-mul4--conn--a0--to--pp_3_0.left",
+   "component_id": "comp-mul4",
+   "from_node": "",
+   "from_port": "a0",
+   "to_node": "pp_3_0",
+   "to_port": "left"
+  },
+  {
+   "connection_id": "comp-mul4--conn--b3--to--pp_3_0.right",
+   "component_id": "comp-mul4",
+   "from_node": "",
+   "from_port": "b3",
+   "to_node": "pp_3_0",
+   "to_port": "right"
+  },
+  {
+   "connection_id": "comp-mul4--conn--a1--to--pp_3_1.left",
+   "component_id": "comp-mul4",
+   "from_node": "",
+   "from_port": "a1",
+   "to_node": "pp_3_1",
+   "to_port": "left"
+  },
+  {
+   "connection_id": "comp-mul4--conn--b3--to--pp_3_1.right",
+   "component_id": "comp-mul4",
+   "from_node": "",
+   "from_port": "b3",
+   "to_node": "pp_3_1",
+   "to_port": "right"
+  },
+  {
+   "connection_id": "comp-mul4--conn--a2--to--pp_3_2.left",
+   "component_id": "comp-mul4",
+   "from_node": "",
+   "from_port": "a2",
+   "to_node": "pp_3_2",
+   "to_port": "left"
+  },
+  {
+   "connection_id": "comp-mul4--conn--b3--to--pp_3_2.right",
+   "component_id": "comp-mul4",
+   "from_node": "",
+   "from_port": "b3",
+   "to_node": "pp_3_2",
+   "to_port": "right"
+  },
+  {
+   "connection_id": "comp-mul4--conn--a3--to--pp_3_3.left",
+   "component_id": "comp-mul4",
+   "from_node": "",
+   "from_port": "a3",
+   "to_node": "pp_3_3",
+   "to_port": "left"
+  },
+  {
+   "connection_id": "comp-mul4--conn--b3--to--pp_3_3.right",
+   "component_id": "comp-mul4",
+   "from_node": "",
+   "from_port": "b3",
+   "to_node": "pp_3_3",
+   "to_port": "right"
+  },
+  {
+   "connection_id": "comp-mul4--conn--pp_0_0.out--to--p0",
+   "component_id": "comp-mul4",
+   "from_node": "pp_0_0",
+   "from_port": "out",
+   "to_node": "",
+   "to_port": "p0"
+  },
+  {
+   "connection_id": "comp-mul4--conn--pp_0_1.out--to--addrow1.a0",
+   "component_id": "comp-mul4",
+   "from_node": "pp_0_1",
+   "from_port": "out",
+   "to_node": "addrow1",
+   "to_port": "a0"
+  },
+  {
+   "connection_id": "comp-mul4--conn--pp_1_0.out--to--addrow1.b0",
+   "component_id": "comp-mul4",
+   "from_node": "pp_1_0",
+   "from_port": "out",
+   "to_node": "addrow1",
+   "to_port": "b0"
+  },
+  {
+   "connection_id": "comp-mul4--conn--pp_0_2.out--to--addrow1.a1",
+   "component_id": "comp-mul4",
+   "from_node": "pp_0_2",
+   "from_port": "out",
+   "to_node": "addrow1",
+   "to_port": "a1"
+  },
+  {
+   "connection_id": "comp-mul4--conn--pp_1_1.out--to--addrow1.b1",
+   "component_id": "comp-mul4",
+   "from_node": "pp_1_1",
+   "from_port": "out",
+   "to_node": "addrow1",
+   "to_port": "b1"
+  },
+  {
+   "connection_id": "comp-mul4--conn--pp_0_3.out--to--addrow1.a2",
+   "component_id": "comp-mul4",
+   "from_node": "pp_0_3",
+   "from_port": "out",
+   "to_node": "addrow1",
+   "to_port": "a2"
+  },
+  {
+   "connection_id": "comp-mul4--conn--pp_1_2.out--to--addrow1.b2",
+   "component_id": "comp-mul4",
+   "from_node": "pp_1_2",
+   "from_port": "out",
+   "to_node": "addrow1",
+   "to_port": "b2"
+  },
+  {
+   "connection_id": "comp-mul4--conn--const.0--to--addrow1.a3",
+   "component_id": "comp-mul4",
+   "from_node": "const",
+   "from_port": "0",
+   "to_node": "addrow1",
+   "to_port": "a3"
+  },
+  {
+   "connection_id": "comp-mul4--conn--pp_1_3.out--to--addrow1.b3",
+   "component_id": "comp-mul4",
+   "from_node": "pp_1_3",
+   "from_port": "out",
+   "to_node": "addrow1",
+   "to_port": "b3"
+  },
+  {
+   "connection_id": "comp-mul4--conn--const.0--to--addrow1.cin",
+   "component_id": "comp-mul4",
+   "from_node": "const",
+   "from_port": "0",
+   "to_node": "addrow1",
+   "to_port": "cin"
+  },
+  {
+   "connection_id": "comp-mul4--conn--addrow1.s0--to--p1",
+   "component_id": "comp-mul4",
+   "from_node": "addrow1",
+   "from_port": "s0",
+   "to_node": "",
+   "to_port": "p1"
+  },
+  {
+   "connection_id": "comp-mul4--conn--addrow1.s1--to--addrow2.a0",
+   "component_id": "comp-mul4",
+   "from_node": "addrow1",
+   "from_port": "s1",
+   "to_node": "addrow2",
+   "to_port": "a0"
+  },
+  {
+   "connection_id": "comp-mul4--conn--pp_2_0.out--to--addrow2.b0",
+   "component_id": "comp-mul4",
+   "from_node": "pp_2_0",
+   "from_port": "out",
+   "to_node": "addrow2",
+   "to_port": "b0"
+  },
+  {
+   "connection_id": "comp-mul4--conn--addrow1.s2--to--addrow2.a1",
+   "component_id": "comp-mul4",
+   "from_node": "addrow1",
+   "from_port": "s2",
+   "to_node": "addrow2",
+   "to_port": "a1"
+  },
+  {
+   "connection_id": "comp-mul4--conn--pp_2_1.out--to--addrow2.b1",
+   "component_id": "comp-mul4",
+   "from_node": "pp_2_1",
+   "from_port": "out",
+   "to_node": "addrow2",
+   "to_port": "b1"
+  },
+  {
+   "connection_id": "comp-mul4--conn--addrow1.s3--to--addrow2.a2",
+   "component_id": "comp-mul4",
+   "from_node": "addrow1",
+   "from_port": "s3",
+   "to_node": "addrow2",
+   "to_port": "a2"
+  },
+  {
+   "connection_id": "comp-mul4--conn--pp_2_2.out--to--addrow2.b2",
+   "component_id": "comp-mul4",
+   "from_node": "pp_2_2",
+   "from_port": "out",
+   "to_node": "addrow2",
+   "to_port": "b2"
+  },
+  {
+   "connection_id": "comp-mul4--conn--addrow1.cout--to--addrow2.a3",
+   "component_id": "comp-mul4",
+   "from_node": "addrow1",
+   "from_port": "cout",
+   "to_node": "addrow2",
+   "to_port": "a3"
+  },
+  {
+   "connection_id": "comp-mul4--conn--pp_2_3.out--to--addrow2.b3",
+   "component_id": "comp-mul4",
+   "from_node": "pp_2_3",
+   "from_port": "out",
+   "to_node": "addrow2",
+   "to_port": "b3"
+  },
+  {
+   "connection_id": "comp-mul4--conn--const.0--to--addrow2.cin",
+   "component_id": "comp-mul4",
+   "from_node": "const",
+   "from_port": "0",
+   "to_node": "addrow2",
+   "to_port": "cin"
+  },
+  {
+   "connection_id": "comp-mul4--conn--addrow2.s0--to--p2",
+   "component_id": "comp-mul4",
+   "from_node": "addrow2",
+   "from_port": "s0",
+   "to_node": "",
+   "to_port": "p2"
+  },
+  {
+   "connection_id": "comp-mul4--conn--addrow2.s1--to--addrow3.a0",
+   "component_id": "comp-mul4",
+   "from_node": "addrow2",
+   "from_port": "s1",
+   "to_node": "addrow3",
+   "to_port": "a0"
+  },
+  {
+   "connection_id": "comp-mul4--conn--pp_3_0.out--to--addrow3.b0",
+   "component_id": "comp-mul4",
+   "from_node": "pp_3_0",
+   "from_port": "out",
+   "to_node": "addrow3",
+   "to_port": "b0"
+  },
+  {
+   "connection_id": "comp-mul4--conn--addrow2.s2--to--addrow3.a1",
+   "component_id": "comp-mul4",
+   "from_node": "addrow2",
+   "from_port": "s2",
+   "to_node": "addrow3",
+   "to_port": "a1"
+  },
+  {
+   "connection_id": "comp-mul4--conn--pp_3_1.out--to--addrow3.b1",
+   "component_id": "comp-mul4",
+   "from_node": "pp_3_1",
+   "from_port": "out",
+   "to_node": "addrow3",
+   "to_port": "b1"
+  },
+  {
+   "connection_id": "comp-mul4--conn--addrow2.s3--to--addrow3.a2",
+   "component_id": "comp-mul4",
+   "from_node": "addrow2",
+   "from_port": "s3",
+   "to_node": "addrow3",
+   "to_port": "a2"
+  },
+  {
+   "connection_id": "comp-mul4--conn--pp_3_2.out--to--addrow3.b2",
+   "component_id": "comp-mul4",
+   "from_node": "pp_3_2",
+   "from_port": "out",
+   "to_node": "addrow3",
+   "to_port": "b2"
+  },
+  {
+   "connection_id": "comp-mul4--conn--addrow2.cout--to--addrow3.a3",
+   "component_id": "comp-mul4",
+   "from_node": "addrow2",
+   "from_port": "cout",
+   "to_node": "addrow3",
+   "to_port": "a3"
+  },
+  {
+   "connection_id": "comp-mul4--conn--pp_3_3.out--to--addrow3.b3",
+   "component_id": "comp-mul4",
+   "from_node": "pp_3_3",
+   "from_port": "out",
+   "to_node": "addrow3",
+   "to_port": "b3"
+  },
+  {
+   "connection_id": "comp-mul4--conn--const.0--to--addrow3.cin",
+   "component_id": "comp-mul4",
+   "from_node": "const",
+   "from_port": "0",
+   "to_node": "addrow3",
+   "to_port": "cin"
+  },
+  {
+   "connection_id": "comp-mul4--conn--addrow3.s0--to--p3",
+   "component_id": "comp-mul4",
+   "from_node": "addrow3",
+   "from_port": "s0",
+   "to_node": "",
+   "to_port": "p3"
+  },
+  {
+   "connection_id": "comp-mul4--conn--addrow3.s1--to--p4",
+   "component_id": "comp-mul4",
+   "from_node": "addrow3",
+   "from_port": "s1",
+   "to_node": "",
+   "to_port": "p4"
+  },
+  {
+   "connection_id": "comp-mul4--conn--addrow3.s2--to--p5",
+   "component_id": "comp-mul4",
+   "from_node": "addrow3",
+   "from_port": "s2",
+   "to_node": "",
+   "to_port": "p5"
+  },
+  {
+   "connection_id": "comp-mul4--conn--addrow3.s3--to--p6",
+   "component_id": "comp-mul4",
+   "from_node": "addrow3",
+   "from_port": "s3",
+   "to_node": "",
+   "to_port": "p6"
+  },
+  {
+   "connection_id": "comp-mul4--conn--addrow3.cout--to--p7",
+   "component_id": "comp-mul4",
+   "from_node": "addrow3",
+   "from_port": "cout",
+   "to_node": "",
+   "to_port": "p7"
+  },
+  {
+   "connection_id": "comp-mux2--conn--sel--to--nsel.in",
+   "component_id": "comp-mux2",
+   "from_node": "",
+   "from_port": "sel",
+   "to_node": "nsel",
+   "to_port": "in"
+  },
+  {
+   "connection_id": "comp-mux2--conn--nsel.out--to--a0.left",
+   "component_id": "comp-mux2",
+   "from_node": "nsel",
+   "from_port": "out",
+   "to_node": "a0",
+   "to_port": "left"
+  },
+  {
+   "connection_id": "comp-mux2--conn--d0--to--a0.right",
+   "component_id": "comp-mux2",
+   "from_node": "",
+   "from_port": "d0",
+   "to_node": "a0",
+   "to_port": "right"
+  },
+  {
+   "connection_id": "comp-mux2--conn--sel--to--a1.left",
+   "component_id": "comp-mux2",
+   "from_node": "",
+   "from_port": "sel",
+   "to_node": "a1",
+   "to_port": "left"
+  },
+  {
+   "connection_id": "comp-mux2--conn--d1--to--a1.right",
+   "component_id": "comp-mux2",
+   "from_node": "",
+   "from_port": "d1",
+   "to_node": "a1",
+   "to_port": "right"
+  },
+  {
+   "connection_id": "comp-mux2--conn--a0.out--to--orr.left",
+   "component_id": "comp-mux2",
+   "from_node": "a0",
+   "from_port": "out",
+   "to_node": "orr",
+   "to_port": "left"
+  },
+  {
+   "connection_id": "comp-mux2--conn--a1.out--to--orr.right",
+   "component_id": "comp-mux2",
+   "from_node": "a1",
+   "from_port": "out",
+   "to_node": "orr",
+   "to_port": "right"
+  },
+  {
+   "connection_id": "comp-mux2--conn--orr.out--to--out",
+   "component_id": "comp-mux2",
+   "from_node": "orr",
+   "from_port": "out",
+   "to_node": "",
+   "to_port": "out"
+  },
+  {
+   "connection_id": "comp-adder5--conn--a0--to--fa0.a",
+   "component_id": "comp-adder5",
+   "from_node": "",
+   "from_port": "a0",
+   "to_node": "fa0",
+   "to_port": "a"
+  },
+  {
+   "connection_id": "comp-adder5--conn--b0--to--fa0.b",
+   "component_id": "comp-adder5",
+   "from_node": "",
+   "from_port": "b0",
+   "to_node": "fa0",
+   "to_port": "b"
+  },
+  {
+   "connection_id": "comp-adder5--conn--cin--to--fa0.cin",
+   "component_id": "comp-adder5",
+   "from_node": "",
+   "from_port": "cin",
+   "to_node": "fa0",
+   "to_port": "cin"
+  },
+  {
+   "connection_id": "comp-adder5--conn--fa0.sum--to--s0",
+   "component_id": "comp-adder5",
+   "from_node": "fa0",
+   "from_port": "sum",
+   "to_node": "",
+   "to_port": "s0"
+  },
+  {
+   "connection_id": "comp-adder5--conn--a1--to--fa1.a",
+   "component_id": "comp-adder5",
+   "from_node": "",
+   "from_port": "a1",
+   "to_node": "fa1",
+   "to_port": "a"
+  },
+  {
+   "connection_id": "comp-adder5--conn--b1--to--fa1.b",
+   "component_id": "comp-adder5",
+   "from_node": "",
+   "from_port": "b1",
+   "to_node": "fa1",
+   "to_port": "b"
+  },
+  {
+   "connection_id": "comp-adder5--conn--fa0.carry--to--fa1.cin",
+   "component_id": "comp-adder5",
+   "from_node": "fa0",
+   "from_port": "carry",
+   "to_node": "fa1",
+   "to_port": "cin"
+  },
+  {
+   "connection_id": "comp-adder5--conn--fa1.sum--to--s1",
+   "component_id": "comp-adder5",
+   "from_node": "fa1",
+   "from_port": "sum",
+   "to_node": "",
+   "to_port": "s1"
+  },
+  {
+   "connection_id": "comp-adder5--conn--a2--to--fa2.a",
+   "component_id": "comp-adder5",
+   "from_node": "",
+   "from_port": "a2",
+   "to_node": "fa2",
+   "to_port": "a"
+  },
+  {
+   "connection_id": "comp-adder5--conn--b2--to--fa2.b",
+   "component_id": "comp-adder5",
+   "from_node": "",
+   "from_port": "b2",
+   "to_node": "fa2",
+   "to_port": "b"
+  },
+  {
+   "connection_id": "comp-adder5--conn--fa1.carry--to--fa2.cin",
+   "component_id": "comp-adder5",
+   "from_node": "fa1",
+   "from_port": "carry",
+   "to_node": "fa2",
+   "to_port": "cin"
+  },
+  {
+   "connection_id": "comp-adder5--conn--fa2.sum--to--s2",
+   "component_id": "comp-adder5",
+   "from_node": "fa2",
+   "from_port": "sum",
+   "to_node": "",
+   "to_port": "s2"
+  },
+  {
+   "connection_id": "comp-adder5--conn--a3--to--fa3.a",
+   "component_id": "comp-adder5",
+   "from_node": "",
+   "from_port": "a3",
+   "to_node": "fa3",
+   "to_port": "a"
+  },
+  {
+   "connection_id": "comp-adder5--conn--b3--to--fa3.b",
+   "component_id": "comp-adder5",
+   "from_node": "",
+   "from_port": "b3",
+   "to_node": "fa3",
+   "to_port": "b"
+  },
+  {
+   "connection_id": "comp-adder5--conn--fa2.carry--to--fa3.cin",
+   "component_id": "comp-adder5",
+   "from_node": "fa2",
+   "from_port": "carry",
+   "to_node": "fa3",
+   "to_port": "cin"
+  },
+  {
+   "connection_id": "comp-adder5--conn--fa3.sum--to--s3",
+   "component_id": "comp-adder5",
+   "from_node": "fa3",
+   "from_port": "sum",
+   "to_node": "",
+   "to_port": "s3"
+  },
+  {
+   "connection_id": "comp-adder5--conn--a4--to--fa4.a",
+   "component_id": "comp-adder5",
+   "from_node": "",
+   "from_port": "a4",
+   "to_node": "fa4",
+   "to_port": "a"
+  },
+  {
+   "connection_id": "comp-adder5--conn--b4--to--fa4.b",
+   "component_id": "comp-adder5",
+   "from_node": "",
+   "from_port": "b4",
+   "to_node": "fa4",
+   "to_port": "b"
+  },
+  {
+   "connection_id": "comp-adder5--conn--fa3.carry--to--fa4.cin",
+   "component_id": "comp-adder5",
+   "from_node": "fa3",
+   "from_port": "carry",
+   "to_node": "fa4",
+   "to_port": "cin"
+  },
+  {
+   "connection_id": "comp-adder5--conn--fa4.sum--to--s4",
+   "component_id": "comp-adder5",
+   "from_node": "fa4",
+   "from_port": "sum",
+   "to_node": "",
+   "to_port": "s4"
+  },
+  {
+   "connection_id": "comp-adder5--conn--fa4.carry--to--cout",
+   "component_id": "comp-adder5",
+   "from_node": "fa4",
+   "from_port": "carry",
+   "to_node": "",
+   "to_port": "cout"
+  },
+  {
+   "connection_id": "comp-sub5--conn--b0--to--notb0.in",
+   "component_id": "comp-sub5",
+   "from_node": "",
+   "from_port": "b0",
+   "to_node": "notb0",
+   "to_port": "in"
+  },
+  {
+   "connection_id": "comp-sub5--conn--notb0.out--to--add.b0",
+   "component_id": "comp-sub5",
+   "from_node": "notb0",
+   "from_port": "out",
+   "to_node": "add",
+   "to_port": "b0"
+  },
+  {
+   "connection_id": "comp-sub5--conn--a0--to--add.a0",
+   "component_id": "comp-sub5",
+   "from_node": "",
+   "from_port": "a0",
+   "to_node": "add",
+   "to_port": "a0"
+  },
+  {
+   "connection_id": "comp-sub5--conn--add.s0--to--s0",
+   "component_id": "comp-sub5",
+   "from_node": "add",
+   "from_port": "s0",
+   "to_node": "",
+   "to_port": "s0"
+  },
+  {
+   "connection_id": "comp-sub5--conn--b1--to--notb1.in",
+   "component_id": "comp-sub5",
+   "from_node": "",
+   "from_port": "b1",
+   "to_node": "notb1",
+   "to_port": "in"
+  },
+  {
+   "connection_id": "comp-sub5--conn--notb1.out--to--add.b1",
+   "component_id": "comp-sub5",
+   "from_node": "notb1",
+   "from_port": "out",
+   "to_node": "add",
+   "to_port": "b1"
+  },
+  {
+   "connection_id": "comp-sub5--conn--a1--to--add.a1",
+   "component_id": "comp-sub5",
+   "from_node": "",
+   "from_port": "a1",
+   "to_node": "add",
+   "to_port": "a1"
+  },
+  {
+   "connection_id": "comp-sub5--conn--add.s1--to--s1",
+   "component_id": "comp-sub5",
+   "from_node": "add",
+   "from_port": "s1",
+   "to_node": "",
+   "to_port": "s1"
+  },
+  {
+   "connection_id": "comp-sub5--conn--b2--to--notb2.in",
+   "component_id": "comp-sub5",
+   "from_node": "",
+   "from_port": "b2",
+   "to_node": "notb2",
+   "to_port": "in"
+  },
+  {
+   "connection_id": "comp-sub5--conn--notb2.out--to--add.b2",
+   "component_id": "comp-sub5",
+   "from_node": "notb2",
+   "from_port": "out",
+   "to_node": "add",
+   "to_port": "b2"
+  },
+  {
+   "connection_id": "comp-sub5--conn--a2--to--add.a2",
+   "component_id": "comp-sub5",
+   "from_node": "",
+   "from_port": "a2",
+   "to_node": "add",
+   "to_port": "a2"
+  },
+  {
+   "connection_id": "comp-sub5--conn--add.s2--to--s2",
+   "component_id": "comp-sub5",
+   "from_node": "add",
+   "from_port": "s2",
+   "to_node": "",
+   "to_port": "s2"
+  },
+  {
+   "connection_id": "comp-sub5--conn--b3--to--notb3.in",
+   "component_id": "comp-sub5",
+   "from_node": "",
+   "from_port": "b3",
+   "to_node": "notb3",
+   "to_port": "in"
+  },
+  {
+   "connection_id": "comp-sub5--conn--notb3.out--to--add.b3",
+   "component_id": "comp-sub5",
+   "from_node": "notb3",
+   "from_port": "out",
+   "to_node": "add",
+   "to_port": "b3"
+  },
+  {
+   "connection_id": "comp-sub5--conn--a3--to--add.a3",
+   "component_id": "comp-sub5",
+   "from_node": "",
+   "from_port": "a3",
+   "to_node": "add",
+   "to_port": "a3"
+  },
+  {
+   "connection_id": "comp-sub5--conn--add.s3--to--s3",
+   "component_id": "comp-sub5",
+   "from_node": "add",
+   "from_port": "s3",
+   "to_node": "",
+   "to_port": "s3"
+  },
+  {
+   "connection_id": "comp-sub5--conn--b4--to--notb4.in",
+   "component_id": "comp-sub5",
+   "from_node": "",
+   "from_port": "b4",
+   "to_node": "notb4",
+   "to_port": "in"
+  },
+  {
+   "connection_id": "comp-sub5--conn--notb4.out--to--add.b4",
+   "component_id": "comp-sub5",
+   "from_node": "notb4",
+   "from_port": "out",
+   "to_node": "add",
+   "to_port": "b4"
+  },
+  {
+   "connection_id": "comp-sub5--conn--a4--to--add.a4",
+   "component_id": "comp-sub5",
+   "from_node": "",
+   "from_port": "a4",
+   "to_node": "add",
+   "to_port": "a4"
+  },
+  {
+   "connection_id": "comp-sub5--conn--add.s4--to--s4",
+   "component_id": "comp-sub5",
+   "from_node": "add",
+   "from_port": "s4",
+   "to_node": "",
+   "to_port": "s4"
+  },
+  {
+   "connection_id": "comp-sub5--conn--const.1--to--add.cin",
+   "component_id": "comp-sub5",
+   "from_node": "const",
+   "from_port": "1",
+   "to_node": "add",
+   "to_port": "cin"
+  },
+  {
+   "connection_id": "comp-sub5--conn--add.cout--to--borrow_not.in",
+   "component_id": "comp-sub5",
+   "from_node": "add",
+   "from_port": "cout",
+   "to_node": "borrow_not",
+   "to_port": "in"
+  },
+  {
+   "connection_id": "comp-sub5--conn--borrow_not.out--to--borrow",
+   "component_id": "comp-sub5",
+   "from_node": "borrow_not",
+   "from_port": "out",
+   "to_node": "",
+   "to_port": "borrow"
+  },
+  {
+   "connection_id": "comp-div4--conn--a3--to--st0_sub.a0",
+   "component_id": "comp-div4",
+   "from_node": "",
+   "from_port": "a3",
+   "to_node": "st0_sub",
+   "to_port": "a0"
+  },
+  {
+   "connection_id": "comp-div4--conn--const.0--to--st0_sub.a1",
+   "component_id": "comp-div4",
+   "from_node": "const",
+   "from_port": "0",
+   "to_node": "st0_sub",
+   "to_port": "a1"
+  },
+  {
+   "connection_id": "comp-div4--conn--const.0--to--st0_sub.a2",
+   "component_id": "comp-div4",
+   "from_node": "const",
+   "from_port": "0",
+   "to_node": "st0_sub",
+   "to_port": "a2"
+  },
+  {
+   "connection_id": "comp-div4--conn--const.0--to--st0_sub.a3",
+   "component_id": "comp-div4",
+   "from_node": "const",
+   "from_port": "0",
+   "to_node": "st0_sub",
+   "to_port": "a3"
+  },
+  {
+   "connection_id": "comp-div4--conn--const.0--to--st0_sub.a4",
+   "component_id": "comp-div4",
+   "from_node": "const",
+   "from_port": "0",
+   "to_node": "st0_sub",
+   "to_port": "a4"
+  },
+  {
+   "connection_id": "comp-div4--conn--b0--to--st0_sub.b0",
+   "component_id": "comp-div4",
+   "from_node": "",
+   "from_port": "b0",
+   "to_node": "st0_sub",
+   "to_port": "b0"
+  },
+  {
+   "connection_id": "comp-div4--conn--b1--to--st0_sub.b1",
+   "component_id": "comp-div4",
+   "from_node": "",
+   "from_port": "b1",
+   "to_node": "st0_sub",
+   "to_port": "b1"
+  },
+  {
+   "connection_id": "comp-div4--conn--b2--to--st0_sub.b2",
+   "component_id": "comp-div4",
+   "from_node": "",
+   "from_port": "b2",
+   "to_node": "st0_sub",
+   "to_port": "b2"
+  },
+  {
+   "connection_id": "comp-div4--conn--b3--to--st0_sub.b3",
+   "component_id": "comp-div4",
+   "from_node": "",
+   "from_port": "b3",
+   "to_node": "st0_sub",
+   "to_port": "b3"
+  },
+  {
+   "connection_id": "comp-div4--conn--const.0--to--st0_sub.b4",
+   "component_id": "comp-div4",
+   "from_node": "const",
+   "from_port": "0",
+   "to_node": "st0_sub",
+   "to_port": "b4"
+  },
+  {
+   "connection_id": "comp-div4--conn--st0_sub.borrow--to--st0_q.in",
+   "component_id": "comp-div4",
+   "from_node": "st0_sub",
+   "from_port": "borrow",
+   "to_node": "st0_q",
+   "to_port": "in"
+  },
+  {
+   "connection_id": "comp-div4--conn--st0_q.out--to--q3",
+   "component_id": "comp-div4",
+   "from_node": "st0_q",
+   "from_port": "out",
+   "to_node": "",
+   "to_port": "q3"
+  },
+  {
+   "connection_id": "comp-div4--conn--a3--to--st0_mux0.d0",
+   "component_id": "comp-div4",
+   "from_node": "",
+   "from_port": "a3",
+   "to_node": "st0_mux0",
+   "to_port": "d0"
+  },
+  {
+   "connection_id": "comp-div4--conn--st0_sub.s0--to--st0_mux0.d1",
+   "component_id": "comp-div4",
+   "from_node": "st0_sub",
+   "from_port": "s0",
+   "to_node": "st0_mux0",
+   "to_port": "d1"
+  },
+  {
+   "connection_id": "comp-div4--conn--st0_q.out--to--st0_mux0.sel",
+   "component_id": "comp-div4",
+   "from_node": "st0_q",
+   "from_port": "out",
+   "to_node": "st0_mux0",
+   "to_port": "sel"
+  },
+  {
+   "connection_id": "comp-div4--conn--const.0--to--st0_mux1.d0",
+   "component_id": "comp-div4",
+   "from_node": "const",
+   "from_port": "0",
+   "to_node": "st0_mux1",
+   "to_port": "d0"
+  },
+  {
+   "connection_id": "comp-div4--conn--st0_sub.s1--to--st0_mux1.d1",
+   "component_id": "comp-div4",
+   "from_node": "st0_sub",
+   "from_port": "s1",
+   "to_node": "st0_mux1",
+   "to_port": "d1"
+  },
+  {
+   "connection_id": "comp-div4--conn--st0_q.out--to--st0_mux1.sel",
+   "component_id": "comp-div4",
+   "from_node": "st0_q",
+   "from_port": "out",
+   "to_node": "st0_mux1",
+   "to_port": "sel"
+  },
+  {
+   "connection_id": "comp-div4--conn--const.0--to--st0_mux2.d0",
+   "component_id": "comp-div4",
+   "from_node": "const",
+   "from_port": "0",
+   "to_node": "st0_mux2",
+   "to_port": "d0"
+  },
+  {
+   "connection_id": "comp-div4--conn--st0_sub.s2--to--st0_mux2.d1",
+   "component_id": "comp-div4",
+   "from_node": "st0_sub",
+   "from_port": "s2",
+   "to_node": "st0_mux2",
+   "to_port": "d1"
+  },
+  {
+   "connection_id": "comp-div4--conn--st0_q.out--to--st0_mux2.sel",
+   "component_id": "comp-div4",
+   "from_node": "st0_q",
+   "from_port": "out",
+   "to_node": "st0_mux2",
+   "to_port": "sel"
+  },
+  {
+   "connection_id": "comp-div4--conn--const.0--to--st0_mux3.d0",
+   "component_id": "comp-div4",
+   "from_node": "const",
+   "from_port": "0",
+   "to_node": "st0_mux3",
+   "to_port": "d0"
+  },
+  {
+   "connection_id": "comp-div4--conn--st0_sub.s3--to--st0_mux3.d1",
+   "component_id": "comp-div4",
+   "from_node": "st0_sub",
+   "from_port": "s3",
+   "to_node": "st0_mux3",
+   "to_port": "d1"
+  },
+  {
+   "connection_id": "comp-div4--conn--st0_q.out--to--st0_mux3.sel",
+   "component_id": "comp-div4",
+   "from_node": "st0_q",
+   "from_port": "out",
+   "to_node": "st0_mux3",
+   "to_port": "sel"
+  },
+  {
+   "connection_id": "comp-div4--conn--const.0--to--st0_mux4.d0",
+   "component_id": "comp-div4",
+   "from_node": "const",
+   "from_port": "0",
+   "to_node": "st0_mux4",
+   "to_port": "d0"
+  },
+  {
+   "connection_id": "comp-div4--conn--st0_sub.s4--to--st0_mux4.d1",
+   "component_id": "comp-div4",
+   "from_node": "st0_sub",
+   "from_port": "s4",
+   "to_node": "st0_mux4",
+   "to_port": "d1"
+  },
+  {
+   "connection_id": "comp-div4--conn--st0_q.out--to--st0_mux4.sel",
+   "component_id": "comp-div4",
+   "from_node": "st0_q",
+   "from_port": "out",
+   "to_node": "st0_mux4",
+   "to_port": "sel"
+  },
+  {
+   "connection_id": "comp-div4--conn--a2--to--st1_sub.a0",
+   "component_id": "comp-div4",
+   "from_node": "",
+   "from_port": "a2",
+   "to_node": "st1_sub",
+   "to_port": "a0"
+  },
+  {
+   "connection_id": "comp-div4--conn--st0_mux0.out--to--st1_sub.a1",
+   "component_id": "comp-div4",
+   "from_node": "st0_mux0",
+   "from_port": "out",
+   "to_node": "st1_sub",
+   "to_port": "a1"
+  },
+  {
+   "connection_id": "comp-div4--conn--st0_mux1.out--to--st1_sub.a2",
+   "component_id": "comp-div4",
+   "from_node": "st0_mux1",
+   "from_port": "out",
+   "to_node": "st1_sub",
+   "to_port": "a2"
+  },
+  {
+   "connection_id": "comp-div4--conn--st0_mux2.out--to--st1_sub.a3",
+   "component_id": "comp-div4",
+   "from_node": "st0_mux2",
+   "from_port": "out",
+   "to_node": "st1_sub",
+   "to_port": "a3"
+  },
+  {
+   "connection_id": "comp-div4--conn--st0_mux3.out--to--st1_sub.a4",
+   "component_id": "comp-div4",
+   "from_node": "st0_mux3",
+   "from_port": "out",
+   "to_node": "st1_sub",
+   "to_port": "a4"
+  },
+  {
+   "connection_id": "comp-div4--conn--b0--to--st1_sub.b0",
+   "component_id": "comp-div4",
+   "from_node": "",
+   "from_port": "b0",
+   "to_node": "st1_sub",
+   "to_port": "b0"
+  },
+  {
+   "connection_id": "comp-div4--conn--b1--to--st1_sub.b1",
+   "component_id": "comp-div4",
+   "from_node": "",
+   "from_port": "b1",
+   "to_node": "st1_sub",
+   "to_port": "b1"
+  },
+  {
+   "connection_id": "comp-div4--conn--b2--to--st1_sub.b2",
+   "component_id": "comp-div4",
+   "from_node": "",
+   "from_port": "b2",
+   "to_node": "st1_sub",
+   "to_port": "b2"
+  },
+  {
+   "connection_id": "comp-div4--conn--b3--to--st1_sub.b3",
+   "component_id": "comp-div4",
+   "from_node": "",
+   "from_port": "b3",
+   "to_node": "st1_sub",
+   "to_port": "b3"
+  },
+  {
+   "connection_id": "comp-div4--conn--const.0--to--st1_sub.b4",
+   "component_id": "comp-div4",
+   "from_node": "const",
+   "from_port": "0",
+   "to_node": "st1_sub",
+   "to_port": "b4"
+  },
+  {
+   "connection_id": "comp-div4--conn--st1_sub.borrow--to--st1_q.in",
+   "component_id": "comp-div4",
+   "from_node": "st1_sub",
+   "from_port": "borrow",
+   "to_node": "st1_q",
+   "to_port": "in"
+  },
+  {
+   "connection_id": "comp-div4--conn--st1_q.out--to--q2",
+   "component_id": "comp-div4",
+   "from_node": "st1_q",
+   "from_port": "out",
+   "to_node": "",
+   "to_port": "q2"
+  },
+  {
+   "connection_id": "comp-div4--conn--a2--to--st1_mux0.d0",
+   "component_id": "comp-div4",
+   "from_node": "",
+   "from_port": "a2",
+   "to_node": "st1_mux0",
+   "to_port": "d0"
+  },
+  {
+   "connection_id": "comp-div4--conn--st1_sub.s0--to--st1_mux0.d1",
+   "component_id": "comp-div4",
+   "from_node": "st1_sub",
+   "from_port": "s0",
+   "to_node": "st1_mux0",
+   "to_port": "d1"
+  },
+  {
+   "connection_id": "comp-div4--conn--st1_q.out--to--st1_mux0.sel",
+   "component_id": "comp-div4",
+   "from_node": "st1_q",
+   "from_port": "out",
+   "to_node": "st1_mux0",
+   "to_port": "sel"
+  },
+  {
+   "connection_id": "comp-div4--conn--st0_mux0.out--to--st1_mux1.d0",
+   "component_id": "comp-div4",
+   "from_node": "st0_mux0",
+   "from_port": "out",
+   "to_node": "st1_mux1",
+   "to_port": "d0"
+  },
+  {
+   "connection_id": "comp-div4--conn--st1_sub.s1--to--st1_mux1.d1",
+   "component_id": "comp-div4",
+   "from_node": "st1_sub",
+   "from_port": "s1",
+   "to_node": "st1_mux1",
+   "to_port": "d1"
+  },
+  {
+   "connection_id": "comp-div4--conn--st1_q.out--to--st1_mux1.sel",
+   "component_id": "comp-div4",
+   "from_node": "st1_q",
+   "from_port": "out",
+   "to_node": "st1_mux1",
+   "to_port": "sel"
+  },
+  {
+   "connection_id": "comp-div4--conn--st0_mux1.out--to--st1_mux2.d0",
+   "component_id": "comp-div4",
+   "from_node": "st0_mux1",
+   "from_port": "out",
+   "to_node": "st1_mux2",
+   "to_port": "d0"
+  },
+  {
+   "connection_id": "comp-div4--conn--st1_sub.s2--to--st1_mux2.d1",
+   "component_id": "comp-div4",
+   "from_node": "st1_sub",
+   "from_port": "s2",
+   "to_node": "st1_mux2",
+   "to_port": "d1"
+  },
+  {
+   "connection_id": "comp-div4--conn--st1_q.out--to--st1_mux2.sel",
+   "component_id": "comp-div4",
+   "from_node": "st1_q",
+   "from_port": "out",
+   "to_node": "st1_mux2",
+   "to_port": "sel"
+  },
+  {
+   "connection_id": "comp-div4--conn--st0_mux2.out--to--st1_mux3.d0",
+   "component_id": "comp-div4",
+   "from_node": "st0_mux2",
+   "from_port": "out",
+   "to_node": "st1_mux3",
+   "to_port": "d0"
+  },
+  {
+   "connection_id": "comp-div4--conn--st1_sub.s3--to--st1_mux3.d1",
+   "component_id": "comp-div4",
+   "from_node": "st1_sub",
+   "from_port": "s3",
+   "to_node": "st1_mux3",
+   "to_port": "d1"
+  },
+  {
+   "connection_id": "comp-div4--conn--st1_q.out--to--st1_mux3.sel",
+   "component_id": "comp-div4",
+   "from_node": "st1_q",
+   "from_port": "out",
+   "to_node": "st1_mux3",
+   "to_port": "sel"
+  },
+  {
+   "connection_id": "comp-div4--conn--st0_mux3.out--to--st1_mux4.d0",
+   "component_id": "comp-div4",
+   "from_node": "st0_mux3",
+   "from_port": "out",
+   "to_node": "st1_mux4",
+   "to_port": "d0"
+  },
+  {
+   "connection_id": "comp-div4--conn--st1_sub.s4--to--st1_mux4.d1",
+   "component_id": "comp-div4",
+   "from_node": "st1_sub",
+   "from_port": "s4",
+   "to_node": "st1_mux4",
+   "to_port": "d1"
+  },
+  {
+   "connection_id": "comp-div4--conn--st1_q.out--to--st1_mux4.sel",
+   "component_id": "comp-div4",
+   "from_node": "st1_q",
+   "from_port": "out",
+   "to_node": "st1_mux4",
+   "to_port": "sel"
+  },
+  {
+   "connection_id": "comp-div4--conn--a1--to--st2_sub.a0",
+   "component_id": "comp-div4",
+   "from_node": "",
+   "from_port": "a1",
+   "to_node": "st2_sub",
+   "to_port": "a0"
+  },
+  {
+   "connection_id": "comp-div4--conn--st1_mux0.out--to--st2_sub.a1",
+   "component_id": "comp-div4",
+   "from_node": "st1_mux0",
+   "from_port": "out",
+   "to_node": "st2_sub",
+   "to_port": "a1"
+  },
+  {
+   "connection_id": "comp-div4--conn--st1_mux1.out--to--st2_sub.a2",
+   "component_id": "comp-div4",
+   "from_node": "st1_mux1",
+   "from_port": "out",
+   "to_node": "st2_sub",
+   "to_port": "a2"
+  },
+  {
+   "connection_id": "comp-div4--conn--st1_mux2.out--to--st2_sub.a3",
+   "component_id": "comp-div4",
+   "from_node": "st1_mux2",
+   "from_port": "out",
+   "to_node": "st2_sub",
+   "to_port": "a3"
+  },
+  {
+   "connection_id": "comp-div4--conn--st1_mux3.out--to--st2_sub.a4",
+   "component_id": "comp-div4",
+   "from_node": "st1_mux3",
+   "from_port": "out",
+   "to_node": "st2_sub",
+   "to_port": "a4"
+  },
+  {
+   "connection_id": "comp-div4--conn--b0--to--st2_sub.b0",
+   "component_id": "comp-div4",
+   "from_node": "",
+   "from_port": "b0",
+   "to_node": "st2_sub",
+   "to_port": "b0"
+  },
+  {
+   "connection_id": "comp-div4--conn--b1--to--st2_sub.b1",
+   "component_id": "comp-div4",
+   "from_node": "",
+   "from_port": "b1",
+   "to_node": "st2_sub",
+   "to_port": "b1"
+  },
+  {
+   "connection_id": "comp-div4--conn--b2--to--st2_sub.b2",
+   "component_id": "comp-div4",
+   "from_node": "",
+   "from_port": "b2",
+   "to_node": "st2_sub",
+   "to_port": "b2"
+  },
+  {
+   "connection_id": "comp-div4--conn--b3--to--st2_sub.b3",
+   "component_id": "comp-div4",
+   "from_node": "",
+   "from_port": "b3",
+   "to_node": "st2_sub",
+   "to_port": "b3"
+  },
+  {
+   "connection_id": "comp-div4--conn--const.0--to--st2_sub.b4",
+   "component_id": "comp-div4",
+   "from_node": "const",
+   "from_port": "0",
+   "to_node": "st2_sub",
+   "to_port": "b4"
+  },
+  {
+   "connection_id": "comp-div4--conn--st2_sub.borrow--to--st2_q.in",
+   "component_id": "comp-div4",
+   "from_node": "st2_sub",
+   "from_port": "borrow",
+   "to_node": "st2_q",
+   "to_port": "in"
+  },
+  {
+   "connection_id": "comp-div4--conn--st2_q.out--to--q1",
+   "component_id": "comp-div4",
+   "from_node": "st2_q",
+   "from_port": "out",
+   "to_node": "",
+   "to_port": "q1"
+  },
+  {
+   "connection_id": "comp-div4--conn--a1--to--st2_mux0.d0",
+   "component_id": "comp-div4",
+   "from_node": "",
+   "from_port": "a1",
+   "to_node": "st2_mux0",
+   "to_port": "d0"
+  },
+  {
+   "connection_id": "comp-div4--conn--st2_sub.s0--to--st2_mux0.d1",
+   "component_id": "comp-div4",
+   "from_node": "st2_sub",
+   "from_port": "s0",
+   "to_node": "st2_mux0",
+   "to_port": "d1"
+  },
+  {
+   "connection_id": "comp-div4--conn--st2_q.out--to--st2_mux0.sel",
+   "component_id": "comp-div4",
+   "from_node": "st2_q",
+   "from_port": "out",
+   "to_node": "st2_mux0",
+   "to_port": "sel"
+  },
+  {
+   "connection_id": "comp-div4--conn--st1_mux0.out--to--st2_mux1.d0",
+   "component_id": "comp-div4",
+   "from_node": "st1_mux0",
+   "from_port": "out",
+   "to_node": "st2_mux1",
+   "to_port": "d0"
+  },
+  {
+   "connection_id": "comp-div4--conn--st2_sub.s1--to--st2_mux1.d1",
+   "component_id": "comp-div4",
+   "from_node": "st2_sub",
+   "from_port": "s1",
+   "to_node": "st2_mux1",
+   "to_port": "d1"
+  },
+  {
+   "connection_id": "comp-div4--conn--st2_q.out--to--st2_mux1.sel",
+   "component_id": "comp-div4",
+   "from_node": "st2_q",
+   "from_port": "out",
+   "to_node": "st2_mux1",
+   "to_port": "sel"
+  },
+  {
+   "connection_id": "comp-div4--conn--st1_mux1.out--to--st2_mux2.d0",
+   "component_id": "comp-div4",
+   "from_node": "st1_mux1",
+   "from_port": "out",
+   "to_node": "st2_mux2",
+   "to_port": "d0"
+  },
+  {
+   "connection_id": "comp-div4--conn--st2_sub.s2--to--st2_mux2.d1",
+   "component_id": "comp-div4",
+   "from_node": "st2_sub",
+   "from_port": "s2",
+   "to_node": "st2_mux2",
+   "to_port": "d1"
+  },
+  {
+   "connection_id": "comp-div4--conn--st2_q.out--to--st2_mux2.sel",
+   "component_id": "comp-div4",
+   "from_node": "st2_q",
+   "from_port": "out",
+   "to_node": "st2_mux2",
+   "to_port": "sel"
+  },
+  {
+   "connection_id": "comp-div4--conn--st1_mux2.out--to--st2_mux3.d0",
+   "component_id": "comp-div4",
+   "from_node": "st1_mux2",
+   "from_port": "out",
+   "to_node": "st2_mux3",
+   "to_port": "d0"
+  },
+  {
+   "connection_id": "comp-div4--conn--st2_sub.s3--to--st2_mux3.d1",
+   "component_id": "comp-div4",
+   "from_node": "st2_sub",
+   "from_port": "s3",
+   "to_node": "st2_mux3",
+   "to_port": "d1"
+  },
+  {
+   "connection_id": "comp-div4--conn--st2_q.out--to--st2_mux3.sel",
+   "component_id": "comp-div4",
+   "from_node": "st2_q",
+   "from_port": "out",
+   "to_node": "st2_mux3",
+   "to_port": "sel"
+  },
+  {
+   "connection_id": "comp-div4--conn--st1_mux3.out--to--st2_mux4.d0",
+   "component_id": "comp-div4",
+   "from_node": "st1_mux3",
+   "from_port": "out",
+   "to_node": "st2_mux4",
+   "to_port": "d0"
+  },
+  {
+   "connection_id": "comp-div4--conn--st2_sub.s4--to--st2_mux4.d1",
+   "component_id": "comp-div4",
+   "from_node": "st2_sub",
+   "from_port": "s4",
+   "to_node": "st2_mux4",
+   "to_port": "d1"
+  },
+  {
+   "connection_id": "comp-div4--conn--st2_q.out--to--st2_mux4.sel",
+   "component_id": "comp-div4",
+   "from_node": "st2_q",
+   "from_port": "out",
+   "to_node": "st2_mux4",
+   "to_port": "sel"
+  },
+  {
+   "connection_id": "comp-div4--conn--a0--to--st3_sub.a0",
+   "component_id": "comp-div4",
+   "from_node": "",
+   "from_port": "a0",
+   "to_node": "st3_sub",
+   "to_port": "a0"
+  },
+  {
+   "connection_id": "comp-div4--conn--st2_mux0.out--to--st3_sub.a1",
+   "component_id": "comp-div4",
+   "from_node": "st2_mux0",
+   "from_port": "out",
+   "to_node": "st3_sub",
+   "to_port": "a1"
+  },
+  {
+   "connection_id": "comp-div4--conn--st2_mux1.out--to--st3_sub.a2",
+   "component_id": "comp-div4",
+   "from_node": "st2_mux1",
+   "from_port": "out",
+   "to_node": "st3_sub",
+   "to_port": "a2"
+  },
+  {
+   "connection_id": "comp-div4--conn--st2_mux2.out--to--st3_sub.a3",
+   "component_id": "comp-div4",
+   "from_node": "st2_mux2",
+   "from_port": "out",
+   "to_node": "st3_sub",
+   "to_port": "a3"
+  },
+  {
+   "connection_id": "comp-div4--conn--st2_mux3.out--to--st3_sub.a4",
+   "component_id": "comp-div4",
+   "from_node": "st2_mux3",
+   "from_port": "out",
+   "to_node": "st3_sub",
+   "to_port": "a4"
+  },
+  {
+   "connection_id": "comp-div4--conn--b0--to--st3_sub.b0",
+   "component_id": "comp-div4",
+   "from_node": "",
+   "from_port": "b0",
+   "to_node": "st3_sub",
+   "to_port": "b0"
+  },
+  {
+   "connection_id": "comp-div4--conn--b1--to--st3_sub.b1",
+   "component_id": "comp-div4",
+   "from_node": "",
+   "from_port": "b1",
+   "to_node": "st3_sub",
+   "to_port": "b1"
+  },
+  {
+   "connection_id": "comp-div4--conn--b2--to--st3_sub.b2",
+   "component_id": "comp-div4",
+   "from_node": "",
+   "from_port": "b2",
+   "to_node": "st3_sub",
+   "to_port": "b2"
+  },
+  {
+   "connection_id": "comp-div4--conn--b3--to--st3_sub.b3",
+   "component_id": "comp-div4",
+   "from_node": "",
+   "from_port": "b3",
+   "to_node": "st3_sub",
+   "to_port": "b3"
+  },
+  {
+   "connection_id": "comp-div4--conn--const.0--to--st3_sub.b4",
+   "component_id": "comp-div4",
+   "from_node": "const",
+   "from_port": "0",
+   "to_node": "st3_sub",
+   "to_port": "b4"
+  },
+  {
+   "connection_id": "comp-div4--conn--st3_sub.borrow--to--st3_q.in",
+   "component_id": "comp-div4",
+   "from_node": "st3_sub",
+   "from_port": "borrow",
+   "to_node": "st3_q",
+   "to_port": "in"
+  },
+  {
+   "connection_id": "comp-div4--conn--st3_q.out--to--q0",
+   "component_id": "comp-div4",
+   "from_node": "st3_q",
+   "from_port": "out",
+   "to_node": "",
+   "to_port": "q0"
+  },
+  {
+   "connection_id": "comp-div4--conn--a0--to--st3_mux0.d0",
+   "component_id": "comp-div4",
+   "from_node": "",
+   "from_port": "a0",
+   "to_node": "st3_mux0",
+   "to_port": "d0"
+  },
+  {
+   "connection_id": "comp-div4--conn--st3_sub.s0--to--st3_mux0.d1",
+   "component_id": "comp-div4",
+   "from_node": "st3_sub",
+   "from_port": "s0",
+   "to_node": "st3_mux0",
+   "to_port": "d1"
+  },
+  {
+   "connection_id": "comp-div4--conn--st3_q.out--to--st3_mux0.sel",
+   "component_id": "comp-div4",
+   "from_node": "st3_q",
+   "from_port": "out",
+   "to_node": "st3_mux0",
+   "to_port": "sel"
+  },
+  {
+   "connection_id": "comp-div4--conn--st2_mux0.out--to--st3_mux1.d0",
+   "component_id": "comp-div4",
+   "from_node": "st2_mux0",
+   "from_port": "out",
+   "to_node": "st3_mux1",
+   "to_port": "d0"
+  },
+  {
+   "connection_id": "comp-div4--conn--st3_sub.s1--to--st3_mux1.d1",
+   "component_id": "comp-div4",
+   "from_node": "st3_sub",
+   "from_port": "s1",
+   "to_node": "st3_mux1",
+   "to_port": "d1"
+  },
+  {
+   "connection_id": "comp-div4--conn--st3_q.out--to--st3_mux1.sel",
+   "component_id": "comp-div4",
+   "from_node": "st3_q",
+   "from_port": "out",
+   "to_node": "st3_mux1",
+   "to_port": "sel"
+  },
+  {
+   "connection_id": "comp-div4--conn--st2_mux1.out--to--st3_mux2.d0",
+   "component_id": "comp-div4",
+   "from_node": "st2_mux1",
+   "from_port": "out",
+   "to_node": "st3_mux2",
+   "to_port": "d0"
+  },
+  {
+   "connection_id": "comp-div4--conn--st3_sub.s2--to--st3_mux2.d1",
+   "component_id": "comp-div4",
+   "from_node": "st3_sub",
+   "from_port": "s2",
+   "to_node": "st3_mux2",
+   "to_port": "d1"
+  },
+  {
+   "connection_id": "comp-div4--conn--st3_q.out--to--st3_mux2.sel",
+   "component_id": "comp-div4",
+   "from_node": "st3_q",
+   "from_port": "out",
+   "to_node": "st3_mux2",
+   "to_port": "sel"
+  },
+  {
+   "connection_id": "comp-div4--conn--st2_mux2.out--to--st3_mux3.d0",
+   "component_id": "comp-div4",
+   "from_node": "st2_mux2",
+   "from_port": "out",
+   "to_node": "st3_mux3",
+   "to_port": "d0"
+  },
+  {
+   "connection_id": "comp-div4--conn--st3_sub.s3--to--st3_mux3.d1",
+   "component_id": "comp-div4",
+   "from_node": "st3_sub",
+   "from_port": "s3",
+   "to_node": "st3_mux3",
+   "to_port": "d1"
+  },
+  {
+   "connection_id": "comp-div4--conn--st3_q.out--to--st3_mux3.sel",
+   "component_id": "comp-div4",
+   "from_node": "st3_q",
+   "from_port": "out",
+   "to_node": "st3_mux3",
+   "to_port": "sel"
+  },
+  {
+   "connection_id": "comp-div4--conn--st2_mux3.out--to--st3_mux4.d0",
+   "component_id": "comp-div4",
+   "from_node": "st2_mux3",
+   "from_port": "out",
+   "to_node": "st3_mux4",
+   "to_port": "d0"
+  },
+  {
+   "connection_id": "comp-div4--conn--st3_sub.s4--to--st3_mux4.d1",
+   "component_id": "comp-div4",
+   "from_node": "st3_sub",
+   "from_port": "s4",
+   "to_node": "st3_mux4",
+   "to_port": "d1"
+  },
+  {
+   "connection_id": "comp-div4--conn--st3_q.out--to--st3_mux4.sel",
+   "component_id": "comp-div4",
+   "from_node": "st3_q",
+   "from_port": "out",
+   "to_node": "st3_mux4",
+   "to_port": "sel"
+  },
+  {
+   "connection_id": "comp-div4--conn--st3_mux0.out--to--r0",
+   "component_id": "comp-div4",
+   "from_node": "st3_mux0",
+   "from_port": "out",
+   "to_node": "",
+   "to_port": "r0"
+  },
+  {
+   "connection_id": "comp-div4--conn--st3_mux1.out--to--r1",
+   "component_id": "comp-div4",
+   "from_node": "st3_mux1",
+   "from_port": "out",
+   "to_node": "",
+   "to_port": "r1"
+  },
+  {
+   "connection_id": "comp-div4--conn--st3_mux2.out--to--r2",
+   "component_id": "comp-div4",
+   "from_node": "st3_mux2",
+   "from_port": "out",
+   "to_node": "",
+   "to_port": "r2"
+  },
+  {
+   "connection_id": "comp-div4--conn--st3_mux3.out--to--r3",
+   "component_id": "comp-div4",
+   "from_node": "st3_mux3",
+   "from_port": "out",
+   "to_node": "",
+   "to_port": "r3"
+  }
+ ]
+}

@@ -53,6 +53,31 @@ Numeral(4)                            recognize numeral   ∎
 - **zero imports above the kernel** — all four theorems carry `ActiveImportCount = 0` and appear in no `TheoremDependencies` row;
 - per-operation **normal-form** checks (`= 4`, `= 2`).
 
+## Managing this sub-graph (`./start.sh`)
+
+This folder has its own control panel. The sub-graph is the Peano contract
+(`theorem-contract.json`) plus the federated gate-level provider
+(`bit-calculator/`); `start.sh` drives the runnable part — the bit-calculator's
+build, standalone Postgres, and conformance.
+
+```bash
+./start.sh              # build → db → test → boot the calculator app (default)
+./start.sh app          # boot the Casio-style solar calculator (API + Vite web)
+./start.sh test         # conformance: invariant (value_ok) + substrate equivalence
+./start.sh netlist      # exhaustive netlist validation (Python simulator)
+./start.sh calc 3 + 5   # compute 3+5 LIVE through the gate netlist  → 8
+./start.sh calc 6 x 2   # 6×2 → 12   (ops: + - x /, operands 0..15)
+./start.sh contract     # print the Peano + bit-calculator provider contracts
+./start.sh stop         # free the app ports and drop the standalone DB
+```
+
+`./start.sh app` opens a little **Casio-style solar calculator** at
+`http://localhost:5180`. Its `=` key posts to a small Express API that settles the
+logic-gate netlist in Postgres and reads the answer off the output pins — **no
+arithmetic runs in the app or the API; the gates compute.** `db` always
+drops-and-recreates first and app boots free their ports first, so restart is one
+command. Run `./start.sh help` for the full list.
+
 ## Status rule (same guardrail as every other domain)
 
 Do not promote any of these theorems past their **stated scope**. `2 + 2 = 4` is internalized; *addition is commutative* is a different, not-yet-modeled theorem. A finite calibration or a green invariant does not establish a universal theorem — the universal inference must be represented and its child frontier closed. See the domain `NextTarget` for the intended generalizations (associativity, commutativity, distributivity, ordering, the division algorithm).

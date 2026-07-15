@@ -99,7 +99,22 @@ The `natural-number-arithmetic` (Peano) domain adds the network's first fully in
 4 theorems FULLY_INTERNALIZED_FOR_SCOPE with ActiveImportCount = 0
 ```
 
-`scripts/validate_starter.py` asserts the 12-theorem / 7-dependency shape and the frozen v21 SHA-256 + SQLite counts; keep both in sync with this block.
+### bit-calculator addendum (gate-level second witness)
+
+The `bit-calculator` federated provider (`domains/natural-number-arithmetic/bit-calculator/`) computes the four flagship facts a **second, disjoint way**: not through Peano `Zero`/`Successor` chains, but through a Rosetta-style **logic-gate netlist** (AND/OR/XOR/NOT → half/full adder → 4-bit adder/subtractor/multiplier/divider). Nothing arithmetic is stored — only input bits are data; every result bit is a fixed-point settle over gate truth tables and connections, in Postgres and (independently) in Python. It is its **own** effortless project with its own rulebook, `effortless-postgres/`, and test DB; the main rulebook imports only its versioned `provider-certificate.json`. This does NOT alter any v21 or Peano count above. After it is present the main-rulebook totals are:
+
+```text
+13 theorems          (8 v21 + 4 natural-number-arithmetic + 1 bit-calculator provider)
+11 dependencies      (7 load-bearing FLT + 4 corroborating-witness bit-calculator; the 4 witness rows are NOT load-bearing, NOT imported, and change no consumer's zero-import status)
+10 domains, 10 trust boundaries, 9 foundation kernels
+8 conclusions        (4 prior + 4 bit-calculator gate-witness conclusions)
+2 kernels with theorem_content_internalized = 1  (kernel-peano-naturals-v1, kernel-logic-gates-v1; the 7 v21 kernels remain 0)
+5 theorems FULLY_INTERNALIZED_FOR_SCOPE with ActiveImportCount = 0  (4 Peano + 1 bit-calculator)
+```
+
+The bit-calculator's own model (a separate rulebook) holds: 4 GateTypes, 14 GateTruthRows, 10 Components, 118 ComponentPins, 79 ComponentInstances, 295 ComponentConnections, 24 Computations. Its Postgres engine (`03b-customize-views.sql`) and Python simulator (`scripts/netlist_sim.py`) agree on all 24 computations; the four netlists are validated exhaustively (256 pairs each for add/sub/mul, 240 for div) against reference arithmetic in the validator harness only.
+
+`scripts/validate_starter.py` asserts the **13-theorem** shape, **7 load-bearing + 4 corroborating-witness** dependency split, and the frozen v21 SHA-256 + SQLite counts; keep all of these in sync with this block.
 
 ## Host conventions
 

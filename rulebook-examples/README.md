@@ -66,6 +66,19 @@ What this demonstrates:
 
 ---
 
+### `effortless-math` — *the highest-status domain, and the trust boundary as data*
+
+The ERB hub-and-spoke method pointed at mathematics itself. Fermat's Last Theorem is the deeply modeled flagship **consumer** theorem; seven deep number-theory results (analytic prime distribution / Chebotarev, Hilbert specialization, Mazur modular-curve arithmetic, global deformation duality, modular-curve cohomological comparison, universal Ribet level-lowering, solvable Artin automorphy) are first-class **provider** theorems. Consumers bind versioned provider certificates, never a provider's private tables.
+
+What this demonstrates:
+- **Proof status is data, not a boolean.** `IMPORTED`, `DECOMPOSED`, `DERIVED_WITH_IMPORTED_CHILDREN`, `DERIVED_WITH_SHARED_KERNEL`, `FULLY_INTERNALIZED_FOR_SCOPE`, `FALSIFIED`, `SUPERSEDED`, `NOT_EVALUABLE` are distinct, separately-witnessed facts. FLT sits at `DERIVED_WITH_IMPORTED_CHILDREN`: the contradiction is derived while seven children remain imported.
+- **The trust boundary falls out of the DAG.** A conclusion is only as internal as its deepest load-bearing child; the boundary is reported, never hidden. This is CMCC's provenance-by-construction applied to the one domain where provenance is the whole game.
+- **Category-honest by design.** It reproduces the frozen v21 answer key — 8 theorems, 7 load-bearing dependencies, 113 proof facts, 571 loops, 305 invariant rows, 1 derived contradiction, 0 providers fully internalized. It is a certificate/status **ledger and build system for a proof network**, NOT a prover, and never claims a zero-import proof of FLT. The bookkeeping of a proof decomposes cleanly into schema + data + lookups + aggregations + formulas; proof-*search* does not, and the project never claims it.
+
+→ [effortless-math/README.md](effortless-math/README.md)
+
+---
+
 ### `effortless-banking` — *deep domain, one lifecycle*
 
 A full loan-origination lifecycle with an underwriting state machine, time-based covenant and DSCR/LTV monitoring, risk-grade migration, segregation-of-duties checks, and branching approval logic — expressed in the same rulebook primitives as every other domain here.

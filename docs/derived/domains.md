@@ -266,3 +266,13 @@ Five-part mechanical timer modeled with every README noun as a table — a hardw
 
 _Rulebook path:_ `rulebook-examples/mechanical-kitchen-timer/effortless-rulebook/mechanical-kitchen-timer-rulebook.json`
 
+## Effortless Math
+
+_complexity: advanced · tables: 16_
+
+Executable theorem network — Fermat's Last Theorem as flagship consumer over seven imported provider theorems; a certificate/status ledger for a proof network, not a prover.
+
+**Key features.** provider/consumer theorem contracts, non-boolean proof-status ledger, trust-boundary DAG, versioned certificates, bitemporal witness/provenance
+
+_Rulebook path:_ `rulebook-examples/effortless-math/effortless-rulebook/effortless-math-rulebook.json`
+

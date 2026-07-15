@@ -25,17 +25,15 @@ Primary navigation tree for the admin portal. Drives the left sidebar. Each node
 - **Flavours** → `screen-viewer-flavors` _(min role: role-viewer)_
 - **Current Domain** _(min role: role-developer)_
   - **Overview** → `screen-dev-domain` _(min role: role-developer)_
-  - **Entities** → `screen-dev-entities` _(min role: role-developer)_
+  - **Explorer** → `screen-dev-explorer` _(min role: role-developer)_
   - **Formulas** → `screen-dev-formulas` _(min role: role-developer)_
   - **Relationships** → `screen-dev-relations` _(min role: role-developer)_
-  - **Sample Data** → `screen-dev-data` _(min role: role-developer)_
   - **Effortless Tools** → `screen-dev-substrates` _(min role: role-developer)_
   - **Tests** → `screen-dev-tests` _(min role: role-developer)_
   - **Input Spokes** → `screen-dev-spokes` _(min role: role-developer)_
   - **Files** → `screen-dev-files` _(min role: role-developer)_
-  - **Explorer** → `screen-dev-explorer` _(min role: role-developer)_
   - **Rulebook JSON** → `screen-dev-rulebook-json` _(min role: role-developer)_
-  - **Reset Editor** → `screen-dev-reset` _(min role: role-developer)_
+  - **App & Data Tools** → `screen-dev-reset` _(min role: role-developer)_
 - **Platform Features** → `screen-viewer-features` _(min role: role-viewer)_
 - **Current Domain** _(min role: role-viewer)_
   - **Overview** → `screen-viewer-domain` _(min role: role-viewer)_

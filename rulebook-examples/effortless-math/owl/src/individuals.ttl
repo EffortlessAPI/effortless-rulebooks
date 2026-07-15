@@ -153,6 +153,42 @@ effortless-ntwf:conc-nna-same-genes-as-flt a effortless-ntwf:Conclusions ;
     effortless-ntwf:evidence "2+2=4 is modeled with the exact same tables as Fermat's Last Theorem (Domains, Theorems, FoundationKernels, ProofFacts, InvariantChecks, TrustBoundaries, Conclusions) with no special-case schema." ;
     effortless-ntwf:witnessedInLoop "loop-576" .
 
+effortless-ntwf:conc-bitcalc-add a effortless-ntwf:Conclusions ;
+    effortless-ntwf:conclusionId "conc-bitcalc-add" ;
+    effortless-ntwf:category "instrument" ;
+    effortless-ntwf:status "witnessed" ;
+    effortless-ntwf:reportTier "supporting" ;
+    effortless-ntwf:title "add4(2,2) settles to 0100 = 4 by logic gates" ;
+    effortless-ntwf:evidence "vw_computation_answer.value_ok = true in erb_bit_calculator; and the Python netlist_sim agrees (24/24 computations across both substrates)." ;
+    effortless-ntwf:witnessedInLoop "bit-calculator-integration" .
+
+effortless-ntwf:conc-bitcalc-sub a effortless-ntwf:Conclusions ;
+    effortless-ntwf:conclusionId "conc-bitcalc-sub" ;
+    effortless-ntwf:category "instrument" ;
+    effortless-ntwf:status "witnessed" ;
+    effortless-ntwf:reportTier "supporting" ;
+    effortless-ntwf:title "sub4(4,2) settles to 0010 = 2 by logic gates" ;
+    effortless-ntwf:evidence "vw_computation_answer.value_ok = true in erb_bit_calculator; and the Python netlist_sim agrees (24/24 computations across both substrates)." ;
+    effortless-ntwf:witnessedInLoop "bit-calculator-integration" .
+
+effortless-ntwf:conc-bitcalc-mul a effortless-ntwf:Conclusions ;
+    effortless-ntwf:conclusionId "conc-bitcalc-mul" ;
+    effortless-ntwf:category "instrument" ;
+    effortless-ntwf:status "witnessed" ;
+    effortless-ntwf:reportTier "supporting" ;
+    effortless-ntwf:title "mul4(2,2) settles to 00000100 = 4 by logic gates" ;
+    effortless-ntwf:evidence "vw_computation_answer.value_ok = true in erb_bit_calculator; and the Python netlist_sim agrees (24/24 computations across both substrates)." ;
+    effortless-ntwf:witnessedInLoop "bit-calculator-integration" .
+
+effortless-ntwf:conc-bitcalc-div a effortless-ntwf:Conclusions ;
+    effortless-ntwf:conclusionId "conc-bitcalc-div" ;
+    effortless-ntwf:category "instrument" ;
+    effortless-ntwf:status "witnessed" ;
+    effortless-ntwf:reportTier "supporting" ;
+    effortless-ntwf:title "div4(4,2) settles to quotient 0010 = 2 by logic gates" ;
+    effortless-ntwf:evidence "vw_computation_answer.value_ok = true in erb_bit_calculator; and the Python netlist_sim agrees (24/24 computations across both substrates)." ;
+    effortless-ntwf:witnessedInLoop "bit-calculator-integration" .
+
 # === Individuals: Domains ===
 
 effortless-ntwf:domain-fermats-last-theorem a effortless-ntwf:Domains ;
@@ -252,6 +288,17 @@ effortless-ntwf:domain-natural-number-arithmetic a effortless-ntwf:Domains ;
     effortless-ntwf:description "Peano naturals with the four elementary operations. Each result is derived from the recursive definitions and imports no theorem above the Peano kernel trust boundary." ;
     effortless-ntwf:canonicalTheoremId "natural-number-addition-2-plus-2-equals-4" ;
     effortless-ntwf:relativePath "domains/natural-number-arithmetic" ;
+    effortless-ntwf:isFlagship false .
+
+effortless-ntwf:domain-bit-calculator-arithmetic a effortless-ntwf:Domains ;
+    effortless-ntwf:domainId "domain-bit-calculator-arithmetic" ;
+    effortless-ntwf:slug "bit-calculator-arithmetic" ;
+    effortless-ntwf:title "Gate-Level Bit Calculator" ;
+    effortless-ntwf:role "foundation-internalized" ;
+    effortless-ntwf:status "deeply-modeled" ;
+    effortless-ntwf:description "4-bit arithmetic (add/sub/mul/div) computed by a Rosetta-style logic-gate netlist. A federated provider whose full proof model lives in domains/natural-number-arithmetic/bit-calculator/. Nothing arithmetic is stored -- only input bits; every result bit is a fixed-point computation over gate truth tables. Second, independent zero-import witness of the four flagship arithmetic facts." ;
+    effortless-ntwf:canonicalTheoremId "bit-calculator-4bit-arithmetic" ;
+    effortless-ntwf:relativePath "domains/natural-number-arithmetic/bit-calculator" ;
     effortless-ntwf:isFlagship false .
 
 # === Individuals: FoundationKernels ===
@@ -359,6 +406,19 @@ effortless-ntwf:8 a effortless-ntwf:FoundationKernels ;
     effortless-ntwf:theorem_content_internalized 1 ;
     effortless-ntwf:status "INTERNALIZED-FOUNDATION-KERNEL" ;
     effortless-ntwf:next_target "Extend to associativity, commutativity, distributivity, and the ordering relation." .
+
+effortless-ntwf:9 a effortless-ntwf:FoundationKernels ;
+    effortless-ntwf:kernel_order 9 ;
+    effortless-ntwf:kernel_id "kernel-logic-gates-v1" ;
+    effortless-ntwf:title "Boolean logic gates and netlist semantics" ;
+    effortless-ntwf:mathematical_scope "AND/OR/XOR/NOT truth tables plus the connection/instance netlist model. Arithmetic components (adders, multiplier, divider) are built from these as data." ;
+    effortless-ntwf:input_contract_json "[\"AND/OR/XOR/NOT truth tables\", \"netlist instances\", \"netlist connections\", \"input bit strings\"]" ;
+    effortless-ntwf:output_contract_json "[\"settled output wires forming the result bit string\"]" ;
+    effortless-ntwf:finite_compiler_tables_json "[\"gate_truth_rows\", \"component_connections\", \"component_instances\"]" ;
+    effortless-ntwf:source_id "src-logic-gates-kernel-v1" ;
+    effortless-ntwf:theorem_content_internalized 1 ;
+    effortless-ntwf:status "ACTIVE-FOUNDATION-KERNEL" ;
+    effortless-ntwf:next_target "Widen to 8-bit (and beyond) by adding netlist rows only; add signed/overflow flags as data." .
 
 # === Individuals: InvariantChecks ===
 
@@ -13477,6 +13537,54 @@ effortless-ntwf:dep-flt-solvable-artin-automorphy a effortless-ntwf:TheoremDepen
     effortless-ntwf:providerContractPath "domains/solvable-artin-automorphy/theorem-contract.json" ;
     effortless-ntwf:notes "Solvable base change, automorphic induction, and converse theorem." .
 
+effortless-ntwf:dep-natural-number-addition-2-plus-2-equals-4-bitcalc-witness a effortless-ntwf:TheoremDependencies ;
+    effortless-ntwf:dependencyId "dep-natural-number-addition-2-plus-2-equals-4-bitcalc-witness" ;
+    effortless-ntwf:consumerTheoremId "natural-number-addition-2-plus-2-equals-4" ;
+    effortless-ntwf:providerTheoremId "bit-calculator-4bit-arithmetic" ;
+    effortless-ntwf:requiredConclusion "gate-substrate witness that 2+2=4" ;
+    effortless-ntwf:proofStatusId "FULLY_INTERNALIZED_FOR_SCOPE" ;
+    effortless-ntwf:loadBearing false ;
+    effortless-ntwf:isImported false ;
+    effortless-ntwf:isSharedKernel false ;
+    effortless-ntwf:providerContractPath "domains/natural-number-arithmetic/bit-calculator/provider-certificate.json" ;
+    effortless-ntwf:notes "Corroborating cross-substrate witness, not an import. The Peano Successor derivation independently establishes this fact; the gate netlist re-establishes the identical fact on a disjoint substrate. Does not change the consumer's zero-import status or ActiveImportCount." .
+
+effortless-ntwf:dep-natural-number-subtraction-4-minus-2-equals-2-bitcalc-witness a effortless-ntwf:TheoremDependencies ;
+    effortless-ntwf:dependencyId "dep-natural-number-subtraction-4-minus-2-equals-2-bitcalc-witness" ;
+    effortless-ntwf:consumerTheoremId "natural-number-subtraction-4-minus-2-equals-2" ;
+    effortless-ntwf:providerTheoremId "bit-calculator-4bit-arithmetic" ;
+    effortless-ntwf:requiredConclusion "gate-substrate witness that 4-2=2" ;
+    effortless-ntwf:proofStatusId "FULLY_INTERNALIZED_FOR_SCOPE" ;
+    effortless-ntwf:loadBearing false ;
+    effortless-ntwf:isImported false ;
+    effortless-ntwf:isSharedKernel false ;
+    effortless-ntwf:providerContractPath "domains/natural-number-arithmetic/bit-calculator/provider-certificate.json" ;
+    effortless-ntwf:notes "Corroborating cross-substrate witness, not an import. The Peano Successor derivation independently establishes this fact; the gate netlist re-establishes the identical fact on a disjoint substrate. Does not change the consumer's zero-import status or ActiveImportCount." .
+
+effortless-ntwf:dep-natural-number-multiplication-2-times-2-equals-4-bitcalc-witness a effortless-ntwf:TheoremDependencies ;
+    effortless-ntwf:dependencyId "dep-natural-number-multiplication-2-times-2-equals-4-bitcalc-witness" ;
+    effortless-ntwf:consumerTheoremId "natural-number-multiplication-2-times-2-equals-4" ;
+    effortless-ntwf:providerTheoremId "bit-calculator-4bit-arithmetic" ;
+    effortless-ntwf:requiredConclusion "gate-substrate witness that 2*2=4" ;
+    effortless-ntwf:proofStatusId "FULLY_INTERNALIZED_FOR_SCOPE" ;
+    effortless-ntwf:loadBearing false ;
+    effortless-ntwf:isImported false ;
+    effortless-ntwf:isSharedKernel false ;
+    effortless-ntwf:providerContractPath "domains/natural-number-arithmetic/bit-calculator/provider-certificate.json" ;
+    effortless-ntwf:notes "Corroborating cross-substrate witness, not an import. The Peano Successor derivation independently establishes this fact; the gate netlist re-establishes the identical fact on a disjoint substrate. Does not change the consumer's zero-import status or ActiveImportCount." .
+
+effortless-ntwf:dep-natural-number-division-4-div-2-equals-2-bitcalc-witness a effortless-ntwf:TheoremDependencies ;
+    effortless-ntwf:dependencyId "dep-natural-number-division-4-div-2-equals-2-bitcalc-witness" ;
+    effortless-ntwf:consumerTheoremId "natural-number-division-4-div-2-equals-2" ;
+    effortless-ntwf:providerTheoremId "bit-calculator-4bit-arithmetic" ;
+    effortless-ntwf:requiredConclusion "gate-substrate witness that 4/2=2" ;
+    effortless-ntwf:proofStatusId "FULLY_INTERNALIZED_FOR_SCOPE" ;
+    effortless-ntwf:loadBearing false ;
+    effortless-ntwf:isImported false ;
+    effortless-ntwf:isSharedKernel false ;
+    effortless-ntwf:providerContractPath "domains/natural-number-arithmetic/bit-calculator/provider-certificate.json" ;
+    effortless-ntwf:notes "Corroborating cross-substrate witness, not an import. The Peano Successor derivation independently establishes this fact; the gate netlist re-establishes the identical fact on a disjoint substrate. Does not change the consumer's zero-import status or ActiveImportCount." .
+
 # === Individuals: Theorems ===
 
 effortless-ntwf:fermats-last-theorem a effortless-ntwf:Theorems ;
@@ -13671,6 +13779,22 @@ effortless-ntwf:natural-number-division-4-div-2-equals-2 a effortless-ntwf:Theor
     effortless-ntwf:isFlagship false ;
     effortless-ntwf:nextTarget "Model the remainder and prove the division algorithm 4 = 2*q + r with 0<=r<2." .
 
+effortless-ntwf:bit-calculator-4bit-arithmetic a effortless-ntwf:Theorems ;
+    effortless-ntwf:theoremId "bit-calculator-4bit-arithmetic" ;
+    effortless-ntwf:domainId "domain-bit-calculator-arithmetic" ;
+    effortless-ntwf:title "Gate-Level 4-Bit Arithmetic" ;
+    effortless-ntwf:theoremKind "foundation-internalized" ;
+    effortless-ntwf:statement "The four elementary operations on 4-bit naturals, each computed by a logic-gate netlist; the four flagship cases settle to the Peano results." ;
+    effortless-ntwf:scope "4-bit unsigned add/sub/mul/div by netlist; width is a data parameter. Nothing arithmetic is stored -- only input bits are data." ;
+    effortless-ntwf:proofStatusId "FULLY_INTERNALIZED_FOR_SCOPE" ;
+    effortless-ntwf:trustBoundary "LogicGateKernel" ;
+    effortless-ntwf:activeImportCount 0 ;
+    effortless-ntwf:rootFactId "bitcalc_add_2_2_equals_4" ;
+    effortless-ntwf:contractPath "domains/natural-number-arithmetic/bit-calculator/provider-certificate.json" ;
+    effortless-ntwf:currentVersion "1.0.0" ;
+    effortless-ntwf:isFlagship false ;
+    effortless-ntwf:nextTarget "8-bit width; signed arithmetic; a small calculator UI over vw_computation_answer; python/xlsx witness substrates." .
+
 # === Individuals: TrustBoundaries ===
 
 effortless-ntwf:trust-fermats-last-theorem a effortless-ntwf:TrustBoundaries ;
@@ -13753,3 +13877,12 @@ effortless-ntwf:trust-natural-number-arithmetic a effortless-ntwf:TrustBoundarie
     effortless-ntwf:kernelOrSubstrate "Peano natural-number kernel + ERB rulebook + conformance harness" ;
     effortless-ntwf:canClaimZeroImports true ;
     effortless-ntwf:notes "Unlike the FLT frontier, this domain closes its child frontier entirely and therefore may claim zero imports above an explicitly declared kernel boundary." .
+
+effortless-ntwf:trust-bit-calculator-arithmetic a effortless-ntwf:TrustBoundaries ;
+    effortless-ntwf:trustBoundaryId "trust-bit-calculator-arithmetic" ;
+    effortless-ntwf:theoremId "bit-calculator-4bit-arithmetic" ;
+    effortless-ntwf:boundaryKind "internalized-foundation" ;
+    effortless-ntwf:acceptedExternalClaims "None above the logic-gate kernel: only the AND/OR/XOR/NOT truth tables and netlist connection semantics are trusted." ;
+    effortless-ntwf:kernelOrSubstrate "gate_truth_rows + netlist + Postgres/Python settling engines" ;
+    effortless-ntwf:canClaimZeroImports true ;
+    effortless-ntwf:notes "Zero imports relative to the declared logic-gate kernel. The child frontier is closed: every result reduces to truth-table lookups and wire propagation, verified exhaustively on the netlist and cross-checked across two substrates." .

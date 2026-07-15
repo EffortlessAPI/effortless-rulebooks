@@ -44,22 +44,34 @@ for name, value in rulebook.items():
 
 theorem_rows = rulebook['Theorems']['data']
 theorem_ids = {row['TheoremId'] for row in theorem_rows}
-# 8 migrated v21 theorems (FLT + 7 foundation providers) plus the 4 fully
-# internalized natural-number-arithmetic theorems (+, -, *, /) added in loops 572-575.
-if len(theorem_ids) != 12:
-    raise ValueError(f'Expected 12 theorem IDs, found {len(theorem_ids)}')
+# 8 migrated v21 theorems (FLT + 7 foundation providers), the 4 fully internalized
+# natural-number-arithmetic theorems (+, -, *, /) added in loops 572-575, and the
+# 1 gate-level bit-calculator provider theorem (a second, disjoint zero-import
+# witness of the same four flagship facts).
+if len(theorem_ids) != 13:
+    raise ValueError(f'Expected 13 theorem IDs, found {len(theorem_ids)}')
 
 dependencies = rulebook['TheoremDependencies']['data']
-# Still exactly the 7 load-bearing FLT provider dependencies. The natural-number-
-# arithmetic theorems are zero-import and add no TheoremDependencies rows.
-if len(dependencies) != 7:
-    raise ValueError(f'Expected 7 theorem dependencies, found {len(dependencies)}')
 for dependency in dependencies:
     if dependency['ConsumerTheoremId'] not in theorem_ids:
         raise ValueError(f"Unknown consumer theorem: {dependency['ConsumerTheoremId']}")
     if dependency['ProviderTheoremId'] not in theorem_ids:
         raise ValueError(f"Unknown provider theorem: {dependency['ProviderTheoremId']}")
     require(ROOT / dependency['ProviderContractPath'])
+
+# The 7 LOAD-BEARING dependencies are still exactly the FLT foundation providers;
+# nothing above the Peano or logic-gate kernels is load-bearing. The bit-calculator
+# adds 4 non-load-bearing CORROBORATING-WITNESS dependencies onto the four Peano
+# theorems -- these do not change any consumer's zero-import status.
+load_bearing = [d for d in dependencies if d['LoadBearing']]
+witness = [d for d in dependencies if not d['LoadBearing']]
+if len(load_bearing) != 7:
+    raise ValueError(f'Expected 7 load-bearing FLT dependencies, found {len(load_bearing)}')
+if len(witness) != 4:
+    raise ValueError(f'Expected 4 corroborating-witness dependencies, found {len(witness)}')
+for d in witness:
+    if d['IsImported'] or d['IsSharedKernel']:
+        raise ValueError(f"Witness dependency {d['DependencyId']} must not be imported/shared-kernel")
 
 for theorem in theorem_rows:
     require(ROOT / theorem['ContractPath'])
@@ -104,7 +116,8 @@ if critical_failures:
 
 print('Effortless Math starter validation: PASS')
 print(f"Theorems: {len(theorem_ids)}")
-print(f"FLT provider dependencies: {len(dependencies)}")
+print(f"Load-bearing FLT provider dependencies: {len(load_bearing)}")
+print(f"Corroborating-witness dependencies (bit-calculator): {len(witness)}")
 print(f"v21 loops/proof facts/invariants: {observed['V21LoopCount']}/{observed['V21ProofFactCount']}/{observed['V21InvariantCount']}")
 print(f"v21 contradiction rows: {observed['V21ContradictionCount']}")
 print(f"v21 active foundation kernels: {observed['V21ActiveImportCount']}")

@@ -23,17 +23,15 @@ Every screen in the admin portal. Each screen names the entities it reads/writes
 | screen-dev-home | /developer | Developer Home | role-developer |
 | screen-dev-domains | /developer/domains | Pick Domain | role-developer |
 | screen-dev-domain | /developer/:domain | Domain Landing | role-developer |
-| screen-dev-entities | /developer/:domain/entities | Entities | role-developer |
 | screen-dev-formulas | /developer/:domain/formulas | Formulas | role-developer |
 | screen-dev-relations | /developer/:domain/relationships | Relationships | role-developer |
-| screen-dev-data | /developer/:domain/data | Sample Data | role-developer |
 | screen-dev-substrates | /developer/:domain/substrates | Effortless Tools | role-developer |
 | screen-dev-tests | /developer/:domain/tests | Tests | role-developer |
 | screen-dev-spokes | /developer/:domain/spokes | Input Spokes | role-developer |
 | screen-dev-files | /developer/:domain/files | Files | role-developer |
-| screen-dev-explorer | /developer/:domain/explorer | Data + SQL Explorer | role-developer |
+| screen-dev-explorer | /developer/:domain/explorer | Explorer | role-developer |
 | screen-dev-rulebook-json | /developer/:domain/rulebook-json | Rulebook JSON | role-developer |
-| screen-dev-reset | /developer/:domain/reset | Reset Editor | role-developer |
+| screen-dev-reset | /developer/:domain/reset | App & Data Tools | role-developer |
 | screen-admin-home | /admin | Admin Home | role-admin |
 | screen-admin-users | /admin/users | Users | role-admin |
 | screen-admin-roles | /admin/roles | Roles | role-admin |

@@ -1837,6 +1837,18 @@
         "Purpose": "Five-part mechanical timer modeled with every README noun as a table — a hardware-ontology stress test.",
         "ParentDomainId": null,
         "ProgressionNote": "Hardware-ontology stress test: every noun in the kitchen-timer README becomes a table (26 of them). Proves the methodology isn't limited to information systems."
+      },
+      {
+        "DomainId": "domain-027",
+        "DomainName": "Effortless Math",
+        "RelativePath": "rulebook-examples/effortless-math/",
+        "RulebookPath": "rulebook-examples/effortless-math/effortless-rulebook/effortless-math-rulebook.json",
+        "ComplexityLevel": "advanced",
+        "TableCount": 16,
+        "KeyFeatures": "provider/consumer theorem contracts, non-boolean proof-status ledger, trust-boundary DAG, versioned certificates, bitemporal witness/provenance",
+        "Purpose": "Executable theorem network — Fermat's Last Theorem as flagship consumer over seven imported provider theorems; a certificate/status ledger for a proof network, not a prover.",
+        "ParentDomainId": null,
+        "ProgressionNote": "Points the hub-and-spoke method at mathematics itself: proof status is data (IMPORTED … FULLY_INTERNALIZED_FOR_SCOPE), the trust boundary falls out of the DAG, and it is category-honest — it reproduces the frozen v21 answer key (8 theorems, 7 load-bearing deps, 1 derived contradiction, 0 providers fully internalized) and never claims a zero-import proof of FLT."
       }
     ]
   },

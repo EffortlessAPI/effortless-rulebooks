@@ -18,49 +18,37 @@ This repo contains the orchestration platform and two catalogs: **[toy-rulebooks
 
 ---
 
-## What it looks like in practice
+## The projects — read top to bottom, most settled first
 
-These domains were each built in roughly a weekend — 10–15 hours of actual work — by one person tending a rulebook. The commit history is the record: not a changelog of modules added or removed, but a log of *intent* crystallizing, each commit one step forward with almost no thrash. The rulebook is stable early; the application layer follows. The complexity you see below is the complexity of the domain, not the cost of building it.
+The clearest way to feel what this repo does is to read the projects in order. They are grouped by how *settled* the rulebook is — not by how impressive the demo looks — so the list itself is a maturity gradient. The mature domains have found their shape and hold still; the evolving ones are still crystallizing; the toys are the smallest possible door into the substrate matrix.
 
-| Domain | Tables | What it models |
-|---|---|---|
-| [causal-autoimmune-architecture](rulebook-examples/causal-autoimmune-architecture/) | 38 | A causal inference engine for heterogeneous autoimmune disease — multi-omic cohort data, federated datasets, variant types, ancestry-equitable predictions. The DAG produces falsifiable causal mechanisms as derived facts. |
-| [simpsons-paradox](rulebook-examples/simpsons-paradox/) | 29 | A digital mirror of Simpson's Paradox. The paradox itself falls out of the DAG as a derived fact — it is never modeled directly. Loop commits in this repo (`loop-05` → `loop-20`) show the rulebook evolving from blank to witnessed reversal in four named steps. |
-| [talismans-special-solutions](rulebook-examples/talismans-special-solutions/) | 22 | One approval workflow told tip to tail: humans, AI agents, and automated pipelines under one ontology. Roles, departments, escalation logic, and a dual-substrate conformance witness (Postgres + OWL reasoner). |
-| [traffic-ticket-contest](rulebook-examples/traffic-ticket-contest/) | 55 | A traffic ticket everyone understands, modeled as four state machines and a multi-jurisdiction rules engine — 75 features, 57 business rules, 194 conformance tests, 980 catalog fields. An intentionally ordinary domain taken to full production depth. |
-| [intelligence-taxonomy](rulebook-examples/intelligence-taxonomy/) | 3 | A catalog of intelligences — biological, digital, collective — classified by what they can do, not what they are made of. Intentionally minimal: three tables, the point is the classification logic, not the table count. |
+A note that colors everything below. The rulebook is HEAD — the recorded meaning — and every generated artifact is a projection that trails it until the next build. Take ACME's `FullName`, where the drift is easiest to see: today it is `First & " " & Last`. Change the rulebook to `Last & ", " & First` and, for a moment, *everything* is wrong — the Postgres view, the Python, the Excel export, the UI all still say the old thing. Then `effortless build` runs and all of it realigns to `Last, First` in one pass. What used to be user stories, a sprint, PRs, and a suite of tests is one deterministic rebuild. The one thing that does **not** follow along, even after the rebuild, is the natural-language prose in READMEs and comments — which is exactly why a document like this one is worth aligning by hand from time to time.
+
+### Mature projects — the rulebook has found its shape
+
+- **[Simpson's Paradox](rulebook-examples/simpsons-paradox/)** is the crown jewel. It fully decomposes a famously counterintuitive statistical paradox down to ground truth without ever asserting the paradox directly — the reversal simply *falls out* of the DAG as a derived fact. The loop commits (`loop-05` → `loop-20`) are the record: the rulebook evolves from blank to a witnessed type-A reversal in a handful of named conceptual steps, with the SQL, Python, and admin app regenerating silently underneath.
+- **[Effortless Banking](rulebook-examples/effortless-banking/)** explores a full community-bank loan-origination lifecycle: an underwriting state machine, time-based covenant monitoring, risk-grade migration, segregation-of-duties checks, and branching approval logic — the depth of a real regulated workflow, all declared once and projected into Postgres views.
+- **[Veritasium Power Laws & Fractals](rulebook-examples/veritasium-power-laws-and-fractals/)** models the difference between a "normal" (Gaussian) world and a fat-tailed, power-law one — the mathematics behind why a few wild swings dominate outcomes — as an executable rulebook rather than a lecture.
+- **[Talismans Special Solutions](rulebook-examples/talismans-special-solutions/)** tells one approval workflow tip to tail: humans, AI agents, and automated pipelines under a single ontology, with roles, departments, escalation logic, and a dual-substrate conformance witness (Postgres **and** an OWL reasoner agreeing on every answer).
+- **[Traffic Tickets](rulebook-examples/traffic-ticket-contest/)** takes an intentionally ordinary domain — a traffic ticket everyone already understands — to full production depth: four state machines and a multi-jurisdiction rules engine across 75 features, 57 business rules, 194 conformance tests, and 980 catalog fields.
+
+### Projects still evolving — more ambitious, still crystallizing
+
+- **[Effortless Math](rulebook-examples/effortless-math/)** is an executable theorem network with Fermat's Last Theorem as its flagship consumer and several deep number-theory results as first-class provider theorems. Proof status is *data*, not a boolean (`IMPORTED` … `FULLY_INTERNALIZED_FOR_SCOPE`), so the trust boundary — which children are still merely imported — falls out of the DAG. It is a certificate/status ledger for a proof network, not a prover; it never claims a zero-import proof of FLT. A work in progress, and the most ambitious thing here.
+- **[FLT](rulebook-examples/effortless-math/domains/fermats-last-theorem/)** is the domain effortless-math uses to explore exactly how far a network of imported and internalized theorems can be pushed before the DAG has to admit what it is still taking on trust.
+- **[Natural Number Arithmetic](rulebook-examples/effortless-math/domains/natural-number-arithmetic/)** grounds all of that: a simple 4-bit calculator, built rulebook-native as an honest machine (results wrap mod 16, an overflow lamp lights) where the bits are lookup fields over a DAG rather than a hand-written engine — arithmetic reconstructed from the ground up so the tower above it has something to stand on.
+- **[Naive Set Theory](rulebook-examples/naive-set-theory/)** and **[Tiling the Plane](rulebook-examples/tiling-the-plane/)** push the primitives into pure mathematics — a three-valued (true/false/`null`) membership semantics for the first, a catalog of which tilings of the Euclidean plane exist and *why* each is valid for the second. Both are actively evolving.
+
+The rest of [`rulebook-examples/`](rulebook-examples/) — [causal-autoimmune-architecture](rulebook-examples/causal-autoimmune-architecture/), [intelligence-taxonomy](rulebook-examples/intelligence-taxonomy/), [planar-unit-discovery](rulebook-examples/planar-unit-discovery/), and others — is evolving more actively still; treat those as sketches in progress.
+
+### Toy rulebooks — the smallest possible door
+
+- **[ACME LLC](toy-rulebooks/acme-llc/)** is the substrate-breadth witness: a deliberately tiny domain (three tables, six calculated fields) run through all 17 substrates, all conformant. It is also where the drift story above is easiest to watch. Start here if you want to see the substrate matrix.
+- **[Gym Trainer Invoicing](toy-rulebooks/gym-trainer-invoicing/)** is a small-business example — trainers log sessions, sessions roll up into invoices, invoices roll up into per-client balances and overdue flags — that shows how quickly ordinary billing logic (every total, tax, balance, "is paid?", "is overdue?") becomes a rulebook you can trust.
 
 → [Full domain examples](rulebook-examples/) · [Toy demos](toy-rulebooks/) · [Generated domain catalog](docs/derived/domains.md)
 
-**Two directories, by construction.** [`toy-rulebooks/`](toy-rulebooks/) contains intentionally minimal domains — [acme-llc](toy-rulebooks/acme-llc/) is the canonical one, three tables, run through all 17 substrates — whose job is to open the door by showing the *substrate matrix*. [`rulebook-examples/`](rulebook-examples/) contains the full ontologies above, showing how far the primitives actually reach. The toys demonstrate breadth of platform. The examples demonstrate depth of domain.
-
----
-
-## Conformance results — acme-llc (last run)
-
-17 substrates. All 100%. Same business rules, same answer, different runtime.
-
-| Substrate | Score | Time |
-|---|---|---|
-| python | 100% | 0.00s |
-| yaml | 100% | 0.13s |
-| uml | 100% | 0.17s |
-| explain-dag | 100% | 0.17s |
-| airtable | 100% | 0.11s |
-| golang | 100% | 0.29s |
-| owl | 100% | 0.41s |
-| cobol | 100% | 0.44s |
-| csv | 100% | 0.42s |
-| xlsx | 100% | 0.48s |
-| binary | 100% | 0.65s |
-| effortless-xlsx | 100% | 1.17s |
-| effortless-csv | 100% | 2.05s |
-| effortless-entity-framework | 100% | 2.34s |
-| postgres | 100% | 4.45s |
-| effortless-postgres | 100% | 4.37s |
-| english (LLM-graded) | 100% | 18.84s |
-
-The harness that produced this table runs on every build. There is no "build without testing."
+**Two directories, by construction.** [`toy-rulebooks/`](toy-rulebooks/) contains intentionally minimal domains whose job is to open the door by showing the *substrate matrix*. [`rulebook-examples/`](rulebook-examples/) contains the full ontologies above, showing how far the primitives actually reach. The toys demonstrate breadth of platform. The examples demonstrate depth of domain.
 
 ---
 
@@ -127,10 +115,8 @@ The shape of the whole thing: a semantic build loop where business meaning lives
 
 ## Full domain catalog
 
-The top five domains above are the new additions that show what a weekend of focused work produces. The broader catalog also includes the platform witnesses:
+The grouped list above walks the projects most people care about, most-settled first. The full catalog — every domain in both directories, plus the self-referential platform demos — is generated from the platform rulebook. One extra pointer worth calling out on its own:
 
-- **[acme-llc](toy-rulebooks/acme-llc/)** — the substrate breadth witness: a deliberately simple domain (six calculated fields) run through all 17 substrates, all conformant. Start here if you want to see the substrate matrix.
-- **[effortless-banking](rulebook-examples/effortless-banking/)** — the domain depth witness: a full loan-origination lifecycle with an underwriting state machine, time-based covenant monitoring, risk-grade migration, segregation-of-duties checks, and branching approval logic.
 - **[A Tale of Two Claudes](toy-rulebooks/naked-claude-vs-effortless-claude/TALE_OF_TWO_CLAUDES.md)** — a direct comparison of LLM behavior with and without ERB grounding on the same question.
 
 → [Full domain catalog (generated)](docs/derived/domains.md)
@@ -177,6 +163,50 @@ The skills in this repo are mirrored from [effortless-claude](https://github.com
 | [/effortless-rulebooks](docs/skills/effortless-rulebooks/SKILL.md) | Empirical proof that CMCC works — conformance suite, ExplainDAG |
 
 → [Full skills catalog](docs/skills/README.md)
+
+---
+
+## Running it — the ACME CLI and the conformance harness
+
+The projects above are the point of the repo now. But underneath them sits the original operational layer — a CLI orchestrator and a 17-substrate conformance harness — and it still works exactly as it did. It has simply been overshadowed by the domains, so it belongs here at the bottom rather than at the top.
+
+The root **`./start.sh`** is the single entry point. It always clears its ports before booting, so restart is one command — never a kill-then-start ritual:
+
+```bash
+./start.sh            # CLI orchestrator menu (the original experience)
+./start.sh --portal   # the Web Admin Portal instead of the CLI menu
+./start.sh --cli      # force the CLI menu explicitly
+```
+
+From the CLI menu, **`[B] BUILD`** on any domain runs every transpiler, then runs every substrate's conformance test, then regenerates and opens `orchestration-report.html`. There is no "build without testing" — testing *is* the build. Individual transpiler entries do the same for a single substrate. `start.sh` also boots the [ssotme-proxy transpiler bus on `localhost:4242`](docs/features/README.ssotme-proxy.md), which serves all of the repo-local transpilers as first-class `ssotme://` routes any `effortless build` can call.
+
+The admin portal and `./start.sh --cli` are peer interfaces to the same pipeline — every portal mutation shells out to the same CLI command ([portal/CLI parity](docs/features/README.portal-cli-parity.md)).
+
+### Conformance results — acme-llc (last run)
+
+The [acme-llc](toy-rulebooks/acme-llc/) toy is where the harness is easiest to read: 17 substrates, all 100%. Same business rules, same answer, different runtime.
+
+| Substrate | Score | Time |
+|---|---|---|
+| python | 100% | 0.00s |
+| yaml | 100% | 0.13s |
+| uml | 100% | 0.17s |
+| explain-dag | 100% | 0.17s |
+| airtable | 100% | 0.11s |
+| golang | 100% | 0.29s |
+| owl | 100% | 0.41s |
+| cobol | 100% | 0.44s |
+| csv | 100% | 0.42s |
+| xlsx | 100% | 0.48s |
+| binary | 100% | 0.65s |
+| effortless-xlsx | 100% | 1.17s |
+| effortless-csv | 100% | 2.05s |
+| effortless-entity-framework | 100% | 2.34s |
+| postgres | 100% | 4.45s |
+| effortless-postgres | 100% | 4.37s |
+| english (LLM-graded) | 100% | 18.84s |
+
+The harness that produced this table runs on every build. There is no "build without testing."
 
 ---
 

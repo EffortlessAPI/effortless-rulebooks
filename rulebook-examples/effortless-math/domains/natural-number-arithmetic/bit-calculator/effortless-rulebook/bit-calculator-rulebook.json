@@ -1,0 +1,69 @@
+{
+  "Name": "bit-calculator",
+  "Description": "A half adder, and nothing else. Two input bits a and b; the DB computes sum = a XOR b and carry = a AND b by LOOKING THEM UP in gate truth tables. No arithmetic is stored. The output bit of every computation is a calculated field the substrate derives from truth-table rows.",
+  "__meta__": {
+    "schema": [
+      {"name": "MetaKey", "datatype": "string", "type": "raw", "nullable": false, "Description": "MetaKey"},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "formula": "={{MetaKey}}", "Description": "Name"},
+      {"name": "ValueType", "datatype": "string", "type": "raw", "nullable": true, "Description": "ValueType"},
+      {"name": "StringValue", "datatype": "string", "type": "raw", "nullable": true, "Description": "StringValue"},
+      {"name": "JsonValue", "datatype": "string", "type": "raw", "nullable": true, "Description": "JsonValue"}
+    ],
+    "data": [
+      {"MetaKey": "tagline", "ValueType": "string", "StringValue": "One half adder. The bits are looked up, not computed.", "JsonValue": null}
+    ]
+  },
+  "GateTypes": {
+    "schema": [
+      {"name": "gate_type_id", "datatype": "string", "type": "raw", "nullable": false, "Description": "gate_type_id"},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "formula": "={{gate_type_id}}", "Description": "Name"},
+      {"name": "symbol", "datatype": "string", "type": "raw", "nullable": true, "Description": "Human-readable gate symbol"},
+      {"name": "description", "datatype": "string", "type": "raw", "nullable": true, "Description": "What the gate does"}
+    ],
+    "data": [
+      {"gate_type_id": "gate-xor", "symbol": "XOR", "description": "Exclusive OR of two bits. This is the SUM bit of a half adder."},
+      {"gate_type_id": "gate-and", "symbol": "AND", "description": "Logical AND of two bits. This is the CARRY bit of a half adder."}
+    ]
+  },
+  "GateTruthRows": {
+    "schema": [
+      {"name": "truth_row_id", "datatype": "string", "type": "raw", "nullable": false, "Description": "truth_row_id"},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "formula": "={{truth_row_id}}", "Description": "Name"},
+      {"name": "gate_type_id", "datatype": "string", "type": "relationship", "nullable": false, "RelatedTo": "GateTypes", "Description": "Which gate this truth row belongs to"},
+      {"name": "in0", "datatype": "integer", "type": "raw", "nullable": false, "Description": "Left input bit"},
+      {"name": "in1", "datatype": "integer", "type": "raw", "nullable": false, "Description": "Right input bit"},
+      {"name": "out_bit", "datatype": "integer", "type": "raw", "nullable": false, "Description": "The gate's output bit for this input combination"}
+    ],
+    "data": [
+      {"truth_row_id": "gate-xor|0|0", "gate_type_id": "gate-xor", "in0": 0, "in1": 0, "out_bit": 0},
+      {"truth_row_id": "gate-xor|0|1", "gate_type_id": "gate-xor", "in0": 0, "in1": 1, "out_bit": 1},
+      {"truth_row_id": "gate-xor|1|0", "gate_type_id": "gate-xor", "in0": 1, "in1": 0, "out_bit": 1},
+      {"truth_row_id": "gate-xor|1|1", "gate_type_id": "gate-xor", "in0": 1, "in1": 1, "out_bit": 0},
+      {"truth_row_id": "gate-and|0|0", "gate_type_id": "gate-and", "in0": 0, "in1": 0, "out_bit": 0},
+      {"truth_row_id": "gate-and|0|1", "gate_type_id": "gate-and", "in0": 0, "in1": 1, "out_bit": 0},
+      {"truth_row_id": "gate-and|1|0", "gate_type_id": "gate-and", "in0": 1, "in1": 0, "out_bit": 0},
+      {"truth_row_id": "gate-and|1|1", "gate_type_id": "gate-and", "in0": 1, "in1": 1, "out_bit": 1}
+    ]
+  },
+  "Computations": {
+    "schema": [
+      {"name": "computation_id", "datatype": "string", "type": "raw", "nullable": false, "Description": "computation_id"},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "formula": "={{computation_id}}", "Description": "Name"},
+      {"name": "gate_type_id", "datatype": "relationship", "type": "relationship", "nullable": false, "RelatedTo": "GateTypes", "Description": "Which gate this computation exercises (XOR for sum, AND for carry)"},
+      {"name": "a", "datatype": "integer", "type": "raw", "nullable": false, "Description": "Input bit a (the ONLY thing the app supplies besides which gate)"},
+      {"name": "b", "datatype": "integer", "type": "raw", "nullable": false, "Description": "Input bit b"},
+      {"name": "my_lookup_key", "datatype": "string", "type": "calculated", "nullable": true, "formula": "=CONCAT({{gate_type_id}}, \"|\", {{a}}, \"|\", {{b}})", "Description": "This computation's gate+inputs; equals exactly one GateTruthRows.truth_row_id"},
+      {"name": "out_bit", "datatype": "integer", "type": "lookup", "nullable": true, "RelatedTo": "GateTruthRows", "formula": "=INDEX(GateTruthRows!{{out_bit}}, MATCH({{my_lookup_key}}, GateTruthRows!{{truth_row_id}}, 0))", "Description": "THE ANSWER. The DB looks up this computation's output bit in the gate truth table by matching its gate+inputs key against the truth row's id. Not stored, not hand-computed — derived by the substrate from truth-table rows."}
+    ],
+    "data": [
+      {"computation_id": "sum--0+0", "gate_type_id": "gate-xor", "a": 0, "b": 0},
+      {"computation_id": "sum--0+1", "gate_type_id": "gate-xor", "a": 0, "b": 1},
+      {"computation_id": "sum--1+0", "gate_type_id": "gate-xor", "a": 1, "b": 0},
+      {"computation_id": "sum--1+1", "gate_type_id": "gate-xor", "a": 1, "b": 1},
+      {"computation_id": "carry--0+0", "gate_type_id": "gate-and", "a": 0, "b": 0},
+      {"computation_id": "carry--0+1", "gate_type_id": "gate-and", "a": 0, "b": 1},
+      {"computation_id": "carry--1+0", "gate_type_id": "gate-and", "a": 1, "b": 0},
+      {"computation_id": "carry--1+1", "gate_type_id": "gate-and", "a": 1, "b": 1}
+    ]
+  }
+}

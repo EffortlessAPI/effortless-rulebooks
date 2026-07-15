@@ -1,0 +1,118 @@
+{
+  "TheoremId": "bit-calculator-4bit-arithmetic",
+  "Version": "1.0.0",
+  "Title": "Gate-Level 4-Bit Arithmetic (Rosetta-style netlist)",
+  "KernelId": "kernel-logic-gates-v1",
+  "Statement": "The four elementary operations on 4-bit unsigned naturals, each computed by a logic-gate netlist and witnessed to agree with the Peano results for the four flagship cases.",
+  "Scope": "4-bit unsigned add (ripple-carry), truncated/two's-complement subtract, shift-and-add multiply (8-bit product), and restoring divide. Nothing arithmetic is stored: only input bits are data; every downstream bit is a fixed-point computation over gate truth tables and the netlist. Width is a data parameter -- the same engine settles 2, 4, 8, or N bits unchanged.",
+  "TrustBoundary": "LogicGateKernel: the AND/OR/XOR/NOT truth tables (14 rows) and the netlist connection semantics are the trusted base. No theorem is imported above the gate kernel.",
+  "CanClaimZeroImports": true,
+  "RemainingImports": [],
+  "PrimitiveGates": [
+    {
+      "GateTypeId": "gate-and",
+      "Rule": "out = a AND b"
+    },
+    {
+      "GateTypeId": "gate-or",
+      "Rule": "out = a OR b"
+    },
+    {
+      "GateTypeId": "gate-xor",
+      "Rule": "out = a XOR b"
+    },
+    {
+      "GateTypeId": "gate-not",
+      "Rule": "out = NOT a"
+    }
+  ],
+  "ComponentHierarchy": [
+    "half_adder = XOR (sum) + AND (carry)",
+    "full_adder = 2 x half_adder + OR",
+    "adder4 = 4 x full_adder (ripple carry)",
+    "add4 = adder4 with carry-in tied 0",
+    "sub4 = adder4 + NOT on B + carry-in 1 (two's complement)",
+    "mul4 = 4 x shift-and-add rows of adder4 -> 8-bit product",
+    "mux2 = NOT + 2 AND + OR",
+    "div4 = restoring division: 4 stages of sub5 + per-bit mux2"
+  ],
+  "BoundHypotheses": [
+    "gate_truth_tables_are_the_standard_boolean_functions",
+    "operands_are_supplied_as_4_bit_strings_msb_first",
+    "the_chinese_room_engine_lays_only_input_bits_onto_wires"
+  ],
+  "Conclusions": [
+    {
+      "ConclusionId": "bitcalc_add_2_2_equals_4",
+      "Statement": "add4(2,2) settles to output bits 0100 = 4",
+      "ComputationId": "compute--add--2--2",
+      "WitnessedBy": [
+        "postgres:vw_computation_answer",
+        "python:netlist_sim"
+      ]
+    },
+    {
+      "ConclusionId": "bitcalc_sub_4_2_equals_2",
+      "Statement": "sub4(4,2) settles to output bits 0010 = 2, borrow 0",
+      "ComputationId": "compute--sub--4--2",
+      "WitnessedBy": [
+        "postgres:vw_computation_answer",
+        "python:netlist_sim"
+      ]
+    },
+    {
+      "ConclusionId": "bitcalc_mul_2_2_equals_4",
+      "Statement": "mul4(2,2) settles to output bits 00000100 = 4",
+      "ComputationId": "compute--mul--2--2",
+      "WitnessedBy": [
+        "postgres:vw_computation_answer",
+        "python:netlist_sim"
+      ]
+    },
+    {
+      "ConclusionId": "bitcalc_div_4_2_equals_2",
+      "Statement": "div4(4,2) settles to quotient bits 0010 = 2, remainder 0",
+      "ComputationId": "compute--div--4--2",
+      "WitnessedBy": [
+        "postgres:vw_computation_answer",
+        "python:netlist_sim"
+      ]
+    }
+  ],
+  "ProofStatus": "FULLY_INTERNALIZED_FOR_SCOPE",
+  "SuppliesToConsumer": {
+    "ConsumerDomain": "domain-natural-number-arithmetic",
+    "SuppliedConclusions": [
+      "bitcalc_add_2_2_equals_4",
+      "bitcalc_sub_4_2_equals_2",
+      "bitcalc_mul_2_2_equals_4",
+      "bitcalc_div_4_2_equals_2"
+    ],
+    "Nature": "second-substrate-witness",
+    "Note": "The Peano Successor derivations already establish the four flagship facts internally. This provider re-establishes the identical four facts on a disjoint substrate (logic gates), so the network holds two independent zero-import witnesses for 2+2=4, 4-2=2, 2*2=4, 4/2=2. This is a corroborating witness, not a load-bearing import."
+  },
+  "SubstrateEquivalence": {
+    "Substrates": [
+      "postgres:03b-customize-views.sql",
+      "python:netlist_sim.py"
+    ],
+    "ComputationsChecked": 24,
+    "Agreements": 24,
+    "ExhaustiveNetlistValidation": "adder4/sub4/mul4 verified on all 256 4-bit input pairs; div4 on all 240 non-zero-divisor pairs, against reference arithmetic in the validator harness only."
+  },
+  "Statistics": {
+    "GateTypes": 4,
+    "GateTruthRows": 14,
+    "Components": 10,
+    "ComponentPins": 118,
+    "ComponentInstances": 79,
+    "ComponentConnections": 295,
+    "Computations": 24
+  },
+  "ArtifactHashes": {
+    "rulebook": "sha256:d22dd6c9f619dfe2930b2de3c08dd9b6304cec3e0f53aa993052776bbae48dce",
+    "settling_engine_sql": "sha256:8f1bd7ba1b87f1101d68deee050667b635a280a75cb1399ee6857b04b10b317d",
+    "netlist_simulator": "sha256:adde5eb7a6f5b1c9814b8873f2963025273ceeba5c56a57623f9b7e3be5d1720"
+  },
+  "GeneratedTimestamp": null
+}

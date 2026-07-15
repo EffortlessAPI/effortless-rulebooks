@@ -9,7 +9,7 @@ Classification of each demo rulebook under rulebook-examples/. Lets the UI group
 | Project | Name | Flavor | Complexity | Entities | Calcs | Aggs | Lookups | Focus | Answer Key For |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | acme-corporation | ACME Corporation | crud-template | basic | 5 | 1 | 2 | 10 | Classic relational CRUD template — clients, projects, employees, roles. The 'starter sized' demo for new authors. | postgres,entity-framework |
-| acme-llc | ACME, LLC | tutorial-ladder | minimal | 3 | 2 | 0 | 0 | Smallest viable rulebook with a calculated field — the 'Hello, formulas' tutorial. | — |
+| acme-llc | ACME, LLC | tutorial-ladder | minimal | 3 | 3 | 0 | 0 | Smallest viable rulebook with a calculated field — the 'Hello, formulas' tutorial. | — |
 | customer-fullname | Customer FullName | tutorial-ladder | minimal | 1 | 2 | 0 | 0 | One entity, one calculated field (CONCAT(First, ' ', Last)). The 'absolute minimum' demo — proves the toolchain end-to-end with no relationships. | — |
 | effortless-rulesbooks | ERB Self-Describing Rulebook | meta-rulebook | advanced | 9 | 0 | 0 | 0 | The rulebook that describes the ERB project itself (sibling of this platform rulebook). Demonstrates eating-the-dog-food — meta over business data. | — |
 | is-everything-a-language | Is Everything a Language? | graph-ontology | advanced | 3 | 8 | 0 | 0 | Heavy formulas evaluating linguistic / semiotic candidates. Shows that the substrate equality claim holds even for non-CRUD ontologies. | owl,python |
@@ -34,3 +34,4 @@ Classification of each demo rulebook under rulebook-examples/. Lets the UI group
 | nakedclaude-v1 | NakedClaude (v1) | tutorial-ladder | minimal | 1 | 1 | 0 | 0 | Auto-discovered demo. Replace this stub with a one-line description of what nakedclaude-v1 is designed to teach. | — |
 | nakedclaude-v4 | NakedClaude (v4) | aggregation-heavy | advanced | 15 | 30 | 13 | 43 | Auto-discovered demo. Replace this stub with a one-line description of what nakedclaude-v4 is designed to teach. | — |
 | volunteer-shift-scheduler | Volunteer Shift Scheduler | aggregation-heavy | basic | 4 | 6 | 6 | 4 | Auto-discovered demo. Replace this stub with a one-line description of what volunteer-shift-scheduler is designed to teach. | — |
+| planar-unit-discovery | planar-unit-discovery | aggregation-heavy | advanced | 36 | 110 | 33 | 49 | Auto-discovered demo. Replace this stub with a one-line description of what planar-unit-discovery is designed to teach. | — |

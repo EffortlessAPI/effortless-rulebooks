@@ -3,7 +3,7 @@
   "ShowAllFiles": false,
   "CurrentPath": "",
   "SSoTmeProjectFiles": null,
-  "SSoTmeProjectId": null,
+  "SSoTmeProjectId": "1de564e1-1cf5-409f-9456-93658f947567",
   "Name": "effortless-math",
   "Description": "Cross-theorem executable mathematics network. FLT is the deeply modeled flagship; seven provider theorems begin as imported first-class contracts.",
   "ProjectSettings": [
@@ -19,6 +19,8 @@
       "RelativePath": "/effortless-rulebook",
       "CommandLine": "minimize-rulebook -i effortless-math-rulebook.json",
       "IsDisabled": false,
+      "LastVersionUsed": "v2026.07.08.1133",
+      "LastUrl": "https://effortless-minimize-rulebook-v2026-07-08-1133-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "Description": "Minimize the canonical theorem-network rulebook."
     },
     {
@@ -27,6 +29,8 @@
       "RelativePath": "/effortless-postgres",
       "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/effortless-math-rulebook.json -p memoize_repeated_calls=true",
       "IsDisabled": false,
+      "LastVersionUsed": "v2026.07.11.2146",
+      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-07-11-2146-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "Description": "Generate Postgres schema and seed data."
     },
     {
@@ -35,6 +39,8 @@
       "RelativePath": "/rulespeak",
       "CommandLine": "rulebook-to-rulespeak -i ../effortless-rulebook/effortless-math-rulebook.json",
       "IsDisabled": false,
+      "LastVersionUsed": "v2026.07.08.1458",
+      "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-07-08-1458-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "Description": "Generate the human-readable theorem-network narrative."
     },
     {
@@ -43,6 +49,8 @@
       "RelativePath": "/owl",
       "CommandLine": "rulebook-to-owl -i ../effortless-rulebook/effortless-math-rulebook.json",
       "IsDisabled": false,
+      "LastVersionUsed": "v2026.07.08.0207",
+      "LastUrl": "https://effortless-rulebook-to-owl-v2026-07-08-0207-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "Description": "Generate OWL/SHACL theorem-network projections."
     },
     {
@@ -51,6 +59,8 @@
       "RelativePath": "/app/frontend/public",
       "CommandLine": "rulebook-to-explainer-dag -i ../../effortless-rulebook/effortless-math-rulebook.json -o rulebook-explainer-dag",
       "IsDisabled": false,
+      "LastVersionUsed": "v2026.06.20.1606",
+      "LastUrl": "https://effortless-rulebook-to-explainer-v2026-06-20-1606-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "Description": "Generate an ExplainDAG projection."
     },
     {

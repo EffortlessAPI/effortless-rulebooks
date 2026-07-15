@@ -1,0 +1,45 @@
+{
+  "ShowHidden": false,
+  "ShowAllFiles": false,
+  "CurrentPath": "",
+  "SSoTmeProjectFiles": null,
+  "SSoTmeProjectId": "022f89b6-fd6a-4dc3-bbc2-2f0ad8096643",
+  "Name": "bit-calculator",
+  "Description": "Gate-level 4-bit arithmetic provider for natural-number-arithmetic. Add/sub/mul/div computed by logic-gate netlists; nothing arithmetic is stored, only input bits. Federated provider theorem imported by effortless-math as four flagship results.",
+  "ProjectSettings": [
+    {
+      "Name": "project-name",
+      "Value": "bit-calculator"
+    }
+  ],
+  "ProjectTranspilers": [
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktopostgres",
+      "RelativePath": "/effortless-postgres",
+      "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/bit-calculator-rulebook.json -p memoize_repeated_calls=true",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.07.11.2146",
+      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-07-11-2146-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "Description": "Generate Postgres schema and seed data for the gate calculator."
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "execute",
+      "RelativePath": "/effortless-postgres",
+      "CommandLine": "-exec ./init-db.sh",
+      "IsDisabled": false,
+      "Description": "Load the generated SQL into erb_bit_calculator (init-db.sh points at that DB). Runs on every build."
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktorulespeak",
+      "RelativePath": "/rulespeak",
+      "CommandLine": "rulebook-to-rulespeak -i ../effortless-rulebook/bit-calculator-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.07.08.1458",
+      "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-07-08-1458-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "Description": "Generate the human-readable gate-calculator narrative."
+    }
+  ]
+}
