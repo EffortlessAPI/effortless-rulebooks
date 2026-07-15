@@ -1,0 +1,15 @@
+Domains: DomainId, Name, Slug, Title, Role, Status, Description, CanonicalTheoremId, RelativePath, IsFlagship
+ProofStatuses: ProofStatusId, Name, SortOrder, IsImported, IsDerived, AllowsImportedChildren, IsTerminal, Description
+Theorems: TheoremId, Name, DomainId, Title, TheoremKind, Statement, Scope, ProofStatusId, TrustBoundary, ActiveImportCount, RootFactId, ContractPath, CurrentVersion, IsFlagship, NextTarget
+TheoremDependencies: DependencyId, Name, ConsumerTheoremId, ProviderTheoremId, RequiredConclusion, ProofStatusId, LoadBearing, IsImported, IsSharedKernel, ProviderContractPath, Notes
+FoundationKernels: kernel_order, kernel_id, Name, title, mathematical_scope, input_contract_json, output_contract_json, finite_compiler_tables_json, source_id, theorem_content_internalized, status, next_target
+ProofFacts: FactId, Name, StepNo, RuleId, DerivedFact, AntecedentsJson, DerivationKind, Contradiction, Notes, DomainId
+Loops: LoopId, Name, LoopOrder, Title, Status, NewConcept, DomainQuestion, WitnessSummary, NextFrontier, EpistemicTier, DomainId
+InvariantChecks: InvariantCheckId, Name, Description, Tier, PassCount, FailCount, UniverseCount, Status, Evidence, ProtectsLoop, DomainId
+Sources: SourceId, Name, Citation, SourceUrl, SourceKind, Role
+TrustBoundaries: TrustBoundaryId, Name, TheoremId, BoundaryKind, AcceptedExternalClaims, KernelOrSubstrate, CanClaimZeroImports, Notes
+ArtifactRegistry: ArtifactId, Name, DomainId, ArtifactKind, RelativePath, Version, Sha256, IsCanonicalMigrationSource, Notes
+MigrationMappings: MappingId, Name, SourceTable, TargetTable, Strategy, Notes
+ProjectRoadmap: RoadmapId, Name, SequenceNo, Title, Status, AcceptanceCriteria, DependsOn
+Conclusions: ConclusionId, Name, Category, Status, ReportTier, Title, Evidence, WitnessedInLoop
+LegacyParentAudits: edge_order, edge_id, Name, previous_status, current_status, parent_removed, replacement_kernel_id, kernel_shared_with_parent_count, theorem_content_fully_internalized, status, next_target

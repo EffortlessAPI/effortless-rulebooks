@@ -1,0 +1,1093 @@
+{
+  "Domains": {
+    "Description": "Table: Domains \u2014 mathematical domains in the global theorem network.",
+    "schema": [
+      {
+        "name": "DomainId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Unique domain identifier."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Display label, mirrors DomainId.",
+        "formula": "={{DomainId}}"
+      },
+      {
+        "name": "Slug",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Slug"
+      },
+      {
+        "name": "Title",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Title"
+      },
+      {
+        "name": "Role",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Role"
+      },
+      {
+        "name": "Status",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Status"
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Description"
+      },
+      {
+        "name": "CanonicalTheoremId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "CanonicalTheoremId"
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "RelativePath"
+      },
+      {
+        "name": "IsFlagship",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "IsFlagship"
+      }
+    ]
+  },
+  "ProofStatuses": {
+    "Description": "Table: ProofStatuses \u2014 controlled proof-state vocabulary. Parent removal and full internalization are deliberately distinct.",
+    "schema": [
+      {
+        "name": "ProofStatusId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "ProofStatusId"
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Name",
+        "formula": "={{ProofStatusId}}"
+      },
+      {
+        "name": "SortOrder",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "SortOrder"
+      },
+      {
+        "name": "IsImported",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "IsImported"
+      },
+      {
+        "name": "IsDerived",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "IsDerived"
+      },
+      {
+        "name": "AllowsImportedChildren",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "AllowsImportedChildren"
+      },
+      {
+        "name": "IsTerminal",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "IsTerminal"
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Description"
+      }
+    ]
+  },
+  "Theorems": {
+    "Description": "Table: Theorems \u2014 one row per application theorem or provider theorem.",
+    "schema": [
+      {
+        "name": "TheoremId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "TheoremId"
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Name",
+        "formula": "={{TheoremId}}"
+      },
+      {
+        "name": "DomainId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "DomainId"
+      },
+      {
+        "name": "Title",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Title"
+      },
+      {
+        "name": "TheoremKind",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "TheoremKind"
+      },
+      {
+        "name": "Statement",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Statement"
+      },
+      {
+        "name": "Scope",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Scope"
+      },
+      {
+        "name": "ProofStatusId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "ProofStatusId"
+      },
+      {
+        "name": "TrustBoundary",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "TrustBoundary"
+      },
+      {
+        "name": "ActiveImportCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "ActiveImportCount"
+      },
+      {
+        "name": "RootFactId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "RootFactId"
+      },
+      {
+        "name": "ContractPath",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "ContractPath"
+      },
+      {
+        "name": "CurrentVersion",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "CurrentVersion"
+      },
+      {
+        "name": "IsFlagship",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "IsFlagship"
+      },
+      {
+        "name": "NextTarget",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "NextTarget"
+      }
+    ]
+  },
+  "TheoremDependencies": {
+    "Description": "Table: TheoremDependencies \u2014 typed provider/consumer edges between theorem contracts.",
+    "schema": [
+      {
+        "name": "DependencyId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "DependencyId"
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Name",
+        "formula": "={{DependencyId}}"
+      },
+      {
+        "name": "ConsumerTheoremId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "ConsumerTheoremId"
+      },
+      {
+        "name": "ProviderTheoremId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "ProviderTheoremId"
+      },
+      {
+        "name": "RequiredConclusion",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "RequiredConclusion"
+      },
+      {
+        "name": "ProofStatusId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "ProofStatusId"
+      },
+      {
+        "name": "LoadBearing",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "LoadBearing"
+      },
+      {
+        "name": "IsImported",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "IsImported"
+      },
+      {
+        "name": "IsSharedKernel",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "IsSharedKernel"
+      },
+      {
+        "name": "ProviderContractPath",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "ProviderContractPath"
+      },
+      {
+        "name": "Notes",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Notes"
+      }
+    ]
+  },
+  "FoundationKernels": {
+    "Description": "Table: FoundationKernels \u2014 the seven v21 provider frontiers.",
+    "schema": [
+      {
+        "name": "kernel_order",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "kernel_order"
+      },
+      {
+        "name": "kernel_id",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "kernel_id"
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Name",
+        "formula": "={{kernel_id}}"
+      },
+      {
+        "name": "title",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "title"
+      },
+      {
+        "name": "mathematical_scope",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "mathematical_scope"
+      },
+      {
+        "name": "input_contract_json",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "input_contract_json"
+      },
+      {
+        "name": "output_contract_json",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "output_contract_json"
+      },
+      {
+        "name": "finite_compiler_tables_json",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "finite_compiler_tables_json"
+      },
+      {
+        "name": "source_id",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "source_id"
+      },
+      {
+        "name": "theorem_content_internalized",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "theorem_content_internalized"
+      },
+      {
+        "name": "status",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "status"
+      },
+      {
+        "name": "next_target",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "next_target"
+      }
+    ]
+  },
+  "ProofFacts": {
+    "Description": "Table: ProofFacts \u2014 the current v21 contradiction trace, one derived fact per row.",
+    "schema": [
+      {
+        "name": "FactId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "FactId"
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Name",
+        "formula": "={{FactId}}"
+      },
+      {
+        "name": "StepNo",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "StepNo"
+      },
+      {
+        "name": "RuleId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "RuleId"
+      },
+      {
+        "name": "DerivedFact",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "DerivedFact"
+      },
+      {
+        "name": "AntecedentsJson",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "AntecedentsJson"
+      },
+      {
+        "name": "DerivationKind",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "DerivationKind"
+      },
+      {
+        "name": "Contradiction",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Contradiction"
+      },
+      {
+        "name": "Notes",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Notes"
+      },
+      {
+        "name": "DomainId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "DomainId"
+      }
+    ]
+  },
+  "Loops": {
+    "Description": "Table: Loops \u2014 all 571 historical and conceptual build loops from Fermat Witness Lab v21.",
+    "schema": [
+      {
+        "name": "LoopId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "LoopId"
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Name",
+        "formula": "={{LoopId}}"
+      },
+      {
+        "name": "LoopOrder",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "LoopOrder"
+      },
+      {
+        "name": "Title",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Title"
+      },
+      {
+        "name": "Status",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Status"
+      },
+      {
+        "name": "NewConcept",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "NewConcept"
+      },
+      {
+        "name": "DomainQuestion",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "DomainQuestion"
+      },
+      {
+        "name": "WitnessSummary",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "WitnessSummary"
+      },
+      {
+        "name": "NextFrontier",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "NextFrontier"
+      },
+      {
+        "name": "EpistemicTier",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "EpistemicTier"
+      },
+      {
+        "name": "DomainId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "DomainId"
+      }
+    ]
+  },
+  "InvariantChecks": {
+    "Description": "Table: InvariantChecks \u2014 imported v21 invariant ledger. Any FAIL row must fail the build.",
+    "schema": [
+      {
+        "name": "InvariantCheckId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "InvariantCheckId"
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Name",
+        "formula": "={{InvariantCheckId}}"
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Description"
+      },
+      {
+        "name": "Tier",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Tier"
+      },
+      {
+        "name": "PassCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "PassCount"
+      },
+      {
+        "name": "FailCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "FailCount"
+      },
+      {
+        "name": "UniverseCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "UniverseCount"
+      },
+      {
+        "name": "Status",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Status"
+      },
+      {
+        "name": "Evidence",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Evidence"
+      },
+      {
+        "name": "ProtectsLoop",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "ProtectsLoop"
+      },
+      {
+        "name": "DomainId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "DomainId"
+      }
+    ]
+  },
+  "Sources": {
+    "Description": "Table: Sources \u2014 provenance catalog from v21.",
+    "schema": [
+      {
+        "name": "SourceId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "SourceId"
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Name",
+        "formula": "={{SourceId}}"
+      },
+      {
+        "name": "Citation",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Citation"
+      },
+      {
+        "name": "SourceUrl",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "SourceUrl"
+      },
+      {
+        "name": "SourceKind",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "SourceKind"
+      },
+      {
+        "name": "Role",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Role"
+      }
+    ]
+  },
+  "TrustBoundaries": {
+    "Description": "Table: TrustBoundaries \u2014 explicit statement of what each theorem still trusts externally.",
+    "schema": [
+      {
+        "name": "TrustBoundaryId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "TrustBoundaryId"
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Name",
+        "formula": "={{TrustBoundaryId}}"
+      },
+      {
+        "name": "TheoremId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "TheoremId"
+      },
+      {
+        "name": "BoundaryKind",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "BoundaryKind"
+      },
+      {
+        "name": "AcceptedExternalClaims",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "AcceptedExternalClaims"
+      },
+      {
+        "name": "KernelOrSubstrate",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "KernelOrSubstrate"
+      },
+      {
+        "name": "CanClaimZeroImports",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "CanClaimZeroImports"
+      },
+      {
+        "name": "Notes",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Notes"
+      }
+    ]
+  },
+  "ArtifactRegistry": {
+    "Description": "Table: ArtifactRegistry \u2014 immutable source artifacts and content hashes for the migration.",
+    "schema": [
+      {
+        "name": "ArtifactId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "ArtifactId"
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Name",
+        "formula": "={{ArtifactId}}"
+      },
+      {
+        "name": "DomainId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "DomainId"
+      },
+      {
+        "name": "ArtifactKind",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "ArtifactKind"
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "RelativePath"
+      },
+      {
+        "name": "Version",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Version"
+      },
+      {
+        "name": "Sha256",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Sha256"
+      },
+      {
+        "name": "IsCanonicalMigrationSource",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "IsCanonicalMigrationSource"
+      },
+      {
+        "name": "Notes",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Notes"
+      }
+    ]
+  },
+  "MigrationMappings": {
+    "Description": "Table: MigrationMappings \u2014 explicit mapping from v21 SQLite concepts to the new theorem-network rulebook.",
+    "schema": [
+      {
+        "name": "MappingId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "MappingId"
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Name",
+        "formula": "={{MappingId}}"
+      },
+      {
+        "name": "SourceTable",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "SourceTable"
+      },
+      {
+        "name": "TargetTable",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "TargetTable"
+      },
+      {
+        "name": "Strategy",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Strategy"
+      },
+      {
+        "name": "Notes",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Notes"
+      }
+    ]
+  },
+  "ProjectRoadmap": {
+    "Description": "Table: ProjectRoadmap \u2014 integration sequence and acceptance criteria.",
+    "schema": [
+      {
+        "name": "RoadmapId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "RoadmapId"
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Name",
+        "formula": "={{RoadmapId}}"
+      },
+      {
+        "name": "SequenceNo",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "SequenceNo"
+      },
+      {
+        "name": "Title",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Title"
+      },
+      {
+        "name": "Status",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Status"
+      },
+      {
+        "name": "AcceptanceCriteria",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "AcceptanceCriteria"
+      },
+      {
+        "name": "DependsOn",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "DependsOn"
+      }
+    ]
+  },
+  "Conclusions": {
+    "Description": "Table: Conclusions \u2014 high-level claims earned by the migration starter itself.",
+    "schema": [
+      {
+        "name": "ConclusionId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "ConclusionId"
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Name",
+        "formula": "={{ConclusionId}}"
+      },
+      {
+        "name": "Category",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Category"
+      },
+      {
+        "name": "Status",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Status"
+      },
+      {
+        "name": "ReportTier",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "ReportTier"
+      },
+      {
+        "name": "Title",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Title"
+      },
+      {
+        "name": "Evidence",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Evidence"
+      },
+      {
+        "name": "WitnessedInLoop",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "WitnessedInLoop"
+      }
+    ]
+  },
+  "LegacyParentAudits": {
+    "Description": "Table: LegacyParentAudits \u2014 the final-nine parent-to-kernel compression from v21.",
+    "schema": [
+      {
+        "name": "edge_order",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "edge_order"
+      },
+      {
+        "name": "edge_id",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "edge_id"
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Name",
+        "formula": "={{edge_id}}"
+      },
+      {
+        "name": "previous_status",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "previous_status"
+      },
+      {
+        "name": "current_status",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "current_status"
+      },
+      {
+        "name": "parent_removed",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "parent_removed"
+      },
+      {
+        "name": "replacement_kernel_id",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "replacement_kernel_id"
+      },
+      {
+        "name": "kernel_shared_with_parent_count",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "kernel_shared_with_parent_count"
+      },
+      {
+        "name": "theorem_content_fully_internalized",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "theorem_content_fully_internalized"
+      },
+      {
+        "name": "status",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "status"
+      },
+      {
+        "name": "next_target",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "next_target"
+      }
+    ]
+  }
+}

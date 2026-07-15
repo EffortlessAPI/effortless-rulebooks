@@ -1,0 +1,9 @@
+{
+  "_comment": "Stable DR-number ledger for rulebook-to-rulespeak. Auto-maintained; feed this file back in on the next build to keep rule numbers stable. Numbers in 'Retired' are tombstones and are never reissued. Hand-edit an Assignments number only to deliberately re-pin a rule.",
+  "NextId": 3,
+  "Assignments": {
+    "FoundationKernels.Name": 1,
+    "LegacyParentAudits.Name": 2
+  },
+  "Retired": []
+}

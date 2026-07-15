@@ -1,0 +1,1826 @@
+<!doctype html>
+<html lang="en" data-lang="en" class="show-rulespeak show-desc show-inputs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>effortless-math — RuleSpeak</title>
+<style>
+
+:root{
+  --raw:#003a70; --calc:#5a3aa0; --agg:#0a7b78; --rel:#666; --lookup:#9a6708;
+  --raw-bg:#eaf0f8; --calc-bg:#f1ebfb; --agg-bg:#e5f4f3; --rel-bg:#f0f0f0; --lookup-bg:#fbf2dd;
+  --ink:#1a1a22; --muted:#6b6b78; --line:#e3e3ea; --bg:#fafafc; --card:#fff;
+  --bar-h:48px;                 /* sticky topbar height — anchors clear it */
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font:15px/1.55 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  color:var(--ink);background:var(--bg);}
+a{color:var(--calc);text-decoration:none}
+a:hover{text-decoration:underline}
+code{font:0.85em ui-monospace,SFMono-Regular,Menlo,monospace;background:#f3f3f7;padding:1px 5px;border-radius:4px}
+
+/* ── One language visible at a time; <html data-lang> picks it (rules per
+      language are appended at render time). ─────────────────────────────── */
+.lang-doc{display:none}
+
+/* ── Element visibility: each doc element shows only when <html> carries its flag. */
+.elem{display:none}
+html.show-rulespeak .elem-rulespeak{display:block}
+html.show-english   .elem-english{display:block}
+html.show-formula   .elem-formula{display:block}
+html.show-desc      .elem-desc{display:block}
+html.show-inputs    .elem-inputs{display:block}
+html.show-consumers .elem-consumers{display:block}
+
+/* ── Sticky top bar — brand · breadcrumb · language · gear ───────────────── */
+.topbar{position:sticky;top:0;z-index:40;height:var(--bar-h);
+  background:rgba(255,255,255,.92);border-bottom:1px solid var(--line);
+  backdrop-filter:saturate(1.1) blur(8px)}
+.topbar-inner{max-width:960px;margin:0 auto;padding:0 24px;height:var(--bar-h);
+  display:flex;align-items:center;gap:12px}
+.topbar-brand{font-weight:800;font-size:15px;color:var(--ink);white-space:nowrap;flex:none}
+.topbar-brand:hover{text-decoration:none}
+.topbar-tag{font-size:11px;font-weight:700;color:var(--calc);background:var(--calc-bg);
+  padding:1px 7px;border-radius:999px;margin-left:4px;vertical-align:middle}
+.crumb{flex:1;min-width:0;display:flex;align-items:center;gap:7px;
+  font-size:13px;color:var(--muted);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.crumb-entity{font-weight:700;color:var(--ink)}
+.crumb-sep{color:var(--line)}
+.crumb-field{color:var(--calc);font-weight:600;overflow:hidden;text-overflow:ellipsis}
+.lang-select{flex:none;height:32px;border:1px solid var(--line);border-radius:9px;background:#fff;
+  color:var(--ink);font:600 13px/1 inherit;padding:0 8px;cursor:pointer;max-width:150px}
+.lang-select:hover{border-color:var(--calc)}
+.gear{flex:none;width:34px;height:34px;border-radius:9px;border:1px solid var(--line);
+  background:#fff;cursor:pointer;font-size:17px;line-height:1;color:var(--muted);
+  display:inline-flex;align-items:center;justify-content:center;transition:all .12s}
+.gear:hover{color:var(--ink);border-color:var(--calc);box-shadow:0 1px 4px rgba(90,58,160,.15)}
+.gear[aria-expanded='true']{background:var(--calc);color:#fff;border-color:var(--calc)}
+
+/* ── Gear popup ──────────────────────────────────────────────────────────── */
+.gear-pop{position:absolute;top:calc(var(--bar-h) + 6px);right:24px;z-index:50;width:290px;
+  background:#fff;border:1px solid var(--line);border-radius:12px;
+  box-shadow:0 10px 32px rgba(20,20,40,.18);padding:12px}
+.gear-pop[hidden]{display:none}
+.gear-pop-title{margin:2px 4px 8px;font-size:11px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.06em;color:var(--muted)}
+.gear-opt{display:grid;grid-template-columns:auto 1fr;column-gap:9px;align-items:baseline;
+  padding:7px 6px;border-radius:8px;cursor:pointer}
+.gear-opt:hover{background:var(--calc-bg)}
+.gear-opt input{grid-row:1 / span 2;align-self:center;width:16px;height:16px;accent-color:var(--calc);cursor:pointer}
+.gear-opt-label{font-weight:600;font-size:14px;color:var(--ink)}
+.gear-opt-hint{grid-column:2;font-size:12px;color:var(--muted);line-height:1.35}
+.gear-reset{margin:8px 4px 2px;border:0;background:transparent;color:var(--calc);
+  font:600 12px/1 inherit;cursor:pointer;padding:4px}
+.gear-reset:hover{text-decoration:underline}
+.gear-inline{border:1px solid var(--line);background:#fff;border-radius:7px;padding:1px 7px;
+  font:600 12px/1 inherit;color:var(--calc);cursor:pointer}
+.gear-inline:hover{border-color:var(--calc)}
+
+.doc-header{background:linear-gradient(180deg,#fff,#f5f4fb);border-bottom:1px solid var(--line)}
+.doc-header-inner{max-width:960px;margin:0 auto;padding:18px 24px}
+.doc-title{margin:0;font-size:24px;font-weight:800}
+.doc-title-sub{font-size:13px;font-weight:600;color:var(--calc);background:var(--calc-bg);
+  padding:2px 8px;border-radius:999px;vertical-align:middle;margin-left:6px}
+.doc-lede{margin:6px 0 0;font-style:italic;color:var(--muted)}
+.doc-note{margin:8px 0 12px;color:var(--muted);font-size:13px;max-width:70ch}
+.narr-hint{margin:8px 0 0;font-size:12px;color:var(--muted);max-width:78ch}
+
+.toc{max-width:960px;margin:22px auto 0;padding:0 24px;scroll-margin-top:calc(var(--bar-h) + 12px)}
+.toc-title{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:0 0 8px}
+.toc-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:6px}
+.toc-list a{font-weight:600}
+.toc-meta{font-size:12px;color:var(--muted);margin-left:6px}
+
+.entity{max-width:960px;margin:34px auto 0;padding:0 24px;scroll-margin-top:calc(var(--bar-h) + 14px)}
+.entity-head{border-bottom:2px solid var(--line);padding-bottom:8px;margin-bottom:14px}
+.entity-title{margin:0;font-size:21px;font-weight:800}
+.entity-synopsis{margin:4px 0 0;color:var(--muted);max-width:74ch}
+
+.field{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--rel);
+  border-radius:10px;padding:14px 16px;margin:0 0 12px;scroll-margin-top:calc(var(--bar-h) + 14px)}
+.field.tone-raw{border-left-color:var(--raw)} .field.tone-calc{border-left-color:var(--calc)}
+.field.tone-agg{border-left-color:var(--agg)} .field.tone-lookup{border-left-color:var(--lookup)}
+.field.tone-rel{border-left-color:var(--rel)}
+.field-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.field-glyph{width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;
+  border-radius:6px;font-weight:700;color:#fff;font-size:13px}
+.tone-raw .field-glyph{background:var(--raw)} .tone-calc .field-glyph{background:var(--calc)}
+.tone-agg .field-glyph{background:var(--agg)} .tone-lookup .field-glyph{background:var(--lookup)}
+.tone-rel .field-glyph{background:var(--rel)}
+.field-name{font-weight:700;font-size:16px}
+.pill{font-size:11px;font-weight:600;padding:2px 8px;border-radius:999px;background:#f0f0f5;color:var(--muted)}
+.pill-type{background:var(--calc-bg);color:var(--calc)}
+.tone-raw .pill-type{background:var(--raw-bg);color:var(--raw)}
+.tone-agg .pill-type{background:var(--agg-bg);color:var(--agg)}
+.tone-lookup .pill-type{background:var(--lookup-bg);color:var(--lookup)}
+.tone-rel .pill-type{background:var(--rel-bg);color:var(--rel)}
+.pill-dr{background:#eee;color:#555;font-variant-numeric:tabular-nums}
+
+.narr-views{margin-top:10px;display:flex;flex-direction:column;gap:10px}
+.narr-views:empty{margin-top:0}
+.view-label{display:inline-block;font-size:11px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.05em;color:var(--muted);margin-bottom:4px}
+.view-body{margin:0}
+.mech{color:#9a6708;background:var(--lookup-bg);padding:1px 6px;border-radius:6px;
+  font-weight:600;text-transform:none;letter-spacing:0}
+.fx{font:0.92em ui-monospace,SFMono-Regular,Menlo,monospace;background:#f7f7fb;border:1px solid var(--line);
+  border-radius:8px;padding:8px 10px;overflow-x:auto;white-space:pre-wrap;word-break:break-word}
+.fx-eq{color:var(--muted)}
+.fx-chip{background:var(--calc-bg);color:var(--calc);padding:1px 6px;border-radius:5px;font-weight:600}
+.ref{border-bottom:1px dashed var(--calc);font-weight:600}
+
+.rt-headline{margin:0 0 4px}
+.rt-priority{margin:4px 0;padding-left:22px}
+.rt-priority>li{margin:2px 0}
+.rt-value{font-weight:700;color:var(--calc)}
+.rt-otherwise{color:var(--muted);font-style:italic}
+.rt-group-label{font-weight:600}
+.rt-group{margin:2px 0 6px;padding-left:20px}
+
+.gt{margin-top:8px}
+.gt-body{margin:0;color:var(--muted)}
+.gt-reverse{margin-top:6px}
+
+.prov{margin-top:10px;border-top:1px dashed var(--line);padding-top:8px}
+.prov>summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--ink);list-style:none}
+.prov>summary::-webkit-details-marker{display:none}
+.prov>summary::before{content:'▸';display:inline-block;margin-right:6px;color:var(--muted);transition:transform .1s}
+.prov[open]>summary::before{transform:rotate(90deg)}
+.count{font-size:11px;font-weight:700;background:#eee;color:#555;padding:1px 7px;border-radius:999px;margin-left:4px}
+.count-muted{background:#f5f5f5;color:#999}
+.prov-hint{font-size:12px;font-weight:400;color:var(--muted);margin-left:6px}
+.prov-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;margin-top:8px}
+.prov-pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.input{display:block;border:1px solid var(--line);border-left:3px solid var(--rel);border-radius:8px;
+  padding:8px 10px;background:#fcfcfe}
+.input.tone-raw{border-left-color:var(--raw)} .input.tone-calc{border-left-color:var(--calc)}
+.input.tone-agg{border-left-color:var(--agg)} .input.tone-lookup{border-left-color:var(--lookup)}
+.input.tone-rel{border-left-color:var(--rel)}
+.input:hover{background:#f4f3fb;text-decoration:none}
+.input-static{cursor:default}
+span.input-static:hover{background:#fcfcfe}
+.input-head{display:flex;align-items:center;gap:6px}
+.input-glyph{font-size:12px;color:var(--muted)}
+.input-name{font-weight:700;color:var(--ink)}
+.input-table{font-size:11px;color:var(--muted);margin-left:auto}
+.input-en{display:block;margin-top:3px;font-size:13px;color:var(--muted)}
+.ref-pill{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;
+  border:1px solid var(--line);border-radius:999px;padding:3px 10px;background:#fff;color:var(--ink)}
+.ref-pill.tone-raw{border-color:var(--raw);color:var(--raw)} .ref-pill.tone-calc{border-color:var(--calc);color:var(--calc)}
+.ref-pill.tone-agg{border-color:var(--agg);color:var(--agg)} .ref-pill.tone-lookup{border-color:var(--lookup);color:var(--lookup)}
+.ref-pill.faded{opacity:.6}
+.ref-pill-tbl{font-weight:400;color:var(--muted)}
+
+.field-note{margin:8px 0 0;font-size:13px;font-style:italic;color:var(--muted);
+  border-left:2px solid var(--line);padding-left:10px}
+
+.doc-footer{max-width:960px;margin:40px auto;padding:18px 24px;border-top:1px solid var(--line);
+  color:var(--muted);font-size:13px}
+.doc-footer-legend{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:12px;font-weight:600;padding:2px 9px;border-radius:999px}
+.chip-raw{background:var(--raw-bg);color:var(--raw)} .chip-calc{background:var(--calc-bg);color:var(--calc)}
+.chip-agg{background:var(--agg-bg);color:var(--agg)} .chip-lookup{background:var(--lookup-bg);color:var(--lookup)}
+.chip-rel{background:var(--rel-bg);color:var(--rel)}
+:target{animation:flash 1.2s ease}
+@keyframes flash{0%{background:var(--calc-bg)}100%{background:var(--card)}}
+
+html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
+</style>
+<script>
+
+(function(){
+  var LANGS=['en'];
+  var DEFAULT_LANG='en';
+  var ELEMS=['rulespeak','english','formula','desc','inputs','consumers'];
+  var root=document.documentElement;
+
+  var lang=null;
+  try{ lang=new URLSearchParams(location.search).get('lang'); }catch(e){}
+  if(!lang){ try{ lang=localStorage.getItem('rulespeak.lang'); }catch(e){} }
+  if(LANGS.indexOf(lang)<0) lang=DEFAULT_LANG;
+  root.setAttribute('data-lang',lang);
+  root.setAttribute('lang',lang);
+
+  ELEMS.forEach(function(k){
+    var v=null; try{v=localStorage.getItem('rulespeak.show.'+k);}catch(e){}
+    if(v==='1') root.classList.add('show-'+k);
+    else if(v==='0') root.classList.remove('show-'+k);
+  });
+})();
+
+</script>
+</head>
+<body>
+<div class="lang-doc" data-lang="en" lang="en">
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="topbar-brand" href="#en-top">📘 effortless-math <span class="topbar-tag">RuleSpeak</span></a>
+    <nav class="crumb" aria-label="You are reading">
+      <span class="crumb-entity"></span>
+      <span class="crumb-sep" hidden>›</span>
+      <span class="crumb-field"></span>
+    </nav>
+    <button type="button" class="gear" aria-haspopup="dialog" aria-expanded="false" title="Documentation options" aria-label="Documentation options">⚙︎</button>
+  </div>
+  <div class="gear-pop" role="dialog" aria-label="Documentation options" hidden>
+    <p class="gear-pop-title">Show in this document</p>
+    <label class="gear-opt" title="The declarative business rule (only if / must / priority)">
+      <input type="checkbox" data-elem="rulespeak" checked>
+      <span class="gear-opt-label">RuleSpeak</span>
+      <span class="gear-opt-hint">The declarative business rule (only if / must / priority)</span>
+    </label>
+    <label class="gear-opt" title="The formula read aloud as a plain sentence">
+      <input type="checkbox" data-elem="english">
+      <span class="gear-opt-label">Plain reading</span>
+      <span class="gear-opt-hint">The formula read aloud as a plain sentence</span>
+    </label>
+    <label class="gear-opt" title="The raw =expression, with clickable field chips">
+      <input type="checkbox" data-elem="formula">
+      <span class="gear-opt-label">Formulas</span>
+      <span class="gear-opt-hint">The raw =expression, with clickable field chips</span>
+    </label>
+    <label class="gear-opt" title="The author's narrative comment on a field, when present">
+      <input type="checkbox" data-elem="desc" checked>
+      <span class="gear-opt-label">Description</span>
+      <span class="gear-opt-hint">The author's narrative comment on a field, when present</span>
+    </label>
+    <label class="gear-opt" title="The fields each rule reads (its DAG inputs / upstream)">
+      <input type="checkbox" data-elem="inputs" checked>
+      <span class="gear-opt-label">Links to inputs</span>
+      <span class="gear-opt-hint">The fields each rule reads (its DAG inputs / upstream)</span>
+    </label>
+    <label class="gear-opt" title="The rules that read this one (its DAG consumers / downstream)">
+      <input type="checkbox" data-elem="consumers">
+      <span class="gear-opt-label">Links to consumers</span>
+      <span class="gear-opt-hint">The rules that read this one (its DAG consumers / downstream)</span>
+    </label>
+    <button type="button" class="gear-reset">Reset to defaults</button>
+  </div>
+</div>
+<header class="doc-header" id="en-top">
+  <div class="doc-header-inner">
+    <h1 class="doc-title">📘 effortless-math <span class="doc-title-sub">RuleSpeak</span></h1>
+    <p class="doc-lede">Executable theorem network starter. Fermat's Last Theorem is the deeply modeled flagship domain; seven foundation theorems begin as first-class provider contracts with imported universal content.</p>
+    <p class="doc-note">Declarative business rules rendered from the rulebook — the single source of truth. Every statement below is the plain-language reading of a formula; nothing here is hand-authored prose.</p>
+    <p class="narr-hint">Use the <button type="button" class="gear-inline gear-open-inline">⚙︎ options</button> in the top-right corner to turn each part of the documentation on or off — RuleSpeak, the literal reading, the raw formula, the author's description, and the links to a rule's inputs and consumers. Your choices are remembered.</p>
+  </div>
+</header>
+<nav class="toc">
+  <h2 class="toc-title">Entities</h2>
+  <ul class="toc-list">
+    <li><a href="#en-t-domains">Domain</a> <span class="toc-meta">0 rules · 0 links</span></li>
+    <li><a href="#en-t-proofstatuses">Proof Status</a> <span class="toc-meta">0 rules · 0 links</span></li>
+    <li><a href="#en-t-theorems">Theorem</a> <span class="toc-meta">0 rules · 0 links</span></li>
+    <li><a href="#en-t-theoremdependencies">Theorem Dependency</a> <span class="toc-meta">0 rules · 0 links</span></li>
+    <li><a href="#en-t-foundationkernels">Foundation Kernel</a> <span class="toc-meta">1 rules · 0 links</span></li>
+    <li><a href="#en-t-prooffacts">Proof Fact</a> <span class="toc-meta">0 rules · 0 links</span></li>
+    <li><a href="#en-t-loops">Loop</a> <span class="toc-meta">0 rules · 0 links</span></li>
+    <li><a href="#en-t-invariantchecks">Invariant Check</a> <span class="toc-meta">0 rules · 0 links</span></li>
+    <li><a href="#en-t-sources">Source</a> <span class="toc-meta">0 rules · 0 links</span></li>
+    <li><a href="#en-t-trustboundaries">Trust Boundary</a> <span class="toc-meta">0 rules · 0 links</span></li>
+    <li><a href="#en-t-artifactregistry">Artifact Registry</a> <span class="toc-meta">0 rules · 0 links</span></li>
+    <li><a href="#en-t-migrationmappings">Migration Mapping</a> <span class="toc-meta">0 rules · 0 links</span></li>
+    <li><a href="#en-t-projectroadmap">Project Roadmap</a> <span class="toc-meta">0 rules · 0 links</span></li>
+    <li><a href="#en-t-conclusions">Conclusion</a> <span class="toc-meta">0 rules · 0 links</span></li>
+    <li><a href="#en-t-legacyparentaudits">Legacy Parent Audit</a> <span class="toc-meta">1 rules · 0 links</span></li>
+  </ul>
+</nav>
+<section class="entity" id="en-t-domains" data-entity="Domain">
+  <header class="entity-head">
+    <h2 class="entity-title">Domain</h2>
+    <p class="entity-synopsis">A domain is identified by its name.</p>
+  </header>
+  <article class="field tone-raw" id="en-f-domains-slug" data-entity="Domain" data-field="Slug">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Slug</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Slug</p>
+    </article>
+  <article class="field tone-raw" id="en-f-domains-title" data-entity="Domain" data-field="Title">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Title</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Title</p>
+    </article>
+  <article class="field tone-raw" id="en-f-domains-role" data-entity="Domain" data-field="Role">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Role</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Role</p>
+    </article>
+  <article class="field tone-raw" id="en-f-domains-status" data-entity="Domain" data-field="Status">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Status</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Status</p>
+    </article>
+  <article class="field tone-raw" id="en-f-domains-description" data-entity="Domain" data-field="Description">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Description</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Description</p>
+    </article>
+  <article class="field tone-raw" id="en-f-domains-relativepath" data-entity="Domain" data-field="Relative Path">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Relative Path</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">RelativePath</p>
+    </article>
+  <article class="field tone-raw" id="en-f-domains-isflagship" data-entity="Domain" data-field="Is Flagship">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Is Flagship</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>boolean</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">IsFlagship</p>
+    </article>
+</section>
+<section class="entity" id="en-t-proofstatuses" data-entity="Proof Status">
+  <header class="entity-head">
+    <h2 class="entity-title">Proof Status</h2>
+    <p class="entity-synopsis">A proof status is identified by its name.</p>
+  </header>
+  <article class="field tone-raw" id="en-f-proofstatuses-sortorder" data-entity="Proof Status" data-field="Sort Order">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Sort Order</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">SortOrder</p>
+    </article>
+  <article class="field tone-raw" id="en-f-proofstatuses-isimported" data-entity="Proof Status" data-field="Is Imported">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Is Imported</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>boolean</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">IsImported</p>
+    </article>
+  <article class="field tone-raw" id="en-f-proofstatuses-isderived" data-entity="Proof Status" data-field="Is Derived">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Is Derived</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>boolean</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">IsDerived</p>
+    </article>
+  <article class="field tone-raw" id="en-f-proofstatuses-allowsimportedchildren" data-entity="Proof Status" data-field="Allows Imported Children">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Allows Imported Children</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>boolean</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">AllowsImportedChildren</p>
+    </article>
+  <article class="field tone-raw" id="en-f-proofstatuses-isterminal" data-entity="Proof Status" data-field="Is Terminal">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Is Terminal</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>boolean</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">IsTerminal</p>
+    </article>
+  <article class="field tone-raw" id="en-f-proofstatuses-description" data-entity="Proof Status" data-field="Description">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Description</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Description</p>
+    </article>
+</section>
+<section class="entity" id="en-t-theorems" data-entity="Theorem">
+  <header class="entity-head">
+    <h2 class="entity-title">Theorem</h2>
+    <p class="entity-synopsis">A theorem is identified by its name.</p>
+  </header>
+  <article class="field tone-raw" id="en-f-theorems-title" data-entity="Theorem" data-field="Title">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Title</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Title</p>
+    </article>
+  <article class="field tone-raw" id="en-f-theorems-theoremkind" data-entity="Theorem" data-field="Theorem Kind">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Theorem Kind</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">TheoremKind</p>
+    </article>
+  <article class="field tone-raw" id="en-f-theorems-statement" data-entity="Theorem" data-field="Statement">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Statement</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Statement</p>
+    </article>
+  <article class="field tone-raw" id="en-f-theorems-scope" data-entity="Theorem" data-field="Scope">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Scope</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Scope</p>
+    </article>
+  <article class="field tone-raw" id="en-f-theorems-trustboundary" data-entity="Theorem" data-field="Trust Boundary">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Trust Boundary</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">TrustBoundary</p>
+    </article>
+  <article class="field tone-raw" id="en-f-theorems-activeimportcount" data-entity="Theorem" data-field="Active Import Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Active Import Count</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">ActiveImportCount</p>
+    </article>
+  <article class="field tone-raw" id="en-f-theorems-contractpath" data-entity="Theorem" data-field="Contract Path">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Contract Path</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">ContractPath</p>
+    </article>
+  <article class="field tone-raw" id="en-f-theorems-currentversion" data-entity="Theorem" data-field="Current Version">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Current Version</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">CurrentVersion</p>
+    </article>
+  <article class="field tone-raw" id="en-f-theorems-isflagship" data-entity="Theorem" data-field="Is Flagship">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Is Flagship</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>boolean</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">IsFlagship</p>
+    </article>
+  <article class="field tone-raw" id="en-f-theorems-nexttarget" data-entity="Theorem" data-field="Next Target">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Next Target</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">NextTarget</p>
+    </article>
+</section>
+<section class="entity" id="en-t-theoremdependencies" data-entity="Theorem Dependency">
+  <header class="entity-head">
+    <h2 class="entity-title">Theorem Dependency</h2>
+    <p class="entity-synopsis">A theorem dependency is identified by its name.</p>
+  </header>
+  <article class="field tone-raw" id="en-f-theoremdependencies-requiredconclusion" data-entity="Theorem Dependency" data-field="Required Conclusion">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Required Conclusion</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">RequiredConclusion</p>
+    </article>
+  <article class="field tone-raw" id="en-f-theoremdependencies-loadbearing" data-entity="Theorem Dependency" data-field="Load Bearing">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Load Bearing</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>boolean</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">LoadBearing</p>
+    </article>
+  <article class="field tone-raw" id="en-f-theoremdependencies-isimported" data-entity="Theorem Dependency" data-field="Is Imported">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Is Imported</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>boolean</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">IsImported</p>
+    </article>
+  <article class="field tone-raw" id="en-f-theoremdependencies-issharedkernel" data-entity="Theorem Dependency" data-field="Is Shared Kernel">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Is Shared Kernel</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>boolean</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">IsSharedKernel</p>
+    </article>
+  <article class="field tone-raw" id="en-f-theoremdependencies-providercontractpath" data-entity="Theorem Dependency" data-field="Provider Contract Path">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Provider Contract Path</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">ProviderContractPath</p>
+    </article>
+  <article class="field tone-raw" id="en-f-theoremdependencies-notes" data-entity="Theorem Dependency" data-field="Notes">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Notes</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Notes</p>
+    </article>
+</section>
+<section class="entity" id="en-t-foundationkernels" data-entity="Foundation Kernel">
+  <header class="entity-head">
+    <h2 class="entity-title">Foundation Kernel</h2>
+    <p class="entity-synopsis">A foundation kernel is identified by its <a class="ref" href="#en-f-foundationkernels-name">name</a>.</p>
+  </header>
+  <article class="field tone-raw" id="en-f-foundationkernels-kernel-order" data-entity="Foundation Kernel" data-field="kernel order">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">kernel order</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">kernel_order</p>
+    </article>
+  <article class="field tone-raw" id="en-f-foundationkernels-kernel-id" data-entity="Foundation Kernel" data-field="kernel ID">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">kernel ID</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <details class="prov prov-consumers elem elem-consumers" open>
+      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#en-f-foundationkernels-name">ƒ Name <span class="ref-pill-tbl">Foundation Kernel</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">kernel_id</p>
+    </article>
+  <article class="field tone-calc" id="en-f-foundationkernels-name" data-entity="Foundation Kernel" data-field="Name">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Name</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-1</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A foundation kernel's <a class="ref" href="#en-f-foundationkernels-name">name</a> is the same as its <a class="ref" href="#en-f-foundationkernels-kernel-id">kernel ID</a>.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body"><a class="ref" href="#en-f-foundationkernels-kernel-id">Kernel ID</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span><a class="fx-chip" href="#en-f-foundationkernels-kernel-id">kernel ID</a></div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#en-f-foundationkernels-kernel-id">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">kernel ID</span><span class="input-table">Foundation Kernel</span></span>
+          <span class="input-en muted">kernel_id</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#en-f-foundationkernels-kernel-id">● kernel ID <span class="ref-pill-tbl">Foundation Kernel</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Name</p>
+    </article>
+  <article class="field tone-raw" id="en-f-foundationkernels-title" data-entity="Foundation Kernel" data-field="title">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">title</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">title</p>
+    </article>
+  <article class="field tone-raw" id="en-f-foundationkernels-mathematical-scope" data-entity="Foundation Kernel" data-field="mathematical scope">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">mathematical scope</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">mathematical_scope</p>
+    </article>
+  <article class="field tone-raw" id="en-f-foundationkernels-input-contract-json" data-entity="Foundation Kernel" data-field="input contract JSON">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">input contract JSON</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">input_contract_json</p>
+    </article>
+  <article class="field tone-raw" id="en-f-foundationkernels-output-contract-json" data-entity="Foundation Kernel" data-field="output contract JSON">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">output contract JSON</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">output_contract_json</p>
+    </article>
+  <article class="field tone-raw" id="en-f-foundationkernels-finite-compiler-tables-json" data-entity="Foundation Kernel" data-field="finite compiler tables JSON">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">finite compiler tables JSON</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">finite_compiler_tables_json</p>
+    </article>
+  <article class="field tone-raw" id="en-f-foundationkernels-source-id" data-entity="Foundation Kernel" data-field="source ID">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">source ID</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">source_id</p>
+    </article>
+  <article class="field tone-raw" id="en-f-foundationkernels-theorem-content-internalized" data-entity="Foundation Kernel" data-field="theorem content internalized">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">theorem content internalized</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">theorem_content_internalized</p>
+    </article>
+  <article class="field tone-raw" id="en-f-foundationkernels-status" data-entity="Foundation Kernel" data-field="status">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">status</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">status</p>
+    </article>
+  <article class="field tone-raw" id="en-f-foundationkernels-next-target" data-entity="Foundation Kernel" data-field="next target">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">next target</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">next_target</p>
+    </article>
+</section>
+<section class="entity" id="en-t-prooffacts" data-entity="Proof Fact">
+  <header class="entity-head">
+    <h2 class="entity-title">Proof Fact</h2>
+    <p class="entity-synopsis">A proof fact is identified by its name.</p>
+  </header>
+  <article class="field tone-raw" id="en-f-prooffacts-stepno" data-entity="Proof Fact" data-field="Step No">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Step No</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">StepNo</p>
+    </article>
+  <article class="field tone-raw" id="en-f-prooffacts-derivedfact" data-entity="Proof Fact" data-field="Derived Fact">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Derived Fact</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">DerivedFact</p>
+    </article>
+  <article class="field tone-raw" id="en-f-prooffacts-antecedentsjson" data-entity="Proof Fact" data-field="Antecedents JSON">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Antecedents JSON</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">AntecedentsJson</p>
+    </article>
+  <article class="field tone-raw" id="en-f-prooffacts-derivationkind" data-entity="Proof Fact" data-field="Derivation Kind">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Derivation Kind</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">DerivationKind</p>
+    </article>
+  <article class="field tone-raw" id="en-f-prooffacts-contradiction" data-entity="Proof Fact" data-field="Contradiction">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Contradiction</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>boolean</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Contradiction</p>
+    </article>
+  <article class="field tone-raw" id="en-f-prooffacts-notes" data-entity="Proof Fact" data-field="Notes">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Notes</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Notes</p>
+    </article>
+</section>
+<section class="entity" id="en-t-loops" data-entity="Loop">
+  <header class="entity-head">
+    <h2 class="entity-title">Loop</h2>
+    <p class="entity-synopsis">A loop is identified by its name.</p>
+  </header>
+  <article class="field tone-raw" id="en-f-loops-looporder" data-entity="Loop" data-field="Loop Order">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Loop Order</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">LoopOrder</p>
+    </article>
+  <article class="field tone-raw" id="en-f-loops-title" data-entity="Loop" data-field="Title">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Title</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Title</p>
+    </article>
+  <article class="field tone-raw" id="en-f-loops-status" data-entity="Loop" data-field="Status">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Status</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Status</p>
+    </article>
+  <article class="field tone-raw" id="en-f-loops-newconcept" data-entity="Loop" data-field="New Concept">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">New Concept</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">NewConcept</p>
+    </article>
+  <article class="field tone-raw" id="en-f-loops-domainquestion" data-entity="Loop" data-field="Domain Question">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Domain Question</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">DomainQuestion</p>
+    </article>
+  <article class="field tone-raw" id="en-f-loops-witnesssummary" data-entity="Loop" data-field="Witness Summary">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Witness Summary</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">WitnessSummary</p>
+    </article>
+  <article class="field tone-raw" id="en-f-loops-nextfrontier" data-entity="Loop" data-field="Next Frontier">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Next Frontier</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">NextFrontier</p>
+    </article>
+  <article class="field tone-raw" id="en-f-loops-epistemictier" data-entity="Loop" data-field="Epistemic Tier">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Epistemic Tier</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">EpistemicTier</p>
+    </article>
+</section>
+<section class="entity" id="en-t-invariantchecks" data-entity="Invariant Check">
+  <header class="entity-head">
+    <h2 class="entity-title">Invariant Check</h2>
+    <p class="entity-synopsis">An invariant check is identified by its name.</p>
+  </header>
+  <article class="field tone-raw" id="en-f-invariantchecks-description" data-entity="Invariant Check" data-field="Description">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Description</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Description</p>
+    </article>
+  <article class="field tone-raw" id="en-f-invariantchecks-tier" data-entity="Invariant Check" data-field="Tier">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Tier</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Tier</p>
+    </article>
+  <article class="field tone-raw" id="en-f-invariantchecks-passcount" data-entity="Invariant Check" data-field="Pass Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Pass Count</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">PassCount</p>
+    </article>
+  <article class="field tone-raw" id="en-f-invariantchecks-failcount" data-entity="Invariant Check" data-field="Fail Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Fail Count</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">FailCount</p>
+    </article>
+  <article class="field tone-raw" id="en-f-invariantchecks-universecount" data-entity="Invariant Check" data-field="Universe Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Universe Count</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">UniverseCount</p>
+    </article>
+  <article class="field tone-raw" id="en-f-invariantchecks-status" data-entity="Invariant Check" data-field="Status">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Status</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Status</p>
+    </article>
+  <article class="field tone-raw" id="en-f-invariantchecks-evidence" data-entity="Invariant Check" data-field="Evidence">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Evidence</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Evidence</p>
+    </article>
+  <article class="field tone-raw" id="en-f-invariantchecks-protectsloop" data-entity="Invariant Check" data-field="Protects Loop">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Protects Loop</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">ProtectsLoop</p>
+    </article>
+</section>
+<section class="entity" id="en-t-sources" data-entity="Source">
+  <header class="entity-head">
+    <h2 class="entity-title">Source</h2>
+    <p class="entity-synopsis">A source is identified by its name.</p>
+  </header>
+  <article class="field tone-raw" id="en-f-sources-citation" data-entity="Source" data-field="Citation">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Citation</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Citation</p>
+    </article>
+  <article class="field tone-raw" id="en-f-sources-sourceurl" data-entity="Source" data-field="Source URL">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Source URL</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">SourceUrl</p>
+    </article>
+  <article class="field tone-raw" id="en-f-sources-sourcekind" data-entity="Source" data-field="Source Kind">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Source Kind</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">SourceKind</p>
+    </article>
+  <article class="field tone-raw" id="en-f-sources-role" data-entity="Source" data-field="Role">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Role</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Role</p>
+    </article>
+</section>
+<section class="entity" id="en-t-trustboundaries" data-entity="Trust Boundary">
+  <header class="entity-head">
+    <h2 class="entity-title">Trust Boundary</h2>
+    <p class="entity-synopsis">A trust boundary is identified by its name.</p>
+  </header>
+  <article class="field tone-raw" id="en-f-trustboundaries-boundarykind" data-entity="Trust Boundary" data-field="Boundary Kind">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Boundary Kind</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">BoundaryKind</p>
+    </article>
+  <article class="field tone-raw" id="en-f-trustboundaries-acceptedexternalclaims" data-entity="Trust Boundary" data-field="Accepted External Claims">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Accepted External Claims</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">AcceptedExternalClaims</p>
+    </article>
+  <article class="field tone-raw" id="en-f-trustboundaries-kernelorsubstrate" data-entity="Trust Boundary" data-field="Kernel or Substrate">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Kernel or Substrate</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">KernelOrSubstrate</p>
+    </article>
+  <article class="field tone-raw" id="en-f-trustboundaries-canclaimzeroimports" data-entity="Trust Boundary" data-field="Can Claim Zero Imports">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Can Claim Zero Imports</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>boolean</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">CanClaimZeroImports</p>
+    </article>
+  <article class="field tone-raw" id="en-f-trustboundaries-notes" data-entity="Trust Boundary" data-field="Notes">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Notes</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Notes</p>
+    </article>
+</section>
+<section class="entity" id="en-t-artifactregistry" data-entity="Artifact Registry">
+  <header class="entity-head">
+    <h2 class="entity-title">Artifact Registry</h2>
+    <p class="entity-synopsis">An artifact registry is identified by its name.</p>
+  </header>
+  <article class="field tone-raw" id="en-f-artifactregistry-artifactkind" data-entity="Artifact Registry" data-field="Artifact Kind">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Artifact Kind</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">ArtifactKind</p>
+    </article>
+  <article class="field tone-raw" id="en-f-artifactregistry-relativepath" data-entity="Artifact Registry" data-field="Relative Path">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Relative Path</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">RelativePath</p>
+    </article>
+  <article class="field tone-raw" id="en-f-artifactregistry-version" data-entity="Artifact Registry" data-field="Version">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Version</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Version</p>
+    </article>
+  <article class="field tone-raw" id="en-f-artifactregistry-sha256" data-entity="Artifact Registry" data-field="Sha256">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Sha256</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Sha256</p>
+    </article>
+  <article class="field tone-raw" id="en-f-artifactregistry-iscanonicalmigrationsource" data-entity="Artifact Registry" data-field="Is Canonical Migration Source">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Is Canonical Migration Source</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>boolean</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">IsCanonicalMigrationSource</p>
+    </article>
+  <article class="field tone-raw" id="en-f-artifactregistry-notes" data-entity="Artifact Registry" data-field="Notes">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Notes</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Notes</p>
+    </article>
+</section>
+<section class="entity" id="en-t-migrationmappings" data-entity="Migration Mapping">
+  <header class="entity-head">
+    <h2 class="entity-title">Migration Mapping</h2>
+    <p class="entity-synopsis">A migration mapping is identified by its name.</p>
+  </header>
+  <article class="field tone-raw" id="en-f-migrationmappings-sourcetable" data-entity="Migration Mapping" data-field="Source Table">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Source Table</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">SourceTable</p>
+    </article>
+  <article class="field tone-raw" id="en-f-migrationmappings-targettable" data-entity="Migration Mapping" data-field="Target Table">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Target Table</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">TargetTable</p>
+    </article>
+  <article class="field tone-raw" id="en-f-migrationmappings-strategy" data-entity="Migration Mapping" data-field="Strategy">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Strategy</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Strategy</p>
+    </article>
+  <article class="field tone-raw" id="en-f-migrationmappings-notes" data-entity="Migration Mapping" data-field="Notes">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Notes</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Notes</p>
+    </article>
+</section>
+<section class="entity" id="en-t-projectroadmap" data-entity="Project Roadmap">
+  <header class="entity-head">
+    <h2 class="entity-title">Project Roadmap</h2>
+    <p class="entity-synopsis">A project roadmap is identified by its name.</p>
+  </header>
+  <article class="field tone-raw" id="en-f-projectroadmap-sequenceno" data-entity="Project Roadmap" data-field="Sequence No">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Sequence No</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">SequenceNo</p>
+    </article>
+  <article class="field tone-raw" id="en-f-projectroadmap-title" data-entity="Project Roadmap" data-field="Title">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Title</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Title</p>
+    </article>
+  <article class="field tone-raw" id="en-f-projectroadmap-status" data-entity="Project Roadmap" data-field="Status">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Status</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Status</p>
+    </article>
+  <article class="field tone-raw" id="en-f-projectroadmap-acceptancecriteria" data-entity="Project Roadmap" data-field="Acceptance Criteria">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Acceptance Criteria</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">AcceptanceCriteria</p>
+    </article>
+  <article class="field tone-raw" id="en-f-projectroadmap-dependson" data-entity="Project Roadmap" data-field="Depends on">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Depends on</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">DependsOn</p>
+    </article>
+</section>
+<section class="entity" id="en-t-conclusions" data-entity="Conclusion">
+  <header class="entity-head">
+    <h2 class="entity-title">Conclusion</h2>
+    <p class="entity-synopsis">A conclusion is identified by its name.</p>
+  </header>
+  <article class="field tone-raw" id="en-f-conclusions-category" data-entity="Conclusion" data-field="Category">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Category</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Category</p>
+    </article>
+  <article class="field tone-raw" id="en-f-conclusions-status" data-entity="Conclusion" data-field="Status">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Status</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Status</p>
+    </article>
+  <article class="field tone-raw" id="en-f-conclusions-reporttier" data-entity="Conclusion" data-field="Report Tier">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Report Tier</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">ReportTier</p>
+    </article>
+  <article class="field tone-raw" id="en-f-conclusions-title" data-entity="Conclusion" data-field="Title">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Title</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Title</p>
+    </article>
+  <article class="field tone-raw" id="en-f-conclusions-evidence" data-entity="Conclusion" data-field="Evidence">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Evidence</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Evidence</p>
+    </article>
+  <article class="field tone-raw" id="en-f-conclusions-witnessedinloop" data-entity="Conclusion" data-field="Witnessed in Loop">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Witnessed in Loop</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">WitnessedInLoop</p>
+    </article>
+</section>
+<section class="entity" id="en-t-legacyparentaudits" data-entity="Legacy Parent Audit">
+  <header class="entity-head">
+    <h2 class="entity-title">Legacy Parent Audit</h2>
+    <p class="entity-synopsis">A legacy parent audit is identified by its <a class="ref" href="#en-f-legacyparentaudits-name">name</a>.</p>
+  </header>
+  <article class="field tone-raw" id="en-f-legacyparentaudits-edge-order" data-entity="Legacy Parent Audit" data-field="edge order">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">edge order</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">edge_order</p>
+    </article>
+  <article class="field tone-raw" id="en-f-legacyparentaudits-edge-id" data-entity="Legacy Parent Audit" data-field="edge ID">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">edge ID</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <details class="prov prov-consumers elem elem-consumers" open>
+      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#en-f-legacyparentaudits-name">ƒ Name <span class="ref-pill-tbl">Legacy Parent Audit</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">edge_id</p>
+    </article>
+  <article class="field tone-calc" id="en-f-legacyparentaudits-name" data-entity="Legacy Parent Audit" data-field="Name">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Name</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-2</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A legacy parent audit's <a class="ref" href="#en-f-legacyparentaudits-name">name</a> is the same as its <a class="ref" href="#en-f-legacyparentaudits-edge-id">edge ID</a>.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body"><a class="ref" href="#en-f-legacyparentaudits-edge-id">Edge ID</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span><a class="fx-chip" href="#en-f-legacyparentaudits-edge-id">edge ID</a></div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#en-f-legacyparentaudits-edge-id">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">edge ID</span><span class="input-table">Legacy Parent Audit</span></span>
+          <span class="input-en muted">edge_id</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#en-f-legacyparentaudits-edge-id">● edge ID <span class="ref-pill-tbl">Legacy Parent Audit</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Name</p>
+    </article>
+  <article class="field tone-raw" id="en-f-legacyparentaudits-previous-status" data-entity="Legacy Parent Audit" data-field="previous status">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">previous status</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">previous_status</p>
+    </article>
+  <article class="field tone-raw" id="en-f-legacyparentaudits-current-status" data-entity="Legacy Parent Audit" data-field="current status">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">current status</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">current_status</p>
+    </article>
+  <article class="field tone-raw" id="en-f-legacyparentaudits-parent-removed" data-entity="Legacy Parent Audit" data-field="parent removed">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">parent removed</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">parent_removed</p>
+    </article>
+  <article class="field tone-raw" id="en-f-legacyparentaudits-replacement-kernel-id" data-entity="Legacy Parent Audit" data-field="replacement kernel ID">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">replacement kernel ID</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">replacement_kernel_id</p>
+    </article>
+  <article class="field tone-raw" id="en-f-legacyparentaudits-kernel-shared-with-parent-count" data-entity="Legacy Parent Audit" data-field="kernel shared with parent count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">kernel shared with parent count</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">kernel_shared_with_parent_count</p>
+    </article>
+  <article class="field tone-raw" id="en-f-legacyparentaudits-theorem-content-fully-internalized" data-entity="Legacy Parent Audit" data-field="theorem content fully internalized">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">theorem content fully internalized</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">theorem_content_fully_internalized</p>
+    </article>
+  <article class="field tone-raw" id="en-f-legacyparentaudits-status" data-entity="Legacy Parent Audit" data-field="status">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">status</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">status</p>
+    </article>
+  <article class="field tone-raw" id="en-f-legacyparentaudits-next-target" data-entity="Legacy Parent Audit" data-field="next target">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">next target</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">next_target</p>
+    </article>
+</section>
+<footer class="doc-footer">
+  <p>Rendered from the rulebook by the shared <b>RuleSpeak</b> engine (<code>rulebook-rulespeak-core</code>). The same engine narrates the React Explainer DAG, so every narration mode reads identically across both.</p>
+  <p class="doc-footer-legend"><span class="chip chip-raw">● Ground truth</span> <span class="chip chip-calc">ƒ Calculated</span> <span class="chip chip-agg">Σ Aggregation</span> <span class="chip chip-lookup">↗ Lookup</span> <span class="chip chip-rel">⇢ Relationship</span></p>
+</footer>
+</div>
+<script>
+
+(function(){
+  var LANGS=['en'];
+  var ELEMS=['rulespeak','english','formula','desc','inputs','consumers'];
+  var DEFAULTS={'rulespeak':true,'english':false,'formula':false,'desc':true,'inputs':true,'consumers':false};
+  var root=document.documentElement;
+
+  // ── Language switching. All .lang-select controls stay in sync; the choice
+  //    persists in localStorage and the URL (?lang=…) so links carry it.
+  var selects=Array.prototype.slice.call(document.querySelectorAll('.lang-select'));
+  function currentLang(){ return root.getAttribute('data-lang')||'en'; }
+  function setLang(code,fromHash){
+    if(LANGS.indexOf(code)<0) return;
+    root.setAttribute('data-lang',code);
+    root.setAttribute('lang',code);
+    try{localStorage.setItem('rulespeak.lang',code);}catch(e){}
+    try{
+      var u=new URL(location.href);
+      u.searchParams.set('lang',code);
+      history.replaceState(null,'',u.toString());
+    }catch(e){}
+    selects.forEach(function(s){ s.value=code; });
+    if(!fromHash) rebindSpy();
+  }
+  selects.forEach(function(s){
+    s.addEventListener('change',function(){
+      var was=currentLang();
+      var code=s.value;
+      // Carry the reader to the SAME field in the new language when the hash
+      // points somewhere: swap the language prefix on the anchor.
+      var h=location.hash||'';
+      setLang(code);
+      var m=h.match(/^#([a-z]{2})-(.+)$/);
+      if(m && m[1]===was){
+        var target=document.getElementById(code+'-'+m[2]);
+        if(target){ location.hash='#'+code+'-'+m[2]; }
+      }
+    });
+  });
+
+  // ── Legacy-hash shim: pre-language anchors (#f-…, #t-…, #top) map onto the
+  //    active language's scoped ids so old deep links keep working.
+  (function(){
+    var h=location.hash||'';
+    var m=h.match(/^#((?:f|t)-.+|top)$/);
+    if(m){
+      var scoped=document.getElementById(currentLang()+'-'+m[1]);
+      if(scoped) location.replace('#'+currentLang()+'-'+m[1]);
+    }
+  })();
+
+  // ── Per-element visibility, persisted. Checkboxes exist once per language doc;
+  //    drive them all from the shared <html> classes.
+  var boxes=Array.prototype.slice.call(document.querySelectorAll('.gear-opt input[data-elem]'));
+  function isOn(k){ return root.classList.contains('show-'+k); }
+  function setElem(k,on){
+    root.classList.toggle('show-'+k,on);
+    try{localStorage.setItem('rulespeak.show.'+k,on?'1':'0');}catch(e){}
+    boxes.forEach(function(b){ if(b.getAttribute('data-elem')===k) b.checked=on; });
+  }
+  boxes.forEach(function(b){
+    var k=b.getAttribute('data-elem');
+    b.checked=isOn(k);
+    b.addEventListener('change',function(){ setElem(k,b.checked); });
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('.gear-reset'),function(reset){
+    reset.addEventListener('click',function(){ ELEMS.forEach(function(k){ setElem(k,!!DEFAULTS[k]); }); });
+  });
+
+  // ── Gear popups: each language doc has its own button + popup pair.
+  Array.prototype.forEach.call(document.querySelectorAll('.lang-doc'),function(doc){
+    var gear=doc.querySelector('.gear');
+    var pop=doc.querySelector('.gear-pop');
+    if(!gear||!pop) return;
+    function openPop(o){ pop.hidden=!o; gear.setAttribute('aria-expanded',o?'true':'false'); }
+    gear.addEventListener('click',function(e){ e.stopPropagation(); openPop(pop.hidden); });
+    Array.prototype.forEach.call(doc.querySelectorAll('.gear-open-inline'),function(inline){
+      inline.addEventListener('click',function(e){ e.stopPropagation(); openPop(true); });
+    });
+    document.addEventListener('click',function(e){
+      if(!pop.hidden && !pop.contains(e.target) && e.target!==gear) openPop(false);
+    });
+    document.addEventListener('keydown',function(e){ if(e.key==='Escape') openPop(false); });
+  });
+
+  // ── Scroll-spy breadcrumb, scoped to the ACTIVE language document.
+  var fields=[],entities=[],cE=null,cF=null,cSep=null;
+  function rebindSpy(){
+    var doc=document.querySelector('.lang-doc[data-lang="'+currentLang()+'"]');
+    if(!doc) return;
+    cE=doc.querySelector('.crumb-entity');
+    cF=doc.querySelector('.crumb-field');
+    cSep=doc.querySelector('.crumb-sep');
+    fields=Array.prototype.slice.call(doc.querySelectorAll('.field[data-field]'));
+    entities=Array.prototype.slice.call(doc.querySelectorAll('.entity[data-entity]'));
+    update();
+  }
+  function setCrumb(entity,field){
+    if(!cE) return;
+    cE.textContent=entity||'';
+    if(field){ cF.textContent=field; cSep.hidden=false; }
+    else { cF.textContent=''; cSep.hidden=true; }
+  }
+  var barH=parseInt(getComputedStyle(root).getPropertyValue('--bar-h'),10)||48;
+  function update(){
+    var line=barH+18, curF=null, curE=null;
+    for(var i=0;i<fields.length;i++){ if(fields[i].getBoundingClientRect().top<=line) curF=fields[i]; else break; }
+    for(var j=0;j<entities.length;j++){ if(entities[j].getBoundingClientRect().top<=line) curE=entities[j]; else break; }
+    if(curF){
+      var fEnt=curF.getAttribute('data-entity');
+      var eName=curE?curE.getAttribute('data-entity'):fEnt;
+      if(eName!==fEnt) setCrumb(eName,null);
+      else setCrumb(fEnt,curF.getAttribute('data-field'));
+    } else if(curE){ setCrumb(curE.getAttribute('data-entity'),null); }
+    else { setCrumb('',null); }
+  }
+  var ticking=false;
+  function onScroll(){ if(!ticking){ ticking=true; requestAnimationFrame(function(){ update(); ticking=false; }); } }
+  window.addEventListener('scroll',onScroll,{passive:true});
+  window.addEventListener('resize',onScroll,{passive:true});
+  rebindSpy();
+})();
+
+</script>
+</body>
+</html>
