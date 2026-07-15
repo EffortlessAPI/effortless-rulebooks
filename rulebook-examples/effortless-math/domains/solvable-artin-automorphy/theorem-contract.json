@@ -1,0 +1,35 @@
+{
+  "TheoremId": "solvable-artin-automorphy",
+  "Version": "0.1.0",
+  "Title": "Solvable Artin Automorphy",
+  "DomainId": "domain-solvable-artin-automorphy",
+  "Statement": "Solvable base change, automorphic induction, and converse theorem.",
+  "Scope": "Initial provider stub migrated from Fermat Witness Lab v21.",
+  "Hypotheses": [
+    "odd finite image",
+    "dihedral/tetrahedral/octahedral router",
+    "local factors"
+  ],
+  "Conclusions": [
+    "weight-one cuspidal automorphic representation"
+  ],
+  "ProofStatus": "IMPORTED",
+  "TrustBoundary": "The universal theorem remains external; finite compiler interfaces and consumer contracts are present.",
+  "ProviderFacts": [
+    "solvable_base_change_converse_available"
+  ],
+  "Dependencies": [],
+  "WitnessSchemas": [
+    "artin_projective_type_profiles_v19",
+    "automorphic_induction_state_machines_v19",
+    "artin_local_factor_certificates_v19"
+  ],
+  "Consumers": [
+    "fermats-last-theorem"
+  ],
+  "SourceIds": [
+    "src-solvable-automorphy-kernel-v21"
+  ],
+  "NextTarget": "Internalize the analytic Langlands-Tunnell kernel.",
+  "LegacyKernelId": "kernel-solvable-automorphy-v21"
+}

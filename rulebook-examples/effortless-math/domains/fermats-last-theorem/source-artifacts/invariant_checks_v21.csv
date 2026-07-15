@@ -1,0 +1,306 @@
+check_id,description,tier,pass_count,fail_count,universe_count,status,evidence,protects_loop
+inv-v13-hecke-compatibility,Every Hecke Frobenius stage reduces compatibly.,adic-certificate,8,0,8,PASS,Live rows from hecke_pseudocharacter_compatibility_v13.,loop-223
+inv-v13-stage-compatibility,Every adjacent representation stage reduces compatibly.,adic-certificate,6,0,6,PASS,Live rows from representation_stage_compatibility_v13.,loop-220
+inv-v14-module-compat,All module stages reduce compatibly.,adic-certificate,6,0,6,PASS,Live rows from module_stage_compatibility_v14.,loop-237
+inv-v14-ordinary-roots,All ordinary unit-root stages pass.,adic-certificate,12,0,12,PASS,Live rows from ordinary_unit_root_stages_v14.,loop-244
+inv-v15-compat,Stage compatibility passes.,adic-certificate,6,0,6,PASS,Rows from tate_module_compatibility_v15.,loop-268
+inv-v15-stages,Tate stages pass.,adic-certificate,8,0,8,PASS,Rows from tate_module_stages_v15.,loop-267
+inv-v17-cohomology,Every finite comparison stage passes.,adic-certificate,36,0,36,PASS,Live rows from betti_etale_stage_certificates_v17.,loop-313
+inv-v9-adic-stages,Every finite 7-adic stage is compatible with the previous stage and has the same simultaneous eigenvector.,adic-certificate,8,0,8,PASS,Live rows from adic_eigencharacter_stages_v9.,loop-137
+inv-v14-filtrations,All ordinary filtration certificates pass.,adic-local-model,2,0,2,PASS,Live rows from ordinary_filtration_certificates_v14.,loop-246
+inv-v11-counterfactuals,Every counterfactual is classified correctly.,adversarial-invariant,7,0,7,PASS,Live rows from tw_patching_counterfactuals_v11.,loop-178
+inv-v12-rt-counterfactuals,Every R→T counterfactual is classified correctly.,adversarial-invariant,4,0,4,PASS,Live rows from rt_surjection_counterfactuals_v12.,loop-208
+inv-v13-counterfactuals,Every pseudocharacter counterfactual is accepted or rejected correctly.,adversarial-invariant,4,0,4,PASS,Live rows from pseudocharacter_counterfactuals_v13.,loop-221
+inv-v14-local-counter,All local-global counterfactuals are classified correctly.,adversarial-invariant,4,0,4,PASS,Live rows from local_global_counterfactuals_v14.,loop-251
+inv-v14-module-counter,All module counterfactuals are classified correctly.,adversarial-invariant,5,0,5,PASS,Live rows from module_pseudocharacter_counterfactuals_v14.,loop-239
+inv-v15-counterfactuals,Counterfactuals pass.,adversarial-invariant,6,0,6,PASS,Rows from etale_rank_counterfactuals_v15.,loop-278
+inv-v16-counterfactuals,Every multiplicity counterfactual behaves as predicted.,adversarial-invariant,5,0,5,PASS,Live rows from multiplicity_two_counterfactuals_v16.,loop-299
+inv-v17-counterfactuals,Every batch counterfactual behaves as predicted.,adversarial-invariant,6,0,6,PASS,Live rows from five_edge_counterfactuals_v17.,loop-349
+inv-v18-counterfactuals,Every second-five counterfactual behaves as predicted.,adversarial-invariant,6,0,6,PASS,Live rows from second_five_edge_counterfactuals_v18.,loop-400
+inv-v19-counterfactuals,Every v19 counterfactual behaves as predicted.,adversarial-invariant,6,0,6,PASS,Live rows from five_edge_counterfactuals_v19.,loop-451
+inv-v20-counterfactuals,Every five-import counterfactual behaves as predicted.,adversarial-invariant,6,0,6,PASS,Live rows from five_import_counterfactuals_v20.,loop-499
+inv-v21-counterfactuals,Every final-nine counterfactual behaves as predicted.,adversarial-invariant,8,0,8,PASS,Live rows from final_nine_counterfactuals_v21.,loop-570
+inv-v6-counterfactuals,All counterfactual component-obstruction tests behave as predicted.,adversarial-invariant,6,0,6,PASS,Live rows from counterfactual_component_tests_v6.,loop-109
+inv-v8-counterfactuals,Every multiplicity counterfactual changes the packet dimension as predicted.,adversarial-invariant,3,0,3,PASS,Live rows from multiplicity_counterfactuals_v8.,loop-130
+inv-v9-counterfactuals,Every lifting counterfactual is classified as designed.,adversarial-invariant,5,0,5,PASS,Live rows from lifting_counterfactuals_v9.,loop-140
+inv-v7-eisenstein-defect-p5,The X0(33)→X0(11)^2 mod-5 map has the predicted one-dimensional defect and is rejected by the non-Eisenstein gate.,adversarial-phase-diagram,1,0,1,PASS,Cokernel dimension 1; non-Eisenstein gate 0.,loop-118
+inv-c4-c6-delta,c4^3-c6^2=1728 Delta for the Frey model.,algebraic,6,0,6,PASS,One symbolic witness plus all numerical samples pass.,loop-08
+inv-symbolic-discriminant,Symbolic Frey cubic discriminant factorization holds.,algebraic,1,0,1,PASS,SymPy residual is exactly zero.,loop-08
+inv-visible-2-torsion,All three y=0 root points lie on each sampled curve.,algebraic,15,0,15,PASS,15 point substitutions checked.,loop-09
+inv-2adic-delta-scaling,The change divides Delta by 2^12 and yields Delta_min=2^-8(ABC)^2.,algebraic-local,6,0,6,PASS,Exact invariant recomputation on every normalized sample.,loop-23
+inv-2adic-integral-change,The normalized change of variables gives integral coefficients.,algebraic-local,6,0,6,PASS,Checked on every normalized sample and symbolically.,loop-23
+inv-v12-rt-surjection,Every R→T surjection certificate passes without its parent import.,algebraic-proof-rule,2,0,2,PASS,Live rows from rt_surjection_certificates_v12.,loop-206
+inv-v12-universal-property,Every universal-property certificate passes.,algebraic-proof-rule,2,0,2,PASS,Live rows from deformation_universal_property_certificates_v12.,loop-203
+inv-v14-module-pseudo,All module pseudocharacter certificates pass.,algebraic-proof-rule,8,0,8,PASS,Live rows from module_pseudocharacter_certificates_v14.,loop-236
+inv-v15-nakayama,Nakayama certificates pass.,algebraic-proof-rule,4,0,4,PASS,Rows from nakayama_freeness_certificates_v15.,loop-266
+inv-v15-sign,Sign rank-one certificates pass.,algebraic-proof-rule,2,0,2,PASS,Rows from sign_rank_one_certificates_v15.,loop-274
+inv-v16-dimension-models,Every connected/étale dimension model has total dimension twice the connected dimension.,algebraic-proof-rule,4,0,4,PASS,Live rows from connected_etale_dimension_models_v16.,loop-291
+inv-v9-rank-one-lift,The rank-one residual eigencharacter and vector lift directly to characteristic zero.,algebraic-proof-rule,1,0,1,PASS,Live rows from rank_one_lift_certificates_v9.,loop-138
+inv-residual-modularity-branches,Both mod-3 branches reach a terminal residual-modularity fact.,assembled-with-imports,3,0,3,PASS,Imported and witnessed steps remain individually typed.,loop-53
+inv-v21-automorphy,The solvable automorphy finite router passes.,automorphy-contract,1,0,1,PASS,Live rows from automorphy_kernel_contracts_v21.,loop-571
+inv-v6-certificate-revision,The 55→11 mod-7 certificate references the correct special fiber and no longer imports the component-group bridge.,bitemporal-correction,1,0,1,PASS,lowering_certificate_revisions_v6 preserves both prior and revised states.,loop-110
+inv-v7-certificate-revision,The 55→11 mod-7 lowering certificate no longer imports Ihara.,bitemporal-correction,1,0,1,PASS,lowering_certificate_revisions_v7 retains the previous and current import lists.,loop-120
+inv-v8-certificate-revision,The concrete 55→11 lowering certificate no longer imports source-level multiplicity one.,bitemporal-correction,1,0,1,PASS,lowering_certificate_revisions_v8 preserves both import lists.,loop-131
+inv-v9-certificate-revision,The concrete lowering certificate has no remaining direct imported edges.,bitemporal-edge-closure,1,0,1,PASS,lowering_certificate_revisions_v9 preserves the prior conditional state and the closed current state.,loop-141
+inv-bounded-search-gt2,"No positive solutions appear in the bounded searches for n=3,4,5,7.",bounded-computation,4,0,4,PASS,"This is finite evidence only, not a proof.",loop-05
+inv-bounded-search-positive-control,The n=2 bounded search finds Pythagorean triples.,bounded-computation,1,0,1,PASS,Found 165 triples in the search box.,loop-05
+inv-v11-limits,"All patched-limit certificates prove isomorphism, regular descent, and freeness.",commutative-algebra,2,0,2,PASS,Live rows from tw_limit_certificates_v11.,loop-176
+inv-v20-faithful-module,Every faithful-free-module certificate turns the R→T surjection into an isomorphism.,commutative-algebra,2,0,2,PASS,Live rows from faithful_module_isomorphism_certificates_v20.,loop-495
+inv-v9-local-algebra,The localized rank-one Hecke algebra is finite free with scalar action and the expected residue character.,commutative-algebra,1,0,1,PASS,Live rows from localized_hecke_algebras_v9.,loop-136
+inv-v21-comparison,The shared comparison compiler passes.,comparison-contract,1,0,1,PASS,Live rows from comparison_kernel_certificates_v21.,loop-554
+inv-level2-space-zero,The genus computation gives dim S2(Gamma0(2))=0.,computational-theorem,1,0,1,PASS,"mu=3, cusps=2, e2=1, e3=0, genus=0.",loop-19
+inv-ab-delta-valuations-mod-p,"For odd q dividing a or b, v_q(Delta) is divisible by p.",conditional-algebraic,6,0,6,PASS,Observed directly on numerical samples.,loop-13
+inv-v16-residual-profiles,Every residual-prime profile is conditionally certified or correctly rejected.,conditional-certificate,4,0,4,PASS,Live rows from residual_prime_multiplicity_profiles_v16.,loop-297
+inv-v17-constituents,Every constituent certificate derives the target power.,conditional-certificate,3,0,3,PASS,Live rows from constituent_control_certificates_v17.,loop-307
+inv-v18-small-primes,"All p=5,7,11 Frey profiles derive irreducibility conditionally.",conditional-certificate,3,0,3,PASS,Live rows from frey_small_prime_profiles_v18.,loop-367
+inv-v19-frey-local,Both Frey local profiles derive the contradiction without the old parent import.,conditional-certificate,2,0,2,PASS,Live rows from frey_local_specialization_profiles_v19.,loop-419
+inv-v5-lowering-certificates,Certificates either reject invalid Eisenstein inputs or return a conditional lower-level form.,conditional-certificate,3,0,3,PASS,Mod-5 false positive rejected; mod-7/mod-13 calibration routes certified conditionally.,loop-101
+inv-v12-branch-certificates,Every branch certificate is conditional rather than an ordinary branch fact.,conditional-derivation,2,0,2,PASS,Live rows from conditional_branch_certificates_v12.,loop-183
+inv-v16-branches,"Both multiplicity branch certificates are conditional implications, not realized branch facts.",conditional-derivation,2,0,2,PASS,Live rows from multiplicity_branch_certificates_v16.,loop-298
+inv-v17-finite-flat,Every Tate run matches valuation divisibility.,conditional-inference,45,0,45,PASS,Live rows from finite_flat_compiler_runs_v17.,loop-326
+inv-v4-one-step,One-step lowering succeeds only when all four witness classes are present.,conditional-inference,3,0,3,PASS,Positive and blocked counterfactual runs.,loop-90
+inv-eta-criterion-arithmetic,The eta quotient passes the level/weight/congruence/cusp-order arithmetic.,conditional-on-eta-quotient-theorem,1,0,1,PASS,The criterion arithmetic is internalized; the theorem is sourced.,loop-34
+inv-level-lowering-terminal-two,Every formal level-lowering cascade terminates at level 2.,conditional-on-ribet,4,0,4,PASS,Prime-removal mechanics are executed; Ribet's theorem is imported.,loop-38
+inv-sturm-bound-level11,The weight-2 level-11 Sturm bound is 2.,conditional-on-sturm,1,0,1,PASS,Computed from floor(k*[SL2:Gamma0(N)]/12).,loop-37
+inv-v19-automorphic-machines,Every automorphic state machine terminates in a conditional weight-one form.,conditional-state-machine,3,0,3,PASS,Live rows from automorphic_induction_state_machines_v19.,loop-439
+v3-minlevel,All level paths terminate at 2,conditional-state-machine,4,0,4,PASS,State machine.,loop-73
+inv-formal-odd-finite,Every formal odd bad prime has p-divisible minimal-discriminant valuation and is finite.,conditional-with-imported-local-criterion,16,0,16,PASS,Valuations are derived; finiteness uses the Tate-curve criterion.,loop-27
+inv-formal-two-nonfinite,Prime 2 has v2(Delta_min)≡-8 mod p and remains nonfinite.,conditional-with-imported-local-criterion,4,0,4,PASS,The nonfinite anchor required for repeated level lowering.,loop-27
+inv-v21-schlessinger,Every Schlessinger compiler case passes.,deformation-contract,2,0,2,PASS,Live rows from schlessinger_compiler_cases_v21.,loop-530
+inv-v12-anti-cohomology,Every anti-invariant cohomology certificate is free.,derived-algebra,2,0,2,PASS,Live rows from anti_invariant_cohomology_certificates_v12.,loop-191
+inv-v15-rank2,Rank-two parent certificates pass without parent import.,derived-algebra,2,0,2,PASS,Rows from rank_two_etale_module_certificates_v15.,loop-271
+inv-away-from-p-unramified,"Away from p, Tate p-torsion is unramified exactly when p divides v_l(q).",derived-local-theorem,12,0,12,PASS,Direct Kummer ramification calculation.,loop-45
+inv-v21-duality,Every global-duality compiler case passes.,duality-contract,2,0,2,PASS,Live rows from global_duality_compiler_cases_v21.,loop-538
+inv-first-second-route,Every first/second-case route has an explicit local status at p.,epistemic-routing,6,0,6,PASS,Only the second case crosses the finite-flat import.,loop-46
+inv-rational-5-torsion-control,The conductor-11 control point has exact order 5.,exact-group-law,5,0,5,PASS,Multiples are computed with the general Weierstrass group law.,loop-48
+inv-tate-torsion-kummer,"Parameter-root ramification index is p/gcd(p,v(q)).",exact-local-arithmetic,29,0,29,PASS,All generated torsion-coordinate profiles.,loop-43
+inv-x5-genus-zero,The full-level modular curve X(5) has genus zero.,exact-modular-curve-arithmetic,1,0,1,PASS,Index/cusp genus formula.,loop-55
+inv-tate-series-leading,Generated Delta and j coefficients match canonical leading terms.,exact-series,41,0,41,PASS,"Product/Eisenstein-series generation, not seeded coefficient lists.",loop-42
+inv-v7-rational-reduction,Every continued-fraction symbol reduction has the expected cusp boundary.,exact-symbolic-reduction,4,0,4,PASS,Live rows from rational_symbol_reduction_checks_v7.,loop-116
+inv-v8-hecke-operators,"Every computed Hecke operator kills Manin relations, preserves compact homology, and commutes with the packet generators.",exact-symbolic-reduction,11,0,11,PASS,Live rows from hecke_operator_certificates_v8.,loop-123
+inv-v20-g12-generators,Every explicit G12 generator is an integral reflection with the correct reduction.,explicit-characteristic-zero-lift,3,0,3,PASS,Live rows from g12_lift_generators_v20.,loop-454
+inv-deformation-ring-toys,All declared tangent/length/CI toy calculations are internally consistent.,finite-algebra,4,0,4,PASS,Finite local algebras and one positive-dimensional control.,loop-58
+inv-rt-map-diagnostics,Toy R-to-T diagnostics classify isomorphism exactly by the declared finite criteria.,finite-algebra,4,0,4,PASS,The strict quotient with matching tangent dimension is caught by length.,loop-59
+inv-v10-patching-systems,Every cached finite patching transition passes.,finite-algebra,4,0,4,PASS,Existing patching-transition certificates.,loop-158
+inv-v11-stages,All explicit stages satisfy the reduced contract.,finite-algebra,7,0,7,PASS,Live rows from tw_stage_algebras_v11.,loop-164
+inv-v11-truncations,All finite transitions are compatible and surjective.,finite-algebra,5,0,5,PASS,Live rows from tw_truncation_certificates_v11.,loop-168
+inv-v12-diamond,Every diamond/augmentation certificate passes.,finite-algebra,7,0,7,PASS,Live rows from diamond_augmentation_certificates_v12.,loop-196
+inv-v12-n-compatibility,Every adjacent n-structure compatibility square commutes.,finite-algebra,5,0,5,PASS,Live rows from n_structure_compatibility_v12.,loop-200
+inv-v13-ch-algebras,Every Cayley–Hamilton quotient multiplication is associative.,finite-algebra,8,0,8,PASS,Live rows from cayley_hamilton_algebras_v13.,loop-217
+inv-v13-matrix-units,Every stage satisfies all matrix-unit relations.,finite-algebra,8,0,8,PASS,Live rows from matrix_unit_certificates_v13.,loop-218
+inv-v8-stabilization,The U5 stabilization polynomial and direct-sum decomposition pass.,finite-algebra,1,0,1,PASS,Live rows from stabilization_polynomial_certificates_v8.,loop-127
+v3-patch,patch,finite-algebra,12,0,12,PASS,patching_transition_checks,loop-79
+v3-rt,R=T controls,finite-algebra,1,0,1,PASS,Adversarial controls.,loop-80
+inv-v19-artin-types,Every projective Artin type is solvable and correctly routed.,finite-artin-router,3,0,3,PASS,Live rows from artin_projective_type_profiles_v19.,loop-434
+inv-v18-brauer-cases,Every Brauer lifting calibration is accepted or rejected correctly.,finite-character-theory,3,0,3,PASS,Live rows from brauer_lift_calibration_cases_v18.,loop-355
+inv-v8-sturm,Every coefficient through the level-55 Sturm bound matches the selected stabilized eigenpacket.,finite-coefficient-certificate,12,0,12,PASS,Live rows from sturm_eigenpacket_checks_v8.,loop-129
+inv-v9-reduction,Every target packet reduction check agrees with the explicit integral eigenform.,finite-coefficient-certificate,7,0,7,PASS,Live rows from target_packet_reduction_checks_v9.,loop-139
+inv-v12-local-group-rings,Every local group-ring certificate passes its unit and nilpotence checks.,finite-commutative-algebra,3,0,3,PASS,Live rows from group_ring_locality_certificates_v12.,loop-186
+inv-v16-qexp-models,Every q-expansion duality model has a one-dimensional maximal-ideal torsion line.,finite-commutative-algebra,8,0,8,PASS,Live rows from qexp_duality_models_v16.,loop-287
+inv-v4-flat-controls,All chain-ring flatness controls are classified consistently.,finite-commutative-algebra,45,0,45,PASS,Live rows from chain_ring_flatness_controls.,loop-84
+inv-v15-comparison,Finite comparison calibrations pass.,finite-comparison,2,0,2,PASS,Rows from betti_etale_comparison_certificates_v15.,loop-270
+inv-curve-form-trace-match,The conductor-11 curve trace equals the eta coefficient at every tested good prime.,finite-computation,45,0,45,PASS,Independent point counting and product expansion for q<200.,loop-35
+inv-frobenius-hasse,Every computed Frobenius trace satisfies the Hasse bound.,finite-computation,110,0,110,PASS,Direct point counts over finite fields.,loop-30
+inv-frobenius-irred-normalized,Every tested normalized curve/primes pair has a nonsquare-Frobenius certificate.,finite-computation,60,0,60,PASS,Concrete curves only; the general Frey theorem remains sourced.,loop-48
+inv-frobenius-reducible-control,The rational-5-torsion control produces no false mod-5 irreducibility certificate.,finite-computation,1,0,1,PASS,Positive reducibility control.,loop-48
+inv-hecke-relations-level11,The generated eta coefficients obey all tested Hecke recurrences.,finite-computation,224,0,224,PASS,"Prime-square, coprime multiplicativity, and bad-prime powers.",loop-31
+inv-residual-congruence,"Curve and form traces agree modulo p=5,7,13 at every tested Frobenius prime.",finite-computation,132,0,132,PASS,Concrete residual-representation coefficient witness.,loop-36
+inv-small-level-phase-boundary,The first positive dim S2(Gamma0(N)) for N>=1 is N=11.,finite-computation,1,0,1,PASS,Genus formula evaluated for levels 1 through 100.,loop-39
+inv-taylor-wiles-primes,Every generated auxiliary prime satisfies q=1 mod p^n and distinct residual eigenvalues.,finite-computation,32,0,32,PASS,Actual prime search and elliptic-curve point counts.,loop-60
+inv-v5-maximal-ideal-gate,Maximal-ideal profiles classify the mod-5 control as Eisenstein and mod-7/mod-13 as non-Eisenstein.,finite-computation,3,0,3,PASS,Live rows from maximal_ideal_profiles.,loop-99
+v3-hecke,hecke,finite-computation,81,0,81,PASS,hecke_level_conditions,loop-70
+inv-v15-es,Finite Eichler–Shimura relations pass.,finite-correspondence,32,0,32,PASS,Rows from eichler_shimura_stage_certificates_v15.,loop-275
+inv-v19-cheb-counts,Every prime-count stage sees all classes and matches the expected finite evidence threshold.,finite-density-evidence,4,0,4,PASS,Live rows from prime_count_density_stages_v19.,loop-409
+inv-v7-cusp-eisenstein,Every boundary double-coset check has r+1 representatives and Eisenstein eigenvalue r+1.,finite-double-coset,8,0,8,PASS,Live rows from cusp_eisenstein_checks_v7.,loop-119
+inv-normalization-mod32,Every qualifying primitive residue class normalizes to b even and a≡-1 mod4.,finite-exhaustion,3072,0,3072,PASS,"Exhaustive modulo-32 enumeration for p=5,7,11,13.",loop-22
+inv-v11-ring-laws,All ring-law certificates pass.,finite-exhaustion,7,0,7,PASS,Live rows from tw_stage_ring_checks_v11.,loop-165
+inv-v4-cocycles,All cyclic cocycle tables satisfy the 2-cocycle identity.,finite-exhaustion,23,0,23,PASS,Live rows from cyclic_extension_cocycles.,loop-82
+v3-hopf,hopf,finite-exhaustion,990,0,990,PASS,hopf_structure_checks,loop-68
+inv-v6-base-supersingular,The characteristic-5 curve y^2=x^3+1 has trace zero and is the unique supersingular isomorphism class.,finite-field-exhaustion,1,0,1,PASS,Direct point count #6; trace=0; supersingular class-count formula gives 1.,loop-102
+inv-v17-s3,Every cubic factorization has a valid S3 class.,finite-field-factorization,9,0,9,PASS,Live rows from s3_splitting_prime_certificates_v17.,loop-303
+inv-v20-kummer-schemes,Every explicit Kummer middle group scheme is finite flat of rank p^2.,finite-flat-group-scheme,9,0,9,PASS,Live rows from kummer_group_scheme_certificates_v20.,loop-475
+inv-v19-cheb-classes,Every finite Galois class profile is complete and represented.,finite-galois-classes,3,0,3,PASS,Live rows from finite_galois_class_profiles_v19.,loop-404
+inv-v4-exactness,Every finite extension model has the expected kernel and quotient sizes.,finite-group,23,0,23,PASS,Live rows from extension_exactness_checks.,loop-83
+inv-v12-free-cocycles,Every free-group cocycle certificate satisfies the cocycle identity.,finite-group-cohomology,2,0,2,PASS,Live rows from free_group_cocycle_certificates_v12.,loop-187
+inv-v12-shapiro,Every degree-one Shapiro certificate has matching dimensions.,finite-group-cohomology,3,0,3,PASS,Live rows from shapiro_degree1_certificates_v12.,loop-190
+inv-pgl2-f3-solvable,"PGL2(F3) has order 24 and derived series 24,12,4,1.",finite-group-computation,4,0,4,PASS,"Computed from the projective action, not stored as an assumption.",loop-51
+inv-v10-gl2-count,GL2(F3) has 48 elements and PGL2(F3) has 24 projective classes.,finite-group-exhaustion,1,0,1,PASS,Complete matrix enumeration.,loop-144
+inv-v13-groups,Every finite group model has a valid multiplication table.,finite-group-exhaustion,1,0,1,PASS,Live rows from finite_group_models_v13.,loop-214
+inv-v18-transvections,Every elementary-transvection pair generates the full SL2 group.,finite-group-exhaustion,9,0,9,PASS,Live rows from transvection_generation_certificates_v18.,loop-373
+inv-v20-g12-group,The characteristic-zero matrices generate a group of order 48.,finite-group-exhaustion,1,0,1,PASS,Live rows from g12_lift_group_certificates_v20.,loop-456
+inv-v10-subgroup-solvability,Every subgroup of PGL2(F3) is solvable.,finite-group-proof,30,0,30,PASS,All 30 subgroups and their derived series.,loop-145
+inv-v18-large-images,Every large-prime profile derives GL2.,finite-group-proof,9,0,9,PASS,Live rows from large_image_certificates_v18.,loop-376
+inv-v20-kummer-laws,Every Kummer component law is associative and has inverses.,finite-group-scheme-law,3,0,3,PASS,Live rows from kummer_component_law_checks_v20.,loop-476
+inv-v16-qexp-packets,Every q-expansion packet certificate is correctly certified or rejected.,finite-hecke-module,4,0,4,PASS,Live rows from qexp_eigenline_certificates_v16.,loop-288
+inv-v15-fibers,Concrete fibers are certified or correctly rejected.,finite-homology,3,0,3,PASS,Rows from multiplicity_fiber_certificates_v15.,loop-265
+inv-v7-map-compatibility,Every computed degeneracy map kills all source relations and preserves compact homology.,finite-homology,22,0,22,PASS,Live rows from degeneracy_map_certificates_v7.,loop-116
+inv-v7-module-dimensions,Every Manin module has cuspidal dimension 2g(X0(N)).,finite-homology,33,0,33,PASS,Live rows from manin_module_certificates_v7.,loop-115
+inv-v18-isogeny-degrees,Every cyclic 2p-isogeny profile is correctly routed.,finite-isogeny-ledger,14,0,14,PASS,Live rows from isogeny_degree_certificates_v18.,loop-363
+inv-v19-isogeny-ledger,Every cyclic-isogeny degree ledger row is internally consistent.,finite-isogeny-ledger,34,0,34,PASS,Live rows from cyclic_isogeny_degree_ledger_v19.,loop-444
+inv-v12-involution,Every involution splits into complementary plus/minus summands.,finite-linear-algebra,2,0,2,PASS,Live rows from involution_split_certificates_v12.,loop-188
+inv-v13-trace-bases,Every stage has a unit rank-four trace-pairing basis.,finite-linear-algebra,8,0,8,PASS,Live rows from trace_basis_certificates_v13.,loop-216
+inv-v14-basis,"All basis changes preserve representation laws, traces, and determinants.",finite-linear-algebra,24,0,24,PASS,Live rows from basis_change_invariance_v14.,loop-235
+inv-v14-projectors,All ordinary projectors are rank-one idempotents with correct eigenspaces.,finite-linear-algebra,12,0,12,PASS,Live rows from ordinary_projector_certificates_v14.,loop-245
+inv-v15-pairing,Pairings pass.,finite-linear-algebra,8,0,8,PASS,Rows from perfect_pairing_certificates_v15.,loop-269
+inv-v15-projectors,Projectors pass.,finite-linear-algebra,8,0,8,PASS,Rows from sign_projector_certificates_v15.,loop-273
+inv-v18-weight-packets,Every weight-two packet control behaves as designed.,finite-linear-algebra,2,0,2,PASS,Live rows from weight2_eigenpacket_projection_v18.,loop-385
+inv-v4-eigenlift,All eigenclass lifting controls behave as designed.,finite-linear-algebra,3,0,3,PASS,Live rows from eigenclass_lift_controls.,loop-89
+inv-v4-old-new,All old/new intersection controls match their expected dimensions.,finite-linear-algebra,3,0,3,PASS,Live rows from old_new_intersection_checks.,loop-88
+inv-v4-specialization,All finite degeneracy-specialization controls hit their expected dimensions.,finite-linear-algebra,3,0,3,PASS,Live rows from degeneracy_specialization_checks.,loop-87
+inv-v5-specialization-adapter,All finite specialization adapters satisfy their shape/pairing checks.,finite-linear-algebra,3,0,3,PASS,Live rows from degeneracy_specialization_adapters.,loop-98
+inv-v7-relations,All Manin relation quotients have unique pivots and valid quotient dimensions.,finite-linear-algebra,33,0,33,PASS,Live rows from manin_relation_certificates_v7.,loop-114
+inv-v8-packets,"Every packet has the expected full, plus, and minus dimensions.",finite-linear-algebra,4,0,4,PASS,Live rows from hecke_packet_certificates_v8.,loop-128
+inv-v8-sign-split,Every conjugation certificate squares to one and splits homology evenly.,finite-linear-algebra,2,0,2,PASS,Live rows from conjugation_split_certificates_v8.,loop-125
+v3-deg,deg,finite-linear-algebra,80,0,80,PASS,degeneracy_operator_cases,loop-69
+v3-dims,dims,finite-linear-algebra,3,0,3,PASS,selmer_dimension_checks,loop-76
+v3-kill,kill,finite-linear-algebra,4,0,4,PASS,dual_selmer_kill_runs,loop-77
+v3-selmer,selmer,finite-linear-algebra,3,0,3,PASS,selmer_complexes,loop-75
+inv-v14-steinberg,All Steinberg Weil–Deligne certificates pass.,finite-local-algebra,8,0,8,PASS,Live rows from steinberg_weil_deligne_certificates_v14.,loop-249
+inv-v5-hensel-lifts,All simple-root eigenvalue lifts pass at every precision.,finite-local-algebra,16,0,16,PASS,Live rows from eigenpacket_hensel_lifts.,loop-101
+inv-v10-artin-factors,Every concrete curve/form local trace matches modulo 3.,finite-local-arithmetic,44,0,44,PASS,curve_form_matches over the stored Frobenius universe.,loop-147
+inv-v14-good-local,All good-prime local certificates pass.,finite-local-arithmetic,80,0,80,PASS,Live rows from good_prime_local_certificates_v14.,loop-243
+inv-v19-local-factors,Every Artin/modular local factor calibration matches.,finite-local-factors,44,0,44,PASS,Live rows from artin_local_factor_certificates_v19.,loop-438
+inv-v14-cohom-stages,All finite Hecke-cohomology action stages pass.,finite-module,8,0,8,PASS,Live rows from cohomology_action_stages_v14.,loop-234
+inv-v6-ss-orbits,Supersingular Γ0(11) orbit enumeration yields four fixed-point-free orbits.,finite-moduli-enumeration,1,0,1,PASS,Live rows from supersingular_level_actions_v6.,loop-102
+inv-v17-monodromy,Every monodromy comparison stage passes.,finite-monodromy,4,0,4,PASS,Live rows from monodromy_comparison_certificates_v17.,loop-336
+inv-v10-tw-summary,Every witnessed Taylor–Wiles prime satisfies both finite conditions.,finite-prime-search,4,0,4,PASS,Aggregated Taylor–Wiles-prime rows.,loop-157
+inv-v20-tw-runs,Every Taylor–Wiles finite calibration kills its dual Selmer coordinates.,finite-prime-selection,8,0,8,PASS,Live rows from tw_selection_runs_v20.,loop-490
+inv-v16-good-certificates,Every good-reduction certificate has the expected conclusion.,finite-proof-certificate,4,0,4,PASS,Live rows from good_reduction_multiplicity_certificates_v16.,loop-294
+inv-v7-ihara-55to11-p7,The exact homology map X0(55)→X0(11)^2 is surjective over F7.,finite-proof-certificate,1,0,1,PASS,Rank 4 against target dimension 4; matrix hash 0f6b3980190e9658828c32403c17bf1447dcb53e754487ae7aca93564b9d8e3a.,loop-117
+inv-v8-homological-multiplicity-one,The level-55 mod-7 maximal-ideal packet has full dimension two and one dimension in each sign.,finite-proof-certificate,1,0,1,PASS,homological_multiplicity_certificates_v8 and the independent verifier.,loop-128
+inv-v8-level11-validation,All level-11 Hecke operators act by the stored eta-product coefficients.,finite-proof-certificate,4,0,4,PASS,Live rows from hecke_validation_checks_v8.,loop-124
+inv-v9-explicit-lift,The concrete characteristic-zero lift certificate closes the lifting edge.,finite-proof-certificate,1,0,1,PASS,Live rows from explicit_lift_certificates_v9.,loop-141
+inv-v10-finite-rt,All finite curve/form trace R→T stages match.,finite-pseudocharacter,10,0,10,PASS,"p=3 and p=5, five precisions each.",loop-159
+inv-v13-hecke-frobenius,Every stored Hecke Frobenius stage matches traces and cyclotomic determinants.,finite-pseudocharacter,10,0,10,PASS,Live rows from hecke_frobenius_pseudocharacter_stages_v13.,loop-222
+inv-v13-pseudocharacters,Every pseudocharacter stage satisfies all trace and determinant identities.,finite-pseudocharacter,8,0,8,PASS,Live rows from pseudocharacter_stages_v13.,loop-215
+inv-v20-tw-contracts,Every Taylor–Wiles finite quotient contract has full evaluation rank and split-distinct residual class.,finite-quotient-selection,4,0,4,PASS,Live rows from tw_selection_contracts_v20.,loop-486
+inv-v18-x015-points,All eight rational points are enumerated and classified.,finite-rational-points,8,0,8,PASS,Live rows from x015_rational_points_v18.,loop-397
+inv-v18-image-profiles,"Every mod-3 finite-image profile is solvable, irreducible, and oddness-compatible.",finite-representation-profile,3,0,3,PASS,Live rows from mod3_image_brauer_profiles_v18.,loop-354
+inv-v16-character-models,Every finite character model decomposes with the expected multiplicities.,finite-representation-theory,6,0,6,PASS,Live rows from finite_character_models_v16.,loop-285
+inv-v16-constituents,Every finite constituent certificate agrees with its complete character decomposition.,finite-representation-theory,6,0,6,PASS,Live rows from constituent_decomposition_certificates_v16.,loop-286
+inv-v17-bn,Every character compiler case decomposes correctly.,finite-representation-theory,5,0,5,PASS,Live rows from brauer_nesbitt_compiler_cases_v17.,loop-305
+inv-v18-x015-semistability,All noncuspidal X0(15) points are nonsemistable.,finite-semistability-filter,1,0,1,PASS,Live rows from x015_semistability_profiles_v18.,loop-399
+inv-v19-crt,Every CRT specialization satisfies all local constraints and avoids all listed bad polynomials.,finite-specialization,2,0,2,PASS,Live rows from crt_specialization_certificates_v19.,loop-428
+inv-hilbert-selection-toy,The quartic/CRT toy simultaneously satisfies global irreducibility and two local conditions.,finite-toy,1,0,1,PASS,"Models the shape, not the theorem’s infinite existence statement.",loop-56
+inv-v19-formal-tangent,Every formal-immersion tangent certificate has the expected rank.,formal-geometry-schema,4,0,4,PASS,Live rows from formal_immersion_tangent_certificates_v19.,loop-447
+inv-v21-formal-contract,Mazur formal-immersion finite contract passes.,foundation-contract,1,0,1,PASS,Live rows from formal_immersion_contracts_v21.,loop-522
+inv-v21-prime-contract,Prime-distribution finite compiler passes.,foundation-contract,1,0,1,PASS,Live rows from prime_distribution_contracts_v21.,loop-508
+inv-v21-specialization-contract,Hilbert finite specialization compiler passes.,foundation-contract,1,0,1,PASS,Live rows from specialization_contracts_v21.,loop-515
+inv-v21-proof-trace,All nine parent imports are derived from seven explicit foundation kernels and the contradiction is preserved.,foundation-frontier-rewrite,1,0,1,PASS,"{""active_after"": 7, ""active_before"": 9, ""trace"": {""analytic_chebotarev_density_available"": ""derived-from-prime-distribution-kernel"", ""deformation_problem_represented"": ""derived-from-deformation-duality-kernel"", ""hilbert_irreducibility_weak_approximation_available"": ""derived-from-hilbert-specialization-kernel"", ""level_2_weight_2_newform_exists"": ""derived-from-universal-level-lowering-kernel"", ""mazur_formal_immersion_eisenstein_kernel_available"": ""derived-from-mazur-formal-kernel"", ""modular_curve_geometric_comparison_available"": ""derived-from-modular-curve-comparison-kernel"", ""poitou_tate_balance_available"": ""derived-from-deformation-duality-kernel"", ""semistable_nearby_cycles_comparison_available"": ""derived-from-modular-curve-comparison-kernel"", ""solvable_base_change_converse_available"": ""derived-from-solvable-automorphy-kernel""}}",loop-571
+status-v21-kernel-1,Analytic prime distribution,foundation-import,0,0,0,IMPORTED,Chebotarev density for finite Galois quotients. Internalize the analytic prime-ideal theorem and Artin-L-function argument.,loop-571
+status-v21-kernel-2,Hilbert specialization,foundation-import,0,0,0,IMPORTED,Hilbert irreducibility with simultaneous weak approximation. Internalize universal thin-set avoidance.,loop-571
+status-v21-kernel-3,Mazur modular-curve arithmetic,foundation-import,0,0,0,IMPORTED,Formal immersion at the cusp plus finiteness of the Eisenstein quotient. Internalize the Eisenstein quotient and formal-immersion theorem.,loop-571
+status-v21-kernel-4,Global deformation and duality,foundation-import,0,0,0,IMPORTED,"Schlessinger/Mazur representability and Poitou-Tate global-local duality. Internalize actual Galois cochain realization, representability, and duality.",loop-571
+status-v21-kernel-5,Modular-curve cohomological comparison,foundation-import,0,0,0,IMPORTED,"Betti-etale, de Rham/Dieudonne, Eichler-Shimura, and nearby-cycles comparison. Internalize functorial comparison for the actual modular curve and Jacobian.",loop-571
+status-v21-kernel-6,Universal Ribet level lowering,foundation-import,0,0,0,IMPORTED,Uniform one-prime descent for every admissible hypothetical FLT level. Internalize the universal quantifier over all admissible levels.,loop-571
+status-v21-kernel-7,Solvable Artin automorphy,foundation-import,0,0,0,IMPORTED,"Solvable base change, automorphic induction, and converse theorem. Internalize the analytic Langlands-Tunnell kernel.",loop-571
+inv-v12-generator-coverage,Every Hecke generator-coverage certificate passes.,generator-coverage,2,0,2,PASS,Live rows from hecke_generator_coverage_v12.,loop-204
+inv-contradiction-derived,Forward chaining derives the modern contradiction from explicit facts and rules.,graph-derivation,1,0,1,PASS,"The final fact is derived by rule-09, not seeded.",loop-20
+inv-v1-contradiction-derived,The v1 graph derives contradiction with semistability internalized.,graph-derivation,1,0,1,PASS,"The contradiction is derived, not seeded.",loop-40
+inv-v10-contradiction,The revised child-DAG trace still derives one contradiction.,graph-derivation,1,0,1,PASS,The revised trace has 38 steps.,loop-161
+inv-v2-contradiction-derived,The 61-loop graph derives the FLT contradiction.,graph-derivation,1,0,1,PASS,"Final contradiction is forward-chained, not seeded.",loop-61
+inv-v5-contradiction,The refined 27-step graph still derives contradiction.,graph-derivation,1,0,1,PASS,"Contradiction is derived, not seeded.",loop-101
+v3-contr,Contradiction derived,graph-derivation,1,0,1,PASS,Not seeded.,loop-81
+inv-v12-proof-trace,The repaired trace derives all three parents internally and preserves the contradiction.,graph-rewrite,1,0,1,PASS,"{""semistable_residual_modularity_all_cases"": ""proof-by-cases"", ""tw_arithmetic_n_structures_compatible"": ""internal-n-structure-assembler"", ""tw_auxiliary_level_stage_freeness"": ""derived-rank-transfer"", ""universal_R_to_T_surjection"": ""derived-surjection""}",loop-210
+inv-v17-proof-trace,All five parents are derived and the contradiction is preserved.,graph-rewrite,1,0,1,PASS,"{""bad_prime_cohomology_comparison_available"": ""derived-bad-prime-comparison"", ""integral_modular_curve_cohomology_package_available"": ""derived-integral-cohomology-package"", ""multiplicity_constituent_control_available"": ""derived-constituent-control"", ""multiplicity_residual_case_implication_certified"": ""derived-residual-prime-multiplicity"", ""rho_finite_at_residual_p_if_bad"": ""derived-finite-flat-at-p""}",loop-350
+inv-v18-proof-trace,All second-five parent facts are derived and the contradiction is preserved.,graph-rewrite,1,0,1,PASS,"{""complex_artin_lift_exists"": ""derived-finite-image-lift"", ""irreducible_mod3_branch_implication_certified"": ""derived-weight-change"", ""mod5_irreducible_if_mod3_reducible"": ""derived-x015-rational-point-classification"", ""rho_p_irreducible"": ""proof-by-prime-cases"", ""semistable_large_prime_gl2_image"": ""derived-large-image""}",loop-400
+inv-v19-proof-trace,All five v19 parent facts are derived and the contradiction is preserved.,graph-rewrite,1,0,1,PASS,"{""auxiliary_curve_selected"": ""derived-hilbert-selection"", ""finite_quotient_chebotarev_class_coverage"": ""derived-chebotarev-class-coverage"", ""frey_x010_x014_local_obstruction_available"": ""derived-frey-local-obstruction"", ""mazur_kenku_isogeny_classification_available"": ""derived-isogeny-classification"", ""weight1_automorphic_representation_exists"": ""derived-langlands-tunnell""}",loop-451
+inv-v20-proof-trace,"All five imports are replaced, active imports fall below ten, and the contradiction is preserved.",graph-rewrite,1,0,1,PASS,"{""active_after"": 9, ""active_before"": 14, ""trace"": {""R_equals_T"": ""derived-faithful-module-isomorphism"", ""mod3_weight_one_eisenstein_congruence_available"": ""derived-explicit-theta-congruence"", ""oort_tate_raynaud_extension_classification_available"": ""derived-explicit-kummer-classification"", ""solvable_brauer_character_lift_available"": ""derived-explicit-g12-lift"", ""taylor_wiles_auxiliary_primes_exist"": ""derived-using-existing-chebotarev""}}",loop-501
+inv-v11-compiler,Every valid compiler run is accepted.,inference-compiler,2,0,2,PASS,Live rows from tw_patching_compiler_runs_v11.,loop-177
+inv-v12-n-structures,Every finite arithmetic n-structure run is emitted.,inference-compiler,7,0,7,PASS,Live rows from arithmetic_n_structure_runs_v12.,loop-199
+inv-v13-assemblies,Every base/auxiliary assembly derives the parent without directly using it.,inference-compiler,2,0,2,PASS,Live rows from hecke_galois_assembly_v13.,loop-228
+inv-v13-representations,Every reconstructed stage is a genuine two-dimensional representation with the supplied trace and determinant.,inference-compiler,8,0,8,PASS,Live rows from reconstructed_representation_stages_v13.,loop-219
+inv-v14-local-glue,All local model gluing certificates derive the parent conditionally.,inference-compiler,2,0,2,PASS,Live rows from local_model_gluing_certificates_v14.,loop-250
+inv-v17-residual-multiplicity,Every residual multiplicity profile has dimension two.,inference-compiler,2,0,2,PASS,Live rows from residual_prime_multiplicity_compiler_v17.,loop-344
+inv-v6-obstruction-certificates,Every specialization obstruction certificate agrees with the component p-primary profile.,integer-arithmetic,4,0,4,PASS,Live rows from specialization_obstruction_certificates_v6.,loop-108
+inv-v6-raynaud-complex,Every Raynaud complex satisfies a∘i=0 and b∘a=0.,integer-homological-algebra,5,0,5,PASS,Live rows from raynaud_complexes_v6.,loop-104
+inv-v6-raynaud-quotient,Every component quotient certificate is exact and matches its expected order.,integer-homological-algebra,5,0,5,PASS,Live rows from raynaud_component_certificates_v6.,loop-105
+status-v5-neron-identification,"Given a regular semistable-model adapter, the Raynaud complex computes the Néron component group as ker(b)/im(a).",integer-homological-algebra,5,0,5,PASS,Executable exact complexes and Smith-normal-form certificates in raynaud_component_certificates_v6.,loop-105
+inv-v5-character-lattice,Degree-zero bases are saturated and have expected rank.,integer-lattice,4,0,4,PASS,Live rows from character_lattice_witnesses.,loop-95
+inv-v5-monodromy,All monodromy pairings are positive and nondegenerate.,integer-lattice,4,0,4,PASS,Live rows from monodromy_pairing_witnesses_v5.,loop-96
+inv-v4-component-order,Every graph critical-group order equals its Matrix-Tree determinant.,integer-linear-algebra,5,0,5,PASS,Live rows from graph_component_groups.,loop-86
+inv-v5-component-group,All component-group orders match expected calibration/template orders.,integer-linear-algebra,4,0,4,PASS,Live rows from neron_component_group_witnesses.,loop-97
+inv-v5-dual-graph,Dual-graph cycle ranks equal edge_count-vertex_count+1.,integer-linear-algebra,4,0,4,PASS,Live rows from dual_graph_witnesses_v5.,loop-94
+inv-v17-hecke-squares,Every Hecke comparison square commutes.,integral-hecke,4,0,4,PASS,Live rows from hecke_comparison_squares_v17.,loop-314
+inv-v9-hecke-actions,Every stored integral Hecke action is scalar and passes its recurrence/source check.,integral-linear-algebra,9,0,9,PASS,Live rows from integral_hecke_actions_v9.,loop-135
+inv-v9-integral-lattice,The target form spans a normalized torsion-free rank-one integral lattice.,integral-q-expansion,1,0,1,PASS,Live rows from integral_form_lattices_v9.,loop-134
+inv-v20-g12-reduction,The integral G12 group reduces bijectively to GL2(F3).,integral-reduction,1,0,1,PASS,Live rows from g12_reduction_certificates_v20.,loop-458
+inv-v21-level-lowering,The universal level-lowering contract passes.,level-lowering-contract,1,0,1,PASS,Live rows from level_lowering_contracts_v21.,loop-563
+inv-2adic-minimal-multiplicative,"At 2, c4 is a unit and Delta has positive valuation.",local-arithmetic,6,0,6,PASS,Minimal multiplicative reduction at 2.,loop-24
+inv-conductor-radical-v1,Every sampled conductor equals rad(ABC).,local-arithmetic,31,0,31,PASS,All bad primes are multiplicative.,loop-26
+inv-global-bad-primes-multiplicative,Every sampled bad prime has v_q(c4)=0 and conductor exponent 1.,local-arithmetic,31,0,31,PASS,Prime-by-prime global minimal-model witness.,loop-25
+inv-odd-c4-unit,"At every sampled odd bad prime, v_q(c4)=0.",local-arithmetic,17,0,17,PASS,Direct integer valuations on all sampled bad primes.,loop-11
+inv-odd-conductor-exponent-one,Every sampled odd multiplicative prime has conductor exponent 1.,local-arithmetic,17,0,17,PASS,Local conductor rule applied away from 2.,loop-12
+inv-odd-multiplicative,Every sampled odd bad prime is classified multiplicative.,local-arithmetic,17,0,17,PASS,v_q(Delta)>0 and v_q(c4)=0.,loop-11
+inv-two-adic-machine-proof,"The exact normalized model, minimal discriminant, c4 unit, multiplicative reduction, and conductor exponent at 2 are machine-witnessed.",local-arithmetic,6,0,6,PASS,"Loops 22–26: x=4X, y=4X+8Y; all normalized samples have v2(c4)=0 and v2(Delta)>0.",loop-24
+inv-v20-tate-criterion,Every Tate finite-flat profile agrees with valuation divisibility.,local-kummer-criterion,15,0,15,PASS,Live rows from tate_finite_flat_certificates_v20.,loop-480
+inv-v13-local-models,Every local model has a valid finite Hecke parameter.,local-representation-schema,6,0,6,PASS,Live rows from local_representation_models_v13.,loop-226
+inv-v12-proof-by-cases,The residual-modularity parent is assembled by a valid proof-by-cases certificate.,logic-repair,1,0,1,PASS,Live rows from proof_by_cases_certificates_v12.,loop-184
+inv-v12-case-partition,"Every case partition is exhaustive, exclusive, and asserts no simultaneous realized branches.",logical-kernel,1,0,1,PASS,Live rows from case_partitions_v12.,loop-182
+inv-imported-edges-load-bearing,Every imported edge in the main trace is individually load-bearing.,methodology,4,0,4,PASS,Counterfactual graph builds disable each imported edge in turn.,loop-40
+inv-v12-rank-transfer,Every Hecke rank-transfer certificate passes.,module-rank-transfer,2,0,2,PASS,Live rows from hecke_rank_transfer_certificates_v12.,loop-192
+inv-v10-parent-replacement,Both omnibus parent edges are removed as raw proof-trace imports.,parent-edge-replacement,2,0,2,PASS,omnibus_parent_replacements_v10 and the revised proof trace.,loop-161
+inv-v11-proof-trace,The main trace derives patched freeness from arithmetic inputs plus the internal compiler.,parent-edge-replacement,1,0,1,PASS,proof_trace_revisions_v11 and implication_rules.,loop-180
+inv-v13-proof-trace,The Hecke-valued representation parent is derived from child inputs and the contradiction is preserved.,parent-edge-replacement,1,0,1,PASS,"[{""derivation_kind"": ""derived-hecke-galois-assembly""}]",loop-230
+inv-v14-trace,Both parents are derived and the Hecke–Galois assembly/contradiction remain intact.,parent-edge-replacement,1,0,1,PASS,"{""hecke_galois_representations_exist"": ""derived-hecke-galois-assembly"", ""hecke_local_global_compatibility_available"": ""derived-local-global-compatibility"", ""hecke_modular_pseudocharacter_system_exists"": ""derived-modular-pseudocharacter""}",loop-253
+inv-v15-proof-trace,Both parent facts are derived and contradiction preserved.,parent-edge-replacement,1,0,1,PASS,"{""localized_etale_hecke_module_exists"": ""derived-localized-etale-parent"", ""tw_auxiliary_cohomology_rank_one"": ""internal-sign-projector-rank-one-compiler""}",loop-281
+inv-v16-proof-trace,The multiplicity parent is proof-by-cases and all downstream rank compilers still fire.,parent-edge-replacement,1,0,1,PASS,"{""localized_etale_hecke_module_free_rank_two"": ""internal-nakayama-rank-two-compiler"", ""multiplicity_good_case_implication_certified"": ""internal-good-reduction-dimension-compiler"", ""multiplicity_residual_case_implication_certified"": ""imported-mazur-ribet-residual-prime-comparison"", ""tw_auxiliary_cohomology_rank_one"": ""internal-sign-projector-rank-one-compiler"", ""universal_non_eisenstein_multiplicity_two_available"": ""proof-by-cases""}",loop-300
+inv-v20-rt-direct,Every patching system derives R=T without the numerical criterion.,patching-descent,2,0,2,PASS,Live rows from rt_direct_descent_certificates_v20.,loop-497
+inv-v16-parent,The universal multiplicity parent is derived by a valid proof-by-cases certificate.,proof-by-cases,1,0,1,PASS,Live rows from multiplicity_two_parent_certificates_v16.,loop-298
+inv-v15-rational-rank,Rational rank ratios pass.,rational-linear-algebra,3,0,3,PASS,Rows from rational_hecke_rank_certificates_v15.,loop-264
+inv-x015-obstruction-shape,All four sourced noncuspidal X0(15)(Q) classes are marked non-semistable.,sourced-classification,4,0,4,PASS,"A provenance check on the imported classification, not a recomputation.",loop-54
+edge-status-import-RT-patching,Taylor–Wiles patching and R=T modularity lifting,sourced-import,0,0,0,IMPORTED,Source=src-taylor-wiles-1995; load-bearing=1; proof_internalized=0.,loop-61
+edge-status-import-finite-flat-at-p,Finite-flat criterion at the residual prime in the second case,sourced-import,0,0,0,IMPORTED,Source=src-tate-curve-via-ribet; load-bearing=1; proof_internalized=0.,loop-61
+edge-status-import-frey-small-prime-irreducibility,"Frey irreducibility for p=5,7,11 using full rational 2-torsion",sourced-import,0,0,0,IMPORTED,Source=src-ribet-toulouse-1990; load-bearing=1; proof_internalized=0.,loop-61
+edge-status-import-hilbert-chebotarev-3-5,Hilbert irreducibility and Chebotarev selection in the twisted X(5) family,sourced-import,0,0,0,IMPORTED,Source=src-wiles-3-5-1995; load-bearing=1; proof_internalized=0.,loop-61
+edge-status-import-langlands-tunnell,Odd irreducible solvable Artin representation gives a weight-1 form,sourced-import,0,0,0,IMPORTED,Source=src-tunnell-1981; load-bearing=1; proof_internalized=0.,loop-61
+edge-status-import-mazur-semistable-surjectivity,Semistable mod-p image is GL2(Fp) for p>11,sourced-import,0,0,0,IMPORTED,Source=src-mazur-1978; load-bearing=1; proof_internalized=0.,loop-61
+edge-status-import-ribet-level-lowering,Ribet’s component-group level-lowering theorem,sourced-import,0,0,0,IMPORTED,Source=src-ribet-toulouse-1990; load-bearing=1; proof_internalized=0.,loop-61
+edge-status-import-weight-raising-mod3,Weight-1 to weight-2 residual modularity step,sourced-import,0,0,0,IMPORTED,Source=src-wiles-1995; load-bearing=1; proof_internalized=0.,loop-61
+edge-status-import-x0-15-rational-points,Rational-point classification on X0(15),sourced-import,0,0,0,IMPORTED,Source=src-wiles-3-5-1995; load-bearing=1; proof_internalized=0.,loop-61
+status-ff-converse,ff-converse,sourced-import,0,0,0,IMPORTED,Finite-flat extension theorem.,loop-67
+status-ff-extend,ff-extend,sourced-import,0,0,0,IMPORTED,Finite-flat extension theorem.,loop-67
+status-ff-generic,ff-generic,sourced-import,0,0,0,IMPORTED,Finite-flat extension theorem.,loop-67
+status-v10-residual-content,Universal residual-modularity child theorems remain source-backed.,sourced-import,0,0,0,IMPORTED,"[""Characteristic-zero finite-image lift"", ""Langlands\u2013Tunnell automorphy"", ""Weight change"", ""X0(15) gate"", ""Hilbert/Chebotarev selection""]",loop-151
+status-v10-rt-content,Universal R=T child theorems remain source-backed.,sourced-import,0,0,0,IMPORTED,"[""Representability"", ""Local deformation conditions"", ""Tangent and obstruction spaces"", ""Poitou\u2013Tate balance"", ""Taylor\u2013Wiles prime existence"", ""Taylor\u2013Wiles patching theorem"", ""R to T map"", ""Numerical criterion""]",loop-160
+status-v11-arithmetic-system,"The actual R_Q,T_Q,H_Q form compatible n-structures.",sourced-import,0,0,0,IMPORTED,Arithmetic construction remains source-backed.,loop-179
+status-v11-stage-freeness,The actual auxiliary-level Hecke/cohomology object is free over O[Delta_Q].,sourced-import,0,0,0,IMPORTED,Taylor–Wiles Theorem 2 remains the next arithmetic edge.,loop-179
+status-v12-hecke-representations,Base and auxiliary Hecke algebras carry the required Galois representations.,sourced-import,0,0,0,IMPORTED,The parent compilers are internal; this arithmetic theorem remains load-bearing.,loop-211
+status-v12-rank-one-cohomology,Localized sign cohomology is universally free rank one over T_Q.,sourced-import,0,0,0,IMPORTED,The parent compilers are internal; this arithmetic theorem remains load-bearing.,loop-211
+status-v13-global-pseudocharacter,A continuous complete Hecke pseudocharacter exists on every finite local Hecke quotient.,sourced-import,0,0,0,IMPORTED,The parent assembler is internal; this child theorem remains load-bearing.,loop-231
+status-v13-local-global,The reconstructed global representation has the required ordinary/finite-flat/Steinberg local restrictions.,sourced-import,0,0,0,IMPORTED,The parent assembler is internal; this child theorem remains load-bearing.,loop-231
+status-v14-bad-prime-comparison,Global modular cohomology has the declared ordinary/finite-flat/Steinberg local restrictions.,sourced-import,0,0,0,IMPORTED,Parent compilers internalized; theorem input remains load-bearing.,loop-261
+status-v14-etale-module,Localized modular-curve étale cohomology supplies a free rank-two Hecke module with Galois action.,sourced-import,0,0,0,IMPORTED,Parent compilers internalized; theorem input remains load-bearing.,loop-261
+status-v15-integral-comparison,Universal integral modular-curve cohomology package.,sourced-import,0,0,0,IMPORTED,Parent compilers internal; child theorem remains.,loop-281
+status-v15-multiplicity-two,Universal non-Eisenstein multiplicity-two theorem.,sourced-import,0,0,0,IMPORTED,Parent compilers internal; child theorem remains.,loop-281
+status-v16-constituent-theorem,Good-prime Hecke Frobenius data and irreducibility force every Jordan–Hölder constituent to be rho_m.,sourced-import,0,0,0,IMPORTED,The parent theorem is internalized as proof by cases; this child remains load-bearing.,loop-301
+status-v16-residual-prime-comparison,The Mazur–Ribet Néron/group-scheme argument proves multiplicity two when the residual prime divides the level.,sourced-import,0,0,0,IMPORTED,The parent theorem is internalized as proof by cases; this child remains load-bearing.,loop-301
+status-v17-chebotarev,Finite-quotient Chebotarev density.,sourced-import,0,0,0,IMPORTED,The parent compiler is internal; this child theorem remains load-bearing.,loop-351
+status-v17-finite-flat-classification,Finite-flat middle-extension classification.,sourced-import,0,0,0,IMPORTED,The parent compiler is internal; this child theorem remains load-bearing.,loop-351
+status-v17-geometry,Functorial modular-curve geometric comparison.,sourced-import,0,0,0,IMPORTED,The parent compiler is internal; this child theorem remains load-bearing.,loop-351
+status-v17-nearby-cycles,Semistable nearby-cycles comparison.,sourced-import,0,0,0,IMPORTED,The parent compiler is internal; this child theorem remains load-bearing.,loop-351
+status-v18-fong-swan-child,Solvable Brauer-character lifting in characteristic 3.,sourced-import,0,0,0,IMPORTED,The parent assembler is internal; this narrower theorem remains load-bearing.,loop-401
+status-v18-frey-local-child,Frey-specific X0(10)/X0(14) local obstruction.,sourced-import,0,0,0,IMPORTED,The parent assembler is internal; this narrower theorem remains load-bearing.,loop-401
+status-v18-mazur-kenku-child,Rational cyclic-isogeny classification and formal-immersion obstruction.,sourced-import,0,0,0,IMPORTED,The parent assembler is internal; this narrower theorem remains load-bearing.,loop-401
+status-v18-weight-change-child,Existence of the weight-one Eisenstein congruence and classical weight-two packet.,sourced-import,0,0,0,IMPORTED,The parent assembler is internal; this narrower theorem remains load-bearing.,loop-401
+status-v19-chebotarev,Analytic Chebotarev density theorem.,sourced-import,0,0,0,IMPORTED,The parent compiler is internal; this child theorem remains load-bearing.,loop-451
+status-v19-formal-immersion,Mazur formal immersion and finite Eisenstein quotient.,sourced-import,0,0,0,IMPORTED,The parent compiler is internal; this child theorem remains load-bearing.,loop-451
+status-v19-hilbert,Hilbert irreducibility with weak approximation.,sourced-import,0,0,0,IMPORTED,The parent compiler is internal; this child theorem remains load-bearing.,loop-451
+status-v19-lt,Solvable base change/converse theorem for Langlands–Tunnell.,sourced-import,0,0,0,IMPORTED,The parent compiler is internal; this child theorem remains load-bearing.,loop-451
+status-v4-finite-flat-middle,Nonsplit Tate extension admits a finite-flat middle model over Z_p.,sourced-import,0,0,0,IMPORTED,"Endpoint schemes, cocycle, exact generic sequence, and split cases are witnessed; middle model theorem remains external.",loop-85
+status-v4-ihara-lift,A surviving class in the q-new quotient lifts to a lower-level eigenform.,sourced-import,0,0,0,IMPORTED,"Old/new and eigenvector controls are internalized; Ihara, multiplicity one, and lifting remain external.",loop-90
+status-v4-specialization-bridge,Degeneracy kernel specializes into the modular Jacobian component group as required.,sourced-import,0,0,0,IMPORTED,Finite linear controls and graph component groups are internalized; Néron/Jacobian specialization remains external.,loop-90
+status-v5-deligne-serre,A surviving mod-p eigenpacket lifts to a characteristic-zero eigenform in general.,sourced-import,0,0,0,IMPORTED,Finite antecedent geometry is populated; the universal theorem remains source-backed.,loop-101
+status-v5-ihara,Non-Eisenstein localization makes the degeneracy map injective.,sourced-import,0,0,0,IMPORTED,Finite antecedent geometry is populated; the universal theorem remains source-backed.,loop-99
+status-v5-multiplicity-one,The relevant localized source-level Hecke module satisfies multiplicity one.,sourced-import,0,0,0,IMPORTED,Finite antecedent geometry is populated; the universal theorem remains source-backed.,loop-100
+status-v7-universal-ihara,"For every squarefree level in the hypothetical FLT universe, non-Eisenstein localization makes the two degeneracy pullbacks injective.",sourced-import,0,0,0,IMPORTED,The finite certificate generator closes instantiated levels; a universal rank theorem remains source-backed.,loop-121
+status-v8-universal-multiplicity-one,"For every irreducible maximal ideal in the hypothetical FLT universe, J_0(N)[m] has dimension two.",sourced-import,0,0,0,IMPORTED,The finite Hecke certificate generator closes instantiated packets; the universal theorem remains source-backed.,loop-131
+status-v9-universal-deligne-serre,Every finite-rank residual simultaneous Hecke eigensystem lifts after a finite coefficient extension.,sourced-import,0,0,0,IMPORTED,The concrete rank-one case is closed; the general Deligne–Serre lemma remains source-backed.,loop-141
+v3-dual,Cartier duality,symbolic-algebra,3,0,3,PASS,Character matrices.,loop-65
+inv-v18-weight-congruence,The symbolic weight-change q-expansion is congruent modulo 3.,symbolic-qexp,1,0,1,PASS,Live rows from eisenstein_congruence_stages_v18.,loop-383
+inv-v20-weight-product,The weight-two product is congruent to the weight-one source modulo 3.,symbolic-qexp,1,0,1,PASS,Live rows from weight_change_product_certificates_v20.,loop-469
+inv-v20-theta-modularity,"The A2 lattice certificate has weight one, level three, and character chi_-3.",theta-modularity,1,0,1,PASS,Live rows from a2_theta_modularity_certificates_v20.,loop-466
+inv-v20-theta,Every A2 theta coefficient agrees with the divisor formula and is 0 mod 3 away from the constant term.,theta-series,101,0,101,PASS,Live rows from a2_theta_coefficients_v20.,loop-464
+inv-v19-thin-sets,Every thin-set profile and local-open constraint passes.,thin-set-schema,2,0,2,PASS,Live rows from thin_set_profiles_v19.,loop-424
+inv-patching-coordinate-balance,Every toy patching profile balances added variables and relations.,toy-patching,4,0,4,PASS,A coordinate witness only; module freeness and patching remain imported.,loop-60
+inv-v18-x015-descent,The X0(15) descent has two classes on each isogenous side.,two-isogeny-descent,1,0,1,PASS,Live rows from x015_rank_certificates_v18.,loop-395

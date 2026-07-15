@@ -1,0 +1,258 @@
+{
+  "PackageName": "effortless-math-claude-starter",
+  "Version": "0.1.0",
+  "GeneratedFrom": "Fermat Witness Lab v21",
+  "FileCount": 50,
+  "Files": [
+    {
+      "Path": "CLAUDE_BOOTSTRAP_PROMPT.md",
+      "Bytes": 3369,
+      "Sha256": "996d758c80519700c8caf9ee5890314da0e664b4c992a3689d052a9a0a075b33"
+    },
+    {
+      "Path": "README.md",
+      "Bytes": 3611,
+      "Sha256": "cb5b49257c4228b46dc98e58ebd923ea3257c82e6e881720f70c911893fb4396"
+    },
+    {
+      "Path": "SHA256SUMS.txt",
+      "Bytes": 6520,
+      "Sha256": "214bcfebcddbd0501678b7636ea07cf910f8a4623b24dd63dd957d46ed0d28bc"
+    },
+    {
+      "Path": "payload/effortless-math/CLAUDE.md",
+      "Bytes": 2578,
+      "Sha256": "341150b64ad054d9f7bdc6625ce491ff438d718054eb8fd7d057e66d8aa4863a"
+    },
+    {
+      "Path": "payload/effortless-math/README.md",
+      "Bytes": 2871,
+      "Sha256": "0066f1845934c855e2aacd14d778fe3cf654630b4d9c7faf8dd8eb5a91bba8d3"
+    },
+    {
+      "Path": "payload/effortless-math/catalog/foundation-kernels.json",
+      "Bytes": 5762,
+      "Sha256": "5ded18d82a5ce2e53792c1e7c60b41e4a0ba1a32e88d51e95e65c4c44197d687"
+    },
+    {
+      "Path": "payload/effortless-math/catalog/proof-statuses.json",
+      "Bytes": 2524,
+      "Sha256": "5b9d74ec746f3dd7a69264958fe7c57434396cfaa1ef8b8abee67604cbf408a2"
+    },
+    {
+      "Path": "payload/effortless-math/catalog/theorem-network.json",
+      "Bytes": 6334,
+      "Sha256": "a0b3976c8c4e0e1413e3b66651943d1565caf1162dc3df8c9bfbd331f345cb04"
+    },
+    {
+      "Path": "payload/effortless-math/docs/ARCHITECTURE.md",
+      "Bytes": 3128,
+      "Sha256": "f7bb7142eec6d4fe7e97bfc73797c71bfc70631e7b32a5b5e04c2c931992560e"
+    },
+    {
+      "Path": "payload/effortless-math/docs/INTEGRATION_CHECKLIST.md",
+      "Bytes": 2289,
+      "Sha256": "73ca8fdcd917160f3bc4ca53d7033451ea544c3afec502def2831bd7cc3815a7"
+    },
+    {
+      "Path": "payload/effortless-math/docs/MIGRATION_PLAN.md",
+      "Bytes": 2880,
+      "Sha256": "e98fc7cda989787b68c9b9eb706679323015b01db78672be4683cc713186034f"
+    },
+    {
+      "Path": "payload/effortless-math/docs/TRUST_MODEL.md",
+      "Bytes": 1654,
+      "Sha256": "b7eec72c0e7c63f0753956e45c209e8e6514f148a4a243fc19980f0c6f60fd45"
+    },
+    {
+      "Path": "payload/effortless-math/docs/V21_MAPPING.md",
+      "Bytes": 1188,
+      "Sha256": "09012a4036b679059d07cf81ebfb3ac5e75502e64ae5c3134b4abc71661d1049"
+    },
+    {
+      "Path": "payload/effortless-math/domains/analytic-prime-distribution/README.md",
+      "Bytes": 1316,
+      "Sha256": "e39f98eaaee8732dbf1f707261d55b9cf5ffa3f749d33fe4f29ba91e8f90c0c4"
+    },
+    {
+      "Path": "payload/effortless-math/domains/analytic-prime-distribution/theorem-contract.json",
+      "Bytes": 1116,
+      "Sha256": "94866a790db9e9319ca803276808ce819168df7904312a287fcb2bb8f34bc94f"
+    },
+    {
+      "Path": "payload/effortless-math/domains/fermats-last-theorem/README.md",
+      "Bytes": 1172,
+      "Sha256": "cba1455d2bd31f7a495e463c1cc4f7e6d297a25e3cfbb43f931dd228109aa2f4"
+    },
+    {
+      "Path": "payload/effortless-math/domains/fermats-last-theorem/source-artifacts/FINAL_NINE_ATTEMPT_V21.md",
+      "Bytes": 657,
+      "Sha256": "d5a246b8b44d25216f351de59e445e5f46629814ac6c7b9c0ef230ace2596534"
+    },
+    {
+      "Path": "payload/effortless-math/domains/fermats-last-theorem/source-artifacts/WITNESS_REPORT_V21.md",
+      "Bytes": 32170,
+      "Sha256": "a69503387b772aa4eee47f5e4c624764968343f1fc05367cadabff671a443f6a"
+    },
+    {
+      "Path": "payload/effortless-math/domains/fermats-last-theorem/source-artifacts/active_import_surface_v21.csv",
+      "Bytes": 1031,
+      "Sha256": "5b0eb5ea5d4668178110f02a0ac3f3e60cd8a0a3ff149a838c53aaff0e195b2f"
+    },
+    {
+      "Path": "payload/effortless-math/domains/fermats-last-theorem/source-artifacts/build_fermat_witness_v21.py",
+      "Bytes": 58556,
+      "Sha256": "b781453451f87df8c8533ce168287482d9b27e3e9bfeece8f8f158f7fb201bd2"
+    },
+    {
+      "Path": "payload/effortless-math/domains/fermats-last-theorem/source-artifacts/fermat_witness_v21.sqlite",
+      "Bytes": 3866624,
+      "Sha256": "4ed043d32d50b5a7258bb17c1b20ccba938bb16f8046cc403429b5ea59c52b64"
+    },
+    {
+      "Path": "payload/effortless-math/domains/fermats-last-theorem/source-artifacts/foundation_frontier_v21.csv",
+      "Bytes": 3959,
+      "Sha256": "cb98118c4211afe45728d78e290d350da06d64215d881963fcf7316354dda01f"
+    },
+    {
+      "Path": "payload/effortless-math/domains/fermats-last-theorem/source-artifacts/invariant_checks_v21.csv",
+      "Bytes": 58748,
+      "Sha256": "cfd9a582446f48304327a2da73ce73ced919277703cbb57411003b7a71a23584"
+    },
+    {
+      "Path": "payload/effortless-math/domains/fermats-last-theorem/source-artifacts/nine_parent_audit_v21.csv",
+      "Bytes": 2241,
+      "Sha256": "5a1fd3f1ada6918b432afa5ed8a31fe8332c5222e7a5419698f0df4281985160"
+    },
+    {
+      "Path": "payload/effortless-math/domains/fermats-last-theorem/source-artifacts/proof_trace_v21.csv",
+      "Bytes": 22395,
+      "Sha256": "f5f95a86c440c3f67e7a2f9f71022b52dcb73dd30b7f8cebbe33399947b42239"
+    },
+    {
+      "Path": "payload/effortless-math/domains/fermats-last-theorem/source-artifacts/verify_final_nine_v21.py",
+      "Bytes": 2507,
+      "Sha256": "75776522c86b4b13e73ccb5e76b4ebd797e269814a9bfbd3833a48a887821f08"
+    },
+    {
+      "Path": "payload/effortless-math/domains/fermats-last-theorem/theorem-contract.json",
+      "Bytes": 1394,
+      "Sha256": "bac37441c802886edab67ec8737811e7418de18fd0ba362fbe47c88c76d75b9a"
+    },
+    {
+      "Path": "payload/effortless-math/domains/global-deformation-duality/README.md",
+      "Bytes": 1446,
+      "Sha256": "1e27b2b860e8855fc6611c529aa8c27c9d04ba000d17c66dcb92198f3195c77c"
+    },
+    {
+      "Path": "payload/effortless-math/domains/global-deformation-duality/theorem-contract.json",
+      "Bytes": 1265,
+      "Sha256": "9ee32fe1bc5086a859f1bfd10aadb35d040dc796121f31548af9b7f7fa002936"
+    },
+    {
+      "Path": "payload/effortless-math/domains/hilbert-specialization/README.md",
+      "Bytes": 1332,
+      "Sha256": "78be90987114820defad45fdf9d46d38517b27095ed60f76eaa124db7411aaa0"
+    },
+    {
+      "Path": "payload/effortless-math/domains/hilbert-specialization/theorem-contract.json",
+      "Bytes": 1134,
+      "Sha256": "85a2754675130b04dcce863e1b887411e0ed408517f49feb01baee25d4a410ae"
+    },
+    {
+      "Path": "payload/effortless-math/domains/mazur-modular-curve-arithmetic/README.md",
+      "Bytes": 1404,
+      "Sha256": "0fc7d8165d7402224767214401567939c2a6f15e7ddb1d770b865733433e7e65"
+    },
+    {
+      "Path": "payload/effortless-math/domains/mazur-modular-curve-arithmetic/theorem-contract.json",
+      "Bytes": 1216,
+      "Sha256": "429ae9a80820d2cae151cdddb4507d903eb5393d5426b30a95c23ffe094d5786"
+    },
+    {
+      "Path": "payload/effortless-math/domains/modular-curve-cohomological-comparison/README.md",
+      "Bytes": 1505,
+      "Sha256": "3c21ec5713adfaa3b65f3af96cc3d4850c33ea16aeb0ccac843b3fcb00dc9a1c"
+    },
+    {
+      "Path": "payload/effortless-math/domains/modular-curve-cohomological-comparison/theorem-contract.json",
+      "Bytes": 1318,
+      "Sha256": "ffb17967743d113ac2d6008286df83309854808c6c0131a2dd9f6f22e5d57e7d"
+    },
+    {
+      "Path": "payload/effortless-math/domains/solvable-artin-automorphy/README.md",
+      "Bytes": 1349,
+      "Sha256": "7a806c834b3a0dd7bfbd5484d950266fe912b703c0aedfd4e93e6e1ab740456e"
+    },
+    {
+      "Path": "payload/effortless-math/domains/solvable-artin-automorphy/theorem-contract.json",
+      "Bytes": 1151,
+      "Sha256": "2afb3f457b3a4ff53864409148e99f98836da6629d7866113246bedf8425f374"
+    },
+    {
+      "Path": "payload/effortless-math/domains/universal-level-lowering/README.md",
+      "Bytes": 1378,
+      "Sha256": "5b8405ca093341dbd7290d8f014ec55644084cb38dc8fce2df30ff9737372947"
+    },
+    {
+      "Path": "payload/effortless-math/domains/universal-level-lowering/theorem-contract.json",
+      "Bytes": 1192,
+      "Sha256": "0d21a1c91469bbd97c31b115c89dbb7016e90340ec77c3c435c717e5086a44fa"
+    },
+    {
+      "Path": "payload/effortless-math/effortless-rulebook/effortless-math-rulebook.json",
+      "Bytes": 631763,
+      "Sha256": "ee6bc003db7eff2f1de7d3756262499c9ae2507dca58a9c199c4e31a4ce80941"
+    },
+    {
+      "Path": "payload/effortless-math/effortless.json",
+      "Bytes": 2426,
+      "Sha256": "aeee5b41166834821b25a4aba8d37e98901a61533155a6932fedc0d3616f53b6"
+    },
+    {
+      "Path": "payload/effortless-math/schemas/provider-certificate.schema.json",
+      "Bytes": 1002,
+      "Sha256": "2695f0f2964338a19b1b1af77d851bec7406863d07523ad0eb9505f868806722"
+    },
+    {
+      "Path": "payload/effortless-math/schemas/theorem-contract.schema.json",
+      "Bytes": 1828,
+      "Sha256": "451ad2a074b3270dc4d1240bd97bc4614220c7e5d4ef3d697daeeb81bd30911e"
+    },
+    {
+      "Path": "payload/effortless-math/schemas/theorem-network.schema.json",
+      "Bytes": 614,
+      "Sha256": "5a53521592f1a0a4b585bc5b11848e6e535905bbaabc6e12a5c383fc692d2775"
+    },
+    {
+      "Path": "payload/effortless-math/scripts/extract_v21.py",
+      "Bytes": 1153,
+      "Sha256": "ae70ac8dec63317b0c0b7969ee12a56d698ee8ae2f2b8267d61981819a0761be"
+    },
+    {
+      "Path": "payload/effortless-math/scripts/stage_as_rulebook_example.py",
+      "Bytes": 1198,
+      "Sha256": "1acbaca82e64b4121de643b49f2cb554a61d1a971c25e6483023a62f87b0c736"
+    },
+    {
+      "Path": "payload/effortless-math/scripts/validate_starter.py",
+      "Bytes": 4613,
+      "Sha256": "aecb3441832a35093c3d80c52a62875f94673538e56596d138d78c052a7b66e9"
+    },
+    {
+      "Path": "payload/effortless-math/source-artifacts/fermat_witness_lab_v21.zip",
+      "Bytes": 1349052,
+      "Sha256": "284ce38b6e616fddaa6efea311781ca061db84ca007aa0444b72eec68c122bf6"
+    },
+    {
+      "Path": "payload/effortless-math/testing/README.md",
+      "Bytes": 440,
+      "Sha256": "2d158170ecbd81007302321181e807891167b0080a81d9f67bf3b5ab62935f1d"
+    },
+    {
+      "Path": "payload/effortless-math/testing/expected-state.json",
+      "Bytes": 409,
+      "Sha256": "b6f9461756c751cf7a117ad49fb18c12ff84c7d9d2c9fd2134cfc696ff42e526"
+    }
+  ]
+}

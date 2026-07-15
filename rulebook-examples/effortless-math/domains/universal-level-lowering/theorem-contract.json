@@ -1,0 +1,37 @@
+{
+  "TheoremId": "universal-level-lowering",
+  "Version": "0.1.0",
+  "Title": "Universal Ribet Level Lowering",
+  "DomainId": "domain-universal-level-lowering",
+  "Statement": "Uniform one-prime descent for every admissible hypothetical FLT level.",
+  "Scope": "Initial provider stub migrated from Fermat Witness Lab v21.",
+  "Hypotheses": [
+    "modularity",
+    "irreducibility",
+    "finite/local profile",
+    "Ihara/component/multiplicity/lift generators"
+  ],
+  "Conclusions": [
+    "weight-two newform at the lowered level"
+  ],
+  "ProofStatus": "IMPORTED",
+  "TrustBoundary": "The universal theorem remains external; finite compiler interfaces and consumer contracts are present.",
+  "ProviderFacts": [
+    "level_2_weight_2_newform_exists"
+  ],
+  "Dependencies": [],
+  "WitnessSchemas": [
+    "edge_closure_audit_v9",
+    "edge_closure_audit_v8",
+    "edge_closure_audit_v7",
+    "lower_level_eigenform_certificates"
+  ],
+  "Consumers": [
+    "fermats-last-theorem"
+  ],
+  "SourceIds": [
+    "src-universal-level-lowering-kernel-v21"
+  ],
+  "NextTarget": "Internalize the universal quantifier over all admissible levels.",
+  "LegacyKernelId": "kernel-universal-level-lowering-v21"
+}

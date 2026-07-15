@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://effortlessapi.example/schemas/theorem-network.schema.json",
+  "title": "Effortless Math Theorem Network",
+  "type": "object",
+  "required": [
+    "NetworkId",
+    "Version",
+    "Theorems",
+    "Dependencies"
+  ],
+  "properties": {
+    "NetworkId": {
+      "type": "string"
+    },
+    "Version": {
+      "type": "string"
+    },
+    "Theorems": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "Dependencies": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    }
+  }
+}

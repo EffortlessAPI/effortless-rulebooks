@@ -1,0 +1,35 @@
+{
+  "TheoremId": "hilbert-specialization",
+  "Version": "0.1.0",
+  "Title": "Hilbert Specialization",
+  "DomainId": "domain-hilbert-specialization",
+  "Statement": "Hilbert irreducibility with simultaneous weak approximation.",
+  "Scope": "Initial provider stub migrated from Fermat Witness Lab v21.",
+  "Hypotheses": [
+    "rational parameter space",
+    "thin bad covers",
+    "local open conditions"
+  ],
+  "Conclusions": [
+    "rational specialization outside thin sets satisfying every local open"
+  ],
+  "ProofStatus": "IMPORTED",
+  "TrustBoundary": "The universal theorem remains external; finite compiler interfaces and consumer contracts are present.",
+  "ProviderFacts": [
+    "hilbert_irreducibility_weak_approximation_available"
+  ],
+  "Dependencies": [],
+  "WitnessSchemas": [
+    "thin_set_profiles_v19",
+    "local_open_constraints_v19",
+    "crt_specialization_certificates_v19"
+  ],
+  "Consumers": [
+    "fermats-last-theorem"
+  ],
+  "SourceIds": [
+    "src-hilbert-specialization-kernel-v21"
+  ],
+  "NextTarget": "Internalize universal thin-set avoidance.",
+  "LegacyKernelId": "kernel-hilbert-specialization-v21"
+}

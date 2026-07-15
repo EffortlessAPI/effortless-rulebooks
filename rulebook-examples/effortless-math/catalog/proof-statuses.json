@@ -1,0 +1,83 @@
+[
+  {
+    "ProofStatusId": "PLANNED",
+    "SortOrder": 10,
+    "IsImported": false,
+    "IsDerived": false,
+    "AllowsImportedChildren": true,
+    "IsTerminal": false,
+    "Description": "The theorem or edge has a declared contract but no active proof object yet."
+  },
+  {
+    "ProofStatusId": "IMPORTED",
+    "SortOrder": 20,
+    "IsImported": true,
+    "IsDerived": false,
+    "AllowsImportedChildren": true,
+    "IsTerminal": false,
+    "Description": "The conclusion is accepted from an external theorem or trusted adapter."
+  },
+  {
+    "ProofStatusId": "DECOMPOSED",
+    "SortOrder": 30,
+    "IsImported": true,
+    "IsDerived": false,
+    "AllowsImportedChildren": true,
+    "IsTerminal": false,
+    "Description": "A theorem-sized import has been split into typed child obligations."
+  },
+  {
+    "ProofStatusId": "DERIVED_WITH_IMPORTED_CHILDREN",
+    "SortOrder": 40,
+    "IsImported": false,
+    "IsDerived": true,
+    "AllowsImportedChildren": true,
+    "IsTerminal": false,
+    "Description": "The parent fact is derived, but at least one load-bearing child remains imported."
+  },
+  {
+    "ProofStatusId": "DERIVED_WITH_SHARED_KERNEL",
+    "SortOrder": 50,
+    "IsImported": false,
+    "IsDerived": true,
+    "AllowsImportedChildren": true,
+    "IsTerminal": false,
+    "Description": "The parent is derived from a reusable provider theorem or foundation kernel."
+  },
+  {
+    "ProofStatusId": "FULLY_INTERNALIZED_FOR_SCOPE",
+    "SortOrder": 60,
+    "IsImported": false,
+    "IsDerived": true,
+    "AllowsImportedChildren": false,
+    "IsTerminal": true,
+    "Description": "All load-bearing inference content is represented above the declared trust boundary for the stated scope."
+  },
+  {
+    "ProofStatusId": "FALSIFIED",
+    "SortOrder": 70,
+    "IsImported": false,
+    "IsDerived": false,
+    "AllowsImportedChildren": false,
+    "IsTerminal": true,
+    "Description": "The claimed inference failed or a counterexample was witnessed."
+  },
+  {
+    "ProofStatusId": "SUPERSEDED",
+    "SortOrder": 80,
+    "IsImported": false,
+    "IsDerived": false,
+    "AllowsImportedChildren": false,
+    "IsTerminal": true,
+    "Description": "A historical theorem edge or schema is retained for provenance but is no longer live."
+  },
+  {
+    "ProofStatusId": "NOT_EVALUABLE",
+    "SortOrder": 90,
+    "IsImported": false,
+    "IsDerived": false,
+    "AllowsImportedChildren": true,
+    "IsTerminal": false,
+    "Description": "The rule lacks the data, adapter, or scope information required to evaluate it."
+  }
+]

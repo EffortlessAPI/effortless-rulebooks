@@ -1,0 +1,34 @@
+{
+  "TheoremId": "analytic-prime-distribution",
+  "Version": "0.1.0",
+  "Title": "Analytic Prime Distribution / Chebotarev",
+  "DomainId": "domain-analytic-prime-distribution",
+  "Statement": "Chebotarev density for finite Galois quotients.",
+  "Scope": "Initial provider stub migrated from Fermat Witness Lab v21.",
+  "Hypotheses": [
+    "finite quotient",
+    "complete conjugacy classes",
+    "Frobenius classifier"
+  ],
+  "Conclusions": [
+    "positive density and representatives in every class"
+  ],
+  "ProofStatus": "IMPORTED",
+  "TrustBoundary": "The universal theorem remains external; finite compiler interfaces and consumer contracts are present.",
+  "ProviderFacts": [
+    "analytic_chebotarev_density_available"
+  ],
+  "Dependencies": [],
+  "WitnessSchemas": [
+    "finite_galois_class_profiles_v19",
+    "prime_count_density_stages_v19"
+  ],
+  "Consumers": [
+    "fermats-last-theorem"
+  ],
+  "SourceIds": [
+    "src-prime-distribution-kernel-v21"
+  ],
+  "NextTarget": "Internalize the analytic prime-ideal theorem and Artin-L-function argument.",
+  "LegacyKernelId": "kernel-prime-distribution-v21"
+}

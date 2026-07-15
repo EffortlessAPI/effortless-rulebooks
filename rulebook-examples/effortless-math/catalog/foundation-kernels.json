@@ -1,0 +1,93 @@
+[
+  {
+    "kernel_order": 1,
+    "kernel_id": "kernel-prime-distribution-v21",
+    "title": "Analytic prime distribution",
+    "mathematical_scope": "Chebotarev density for finite Galois quotients.",
+    "input_contract_json": "[\"finite quotient\", \"complete conjugacy classes\", \"Frobenius classifier\"]",
+    "output_contract_json": "[\"positive density and representatives in every class\"]",
+    "finite_compiler_tables_json": "[\"finite_galois_class_profiles_v19\", \"prime_count_density_stages_v19\"]",
+    "source_id": "src-prime-distribution-kernel-v21",
+    "theorem_content_internalized": 0,
+    "status": "ACTIVE-FOUNDATION-KERNEL",
+    "next_target": "Internalize the analytic prime-ideal theorem and Artin-L-function argument."
+  },
+  {
+    "kernel_order": 2,
+    "kernel_id": "kernel-hilbert-specialization-v21",
+    "title": "Hilbert specialization",
+    "mathematical_scope": "Hilbert irreducibility with simultaneous weak approximation.",
+    "input_contract_json": "[\"rational parameter space\", \"thin bad covers\", \"local open conditions\"]",
+    "output_contract_json": "[\"rational specialization outside thin sets satisfying every local open\"]",
+    "finite_compiler_tables_json": "[\"thin_set_profiles_v19\", \"local_open_constraints_v19\", \"crt_specialization_certificates_v19\"]",
+    "source_id": "src-hilbert-specialization-kernel-v21",
+    "theorem_content_internalized": 0,
+    "status": "ACTIVE-FOUNDATION-KERNEL",
+    "next_target": "Internalize universal thin-set avoidance."
+  },
+  {
+    "kernel_order": 3,
+    "kernel_id": "kernel-mazur-formal-immersion-v21",
+    "title": "Mazur modular-curve arithmetic",
+    "mathematical_scope": "Formal immersion at the cusp plus finiteness of the Eisenstein quotient.",
+    "input_contract_json": "[\"cyclic isogeny degree ledger\", \"cusp specialization\", \"tangent rank\"]",
+    "output_contract_json": "[\"rational point forced to the cusp\", \"rational isogeny exclusion\"]",
+    "finite_compiler_tables_json": "[\"cyclic_isogeny_degree_ledger_v19\", \"formal_immersion_tangent_certificates_v19\", \"frey_local_specialization_profiles_v19\"]",
+    "source_id": "src-mazur-modular-curve-kernel-v21",
+    "theorem_content_internalized": 0,
+    "status": "ACTIVE-FOUNDATION-KERNEL",
+    "next_target": "Internalize the Eisenstein quotient and formal-immersion theorem."
+  },
+  {
+    "kernel_order": 4,
+    "kernel_id": "kernel-global-deformation-duality-v21",
+    "title": "Global deformation and duality",
+    "mathematical_scope": "Schlessinger/Mazur representability and Poitou-Tate global-local duality.",
+    "input_contract_json": "[\"absolutely irreducible residual representation\", \"finite tangent/obstruction spaces\", \"local conditions\"]",
+    "output_contract_json": "[\"universal deformation ring\", \"Selmer/dual-Selmer exact balance\"]",
+    "finite_compiler_tables_json": "[\"deformation_problem_contracts_v10\", \"tangent_obstruction_interfaces_v10\", \"poitou_tate_profiles_v10\"]",
+    "source_id": "src-global-deformation-duality-kernel-v21",
+    "theorem_content_internalized": 0,
+    "status": "ACTIVE-FOUNDATION-KERNEL",
+    "next_target": "Internalize actual Galois cochain realization, representability, and duality."
+  },
+  {
+    "kernel_order": 5,
+    "kernel_id": "kernel-modular-curve-comparison-v21",
+    "title": "Modular-curve cohomological comparison",
+    "mathematical_scope": "Betti-etale, de Rham/Dieudonne, Eichler-Shimura, and nearby-cycles comparison.",
+    "input_contract_json": "[\"finite coefficient towers\", \"Hecke correspondences\", \"monodromy models\"]",
+    "output_contract_json": "[\"actual geometric realization at good and bad primes\"]",
+    "finite_compiler_tables_json": "[\"betti_etale_stage_certificates_v17\", \"hecke_comparison_squares_v17\", \"eichler_shimura_stage_certificates_v15\", \"monodromy_comparison_certificates_v17\"]",
+    "source_id": "src-modular-curve-comparison-kernel-v21",
+    "theorem_content_internalized": 0,
+    "status": "ACTIVE-FOUNDATION-KERNEL",
+    "next_target": "Internalize functorial comparison for the actual modular curve and Jacobian."
+  },
+  {
+    "kernel_order": 6,
+    "kernel_id": "kernel-universal-level-lowering-v21",
+    "title": "Universal Ribet level lowering",
+    "mathematical_scope": "Uniform one-prime descent for every admissible hypothetical FLT level.",
+    "input_contract_json": "[\"modularity\", \"irreducibility\", \"finite/local profile\", \"Ihara/component/multiplicity/lift generators\"]",
+    "output_contract_json": "[\"weight-two newform at the lowered level\"]",
+    "finite_compiler_tables_json": "[\"edge_closure_audit_v9\", \"edge_closure_audit_v8\", \"edge_closure_audit_v7\", \"lower_level_eigenform_certificates\"]",
+    "source_id": "src-universal-level-lowering-kernel-v21",
+    "theorem_content_internalized": 0,
+    "status": "ACTIVE-FOUNDATION-KERNEL",
+    "next_target": "Internalize the universal quantifier over all admissible levels."
+  },
+  {
+    "kernel_order": 7,
+    "kernel_id": "kernel-solvable-automorphy-v21",
+    "title": "Solvable Artin automorphy",
+    "mathematical_scope": "Solvable base change, automorphic induction, and converse theorem.",
+    "input_contract_json": "[\"odd finite image\", \"dihedral/tetrahedral/octahedral router\", \"local factors\"]",
+    "output_contract_json": "[\"weight-one cuspidal automorphic representation\"]",
+    "finite_compiler_tables_json": "[\"artin_projective_type_profiles_v19\", \"automorphic_induction_state_machines_v19\", \"artin_local_factor_certificates_v19\"]",
+    "source_id": "src-solvable-automorphy-kernel-v21",
+    "theorem_content_internalized": 0,
+    "status": "ACTIVE-FOUNDATION-KERNEL",
+    "next_target": "Internalize the analytic Langlands-Tunnell kernel."
+  }
+]

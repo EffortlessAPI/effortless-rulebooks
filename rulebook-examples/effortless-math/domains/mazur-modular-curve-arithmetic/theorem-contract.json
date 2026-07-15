@@ -1,0 +1,36 @@
+{
+  "TheoremId": "mazur-modular-curve-arithmetic",
+  "Version": "0.1.0",
+  "Title": "Mazur Modular-Curve Arithmetic",
+  "DomainId": "domain-mazur-modular-curve-arithmetic",
+  "Statement": "Formal immersion at the cusp plus finiteness of the Eisenstein quotient.",
+  "Scope": "Initial provider stub migrated from Fermat Witness Lab v21.",
+  "Hypotheses": [
+    "cyclic isogeny degree ledger",
+    "cusp specialization",
+    "tangent rank"
+  ],
+  "Conclusions": [
+    "rational point forced to the cusp",
+    "rational isogeny exclusion"
+  ],
+  "ProofStatus": "IMPORTED",
+  "TrustBoundary": "The universal theorem remains external; finite compiler interfaces and consumer contracts are present.",
+  "ProviderFacts": [
+    "mazur_formal_immersion_eisenstein_kernel_available"
+  ],
+  "Dependencies": [],
+  "WitnessSchemas": [
+    "cyclic_isogeny_degree_ledger_v19",
+    "formal_immersion_tangent_certificates_v19",
+    "frey_local_specialization_profiles_v19"
+  ],
+  "Consumers": [
+    "fermats-last-theorem"
+  ],
+  "SourceIds": [
+    "src-mazur-modular-curve-kernel-v21"
+  ],
+  "NextTarget": "Internalize the Eisenstein quotient and formal-immersion theorem.",
+  "LegacyKernelId": "kernel-mazur-formal-immersion-v21"
+}

@@ -1,0 +1,65 @@
+{
+  "ShowHidden": false,
+  "ShowAllFiles": false,
+  "CurrentPath": "",
+  "SSoTmeProjectFiles": null,
+  "SSoTmeProjectId": null,
+  "Name": "effortless-math",
+  "Description": "Cross-theorem executable mathematics network. FLT is the deeply modeled flagship; seven provider theorems begin as imported first-class contracts.",
+  "ProjectSettings": [
+    {
+      "Name": "project-name",
+      "Value": "effortless-math"
+    }
+  ],
+  "ProjectTranspilers": [
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "minimizerulebook",
+      "RelativePath": "/effortless-rulebook",
+      "CommandLine": "minimize-rulebook -i effortless-math-rulebook.json",
+      "IsDisabled": false,
+      "Description": "Minimize the canonical theorem-network rulebook."
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktopostgres",
+      "RelativePath": "/effortless-postgres",
+      "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/effortless-math-rulebook.json -p memoize_repeated_calls=true",
+      "IsDisabled": false,
+      "Description": "Generate Postgres schema and seed data."
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktorulespeak",
+      "RelativePath": "/rulespeak",
+      "CommandLine": "rulebook-to-rulespeak -i ../effortless-rulebook/effortless-math-rulebook.json",
+      "IsDisabled": false,
+      "Description": "Generate the human-readable theorem-network narrative."
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktoowl",
+      "RelativePath": "/owl",
+      "CommandLine": "rulebook-to-owl -i ../effortless-rulebook/effortless-math-rulebook.json",
+      "IsDisabled": false,
+      "Description": "Generate OWL/SHACL theorem-network projections."
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktoexplainerdag",
+      "RelativePath": "/app/frontend/public",
+      "CommandLine": "rulebook-to-explainer-dag -i ../../effortless-rulebook/effortless-math-rulebook.json -o rulebook-explainer-dag",
+      "IsDisabled": false,
+      "Description": "Generate an ExplainDAG projection."
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktoxlsx",
+      "RelativePath": "",
+      "CommandLine": "rulebook-to-xlsx -i effortless-rulebook/effortless-math-rulebook.json",
+      "IsDisabled": true,
+      "DisabledNote": "Enable after the rulebook is integrated and the large-domain XLSX path is capacity-tested."
+    }
+  ]
+}

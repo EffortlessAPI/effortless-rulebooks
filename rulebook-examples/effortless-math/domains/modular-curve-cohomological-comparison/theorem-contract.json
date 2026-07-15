@@ -1,0 +1,37 @@
+{
+  "TheoremId": "modular-curve-cohomological-comparison",
+  "Version": "0.1.0",
+  "Title": "Modular-Curve Cohomological Comparison",
+  "DomainId": "domain-modular-curve-comparison",
+  "Statement": "Betti-etale, de Rham/Dieudonne, Eichler-Shimura, and nearby-cycles comparison.",
+  "Scope": "Initial provider stub migrated from Fermat Witness Lab v21.",
+  "Hypotheses": [
+    "finite coefficient towers",
+    "Hecke correspondences",
+    "monodromy models"
+  ],
+  "Conclusions": [
+    "actual geometric realization at good and bad primes"
+  ],
+  "ProofStatus": "IMPORTED",
+  "TrustBoundary": "The universal theorem remains external; finite compiler interfaces and consumer contracts are present.",
+  "ProviderFacts": [
+    "modular_curve_geometric_comparison_available",
+    "semistable_nearby_cycles_comparison_available"
+  ],
+  "Dependencies": [],
+  "WitnessSchemas": [
+    "betti_etale_stage_certificates_v17",
+    "hecke_comparison_squares_v17",
+    "eichler_shimura_stage_certificates_v15",
+    "monodromy_comparison_certificates_v17"
+  ],
+  "Consumers": [
+    "fermats-last-theorem"
+  ],
+  "SourceIds": [
+    "src-modular-curve-comparison-kernel-v21"
+  ],
+  "NextTarget": "Internalize functorial comparison for the actual modular curve and Jacobian.",
+  "LegacyKernelId": "kernel-modular-curve-comparison-v21"
+}

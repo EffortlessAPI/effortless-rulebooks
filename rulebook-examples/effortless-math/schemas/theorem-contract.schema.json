@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://effortlessapi.example/schemas/theorem-contract.schema.json",
+  "title": "Effortless Math Theorem Contract",
+  "type": "object",
+  "required": [
+    "TheoremId",
+    "Version",
+    "Title",
+    "DomainId",
+    "Statement",
+    "Scope",
+    "Hypotheses",
+    "Conclusions",
+    "ProofStatus",
+    "TrustBoundary",
+    "ProviderFacts",
+    "Dependencies",
+    "WitnessSchemas",
+    "Consumers",
+    "NextTarget"
+  ],
+  "properties": {
+    "TheoremId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "Version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "Title": {
+      "type": "string"
+    },
+    "DomainId": {
+      "type": "string"
+    },
+    "Statement": {
+      "type": "string"
+    },
+    "Scope": {
+      "type": "string"
+    },
+    "Hypotheses": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "Conclusions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "ProofStatus": {
+      "type": "string"
+    },
+    "TrustBoundary": {
+      "type": "string"
+    },
+    "ProviderFacts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "Dependencies": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "WitnessSchemas": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "Consumers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "SourceIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "NextTarget": {
+      "type": "string"
+    },
+    "LegacyKernelId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,40 @@
+{
+  "TheoremId": "fermats-last-theorem",
+  "Version": "21.0.0-migration",
+  "Title": "Fermat's Last Theorem",
+  "DomainId": "domain-fermats-last-theorem",
+  "Statement": "For every integer n>2, there are no nonzero integers x,y,z with x^n+y^n=z^n.",
+  "Scope": "Conditional executable theorem network migrated from Fermat Witness Lab v21; prime-exponent p>=5 route deeply represented.",
+  "Hypotheses": [
+    "hypothetical_primitive_flt_solution_p_ge_5",
+    "standard reductions from arbitrary exponent n>2 to the modeled prime-exponent route"
+  ],
+  "Conclusions": [
+    "contradiction",
+    "no hypothetical primitive FLT solution in the modeled scope"
+  ],
+  "ProofStatus": "DERIVED_WITH_IMPORTED_CHILDREN",
+  "TrustBoundary": "Seven foundation theorem contracts remain imported.",
+  "ProviderFacts": [
+    "contradiction"
+  ],
+  "Dependencies": [
+    "analytic-prime-distribution",
+    "hilbert-specialization",
+    "mazur-modular-curve-arithmetic",
+    "global-deformation-duality",
+    "modular-curve-cohomological-comparison",
+    "universal-level-lowering",
+    "solvable-artin-automorphy"
+  ],
+  "WitnessSchemas": [
+    "ProofFacts",
+    "Loops",
+    "InvariantChecks",
+    "ArtifactRegistry"
+  ],
+  "Consumers": [],
+  "SourceIds": [],
+  "NextTarget": "Replace each provider dependency with a versioned provider certificate and rebuild the whole network.",
+  "LegacyKernelId": null
+}

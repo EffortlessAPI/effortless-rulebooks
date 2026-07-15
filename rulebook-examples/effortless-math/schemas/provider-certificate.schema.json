@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://effortlessapi.example/schemas/provider-certificate.schema.json",
+  "title": "Effortless Math Provider Certificate",
+  "type": "object",
+  "required": [
+    "TheoremId",
+    "Version",
+    "ProofStatus",
+    "HypothesisBindings",
+    "Conclusions",
+    "ArtifactHashes",
+    "RemainingImports"
+  ],
+  "properties": {
+    "TheoremId": {
+      "type": "string"
+    },
+    "Version": {
+      "type": "string"
+    },
+    "ProofStatus": {
+      "type": "string"
+    },
+    "HypothesisBindings": {
+      "type": "object"
+    },
+    "Conclusions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "ArtifactHashes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "RemainingImports": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "GeneratedAt": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

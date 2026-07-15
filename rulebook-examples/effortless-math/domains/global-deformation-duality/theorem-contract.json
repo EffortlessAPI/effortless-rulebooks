@@ -1,0 +1,37 @@
+{
+  "TheoremId": "global-deformation-duality",
+  "Version": "0.1.0",
+  "Title": "Global Deformation and Duality",
+  "DomainId": "domain-global-deformation-duality",
+  "Statement": "Schlessinger/Mazur representability and Poitou-Tate global-local duality.",
+  "Scope": "Initial provider stub migrated from Fermat Witness Lab v21.",
+  "Hypotheses": [
+    "absolutely irreducible residual representation",
+    "finite tangent/obstruction spaces",
+    "local conditions"
+  ],
+  "Conclusions": [
+    "universal deformation ring",
+    "Selmer/dual-Selmer exact balance"
+  ],
+  "ProofStatus": "IMPORTED",
+  "TrustBoundary": "The universal theorem remains external; finite compiler interfaces and consumer contracts are present.",
+  "ProviderFacts": [
+    "deformation_problem_represented",
+    "poitou_tate_balance_available"
+  ],
+  "Dependencies": [],
+  "WitnessSchemas": [
+    "deformation_problem_contracts_v10",
+    "tangent_obstruction_interfaces_v10",
+    "poitou_tate_profiles_v10"
+  ],
+  "Consumers": [
+    "fermats-last-theorem"
+  ],
+  "SourceIds": [
+    "src-global-deformation-duality-kernel-v21"
+  ],
+  "NextTarget": "Internalize actual Galois cochain realization, representability, and duality.",
+  "LegacyKernelId": "kernel-global-deformation-duality-v21"
+}

@@ -1,0 +1,8 @@
+edge_id,title,next_decomposition_target
+import-kernel-global-deformation-duality-v21,Global deformation and Poitou-Tate foundation kernel,Internalize actual Galois deformation representability and global duality.
+import-kernel-hilbert-specialization-v21,Hilbert specialization foundation kernel,Internalize universal thin-set avoidance.
+import-kernel-mazur-formal-immersion-v21,Mazur formal-immersion/Eisenstein foundation kernel,Internalize formal immersion and Eisenstein quotient finiteness.
+import-kernel-modular-curve-comparison-v21,Modular-curve cohomological comparison foundation kernel,Internalize good- and bad-prime geometric comparison.
+import-kernel-prime-distribution-v21,Analytic prime-distribution foundation kernel,Internalize analytic Chebotarev.
+import-kernel-solvable-automorphy-v21,Solvable Artin automorphy foundation kernel,Internalize the Langlands-Tunnell analytic kernel.
+import-kernel-universal-level-lowering-v21,Universal Ribet level-lowering foundation kernel,Internalize universal one-prime descent.

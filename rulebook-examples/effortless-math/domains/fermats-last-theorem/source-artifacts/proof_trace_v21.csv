@@ -1,0 +1,114 @@
+step_no,rule_id,derived_fact,antecedents_json,derivation_kind,contradiction,notes
+1,v10-01,normalized_signed_flt_solution,"[""hypothetical_primitive_flt_solution_p_ge_5""]",elementary,0,Normalization.
+2,v10-02,frey_curve_exists,"[""normalized_signed_flt_solution""]",definition,0,Frey construction.
+3,v10-03,frey_minimal_model_exists,"[""normalized_signed_flt_solution""]",algebraic,0,Integral minimal model.
+4,v10-04,frey_curve_semistable,"[""frey_minimal_model_exists""]",local-arithmetic,0,Semistability.
+5,v10-05,frey_discriminant_flt_shape,"[""frey_minimal_model_exists""]",algebraic,0,Valuation profile.
+6,v10-06,frey_full_rational_2_torsion,"[""frey_curve_exists""]",algebraic,0,Visible rational two-torsion.
+7,v10-32,rho_unramified_all_bad_q_ne_p,"[""frey_discriminant_flt_shape""]",tate-kummer-derived,0,Away-from-p criterion.
+8,v10-33,finite_flat_endpoints_and_cocycle_witnessed,"[""frey_discriminant_flt_shape""]",finite-flat-algebra,0,Finite-flat boundary.
+9,v10-37,no_level_2_weight_2_newform,"[""dim_s2_gamma0_2_zero""]",computed,0,Level-2 space is zero.
+10,v12-case-01,mod3_case_partition_certified,"[""frey_curve_semistable""]",logical-partition,0,"E[3] is irreducible or reducible, exclusively."
+11,v12-case-02,mod3_projective_image_solvable,"[""mod3_case_partition_certified""]",finite-group-proof,0,Universal finite projective-image fact.
+12,v12-case-03,mod3_oddness_profile,"[""mod3_case_partition_certified""]",finite-representation-profile,0,Oddness profile.
+13,v15-sign-01,rho_p_odd,"[""frey_curve_exists""]",structural-oddness,0,Complex conjugation has +1 and -1 eigenlines.
+14,v17-ff-01,finite_flat_endpoint_and_kummer_contract_ready,"[""finite_flat_endpoints_and_cocycle_witnessed""]",internal-finite-flat-schema,0,Endpoint and Kummer contract.
+15,v18-fs-01,mod3_brauer_character_contract_ready,"[""mod3_projective_image_solvable"", ""mod3_oddness_profile""]",internal-finite-image-compiler,0,"Finite image, Brauer traces, determinant, and oddness."
+16,v18-irred-01,frey_exponent_prime_partition_certified,"[""frey_curve_exists"", ""frey_full_rational_2_torsion""]",logical-partition,0,"p is 5/7, 11, or greater than 11."
+17,v18-x015-01,x015_rank_zero_and_points_certified,"[""frey_curve_semistable"", ""mod3_case_partition_certified""]",internal-2-isogeny-descent,0,X0(15)(Q) consists of eight explicitly enumerated points.
+18,v18-x015-02,x015_noncuspidal_points_nonsemistable,"[""x015_rank_zero_and_points_certified""]",finite-point-semistability-filter,0,The four noncuspidal points have conductor 50 and are not semistable.
+19,v18-x015-03,mod5_irreducible_if_mod3_reducible,"[""frey_curve_semistable"", ""x015_noncuspidal_points_nonsemistable""]",derived-x015-rational-point-classification,0,A semistable curve cannot correspond to a noncuspidal X0(15) point.
+20,v19-isog-01,cyclic_isogeny_degree_ledger_ready,"[""frey_exponent_prime_partition_certified""]",internal-isogeny-degree-ledger,0,Allowed and excluded cyclic degrees.
+21,v20-ff-01,explicit_kummer_middle_group_scheme_available,"[""finite_flat_endpoint_and_kummer_contract_ready""]",internal-explicit-kummer-group-scheme,0,The disjoint p-component rank-p scheme gives the middle extension.
+22,v20-ff-02,oort_tate_raynaud_extension_classification_available,"[""explicit_kummer_middle_group_scheme_available""]",derived-explicit-kummer-classification,0,The valuation criterion is proved from K*/K*^p.
+23,v20-fs-01,explicit_g12_integral_lift_constructed,"[""mod3_brauer_character_contract_ready""]",internal-explicit-g12-lift,0,G12 over Z[sqrt(-2)] reduces bijectively to GL2(F3).
+24,v20-fs-02,solvable_brauer_character_lift_available,"[""explicit_g12_integral_lift_constructed""]",derived-explicit-g12-lift,0,Restrict the full G12 lift to the actual residual image subgroup.
+25,v21-formal-kernel,mazur_formal_immersion_foundation_kernel_available,"[""cyclic_isogeny_degree_ledger_ready""]",imported-foundation-kernel,0,Mazur formal immersion kernel.
+26,v21-formal-parent,mazur_formal_immersion_eisenstein_kernel_available,"[""cyclic_isogeny_degree_ledger_ready"", ""mazur_formal_immersion_foundation_kernel_available""]",derived-from-mazur-formal-kernel,0,Formal immersion parent derived.
+27,v12-case-08,twisted_x5_genus_zero_family,"[""mod5_irreducible_if_mod3_reducible""]",mixed-geometry,0,Twisted X(5) geometry.
+28,v17-ff-03,rho_finite_at_residual_p_if_bad,"[""finite_flat_endpoint_and_kummer_contract_ready"", ""oort_tate_raynaud_extension_classification_available""]",derived-finite-flat-at-p,0,Finite-flat parent assembled.
+29,v18-fs-03,complex_artin_lift_exists,"[""mod3_brauer_character_contract_ready"", ""solvable_brauer_character_lift_available""]",derived-finite-image-lift,0,The characteristic-zero finite-image representation is assembled.
+30,v19-frey-01,frey_x010_x014_local_specialization_compiled,"[""frey_curve_semistable"", ""frey_full_rational_2_torsion"", ""mazur_formal_immersion_eisenstein_kernel_available""]",internal-frey-cusp-specialization,0,"The p=5,7 Frey point specializes to the distinguished cusp."
+31,v19-frey-02,frey_x010_x014_local_obstruction_available,"[""frey_x010_x014_local_specialization_compiled""]",derived-frey-local-obstruction,0,"Formal immersion forces the noncuspidal Frey point to be a cusp, contradiction."
+32,v19-hilbert-01,twisted_x5_thin_sets_and_local_opens_compiled,"[""twisted_x5_genus_zero_family""]",internal-thin-set-crt-compiler,0,Finite thin loci and local residue constraints.
+33,v19-isog-03,mazur_kenku_isogeny_classification_available,"[""cyclic_isogeny_degree_ledger_ready"", ""mazur_formal_immersion_eisenstein_kernel_available""]",derived-isogeny-classification,0,The rational-isogeny parent is assembled.
+34,v19-lt-01,solvable_artin_projective_type_router_ready,"[""complex_artin_lift_exists"", ""mod3_projective_image_solvable""]",internal-artin-type-router,0,"Dihedral, tetrahedral, and octahedral routes."
+35,v21-hilbert-kernel,hilbert_specialization_foundation_kernel_available,"[""twisted_x5_thin_sets_and_local_opens_compiled""]",imported-foundation-kernel,0,Hilbert specialization kernel.
+36,v21-hilbert-parent,hilbert_irreducibility_weak_approximation_available,"[""twisted_x5_thin_sets_and_local_opens_compiled"", ""hilbert_specialization_foundation_kernel_available""]",derived-from-hilbert-specialization-kernel,0,Parent theorem derived from finite compiler plus kernel.
+37,v21-auto-kernel,solvable_automorphy_foundation_kernel_available,"[""solvable_artin_projective_type_router_ready""]",imported-foundation-kernel,0,Solvable automorphy kernel.
+38,v21-auto-parent,solvable_base_change_converse_available,"[""solvable_artin_projective_type_router_ready"", ""solvable_automorphy_foundation_kernel_available""]",derived-from-solvable-automorphy-kernel,0,Automorphy parent derived.
+39,v10-35,rho_finite_all_odd_nonfinite_2,"[""rho_unramified_all_bad_q_ne_p"", ""rho_finite_at_residual_p_if_bad""]",case-completion,0,Local profile.
+40,v18-irred-04,frey_small_prime_irreducibility_certified,"[""frey_full_rational_2_torsion"", ""mazur_kenku_isogeny_classification_available"", ""frey_x010_x014_local_obstruction_available""]",internal-small-prime-isogeny-compiler,0,A rational p-isogeny gives a cyclic 2p-isogeny; all small cases are excluded.
+41,v18-irred-05,frey_large_prime_irreducibility_certified,"[""frey_full_rational_2_torsion"", ""mazur_kenku_isogeny_classification_available""]",internal-large-prime-isogeny-compiler,0,"For p>11, 2p is not an allowed rational cyclic-isogeny degree."
+42,v18-irred-06,rho_p_irreducible,"[""frey_exponent_prime_partition_certified"", ""frey_small_prime_irreducibility_certified"", ""frey_large_prime_irreducibility_certified""]",proof-by-prime-cases,0,The Frey irreducibility parent is derived.
+43,v19-hilbert-03,auxiliary_curve_selected,"[""twisted_x5_thin_sets_and_local_opens_compiled"", ""hilbert_irreducibility_weak_approximation_available""]",derived-hilbert-selection,0,The auxiliary curve satisfies the required local and generic properties.
+44,v19-lt-03,weight1_automorphic_representation_exists,"[""solvable_artin_projective_type_router_ready"", ""solvable_base_change_converse_available""]",derived-langlands-tunnell,0,The weight-one automorphic representation is assembled.
+45,v20-weight-01,a2_theta_weight_one_series_available,"[""weight1_automorphic_representation_exists""]",internal-a2-theta-modularity,0,The A2 theta series is a weight-one form of character chi_-3.
+46,v20-weight-02,mod3_weight_one_eisenstein_congruence_available,"[""a2_theta_weight_one_series_available""]",derived-explicit-theta-congruence,0,All nonconstant coefficients are multiples of 6.
+47,v13-hecke-02,hecke_residual_pseudocharacter_absolutely_irreducible,"[""rho_p_irreducible""]",structural,0,The residual trace comes from the already irreducible residual representation.
+48,v16-mult-01,multiplicity_theorem_case_partition_certified,"[""rho_p_irreducible"", ""rho_finite_all_odd_nonfinite_2""]",logical-partition,0,Theorem 4.26 applicability is split into good and residual-prime cases.
+49,v17-cbn-01,finite_residual_quotient_available,"[""rho_p_irreducible""]",structural,0,Residual image is finite.
+50,v17-cbn-03,brauer_nesbitt_character_compiler_ready,"[""finite_residual_quotient_available""]",internal-character-compiler,0,Complete class traces determine semisimplification.
+51,v18-image-01,semistable_transvection_profile_ready,"[""rho_p_irreducible"", ""frey_curve_semistable""]",internal-local-image-profile,0,Semistable local inertia supplies the required elementary-unipotent profile.
+52,v18-image-02,sl2_elementary_generation_available,"[""semistable_transvection_profile_ready""]",internal-transvection-generation,0,Upper and lower transvections generate SL2.
+53,v18-image-03,semistable_large_prime_gl2_image,"[""sl2_elementary_generation_available""]",derived-large-image,0,Cyclotomic determinant upgrades SL2 to GL2.
+54,v18-weight-02,weight2_residual_hecke_packet_extracted,"[""weight1_automorphic_representation_exists"", ""mod3_weight_one_eisenstein_congruence_available""]",internal-qexp-and-eigenpacket-compiler,0,Multiplication and packet projection preserve the residual Hecke system.
+55,v18-weight-03,irreducible_mod3_branch_implication_certified,"[""weight2_residual_hecke_packet_extracted""]",derived-weight-change,0,The irreducible mod-3 branch is modular of weight two.
+56,v19-cheb-01,finite_quotient_class_table_and_classifier_ready,"[""finite_residual_quotient_available""]",internal-finite-chebotarev-compiler,0,Complete class table and Frobenius factorization classifier.
+57,v21-cheb-kernel,prime_distribution_foundation_kernel_available,"[""finite_quotient_class_table_and_classifier_ready""]",imported-foundation-kernel,0,Analytic prime distribution kernel.
+58,v21-cheb-parent,analytic_chebotarev_density_available,"[""finite_quotient_class_table_and_classifier_ready"", ""prime_distribution_foundation_kernel_available""]",derived-from-prime-distribution-kernel,0,Parent theorem derived from finite compiler plus kernel.
+59,v12-case-10,reducible_mod3_branch_implication_certified,"[""auxiliary_curve_selected"", ""irreducible_mod3_branch_implication_certified""]",derived-transfer,0,Certifies reducible(E[3]) ⇒ residual modularity.
+60,v12-case-11,semistable_residual_modularity_all_cases,"[""mod3_case_partition_certified"", ""irreducible_mod3_branch_implication_certified"", ""reducible_mod3_branch_implication_certified""]",proof-by-cases,0,No realized branch facts are asserted.
+61,v14-local-02,ordinary_steinberg_local_models_compiled,"[""semistable_residual_modularity_all_cases""]",internal-local-model-compiler,0,"Good, ordinary, finite-flat schema, and Steinberg models."
+62,v17-bad-01,bad_prime_monodromy_local_model_ready,"[""semistable_residual_modularity_all_cases""]",internal-monodromy-compiler,0,Monodromy and local U model.
+63,v17-coh-01,betti_finite_towers_and_hecke_squares_ready,"[""semistable_residual_modularity_all_cases""]",internal-cohomology-finite-compiler,0,Finite towers and Hecke squares.
+64,v19-cheb-03,finite_quotient_chebotarev_class_coverage,"[""finite_quotient_class_table_and_classifier_ready"", ""analytic_chebotarev_density_available""]",derived-chebotarev-class-coverage,0,Every finite class has unramified Frobenius representatives.
+65,v21-def-kernel,global_deformation_duality_foundation_kernel_available,"[""semistable_residual_modularity_all_cases""]",imported-foundation-kernel,0,Shared deformation/duality kernel.
+66,v21-def-parent,deformation_problem_represented,"[""semistable_residual_modularity_all_cases"", ""global_deformation_duality_foundation_kernel_available""]",derived-from-deformation-duality-kernel,0,Representability parent derived.
+67,v21-comparison-kernel,modular_curve_comparison_foundation_kernel_available,"[""semistable_residual_modularity_all_cases""]",imported-foundation-kernel,0,Shared good/bad comparison kernel.
+68,v21-good-comparison-parent,modular_curve_geometric_comparison_available,"[""betti_finite_towers_and_hecke_squares_ready"", ""modular_curve_comparison_foundation_kernel_available""]",derived-from-modular-curve-comparison-kernel,0,Good-prime comparison parent derived.
+69,v21-bad-comparison-parent,semistable_nearby_cycles_comparison_available,"[""bad_prime_monodromy_local_model_ready"", ""modular_curve_comparison_foundation_kernel_available""]",derived-from-modular-curve-comparison-kernel,0,Nearby-cycles parent derived.
+70,v10-20,local_deformation_conditions_defined,"[""deformation_problem_represented""]",local-deformation-schema,0,Local condition contracts.
+71,v10-21,global_tangent_obstruction_profile,"[""local_deformation_conditions_defined""]",cohomological-interface,0,Selmer interface.
+72,v17-bad-03,bad_prime_cohomology_comparison_available,"[""bad_prime_monodromy_local_model_ready"", ""semistable_nearby_cycles_comparison_available""]",derived-bad-prime-comparison,0,Bad-prime parent assembled.
+73,v17-coh-03,integral_modular_curve_cohomology_package_available,"[""betti_finite_towers_and_hecke_squares_ready"", ""modular_curve_geometric_comparison_available""]",derived-integral-cohomology-package,0,Cohomology parent assembled.
+74,v21-duality-parent,poitou_tate_balance_available,"[""global_tangent_obstruction_profile"", ""global_deformation_duality_foundation_kernel_available""]",derived-from-deformation-duality-kernel,0,Poitou-Tate parent derived.
+75,v14-local-03,hecke_local_global_compatibility_available,"[""bad_prime_cohomology_comparison_available"", ""ordinary_steinberg_local_models_compiled""]",derived-local-global-compatibility,0,The old compatibility parent is derived.
+76,v16-mult-03,multiplicity_qexp_eigenline_one,"[""integral_modular_curve_cohomology_package_available""]",internal-qexp-duality-compiler,0,Perfect q-expansion duality gives a one-dimensional m-torsion line.
+77,v17-cbn-04,multiplicity_constituent_control_available,"[""finite_quotient_chebotarev_class_coverage"", ""brauer_nesbitt_character_compiler_ready"", ""integral_modular_curve_cohomology_package_available""]",derived-constituent-control,0,Constituent parent assembled.
+78,v17-res-01,residual_prime_multiplicity_dimension_compiler_ready,"[""rho_finite_at_residual_p_if_bad"", ""bad_prime_cohomology_comparison_available"", ""multiplicity_qexp_eigenline_one""]",internal-residual-dimension-compiler,0,Connected/étale dimension and component obstruction.
+79,v17-res-02,multiplicity_residual_case_implication_certified,"[""residual_prime_multiplicity_dimension_compiler_ready""]",derived-residual-prime-multiplicity,0,Residual-prime parent assembled.
+80,v20-tw-01,tw_finite_quotient_selection_contract_ready,"[""poitou_tate_balance_available"", ""analytic_chebotarev_density_available"", ""rho_p_irreducible""]",internal-dual-selmer-selection-compiler,0,Independent evaluation vectors and desired finite quotient classes are constructed.
+81,v20-tw-02,taylor_wiles_auxiliary_primes_exist,"[""tw_finite_quotient_selection_contract_ready""]",derived-using-existing-chebotarev,0,Analytic Chebotarev supplies primes in the selected classes.
+82,v10-24,patched_inverse_system_witnessed,"[""taylor_wiles_auxiliary_primes_exist""]",finite-algebra,0,Cached finite patching system.
+83,v12-tw-01,tw_auxiliary_cover_free_group_geometry,"[""taylor_wiles_auxiliary_primes_exist""]",internal-theorem2-geometry,0,"Free cover, Shapiro, and involution contract."
+84,v12-tw-02,tw_anti_invariant_cohomology_free,"[""tw_auxiliary_cover_free_group_geometry""]",internal-theorem2-compiler,0,H1-minus is free over O[Delta].
+85,v16-mult-04,multiplicity_good_case_implication_certified,"[""multiplicity_constituent_control_available"", ""multiplicity_qexp_eigenline_one"", ""integral_modular_curve_cohomology_package_available""]",internal-good-reduction-dimension-compiler,0,D(V)^0 has dimension one and D(V) has twice that dimension.
+86,v16-mult-06,universal_non_eisenstein_multiplicity_two_available,"[""multiplicity_theorem_case_partition_certified"", ""multiplicity_good_case_implication_certified"", ""multiplicity_residual_case_implication_certified""]",proof-by-cases,0,The parent theorem is derived without asserting either branch as realized.
+87,v15-etale-03,localized_etale_hecke_module_free_rank_two,"[""integral_modular_curve_cohomology_package_available"", ""universal_non_eisenstein_multiplicity_two_available""]",internal-nakayama-rank-two-compiler,0,Rational rank plus residue dimension gives freeness.
+88,v15-etale-04,localized_etale_hecke_module_exists,"[""localized_etale_hecke_module_free_rank_two""]",derived-localized-etale-parent,0,Old parent fact derived.
+89,v15-sign-02,tw_auxiliary_localized_etale_module_free_rank_two,"[""taylor_wiles_auxiliary_primes_exist"", ""integral_modular_curve_cohomology_package_available"", ""universal_non_eisenstein_multiplicity_two_available""]",internal-nakayama-rank-two-compiler,0,Same rank-two compiler at auxiliary level.
+90,v15-sign-03,tw_auxiliary_cohomology_rank_one,"[""tw_auxiliary_localized_etale_module_free_rank_two"", ""rho_p_odd""]",internal-sign-projector-rank-one-compiler,0,Complementary projectors and one-dimensional residue signs.
+91,v12-tw-04,tw_auxiliary_level_stage_freeness,"[""tw_anti_invariant_cohomology_free"", ""tw_auxiliary_cohomology_rank_one""]",derived-rank-transfer,0,T_Q is free over O[Delta_Q].
+92,v14-module-02,hecke_module_pseudocharacter_compiled,"[""localized_etale_hecke_module_exists""]",internal-module-pseudocharacter-compiler,0,Trace/determinant and compatible finite quotients.
+93,v14-module-03,hecke_modular_pseudocharacter_system_exists,"[""hecke_module_pseudocharacter_compiled""]",derived-modular-pseudocharacter,0,The old parent is derived.
+94,v13-hecke-03,hecke_cayley_hamilton_stages_split,"[""hecke_modular_pseudocharacter_system_exists"", ""hecke_residual_pseudocharacter_absolutely_irreducible""]",internal-pseudocharacter-compiler,0,"Unit trace bases, Cayley–Hamilton quotients, and matrix units."
+95,v13-hecke-04,hecke_global_representation_inverse_limit_constructed,"[""hecke_cayley_hamilton_stages_split""]",internal-adic-representation-compiler,0,Compatible finite-stage representations form the completed representation.
+96,v13-hecke-06,hecke_galois_representations_exist,"[""hecke_global_representation_inverse_limit_constructed"", ""hecke_local_global_compatibility_available""]",derived-hecke-galois-assembly,0,The omnibus parent is assembled from two child theorem inputs and an internal compiler.
+97,v12-rt-01,universal_deformation_map_constructed,"[""deformation_problem_represented"", ""hecke_galois_representations_exist""]",universal-property-compiler,0,Unique map R→T.
+98,v12-rt-02,hecke_trace_generator_coverage,"[""hecke_galois_representations_exist""]",generator-coverage,0,"Traces, determinants, and local U operators generate T."
+99,v12-rt-03,universal_R_to_T_surjection,"[""universal_deformation_map_constructed"", ""hecke_trace_generator_coverage""]",derived-surjection,0,Surjectivity from topological generator coverage.
+100,v12-tw-05,tw_arithmetic_n_structure_contract_satisfied,"[""deformation_problem_represented"", ""local_deformation_conditions_defined"", ""taylor_wiles_auxiliary_primes_exist"", ""tw_auxiliary_level_stage_freeness"", ""hecke_galois_representations_exist""]",n-structure-input-contract,0,All typed inputs present.
+101,v12-tw-06,tw_arithmetic_n_structures_compatible,"[""tw_arithmetic_n_structure_contract_satisfied""]",internal-n-structure-assembler,0,"Emit compatible R_Q,T_Q,H_Q diagrams."
+102,v11-patch-03,tw_patching_contract_satisfied,"[""tw_arithmetic_n_structures_compatible""]",contract-validation,0,Every Proposition 3 hypothesis is represented.
+103,v11-patch-04,tw_diagonal_inverse_limit_constructed,"[""tw_patching_contract_satisfied""]",internal-patching-compiler,0,"Finite bounds, diagonal selection, and inverse limit."
+104,v11-patch-05,patched_arithmetic_module_free,"[""tw_diagonal_inverse_limit_constructed""]",derived-from-internal-patching-compiler,0,The algebraic patching theorem is no longer imported.
+105,v20-rt-01,patched_module_faithful_over_R,"[""patched_arithmetic_module_free"", ""universal_R_to_T_surjection""]",internal-faithful-free-module-lemma,0,A positive-rank free R-module has zero annihilator.
+106,v20-rt-02,R_equals_T,"[""patched_module_faithful_over_R"", ""universal_R_to_T_surjection""]",derived-faithful-module-isomorphism,0,"The kernel annihilates a faithful module, so it is zero."
+107,v10-29,semistable_modularity_lift,"[""R_equals_T""]",derived-from-rt-child-dag,0,No omnibus R=T import remains.
+108,v10-30,frey_curve_modular,"[""semistable_modularity_lift""]",derived,0,Lift residual modularity.
+109,v10-31,rho_p_modular,"[""frey_curve_modular""]",structural,0,Residual representation modular.
+110,v21-lowering-contract,universal_level_lowering_contract_ready,"[""rho_p_modular"", ""rho_p_irreducible"", ""rho_finite_all_odd_nonfinite_2""]",internal-universal-contract,0,All finite certificate-generator interfaces are present.
+111,v21-lowering-kernel,universal_level_lowering_foundation_kernel_available,"[""universal_level_lowering_contract_ready""]",imported-foundation-kernel,0,Universal level-lowering kernel.
+112,v21-lowering-parent,level_2_weight_2_newform_exists,"[""universal_level_lowering_contract_ready"", ""universal_level_lowering_foundation_kernel_available""]",derived-from-universal-level-lowering-kernel,0,Level-two newform conclusion derived.
+113,v10-38,contradiction,"[""level_2_weight_2_newform_exists"", ""no_level_2_weight_2_newform""]",logic,1,Contradiction.

@@ -1,0 +1,12 @@
+{
+  "TheoremCount": 8,
+  "FoundationKernelCount": 7,
+  "FltActiveProviderDependencies": 7,
+  "V21LoopCount": 571,
+  "V21ProofFactCount": 113,
+  "V21InvariantCount": 305,
+  "V21ContradictionCount": 1,
+  "V21ActiveImportCount": 7,
+  "V21ArchiveSha256": "284ce38b6e616fddaa6efea311781ca061db84ca007aa0444b72eec68c122bf6",
+  "V21SqliteSha256": "4ed043d32d50b5a7258bb17c1b20ccba938bb16f8046cc403429b5ea59c52b64"
+}

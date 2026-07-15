@@ -1,0 +1,148 @@
+{
+  "NetworkId": "effortless-math-theorem-network",
+  "Version": "0.1.0-starter",
+  "Theorems": [
+    {
+      "TheoremId": "fermats-last-theorem",
+      "Title": "Fermat's Last Theorem",
+      "DomainId": "domain-fermats-last-theorem",
+      "ProofStatus": "DERIVED_WITH_IMPORTED_CHILDREN",
+      "ContractPath": "domains/fermats-last-theorem/theorem-contract.json"
+    },
+    {
+      "TheoremId": "analytic-prime-distribution",
+      "Title": "Analytic Prime Distribution / Chebotarev",
+      "DomainId": "domain-analytic-prime-distribution",
+      "ProofStatus": "IMPORTED",
+      "ContractPath": "domains/analytic-prime-distribution/theorem-contract.json"
+    },
+    {
+      "TheoremId": "hilbert-specialization",
+      "Title": "Hilbert Specialization",
+      "DomainId": "domain-hilbert-specialization",
+      "ProofStatus": "IMPORTED",
+      "ContractPath": "domains/hilbert-specialization/theorem-contract.json"
+    },
+    {
+      "TheoremId": "mazur-modular-curve-arithmetic",
+      "Title": "Mazur Modular-Curve Arithmetic",
+      "DomainId": "domain-mazur-modular-curve-arithmetic",
+      "ProofStatus": "IMPORTED",
+      "ContractPath": "domains/mazur-modular-curve-arithmetic/theorem-contract.json"
+    },
+    {
+      "TheoremId": "global-deformation-duality",
+      "Title": "Global Deformation and Duality",
+      "DomainId": "domain-global-deformation-duality",
+      "ProofStatus": "IMPORTED",
+      "ContractPath": "domains/global-deformation-duality/theorem-contract.json"
+    },
+    {
+      "TheoremId": "modular-curve-cohomological-comparison",
+      "Title": "Modular-Curve Cohomological Comparison",
+      "DomainId": "domain-modular-curve-comparison",
+      "ProofStatus": "IMPORTED",
+      "ContractPath": "domains/modular-curve-cohomological-comparison/theorem-contract.json"
+    },
+    {
+      "TheoremId": "universal-level-lowering",
+      "Title": "Universal Ribet Level Lowering",
+      "DomainId": "domain-universal-level-lowering",
+      "ProofStatus": "IMPORTED",
+      "ContractPath": "domains/universal-level-lowering/theorem-contract.json"
+    },
+    {
+      "TheoremId": "solvable-artin-automorphy",
+      "Title": "Solvable Artin Automorphy",
+      "DomainId": "domain-solvable-artin-automorphy",
+      "ProofStatus": "IMPORTED",
+      "ContractPath": "domains/solvable-artin-automorphy/theorem-contract.json"
+    }
+  ],
+  "Dependencies": [
+    {
+      "DependencyId": "dep-flt-analytic-prime-distribution",
+      "ConsumerTheoremId": "fermats-last-theorem",
+      "ProviderTheoremId": "analytic-prime-distribution",
+      "RequiredConclusion": "positive density and representatives in every class",
+      "ProofStatusId": "IMPORTED",
+      "LoadBearing": true,
+      "IsImported": true,
+      "IsSharedKernel": false,
+      "ProviderContractPath": "domains/analytic-prime-distribution/theorem-contract.json",
+      "Notes": "Chebotarev density for finite Galois quotients."
+    },
+    {
+      "DependencyId": "dep-flt-hilbert-specialization",
+      "ConsumerTheoremId": "fermats-last-theorem",
+      "ProviderTheoremId": "hilbert-specialization",
+      "RequiredConclusion": "rational specialization outside thin sets satisfying every local open",
+      "ProofStatusId": "IMPORTED",
+      "LoadBearing": true,
+      "IsImported": true,
+      "IsSharedKernel": false,
+      "ProviderContractPath": "domains/hilbert-specialization/theorem-contract.json",
+      "Notes": "Hilbert irreducibility with simultaneous weak approximation."
+    },
+    {
+      "DependencyId": "dep-flt-mazur-modular-curve-arithmetic",
+      "ConsumerTheoremId": "fermats-last-theorem",
+      "ProviderTheoremId": "mazur-modular-curve-arithmetic",
+      "RequiredConclusion": "rational point forced to the cusp; rational isogeny exclusion",
+      "ProofStatusId": "IMPORTED",
+      "LoadBearing": true,
+      "IsImported": true,
+      "IsSharedKernel": false,
+      "ProviderContractPath": "domains/mazur-modular-curve-arithmetic/theorem-contract.json",
+      "Notes": "Formal immersion at the cusp plus finiteness of the Eisenstein quotient."
+    },
+    {
+      "DependencyId": "dep-flt-global-deformation-duality",
+      "ConsumerTheoremId": "fermats-last-theorem",
+      "ProviderTheoremId": "global-deformation-duality",
+      "RequiredConclusion": "universal deformation ring; Selmer/dual-Selmer exact balance",
+      "ProofStatusId": "IMPORTED",
+      "LoadBearing": true,
+      "IsImported": true,
+      "IsSharedKernel": true,
+      "ProviderContractPath": "domains/global-deformation-duality/theorem-contract.json",
+      "Notes": "Schlessinger/Mazur representability and Poitou-Tate global-local duality."
+    },
+    {
+      "DependencyId": "dep-flt-modular-curve-cohomological-comparison",
+      "ConsumerTheoremId": "fermats-last-theorem",
+      "ProviderTheoremId": "modular-curve-cohomological-comparison",
+      "RequiredConclusion": "actual geometric realization at good and bad primes",
+      "ProofStatusId": "IMPORTED",
+      "LoadBearing": true,
+      "IsImported": true,
+      "IsSharedKernel": true,
+      "ProviderContractPath": "domains/modular-curve-cohomological-comparison/theorem-contract.json",
+      "Notes": "Betti-etale, de Rham/Dieudonne, Eichler-Shimura, and nearby-cycles comparison."
+    },
+    {
+      "DependencyId": "dep-flt-universal-level-lowering",
+      "ConsumerTheoremId": "fermats-last-theorem",
+      "ProviderTheoremId": "universal-level-lowering",
+      "RequiredConclusion": "weight-two newform at the lowered level",
+      "ProofStatusId": "IMPORTED",
+      "LoadBearing": true,
+      "IsImported": true,
+      "IsSharedKernel": false,
+      "ProviderContractPath": "domains/universal-level-lowering/theorem-contract.json",
+      "Notes": "Uniform one-prime descent for every admissible hypothetical FLT level."
+    },
+    {
+      "DependencyId": "dep-flt-solvable-artin-automorphy",
+      "ConsumerTheoremId": "fermats-last-theorem",
+      "ProviderTheoremId": "solvable-artin-automorphy",
+      "RequiredConclusion": "weight-one cuspidal automorphic representation",
+      "ProofStatusId": "IMPORTED",
+      "LoadBearing": true,
+      "IsImported": true,
+      "IsSharedKernel": false,
+      "ProviderContractPath": "domains/solvable-artin-automorphy/theorem-contract.json",
+      "Notes": "Solvable base change, automorphic induction, and converse theorem."
+    }
+  ]
+}
