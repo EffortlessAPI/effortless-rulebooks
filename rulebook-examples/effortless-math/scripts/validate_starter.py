@@ -44,10 +44,14 @@ for name, value in rulebook.items():
 
 theorem_rows = rulebook['Theorems']['data']
 theorem_ids = {row['TheoremId'] for row in theorem_rows}
-if len(theorem_ids) != 8:
-    raise ValueError(f'Expected 8 theorem IDs, found {len(theorem_ids)}')
+# 8 migrated v21 theorems (FLT + 7 foundation providers) plus the 4 fully
+# internalized natural-number-arithmetic theorems (+, -, *, /) added in loops 572-575.
+if len(theorem_ids) != 12:
+    raise ValueError(f'Expected 12 theorem IDs, found {len(theorem_ids)}')
 
 dependencies = rulebook['TheoremDependencies']['data']
+# Still exactly the 7 load-bearing FLT provider dependencies. The natural-number-
+# arithmetic theorems are zero-import and add no TheoremDependencies rows.
 if len(dependencies) != 7:
     raise ValueError(f'Expected 7 theorem dependencies, found {len(dependencies)}')
 for dependency in dependencies:

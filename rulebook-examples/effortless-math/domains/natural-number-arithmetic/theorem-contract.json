@@ -1,0 +1,82 @@
+{
+  "DomainId": "domain-natural-number-arithmetic",
+  "Version": "1.0.0",
+  "Title": "Natural-Number Arithmetic (Peano)",
+  "KernelId": "kernel-peano-naturals-v1",
+  "Statement": "The four elementary operations on the Peano naturals, each internalized for its stated scope.",
+  "Scope": "Zero/Successor naturals with addition, truncated subtraction, multiplication, and exact (partial) division defined by structural recursion. No theorem is imported above the Peano kernel trust boundary.",
+  "TrustBoundary": "PeanoNaturalNumberKernel: Zero, Successor, and the recursive operation definitions are the trusted base.",
+  "CanClaimZeroImports": true,
+  "RemainingImports": [],
+  "InferenceRules": [
+    { "RuleId": "nat-add-zero-left", "Rule": "0 + n = n" },
+    { "RuleId": "nat-add-succ-left", "Rule": "S(m) + n = S(m + n)" },
+    { "RuleId": "nat-sub-n-zero", "Rule": "n - 0 = n" },
+    { "RuleId": "nat-sub-succ-succ", "Rule": "S(m) - S(n) = m - n" },
+    { "RuleId": "nat-mul-zero-left", "Rule": "0 * n = 0" },
+    { "RuleId": "nat-mul-succ-left", "Rule": "S(m) * n = n + (m * n)" },
+    { "RuleId": "nat-div-base", "Rule": "m / n = 0 when m < n" },
+    { "RuleId": "nat-div-sub-step", "Rule": "m / n = 1 + ((m - n) / n) when m >= n and n > 0" }
+  ],
+  "Numerals": {
+    "0": "Z",
+    "1": "S(Z)",
+    "2": "S(S(Z))",
+    "3": "S(S(S(Z)))",
+    "4": "S(S(S(S(Z))))"
+  },
+  "Theorems": [
+    {
+      "TheoremId": "natural-number-addition-2-plus-2-equals-4",
+      "Statement": "NaturalAdd(2,2) = 4",
+      "Hypotheses": ["numeral_2_is_SSO"],
+      "Conclusions": ["add_2_2_equals_4"],
+      "ProofStatus": "FULLY_INTERNALIZED_FOR_SCOPE",
+      "RemainingImports": [],
+      "RootFactId": "add_2_2_equals_4"
+    },
+    {
+      "TheoremId": "natural-number-subtraction-4-minus-2-equals-2",
+      "Statement": "NaturalSub(4,2) = 2",
+      "Hypotheses": ["numeral_4_is_SSSSO", "numeral_2_is_SSO"],
+      "Conclusions": ["sub_4_2_equals_2"],
+      "ProofStatus": "FULLY_INTERNALIZED_FOR_SCOPE",
+      "RemainingImports": [],
+      "RootFactId": "sub_4_2_equals_2"
+    },
+    {
+      "TheoremId": "natural-number-multiplication-2-times-2-equals-4",
+      "Statement": "NaturalMul(2,2) = 4",
+      "Hypotheses": ["numeral_2_is_SSO"],
+      "Conclusions": ["mul_2_2_equals_4"],
+      "ProofStatus": "FULLY_INTERNALIZED_FOR_SCOPE",
+      "RemainingImports": [],
+      "RootFactId": "mul_2_2_equals_4",
+      "InternalReuse": ["natural-number-addition-2-plus-2-equals-4"]
+    },
+    {
+      "TheoremId": "natural-number-division-4-div-2-equals-2",
+      "Statement": "NaturalDiv(4,2) = 2",
+      "Hypotheses": ["numeral_4_is_SSSSO", "numeral_2_is_SSO"],
+      "Conclusions": ["div_4_2_equals_2"],
+      "ProofStatus": "FULLY_INTERNALIZED_FOR_SCOPE",
+      "RemainingImports": [],
+      "RootFactId": "div_4_2_equals_2",
+      "InternalReuse": ["natural-number-subtraction-4-minus-2-equals-2"]
+    }
+  ],
+  "WitnessSchemas": [
+    "ProofFacts",
+    "Loops",
+    "InvariantChecks",
+    "FoundationKernels",
+    "TrustBoundaries",
+    "Conclusions"
+  ],
+  "Dependencies": [],
+  "Consumers": [],
+  "SourceIds": ["src-peano-naturals-kernel-v1"],
+  "NextTarget": "Generalize to associativity, commutativity, distributivity, the ordering relation, and the division algorithm 4 = 2q + r with 0 <= r < 2.",
+  "ArtifactHashes": {},
+  "GeneratedTimestamp": null
+}
