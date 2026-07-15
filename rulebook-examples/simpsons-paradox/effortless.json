@@ -73,7 +73,7 @@
       "IsSSoTTranspiler": false,
       "Name": "rulebooktoexplainerdag",
       "RelativePath": "/app/frontend/public",
-      "CommandLine": "rulebook-to-explainer-dag -i ../../effortless-rulebook/simpsons-paradox-rulebook.json -o rulebook-explainer-dag",
+      "CommandLine": "rulebook-to-explainer-dag -i ../../../effortless-rulebook/simpsons-paradox-rulebook.json -o rulebook-explainer-dag",
       "IsDisabled": false,
       "PinnedVersion": "v2026.06.20.1606",
       "LastVersionUsed": "v2026.06.20.1606",
@@ -95,13 +95,6 @@
       "CommandLine": "-exec ./generate-rulespeak-pdf.sh",
       "IsDisabled": false,
       "Description": "Render rulespeak/rulespeak.pdf from rulespeak.html (requires Chrome/Chromium)"
-    },
-    {
-      "IsSSoTTranspiler": false,
-      "Name": "httpseffortlessrulebooktohydratedv202607081333cmvbd4phczmeg7pktzg2z971j0cplnapp",
-      "RelativePath": "/owl",
-      "CommandLine": "https://effortless-rulebook-to-hydrated--v2026-07-08-1333-cmvbd4phczmeg.7pktzg2z971j0.cpln.app -i ../effortless-rulebook/simpsons-paradox-rulebook.json",
-      "IsDisabled": false
     }
   ]
 }

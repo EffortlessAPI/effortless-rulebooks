@@ -27,7 +27,10 @@ import {
   domainCaveat,
   formatObservedMetric,
   isConsistencyCheck,
+  isVacuousHypothesis,
   tierConclusionCounts,
+  SUPERSEDED_HYPOTHESES,
+  SUPERSEDED_HYPOTHESES_CONCLUSION_ID,
 } from '../shared/epistemic-framing.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -315,12 +318,17 @@ export async function buildSummaryPdf(): Promise<Buffer> {
     isConsistencyCheck(h.hypothesis_id) ||
     h.epistemic_tier === 'consistency-check',
   );
-  const corpusHypotheses = hypothesisRows.filter(
+  const corpusHypothesesAll = hypothesisRows.filter(
     h =>
       !isConsistencyCheck(h.hypothesis_id) &&
       h.epistemic_tier !== 'consistency-check',
   );
+  const vacuousHypotheses = corpusHypothesesAll.filter(h => isVacuousHypothesis(h.hypothesis_id));
+  const corpusHypotheses = corpusHypothesesAll.filter(h => !isVacuousHypothesis(h.hypothesis_id));
   const corpusConfirmed = corpusHypotheses.filter(
+    h => findingsByHypothesis.get(h.hypothesis_id)?.is_confirmed === true,
+  ).length;
+  const vacuousConfirmed = vacuousHypotheses.filter(
     h => findingsByHypothesis.get(h.hypothesis_id)?.is_confirmed === true,
   ).length;
   const consistencyConfirmed = consistencyHypotheses.filter(
@@ -404,6 +412,14 @@ export async function buildSummaryPdf(): Promise<Buffer> {
     'Corpus hypotheses (loop-61)',
     `${corpusConfirmed} / ${corpusHypotheses.length} confirmed`,
   );
+  if (vacuousHypotheses.length > 0) {
+    y = bulletLine(
+      doc,
+      y,
+      'Vacuous (true by construction — excluded from ratio above)',
+      `${vacuousConfirmed} / ${vacuousHypotheses.length} pass`,
+    );
+  }
   y = bulletLine(
     doc,
     y,
@@ -469,6 +485,47 @@ export async function buildSummaryPdf(): Promise<Buffer> {
     }
   }
 
+  if (vacuousHypotheses.length > 0) {
+    y += 4;
+    y = bodyText(
+      doc,
+      y,
+      'Vacuous corpus hypotheses — PASS only because their filtered universe is empty by ' +
+        'construction (control studies were selected for absence of paradox and were never ' +
+        'encoded with paired treatment arms, so there is no row that could sign-flip). True the ' +
+        'way "all unicorns are blue" is true; excluded from the confirmation ratio above.',
+      { size: SMALL_SIZE, color: '#666666' },
+    );
+    for (const h of vacuousHypotheses) {
+      y = renderDiscoveryHypothesis(
+        doc,
+        y,
+        h,
+        findingsByHypothesis.get(h.hypothesis_id),
+        'vacuous',
+      );
+    }
+  }
+
+  y += 4;
+  y = bodyText(
+    doc,
+    y,
+    `Superseded corpus hypotheses (historical — retired from the live DAG at loop-79; not counted ` +
+      `above). Six patterns witnessed FAIL at N=238 during expansion wave 3 (loop-78) and were ` +
+      `removed from DiscoveryHypotheses so the instrument doesn't carry dead vocabulary forward — ` +
+      `their FAIL evidence is preserved verbatim in ${SUPERSEDED_HYPOTHESES_CONCLUSION_ID}:`,
+    { size: SMALL_SIZE, color: '#666666' },
+  );
+  for (const h of SUPERSEDED_HYPOTHESES) {
+    y = bodyText(
+      doc,
+      y,
+      `${h.hypothesisId} — FAIL (superseded, loop-78/79): ${h.observedMetric}`,
+      { size: SMALL_SIZE, color: '#884400' },
+    );
+  }
+
   for (const cat of CATEGORY_ORDER) {
     const group = witnessed.filter(c => c.category === cat);
     if (group.length === 0) continue;
@@ -478,6 +535,25 @@ export async function buildSummaryPdf(): Promise<Buffer> {
       `${conclusionPdfLabel(cat)} (${group.length})`,
     );
     for (const c of group) {
+      y = renderConclusionBlock(doc, y, c);
+    }
+  }
+
+  const historicalConclusions = conclusionRows.filter(c => c.status === 'historical');
+  if (historicalConclusions.length > 0) {
+    y = sectionHeading(
+      doc,
+      y,
+      `Historical (superseded — no longer live) (${historicalConclusions.length})`,
+    );
+    y = bodyText(
+      doc,
+      y,
+      'These conclusions were true of an earlier, smaller corpus and were superseded by later ' +
+        'expansion waves — kept visible with their supersession evidence rather than deleted.',
+      { size: SMALL_SIZE, color: '#666666' },
+    );
+    for (const c of historicalConclusions) {
       y = renderConclusionBlock(doc, y, c);
     }
   }
@@ -509,9 +585,12 @@ export async function buildSummaryPdf(): Promise<Buffer> {
     'Vacuous (0 pass / 0 fail — empty universe, proves nothing yet)',
     String(kindCounts.vacuous),
   );
-  const failed = invariantRows.filter(i => Number(i.fail_count) > 0);
-  if (failed.length > 0) {
-    for (const inv of failed.slice(0, 12)) {
+  const criticalFailedRows = criticalInvariants.filter(i => Number(i.fail_count) > 0);
+  const warningFailedRows = invariantRows.filter(
+    i => i.severity !== 'critical' && Number(i.fail_count) > 0,
+  );
+  if (criticalFailedRows.length > 0) {
+    for (const inv of criticalFailedRows.slice(0, 12)) {
       y = bodyText(
         doc,
         y,
@@ -529,6 +608,24 @@ export async function buildSummaryPdf(): Promise<Buffer> {
         `(empty universe). See "${INVARIANT_DEFINITIONS_TITLE}" above.`,
       { size: SMALL_SIZE },
     );
+  }
+  if (warningFailedRows.length > 0) {
+    y += 4;
+    y = bodyText(
+      doc,
+      y,
+      `Warning-only (informational, not critical — pre-loop-70 legacy checks kept for visibility, ` +
+        `do not gate the build):`,
+      { size: SMALL_SIZE, color: '#666666' },
+    );
+    for (const inv of warningFailedRows) {
+      y = bodyText(
+        doc,
+        y,
+        `${inv.invariant_check_id}: ${inv.natural_language} (fail=${inv.fail_count})`,
+        { size: SMALL_SIZE, color: '#884400' },
+      );
+    }
   }
   const judgmentRows = criticalInvariants.filter(
     i => classifyInvariant(i) === 'judgment',

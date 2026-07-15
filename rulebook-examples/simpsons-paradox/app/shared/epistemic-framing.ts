@@ -2,6 +2,47 @@
 
 export const CONSISTENCY_CHECK_HYPOTHESES = new Set(['H-purity']);
 
+/** Corpus hypotheses that PASS only because their filtered universe is empty by construction
+ *  (control studies were selected for absence of paradox, so they were never encoded with
+ *  paired treatment arms — zero TreatmentRankings rows means zero opportunity to sign-flip).
+ *  observed_metric already self-labels these "vacuous" at the SQL layer (see 03c). Excluding
+ *  them from the corpus-hypothesis confirmed/total ratio stops a true-by-construction PASS from
+ *  inflating a headline confirmation count that is supposed to mean "survived a real test." */
+export const VACUOUS_HYPOTHESES = new Set([
+  'H-control-type-d-predominance',
+  'H-control-no-manifest-flip',
+  'H-control-safety-corridor',
+]);
+
+export function isVacuousHypothesis(hypothesisId: string): boolean {
+  return VACUOUS_HYPOTHESES.has(hypothesisId);
+}
+
+/** Corpus-pattern-superseded hypotheses retired from the live DAG at loop-79 after loop-78
+ *  witnessed them FAIL at N=238 (expansion wave 3). Removed from DiscoveryHypotheses/
+ *  DiscoveryFindings so the instrument doesn't carry dead vocabulary forward, but their FAIL
+ *  evidence is preserved verbatim in conc-32's Evidence field — this is the permanent record,
+ *  not a live query. A report that silently drops these six from view (rather than showing
+ *  historical/FAIL) is indistinguishable from cherry-picking, even though nothing was hidden
+ *  from the rulebook itself. Kept as a fixed historical list, not re-derived each build, because
+ *  loop-79 already closed the book on it; if a future loop supersedes a NEW hypothesis, add it
+ *  here alongside its own conc-* evidence row. */
+export interface SupersededHypothesis {
+  hypothesisId: string;
+  observedMetric: string;
+}
+
+export const SUPERSEDED_HYPOTHESES: SupersededHypothesis[] = [
+  { hypothesisId: 'H-econ-zero', observedMetric: 'flips=10 (was 0 pre-expansion)' },
+  { hypothesisId: 'H-domain-dist', observedMetric: 'epi<edu (direction reversed)' },
+  { hypothesisId: 'H-catalog-flip-prediction', observedMetric: 'flipPred=54.1% (was 25.4%)' },
+  { hypothesisId: 'H-domain-flip-geometry-controlled', observedMetric: 'econHighImbFlips=10 (was 0)' },
+  { hypothesisId: 'H-econ-encoding-selection', observedMetric: 'mismatch=50% (was 100%)' },
+  { hypothesisId: 'H-domain-profiles-stable', observedMetric: 'econFlipRate=25.6% (was 0%)' },
+];
+
+export const SUPERSEDED_HYPOTHESES_CONCLUSION_ID = 'conc-32-expansion-wave-3-supersession';
+
 export const SWEEP_CONTRACT =
   'Allocation sweep: 10 steps per study, f ∈ [0.05, 0.95] (SweepStudyConfig). ' +
   'Latent flip = Type D at observed allocation + PooledGapCrossesZero somewhere in that range — ' +
