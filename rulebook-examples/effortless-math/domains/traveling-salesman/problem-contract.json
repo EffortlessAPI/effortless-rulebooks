@@ -1,0 +1,93 @@
+{
+  "ProblemId": "traveling-salesman-semantic-geometry",
+  "Version": "0.1.0",
+  "Title": "Traveling Salesman — City / Neighborhood / Address Semantic Geometry",
+  "Status": "RESEARCH_PROGRAM",
+  "Statement": "Given a finite city-scale set of required addresses and explicit symmetric travel costs, represent the graph, supplied tours, inference state, and residual search as executable structural data.",
+  "Scope": "Initial scope is one finite symmetric complete weighted graph with a fixed depot, five required addresses, explicit canonical undirected edge rows, and supplied ordered tour witnesses. The scope validates tours; it does not yet find or prove an optimal tour.",
+  "TrustBoundary": "InputGraphKernel: city/neighborhood/address membership, required-stop selection, and TravelEdges.DistanceMeters/TravelCost are trusted input data. Formula semantics are projected into Postgres and independently replayed by the Python reference substrate.",
+  "Claims": {
+    "PEqualsNP": false,
+    "UniversalPolynomialNormalization": false,
+    "OptimalityProved": false,
+    "HamiltonianWitnessValidationImplemented": true,
+    "SearchEliminationMeasured": true
+  },
+  "CanonicalAsset": "effortless-rulebook/traveling-salesman-rulebook.json",
+  "ExecutionSubstrates": [
+    "postgres:generated vw_* views",
+    "python:scripts/reference_model.py"
+  ],
+  "Loops": [
+    {
+      "LoopOrder": 577,
+      "LoopId": "tsp-loop-577",
+      "Result": "City -> Neighborhood -> Address hierarchy closed for the fixture."
+    },
+    {
+      "LoopOrder": 578,
+      "LoopId": "tsp-loop-578",
+      "Result": "Five-stop complete symmetric weighted graph normalized as ten canonical edges."
+    },
+    {
+      "LoopOrder": 579,
+      "LoopId": "tsp-loop-579",
+      "Result": "Candidate tours represented as ordered stops plus edge-bound legs."
+    },
+    {
+      "LoopOrder": 580,
+      "LoopId": "tsp-loop-580",
+      "Result": "Valid reference route accepted; duplicate-stop route rejected; optimality remains false."
+    },
+    {
+      "LoopOrder": 581,
+      "LoopId": "tsp-loop-581",
+      "Result": "Baseline records twelve symmetry-reduced route classes and zero semantic elimination."
+    }
+  ],
+  "CurrentCertificates": [
+    {
+      "CertificateId": "gridville-complete-graph",
+      "Kind": "complete-undirected-graph-check",
+      "Conclusion": "tsp-gridville-5 has five stops and ten unique canonical undirected edges."
+    },
+    {
+      "CertificateId": "gridville-reference-tour",
+      "Kind": "hamiltonian-cycle-witness",
+      "Conclusion": "A-B-C-D-E-A is a valid supplied tour of cost 14 within the declared instance."
+    },
+    {
+      "CertificateId": "gridville-negative-tour",
+      "Kind": "counterexample-certificate",
+      "Conclusion": "A-B-C-B-E-A is rejected because B is visited twice and D is omitted."
+    }
+  ],
+  "RemainingFrontier": [
+    "degree-two forced-edge closure",
+    "forbidden-edge propagation",
+    "symmetry-class collapse beyond fixed depot and reversal",
+    "neighborhood boundary-state inference",
+    "component contraction",
+    "subtour exclusion certificates for unordered edge-set candidates",
+    "lower bounds and optimality certificates",
+    "branching and backtracking only after constraint closure"
+  ],
+  "Acceptance": {
+    "RulebookTables": 13,
+    "Cities": 1,
+    "Neighborhoods": 3,
+    "Addresses": 5,
+    "TSPInstances": 1,
+    "InstanceStops": 5,
+    "TravelEdges": 10,
+    "CandidateTours": 2,
+    "TSPLoops": 5,
+    "ReferenceTourValid": true,
+    "ReferenceTourCost": 14,
+    "ReferenceTourOptimalityProved": false,
+    "NegativeTourValid": false,
+    "SearchEliminationPct": 0
+  },
+  "ArtifactHashes": {},
+  "GeneratedTimestamp": null
+}
