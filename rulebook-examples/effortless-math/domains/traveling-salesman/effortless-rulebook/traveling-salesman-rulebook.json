@@ -1,0 +1,352 @@
+{
+  "$schema": "https://example.com/cmcc-schema/v1",
+  "Name": "traveling-salesman",
+  "Description": "Traveling Salesman research domain at city/neighborhood/address scale. The initial rulebook normalizes a finite weighted city graph, validates explicit ordered-tour witnesses, records search metrics, and keeps optimality and complexity claims outside the closed frontier.",
+  "__meta__": {
+    "Description": "Rulebook metadata and explicit research-program guardrails.",
+    "schema": [
+      {"name": "MetaKey", "datatype": "string", "type": "raw", "nullable": false, "Description": "Stable metadata key."},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "Description": "Display alias for the metadata row.", "formula": "={{MetaKey}}"},
+      {"name": "ValueType", "datatype": "string", "type": "raw", "nullable": true, "Description": "Declared type of the metadata value."},
+      {"name": "StringValue", "datatype": "string", "type": "raw", "nullable": true, "Description": "String-valued metadata."},
+      {"name": "IntegerValue", "datatype": "integer", "type": "raw", "nullable": true, "Description": "Integer-valued metadata."},
+      {"name": "BooleanValue", "datatype": "boolean", "type": "raw", "nullable": true, "Description": "Boolean-valued metadata."}
+    ],
+    "data": [
+      {"MetaKey": "research_status", "ValueType": "string", "StringValue": "RESEARCH_PROGRAM", "IntegerValue": null, "BooleanValue": null},
+      {"MetaKey": "canonical_scope", "ValueType": "string", "StringValue": "symmetric finite weighted city graph", "IntegerValue": null, "BooleanValue": null},
+      {"MetaKey": "first_loop", "ValueType": "integer", "StringValue": null, "IntegerValue": 577, "BooleanValue": null},
+      {"MetaKey": "last_loop", "ValueType": "integer", "StringValue": null, "IntegerValue": 581, "BooleanValue": null},
+      {"MetaKey": "claims_p_equals_np", "ValueType": "boolean", "StringValue": null, "IntegerValue": null, "BooleanValue": false},
+      {"MetaKey": "claims_optimality", "ValueType": "boolean", "StringValue": null, "IntegerValue": null, "BooleanValue": false}
+    ]
+  },
+  "Cities": {
+    "Description": "Cities provide the outer spatial boundary for TSP instances.",
+    "schema": [
+      {"name": "CityId", "datatype": "string", "type": "raw", "nullable": false, "Description": "Stable city identifier."},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "Description": "Human-readable city label.", "formula": "={{DisplayName}}"},
+      {"name": "DisplayName", "datatype": "string", "type": "raw", "nullable": false, "Description": "Human-readable city name."},
+      {"name": "CountryCode", "datatype": "string", "type": "raw", "nullable": false, "Description": "ISO-style country code for the city."},
+      {"name": "CoordinateSystem", "datatype": "string", "type": "raw", "nullable": false, "Description": "Coordinate convention used by addresses in this city."},
+      {"name": "Description", "datatype": "string", "type": "raw", "nullable": true, "Description": "Purpose of the city fixture."}
+    ],
+    "data": [
+      {"CityId": "gridville", "DisplayName": "Gridville", "CountryCode": "US", "CoordinateSystem": "LOCAL_INTEGER_GRID_V1", "Description": "Deterministic five-address fixture used to bring the TSP Postgres substrate online."}
+    ]
+  },
+  "Neighborhoods": {
+    "Description": "Neighborhoods partition a city into first-class spatial clusters.",
+    "schema": [
+      {"name": "NeighborhoodId", "datatype": "string", "type": "raw", "nullable": false, "Description": "Stable neighborhood identifier."},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "Description": "Human-readable neighborhood label.", "formula": "={{DisplayName}}"},
+      {"name": "DisplayName", "datatype": "string", "type": "raw", "nullable": false, "Description": "Human-readable neighborhood name."},
+      {"name": "City", "datatype": "string", "type": "relationship", "nullable": false, "Description": "City containing this neighborhood.", "RelatedTo": "Cities"},
+      {"name": "CityName", "datatype": "string", "type": "lookup", "nullable": true, "Description": "Display name of the containing city.", "formula": "=INDEX(Cities!{{Name}}, MATCH({{City}}, Cities!{{CityId}}, 0))", "RelatedTo": "Cities"},
+      {"name": "ClusterKind", "datatype": "string", "type": "raw", "nullable": false, "Description": "Semantic role of the neighborhood in the initial fixture."}
+    ],
+    "data": [
+      {"NeighborhoodId": "gridville-downtown", "DisplayName": "Downtown", "City": "gridville", "ClusterKind": "CORE"},
+      {"NeighborhoodId": "gridville-north", "DisplayName": "North Hills", "City": "gridville", "ClusterKind": "RESIDENTIAL"},
+      {"NeighborhoodId": "gridville-south", "DisplayName": "South Market", "City": "gridville", "ClusterKind": "MIXED_USE"}
+    ]
+  },
+  "Addresses": {
+    "Description": "Addresses are visitable physical locations. Coordinates support visualization; edge costs remain explicit graph data.",
+    "schema": [
+      {"name": "AddressId", "datatype": "string", "type": "raw", "nullable": false, "Description": "Stable address identifier."},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "Description": "Human-readable address label.", "formula": "={{StreetLabel}}"},
+      {"name": "StreetLabel", "datatype": "string", "type": "raw", "nullable": false, "Description": "Human-readable street or place label."},
+      {"name": "Neighborhood", "datatype": "string", "type": "relationship", "nullable": false, "Description": "Neighborhood containing this address.", "RelatedTo": "Neighborhoods"},
+      {"name": "NeighborhoodName", "datatype": "string", "type": "lookup", "nullable": true, "Description": "Display name of the containing neighborhood.", "formula": "=INDEX(Neighborhoods!{{Name}}, MATCH({{Neighborhood}}, Neighborhoods!{{NeighborhoodId}}, 0))", "RelatedTo": "Neighborhoods"},
+      {"name": "City", "datatype": "string", "type": "lookup", "nullable": true, "Description": "City reached through the address's neighborhood.", "formula": "=INDEX(Neighborhoods!{{City}}, MATCH({{Neighborhood}}, Neighborhoods!{{NeighborhoodId}}, 0))", "RelatedTo": "Neighborhoods"},
+      {"name": "XCoordinate", "datatype": "number", "type": "raw", "nullable": false, "Description": "Local X coordinate for visualization and later geometric experiments."},
+      {"name": "YCoordinate", "datatype": "number", "type": "raw", "nullable": false, "Description": "Local Y coordinate for visualization and later geometric experiments."},
+      {"name": "IsDepotCandidate", "datatype": "boolean", "type": "raw", "nullable": false, "Description": "Whether this address may serve as a depot."}
+    ],
+    "data": [
+      {"AddressId": "addr-a-depot", "StreetLabel": "1 Center Plaza", "Neighborhood": "gridville-downtown", "XCoordinate": 0, "YCoordinate": 0, "IsDepotCandidate": true},
+      {"AddressId": "addr-b-market", "StreetLabel": "20 Market Street", "Neighborhood": "gridville-downtown", "XCoordinate": 2, "YCoordinate": 0, "IsDepotCandidate": false},
+      {"AddressId": "addr-c-north", "StreetLabel": "300 North Avenue", "Neighborhood": "gridville-north", "XCoordinate": 3, "YCoordinate": 2, "IsDepotCandidate": false},
+      {"AddressId": "addr-d-hill", "StreetLabel": "44 Hill Road", "Neighborhood": "gridville-north", "XCoordinate": 1, "YCoordinate": 3, "IsDepotCandidate": false},
+      {"AddressId": "addr-e-south", "StreetLabel": "9 South Lane", "Neighborhood": "gridville-south", "XCoordinate": -1, "YCoordinate": 2, "IsDepotCandidate": false}
+    ]
+  },
+  "TSPInstances": {
+    "Description": "One finite Traveling Salesman problem instance over required city addresses.",
+    "schema": [
+      {"name": "TSPInstanceId", "datatype": "string", "type": "raw", "nullable": false, "Description": "Stable TSP instance identifier."},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "Description": "Human-readable instance label.", "formula": "={{DisplayName}}"},
+      {"name": "DisplayName", "datatype": "string", "type": "raw", "nullable": false, "Description": "Human-readable TSP instance name."},
+      {"name": "City", "datatype": "string", "type": "relationship", "nullable": false, "Description": "City containing the instance.", "RelatedTo": "Cities"},
+      {"name": "DepotAddress", "datatype": "string", "type": "relationship", "nullable": false, "Description": "Address fixed as the tour depot.", "RelatedTo": "Addresses"},
+      {"name": "DistanceModel", "datatype": "string", "type": "raw", "nullable": false, "Description": "Interpretation of TravelEdges.TravelCost."},
+      {"name": "IsSymmetric", "datatype": "boolean", "type": "raw", "nullable": false, "Description": "Whether each canonical edge cost applies in both directions."},
+      {"name": "Status", "datatype": "string", "type": "raw", "nullable": false, "Description": "Current semantic-normalization status."},
+      {"name": "SearchPolicy", "datatype": "string", "type": "raw", "nullable": false, "Description": "Research policy governing when search is allowed."},
+      {"name": "CountOfStops", "datatype": "integer", "type": "aggregation", "nullable": true, "Description": "Number of normalized instance-stop rows.", "formula": "=COUNTIFS(InstanceStops!{{TSPInstance}}, {{TSPInstanceId}})"},
+      {"name": "CountOfRequiredStops", "datatype": "integer", "type": "aggregation", "nullable": true, "Description": "Number of required visit stops.", "formula": "=COUNTIFS(InstanceStops!{{TSPInstance}}, {{TSPInstanceId}}, InstanceStops!{{IsRequired}}, TRUE())"},
+      {"name": "CountOfTravelEdges", "datatype": "integer", "type": "aggregation", "nullable": true, "Description": "Number of canonical undirected travel edges.", "formula": "=COUNTIFS(TravelEdges!{{TSPInstance}}, {{TSPInstanceId}})"},
+      {"name": "ExpectedUndirectedEdgeCount", "datatype": "integer", "type": "calculated", "nullable": true, "Description": "n(n-1)/2 expected edges for a complete undirected graph.", "formula": "=({{CountOfStops}} * ({{CountOfStops}} - 1)) / 2"},
+      {"name": "IsCompleteUndirectedGraph", "datatype": "boolean", "type": "calculated", "nullable": true, "Description": "Whether every unordered pair of stops has one canonical edge.", "formula": "={{CountOfTravelEdges}} = {{ExpectedUndirectedEdgeCount}}"},
+      {"name": "Notes", "datatype": "string", "type": "raw", "nullable": true, "Description": "Scope and caveats for the instance."}
+    ],
+    "data": [
+      {"TSPInstanceId": "tsp-gridville-5", "DisplayName": "Gridville Five-Address Baseline", "City": "gridville", "DepotAddress": "addr-a-depot", "DistanceModel": "EXPLICIT_SYMMETRIC_COST", "IsSymmetric": true, "Status": "NORMALIZED", "SearchPolicy": "SEMANTIC_CLOSURE_BEFORE_SEARCH", "Notes": "A five-stop complete weighted graph. It calibrates representation and tour validation; it does not establish a general TSP algorithm."}
+    ]
+  },
+  "InstanceStops": {
+    "Description": "Junction entity selecting addresses into a TSP instance without introducing a many-to-many relationship.",
+    "schema": [
+      {"name": "InstanceStopId", "datatype": "string", "type": "raw", "nullable": false, "Description": "Stable instance-stop identifier."},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "Description": "Display alias for the selected stop.", "formula": "={{InstanceStopId}}"},
+      {"name": "TSPInstance", "datatype": "string", "type": "relationship", "nullable": false, "Description": "TSP instance containing the stop.", "RelatedTo": "TSPInstances"},
+      {"name": "Address", "datatype": "string", "type": "relationship", "nullable": false, "Description": "Address selected into the instance.", "RelatedTo": "Addresses"},
+      {"name": "IsRequired", "datatype": "boolean", "type": "raw", "nullable": false, "Description": "Whether the tour must visit this stop exactly once."},
+      {"name": "InstanceCity", "datatype": "string", "type": "lookup", "nullable": true, "Description": "City declared by the TSP instance.", "formula": "=INDEX(TSPInstances!{{City}}, MATCH({{TSPInstance}}, TSPInstances!{{TSPInstanceId}}, 0))", "RelatedTo": "TSPInstances"},
+      {"name": "InstanceDepotAddress", "datatype": "string", "type": "lookup", "nullable": true, "Description": "Depot address declared by the TSP instance.", "formula": "=INDEX(TSPInstances!{{DepotAddress}}, MATCH({{TSPInstance}}, TSPInstances!{{TSPInstanceId}}, 0))", "RelatedTo": "TSPInstances"},
+      {"name": "AddressName", "datatype": "string", "type": "lookup", "nullable": true, "Description": "Human-readable address label.", "formula": "=INDEX(Addresses!{{Name}}, MATCH({{Address}}, Addresses!{{AddressId}}, 0))", "RelatedTo": "Addresses"},
+      {"name": "AddressCity", "datatype": "string", "type": "lookup", "nullable": true, "Description": "City reached through the selected address.", "formula": "=INDEX(Addresses!{{City}}, MATCH({{Address}}, Addresses!{{AddressId}}, 0))", "RelatedTo": "Addresses"},
+      {"name": "Neighborhood", "datatype": "string", "type": "lookup", "nullable": true, "Description": "Neighborhood of the selected address.", "formula": "=INDEX(Addresses!{{Neighborhood}}, MATCH({{Address}}, Addresses!{{AddressId}}, 0))", "RelatedTo": "Addresses"},
+      {"name": "XCoordinate", "datatype": "number", "type": "lookup", "nullable": true, "Description": "X coordinate of the selected address.", "formula": "=INDEX(Addresses!{{XCoordinate}}, MATCH({{Address}}, Addresses!{{AddressId}}, 0))", "RelatedTo": "Addresses"},
+      {"name": "YCoordinate", "datatype": "number", "type": "lookup", "nullable": true, "Description": "Y coordinate of the selected address.", "formula": "=INDEX(Addresses!{{YCoordinate}}, MATCH({{Address}}, Addresses!{{AddressId}}, 0))", "RelatedTo": "Addresses"},
+      {"name": "IsWithinInstanceCity", "datatype": "boolean", "type": "calculated", "nullable": true, "Description": "Whether the selected address belongs to the instance city.", "formula": "={{AddressCity}} = {{InstanceCity}}"},
+      {"name": "IsDepot", "datatype": "boolean", "type": "calculated", "nullable": true, "Description": "Whether this stop is the instance depot.", "formula": "={{Address}} = {{InstanceDepotAddress}}"}
+    ],
+    "data": [
+      {"InstanceStopId": "stop-a", "TSPInstance": "tsp-gridville-5", "Address": "addr-a-depot", "IsRequired": true},
+      {"InstanceStopId": "stop-b", "TSPInstance": "tsp-gridville-5", "Address": "addr-b-market", "IsRequired": true},
+      {"InstanceStopId": "stop-c", "TSPInstance": "tsp-gridville-5", "Address": "addr-c-north", "IsRequired": true},
+      {"InstanceStopId": "stop-d", "TSPInstance": "tsp-gridville-5", "Address": "addr-d-hill", "IsRequired": true},
+      {"InstanceStopId": "stop-e", "TSPInstance": "tsp-gridville-5", "Address": "addr-e-south", "IsRequired": true}
+    ]
+  },
+  "TravelEdges": {
+    "Description": "Canonical undirected weighted edges between instance stops. The edge entity resolves the address-to-address many-to-many relation.",
+    "schema": [
+      {"name": "TravelEdgeId", "datatype": "string", "type": "raw", "nullable": false, "Description": "Stable canonical edge identifier."},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "Description": "Display alias for the edge.", "formula": "={{TravelEdgeId}}"},
+      {"name": "TSPInstance", "datatype": "string", "type": "relationship", "nullable": false, "Description": "TSP instance owning the edge.", "RelatedTo": "TSPInstances"},
+      {"name": "FromStop", "datatype": "string", "type": "relationship", "nullable": false, "Description": "First canonical endpoint.", "RelatedTo": "InstanceStops"},
+      {"name": "ToStop", "datatype": "string", "type": "relationship", "nullable": false, "Description": "Second canonical endpoint.", "RelatedTo": "InstanceStops"},
+      {"name": "DistanceMeters", "datatype": "number", "type": "raw", "nullable": false, "Description": "Observed or supplied travel distance for the edge."},
+      {"name": "TravelCost", "datatype": "number", "type": "raw", "nullable": false, "Description": "Optimization cost used by the initial TSP objective."},
+      {"name": "IsAvailable", "datatype": "boolean", "type": "raw", "nullable": false, "Description": "Whether the edge remains available after current normalization."},
+      {"name": "EdgeSource", "datatype": "string", "type": "raw", "nullable": false, "Description": "Provenance of the edge weight."},
+      {"name": "FromTSPInstance", "datatype": "string", "type": "lookup", "nullable": true, "Description": "Instance of the first endpoint.", "formula": "=INDEX(InstanceStops!{{TSPInstance}}, MATCH({{FromStop}}, InstanceStops!{{InstanceStopId}}, 0))", "RelatedTo": "InstanceStops"},
+      {"name": "ToTSPInstance", "datatype": "string", "type": "lookup", "nullable": true, "Description": "Instance of the second endpoint.", "formula": "=INDEX(InstanceStops!{{TSPInstance}}, MATCH({{ToStop}}, InstanceStops!{{InstanceStopId}}, 0))", "RelatedTo": "InstanceStops"},
+      {"name": "IsSelfLoop", "datatype": "boolean", "type": "calculated", "nullable": true, "Description": "Whether both endpoints are the same stop.", "formula": "={{FromStop}} = {{ToStop}}"},
+      {"name": "IsWithinInstance", "datatype": "boolean", "type": "calculated", "nullable": true, "Description": "Whether the edge and both endpoints belong to one instance.", "formula": "=AND({{TSPInstance}} = {{FromTSPInstance}}, {{TSPInstance}} = {{ToTSPInstance}})"},
+      {"name": "IsAdmissible", "datatype": "boolean", "type": "calculated", "nullable": true, "Description": "First-order edge admissibility.", "formula": "=AND({{IsAvailable}}, NOT({{IsSelfLoop}}), {{IsWithinInstance}})"}
+    ],
+    "data": [
+      {"TravelEdgeId": "edge-a-b", "TSPInstance": "tsp-gridville-5", "FromStop": "stop-a", "ToStop": "stop-b", "DistanceMeters": 2000, "TravelCost": 2, "IsAvailable": true, "EdgeSource": "SEEDED_TEST_GRAPH"},
+      {"TravelEdgeId": "edge-a-c", "TSPInstance": "tsp-gridville-5", "FromStop": "stop-a", "ToStop": "stop-c", "DistanceMeters": 6000, "TravelCost": 6, "IsAvailable": true, "EdgeSource": "SEEDED_TEST_GRAPH"},
+      {"TravelEdgeId": "edge-a-d", "TSPInstance": "tsp-gridville-5", "FromStop": "stop-a", "ToStop": "stop-d", "DistanceMeters": 5000, "TravelCost": 5, "IsAvailable": true, "EdgeSource": "SEEDED_TEST_GRAPH"},
+      {"TravelEdgeId": "edge-a-e", "TSPInstance": "tsp-gridville-5", "FromStop": "stop-a", "ToStop": "stop-e", "DistanceMeters": 3000, "TravelCost": 3, "IsAvailable": true, "EdgeSource": "SEEDED_TEST_GRAPH"},
+      {"TravelEdgeId": "edge-b-c", "TSPInstance": "tsp-gridville-5", "FromStop": "stop-b", "ToStop": "stop-c", "DistanceMeters": 3000, "TravelCost": 3, "IsAvailable": true, "EdgeSource": "SEEDED_TEST_GRAPH"},
+      {"TravelEdgeId": "edge-b-d", "TSPInstance": "tsp-gridville-5", "FromStop": "stop-b", "ToStop": "stop-d", "DistanceMeters": 5000, "TravelCost": 5, "IsAvailable": true, "EdgeSource": "SEEDED_TEST_GRAPH"},
+      {"TravelEdgeId": "edge-b-e", "TSPInstance": "tsp-gridville-5", "FromStop": "stop-b", "ToStop": "stop-e", "DistanceMeters": 6000, "TravelCost": 6, "IsAvailable": true, "EdgeSource": "SEEDED_TEST_GRAPH"},
+      {"TravelEdgeId": "edge-c-d", "TSPInstance": "tsp-gridville-5", "FromStop": "stop-c", "ToStop": "stop-d", "DistanceMeters": 3000, "TravelCost": 3, "IsAvailable": true, "EdgeSource": "SEEDED_TEST_GRAPH"},
+      {"TravelEdgeId": "edge-c-e", "TSPInstance": "tsp-gridville-5", "FromStop": "stop-c", "ToStop": "stop-e", "DistanceMeters": 5000, "TravelCost": 5, "IsAvailable": true, "EdgeSource": "SEEDED_TEST_GRAPH"},
+      {"TravelEdgeId": "edge-d-e", "TSPInstance": "tsp-gridville-5", "FromStop": "stop-d", "ToStop": "stop-e", "DistanceMeters": 3000, "TravelCost": 3, "IsAvailable": true, "EdgeSource": "SEEDED_TEST_GRAPH"}
+    ]
+  },
+  "CandidateTours": {
+    "Description": "Explicit candidate tours. Validity is derived; optimality is deliberately not inferred.",
+    "schema": [
+      {"name": "CandidateTourId", "datatype": "string", "type": "raw", "nullable": false, "Description": "Stable candidate-tour identifier."},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "Description": "Human-readable tour label.", "formula": "={{DisplayName}}"},
+      {"name": "DisplayName", "datatype": "string", "type": "raw", "nullable": false, "Description": "Human-readable candidate-tour name."},
+      {"name": "TSPInstance", "datatype": "string", "type": "relationship", "nullable": false, "Description": "TSP instance evaluated by this candidate.", "RelatedTo": "TSPInstances"},
+      {"name": "CandidateKind", "datatype": "string", "type": "raw", "nullable": false, "Description": "Role of this candidate in the fixture."},
+      {"name": "SearchBranchesExplored", "datatype": "integer", "type": "raw", "nullable": false, "Description": "Branches explored to obtain this candidate; zero means supplied witness, not solved."},
+      {"name": "BacktrackCount", "datatype": "integer", "type": "raw", "nullable": false, "Description": "Backtracking performed to obtain this candidate."},
+      {"name": "RequiredStopCount", "datatype": "integer", "type": "lookup", "nullable": true, "Description": "Required stop count supplied by the instance.", "formula": "=INDEX(TSPInstances!{{CountOfRequiredStops}}, MATCH({{TSPInstance}}, TSPInstances!{{TSPInstanceId}}, 0))", "RelatedTo": "TSPInstances"},
+      {"name": "CountOfTourStops", "datatype": "integer", "type": "aggregation", "nullable": true, "Description": "Number of ordered tour-stop rows.", "formula": "=COUNTIFS(TourStops!{{CandidateTour}}, {{CandidateTourId}})"},
+      {"name": "CountOfTourLegs", "datatype": "integer", "type": "aggregation", "nullable": true, "Description": "Number of ordered tour-leg rows.", "formula": "=COUNTIFS(TourLegs!{{CandidateTour}}, {{CandidateTourId}})"},
+      {"name": "CountOfNonUniqueVisits", "datatype": "integer", "type": "aggregation", "nullable": true, "Description": "Tour-stop rows whose instance stop appears more than once.", "formula": "=COUNTIFS(TourStops!{{CandidateTour}}, {{CandidateTourId}}, TourStops!{{IsUniqueVisit}}, FALSE())"},
+      {"name": "CountOfNonUniqueSequences", "datatype": "integer", "type": "aggregation", "nullable": true, "Description": "Tour-stop rows whose sequence position is duplicated.", "formula": "=COUNTIFS(TourStops!{{CandidateTour}}, {{CandidateTourId}}, TourStops!{{IsUniqueSequence}}, FALSE())"},
+      {"name": "CountOfOutOfInstanceStops", "datatype": "integer", "type": "aggregation", "nullable": true, "Description": "Tour stops that do not belong to the candidate's instance.", "formula": "=COUNTIFS(TourStops!{{CandidateTour}}, {{CandidateTourId}}, TourStops!{{IsInTourInstance}}, FALSE())"},
+      {"name": "CountOfNonRequiredStops", "datatype": "integer", "type": "aggregation", "nullable": true, "Description": "Tour stops not marked required by the instance.", "formula": "=COUNTIFS(TourStops!{{CandidateTour}}, {{CandidateTourId}}, TourStops!{{StopIsRequired}}, FALSE())"},
+      {"name": "CountOfDepotStops", "datatype": "integer", "type": "aggregation", "nullable": true, "Description": "Number of depot visits in the ordered stop list.", "formula": "=COUNTIFS(TourStops!{{CandidateTour}}, {{CandidateTourId}}, TourStops!{{StopIsDepot}}, TRUE())"},
+      {"name": "CountOfDepotPositionViolations", "datatype": "integer", "type": "aggregation", "nullable": true, "Description": "Depot rows not placed at sequence position one.", "formula": "=COUNTIFS(TourStops!{{CandidateTour}}, {{CandidateTourId}}, TourStops!{{IsDepotAtFirstPosition}}, FALSE())"},
+      {"name": "CountOfInvalidLegs", "datatype": "integer", "type": "aggregation", "nullable": true, "Description": "Tour legs failing membership, sequence, edge, or instance checks.", "formula": "=COUNTIFS(TourLegs!{{CandidateTour}}, {{CandidateTourId}}, TourLegs!{{IsValid}}, FALSE())"},
+      {"name": "TotalTravelCost", "datatype": "number", "type": "aggregation", "nullable": true, "Description": "Sum of validated tour-leg costs.", "formula": "=SUMIFS(TourLegs!{{TravelCost}}, TourLegs!{{CandidateTour}}, {{CandidateTourId}})"},
+      {"name": "IsHamiltonianCycleWitness", "datatype": "boolean", "type": "calculated", "nullable": true, "Description": "Whether this explicit ordered route is a valid single Hamiltonian cycle for the instance.", "formula": "=AND({{CountOfTourStops}} = {{RequiredStopCount}}, {{CountOfTourLegs}} = {{RequiredStopCount}}, {{CountOfNonUniqueVisits}} = 0, {{CountOfNonUniqueSequences}} = 0, {{CountOfOutOfInstanceStops}} = 0, {{CountOfNonRequiredStops}} = 0, {{CountOfDepotStops}} = 1, {{CountOfDepotPositionViolations}} = 0, {{CountOfInvalidLegs}} = 0)"},
+      {"name": "IsOptimalityProved", "datatype": "boolean", "type": "calculated", "nullable": true, "Description": "Always false in the initial architecture: a valid tour witness is not an optimality certificate.", "formula": "=FALSE()"},
+      {"name": "ResidualClaim", "datatype": "string", "type": "calculated", "nullable": true, "Description": "Honest current epistemic status of the candidate.", "formula": "=IF({{IsHamiltonianCycleWitness}}, \"VALID_TOUR_NOT_OPTIMALITY_PROOF\", \"INVALID_TOUR\")"}
+    ],
+    "data": [
+      {"CandidateTourId": "tour-reference-ring", "DisplayName": "Reference ring A-B-C-D-E-A", "TSPInstance": "tsp-gridville-5", "CandidateKind": "SEEDED_REFERENCE_WITNESS", "SearchBranchesExplored": 0, "BacktrackCount": 0},
+      {"CandidateTourId": "tour-duplicate-b", "DisplayName": "Counterexample A-B-C-B-E-A", "TSPInstance": "tsp-gridville-5", "CandidateKind": "NEGATIVE_CONFORMANCE_WITNESS", "SearchBranchesExplored": 0, "BacktrackCount": 0}
+    ]
+  },
+  "TourStops": {
+    "Description": "Ordered candidate-tour visits. Multiplicity and sequence uniqueness are derived from the row set.",
+    "schema": [
+      {"name": "TourStopId", "datatype": "string", "type": "raw", "nullable": false, "Description": "Stable ordered tour-stop identifier."},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "Description": "Display alias for the ordered visit.", "formula": "={{TourStopId}}"},
+      {"name": "CandidateTour", "datatype": "string", "type": "relationship", "nullable": false, "Description": "Candidate tour containing the ordered visit.", "RelatedTo": "CandidateTours"},
+      {"name": "InstanceStop", "datatype": "string", "type": "relationship", "nullable": false, "Description": "Instance stop visited at this position.", "RelatedTo": "InstanceStops"},
+      {"name": "SequencePosition", "datatype": "integer", "type": "raw", "nullable": false, "Description": "One-based position in the ordered visit list."},
+      {"name": "TourTSPInstance", "datatype": "string", "type": "lookup", "nullable": true, "Description": "TSP instance owned by the candidate tour.", "formula": "=INDEX(CandidateTours!{{TSPInstance}}, MATCH({{CandidateTour}}, CandidateTours!{{CandidateTourId}}, 0))", "RelatedTo": "CandidateTours"},
+      {"name": "StopTSPInstance", "datatype": "string", "type": "lookup", "nullable": true, "Description": "TSP instance owning the visited stop.", "formula": "=INDEX(InstanceStops!{{TSPInstance}}, MATCH({{InstanceStop}}, InstanceStops!{{InstanceStopId}}, 0))", "RelatedTo": "InstanceStops"},
+      {"name": "StopIsRequired", "datatype": "boolean", "type": "lookup", "nullable": true, "Description": "Whether the visited stop is required.", "formula": "=INDEX(InstanceStops!{{IsRequired}}, MATCH({{InstanceStop}}, InstanceStops!{{InstanceStopId}}, 0))", "RelatedTo": "InstanceStops"},
+      {"name": "StopIsDepot", "datatype": "boolean", "type": "lookup", "nullable": true, "Description": "Whether the visited stop is the depot.", "formula": "=INDEX(InstanceStops!{{IsDepot}}, MATCH({{InstanceStop}}, InstanceStops!{{InstanceStopId}}, 0))", "RelatedTo": "InstanceStops"},
+      {"name": "IsInTourInstance", "datatype": "boolean", "type": "calculated", "nullable": true, "Description": "Whether the visited stop belongs to the candidate's instance.", "formula": "={{TourTSPInstance}} = {{StopTSPInstance}}"},
+      {"name": "VisitMultiplicity", "datatype": "integer", "type": "aggregation", "nullable": true, "Description": "Number of times this instance stop appears in the candidate.", "formula": "=COUNTIFS(TourStops!{{CandidateTour}}, {{CandidateTour}}, TourStops!{{InstanceStop}}, {{InstanceStop}})"},
+      {"name": "SequenceMultiplicity", "datatype": "integer", "type": "aggregation", "nullable": true, "Description": "Number of rows using this sequence position in the candidate.", "formula": "=COUNTIFS(TourStops!{{CandidateTour}}, {{CandidateTour}}, TourStops!{{SequencePosition}}, {{SequencePosition}})"},
+      {"name": "IsUniqueVisit", "datatype": "boolean", "type": "calculated", "nullable": true, "Description": "Whether this stop appears exactly once.", "formula": "={{VisitMultiplicity}} = 1"},
+      {"name": "IsUniqueSequence", "datatype": "boolean", "type": "calculated", "nullable": true, "Description": "Whether this sequence position appears exactly once.", "formula": "={{SequenceMultiplicity}} = 1"},
+      {"name": "IsDepotAtFirstPosition", "datatype": "boolean", "type": "calculated", "nullable": true, "Description": "Non-depot rows pass automatically; the depot must be position one.", "formula": "=OR(NOT({{StopIsDepot}}), {{SequencePosition}} = 1)"}
+    ],
+    "data": [
+      {"TourStopId": "ref-stop-1", "CandidateTour": "tour-reference-ring", "InstanceStop": "stop-a", "SequencePosition": 1},
+      {"TourStopId": "ref-stop-2", "CandidateTour": "tour-reference-ring", "InstanceStop": "stop-b", "SequencePosition": 2},
+      {"TourStopId": "ref-stop-3", "CandidateTour": "tour-reference-ring", "InstanceStop": "stop-c", "SequencePosition": 3},
+      {"TourStopId": "ref-stop-4", "CandidateTour": "tour-reference-ring", "InstanceStop": "stop-d", "SequencePosition": 4},
+      {"TourStopId": "ref-stop-5", "CandidateTour": "tour-reference-ring", "InstanceStop": "stop-e", "SequencePosition": 5},
+      {"TourStopId": "bad-stop-1", "CandidateTour": "tour-duplicate-b", "InstanceStop": "stop-a", "SequencePosition": 1},
+      {"TourStopId": "bad-stop-2", "CandidateTour": "tour-duplicate-b", "InstanceStop": "stop-b", "SequencePosition": 2},
+      {"TourStopId": "bad-stop-3", "CandidateTour": "tour-duplicate-b", "InstanceStop": "stop-c", "SequencePosition": 3},
+      {"TourStopId": "bad-stop-4", "CandidateTour": "tour-duplicate-b", "InstanceStop": "stop-b", "SequencePosition": 4},
+      {"TourStopId": "bad-stop-5", "CandidateTour": "tour-duplicate-b", "InstanceStop": "stop-e", "SequencePosition": 5}
+    ]
+  },
+  "TourLegs": {
+    "Description": "Ordered directed traversal legs bound to canonical undirected travel edges.",
+    "schema": [
+      {"name": "TourLegId", "datatype": "string", "type": "raw", "nullable": false, "Description": "Stable ordered tour-leg identifier."},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "Description": "Display alias for the leg.", "formula": "={{TourLegId}}"},
+      {"name": "CandidateTour", "datatype": "string", "type": "relationship", "nullable": false, "Description": "Candidate tour containing the leg.", "RelatedTo": "CandidateTours"},
+      {"name": "FromTourStop", "datatype": "string", "type": "relationship", "nullable": false, "Description": "Ordered visit at the start of the leg.", "RelatedTo": "TourStops"},
+      {"name": "ToTourStop", "datatype": "string", "type": "relationship", "nullable": false, "Description": "Ordered visit at the end of the leg.", "RelatedTo": "TourStops"},
+      {"name": "TravelEdge", "datatype": "string", "type": "relationship", "nullable": false, "Description": "Canonical undirected edge traversed by the leg.", "RelatedTo": "TravelEdges"},
+      {"name": "LegOrder", "datatype": "integer", "type": "raw", "nullable": false, "Description": "One-based order of the leg."},
+      {"name": "TourTSPInstance", "datatype": "string", "type": "lookup", "nullable": true, "Description": "TSP instance owned by the candidate tour.", "formula": "=INDEX(CandidateTours!{{TSPInstance}}, MATCH({{CandidateTour}}, CandidateTours!{{CandidateTourId}}, 0))", "RelatedTo": "CandidateTours"},
+      {"name": "RequiredStopCount", "datatype": "integer", "type": "lookup", "nullable": true, "Description": "Required stop count reached through the candidate's TSP instance and used to recognize the closing leg.", "formula": "=INDEX(TSPInstances!{{CountOfRequiredStops}}, MATCH({{TourTSPInstance}}, TSPInstances!{{TSPInstanceId}}, 0))", "RelatedTo": "TSPInstances"},
+      {"name": "FromTourCandidate", "datatype": "string", "type": "lookup", "nullable": true, "Description": "Candidate tour owning the from visit.", "formula": "=INDEX(TourStops!{{CandidateTour}}, MATCH({{FromTourStop}}, TourStops!{{TourStopId}}, 0))", "RelatedTo": "TourStops"},
+      {"name": "ToTourCandidate", "datatype": "string", "type": "lookup", "nullable": true, "Description": "Candidate tour owning the to visit.", "formula": "=INDEX(TourStops!{{CandidateTour}}, MATCH({{ToTourStop}}, TourStops!{{TourStopId}}, 0))", "RelatedTo": "TourStops"},
+      {"name": "FromInstanceStop", "datatype": "string", "type": "lookup", "nullable": true, "Description": "Instance stop at the start of the leg.", "formula": "=INDEX(TourStops!{{InstanceStop}}, MATCH({{FromTourStop}}, TourStops!{{TourStopId}}, 0))", "RelatedTo": "TourStops"},
+      {"name": "ToInstanceStop", "datatype": "string", "type": "lookup", "nullable": true, "Description": "Instance stop at the end of the leg.", "formula": "=INDEX(TourStops!{{InstanceStop}}, MATCH({{ToTourStop}}, TourStops!{{TourStopId}}, 0))", "RelatedTo": "TourStops"},
+      {"name": "FromSequencePosition", "datatype": "integer", "type": "lookup", "nullable": true, "Description": "Sequence position at the start of the leg.", "formula": "=INDEX(TourStops!{{SequencePosition}}, MATCH({{FromTourStop}}, TourStops!{{TourStopId}}, 0))", "RelatedTo": "TourStops"},
+      {"name": "ToSequencePosition", "datatype": "integer", "type": "lookup", "nullable": true, "Description": "Sequence position at the end of the leg.", "formula": "=INDEX(TourStops!{{SequencePosition}}, MATCH({{ToTourStop}}, TourStops!{{TourStopId}}, 0))", "RelatedTo": "TourStops"},
+      {"name": "EdgeTSPInstance", "datatype": "string", "type": "lookup", "nullable": true, "Description": "TSP instance owning the selected edge.", "formula": "=INDEX(TravelEdges!{{TSPInstance}}, MATCH({{TravelEdge}}, TravelEdges!{{TravelEdgeId}}, 0))", "RelatedTo": "TravelEdges"},
+      {"name": "EdgeFromStop", "datatype": "string", "type": "lookup", "nullable": true, "Description": "First canonical edge endpoint.", "formula": "=INDEX(TravelEdges!{{FromStop}}, MATCH({{TravelEdge}}, TravelEdges!{{TravelEdgeId}}, 0))", "RelatedTo": "TravelEdges"},
+      {"name": "EdgeToStop", "datatype": "string", "type": "lookup", "nullable": true, "Description": "Second canonical edge endpoint.", "formula": "=INDEX(TravelEdges!{{ToStop}}, MATCH({{TravelEdge}}, TravelEdges!{{TravelEdgeId}}, 0))", "RelatedTo": "TravelEdges"},
+      {"name": "EdgeTravelCost", "datatype": "number", "type": "lookup", "nullable": true, "Description": "Optimization cost of the selected edge.", "formula": "=INDEX(TravelEdges!{{TravelCost}}, MATCH({{TravelEdge}}, TravelEdges!{{TravelEdgeId}}, 0))", "RelatedTo": "TravelEdges"},
+      {"name": "EdgeIsAdmissible", "datatype": "boolean", "type": "lookup", "nullable": true, "Description": "Whether the selected edge passes first-order normalization.", "formula": "=INDEX(TravelEdges!{{IsAdmissible}}, MATCH({{TravelEdge}}, TravelEdges!{{TravelEdgeId}}, 0))", "RelatedTo": "TravelEdges"},
+      {"name": "IsCandidateMembershipValid", "datatype": "boolean", "type": "calculated", "nullable": true, "Description": "Whether both ordered visits belong to this candidate.", "formula": "=AND({{CandidateTour}} = {{FromTourCandidate}}, {{CandidateTour}} = {{ToTourCandidate}})"},
+      {"name": "IsSequenceTransition", "datatype": "boolean", "type": "calculated", "nullable": true, "Description": "Whether the leg follows the next visit or closes the route from n back to one.", "formula": "=OR({{ToSequencePosition}} = {{FromSequencePosition}} + 1, AND({{FromSequencePosition}} = {{RequiredStopCount}}, {{ToSequencePosition}} = 1))"},
+      {"name": "IsEdgeEndpointMatch", "datatype": "boolean", "type": "calculated", "nullable": true, "Description": "Whether the directed leg traverses the selected undirected edge in either direction.", "formula": "=OR(AND({{FromInstanceStop}} = {{EdgeFromStop}}, {{ToInstanceStop}} = {{EdgeToStop}}), AND({{FromInstanceStop}} = {{EdgeToStop}}, {{ToInstanceStop}} = {{EdgeFromStop}}))"},
+      {"name": "IsInTourInstance", "datatype": "boolean", "type": "calculated", "nullable": true, "Description": "Whether the edge belongs to the candidate's TSP instance.", "formula": "={{EdgeTSPInstance}} = {{TourTSPInstance}}"},
+      {"name": "IsValid", "datatype": "boolean", "type": "calculated", "nullable": true, "Description": "Whether the leg passes all represented structural checks.", "formula": "=AND({{IsCandidateMembershipValid}}, {{IsSequenceTransition}}, {{IsEdgeEndpointMatch}}, {{IsInTourInstance}}, {{EdgeIsAdmissible}})"},
+      {"name": "TravelCost", "datatype": "number", "type": "calculated", "nullable": true, "Description": "Cost contributed by a valid leg; invalid legs contribute zero and are counted separately.", "formula": "=IF({{IsValid}}, {{EdgeTravelCost}}, 0)"}
+    ],
+    "data": [
+      {"TourLegId": "ref-leg-1", "CandidateTour": "tour-reference-ring", "FromTourStop": "ref-stop-1", "ToTourStop": "ref-stop-2", "TravelEdge": "edge-a-b", "LegOrder": 1},
+      {"TourLegId": "ref-leg-2", "CandidateTour": "tour-reference-ring", "FromTourStop": "ref-stop-2", "ToTourStop": "ref-stop-3", "TravelEdge": "edge-b-c", "LegOrder": 2},
+      {"TourLegId": "ref-leg-3", "CandidateTour": "tour-reference-ring", "FromTourStop": "ref-stop-3", "ToTourStop": "ref-stop-4", "TravelEdge": "edge-c-d", "LegOrder": 3},
+      {"TourLegId": "ref-leg-4", "CandidateTour": "tour-reference-ring", "FromTourStop": "ref-stop-4", "ToTourStop": "ref-stop-5", "TravelEdge": "edge-d-e", "LegOrder": 4},
+      {"TourLegId": "ref-leg-5", "CandidateTour": "tour-reference-ring", "FromTourStop": "ref-stop-5", "ToTourStop": "ref-stop-1", "TravelEdge": "edge-a-e", "LegOrder": 5},
+      {"TourLegId": "bad-leg-1", "CandidateTour": "tour-duplicate-b", "FromTourStop": "bad-stop-1", "ToTourStop": "bad-stop-2", "TravelEdge": "edge-a-b", "LegOrder": 1},
+      {"TourLegId": "bad-leg-2", "CandidateTour": "tour-duplicate-b", "FromTourStop": "bad-stop-2", "ToTourStop": "bad-stop-3", "TravelEdge": "edge-b-c", "LegOrder": 2},
+      {"TourLegId": "bad-leg-3", "CandidateTour": "tour-duplicate-b", "FromTourStop": "bad-stop-3", "ToTourStop": "bad-stop-4", "TravelEdge": "edge-b-c", "LegOrder": 3},
+      {"TourLegId": "bad-leg-4", "CandidateTour": "tour-duplicate-b", "FromTourStop": "bad-stop-4", "ToTourStop": "bad-stop-5", "TravelEdge": "edge-b-e", "LegOrder": 4},
+      {"TourLegId": "bad-leg-5", "CandidateTour": "tour-duplicate-b", "FromTourStop": "bad-stop-5", "ToTourStop": "bad-stop-1", "TravelEdge": "edge-a-e", "LegOrder": 5}
+    ]
+  },
+  "TSPInferenceRules": {
+    "Description": "Declared structural inference contracts, including soundness, completeness, runtime, memory, applicability, and certificate shape.",
+    "schema": [
+      {"name": "TSPInferenceRuleId", "datatype": "string", "type": "raw", "nullable": false, "Description": "Stable inference-rule identifier."},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "Description": "Human-readable inference-rule label.", "formula": "={{DisplayName}}"},
+      {"name": "DisplayName", "datatype": "string", "type": "raw", "nullable": false, "Description": "Human-readable inference-rule name."},
+      {"name": "InferenceLayer", "datatype": "string", "type": "raw", "nullable": false, "Description": "Pipeline layer in which the rule applies."},
+      {"name": "ImplementationStatus", "datatype": "string", "type": "raw", "nullable": false, "Description": "Whether the rule is executable in the current rulebook."},
+      {"name": "Soundness", "datatype": "string", "type": "raw", "nullable": false, "Description": "Current soundness claim."},
+      {"name": "Completeness", "datatype": "string", "type": "raw", "nullable": false, "Description": "Current completeness claim."},
+      {"name": "RuntimeClass", "datatype": "string", "type": "raw", "nullable": false, "Description": "Declared asymptotic runtime for the represented step."},
+      {"name": "MemoryClass", "datatype": "string", "type": "raw", "nullable": false, "Description": "Declared asymptotic memory for the represented step."},
+      {"name": "Applicability", "datatype": "string", "type": "raw", "nullable": false, "Description": "Preconditions for using the rule."},
+      {"name": "CertificateType", "datatype": "string", "type": "raw", "nullable": false, "Description": "Witness or certificate emitted by the rule."},
+      {"name": "Description", "datatype": "string", "type": "raw", "nullable": false, "Description": "Operational meaning of the rule."}
+    ],
+    "data": [
+      {"TSPInferenceRuleId": "tsp-rule-geographic-normalization", "DisplayName": "City / Neighborhood / Address normalization", "InferenceLayer": "SEMANTIC_NORMALIZATION", "ImplementationStatus": "EXECUTABLE", "Soundness": "STRUCTURAL_BY_CONSTRUCTION", "Completeness": "COMPLETE_FOR_DECLARED_FIXTURE", "RuntimeClass": "O(V)", "MemoryClass": "O(V)", "Applicability": "Every address has exactly one neighborhood and every neighborhood exactly one city.", "CertificateType": "normalized-spatial-hierarchy", "Description": "Promotes city, neighborhood, and address boundaries to first-class rows instead of opaque labels."},
+      {"TSPInferenceRuleId": "tsp-rule-weighted-edge-normalization", "DisplayName": "Canonical weighted-edge normalization", "InferenceLayer": "FIRST_ORDER_INFERENCE", "ImplementationStatus": "EXECUTABLE", "Soundness": "SOUND_FOR_DECLARED_SYMMETRIC_GRAPH", "Completeness": "COMPLETE_WHEN_ONE_EDGE_EXISTS_PER_UNORDERED_STOP_PAIR", "RuntimeClass": "O(E)", "MemoryClass": "O(E)", "Applicability": "Finite symmetric instance with explicit canonical edge rows.", "CertificateType": "complete-undirected-graph-check", "Description": "Rejects self-loops and cross-instance edges and checks the expected n(n-1)/2 edge count."},
+      {"TSPInferenceRuleId": "tsp-rule-tour-witness-validation", "DisplayName": "Ordered Hamiltonian-cycle witness validation", "InferenceLayer": "CONSTRAINT_CLOSURE", "ImplementationStatus": "EXECUTABLE", "Soundness": "SOUND_FOR_EXPLICIT_ORDERED_TOUR_WITNESSES", "Completeness": "COMPLETE_FOR_VALIDATING_A_SUPPLIED_TOUR_NOT_FOR_FINDING_OR_PROVING_OPTIMALITY", "RuntimeClass": "O(V+E_TOUR)", "MemoryClass": "O(V+E_TOUR)", "Applicability": "Candidate supplies one ordered visit list and one edge-bound leg per required stop.", "CertificateType": "hamiltonian-cycle-witness", "Description": "Derives validity from visit uniqueness, sequence uniqueness, depot placement, edge membership, and route closure."},
+      {"TSPInferenceRuleId": "tsp-rule-degree-two-forcing", "DisplayName": "Degree-two forced-edge closure", "InferenceLayer": "SECOND_ORDER_INFERENCE", "ImplementationStatus": "PLANNED", "Soundness": "KNOWN_SOUND_NOT_YET_EXECUTABLE_HERE", "Completeness": "LOCAL_ONLY", "RuntimeClass": "TARGET_O(V+E)", "MemoryClass": "TARGET_O(V+E)", "Applicability": "A stop has exactly two remaining admissible incident edges.", "CertificateType": "forced-edge-certificate", "Description": "Next closure target: force both remaining edges at a degree-two stop without branching."},
+      {"TSPInferenceRuleId": "tsp-rule-neighborhood-boundary-state", "DisplayName": "Neighborhood boundary-state contraction", "InferenceLayer": "THIRD_ORDER_INFERENCE", "ImplementationStatus": "PLANNED", "Soundness": "UNASSESSED", "Completeness": "UNKNOWN", "RuntimeClass": "UNKNOWN", "MemoryClass": "UNKNOWN", "Applicability": "Neighborhood clusters expose a finite set of admissible boundary crossings.", "CertificateType": "cluster-boundary-state", "Description": "Future city-scale kernel for contracting internally settled neighborhoods into reusable boundary states."}
+    ]
+  },
+  "TSPLoops": {
+    "Description": "Named semantic loops that establish the initial Traveling Salesman architecture.",
+    "schema": [
+      {"name": "TSPLoopId", "datatype": "string", "type": "raw", "nullable": false, "Description": "Stable loop identifier."},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "Description": "Human-readable loop label.", "formula": "={{DisplayName}}"},
+      {"name": "LoopOrder", "datatype": "integer", "type": "raw", "nullable": false, "Description": "Global Effortless Math loop number."},
+      {"name": "DisplayName", "datatype": "string", "type": "raw", "nullable": false, "Description": "Human-readable loop name."},
+      {"name": "Status", "datatype": "string", "type": "raw", "nullable": false, "Description": "Completion status of this loop."},
+      {"name": "PrimaryInferenceRule", "datatype": "string", "type": "relationship", "nullable": false, "Description": "Primary inference contract advanced by the loop.", "RelatedTo": "TSPInferenceRules"},
+      {"name": "NewConcept", "datatype": "string", "type": "raw", "nullable": false, "Description": "Semantic structure added by the loop."},
+      {"name": "WitnessSummary", "datatype": "string", "type": "raw", "nullable": false, "Description": "Concrete evidence produced by the loop."},
+      {"name": "NextFrontier", "datatype": "string", "type": "raw", "nullable": false, "Description": "Unclosed edge exposed by the loop."}
+    ],
+    "data": [
+      {"TSPLoopId": "tsp-loop-577", "LoopOrder": 577, "DisplayName": "Spatial hierarchy", "Status": "CLOSED", "PrimaryInferenceRule": "tsp-rule-geographic-normalization", "NewConcept": "City -> Neighborhood -> Address", "WitnessSummary": "One city, three neighborhoods, and five addresses form an acyclic spatial hierarchy.", "NextFrontier": "Select addresses into a finite optimization instance."},
+      {"TSPLoopId": "tsp-loop-578", "LoopOrder": 578, "DisplayName": "Weighted graph normalization", "Status": "CLOSED", "PrimaryInferenceRule": "tsp-rule-weighted-edge-normalization", "NewConcept": "TSP instance, instance stops, and canonical undirected edges", "WitnessSummary": "Five required stops and ten canonical edges satisfy n(n-1)/2 for a complete symmetric graph.", "NextFrontier": "Represent a route as an auditable ordered witness."},
+      {"TSPLoopId": "tsp-loop-579", "LoopOrder": 579, "DisplayName": "Ordered route witness", "Status": "CLOSED", "PrimaryInferenceRule": "tsp-rule-tour-witness-validation", "NewConcept": "Candidate tour, ordered stops, and edge-bound legs", "WitnessSummary": "The route A-B-C-D-E-A is represented entirely by rows and relationships.", "NextFrontier": "Derive route validity and reject a structurally deceptive counterexample."},
+      {"TSPLoopId": "tsp-loop-580", "LoopOrder": 580, "DisplayName": "Postgres tour certificate", "Status": "CLOSED", "PrimaryInferenceRule": "tsp-rule-tour-witness-validation", "NewConcept": "Derived Hamiltonian-cycle validity with explicit optimality boundary", "WitnessSummary": "The reference route validates; A-B-C-B-E-A is rejected for duplicate visitation; both retain IsOptimalityProved=false.", "NextFrontier": "Measure how much search remains before adding inference closure."},
+      {"TSPLoopId": "tsp-loop-581", "LoopOrder": 581, "DisplayName": "Search baseline", "Status": "CLOSED", "PrimaryInferenceRule": "tsp-rule-degree-two-forcing", "NewConcept": "Search-elimination metrics", "WitnessSummary": "For five stops with depot and reversal symmetry fixed, twelve route classes remain and zero have yet been eliminated.", "NextFrontier": "Implement degree-two forced-edge closure and compare BranchCountAfter against twelve."}
+    ]
+  },
+  "SearchMetrics": {
+    "Description": "Quantitative record of how much combinatorial search remains after each represented inference stage.",
+    "schema": [
+      {"name": "SearchMetricId", "datatype": "string", "type": "raw", "nullable": false, "Description": "Stable search-metric identifier."},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "Description": "Display alias for the metric row.", "formula": "={{SearchMetricId}}"},
+      {"name": "TSPInstance", "datatype": "string", "type": "relationship", "nullable": false, "Description": "TSP instance being measured.", "RelatedTo": "TSPInstances"},
+      {"name": "TSPLoop", "datatype": "string", "type": "relationship", "nullable": false, "Description": "Loop that produced the measurement.", "RelatedTo": "TSPLoops"},
+      {"name": "RawNodeCount", "datatype": "integer", "type": "raw", "nullable": false, "Description": "Required stop count before inference."},
+      {"name": "RawEdgeCount", "datatype": "integer", "type": "raw", "nullable": false, "Description": "Canonical edge count before inference."},
+      {"name": "ForcedEdgeCount", "datatype": "integer", "type": "raw", "nullable": false, "Description": "Edges forced by represented inference."},
+      {"name": "ForbiddenEdgeCount", "datatype": "integer", "type": "raw", "nullable": false, "Description": "Edges forbidden by represented inference."},
+      {"name": "SymmetryClassCount", "datatype": "integer", "type": "raw", "nullable": false, "Description": "Route classes after fixing depot and reversal symmetry."},
+      {"name": "ComponentContractionCount", "datatype": "integer", "type": "raw", "nullable": false, "Description": "Components or clusters contracted."},
+      {"name": "BranchCountBefore", "datatype": "integer", "type": "raw", "nullable": false, "Description": "Branches before the current inference stage."},
+      {"name": "BranchCountAfter", "datatype": "integer", "type": "raw", "nullable": false, "Description": "Branches after the current inference stage."},
+      {"name": "BacktrackCount", "datatype": "integer", "type": "raw", "nullable": false, "Description": "Backtracks consumed by search."},
+      {"name": "ResidualAmbiguityCount", "datatype": "integer", "type": "raw", "nullable": false, "Description": "Remaining unresolved route classes or boundary states."},
+      {"name": "SearchEliminationPct", "datatype": "number", "type": "calculated", "nullable": true, "Description": "Percentage of branches removed without search.", "formula": "=IF({{BranchCountBefore}} = 0, 0, ROUND(({{BranchCountBefore}} - {{BranchCountAfter}}) / {{BranchCountBefore}} * 100, 2))"},
+      {"name": "Status", "datatype": "string", "type": "raw", "nullable": false, "Description": "Interpretation of the metric row."}
+    ],
+    "data": [
+      {"SearchMetricId": "search-baseline-gridville-5", "TSPInstance": "tsp-gridville-5", "TSPLoop": "tsp-loop-581", "RawNodeCount": 5, "RawEdgeCount": 10, "ForcedEdgeCount": 0, "ForbiddenEdgeCount": 0, "SymmetryClassCount": 12, "ComponentContractionCount": 0, "BranchCountBefore": 12, "BranchCountAfter": 12, "BacktrackCount": 0, "ResidualAmbiguityCount": 12, "Status": "BASELINE_NO_CLOSURE"}
+    ]
+  },
+  "TSPInvariantChecks": {
+    "Description": "Rulebook-native acceptance checks comparing expected raw outcomes to derived candidate-tour fields.",
+    "schema": [
+      {"name": "TSPInvariantCheckId", "datatype": "string", "type": "raw", "nullable": false, "Description": "Stable invariant-check identifier."},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "Description": "Human-readable invariant label.", "formula": "={{DisplayName}}"},
+      {"name": "DisplayName", "datatype": "string", "type": "raw", "nullable": false, "Description": "Human-readable invariant name."},
+      {"name": "CandidateTour", "datatype": "string", "type": "relationship", "nullable": false, "Description": "Candidate tour under test.", "RelatedTo": "CandidateTours"},
+      {"name": "ExpectedHamiltonianCycleWitness", "datatype": "boolean", "type": "raw", "nullable": false, "Description": "Expected derived route-validity result."},
+      {"name": "ActualHamiltonianCycleWitness", "datatype": "boolean", "type": "lookup", "nullable": true, "Description": "Derived route-validity result from the candidate-tour view.", "formula": "=INDEX(CandidateTours!{{IsHamiltonianCycleWitness}}, MATCH({{CandidateTour}}, CandidateTours!{{CandidateTourId}}, 0))", "RelatedTo": "CandidateTours"},
+      {"name": "ExpectedOptimalityProved", "datatype": "boolean", "type": "raw", "nullable": false, "Description": "Expected optimality-certificate status."},
+      {"name": "ActualOptimalityProved", "datatype": "boolean", "type": "lookup", "nullable": true, "Description": "Derived optimality-certificate status from the candidate-tour view.", "formula": "=INDEX(CandidateTours!{{IsOptimalityProved}}, MATCH({{CandidateTour}}, CandidateTours!{{CandidateTourId}}, 0))", "RelatedTo": "CandidateTours"},
+      {"name": "ExpectedTotalTravelCost", "datatype": "number", "type": "raw", "nullable": false, "Description": "Expected sum of represented valid leg costs."},
+      {"name": "ActualTotalTravelCost", "datatype": "number", "type": "lookup", "nullable": true, "Description": "Derived total tour cost from the candidate-tour view.", "formula": "=INDEX(CandidateTours!{{TotalTravelCost}}, MATCH({{CandidateTour}}, CandidateTours!{{CandidateTourId}}, 0))", "RelatedTo": "CandidateTours"},
+      {"name": "IsHamiltonianStatusCorrect", "datatype": "boolean", "type": "calculated", "nullable": true, "Description": "Whether expected and actual route validity agree.", "formula": "={{ExpectedHamiltonianCycleWitness}} = {{ActualHamiltonianCycleWitness}}"},
+      {"name": "IsOptimalityStatusCorrect", "datatype": "boolean", "type": "calculated", "nullable": true, "Description": "Whether expected and actual optimality status agree.", "formula": "={{ExpectedOptimalityProved}} = {{ActualOptimalityProved}}"},
+      {"name": "IsCostCorrect", "datatype": "boolean", "type": "calculated", "nullable": true, "Description": "Whether expected and actual total cost agree.", "formula": "={{ExpectedTotalTravelCost}} = {{ActualTotalTravelCost}}"},
+      {"name": "IsPassing", "datatype": "boolean", "type": "calculated", "nullable": true, "Description": "Whether all represented expectations agree with derived values.", "formula": "=AND({{IsHamiltonianStatusCorrect}}, {{IsOptimalityStatusCorrect}}, {{IsCostCorrect}})"}
+    ],
+    "data": [
+      {"TSPInvariantCheckId": "check-reference-route", "DisplayName": "Reference route validates without claiming optimality", "CandidateTour": "tour-reference-ring", "ExpectedHamiltonianCycleWitness": true, "ExpectedOptimalityProved": false, "ExpectedTotalTravelCost": 14},
+      {"TSPInvariantCheckId": "check-duplicate-route", "DisplayName": "Duplicate-stop route is rejected", "CandidateTour": "tour-duplicate-b", "ExpectedHamiltonianCycleWitness": false, "ExpectedOptimalityProved": false, "ExpectedTotalTravelCost": 17}
+    ]
+  }
+}
