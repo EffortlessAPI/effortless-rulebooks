@@ -116,6 +116,39 @@ The bit-calculator's own model (a separate rulebook) holds: 4 GateTypes, 14 Gate
 
 `scripts/validate_starter.py` asserts the **13-theorem** shape, **7 load-bearing + 4 corroborating-witness** dependency split, and the frozen v21 SHA-256 + SQLite counts; keep all of these in sync with this block.
 
+### traveling-salesman addendum (loops 577–581)
+
+The `traveling-salesman` optimization domain (`domains/traveling-salesman/`) begins the first major stress test outside theorem decomposition. It is a standalone Effortless project with its own canonical rulebook, generated Postgres projection, Python reference substrate, and local database `erb_traveling_salesman`.
+
+It is **not yet registered as a theorem or provider** in the global theorem catalog, so it does not change any theorem, dependency, conclusion, trust-boundary, foundation-kernel, or frozen v21 count above. Its loop numbers continue the research history, while its domain-local rows remain separate until an explicit federation loop is added.
+
+The first acceptance state is:
+
+```text
+13 TSP domain tables
+1 city, 3 neighborhoods, 5 addresses
+1 finite TSP instance with 5 required stops
+10 canonical undirected travel edges
+2 supplied candidate tours
+5 semantic loops (577–581)
+2 invariant rows
+reference route A-B-C-D-E-A: valid=true, cost=14, optimality=false
+negative route A-B-C-B-E-A: valid=false, cost=17, optimality=false
+search elimination: 0% (12 -> 12 symmetry-reduced route classes)
+```
+
+Never conflate:
+
+```text
+supplied route is structurally valid
+route is optimal
+solver found the route
+search was eliminated
+P = NP
+```
+
+`scripts/validate_rulebook.py` validates the canonical structure and executes the Python reference model. `testing/take-test.py` compares that model against generated Postgres `vw_*` values. The next semantic loop is **582: degree-two forced-edge closure**, whose success criterion is a replayable certificate and a measured reduction in `BranchCountAfter`, not merely finding a route.
+
 ## Host conventions
 
 - Include `rulebooktorulespeak` in `effortless.json`.
