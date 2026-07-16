@@ -1,0 +1,44 @@
+      {"name": "CityName", "datatype": "string", "type": "lookup", "nullable": true, "Description": "Display name of the containing city.", "formula": "=INDEX(Cities!{{Name}}, MATCH({{City}}, Cities!{{CityId}}, 0))", "RelatedTo": "Cities"},
+      {"name": "ClusterKind", "datatype": "string", "type": "raw", "nullable": false, "Description": "Semantic role of the neighborhood in the initial fixture."}
+    ],
+    "data": [
+      {"NeighborhoodId": "gridville-downtown", "DisplayName": "Downtown", "City": "gridville", "ClusterKind": "CORE"},
+      {"NeighborhoodId": "gridville-north", "DisplayName": "North Hills", "City": "gridville", "ClusterKind": "RESIDENTIAL"},
+      {"NeighborhoodId": "gridville-south", "DisplayName": "South Market", "City": "gridville", "ClusterKind": "MIXED_USE"}
+    ]
+  },
+  "Addresses": {
+    "Description": "Addresses are visitable physical locations. Coordinates support visualization; edge costs remain explicit graph data.",
+    "schema": [
+      {"name": "AddressId", "datatype": "string", "type": "raw", "nullable": false, "Description": "Stable address identifier."},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "Description": "Human-readable address label.", "formula": "={{StreetLabel}}"},
+      {"name": "StreetLabel", "datatype": "string", "type": "raw", "nullable": false, "Description": "Human-readable street or place label."},
+      {"name": "Neighborhood", "datatype": "string", "type": "relationship", "nullable": false, "Description": "Neighborhood containing this address.", "RelatedTo": "Neighborhoods"},
+      {"name": "NeighborhoodName", "datatype": "string", "type": "lookup", "nullable": true, "Description": "Display name of the containing neighborhood.", "formula": "=INDEX(Neighborhoods!{{Name}}, MATCH({{Neighborhood}}, Neighborhoods!{{NeighborhoodId}}, 0))", "RelatedTo": "Neighborhoods"},
+      {"name": "City", "datatype": "string", "type": "lookup", "nullable": true, "Description": "City reached through the address's neighborhood.", "formula": "=INDEX(Neighborhoods!{{City}}, MATCH({{Neighborhood}}, Neighborhoods!{{NeighborhoodId}}, 0))", "RelatedTo": "Neighborhoods"},
+      {"name": "XCoordinate", "datatype": "number", "type": "raw", "nullable": false, "Description": "Local X coordinate for visualization and later geometric experiments."},
+      {"name": "YCoordinate", "datatype": "number", "type": "raw", "nullable": false, "Description": "Local Y coordinate for visualization and later geometric experiments."},
+      {"name": "IsDepotCandidate", "datatype": "boolean", "type": "raw", "nullable": false, "Description": "Whether this address may serve as a depot."}
+    ],
+    "data": [
+      {"AddressId": "addr-a-depot", "StreetLabel": "1 Center Plaza", "Neighborhood": "gridville-downtown", "XCoordinate": 0, "YCoordinate": 0, "IsDepotCandidate": true},
+      {"AddressId": "addr-b-market", "StreetLabel": "20 Market Street", "Neighborhood": "gridville-downtown", "XCoordinate": 2, "YCoordinate": 0, "IsDepotCandidate": false},
+      {"AddressId": "addr-c-north", "StreetLabel": "300 North Avenue", "Neighborhood": "gridville-north", "XCoordinate": 3, "YCoordinate": 2, "IsDepotCandidate": false},
+      {"AddressId": "addr-d-hill", "StreetLabel": "44 Hill Road", "Neighborhood": "gridville-north", "XCoordinate": 1, "YCoordinate": 3, "IsDepotCandidate": false},
+      {"AddressId": "addr-e-south", "StreetLabel": "9 South Lane", "Neighborhood": "gridville-south", "XCoordinate": -1, "YCoordinate": 2, "IsDepotCandidate": false}
+    ]
+  },
+  "TSPInstances": {
+    "Description": "One finite Traveling Salesman problem instance over required city addresses.",
+    "schema": [
+      {"name": "TSPInstanceId", "datatype": "string", "type": "raw", "nullable": false, "Description": "Stable TSP instance identifier."},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "Description": "Human-readable instance label.", "formula": "={{DisplayName}}"},
+      {"name": "DisplayName", "datatype": "string", "type": "raw", "nullable": false, "Description": "Human-readable TSP instance name."},
+      {"name": "City", "datatype": "string", "type": "relationship", "nullable": false, "Description": "City containing the instance.", "RelatedTo": "Cities"},
+      {"name": "DepotAddress", "datatype": "string", "type": "relationship", "nullable": false, "Description": "Address fixed as the tour depot.", "RelatedTo": "Addresses"},
+      {"name": "DistanceModel", "datatype": "string", "type": "raw", "nullable": false, "Description": "Interpretation of TravelEdges.TravelCost."},
+      {"name": "IsSymmetric", "datatype": "boolean", "type": "raw", "nullable": false, "Description": "Whether each canonical edge cost applies in both directions."},
+      {"name": "Status", "datatype": "string", "type": "raw", "nullable": false, "Description": "Current semantic-normalization status."},
+      {"name": "SearchPolicy", "datatype": "string", "type": "raw", "nullable": false, "Description": "Research policy governing when search is allowed."},
+      {"name": "CountOfStops", "datatype": "integer", "type": "aggregation", "nullable": true, "Description": "Number of normalized instance-stop rows.", "formula": "=COUNTIFS(InstanceStops!{{TSPInstance}}, {{TSPInstanceId}})"},
+      {"name": "CountOfRequiredStops", "datatype": "integer", "type": "aggregation", "nullable": true, "Description": "Number of required visit stops.", "formula": "=COUNTIFS(InstanceStops!{{TSPInstance}}, {{TSPInstanceId}}, InstanceStops!{{IsRequired}}, TRUE())"},
