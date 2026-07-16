@@ -1,0 +1,44 @@
+      {"name": "CountOfTravelEdges", "datatype": "integer", "type": "aggregation", "nullable": true, "Description": "Number of canonical undirected travel edges.", "formula": "=COUNTIFS(TravelEdges!{{TSPInstance}}, {{TSPInstanceId}})"},
+      {"name": "ExpectedUndirectedEdgeCount", "datatype": "integer", "type": "calculated", "nullable": true, "Description": "n(n-1)/2 expected edges for a complete undirected graph.", "formula": "=({{CountOfStops}} * ({{CountOfStops}} - 1)) / 2"},
+      {"name": "IsCompleteUndirectedGraph", "datatype": "boolean", "type": "calculated", "nullable": true, "Description": "Whether every unordered pair of stops has one canonical edge.", "formula": "={{CountOfTravelEdges}} = {{ExpectedUndirectedEdgeCount}}"},
+      {"name": "Notes", "datatype": "string", "type": "raw", "nullable": true, "Description": "Scope and caveats for the instance."}
+    ],
+    "data": [
+      {"TSPInstanceId": "tsp-gridville-5", "DisplayName": "Gridville Five-Address Baseline", "City": "gridville", "DepotAddress": "addr-a-depot", "DistanceModel": "EXPLICIT_SYMMETRIC_COST", "IsSymmetric": true, "Status": "NORMALIZED", "SearchPolicy": "SEMANTIC_CLOSURE_BEFORE_SEARCH", "Notes": "A five-stop complete weighted graph. It calibrates representation and tour validation; it does not establish a general TSP algorithm."}
+    ]
+  },
+  "InstanceStops": {
+    "Description": "Junction entity selecting addresses into a TSP instance without introducing a many-to-many relationship.",
+    "schema": [
+      {"name": "InstanceStopId", "datatype": "string", "type": "raw", "nullable": false, "Description": "Stable instance-stop identifier."},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "Description": "Display alias for the selected stop.", "formula": "={{InstanceStopId}}"},
+      {"name": "TSPInstance", "datatype": "string", "type": "relationship", "nullable": false, "Description": "TSP instance containing the stop.", "RelatedTo": "TSPInstances"},
+      {"name": "Address", "datatype": "string", "type": "relationship", "nullable": false, "Description": "Address selected into the instance.", "RelatedTo": "Addresses"},
+      {"name": "IsRequired", "datatype": "boolean", "type": "raw", "nullable": false, "Description": "Whether the tour must visit this stop exactly once."},
+      {"name": "InstanceCity", "datatype": "string", "type": "lookup", "nullable": true, "Description": "City declared by the TSP instance.", "formula": "=INDEX(TSPInstances!{{City}}, MATCH({{TSPInstance}}, TSPInstances!{{TSPInstanceId}}, 0))", "RelatedTo": "TSPInstances"},
+      {"name": "InstanceDepotAddress", "datatype": "string", "type": "lookup", "nullable": true, "Description": "Depot address declared by the TSP instance.", "formula": "=INDEX(TSPInstances!{{DepotAddress}}, MATCH({{TSPInstance}}, TSPInstances!{{TSPInstanceId}}, 0))", "RelatedTo": "TSPInstances"},
+      {"name": "AddressName", "datatype": "string", "type": "lookup", "nullable": true, "Description": "Human-readable address label.", "formula": "=INDEX(Addresses!{{Name}}, MATCH({{Address}}, Addresses!{{AddressId}}, 0))", "RelatedTo": "Addresses"},
+      {"name": "AddressCity", "datatype": "string", "type": "lookup", "nullable": true, "Description": "City reached through the selected address.", "formula": "=INDEX(Addresses!{{City}}, MATCH({{Address}}, Addresses!{{AddressId}}, 0))", "RelatedTo": "Addresses"},
+      {"name": "Neighborhood", "datatype": "string", "type": "lookup", "nullable": true, "Description": "Neighborhood of the selected address.", "formula": "=INDEX(Addresses!{{Neighborhood}}, MATCH({{Address}}, Addresses!{{AddressId}}, 0))", "RelatedTo": "Addresses"},
+      {"name": "XCoordinate", "datatype": "number", "type": "lookup", "nullable": true, "Description": "X coordinate of the selected address.", "formula": "=INDEX(Addresses!{{XCoordinate}}, MATCH({{Address}}, Addresses!{{AddressId}}, 0))", "RelatedTo": "Addresses"},
+      {"name": "YCoordinate", "datatype": "number", "type": "lookup", "nullable": true, "Description": "Y coordinate of the selected address.", "formula": "=INDEX(Addresses!{{YCoordinate}}, MATCH({{Address}}, Addresses!{{AddressId}}, 0))", "RelatedTo": "Addresses"},
+      {"name": "IsWithinInstanceCity", "datatype": "boolean", "type": "calculated", "nullable": true, "Description": "Whether the selected address belongs to the instance city.", "formula": "={{AddressCity}} = {{InstanceCity}}"},
+      {"name": "IsDepot", "datatype": "boolean", "type": "calculated", "nullable": true, "Description": "Whether this stop is the instance depot.", "formula": "={{Address}} = {{InstanceDepotAddress}}"}
+    ],
+    "data": [
+      {"InstanceStopId": "stop-a", "TSPInstance": "tsp-gridville-5", "Address": "addr-a-depot", "IsRequired": true},
+      {"InstanceStopId": "stop-b", "TSPInstance": "tsp-gridville-5", "Address": "addr-b-market", "IsRequired": true},
+      {"InstanceStopId": "stop-c", "TSPInstance": "tsp-gridville-5", "Address": "addr-c-north", "IsRequired": true},
+      {"InstanceStopId": "stop-d", "TSPInstance": "tsp-gridville-5", "Address": "addr-d-hill", "IsRequired": true},
+      {"InstanceStopId": "stop-e", "TSPInstance": "tsp-gridville-5", "Address": "addr-e-south", "IsRequired": true}
+    ]
+  },
+  "TravelEdges": {
+    "Description": "Canonical undirected weighted edges between instance stops. The edge entity resolves the address-to-address many-to-many relation.",
+    "schema": [
+      {"name": "TravelEdgeId", "datatype": "string", "type": "raw", "nullable": false, "Description": "Stable canonical edge identifier."},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "Description": "Display alias for the edge.", "formula": "={{TravelEdgeId}}"},
+      {"name": "TSPInstance", "datatype": "string", "type": "relationship", "nullable": false, "Description": "TSP instance owning the edge.", "RelatedTo": "TSPInstances"},
+      {"name": "FromStop", "datatype": "string", "type": "relationship", "nullable": false, "Description": "First canonical endpoint.", "RelatedTo": "InstanceStops"},
+      {"name": "ToStop", "datatype": "string", "type": "relationship", "nullable": false, "Description": "Second canonical endpoint.", "RelatedTo": "InstanceStops"},
+      {"name": "DistanceMeters", "datatype": "number", "type": "raw", "nullable": false, "Description": "Observed or supplied travel distance for the edge."},
