@@ -79,6 +79,7 @@ cmd_show() {
   echo "=== normalized graph ==="
   psql_db -c "
     SELECT tsp_instance_id, count_of_required_stops, count_of_travel_edges,
+           count_of_inadmissible_edges, count_of_non_unique_edge_pair_rows,
            expected_undirected_edge_count, is_complete_undirected_graph
       FROM vw_tsp_instances
      ORDER BY tsp_instance_id;"
@@ -92,7 +93,37 @@ cmd_show() {
      ORDER BY candidate_tour_id;"
 
   echo
+  echo "=== degree-two lower bound ==="
+  psql_db -c "
+    SELECT local_degree_bound_id, instance_stop, local_bound_cost,
+           is_two_cheapest_witness
+      FROM vw_local_degree_bounds
+     ORDER BY local_degree_bound_id;"
+  psql_db -c "
+    SELECT instance_lower_bound_id, total_local_degree_bound_cost,
+           lower_bound_cost, is_certified
+      FROM vw_instance_lower_bounds
+     ORDER BY instance_lower_bound_id;"
+  psql_db -c "
+    SELECT optimality_certificate_id, candidate_travel_cost, lower_bound_cost,
+           is_passing, scope_claim
+      FROM vw_optimality_certificates
+     ORDER BY optimality_certificate_id;"
+
+  echo
+  echo "=== frontier obligations ==="
+  psql_db -c "
+    SELECT tsp_frontier_obligation_id, obligation_kind, status,
+           is_imported_dependency, certificate_type
+      FROM vw_tsp_frontier_obligations
+     ORDER BY tsp_frontier_obligation_id;"
+
+  echo
   echo "=== invariants ==="
+  psql_db -c "
+    SELECT tsp_graph_invariant_check_id, is_passing
+      FROM vw_tsp_graph_invariant_checks
+     ORDER BY tsp_graph_invariant_check_id;"
   psql_db -c "
     SELECT tsp_invariant_check_id, is_passing
       FROM vw_tsp_invariant_checks
@@ -101,8 +132,8 @@ cmd_show() {
   echo
   echo "=== residual search ==="
   psql_db -c "
-    SELECT search_metric_id, branch_count_before, branch_count_after,
-           search_elimination_pct, residual_ambiguity_count
+    SELECT search_metric_id, search_question, branch_count_before,
+           branch_count_after, search_elimination_pct, residual_ambiguity_count
       FROM vw_search_metrics
      ORDER BY search_metric_id;"
 }
