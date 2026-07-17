@@ -1,10 +1,10 @@
 # Traveling Salesman — Semantic Geometry Starter
 
 **Status:** Research program  
-**Version:** 0.1.0  
-**Current claim:** explicit tours can be validated structurally; optimality is not yet proved.
+**Version:** 0.2.0  
+**Current finite claim:** the supplied Gridville cycle is structurally valid and optimal for its declared five-stop instance by a witnessed degree-two lower-bound equality. No general solver or complexity claim is made.
 
-This domain starts the Traveling Salesman stress test outside pure theorem decomposition. The canonical object is not a solver and not a route. It is an executable dependency graph describing the city, the selected stops, the weighted graph, supplied route witnesses, inference contracts, invariants, and residual search.
+The canonical object is not a solver and not a route. It is an executable dependency graph describing the city, selected stops, canonical weighted edges, supplied route witnesses, typed frontier obligations, local inference certificates, finite optimality certificates, and residual search.
 
 ## Sixty-thousand-foot object
 
@@ -15,105 +15,120 @@ City
         └── InstanceStop
             ├── TravelEdge
             ├── TourStop
-            └── TourLeg
+            ├── TourLeg
+            └── LocalDegreeBound
+                  └── IncidentDominanceCheck
+
+TSPInstance
+├── InstanceLowerBound
+├── CandidateTour
+│   └── OptimalityCertificate
+├── FrontierObligation
+└── SearchMetric
 ```
 
-`InstanceStops` selects addresses into a particular problem instance. `TravelEdges` promotes address-to-address connectivity into a first-class entity, so there is no hidden many-to-many relation. A candidate route is represented by ordered `TourStops` and edge-bound `TourLegs`.
+`InstanceStops` selects addresses into a particular problem instance. `TravelEdges` makes connectivity first-class. A candidate route is represented by ordered `TourStops` and edge-bound `TourLegs`; it is never an opaque list.
 
-## Initial loops
+## Vocabulary
+
+The pieces still to close are generally **frontier obligations**, not imported edges.
+
+| Term | Meaning |
+|---|---|
+| Imported dependency | An external provider conclusion consumed without internal derivation in this domain. |
+| Frontier obligation | Any open semantic edge, typed as inference, certificate, substrate, generalization, or residual search. |
+| Kernel assumption | Trusted primitive input semantics recorded at the declared trust boundary. |
+| Residual search | Explicit ambiguity remaining after all represented deterministic obligations reach closure. |
+
+The current active imported-dependency count is **zero**. Live Postgres commissioning is an open `SUBSTRATE_OBLIGATION`; route reconstruction is an open `CERTIFICATE_OBLIGATION`.
+
+## Loops 577–586
 
 | Loop | Closure |
 |---:|---|
-| 577 | One city, three neighborhoods, and five addresses form an acyclic spatial hierarchy. |
-| 578 | The five stops produce ten canonical undirected edges, matching `n(n-1)/2`. |
-| 579 | A route becomes an ordered structural witness rather than an opaque list. |
-| 580 | Postgres derives that `A-B-C-D-E-A` is valid and rejects `A-B-C-B-E-A`; neither is promoted to an optimality proof. |
-| 581 | Search is measured before inference: 12 symmetry-reduced route classes remain, so semantic elimination is currently 0%. |
+| 577 | City → Neighborhood → Address hierarchy. |
+| 578 | Five-stop graph normalized as ten canonical undirected edges. |
+| 579 | Route represented as ordered stops plus edge-bound legs. |
+| 580 | Reference route accepted; duplicate-stop route rejected. |
+| 581 | Route-discovery baseline recorded as 12 → 12. |
+| 582 | Frontier obligations typed separately from imported dependencies. |
+| 583 | Every ordered visit must have exactly one incoming and outgoing transition. |
+| 584 | Pair identity and multiplicity replace edge count as the completeness certificate. |
+| 585 | Two cheapest incident edges at each stop produce a global degree-two lower bound. |
+| 586 | Candidate cost 14 equals certified lower bound 14, proving finite-instance optimality. |
 
-## Seed fixture
+## Three negative certificates
 
-The initial instance is `tsp-gridville-5`.
-
-```text
-A  depot      Downtown
-B  market     Downtown
-C  north      North Hills
-D  hill       North Hills
-E  south      South Market
-```
-
-The reference route is:
+The rulebook rejects:
 
 ```text
-A -> B -> C -> D -> E -> A
+A → B → C → B → E → A
 ```
 
-Its represented cost is `14`. The deliberately invalid witness is:
+because `B` is duplicated and `D` is omitted.
+
+It also rejects a more deceptive candidate with five unique visits and five individually legal legs:
 
 ```text
-A -> B -> C -> B -> E -> A
+A→B, A→B, B→C, C→D, D→E
 ```
 
-It also has five ordered rows and five legal edge traversals, but it repeats `B` and omits `D`. The rulebook must reject it. This is the first negative certificate.
+because `A→B` is duplicated and `E→A` is missing. Global one-in/one-out coverage is required.
 
-## What Postgres derives
+Finally, `tsp-gridville-broken-3` has exactly `n(n−1)/2 = 3` edge rows but repeats `A-B` and omits `B-C`; canonical pair multiplicity rejects it. Count alone is not a graph-completeness proof.
 
-The generated views expose:
+## Degree-two lower-bound geometry
+
+Every Hamiltonian cycle uses two incident edges at every stop. The witnessed two cheapest incident costs are:
 
 ```text
-vw_tsp_instances.is_complete_undirected_graph
-vw_travel_edges.is_admissible
-vw_candidate_tours.total_travel_cost
-vw_candidate_tours.is_hamiltonian_cycle_witness
-vw_candidate_tours.is_optimality_proved
-vw_tsp_invariant_checks.is_passing
-vw_search_metrics.search_elimination_pct
+A: 2 + 3 = 5
+B: 2 + 3 = 5
+C: 3 + 3 = 6
+D: 3 + 3 = 6
+E: 3 + 3 = 6
 ```
 
-Application or test code reads these columns. It does not reimplement their formulas.
+Their sum is `28`. Every tour edge is counted at both endpoints, so every tour costs at least:
+
+```text
+28 / 2 = 14
+```
+
+The supplied cycle `A-B-C-D-E-A` has cost `14`. Bound equality therefore certifies it as optimal **for `tsp-gridville-5` only**.
+
+## Search accounting
+
+Two different questions remain separate:
+
+```text
+DISCOVER_ROUTE_WITHOUT_SUPPLIED_CANDIDATE       12 → 12   0% eliminated
+VERIFY_OPTIMALITY_OF_SUPPLIED_CANDIDATE         12 → 0  100% enumeration avoided
+```
+
+The second result does not claim that the system discovered the route. It proves that exhaustive route comparison is unnecessary to verify this supplied candidate's optimality.
 
 ## Run
 
 From this directory:
 
 ```bash
-./start.sh validate   # rulebook + Python substrate only
+./start.sh validate   # canonical rulebook + Python substrate
 ./start.sh all        # validate -> effortless build -> Postgres -> conformance -> show
-```
-
-Individual stages:
-
-```bash
-./start.sh build
-./start.sh db
-./start.sh test
-./start.sh show
-./start.sh contract
-./start.sh stop
 ```
 
 The local database is `erb_traveling_salesman`, unless `TSP_DB` explicitly overrides it.
 
-## Conformance boundary
-
-`scripts/reference_model.py` is a peer execution substrate. It consumes only raw rulebook rows and independently evaluates graph completeness and supplied-tour validity. `testing/take-test.py` compares those results with generated Postgres `vw_*` rows.
-
-Expected first acceptance state:
-
-```text
-13 domain tables
-1 city
-3 neighborhoods
-5 addresses
-5 required instance stops
-10 canonical travel edges
-2 candidate tours
-2/2 rulebook invariant rows passing
-reference route: valid=true, cost=14, optimality=false
-negative route: valid=false, cost=17, optimality=false
-search elimination: 0% (12 -> 12)
-```
-
 ## Honest frontier
 
-Nothing here claims that the reference route is optimal, that a general solver exists, or that complexity has changed. The next edge to close is `tsp-rule-degree-two-forcing`, followed by forbidden-edge propagation, symmetry collapse, neighborhood boundary states, component contraction, subtour exclusion, lower bounds, and only then residual branching.
+The nearest open obligations are live Postgres commissioning, route reconstruction from inferred edge rows, a deliberately non-tight lower-bound fixture, degree-two forcing after pruning, neighborhood boundary-state contraction, subtour certificates, and explicit residual branching.
+
+---
+
+## Local transpiler bus (`localhost:4242`)
+
+> **All 13 local transpilers live on `localhost:4242`.** Once you run
+> `./start.sh` from the repo root, the ssotme-proxy exposes every repo-local
+> transpiler — `rulebook-to-postgres`, `rulebook-to-python`, `rulebook-to-golang`,
+> `rulebook-to-cobol`, `rulebook-to-owl`, and more — as first-class `ssotme://`
+> routes any `effortless build` can call.
