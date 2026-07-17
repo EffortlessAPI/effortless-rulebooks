@@ -1,17 +1,19 @@
 {
   "ProblemId": "traveling-salesman-semantic-geometry",
-  "Version": "0.1.0",
-  "Title": "Traveling Salesman — City / Neighborhood / Address Semantic Geometry",
+  "Version": "0.2.0",
+  "Title": "Traveling Salesman \u2014 City / Neighborhood / Address Semantic Geometry",
   "Status": "RESEARCH_PROGRAM",
-  "Statement": "Given a finite city-scale set of required addresses and explicit symmetric travel costs, represent the graph, supplied tours, inference state, and residual search as executable structural data.",
-  "Scope": "Initial scope is one finite symmetric complete weighted graph with a fixed depot, five required addresses, explicit canonical undirected edge rows, and supplied ordered tour witnesses. The scope validates tours; it does not yet find or prove an optimal tour.",
-  "TrustBoundary": "InputGraphKernel: city/neighborhood/address membership, required-stop selection, and TravelEdges.DistanceMeters/TravelCost are trusted input data. Formula semantics are projected into Postgres and independently replayed by the Python reference substrate.",
+  "Statement": "Given finite city-scale weighted graphs, represent graph normalization, supplied tours, typed frontier obligations, local-to-global lower bounds, finite optimality certificates, and residual search as executable structural data.",
+  "Scope": "Primary scope is the five-stop symmetric complete Gridville fixture with a fixed depot and explicit canonical undirected edge rows. A three-stop count-preserving broken graph and two invalid tour witnesses are negative certificates. The scope validates supplied cycles and proves the reference route optimal for this finite instance; it does not yet reconstruct the route from inference or provide a general solver.",
+  "TrustBoundary": "InputGraphKernel: city/neighborhood/address membership, required-stop selection, and TravelEdges weights are trusted input data. Pair identity, cycle coverage, local two-cheapest witnesses, double-counting, and bound equality are represented internally. Live Postgres commissioning remains an open substrate obligation.",
   "Claims": {
     "PEqualsNP": false,
     "UniversalPolynomialNormalization": false,
-    "OptimalityProved": false,
+    "GeneralOptimalityProved": false,
+    "Gridville5OptimalityProved": true,
     "HamiltonianWitnessValidationImplemented": true,
-    "SearchEliminationMeasured": true
+    "SearchEliminationMeasured": true,
+    "ActiveImportedDependencyCount": 0
   },
   "CanonicalAsset": "effortless-rulebook/traveling-salesman-rulebook.json",
   "ExecutionSubstrates": [
@@ -37,57 +39,115 @@
     {
       "LoopOrder": 580,
       "LoopId": "tsp-loop-580",
-      "Result": "Valid reference route accepted; duplicate-stop route rejected; optimality remains false."
+      "Result": "Valid reference route accepted; duplicate-stop route rejected; optimality remained open."
     },
     {
       "LoopOrder": 581,
       "LoopId": "tsp-loop-581",
-      "Result": "Baseline records twelve symmetry-reduced route classes and zero semantic elimination."
+      "Result": "Baseline recorded twelve symmetry-reduced route-discovery classes."
+    },
+    {
+      "LoopOrder": 582,
+      "LoopId": "tsp-loop-582",
+      "Result": "Frontier obligations typed separately from imported dependencies; imported count remains zero."
+    },
+    {
+      "LoopOrder": 583,
+      "LoopId": "tsp-loop-583",
+      "Result": "Global one-in/one-out transition coverage rejects a locally legal but globally incomplete cycle."
+    },
+    {
+      "LoopOrder": 584,
+      "LoopId": "tsp-loop-584",
+      "Result": "Canonical pair multiplicity rejects a count-preserving duplicate-edge graph."
+    },
+    {
+      "LoopOrder": 585,
+      "LoopId": "tsp-loop-585",
+      "Result": "Degree-two local bounds certify a global tour lower bound of 14."
+    },
+    {
+      "LoopOrder": 586,
+      "LoopId": "tsp-loop-586",
+      "Result": "Reference candidate cost 14 equals the certified lower bound, proving finite-instance optimality."
     }
   ],
   "CurrentCertificates": [
     {
       "CertificateId": "gridville-complete-graph",
-      "Kind": "complete-undirected-graph-check",
-      "Conclusion": "tsp-gridville-5 has five stops and ten unique canonical undirected edges."
+      "Kind": "complete-undirected-graph-certificate",
+      "Conclusion": "tsp-gridville-5 has five stops and exactly one admissible canonical edge for every unordered pair."
+    },
+    {
+      "CertificateId": "gridville-broken-pair-graph",
+      "Kind": "counterexample-certificate",
+      "Conclusion": "tsp-gridville-broken-3 has the expected edge-row count but is incomplete because AB is duplicated and BC is absent."
     },
     {
       "CertificateId": "gridville-reference-tour",
-      "Kind": "hamiltonian-cycle-witness",
-      "Conclusion": "A-B-C-D-E-A is a valid supplied tour of cost 14 within the declared instance."
+      "Kind": "global-cycle-coverage-certificate",
+      "Conclusion": "A-B-C-D-E-A is a valid supplied Hamiltonian cycle of cost 14."
     },
     {
-      "CertificateId": "gridville-negative-tour",
+      "CertificateId": "gridville-duplicate-stop-tour",
       "Kind": "counterexample-certificate",
-      "Conclusion": "A-B-C-B-E-A is rejected because B is visited twice and D is omitted."
+      "Conclusion": "A-B-C-B-E-A is rejected because B is repeated and D is omitted."
+    },
+    {
+      "CertificateId": "gridville-missing-close-tour",
+      "Kind": "counterexample-certificate",
+      "Conclusion": "A candidate with a duplicated A-B transition and missing E-A transition is rejected despite five unique visits and five locally legal legs."
+    },
+    {
+      "CertificateId": "gridville-degree-two-bound",
+      "Kind": "degree-two-lower-bound-certificate",
+      "Conclusion": "Local bounds 5+5+6+6+6 double-count tour edges, yielding a certified global lower bound of 14."
+    },
+    {
+      "CertificateId": "gridville-finite-optimality",
+      "Kind": "finite-instance-optimality-certificate",
+      "Conclusion": "The valid reference route cost 14 equals the certified lower bound 14, so the route is optimal for tsp-gridville-5."
     }
   ],
   "RemainingFrontier": [
-    "degree-two forced-edge closure",
+    "live Postgres build and Python/Postgres conformance with artifact hashes",
+    "route reconstruction from inferred edge rows rather than a supplied candidate",
+    "degree-two forced-edge closure after admissibility pruning",
     "forbidden-edge propagation",
-    "symmetry-class collapse beyond fixed depot and reversal",
-    "neighborhood boundary-state inference",
-    "component contraction",
-    "subtour exclusion certificates for unordered edge-set candidates",
-    "lower bounds and optimality certificates",
-    "branching and backtracking only after constraint closure"
+    "neighborhood boundary-state inference and component contraction",
+    "subtour exclusion certificates for unordered inferred edge sets",
+    "non-tight lower-bound fixtures requiring stronger inference or explicit residual branching"
   ],
   "Acceptance": {
-    "RulebookTables": 13,
+    "RulebookTables": 19,
     "Cities": 1,
     "Neighborhoods": 3,
     "Addresses": 5,
-    "TSPInstances": 1,
-    "InstanceStops": 5,
-    "TravelEdges": 10,
-    "CandidateTours": 2,
-    "TSPLoops": 5,
+    "TSPInstances": 2,
+    "InstanceStops": 8,
+    "TravelEdges": 13,
+    "CandidateTours": 3,
+    "TSPLoops": 10,
+    "FrontierObligations": 8,
+    "ActiveImportedDependencies": 0,
     "ReferenceTourValid": true,
     "ReferenceTourCost": 14,
-    "ReferenceTourOptimalityProved": false,
-    "NegativeTourValid": false,
-    "SearchEliminationPct": 0
+    "ReferenceTourOptimalityProved": true,
+    "DegreeTwoLowerBound": 14,
+    "DuplicateStopTourValid": false,
+    "MissingCloseTourValid": false,
+    "BrokenGraphComplete": false,
+    "RouteDiscoverySearchEliminationPct": 0,
+    "SuppliedCandidateOptimalityVerificationEliminationPct": 100
   },
-  "ArtifactHashes": {},
-  "GeneratedTimestamp": null
+  "ArtifactHashes": {
+    "rulebook": "sha256:133be28b3d9a32e25fedfe7817a808d0ba2033257d8de39f4578a6f7d857dc5f"
+  },
+  "GeneratedTimestamp": null,
+  "Vocabulary": {
+    "ImportedDependency": "An external provider conclusion consumed without internal derivation in this domain.",
+    "FrontierObligation": "Any still-open semantic edge, typed as inference, certificate, substrate, generalization, or residual search.",
+    "ResidualSearch": "Explicit ambiguity remaining after all currently represented deterministic obligations reach closure.",
+    "KernelAssumption": "Trusted primitive input semantics recorded at the trust boundary, not silently promoted into a derivation."
+  }
 }
