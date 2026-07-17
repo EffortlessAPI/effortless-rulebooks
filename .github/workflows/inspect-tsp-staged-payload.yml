@@ -7,6 +7,12 @@ on:
     paths:
       - .tsp-loop-582-586-payload/**
       - .github/workflows/inspect-tsp-staged-payload.yml
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .tsp-loop-582-586-payload/**
+      - .github/workflows/inspect-tsp-staged-payload.yml
 
 permissions:
   contents: read
