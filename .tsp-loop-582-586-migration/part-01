@@ -1,0 +1,189 @@
+stances"),
+            schema_field("ExpectedCompleteUndirectedGraph", "boolean", "raw", False, "Expected graph-completeness status."),
+            schema_field("ActualCompleteUndirectedGraph", "boolean", "lookup", True, "Derived graph-completeness status.", formula="=INDEX(TSPInstances!{{IsCompleteUndirectedGraph}}, MATCH({{TSPInstance}}, TSPInstances!{{TSPInstanceId}}, 0))", related_to="TSPInstances"),
+            schema_field("ExpectedTravelEdgeCount", "integer", "raw", False, "Expected raw edge-row count."),
+            schema_field("ActualTravelEdgeCount", "integer", "lookup", True, "Derived raw edge-row count.", formula="=INDEX(TSPInstances!{{CountOfTravelEdges}}, MATCH({{TSPInstance}}, TSPInstances!{{TSPInstanceId}}, 0))", related_to="TSPInstances"),
+            schema_field("ExpectedNonUniqueEdgePairRows", "integer", "raw", False, "Expected number of rows participating in duplicated pair keys."),
+            schema_field("ActualNonUniqueEdgePairRows", "integer", "lookup", True, "Derived duplicated-pair row count.", formula="=INDEX(TSPInstances!{{CountOfNonUniqueEdgePairRows}}, MATCH({{TSPInstance}}, TSPInstances!{{TSPInstanceId}}, 0))", related_to="TSPInstances"),
+            schema_field("IsPassing", "boolean", "calculated", True, "Whether all graph expectations agree with derived values.", formula="=AND({{ExpectedCompleteUndirectedGraph}} = {{ActualCompleteUndirectedGraph}}, {{ExpectedTravelEdgeCount}} = {{ActualTravelEdgeCount}}, {{ExpectedNonUniqueEdgePairRows}} = {{ActualNonUniqueEdgePairRows}})"),
+        ],
+        [
+            {
+                "TSPGraphInvariantCheckId": "check-gridville-complete-graph",
+                "DisplayName": "Gridville five-stop graph has one edge per unordered pair",
+                "TSPInstance": "tsp-gridville-5",
+                "ExpectedCompleteUndirectedGraph": True,
+                "ExpectedTravelEdgeCount": 10,
+                "ExpectedNonUniqueEdgePairRows": 0,
+            },
+            {
+                "TSPGraphInvariantCheckId": "check-broken-count-preserving-graph",
+                "DisplayName": "Expected edge count cannot hide a duplicated pair and omitted pair",
+                "TSPInstance": "tsp-gridville-broken-3",
+                "ExpectedCompleteUndirectedGraph": False,
+                "ExpectedTravelEdgeCount": 3,
+                "ExpectedNonUniqueEdgePairRows": 2,
+            },
+        ],
+    )
+    insert_table_after(rb, "TSPInstances", "TSPGraphInvariantChecks", graph_invariants)
+
+    # Loop 583: global cycle coverage, not merely locally valid leg rows.
+    upsert_schema_fields(
+        rb["TourStops"],
+        [
+            schema_field(
+                "CountOfOutgoingLegs", "integer", "aggregation", True,
+                "Tour-leg rows in this candidate whose FromTourStop is this ordered visit.",
+                formula="=COUNTIFS(TourLegs!{{CandidateTour}}, {{CandidateTour}}, TourLegs!{{FromTourStop}}, {{TourStopId}})",
+            ),
+            schema_field(
+                "CountOfIncomingLegs", "integer", "aggregation", True,
+                "Tour-leg rows in this candidate whose ToTourStop is this ordered visit.",
+                formula="=COUNTIFS(TourLegs!{{CandidateTour}}, {{CandidateTour}}, TourLegs!{{ToTourStop}}, {{TourStopId}})",
+            ),
+            schema_field(
+                "HasExactlyOneOutgoingLeg", "boolean", "calculated", True,
+                "Whether this ordered visit has exactly one outgoing candidate leg.",
+                formula="={{CountOfOutgoingLegs}} = 1",
+            ),
+            schema_field(
+                "HasExactlyOneIncomingLeg", "boolean", "calculated", True,
+                "Whether this ordered visit has exactly one incoming candidate leg.",
+                formula="={{CountOfIncomingLegs}} = 1",
+            ),
+            schema_field(
+                "IsCycleDegreeSatisfied", "boolean", "calculated", True,
+                "Whether this ordered visit participates in exactly one incoming and one outgoing transition.",
+                formula="=AND({{HasExactlyOneOutgoingLeg}}, {{HasExactlyOneIncomingLeg}})",
+            ),
+        ],
+    )
+    upsert_schema_fields(
+        rb["TourLegs"],
+        [
+            schema_field(
+                "LegOrderMultiplicity", "integer", "aggregation", True,
+                "Number of leg rows in this candidate carrying the same LegOrder.",
+                formula="=COUNTIFS(TourLegs!{{CandidateTour}}, {{CandidateTour}}, TourLegs!{{LegOrder}}, {{LegOrder}})",
+            ),
+            schema_field(
+                "IsUniqueLegOrder", "boolean", "calculated", True,
+                "Whether this leg order appears exactly once in the candidate.",
+                formula="={{LegOrderMultiplicity}} = 1",
+            ),
+        ],
+        before="IsCandidateMembershipValid",
+    )
+    leg_valid = next(f for f in rb["TourLegs"]["schema"] if f["name"] == "IsValid")
+    leg_valid["Description"] = (
+        "Whether the leg passes candidate membership, sequence, endpoint, instance, admissibility, and unique-order checks."
+    )
+    leg_valid["formula"] = (
+        "=AND({{IsCandidateMembershipValid}}, {{IsSequenceTransition}}, {{IsEdgeEndpointMatch}}, "
+        "{{IsInTourInstance}}, {{EdgeIsAdmissible}}, {{IsUniqueLegOrder}})"
+    )
+
+    upsert_schema_fields(
+        rb["CandidateTours"],
+        [
+            schema_field(
+                "CountOfCycleDegreeViolations", "integer", "aggregation", True,
+                "Ordered visits lacking exactly one incoming and one outgoing candidate leg.",
+                formula="=COUNTIFS(TourStops!{{CandidateTour}}, {{CandidateTourId}}, TourStops!{{IsCycleDegreeSatisfied}}, FALSE())",
+            ),
+            schema_field(
+                "CountOfNonUniqueLegOrders", "integer", "aggregation", True,
+                "Leg rows whose LegOrder is duplicated within the candidate.",
+                formula="=COUNTIFS(TourLegs!{{CandidateTour}}, {{CandidateTourId}}, TourLegs!{{IsUniqueLegOrder}}, FALSE())",
+            ),
+        ],
+        before="TotalTravelCost",
+    )
+    hamiltonian = next(f for f in rb["CandidateTours"]["schema"] if f["name"] == "IsHamiltonianCycleWitness")
+    hamiltonian["Description"] = (
+        "Whether the supplied ordered rows form one globally covered Hamiltonian cycle for the declared instance."
+    )
+    hamiltonian["formula"] = (
+        "=AND({{CountOfTourStops}} = {{RequiredStopCount}}, {{CountOfTourLegs}} = {{RequiredStopCount}}, "
+        "{{CountOfNonUniqueVisits}} = 0, {{CountOfNonUniqueSequences}} = 0, "
+        "{{CountOfOutOfInstanceStops}} = 0, {{CountOfNonRequiredStops}} = 0, "
+        "{{CountOfDepotStops}} = 1, {{CountOfDepotPositionViolations}} = 0, "
+        "{{CountOfInvalidLegs}} = 0, {{CountOfCycleDegreeViolations}} = 0, "
+        "{{CountOfNonUniqueLegOrders}} = 0)"
+    )
+
+    # The old local-leg checks would accept every individual row in this candidate;
+    # the new global degree certificate must reject its duplicated A->B and missing E->A transition.
+    upsert_rows(
+        rb["CandidateTours"],
+        "CandidateTourId",
+        [
+            {
+                "CandidateTourId": "tour-missing-close-duplicate-ab",
+                "DisplayName": "Counterexample with duplicated A-B and missing E-A",
+                "TSPInstance": "tsp-gridville-5",
+                "CandidateKind": "NEGATIVE_GLOBAL_CYCLE_WITNESS",
+                "SearchBranchesExplored": 0,
+                "BacktrackCount": 0,
+            }
+        ],
+    )
+    global_bad_stops = [
+        {"TourStopId": f"gap-stop-{i}", "CandidateTour": "tour-missing-close-duplicate-ab", "InstanceStop": stop, "SequencePosition": i}
+        for i, stop in enumerate(["stop-a", "stop-b", "stop-c", "stop-d", "stop-e"], start=1)
+    ]
+    upsert_rows(rb["TourStops"], "TourStopId", global_bad_stops)
+    global_bad_legs = [
+        {"TourLegId": "gap-leg-1", "CandidateTour": "tour-missing-close-duplicate-ab", "FromTourStop": "gap-stop-1", "ToTourStop": "gap-stop-2", "TravelEdge": "edge-a-b", "LegOrder": 1},
+        {"TourLegId": "gap-leg-2", "CandidateTour": "tour-missing-close-duplicate-ab", "FromTourStop": "gap-stop-1", "ToTourStop": "gap-stop-2", "TravelEdge": "edge-a-b", "LegOrder": 2},
+        {"TourLegId": "gap-leg-3", "CandidateTour": "tour-missing-close-duplicate-ab", "FromTourStop": "gap-stop-2", "ToTourStop": "gap-stop-3", "TravelEdge": "edge-b-c", "LegOrder": 3},
+        {"TourLegId": "gap-leg-4", "CandidateTour": "tour-missing-close-duplicate-ab", "FromTourStop": "gap-stop-3", "ToTourStop": "gap-stop-4", "TravelEdge": "edge-c-d", "LegOrder": 4},
+        {"TourLegId": "gap-leg-5", "CandidateTour": "tour-missing-close-duplicate-ab", "FromTourStop": "gap-stop-4", "ToTourStop": "gap-stop-5", "TravelEdge": "edge-d-e", "LegOrder": 5},
+    ]
+    upsert_rows(rb["TourLegs"], "TourLegId", global_bad_legs)
+    upsert_rows(
+        rb["TSPInvariantChecks"],
+        "TSPInvariantCheckId",
+        [
+            {
+                "TSPInvariantCheckId": "check-missing-close-duplicate-transition",
+                "DisplayName": "Locally legal legs cannot hide duplicated and missing global transitions",
+                "CandidateTour": "tour-missing-close-duplicate-ab",
+                "ExpectedHamiltonianCycleWitness": False,
+                "ExpectedOptimalityProved": False,
+                "ExpectedTotalTravelCost": 13,
+            }
+        ],
+    )
+
+    # Loop 585: explicit local two-cheapest incident-edge witnesses.
+    local_bounds = table(
+        "One degree-two lower-bound witness per required stop. Each row names two incident edges and proves all other incident edges are no cheaper than the second selected edge.",
+        [
+            schema_field("LocalDegreeBoundId", "string", "raw", False, "Stable local-bound identifier."),
+            schema_field("Name", "string", "calculated", True, "Display alias for the local bound.", formula="={{LocalDegreeBoundId}}"),
+            schema_field("TSPInstance", "string", "relationship", False, "Instance whose tour degree requirement is being bounded.", related_to="TSPInstances"),
+            schema_field("InstanceStop", "string", "relationship", False, "Required stop receiving the local degree-two bound.", related_to="InstanceStops"),
+            schema_field("FirstEdge", "string", "relationship", False, "Cheapest selected incident edge.", related_to="TravelEdges"),
+            schema_field("SecondEdge", "string", "relationship", False, "Second-cheapest selected incident edge.", related_to="TravelEdges"),
+            schema_field("StopTSPInstance", "string", "lookup", True, "Instance owning the bounded stop.", formula="=INDEX(InstanceStops!{{TSPInstance}}, MATCH({{InstanceStop}}, InstanceStops!{{InstanceStopId}}, 0))", related_to="InstanceStops"),
+            schema_field("StopAdmissibleIncidentEdgeCount", "integer", "lookup", True, "Current admissible incident-edge count at the stop.", formula="=INDEX(InstanceStops!{{CountOfAdmissibleIncidentEdges}}, MATCH({{InstanceStop}}, InstanceStops!{{InstanceStopId}}, 0))", related_to="InstanceStops"),
+            schema_field("FirstEdgeFromStop", "string", "lookup", True, "First selected edge's canonical first endpoint.", formula="=INDEX(TravelEdges!{{FromStop}}, MATCH({{FirstEdge}}, TravelEdges!{{TravelEdgeId}}, 0))", related_to="TravelEdges"),
+            schema_field("FirstEdgeToStop", "string", "lookup", True, "First selected edge's canonical second endpoint.", formula="=INDEX(TravelEdges!{{ToStop}}, MATCH({{FirstEdge}}, TravelEdges!{{TravelEdgeId}}, 0))", related_to="TravelEdges"),
+            schema_field("SecondEdgeFromStop", "string", "lookup", True, "Second selected edge's canonical first endpoint.", formula="=INDEX(TravelEdges!{{FromStop}}, MATCH({{SecondEdge}}, TravelEdges!{{TravelEdgeId}}, 0))", related_to="TravelEdges"),
+            schema_field("SecondEdgeToStop", "string", "lookup", True, "Second selected edge's canonical second endpoint.", formula="=INDEX(TravelEdges!{{ToStop}}, MATCH({{SecondEdge}}, TravelEdges!{{TravelEdgeId}}, 0))", related_to="TravelEdges"),
+            schema_field("FirstEdgeCost", "number", "lookup", True, "Cost of the first selected edge.", formula="=INDEX(TravelEdges!{{TravelCost}}, MATCH({{FirstEdge}}, TravelEdges!{{TravelEdgeId}}, 0))", related_to="TravelEdges"),
+            schema_field("SecondEdgeCost", "number", "lookup", True, "Cost of the second selected edge.", formula="=INDEX(TravelEdges!{{TravelCost}}, MATCH({{SecondEdge}}, TravelEdges!{{TravelEdgeId}}, 0))", related_to="TravelEdges"),
+            schema_field("IsFirstEdgeIncident", "boolean", "calculated", True, "Whether the first selected edge is incident to the bounded stop.", formula="=OR({{InstanceStop}} = {{FirstEdgeFromStop}}, {{InstanceStop}} = {{FirstEdgeToStop}})"),
+            schema_field("IsSecondEdgeIncident", "boolean", "calculated", True, "Whether the second selected edge is incident to the bounded stop.", formula="=OR({{InstanceStop}} = {{SecondEdgeFromStop}}, {{InstanceStop}} = {{SecondEdgeToStop}})"),
+            schema_field("AreSelectedEdgesDistinct", "boolean", "calculated", True, "Whether the two selected edge rows are distinct.", formula="={{FirstEdge}} <> {{SecondEdge}}"),
+            schema_field("AreSelectedCostsOrdered", "boolean", "calculated", True, "Whether the first selected edge is no more expensive than the second.", formula="={{FirstEdgeCost}} <= {{SecondEdgeCost}}"),
+            schema_field("RequiredDominanceCheckCount", "integer", "calculated", True, "Number of other incident edges that must be compared against the second selected cost.", formula="={{StopAdmissibleIncidentEdgeCount}} - 2"),
+            schema_field("CountOfDominanceChecks", "integer", "aggregation", True, "Represented comparisons against other incident edges.", formula="=COUNTIFS(IncidentDominanceChecks!{{LocalDegreeBound}}, {{LocalDegreeBoundId}})"),
+            schema_field("CountOfFailedDominanceChecks", "integer", "aggregation", True, "Dominance comparisons that fail incidence, distinctness, uniqueness, or cost ordering.", formula="=COUNTIFS(IncidentDominanceChecks!{{LocalDegreeBound}}, {{LocalDegreeBoundId}}, IncidentDominanceChecks!{{IsPassing}}, FALSE())"),
+            schema_field("IsTwoCheapestWitness", "boolean", "calculated", True, "Whether this row and its child comparisons certify the two cheapest admissible incident edges.", formula="=AND({{TSPInstance}} = {{StopTSPInstance}}, {{IsFirstEdgeIncident}}, {{IsSecondEdgeIncident}}, {{AreSelectedEdgesDistinct}}, {{AreSelectedCostsOrdered}}, {{CountOfDominanceChecks}} = {{RequiredDominanceCheckCount}}, {{CountOfFailedDominanceChecks}} = 0)"),
+            schema_field("LocalBoundCost", "number", "calculated", True, "Certified sum of the two cheapest incident edge costs; zero when the witness is invalid.", formula="=IF({{IsTwoCheapestWitness}}, {{FirstEdgeCost}} + {{SecondEdgeCost}}, 0)"),
+        ],
+        [
+            {"LocalDegreeBoundId": "local-bound-stop-a", "TSPInstanc
