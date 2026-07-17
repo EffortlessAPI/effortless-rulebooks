@@ -33,14 +33,23 @@ The fixture is one five-address symmetric complete weighted graph with a fixed d
 Never conflate:
 
 ```text
+an imported dependency
+!= an internal frontier obligation
+!= a kernel assumption
+!= residual search
+
+and
+
 a supplied route is structurally valid
 != the route is optimal
 != a solver found the route
-!= search was eliminated
+!= route-discovery search was eliminated
 != P = NP
 ```
 
-`CandidateTours.IsHamiltonianCycleWitness` may become true from represented structure. `CandidateTours.IsOptimalityProved` remains false until an actual lower-bound/optimality certificate is represented and closed.
+Use **imported dependency** only when the domain consumes an external provider conclusion. Use **frontier obligation** for an open semantic edge inside this domain, typed as `INFERENCE_OBLIGATION`, `CERTIFICATE_OBLIGATION`, `SUBSTRATE_OBLIGATION`, `GENERALIZATION_OBLIGATION`, or `RESIDUAL_SEARCH`.
+
+`CandidateTours.IsHamiltonianCycleWitness` derives from global transition coverage. `CandidateTours.IsOptimalityProved` may become true only from a passing finite-instance certificate; the current Gridville certificate does not generalize to arbitrary TSP instances.
 
 ## Search doctrine
 
@@ -55,14 +64,19 @@ Search is the final stage, not the first. Every inference rule must declare:
 
 `SearchMetrics` must state exactly how many branches remain. The initial baseline is intentionally 12 -> 12, or 0% eliminated.
 
-## First loops
+## Current loops
 
 ```text
 577  City / Neighborhood / Address hierarchy
 578  finite weighted graph normalization
 579  ordered route witness
-580  Postgres route certificate + negative witness
+580  initial route certificate + negative witness
 581  residual-search baseline
+582  typed frontier-obligation ledger
+583  global one-in/one-out cycle coverage
+584  canonical unordered edge-pair completeness
+585  degree-two local-to-global lower bound
+586  Gridville finite optimality by bound equality
 ```
 
 Do not renumber these rows.
@@ -88,4 +102,11 @@ The build must fail loudly if the rulebook, generated initializer, `effortless` 
 
 ## Immediate next frontier
 
-Implement `tsp-rule-degree-two-forcing` as a witnessed closure rule. The success metric is not “found a route”; it is a measured reduction in `BranchCountAfter` with a replayable forced-edge certificate.
+The remaining nearby obligations are:
+
+1. commission the generated Postgres projection and record artifact hashes;
+2. reconstruct the cycle from inferred structural edges rather than consuming a supplied route;
+3. add a non-tight lower-bound fixture so unresolved optimality remains explicitly open;
+4. implement degree-two forced-edge closure only after admissibility pruning creates a genuine degree-two stop.
+
+The success metric remains measured semantic closure and replayable certificates, not merely finding a route.
