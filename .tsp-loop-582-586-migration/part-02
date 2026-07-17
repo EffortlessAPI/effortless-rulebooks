@@ -1,0 +1,133 @@
+e": "tsp-gridville-5", "InstanceStop": "stop-a", "FirstEdge": "edge-a-b", "SecondEdge": "edge-a-e"},
+            {"LocalDegreeBoundId": "local-bound-stop-b", "TSPInstance": "tsp-gridville-5", "InstanceStop": "stop-b", "FirstEdge": "edge-a-b", "SecondEdge": "edge-b-c"},
+            {"LocalDegreeBoundId": "local-bound-stop-c", "TSPInstance": "tsp-gridville-5", "InstanceStop": "stop-c", "FirstEdge": "edge-b-c", "SecondEdge": "edge-c-d"},
+            {"LocalDegreeBoundId": "local-bound-stop-d", "TSPInstance": "tsp-gridville-5", "InstanceStop": "stop-d", "FirstEdge": "edge-c-d", "SecondEdge": "edge-d-e"},
+            {"LocalDegreeBoundId": "local-bound-stop-e", "TSPInstance": "tsp-gridville-5", "InstanceStop": "stop-e", "FirstEdge": "edge-a-e", "SecondEdge": "edge-d-e"},
+        ],
+    )
+    insert_table_after(rb, "TourLegs", "LocalDegreeBounds", local_bounds)
+
+    dominance_checks = table(
+        "Witness rows proving every unselected incident edge is at least as expensive as the second edge named by a LocalDegreeBound.",
+        [
+            schema_field("IncidentDominanceCheckId", "string", "raw", False, "Stable dominance-check identifier."),
+            schema_field("Name", "string", "calculated", True, "Display alias for the dominance check.", formula="={{IncidentDominanceCheckId}}"),
+            schema_field("LocalDegreeBound", "string", "relationship", False, "Local lower-bound witness being supported.", related_to="LocalDegreeBounds"),
+            schema_field("OtherEdge", "string", "relationship", False, "Unselected incident edge compared against the second selected edge.", related_to="TravelEdges"),
+            schema_field("BoundStop", "string", "lookup", True, "Stop bounded by the parent witness.", formula="=INDEX(LocalDegreeBounds!{{InstanceStop}}, MATCH({{LocalDegreeBound}}, LocalDegreeBounds!{{LocalDegreeBoundId}}, 0))", related_to="LocalDegreeBounds"),
+            schema_field("FirstSelectedEdge", "string", "lookup", True, "First edge selected by the parent witness.", formula="=INDEX(LocalDegreeBounds!{{FirstEdge}}, MATCH({{LocalDegreeBound}}, LocalDegreeBounds!{{LocalDegreeBoundId}}, 0))", related_to="LocalDegreeBounds"),
+            schema_field("SecondSelectedEdge", "string", "lookup", True, "Second edge selected by the parent witness.", formula="=INDEX(LocalDegreeBounds!{{SecondEdge}}, MATCH({{LocalDegreeBound}}, LocalDegreeBounds!{{LocalDegreeBoundId}}, 0))", related_to="LocalDegreeBounds"),
+            schema_field("SecondSelectedEdgeCost", "number", "lookup", True, "Cost of the second selected edge.", formula="=INDEX(LocalDegreeBounds!{{SecondEdgeCost}}, MATCH({{LocalDegreeBound}}, LocalDegreeBounds!{{LocalDegreeBoundId}}, 0))", related_to="LocalDegreeBounds"),
+            schema_field("OtherEdgeFromStop", "string", "lookup", True, "Other edge's first endpoint.", formula="=INDEX(TravelEdges!{{FromStop}}, MATCH({{OtherEdge}}, TravelEdges!{{TravelEdgeId}}, 0))", related_to="TravelEdges"),
+            schema_field("OtherEdgeToStop", "string", "lookup", True, "Other edge's second endpoint.", formula="=INDEX(TravelEdges!{{ToStop}}, MATCH({{OtherEdge}}, TravelEdges!{{TravelEdgeId}}, 0))", related_to="TravelEdges"),
+            schema_field("OtherEdgeCost", "number", "lookup", True, "Cost of the unselected incident edge.", formula="=INDEX(TravelEdges!{{TravelCost}}, MATCH({{OtherEdge}}, TravelEdges!{{TravelEdgeId}}, 0))", related_to="TravelEdges"),
+            schema_field("OtherEdgeMultiplicity", "integer", "aggregation", True, "Number of comparison rows in the same local witness naming this other edge.", formula="=COUNTIFS(IncidentDominanceChecks!{{LocalDegreeBound}}, {{LocalDegreeBound}}, IncidentDominanceChecks!{{OtherEdge}}, {{OtherEdge}})"),
+            schema_field("IsOtherEdgeIncident", "boolean", "calculated", True, "Whether the compared edge is incident to the bounded stop.", formula="=OR({{BoundStop}} = {{OtherEdgeFromStop}}, {{BoundStop}} = {{OtherEdgeToStop}})"),
+            schema_field("IsOtherEdgeUnselected", "boolean", "calculated", True, "Whether the compared edge differs from both selected edges.", formula="=AND({{OtherEdge}} <> {{FirstSelectedEdge}}, {{OtherEdge}} <> {{SecondSelectedEdge}})"),
+            schema_field("IsOtherEdgeUnique", "boolean", "calculated", True, "Whether this unselected edge appears exactly once among the parent's comparisons.", formula="={{OtherEdgeMultiplicity}} = 1"),
+            schema_field("IsDominatedBySecondCost", "boolean", "calculated", True, "Whether the unselected edge is no cheaper than the second selected edge.", formula="={{OtherEdgeCost}} >= {{SecondSelectedEdgeCost}}"),
+            schema_field("IsPassing", "boolean", "calculated", True, "Whether the comparison is incident, unselected, unique, and cost-dominated.", formula="=AND({{IsOtherEdgeIncident}}, {{IsOtherEdgeUnselected}}, {{IsOtherEdgeUnique}}, {{IsDominatedBySecondCost}})"),
+        ],
+        [
+            {"IncidentDominanceCheckId": "dom-a-d", "LocalDegreeBound": "local-bound-stop-a", "OtherEdge": "edge-a-d"},
+            {"IncidentDominanceCheckId": "dom-a-c", "LocalDegreeBound": "local-bound-stop-a", "OtherEdge": "edge-a-c"},
+            {"IncidentDominanceCheckId": "dom-b-d", "LocalDegreeBound": "local-bound-stop-b", "OtherEdge": "edge-b-d"},
+            {"IncidentDominanceCheckId": "dom-b-e", "LocalDegreeBound": "local-bound-stop-b", "OtherEdge": "edge-b-e"},
+            {"IncidentDominanceCheckId": "dom-c-e", "LocalDegreeBound": "local-bound-stop-c", "OtherEdge": "edge-c-e"},
+            {"IncidentDominanceCheckId": "dom-c-a", "LocalDegreeBound": "local-bound-stop-c", "OtherEdge": "edge-a-c"},
+            {"IncidentDominanceCheckId": "dom-d-a", "LocalDegreeBound": "local-bound-stop-d", "OtherEdge": "edge-a-d"},
+            {"IncidentDominanceCheckId": "dom-d-b", "LocalDegreeBound": "local-bound-stop-d", "OtherEdge": "edge-b-d"},
+            {"IncidentDominanceCheckId": "dom-e-c", "LocalDegreeBound": "local-bound-stop-e", "OtherEdge": "edge-c-e"},
+            {"IncidentDominanceCheckId": "dom-e-b", "LocalDegreeBound": "local-bound-stop-e", "OtherEdge": "edge-b-e"},
+        ],
+    )
+    insert_table_after(rb, "LocalDegreeBounds", "IncidentDominanceChecks", dominance_checks)
+
+    instance_bounds = table(
+        "Global lower bounds obtained by summing certified local degree-two bounds and dividing by two because each tour edge is incident to two stops.",
+        [
+            schema_field("InstanceLowerBoundId", "string", "raw", False, "Stable instance-lower-bound identifier."),
+            schema_field("Name", "string", "calculated", True, "Display alias for the lower bound.", formula="={{InstanceLowerBoundId}}"),
+            schema_field("TSPInstance", "string", "relationship", False, "Instance receiving the lower bound.", related_to="TSPInstances"),
+            schema_field("BoundKind", "string", "raw", False, "Kind of reusable lower-bound geometry."),
+            schema_field("RequiredStopCount", "integer", "lookup", True, "Required stop count of the instance.", formula="=INDEX(TSPInstances!{{CountOfRequiredStops}}, MATCH({{TSPInstance}}, TSPInstances!{{TSPInstanceId}}, 0))", related_to="TSPInstances"),
+            schema_field("CountOfLocalDegreeBounds", "integer", "aggregation", True, "Local degree-bound rows represented for the instance.", formula="=COUNTIFS(LocalDegreeBounds!{{TSPInstance}}, {{TSPInstance}})"),
+            schema_field("CountOfInvalidLocalDegreeBounds", "integer", "aggregation", True, "Local degree-bound rows that do not carry a valid two-cheapest witness.", formula="=COUNTIFS(LocalDegreeBounds!{{TSPInstance}}, {{TSPInstance}}, LocalDegreeBounds!{{IsTwoCheapestWitness}}, FALSE())"),
+            schema_field("TotalLocalDegreeBoundCost", "number", "aggregation", True, "Sum of the local two-edge lower bounds across all required stops.", formula="=SUMIFS(LocalDegreeBounds!{{LocalBoundCost}}, LocalDegreeBounds!{{TSPInstance}}, {{TSPInstance}})"),
+            schema_field("LowerBoundCost", "number", "calculated", True, "Certified global tour lower bound after double-count correction.", formula="={{TotalLocalDegreeBoundCost}} / 2"),
+            schema_field("IsCertified", "boolean", "calculated", True, "Whether every required stop has one valid local witness and the global double-counting aggregation is closed.", formula="=AND({{CountOfLocalDegreeBounds}} = {{RequiredStopCount}}, {{CountOfInvalidLocalDegreeBounds}} = 0)"),
+        ],
+        [
+            {
+                "InstanceLowerBoundId": "degree-two-lower-bound-gridville-5",
+                "TSPInstance": "tsp-gridville-5",
+                "BoundKind": "SUM_TWO_CHEAPEST_INCIDENT_EDGES_DIVIDED_BY_TWO",
+            }
+        ],
+    )
+    insert_table_after(rb, "IncidentDominanceChecks", "InstanceLowerBounds", instance_bounds)
+
+    # Loop 586: equality of a certified lower bound and a valid candidate cost.
+    optimality = table(
+        "Finite-instance optimality certificates. Passing requires a valid Hamiltonian witness, a certified lower bound for the same instance, and equality between candidate cost and lower bound.",
+        [
+            schema_field("OptimalityCertificateId", "string", "raw", False, "Stable optimality-certificate identifier."),
+            schema_field("Name", "string", "calculated", True, "Display alias for the certificate.", formula="={{OptimalityCertificateId}}"),
+            schema_field("CandidateTour", "string", "relationship", False, "Candidate whose optimality is being certified.", related_to="CandidateTours"),
+            schema_field("InstanceLowerBound", "string", "relationship", False, "Certified lower bound compared with the candidate cost.", related_to="InstanceLowerBounds"),
+            schema_field("CandidateTSPInstance", "string", "lookup", True, "Instance owned by the candidate.", formula="=INDEX(CandidateTours!{{TSPInstance}}, MATCH({{CandidateTour}}, CandidateTours!{{CandidateTourId}}, 0))", related_to="CandidateTours"),
+            schema_field("LowerBoundTSPInstance", "string", "lookup", True, "Instance owned by the lower-bound certificate.", formula="=INDEX(InstanceLowerBounds!{{TSPInstance}}, MATCH({{InstanceLowerBound}}, InstanceLowerBounds!{{InstanceLowerBoundId}}, 0))", related_to="InstanceLowerBounds"),
+            schema_field("CandidateTravelCost", "number", "lookup", True, "Derived travel cost of the candidate.", formula="=INDEX(CandidateTours!{{TotalTravelCost}}, MATCH({{CandidateTour}}, CandidateTours!{{CandidateTourId}}, 0))", related_to="CandidateTours"),
+            schema_field("LowerBoundCost", "number", "lookup", True, "Certified lower-bound cost.", formula="=INDEX(InstanceLowerBounds!{{LowerBoundCost}}, MATCH({{InstanceLowerBound}}, InstanceLowerBounds!{{InstanceLowerBoundId}}, 0))", related_to="InstanceLowerBounds"),
+            schema_field("CandidateIsHamiltonianCycleWitness", "boolean", "lookup", True, "Whether the candidate is a valid Hamiltonian-cycle witness.", formula="=INDEX(CandidateTours!{{IsHamiltonianCycleWitness}}, MATCH({{CandidateTour}}, CandidateTours!{{CandidateTourId}}, 0))", related_to="CandidateTours"),
+            schema_field("LowerBoundIsCertified", "boolean", "lookup", True, "Whether the lower-bound construction is certified.", formula="=INDEX(InstanceLowerBounds!{{IsCertified}}, MATCH({{InstanceLowerBound}}, InstanceLowerBounds!{{InstanceLowerBoundId}}, 0))", related_to="InstanceLowerBounds"),
+            schema_field("IsSameInstance", "boolean", "calculated", True, "Whether candidate and lower bound refer to the same TSP instance.", formula="={{CandidateTSPInstance}} = {{LowerBoundTSPInstance}}"),
+            schema_field("IsBoundTight", "boolean", "calculated", True, "Whether the candidate cost equals the certified lower bound.", formula="={{CandidateTravelCost}} = {{LowerBoundCost}}"),
+            schema_field("IsPassing", "boolean", "calculated", True, "Whether bound equality certifies this candidate as optimal for the declared finite instance.", formula="=AND({{CandidateIsHamiltonianCycleWitness}}, {{LowerBoundIsCertified}}, {{IsSameInstance}}, {{IsBoundTight}})"),
+            schema_field("ScopeClaim", "string", "calculated", True, "Honest scope of the certificate.", formula='=IF({{IsPassing}}, "OPTIMAL_FOR_DECLARED_FINITE_INSTANCE", "OPTIMALITY_NOT_CERTIFIED")'),
+        ],
+        [
+            {
+                "OptimalityCertificateId": "optimality-gridville-reference-ring",
+                "CandidateTour": "tour-reference-ring",
+                "InstanceLowerBound": "degree-two-lower-bound-gridville-5",
+            }
+        ],
+    )
+    insert_table_after(rb, "InstanceLowerBounds", "OptimalityCertificates", optimality)
+
+    upsert_schema_fields(
+        rb["CandidateTours"],
+        [
+            schema_field(
+                "CountOfPassingOptimalityCertificates", "integer", "aggregation", True,
+                "Passing finite-instance optimality certificates attached to this candidate.",
+                formula="=COUNTIFS(OptimalityCertificates!{{CandidateTour}}, {{CandidateTourId}}, OptimalityCertificates!{{IsPassing}}, TRUE())",
+            ),
+        ],
+        before="IsOptimalityProved",
+    )
+    optimal_field = next(f for f in rb["CandidateTours"]["schema"] if f["name"] == "IsOptimalityProved")
+    optimal_field["Description"] = (
+        "Whether at least one passing finite-instance optimality certificate closes this candidate's scope."
+    )
+    optimal_field["formula"] = (
+        "=AND({{IsHamiltonianCycleWitness}}, {{CountOfPassingOptimalityCertificates}} > 0)"
+    )
+    residual = next(f for f in rb["CandidateTours"]["schema"] if f["name"] == "ResidualClaim")
+    residual["formula"] = (
+        '=IF({{IsOptimalityProved}}, "OPTIMAL_FOR_DECLARED_FINITE_INSTANCE", '
+        'IF({{IsHamiltonianCycleWitness}}, "VALID_TOUR_NOT_OPTIMALITY_PROOF", "INVALID_TOUR"))'
+    )
+
+    # Typed frontier vocabulary: imported dependency is only one possible obligation kind.
+    frontier = table(
+        "Typed ledger of open and closed semantic frontier obligations. Imported dependencies are used only when an external provider conclusion is actually consumed.",
+        [
+            schema_field("TSPFrontierObligationId", "string", "raw", False, "Stable frontier-obligation identifier."),
+            schema_field("Name", "string", "calculated", True, "Human-readable obligation label.", formula="={{DisplayName}}"),
+            schema_field("DisplayName", "string", "raw", False, "Human-readable frontier-obligation name."),
+            schema_field("ObligationKind", "string", "raw", False, "Typed class: imported dependency, inference, certificate, substrate, generalization, or residual search."),
+            schema_field("Status", "string", "raw", False, "OPEN, CLOSED, BLOCKED, DEFERRED, or FALSIFIED."),
+            schema_field("InferenceRule", "string", "relationship", True, "Inference contract primarily responsible for closure.", related_to="TSPInferenceRules"),
+            schema_field("OpenedByLoop", "
