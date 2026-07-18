@@ -1,7 +1,9 @@
 {
-  "stage": "LIVE_BUILD_AND_CONFORMANCE_STARTED",
+  "stage": "BUILD_OR_CONFORMANCE_FAILED",
   "attempt": 6,
   "github_run_id": "29632044920",
+  "cli_source": "https://github.com/EffortlessAPI/cli/archive/1551cb82d5a8992ad09e4c82d08e28493f92f7b4.tar.gz",
   "cli_commit": "1551cb82d5a8992ad09e4c82d08e28493f92f7b4",
-  "cli_source": "https://github.com/EffortlessAPI/cli/archive/1551cb82d5a8992ad09e4c82d08e28493f92f7b4.tar.gz"
+  "build_log": "rulebook-examples/effortless-math/domains/traveling-salesman/testing/postgres-commissioning-retry-6.log",
+  "exit_code": 1
 }
