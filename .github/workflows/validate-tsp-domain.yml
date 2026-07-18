@@ -16,22 +16,42 @@ on:
       - .github/workflows/validate-tsp-domain.yml
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   validate:
     runs-on: ubuntu-latest
+    env:
+      TARGET_BRANCH: ${{ github.head_ref || github.ref_name }}
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref || github.ref_name }}
           fetch-depth: 0
 
-      - name: Validate semantic rulebook and summary projections
+      - name: Validate semantic rulebook and persist diagnostics
+        id: semantic
+        shell: bash
         run: |
-          set -euo pipefail
+          set +e
           domain='rulebook-examples/effortless-math/domains/traveling-salesman'
-          python3 "$domain/scripts/validate_rulebook.py"
+          python3 "$domain/scripts/validate_rulebook.py" > .tsp-validation-result.txt 2>&1
+          status=$?
+          cat .tsp-validation-result.txt
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Commit diagnostic result
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .tsp-validation-result.txt
+          git diff --cached --quiet || git commit -m 'Record TSP validation diagnostic'
+          git push origin HEAD:"$TARGET_BRANCH"
+
+      - name: Stop on semantic failure
+        if: steps.semantic.outputs.status != '0'
+        run: exit "${{ steps.semantic.outputs.status }}"
 
       - name: Compile replay and validation programs
         run: |
@@ -81,6 +101,6 @@ jobs:
               print(' ', message)
           PY
 
-      - name: Ensure validation is read-only
+      - name: Ensure validation is read-only except diagnostic artifact
         run: |
           test -z "$(git status --porcelain)"
