@@ -51,12 +51,17 @@ jobs:
           git push origin HEAD:"$TARGET_BRANCH"
 
       - name: Independently validate canonical convergence state
+        id: audit
         shell: bash
         run: |
-          set -euo pipefail
+          set -uo pipefail
           domain='rulebook-examples/effortless-math/domains/traveling-salesman'
-          python3 "$domain/scripts/validate_rulebook.py"
-          python3 - <<'PY'
+          log="$RUNNER_TEMP/tsp-convergence-verifier.log"
+          set +e
+          (
+            set -e
+            python3 "$domain/scripts/validate_rulebook.py"
+            python3 - <<'PY'
           import json
           import subprocess
           from pathlib import Path
@@ -70,7 +75,7 @@ jobs:
           contract = json.loads((domain / 'problem-contract.json').read_text())
           loops = {int(row['LoopOrder']): row for row in rb['TSPLoops']['data']}
           if sorted(loops) != list(range(577, 611)):
-              raise AssertionError('loop sequence is not contiguous through 610')
+              raise AssertionError(f'loop sequence mismatch: {min(loops)}..{max(loops)}, count={len(loops)}')
           if any(loops[n]['Status'] != 'CLOSED' for n in range(597, 611)):
               raise AssertionError('not every convergence loop is CLOSED')
           if any(not loops[n].get('BeforeState') or not loops[n].get('AfterState') for n in range(597, 611)):
@@ -79,12 +84,13 @@ jobs:
           concepts = rb['TSPConceptRegistry']['data']
           primitive_count = sum(row['ConceptKind'] == 'PRIMITIVE' for row in concepts)
           coined_count = sum(row['ConceptKind'] == 'COINED_PREDICATE' for row in concepts)
+          print(f'primitive_count={primitive_count} coined_count={coined_count}')
           if primitive_count != 8:
               raise AssertionError(f'primitive basis count is {primitive_count}, expected 8')
           if coined_count != 14:
               raise AssertionError(f'coined predicate count is {coined_count}, expected 14')
           if contract['Claims'].get('SemanticCompressionPct') != 75:
-              raise AssertionError('semantic compression claim is not 75%')
+              raise AssertionError(f"semantic compression={contract['Claims'].get('SemanticCompressionPct')!r}")
           if contract['Claims'].get('TwinTrianglesOptimalityProved') is not True:
               raise AssertionError('twin-triangles finite optimality certificate is missing')
           if contract['Claims'].get('ConceptConvergenceProved') is not False:
@@ -92,6 +98,7 @@ jobs:
 
           bounds = {row['InstanceLowerBoundId']: row for row in rb['InstanceLowerBounds']['data']}
           twin = bounds['degree-two-lower-bound-twin-triangles-6']
+          print(f"twin_base={twin.get('BaseLowerBoundCost')!r} twin_adjustment={twin.get('SupplementalBoundAdjustment')!r}")
           if float(twin['BaseLowerBoundCost']) != 6 or float(twin['SupplementalBoundAdjustment']) != 18:
               raise AssertionError('twin repair-bound composition mismatch')
 
@@ -118,6 +125,7 @@ jobs:
               if message not in subjects:
                   raise AssertionError(f'missing convergence commit: {message}')
               positions.append(subjects.index(message))
+          print(f'commit_positions={positions}')
           if positions != sorted(positions) or len(set(positions)) != len(positions):
               raise AssertionError(f'convergence commits are not strictly ordered: {positions}')
 
@@ -135,8 +143,37 @@ jobs:
           (domain / 'testing/convergence-597-610-verified.json').write_text(json.dumps(payload, indent=2) + '\n')
           print('independent TSP convergence verification: PASS')
           PY
+          ) 2>&1 | tee "$log"
+          status=${PIPESTATUS[0]}
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          echo "log=$log" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Persist exact verifier failure
+        if: steps.audit.outputs.status != '0'
+        shell: bash
+        run: |
+          set -euo pipefail
+          domain='rulebook-examples/effortless-math/domains/traveling-salesman'
+          cp '${{ steps.audit.outputs.log }}' /tmp/tsp-convergence-verifier-failure.log
+          git fetch origin "$TARGET_BRANCH"
+          git reset --hard "origin/$TARGET_BRANCH"
+          cp /tmp/tsp-convergence-verifier-failure.log "$domain/testing/convergence-597-610-verification-failure.log"
+          cat > "$domain/testing/convergence-597-610-verification-status.json" <<EOF
+          {
+            "status": "FAILED",
+            "github_run_id": "$GITHUB_RUN_ID",
+            "verifier": "v2-checkpointed",
+            "log": "testing/convergence-597-610-verification-failure.log"
+          }
+          EOF
+          git add "$domain/testing/convergence-597-610-verification-failure.log" "$domain/testing/convergence-597-610-verification-status.json"
+          git commit -m 'Record TSP convergence verifier failure'
+          git push origin HEAD:"$TARGET_BRANCH"
+          exit 1
 
       - name: Commit independent convergence certificate
+        if: steps.audit.outputs.status == '0'
         shell: bash
         run: |
           set -euo pipefail
