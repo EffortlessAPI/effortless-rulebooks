@@ -1,0 +1,77 @@
+name: Clean up TSP convergence 597-610 scaffolding
+
+on:
+  push:
+    branches:
+      - agent/tsp-semantic-foundation
+    paths:
+      - rulebook-examples/effortless-math/domains/traveling-salesman/testing/convergence-597-610-verified.json
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/tsp-semantic-foundation
+          fetch-depth: 0
+
+      - name: Require verified convergence certificate
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('rulebook-examples/effortless-math/domains/traveling-salesman/testing/convergence-597-610-verified.json')
+          result = json.loads(p.read_text())
+          assert result['status'] == 'VERIFIED'
+          assert result['primitive_basis_count'] == 8
+          assert result['coined_predicates'] == 14
+          PY
+
+      - name: Remove completed orchestration scaffolding
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git rm -f --ignore-unmatch \
+            .github/workflows/apply-tsp-loops-597-610-convergence-v2.yml \
+            .github/workflows/apply-tsp-loops-597-610-convergence-v3.yml \
+            .github/workflows/apply-tsp-loops-597-610-convergence-v4.yml \
+            .github/workflows/apply-tsp-loops-597-610-convergence-v5.yml \
+            .github/workflows/apply-tsp-loops-597-610-convergence-v6.yml \
+            .github/workflows/apply-tsp-loops-597-610-convergence-v7.yml \
+            .github/workflows/apply-tsp-loops-597-610-convergence-v8.yml \
+            .github/workflows/verify-tsp-convergence-597-610.yml \
+            .github/workflows/finalize-tsp-convergence-pr.yml \
+            .github/workflows/reemit-tsp-convergence-result.yml \
+            .github/workflows/cleanup-tsp-convergence-597-610.yml \
+            .tsp-convergence-597-610-v2.trigger \
+            .tsp-convergence-597-610-v3.trigger \
+            .tsp-convergence-597-610-v4.trigger \
+            .tsp-convergence-597-610-v5.trigger \
+            .tsp-convergence-597-610-v6.trigger \
+            .tsp-convergence-597-610-v7.trigger \
+            .tsp-convergence-597-610-v8.trigger \
+            rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_597_610_convergence_v3.py \
+            rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_597_610_convergence_v4.py \
+            rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_597_610_convergence_v5.py \
+            rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_597_610_convergence_v6.py \
+            rulebook-examples/effortless-math/domains/traveling-salesman/testing/convergence-597-610-v3-failure.log \
+            rulebook-examples/effortless-math/domains/traveling-salesman/testing/convergence-597-610-v4-failure.log \
+            rulebook-examples/effortless-math/domains/traveling-salesman/testing/convergence-597-610-v5-failure.log \
+            rulebook-examples/effortless-math/domains/traveling-salesman/testing/convergence-597-610-v6-failure.log \
+            rulebook-examples/effortless-math/domains/traveling-salesman/testing/convergence-597-610-v7-failure.log \
+            rulebook-examples/effortless-math/domains/traveling-salesman/testing/convergence-597-610-v8-failure.log
+          domain='rulebook-examples/effortless-math/domains/traveling-salesman'
+          python3 "$domain/scripts/validate_rulebook.py"
+          git add -A
+          git diff --cached --quiet && exit 0
+          git commit -m 'Clean up completed TSP convergence scaffolding'
+          git pull --rebase origin agent/tsp-semantic-foundation
+          git push origin HEAD:agent/tsp-semantic-foundation
