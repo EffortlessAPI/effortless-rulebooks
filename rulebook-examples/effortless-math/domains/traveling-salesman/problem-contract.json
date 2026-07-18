@@ -1,6 +1,6 @@
 {
   "ProblemId": "traveling-salesman-semantic-geometry",
-  "Version": "0.3.1",
+  "Version": "0.4.0-alpha",
   "Title": "Traveling Salesman — City / Neighborhood / Address Semantic Geometry",
   "Status": "RESEARCH_PROGRAM",
   "Statement": "Given finite city-scale weighted graphs, represent graph normalization, supplied tours, typed frontier obligations, local-to-global lower bounds, finite optimality certificates, and residual search as executable structural data.",
@@ -17,7 +17,8 @@
     "RouteReconstructedWithoutSuppliedAntecedent": true,
     "GridvilleRouteDiscoveryBranchCount": 0,
     "NeighborhoodContractionFixtureCertified": true,
-    "PostgresConformanceCommissioned": true
+    "PostgresConformanceCommissioned": true,
+    "ConceptConvergencePredictionRecorded": false
   },
   "CanonicalAsset": "effortless-rulebook/traveling-salesman-rulebook.json",
   "ExecutionSubstrates": [
@@ -184,6 +185,146 @@
       "AfterState": "Each twin-triangle neighborhood contracts six raw internal orders to three undirected boundary states (50%); paired composition contracts 36 combinations to nine (75%) with cost-preserving path witnesses.",
       "Result": "Each twin-triangle neighborhood contracts six raw internal orders to three undirected boundary states (50%); paired composition contracts 36 combinations to nine (75%) with cost-preserving path witnesses.",
       "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 597,
+      "LoopId": "tsp-loop-597",
+      "Status": "PLANNED",
+      "BeforeState": "Forty physical tables expose at least thirty-two recurring surface predicates, but no explicit convergence hypothesis or semantic compression baseline is recorded.",
+      "ClosureCriterion": "Record the working prediction, baseline thirty-two surface predicates, target eight-predicate basis, and DAG-based predicate-invention method without claiming a theorem.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 598,
+      "LoopId": "tsp-loop-598",
+      "Status": "PLANNED",
+      "BeforeState": "The convergence prediction is recorded, but the candidate primitive vocabulary and surface-to-basis map do not exist.",
+      "ClosureCriterion": "Represent exactly eight canonical primitives and map all thirty-two baseline surface predicates to finite basis expressions.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 599,
+      "LoopId": "tsp-loop-599",
+      "Status": "PLANNED",
+      "BeforeState": "UNKNOWN, SELECTED, FORCED, FORBIDDEN, CONTRADICTED, and SUPERSEDED are separate surface statuses split across edge-state and constraint-decision projections.",
+      "ClosureCriterion": "Project all edge statuses onto one commitment rank, polarity, necessity scope, and provenance representation without conflating selected with forced.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 600,
+      "LoopId": "tsp-loop-600",
+      "Status": "PLANNED",
+      "BeforeState": "Cycle degree, selected degree, remaining degree, local lower-bound incidence, and forcing applicability are represented as separate concepts.",
+      "ClosureCriterion": "Represent required incidence, observed incidence, and incidence defect uniformly for every Gridville and twin-triangle stop.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 601,
+      "LoopId": "tsp-loop-601",
+      "Status": "PLANNED",
+      "BeforeState": "Degree violations, connected-component count, boundary crossings, and cost gaps are separate acceptance surfaces.",
+      "ClosureCriterion": "Represent incidence, connectivity, boundary, and cost defects as one vector and distinguish zero-defect Gridville from twin triangles.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 602,
+      "LoopId": "tsp-loop-602",
+      "Status": "PLANNED",
+      "BeforeState": "Twin triangles exposes two selected components, but the mandatory number of crossings between them is not represented.",
+      "ClosureCriterion": "Derive that a Hamiltonian cycle crosses a nontrivial component cut a positive even number of times, hence at least twice.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 603,
+      "LoopId": "tsp-loop-603",
+      "Status": "PLANNED",
+      "BeforeState": "Twin triangles has a certified local degree bound of six and a two-crossing requirement, but no composed global repair cost.",
+      "ClosureCriterion": "Add two cost-ten crossings, release two cost-one internal edges, and certify an eighteen-unit repair adjustment and lower bound twenty-four.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 604,
+      "LoopId": "tsp-loop-604",
+      "Status": "PLANNED",
+      "BeforeState": "Twin triangles has a repaired lower bound of twenty-four and a feasible candidate of cost twenty-four, but no finite optimality certificate.",
+      "ClosureCriterion": "Close twin-triangle finite optimality by lower-bound/upper-bound equality while retaining the original non-tight local-bound counterexample.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 605,
+      "LoopId": "tsp-loop-605",
+      "Status": "PLANNED",
+      "BeforeState": "Candidate tours, reconstructed tours, and cluster paths use separate object vocabularies despite sharing coverage, incidence, order, connectivity, cost, and provenance.",
+      "ClosureCriterion": "Project supplied and reconstructed cycles into one normal form whose semantic key differs only by provenance where the underlying cycle is identical.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 606,
+      "LoopId": "tsp-loop-606",
+      "Status": "PLANNED",
+      "BeforeState": "Neighborhood boundary states are special-purpose rows rather than path witnesses in the common normal form.",
+      "ClosureCriterion": "Project all six cluster boundary states into valid path normal forms keyed by scope, entry, exit, coverage, and cost.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 607,
+      "LoopId": "tsp-loop-607",
+      "Status": "PLANNED",
+      "BeforeState": "The measured six-to-three neighborhood contraction is stored as a count reduction without an explicit equivalence relation.",
+      "ClosureCriterion": "Represent reversal-equivalent internal orders as quotient classes and derive three classes per neighborhood and nine product classes.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 608,
+      "LoopId": "tsp-loop-608",
+      "Status": "PLANNED",
+      "BeforeState": "Neighborhood clusters and selected connected components are treated as different kinds of objects despite exposing the same boundary-degree contract.",
+      "ClosureCriterion": "Represent the two twin neighborhoods as quotient nodes with boundary degree two, unifying cluster and component interfaces.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 609,
+      "LoopId": "tsp-loop-609",
+      "Status": "PLANNED",
+      "BeforeState": "Inference applications, antecedents, supports, states, constraint rounds, and decisions are separate execution concepts.",
+      "ClosureCriterion": "Project representative selection, union, rigidity, reconstruction, forcing, forbidding, cut, repair, optimality, and quotient steps into one closure-event schema.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 610,
+      "LoopId": "tsp-loop-610",
+      "Status": "PLANNED",
+      "BeforeState": "Thirteen reduction loops have coined derived predicates, but their cumulative compression and primitive-basis stability are not certified.",
+      "ClosureCriterion": "Certify thirty-two-to-eight semantic compression, fourteen coined terms, zero new primitives after the basis loop, bounded physical schema growth, and an explicit residual kernel.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
     }
   ],
   "CurrentCertificates": [
@@ -242,7 +383,7 @@
     "InstanceStops": 19,
     "TravelEdges": 38,
     "CandidateTours": 4,
-    "TSPLoops": 20,
+    "TSPLoops": 34,
     "FrontierObligations": 16,
     "ActiveImportedDependencies": 0,
     "ReferenceTourValid": true,
@@ -254,7 +395,7 @@
     "BrokenGraphComplete": false,
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
-    "LastPlannedLoop": 596,
+    "LastPlannedLoop": 610,
     "HighestCompletedLoop": 596,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 5,
@@ -299,7 +440,7 @@
     "ClusterContractionCertificates": 3
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:e22bb655d62fbef1fe6dc89e1813ea0ad1a1cbed231085d4df9bd200579915db",
+    "rulebook": "sha256:7f312cf1aafb50a00eb3c2eb55e6df10605f84d5a185dfa9ff56ccbaa50f4440",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",

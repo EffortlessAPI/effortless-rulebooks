@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
-from validate_rulebook_v3 import main as validate_rulebook
-from validate_summary_alignment import main as validate_summary
-
+from validate_rulebook_v4 import validate_repository_state
+from validate_summary_alignment_v4 import validate_summary_alignment
 
 if __name__ == "__main__":
-    validate_rulebook()
-    validate_summary()
+    validate_repository_state()
+    validate_summary_alignment()
