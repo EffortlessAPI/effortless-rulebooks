@@ -210,12 +210,12 @@
     {
       "LoopOrder": 599,
       "LoopId": "tsp-loop-599",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "UNKNOWN, SELECTED, FORCED, FORBIDDEN, CONTRADICTED, and SUPERSEDED are separate surface statuses split across edge-state and constraint-decision projections.",
       "ClosureCriterion": "Project all edge statuses onto one commitment rank, polarity, necessity scope, and provenance representation without conflating selected with forced.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Collapsed edge-state and constraint-decision vocabulary into a commitment lattice with rank, polarity, necessity scope, and provenance.",
+      "Result": "Gridville selections have rank 1 and CURRENT_WITNESS scope; sparse forced edges have rank 2 and ALL_FEASIBLE_TOURS scope; no epistemic upgrade was hidden.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 600,
@@ -397,7 +397,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 610,
-    "HighestCompletedLoop": 598,
+    "HighestCompletedLoop": 599,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 5,
     "SelectedNotForcedEdgeStates": 5,
@@ -439,11 +439,11 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 12,
     "ClusterContractionCertificates": 3,
-    "ConvergenceMeasurements": 2,
-    "ConceptRegistry": 42
+    "ConvergenceMeasurements": 3,
+    "ConceptRegistry": 43
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:b0484c841f43eaf7c60983c99598dcc9060b1a8f631f395f98af553d321bd6ca",
+    "rulebook": "sha256:86c81ac901f9cb643385b1d8b3a63452612bd92f7e9e0ec77cd585e948b1533e",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
