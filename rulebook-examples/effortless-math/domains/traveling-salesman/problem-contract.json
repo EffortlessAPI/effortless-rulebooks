@@ -250,12 +250,12 @@
     {
       "LoopOrder": 603,
       "LoopId": "tsp-loop-603",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Twin triangles has a certified local degree bound of six and a two-crossing requirement, but no composed global repair cost.",
       "ClosureCriterion": "Add two cost-ten crossings, release two cost-one internal edges, and certify an eighteen-unit repair adjustment and lower bound twenty-four.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Composed the local degree bound with cut repair: 6 + (2 x 10) - (2 x 1) = 24.",
+      "Result": "Twin component repair adjustment is +18; the strengthened finite-instance lower bound is 24.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 604,
@@ -385,7 +385,7 @@
     "TravelEdges": 38,
     "CandidateTours": 4,
     "TSPLoops": 34,
-    "FrontierObligations": 17,
+    "FrontierObligations": 18,
     "ActiveImportedDependencies": 0,
     "ReferenceTourValid": true,
     "ReferenceTourCost": 14,
@@ -397,7 +397,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 610,
-    "HighestCompletedLoop": 602,
+    "HighestCompletedLoop": 603,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 5,
     "SelectedNotForcedEdgeStates": 5,
@@ -439,13 +439,13 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 12,
     "ClusterContractionCertificates": 3,
-    "ConvergenceMeasurements": 6,
-    "ConceptRegistry": 46,
+    "ConvergenceMeasurements": 7,
+    "ConceptRegistry": 47,
     "DefectProfiles": 13,
-    "BoundTerms": 1
+    "BoundTerms": 4
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:e836f0b084d14b456be90ece0ed8e9d230afc77c1c2facdfe358529ce9de9817",
+    "rulebook": "sha256:9430826a42be70d2d125b58043c99060bfbf7f29ac86f5376283407152865ee8",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",

@@ -491,3 +491,75 @@ def as_json(path: Path | str = DEFAULT_RULEBOOK) -> str:
 
 if __name__ == "__main__":
     print(as_json())
+
+
+# TSP_COMPONENT_REPAIR_BOUND_OVERRIDE_FINAL
+# The public result type is constructed by declared field names, so the
+# composed lower bound is independent of historical dataclass field order.
+def evaluate_instance_lower_bounds(rulebook):
+    graph = evaluate_graph(rulebook)
+    local = evaluate_local_degree_bounds(rulebook)
+    result = {}
+    terms_table = rulebook.get("TSPBoundTerms", {}).get("data", [])
+    for row in _rows(rulebook, "InstanceLowerBounds"):
+        lower_id = row["InstanceLowerBoundId"]
+        iid = row["TSPInstance"]
+        bounds = [item for item in local.values() if item.tsp_instance_id == iid]
+        invalid = sum(not item.is_two_cheapest_witness for item in bounds)
+        total = sum((Decimal(str(item.local_bound_cost)) for item in bounds), Decimal("0"))
+        base_lower = total / Decimal("2")
+        required_terms = int(row.get("RequiredSupplementalTermCount", 0))
+        supplemental_terms = [
+            term for term in terms_table
+            if term.get("BoundCertificate") == lower_id
+            and term.get("CountsTowardAdjustment") is True
+        ]
+        certified_terms = [term for term in supplemental_terms if term.get("IsCertified") is True]
+        witnessed_adjustment = sum(
+            (
+                Decimal(str(term["Quantity"]))
+                * Decimal(str(term["UnitWeight"]))
+                * Decimal(str(term["Sign"]))
+                for term in certified_terms
+            ),
+            Decimal("0"),
+        )
+        declared_adjustment = Decimal(str(row.get("SupplementalBoundAdjustment", witnessed_adjustment)))
+        supplemental_certified = (
+            len(supplemental_terms) == required_terms
+            and len(certified_terms) == required_terms
+            and declared_adjustment == witnessed_adjustment
+        )
+        lower = base_lower + declared_adjustment
+        certified = (
+            iid in graph
+            and len(bounds) == graph[iid]["count_of_required_stops"]
+            and invalid == 0
+            and supplemental_certified
+        )
+        available = {
+            "instance_lower_bound_id": lower_id,
+            "lower_bound_id": lower_id,
+            "tsp_instance": iid,
+            "tsp_instance_id": iid,
+            "count_of_local_degree_bounds": len(bounds),
+            "count_of_invalid_local_degree_bounds": invalid,
+            "total_local_degree_bound_cost": float(total),
+            "base_lower_bound_cost": float(base_lower),
+            "supplemental_bound_adjustment": float(declared_adjustment),
+            "lower_bound_cost": float(lower),
+            "is_certified": certified,
+        }
+        fields = getattr(InstanceLowerBoundResult, "__dataclass_fields__", {})
+        if fields:
+            missing = [name for name in fields if name not in available]
+            if missing:
+                raise AssertionError(f"unmapped InstanceLowerBoundResult fields: {missing}")
+            result[lower_id] = InstanceLowerBoundResult(
+                **{name: available[name] for name in fields}
+            )
+        else:
+            result[lower_id] = InstanceLowerBoundResult(
+                lower_id, iid, len(bounds), invalid, float(total), float(lower), certified
+            )
+    return result
