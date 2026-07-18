@@ -5,7 +5,6 @@ on:
     branches:
       - agent/tsp-semantic-foundation
     paths:
-      - .tsp-validation-trigger
       - .github/workflows/validate-tsp-domain.yml
       - rulebook-examples/effortless-math/domains/traveling-salesman/**
   pull_request:
@@ -21,6 +20,7 @@ permissions:
 jobs:
   validate:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
         with:
