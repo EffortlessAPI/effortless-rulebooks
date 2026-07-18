@@ -686,12 +686,12 @@
     {
       "LoopOrder": 644,
       "LoopId": "tsp-loop-644",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "The two optimal witnesses are recorded, but residual ambiguity is not classified as a value-preserving orbit distinct from unresolved optimality.",
       "ClosureCriterion": "Record three initial route classes, two surviving optimal classes, certified value four, zero mathematical branch decisions, and residual choice-orbit size two.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Named and measured the two-member value-preserving optimal witness orbit.",
+      "Result": "Initial route classes=3, surviving optimal classes=2, residual ambiguity=2, certified value=4, branch decisions=0. The remaining orbit is not an unresolved optimum-value defect.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 645,
@@ -823,7 +823,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 646,
-    "HighestCompletedLoop": 643,
+    "HighestCompletedLoop": 644,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 15,
     "SelectedNotForcedEdgeStates": 5,
@@ -860,13 +860,13 @@
     "ConnectedDegreeTwoCertificates": 3,
     "RouteReconstructions": 2,
     "RouteReconstructionSteps": 14,
-    "SearchCertificates": 2,
+    "SearchCertificates": 3,
     "ConstraintRounds": 3,
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 66,
     "ClusterContractionCertificates": 7,
-    "ConvergenceMeasurements": 47,
-    "ConceptRegistry": 98,
+    "ConvergenceMeasurements": 48,
+    "ConceptRegistry": 99,
     "DefectProfiles": 21,
     "BoundTerms": 8,
     "WitnessNormalForms": 13,
@@ -894,7 +894,7 @@
     "OptimalFaceChoiceOrbitSize": 2
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:cdb3df8124d748773ceb01851ab226c127b7963c14bbe706a951b91fb7712dc9",
+    "rulebook": "sha256:b4007fa29f55170f9afb0c675f9baf8114ff2c9cc4fdd81c97ccf40d5c3738e7",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
