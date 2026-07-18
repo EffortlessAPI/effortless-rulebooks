@@ -1,6 +1,6 @@
 {
   "ProblemId": "traveling-salesman-semantic-geometry",
-  "Version": "0.5.0",
+  "Version": "0.6.0-alpha",
   "Title": "Traveling Salesman — City / Neighborhood / Address Semantic Geometry",
   "Status": "RESEARCH_PROGRAM",
   "Statement": "Given finite city-scale weighted graphs, represent graph normalization, supplied tours, typed frontier obligations, local-to-global lower bounds, finite optimality certificates, and residual search as executable structural data.",
@@ -36,7 +36,12 @@
     "HistoricalLoop610PredicateBasisCount": 8,
     "CurrentSemanticCompressionPct": 90.63,
     "NovelTermsCoined611To623": 13,
-    "AsymmetricFourStopQuotientCertified": true
+    "AsymmetricFourStopQuotientCertified": true,
+    "OneArcOneRewriteObserved": false,
+    "OneArcOneRewriteProved": false,
+    "ThreeRegionOptimalityProved": false,
+    "OptimalFaceValueCertified": false,
+    "OptimalFaceUniqueRouteProved": false
   },
   "CanonicalAsset": "effortless-rulebook/traveling-salesman-rulebook.json",
   "ExecutionSubstrates": [
@@ -473,6 +478,236 @@
       "AfterState": "Certified an asymmetric semantic quotient: 24 directed internal paths to 12 reversal classes to 6 fiber minima, with no physical table growth.",
       "Result": "The current semantic vocabulary remains three atoms plus four operators; asymmetric costs coin new predicates without adding a primitive. The certificate is finite and scoped to tsp-asymmetric-four-4.",
       "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 624,
+      "LoopId": "tsp-loop-624",
+      "Status": "PLANNED",
+      "BeforeState": "Loop 623 records local expansion as compatible with convergence, but the repository has no multidimensional measurement separating semantic basis size, physical size, open frontier, and named derived vocabulary.",
+      "ClosureCriterion": "Represent a coherence vector that records active atoms, active operators, physical-table delta, open frontier, named concepts, and the non-monotone expansion guardrail without collapsing those dimensions to an arbitrary scalar.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 625,
+      "LoopId": "tsp-loop-625",
+      "Status": "PLANNED",
+      "BeforeState": "ATTACHMENT, VALUATION, and WARRANT are three active ternary atoms with the same subject-label-target shape but different label and target sorts.",
+      "ClosureCriterion": "Introduce SEMANTIC_ARC(subject,label,target), reduce the three atoms to typed arc projections, preserve all historical definitions, and leave exactly one active relational atom.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 626,
+      "LoopId": "tsp-loop-626",
+      "Status": "PLANNED",
+      "BeforeState": "A single generic arc can encode the three atoms syntactically, but their role, measure, and modality constraints are not yet recoverable as typed signatures.",
+      "ClosureCriterion": "Record subject, label, and target sorts for attachment, valuation, and warrant projections and require distinct recoverable signatures for each historical atom.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 627,
+      "LoopId": "tsp-loop-627",
+      "Status": "PLANNED",
+      "BeforeState": "The arc signatures are represented, but lossless recovery of the historical vocabulary has not been certified across the concept registry.",
+      "ClosureCriterion": "Give every registered concept an explicit recovery expression over semantic arcs and operators, reject unreduced historical tokens, and preserve source-table provenance.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 628,
+      "LoopId": "tsp-loop-628",
+      "Status": "PLANNED",
+      "BeforeState": "CLOSURE and FIXPOINT are separate active operators although both repeatedly add warranted consequences until a stability condition holds.",
+      "ClosureCriterion": "Introduce SATURATE(seed,rewrite,termination_warrant), reduce closure and fixed point to explicit saturation modes, and preserve their historical operator identities.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 629,
+      "LoopId": "tsp-loop-629",
+      "Status": "PLANNED",
+      "BeforeState": "AGGREGATE and QUOTIENT are separate active operators although both group a domain by a key and replace each fiber with a warranted summary or representative.",
+      "ClosureCriterion": "Introduce FIBER_REDUCE(domain,key,reducer,expansion_warrant), reduce aggregate and quotient to reducer modes, and preserve all expansion and valuation semantics.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 630,
+      "LoopId": "tsp-loop-630",
+      "Status": "PLANNED",
+      "BeforeState": "SATURATE and FIBER_REDUCE remain separate operators even though both transform one semantic-arc state into another under an explicit warrant.",
+      "ClosureCriterion": "Introduce WARRANTED_REWRITE(input,rule,polarity,output,warrant), reduce saturation and fiber reduction to rewrite modes, and leave exactly one active semantic operator.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 631,
+      "LoopId": "tsp-loop-631",
+      "Status": "PLANNED",
+      "BeforeState": "The single rewrite operator is parametric, but the distinction between black-box internalization growth, saturation growth, and quotient contraction is not typed.",
+      "ClosureCriterion": "Classify historical and current operators as EXPANSIVE, CONTRACTIVE, MIXED, or PARAMETRIC, with modes that recover closure, fixed point, aggregate, quotient, saturation, and fiber reduction.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 632,
+      "LoopId": "tsp-loop-632",
+      "Status": "PLANNED",
+      "BeforeState": "One active arc and one active rewrite have emerged incrementally, but lossless coverage, current-basis counts, and empirical scope are not yet certified.",
+      "ClosureCriterion": "Certify one active atom and one active operator, recover every registered concept without old atom/operator tokens, preserve all prior certificates, and retain the non-claim of minimality or universality.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 633,
+      "LoopId": "tsp-loop-633",
+      "Status": "PLANNED",
+      "BeforeState": "Neighborhoods, components, and boundary fibers are quotient objects, but their shared port, coverage, valuation, and expansion contract is not represented as one region interface.",
+      "ClosureCriterion": "Add a common region-interface projection to existing quotient nodes without a new table and define ports, internal coverage, expansion witness, and interface status through semantic arcs.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 634,
+      "LoopId": "tsp-loop-634",
+      "Status": "PLANNED",
+      "BeforeState": "Component repair has only been tested on two three-stop regions, so crossing demand and repair composition for more than two components are unmeasured.",
+      "ClosureCriterion": "Represent a complete nine-stop graph partitioned into three cost-one triangles, three cost-ten ring crossings, expensive remaining crossings, nine valid local degree bounds, and a three-component local two-factor of cost nine.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 635,
+      "LoopId": "tsp-loop-635",
+      "Status": "PLANNED",
+      "BeforeState": "The region-triad local two-factor has three components, but the components do not yet expose reusable path states and expansion witnesses.",
+      "ClosureCriterion": "Represent three boundary-degree-two quotient nodes, three path states per region, explicit edge expansions, and one passing six-to-three contraction certificate per region.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 636,
+      "LoopId": "tsp-loop-636",
+      "Status": "PLANNED",
+      "BeforeState": "Every local stop has degree two, yet the quotient graph has no external incidence; the resulting global defect is not represented in the common budget vocabulary.",
+      "ClosureCriterion": "Give each of three region nodes required boundary degree two, observed degree zero, and a shared global profile separating closed internal incidence from open quotient incidence.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 637,
+      "LoopId": "tsp-loop-637",
+      "Status": "PLANNED",
+      "BeforeState": "Three quotient nodes each require boundary degree two, but the number of inter-region edges forced by that demand is not yet derived.",
+      "ClosureCriterion": "Apply the handshake identity to the quotient: total boundary degree six divided by two endpoints per crossing requires at least three inter-region edges.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 638,
+      "LoopId": "tsp-loop-638",
+      "Status": "PLANNED",
+      "BeforeState": "The base degree-two lower bound is nine and crossing demand is three, but the signed cost of repairing three components is not represented.",
+      "ClosureCriterion": "Certify 9 + 3*10 - 3*1 = 36 from a base term, three mandatory crossing insertions, and one necessary cost-one internal release per region.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 639,
+      "LoopId": "tsp-loop-639",
+      "Status": "PLANNED",
+      "BeforeState": "The repair equation proves a lower value, but no structural object witnesses the three added and three released edges that preserve degree while joining the regions.",
+      "ClosureCriterion": "Replace one internal edge per local triangle with the three cost-ten ring crossings, preserve every stop at degree two, and certify one connected nine-edge cycle of cost thirty-six.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 640,
+      "LoopId": "tsp-loop-640",
+      "Status": "PLANNED",
+      "BeforeState": "The balanced-exchange edge set is a certified cycle, but it has no ordered reconstruction or normalized route witness.",
+      "ClosureCriterion": "Reconstruct the nine-stop cycle from the repaired edge set, emit ordered steps and a comparison candidate of cost thirty-six, and record CandidateUsedAsAntecedent=false.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 641,
+      "LoopId": "tsp-loop-641",
+      "Status": "PLANNED",
+      "BeforeState": "The three-region lower bound and valid reconstructed cycle both equal thirty-six, but no finite optimality certificate joins them.",
+      "ClosureCriterion": "Certify the reconstructed cost-thirty-six cycle as optimal for tsp-three-regions-9 by lower-bound equality, without claiming a general k-region theorem.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 642,
+      "LoopId": "tsp-loop-642",
+      "Status": "PLANNED",
+      "BeforeState": "Every represented positive fixture has one distinguished optimal route, so optimal value and optimal witness identity have not been separated.",
+      "ClosureCriterion": "Represent a complete four-stop graph with degree-two lower bound four, two non-reversal-equivalent Hamiltonian cycles of cost four, and a third Hamiltonian cycle of cost six.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 643,
+      "LoopId": "tsp-loop-643",
+      "Status": "PLANNED",
+      "BeforeState": "The optimal-face fixture has two equal-cost witnesses, but proof status and witness-selection status are not independently represented.",
+      "ClosureCriterion": "Attach passing optimality certificates to both cost-four cycles and represent value status CLOSED while choice status remains a two-alternative non-reversal orbit.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 644,
+      "LoopId": "tsp-loop-644",
+      "Status": "PLANNED",
+      "BeforeState": "The two optimal witnesses are recorded, but residual ambiguity is not classified as a value-preserving orbit distinct from unresolved optimality.",
+      "ClosureCriterion": "Record three initial route classes, two surviving optimal classes, certified value four, zero mathematical branch decisions, and residual choice-orbit size two.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 645,
+      "LoopId": "tsp-loop-645",
+      "Status": "PLANNED",
+      "BeforeState": "A residual choice orbit exists, but the system does not distinguish a branch needed for proof from a conditional tie-break needed only to select one representative.",
+      "ClosureCriterion": "Reject mathematical branching for value proof, require an external tie-break policy before representative selection, and emit a replayable rejected-branch event with zero branch decisions.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 646,
+      "LoopId": "tsp-loop-646",
+      "Status": "PLANNED",
+      "BeforeState": "The pass has coined new machinery and added many witness rows, but its effect on basis size, physical schema, trust, multi-region repair, and residual choice has not been summarized.",
+      "ClosureCriterion": "Certify one active arc, one active rewrite, unchanged physical-table count, explicit local expansion, three-region optimum thirty-six, optimal-face value four with choice orbit two, and zero branch decisions for value proof.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
     }
   ],
   "CurrentCertificates": [
@@ -571,7 +806,7 @@
     "InstanceStops": 23,
     "TravelEdges": 44,
     "CandidateTours": 4,
-    "TSPLoops": 47,
+    "TSPLoops": 70,
     "FrontierObligations": 23,
     "ActiveImportedDependencies": 0,
     "ReferenceTourValid": true,
@@ -583,7 +818,7 @@
     "BrokenGraphComplete": false,
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
-    "LastPlannedLoop": 623,
+    "LastPlannedLoop": 646,
     "HighestCompletedLoop": 623,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 14,
@@ -648,7 +883,7 @@
     "AsymmetricQuotientReductionPct": 75
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:00d93006eb76ead7ed493cd71c153c8eaeaa20c0794ad2f9231e0ec7310e96e8",
+    "rulebook": "sha256:654f4b05801c59e9782108310b41eccb64a0c801c6561e3180853b2ba7b93dac",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
