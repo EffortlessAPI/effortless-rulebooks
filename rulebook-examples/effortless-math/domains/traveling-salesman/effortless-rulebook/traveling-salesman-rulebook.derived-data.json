@@ -58,6 +58,16 @@
       "QuotientNodeKind": "CONNECTED_COMPONENT_BOUNDARY_OBJECT",
       "RequiredBoundaryDegree": 2,
       "QuotientScopeId": "tsp-twin-triangles-6"
+    },
+    {
+      "NeighborhoodId": "gridville-asymmetric-four",
+      "DisplayName": "Asymmetric Four",
+      "City": "gridville",
+      "ClusterKind": "ASYMMETRIC_BOUNDARY_FIBER_FIXTURE",
+      "IsQuotientNode": true,
+      "QuotientNodeKind": "BOUNDARY_FIBER_REGION",
+      "RequiredBoundaryDegree": 2,
+      "QuotientScopeId": "tsp-asymmetric-four-4"
     }
   ],
   "Addresses": [
@@ -148,6 +158,38 @@
       "XCoordinate": 22,
       "YCoordinate": 0,
       "IsDepotCandidate": false
+    },
+    {
+      "AddressId": "addr-asym-1",
+      "StreetLabel": "Asymmetric 1",
+      "Neighborhood": "gridville-asymmetric-four",
+      "XCoordinate": 31,
+      "YCoordinate": 1,
+      "IsDepotCandidate": true
+    },
+    {
+      "AddressId": "addr-asym-2",
+      "StreetLabel": "Asymmetric 2",
+      "Neighborhood": "gridville-asymmetric-four",
+      "XCoordinate": 32,
+      "YCoordinate": 4,
+      "IsDepotCandidate": false
+    },
+    {
+      "AddressId": "addr-asym-3",
+      "StreetLabel": "Asymmetric 3",
+      "Neighborhood": "gridville-asymmetric-four",
+      "XCoordinate": 33,
+      "YCoordinate": 4,
+      "IsDepotCandidate": false
+    },
+    {
+      "AddressId": "addr-asym-4",
+      "StreetLabel": "Asymmetric 4",
+      "Neighborhood": "gridville-asymmetric-four",
+      "XCoordinate": 34,
+      "YCoordinate": 1,
+      "IsDepotCandidate": false
     }
   ],
   "TSPInstances": [
@@ -194,6 +236,17 @@
       "Status": "SPARSE_CONSTRAINT_FIXTURE",
       "SearchPolicy": "CONSTRAINT_CLOSURE_BEFORE_SEARCH",
       "Notes": "Only the five ring edges and one B-D chord are available; degree-two forcing selects the ring without branching."
+    },
+    {
+      "TSPInstanceId": "tsp-asymmetric-four-4",
+      "DisplayName": "Asymmetric Four-Stop Boundary Fiber",
+      "City": "gridville",
+      "DepotAddress": "addr-asym-1",
+      "DistanceModel": "EXPLICIT_SYMMETRIC_COST",
+      "IsSymmetric": true,
+      "Status": "NORMALIZED",
+      "SearchPolicy": "LOCAL_QUOTIENT_BEFORE_CITY_SEARCH",
+      "Notes": "Four-stop complete internal cluster with unequal path valuations used to separate reversal quotienting from fiber dominance."
     }
   ],
   "TSPGraphInvariantChecks": [
@@ -327,6 +380,30 @@
       "InstanceStopId": "sparse-stop-e",
       "TSPInstance": "tsp-sparse-forcing-5",
       "Address": "addr-e-south",
+      "IsRequired": true
+    },
+    {
+      "InstanceStopId": "asym-stop-1",
+      "TSPInstance": "tsp-asymmetric-four-4",
+      "Address": "addr-asym-1",
+      "IsRequired": true
+    },
+    {
+      "InstanceStopId": "asym-stop-2",
+      "TSPInstance": "tsp-asymmetric-four-4",
+      "Address": "addr-asym-2",
+      "IsRequired": true
+    },
+    {
+      "InstanceStopId": "asym-stop-3",
+      "TSPInstance": "tsp-asymmetric-four-4",
+      "Address": "addr-asym-3",
+      "IsRequired": true
+    },
+    {
+      "InstanceStopId": "asym-stop-4",
+      "TSPInstance": "tsp-asymmetric-four-4",
+      "Address": "addr-asym-4",
       "IsRequired": true
     }
   ],
@@ -748,6 +825,72 @@
       "TravelCost": 3,
       "IsAvailable": true,
       "EdgeSource": "SPARSE_FORCING_FIXTURE"
+    },
+    {
+      "TravelEdgeId": "asym-edge-1-2",
+      "TSPInstance": "tsp-asymmetric-four-4",
+      "FromStop": "asym-stop-1",
+      "ToStop": "asym-stop-2",
+      "DistanceMeters": 1000,
+      "TravelCost": 1,
+      "IsAvailable": true,
+      "EdgeSource": "ASYMMETRIC_FIBER_FIXTURE",
+      "CanonicalPairKey": "asym-stop-1|asym-stop-2"
+    },
+    {
+      "TravelEdgeId": "asym-edge-1-3",
+      "TSPInstance": "tsp-asymmetric-four-4",
+      "FromStop": "asym-stop-1",
+      "ToStop": "asym-stop-3",
+      "DistanceMeters": 4000,
+      "TravelCost": 4,
+      "IsAvailable": true,
+      "EdgeSource": "ASYMMETRIC_FIBER_FIXTURE",
+      "CanonicalPairKey": "asym-stop-1|asym-stop-3"
+    },
+    {
+      "TravelEdgeId": "asym-edge-1-4",
+      "TSPInstance": "tsp-asymmetric-four-4",
+      "FromStop": "asym-stop-1",
+      "ToStop": "asym-stop-4",
+      "DistanceMeters": 8000,
+      "TravelCost": 8,
+      "IsAvailable": true,
+      "EdgeSource": "ASYMMETRIC_FIBER_FIXTURE",
+      "CanonicalPairKey": "asym-stop-1|asym-stop-4"
+    },
+    {
+      "TravelEdgeId": "asym-edge-2-3",
+      "TSPInstance": "tsp-asymmetric-four-4",
+      "FromStop": "asym-stop-2",
+      "ToStop": "asym-stop-3",
+      "DistanceMeters": 2000,
+      "TravelCost": 2,
+      "IsAvailable": true,
+      "EdgeSource": "ASYMMETRIC_FIBER_FIXTURE",
+      "CanonicalPairKey": "asym-stop-2|asym-stop-3"
+    },
+    {
+      "TravelEdgeId": "asym-edge-2-4",
+      "TSPInstance": "tsp-asymmetric-four-4",
+      "FromStop": "asym-stop-2",
+      "ToStop": "asym-stop-4",
+      "DistanceMeters": 5000,
+      "TravelCost": 5,
+      "IsAvailable": true,
+      "EdgeSource": "ASYMMETRIC_FIBER_FIXTURE",
+      "CanonicalPairKey": "asym-stop-2|asym-stop-4"
+    },
+    {
+      "TravelEdgeId": "asym-edge-3-4",
+      "TSPInstance": "tsp-asymmetric-four-4",
+      "FromStop": "asym-stop-3",
+      "ToStop": "asym-stop-4",
+      "DistanceMeters": 3000,
+      "TravelCost": 3,
+      "IsAvailable": true,
+      "EdgeSource": "ASYMMETRIC_FIBER_FIXTURE",
+      "CanonicalPairKey": "asym-stop-3|asym-stop-4"
     }
   ],
   "CandidateTours": [
@@ -3157,7 +3300,15 @@
       "Status": "SURVIVES",
       "NormalizedWitnessId": "normal-path-cluster-state-gridville-west-triangle-twin-stop-wa-twin-stop-wb",
       "OrientationMultiplicity": 2,
-      "IsQuotientRepresentative": true
+      "IsQuotientRepresentative": true,
+      "EntryPortRole": "BOUNDARY_ENTRY",
+      "ExitPortRole": "BOUNDARY_EXIT",
+      "PortContract": "ONE_ENTRY_ONE_EXIT_FULL_INTERNAL_COVERAGE",
+      "BoundaryFiberKey": "gridville-west-triangle|twin-stop-wa|twin-stop-wb",
+      "InternalOrderKey": "twin-stop-wa\u003Etwin-stop-wc\u003Etwin-stop-wb",
+      "RawOrientationMultiplicity": 2,
+      "DominatedByStateId": null,
+      "DominanceDelta": 0
     },
     {
       "TSPClusterBoundaryStateId": "cluster-state-gridville-west-triangle-twin-stop-wa-twin-stop-wc",
@@ -3173,7 +3324,15 @@
       "Status": "SURVIVES",
       "NormalizedWitnessId": "normal-path-cluster-state-gridville-west-triangle-twin-stop-wa-twin-stop-wc",
       "OrientationMultiplicity": 2,
-      "IsQuotientRepresentative": true
+      "IsQuotientRepresentative": true,
+      "EntryPortRole": "BOUNDARY_ENTRY",
+      "ExitPortRole": "BOUNDARY_EXIT",
+      "PortContract": "ONE_ENTRY_ONE_EXIT_FULL_INTERNAL_COVERAGE",
+      "BoundaryFiberKey": "gridville-west-triangle|twin-stop-wa|twin-stop-wc",
+      "InternalOrderKey": "twin-stop-wa\u003Etwin-stop-wb\u003Etwin-stop-wc",
+      "RawOrientationMultiplicity": 2,
+      "DominatedByStateId": null,
+      "DominanceDelta": 0
     },
     {
       "TSPClusterBoundaryStateId": "cluster-state-gridville-west-triangle-twin-stop-wb-twin-stop-wc",
@@ -3189,7 +3348,15 @@
       "Status": "SURVIVES",
       "NormalizedWitnessId": "normal-path-cluster-state-gridville-west-triangle-twin-stop-wb-twin-stop-wc",
       "OrientationMultiplicity": 2,
-      "IsQuotientRepresentative": true
+      "IsQuotientRepresentative": true,
+      "EntryPortRole": "BOUNDARY_ENTRY",
+      "ExitPortRole": "BOUNDARY_EXIT",
+      "PortContract": "ONE_ENTRY_ONE_EXIT_FULL_INTERNAL_COVERAGE",
+      "BoundaryFiberKey": "gridville-west-triangle|twin-stop-wb|twin-stop-wc",
+      "InternalOrderKey": "twin-stop-wb\u003Etwin-stop-wa\u003Etwin-stop-wc",
+      "RawOrientationMultiplicity": 2,
+      "DominatedByStateId": null,
+      "DominanceDelta": 0
     },
     {
       "TSPClusterBoundaryStateId": "cluster-state-gridville-east-triangle-twin-stop-ed-twin-stop-ee",
@@ -3205,7 +3372,15 @@
       "Status": "SURVIVES",
       "NormalizedWitnessId": "normal-path-cluster-state-gridville-east-triangle-twin-stop-ed-twin-stop-ee",
       "OrientationMultiplicity": 2,
-      "IsQuotientRepresentative": true
+      "IsQuotientRepresentative": true,
+      "EntryPortRole": "BOUNDARY_ENTRY",
+      "ExitPortRole": "BOUNDARY_EXIT",
+      "PortContract": "ONE_ENTRY_ONE_EXIT_FULL_INTERNAL_COVERAGE",
+      "BoundaryFiberKey": "gridville-east-triangle|twin-stop-ed|twin-stop-ee",
+      "InternalOrderKey": "twin-stop-ed\u003Etwin-stop-ef\u003Etwin-stop-ee",
+      "RawOrientationMultiplicity": 2,
+      "DominatedByStateId": null,
+      "DominanceDelta": 0
     },
     {
       "TSPClusterBoundaryStateId": "cluster-state-gridville-east-triangle-twin-stop-ed-twin-stop-ef",
@@ -3221,7 +3396,15 @@
       "Status": "SURVIVES",
       "NormalizedWitnessId": "normal-path-cluster-state-gridville-east-triangle-twin-stop-ed-twin-stop-ef",
       "OrientationMultiplicity": 2,
-      "IsQuotientRepresentative": true
+      "IsQuotientRepresentative": true,
+      "EntryPortRole": "BOUNDARY_ENTRY",
+      "ExitPortRole": "BOUNDARY_EXIT",
+      "PortContract": "ONE_ENTRY_ONE_EXIT_FULL_INTERNAL_COVERAGE",
+      "BoundaryFiberKey": "gridville-east-triangle|twin-stop-ed|twin-stop-ef",
+      "InternalOrderKey": "twin-stop-ed\u003Etwin-stop-ee\u003Etwin-stop-ef",
+      "RawOrientationMultiplicity": 2,
+      "DominatedByStateId": null,
+      "DominanceDelta": 0
     },
     {
       "TSPClusterBoundaryStateId": "cluster-state-gridville-east-triangle-twin-stop-ee-twin-stop-ef",
@@ -3237,7 +3420,303 @@
       "Status": "SURVIVES",
       "NormalizedWitnessId": "normal-path-cluster-state-gridville-east-triangle-twin-stop-ee-twin-stop-ef",
       "OrientationMultiplicity": 2,
-      "IsQuotientRepresentative": true
+      "IsQuotientRepresentative": true,
+      "EntryPortRole": "BOUNDARY_ENTRY",
+      "ExitPortRole": "BOUNDARY_EXIT",
+      "PortContract": "ONE_ENTRY_ONE_EXIT_FULL_INTERNAL_COVERAGE",
+      "BoundaryFiberKey": "gridville-east-triangle|twin-stop-ee|twin-stop-ef",
+      "InternalOrderKey": "twin-stop-ee\u003Etwin-stop-ed\u003Etwin-stop-ef",
+      "RawOrientationMultiplicity": 2,
+      "DominatedByStateId": null,
+      "DominanceDelta": 0
+    },
+    {
+      "TSPClusterBoundaryStateId": "cluster-state-asym-1-3-4-2",
+      "TSPInstance": "tsp-asymmetric-four-4",
+      "Neighborhood": "gridville-asymmetric-four",
+      "EntryStop": "asym-stop-1",
+      "ExitStop": "asym-stop-2",
+      "InternalViaStop": "asym-stop-3",
+      "SecondInternalViaStop": "asym-stop-4",
+      "InternalPathCost": 12,
+      "InternalStopCount": 4,
+      "IsHamiltonianPath": true,
+      "IsDominated": false,
+      "Status": "SURVIVES",
+      "OrientationMultiplicity": 2,
+      "IsQuotientRepresentative": true,
+      "EntryPortRole": "BOUNDARY_ENTRY",
+      "ExitPortRole": "BOUNDARY_EXIT",
+      "PortContract": "ONE_ENTRY_ONE_EXIT_FULL_INTERNAL_COVERAGE",
+      "BoundaryFiberKey": "gridville-asymmetric-four|asym-stop-1|asym-stop-2",
+      "InternalOrderKey": "asym-stop-1\u003Easym-stop-3\u003Easym-stop-4\u003Easym-stop-2",
+      "RawOrientationMultiplicity": 2,
+      "DominatedByStateId": null,
+      "DominanceDelta": 0
+    },
+    {
+      "TSPClusterBoundaryStateId": "cluster-state-asym-1-4-3-2",
+      "TSPInstance": "tsp-asymmetric-four-4",
+      "Neighborhood": "gridville-asymmetric-four",
+      "EntryStop": "asym-stop-1",
+      "ExitStop": "asym-stop-2",
+      "InternalViaStop": "asym-stop-4",
+      "SecondInternalViaStop": "asym-stop-3",
+      "InternalPathCost": 13,
+      "InternalStopCount": 4,
+      "IsHamiltonianPath": true,
+      "IsDominated": true,
+      "Status": "DOMINATED",
+      "OrientationMultiplicity": 2,
+      "IsQuotientRepresentative": true,
+      "EntryPortRole": "BOUNDARY_ENTRY",
+      "ExitPortRole": "BOUNDARY_EXIT",
+      "PortContract": "ONE_ENTRY_ONE_EXIT_FULL_INTERNAL_COVERAGE",
+      "BoundaryFiberKey": "gridville-asymmetric-four|asym-stop-1|asym-stop-2",
+      "InternalOrderKey": "asym-stop-1\u003Easym-stop-4\u003Easym-stop-3\u003Easym-stop-2",
+      "RawOrientationMultiplicity": 2,
+      "DominatedByStateId": "cluster-state-asym-1-3-4-2",
+      "DominanceDelta": 1
+    },
+    {
+      "TSPClusterBoundaryStateId": "cluster-state-asym-1-2-4-3",
+      "TSPInstance": "tsp-asymmetric-four-4",
+      "Neighborhood": "gridville-asymmetric-four",
+      "EntryStop": "asym-stop-1",
+      "ExitStop": "asym-stop-3",
+      "InternalViaStop": "asym-stop-2",
+      "SecondInternalViaStop": "asym-stop-4",
+      "InternalPathCost": 9,
+      "InternalStopCount": 4,
+      "IsHamiltonianPath": true,
+      "IsDominated": false,
+      "Status": "SURVIVES",
+      "OrientationMultiplicity": 2,
+      "IsQuotientRepresentative": true,
+      "EntryPortRole": "BOUNDARY_ENTRY",
+      "ExitPortRole": "BOUNDARY_EXIT",
+      "PortContract": "ONE_ENTRY_ONE_EXIT_FULL_INTERNAL_COVERAGE",
+      "BoundaryFiberKey": "gridville-asymmetric-four|asym-stop-1|asym-stop-3",
+      "InternalOrderKey": "asym-stop-1\u003Easym-stop-2\u003Easym-stop-4\u003Easym-stop-3",
+      "RawOrientationMultiplicity": 2,
+      "DominatedByStateId": null,
+      "DominanceDelta": 0
+    },
+    {
+      "TSPClusterBoundaryStateId": "cluster-state-asym-1-4-2-3",
+      "TSPInstance": "tsp-asymmetric-four-4",
+      "Neighborhood": "gridville-asymmetric-four",
+      "EntryStop": "asym-stop-1",
+      "ExitStop": "asym-stop-3",
+      "InternalViaStop": "asym-stop-4",
+      "SecondInternalViaStop": "asym-stop-2",
+      "InternalPathCost": 15,
+      "InternalStopCount": 4,
+      "IsHamiltonianPath": true,
+      "IsDominated": true,
+      "Status": "DOMINATED",
+      "OrientationMultiplicity": 2,
+      "IsQuotientRepresentative": true,
+      "EntryPortRole": "BOUNDARY_ENTRY",
+      "ExitPortRole": "BOUNDARY_EXIT",
+      "PortContract": "ONE_ENTRY_ONE_EXIT_FULL_INTERNAL_COVERAGE",
+      "BoundaryFiberKey": "gridville-asymmetric-four|asym-stop-1|asym-stop-3",
+      "InternalOrderKey": "asym-stop-1\u003Easym-stop-4\u003Easym-stop-2\u003Easym-stop-3",
+      "RawOrientationMultiplicity": 2,
+      "DominatedByStateId": "cluster-state-asym-1-2-4-3",
+      "DominanceDelta": 6
+    },
+    {
+      "TSPClusterBoundaryStateId": "cluster-state-asym-1-2-3-4",
+      "TSPInstance": "tsp-asymmetric-four-4",
+      "Neighborhood": "gridville-asymmetric-four",
+      "EntryStop": "asym-stop-1",
+      "ExitStop": "asym-stop-4",
+      "InternalViaStop": "asym-stop-2",
+      "SecondInternalViaStop": "asym-stop-3",
+      "InternalPathCost": 6,
+      "InternalStopCount": 4,
+      "IsHamiltonianPath": true,
+      "IsDominated": false,
+      "Status": "SURVIVES",
+      "OrientationMultiplicity": 2,
+      "IsQuotientRepresentative": true,
+      "EntryPortRole": "BOUNDARY_ENTRY",
+      "ExitPortRole": "BOUNDARY_EXIT",
+      "PortContract": "ONE_ENTRY_ONE_EXIT_FULL_INTERNAL_COVERAGE",
+      "BoundaryFiberKey": "gridville-asymmetric-four|asym-stop-1|asym-stop-4",
+      "InternalOrderKey": "asym-stop-1\u003Easym-stop-2\u003Easym-stop-3\u003Easym-stop-4",
+      "RawOrientationMultiplicity": 2,
+      "DominatedByStateId": null,
+      "DominanceDelta": 0
+    },
+    {
+      "TSPClusterBoundaryStateId": "cluster-state-asym-1-3-2-4",
+      "TSPInstance": "tsp-asymmetric-four-4",
+      "Neighborhood": "gridville-asymmetric-four",
+      "EntryStop": "asym-stop-1",
+      "ExitStop": "asym-stop-4",
+      "InternalViaStop": "asym-stop-3",
+      "SecondInternalViaStop": "asym-stop-2",
+      "InternalPathCost": 11,
+      "InternalStopCount": 4,
+      "IsHamiltonianPath": true,
+      "IsDominated": true,
+      "Status": "DOMINATED",
+      "OrientationMultiplicity": 2,
+      "IsQuotientRepresentative": true,
+      "EntryPortRole": "BOUNDARY_ENTRY",
+      "ExitPortRole": "BOUNDARY_EXIT",
+      "PortContract": "ONE_ENTRY_ONE_EXIT_FULL_INTERNAL_COVERAGE",
+      "BoundaryFiberKey": "gridville-asymmetric-four|asym-stop-1|asym-stop-4",
+      "InternalOrderKey": "asym-stop-1\u003Easym-stop-3\u003Easym-stop-2\u003Easym-stop-4",
+      "RawOrientationMultiplicity": 2,
+      "DominatedByStateId": "cluster-state-asym-1-2-3-4",
+      "DominanceDelta": 5
+    },
+    {
+      "TSPClusterBoundaryStateId": "cluster-state-asym-2-1-4-3",
+      "TSPInstance": "tsp-asymmetric-four-4",
+      "Neighborhood": "gridville-asymmetric-four",
+      "EntryStop": "asym-stop-2",
+      "ExitStop": "asym-stop-3",
+      "InternalViaStop": "asym-stop-1",
+      "SecondInternalViaStop": "asym-stop-4",
+      "InternalPathCost": 12,
+      "InternalStopCount": 4,
+      "IsHamiltonianPath": true,
+      "IsDominated": false,
+      "Status": "SURVIVES",
+      "OrientationMultiplicity": 2,
+      "IsQuotientRepresentative": true,
+      "EntryPortRole": "BOUNDARY_ENTRY",
+      "ExitPortRole": "BOUNDARY_EXIT",
+      "PortContract": "ONE_ENTRY_ONE_EXIT_FULL_INTERNAL_COVERAGE",
+      "BoundaryFiberKey": "gridville-asymmetric-four|asym-stop-2|asym-stop-3",
+      "InternalOrderKey": "asym-stop-2\u003Easym-stop-1\u003Easym-stop-4\u003Easym-stop-3",
+      "RawOrientationMultiplicity": 2,
+      "DominatedByStateId": null,
+      "DominanceDelta": 0
+    },
+    {
+      "TSPClusterBoundaryStateId": "cluster-state-asym-2-4-1-3",
+      "TSPInstance": "tsp-asymmetric-four-4",
+      "Neighborhood": "gridville-asymmetric-four",
+      "EntryStop": "asym-stop-2",
+      "ExitStop": "asym-stop-3",
+      "InternalViaStop": "asym-stop-4",
+      "SecondInternalViaStop": "asym-stop-1",
+      "InternalPathCost": 17,
+      "InternalStopCount": 4,
+      "IsHamiltonianPath": true,
+      "IsDominated": true,
+      "Status": "DOMINATED",
+      "OrientationMultiplicity": 2,
+      "IsQuotientRepresentative": true,
+      "EntryPortRole": "BOUNDARY_ENTRY",
+      "ExitPortRole": "BOUNDARY_EXIT",
+      "PortContract": "ONE_ENTRY_ONE_EXIT_FULL_INTERNAL_COVERAGE",
+      "BoundaryFiberKey": "gridville-asymmetric-four|asym-stop-2|asym-stop-3",
+      "InternalOrderKey": "asym-stop-2\u003Easym-stop-4\u003Easym-stop-1\u003Easym-stop-3",
+      "RawOrientationMultiplicity": 2,
+      "DominatedByStateId": "cluster-state-asym-2-1-4-3",
+      "DominanceDelta": 5
+    },
+    {
+      "TSPClusterBoundaryStateId": "cluster-state-asym-2-1-3-4",
+      "TSPInstance": "tsp-asymmetric-four-4",
+      "Neighborhood": "gridville-asymmetric-four",
+      "EntryStop": "asym-stop-2",
+      "ExitStop": "asym-stop-4",
+      "InternalViaStop": "asym-stop-1",
+      "SecondInternalViaStop": "asym-stop-3",
+      "InternalPathCost": 8,
+      "InternalStopCount": 4,
+      "IsHamiltonianPath": true,
+      "IsDominated": false,
+      "Status": "SURVIVES",
+      "OrientationMultiplicity": 2,
+      "IsQuotientRepresentative": true,
+      "EntryPortRole": "BOUNDARY_ENTRY",
+      "ExitPortRole": "BOUNDARY_EXIT",
+      "PortContract": "ONE_ENTRY_ONE_EXIT_FULL_INTERNAL_COVERAGE",
+      "BoundaryFiberKey": "gridville-asymmetric-four|asym-stop-2|asym-stop-4",
+      "InternalOrderKey": "asym-stop-2\u003Easym-stop-1\u003Easym-stop-3\u003Easym-stop-4",
+      "RawOrientationMultiplicity": 2,
+      "DominatedByStateId": null,
+      "DominanceDelta": 0
+    },
+    {
+      "TSPClusterBoundaryStateId": "cluster-state-asym-2-3-1-4",
+      "TSPInstance": "tsp-asymmetric-four-4",
+      "Neighborhood": "gridville-asymmetric-four",
+      "EntryStop": "asym-stop-2",
+      "ExitStop": "asym-stop-4",
+      "InternalViaStop": "asym-stop-3",
+      "SecondInternalViaStop": "asym-stop-1",
+      "InternalPathCost": 14,
+      "InternalStopCount": 4,
+      "IsHamiltonianPath": true,
+      "IsDominated": true,
+      "Status": "DOMINATED",
+      "OrientationMultiplicity": 2,
+      "IsQuotientRepresentative": true,
+      "EntryPortRole": "BOUNDARY_ENTRY",
+      "ExitPortRole": "BOUNDARY_EXIT",
+      "PortContract": "ONE_ENTRY_ONE_EXIT_FULL_INTERNAL_COVERAGE",
+      "BoundaryFiberKey": "gridville-asymmetric-four|asym-stop-2|asym-stop-4",
+      "InternalOrderKey": "asym-stop-2\u003Easym-stop-3\u003Easym-stop-1\u003Easym-stop-4",
+      "RawOrientationMultiplicity": 2,
+      "DominatedByStateId": "cluster-state-asym-2-1-3-4",
+      "DominanceDelta": 6
+    },
+    {
+      "TSPClusterBoundaryStateId": "cluster-state-asym-3-1-2-4",
+      "TSPInstance": "tsp-asymmetric-four-4",
+      "Neighborhood": "gridville-asymmetric-four",
+      "EntryStop": "asym-stop-3",
+      "ExitStop": "asym-stop-4",
+      "InternalViaStop": "asym-stop-1",
+      "SecondInternalViaStop": "asym-stop-2",
+      "InternalPathCost": 10,
+      "InternalStopCount": 4,
+      "IsHamiltonianPath": true,
+      "IsDominated": false,
+      "Status": "SURVIVES",
+      "OrientationMultiplicity": 2,
+      "IsQuotientRepresentative": true,
+      "EntryPortRole": "BOUNDARY_ENTRY",
+      "ExitPortRole": "BOUNDARY_EXIT",
+      "PortContract": "ONE_ENTRY_ONE_EXIT_FULL_INTERNAL_COVERAGE",
+      "BoundaryFiberKey": "gridville-asymmetric-four|asym-stop-3|asym-stop-4",
+      "InternalOrderKey": "asym-stop-3\u003Easym-stop-1\u003Easym-stop-2\u003Easym-stop-4",
+      "RawOrientationMultiplicity": 2,
+      "DominatedByStateId": null,
+      "DominanceDelta": 0
+    },
+    {
+      "TSPClusterBoundaryStateId": "cluster-state-asym-3-2-1-4",
+      "TSPInstance": "tsp-asymmetric-four-4",
+      "Neighborhood": "gridville-asymmetric-four",
+      "EntryStop": "asym-stop-3",
+      "ExitStop": "asym-stop-4",
+      "InternalViaStop": "asym-stop-2",
+      "SecondInternalViaStop": "asym-stop-1",
+      "InternalPathCost": 11,
+      "InternalStopCount": 4,
+      "IsHamiltonianPath": true,
+      "IsDominated": true,
+      "Status": "DOMINATED",
+      "OrientationMultiplicity": 2,
+      "IsQuotientRepresentative": true,
+      "EntryPortRole": "BOUNDARY_ENTRY",
+      "ExitPortRole": "BOUNDARY_EXIT",
+      "PortContract": "ONE_ENTRY_ONE_EXIT_FULL_INTERNAL_COVERAGE",
+      "BoundaryFiberKey": "gridville-asymmetric-four|asym-stop-3|asym-stop-4",
+      "InternalOrderKey": "asym-stop-3\u003Easym-stop-2\u003Easym-stop-1\u003Easym-stop-4",
+      "RawOrientationMultiplicity": 2,
+      "DominatedByStateId": "cluster-state-asym-3-1-2-4",
+      "DominanceDelta": 1
     }
   ],
   "TSPClusterBoundaryStateMembers": [
@@ -3312,6 +3791,222 @@
       "ClusterBoundaryState": "cluster-state-gridville-east-triangle-twin-stop-ee-twin-stop-ef",
       "TravelEdge": "twin-edge-ed-ef",
       "MemberOrder": 2
+    },
+    {
+      "TSPClusterBoundaryStateMemberId": "member-cluster-state-asym-1-3-4-2-1",
+      "ClusterBoundaryState": "cluster-state-asym-1-3-4-2",
+      "TravelEdge": "asym-edge-1-3",
+      "MemberOrder": 1
+    },
+    {
+      "TSPClusterBoundaryStateMemberId": "member-cluster-state-asym-1-3-4-2-2",
+      "ClusterBoundaryState": "cluster-state-asym-1-3-4-2",
+      "TravelEdge": "asym-edge-3-4",
+      "MemberOrder": 2
+    },
+    {
+      "TSPClusterBoundaryStateMemberId": "member-cluster-state-asym-1-3-4-2-3",
+      "ClusterBoundaryState": "cluster-state-asym-1-3-4-2",
+      "TravelEdge": "asym-edge-2-4",
+      "MemberOrder": 3
+    },
+    {
+      "TSPClusterBoundaryStateMemberId": "member-cluster-state-asym-1-4-3-2-1",
+      "ClusterBoundaryState": "cluster-state-asym-1-4-3-2",
+      "TravelEdge": "asym-edge-1-4",
+      "MemberOrder": 1
+    },
+    {
+      "TSPClusterBoundaryStateMemberId": "member-cluster-state-asym-1-4-3-2-2",
+      "ClusterBoundaryState": "cluster-state-asym-1-4-3-2",
+      "TravelEdge": "asym-edge-3-4",
+      "MemberOrder": 2
+    },
+    {
+      "TSPClusterBoundaryStateMemberId": "member-cluster-state-asym-1-4-3-2-3",
+      "ClusterBoundaryState": "cluster-state-asym-1-4-3-2",
+      "TravelEdge": "asym-edge-2-3",
+      "MemberOrder": 3
+    },
+    {
+      "TSPClusterBoundaryStateMemberId": "member-cluster-state-asym-1-2-4-3-1",
+      "ClusterBoundaryState": "cluster-state-asym-1-2-4-3",
+      "TravelEdge": "asym-edge-1-2",
+      "MemberOrder": 1
+    },
+    {
+      "TSPClusterBoundaryStateMemberId": "member-cluster-state-asym-1-2-4-3-2",
+      "ClusterBoundaryState": "cluster-state-asym-1-2-4-3",
+      "TravelEdge": "asym-edge-2-4",
+      "MemberOrder": 2
+    },
+    {
+      "TSPClusterBoundaryStateMemberId": "member-cluster-state-asym-1-2-4-3-3",
+      "ClusterBoundaryState": "cluster-state-asym-1-2-4-3",
+      "TravelEdge": "asym-edge-3-4",
+      "MemberOrder": 3
+    },
+    {
+      "TSPClusterBoundaryStateMemberId": "member-cluster-state-asym-1-4-2-3-1",
+      "ClusterBoundaryState": "cluster-state-asym-1-4-2-3",
+      "TravelEdge": "asym-edge-1-4",
+      "MemberOrder": 1
+    },
+    {
+      "TSPClusterBoundaryStateMemberId": "member-cluster-state-asym-1-4-2-3-2",
+      "ClusterBoundaryState": "cluster-state-asym-1-4-2-3",
+      "TravelEdge": "asym-edge-2-4",
+      "MemberOrder": 2
+    },
+    {
+      "TSPClusterBoundaryStateMemberId": "member-cluster-state-asym-1-4-2-3-3",
+      "ClusterBoundaryState": "cluster-state-asym-1-4-2-3",
+      "TravelEdge": "asym-edge-2-3",
+      "MemberOrder": 3
+    },
+    {
+      "TSPClusterBoundaryStateMemberId": "member-cluster-state-asym-1-2-3-4-1",
+      "ClusterBoundaryState": "cluster-state-asym-1-2-3-4",
+      "TravelEdge": "asym-edge-1-2",
+      "MemberOrder": 1
+    },
+    {
+      "TSPClusterBoundaryStateMemberId": "member-cluster-state-asym-1-2-3-4-2",
+      "ClusterBoundaryState": "cluster-state-asym-1-2-3-4",
+      "TravelEdge": "asym-edge-2-3",
+      "MemberOrder": 2
+    },
+    {
+      "TSPClusterBoundaryStateMemberId": "member-cluster-state-asym-1-2-3-4-3",
+      "ClusterBoundaryState": "cluster-state-asym-1-2-3-4",
+      "TravelEdge": "asym-edge-3-4",
+      "MemberOrder": 3
+    },
+    {
+      "TSPClusterBoundaryStateMemberId": "member-cluster-state-asym-1-3-2-4-1",
+      "ClusterBoundaryState": "cluster-state-asym-1-3-2-4",
+      "TravelEdge": "asym-edge-1-3",
+      "MemberOrder": 1
+    },
+    {
+      "TSPClusterBoundaryStateMemberId": "member-cluster-state-asym-1-3-2-4-2",
+      "ClusterBoundaryState": "cluster-state-asym-1-3-2-4",
+      "TravelEdge": "asym-edge-2-3",
+      "MemberOrder": 2
+    },
+    {
+      "TSPClusterBoundaryStateMemberId": "member-cluster-state-asym-1-3-2-4-3",
+      "ClusterBoundaryState": "cluster-state-asym-1-3-2-4",
+      "TravelEdge": "asym-edge-2-4",
+      "MemberOrder": 3
+    },
+    {
+      "TSPClusterBoundaryStateMemberId": "member-cluster-state-asym-2-1-4-3-1",
+      "ClusterBoundaryState": "cluster-state-asym-2-1-4-3",
+      "TravelEdge": "asym-edge-1-2",
+      "MemberOrder": 1
+    },
+    {
+      "TSPClusterBoundaryStateMemberId": "member-cluster-state-asym-2-1-4-3-2",
+      "ClusterBoundaryState": "cluster-state-asym-2-1-4-3",
+      "TravelEdge": "asym-edge-1-4",
+      "MemberOrder": 2
+    },
+    {
+      "TSPClusterBoundaryStateMemberId": "member-cluster-state-asym-2-1-4-3-3",
+      "ClusterBoundaryState": "cluster-state-asym-2-1-4-3",
+      "TravelEdge": "asym-edge-3-4",
+      "MemberOrder": 3
+    },
+    {
+      "TSPClusterBoundaryStateMemberId": "member-cluster-state-asym-2-4-1-3-1",
+      "ClusterBoundaryState": "cluster-state-asym-2-4-1-3",
+      "TravelEdge": "asym-edge-2-4",
+      "MemberOrder": 1
+    },
+    {
+      "TSPClusterBoundaryStateMemberId": "member-cluster-state-asym-2-4-1-3-2",
+      "ClusterBoundaryState": "cluster-state-asym-2-4-1-3",
+      "TravelEdge": "asym-edge-1-4",
+      "MemberOrder": 2
+    },
+    {
+      "TSPClusterBoundaryStateMemberId": "member-cluster-state-asym-2-4-1-3-3",
+      "ClusterBoundaryState": "cluster-state-asym-2-4-1-3",
+      "TravelEdge": "asym-edge-1-3",
+      "MemberOrder": 3
+    },
+    {
+      "TSPClusterBoundaryStateMemberId": "member-cluster-state-asym-2-1-3-4-1",
+      "ClusterBoundaryState": "cluster-state-asym-2-1-3-4",
+      "TravelEdge": "asym-edge-1-2",
+      "MemberOrder": 1
+    },
+    {
+      "TSPClusterBoundaryStateMemberId": "member-cluster-state-asym-2-1-3-4-2",
+      "ClusterBoundaryState": "cluster-state-asym-2-1-3-4",
+      "TravelEdge": "asym-edge-1-3",
+      "MemberOrder": 2
+    },
+    {
+      "TSPClusterBoundaryStateMemberId": "member-cluster-state-asym-2-1-3-4-3",
+      "ClusterBoundaryState": "cluster-state-asym-2-1-3-4",
+      "TravelEdge": "asym-edge-3-4",
+      "MemberOrder": 3
+    },
+    {
+      "TSPClusterBoundaryStateMemberId": "member-cluster-state-asym-2-3-1-4-1",
+      "ClusterBoundaryState": "cluster-state-asym-2-3-1-4",
+      "TravelEdge": "asym-edge-2-3",
+      "MemberOrder": 1
+    },
+    {
+      "TSPClusterBoundaryStateMemberId": "member-cluster-state-asym-2-3-1-4-2",
+      "ClusterBoundaryState": "cluster-state-asym-2-3-1-4",
+      "TravelEdge": "asym-edge-1-3",
+      "MemberOrder": 2
+    },
+    {
+      "TSPClusterBoundaryStateMemberId": "member-cluster-state-asym-2-3-1-4-3",
+      "ClusterBoundaryState": "cluster-state-asym-2-3-1-4",
+      "TravelEdge": "asym-edge-1-4",
+      "MemberOrder": 3
+    },
+    {
+      "TSPClusterBoundaryStateMemberId": "member-cluster-state-asym-3-1-2-4-1",
+      "ClusterBoundaryState": "cluster-state-asym-3-1-2-4",
+      "TravelEdge": "asym-edge-1-3",
+      "MemberOrder": 1
+    },
+    {
+      "TSPClusterBoundaryStateMemberId": "member-cluster-state-asym-3-1-2-4-2",
+      "ClusterBoundaryState": "cluster-state-asym-3-1-2-4",
+      "TravelEdge": "asym-edge-1-2",
+      "MemberOrder": 2
+    },
+    {
+      "TSPClusterBoundaryStateMemberId": "member-cluster-state-asym-3-1-2-4-3",
+      "ClusterBoundaryState": "cluster-state-asym-3-1-2-4",
+      "TravelEdge": "asym-edge-2-4",
+      "MemberOrder": 3
+    },
+    {
+      "TSPClusterBoundaryStateMemberId": "member-cluster-state-asym-3-2-1-4-1",
+      "ClusterBoundaryState": "cluster-state-asym-3-2-1-4",
+      "TravelEdge": "asym-edge-2-3",
+      "MemberOrder": 1
+    },
+    {
+      "TSPClusterBoundaryStateMemberId": "member-cluster-state-asym-3-2-1-4-2",
+      "ClusterBoundaryState": "cluster-state-asym-3-2-1-4",
+      "TravelEdge": "asym-edge-1-2",
+      "MemberOrder": 2
+    },
+    {
+      "TSPClusterBoundaryStateMemberId": "member-cluster-state-asym-3-2-1-4-3",
+      "ClusterBoundaryState": "cluster-state-asym-3-2-1-4",
+      "TravelEdge": "asym-edge-1-4",
+      "MemberOrder": 3
     }
   ],
   "TSPClusterContractionCertificates": [
@@ -3359,6 +4054,21 @@
       "ScopeClaim": "CERTIFIED_FOR_TWO_THREE_STOP_CLUSTERS_ONLY",
       "EquivalenceRelation": "PRODUCT_OF_NEIGHBORHOOD_PATH_REVERSAL_QUOTIENTS",
       "QuotientClassCount": 9
+    },
+    {
+      "TSPClusterContractionCertificateId": "contraction-asymmetric-four-boundary-fibers",
+      "TSPInstance": "tsp-asymmetric-four-4",
+      "Neighborhood": "gridville-asymmetric-four",
+      "ScopeKind": "NEIGHBORHOOD",
+      "RawInternalOrderCount": 24,
+      "SurvivingBoundaryStateCount": 6,
+      "RawCombinationCount": null,
+      "ContractedCombinationCount": null,
+      "ReductionPct": 75,
+      "IsPassing": true,
+      "ScopeClaim": "CERTIFIED_FOR_ASYMMETRIC_FOUR_STOP_CLUSTER",
+      "EquivalenceRelation": "PATH_REVERSAL_THEN_EQUAL_PORT_EQUAL_COVERAGE_COST_DOMINANCE",
+      "QuotientClassCount": 12
     }
   ],
   "TSPInferenceRules": [
@@ -3673,6 +4383,58 @@
       "Applicability": "An inference step has a rule, input state, output state, antecedent count, decision count, and certificate.",
       "CertificateType": "closure-event-certificate",
       "Description": "Collapse applications, rounds, supports, antecedents, and decisions into one event vocabulary."
+    },
+    {
+      "TSPInferenceRuleId": "tsp-rule-atom-operator-refinement",
+      "DisplayName": "Atom/operator semantic refinement",
+      "InferenceLayer": "SEMANTIC_REDUCTION",
+      "ImplementationStatus": "PLANNED",
+      "Soundness": "DEFINITIONAL_REFACTOR_WITH_EXPLICIT_HISTORICAL_PROJECTIONS",
+      "Completeness": "EMPIRICAL_FOR_REGISTERED_CURRENT_DOMAIN",
+      "RuntimeClass": "O(C)",
+      "MemoryClass": "O(C)",
+      "Applicability": "Registered concepts admit explicit definitions over fewer relational atoms and named operators.",
+      "CertificateType": "atom-operator-basis-certificate",
+      "Description": "Separate relational atoms from closure operators while preserving every historical concept as a replayable definition."
+    },
+    {
+      "TSPInferenceRuleId": "tsp-rule-operator-lift",
+      "DisplayName": "Semantic operator lift",
+      "InferenceLayer": "SEMANTIC_REDUCTION",
+      "ImplementationStatus": "PLANNED",
+      "Soundness": "SOUND_WHEN_OPERATOR_INPUT_OUTPUT_AND_WARRANT_ARE_EXPLICIT",
+      "Completeness": "CURRENT_CLOSURE_AGGREGATE_QUOTIENT_FIXPOINT_FAMILIES",
+      "RuntimeClass": "OPERATOR_DEPENDENT",
+      "MemoryClass": "OPERATOR_DEPENDENT",
+      "Applicability": "A recurring derived relation is produced by a reusable transformation over typed atoms.",
+      "CertificateType": "semantic-operator-certificate",
+      "Description": "Promote closure, aggregation, quotient, and fixed-point transformations to reusable operators rather than primitive predicates."
+    },
+    {
+      "TSPInferenceRuleId": "tsp-rule-boundary-fiber",
+      "DisplayName": "Boundary-fiber normalization",
+      "InferenceLayer": "SEMANTIC_QUOTIENT",
+      "ImplementationStatus": "PLANNED",
+      "Soundness": "SOUND_FOR_EXPLICIT_HAMILTONIAN_PATH_EXPANSIONS",
+      "Completeness": "FINITE_DECLARED_CLUSTER",
+      "RuntimeClass": "O(P)",
+      "MemoryClass": "O(P)",
+      "Applicability": "Internal path witnesses expose a scope, two ports, full coverage, edge members, order, and cost.",
+      "CertificateType": "boundary-fiber-certificate",
+      "Description": "Group internal path witnesses that share the same typed boundary ports and coverage scope."
+    },
+    {
+      "TSPInferenceRuleId": "tsp-rule-fiber-dominance",
+      "DisplayName": "Boundary-fiber valuation dominance",
+      "InferenceLayer": "SEMANTIC_QUOTIENT",
+      "ImplementationStatus": "PLANNED",
+      "Soundness": "SOUND_FOR_EQUAL_PORT_EQUAL_COVERAGE_PATHS_WITH_ADDITIVE_COST",
+      "Completeness": "FINITE_DECLARED_FIBERS",
+      "RuntimeClass": "O(P_LOG_P)",
+      "MemoryClass": "O(P)",
+      "Applicability": "Two or more valid path witnesses share a boundary fiber and differ only in internal order and valuation.",
+      "CertificateType": "fiber-minimum-certificate",
+      "Description": "Retain minimum-valued representatives within each boundary fiber and preserve dominated witnesses as expandable provenance."
     }
   ],
   "TSPFrontierObligations": [
@@ -4389,6 +5151,188 @@
       "BeforeState": "Thirteen reduction loops have coined derived predicates, but their cumulative compression and primitive-basis stability are not certified.",
       "AfterState": "Certified a stable eight-predicate basis across fourteen reduction loops: thirty-two baseline surface predicates compress to eight primitives, fourteen useful terms were coined, and no new primitive appeared after loop 598.",
       "CompletionDisposition": "CLOSED"
+    },
+    {
+      "TSPLoopId": "tsp-loop-611",
+      "LoopOrder": 611,
+      "DisplayName": "Predicate/operator split",
+      "Status": "CLOSED",
+      "PrimaryInferenceRule": "tsp-rule-atom-operator-refinement",
+      "NewConcept": "Predicate\u2013Operator Split",
+      "WitnessSummary": "All eight loop-610 primitives retain their historical identity and receive explicit semantic-category and reduced-expression fields; current primitive count remains eight. The convergence objective is coherence rather than monotone row, table, or predicate-count reduction.",
+      "NextFrontier": "Test whether membership and incidence share one typed attachment atom.",
+      "PlannedClosureCriterion": "Classify the eight historical predicates as candidate atoms or operator-derived concepts, preserve their loop-610 provenance, and record that local expansion is permitted when an opaque dependency is replaced by explicit reusable machinery. Measure convergence by coherence, reuse, trust-boundary reduction, and residual ambiguity rather than by monotone physical size.",
+      "BeforeState": "Loop 610 records eight canonical predicates, but relational atoms and reusable operators are not distinguished. Convergence could also be misread as requiring monotone table or predicate shrinkage.",
+      "AfterState": "Separated the historical eight-predicate basis into candidate relational atoms and operator-derived concepts without changing the active basis. Recorded that local representational growth is compatible with global semantic convergence when it replaces opacity with reusable structure.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "TSPLoopId": "tsp-loop-612",
+      "LoopOrder": 612,
+      "DisplayName": "Attachment atom",
+      "Status": "CLOSED",
+      "PrimaryInferenceRule": "tsp-rule-atom-operator-refinement",
+      "NewConcept": "Attachment Atom",
+      "WitnessSummary": "Every historical membership/incidence surface retains a reduced expression, while the active primitive count becomes seven.",
+      "NextFrontier": "Test whether cardinality, order, and weight share one valuation atom.",
+      "PlannedClosureCriterion": "Introduce ATTACHMENT(subject, object, role), reduce MEMBERSHIP and INCIDENCE to typed attachment roles, and preserve every historical surface definition.",
+      "BeforeState": "Membership and incidence are separate primitives even though both attach one object to a typed scope or endpoint.",
+      "AfterState": "Collapsed membership and incidence into ATTACHMENT with typed roles such as member, endpoint, entry, exit, and uses.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "TSPLoopId": "tsp-loop-613",
+      "LoopOrder": 613,
+      "DisplayName": "Valuation atom",
+      "Status": "CLOSED",
+      "PrimaryInferenceRule": "tsp-rule-atom-operator-refinement",
+      "NewConcept": "Valuation Atom",
+      "WitnessSummary": "Degree is a valuation under incident-count, sequence is a valuation under ordinal-position, and cost is a valuation under the objective measure; active primitive count becomes five.",
+      "NextFrontier": "Test whether commitment and provenance share one warrant atom.",
+      "PlannedClosureCriterion": "Introduce VALUATION(subject, measure, value), reduce count, ordinal, and cost predicates to valuation forms, and retain aggregation as an explicit pending operator.",
+      "BeforeState": "Cardinality, order, and weight remain separate primitives despite all assigning values under a named measure.",
+      "AfterState": "Collapsed cardinality, order, and weight into VALUATION under explicit measures.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "TSPLoopId": "tsp-loop-614",
+      "LoopOrder": 614,
+      "DisplayName": "Warrant atom",
+      "Status": "CLOSED",
+      "PrimaryInferenceRule": "tsp-rule-atom-operator-refinement",
+      "NewConcept": "Warrant Atom",
+      "WitnessSummary": "SELECTED remains a current-witness warrant, FORCED remains an all-feasible-tours warrant, and historical provenance remains queryable; active primitive count becomes four.",
+      "NextFrontier": "Move connectivity from the atom basis into a closure operator.",
+      "PlannedClosureCriterion": "Introduce WARRANT(conclusion, source, modality), reduce commitment and provenance to warrant projections, and preserve necessity scope distinctions.",
+      "BeforeState": "Commitment and provenance are separate primitives even though every commitment is a scoped conclusion warranted by sources and rules.",
+      "AfterState": "Collapsed commitment and provenance into WARRANT with explicit source, modality, and scope.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "TSPLoopId": "tsp-loop-615",
+      "LoopOrder": 615,
+      "DisplayName": "Closure operator",
+      "Status": "CLOSED",
+      "PrimaryInferenceRule": "tsp-rule-operator-lift",
+      "NewConcept": "Closure Operator",
+      "WitnessSummary": "The current active atom count is three: ATTACHMENT, VALUATION, WARRANT. Connectedness, components, cuts, and reachability are closure results.",
+      "NextFrontier": "Lift count, sum, minimum, and parity into one aggregation operator.",
+      "PlannedClosureCriterion": "Register CLOSURE as an operator over attachment relations, reduce CONNECTIVITY to closure, and leave exactly three active relational atoms.",
+      "BeforeState": "Connectivity is still treated as a primitive rather than reachability closure over typed attachments.",
+      "AfterState": "Lifted connectivity from the primitive basis into CLOSURE over typed attachments.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "TSPLoopId": "tsp-loop-616",
+      "LoopOrder": 616,
+      "DisplayName": "Aggregate operator",
+      "Status": "CLOSED",
+      "PrimaryInferenceRule": "tsp-rule-operator-lift",
+      "NewConcept": "Aggregate Operator",
+      "WitnessSummary": "Degree, edge count, lower-bound sum, fiber minimum, and convergence measurement now differ by measure and reducer, not by primitive type.",
+      "NextFrontier": "Lift symmetry and dominance contraction into one quotient operator.",
+      "PlannedClosureCriterion": "Register AGGREGATE as the common count/sum/min/max/parity operator over attachments and valuations, with no new atom.",
+      "BeforeState": "Counts, sums, minima, degrees, and repair totals are expressed through many surface formulas without one operator identity.",
+      "AfterState": "Lifted count, sum, minimum, maximum, parity, and signed repair arithmetic into AGGREGATE.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "TSPLoopId": "tsp-loop-617",
+      "LoopOrder": 617,
+      "DisplayName": "Quotient operator",
+      "Status": "CLOSED",
+      "PrimaryInferenceRule": "tsp-rule-operator-lift",
+      "NewConcept": "Quotient Operator",
+      "WitnessSummary": "Path reversal, component abstraction, and later valuation dominance now share one operator contract.",
+      "NextFrontier": "Lift repeated closure rounds into one fixed-point operator.",
+      "PlannedClosureCriterion": "Register QUOTIENT as the operator that identifies witnesses under an explicit equivalence relation and retains representatives plus expansion provenance.",
+      "BeforeState": "Semantic Quotient and Component Quotient are coined predicates but quotienting is not represented as a reusable operator.",
+      "AfterState": "Lifted semantic and component contraction into QUOTIENT with explicit equivalence, representatives, and expansion warrant.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "TSPLoopId": "tsp-loop-618",
+      "LoopOrder": 618,
+      "DisplayName": "Fixed-point operator",
+      "Status": "CLOSED",
+      "PrimaryInferenceRule": "tsp-rule-operator-lift",
+      "NewConcept": "Fixed-Point Operator",
+      "WitnessSummary": "Forcing, forbidding, repair, and quotient events can now be described as warranted transformations iterated until state stability.",
+      "NextFrontier": "Certify the current three-atom/four-operator factorization.",
+      "PlannedClosureCriterion": "Register FIXPOINT as repeated warranted closure until no commitment changes, and map inference rounds and closure events onto it.",
+      "BeforeState": "Closure events and constraint rounds expose repeated application, but fixed-point iteration is not explicit in the semantic basis.",
+      "AfterState": "Lifted repeated constraint and inference closure into FIXPOINT.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "TSPLoopId": "tsp-loop-619",
+      "LoopOrder": 619,
+      "DisplayName": "Three-atom basis",
+      "Status": "CLOSED",
+      "PrimaryInferenceRule": "tsp-rule-atom-operator-refinement",
+      "NewConcept": "Three-Atom Basis",
+      "WitnessSummary": "Atoms = ATTACHMENT, VALUATION, WARRANT. Operators = CLOSURE, AGGREGATE, QUOTIENT, FIXPOINT. Thirty-two baseline surfaces compress to three active atoms (90.63%) for the represented domain.",
+      "NextFrontier": "Stress the reduced basis on a general boundary-port interface.",
+      "PlannedClosureCriterion": "Certify ATTACHMENT, VALUATION, and WARRANT as the current atoms; CLOSURE, AGGREGATE, QUOTIENT, and FIXPOINT as operators; and express every registered concept without the old eight primitive tokens.",
+      "BeforeState": "Three active atoms and four operators have emerged incrementally, but their coverage of the historical vocabulary is not certified.",
+      "AfterState": "Certified a current basis of three atoms and four operators while preserving the historical eight-predicate certificate.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "TSPLoopId": "tsp-loop-620",
+      "LoopOrder": 620,
+      "DisplayName": "Boundary port",
+      "Status": "CLOSED",
+      "PrimaryInferenceRule": "tsp-rule-boundary-fiber",
+      "NewConcept": "Boundary Port",
+      "WitnessSummary": "All six existing triangle path states expose one entry, one exit, full internal coverage, orientation multiplicity two, and a canonical boundary-fiber key.",
+      "NextFrontier": "Build a non-symmetric four-stop neighborhood and group its path witnesses by boundary fiber.",
+      "PlannedClosureCriterion": "Represent every existing cluster path through typed entry/exit ports, a common port contract, orientation multiplicity, and a boundary-fiber key.",
+      "BeforeState": "Entry and exit stops remain special cluster fields rather than typed attachments with a reusable port contract.",
+      "AfterState": "Normalized existing cluster entries and exits as typed boundary ports over ATTACHMENT, VALUATION, and WARRANT.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "TSPLoopId": "tsp-loop-621",
+      "LoopOrder": 621,
+      "DisplayName": "Boundary fiber",
+      "Status": "CLOSED",
+      "PrimaryInferenceRule": "tsp-rule-boundary-fiber",
+      "NewConcept": "Boundary Fiber",
+      "WitnessSummary": "The twelve path rows retain twenty-four raw directed orientations, full four-stop coverage, explicit three-edge expansions, and unequal costs within every boundary fiber.",
+      "NextFrontier": "Collapse each boundary fiber by valuation dominance.",
+      "PlannedClosureCriterion": "Represent an asymmetric four-stop complete neighborhood with twelve reversal-quotient path states grouped into six boundary fibers, retaining twenty-four directed orientations and explicit expansion members.",
+      "BeforeState": "The three-stop fixture has one path per unordered boundary, so it cannot distinguish quotienting by symmetry from competing internal valuations.",
+      "AfterState": "Represented an asymmetric four-stop complete cluster as six boundary fibers containing twelve reversal-quotient path witnesses.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "TSPLoopId": "tsp-loop-622",
+      "LoopOrder": 622,
+      "DisplayName": "Fiber minimum",
+      "Status": "CLOSED",
+      "PrimaryInferenceRule": "tsp-rule-fiber-dominance",
+      "NewConcept": "Fiber Minimum",
+      "WitnessSummary": "Six fibers each contain one SURVIVES row and one DOMINATED row; dominance deltas are 1, 6, 5, 5, 6, and 1 under the declared edge costs.",
+      "NextFrontier": "Certify the combined reversal and valuation quotient.",
+      "PlannedClosureCriterion": "Within each of six boundary fibers, warrant the unique minimum-cost path, mark the other path dominated, and record the exact dominance delta.",
+      "BeforeState": "Each asymmetric boundary fiber contains two non-equivalent internal path valuations and no canonical survivor.",
+      "AfterState": "Collapsed each asymmetric boundary fiber to its unique minimum-valued path while preserving the dominated alternative.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "TSPLoopId": "tsp-loop-623",
+      "LoopOrder": 623,
+      "DisplayName": "Asymmetric semantic quotient",
+      "Status": "CLOSED",
+      "PrimaryInferenceRule": "tsp-rule-fiber-dominance",
+      "NewConcept": "Asymmetric Quotient",
+      "WitnessSummary": "The current semantic vocabulary remains three atoms plus four operators; asymmetric costs coin new predicates without adding a primitive. The certificate is finite and scoped to tsp-asymmetric-four-4.",
+      "NextFrontier": "Generalize region repair across more than two quotient components, then expose a genuine residual branch orbit.",
+      "PlannedClosureCriterion": "Certify 24 directed paths to 12 reversal classes to 6 boundary-fiber minima, with expansion, coverage, and cost preservation, while the physical table count remains unchanged.",
+      "BeforeState": "The original contraction certificate only demonstrates three-stop reversal symmetry and does not test the reduced basis against asymmetric valuations.",
+      "AfterState": "Certified an asymmetric semantic quotient: 24 directed internal paths to 12 reversal classes to 6 fiber minima, with no physical table growth.",
+      "CompletionDisposition": "CLOSED"
     }
   ],
   "TSPConvergenceMeasurements": [
@@ -4573,96 +5517,305 @@
       "NovelTerm": "Convergence Event",
       "PredictionStatus": "SUPPORTED_FOR_CURRENT_DOMAIN",
       "Notes": "Fourteen named predicates were coined, but no primitive was added after loop 598. Five generic tables preserve replay while semantic compression remains 75%."
+    },
+    {
+      "TSPConvergenceMeasurementId": "convergence-loop-611",
+      "TSPLoop": "tsp-loop-611",
+      "MeasurementKind": "ATOM_OPERATOR_REFINEMENT",
+      "SurfaceConceptCountBefore": 32,
+      "PrimitiveCountAfter": 8,
+      "NewPrimitiveCount": 0,
+      "DerivedAliasCount": 47,
+      "PhysicalTableCount": 45,
+      "NovelTerm": "Predicate\u2013Operator Split",
+      "PredictionStatus": "EARLY_SUPPORT",
+      "Notes": "The loop-610 basis is preserved as history while candidates for atoms and operators are explicitly classified. Local representation may grow when an opaque node is decomposed; support is measured by increasing semantic reuse, explicit warrants, smaller opaque trust boundaries, and reduced residual ambiguity."
+    },
+    {
+      "TSPConvergenceMeasurementId": "convergence-loop-612",
+      "TSPLoop": "tsp-loop-612",
+      "MeasurementKind": "ATOM_OPERATOR_REFINEMENT",
+      "SurfaceConceptCountBefore": 32,
+      "PrimitiveCountAfter": 7,
+      "NewPrimitiveCount": 1,
+      "DerivedAliasCount": 50,
+      "PhysicalTableCount": 45,
+      "NovelTerm": "Attachment Atom",
+      "PredictionStatus": "EARLY_SUPPORT",
+      "Notes": "Membership and incidence are role-specialized attachments; active primitive count falls from eight to seven."
+    },
+    {
+      "TSPConvergenceMeasurementId": "convergence-loop-613",
+      "TSPLoop": "tsp-loop-613",
+      "MeasurementKind": "ATOM_OPERATOR_REFINEMENT",
+      "SurfaceConceptCountBefore": 32,
+      "PrimitiveCountAfter": 5,
+      "NewPrimitiveCount": 1,
+      "DerivedAliasCount": 54,
+      "PhysicalTableCount": 45,
+      "NovelTerm": "Valuation Atom",
+      "PredictionStatus": "EARLY_SUPPORT",
+      "Notes": "Counts, ordinals, costs, bounds, ranks, and deltas become named valuations; active primitive count falls to five."
+    },
+    {
+      "TSPConvergenceMeasurementId": "convergence-loop-614",
+      "TSPLoop": "tsp-loop-614",
+      "MeasurementKind": "ATOM_OPERATOR_REFINEMENT",
+      "SurfaceConceptCountBefore": 32,
+      "PrimitiveCountAfter": 4,
+      "NewPrimitiveCount": 1,
+      "DerivedAliasCount": 57,
+      "PhysicalTableCount": 45,
+      "NovelTerm": "Warrant Atom",
+      "PredictionStatus": "EARLY_SUPPORT",
+      "Notes": "Commitment and provenance become one scoped warrant relation without erasing selected-versus-forced modality; active primitives fall to four."
+    },
+    {
+      "TSPConvergenceMeasurementId": "convergence-loop-615",
+      "TSPLoop": "tsp-loop-615",
+      "MeasurementKind": "ATOM_OPERATOR_REFINEMENT",
+      "SurfaceConceptCountBefore": 32,
+      "PrimitiveCountAfter": 3,
+      "NewPrimitiveCount": 0,
+      "DerivedAliasCount": 59,
+      "PhysicalTableCount": 45,
+      "NovelTerm": "Closure Operator",
+      "PredictionStatus": "EARLY_SUPPORT",
+      "Notes": "Connectivity becomes reachability closure over attachments; active relational primitives are ATTACHMENT, VALUATION, and WARRANT."
+    },
+    {
+      "TSPConvergenceMeasurementId": "convergence-loop-616",
+      "TSPLoop": "tsp-loop-616",
+      "MeasurementKind": "ATOM_OPERATOR_REFINEMENT",
+      "SurfaceConceptCountBefore": 32,
+      "PrimitiveCountAfter": 3,
+      "NewPrimitiveCount": 0,
+      "DerivedAliasCount": 60,
+      "PhysicalTableCount": 45,
+      "NovelTerm": "Aggregate Operator",
+      "PredictionStatus": "EARLY_SUPPORT",
+      "Notes": "Counts, sums, minima, maxima, parity, degree, and repair totals share one operator over attachments and valuations."
+    },
+    {
+      "TSPConvergenceMeasurementId": "convergence-loop-617",
+      "TSPLoop": "tsp-loop-617",
+      "MeasurementKind": "ATOM_OPERATOR_REFINEMENT",
+      "SurfaceConceptCountBefore": 32,
+      "PrimitiveCountAfter": 3,
+      "NewPrimitiveCount": 0,
+      "DerivedAliasCount": 61,
+      "PhysicalTableCount": 45,
+      "NovelTerm": "Quotient Operator",
+      "PredictionStatus": "EARLY_SUPPORT",
+      "Notes": "Symmetry classes, dominated witnesses, and component contraction become applications of one explicit equivalence/representative operator."
+    },
+    {
+      "TSPConvergenceMeasurementId": "convergence-loop-618",
+      "TSPLoop": "tsp-loop-618",
+      "MeasurementKind": "ATOM_OPERATOR_REFINEMENT",
+      "SurfaceConceptCountBefore": 32,
+      "PrimitiveCountAfter": 3,
+      "NewPrimitiveCount": 0,
+      "DerivedAliasCount": 62,
+      "PhysicalTableCount": 45,
+      "NovelTerm": "Fixed-Point Operator",
+      "PredictionStatus": "EARLY_SUPPORT",
+      "Notes": "Inference rounds and closure events share repeated warranted state transformation until no commitment changes."
+    },
+    {
+      "TSPConvergenceMeasurementId": "convergence-loop-619",
+      "TSPLoop": "tsp-loop-619",
+      "MeasurementKind": "ATOM_OPERATOR_REFINEMENT",
+      "SurfaceConceptCountBefore": 32,
+      "PrimitiveCountAfter": 3,
+      "NewPrimitiveCount": 0,
+      "DerivedAliasCount": 63,
+      "PhysicalTableCount": 45,
+      "NovelTerm": "Three-Atom Basis",
+      "PredictionStatus": "SUPPORTED_FOR_CURRENT_DOMAIN",
+      "Notes": "All registered concepts reduce to three atoms and four operators; the historical eight-predicate basis remains versioned data."
+    },
+    {
+      "TSPConvergenceMeasurementId": "convergence-loop-620",
+      "TSPLoop": "tsp-loop-620",
+      "MeasurementKind": "ATOM_OPERATOR_REFINEMENT",
+      "SurfaceConceptCountBefore": 32,
+      "PrimitiveCountAfter": 3,
+      "NewPrimitiveCount": 0,
+      "DerivedAliasCount": 64,
+      "PhysicalTableCount": 45,
+      "NovelTerm": "Boundary Port",
+      "PredictionStatus": "EARLY_SUPPORT",
+      "Notes": "Entry and exit become typed attachment roles under one port contract; no table is added."
+    },
+    {
+      "TSPConvergenceMeasurementId": "convergence-loop-621",
+      "TSPLoop": "tsp-loop-621",
+      "MeasurementKind": "ATOM_OPERATOR_REFINEMENT",
+      "SurfaceConceptCountBefore": 32,
+      "PrimitiveCountAfter": 3,
+      "NewPrimitiveCount": 0,
+      "DerivedAliasCount": 65,
+      "PhysicalTableCount": 45,
+      "NovelTerm": "Boundary Fiber",
+      "PredictionStatus": "EARLY_SUPPORT",
+      "Notes": "An asymmetric four-stop cluster yields six fibers, two internal-order representatives per fiber, and twenty-four raw directed orientations without adding a table."
+    },
+    {
+      "TSPConvergenceMeasurementId": "convergence-loop-622",
+      "TSPLoop": "tsp-loop-622",
+      "MeasurementKind": "ATOM_OPERATOR_REFINEMENT",
+      "SurfaceConceptCountBefore": 32,
+      "PrimitiveCountAfter": 3,
+      "NewPrimitiveCount": 0,
+      "DerivedAliasCount": 66,
+      "PhysicalTableCount": 45,
+      "NovelTerm": "Fiber Minimum",
+      "PredictionStatus": "EARLY_SUPPORT",
+      "Notes": "Six strict minimum-cost representatives survive and six higher-valued paths remain as dominated expansion provenance."
+    },
+    {
+      "TSPConvergenceMeasurementId": "convergence-loop-623",
+      "TSPLoop": "tsp-loop-623",
+      "MeasurementKind": "ASYMMETRIC_STRESS_EVENT",
+      "SurfaceConceptCountBefore": 32,
+      "PrimitiveCountAfter": 3,
+      "NewPrimitiveCount": 0,
+      "DerivedAliasCount": 67,
+      "PhysicalTableCount": 45,
+      "NovelTerm": "Asymmetric Quotient",
+      "PredictionStatus": "SUPPORTED_FOR_CURRENT_DOMAIN",
+      "Notes": "Twenty-four directed paths reduce to twelve reversal classes and six valuation-minimal boundary states with the same three atoms and four operators."
     }
   ],
   "TSPConceptRegistry": [
     {
       "TSPConceptId": "concept-membership",
       "DisplayName": "Membership",
-      "ConceptKind": "PRIMITIVE",
+      "ConceptKind": "HISTORICAL_PRIMITIVE",
       "BasisExpression": "MEMBERSHIP",
       "Arity": 2,
       "SourceTables": "canonical predicate basis",
       "IntroducedByLoop": "tsp-loop-598",
-      "SupersededByConcept": null,
-      "Status": "ACTIVE_PRIMITIVE"
+      "SupersededByConcept": "concept-attachment",
+      "Status": "REDUCED_TO_ATTACHMENT",
+      "HistoricalConceptKind": "PRIMITIVE_V1",
+      "SemanticCategory": "HISTORICAL",
+      "ReducedBasisExpression": "ATTACHMENT",
+      "OperatorExpression": "",
+      "ReductionGeneration": 2
     },
     {
       "TSPConceptId": "concept-incidence",
       "DisplayName": "Incidence",
-      "ConceptKind": "PRIMITIVE",
+      "ConceptKind": "HISTORICAL_PRIMITIVE",
       "BasisExpression": "INCIDENCE",
       "Arity": 2,
       "SourceTables": "canonical predicate basis",
       "IntroducedByLoop": "tsp-loop-598",
-      "SupersededByConcept": null,
-      "Status": "ACTIVE_PRIMITIVE"
+      "SupersededByConcept": "concept-attachment",
+      "Status": "REDUCED_TO_ATTACHMENT",
+      "HistoricalConceptKind": "PRIMITIVE_V1",
+      "SemanticCategory": "HISTORICAL",
+      "ReducedBasisExpression": "ATTACHMENT",
+      "OperatorExpression": "",
+      "ReductionGeneration": 2
     },
     {
       "TSPConceptId": "concept-cardinality",
       "DisplayName": "Cardinality",
-      "ConceptKind": "PRIMITIVE",
+      "ConceptKind": "HISTORICAL_PRIMITIVE",
       "BasisExpression": "CARDINALITY",
       "Arity": 1,
       "SourceTables": "canonical predicate basis",
       "IntroducedByLoop": "tsp-loop-598",
-      "SupersededByConcept": null,
-      "Status": "ACTIVE_PRIMITIVE"
+      "SupersededByConcept": "concept-valuation",
+      "Status": "REDUCED_TO_VALUATION",
+      "HistoricalConceptKind": "PRIMITIVE_V1",
+      "SemanticCategory": "HISTORICAL",
+      "ReducedBasisExpression": "VALUATION",
+      "OperatorExpression": "AGGREGATE",
+      "ReductionGeneration": 2
     },
     {
       "TSPConceptId": "concept-order",
       "DisplayName": "Order",
-      "ConceptKind": "PRIMITIVE",
+      "ConceptKind": "HISTORICAL_PRIMITIVE",
       "BasisExpression": "ORDER",
       "Arity": 2,
       "SourceTables": "canonical predicate basis",
       "IntroducedByLoop": "tsp-loop-598",
-      "SupersededByConcept": null,
-      "Status": "ACTIVE_PRIMITIVE"
+      "SupersededByConcept": "concept-valuation",
+      "Status": "REDUCED_TO_VALUATION",
+      "HistoricalConceptKind": "PRIMITIVE_V1",
+      "SemanticCategory": "HISTORICAL",
+      "ReducedBasisExpression": "VALUATION",
+      "OperatorExpression": "AGGREGATE_PENDING",
+      "ReductionGeneration": 2
     },
     {
       "TSPConceptId": "concept-weight",
       "DisplayName": "Weight",
-      "ConceptKind": "PRIMITIVE",
+      "ConceptKind": "HISTORICAL_PRIMITIVE",
       "BasisExpression": "WEIGHT",
       "Arity": 1,
       "SourceTables": "canonical predicate basis",
       "IntroducedByLoop": "tsp-loop-598",
-      "SupersededByConcept": null,
-      "Status": "ACTIVE_PRIMITIVE"
+      "SupersededByConcept": "concept-valuation",
+      "Status": "REDUCED_TO_VALUATION",
+      "HistoricalConceptKind": "PRIMITIVE_V1",
+      "SemanticCategory": "HISTORICAL",
+      "ReducedBasisExpression": "VALUATION",
+      "OperatorExpression": "AGGREGATE",
+      "ReductionGeneration": 2
     },
     {
       "TSPConceptId": "concept-commitment",
       "DisplayName": "Commitment",
-      "ConceptKind": "PRIMITIVE",
+      "ConceptKind": "HISTORICAL_PRIMITIVE",
       "BasisExpression": "COMMITMENT",
       "Arity": 2,
       "SourceTables": "canonical predicate basis",
       "IntroducedByLoop": "tsp-loop-598",
-      "SupersededByConcept": null,
-      "Status": "ACTIVE_PRIMITIVE"
+      "SupersededByConcept": "concept-warrant",
+      "Status": "REDUCED_TO_WARRANT",
+      "HistoricalConceptKind": "PRIMITIVE_V1",
+      "SemanticCategory": "HISTORICAL",
+      "ReducedBasisExpression": "WARRANT",
+      "OperatorExpression": "",
+      "ReductionGeneration": 2
     },
     {
       "TSPConceptId": "concept-connectivity",
       "DisplayName": "Connectivity",
-      "ConceptKind": "PRIMITIVE",
+      "ConceptKind": "HISTORICAL_PRIMITIVE",
       "BasisExpression": "CONNECTIVITY",
       "Arity": 2,
       "SourceTables": "canonical predicate basis",
       "IntroducedByLoop": "tsp-loop-598",
-      "SupersededByConcept": null,
-      "Status": "ACTIVE_PRIMITIVE"
+      "SupersededByConcept": "concept-closure",
+      "Status": "REDUCED_TO_CLOSURE",
+      "HistoricalConceptKind": "PRIMITIVE_V1",
+      "SemanticCategory": "HISTORICAL",
+      "ReducedBasisExpression": "CLOSURE(ATTACHMENT)",
+      "OperatorExpression": "CLOSURE",
+      "ReductionGeneration": 2
     },
     {
       "TSPConceptId": "concept-provenance",
       "DisplayName": "Provenance",
-      "ConceptKind": "PRIMITIVE",
+      "ConceptKind": "HISTORICAL_PRIMITIVE",
       "BasisExpression": "PROVENANCE",
       "Arity": 2,
       "SourceTables": "canonical predicate basis",
       "IntroducedByLoop": "tsp-loop-598",
-      "SupersededByConcept": null,
-      "Status": "ACTIVE_PRIMITIVE"
+      "SupersededByConcept": "concept-warrant",
+      "Status": "REDUCED_TO_WARRANT",
+      "HistoricalConceptKind": "PRIMITIVE_V1",
+      "SemanticCategory": "HISTORICAL",
+      "ReducedBasisExpression": "WARRANT",
+      "OperatorExpression": "",
+      "ReductionGeneration": 2
     },
     {
       "TSPConceptId": "surface-city-membership",
@@ -4673,7 +5826,12 @@
       "SourceTables": "Neighborhoods",
       "IntroducedByLoop": "tsp-loop-598",
       "SupersededByConcept": "coined-component-quotient",
-      "Status": "HISTORICAL_PROJECTION"
+      "Status": "HISTORICAL_PROJECTION",
+      "HistoricalConceptKind": "DERIVED_ALIAS",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "ATTACHMENT(Neighborhood,City)",
+      "OperatorExpression": "",
+      "ReductionGeneration": 1
     },
     {
       "TSPConceptId": "surface-neighborhood-membership",
@@ -4684,7 +5842,12 @@
       "SourceTables": "Addresses",
       "IntroducedByLoop": "tsp-loop-598",
       "SupersededByConcept": "coined-component-quotient",
-      "Status": "HISTORICAL_PROJECTION"
+      "Status": "HISTORICAL_PROJECTION",
+      "HistoricalConceptKind": "DERIVED_ALIAS",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "ATTACHMENT(Address,Neighborhood)",
+      "OperatorExpression": "",
+      "ReductionGeneration": 1
     },
     {
       "TSPConceptId": "surface-instance-membership",
@@ -4695,7 +5858,12 @@
       "SourceTables": "InstanceStops",
       "IntroducedByLoop": "tsp-loop-598",
       "SupersededByConcept": null,
-      "Status": "HISTORICAL_PROJECTION"
+      "Status": "HISTORICAL_PROJECTION",
+      "HistoricalConceptKind": "DERIVED_ALIAS",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "ATTACHMENT(Stop,Instance)",
+      "OperatorExpression": "",
+      "ReductionGeneration": 1
     },
     {
       "TSPConceptId": "surface-required-stop-membership",
@@ -4706,7 +5874,12 @@
       "SourceTables": "InstanceStops",
       "IntroducedByLoop": "tsp-loop-598",
       "SupersededByConcept": null,
-      "Status": "HISTORICAL_PROJECTION"
+      "Status": "HISTORICAL_PROJECTION",
+      "HistoricalConceptKind": "DERIVED_ALIAS",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "ATTACHMENT(Stop,RequiredSet)",
+      "OperatorExpression": "",
+      "ReductionGeneration": 1
     },
     {
       "TSPConceptId": "surface-edge-endpoint",
@@ -4717,7 +5890,12 @@
       "SourceTables": "TravelEdges",
       "IntroducedByLoop": "tsp-loop-598",
       "SupersededByConcept": null,
-      "Status": "HISTORICAL_PROJECTION"
+      "Status": "HISTORICAL_PROJECTION",
+      "HistoricalConceptKind": "DERIVED_ALIAS",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "ATTACHMENT(Edge,Stop)",
+      "OperatorExpression": "",
+      "ReductionGeneration": 1
     },
     {
       "TSPConceptId": "surface-tour-leg-endpoint",
@@ -4728,7 +5906,12 @@
       "SourceTables": "TourLegs",
       "IntroducedByLoop": "tsp-loop-598",
       "SupersededByConcept": null,
-      "Status": "HISTORICAL_PROJECTION"
+      "Status": "HISTORICAL_PROJECTION",
+      "HistoricalConceptKind": "DERIVED_ALIAS",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "ATTACHMENT(Leg,Visit)\u002BVALUATION(Visit)",
+      "OperatorExpression": "AGGREGATE_PENDING",
+      "ReductionGeneration": 1
     },
     {
       "TSPConceptId": "surface-cluster-boundary-endpoint",
@@ -4739,7 +5922,12 @@
       "SourceTables": "TSPClusterBoundaryStates",
       "IntroducedByLoop": "tsp-loop-598",
       "SupersededByConcept": "coined-boundary-signature",
-      "Status": "HISTORICAL_PROJECTION"
+      "Status": "HISTORICAL_PROJECTION",
+      "HistoricalConceptKind": "DERIVED_ALIAS",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "ATTACHMENT(Path,Boundary)\u002BATTACHMENT(Boundary,Cluster)",
+      "OperatorExpression": "",
+      "ReductionGeneration": 1
     },
     {
       "TSPConceptId": "surface-visit-multiplicity",
@@ -4750,7 +5938,12 @@
       "SourceTables": "TourStops",
       "IntroducedByLoop": "tsp-loop-598",
       "SupersededByConcept": null,
-      "Status": "HISTORICAL_PROJECTION"
+      "Status": "HISTORICAL_PROJECTION",
+      "HistoricalConceptKind": "DERIVED_ALIAS",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "VALUATION(ATTACHMENT(Visit,Stop))",
+      "OperatorExpression": "AGGREGATE",
+      "ReductionGeneration": 1
     },
     {
       "TSPConceptId": "surface-sequence-multiplicity",
@@ -4761,7 +5954,12 @@
       "SourceTables": "TourStops",
       "IntroducedByLoop": "tsp-loop-598",
       "SupersededByConcept": null,
-      "Status": "HISTORICAL_PROJECTION"
+      "Status": "HISTORICAL_PROJECTION",
+      "HistoricalConceptKind": "DERIVED_ALIAS",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "VALUATION(VALUATION(Visit))",
+      "OperatorExpression": "AGGREGATE",
+      "ReductionGeneration": 1
     },
     {
       "TSPConceptId": "surface-pair-multiplicity",
@@ -4772,7 +5970,12 @@
       "SourceTables": "TravelEdges",
       "IntroducedByLoop": "tsp-loop-598",
       "SupersededByConcept": null,
-      "Status": "HISTORICAL_PROJECTION"
+      "Status": "HISTORICAL_PROJECTION",
+      "HistoricalConceptKind": "DERIVED_ALIAS",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "VALUATION(ATTACHMENT(Edge,EndpointPair))",
+      "OperatorExpression": "AGGREGATE",
+      "ReductionGeneration": 1
     },
     {
       "TSPConceptId": "surface-cycle-degree",
@@ -4783,7 +5986,12 @@
       "SourceTables": "TourStops",
       "IntroducedByLoop": "tsp-loop-598",
       "SupersededByConcept": "coined-incidence-budget",
-      "Status": "HISTORICAL_PROJECTION"
+      "Status": "HISTORICAL_PROJECTION",
+      "HistoricalConceptKind": "DERIVED_ALIAS",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "VALUATION(ATTACHMENT(Edge,Stop))",
+      "OperatorExpression": "AGGREGATE",
+      "ReductionGeneration": 1
     },
     {
       "TSPConceptId": "surface-remaining-incident-count",
@@ -4794,7 +6002,12 @@
       "SourceTables": "TSPConstraintRounds",
       "IntroducedByLoop": "tsp-loop-598",
       "SupersededByConcept": "coined-incidence-budget",
-      "Status": "HISTORICAL_PROJECTION"
+      "Status": "HISTORICAL_PROJECTION",
+      "HistoricalConceptKind": "DERIVED_ALIAS",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "VALUATION(ATTACHMENT(AvailableEdge,Stop)\u002BWARRANT)",
+      "OperatorExpression": "AGGREGATE",
+      "ReductionGeneration": 1
     },
     {
       "TSPConceptId": "surface-canonical-order",
@@ -4805,7 +6018,12 @@
       "SourceTables": "TravelEdges",
       "IntroducedByLoop": "tsp-loop-598",
       "SupersededByConcept": null,
-      "Status": "HISTORICAL_PROJECTION"
+      "Status": "HISTORICAL_PROJECTION",
+      "HistoricalConceptKind": "DERIVED_ALIAS",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "VALUATION(EndpointPair)",
+      "OperatorExpression": "AGGREGATE_PENDING",
+      "ReductionGeneration": 1
     },
     {
       "TSPConceptId": "surface-tour-order",
@@ -4816,7 +6034,12 @@
       "SourceTables": "TourStops",
       "IntroducedByLoop": "tsp-loop-598",
       "SupersededByConcept": "coined-witness-normal-form",
-      "Status": "HISTORICAL_PROJECTION"
+      "Status": "HISTORICAL_PROJECTION",
+      "HistoricalConceptKind": "DERIVED_ALIAS",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "VALUATION(Visit)",
+      "OperatorExpression": "AGGREGATE_PENDING",
+      "ReductionGeneration": 1
     },
     {
       "TSPConceptId": "surface-leg-order",
@@ -4827,7 +6050,12 @@
       "SourceTables": "TourLegs",
       "IntroducedByLoop": "tsp-loop-598",
       "SupersededByConcept": "coined-witness-normal-form",
-      "Status": "HISTORICAL_PROJECTION"
+      "Status": "HISTORICAL_PROJECTION",
+      "HistoricalConceptKind": "DERIVED_ALIAS",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "VALUATION(Leg)",
+      "OperatorExpression": "AGGREGATE_PENDING",
+      "ReductionGeneration": 1
     },
     {
       "TSPConceptId": "surface-boundary-order",
@@ -4838,7 +6066,12 @@
       "SourceTables": "TSPClusterBoundaryStates",
       "IntroducedByLoop": "tsp-loop-598",
       "SupersededByConcept": "coined-boundary-signature",
-      "Status": "HISTORICAL_PROJECTION"
+      "Status": "HISTORICAL_PROJECTION",
+      "HistoricalConceptKind": "DERIVED_ALIAS",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "VALUATION(Entry,Exit)",
+      "OperatorExpression": "AGGREGATE_PENDING",
+      "ReductionGeneration": 1
     },
     {
       "TSPConceptId": "surface-travel-cost",
@@ -4849,7 +6082,12 @@
       "SourceTables": "TravelEdges",
       "IntroducedByLoop": "tsp-loop-598",
       "SupersededByConcept": null,
-      "Status": "HISTORICAL_PROJECTION"
+      "Status": "HISTORICAL_PROJECTION",
+      "HistoricalConceptKind": "DERIVED_ALIAS",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "VALUATION(Edge)",
+      "OperatorExpression": "AGGREGATE",
+      "ReductionGeneration": 1
     },
     {
       "TSPConceptId": "surface-path-cost",
@@ -4860,7 +6098,12 @@
       "SourceTables": "TSPClusterBoundaryStates",
       "IntroducedByLoop": "tsp-loop-598",
       "SupersededByConcept": "coined-boundary-signature",
-      "Status": "HISTORICAL_PROJECTION"
+      "Status": "HISTORICAL_PROJECTION",
+      "HistoricalConceptKind": "DERIVED_ALIAS",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "VALUATION(Path)\u002BVALUATION(PathEdges)",
+      "OperatorExpression": "AGGREGATE",
+      "ReductionGeneration": 1
     },
     {
       "TSPConceptId": "surface-lower-bound",
@@ -4871,7 +6114,12 @@
       "SourceTables": "InstanceLowerBounds",
       "IntroducedByLoop": "tsp-loop-598",
       "SupersededByConcept": "coined-bound-sandwich",
-      "Status": "HISTORICAL_PROJECTION"
+      "Status": "HISTORICAL_PROJECTION",
+      "HistoricalConceptKind": "DERIVED_ALIAS",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "VALUATION\u002BVALUATION\u002BWARRANT",
+      "OperatorExpression": "AGGREGATE",
+      "ReductionGeneration": 1
     },
     {
       "TSPConceptId": "surface-upper-bound",
@@ -4882,7 +6130,12 @@
       "SourceTables": "CandidateTours",
       "IntroducedByLoop": "tsp-loop-598",
       "SupersededByConcept": "coined-bound-sandwich",
-      "Status": "HISTORICAL_PROJECTION"
+      "Status": "HISTORICAL_PROJECTION",
+      "HistoricalConceptKind": "DERIVED_ALIAS",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "VALUATION(Witness)\u002BWARRANT",
+      "OperatorExpression": "AGGREGATE",
+      "ReductionGeneration": 1
     },
     {
       "TSPConceptId": "surface-selected",
@@ -4893,7 +6146,12 @@
       "SourceTables": "TSPEdgeStates",
       "IntroducedByLoop": "tsp-loop-598",
       "SupersededByConcept": "coined-commitment-lattice",
-      "Status": "HISTORICAL_PROJECTION"
+      "Status": "HISTORICAL_PROJECTION",
+      "HistoricalConceptKind": "DERIVED_ALIAS",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "WARRANT(Edge,Selected)\u002BWARRANT",
+      "OperatorExpression": "",
+      "ReductionGeneration": 1
     },
     {
       "TSPConceptId": "surface-forced",
@@ -4904,7 +6162,12 @@
       "SourceTables": "TSPConstraintDecisions",
       "IntroducedByLoop": "tsp-loop-598",
       "SupersededByConcept": "coined-commitment-lattice",
-      "Status": "HISTORICAL_PROJECTION"
+      "Status": "HISTORICAL_PROJECTION",
+      "HistoricalConceptKind": "DERIVED_ALIAS",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "WARRANT(Edge,Necessary)\u002BWARRANT",
+      "OperatorExpression": "",
+      "ReductionGeneration": 1
     },
     {
       "TSPConceptId": "surface-forbidden",
@@ -4915,7 +6178,12 @@
       "SourceTables": "TSPConstraintDecisions",
       "IntroducedByLoop": "tsp-loop-598",
       "SupersededByConcept": "coined-commitment-lattice",
-      "Status": "HISTORICAL_PROJECTION"
+      "Status": "HISTORICAL_PROJECTION",
+      "HistoricalConceptKind": "DERIVED_ALIAS",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "WARRANT(Edge,Excluded)\u002BWARRANT",
+      "OperatorExpression": "",
+      "ReductionGeneration": 1
     },
     {
       "TSPConceptId": "surface-dominated",
@@ -4926,7 +6194,12 @@
       "SourceTables": "TSPClusterBoundaryStates",
       "IntroducedByLoop": "tsp-loop-598",
       "SupersededByConcept": "coined-commitment-lattice",
-      "Status": "HISTORICAL_PROJECTION"
+      "Status": "HISTORICAL_PROJECTION",
+      "HistoricalConceptKind": "DERIVED_ALIAS",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "WARRANT(State,Superseded)\u002BVALUATION",
+      "OperatorExpression": "AGGREGATE",
+      "ReductionGeneration": 1
     },
     {
       "TSPConceptId": "surface-connected-component",
@@ -4937,7 +6210,12 @@
       "SourceTables": "TSPDerivedEdgeSets",
       "IntroducedByLoop": "tsp-loop-598",
       "SupersededByConcept": "coined-component-quotient",
-      "Status": "HISTORICAL_PROJECTION"
+      "Status": "HISTORICAL_PROJECTION",
+      "HistoricalConceptKind": "DERIVED_ALIAS",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "CLOSURE(ATTACHMENT)(VertexSet,EdgeSet)",
+      "OperatorExpression": "CLOSURE",
+      "ReductionGeneration": 1
     },
     {
       "TSPConceptId": "surface-proper-subtour",
@@ -4948,7 +6226,12 @@
       "SourceTables": "TSPDerivedEdgeSets",
       "IntroducedByLoop": "tsp-loop-598",
       "SupersededByConcept": "coined-defect-vector",
-      "Status": "HISTORICAL_PROJECTION"
+      "Status": "HISTORICAL_PROJECTION",
+      "HistoricalConceptKind": "DERIVED_ALIAS",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "CLOSURE(ATTACHMENT)\u002BVALUATION\u002BATTACHMENT",
+      "OperatorExpression": "AGGREGATE\u002BCLOSURE",
+      "ReductionGeneration": 1
     },
     {
       "TSPConceptId": "surface-cut-crossing",
@@ -4959,7 +6242,12 @@
       "SourceTables": "TravelEdges",
       "IntroducedByLoop": "tsp-loop-598",
       "SupersededByConcept": "coined-defect-vector",
-      "Status": "HISTORICAL_PROJECTION"
+      "Status": "HISTORICAL_PROJECTION",
+      "HistoricalConceptKind": "DERIVED_ALIAS",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "CLOSURE(ATTACHMENT)\u002BATTACHMENT\u002BVALUATION",
+      "OperatorExpression": "AGGREGATE\u002BCLOSURE",
+      "ReductionGeneration": 1
     },
     {
       "TSPConceptId": "surface-spanning-tree",
@@ -4970,7 +6258,12 @@
       "SourceTables": "TSPSpanningTreeEdges",
       "IntroducedByLoop": "tsp-loop-598",
       "SupersededByConcept": null,
-      "Status": "HISTORICAL_PROJECTION"
+      "Status": "HISTORICAL_PROJECTION",
+      "HistoricalConceptKind": "DERIVED_ALIAS",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "CLOSURE(ATTACHMENT)\u002BVALUATION\u002BWARRANT",
+      "OperatorExpression": "AGGREGATE\u002BCLOSURE",
+      "ReductionGeneration": 1
     },
     {
       "TSPConceptId": "surface-inference-antecedent",
@@ -4981,7 +6274,12 @@
       "SourceTables": "TSPInferenceAntecedents",
       "IntroducedByLoop": "tsp-loop-598",
       "SupersededByConcept": "coined-closure-event",
-      "Status": "HISTORICAL_PROJECTION"
+      "Status": "HISTORICAL_PROJECTION",
+      "HistoricalConceptKind": "DERIVED_ALIAS",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "WARRANT(Fact,Event)",
+      "OperatorExpression": "",
+      "ReductionGeneration": 1
     },
     {
       "TSPConceptId": "surface-inference-application",
@@ -4992,7 +6290,12 @@
       "SourceTables": "TSPInferenceApplications",
       "IntroducedByLoop": "tsp-loop-598",
       "SupersededByConcept": "coined-closure-event",
-      "Status": "HISTORICAL_PROJECTION"
+      "Status": "HISTORICAL_PROJECTION",
+      "HistoricalConceptKind": "DERIVED_ALIAS",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "WARRANT(Rule,Input,Output)",
+      "OperatorExpression": "",
+      "ReductionGeneration": 1
     },
     {
       "TSPConceptId": "surface-certificate",
@@ -5003,7 +6306,12 @@
       "SourceTables": "TSPInferenceRules",
       "IntroducedByLoop": "tsp-loop-598",
       "SupersededByConcept": "coined-closure-event",
-      "Status": "HISTORICAL_PROJECTION"
+      "Status": "HISTORICAL_PROJECTION",
+      "HistoricalConceptKind": "DERIVED_ALIAS",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "WARRANT(Conclusion,Witness,Scope)",
+      "OperatorExpression": "",
+      "ReductionGeneration": 1
     },
     {
       "TSPConceptId": "surface-trust-status",
@@ -5014,7 +6322,12 @@
       "SourceTables": "TSPFrontierObligations",
       "IntroducedByLoop": "tsp-loop-598",
       "SupersededByConcept": "coined-closure-event",
-      "Status": "HISTORICAL_PROJECTION"
+      "Status": "HISTORICAL_PROJECTION",
+      "HistoricalConceptKind": "DERIVED_ALIAS",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "WARRANT(Conclusion,TrustBoundary)",
+      "OperatorExpression": "",
+      "ReductionGeneration": 1
     },
     {
       "TSPConceptId": "coined-convergence-prediction",
@@ -5025,7 +6338,12 @@
       "SourceTables": "TSPConvergenceMeasurements",
       "IntroducedByLoop": "tsp-loop-597",
       "SupersededByConcept": null,
-      "Status": "ACTIVE_DERIVED"
+      "Status": "ACTIVE_DERIVED",
+      "HistoricalConceptKind": "COINED_PREDICATE",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "WARRANT\u002BVALUATION",
+      "OperatorExpression": "AGGREGATE",
+      "ReductionGeneration": 1
     },
     {
       "TSPConceptId": "coined-predicate-basis",
@@ -5036,7 +6354,12 @@
       "SourceTables": "TSPConceptRegistry",
       "IntroducedByLoop": "tsp-loop-598",
       "SupersededByConcept": null,
-      "Status": "ACTIVE_DERIVED"
+      "Status": "ACTIVE_DERIVED",
+      "HistoricalConceptKind": "COINED_PREDICATE",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "VALUATION(PRIMITIVE_CONCEPTS)\u002BWARRANT(DEFINITIONS)",
+      "OperatorExpression": "AGGREGATE",
+      "ReductionGeneration": 1
     },
     {
       "TSPConceptId": "coined-commitment-lattice",
@@ -5047,7 +6370,12 @@
       "SourceTables": "TSPEdgeStates,TSPConstraintDecisions",
       "IntroducedByLoop": "tsp-loop-599",
       "SupersededByConcept": null,
-      "Status": "ACTIVE_DERIVED"
+      "Status": "ACTIVE_DERIVED",
+      "HistoricalConceptKind": "COINED_PREDICATE",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "WARRANT(Edge,Rank,Polarity,Scope)\u002BWARRANT",
+      "OperatorExpression": "FIXPOINT",
+      "ReductionGeneration": 1
     },
     {
       "TSPConceptId": "coined-incidence-budget",
@@ -5058,7 +6386,12 @@
       "SourceTables": "LocalDegreeBounds,TourStops,TSPEdgeSetStopDegrees,TSPConstraintDecisions",
       "IntroducedByLoop": "tsp-loop-600",
       "SupersededByConcept": null,
-      "Status": "ACTIVE_DERIVED"
+      "Status": "ACTIVE_DERIVED",
+      "HistoricalConceptKind": "COINED_PREDICATE",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "VALUATION(ATTACHMENT(CommittedEdge,Stop))",
+      "OperatorExpression": "AGGREGATE",
+      "ReductionGeneration": 1
     },
     {
       "TSPConceptId": "coined-defect-vector",
@@ -5069,7 +6402,12 @@
       "SourceTables": "TSPDefectProfiles",
       "IntroducedByLoop": "tsp-loop-601",
       "SupersededByConcept": null,
-      "Status": "ACTIVE_DERIVED"
+      "Status": "ACTIVE_DERIVED",
+      "HistoricalConceptKind": "COINED_PREDICATE",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "VALUATION(ATTACHMENT_DEFECT,CLOSURE(ATTACHMENT)_DEFECT,BOUNDARY_DEFECT)\u002BVALUATION(COST_GAP)",
+      "OperatorExpression": "AGGREGATE\u002BCLOSURE",
+      "ReductionGeneration": 1
     },
     {
       "TSPConceptId": "coined-cut-parity",
@@ -5080,7 +6418,12 @@
       "SourceTables": "TSPBoundTerms,TSPDefectProfiles",
       "IntroducedByLoop": "tsp-loop-602",
       "SupersededByConcept": null,
-      "Status": "ACTIVE_DERIVED"
+      "Status": "ACTIVE_DERIVED",
+      "HistoricalConceptKind": "COINED_PREDICATE",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "VALUATION(ATTACHMENT(CycleEdge,Cut)) \u002B CLOSURE(ATTACHMENT)",
+      "OperatorExpression": "AGGREGATE\u002BCLOSURE",
+      "ReductionGeneration": 1
     },
     {
       "TSPConceptId": "coined-component-repair-bound",
@@ -5091,7 +6434,12 @@
       "SourceTables": "TSPBoundTerms,InstanceLowerBounds,TSPDefectProfiles",
       "IntroducedByLoop": "tsp-loop-603",
       "SupersededByConcept": null,
-      "Status": "ACTIVE_DERIVED"
+      "Status": "ACTIVE_DERIVED",
+      "HistoricalConceptKind": "COINED_PREDICATE",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "VALUATION(Base)\u002BVALUATION(MandatoryInsertions)-VALUATION(NecessaryReleases)\u002BCLOSURE(ATTACHMENT)",
+      "OperatorExpression": "AGGREGATE\u002BCLOSURE",
+      "ReductionGeneration": 1
     },
     {
       "TSPConceptId": "coined-bound-sandwich",
@@ -5102,7 +6450,12 @@
       "SourceTables": "InstanceLowerBounds,CandidateTours,OptimalityCertificates",
       "IntroducedByLoop": "tsp-loop-604",
       "SupersededByConcept": null,
-      "Status": "ACTIVE_DERIVED"
+      "Status": "ACTIVE_DERIVED",
+      "HistoricalConceptKind": "COINED_PREDICATE",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "VALUATION(Lower)\u003C=VALUATION(Witness)\u003C=VALUATION(Upper)\u002BWARRANT",
+      "OperatorExpression": "AGGREGATE",
+      "ReductionGeneration": 1
     },
     {
       "TSPConceptId": "coined-witness-normal-form",
@@ -5113,7 +6466,12 @@
       "SourceTables": "CandidateTours,TSPRouteReconstructions,TSPClusterBoundaryStates,TSPWitnessNormalForms",
       "IntroducedByLoop": "tsp-loop-605",
       "SupersededByConcept": null,
-      "Status": "ACTIVE_DERIVED"
+      "Status": "ACTIVE_DERIVED",
+      "HistoricalConceptKind": "COINED_PREDICATE",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "ATTACHMENT\u002BATTACHMENT\u002BVALUATION\u002BVALUATION\u002BVALUATION\u002BCLOSURE(ATTACHMENT)\u002BWARRANT",
+      "OperatorExpression": "AGGREGATE\u002BCLOSURE",
+      "ReductionGeneration": 1
     },
     {
       "TSPConceptId": "coined-boundary-signature",
@@ -5124,7 +6482,12 @@
       "SourceTables": "TSPClusterBoundaryStates,TSPWitnessNormalForms",
       "IntroducedByLoop": "tsp-loop-606",
       "SupersededByConcept": null,
-      "Status": "ACTIVE_DERIVED"
+      "Status": "ACTIVE_DERIVED",
+      "HistoricalConceptKind": "COINED_PREDICATE",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "QUOTIENT(ATTACHMENT,VALUATION,WARRANT)",
+      "OperatorExpression": "AGGREGATE\u002BQUOTIENT",
+      "ReductionGeneration": 1
     },
     {
       "TSPConceptId": "coined-semantic-quotient",
@@ -5135,7 +6498,12 @@
       "SourceTables": "TSPClusterBoundaryStates,TSPClusterContractionCertificates",
       "IntroducedByLoop": "tsp-loop-607",
       "SupersededByConcept": null,
-      "Status": "ACTIVE_DERIVED"
+      "Status": "ACTIVE_DERIVED",
+      "HistoricalConceptKind": "COINED_PREDICATE",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "QUOTIENT(ATTACHMENT,VALUATION,WARRANT)",
+      "OperatorExpression": "AGGREGATE\u002BQUOTIENT",
+      "ReductionGeneration": 1
     },
     {
       "TSPConceptId": "coined-component-quotient",
@@ -5146,7 +6514,12 @@
       "SourceTables": "Neighborhoods,TSPDefectProfiles,TSPClusterBoundaryStates",
       "IntroducedByLoop": "tsp-loop-608",
       "SupersededByConcept": null,
-      "Status": "ACTIVE_DERIVED"
+      "Status": "ACTIVE_DERIVED",
+      "HistoricalConceptKind": "COINED_PREDICATE",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "QUOTIENT(ATTACHMENT,VALUATION,WARRANT)",
+      "OperatorExpression": "AGGREGATE\u002BCLOSURE\u002BQUOTIENT",
+      "ReductionGeneration": 1
     },
     {
       "TSPConceptId": "coined-closure-event",
@@ -5157,7 +6530,12 @@
       "SourceTables": "TSPInferenceApplications,TSPInferenceStates,TSPInferenceAntecedents,TSPEdgeSupports,TSPConstraintRounds,TSPConstraintDecisions",
       "IntroducedByLoop": "tsp-loop-609",
       "SupersededByConcept": null,
-      "Status": "ACTIVE_DERIVED"
+      "Status": "ACTIVE_DERIVED",
+      "HistoricalConceptKind": "COINED_PREDICATE",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "FIXPOINT(WARRANT,ATTACHMENT,VALUATION)",
+      "OperatorExpression": "AGGREGATE\u002BFIXPOINT",
+      "ReductionGeneration": 1
     },
     {
       "TSPConceptId": "coined-convergence-event",
@@ -5168,7 +6546,332 @@
       "SourceTables": "TSPConvergenceMeasurements,TSPConceptRegistry",
       "IntroducedByLoop": "tsp-loop-610",
       "SupersededByConcept": null,
-      "Status": "ACTIVE_DERIVED"
+      "Status": "ACTIVE_DERIVED",
+      "HistoricalConceptKind": "COINED_PREDICATE",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "WARRANT(BasisStability)\u002BVALUATION(Compression,CoinedTerms,PhysicalGrowth)",
+      "OperatorExpression": "AGGREGATE",
+      "ReductionGeneration": 1
+    },
+    {
+      "TSPConceptId": "coined-predicate-operator-split",
+      "DisplayName": "Predicate\u2013Operator Split",
+      "ConceptKind": "COINED_PREDICATE",
+      "BasisExpression": "WARRANT(Classification)\u002BVALUATION(BasisCardinality)",
+      "Arity": 1,
+      "SourceTables": "TSPConceptRegistry,TSPConvergenceMeasurements",
+      "IntroducedByLoop": "tsp-loop-611",
+      "SupersededByConcept": null,
+      "Status": "ACTIVE_DERIVED",
+      "HistoricalConceptKind": "COINED_PREDICATE",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "WARRANT(Classification)\u002BVALUATION(BasisCardinality)",
+      "OperatorExpression": "",
+      "ReductionGeneration": 2
+    },
+    {
+      "TSPConceptId": "concept-attachment",
+      "DisplayName": "Attachment",
+      "ConceptKind": "PRIMITIVE",
+      "BasisExpression": "ATTACHMENT(subject,object,role)",
+      "Arity": 3,
+      "SourceTables": "Cities,Neighborhoods,Addresses,InstanceStops,TravelEdges,TourStops,TSPClusterBoundaryStates",
+      "IntroducedByLoop": "tsp-loop-612",
+      "SupersededByConcept": null,
+      "Status": "ACTIVE_PRIMITIVE",
+      "HistoricalConceptKind": "PRIMITIVE",
+      "SemanticCategory": "ATOM",
+      "ReducedBasisExpression": "ATTACHMENT(subject,object,role)",
+      "OperatorExpression": "",
+      "ReductionGeneration": 2
+    },
+    {
+      "TSPConceptId": "coined-attachment-atom",
+      "DisplayName": "Attachment Atom",
+      "ConceptKind": "COINED_PREDICATE",
+      "BasisExpression": "ATTACHMENT(subject,object,role)\u002BWARRANT(role)",
+      "Arity": 1,
+      "SourceTables": "TSPConceptRegistry",
+      "IntroducedByLoop": "tsp-loop-612",
+      "SupersededByConcept": null,
+      "Status": "ACTIVE_DERIVED",
+      "HistoricalConceptKind": "COINED_PREDICATE",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "ATTACHMENT(subject,object,role)\u002BWARRANT(role)",
+      "OperatorExpression": "",
+      "ReductionGeneration": 2
+    },
+    {
+      "TSPConceptId": "concept-valuation",
+      "DisplayName": "Valuation",
+      "ConceptKind": "PRIMITIVE",
+      "BasisExpression": "VALUATION(subject,measure,value)",
+      "Arity": 3,
+      "SourceTables": "TravelEdges,TourStops,LocalDegreeBounds,InstanceLowerBounds,TSPBoundTerms,TSPConvergenceMeasurements",
+      "IntroducedByLoop": "tsp-loop-613",
+      "SupersededByConcept": null,
+      "Status": "ACTIVE_PRIMITIVE",
+      "HistoricalConceptKind": "PRIMITIVE",
+      "SemanticCategory": "ATOM",
+      "ReducedBasisExpression": "VALUATION(subject,measure,value)",
+      "OperatorExpression": "",
+      "ReductionGeneration": 2
+    },
+    {
+      "TSPConceptId": "coined-valuation-atom",
+      "DisplayName": "Valuation Atom",
+      "ConceptKind": "COINED_PREDICATE",
+      "BasisExpression": "VALUATION(subject,measure,value)\u002BWARRANT(measure)",
+      "Arity": 1,
+      "SourceTables": "TSPConceptRegistry",
+      "IntroducedByLoop": "tsp-loop-613",
+      "SupersededByConcept": null,
+      "Status": "ACTIVE_DERIVED",
+      "HistoricalConceptKind": "COINED_PREDICATE",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "VALUATION(subject,measure,value)\u002BWARRANT(measure)",
+      "OperatorExpression": "",
+      "ReductionGeneration": 2
+    },
+    {
+      "TSPConceptId": "concept-warrant",
+      "DisplayName": "Warrant",
+      "ConceptKind": "PRIMITIVE",
+      "BasisExpression": "WARRANT(conclusion,source,modality)",
+      "Arity": 3,
+      "SourceTables": "TSPInferenceRules,TSPInferenceApplications,TSPInferenceAntecedents,TSPFrontierObligations,TSPEdgeStates",
+      "IntroducedByLoop": "tsp-loop-614",
+      "SupersededByConcept": null,
+      "Status": "ACTIVE_PRIMITIVE",
+      "HistoricalConceptKind": "PRIMITIVE",
+      "SemanticCategory": "ATOM",
+      "ReducedBasisExpression": "WARRANT(conclusion,source,modality)",
+      "OperatorExpression": "",
+      "ReductionGeneration": 2
+    },
+    {
+      "TSPConceptId": "coined-warrant-atom",
+      "DisplayName": "Warrant Atom",
+      "ConceptKind": "COINED_PREDICATE",
+      "BasisExpression": "WARRANT(conclusion,source,modality)",
+      "Arity": 1,
+      "SourceTables": "TSPConceptRegistry,TSPInferenceApplications,TSPEdgeStates",
+      "IntroducedByLoop": "tsp-loop-614",
+      "SupersededByConcept": null,
+      "Status": "ACTIVE_DERIVED",
+      "HistoricalConceptKind": "COINED_PREDICATE",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "WARRANT(conclusion,source,modality)",
+      "OperatorExpression": "",
+      "ReductionGeneration": 2
+    },
+    {
+      "TSPConceptId": "operator-closure",
+      "DisplayName": "Closure",
+      "ConceptKind": "OPERATOR",
+      "BasisExpression": "CLOSURE(ATTACHMENT,scope)",
+      "Arity": 1,
+      "SourceTables": "TravelEdges,TSPDerivedEdgeSets,TSPSpanningTreeEdges,TSPDefectProfiles",
+      "IntroducedByLoop": "tsp-loop-615",
+      "SupersededByConcept": null,
+      "Status": "ACTIVE_OPERATOR",
+      "HistoricalConceptKind": "OPERATOR",
+      "SemanticCategory": "OPERATOR",
+      "ReducedBasisExpression": "CLOSURE(ATTACHMENT,scope)",
+      "OperatorExpression": "CLOSURE",
+      "ReductionGeneration": 2
+    },
+    {
+      "TSPConceptId": "coined-closure-operator",
+      "DisplayName": "Closure Operator",
+      "ConceptKind": "COINED_PREDICATE",
+      "BasisExpression": "CLOSURE(ATTACHMENT)\u002BWARRANT(scope)",
+      "Arity": 1,
+      "SourceTables": "TSPConceptRegistry,TSPDerivedEdgeSets",
+      "IntroducedByLoop": "tsp-loop-615",
+      "SupersededByConcept": null,
+      "Status": "ACTIVE_DERIVED",
+      "HistoricalConceptKind": "COINED_PREDICATE",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "CLOSURE(ATTACHMENT)\u002BWARRANT(scope)",
+      "OperatorExpression": "CLOSURE",
+      "ReductionGeneration": 2
+    },
+    {
+      "TSPConceptId": "operator-aggregate",
+      "DisplayName": "Aggregate",
+      "ConceptKind": "OPERATOR",
+      "BasisExpression": "AGGREGATE(multiset,measure,reducer)",
+      "Arity": 1,
+      "SourceTables": "TSPConvergenceMeasurements,LocalDegreeBounds,InstanceLowerBounds,TSPBoundTerms,SearchMetrics",
+      "IntroducedByLoop": "tsp-loop-616",
+      "SupersededByConcept": null,
+      "Status": "ACTIVE_OPERATOR",
+      "HistoricalConceptKind": "OPERATOR",
+      "SemanticCategory": "OPERATOR",
+      "ReducedBasisExpression": "AGGREGATE(multiset,measure,reducer)",
+      "OperatorExpression": "AGGREGATE",
+      "ReductionGeneration": 2
+    },
+    {
+      "TSPConceptId": "coined-aggregate-operator",
+      "DisplayName": "Aggregate Operator",
+      "ConceptKind": "COINED_PREDICATE",
+      "BasisExpression": "AGGREGATE(ATTACHMENT,VALUATION,reducer)\u002BWARRANT",
+      "Arity": 1,
+      "SourceTables": "TSPConceptRegistry,InstanceLowerBounds,TSPBoundTerms",
+      "IntroducedByLoop": "tsp-loop-616",
+      "SupersededByConcept": null,
+      "Status": "ACTIVE_DERIVED",
+      "HistoricalConceptKind": "COINED_PREDICATE",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "AGGREGATE(ATTACHMENT,VALUATION,reducer)\u002BWARRANT",
+      "OperatorExpression": "AGGREGATE",
+      "ReductionGeneration": 2
+    },
+    {
+      "TSPConceptId": "operator-quotient",
+      "DisplayName": "Quotient",
+      "ConceptKind": "OPERATOR",
+      "BasisExpression": "QUOTIENT(witnesses,equivalence,warrant)",
+      "Arity": 1,
+      "SourceTables": "TSPClusterBoundaryStates,TSPClusterContractionCertificates,TSPWitnessNormalForms,Neighborhoods",
+      "IntroducedByLoop": "tsp-loop-617",
+      "SupersededByConcept": null,
+      "Status": "ACTIVE_OPERATOR",
+      "HistoricalConceptKind": "OPERATOR",
+      "SemanticCategory": "OPERATOR",
+      "ReducedBasisExpression": "QUOTIENT(witnesses,equivalence,warrant)",
+      "OperatorExpression": "QUOTIENT",
+      "ReductionGeneration": 2
+    },
+    {
+      "TSPConceptId": "coined-quotient-operator",
+      "DisplayName": "Quotient Operator",
+      "ConceptKind": "COINED_PREDICATE",
+      "BasisExpression": "QUOTIENT(ATTACHMENT,VALUATION,WARRANT)",
+      "Arity": 1,
+      "SourceTables": "TSPConceptRegistry,TSPClusterContractionCertificates",
+      "IntroducedByLoop": "tsp-loop-617",
+      "SupersededByConcept": null,
+      "Status": "ACTIVE_DERIVED",
+      "HistoricalConceptKind": "COINED_PREDICATE",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "QUOTIENT(ATTACHMENT,VALUATION,WARRANT)",
+      "OperatorExpression": "QUOTIENT",
+      "ReductionGeneration": 2
+    },
+    {
+      "TSPConceptId": "operator-fixpoint",
+      "DisplayName": "Fixpoint",
+      "ConceptKind": "OPERATOR",
+      "BasisExpression": "FIXPOINT(rule,state,until_stable)",
+      "Arity": 1,
+      "SourceTables": "TSPInferenceApplications,TSPInferenceStates,TSPConstraintRounds,TSPConstraintDecisions",
+      "IntroducedByLoop": "tsp-loop-618",
+      "SupersededByConcept": null,
+      "Status": "ACTIVE_OPERATOR",
+      "HistoricalConceptKind": "OPERATOR",
+      "SemanticCategory": "OPERATOR",
+      "ReducedBasisExpression": "FIXPOINT(rule,state,until_stable)",
+      "OperatorExpression": "FIXPOINT",
+      "ReductionGeneration": 2
+    },
+    {
+      "TSPConceptId": "coined-fixpoint-operator",
+      "DisplayName": "Fixed-Point Operator",
+      "ConceptKind": "COINED_PREDICATE",
+      "BasisExpression": "FIXPOINT(WARRANT,ATTACHMENT,VALUATION)",
+      "Arity": 1,
+      "SourceTables": "TSPInferenceApplications,TSPConstraintRounds",
+      "IntroducedByLoop": "tsp-loop-618",
+      "SupersededByConcept": null,
+      "Status": "ACTIVE_DERIVED",
+      "HistoricalConceptKind": "COINED_PREDICATE",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "FIXPOINT(WARRANT,ATTACHMENT,VALUATION)",
+      "OperatorExpression": "FIXPOINT",
+      "ReductionGeneration": 2
+    },
+    {
+      "TSPConceptId": "coined-three-atom-basis",
+      "DisplayName": "Three-Atom Basis",
+      "ConceptKind": "COINED_PREDICATE",
+      "BasisExpression": "ATTACHMENT\u002BVALUATION\u002BWARRANT\u002BCLOSURE\u002BAGGREGATE\u002BQUOTIENT\u002BFIXPOINT",
+      "Arity": 1,
+      "SourceTables": "TSPConceptRegistry,TSPConvergenceMeasurements",
+      "IntroducedByLoop": "tsp-loop-619",
+      "SupersededByConcept": null,
+      "Status": "ACTIVE_DERIVED",
+      "HistoricalConceptKind": "COINED_PREDICATE",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "ATTACHMENT\u002BVALUATION\u002BWARRANT\u002BCLOSURE\u002BAGGREGATE\u002BQUOTIENT\u002BFIXPOINT",
+      "OperatorExpression": "CLOSURE\u002BAGGREGATE\u002BQUOTIENT\u002BFIXPOINT",
+      "ReductionGeneration": 2
+    },
+    {
+      "TSPConceptId": "coined-boundary-port",
+      "DisplayName": "Boundary Port",
+      "ConceptKind": "COINED_PREDICATE",
+      "BasisExpression": "ATTACHMENT(witness,scope,entry_or_exit)\u002BVALUATION(port_degree)\u002BWARRANT(contract)",
+      "Arity": 1,
+      "SourceTables": "TSPClusterBoundaryStates,TSPWitnessNormalForms",
+      "IntroducedByLoop": "tsp-loop-620",
+      "SupersededByConcept": null,
+      "Status": "ACTIVE_DERIVED",
+      "HistoricalConceptKind": "COINED_PREDICATE",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "ATTACHMENT(witness,scope,entry_or_exit)\u002BVALUATION(port_degree)\u002BWARRANT(contract)",
+      "OperatorExpression": "",
+      "ReductionGeneration": 2
+    },
+    {
+      "TSPConceptId": "coined-boundary-fiber",
+      "DisplayName": "Boundary Fiber",
+      "ConceptKind": "COINED_PREDICATE",
+      "BasisExpression": "QUOTIENT(ATTACHMENT(paths,ports),equal_ports_and_coverage)\u002BVALUATION(cost)\u002BWARRANT(expansion)",
+      "Arity": 1,
+      "SourceTables": "TSPClusterBoundaryStates,TSPClusterBoundaryStateMembers",
+      "IntroducedByLoop": "tsp-loop-621",
+      "SupersededByConcept": null,
+      "Status": "ACTIVE_DERIVED",
+      "HistoricalConceptKind": "COINED_PREDICATE",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "QUOTIENT(ATTACHMENT(paths,ports),equal_ports_and_coverage)\u002BVALUATION(cost)\u002BWARRANT(expansion)",
+      "OperatorExpression": "QUOTIENT",
+      "ReductionGeneration": 2
+    },
+    {
+      "TSPConceptId": "coined-fiber-minimum",
+      "DisplayName": "Fiber Minimum",
+      "ConceptKind": "COINED_PREDICATE",
+      "BasisExpression": "AGGREGATE(VALUATION(path,cost),MIN) within BoundaryFiber \u002B WARRANT(dominance)",
+      "Arity": 1,
+      "SourceTables": "TSPClusterBoundaryStates",
+      "IntroducedByLoop": "tsp-loop-622",
+      "SupersededByConcept": null,
+      "Status": "ACTIVE_DERIVED",
+      "HistoricalConceptKind": "COINED_PREDICATE",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "AGGREGATE(VALUATION(path,cost),MIN) within BoundaryFiber \u002B WARRANT(dominance)",
+      "OperatorExpression": "AGGREGATE\u002BQUOTIENT",
+      "ReductionGeneration": 2
+    },
+    {
+      "TSPConceptId": "coined-asymmetric-quotient",
+      "DisplayName": "Asymmetric Quotient",
+      "ConceptKind": "COINED_PREDICATE",
+      "BasisExpression": "QUOTIENT(raw_orientations,reversal) then QUOTIENT(boundary_fiber,minimum_VALUATION)\u002BWARRANT(expansion)",
+      "Arity": 1,
+      "SourceTables": "TSPClusterBoundaryStates,TSPClusterContractionCertificates",
+      "IntroducedByLoop": "tsp-loop-623",
+      "SupersededByConcept": null,
+      "Status": "ACTIVE_DERIVED",
+      "HistoricalConceptKind": "COINED_PREDICATE",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "QUOTIENT(raw_orientations,reversal) then QUOTIENT(boundary_fiber,minimum_VALUATION)\u002BWARRANT(expansion)",
+      "OperatorExpression": "QUOTIENT\u002BAGGREGATE",
+      "ReductionGeneration": 2
     }
   ],
   "SearchMetrics": [

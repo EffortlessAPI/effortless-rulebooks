@@ -859,7 +859,17 @@ SELECT
   calc_tsp_cluster_boundary_states_boundary_signature(t.tsp_cluster_boundary_state_id) AS boundary_signature,-- Scope/entry/exit/coverage/cost signature.
   calc_tsp_cluster_boundary_states_semantic_quotient_key(t.tsp_cluster_boundary_state_id) AS semantic_quotient_key,-- Equivalence key preserving boundary signature and cost.
   t.orientation_multiplicity,                                                   -- Raw directed orientations represented by the undirected state.
-  t.is_quotient_representative                                                  -- Whether this state is the canonical quotient representative.
+  t.is_quotient_representative,                                                 -- Whether this state is the canonical quotient representative.
+  t.second_internal_via_stop,                                                   -- Second internal stop for clusters larger than three.
+  t.entry_port_role,                                                            -- Typed role of the entry boundary attachment.
+  t.exit_port_role,                                                             -- Typed role of the exit boundary attachment.
+  t.port_contract,                                                              -- Coverage and incidence contract exposed at the boundary.
+  t.boundary_fiber_key,                                                         -- Scope plus canonical unordered boundary ports.
+  t.internal_order_key,                                                         -- Canonical represented internal order.
+  t.raw_orientation_multiplicity,                                               -- Directed orientations represented by this quotient row.
+  t.dominated_by_state_id,                                                      -- Canonical lower-valued representative in the same fiber.
+  t.dominance_delta,                                                            -- Cost difference from the fiber minimum.
+  calc_tsp_cluster_boundary_states_is_fiber_minimum(t.tsp_cluster_boundary_state_id) AS is_fiber_minimum-- Whether the state is the surviving minimum in its fiber.
 FROM tsp_cluster_boundary_states t;
 
 -- ----------------------------------------------------------------------------
@@ -1002,7 +1012,13 @@ SELECT
   t.source_tables,                                                              -- Comma-separated historical source projections.
   t.introduced_by_loop,                                                         -- Loop introducing or registering the concept.
   t.superseded_by_concept,                                                      -- Canonical coined concept replacing this surface name, when applicable.
-  t.status                                                                      -- ACTIVE_PRIMITIVE, ACTIVE_DERIVED, or HISTORICAL_PROJECTION.
+  t.status,                                                                     -- ACTIVE_PRIMITIVE, ACTIVE_DERIVED, or HISTORICAL_PROJECTION.
+  t.historical_concept_kind,                                                    -- Concept kind at the time of its historical certificate.
+  t.semantic_category,                                                          -- ATOM, OPERATOR, DERIVED, or HISTORICAL.
+  t.reduced_basis_expression,                                                   -- Current definition over active atoms and operators.
+  t.operator_expression,                                                        -- Operators required to derive the concept from atoms.
+  t.reduction_generation,                                                       -- Reduction generation introducing the current definition.
+  calc_tsp_concept_registry_is_current_basis_member(t.tsp_concept_id) AS is_current_basis_member-- Whether the row is an active atom or operator.
 FROM tsp_concept_registry t;
 
 -- ----------------------------------------------------------------------------

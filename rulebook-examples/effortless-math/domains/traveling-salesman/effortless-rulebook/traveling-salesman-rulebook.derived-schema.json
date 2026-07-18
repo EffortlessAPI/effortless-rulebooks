@@ -3885,6 +3885,78 @@
         "type": "raw",
         "nullable": false,
         "Description": "Whether this state is the canonical quotient representative."
+      },
+      {
+        "name": "SecondInternalViaStop",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Second internal stop for clusters larger than three.",
+        "RelatedTo": "InstanceStops"
+      },
+      {
+        "name": "EntryPortRole",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Typed role of the entry boundary attachment."
+      },
+      {
+        "name": "ExitPortRole",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Typed role of the exit boundary attachment."
+      },
+      {
+        "name": "PortContract",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Coverage and incidence contract exposed at the boundary."
+      },
+      {
+        "name": "BoundaryFiberKey",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Scope plus canonical unordered boundary ports."
+      },
+      {
+        "name": "InternalOrderKey",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Canonical represented internal order."
+      },
+      {
+        "name": "RawOrientationMultiplicity",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Directed orientations represented by this quotient row."
+      },
+      {
+        "name": "DominatedByStateId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Canonical lower-valued representative in the same fiber."
+      },
+      {
+        "name": "DominanceDelta",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Cost difference from the fiber minimum."
+      },
+      {
+        "name": "IsFiberMinimum",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether the state is the surviving minimum in its fiber.",
+        "formula": "=AND({{IsQuotientRepresentative}}, NOT({{IsDominated}}))"
       }
     ]
   },
@@ -4500,6 +4572,49 @@
         "type": "raw",
         "nullable": false,
         "Description": "ACTIVE_PRIMITIVE, ACTIVE_DERIVED, or HISTORICAL_PROJECTION."
+      },
+      {
+        "name": "HistoricalConceptKind",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Concept kind at the time of its historical certificate."
+      },
+      {
+        "name": "SemanticCategory",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "ATOM, OPERATOR, DERIVED, or HISTORICAL."
+      },
+      {
+        "name": "ReducedBasisExpression",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Current definition over active atoms and operators."
+      },
+      {
+        "name": "OperatorExpression",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Operators required to derive the concept from atoms."
+      },
+      {
+        "name": "ReductionGeneration",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Reduction generation introducing the current definition."
+      },
+      {
+        "name": "IsCurrentBasisMember",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether the row is an active atom or operator.",
+        "formula": "=OR({{Status}} = \u0022ACTIVE_PRIMITIVE\u0022, {{Status}} = \u0022ACTIVE_OPERATOR\u0022)"
       }
     ]
   },

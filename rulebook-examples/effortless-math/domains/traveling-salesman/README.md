@@ -229,3 +229,32 @@ finite-instance optimum                 24
 The original degree-only lower bound of 6 remains preserved as a non-tight counterexample. The stronger conclusion comes from composing cut parity with a witnessed repair cost.
 
 **Convergence status:** early empirical support for this represented TSP domain. It is not a universal theorem about mathematical vocabularies or computational complexity.
+
+
+## Loops 611–623 — atoms, operators, and asymmetric fibers
+
+The loop-610 eight-predicate basis was retained as a historical certificate and factored again. The current candidate basis is:
+
+```text
+ATOMS:      ATTACHMENT   VALUATION   WARRANT
+OPERATORS:  CLOSURE      AGGREGATE   QUOTIENT   FIXPOINT
+```
+
+This is **90.63% surface-to-atom compression** from the original 32 recurring surface predicates. It remains empirical for the represented TSP domain, not a theorem of universal minimality.
+
+The asymmetric four-stop stress fixture separates two reductions that were conflated by the three-stop triangles:
+
+```text
+24 directed Hamiltonian paths
+        ↓ path-reversal quotient
+12 unordered-boundary path classes
+        ↓ minimum valuation within each boundary fiber
+ 6 surviving port-to-port states
+```
+
+No new physical table is introduced by loops 611–623. Historical projections remain replayable while the active semantic basis shrinks.
+
+
+**Boundary Fiber.** The asymmetric stress fixture groups equal-port, equal-coverage paths into boundary fibers before minimum valuation selects the surviving representative.
+
+**Coherence guardrail.** Convergence is not defined as monotonically decreasing tables, rows, or named predicates. Internalizing one opaque black box may temporarily expand the explicit DAG. The represented trend is toward greater reuse, clearer warrants, smaller opaque trust boundaries, and less residual ambiguity—not toward superficial brevity.

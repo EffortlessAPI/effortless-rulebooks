@@ -2936,6 +2936,16 @@ RETURNS TEXT AS $$
   SELECT (CONCAT((SELECT NULLIF(neighborhood, '') FROM tsp_cluster_boundary_states WHERE tsp_cluster_boundary_state_id = p_tsp_cluster_boundary_state_id), '|', (SELECT NULLIF(entry_stop, '') FROM tsp_cluster_boundary_states WHERE tsp_cluster_boundary_state_id = p_tsp_cluster_boundary_state_id), '|', (SELECT NULLIF(exit_stop, '') FROM tsp_cluster_boundary_states WHERE tsp_cluster_boundary_state_id = p_tsp_cluster_boundary_state_id), '|', (SELECT internal_stop_count FROM tsp_cluster_boundary_states WHERE tsp_cluster_boundary_state_id = p_tsp_cluster_boundary_state_id), '|', (SELECT internal_path_cost FROM tsp_cluster_boundary_states WHERE tsp_cluster_boundary_state_id = p_tsp_cluster_boundary_state_id)))::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_tsp_cluster_boundary_states_is_fiber_minimum
+-- Field: TSPClusterBoundaryStates.IsFiberMinimum
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_tsp_cluster_boundary_states_is_fiber_minimum(p_tsp_cluster_boundary_state_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((COALESCE((SELECT is_quotient_representative FROM tsp_cluster_boundary_states WHERE tsp_cluster_boundary_state_id = p_tsp_cluster_boundary_state_id), FALSE) AND NOT (COALESCE((SELECT is_dominated FROM tsp_cluster_boundary_states WHERE tsp_cluster_boundary_state_id = p_tsp_cluster_boundary_state_id), FALSE))))::boolean;
+$$ LANGUAGE sql STABLE;
+
 -- get_tsp_cluster_boundary_states_internal_path_cost
 -- Helper function: Get InternalPathCost from TSPClusterBoundaryStates by TSPClusterBoundaryStateId
 -- Used for join-free cross-table references in aggregations
@@ -2997,6 +3007,69 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION get_tsp_cluster_boundary_states_is_quotient_representative(p_tsp_cluster_boundary_state_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT (SELECT is_quotient_representative FROM tsp_cluster_boundary_states WHERE tsp_cluster_boundary_state_id = p_tsp_cluster_boundary_state_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_cluster_boundary_states_entry_port_role
+-- Helper function: Get EntryPortRole from TSPClusterBoundaryStates by TSPClusterBoundaryStateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_cluster_boundary_states_entry_port_role(p_tsp_cluster_boundary_state_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT entry_port_role FROM tsp_cluster_boundary_states WHERE tsp_cluster_boundary_state_id = p_tsp_cluster_boundary_state_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_cluster_boundary_states_exit_port_role
+-- Helper function: Get ExitPortRole from TSPClusterBoundaryStates by TSPClusterBoundaryStateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_cluster_boundary_states_exit_port_role(p_tsp_cluster_boundary_state_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT exit_port_role FROM tsp_cluster_boundary_states WHERE tsp_cluster_boundary_state_id = p_tsp_cluster_boundary_state_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_cluster_boundary_states_port_contract
+-- Helper function: Get PortContract from TSPClusterBoundaryStates by TSPClusterBoundaryStateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_cluster_boundary_states_port_contract(p_tsp_cluster_boundary_state_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT port_contract FROM tsp_cluster_boundary_states WHERE tsp_cluster_boundary_state_id = p_tsp_cluster_boundary_state_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_cluster_boundary_states_boundary_fiber_key
+-- Helper function: Get BoundaryFiberKey from TSPClusterBoundaryStates by TSPClusterBoundaryStateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_cluster_boundary_states_boundary_fiber_key(p_tsp_cluster_boundary_state_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT boundary_fiber_key FROM tsp_cluster_boundary_states WHERE tsp_cluster_boundary_state_id = p_tsp_cluster_boundary_state_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_cluster_boundary_states_internal_order_key
+-- Helper function: Get InternalOrderKey from TSPClusterBoundaryStates by TSPClusterBoundaryStateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_cluster_boundary_states_internal_order_key(p_tsp_cluster_boundary_state_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT internal_order_key FROM tsp_cluster_boundary_states WHERE tsp_cluster_boundary_state_id = p_tsp_cluster_boundary_state_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_cluster_boundary_states_raw_orientation_multiplicity
+-- Helper function: Get RawOrientationMultiplicity from TSPClusterBoundaryStates by TSPClusterBoundaryStateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_cluster_boundary_states_raw_orientation_multiplicity(p_tsp_cluster_boundary_state_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT raw_orientation_multiplicity FROM tsp_cluster_boundary_states WHERE tsp_cluster_boundary_state_id = p_tsp_cluster_boundary_state_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_cluster_boundary_states_dominance_delta
+-- Helper function: Get DominanceDelta from TSPClusterBoundaryStates by TSPClusterBoundaryStateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_cluster_boundary_states_dominance_delta(p_tsp_cluster_boundary_state_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT dominance_delta FROM tsp_cluster_boundary_states WHERE tsp_cluster_boundary_state_id = p_tsp_cluster_boundary_state_id);
 $$ LANGUAGE sql STABLE;
 
 -- calc_tsp_cluster_boundary_state_members_name
@@ -3097,6 +3170,16 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_tsp_concept_registry_name(p_tsp_concept_id TEXT)
 RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(tsp_concept_id, '') FROM tsp_concept_registry WHERE tsp_concept_id = p_tsp_concept_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_tsp_concept_registry_is_current_basis_member
+-- Field: TSPConceptRegistry.IsCurrentBasisMember
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_tsp_concept_registry_is_current_basis_member(p_tsp_concept_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((SELECT NULLIF(status, '') FROM tsp_concept_registry WHERE tsp_concept_id = p_tsp_concept_id) = 'ACTIVE_PRIMITIVE' OR (SELECT NULLIF(status, '') FROM tsp_concept_registry WHERE tsp_concept_id = p_tsp_concept_id) = 'ACTIVE_OPERATOR'))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_search_metrics_name

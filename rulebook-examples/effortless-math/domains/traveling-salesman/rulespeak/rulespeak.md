@@ -216,6 +216,7 @@ _Traveling Salesman research domain at city/neighborhood/address scale. The rule
 | **TSP Cluster Boundary State** | Finite undirected entry/exit Hamiltonian-path states for a neighborhood cluster. | — |
 | Boundary Signature | Computed as the neighborhood, followed by “|”, followed by the entry stop, followed by “|”, followed by the exit stop, followed by “|”, followed by the internal stop count, followed by “|”, followed by the internal path cost. | _Scope/entry/exit/coverage/cost signature._ |
 | Semantic Quotient Key | Computed as the neighborhood, followed by “|”, followed by the entry stop, followed by “|”, followed by the exit stop, followed by “|”, followed by the internal stop count, followed by “|”, followed by the internal path cost. | _Equivalence key preserving boundary signature and cost._ |
+| Is Fiber Minimum | True when all of the following hold: the quotient representative flag is set and the dominated flag is not set. | _Whether the state is the surviving minimum in its fiber._ |
 | **TSP Cluster Boundary State Member** | Ordered internal edges supporting a cluster boundary state. | — |
 | **TSP Cluster Contraction Certificate** | Finite-fixture certificates measuring neighborhood-state contraction. | — |
 | **TSP Inference Rule** | Declared structural inference contracts, including soundness, completeness, runtime, memory, applicability, and certificate shape. | — |
@@ -229,6 +230,7 @@ _Traveling Salesman research domain at city/neighborhood/address scale. The rule
 | **TSP Convergence Measurement** | Measurements testing whether surface concepts compress onto a stable predicate basis. | — |
 | Semantic Compression Pct | Determined by priority: 0 if the surface concept count before is 0; in all other cases, the surface concept count before minus the primitive count after divided by the surface concept count before times 100 rounded to 2 decimal place(s). | _Surface-to-basis reduction percentage._ |
 | **TSP Concept Registry** | Registry of primitive, derived, coined, and historical concepts with explicit basis expressions. | — |
+| Is Current Basis Member | True when at least one of the following holds: the status is “ACTIVE_PRIMITIVE” or the status is “ACTIVE_OPERATOR”. | _Whether the row is an active atom or operator._ |
 | **Search Metric** | Quantitative record of how much combinatorial search remains after each represented inference stage. | — |
 | Search Elimination Pct | Determined by priority: 0 if the branch count before is 0; in all other cases, the branch count before minus the branch count after divided by the branch count before times 100 rounded to 2 decimal place(s). | _Percentage of branches removed without search._ |
 | **TSP Invariant Check** | Rulebook-native acceptance checks comparing expected raw outcomes to derived candidate-tour fields. | — |
@@ -648,21 +650,23 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-167 Route Class Elimination Pct** | The TSP search certificate's route class elimination pct is determined by the following priority:<br>1. 0, if the initial route class count is 0;<br>2. in all other cases, the initial route class count minus the surviving route class count divided by the initial route class count times 100 rounded to 2 decimal place(s). |
 | **DR-168 Boundary Signature** | A TSP cluster boundary state's boundary signature is computed as the neighborhood, followed by “|”, followed by the entry stop, followed by “|”, followed by the exit stop, followed by “|”, followed by the internal stop count, followed by “|”, followed by the internal path cost. |
 | **DR-169 Semantic Quotient Key** | A TSP cluster boundary state's semantic quotient key is computed as the neighborhood, followed by “|”, followed by the entry stop, followed by “|”, followed by the exit stop, followed by “|”, followed by the internal stop count, followed by “|”, followed by the internal path cost. |
-| **DR-170 Name** | A TSP inference rule's name is the same as its display name. |
-| **DR-171 Name** | A TSP frontier obligation's name is the same as its display name. |
-| **DR-172 Is Imported Dependency** | A TSP frontier obligation is considered an imported dependency if the obligation kind is “IMPORTED_DEPENDENCY”. |
-| **DR-173 Is Closed** | A TSP frontier obligation is considered closed if the status is “CLOSED”. |
-| **DR-174 Name** | A TSP loop's name is the same as its display name. |
-| **DR-175 Semantic Compression Pct** | The TSP convergence measurement's semantic compression pct is determined by the following priority:<br>1. 0, if the surface concept count before is 0;<br>2. in all other cases, the surface concept count before minus the primitive count after divided by the surface concept count before times 100 rounded to 2 decimal place(s). |
-| **DR-176 Search Elimination Pct** | The search metric's search elimination pct is determined by the following priority:<br>1. 0, if the branch count before is 0;<br>2. in all other cases, the branch count before minus the branch count after divided by the branch count before times 100 rounded to 2 decimal place(s). |
-| **DR-177 Name** | A TSP invariant check's name is the same as its display name. |
-| **DR-178 Actual Hamiltonian Cycle Witness** | A TSP invariant check's actual hamiltonian cycle witness is true when the TSP invariant check's candidate tour is a hamiltonian cycle witness. |
-| **DR-179 Actual Optimality Proved** | A TSP invariant check's actual optimality proved when the linked candidate tour is optimality proved. |
-| **DR-180 Actual Total Travel Cost** | A TSP invariant check's actual total travel cost — taken from the linked candidate tour. |
-| **DR-181 Is Hamiltonian Status Correct** | A TSP invariant check is considered a hamiltonian status correct if the expected hamiltonian cycle witness is the actual hamiltonian cycle witness. |
-| **DR-182 Is Optimality Status Correct** | A TSP invariant check is considered an optimality status correct if the expected optimality proved is the actual optimality proved. |
-| **DR-183 Is Cost Correct** | A TSP invariant check is considered a cost correct if the expected total travel cost is the actual total travel cost. |
-| **DR-184 Is Passing** | A TSP invariant check is considered passing if all of the following hold: the hamiltonian status correct flag is set; the optimality status correct flag is set; and the cost correct flag is set. |
+| **DR-170 Is Fiber Minimum** | A TSP cluster boundary state is considered a fiber minimum if all of the following hold: the quotient representative flag is set and the dominated flag is not set. |
+| **DR-171 Name** | A TSP inference rule's name is the same as its display name. |
+| **DR-172 Name** | A TSP frontier obligation's name is the same as its display name. |
+| **DR-173 Is Imported Dependency** | A TSP frontier obligation is considered an imported dependency if the obligation kind is “IMPORTED_DEPENDENCY”. |
+| **DR-174 Is Closed** | A TSP frontier obligation is considered closed if the status is “CLOSED”. |
+| **DR-175 Name** | A TSP loop's name is the same as its display name. |
+| **DR-176 Semantic Compression Pct** | The TSP convergence measurement's semantic compression pct is determined by the following priority:<br>1. 0, if the surface concept count before is 0;<br>2. in all other cases, the surface concept count before minus the primitive count after divided by the surface concept count before times 100 rounded to 2 decimal place(s). |
+| **DR-177 Is Current Basis Member** | A TSP concept registry is considered a current basis member if at least one of the following holds: the status is “ACTIVE_PRIMITIVE” or the status is “ACTIVE_OPERATOR”. |
+| **DR-178 Search Elimination Pct** | The search metric's search elimination pct is determined by the following priority:<br>1. 0, if the branch count before is 0;<br>2. in all other cases, the branch count before minus the branch count after divided by the branch count before times 100 rounded to 2 decimal place(s). |
+| **DR-179 Name** | A TSP invariant check's name is the same as its display name. |
+| **DR-180 Actual Hamiltonian Cycle Witness** | A TSP invariant check's actual hamiltonian cycle witness is true when the TSP invariant check's candidate tour is a hamiltonian cycle witness. |
+| **DR-181 Actual Optimality Proved** | A TSP invariant check's actual optimality proved when the linked candidate tour is optimality proved. |
+| **DR-182 Actual Total Travel Cost** | A TSP invariant check's actual total travel cost — taken from the linked candidate tour. |
+| **DR-183 Is Hamiltonian Status Correct** | A TSP invariant check is considered a hamiltonian status correct if the expected hamiltonian cycle witness is the actual hamiltonian cycle witness. |
+| **DR-184 Is Optimality Status Correct** | A TSP invariant check is considered an optimality status correct if the expected optimality proved is the actual optimality proved. |
+| **DR-185 Is Cost Correct** | A TSP invariant check is considered a cost correct if the expected total travel cost is the actual total travel cost. |
+| **DR-186 Is Passing** | A TSP invariant check is considered passing if all of the following hold: the hamiltonian status correct flag is set; the optimality status correct flag is set; and the cost correct flag is set. |
 
 ## 5 Traceability to Schema
 
@@ -840,12 +844,14 @@ the same logic the rulebook stores, written for a business reader._
 | **TSPSearchCertificates.RouteClassEliminationPct** | formula | `If(InitialRouteClassCount = 0, 0, Round(InitialRouteClassCount - SurvivingRouteClassCount / InitialRouteClassCount * 100, 2))` |
 | **TSPClusterBoundaryStates.BoundarySignature** | formula | `Concat(Neighborhood, "\|", EntryStop, "\|", ExitStop, "\|", InternalStopCount, "\|", InternalPathCost)` |
 | **TSPClusterBoundaryStates.SemanticQuotientKey** | formula | `Concat(Neighborhood, "\|", EntryStop, "\|", ExitStop, "\|", InternalStopCount, "\|", InternalPathCost)` |
+| **TSPClusterBoundaryStates.IsFiberMinimum** | formula | `And(IsQuotientRepresentative, Not(IsDominated))` |
 | **TSPInferenceRules.Name** | formula | `DisplayName` |
 | **TSPFrontierObligations.Name** | formula | `DisplayName` |
 | **TSPFrontierObligations.IsImportedDependency** | formula | `ObligationKind = "IMPORTED_DEPENDENCY"` |
 | **TSPFrontierObligations.IsClosed** | formula | `Status = "CLOSED"` |
 | **TSPLoops.Name** | formula | `DisplayName` |
 | **TSPConvergenceMeasurements.SemanticCompressionPct** | formula | `If(SurfaceConceptCountBefore = 0, 0, Round(SurfaceConceptCountBefore - PrimitiveCountAfter / SurfaceConceptCountBefore * 100, 2))` |
+| **TSPConceptRegistry.IsCurrentBasisMember** | formula | `Or(Status = "ACTIVE_PRIMITIVE", Status = "ACTIVE_OPERATOR")` |
 | **SearchMetrics.SearchEliminationPct** | formula | `If(BranchCountBefore = 0, 0, Round(BranchCountBefore - BranchCountAfter / BranchCountBefore * 100, 2))` |
 | **TSPInvariantChecks.Name** | formula | `DisplayName` |
 | **TSPInvariantChecks.ActualHamiltonianCycleWitness** | lookup | `Lookup(CandidateTours.IsHamiltonianCycleWitness via CandidateTour)` |

@@ -304,14 +304,14 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <li><a href="#en-t-tspsearchcertificates">TSP Search Certificate</a> <span class="toc-meta">1 rules · 3 links</span></li>
     <li><a href="#en-t-tspconstraintrounds">TSP Constraint Round</a> <span class="toc-meta">0 rules · 2 links</span></li>
     <li><a href="#en-t-tspconstraintdecisions">TSP Constraint Decision</a> <span class="toc-meta">0 rules · 4 links</span></li>
-    <li><a href="#en-t-tspclusterboundarystates">TSP Cluster Boundary State</a> <span class="toc-meta">2 rules · 5 links</span></li>
+    <li><a href="#en-t-tspclusterboundarystates">TSP Cluster Boundary State</a> <span class="toc-meta">3 rules · 6 links</span></li>
     <li><a href="#en-t-tspclusterboundarystatemembers">TSP Cluster Boundary State Member</a> <span class="toc-meta">0 rules · 2 links</span></li>
     <li><a href="#en-t-tspclustercontractioncertificates">TSP Cluster Contraction Certificate</a> <span class="toc-meta">0 rules · 2 links</span></li>
     <li><a href="#en-t-tspinferencerules">TSP Inference Rule</a> <span class="toc-meta">1 rules · 0 links</span></li>
     <li><a href="#en-t-tspfrontierobligations">TSP Frontier Obligation</a> <span class="toc-meta">3 rules · 3 links</span></li>
     <li><a href="#en-t-tsploops">TSP Loop</a> <span class="toc-meta">1 rules · 1 links</span></li>
     <li><a href="#en-t-tspconvergencemeasurements">TSP Convergence Measurement</a> <span class="toc-meta">1 rules · 1 links</span></li>
-    <li><a href="#en-t-tspconceptregistry">TSP Concept Registry</a> <span class="toc-meta">0 rules · 1 links</span></li>
+    <li><a href="#en-t-tspconceptregistry">TSP Concept Registry</a> <span class="toc-meta">1 rules · 1 links</span></li>
     <li><a href="#en-t-searchmetrics">Search Metric</a> <span class="toc-meta">1 rules · 3 links</span></li>
     <li><a href="#en-t-tspinvariantchecks">TSP Invariant Check</a> <span class="toc-meta">8 rules · 1 links</span></li>
   </ul>
@@ -16525,6 +16525,12 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="gt">
       <p class="gt-body">Ground truth. Written directly to the database (datatype <code>boolean</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
+    <details class="prov prov-consumers elem elem-consumers" open>
+      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#en-f-tspclusterboundarystates-isfiberminimum">ƒ Is Fiber Minimum <span class="ref-pill-tbl">TSP Cluster Boundary State</span></a>
+      </div>
+    </details>
     <p class="field-note elem elem-desc">Whether a cheaper state with the same boundary exists.</p>
     </article>
   <article class="field tone-raw" id="en-f-tspclusterboundarystates-status" data-entity="TSP Cluster Boundary State" data-field="Status">
@@ -16681,7 +16687,154 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="gt">
       <p class="gt-body">Ground truth. Written directly to the database (datatype <code>boolean</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
+    <details class="prov prov-consumers elem elem-consumers" open>
+      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#en-f-tspclusterboundarystates-isfiberminimum">ƒ Is Fiber Minimum <span class="ref-pill-tbl">TSP Cluster Boundary State</span></a>
+      </div>
+    </details>
     <p class="field-note elem elem-desc">Whether this state is the canonical quotient representative.</p>
+    </article>
+  <article class="field tone-rel" id="en-f-tspclusterboundarystates-secondinternalviastop" data-entity="TSP Cluster Boundary State" data-field="Second Internal Via Stop">
+    <div class="field-head">
+      <span class="field-glyph" title="Relationship">⇢</span>
+      <span class="field-name">Second Internal Via Stop</span>
+      <span class="pill pill-type">Relationship</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">A pointer to <a href="#en-t-instancestops">Instance Stop</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
+    </div>
+    <p class="field-note elem elem-desc">Second internal stop for clusters larger than three.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspclusterboundarystates-entryportrole" data-entity="TSP Cluster Boundary State" data-field="Entry Port Role">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Entry Port Role</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Typed role of the entry boundary attachment.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspclusterboundarystates-exitportrole" data-entity="TSP Cluster Boundary State" data-field="Exit Port Role">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Exit Port Role</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Typed role of the exit boundary attachment.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspclusterboundarystates-portcontract" data-entity="TSP Cluster Boundary State" data-field="Port Contract">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Port Contract</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Coverage and incidence contract exposed at the boundary.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspclusterboundarystates-boundaryfiberkey" data-entity="TSP Cluster Boundary State" data-field="Boundary Fiber Key">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Boundary Fiber Key</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Scope plus canonical unordered boundary ports.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspclusterboundarystates-internalorderkey" data-entity="TSP Cluster Boundary State" data-field="Internal Order Key">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Internal Order Key</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Canonical represented internal order.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspclusterboundarystates-raworientationmultiplicity" data-entity="TSP Cluster Boundary State" data-field="Raw Orientation Multiplicity">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Raw Orientation Multiplicity</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Directed orientations represented by this quotient row.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspclusterboundarystates-dominancedelta" data-entity="TSP Cluster Boundary State" data-field="Dominance Delta">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Dominance Delta</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">number</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Cost difference from the fiber minimum.</p>
+    </article>
+  <article class="field tone-calc" id="en-f-tspclusterboundarystates-isfiberminimum" data-entity="TSP Cluster Boundary State" data-field="Is Fiber Minimum">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Is Fiber Minimum</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+      <span class="pill pill-dr">DR-170</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <div class="view-body"><p class="rt-headline">A TSP cluster boundary state is considered a fiber minimum if all of the following:</p><ol class="rt-priority"><ul class="rt-group"><li>the <a class="ref" href="#en-f-tspclusterboundarystates-isquotientrepresentative">quotient representative</a> flag is set</li><li>the <a class="ref" href="#en-f-tspclusterboundarystates-isdominated">dominated</a> flag is not set</li></ul></ol></div>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body"><a class="ref" href="#en-f-tspclusterboundarystates-isquotientrepresentative">Is quotient representative</a> and not <a class="ref" href="#en-f-tspclusterboundarystates-isdominated">is dominated</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>AND(<a class="fx-chip" href="#en-f-tspclusterboundarystates-isquotientrepresentative">Is Quotient Representative</a>, NOT(<a class="fx-chip" href="#en-f-tspclusterboundarystates-isdominated">Is Dominated</a>))</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#en-f-tspclusterboundarystates-isquotientrepresentative">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Is Quotient Representative</span><span class="input-table">TSP Cluster Boundary State</span></span>
+          <span class="input-en muted">Whether this state is the canonical quotient representative.</span>
+        </a>
+        <a class="input tone-raw" href="#en-f-tspclusterboundarystates-isdominated">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Is Dominated</span><span class="input-table">TSP Cluster Boundary State</span></span>
+          <span class="input-en muted">Whether a cheaper state with the same boundary exists.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">2</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#en-f-tspclusterboundarystates-isquotientrepresentative">● Is Quotient Representative <span class="ref-pill-tbl">TSP Cluster Boundary State</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-tspclusterboundarystates-isdominated">● Is Dominated <span class="ref-pill-tbl">TSP Cluster Boundary State</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Whether the state is the surviving minimum in its fiber.</p>
     </article>
 </section>
 <section class="entity" id="en-t-tspclusterboundarystatemembers" data-entity="TSP Cluster Boundary State Member">
@@ -16888,7 +17041,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-170</span>
+      <span class="pill pill-dr">DR-171</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -17060,7 +17213,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-171</span>
+      <span class="pill pill-dr">DR-172</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -17226,7 +17379,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-172</span>
+      <span class="pill pill-dr">DR-173</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -17266,7 +17419,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-173</span>
+      <span class="pill pill-dr">DR-174</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -17312,7 +17465,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-174</span>
+      <span class="pill pill-dr">DR-175</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -17592,7 +17745,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-175</span>
+      <span class="pill pill-dr">DR-176</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -17766,7 +17919,113 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="gt">
       <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
+    <details class="prov prov-consumers elem elem-consumers" open>
+      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#en-f-tspconceptregistry-iscurrentbasismember">ƒ Is Current Basis Member <span class="ref-pill-tbl">TSP Concept Registry</span></a>
+      </div>
+    </details>
     <p class="field-note elem elem-desc">ACTIVE_PRIMITIVE, ACTIVE_DERIVED, or HISTORICAL_PROJECTION.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspconceptregistry-historicalconceptkind" data-entity="TSP Concept Registry" data-field="Historical Concept Kind">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Historical Concept Kind</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Concept kind at the time of its historical certificate.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspconceptregistry-semanticcategory" data-entity="TSP Concept Registry" data-field="Semantic Category">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Semantic Category</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">ATOM, OPERATOR, DERIVED, or HISTORICAL.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspconceptregistry-reducedbasisexpression" data-entity="TSP Concept Registry" data-field="Reduced Basis Expression">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Reduced Basis Expression</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Current definition over active atoms and operators.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspconceptregistry-operatorexpression" data-entity="TSP Concept Registry" data-field="Operator Expression">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Operator Expression</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Operators required to derive the concept from atoms.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspconceptregistry-reductiongeneration" data-entity="TSP Concept Registry" data-field="Reduction Generation">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Reduction Generation</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Reduction generation introducing the current definition.</p>
+    </article>
+  <article class="field tone-calc" id="en-f-tspconceptregistry-iscurrentbasismember" data-entity="TSP Concept Registry" data-field="Is Current Basis Member">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Is Current Basis Member</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+      <span class="pill pill-dr">DR-177</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <div class="view-body"><p class="rt-headline">A TSP concept registry is considered a current basis member if all of the following:</p><ol class="rt-priority"><ul class="rt-group"><li>the <a class="ref" href="#en-f-tspconceptregistry-status">status</a> is “ACTIVE_PRIMITIVE”</li><li>the <a class="ref" href="#en-f-tspconceptregistry-status">status</a> is “ACTIVE_OPERATOR”</li></ul></ol></div>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body"><a class="ref" href="#en-f-tspconceptregistry-status">Status</a> is &quot;ACTIVE_PRIMITIVE&quot; or <a class="ref" href="#en-f-tspconceptregistry-status">status</a> is &quot;ACTIVE_OPERATOR&quot;.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>OR(<a class="fx-chip" href="#en-f-tspconceptregistry-status">Status</a> = &quot;ACTIVE_PRIMITIVE&quot;, <a class="fx-chip" href="#en-f-tspconceptregistry-status">Status</a> = &quot;ACTIVE_OPERATOR&quot;)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#en-f-tspconceptregistry-status">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Status</span><span class="input-table">TSP Concept Registry</span></span>
+          <span class="input-en muted">ACTIVE_PRIMITIVE, ACTIVE_DERIVED, or HISTORICAL_PROJECTION.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#en-f-tspconceptregistry-status">● Status <span class="ref-pill-tbl">TSP Concept Registry</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Whether the row is an active atom or operator.</p>
     </article>
 </section>
 <section class="entity" id="en-t-searchmetrics" data-entity="Search Metric">
@@ -17961,7 +18220,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-176</span>
+      <span class="pill pill-dr">DR-178</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -18024,7 +18283,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-177</span>
+      <span class="pill pill-dr">DR-179</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -18125,7 +18384,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">8 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-178</span>
+      <span class="pill pill-dr">DR-180</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -18222,7 +18481,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">18 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-179</span>
+      <span class="pill pill-dr">DR-181</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -18336,7 +18595,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">8 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-180</span>
+      <span class="pill pill-dr">DR-182</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -18413,7 +18672,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">9 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-181</span>
+      <span class="pill pill-dr">DR-183</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -18487,7 +18746,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">19 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-182</span>
+      <span class="pill pill-dr">DR-184</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -18578,7 +18837,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">9 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-183</span>
+      <span class="pill pill-dr">DR-185</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -18651,7 +18910,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">20 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-184</span>
+      <span class="pill pill-dr">DR-186</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">

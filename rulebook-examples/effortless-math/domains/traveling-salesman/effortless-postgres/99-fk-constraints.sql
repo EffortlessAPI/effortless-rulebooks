@@ -329,6 +329,9 @@ ALTER TABLE tsp_cluster_boundary_states ADD CONSTRAINT fk_tsp_cluster_boundary_s
 ALTER TABLE tsp_cluster_boundary_states DROP CONSTRAINT IF EXISTS fk_tsp_cluster_boundary_states_internal_via_stop;
 ALTER TABLE tsp_cluster_boundary_states ADD CONSTRAINT fk_tsp_cluster_boundary_states_internal_via_stop
   FOREIGN KEY (internal_via_stop) REFERENCES instance_stops (instance_stop_id);
+ALTER TABLE tsp_cluster_boundary_states DROP CONSTRAINT IF EXISTS fk_tsp_cluster_boundary_states_second_internal_via_stop;
+ALTER TABLE tsp_cluster_boundary_states ADD CONSTRAINT fk_tsp_cluster_boundary_states_second_internal_via_stop
+  FOREIGN KEY (second_internal_via_stop) REFERENCES instance_stops (instance_stop_id);
 
 -- TSPClusterBoundaryStateMembers
 ALTER TABLE tsp_cluster_boundary_state_members DROP CONSTRAINT IF EXISTS fk_tsp_cluster_boundary_state_members_cluster_boundary_state;
@@ -371,9 +374,6 @@ ALTER TABLE tsp_convergence_measurements ADD CONSTRAINT fk_tsp_convergence_measu
 ALTER TABLE tsp_concept_registry DROP CONSTRAINT IF EXISTS fk_tsp_concept_registry_introduced_by_loop;
 ALTER TABLE tsp_concept_registry ADD CONSTRAINT fk_tsp_concept_registry_introduced_by_loop
   FOREIGN KEY (introduced_by_loop) REFERENCES tsp_loops (tsp_loop_id);
-ALTER TABLE tsp_concept_registry DROP CONSTRAINT IF EXISTS fk_tsp_concept_registry_superseded_by_concept;
-ALTER TABLE tsp_concept_registry ADD CONSTRAINT fk_tsp_concept_registry_superseded_by_concept
-  FOREIGN KEY (superseded_by_concept) REFERENCES tsp_concept_registry (tsp_concept_id);
 
 -- SearchMetrics
 ALTER TABLE search_metrics DROP CONSTRAINT IF EXISTS fk_search_metrics_tsp_instance;
