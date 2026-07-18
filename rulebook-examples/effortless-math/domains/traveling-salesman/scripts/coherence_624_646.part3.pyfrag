@@ -1,0 +1,1161 @@
+
+def mark_current_basis_concept(
+    rb: dict[str, Any],
+    ident: str,
+    *,
+    mode: str = "COMPOSED_DERIVATION",
+    polarity: str = "MIXED",
+    recovery: str | None = None,
+) -> None:
+    ensure_arc_fields(rb)
+    row = table_index(rb, "TSPConceptRegistry")[ident]
+    row.update(
+        {
+            "ArcSubjectSort": row.get("ArcSubjectSort") or "COMPOSED_SUBJECT",
+            "ArcLabelSort": row.get("ArcLabelSort") or "COMPOSED",
+            "ArcTargetSort": row.get("ArcTargetSort") or "COMPOSED_TARGET",
+            "ArcSignature": row.get("ArcSignature") or "COMPOSITION_OF_TYPED_SEMANTIC_ARCS",
+            "RecoverabilityExpression": recovery or f"PROJECT_{ident}_FROM_SEMANTIC_ARC_AND_WARRANTED_REWRITE",
+            "IsRecoverableFromCurrentBasis": True,
+            "RewriteMode": mode,
+            "RewritePolarity": polarity,
+        }
+    )
+
+
+def ensure_region_fields(rb: dict[str, Any]) -> None:
+    ensure_fields(
+        rb["Neighborhoods"],
+        [
+            base.field("RegionInterfaceKind", "string", "raw", True, "Port-bearing semantic region kind."),
+            base.field("BoundaryPortCount", "integer", "raw", True, "Number of external ports required by the region interface."),
+            base.field("InternalCoverageCount", "integer", "raw", True, "Required internal stops covered by every valid expansion."),
+            base.field("ExpansionWitnessKind", "string", "raw", True, "How a region representative expands to underlying graph structure."),
+            base.field("InterfaceStatus", "string", "raw", True, "OPEN, NORMALIZED, or CERTIFIED."),
+        ],
+    )
+    for row in rows(rb, "Neighborhoods"):
+        row.setdefault("RegionInterfaceKind", None)
+        row.setdefault("BoundaryPortCount", None)
+        row.setdefault("InternalCoverageCount", None)
+        row.setdefault("ExpansionWitnessKind", None)
+        row.setdefault("InterfaceStatus", None)
+
+
+def loop_633(rb: dict[str, Any], contract: dict[str, Any]) -> tuple[str, str]:
+    ensure_region_fields(rb)
+    state_counts: Counter[str] = Counter(
+        state["Neighborhood"] for state in rows(rb, "TSPClusterBoundaryStates")
+    )
+    for row in rows(rb, "Neighborhoods"):
+        if row.get("IsQuotientNode"):
+            row["RegionInterfaceKind"] = "PORT_BEARING_QUOTIENT_REGION"
+            row["BoundaryPortCount"] = int(row.get("RequiredBoundaryDegree") or 2)
+            row["InternalCoverageCount"] = max(
+                [
+                    int(state["InternalStopCount"])
+                    for state in rows(rb, "TSPClusterBoundaryStates")
+                    if state["Neighborhood"] == row["NeighborhoodId"]
+                ]
+                or [0]
+            )
+            row["ExpansionWitnessKind"] = "ORDERED_BOUNDARY_PATH_EDGE_MEMBERS"
+            row["InterfaceStatus"] = "CERTIFIED" if state_counts[row["NeighborhoodId"]] else "NORMALIZED"
+    register_concept(
+        rb,
+        "coined-region-interface",
+        "Region Interface",
+        "COINED_PREDICATE",
+        "SEMANTIC_ARC(region,BOUNDARY_PORT,port)+SEMANTIC_ARC(region,INTERNAL_COVERAGE,count)+WARRANTED_REWRITE(region,EXPANSION,graph,warrant)",
+        1,
+        "Neighborhoods,TSPClusterBoundaryStates,TSPClusterBoundaryStateMembers",
+        633,
+        status="ACTIVE_DERIVED",
+        category="DERIVED",
+        operator_expression="WARRANTED_REWRITE",
+    )
+    mark_current_basis_concept(rb, "coined-region-interface", mode="REGION_NORMALIZATION", polarity="MIXED")
+    add_measurement(
+        rb,
+        633,
+        "Region Interface",
+        "Existing neighborhood, component, and boundary-fiber quotient nodes share one port, coverage, valuation, and expansion contract without a new table.",
+    )
+    return (
+        "Normalized every existing quotient node through one region-interface projection.",
+        "Region identity now carries two boundary ports, internal coverage, an ordered expansion witness kind, and a certified interface status; neighborhood versus component remains provenance.",
+    )
+
+
+R3_INSTANCE = "tsp-three-regions-9"
+R3_REGIONS = {
+    "a": ["r3-stop-a1", "r3-stop-a2", "r3-stop-a3"],
+    "b": ["r3-stop-b1", "r3-stop-b2", "r3-stop-b3"],
+    "c": ["r3-stop-c1", "r3-stop-c2", "r3-stop-c3"],
+}
+R3_NEIGHBORHOODS = {key: f"gridville-region-{key}" for key in R3_REGIONS}
+R3_RING_CROSSINGS = {
+    edge_key("r3-stop-a3", "r3-stop-b1"),
+    edge_key("r3-stop-b3", "r3-stop-c1"),
+    edge_key("r3-stop-a1", "r3-stop-c3"),
+}
+
+
+def r3_region(stop: str) -> str:
+    return stop.removeprefix("r3-stop-")[0]
+
+
+def r3_short(stop: str) -> str:
+    return stop.removeprefix("r3-stop-")
+
+
+def r3_edge_id(a: str, b: str) -> str:
+    x, y = edge_key(a, b)
+    return f"r3-edge-{r3_short(x)}-{r3_short(y)}"
+
+
+def r3_edge_cost(a: str, b: str) -> int:
+    pair = edge_key(a, b)
+    if r3_region(a) == r3_region(b):
+        return 1
+    if pair in R3_RING_CROSSINGS:
+        return 10
+    return 100
+
+
+def r3_all_stops() -> list[str]:
+    return [stop for key in ("a", "b", "c") for stop in R3_REGIONS[key]]
+
+
+def r3_internal_edges() -> list[str]:
+    result: list[str] = []
+    for stops in R3_REGIONS.values():
+        for a, b in itertools.combinations(stops, 2):
+            result.append(r3_edge_id(a, b))
+    return sorted(result)
+
+
+def r3_route() -> list[str]:
+    return [
+        "r3-stop-a1",
+        "r3-stop-a2",
+        "r3-stop-a3",
+        "r3-stop-b1",
+        "r3-stop-b2",
+        "r3-stop-b3",
+        "r3-stop-c1",
+        "r3-stop-c2",
+        "r3-stop-c3",
+    ]
+
+
+def r3_repaired_edges() -> list[str]:
+    route = r3_route()
+    return [r3_edge_id(route[i], route[(i + 1) % len(route)]) for i in range(len(route))]
+
+
+def loop_634(rb: dict[str, Any], contract: dict[str, Any]) -> tuple[str, str]:
+    ensure_region_fields(rb)
+    neighborhoods = []
+    addresses = []
+    stops = []
+    for region_index, region in enumerate(("a", "b", "c"), start=1):
+        neighborhoods.append(
+            {
+                "NeighborhoodId": R3_NEIGHBORHOODS[region],
+                "DisplayName": f"Region {region.upper()}",
+                "City": "gridville",
+                "ClusterKind": "THREE_REGION_REPAIR_FIXTURE",
+                "IsQuotientNode": False,
+                "QuotientNodeKind": None,
+                "RequiredBoundaryDegree": None,
+                "QuotientScopeId": R3_INSTANCE,
+                "RegionInterfaceKind": "PORT_BEARING_QUOTIENT_REGION",
+                "BoundaryPortCount": 2,
+                "InternalCoverageCount": 3,
+                "ExpansionWitnessKind": "ORDERED_BOUNDARY_PATH_EDGE_MEMBERS",
+                "InterfaceStatus": "OPEN",
+            }
+        )
+        for local_index, stop in enumerate(R3_REGIONS[region], start=1):
+            suffix = r3_short(stop)
+            address = f"addr-r3-{suffix}"
+            addresses.append(
+                {
+                    "AddressId": address,
+                    "StreetLabel": f"Region {region.upper()} Stop {local_index}",
+                    "Neighborhood": R3_NEIGHBORHOODS[region],
+                    "XCoordinate": 40 + region_index * 10 + local_index,
+                    "YCoordinate": region_index * 4 + (local_index % 2),
+                    "IsDepotCandidate": stop == "r3-stop-a1",
+                }
+            )
+            stops.append(
+                {
+                    "InstanceStopId": stop,
+                    "TSPInstance": R3_INSTANCE,
+                    "Address": address,
+                    "IsRequired": True,
+                }
+            )
+    upsert_rows(rb["Neighborhoods"], "NeighborhoodId", neighborhoods)
+    upsert_rows(rb["Addresses"], "AddressId", addresses)
+    upsert_rows(
+        rb["TSPInstances"],
+        "TSPInstanceId",
+        [
+            {
+                "TSPInstanceId": R3_INSTANCE,
+                "DisplayName": "Three-Region Repair Nine-Stop Graph",
+                "City": "gridville",
+                "DepotAddress": "addr-r3-a1",
+                "DistanceModel": "EXPLICIT_SYMMETRIC_COST",
+                "IsSymmetric": True,
+                "Status": "NORMALIZED",
+                "SearchPolicy": "REGION_REPAIR_BEFORE_ROUTE_SEARCH",
+                "Notes": "Three cost-one triangles, three cost-ten ring crossings, and cost-one-hundred remaining crossings.",
+            }
+        ],
+    )
+    upsert_rows(rb["InstanceStops"], "InstanceStopId", stops)
+
+    edge_rows = []
+    all_stops = r3_all_stops()
+    for a, b in itertools.combinations(all_stops, 2):
+        x, y = edge_key(a, b)
+        cost = r3_edge_cost(x, y)
+        edge_rows.append(
+            {
+                "TravelEdgeId": r3_edge_id(x, y),
+                "TSPInstance": R3_INSTANCE,
+                "FromStop": x,
+                "ToStop": y,
+                "CanonicalPairKey": f"{x}|{y}",
+                "DistanceMeters": cost * 1000,
+                "TravelCost": cost,
+                "IsAvailable": True,
+                "EdgeSource": "THREE_REGION_REPAIR_FIXTURE",
+            }
+        )
+    upsert_rows(rb["TravelEdges"], "TravelEdgeId", edge_rows)
+
+    local_bounds = []
+    dominance = []
+    for stop in all_stops:
+        internal_peers = sorted(peer for peer in R3_REGIONS[r3_region(stop)] if peer != stop)
+        first, second = [r3_edge_id(stop, peer) for peer in internal_peers]
+        bound_id = f"local-bound-{r3_short(stop)}"
+        local_bounds.append(
+            {
+                "LocalDegreeBoundId": bound_id,
+                "TSPInstance": R3_INSTANCE,
+                "InstanceStop": stop,
+                "FirstEdge": first,
+                "SecondEdge": second,
+            }
+        )
+        selected = {first, second}
+        incident = [
+            row["TravelEdgeId"]
+            for row in edge_rows
+            if stop in {row["FromStop"], row["ToStop"]}
+        ]
+        for other in sorted(set(incident) - selected):
+            dominance.append(
+                {
+                    "IncidentDominanceCheckId": f"dom-{bound_id}-{other}",
+                    "LocalDegreeBound": bound_id,
+                    "OtherEdge": other,
+                }
+            )
+    upsert_rows(rb["LocalDegreeBounds"], "LocalDegreeBoundId", local_bounds)
+    upsert_rows(rb["IncidentDominanceChecks"], "IncidentDominanceCheckId", dominance)
+    upsert_rows(
+        rb["InstanceLowerBounds"],
+        "InstanceLowerBoundId",
+        [
+            {
+                "InstanceLowerBoundId": "degree-two-lower-bound-three-regions-9",
+                "TSPInstance": R3_INSTANCE,
+                "BoundKind": "SUM_TWO_CHEAPEST_INCIDENT_EDGES_DIVIDED_BY_TWO",
+                "RequiredSupplementalTermCount": 0,
+                "BoundCompositionKind": "DEGREE_TWO_ONLY",
+                "SupplementalBoundAdjustment": 0,
+            }
+        ],
+    )
+    upsert_rows(
+        rb["TSPInferenceStates"],
+        "TSPInferenceStateId",
+        [
+            {
+                "TSPInferenceStateId": "state-three-region-local-two-factor",
+                "TSPInstance": R3_INSTANCE,
+                "TSPLoop": "tsp-loop-634",
+                "StateKind": "LOCAL_TWO_FACTOR_REGION_TRIAD",
+                "ParentStateId": None,
+                "Status": "CLOSED",
+                "Description": "Nine locally cheapest internal edges form three disconnected cost-one triangles.",
+            }
+        ],
+    )
+    upsert_rows(
+        rb["TSPDerivedEdgeSets"],
+        "TSPDerivedEdgeSetId",
+        [
+            {
+                "TSPDerivedEdgeSetId": "edge-set-three-region-local-two-factor",
+                "TSPInstance": R3_INSTANCE,
+                "InferenceState": "state-three-region-local-two-factor",
+                "DerivationKind": "UNION_OF_LOCAL_DEGREE_BOUND_SELECTIONS",
+                "EdgeCount": 9,
+                "RequiredStopCount": 9,
+                "TotalCost": 9,
+                "DegreeViolationCount": 0,
+                "ConnectedComponentCount": 3,
+                "ProperSubtourCount": 3,
+                "Status": "DISCONNECTED_SUBTOURS",
+            }
+        ],
+    )
+    upsert_rows(
+        rb["TSPDerivedEdgeSetMembers"],
+        "TSPDerivedEdgeSetMemberId",
+        [
+            {
+                "TSPDerivedEdgeSetMemberId": f"member-three-region-local-{edge_id}",
+                "DerivedEdgeSet": "edge-set-three-region-local-two-factor",
+                "TravelEdge": edge_id,
+                "SupportCount": 2,
+                "SelectedAtBothEndpoints": True,
+                "MemberStatus": "SELECTED",
+            }
+            for edge_id in r3_internal_edges()
+        ],
+    )
+    upsert_rows(
+        rb["TSPEdgeSetStopDegrees"],
+        "TSPEdgeSetStopDegreeId",
+        [
+            {
+                "TSPEdgeSetStopDegreeId": f"degree-three-region-local-{r3_short(stop)}",
+                "DerivedEdgeSet": "edge-set-three-region-local-two-factor",
+                "InstanceStop": stop,
+                "SelectedDegree": 2,
+            }
+            for stop in all_stops
+        ],
+    )
+    register_concept(
+        rb,
+        "coined-region-triad",
+        "Region Triad",
+        "COINED_PREDICATE",
+        "SEMANTIC_ARC(stop,REGION,region)+SEMANTIC_ARC(edge,COST,value)+WARRANTED_REWRITE(local_bounds,UNION,three_component_two_factor,warrant)",
+        1,
+        "Neighborhoods,InstanceStops,TravelEdges,LocalDegreeBounds,TSPDerivedEdgeSets",
+        634,
+        status="ACTIVE_DERIVED",
+        category="DERIVED",
+        operator_expression="WARRANTED_REWRITE",
+    )
+    mark_current_basis_concept(rb, "coined-region-triad", mode="FIXTURE_NORMALIZATION", polarity="EXPANSIVE")
+    add_measurement(
+        rb,
+        634,
+        "Region Triad",
+        "Nine stops and thirty-six edges expand the explicit DAG while reusing the same tables and one-arc/one-rewrite basis; the local two-factor has cost nine and three components.",
+    )
+    return (
+        "Represented three cost-one local triangles inside one complete nine-stop weighted graph.",
+        "Nine valid local degree witnesses select nine internal edges of total cost nine; their union has degree two at every stop, three connected components, three proper subtours, and no route or optimality promotion.",
+    )
+
+
+def triangle_path_specs(stops: list[str]) -> list[tuple[str, str, str]]:
+    result = []
+    for entry, exit_ in itertools.combinations(sorted(stops), 2):
+        via = next(stop for stop in stops if stop not in {entry, exit_})
+        result.append((entry, via, exit_))
+    return result
+
+
+def loop_635(rb: dict[str, Any], contract: dict[str, Any]) -> tuple[str, str]:
+    ensure_region_fields(rb)
+    prev.ensure_boundary_fields(rb)
+    state_rows = []
+    member_rows = []
+    cert_rows = []
+    neighborhoods = table_index(rb, "Neighborhoods")
+    for region in ("a", "b", "c"):
+        neighborhood_id = R3_NEIGHBORHOODS[region]
+        neighborhood = neighborhoods[neighborhood_id]
+        neighborhood.update(
+            {
+                "IsQuotientNode": True,
+                "QuotientNodeKind": "CONNECTED_COMPONENT_BOUNDARY_OBJECT",
+                "RequiredBoundaryDegree": 2,
+                "QuotientScopeId": R3_INSTANCE,
+                "RegionInterfaceKind": "PORT_BEARING_QUOTIENT_REGION",
+                "BoundaryPortCount": 2,
+                "InternalCoverageCount": 3,
+                "ExpansionWitnessKind": "ORDERED_BOUNDARY_PATH_EDGE_MEMBERS",
+                "InterfaceStatus": "CERTIFIED",
+            }
+        )
+        for entry, via, exit_ in triangle_path_specs(R3_REGIONS[region]):
+            state_id = f"cluster-state-r3-{region}-{r3_short(entry)}-{r3_short(exit_)}"
+            first_edge = r3_edge_id(entry, via)
+            second_edge = r3_edge_id(via, exit_)
+            state_rows.append(
+                {
+                    "TSPClusterBoundaryStateId": state_id,
+                    "TSPInstance": R3_INSTANCE,
+                    "Neighborhood": neighborhood_id,
+                    "EntryStop": entry,
+                    "ExitStop": exit_,
+                    "InternalViaStop": via,
+                    "SecondInternalViaStop": None,
+                    "InternalPathCost": 2,
+                    "InternalStopCount": 3,
+                    "IsHamiltonianPath": True,
+                    "IsDominated": False,
+                    "Status": "SURVIVES",
+                    "NormalizedWitnessId": None,
+                    "OrientationMultiplicity": 2,
+                    "IsQuotientRepresentative": True,
+                    "EntryPortRole": "BOUNDARY_ENTRY",
+                    "ExitPortRole": "BOUNDARY_EXIT",
+                    "PortContract": "ONE_ENTRY_ONE_EXIT_FULL_INTERNAL_COVERAGE",
+                    "BoundaryFiberKey": f"{neighborhood_id}|{min(entry, exit_)}|{max(entry, exit_)}",
+                    "InternalOrderKey": f"{entry}>{via}>{exit_}",
+                    "RawOrientationMultiplicity": 2,
+                    "DominatedByStateId": None,
+                    "DominanceDelta": 0,
+                }
+            )
+            member_rows.extend(
+                [
+                    {
+                        "TSPClusterBoundaryStateMemberId": f"member-{state_id}-1",
+                        "ClusterBoundaryState": state_id,
+                        "TravelEdge": first_edge,
+                        "MemberOrder": 1,
+                    },
+                    {
+                        "TSPClusterBoundaryStateMemberId": f"member-{state_id}-2",
+                        "ClusterBoundaryState": state_id,
+                        "TravelEdge": second_edge,
+                        "MemberOrder": 2,
+                    },
+                ]
+            )
+        cert_rows.append(
+            {
+                "TSPClusterContractionCertificateId": f"contraction-three-region-{region}",
+                "TSPInstance": R3_INSTANCE,
+                "Neighborhood": neighborhood_id,
+                "ScopeKind": "NEIGHBORHOOD",
+                "RawInternalOrderCount": 6,
+                "SurvivingBoundaryStateCount": 3,
+                "RawCombinationCount": None,
+                "ContractedCombinationCount": None,
+                "ReductionPct": 50,
+                "IsPassing": True,
+                "ScopeClaim": "CERTIFIED_FOR_DECLARED_THREE_STOP_REGION",
+                "EquivalenceRelation": "PATH_REVERSAL_WITH_FIXED_UNORDERED_BOUNDARY_AND_COST",
+                "QuotientClassCount": 3,
+            }
+        )
+    upsert_rows(rb["TSPClusterBoundaryStates"], "TSPClusterBoundaryStateId", state_rows)
+    upsert_rows(rb["TSPClusterBoundaryStateMembers"], "TSPClusterBoundaryStateMemberId", member_rows)
+    upsert_rows(rb["TSPClusterContractionCertificates"], "TSPClusterContractionCertificateId", cert_rows)
+    register_concept(
+        rb,
+        "coined-region-quotient",
+        "Region Quotient",
+        "COINED_PREDICATE",
+        "WARRANTED_REWRITE(region_paths,CONTRACTIVE,region_representative,expansion_warrant)+SEMANTIC_ARC(region,BOUNDARY_DEGREE,2)",
+        1,
+        "Neighborhoods,TSPClusterBoundaryStates,TSPClusterContractionCertificates",
+        635,
+        status="ACTIVE_DERIVED",
+        category="DERIVED",
+        operator_expression="WARRANTED_REWRITE",
+    )
+    mark_current_basis_concept(rb, "coined-region-quotient", mode="REGION_QUOTIENT", polarity="CONTRACTIVE")
+    add_measurement(
+        rb,
+        635,
+        "Region Quotient",
+        "Three regions each expand through three cost-two Hamiltonian path states and contract six directed internal orders to three reversal classes without adding a table.",
+    )
+    add_frontier(
+        rb,
+        "frontier-three-region-quotient",
+        "Three-region quotient interfaces",
+        634,
+        635,
+        "tsp-rule-region-interface",
+        "Each of three local triangle components exposes a boundary-degree-two region interface with three path states and explicit expansion members.",
+        "region-interface-certificate",
+    )
+    return (
+        "Contracted each local triangle to a certified boundary-degree-two region quotient.",
+        "Three quotient nodes expose nine total boundary states and eighteen expansion edges; each regional certificate records 6 directed orders to 3 reversal classes at cost two.",
+    )
+
+
+def loop_636(rb: dict[str, Any], contract: dict[str, Any]) -> tuple[str, str]:
+    profiles = []
+    for region in ("a", "b", "c"):
+        profiles.append(
+            {
+                "TSPDefectProfileId": f"quotient-incidence-region-{region}",
+                "TSPInstance": R3_INSTANCE,
+                "TSPLoop": "tsp-loop-636",
+                "SubjectKind": "QUOTIENT_NODE",
+                "SubjectId": R3_NEIGHBORHOODS[region],
+                "RequiredIncidence": 2,
+                "ObservedIncidence": 0,
+                "ComponentCount": 1,
+                "RequiredBoundaryCrossings": 2,
+                "ObservedBoundaryCrossings": 0,
+                "LowerBoundCost": 0,
+                "UpperBoundCost": 0,
+                "Status": "QUOTIENT_INCIDENCE_OPEN",
+            }
+        )
+    profiles.append(
+        {
+            "TSPDefectProfileId": "defect-three-region-local-two-factor",
+            "TSPInstance": R3_INSTANCE,
+            "TSPLoop": "tsp-loop-636",
+            "SubjectKind": "EDGE_SET",
+            "SubjectId": "edge-set-three-region-local-two-factor",
+            "RequiredIncidence": 2,
+            "ObservedIncidence": 2,
+            "ComponentCount": 3,
+            "RequiredBoundaryCrossings": 3,
+            "ObservedBoundaryCrossings": 0,
+            "LowerBoundCost": 9,
+            "UpperBoundCost": 36,
+            "Status": "INTERNAL_INCIDENCE_CLOSED_QUOTIENT_INCIDENCE_OPEN",
+        }
+    )
+    upsert_rows(rb["TSPDefectProfiles"], "TSPDefectProfileId", profiles)
+    register_concept(
+        rb,
+        "coined-quotient-incidence-budget",
+        "Quotient Incidence Budget",
+        "COINED_PREDICATE",
+        "SEMANTIC_ARC(region,REQUIRED_BOUNDARY_DEGREE,2)+SEMANTIC_ARC(region,OBSERVED_BOUNDARY_DEGREE,0)+WARRANTED_REWRITE(profile,DEFECT_VECTOR,open,warrant)",
+        1,
+        "Neighborhoods,TSPDefectProfiles",
+        636,
+        status="ACTIVE_DERIVED",
+        category="DERIVED",
+        operator_expression="WARRANTED_REWRITE",
+    )
+    mark_current_basis_concept(rb, "coined-quotient-incidence-budget", mode="DEFECT_PROJECTION", polarity="MIXED")
+    add_measurement(
+        rb,
+        636,
+        "Quotient Incidence Budget",
+        "Internal stop incidence is closed while all three region interfaces have boundary degree deficit two; the global profile separates those coordinates.",
+    )
+    return (
+        "Lifted the three-component defect into quotient incidence budgets.",
+        "Every stop retains internal degree two, every region requires external degree two and currently has zero, and the global profile records component count three with crossing deficit three.",
+    )
+
+
+def loop_637(rb: dict[str, Any], contract: dict[str, Any]) -> tuple[str, str]:
+    upsert_rows(
+        rb["TSPBoundTerms"],
+        "TSPBoundTermId",
+        [
+            {
+                "TSPBoundTermId": "bound-term-three-region-boundary-handshake",
+                "BoundCertificate": "degree-two-lower-bound-three-regions-9",
+                "TSPInstance": R3_INSTANCE,
+                "TSPLoop": "tsp-loop-637",
+                "TermKind": "REGION_BOUNDARY_HANDSHAKE",
+                "Quantity": 3,
+                "UnitWeight": 0,
+                "Sign": 1,
+                "ConstraintKind": "SUM_REQUIRED_REGION_DEGREES_DIVIDED_BY_TWO",
+                "ConstraintValue": 3,
+                "CountsTowardAdjustment": False,
+                "IsCertified": True,
+                "Justification": "Three quotient regions each require boundary degree two; total degree six counts every inter-region edge twice, so at least three crossing edges are required.",
+            }
+        ],
+    )
+    table_index(rb, "TSPInferenceRules")["tsp-rule-boundary-handshake"]["ImplementationStatus"] = "EXECUTABLE"
+    register_concept(
+        rb,
+        "coined-boundary-handshake",
+        "Boundary Handshake",
+        "COINED_PREDICATE",
+        "WARRANTED_REWRITE(SEMANTIC_ARC(region,BOUNDARY_DEGREE,2),AGGREGATE_THEN_DIVIDE_BY_TWO,crossing_demand=3,warrant)",
+        1,
+        "Neighborhoods,TSPBoundTerms,TSPDefectProfiles",
+        637,
+        status="ACTIVE_DERIVED",
+        category="DERIVED",
+        operator_expression="WARRANTED_REWRITE",
+    )
+    mark_current_basis_concept(rb, "coined-boundary-handshake", mode="HANDSHAKE_AGGREGATION", polarity="CONTRACTIVE")
+    add_measurement(
+        rb,
+        637,
+        "Boundary Handshake",
+        "Quotient degree demand six reduces to a certified minimum of three crossing edges because every crossing has two region endpoints.",
+    )
+    return (
+        "Derived a three-edge crossing demand from the quotient boundary-degree handshake.",
+        "Required quotient degree is 3 regions x 2 = 6; dividing by two endpoints per crossing certifies at least 3 inter-region edges.",
+    )
+
+
+def loop_638(rb: dict[str, Any], contract: dict[str, Any]) -> tuple[str, str]:
+    bound_id = "degree-two-lower-bound-three-regions-9"
+    upsert_rows(
+        rb["TSPBoundTerms"],
+        "TSPBoundTermId",
+        [
+            {
+                "TSPBoundTermId": "bound-term-three-region-base",
+                "BoundCertificate": bound_id,
+                "TSPInstance": R3_INSTANCE,
+                "TSPLoop": "tsp-loop-638",
+                "TermKind": "BASE_DEGREE_TWO_BOUND",
+                "Quantity": 1,
+                "UnitWeight": 9,
+                "Sign": 1,
+                "ConstraintKind": "BASE_LOWER_BOUND",
+                "ConstraintValue": 9,
+                "CountsTowardAdjustment": False,
+                "IsCertified": True,
+                "Justification": "Nine local two-cheapest bounds each cost two; double-count correction gives nine.",
+            },
+            {
+                "TSPBoundTermId": "bound-term-three-region-crossing-insertion",
+                "BoundCertificate": bound_id,
+                "TSPInstance": R3_INSTANCE,
+                "TSPLoop": "tsp-loop-638",
+                "TermKind": "MANDATORY_CROSSING_INSERTION",
+                "Quantity": 3,
+                "UnitWeight": 10,
+                "Sign": 1,
+                "ConstraintKind": "BOUNDARY_HANDSHAKE_AND_MINIMUM_CROSSING_COST",
+                "ConstraintValue": 10,
+                "CountsTowardAdjustment": True,
+                "IsCertified": True,
+                "Justification": "Boundary handshake requires three crossings and the minimum available inter-region edge cost is ten.",
+            },
+            {
+                "TSPBoundTermId": "bound-term-three-region-internal-release",
+                "BoundCertificate": bound_id,
+                "TSPInstance": R3_INSTANCE,
+                "TSPLoop": "tsp-loop-638",
+                "TermKind": "NECESSARY_INTERNAL_EDGE_RELEASE",
+                "Quantity": 3,
+                "UnitWeight": 1,
+                "Sign": -1,
+                "ConstraintKind": "ONE_RELEASE_PER_REGION_CYCLE",
+                "ConstraintValue": 3,
+                "CountsTowardAdjustment": True,
+                "IsCertified": True,
+                "Justification": "Opening each cost-one local triangle to accept boundary incidence releases one cost-one internal edge per region.",
+            },
+        ],
+    )
+    lower = table_index(rb, "InstanceLowerBounds")[bound_id]
+    lower.update(
+        {
+            "RequiredSupplementalTermCount": 2,
+            "SupplementalBoundAdjustment": 27,
+            "BoundCompositionKind": "DEGREE_TWO_PLUS_THREE_REGION_REPAIR",
+        }
+    )
+    table_index(rb, "TSPInferenceRules")["tsp-rule-region-repair-equation"]["ImplementationStatus"] = "EXECUTABLE"
+    profile = table_index(rb, "TSPDefectProfiles")["defect-three-region-local-two-factor"]
+    profile["LowerBoundCost"] = 36
+    profile["Status"] = "REGION_REPAIR_BOUND_CERTIFIED"
+    register_concept(
+        rb,
+        "coined-region-repair-equation",
+        "Region Repair Equation",
+        "COINED_PREDICATE",
+        "WARRANTED_REWRITE(base=9,ADD_CROSSINGS=30,RELEASE_INTERNAL=3,lower_bound=36,warrant)",
+        1,
+        "TSPBoundTerms,InstanceLowerBounds,TSPDefectProfiles",
+        638,
+        status="ACTIVE_DERIVED",
+        category="DERIVED",
+        operator_expression="WARRANTED_REWRITE",
+    )
+    mark_current_basis_concept(rb, "coined-region-repair-equation", mode="SIGNED_BOUND_COMPOSITION", polarity="MIXED")
+    add_measurement(
+        rb,
+        638,
+        "Region Repair Equation",
+        "The three-region lower bound is 9 + 30 - 3 = 36, composed entirely from witnessed semantic arcs and a mixed warranted rewrite.",
+    )
+    add_frontier(
+        rb,
+        "frontier-three-region-repair-bound",
+        "Three-region repair lower bound",
+        634,
+        638,
+        "tsp-rule-region-repair-equation",
+        "Base nine plus three cost-ten crossings minus three cost-one releases equals certified lower bound thirty-six.",
+        "region-repair-equation-certificate",
+    )
+    return (
+        "Composed the three-region repair lower bound as 9 + 3*10 - 3*1 = 36.",
+        "The signed supplemental adjustment is +27; all contributing insertion and release terms are separately certified, and no route witness has yet been used to set the bound.",
+    )
+
+
+def ensure_exchange_fields(rb: dict[str, Any]) -> None:
+    ensure_fields(
+        rb["TSPEdgeStates"],
+        [
+            base.field("ExchangeModality", "string", "raw", True, "ADDED, RELEASED, or RETAINED in a balanced exchange witness."),
+            base.field("ExchangeSetId", "string", "raw", True, "Balanced-exchange identifier."),
+            base.field("ExchangeWarrant", "string", "raw", True, "Local incidence and connectivity warrant for the exchange decision."),
+        ],
+    )
+    for row in rows(rb, "TSPEdgeStates"):
+        row.setdefault("ExchangeModality", None)
+        row.setdefault("ExchangeSetId", None)
+        row.setdefault("ExchangeWarrant", None)
+
+
+def loop_639(rb: dict[str, Any], contract: dict[str, Any]) -> tuple[str, str]:
+    ensure_exchange_fields(rb)
+    repaired_set = "edge-set-three-region-balanced-exchange"
+    state_id = "state-three-region-balanced-exchange"
+    app_id = "event-three-region-balanced-exchange"
+    repaired = r3_repaired_edges()
+    released = [
+        r3_edge_id("r3-stop-a1", "r3-stop-a3"),
+        r3_edge_id("r3-stop-b1", "r3-stop-b3"),
+        r3_edge_id("r3-stop-c1", "r3-stop-c3"),
+    ]
+    added = sorted(r3_edge_id(a, b) for a, b in R3_RING_CROSSINGS)
+    retained = sorted(set(repaired) - set(added))
+    upsert_rows(
+        rb["TSPInferenceStates"],
+        "TSPInferenceStateId",
+        [
+            {
+                "TSPInferenceStateId": state_id,
+                "TSPInstance": R3_INSTANCE,
+                "TSPLoop": "tsp-loop-639",
+                "StateKind": "BALANCED_EDGE_EXCHANGE",
+                "ParentStateId": "state-three-region-local-two-factor",
+                "Status": "CLOSED",
+                "Description": "Three crossing edges replace one internal edge per region and yield one connected degree-two cycle.",
+            }
+        ],
+    )
+    upsert_rows(
+        rb["TSPInferenceApplications"],
+        "TSPInferenceApplicationId",
+        [
+            {
+                "TSPInferenceApplicationId": app_id,
+                "InferenceState": state_id,
+                "InferenceRule": "tsp-rule-balanced-edge-exchange",
+                "TSPLoop": "tsp-loop-639",
+                "SubjectType": "DERIVED_EDGE_SET",
+                "SubjectId": repaired_set,
+                "ApplicabilityPassed": True,
+                "Conclusion": "Three added crossings and three released internal edges preserve degree two and connect all three regions.",
+                "CertificateType": "balanced-edge-exchange-certificate",
+                "EventKind": "BALANCED_EXCHANGE",
+                "InputStateId": "state-three-region-local-two-factor",
+                "OutputStateId": state_id,
+                "AntecedentCount": 7,
+                "DecisionCount": 6,
+                "EventStatus": "APPLIED",
+            }
+        ],
+    )
+    upsert_rows(
+        rb["TSPDerivedEdgeSets"],
+        "TSPDerivedEdgeSetId",
+        [
+            {
+                "TSPDerivedEdgeSetId": repaired_set,
+                "TSPInstance": R3_INSTANCE,
+                "InferenceState": state_id,
+                "DerivationKind": "BALANCED_REGION_EDGE_EXCHANGE",
+                "EdgeCount": 9,
+                "RequiredStopCount": 9,
+                "TotalCost": 36,
+                "DegreeViolationCount": 0,
+                "ConnectedComponentCount": 1,
+                "ProperSubtourCount": 0,
+                "Status": "CONNECTED_DEGREE_TWO",
+            }
+        ],
+    )
+    upsert_rows(
+        rb["TSPDerivedEdgeSetMembers"],
+        "TSPDerivedEdgeSetMemberId",
+        [
+            {
+                "TSPDerivedEdgeSetMemberId": f"member-three-region-repaired-{edge_id}",
+                "DerivedEdgeSet": repaired_set,
+                "TravelEdge": edge_id,
+                "SupportCount": 1,
+                "SelectedAtBothEndpoints": edge_id in retained,
+                "MemberStatus": "SELECTED",
+            }
+            for edge_id in repaired
+        ],
+    )
+    upsert_rows(
+        rb["TSPEdgeSetStopDegrees"],
+        "TSPEdgeSetStopDegreeId",
+        [
+            {
+                "TSPEdgeSetStopDegreeId": f"degree-three-region-repaired-{r3_short(stop)}",
+                "DerivedEdgeSet": repaired_set,
+                "InstanceStop": stop,
+                "SelectedDegree": 2,
+            }
+            for stop in r3_all_stops()
+        ],
+    )
+    route = r3_route()
+    tree_rows = []
+    for index in range(len(route) - 1):
+        tree_rows.append(
+            {
+                "TSPSpanningTreeEdgeId": f"tree-three-region-repaired-{index + 1}",
+                "DerivedEdgeSet": repaired_set,
+                "ParentStop": route[index],
+                "ChildStop": route[index + 1],
+                "TravelEdge": r3_edge_id(route[index], route[index + 1]),
+                "Depth": index + 1,
+            }
+        )
+    upsert_rows(rb["TSPSpanningTreeEdges"], "TSPSpanningTreeEdgeId", tree_rows)
+    upsert_rows(
+        rb["TSPConnectedDegreeTwoCertificates"],
+        "TSPConnectedDegreeTwoCertificateId",
+        [
+            {
+                "TSPConnectedDegreeTwoCertificateId": "connected-cycle-three-region-balanced-exchange",
+                "DerivedEdgeSet": repaired_set,
+                "RequiredStopCount": 9,
+                "EdgeCount": 9,
+                "DegreeViolationCount": 0,
+                "ComponentCount": 1,
+                "ProperSubtourCount": 0,
+                "SpanningTreeEdgeCount": 8,
+            }
+        ],
+    )
+    edge_states = []
+    for edge_id in added:
+        edge_states.append(
+            {
+                "TSPEdgeStateId": f"edge-state-three-region-added-{edge_id}",
+                "InferenceState": state_id,
+                "TravelEdge": edge_id,
+                "DecisionStatus": "SELECTED",
+                "EpistemicStatus": "ADDED_BY_BALANCED_EXCHANGE_FOR_CURRENT_WITNESS",
+                "InferenceApplication": app_id,
+                "ExchangeModality": "ADDED",
+                "ExchangeSetId": repaired_set,
+                "ExchangeWarrant": "BOUNDARY_HANDSHAKE_AND_DEGREE_PRESERVATION",
+            }
+        )
+    for edge_id in released:
+        edge_states.append(
+            {
+                "TSPEdgeStateId": f"edge-state-three-region-released-{edge_id}",
+                "InferenceState": state_id,
+                "TravelEdge": edge_id,
+                "DecisionStatus": "SUPERSEDED",
+                "EpistemicStatus": "RELEASED_FROM_CURRENT_REPAIR_WITNESS_NOT_UNIVERSALLY_FORBIDDEN",
+                "InferenceApplication": app_id,
+                "ExchangeModality": "RELEASED",
+                "ExchangeSetId": repaired_set,
+                "ExchangeWarrant": "ONE_INTERNAL_RELEASE_PER_REGION",
+            }
+        )
+    upsert_rows(rb["TSPEdgeStates"], "TSPEdgeStateId", edge_states)
+    table_index(rb, "TSPInferenceRules")["tsp-rule-balanced-edge-exchange"]["ImplementationStatus"] = "EXECUTABLE"
+    register_concept(
+        rb,
+        "coined-balanced-edge-exchange",
+        "Balanced Edge Exchange",
+        "COINED_PREDICATE",
+        "WARRANTED_REWRITE(local_two_factor,ADDED_3_RELEASED_3,connected_cycle,degree_and_connectivity_warrant)",
+        1,
+        "TSPEdgeStates,TSPDerivedEdgeSets,TSPConnectedDegreeTwoCertificates",
+        639,
+        status="ACTIVE_DERIVED",
+        category="DERIVED",
+        operator_expression="WARRANTED_REWRITE",
+    )
+    mark_current_basis_concept(rb, "coined-balanced-edge-exchange", mode="BALANCED_EDGE_EXCHANGE", polarity="MIXED")
+    add_measurement(
+        rb,
+        639,
+        "Balanced Edge Exchange",
+        "Three explicit additions and three explicit releases replace the disconnected local two-factor with one cost-thirty-six connected degree-two cycle.",
+    )
+    return (
+        "Constructed a connected nine-edge cycle by a balanced three-add/three-release exchange.",
+        f"Added={added}; released={released}; every stop has repaired degree two, component count is one, proper subtours are zero, and total cost is thirty-six. Released edges are superseded only for this witness, never silently forbidden globally.",
+    )
+
+
+def add_candidate_route(
+    rb: dict[str, Any],
+    *,
+    candidate_id: str,
+    display: str,
+    instance: str,
+    kind: str,
+    route: list[str],
+    prefix: str,
+) -> None:
+    upsert_rows(
+        rb["CandidateTours"],
+        "CandidateTourId",
+        [
+            {
+                "CandidateTourId": candidate_id,
+                "DisplayName": display,
+                "TSPInstance": instance,
+                "CandidateKind": kind,
+                "SearchBranchesExplored": 0,
+                "BacktrackCount": 0,
+            }
+        ],
+    )
+    stop_rows = []
+    leg_rows = []
+    for index, stop in enumerate(route, start=1):
+        stop_rows.append(
+            {
+                "TourStopId": f"{prefix}-stop-{index}",
+                "CandidateTour": candidate_id,
+                "InstanceStop": stop,
+                "SequencePosition": index,
+            }
+        )
+    for index, stop in enumerate(route, start=1):
+        nxt_index = index + 1 if index < len(route) else 1
+        nxt = route[nxt_index - 1]
+        edge_id = r3_edge_id(stop, nxt) if instance == R3_INSTANCE else face_edge_id(stop, nxt)
+        leg_rows.append(
+            {
+                "TourLegId": f"{prefix}-leg-{index}",
+                "CandidateTour": candidate_id,
+                "FromTourStop": f"{prefix}-stop-{index}",
+                "ToTourStop": f"{prefix}-stop-{nxt_index}",
+                "TravelEdge": edge_id,
+                "LegOrder": index,
+            }
+        )
+    upsert_rows(rb["TourStops"], "TourStopId", stop_rows)
+    upsert_rows(rb["TourLegs"], "TourLegId", leg_rows)
+
+
+def loop_640(rb: dict[str, Any], contract: dict[str, Any]) -> tuple[str, str]:
+    route = r3_route()
+    candidate_id = "tour-three-region-repair-36"
+    add_candidate_route(
+        rb,
+        candidate_id=candidate_id,
+        display="Three-region repaired cycle A1-A2-A3-B1-B2-B3-C1-C2-C3-A1",
+        instance=R3_INSTANCE,
+        kind="RECONSTRUCTED_REPAIR_COMPARISON_WITNESS",
+        route=route,
+        prefix="r3-tour",
+    )
+    reconstruction_id = "reconstruction-three-region-balanced-exchange"
+    upsert_rows(
+        rb["TSPRouteReconstructions"],
+        "TSPRouteReconstructionId",
+        [
+            {
+                "TSPRouteReconstructionId": reconstruction_id,
+                "TSPInstance": R3_INSTANCE,
+                "DerivedEdgeSet": "edge-set-three-region-balanced-exchange",
+                "StartStop": "r3-stop-a1",
+                "OrientationRule": "DEPOT_THEN_REGION_RING_THEN_LOCAL_LEXICAL_PATH",
+                "RequiredStopCount": 9,
+                "ReconstructedStopCount": 9,
+                "ReconstructedLegCount": 9,
+                "TotalCost": 36,
+                "CandidateUsedAsAntecedent": False,
+                "ComparisonCandidate": candidate_id,
+                "MatchesComparisonCandidate": True,
+                "Status": "RECONSTRUCTED",
+            }
+        ],
+    )
+    step_rows = []
+    for index, stop in enumerate(route, start=1):
+        nxt = route[index] if index < len(route) else route[0]
+        step_rows.append(
+            {
+                "TSPRouteReconstructionStepId": f"reconstruction-three-region-step-{index}",
+                "RouteReconstruction": reconstruction_id,
+                "StepOrder": index,
+                "FromStop": stop,
+                "ToStop": nxt,
+                "TravelEdge": r3_edge_id(stop, nxt),
+                "IsClosingStep": index == len(route),
+            }
+        )
+    upsert_rows(rb["TSPRouteReconstructionSteps"], "TSPRouteReconstructionStepId", step_rows)
+    upsert_rows(
+        rb["TSPWitnessNormalForms"],
+        "TSPWitnessNormalFormId",
+        [
+            {
+                "TSPWitnessNormalFormId": "normal-cycle-three-region-reconstructed",
+                "TSPInstance": R3_INSTANCE,
+                "TSPLoop": "tsp-loop-640",
+                "WitnessShape": "CYCLE",
+                "OriginKind": "RECONSTRUCTED",
+                "SourceKind": "TSPRouteReconstructions",
+                "SourceId": reconstruction_id,
+                "BoundarySignature": None,
+                "CoveredStopCount": 9,
+                "RequiredStopCount": 9,
+                "EdgeCount": 9,
+                "TotalCost": 36,
+                "IncidenceDefect": 0,
+                "ConnectivityDefect": 0,
+                "OrderDefect": 0,
+                "ProvenanceSummary": "Reconstructed from a balanced-exchange connected degree-two edge set; the candidate is comparison-only.",
+            }
+        ],
+    )
+    register_concept(
+        rb,
+        "coined-repair-cycle",
+        "Repair Cycle",
+        "COINED_PREDICATE",
+        "WARRANTED_REWRITE(balanced_exchange,ORDERED_RECONSTRUCTION,cycle_witness,semantic_arc_warrant)",
+        1,
+        "TSPRouteReconstructions,TSPRouteReconstructionSteps,TSPWitnessNormalForms,CandidateTours",
+        640,
+        status="ACTIVE_DERIVED",
+        category="DERIVED",
+        operator_expression="WARRANTED_REWRITE",
+    )
+    mark_current_basis_concept(rb, "coined-repair-cycle", mode="ROUTE_RECONSTRUCTION", polarity="EXPANSIVE")
+    add_measurement(
+        rb,
+        640,
+        "Repair Cycle",
+        "The repaired edge set expands to a nine-step ordered route and normal-form witness with CandidateUsedAsAntecedent=false.",
+    )
+    return (
+        "Reconstructed the balanced-exchange cycle as an ordered nine-stop route of cost thirty-six.",
+        "Route A1-A2-A3-B1-B2-B3-C1-C2-C3-A1 has nine valid legs, zero defects, CandidateUsedAsAntecedent=false, and matches its downstream comparison candidate.",
+    )
+
+
+def loop_641(rb: dict[str, Any], contract: dict[str, Any]) -> tuple[str, str]:
+    upsert_rows(
+        rb["OptimalityCertificates"],
+        "OptimalityCertificateId",
+        [
+            {
+                "OptimalityCertificateId": "optimality-three-region-repair-36",
+                "CandidateTour": "tour-three-region-repair-36",
+                "InstanceLowerBound": "degree-two-lower-bound-three-regions-9",
+            }
+        ],
+    )
+    upsert_rows(
+        rb["TSPInvariantChecks"],
+        "TSPInvariantCheckId",
+        [
+            {
+                "TSPInvariantCheckId": "check-three-region-repair-optimality",
+                "DisplayName": "Three-region repaired candidate equals region-repair lower bound",
+                "CandidateTour": "tour-three-region-repair-36",
+                "ExpectedHamiltonianCycleWitness": True,
+                "ExpectedOptimalityProved": True,
+                "ExpectedTotalTravelCost": 36,
+            }
+        ],
+    )
+    profile = table_index(rb, "TSPDefectProfiles")["defect-three-region-local-two-factor"]
+    profile.update(
+        {
+            "ObservedBoundaryCrossings": 3,
+            "ComponentCount": 1,
+            "LowerBoundCost": 36,
+            "UpperBoundCost": 36,
+            "Status": "ZERO_DEFECT_AFTER_REGION_REPAIR",
+        }
+    )
+    for region in ("a", "b", "c"):
+        region_profile = table_index(rb, "TSPDefectProfiles")[f"quotient-incidence-region-{region}"]
+        region_profile["ObservedIncidence"] = 2
+        region_profile["ObservedBoundaryCrossings"] = 2
+        region_profile["Status"] = "QUOTIENT_INCIDENCE_CLOSED"
+    register_concept(
+        rb,
+        "coined-region-bound-sandwich",
+        "Region Bound Sandwich",
+        "COINED_PREDICATE",
+        "SEMANTIC_ARC(instance,LOWER_BOUND,36)+SEMANTIC_ARC(witness,COST,36)+WARRANTED_REWRITE(equality,OPTIMALITY,closed,warrant)",
+        1,
+        "InstanceLowerBounds,CandidateTours,OptimalityCertificates",
+        641,
+        status="ACTIVE_DERIVED",
+        category="DERIVED",
+        operator_expression="WARRANTED_REWRITE",
+    )
+    mark_current_basis_concept(rb, "coined-region-bound-sandwich", mode="BOUND_EQUALITY_RIGIDITY", polarity="CONTRACTIVE")
+    table_index(rb, "TSPInferenceRules")["tsp-rule-bound-equality-optimality"]["ImplementationStatus"] = "EXECUTABLE"
+    claims = contract.setdefault("Claims", {})
+    claims["ThreeRegionOptimalityProved"] = True
+    claims["GeneralKRegionRepairProved"] = False
+    contract.setdefault("Acceptance", {}).update(
+        {
+            "ThreeRegionLowerBound": 36,
+            "ThreeRegionCandidateCost": 36,
+            "ThreeRegionOptimalityProved": True,
+        }
+    )
+    add_measurement(
+        rb,
+        641,
+        "Region Bound Sandwich",
+        "The valid reconstructed cost-thirty-six cycle equals the independently certified three-region lower bound thirty-six.",
+    )
+    add_frontier(
+        rb,
+        "frontier-three-region-optimality",
+        "Three-region finite optimality",
+        634,
+        641,
+        "tsp-rule-bound-equality-optimality",
+        "A valid reconstructed cost-thirty-six cycle equals the certified three-region repair lower bound thirty-six.",
+        "finite-instance-optimality-certificate",
+    )
+    return (
+        "Closed finite optimality for the three-region nine-stop fixture at cost thirty-six.",
+        "Certified lower bound 36 equals valid reconstructed witness cost 36. The certificate is scoped to tsp-three-regions-9 and does not claim a general k-region repair theorem.",
+    )
+
