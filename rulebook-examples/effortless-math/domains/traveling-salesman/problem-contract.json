@@ -41,7 +41,8 @@
     "OneArcOneRewriteProved": false,
     "ThreeRegionOptimalityProved": false,
     "OptimalFaceValueCertified": false,
-    "OptimalFaceUniqueRouteProved": false
+    "OptimalFaceUniqueRouteProved": false,
+    "CoherenceVectorRecorded": true
   },
   "CanonicalAsset": "effortless-rulebook/traveling-salesman-rulebook.json",
   "ExecutionSubstrates": [
@@ -482,12 +483,12 @@
     {
       "LoopOrder": 624,
       "LoopId": "tsp-loop-624",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Loop 623 records local expansion as compatible with convergence, but the repository has no multidimensional measurement separating semantic basis size, physical size, open frontier, and named derived vocabulary.",
       "ClosureCriterion": "Represent a coherence vector that records active atoms, active operators, physical-table delta, open frontier, named concepts, and the non-monotone expansion guardrail without collapsing those dimensions to an arbitrary scalar.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Recorded semantic basis size, operator count, physical-table delta, open frontier, and named vocabulary as separate coherence coordinates.",
+      "Result": "Loop-624 vector: atoms=3, operators=4, tables=45, open_frontier=2, named_concepts=75; local expansion remains allowed.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 625,
@@ -819,7 +820,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 646,
-    "HighestCompletedLoop": 623,
+    "HighestCompletedLoop": 624,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 14,
     "SelectedNotForcedEdgeStates": 5,
@@ -861,8 +862,8 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 48,
     "ClusterContractionCertificates": 4,
-    "ConvergenceMeasurements": 27,
-    "ConceptRegistry": 74,
+    "ConvergenceMeasurements": 28,
+    "ConceptRegistry": 75,
     "DefectProfiles": 16,
     "BoundTerms": 4,
     "WitnessNormalForms": 9,
@@ -883,7 +884,7 @@
     "AsymmetricQuotientReductionPct": 75
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:654f4b05801c59e9782108310b41eccb64a0c801c6561e3180853b2ba7b93dac",
+    "rulebook": "sha256:0d08329eba0f67324ffd3ae60ae3a70ccac2b7aa06ccf48bf601187a9254eec9",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
