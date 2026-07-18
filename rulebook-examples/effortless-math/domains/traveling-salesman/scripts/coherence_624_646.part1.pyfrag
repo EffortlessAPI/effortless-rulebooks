@@ -1,0 +1,678 @@
+#!/usr/bin/env python3
+"""Execute TSP loops 624-646 as a coherence-convergence experiment.
+
+The rulebook remains canonical.  Every loop is registered as PLANNED before
+execution, then closed, validated, committed, and pushed separately.  The pass
+asks whether the three atoms and four operators from loop 623 collapse
+losslessly to one typed semantic arc plus one warranted rewrite, then stresses
+that basis on a three-region repair proof and an optimal face with two distinct
+optimal route classes.
+"""
+from __future__ import annotations
+
+import itertools
+import json
+import os
+import subprocess
+import sys
+from collections import Counter, defaultdict, deque
+from pathlib import Path
+from typing import Any, Iterable
+
+import apply_loops_611_623_refinement as prev
+
+base = prev.base
+REPO = prev.REPO
+DOMAIN = prev.DOMAIN
+RULEBOOK = prev.RULEBOOK
+CONTRACT = prev.CONTRACT
+README = prev.README
+TARGET_BRANCH = os.environ.get("TARGET_BRANCH", "agent/tsp-semantic-foundation")
+VALIDATOR_V6 = DOMAIN / "scripts" / "validate_rulebook_v6.py"
+SUMMARY_V6 = DOMAIN / "scripts" / "validate_summary_alignment_v6.py"
+VALIDATOR_WRAPPER = prev.VALIDATOR_WRAPPER
+PG_DIR = DOMAIN / "effortless-postgres"
+RULESPEAK_DIR = DOMAIN / "rulespeak"
+
+LOOPS: dict[int, dict[str, str]] = {
+    624: {
+        "name": "Coherence vector",
+        "term": "Coherence Vector",
+        "rule": "tsp-rule-coherence-measurement",
+        "before": "Loop 623 records local expansion as compatible with convergence, but the repository has no multidimensional measurement separating semantic basis size, physical size, open frontier, and named derived vocabulary.",
+        "criterion": "Represent a coherence vector that records active atoms, active operators, physical-table delta, open frontier, named concepts, and the non-monotone expansion guardrail without collapsing those dimensions to an arbitrary scalar.",
+        "next": "Test whether ATTACHMENT, VALUATION, and WARRANT are typed signatures of one relation.",
+    },
+    625: {
+        "name": "Semantic arc",
+        "term": "Semantic Arc",
+        "rule": "tsp-rule-semantic-arc-refinement",
+        "before": "ATTACHMENT, VALUATION, and WARRANT are three active ternary atoms with the same subject-label-target shape but different label and target sorts.",
+        "criterion": "Introduce SEMANTIC_ARC(subject,label,target), reduce the three atoms to typed arc projections, preserve all historical definitions, and leave exactly one active relational atom.",
+        "next": "Prevent the generic arc from becoming a vacuous triple store by making its signatures explicit.",
+    },
+    626: {
+        "name": "Arc signature",
+        "term": "Arc Signature",
+        "rule": "tsp-rule-semantic-arc-refinement",
+        "before": "A single generic arc can encode the three atoms syntactically, but their role, measure, and modality constraints are not yet recoverable as typed signatures.",
+        "criterion": "Record subject, label, and target sorts for attachment, valuation, and warrant projections and require distinct recoverable signatures for each historical atom.",
+        "next": "Certify that every registered concept remains recoverable from the current basis.",
+    },
+    627: {
+        "name": "Recoverability witness",
+        "term": "Recoverability Witness",
+        "rule": "tsp-rule-semantic-arc-refinement",
+        "before": "The arc signatures are represented, but lossless recovery of the historical vocabulary has not been certified across the concept registry.",
+        "criterion": "Give every registered concept an explicit recovery expression over semantic arcs and operators, reject unreduced historical tokens, and preserve source-table provenance.",
+        "next": "Collapse closure and fixed point into one saturation operator.",
+    },
+    628: {
+        "name": "Saturation operator",
+        "term": "Saturation Operator",
+        "rule": "tsp-rule-warranted-rewrite",
+        "before": "CLOSURE and FIXPOINT are separate active operators although both repeatedly add warranted consequences until a stability condition holds.",
+        "criterion": "Introduce SATURATE(seed,rewrite,termination_warrant), reduce closure and fixed point to explicit saturation modes, and preserve their historical operator identities.",
+        "next": "Collapse aggregation and quotienting into one fiber-reduction operator.",
+    },
+    629: {
+        "name": "Fiber reduction",
+        "term": "Fiber Reduction",
+        "rule": "tsp-rule-warranted-rewrite",
+        "before": "AGGREGATE and QUOTIENT are separate active operators although both group a domain by a key and replace each fiber with a warranted summary or representative.",
+        "criterion": "Introduce FIBER_REDUCE(domain,key,reducer,expansion_warrant), reduce aggregate and quotient to reducer modes, and preserve all expansion and valuation semantics.",
+        "next": "Test whether saturation and fiber reduction are polarities of one rewrite operator.",
+    },
+    630: {
+        "name": "Warranted rewrite",
+        "term": "Warranted Rewrite",
+        "rule": "tsp-rule-warranted-rewrite",
+        "before": "SATURATE and FIBER_REDUCE remain separate operators even though both transform one semantic-arc state into another under an explicit warrant.",
+        "criterion": "Introduce WARRANTED_REWRITE(input,rule,polarity,output,warrant), reduce saturation and fiber reduction to rewrite modes, and leave exactly one active semantic operator.",
+        "next": "Make expansive and contractive rewrite polarity explicit.",
+    },
+    631: {
+        "name": "Rewrite polarity",
+        "term": "Rewrite Polarity",
+        "rule": "tsp-rule-warranted-rewrite",
+        "before": "The single rewrite operator is parametric, but the distinction between black-box internalization growth, saturation growth, and quotient contraction is not typed.",
+        "criterion": "Classify historical and current operators as EXPANSIVE, CONTRACTIVE, MIXED, or PARAMETRIC, with modes that recover closure, fixed point, aggregate, quotient, saturation, and fiber reduction.",
+        "next": "Certify the one-arc/one-rewrite basis for the represented domain.",
+    },
+    632: {
+        "name": "One-arc one-rewrite basis",
+        "term": "One-Arc/One-Rewrite Basis",
+        "rule": "tsp-rule-semantic-arc-refinement",
+        "before": "One active arc and one active rewrite have emerged incrementally, but lossless coverage, current-basis counts, and empirical scope are not yet certified.",
+        "criterion": "Certify one active atom and one active operator, recover every registered concept without old atom/operator tokens, preserve all prior certificates, and retain the non-claim of minimality or universality.",
+        "next": "Stress the basis on a reusable region interface with three disconnected local components.",
+    },
+    633: {
+        "name": "Region interface",
+        "term": "Region Interface",
+        "rule": "tsp-rule-region-interface",
+        "before": "Neighborhoods, components, and boundary fibers are quotient objects, but their shared port, coverage, valuation, and expansion contract is not represented as one region interface.",
+        "criterion": "Add a common region-interface projection to existing quotient nodes without a new table and define ports, internal coverage, expansion witness, and interface status through semantic arcs.",
+        "next": "Instantiate three cheap local regions in one complete nine-stop graph.",
+    },
+    634: {
+        "name": "Region triad",
+        "term": "Region Triad",
+        "rule": "tsp-rule-region-interface",
+        "before": "Component repair has only been tested on two three-stop regions, so crossing demand and repair composition for more than two components are unmeasured.",
+        "criterion": "Represent a complete nine-stop graph partitioned into three cost-one triangles, three cost-ten ring crossings, expensive remaining crossings, nine valid local degree bounds, and a three-component local two-factor of cost nine.",
+        "next": "Contract each triangle into a boundary-degree-two region quotient.",
+    },
+    635: {
+        "name": "Region quotient",
+        "term": "Region Quotient",
+        "rule": "tsp-rule-region-interface",
+        "before": "The region-triad local two-factor has three components, but the components do not yet expose reusable path states and expansion witnesses.",
+        "criterion": "Represent three boundary-degree-two quotient nodes, three path states per region, explicit edge expansions, and one passing six-to-three contraction certificate per region.",
+        "next": "Express the global deficit as quotient incidence rather than fixture-specific component prose.",
+    },
+    636: {
+        "name": "Quotient incidence budget",
+        "term": "Quotient Incidence Budget",
+        "rule": "tsp-rule-boundary-handshake",
+        "before": "Every local stop has degree two, yet the quotient graph has no external incidence; the resulting global defect is not represented in the common budget vocabulary.",
+        "criterion": "Give each of three region nodes required boundary degree two, observed degree zero, and a shared global profile separating closed internal incidence from open quotient incidence.",
+        "next": "Convert quotient degree demand into a minimum crossing-edge count.",
+    },
+    637: {
+        "name": "Boundary handshake",
+        "term": "Boundary Handshake",
+        "rule": "tsp-rule-boundary-handshake",
+        "before": "Three quotient nodes each require boundary degree two, but the number of inter-region edges forced by that demand is not yet derived.",
+        "criterion": "Apply the handshake identity to the quotient: total boundary degree six divided by two endpoints per crossing requires at least three inter-region edges.",
+        "next": "Compose the crossing demand with insertion and release valuations.",
+    },
+    638: {
+        "name": "Region repair equation",
+        "term": "Region Repair Equation",
+        "rule": "tsp-rule-region-repair-equation",
+        "before": "The base degree-two lower bound is nine and crossing demand is three, but the signed cost of repairing three components is not represented.",
+        "criterion": "Certify 9 + 3*10 - 3*1 = 36 from a base term, three mandatory crossing insertions, and one necessary cost-one internal release per region.",
+        "next": "Construct the repaired cycle as a balanced edge exchange.",
+    },
+    639: {
+        "name": "Balanced edge exchange",
+        "term": "Balanced Edge Exchange",
+        "rule": "tsp-rule-balanced-edge-exchange",
+        "before": "The repair equation proves a lower value, but no structural object witnesses the three added and three released edges that preserve degree while joining the regions.",
+        "criterion": "Replace one internal edge per local triangle with the three cost-ten ring crossings, preserve every stop at degree two, and certify one connected nine-edge cycle of cost thirty-six.",
+        "next": "Project an ordered repair cycle without consuming a supplied candidate as antecedent.",
+    },
+    640: {
+        "name": "Repair cycle",
+        "term": "Repair Cycle",
+        "rule": "tsp-rule-balanced-edge-exchange",
+        "before": "The balanced-exchange edge set is a certified cycle, but it has no ordered reconstruction or normalized route witness.",
+        "criterion": "Reconstruct the nine-stop cycle from the repaired edge set, emit ordered steps and a comparison candidate of cost thirty-six, and record CandidateUsedAsAntecedent=false.",
+        "next": "Close finite optimality by equality with the region repair bound.",
+    },
+    641: {
+        "name": "Region bound sandwich",
+        "term": "Region Bound Sandwich",
+        "rule": "tsp-rule-bound-equality-optimality",
+        "before": "The three-region lower bound and valid reconstructed cycle both equal thirty-six, but no finite optimality certificate joins them.",
+        "criterion": "Certify the reconstructed cost-thirty-six cycle as optimal for tsp-three-regions-9 by lower-bound equality, without claiming a general k-region theorem.",
+        "next": "Stress the value proof on an instance with two distinct optimal route classes.",
+    },
+    642: {
+        "name": "Optimal face",
+        "term": "Optimal Face",
+        "rule": "tsp-rule-optimal-face",
+        "before": "Every represented positive fixture has one distinguished optimal route, so optimal value and optimal witness identity have not been separated.",
+        "criterion": "Represent a complete four-stop graph with degree-two lower bound four, two non-reversal-equivalent Hamiltonian cycles of cost four, and a third Hamiltonian cycle of cost six.",
+        "next": "Certify the optimum value while leaving route identity non-unique.",
+    },
+    643: {
+        "name": "Value choice split",
+        "term": "Value/Choice Split",
+        "rule": "tsp-rule-optimal-face",
+        "before": "The optimal-face fixture has two equal-cost witnesses, but proof status and witness-selection status are not independently represented.",
+        "criterion": "Attach passing optimality certificates to both cost-four cycles and represent value status CLOSED while choice status remains a two-alternative non-reversal orbit.",
+        "next": "Name and measure the residual optimal-witness orbit.",
+    },
+    644: {
+        "name": "Choice orbit",
+        "term": "Choice Orbit",
+        "rule": "tsp-rule-optimal-face",
+        "before": "The two optimal witnesses are recorded, but residual ambiguity is not classified as a value-preserving orbit distinct from unresolved optimality.",
+        "criterion": "Record three initial route classes, two surviving optimal classes, certified value four, zero mathematical branch decisions, and residual choice-orbit size two.",
+        "next": "Decide exactly when a branch is warranted after value closure.",
+    },
+    645: {
+        "name": "Branch warrant",
+        "term": "Branch Warrant",
+        "rule": "tsp-rule-branch-warrant",
+        "before": "A residual choice orbit exists, but the system does not distinguish a branch needed for proof from a conditional tie-break needed only to select one representative.",
+        "criterion": "Reject mathematical branching for value proof, require an external tie-break policy before representative selection, and emit a replayable rejected-branch event with zero branch decisions.",
+        "next": "Measure the second convergence event across the arc/rewrite basis and both stress fixtures.",
+    },
+    646: {
+        "name": "Coherence event two",
+        "term": "Coherence Event II",
+        "rule": "tsp-rule-coherence-measurement",
+        "before": "The pass has coined new machinery and added many witness rows, but its effect on basis size, physical schema, trust, multi-region repair, and residual choice has not been summarized.",
+        "criterion": "Certify one active arc, one active rewrite, unchanged physical-table count, explicit local expansion, three-region optimum thirty-six, optimal-face value four with choice orbit two, and zero branch decisions for value proof.",
+        "next": "Stress the one-arc/one-rewrite basis on heterogeneous regions and only branch when a warranted policy or unresolved value defect remains.",
+    },
+}
+
+COMMIT_MESSAGES = {
+    624: "TSP loop 624: define coherence vector",
+    625: "TSP loop 625: collapse atoms to semantic arc",
+    626: "TSP loop 626: type semantic arc signatures",
+    627: "TSP loop 627: certify basis recoverability",
+    628: "TSP loop 628: collapse closure into saturation",
+    629: "TSP loop 629: collapse aggregation into fiber reduction",
+    630: "TSP loop 630: derive warranted rewrite",
+    631: "TSP loop 631: classify rewrite polarity",
+    632: "TSP loop 632: certify one-arc one-rewrite basis",
+    633: "TSP loop 633: normalize region interfaces",
+    634: "TSP loop 634: represent three-region fixture",
+    635: "TSP loop 635: derive region quotients",
+    636: "TSP loop 636: expose quotient incidence budget",
+    637: "TSP loop 637: derive boundary handshake",
+    638: "TSP loop 638: derive region repair equation",
+    639: "TSP loop 639: apply balanced edge exchange",
+    640: "TSP loop 640: reconstruct repair cycle",
+    641: "TSP loop 641: close region bound sandwich",
+    642: "TSP loop 642: represent optimal face",
+    643: "TSP loop 643: split value from choice",
+    644: "TSP loop 644: measure choice orbit",
+    645: "TSP loop 645: derive branch warrant",
+    646: "TSP loop 646: certify coherence event two",
+}
+
+RULE_ROWS = [
+    {
+        "TSPInferenceRuleId": "tsp-rule-coherence-measurement",
+        "DisplayName": "Multidimensional coherence measurement",
+        "InferenceLayer": "SEMANTIC_REDUCTION",
+        "ImplementationStatus": "PLANNED",
+        "Soundness": "STRUCTURAL_MEASUREMENT_WITHOUT_SCALARIZING_INCOMPARABLE_DIMENSIONS",
+        "Completeness": "CURRENT_REPRESENTED_DOMAIN",
+        "RuntimeClass": "O(C+F)",
+        "MemoryClass": "O(1)_AFTER_COUNTS",
+        "Applicability": "A versioned concept registry, frontier ledger, and physical schema are available.",
+        "CertificateType": "coherence-vector-certificate",
+        "Description": "Measure semantic basis, physical size, open frontier, and named vocabulary separately so local expansion is not mistaken for entropy.",
+    },
+    {
+        "TSPInferenceRuleId": "tsp-rule-semantic-arc-refinement",
+        "DisplayName": "Typed semantic-arc refinement",
+        "InferenceLayer": "SEMANTIC_REDUCTION",
+        "ImplementationStatus": "PLANNED",
+        "Soundness": "DEFINITIONAL_WHEN_SIGNATURES_AND_RECOVERY_VIEWS_ARE_EXPLICIT",
+        "Completeness": "REGISTERED_CURRENT_CONCEPTS",
+        "RuntimeClass": "O(C)",
+        "MemoryClass": "O(C)",
+        "Applicability": "Active ternary atoms share a subject-label-target form and retain typed label and target sorts.",
+        "CertificateType": "semantic-arc-recoverability-certificate",
+        "Description": "Collapse attachment, valuation, and warrant to one typed arc without accepting an untyped triple-store tautology.",
+    },
+    {
+        "TSPInferenceRuleId": "tsp-rule-warranted-rewrite",
+        "DisplayName": "Warranted semantic rewrite",
+        "InferenceLayer": "EXECUTION_GEOMETRY",
+        "ImplementationStatus": "PLANNED",
+        "Soundness": "SOUND_WHEN_INPUT_OUTPUT_POLARITY_TERMINATION_AND_EXPANSION_WARRANTS_ARE_EXPLICIT",
+        "Completeness": "CURRENT_SATURATION_AND_FIBER_REDUCTION_FAMILIES",
+        "RuntimeClass": "MODE_DEPENDENT",
+        "MemoryClass": "MODE_DEPENDENT",
+        "Applicability": "A transformation maps one semantic-arc state to another and exposes its warrant and polarity.",
+        "CertificateType": "warranted-rewrite-certificate",
+        "Description": "Unify expansive saturation and contractive fiber reduction while preserving their distinct modes.",
+    },
+    {
+        "TSPInferenceRuleId": "tsp-rule-region-interface",
+        "DisplayName": "Region interface normalization",
+        "InferenceLayer": "SEMANTIC_QUOTIENT",
+        "ImplementationStatus": "PLANNED",
+        "Soundness": "SOUND_FOR_EXPLICIT_PORT_COVERAGE_COST_AND_EXPANSION_WITNESSES",
+        "Completeness": "DECLARED_FINITE_REGIONS",
+        "RuntimeClass": "O(S)",
+        "MemoryClass": "O(S)",
+        "Applicability": "A connected internal scope exposes finite entry/exit states and an expansion witness.",
+        "CertificateType": "region-interface-certificate",
+        "Description": "Treat neighborhoods, components, and boundary fibers as one port-bearing region contract.",
+    },
+    {
+        "TSPInferenceRuleId": "tsp-rule-boundary-handshake",
+        "DisplayName": "Quotient boundary handshake",
+        "InferenceLayer": "CONNECTIVITY",
+        "ImplementationStatus": "PLANNED",
+        "Soundness": "SOUND_FOR_UNDIRECTED_QUOTIENT_CYCLES",
+        "Completeness": "LOWER_BOUND_ON_CROSSING_EDGE_COUNT",
+        "RuntimeClass": "O(R)",
+        "MemoryClass": "O(1)",
+        "Applicability": "Every quotient region in the target cycle has required external degree two.",
+        "CertificateType": "boundary-handshake-certificate",
+        "Description": "Sum quotient boundary degrees and divide by two because each crossing edge is incident to two regions.",
+    },
+    {
+        "TSPInferenceRuleId": "tsp-rule-region-repair-equation",
+        "DisplayName": "Multi-region repair equation",
+        "InferenceLayer": "LOWER_BOUND",
+        "ImplementationStatus": "PLANNED",
+        "Soundness": "SOUND_FOR_WITNESSED_EQUAL_INTERNAL_RELEASE_COST_AND_MINIMUM_CROSSING_COST",
+        "Completeness": "DECLARED_THREE_TRIANGLE_FIXTURE",
+        "RuntimeClass": "O(E)",
+        "MemoryClass": "O(E)",
+        "Applicability": "A disconnected local two-factor, quotient crossing demand, insertion minima, and release credits are explicitly witnessed.",
+        "CertificateType": "region-repair-equation-certificate",
+        "Description": "Compose local degree cost with signed crossing insertions and necessary internal releases.",
+    },
+    {
+        "TSPInferenceRuleId": "tsp-rule-balanced-edge-exchange",
+        "DisplayName": "Balanced edge exchange",
+        "InferenceLayer": "CONSTRUCTION",
+        "ImplementationStatus": "PLANNED",
+        "Soundness": "SOUND_WHEN_ADDED_AND_RELEASED_INCIDENCE_BALANCE_AT_EVERY_STOP",
+        "Completeness": "DECLARED_THREE_REGION_FIXTURE",
+        "RuntimeClass": "O(V+E)",
+        "MemoryClass": "O(V+E)",
+        "Applicability": "A repair equation identifies crossing insertions and internal releases that preserve degree two.",
+        "CertificateType": "balanced-edge-exchange-certificate",
+        "Description": "Replace local cycle edges with crossing edges while preserving incidence and certifying one connected cycle.",
+    },
+    {
+        "TSPInferenceRuleId": "tsp-rule-optimal-face",
+        "DisplayName": "Optimal-face value and choice separation",
+        "InferenceLayer": "RIGIDITY",
+        "ImplementationStatus": "PLANNED",
+        "Soundness": "SOUND_FOR_MULTIPLE_VALID_WITNESSES_EQUAL_TO_ONE_CERTIFIED_LOWER_BOUND",
+        "Completeness": "DECLARED_FOUR_STOP_FIXTURE",
+        "RuntimeClass": "O(W)",
+        "MemoryClass": "O(W)",
+        "Applicability": "Two or more non-equivalent valid witnesses attain the same certified optimum value.",
+        "CertificateType": "optimal-face-certificate",
+        "Description": "Close the optimum value without falsely claiming a unique optimal witness.",
+    },
+    {
+        "TSPInferenceRuleId": "tsp-rule-branch-warrant",
+        "DisplayName": "Residual branch warrant",
+        "InferenceLayer": "RESIDUAL_SEARCH",
+        "ImplementationStatus": "PLANNED",
+        "Soundness": "EPISTEMIC_STATUS_RULE",
+        "Completeness": "CURRENT_VALUE_CLOSED_CHOICE_OPEN_FIXTURE",
+        "RuntimeClass": "O(1)_AFTER_CERTIFICATES",
+        "MemoryClass": "O(1)",
+        "Applicability": "Deterministic closure is complete and a residual orbit remains; branch purpose and external selection policy are explicit.",
+        "CertificateType": "branch-warrant-certificate",
+        "Description": "Permit branching only for an unresolved value defect or an explicit external representative-selection policy.",
+    },
+]
+
+
+def run(cmd: list[str], *, cwd: Path = REPO, check: bool = True, capture: bool = False) -> subprocess.CompletedProcess[str]:
+    return base.run(cmd, cwd=cwd, check=check, capture=capture)
+
+
+def load(path: Path) -> dict[str, Any]:
+    return base.load(path)
+
+
+def rows(rb: dict[str, Any], name: str) -> list[dict[str, Any]]:
+    return base.rows(rb, name)
+
+
+def table_index(rb: dict[str, Any], name: str) -> dict[str, dict[str, Any]]:
+    return base.table_index(rb, name)
+
+
+def upsert_rows(tbl: dict[str, Any], ident: str, additions: Iterable[dict[str, Any]]) -> None:
+    base.upsert_rows(tbl, ident, additions)
+
+
+def set_meta(rb: dict[str, Any], key: str, value_type: str, *, string: str | None = None, integer: int | None = None, boolean: bool | None = None) -> None:
+    base.set_meta(rb, key, value_type, string=string, integer=integer, boolean=boolean)
+
+
+def active_primitives(rb: dict[str, Any]) -> list[dict[str, Any]]:
+    return prev.active_primitives(rb)
+
+
+def active_operators(rb: dict[str, Any]) -> list[dict[str, Any]]:
+    return prev.active_operators(rb)
+
+
+def register_concept(
+    rb: dict[str, Any],
+    ident: str,
+    display: str,
+    kind: str,
+    expression: str,
+    arity: int,
+    sources: str,
+    loop: int,
+    *,
+    status: str,
+    category: str,
+    operator_expression: str = "",
+) -> None:
+    prev.register_concept(
+        rb,
+        ident,
+        display,
+        kind,
+        expression,
+        arity,
+        sources,
+        loop,
+        status=status,
+        category=category,
+        operator_expression=operator_expression,
+    )
+
+
+def ensure_fields(table: dict[str, Any], fields: list[dict[str, Any]]) -> None:
+    base.ensure_fields(table, fields)
+
+
+def open_frontier_count(rb: dict[str, Any]) -> int:
+    return sum(row["Status"] == "OPEN" for row in rows(rb, "TSPFrontierObligations"))
+
+
+def named_concept_count(rb: dict[str, Any]) -> int:
+    return len(rows(rb, "TSPConceptRegistry"))
+
+
+def ensure_coherence_fields(rb: dict[str, Any]) -> None:
+    ensure_fields(
+        rb["TSPConvergenceMeasurements"],
+        [
+            base.field("ActiveAtomCount", "integer", "raw", True, "Active relational atom count at this measurement."),
+            base.field("ActiveOperatorCount", "integer", "raw", True, "Active semantic operator count at this measurement."),
+            base.field("PhysicalTableDeltaFromLoop610", "integer", "raw", True, "Physical table count minus the loop-610 count of forty-five."),
+            base.field("OpenFrontierCount", "integer", "raw", True, "Open frontier obligations at this measurement."),
+            base.field("NamedConceptCount", "integer", "raw", True, "Versioned concept-registry row count."),
+            base.field("AllowsLocalExpansion", "boolean", "raw", True, "Whether local representational expansion is compatible with the measurement."),
+            base.field("CoherenceDirection", "string", "raw", True, "Multidimensional interpretation without arbitrary scalar weighting."),
+        ],
+    )
+
+
+def add_measurement(
+    rb: dict[str, Any],
+    order: int,
+    term: str,
+    notes: str,
+    *,
+    kind: str = "COHERENCE_REFINEMENT",
+    prediction: str = "EARLY_SUPPORT",
+) -> None:
+    ensure_coherence_fields(rb)
+    upsert_rows(
+        rb["TSPConvergenceMeasurements"],
+        "TSPConvergenceMeasurementId",
+        [
+            {
+                "TSPConvergenceMeasurementId": f"convergence-loop-{order}",
+                "TSPLoop": f"tsp-loop-{order}",
+                "MeasurementKind": kind,
+                "SurfaceConceptCountBefore": 32,
+                "PrimitiveCountAfter": len(active_primitives(rb)),
+                "NewPrimitiveCount": 0,
+                "DerivedAliasCount": sum(row.get("ConceptKind") not in {"PRIMITIVE", "OPERATOR"} for row in rows(rb, "TSPConceptRegistry")),
+                "PhysicalTableCount": len(base.canonical_tables(rb)),
+                "NovelTerm": term,
+                "PredictionStatus": prediction,
+                "Notes": notes,
+                "ActiveAtomCount": len(active_primitives(rb)),
+                "ActiveOperatorCount": len(active_operators(rb)),
+                "PhysicalTableDeltaFromLoop610": len(base.canonical_tables(rb)) - 45,
+                "OpenFrontierCount": open_frontier_count(rb),
+                "NamedConceptCount": named_concept_count(rb),
+                "AllowsLocalExpansion": True,
+                "CoherenceDirection": "MORE_EXPLICIT_REUSE_SMALLER_ACTIVE_BASIS_NO_REQUIRED_PHYSICAL_SHRINKAGE",
+            }
+        ],
+    )
+
+
+def add_frontier(
+    rb: dict[str, Any],
+    ident: str,
+    display: str,
+    opened: int,
+    closed: int,
+    rule: str,
+    criterion: str,
+    certificate: str,
+    *,
+    kind: str = "INFERENCE_OBLIGATION",
+) -> None:
+    upsert_rows(
+        rb["TSPFrontierObligations"],
+        "TSPFrontierObligationId",
+        [
+            {
+                "TSPFrontierObligationId": ident,
+                "DisplayName": display,
+                "ObligationKind": kind,
+                "Status": "CLOSED",
+                "InferenceRule": rule,
+                "OpenedByLoop": f"tsp-loop-{opened}",
+                "ClosedByLoop": f"tsp-loop-{closed}",
+                "TrustDisposition": "INTERNALIZED_FOR_DECLARED_FINITE_SCOPE",
+                "ClosureCriterion": criterion,
+                "CertificateType": certificate,
+            }
+        ],
+    )
+
+
+def plan_loops(rb: dict[str, Any], contract: dict[str, Any]) -> None:
+    upsert_rows(rb["TSPInferenceRules"], "TSPInferenceRuleId", RULE_ROWS)
+    existing = {int(row["LoopOrder"]) for row in rows(rb, "TSPLoops")}
+    for order, spec in LOOPS.items():
+        if order not in existing:
+            rows(rb, "TSPLoops").append(
+                {
+                    "TSPLoopId": f"tsp-loop-{order}",
+                    "LoopOrder": order,
+                    "DisplayName": spec["name"],
+                    "Status": "PLANNED",
+                    "PrimaryInferenceRule": spec["rule"],
+                    "NewConcept": spec["term"],
+                    "WitnessSummary": "Planned coherence-refinement loop; no closure claim yet.",
+                    "NextFrontier": spec["next"],
+                    "PlannedClosureCriterion": spec["criterion"],
+                    "BeforeState": spec["before"],
+                    "AfterState": None,
+                    "CompletionDisposition": None,
+                }
+            )
+    contract_loops = {int(row["LoopOrder"]): row for row in contract["Loops"]}
+    for order, spec in LOOPS.items():
+        if order not in contract_loops:
+            contract["Loops"].append(
+                {
+                    "LoopOrder": order,
+                    "LoopId": f"tsp-loop-{order}",
+                    "Status": "PLANNED",
+                    "BeforeState": spec["before"],
+                    "ClosureCriterion": spec["criterion"],
+                    "AfterState": None,
+                    "Result": "Planned; no conclusion recorded.",
+                    "CompletionDisposition": None,
+                }
+            )
+    contract["Loops"] = sorted(contract["Loops"], key=lambda row: int(row["LoopOrder"]))
+    set_meta(rb, "last_planned_loop", "integer", integer=646)
+    set_meta(rb, "coherence_program_status", "string", string="PLANNED_624_646")
+    contract["Version"] = "0.6.0-alpha"
+    claims = contract.setdefault("Claims", {})
+    claims.update(
+        {
+            "OneArcOneRewriteObserved": False,
+            "OneArcOneRewriteProved": False,
+            "ThreeRegionOptimalityProved": False,
+            "OptimalFaceValueCertified": False,
+            "OptimalFaceUniqueRouteProved": False,
+        }
+    )
+
+
+def finish_loop(rb: dict[str, Any], contract: dict[str, Any], order: int, after: str, witness: str) -> None:
+    loop = next(row for row in rows(rb, "TSPLoops") if int(row["LoopOrder"]) == order)
+    loop.update(
+        {
+            "Status": "CLOSED",
+            "AfterState": after,
+            "WitnessSummary": witness,
+            "CompletionDisposition": "CLOSED",
+            "NextFrontier": LOOPS[order]["next"],
+        }
+    )
+    contract_loop = next(row for row in contract["Loops"] if int(row["LoopOrder"]) == order)
+    contract_loop.update(
+        {
+            "Status": "CLOSED",
+            "AfterState": after,
+            "Result": witness,
+            "CompletionDisposition": "CLOSED",
+        }
+    )
+    set_meta(rb, "last_loop", "integer", integer=order)
+    set_meta(rb, "highest_completed_loop", "integer", integer=order)
+
+
+def save(rb: dict[str, Any], contract: dict[str, Any]) -> None:
+    base.save(rb, contract)
+
+
+def commit(message: str, paths: list[Path]) -> None:
+    base.commit(message, paths)
+    run(["git", "push", "origin", f"HEAD:{TARGET_BRANCH}"])
+
+
+def transform_registry_tokens(rb: dict[str, Any], replacements: dict[str, str]) -> None:
+    for row in rows(rb, "TSPConceptRegistry"):
+        expression = row.get("ReducedBasisExpression") or row.get("BasisExpression") or ""
+        operator = row.get("OperatorExpression") or ""
+        for old, new in replacements.items():
+            expression = expression.replace(old, new)
+            operator = operator.replace(old, new)
+        row["ReducedBasisExpression"] = expression
+        row["OperatorExpression"] = operator
+
+
+def reduce_basis_rows(
+    rb: dict[str, Any],
+    identifiers: Iterable[str],
+    replacement_id: str,
+    replacement_name: str,
+    generation: int,
+    *,
+    historical_kind: str,
+) -> None:
+    concepts = table_index(rb, "TSPConceptRegistry")
+    for ident in identifiers:
+        row = concepts[ident]
+        row["HistoricalConceptKind"] = row.get("HistoricalConceptKind") or row.get("ConceptKind")
+        row["ConceptKind"] = historical_kind
+        row["Status"] = f"REDUCED_TO_{replacement_name}"
+        row["SemanticCategory"] = "HISTORICAL"
+        row["SupersededByConcept"] = replacement_id
+        row["ReductionGeneration"] = generation
+
+
+def edge_key(a: str, b: str) -> tuple[str, str]:
+    return tuple(sorted((a, b)))
+
+
+def raw_tour_cost(rb: dict[str, Any], candidate: str) -> float:
+    edge_map = table_index(rb, "TravelEdges")
+    return sum(
+        float(edge_map[row["TravelEdge"]]["TravelCost"])
+        for row in rows(rb, "TourLegs")
+        if row["CandidateTour"] == candidate
+    )
+
+
+def graph_components(edge_rows: list[dict[str, Any]]) -> int:
+    vertices: set[str] = set()
+    adjacency: dict[str, set[str]] = defaultdict(set)
+    for row in edge_rows:
+        a, b = row["FromStop"], row["ToStop"]
+        vertices.update((a, b))
+        adjacency[a].add(b)
+        adjacency[b].add(a)
+    unseen = set(vertices)
+    count = 0
+    while unseen:
+        count += 1
+        root = unseen.pop()
+        stack = [root]
+        while stack:
+            node = stack.pop()
+            for nxt in adjacency[node]:
+                if nxt in unseen:
+                    unseen.remove(nxt)
+                    stack.append(nxt)
+    return count
