@@ -1,89 +1,324 @@
-name: Apply TSP loops 587-596
+name: Reconcile TSP loops 587-596 projections
 
 on:
-  push:
-    branches:
-      - agent/tsp-semantic-foundation
-    paths:
-      - .tsp-loop-587-596-trigger
   pull_request:
     branches:
       - main
     paths:
-      - .tsp-loop-587-596-trigger
       - .github/workflows/apply-tsp-loops-587-596.yml
+  workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  apply:
+  reconcile:
     runs-on: ubuntu-latest
     env:
       TARGET_BRANCH: ${{ github.head_ref || github.ref_name }}
-      PGHOST: localhost
-      PGUSER: postgres
-      PGPASSWORD: postgres
-    services:
-      postgres:
-        image: postgres:16
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: postgres
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd "pg_isready -U postgres"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref || github.ref_name }}
           fetch-depth: 0
 
-      - name: Configure loop commits
+      - name: Configure corrective commit
         run: |
           git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git config user.email '4189828+github-actions[bot]@users.noreply.github.com'
 
-      - name: Assemble and commit migration programs
+      - name: Reconcile contract, README, and durable summary validation
+        shell: bash
         run: |
           set -euo pipefail
+          python3 <<'PY'
+          import json
+          from pathlib import Path
+
+          domain = Path('rulebook-examples/effortless-math/domains/traveling-salesman')
+          rulebook_path = domain / 'effortless-rulebook' / 'traveling-salesman-rulebook.json'
+          contract_path = domain / 'problem-contract.json'
+          readme_path = domain / 'README.md'
+          validator_path = domain / 'scripts' / 'validate_summary_alignment.py'
+          wrapper_path = domain / 'scripts' / 'validate_rulebook.py'
+
+          rb = json.loads(rulebook_path.read_text())
+          contract = json.loads(contract_path.read_text())
+          tables = {
+              key: value for key, value in rb.items()
+              if key != '__meta__' and isinstance(value, dict)
+              and isinstance(value.get('schema'), list)
+              and isinstance(value.get('data'), list)
+          }
+
+          contract['Version'] = '0.3.0'
+          contract['Statement'] = (
+              'Given finite city-scale weighted graphs, represent normalization, witnessed inference '
+              'applications, inferred edge sets, route reconstruction, lower and upper certificates, '
+              'constraint closure, neighborhood contraction, and residual search as executable structural data.'
+          )
+          contract['Scope'] = (
+              'The five-stop symmetric Gridville fixture is reconstructed from inferred local-bound edge '
+              'geometry with zero branch decisions and remains certified optimal at cost 14. Negative graph '
+              'and tour witnesses remain active. A six-stop twin-triangles fixture demonstrates a sound but '
+              'non-tight lower bound, disconnected selected subtours, explicit residual ambiguity, and finite '
+              'three-stop neighborhood boundary-state contraction. A sparse five-stop fixture witnesses '
+              'degree-two forcing and forbidden-edge propagation. No general solver or complexity claim is made.'
+          )
+          contract['TrustBoundary'] = (
+              'InputGraphKernel: city/neighborhood/address membership, required-stop selection, edge '
+              'availability, and TravelEdges weights are trusted input data. Pair identity, cycle coverage, '
+              'local two-cheapest witnesses, double-counting, inferred edge union, connected degree-two '
+              'certification, deterministic route reconstruction, forcing, forbidding, and finite '
+              'three-stop cluster contraction are represented internally. The generated Postgres projection '
+              'remains a BLOCKED substrate obligation because the commissioning runner lacked the effortless CLI.'
+          )
+          contract['ExecutionSubstrates'] = [
+              'python:scripts/reference_model.py and rulebook validators (commissioned)',
+              'postgres:generated vw_* views (BLOCKED in loop 587: effortless CLI unavailable in runner)',
+          ]
+
+          current = {row['CertificateId']: row for row in contract['CurrentCertificates']}
+          additions = [
+              {'CertificateId': 'gridville-inferred-edge-set', 'Kind': 'derived-edge-set-certificate', 'Conclusion': 'Five locally supported edges are deduplicated without consuming a supplied CandidateTour, TourStop, or TourLeg antecedent.'},
+              {'CertificateId': 'gridville-connected-degree-two', 'Kind': 'connected-degree-two-certificate', 'Conclusion': 'The inferred five-edge set has selected degree two at every stop, one connected component, a four-edge spanning tree, and no proper subtour.'},
+              {'CertificateId': 'gridville-route-reconstruction', 'Kind': 'route-reconstruction-certificate', 'Conclusion': 'The ordered cycle A-B-C-D-E-A is reconstructed from the inferred edge set at cost 14 with CandidateUsedAsAntecedent=false.'},
+              {'CertificateId': 'gridville-derived-search-accounting', 'Kind': 'search-elimination-certificate', 'Conclusion': 'Twelve symmetry-reduced route classes contract to one reconstructed class with zero branch decisions, zero backtracks, and zero residual ambiguity.'},
+              {'CertificateId': 'twin-triangles-non-tight-bound', 'Kind': 'counterexample-certificate', 'Conclusion': 'A degree-two lower bound of 6 remains sound while a feasible route costs 24 and the selected cheap edges form two proper subtours.'},
+              {'CertificateId': 'sparse-degree-two-forcing', 'Kind': 'forced-edge-certificate', 'Conclusion': 'Five sparse-fixture ring edges are forced from degree-two incident-edge states without branching.'},
+              {'CertificateId': 'forbidden-edge-propagation', 'Kind': 'forbidden-edge-certificate', 'Conclusion': 'Degree saturation forbids the sparse B-D chord and proper-subtour prevention forbids the twin WA-WC closing edge.'},
+              {'CertificateId': 'twin-triangle-boundary-contraction', 'Kind': 'cluster-boundary-state-certificate', 'Conclusion': 'Each three-stop neighborhood contracts six directed internal orders to three undirected boundary states; paired composition contracts 36 combinations to nine.'},
+          ]
+          for row in additions:
+              current[row['CertificateId']] = row
+          contract['CurrentCertificates'] = list(current.values())
+
+          acceptance = contract.setdefault('Acceptance', {})
+          count_fields = {
+              'RulebookTables': len(tables),
+              'Cities': len(rb['Cities']['data']),
+              'Neighborhoods': len(rb['Neighborhoods']['data']),
+              'Addresses': len(rb['Addresses']['data']),
+              'TSPInstances': len(rb['TSPInstances']['data']),
+              'InstanceStops': len(rb['InstanceStops']['data']),
+              'TravelEdges': len(rb['TravelEdges']['data']),
+              'CandidateTours': len(rb['CandidateTours']['data']),
+              'TourStops': len(rb['TourStops']['data']),
+              'TourLegs': len(rb['TourLegs']['data']),
+              'TSPLoops': len(rb['TSPLoops']['data']),
+              'FrontierObligations': len(rb['TSPFrontierObligations']['data']),
+              'ExecutionRuns': len(rb['TSPExecutionRuns']['data']),
+              'InferenceStates': len(rb['TSPInferenceStates']['data']),
+              'InferenceApplications': len(rb['TSPInferenceApplications']['data']),
+              'InferenceAntecedents': len(rb['TSPInferenceAntecedents']['data']),
+              'EdgeStates': len(rb['TSPEdgeStates']['data']),
+              'EdgeSupports': len(rb['TSPEdgeSupports']['data']),
+              'DerivedEdgeSets': len(rb['TSPDerivedEdgeSets']['data']),
+              'DerivedEdgeSetMembers': len(rb['TSPDerivedEdgeSetMembers']['data']),
+              'ConnectedDegreeTwoCertificates': len(rb['TSPConnectedDegreeTwoCertificates']['data']),
+              'RouteReconstructions': len(rb['TSPRouteReconstructions']['data']),
+              'RouteReconstructionSteps': len(rb['TSPRouteReconstructionSteps']['data']),
+              'SearchCertificates': len(rb['TSPSearchCertificates']['data']),
+              'ConstraintRounds': len(rb['TSPConstraintRounds']['data']),
+              'ConstraintDecisions': len(rb['TSPConstraintDecisions']['data']),
+              'ClusterBoundaryStates': len(rb['TSPClusterBoundaryStates']['data']),
+              'ClusterBoundaryStateMembers': len(rb['TSPClusterBoundaryStateMembers']['data']),
+              'ClusterContractionCertificates': len(rb['TSPClusterContractionCertificates']['data']),
+          }
+          acceptance.update(count_fields)
+          acceptance['RouteDiscoverySearchEliminationPct'] = 91.67
+          acceptance['GridvilleBranchingAvoidedPct'] = 100
+          acceptance['PostgresCommissioningStatus'] = 'BLOCKED'
+          acceptance['LastPlannedLoop'] = 596
+          acceptance['HighestCompletedLoop'] = 596
+          acceptance['ActiveImportedDependencies'] = 0
+          contract_path.write_text(json.dumps(contract, indent=2, ensure_ascii=False) + '\n')
+
+          readme_path.write_text('''# Traveling Salesman — Semantic Geometry Research Domain
+
+**Status:** Research program  
+**Version:** 0.3.0  
+**Current finite claim:** Gridville's optimal cycle is reconstructed from inferred local-bound edges with zero branch decisions; twin triangles demonstrates a sound non-tight bound and the first finite neighborhood boundary-state contraction certificate. No general solver or complexity claim is made.
+
+The canonical object is the executable structural rulebook, not a solver and not a route. It represents cities, neighborhoods, addresses, finite graph instances, supplied and reconstructed route witnesses, inference applications, antecedents, edge states, derived edge sets, lower bounds, optimality certificates, constraint rounds, boundary states, invariants, and residual search.
+
+## Sixty-thousand-foot object
+
+```text
+City
+└── Neighborhood
+    └── Address
+        └── InstanceStop
+            ├── TravelEdge
+            ├── LocalDegreeBound
+            │   └── IncidentDominanceCheck
+            ├── EdgeState / ConstraintDecision
+            └── ClusterBoundaryState
+
+TSPInstance
+├── CandidateTour
+├── DerivedEdgeSet
+│   ├── StopDegree
+│   ├── ConnectedDegreeTwoCertificate
+│   └── RouteReconstruction
+├── InstanceLowerBound / OptimalityCertificate
+├── InferenceState / InferenceApplication / Antecedent
+├── SearchCertificate
+└── FrontierObligation
+```
+
+## Status vocabulary
+
+```text
+selected by a local witness
+≠ forced in every feasible tour
+≠ present in one optimal tour
+≠ globally necessary
+
+valid supplied route
+≠ reconstructed route
+≠ optimality certificate
+≠ general solver
+≠ P = NP
+```
+
+The active imported-dependency count remains **zero**. Loop 587 is a typed `SUBSTRATE_OBLIGATION` recorded as **BLOCKED**, not silently passed: PostgreSQL was available, but the commissioning runner lacked the `effortless` CLI.
+
+## Loops 577–596
+
+| Loops | Result |
+|---:|---|
+| 577–581 | City hierarchy, canonical graph, ordered tour witnesses, negative route certificate, and honest 12-class baseline. |
+| 582–586 | Typed frontier ledger, global cycle coverage, canonical edge-pair multiplicity, degree-two lower bound, and finite Gridville optimality. |
+| 587 | Postgres commissioning attempted; **BLOCKED** with the exact missing-executable reason. |
+| 588 | Five inference applications, five antecedents, five selected-not-forced edge states, and ten support rows. |
+| 589 | Five distinct Gridville edges derived from local-bound support, without a supplied-route antecedent. |
+| 590 | Selected degree two at every stop, one component, four spanning-tree edges, and no proper subtour. |
+| 591 | `A → B → C → D → E → A` reconstructed from the inferred edge set at cost 14. |
+| 592 | Route classes `12 → 1`; branch decisions `0`; backtracks `0`; residual ambiguity `0`. |
+| 593 | Twin triangles: sound lower bound 6, feasible cost 24, two selected components, two proper subtours, no optimality promotion. |
+| 594 | Five sparse-fixture edges forced by degree-two closure with zero branching. |
+| 595 | Degree saturation and proper-subtour rules emit two deterministic forbidden-edge certificates. |
+| 596 | Each three-stop neighborhood contracts six internal orders to three boundary states; paired composition contracts `36 → 9`. |
+
+Every loop 587–596 was first recorded as `PLANNED` with its before-state and closure criterion. The same rulebook row now preserves its after-state and final disposition.
+
+## Search accounting
+
+```text
+GRIDVILLE ROUTE CLASSES                  12 → 1   91.67% alternatives removed
+GRIDVILLE BRANCH DECISIONS                0       100% branch search avoided
+GRIDVILLE RESIDUAL AMBIGUITY              0
+SUPPLIED-CANDIDATE OPTIMALITY CHECK      enumeration avoided by bound equality
+TWIN-TRIANGLES RESIDUAL CLASSES          60 → 60  lower bound remains non-tight
+```
+
+Gridville is a finite positive witness. Twin triangles is the counterexample that prevents a sound local lower bound from being confused with connectedness, tightness, reconstruction, or optimality.
+
+## Postgres boundary
+
+The generated Postgres/Python conformance path remains explicit:
+
+```bash
+./start.sh validate
+./start.sh all
+```
+
+Loop 587 attempted the full path. It recorded `BLOCKED: missing required executable(s): effortless`; `psql` and PostgreSQL 16 were available. No generated-view conformance claim has been made yet.
+
+## Current frontier
+
+```text
+commission generated Postgres when the effortless CLI is available
+generalize boundary states beyond symmetric three-stop clusters
+strengthen non-tight lower bounds with crossing/component constraints
+branch only after deterministic closure on fixtures with positive residual ambiguity
+```
+
+## Local transpiler bus
+
+The repository's local ssotme proxy exposes the registered transpilers on `localhost:4242` when the root project is running. The rulebook remains canonical; generated SQL, RuleSpeak, Python, OWL, and other substrates remain projections.
+''')
+
+          validator_path.write_text(r'''#!/usr/bin/env python3
+"""Validate that the TSP problem contract and README agree with the canonical rulebook."""
+from __future__ import annotations
+
+import json
+from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+DOMAIN = HERE.parent
+RULEBOOK = DOMAIN / "effortless-rulebook" / "traveling-salesman-rulebook.json"
+CONTRACT = DOMAIN / "problem-contract.json"
+README = DOMAIN / "README.md"
+
+
+def main() -> None:
+    rb = json.loads(RULEBOOK.read_text())
+    contract = json.loads(CONTRACT.read_text())
+    acceptance = contract["Acceptance"]
+    tables = {
+        key: value for key, value in rb.items()
+        if key != "__meta__" and isinstance(value, dict)
+        and isinstance(value.get("schema"), list)
+        and isinstance(value.get("data"), list)
+    }
+    expected = {
+        "RulebookTables": len(tables),
+        "Cities": len(rb["Cities"]["data"]),
+        "Neighborhoods": len(rb["Neighborhoods"]["data"]),
+        "Addresses": len(rb["Addresses"]["data"]),
+        "TSPInstances": len(rb["TSPInstances"]["data"]),
+        "InstanceStops": len(rb["InstanceStops"]["data"]),
+        "TravelEdges": len(rb["TravelEdges"]["data"]),
+        "CandidateTours": len(rb["CandidateTours"]["data"]),
+        "TourStops": len(rb["TourStops"]["data"]),
+        "TourLegs": len(rb["TourLegs"]["data"]),
+        "TSPLoops": len(rb["TSPLoops"]["data"]),
+        "FrontierObligations": len(rb["TSPFrontierObligations"]["data"]),
+    }
+    for key, value in expected.items():
+        assert acceptance.get(key) == value, f"{key}: contract={acceptance.get(key)!r}, rulebook={value!r}"
+    loops = {int(row["LoopOrder"]): row for row in rb["TSPLoops"]["data"]}
+    assert loops[587]["Status"] == "BLOCKED"
+    assert all(loops[order]["Status"] == "CLOSED" for order in range(588, 597))
+    assert acceptance["HighestCompletedLoop"] == 596
+    assert acceptance["PostgresCommissioningStatus"] == "BLOCKED"
+    assert contract["Claims"]["RouteReconstructedWithoutSuppliedAntecedent"] is True
+    text = README.read_text()
+    for marker in ["Loops 577–596", "12 → 1", "BLOCKED: missing required executable(s): effortless", "36 → 9"]:
+        assert marker in text, f"README missing marker: {marker}"
+    print("traveling-salesman summary alignment: PASS")
+    print(f"tables: {len(tables)}; loops: {len(rb['TSPLoops']['data'])}; instances: {len(rb['TSPInstances']['data'])}")
+
+
+if __name__ == "__main__":
+    main()
+''')
+          wrapper_path.write_text('''#!/usr/bin/env python3
+from validate_rulebook_v3 import main as validate_rulebook
+from validate_summary_alignment import main as validate_summary
+
+if __name__ == '__main__':
+    validate_rulebook()
+    validate_summary()
+''')
+          PY
+
           domain='rulebook-examples/effortless-math/domains/traveling-salesman'
-          cat \
-            .tsp-loop-587-596-migration-b64/part-000 \
-            .tsp-loop-587-596-migration-b64/part-001 \
-            .tsp-loop-587-596-migration-b64/part-002 \
-            | base64 -d > "$domain/scripts/apply_loops_587_596.py"
-          cat .tsp-loop-587-596-migration-plain/part-* \
-            >> "$domain/scripts/apply_loops_587_596.py"
-          cat \
-            .tsp-loop-587-596-migration-b64/part-004 \
-            .tsp-loop-587-596-migration-b64/part-005 \
-            .tsp-loop-587-596-migration-b64/part-006 \
-            | base64 -d >> "$domain/scripts/apply_loops_587_596.py"
-          cat .tsp-loop-587-596-validator/part-* > "$domain/scripts/validate_rulebook_v3.py"
-          chmod +x "$domain/scripts/apply_loops_587_596.py" "$domain/scripts/validate_rulebook_v3.py"
           python3 -m py_compile \
-            "$domain/scripts/apply_loops_587_596.py" \
-            "$domain/scripts/validate_rulebook_v3.py"
-          git add "$domain/scripts/apply_loops_587_596.py" "$domain/scripts/validate_rulebook_v3.py"
-          git rm -r \
-            .tsp-loop-587-596-migration \
-            .tsp-loop-587-596-migration-b64 \
-            .tsp-loop-587-596-migration-plain \
-            .tsp-loop-587-596-validator
-          git commit -m 'Add TSP loops 587-596 migration programs'
+            "$domain/scripts/validate_summary_alignment.py" \
+            "$domain/scripts/validate_rulebook.py"
+          python3 "$domain/scripts/validate_rulebook.py"
 
-      - name: Record plan, execute loops, and commit each loop
+      - name: Commit reconciled projections
         run: |
           domain='rulebook-examples/effortless-math/domains/traveling-salesman'
-          python3 "$domain/scripts/apply_loops_587_596.py"
-
-      - name: Push ordered loop history
-        run: |
+          git add \
+            "$domain/problem-contract.json" \
+            "$domain/README.md" \
+            "$domain/scripts/validate_rulebook.py" \
+            "$domain/scripts/validate_summary_alignment.py"
+          git commit -m 'Reconcile TSP loops 587-596 projections'
           git push origin HEAD:"$TARGET_BRANCH"
-          git log -12 --oneline
