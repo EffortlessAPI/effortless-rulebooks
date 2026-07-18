@@ -523,12 +523,12 @@
     {
       "LoopOrder": 628,
       "LoopId": "tsp-loop-628",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "CLOSURE and FIXPOINT are separate active operators although both repeatedly add warranted consequences until a stability condition holds.",
       "ClosureCriterion": "Introduce SATURATE(seed,rewrite,termination_warrant), reduce closure and fixed point to explicit saturation modes, and preserve their historical operator identities.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Collapsed CLOSURE and FIXPOINT into the SATURATE operator.",
+      "Result": "Reachability closure and no-change rule closure remain recoverable as distinct expansive saturation modes; active operators are Saturate, Aggregate, and Quotient.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 629,
@@ -820,7 +820,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 646,
-    "HighestCompletedLoop": 627,
+    "HighestCompletedLoop": 628,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 14,
     "SelectedNotForcedEdgeStates": 5,
@@ -862,8 +862,8 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 48,
     "ClusterContractionCertificates": 4,
-    "ConvergenceMeasurements": 31,
-    "ConceptRegistry": 79,
+    "ConvergenceMeasurements": 32,
+    "ConceptRegistry": 81,
     "DefectProfiles": 16,
     "BoundTerms": 4,
     "WitnessNormalForms": 9,
@@ -884,7 +884,7 @@
     "AsymmetricQuotientReductionPct": 75
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:5ffc789a049040b4d8bf108ce2ae7e4de780c2309fb942ebb40bb9a5e17309f1",
+    "rulebook": "sha256:4ed3cee674394f1e8a1a7fc8177bd104ba4392e219a32634635639244845605d",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
