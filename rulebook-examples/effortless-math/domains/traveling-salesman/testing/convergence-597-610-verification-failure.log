@@ -1,7 +1,6 @@
 traveling-salesman state-aware convergence validation: PASS
 traveling-salesman convergence summary alignment: PASS
 primitive_count=8 coined_count=14
-twin_base=None twin_adjustment=18
 Traceback (most recent call last):
-  File "<stdin>", line 38, in <module>
-KeyError: 'BaseLowerBoundCost'
+  File "<stdin>", line 37, in <module>
+KeyError: 'LowerBoundCost'

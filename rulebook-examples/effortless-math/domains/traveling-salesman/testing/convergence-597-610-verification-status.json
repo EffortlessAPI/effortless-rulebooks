@@ -1,5 +1,6 @@
 {
-  "status": "RUNNER_STARTED",
+  "status": "FAILED",
   "github_run_id": "29651502602",
-  "verifier": "v2-checkpointed"
+  "verifier": "v2-checkpointed",
+  "log": "testing/convergence-597-610-verification-failure.log"
 }
