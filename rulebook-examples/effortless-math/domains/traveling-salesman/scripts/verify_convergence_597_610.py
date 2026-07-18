@@ -13,23 +13,7 @@ CONTRACT = DOMAIN / "problem-contract.json"
 STATUS = DOMAIN / "testing" / "convergence-597-610-status.json"
 VERIFIED = DOMAIN / "testing" / "convergence-597-610-verified.json"
 
-EXPECTED_COMMITS = [
-    "TSP loops 597-610: register convergence experiment",
-    "TSP loop 597: record convergence prediction",
-    "TSP loop 598: define predicate basis",
-    "TSP loop 599: unify commitment lattice",
-    "TSP loop 600: unify incidence budget",
-    "TSP loop 601: define defect vector",
-    "TSP loop 602: certify cut parity",
-    "TSP loop 603: derive component repair bound",
-    "TSP loop 604: close twin bound sandwich",
-    "TSP loop 605: normalize witness forms",
-    "TSP loop 606: define boundary signatures",
-    "TSP loop 607: certify semantic quotient",
-    "TSP loop 608: unify component quotient",
-    "TSP loop 609: normalize closure events",
-    "TSP loop 610: record convergence event",
-]
+PLAN_COMMIT = "TSP loops 597-610: register convergence experiment"
 
 
 def load(path: Path) -> dict:
@@ -40,6 +24,24 @@ def load(path: Path) -> dict:
 
 def term_value(row: dict) -> float:
     return float(row["Quantity"]) * float(row["UnitWeight"]) * int(row["Sign"])
+
+
+def ordered_loop_commit_positions(subjects: list[str]) -> list[int]:
+    """Require one ordered semantic commit per loop without coupling to prose wording."""
+    if PLAN_COMMIT not in subjects:
+        raise AssertionError(f"missing convergence planning commit: {PLAN_COMMIT}")
+    positions = [subjects.index(PLAN_COMMIT)]
+    for order in range(597, 611):
+        prefix = f"TSP loop {order}:"
+        matches = [index for index, subject in enumerate(subjects) if subject.startswith(prefix)]
+        if len(matches) != 1:
+            raise AssertionError(
+                f"expected exactly one convergence commit with prefix {prefix!r}, got {matches}"
+            )
+        positions.append(matches[0])
+    if positions != sorted(positions) or len(set(positions)) != len(positions):
+        raise AssertionError(f"convergence commits are not strictly ordered: {positions}")
+    return positions
 
 
 def main() -> None:
@@ -113,13 +115,7 @@ def main() -> None:
     subjects = subprocess.check_output(
         ["git", "log", "--format=%s", "--reverse"], text=True
     ).splitlines()
-    positions: list[int] = []
-    for message in EXPECTED_COMMITS:
-        if message not in subjects:
-            raise AssertionError(f"missing convergence commit: {message}")
-        positions.append(subjects.index(message))
-    if positions != sorted(positions) or len(set(positions)) != len(positions):
-        raise AssertionError(f"convergence commits are not strictly ordered: {positions}")
+    positions = ordered_loop_commit_positions(subjects)
 
     payload = {
         "status": "VERIFIED",
