@@ -170,5 +170,5 @@ jobs:
           EOF
           git add "$domain/testing/convergence-597-610-status.json"
           git commit -m 'Record TSP convergence 597-610 workflow success'
-          git pull --rebase origin "$TARGET_BRANCH"
+          git status --short
           git push origin HEAD:"$TARGET_BRANCH"
