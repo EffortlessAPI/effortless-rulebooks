@@ -1,0 +1,2 @@
+validation-run: loops-577-596-final
+checks: semantic, summaries, replay compilation, shell syntax, ordered loop commits, clean tree
