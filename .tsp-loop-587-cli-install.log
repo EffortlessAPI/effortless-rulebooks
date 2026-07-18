@@ -9,9 +9,9 @@ npm error npm error path /opt/hostedtoolcache/node/22.23.1/x64/lib/node_modules/
 npm error npm error dest /opt/hostedtoolcache/node/22.23.1/x64/lib/node_modules/.ssotme-ZGc3GlF8
 npm error npm error errno -20
 npm error npm error ENOTDIR: not a directory, rename '/opt/hostedtoolcache/node/22.23.1/x64/lib/node_modules/ssotme' -> '/opt/hostedtoolcache/node/22.23.1/x64/lib/node_modules/.ssotme-ZGc3GlF8'
-npm error npm error A complete log of this run can be found in: /home/runner/.npm/_logs/2026-07-18T05_02_50_358Z-debug-0.log
-npm error A complete log of this run can be found in: /home/runner/.npm/_logs/2026-07-18T05_02_46_715Z-debug-0.log
+npm error npm error A complete log of this run can be found in: /home/runner/.npm/_logs/2026-07-18T05_03_52_888Z-debug-0.log
+npm error A complete log of this run can be found in: /home/runner/.npm/_logs/2026-07-18T05_03_49_572Z-debug-0.log
 /opt/hostedtoolcache/node/22.23.1/x64/lib
 └── ssotme@
 
-/home/runner/work/_temp/4d9a0660-0412-471b-b9f6-acde93e8e6a7.sh: line 8: effortless: command not found
+/home/runner/work/_temp/8e4e9c38-4397-44ec-8081-363e4ca0938f.sh: line 8: effortless: command not found
