@@ -1,4 +1,4 @@
-run-id: tsp-loop-587-retry-7
+run-id: tsp-loop-587-retry-7-valid-env
 cli: https://github.com/EffortlessAPI/cli/archive/1551cb82d5a8992ad09e4c82d08e28493f92f7b4.tar.gz
-npm-prefix: job-level $RUNNER_TEMP/npm-global
+npm-prefix: /tmp/effortless-npm-global
 intent: preserve attempts 1-6; run generated Postgres; close only after live conformance
