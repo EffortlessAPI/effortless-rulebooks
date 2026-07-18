@@ -107,12 +107,12 @@
     {
       "LoopOrder": 590,
       "LoopId": "tsp-loop-590",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "The inferred Gridville edge union has no represented degree, component, spanning-tree, or subtour certificate.",
       "ClosureCriterion": "Witness selected degree two at all five stops, one connected component, a four-edge spanning tree, and zero proper subtours.",
-      "AfterState": null,
-      "Result": null,
-      "CompletionDisposition": null
+      "AfterState": "All five stops have selected degree two; component count=1, spanning-tree edges=4, proper subtours=0.",
+      "Result": "All five stops have selected degree two; component count=1, spanning-tree edges=4, proper subtours=0.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 591,
@@ -247,10 +247,12 @@
     "PostgresCommissioningStatus": "BLOCKED",
     "InferenceApplications": 5,
     "SelectedNotForcedEdgeStates": 5,
-    "GridvilleInferredEdgeCount": 5
+    "GridvilleInferredEdgeCount": 5,
+    "GridvilleConnectedComponents": 1,
+    "GridvilleProperSubtours": 0
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:1f8cdeef9c775b1196dcf698c970da42c8259a62d606c08f68a52b7d41fd3b8d"
+    "rulebook": "sha256:03eca22d001462ee76b26a2ca98351d2c7c43d2e494fcba194383db7d7c58b8b"
   },
   "GeneratedTimestamp": null,
   "Vocabulary": {
