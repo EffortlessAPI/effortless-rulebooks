@@ -1,48 +1,2167 @@
 formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
-[agent/tsp-semantic-foundation 84507c6] TSP loops 597-610: register convergence experiment
+[agent/tsp-semantic-foundation e86c6b6] TSP loops 597-610: register convergence experiment
  6 files changed, 203 insertions(+), 528 deletions(-)
 formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
-[agent/tsp-semantic-foundation 14e7027] TSP loop 597: record convergence prediction
+[agent/tsp-semantic-foundation 6078453] TSP loop 597: record convergence prediction
  2 files changed, 41 insertions(+), 13 deletions(-)
 formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
-[agent/tsp-semantic-foundation d1045c5] TSP loop 598: derive eight-predicate basis
+[agent/tsp-semantic-foundation 416f714] TSP loop 598: derive eight-predicate basis
  2 files changed, 78 insertions(+), 15 deletions(-)
 formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
-[agent/tsp-semantic-foundation 10f2f25] TSP loop 599: collapse edge commitment lattice
+[agent/tsp-semantic-foundation d9dad9a] TSP loop 599: collapse edge commitment lattice
  2 files changed, 24 insertions(+), 18 deletions(-)
 formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
-[agent/tsp-semantic-foundation f25b4be] TSP loop 600: collapse incidence budget
+[agent/tsp-semantic-foundation 237f463] TSP loop 600: collapse incidence budget
  2 files changed, 56 insertions(+), 16 deletions(-)
 formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
-[agent/tsp-semantic-foundation 6cb692d] TSP loop 601: derive defect vector
+[agent/tsp-semantic-foundation 1145031] TSP loop 601: derive defect vector
  2 files changed, 22 insertions(+), 18 deletions(-)
 formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
-[agent/tsp-semantic-foundation 057d46e] TSP loop 602: derive cut parity
+[agent/tsp-semantic-foundation c3b51d1] TSP loop 602: derive cut parity
  2 files changed, 42 insertions(+), 16 deletions(-)
 formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
-traveling-salesman state-aware convergence validation: PASS
-traveling-salesman state-aware convergence validation: PASS
-traveling-salesman state-aware convergence validation: PASS
-traveling-salesman state-aware convergence validation: PASS
-traveling-salesman state-aware convergence validation: PASS
-traveling-salesman state-aware convergence validation: PASS
-traveling-salesman state-aware convergence validation: PASS
+[agent/tsp-semantic-foundation 4260ff2] TSP loop 603: derive component repair bound
+ 3 files changed, 107 insertions(+), 23 deletions(-)
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+[agent/tsp-semantic-foundation cc84736] TSP loop 604: close twin bound sandwich
+ 2 files changed, 32 insertions(+), 25 deletions(-)
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+[agent/tsp-semantic-foundation 81ab8f7] TSP loop 605: normalize cycle witnesses
+ 2 files changed, 54 insertions(+), 21 deletions(-)
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+[agent/tsp-semantic-foundation 89bdeed] TSP loop 606: derive boundary signatures
+ 2 files changed, 35 insertions(+), 25 deletions(-)
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+[agent/tsp-semantic-foundation b00c66f] TSP loop 607: quotient boundary semantics
+ 2 files changed, 32 insertions(+), 25 deletions(-)
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+[agent/tsp-semantic-foundation 0d6be79] TSP loop 608: derive component quotient
+ 2 files changed, 35 insertions(+), 26 deletions(-)
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+[agent/tsp-semantic-foundation 002f9b4] TSP loop 609: normalize closure events
+ 2 files changed, 56 insertions(+), 29 deletions(-)
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+[tsp] effortless build → Postgres + RuleSpeak
+
+
+ **** /effortless-rulebook: minimizerulebook ****
+CommandLine:> effortless minimize-rulebook -i traveling-salesman-rulebook.json
+[cli] Initializing CLI tool URL index...
+[cli] Refreshing CLI tool URL index...
+================================================================================
+  CLOUD-BRIDGE CALL TRIGGERED: Empty local transpiler URL cache
+================================================================================
+  WHY:        Local transpiler URL cache (ssotme-tools.json) is empty or corrupt — must repopulate from cli-cloud-bridge before any transpiler can be resolved.
+  CALLED BY:  SSoTmeCLIHandler.TryGetUrlFromRemoteTools (SSoTmeCLIHandler.cs:3765)
+  CLI VER:    current=2026-06-09.06.13, cached=(none)
+  CWD:        /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook
+  TIME:       2026-07-18T15:07:45.3273694Z
+  COMMAND:    minimize-rulebook -i traveling-salesman-rulebook.json
+================================================================================
+Waiting for the remote transpiler 'httpsssotme-cli-cloud-bridge-v2026-04-24-1853-cmvbd4phczmeg7pktzg2z971j0cplnapp' to boot up       .  .. ...   .  .. ...   .  .. ...   .  .. ...   .  .. ...   .  .. ...   .  .. ...   .  .. ...                                                                                                                                     
+
+Waiting for the remote transpiler 'httpsssotme-cli-cloud-bridge-v2026-04-24-1853-cmvbd4phczmeg7pktzg2z971j0cplnapp' to boot up    .  ..                                                                                                                                   
+
+cli:> effortless/effortless/minimize-rulebook v2026.07.08.1133 [latest]
+Waiting for the remote transpiler 'httpseffortless-minimize-rulebook-v2026-07-08-1133-cmvbd4phczmeg7pktzg2z971j0cplnapp' to boot up       .  .. ...   .  .. ...   .  .. ...   .  .. ...   .  .. ...   .  .. ...   .  .. ...   .  ..                                                                                                                                        
+
+Waiting for the remote transpiler 'httpseffortless-minimize-rulebook-v2026-07-08-1133-cmvbd4phczmeg7pktzg2z971j0cplnapp' to boot up    ...                                                                                                                                       
+
+[cli] Creating /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+[cli] Creating /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.derived-read-me-1st.txt
+[cli] Creating /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.derived-schema.json
+[cli] Creating /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.derived-schema.min.json
+[cli] Creating /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.derived-data.json
+
+
+ **** /effortless-postgres: rulebooktopostgres ****
+CommandLine:> effortless rulebook-to-postgres -i ../effortless-rulebook/traveling-salesman-rulebook.json -p memoize_repeated_calls=true
+cli:> effortless/effortless/rulebook-to-postgres v2026.07.11.2146 [latest]
+Waiting for the remote transpiler 'httpseffortless-rulebook-to-postgres-v2026-07-11-2146-cmvbd4phczmeg7pktzg2z971j0cplnapp' to boot up       .  .. ...   .  .. ...   .  .. ...   .  .. ...   .                                                                                                                                            
+
+[cli] Transpiler processing asynchronously, polling for result...
+Waiting for the remote transpiler 'httpseffortless-rulebook-to-postgres-v2026-07-11-2146-cmvbd4phczmeg7pktzg2z971j0cplnapp' to boot up    .. ...   .  .. ...   [rulebook-to-postgres v2026.07.11.2146] =================================
+[rulebook-to-postgres v2026.07.11.2146]  Starting RunAsync
+[rulebook-to-postgres v2026.07.11.2146]  Generating scripts (schema=public, dropAll=False, snakeCase=True, mode=check-add, stage=dev, emitErbInternals=False, pkType=string, memoizeRepeatedCalls=True, materializeCalculatedFields=False)
+[rulebook-to-postgres v2026.07.11.2146]  Scripts generated successfully.
+[rulebook-to-postgres v2026.07.11.2146] Generated 323 calculation/lookup functions.
+[rulebook-to-postgres v2026.07.11.2146]  Completed successfully.
+.                                                                                                                                            
+
+[cli] Creating /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/01-drop-and-create-tables.sql
+[cli] Creating /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/02-create-functions.sql
+[cli] Creating /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql
+[cli] Creating /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/04-create-policies.sql
+[cli] Creating /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/05-insert-data.sql
+[cli] Creating /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/99-fk-constraints.sql
+[cli] Creating /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/.build-manifest.json
+[cli] Creating /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/quota-report.json
+
+
+ **** /rulespeak: rulebooktorulespeak ****
+CommandLine:> effortless rulebook-to-rulespeak -i ../effortless-rulebook/traveling-salesman-rulebook.json
+cli:> effortless/effortless/rulebook-to-rulespeak v2026.07.08.1458 [latest]
+Waiting for the remote transpiler 'httpseffortless-rulebook-to-rulespeak-v2026-07-08-1458-cmvbd4phczmeg7pktzg2z971j0cplnapp' to boot up       .  .. ...   .  .. ...   .  .. ...   .  .. ...   .                                                                                                                                             
+
+Waiting for the remote transpiler 'httpseffortless-rulebook-to-rulespeak-v2026-07-08-1458-cmvbd4phczmeg7pktzg2z971j0cplnapp' to boot up    ..                                                                                                                                            
+
+[cli] Creating /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/rulespeak/rulespeak.html
+[cli] Creating /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/rulespeak/rulespeak.md
+[cli] Creating /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/rulespeak/rulespeak-identifiers.json
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+[tsp] (re)creating Postgres database: erb_traveling_salesman
+NOTICE:  database "erb_traveling_salesman" does not exist, skipping
+[init-db] target: postgresql://postgres@localhost:5432/erb_traveling_salesman
+[init-db] note: install-magic-links.sql not present — skipping auth install
+[init-db]       fetch from https://magiclink.effortlessapi.com/install-magic-links/v1.sql
+[init-db] [RUN]  00-bootstrap.sql
+[init-db] [RUN]  01-drop-and-create-tables.sql
+SET
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+CREATE TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+COMMENT
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+[init-db] [RUN]  01b-customize-schema.sql
+[init-db] [RUN]  02-create-functions.sql
+SET
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+[init-db] [RUN]  02b-customize-functions.sql
+[init-db] [RUN]  03-create-views.sql
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:13: NOTICE:  view "vw_tsp_invariant_checks" does not exist, skipping
+DROP VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:14: NOTICE:  view "vw_search_metrics" does not exist, skipping
+DROP VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:15: NOTICE:  view "vw_tsp_concept_registry" does not exist, skipping
+DROP VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:16: NOTICE:  view "vw_tsp_convergence_measurements" does not exist, skipping
+DROP VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:17: NOTICE:  view "vw_tsp_loops" does not exist, skipping
+DROP VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:18: NOTICE:  view "vw_tsp_frontier_obligations" does not exist, skipping
+DROP VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:19: NOTICE:  view "vw_tsp_inference_rules" does not exist, skipping
+DROP VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:20: NOTICE:  view "vw_tsp_cluster_contraction_certificates" does not exist, skipping
+DROP VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:21: NOTICE:  view "vw_tsp_cluster_boundary_state_members" does not exist, skipping
+DROP VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:22: NOTICE:  view "vw_tsp_cluster_boundary_states" does not exist, skipping
+DROP VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:23: NOTICE:  view "vw_tsp_constraint_decisions" does not exist, skipping
+DROP VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:24: NOTICE:  view "vw_tsp_constraint_rounds" does not exist, skipping
+DROP VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:25: NOTICE:  view "vw_tsp_search_certificates" does not exist, skipping
+DROP VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:26: NOTICE:  view "vw_tsp_witness_normal_forms" does not exist, skipping
+DROP VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:27: NOTICE:  view "vw_tsp_route_reconstruction_steps" does not exist, skipping
+DROP VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:28: NOTICE:  view "vw_tsp_route_reconstructions" does not exist, skipping
+DROP VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:29: NOTICE:  view "vw_tsp_connected_degree_two_certificates" does not exist, skipping
+DROP VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:30: NOTICE:  view "vw_tsp_spanning_tree_edges" does not exist, skipping
+DROP VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:31: NOTICE:  view "vw_tsp_edge_set_stop_degrees" does not exist, skipping
+DROP VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:32: NOTICE:  view "vw_tsp_derived_edge_set_members" does not exist, skipping
+DROP VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:33: NOTICE:  view "vw_tsp_defect_profiles" does not exist, skipping
+DROP VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:34: NOTICE:  view "vw_tsp_derived_edge_sets" does not exist, skipping
+DROP VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:35: NOTICE:  view "vw_tsp_edge_supports" does not exist, skipping
+DROP VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:36: NOTICE:  view "vw_tsp_edge_states" does not exist, skipping
+DROP VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:37: NOTICE:  view "vw_tsp_inference_antecedents" does not exist, skipping
+DROP VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:38: NOTICE:  view "vw_tsp_inference_applications" does not exist, skipping
+DROP VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:39: NOTICE:  view "vw_tsp_inference_states" does not exist, skipping
+DROP VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:40: NOTICE:  view "vw_tsp_conformance_checks" does not exist, skipping
+DROP VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:41: NOTICE:  view "vw_tsp_artifacts" does not exist, skipping
+DROP VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:42: NOTICE:  view "vw_tsp_execution_runs" does not exist, skipping
+DROP VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:43: NOTICE:  view "vw_optimality_certificates" does not exist, skipping
+DROP VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:44: NOTICE:  view "vw_tsp_bound_terms" does not exist, skipping
+DROP VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:45: NOTICE:  view "vw_instance_lower_bounds" does not exist, skipping
+DROP VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:46: NOTICE:  view "vw_incident_dominance_checks" does not exist, skipping
+DROP VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:47: NOTICE:  view "vw_local_degree_bounds" does not exist, skipping
+DROP VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:48: NOTICE:  view "vw_tour_legs" does not exist, skipping
+DROP VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:49: NOTICE:  view "vw_tour_stops" does not exist, skipping
+DROP VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:50: NOTICE:  view "vw_candidate_tours" does not exist, skipping
+DROP VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:51: NOTICE:  view "vw_travel_edges" does not exist, skipping
+DROP VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:52: NOTICE:  view "vw_instance_stops" does not exist, skipping
+DROP VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:53: NOTICE:  view "vw_tsp_graph_invariant_checks" does not exist, skipping
+DROP VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:54: NOTICE:  view "vw_tsp_instances" does not exist, skipping
+DROP VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:55: NOTICE:  view "vw_addresses" does not exist, skipping
+DROP VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:56: NOTICE:  view "vw_neighborhoods" does not exist, skipping
+DROP VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:57: NOTICE:  view "vw_cities" does not exist, skipping
+DROP VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:63: NOTICE:  view "vw_cities" does not exist, skipping
+DROP VIEW
+CREATE VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:78: NOTICE:  view "vw_neighborhoods" does not exist, skipping
+DROP VIEW
+CREATE VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:97: NOTICE:  view "vw_addresses" does not exist, skipping
+DROP VIEW
+CREATE VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:115: NOTICE:  view "vw_tsp_instances" does not exist, skipping
+DROP VIEW
+CREATE VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:141: NOTICE:  view "vw_tsp_graph_invariant_checks" does not exist, skipping
+DROP VIEW
+CREATE VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:161: NOTICE:  view "vw_instance_stops" does not exist, skipping
+DROP VIEW
+CREATE VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:190: NOTICE:  view "vw_travel_edges" does not exist, skipping
+DROP VIEW
+CREATE VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:219: NOTICE:  view "vw_candidate_tours" does not exist, skipping
+DROP VIEW
+CREATE VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:252: NOTICE:  view "vw_tour_stops" does not exist, skipping
+DROP VIEW
+CREATE VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:281: NOTICE:  view "vw_tour_legs" does not exist, skipping
+DROP VIEW
+CREATE VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:318: NOTICE:  view "vw_local_degree_bounds" does not exist, skipping
+DROP VIEW
+CREATE VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:350: NOTICE:  view "vw_incident_dominance_checks" does not exist, skipping
+DROP VIEW
+CREATE VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:376: NOTICE:  view "vw_instance_lower_bounds" does not exist, skipping
+DROP VIEW
+CREATE VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:401: NOTICE:  view "vw_tsp_bound_terms" does not exist, skipping
+DROP VIEW
+CREATE VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:425: NOTICE:  view "vw_optimality_certificates" does not exist, skipping
+DROP VIEW
+CREATE VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:448: NOTICE:  view "vw_tsp_execution_runs" does not exist, skipping
+DROP VIEW
+CREATE VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:469: NOTICE:  view "vw_tsp_artifacts" does not exist, skipping
+DROP VIEW
+CREATE VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:485: NOTICE:  view "vw_tsp_conformance_checks" does not exist, skipping
+DROP VIEW
+CREATE VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:503: NOTICE:  view "vw_tsp_inference_states" does not exist, skipping
+DROP VIEW
+CREATE VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:520: NOTICE:  view "vw_tsp_inference_applications" does not exist, skipping
+DROP VIEW
+CREATE VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:545: NOTICE:  view "vw_tsp_inference_antecedents" does not exist, skipping
+DROP VIEW
+CREATE VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:560: NOTICE:  view "vw_tsp_edge_states" does not exist, skipping
+DROP VIEW
+CREATE VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:581: NOTICE:  view "vw_tsp_edge_supports" does not exist, skipping
+DROP VIEW
+CREATE VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:597: NOTICE:  view "vw_tsp_derived_edge_sets" does not exist, skipping
+DROP VIEW
+CREATE VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:619: NOTICE:  view "vw_tsp_defect_profiles" does not exist, skipping
+DROP VIEW
+CREATE VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:647: NOTICE:  view "vw_tsp_derived_edge_set_members" does not exist, skipping
+DROP VIEW
+CREATE VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:663: NOTICE:  view "vw_tsp_edge_set_stop_degrees" does not exist, skipping
+DROP VIEW
+CREATE VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:678: NOTICE:  view "vw_tsp_spanning_tree_edges" does not exist, skipping
+DROP VIEW
+CREATE VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:694: NOTICE:  view "vw_tsp_connected_degree_two_certificates" does not exist, skipping
+DROP VIEW
+CREATE VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:713: NOTICE:  view "vw_tsp_route_reconstructions" does not exist, skipping
+DROP VIEW
+CREATE VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:737: NOTICE:  view "vw_tsp_route_reconstruction_steps" does not exist, skipping
+DROP VIEW
+CREATE VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:754: NOTICE:  view "vw_tsp_witness_normal_forms" does not exist, skipping
+DROP VIEW
+CREATE VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:782: NOTICE:  view "vw_tsp_search_certificates" does not exist, skipping
+DROP VIEW
+CREATE VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:805: NOTICE:  view "vw_tsp_constraint_rounds" does not exist, skipping
+DROP VIEW
+CREATE VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:824: NOTICE:  view "vw_tsp_constraint_decisions" does not exist, skipping
+DROP VIEW
+CREATE VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:843: NOTICE:  view "vw_tsp_cluster_boundary_states" does not exist, skipping
+DROP VIEW
+CREATE VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:869: NOTICE:  view "vw_tsp_cluster_boundary_state_members" does not exist, skipping
+DROP VIEW
+CREATE VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:883: NOTICE:  view "vw_tsp_cluster_contraction_certificates" does not exist, skipping
+DROP VIEW
+CREATE VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:906: NOTICE:  view "vw_tsp_inference_rules" does not exist, skipping
+DROP VIEW
+CREATE VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:927: NOTICE:  view "vw_tsp_frontier_obligations" does not exist, skipping
+DROP VIEW
+CREATE VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:949: NOTICE:  view "vw_tsp_loops" does not exist, skipping
+DROP VIEW
+CREATE VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:971: NOTICE:  view "vw_tsp_convergence_measurements" does not exist, skipping
+DROP VIEW
+CREATE VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:993: NOTICE:  view "vw_tsp_concept_registry" does not exist, skipping
+DROP VIEW
+CREATE VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:1012: NOTICE:  view "vw_search_metrics" does not exist, skipping
+DROP VIEW
+CREATE VIEW
+psql:/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/03-create-views.sql:1039: NOTICE:  view "vw_tsp_invariant_checks" does not exist, skipping
+DROP VIEW
+CREATE VIEW
+[init-db] [RUN]  03b-customize-views.sql
+[init-db] [RUN]  04-create-policies.sql
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+[init-db] [RUN]  04b-customize-policies.sql
+[init-db] [RUN]  05-insert-data.sql
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+[init-db] [RUN]  05b-customize-data.sql
+[init-db] [SKIP] 99-fk-constraints.sql (set EFFORTLESS_ENFORCE_FKS=true to apply FK constraints)
+[init-db] complete (manifest: .applied-manifest.json)
+graph substrate agreement: 4/4
+tour substrate agreement: 4/4
+local-bound substrate agreement: 11/11
+instance-bound substrate agreement: 2/2
+optimality-certificate agreement: 2/2
+tour invariants passing: 4/4
+graph invariants passing: 2/2
+search substrate agreement: 2/2
 Traceback (most recent call last):
-  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_597_610_convergence_final3.py", line 39, in <module>
+  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/testing/take-test.py", line 294, in <module>
+    main()
+  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/testing/take-test.py", line 281, in main
+    f"{expected_frontier[0]} total, {expected_frontier[1]} imported, "
+                                     ~~~~~~~~~~~~~~~~~^^^
+IndexError: list index out of range
+traveling-salesman state-aware convergence validation: PASS
+traveling-salesman state-aware convergence validation: PASS
+traveling-salesman state-aware convergence validation: PASS
+traveling-salesman state-aware convergence validation: PASS
+traveling-salesman state-aware convergence validation: PASS
+traveling-salesman state-aware convergence validation: PASS
+traveling-salesman state-aware convergence validation: PASS
+traveling-salesman state-aware convergence validation: PASS
+traveling-salesman state-aware convergence validation: PASS
+traveling-salesman state-aware convergence validation: PASS
+traveling-salesman state-aware convergence validation: PASS
+traveling-salesman state-aware convergence validation: PASS
+traveling-salesman state-aware convergence validation: PASS
+traveling-salesman state-aware convergence validation: PASS
+traveling-salesman state-aware convergence validation: PASS
+traveling-salesman convergence summary alignment: PASS
+Traceback (most recent call last):
+  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_597_610_convergence_final3.py", line 44, in <module>
     base.main()
-  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_597_610_convergence_v2.py", line 1790, in main
-    validate_repository_state()
-  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_597_610_convergence_final2.py", line 147, in validate_repository_state
-    validate_convergence_state(rb, contract, reference_model)
-  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_597_610_convergence_final2.py", line 31, in validate_convergence_state
-    tours = reference_model.evaluate_tours(rb)
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/reference_model.py", line 430, in evaluate_tours
-    certificates = evaluate_optimality_certificates(rulebook)
-                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/reference_model.py", line 390, in evaluate_optimality_certificates
-    lower_bounds = evaluate_instance_lower_bounds(rulebook)
-                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/reference_model.py", line 556, in evaluate_instance_lower_bounds
-    raise AssertionError(f"unmapped InstanceLowerBoundResult fields: {missing}")
-AssertionError: unmapped InstanceLowerBoundResult fields: ['tsp_instance_id']
+  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_597_610_convergence_v2.py", line 1796, in main
+    rebuild_postgres_and_record(contract)
+  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_597_610_convergence_v2.py", line 1730, in rebuild_postgres_and_record
+    run(["bash", "start.sh", "test"], cwd=DOMAIN)
+  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_597_610_convergence_v2.py", line 56, in run
+    raise RuntimeError(f"command failed ({proc.returncode}): {' '.join(cmd)}\n{detail}")
+RuntimeError: command failed (1): bash start.sh test
+
+
