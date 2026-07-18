@@ -1,6 +1,9 @@
 {
-  "status": "RUNNER_STARTED",
+  "status": "SUCCEEDED",
   "driver": "v12-push-each-loop",
   "github_run_id": "29651037645",
-  "head_sha": "28ebff35840b57163118764ed349e79efc71561b"
+  "last_loop": 610,
+  "semantic_basis": "32->8",
+  "coined_terms": 14,
+  "new_primitives_after_598": 0
 }
