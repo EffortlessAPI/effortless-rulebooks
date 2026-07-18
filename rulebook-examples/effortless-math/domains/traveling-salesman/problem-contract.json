@@ -27,7 +27,10 @@
     "SemanticCompressionPct": 75,
     "NovelTermsCoined597To610": 14,
     "ThreeAtomBasisObserved": false,
-    "ThreeAtomBasisProved": false
+    "ThreeAtomBasisProved": false,
+    "CoherenceConvergencePredictionRecorded": true,
+    "LocalExpansionDuringInternalizationAllowed": true,
+    "MonotoneSchemaShrinkageClaimed": false
   },
   "CanonicalAsset": "effortless-rulebook/traveling-salesman-rulebook.json",
   "ExecutionSubstrates": [
@@ -338,12 +341,12 @@
     {
       "LoopOrder": 611,
       "LoopId": "tsp-loop-611",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Loop 610 records eight canonical predicates, but relational atoms and reusable operators are not distinguished. Convergence could also be misread as requiring monotone table or predicate shrinkage.",
       "ClosureCriterion": "Classify the eight historical predicates as candidate atoms or operator-derived concepts, preserve their loop-610 provenance, and record that local expansion is permitted when an opaque dependency is replaced by explicit reusable machinery. Measure convergence by coherence, reuse, trust-boundary reduction, and residual ambiguity rather than by monotone physical size.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Separated the historical eight-predicate basis into candidate relational atoms and operator-derived concepts without changing the active basis. Recorded that local representational growth is compatible with global semantic convergence when it replaces opacity with reusable structure.",
+      "Result": "All eight loop-610 primitives retain their historical identity and receive explicit semantic-category and reduced-expression fields; current primitive count remains eight. The convergence objective is coherence rather than monotone row, table, or predicate-count reduction.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 612,
@@ -565,7 +568,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 623,
-    "HighestCompletedLoop": 610,
+    "HighestCompletedLoop": 611,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 14,
     "SelectedNotForcedEdgeStates": 5,
@@ -607,8 +610,8 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 12,
     "ClusterContractionCertificates": 3,
-    "ConvergenceMeasurements": 14,
-    "ConceptRegistry": 54,
+    "ConvergenceMeasurements": 15,
+    "ConceptRegistry": 55,
     "DefectProfiles": 16,
     "BoundTerms": 4,
     "WitnessNormalForms": 9,
@@ -620,7 +623,7 @@
     "ConvergencePredictionStatus": "EARLY_EMPIRICAL_SUPPORT_FOR_CURRENT_TSP_DOMAIN"
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:ecd5403d677c46699c36a5028f43c8ea6c13a03c425b026773a22d4caa26c5b7",
+    "rulebook": "sha256:44764b95a4aa807292c943b92bd5175cff457f0554a87614f9c737482fe41e44",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
