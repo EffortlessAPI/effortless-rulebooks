@@ -1,6 +1,6 @@
 {
   "ProblemId": "traveling-salesman-semantic-geometry",
-  "Version": "0.4.0",
+  "Version": "0.5.0-alpha",
   "Title": "Traveling Salesman — City / Neighborhood / Address Semantic Geometry",
   "Status": "RESEARCH_PROGRAM",
   "Statement": "Given finite city-scale weighted graphs, represent graph normalization, supplied tours, typed frontier obligations, local-to-global lower bounds, finite optimality certificates, and residual search as executable structural data.",
@@ -25,7 +25,9 @@
     "PredicateBasisCount": 8,
     "SurfacePredicateBaseline": 32,
     "SemanticCompressionPct": 75,
-    "NovelTermsCoined597To610": 14
+    "NovelTermsCoined597To610": 14,
+    "ThreeAtomBasisObserved": false,
+    "ThreeAtomBasisProved": false
   },
   "CanonicalAsset": "effortless-rulebook/traveling-salesman-rulebook.json",
   "ExecutionSubstrates": [
@@ -332,6 +334,136 @@
       "AfterState": "Certified a stable eight-predicate basis across fourteen reduction loops: thirty-two baseline surface predicates compress to eight primitives, fourteen useful terms were coined, and no new primitive appeared after loop 598.",
       "Result": "Convergence event: semantic compression 75%, physical tables 40 to 45, coined terms 14, new primitives after basis discovery 0; status is early empirical support for this finite TSP domain.",
       "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 611,
+      "LoopId": "tsp-loop-611",
+      "Status": "PLANNED",
+      "BeforeState": "Loop 610 records eight canonical predicates, but relational atoms and reusable operators are not distinguished. Convergence could also be misread as requiring monotone table or predicate shrinkage.",
+      "ClosureCriterion": "Classify the eight historical predicates as candidate atoms or operator-derived concepts, preserve their loop-610 provenance, and record that local expansion is permitted when an opaque dependency is replaced by explicit reusable machinery. Measure convergence by coherence, reuse, trust-boundary reduction, and residual ambiguity rather than by monotone physical size.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 612,
+      "LoopId": "tsp-loop-612",
+      "Status": "PLANNED",
+      "BeforeState": "Membership and incidence are separate primitives even though both attach one object to a typed scope or endpoint.",
+      "ClosureCriterion": "Introduce ATTACHMENT(subject, object, role), reduce MEMBERSHIP and INCIDENCE to typed attachment roles, and preserve every historical surface definition.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 613,
+      "LoopId": "tsp-loop-613",
+      "Status": "PLANNED",
+      "BeforeState": "Cardinality, order, and weight remain separate primitives despite all assigning values under a named measure.",
+      "ClosureCriterion": "Introduce VALUATION(subject, measure, value), reduce count, ordinal, and cost predicates to valuation forms, and retain aggregation as an explicit pending operator.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 614,
+      "LoopId": "tsp-loop-614",
+      "Status": "PLANNED",
+      "BeforeState": "Commitment and provenance are separate primitives even though every commitment is a scoped conclusion warranted by sources and rules.",
+      "ClosureCriterion": "Introduce WARRANT(conclusion, source, modality), reduce commitment and provenance to warrant projections, and preserve necessity scope distinctions.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 615,
+      "LoopId": "tsp-loop-615",
+      "Status": "PLANNED",
+      "BeforeState": "Connectivity is still treated as a primitive rather than reachability closure over typed attachments.",
+      "ClosureCriterion": "Register CLOSURE as an operator over attachment relations, reduce CONNECTIVITY to closure, and leave exactly three active relational atoms.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 616,
+      "LoopId": "tsp-loop-616",
+      "Status": "PLANNED",
+      "BeforeState": "Counts, sums, minima, degrees, and repair totals are expressed through many surface formulas without one operator identity.",
+      "ClosureCriterion": "Register AGGREGATE as the common count/sum/min/max/parity operator over attachments and valuations, with no new atom.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 617,
+      "LoopId": "tsp-loop-617",
+      "Status": "PLANNED",
+      "BeforeState": "Semantic Quotient and Component Quotient are coined predicates but quotienting is not represented as a reusable operator.",
+      "ClosureCriterion": "Register QUOTIENT as the operator that identifies witnesses under an explicit equivalence relation and retains representatives plus expansion provenance.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 618,
+      "LoopId": "tsp-loop-618",
+      "Status": "PLANNED",
+      "BeforeState": "Closure events and constraint rounds expose repeated application, but fixed-point iteration is not explicit in the semantic basis.",
+      "ClosureCriterion": "Register FIXPOINT as repeated warranted closure until no commitment changes, and map inference rounds and closure events onto it.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 619,
+      "LoopId": "tsp-loop-619",
+      "Status": "PLANNED",
+      "BeforeState": "Three active atoms and four operators have emerged incrementally, but their coverage of the historical vocabulary is not certified.",
+      "ClosureCriterion": "Certify ATTACHMENT, VALUATION, and WARRANT as the current atoms; CLOSURE, AGGREGATE, QUOTIENT, and FIXPOINT as operators; and express every registered concept without the old eight primitive tokens.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 620,
+      "LoopId": "tsp-loop-620",
+      "Status": "PLANNED",
+      "BeforeState": "Entry and exit stops remain special cluster fields rather than typed attachments with a reusable port contract.",
+      "ClosureCriterion": "Represent every existing cluster path through typed entry/exit ports, a common port contract, orientation multiplicity, and a boundary-fiber key.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 621,
+      "LoopId": "tsp-loop-621",
+      "Status": "PLANNED",
+      "BeforeState": "The three-stop fixture has one path per unordered boundary, so it cannot distinguish quotienting by symmetry from competing internal valuations.",
+      "ClosureCriterion": "Represent an asymmetric four-stop complete neighborhood with twelve reversal-quotient path states grouped into six boundary fibers, retaining twenty-four directed orientations and explicit expansion members.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 622,
+      "LoopId": "tsp-loop-622",
+      "Status": "PLANNED",
+      "BeforeState": "Each asymmetric boundary fiber contains two non-equivalent internal path valuations and no canonical survivor.",
+      "ClosureCriterion": "Within each of six boundary fibers, warrant the unique minimum-cost path, mark the other path dominated, and record the exact dominance delta.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 623,
+      "LoopId": "tsp-loop-623",
+      "Status": "PLANNED",
+      "BeforeState": "The original contraction certificate only demonstrates three-stop reversal symmetry and does not test the reduced basis against asymmetric valuations.",
+      "ClosureCriterion": "Certify 24 directed paths to 12 reversal classes to 6 boundary-fiber minima, with expansion, coverage, and cost preservation, while the physical table count remains unchanged.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
     }
   ],
   "CurrentCertificates": [
@@ -420,7 +552,7 @@
     "InstanceStops": 19,
     "TravelEdges": 38,
     "CandidateTours": 4,
-    "TSPLoops": 34,
+    "TSPLoops": 47,
     "FrontierObligations": 23,
     "ActiveImportedDependencies": 0,
     "ReferenceTourValid": true,
@@ -432,7 +564,7 @@
     "BrokenGraphComplete": false,
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
-    "LastPlannedLoop": 610,
+    "LastPlannedLoop": 623,
     "HighestCompletedLoop": 610,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 14,
@@ -488,7 +620,7 @@
     "ConvergencePredictionStatus": "EARLY_EMPIRICAL_SUPPORT_FOR_CURRENT_TSP_DOMAIN"
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:4ec4cfd86c49a50349ee048c7f9fcc62760cffee9cf4207b06490343c80f9f89",
+    "rulebook": "sha256:ecd5403d677c46699c36a5028f43c8ea6c13a03c425b026773a22d4caa26c5b7",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
