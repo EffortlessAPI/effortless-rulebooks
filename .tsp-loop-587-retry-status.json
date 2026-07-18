@@ -1,5 +1,8 @@
 {
-  "stage": "RUNNER_STARTED",
+  "stage": "CLI_INSTALL_FAILED",
   "github_run_id": "29631550495",
-  "cli_commit": "1551cb82d5a8992ad09e4c82d08e28493f92f7b4"
+  "cli_source": "git+https://github.com/EffortlessAPI/cli.git#1551cb82d5a8992ad09e4c82d08e28493f92f7b4",
+  "cli_commit": "1551cb82d5a8992ad09e4c82d08e28493f92f7b4",
+  "install_log": ".tsp-loop-587-cli-install.log",
+  "exit_code": 127
 }
