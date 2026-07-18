@@ -219,11 +219,12 @@ def main() -> None:
         )
 
     frontier_data = rulebook["TSPFrontierObligations"]["data"]
-    expected_frontier = (
-        len(frontier_data),
-        sum(row["ObligationKind"] == "IMPORTED_DEPENDENCY" for row in frontier_data),
-        sum(row["Status"] == "CLOSED" for row in frontier_data),
+    frontier_total = len(frontier_data)
+    frontier_imported = sum(
+        item["ObligationKind"] == "IMPORTED_DEPENDENCY" for item in frontier_data
     )
+    frontier_closed = sum(item["Status"] == "CLOSED" for item in frontier_data)
+    expected_frontier_counts = (frontier_total, frontier_imported, frontier_closed)
     frontier_rows = psql(
         "SELECT count(*), count(*) FILTER (WHERE is_imported_dependency), "
         "count(*) FILTER (WHERE is_closed) FROM vw_tsp_frontier_obligations"
@@ -233,9 +234,9 @@ def main() -> None:
         actual_frontier: tuple[int, int, int] | None = None
     else:
         actual_frontier = tuple(int(value) for value in frontier_rows[0].split(","))
-        if actual_frontier != expected_frontier:
+        if actual_frontier != expected_frontier_counts:
             failures.append(
-                f"[frontier] canonical={expected_frontier} postgres={actual_frontier}"
+                f"[frontier] canonical={expected_frontier_counts} postgres={actual_frontier}"
             )
 
     metric_rows = psql(
@@ -272,8 +273,7 @@ def main() -> None:
     print(f"search substrate agreement: {search_agreements}/{len(py_search)}")
     print(
         "frontier obligations: "
-        f"{expected_frontier[0]} total, {expected_frontier[1]} imported, "
-        f"{expected_frontier[2]} closed"
+        f"{frontier_total} total, {frontier_imported} imported, {frontier_closed} closed"
     )
 
     if failures:
