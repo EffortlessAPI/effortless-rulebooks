@@ -39,11 +39,12 @@
     "AsymmetricFourStopQuotientCertified": true,
     "OneArcOneRewriteObserved": true,
     "OneArcOneRewriteProved": false,
-    "ThreeRegionOptimalityProved": false,
+    "ThreeRegionOptimalityProved": true,
     "OptimalFaceValueCertified": false,
     "OptimalFaceUniqueRouteProved": false,
     "CoherenceVectorRecorded": true,
-    "TypedArcRecoverabilityCertified": true
+    "TypedArcRecoverabilityCertified": true,
+    "GeneralKRegionRepairProved": false
   },
   "CanonicalAsset": "effortless-rulebook/traveling-salesman-rulebook.json",
   "ExecutionSubstrates": [
@@ -654,12 +655,12 @@
     {
       "LoopOrder": 641,
       "LoopId": "tsp-loop-641",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "The three-region lower bound and valid reconstructed cycle both equal thirty-six, but no finite optimality certificate joins them.",
       "ClosureCriterion": "Certify the reconstructed cost-thirty-six cycle as optimal for tsp-three-regions-9 by lower-bound equality, without claiming a general k-region theorem.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Closed finite optimality for the three-region nine-stop fixture at cost thirty-six.",
+      "Result": "Certified lower bound 36 equals valid reconstructed witness cost 36. The certificate is scoped to tsp-three-regions-9 and does not claim a general k-region repair theorem.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 642,
@@ -809,7 +810,7 @@
     "TravelEdges": 80,
     "CandidateTours": 5,
     "TSPLoops": 70,
-    "FrontierObligations": 27,
+    "FrontierObligations": 28,
     "ActiveImportedDependencies": 0,
     "ReferenceTourValid": true,
     "ReferenceTourCost": 14,
@@ -821,7 +822,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 646,
-    "HighestCompletedLoop": 640,
+    "HighestCompletedLoop": 641,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 15,
     "SelectedNotForcedEdgeStates": 5,
@@ -863,8 +864,8 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 66,
     "ClusterContractionCertificates": 7,
-    "ConvergenceMeasurements": 44,
-    "ConceptRegistry": 95,
+    "ConvergenceMeasurements": 45,
+    "ConceptRegistry": 96,
     "DefectProfiles": 20,
     "BoundTerms": 8,
     "WitnessNormalForms": 10,
@@ -883,10 +884,13 @@
     "AsymmetricReversalClasses": 12,
     "AsymmetricFiberMinima": 6,
     "AsymmetricQuotientReductionPct": 75,
-    "RecoverableConceptCount": 87
+    "RecoverableConceptCount": 87,
+    "ThreeRegionLowerBound": 36,
+    "ThreeRegionCandidateCost": 36,
+    "ThreeRegionOptimalityProved": true
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:1212d2664f5d1586003c49c5bbca2c212e933052fe9c1c057a866dcd7eb4dd90",
+    "rulebook": "sha256:a5924e65be7495a6f04d373628485f2fbec62285facd9ab6dd5ae318f282b14f",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
