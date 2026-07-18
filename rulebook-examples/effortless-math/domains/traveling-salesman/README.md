@@ -1,10 +1,10 @@
 # Traveling Salesman — Semantic Geometry Starter
 
 **Status:** Research program  
-**Version:** 0.2.0  
-**Current finite claim:** the supplied Gridville cycle is structurally valid and optimal for its declared five-stop instance by a witnessed degree-two lower-bound equality. No general solver or complexity claim is made.
+**Version:** 0.3.0  
+**Current finite claim:** Gridville's five-stop cycle is reconstructed from inferred structural edges with `CandidateUsedAsAntecedent=false`, uses zero branch decisions, and is optimal for its declared finite instance by a witnessed degree-two lower-bound equality. No general solver or complexity claim is made.
 
-The canonical object is not a solver and not a route. It is an executable dependency graph describing the city, selected stops, canonical weighted edges, supplied route witnesses, typed frontier obligations, local inference certificates, finite optimality certificates, and residual search.
+The canonical object is not a solver and not a route. It is an executable dependency graph describing the city, selected stops, canonical weighted edges, supplied and reconstructed route witnesses, typed frontier obligations, local inference certificates, finite optimality certificates, constraint closure, neighborhood boundary states, and residual search.
 
 ## Sixty-thousand-foot object
 
@@ -14,20 +14,25 @@ City
     └── Address
         └── InstanceStop
             ├── TravelEdge
-            ├── TourStop
-            ├── TourLeg
-            └── LocalDegreeBound
-                  └── IncidentDominanceCheck
+            ├── TourStop / TourLeg
+            ├── LocalDegreeBound
+            │     └── IncidentDominanceCheck
+            ├── EdgeState / EdgeSupport
+            └── ClusterBoundaryState
 
 TSPInstance
 ├── InstanceLowerBound
+├── DerivedEdgeSet
+│   ├── ConnectedDegreeTwoCertificate
+│   └── RouteReconstruction
 ├── CandidateTour
 │   └── OptimalityCertificate
+├── ConstraintRound / ConstraintDecision
 ├── FrontierObligation
-└── SearchMetric
+└── SearchCertificate
 ```
 
-`InstanceStops` selects addresses into a particular problem instance. `TravelEdges` makes connectivity first-class. A candidate route is represented by ordered `TourStops` and edge-bound `TourLegs`; it is never an opaque list.
+`InstanceStops` selects addresses into a particular problem instance. `TravelEdges` makes connectivity first-class. A supplied candidate route is represented by ordered `TourStops` and edge-bound `TourLegs`; reconstructed routes are projected independently from certified inferred edge sets.
 
 ## Vocabulary
 
@@ -40,46 +45,48 @@ The pieces still to close are generally **frontier obligations**, not imported e
 | Kernel assumption | Trusted primitive input semantics recorded at the declared trust boundary. |
 | Residual search | Explicit ambiguity remaining after all represented deterministic obligations reach closure. |
 
-The current active imported-dependency count is **zero**. Live Postgres commissioning is an open `SUBSTRATE_OBLIGATION`; route reconstruction is an open `CERTIFICATE_OBLIGATION`.
+The active imported-dependency count is **zero**. Live Postgres commissioning remains an open `SUBSTRATE_OBLIGATION`; the mathematical route-reconstruction obligation is closed.
 
-## Loops 577–586
+## Loops 577–596
 
-| Loop | Closure |
+| Loops | Closure |
 |---:|---|
-| 577 | City → Neighborhood → Address hierarchy. |
-| 578 | Five-stop graph normalized as ten canonical undirected edges. |
-| 579 | Route represented as ordered stops plus edge-bound legs. |
-| 580 | Reference route accepted; duplicate-stop route rejected. |
-| 581 | Route-discovery baseline recorded as 12 → 12. |
-| 582 | Frontier obligations typed separately from imported dependencies. |
-| 583 | Every ordered visit must have exactly one incoming and outgoing transition. |
-| 584 | Pair identity and multiplicity replace edge count as the completeness certificate. |
-| 585 | Two cheapest incident edges at each stop produce a global degree-two lower bound. |
-| 586 | Candidate cost 14 equals certified lower bound 14, proving finite-instance optimality. |
+| 577–581 | City hierarchy, weighted graph, supplied route witness, validity, and search baseline. |
+| 582–586 | Typed frontier, global cycle coverage, pair completeness, degree-two lower bound, and finite Gridville optimality. |
+| 587 | Generated Postgres commissioning; currently BLOCKED in canonical status until the live certificate is durably sealed. |
+| 588–591 | Inference application spine, inferred edge union, connected degree-two certificate, and route reconstruction. |
+| 592 | Derived search certificate. |
+| 593 | Non-tight twin-triangles counterexample. |
+| 594–595 | Degree-two forcing and forbidden-edge propagation. |
+| 596 | Neighborhood boundary-state contraction. |
 
-## Three negative certificates
+Every loop from 587 through 596 was first recorded as `PLANNED` with its before-state and closure criterion, then updated in the same canonical row with its after-state and completion disposition.
 
-The rulebook rejects:
+## Negative certificates
+
+The rulebook rejects the duplicate-stop route:
 
 ```text
 A → B → C → B → E → A
 ```
 
-because `B` is duplicated and `D` is omitted.
+because `B` is duplicated and `D` is omitted. It also rejects a candidate with five unique visits and five locally legal legs but a duplicated `A→B` transition and missing `E→A` closure. A count-preserving graph with duplicated `A-B` and omitted `B-C` is rejected by canonical pair multiplicity.
 
-It also rejects a more deceptive candidate with five unique visits and five individually legal legs:
+Twin triangles provides the stronger counterexample:
 
 ```text
-A→B, A→B, B→C, C→D, D→E
+certified degree-two lower bound = 6
+feasible candidate cost          = 24
+selected components              = 2
+proper subtours                  = 2
+optimality proved                = false
 ```
 
-because `A→B` is duplicated and `E→A` is missing. Global one-in/one-out coverage is required.
-
-Finally, `tsp-gridville-broken-3` has exactly `n(n−1)/2 = 3` edge rows but repeats `A-B` and omits `B-C`; canonical pair multiplicity rejects it. Count alone is not a graph-completeness proof.
+Thus a sound local lower bound is not silently upgraded into tightness, connectivity, reconstruction, or optimality.
 
 ## Degree-two lower-bound geometry
 
-Every Hamiltonian cycle uses two incident edges at every stop. The witnessed two cheapest incident costs are:
+Every Hamiltonian cycle uses two incident edges at every stop. The witnessed two cheapest incident costs for Gridville are:
 
 ```text
 A: 2 + 3 = 5
@@ -89,24 +96,54 @@ D: 3 + 3 = 6
 E: 3 + 3 = 6
 ```
 
-Their sum is `28`. Every tour edge is counted at both endpoints, so every tour costs at least:
+Their sum is `28`. Every tour edge is counted at both endpoints, so every tour costs at least `28 / 2 = 14`. The represented Gridville cycle costs `14`, proving finite-instance optimality.
+
+## Route reconstruction and search accounting
+
+The local-bound supports derive these five distinct edges without consuming a candidate route:
 
 ```text
-28 / 2 = 14
+A-B, B-C, C-D, D-E, E-A
 ```
 
-The supplied cycle `A-B-C-D-E-A` has cost `14`. Bound equality therefore certifies it as optimal **for `tsp-gridville-5` only**.
-
-## Search accounting
-
-Two different questions remain separate:
+The rulebook certifies degree two at every required stop, one connected component, a four-edge spanning tree, and zero proper subtours. Deterministic ordering from the depot reconstructs:
 
 ```text
-DISCOVER_ROUTE_WITHOUT_SUPPLIED_CANDIDATE       12 → 12   0% eliminated
-VERIFY_OPTIMALITY_OF_SUPPLIED_CANDIDATE         12 → 0  100% enumeration avoided
+A → B → C → D → E → A
+CandidateUsedAsAntecedent=false
 ```
 
-The second result does not claim that the system discovered the route. It proves that exhaustive route comparison is unnecessary to verify this supplied candidate's optimality.
+The derived route-discovery accounting is:
+
+```text
+initial symmetry-reduced route classes   12
+surviving reconstructed route classes     1
+route-class contraction               12 → 1
+branch decisions                           0
+backtracks                                 0
+residual ambiguity                         0
+```
+
+This is a finite structural result, not a claim about the general complexity of TSP.
+
+## Constraint closure and neighborhood contraction
+
+A sparse fixture executes degree-two forcing and selects five ring edges with no branch decisions. The next closure round forbids one chord by degree saturation and one edge by proper-subtour prevention, each with an explicit reason code.
+
+For each three-stop twin-triangle neighborhood:
+
+```text
+6 directed internal orders → 3 undirected boundary states
+```
+
+For the paired composition:
+
+```text
+36 raw combinations → 9 contracted combinations
+36 → 9
+```
+
+The contraction certificate is scoped to the represented symmetric three-stop clusters.
 
 ## Run
 
@@ -136,3 +173,5 @@ The nearest open obligations are live Postgres commissioning, route reconstructi
 ## Loops 587–596 — inference geometry and contraction
 
 The rulebook records every loop first as PLANNED with a before-state and closure criterion, then preserves the after-state in the same row. Gridville is reconstructed from inferred edges with zero branch decisions; twin triangles preserves a sound non-tight lower bound and yields the first finite neighborhood boundary-state contraction certificate. Loop 587 remains honestly BLOCKED when live generated Postgres cannot be commissioned in the execution environment.
+
+**Postgres commissioning: BLOCKED.** The generated backend and peer comparisons have executed successfully in retry 8, but the canonical substrate obligation remains blocked until the success certificate, execution history, artifact hashes, and summary projections are durably sealed and validated.
