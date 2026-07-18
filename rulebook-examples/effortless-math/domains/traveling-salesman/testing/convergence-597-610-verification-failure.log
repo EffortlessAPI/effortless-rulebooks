@@ -1,6 +1,8 @@
 traveling-salesman state-aware convergence validation: PASS
 traveling-salesman convergence summary alignment: PASS
-primitive_count=8 coined_count=14
 Traceback (most recent call last):
-  File "<stdin>", line 37, in <module>
-KeyError: 'LowerBoundCost'
+  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/verify_convergence_597_610.py", line 150, in <module>
+    main()
+  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/verify_convergence_597_610.py", line 119, in main
+    raise AssertionError(f"missing convergence commit: {message}")
+AssertionError: missing convergence commit: TSP loop 598: define predicate basis

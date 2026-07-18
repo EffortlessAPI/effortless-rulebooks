@@ -1,5 +1,6 @@
 {
-  "status": "RUNNER_STARTED",
+  "status": "FAILED",
   "github_run_id": "29651570243",
-  "verifier": "v3-canonical-witnesses"
+  "verifier": "v3-canonical-witnesses",
+  "log": "testing/convergence-597-610-verification-failure.log"
 }
