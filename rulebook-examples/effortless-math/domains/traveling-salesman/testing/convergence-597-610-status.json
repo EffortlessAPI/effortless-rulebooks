@@ -1,6 +1,7 @@
 {
-  "status": "RUNNER_STARTED",
+  "status": "FAILED",
   "driver": "v12-push-each-loop",
   "github_run_id": "29650954771",
-  "head_sha": "e3cbb0c6e554b1b36243e52e773754c25479cfc0"
+  "exit_code": 1,
+  "log": "testing/convergence-597-610-v12-failure.log"
 }
