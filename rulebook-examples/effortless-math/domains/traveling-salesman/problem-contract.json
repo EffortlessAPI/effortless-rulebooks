@@ -361,12 +361,12 @@
     {
       "LoopOrder": 613,
       "LoopId": "tsp-loop-613",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Cardinality, order, and weight remain separate primitives despite all assigning values under a named measure.",
       "ClosureCriterion": "Introduce VALUATION(subject, measure, value), reduce count, ordinal, and cost predicates to valuation forms, and retain aggregation as an explicit pending operator.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Collapsed cardinality, order, and weight into VALUATION under explicit measures.",
+      "Result": "Degree is a valuation under incident-count, sequence is a valuation under ordinal-position, and cost is a valuation under the objective measure; active primitive count becomes five.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 614,
@@ -568,7 +568,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 623,
-    "HighestCompletedLoop": 612,
+    "HighestCompletedLoop": 613,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 14,
     "SelectedNotForcedEdgeStates": 5,
@@ -610,8 +610,8 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 12,
     "ClusterContractionCertificates": 3,
-    "ConvergenceMeasurements": 16,
-    "ConceptRegistry": 57,
+    "ConvergenceMeasurements": 17,
+    "ConceptRegistry": 59,
     "DefectProfiles": 16,
     "BoundTerms": 4,
     "WitnessNormalForms": 9,
@@ -623,7 +623,7 @@
     "ConvergencePredictionStatus": "EARLY_EMPIRICAL_SUPPORT_FOR_CURRENT_TSP_DOMAIN"
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:6ee7a5d123874ea64b27f238e3ec670f966e92ce5594c3c2aa78951487d6c916",
+    "rulebook": "sha256:525690f125b7c9389da0a3a3a433548de8a782597a2a9a4d812fca8c0bb13747",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
