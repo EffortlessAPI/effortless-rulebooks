@@ -147,12 +147,12 @@
     {
       "LoopOrder": 594,
       "LoopId": "tsp-loop-594",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Degree-two forcing is declared but has no executable state, round, or decision certificates.",
       "ClosureCriterion": "On a sparse five-stop fixture, stops with exactly two available incident edges force the five cycle edges with zero branching.",
-      "AfterState": null,
-      "Result": null,
-      "CompletionDisposition": null
+      "AfterState": "Sparse fixture forced five ring edges from degree-two stops with zero branch decisions; B-D remains for saturation propagation.",
+      "Result": "Sparse fixture forced five ring edges from degree-two stops with zero branch decisions; B-D remains for saturation propagation.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 595,
@@ -262,10 +262,11 @@
     "TwinTriangleLowerBound": 6,
     "TwinTriangleCandidateCost": 24,
     "TwinTriangleSelectedComponents": 2,
-    "TwinTriangleOptimalityProved": false
+    "TwinTriangleOptimalityProved": false,
+    "SparseForcedEdges": 5
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:b29e95037f3b3ac6a9afbf9a18dddc262f423e8de091398bac5a3dafdb1a423f"
+    "rulebook": "sha256:8a295c62ebc51e458586f5b118ed8eefea1fc0a34f3116ef2a43c5eb447567a6"
   },
   "GeneratedTimestamp": null,
   "Vocabulary": {
