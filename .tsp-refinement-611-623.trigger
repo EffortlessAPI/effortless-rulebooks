@@ -1,2 +1,2 @@
-run-id: tsp-refinement-611-623-attempt-1
-intent: record coherence-over-size guardrail, execute and publish loops 611-623 one at a time, rebuild Postgres at loop 623, and independently verify the atom/operator and asymmetric-fiber claims
+run-id: tsp-refinement-611-623-attempt-2
+intent: resume from durable loop 622, close loop 623 with the exact Boundary Fiber projection label, rebuild Postgres, and independently verify the atom/operator and asymmetric-fiber claims
