@@ -105,7 +105,10 @@ def append_readme_section_with_coherence_guardrail() -> None:
     marker = "**Coherence guardrail.**"
     if marker not in text:
         text += (
-            "\n\n**Coherence guardrail.** Convergence is not defined as monotonically "
+            "\n\n**Boundary Fiber.** The asymmetric stress fixture groups equal-port, "
+            "equal-coverage paths into boundary fibers before minimum valuation selects "
+            "the surviving representative.\n\n"
+            "**Coherence guardrail.** Convergence is not defined as monotonically "
             "decreasing tables, rows, or named predicates. Internalizing one opaque black "
             "box may temporarily expand the explicit DAG. The represented trend is toward "
             "greater reuse, clearer warrants, smaller opaque trust boundaries, and less "
