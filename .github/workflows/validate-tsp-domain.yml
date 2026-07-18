@@ -1,0 +1,86 @@
+name: Validate TSP domain
+
+on:
+  push:
+    branches:
+      - agent/tsp-semantic-foundation
+    paths:
+      - .tsp-validation-trigger
+      - .github/workflows/validate-tsp-domain.yml
+      - rulebook-examples/effortless-math/domains/traveling-salesman/**
+  pull_request:
+    branches:
+      - main
+    paths:
+      - rulebook-examples/effortless-math/domains/traveling-salesman/**
+      - .github/workflows/validate-tsp-domain.yml
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
+          fetch-depth: 0
+
+      - name: Validate semantic rulebook and summary projections
+        run: |
+          set -euo pipefail
+          domain='rulebook-examples/effortless-math/domains/traveling-salesman'
+          python3 "$domain/scripts/validate_rulebook.py"
+
+      - name: Compile replay and validation programs
+        run: |
+          set -euo pipefail
+          domain='rulebook-examples/effortless-math/domains/traveling-salesman'
+          python3 -m py_compile \
+            "$domain/scripts/apply_loops_582_586.py" \
+            "$domain/scripts/apply_loops_587_596.py" \
+            "$domain/scripts/reference_model.py" \
+            "$domain/scripts/validate_rulebook.py" \
+            "$domain/scripts/validate_rulebook_v3.py" \
+            "$domain/scripts/validate_summary_alignment.py" \
+            "$domain/testing/take-test.py"
+          bash -n "$domain/start.sh"
+
+      - name: Verify ordered loop commit history
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import subprocess
+
+          subjects = subprocess.check_output(
+              ['git', 'log', '--format=%s', '--reverse'], text=True
+          ).splitlines()
+          expected = [
+              'TSP loops 587-596: register planned frontier',
+              'TSP loop 587: record Postgres commissioning attempt',
+              'TSP loop 588: add inference application spine',
+              'TSP loop 589: derive Gridville edge set',
+              'TSP loop 590: certify connected degree-two geometry',
+              'TSP loop 591: reconstruct route from inferred edges',
+              'TSP loop 592: derive search-elimination certificate',
+              'TSP loop 593: add non-tight twin-triangles fixture',
+              'TSP loop 594: execute degree-two forced-edge closure',
+              'TSP loop 595: propagate forbidden edges',
+              'TSP loop 596: contract neighborhood boundary states',
+          ]
+          positions = []
+          for message in expected:
+              if message not in subjects:
+                  raise AssertionError(f'missing commit: {message}')
+              positions.append(subjects.index(message))
+          if positions != sorted(positions) or len(set(positions)) != len(positions):
+              raise AssertionError(f'loop commits are not in strict order: {positions}')
+          print('ordered TSP loop commits: PASS')
+          for message in expected:
+              print(' ', message)
+          PY
+
+      - name: Ensure validation is read-only
+        run: |
+          test -z "$(git status --porcelain)"
