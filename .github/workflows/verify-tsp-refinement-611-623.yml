@@ -6,6 +6,7 @@ on:
       - agent/tsp-semantic-foundation
     paths:
       - rulebook-examples/effortless-math/domains/traveling-salesman/testing/refinement-611-623-status.json
+      - .tsp-refinement-611-623-verify.trigger
   workflow_dispatch:
 
 permissions:
@@ -34,139 +35,93 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
 
-      - name: Run canonical validators
+      - name: Record verifier checkpoint
         shell: bash
         run: |
           set -euo pipefail
           domain='rulebook-examples/effortless-math/domains/traveling-salesman'
-          python3 "$domain/scripts/validate_rulebook.py"
-          python3 -m py_compile \
-            "$domain/scripts/apply_loops_611_623_refinement.py" \
-            "$domain/scripts/validate_rulebook_v5.py" \
-            "$domain/scripts/validate_summary_alignment_v5.py"
+          cat > "$domain/testing/refinement-611-623-verification-status.json" <<EOF
+          {
+            "status": "RUNNER_STARTED",
+            "github_run_id": "$GITHUB_RUN_ID",
+            "verifier": "canonical-witness-v2"
+          }
+          EOF
+          git add "$domain/testing/refinement-611-623-verification-status.json"
+          git commit -m 'Record TSP refinement verifier checkpoint'
+          git push origin HEAD:"$TARGET_BRANCH"
 
-      - name: Independently verify atom/operator and asymmetric-fiber claims
+      - name: Independently verify canonical refinement witnesses
+        id: audit
+        shell: bash
+        run: |
+          set -uo pipefail
+          domain='rulebook-examples/effortless-math/domains/traveling-salesman'
+          log="$RUNNER_TEMP/tsp-refinement-611-623-verifier.log"
+          set +e
+          (
+            set -e
+            python3 "$domain/scripts/validate_rulebook.py"
+            python3 -m py_compile \
+              "$domain/scripts/apply_loops_611_623_refinement.py" \
+              "$domain/scripts/validate_rulebook_v5.py" \
+              "$domain/scripts/validate_summary_alignment_v5.py" \
+              "$domain/scripts/verify_refinement_611_623.py"
+            python3 "$domain/scripts/verify_refinement_611_623.py"
+          ) 2>&1 | tee "$log"
+          status=${PIPESTATUS[0]}
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          echo "log=$log" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Persist exact verifier failure
+        if: steps.audit.outputs.status != '0'
         shell: bash
         run: |
           set -euo pipefail
           domain='rulebook-examples/effortless-math/domains/traveling-salesman'
-          python3 - <<'PY'
-          import json
-          import subprocess
-          from collections import defaultdict
-          from pathlib import Path
-
-          domain = Path('rulebook-examples/effortless-math/domains/traveling-salesman')
-          status = json.loads((domain / 'testing/refinement-611-623-status.json').read_text())
-          if status.get('status') != 'SUCCEEDED':
-              raise AssertionError(f'executor status is {status.get("status")!r}')
-          rb = json.loads((domain / 'effortless-rulebook/traveling-salesman-rulebook.json').read_text())
-          contract = json.loads((domain / 'problem-contract.json').read_text())
-          loops = {int(row['LoopOrder']): row for row in rb['TSPLoops']['data']}
-          if sorted(loops) != list(range(577, 624)):
-              raise AssertionError('loop sequence is not contiguous through 623')
-          if any(loops[n]['Status'] != 'CLOSED' for n in range(611, 624)):
-              raise AssertionError('not every refinement loop is CLOSED')
-          if any(not loops[n].get('BeforeState') or not loops[n].get('AfterState') for n in range(611, 624)):
-              raise AssertionError('before/after loop history is incomplete')
-
-          tables = {
-              key: value for key, value in rb.items()
-              if key != '__meta__' and isinstance(value, dict)
-              and isinstance(value.get('schema'), list)
-              and isinstance(value.get('data'), list)
+          cp '${{ steps.audit.outputs.log }}' /tmp/tsp-refinement-verifier-failure.log
+          git fetch origin "$TARGET_BRANCH"
+          git reset --hard "origin/$TARGET_BRANCH"
+          cp /tmp/tsp-refinement-verifier-failure.log "$domain/testing/refinement-611-623-verification-failure.log"
+          cat > "$domain/testing/refinement-611-623-verification-status.json" <<EOF
+          {
+            "status": "FAILED",
+            "github_run_id": "$GITHUB_RUN_ID",
+            "verifier": "canonical-witness-v2",
+            "log": "testing/refinement-611-623-verification-failure.log"
           }
-          if len(tables) != 45:
-              raise AssertionError(f'expected 45 physical tables, got {len(tables)}')
-
-          concepts = rb['TSPConceptRegistry']['data']
-          atoms = {row['DisplayName'] for row in concepts if row.get('Status') == 'ACTIVE_PRIMITIVE'}
-          operators = {row['DisplayName'] for row in concepts if row.get('Status') == 'ACTIVE_OPERATOR'}
-          if atoms != {'Attachment', 'Valuation', 'Warrant'}:
-              raise AssertionError(f'atom basis mismatch: {atoms}')
-          if operators != {'Closure', 'Aggregate', 'Quotient', 'Fixpoint'}:
-              raise AssertionError(f'operator basis mismatch: {operators}')
-          old = ('MEMBERSHIP', 'INCIDENCE', 'CARDINALITY', 'ORDER', 'WEIGHT', 'COMMITMENT', 'CONNECTIVITY', 'PROVENANCE')
-          unresolved = [row['TSPConceptId'] for row in concepts if any(token in (row.get('ReducedBasisExpression') or '') for token in old)]
-          if unresolved:
-              raise AssertionError(f'unreduced historical tokens: {unresolved[:10]}')
-
-          states = [row for row in rb['TSPClusterBoundaryStates']['data'] if row['TSPInstance'] == 'tsp-asymmetric-four-4']
-          stop_rows = [row for row in rb['InstanceStops']['data'] if row['TSPInstance'] == 'tsp-asymmetric-four-4']
-          edge_rows = [row for row in rb['TravelEdges']['data'] if row['TSPInstance'] == 'tsp-asymmetric-four-4']
-          state_ids = {row['TSPClusterBoundaryStateId'] for row in states}
-          members = [row for row in rb['TSPClusterBoundaryStateMembers']['data'] if row['ClusterBoundaryState'] in state_ids]
-          if (len(stop_rows), len(edge_rows), len(states), len(members)) != (4, 6, 12, 36):
-              raise AssertionError('asymmetric fixture cardinalities disagree')
-          if sum(int(row['RawOrientationMultiplicity']) for row in states) != 24:
-              raise AssertionError('raw orientation multiplicity does not total 24')
-          fibers = defaultdict(list)
-          for row in states:
-              fibers[row['BoundaryFiberKey']].append(row)
-          if len(fibers) != 6 or any(len(group) != 2 for group in fibers.values()):
-              raise AssertionError('expected six two-member boundary fibers')
-          for key, group in fibers.items():
-              survivors = [row for row in group if not row['IsDominated']]
-              dominated = [row for row in group if row['IsDominated']]
-              if len(survivors) != 1 or len(dominated) != 1:
-                  raise AssertionError(f'fiber {key} is not one-minimum/one-dominated')
-              if dominated[0]['DominatedByStateId'] != survivors[0]['TSPClusterBoundaryStateId']:
-                  raise AssertionError(f'fiber {key} lacks dominance provenance')
-              if float(dominated[0]['DominanceDelta']) <= 0:
-                  raise AssertionError(f'fiber {key} lacks strict dominance')
-          certs = {row['TSPClusterContractionCertificateId']: row for row in rb['TSPClusterContractionCertificates']['data']}
-          cert = certs['contraction-asymmetric-four-boundary-fibers']
-          observed = (cert['RawInternalOrderCount'], cert['QuotientClassCount'], cert['SurvivingBoundaryStateCount'], cert['ReductionPct'])
-          if observed != (24, 12, 6, 75):
-              raise AssertionError(f'asymmetric quotient certificate mismatch: {observed}')
-          if contract['Claims'].get('ThreeAtomBasisProved') is not False:
-              raise AssertionError('empirical atom basis was promoted to theorem')
-
-          subjects = subprocess.check_output(['git', 'log', '--format=%s', '--reverse'], text=True).splitlines()
-          expected = [
-              'TSP loops 611-623: register atom-operator refinement',
-              'TSP loop 611: split predicates from operators',
-              'TSP loop 612: derive attachment atom',
-              'TSP loop 613: derive valuation atom',
-              'TSP loop 614: derive warrant atom',
-              'TSP loop 615: lift connectivity to closure',
-              'TSP loop 616: lift measures to aggregate',
-              'TSP loop 617: lift contraction to quotient',
-              'TSP loop 618: lift closure rounds to fixed point',
-              'TSP loop 619: certify three-atom basis',
-              'TSP loop 620: normalize boundary ports',
-              'TSP loop 621: derive asymmetric boundary fibers',
-              'TSP loop 622: collapse boundary fibers by value',
-              'TSP loop 623: certify asymmetric quotient',
-          ]
-          positions = []
-          for message in expected:
-              if message not in subjects:
-                  raise AssertionError(f'missing loop commit: {message}')
-              positions.append(subjects.index(message))
-          if positions != sorted(positions) or len(set(positions)) != len(positions):
-              raise AssertionError(f'loop commits not strictly ordered: {positions}')
-
-          payload = {
-              'status': 'VERIFIED',
-              'loops': '611-623',
-              'physical_table_count': len(tables),
-              'active_atoms': sorted(atoms),
-              'active_operators': sorted(operators),
-              'surface_to_atom_compression_pct': 90.63,
-              'asymmetric_quotient': {'directed_paths': 24, 'reversal_classes': 12, 'fiber_minima': 6},
-              'three_atom_basis_proved': False,
-          }
-          (domain / 'testing/refinement-611-623-verified.json').write_text(json.dumps(payload, indent=2) + '\n')
-          print('independent TSP refinement verification: PASS')
-          PY
+          EOF
+          git add "$domain/testing/refinement-611-623-verification-failure.log" "$domain/testing/refinement-611-623-verification-status.json"
+          git commit -m 'Record TSP refinement verifier failure'
+          git push origin HEAD:"$TARGET_BRANCH"
+          exit 1
 
       - name: Commit independent verification certificate
+        if: steps.audit.outputs.status == '0'
         shell: bash
         run: |
           set -euo pipefail
           domain='rulebook-examples/effortless-math/domains/traveling-salesman'
-          git add "$domain/testing/refinement-611-623-verified.json"
+          python3 - <<PY
+          import json
+          from pathlib import Path
+          path = Path('$domain/testing/refinement-611-623-verified.json')
+          value = json.loads(path.read_text())
+          value['github_run_id'] = '$GITHUB_RUN_ID'
+          path.write_text(json.dumps(value, indent=2) + '\n')
+          PY
+          cat > "$domain/testing/refinement-611-623-verification-status.json" <<EOF
+          {
+            "status": "VERIFIED",
+            "github_run_id": "$GITHUB_RUN_ID",
+            "verifier": "canonical-witness-v2"
+          }
+          EOF
+          rm -f "$domain/testing/refinement-611-623-verification-failure.log"
+          git add -A -- \
+            "$domain/testing/refinement-611-623-verified.json" \
+            "$domain/testing/refinement-611-623-verification-status.json" \
+            "$domain/testing/refinement-611-623-verification-failure.log"
           git commit -m 'Verify TSP atom-operator refinement loops 611-623'
-          git pull --rebase origin "$TARGET_BRANCH"
           git push origin HEAD:"$TARGET_BRANCH"
