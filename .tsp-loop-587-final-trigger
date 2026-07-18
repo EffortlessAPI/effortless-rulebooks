@@ -1,0 +1,3 @@
+run-id: tsp-loop-587-retry-9
+cli: https://github.com/EffortlessAPI/cli/archive/1551cb82d5a8992ad09e4c82d08e28493f92f7b4.tar.gz
+intent: live generated Postgres conformance, standalone append-only finalizer, canonical validation, commit
