@@ -533,12 +533,12 @@
     {
       "LoopOrder": 629,
       "LoopId": "tsp-loop-629",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "AGGREGATE and QUOTIENT are separate active operators although both group a domain by a key and replace each fiber with a warranted summary or representative.",
       "ClosureCriterion": "Introduce FIBER_REDUCE(domain,key,reducer,expansion_warrant), reduce aggregate and quotient to reducer modes, and preserve all expansion and valuation semantics.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Collapsed AGGREGATE and QUOTIENT into FIBER_REDUCE.",
+      "Result": "Count/sum/min/parity summaries and equivalence representatives remain recoverable reducer modes with explicit expansion warrants; active operator count is two.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 630,
@@ -820,7 +820,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 646,
-    "HighestCompletedLoop": 628,
+    "HighestCompletedLoop": 629,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 14,
     "SelectedNotForcedEdgeStates": 5,
@@ -862,8 +862,8 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 48,
     "ClusterContractionCertificates": 4,
-    "ConvergenceMeasurements": 32,
-    "ConceptRegistry": 81,
+    "ConvergenceMeasurements": 33,
+    "ConceptRegistry": 83,
     "DefectProfiles": 16,
     "BoundTerms": 4,
     "WitnessNormalForms": 9,
@@ -884,7 +884,7 @@
     "AsymmetricQuotientReductionPct": 75
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:4ed3cee674394f1e8a1a7fc8177bd104ba4392e219a32634635639244845605d",
+    "rulebook": "sha256:2766b35c1650c9e61df90dd6498ab997fe154ad62d7ff4fb790d9dbeff7e852d",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
