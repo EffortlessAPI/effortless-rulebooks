@@ -36,9 +36,6 @@ def refresh_recoverability(rb: dict[str, Any]) -> list[str]:
     return unresolved
 
 
-# The first executor version captured the registry index before registering the
-# coined Semantic Arc row.  Redefine only loop 625; later LOOP_FUNCS binding
-# resolves this corrected function while preserving the durable loop-624 state.
 def loop_625(rb: dict[str, Any], contract: dict[str, Any]) -> tuple[str, str]:
     ensure_arc_fields(rb)
     register_concept(
@@ -103,8 +100,7 @@ def loop_625(rb: dict[str, Any], contract: dict[str, Any]) -> tuple[str, str]:
         status="ACTIVE_DERIVED",
         category="DERIVED",
     )
-    concepts = table_index(rb, "TSPConceptRegistry")
-    coined = concepts["coined-semantic-arc"]
+    coined = table_index(rb, "TSPConceptRegistry")["coined-semantic-arc"]
     coined.update(
         {
             "ArcSubjectSort": "ANY_DECLARED_SUBJECT_SORT",
@@ -125,4 +121,111 @@ def loop_625(rb: dict[str, Any], contract: dict[str, Any]) -> tuple[str, str]:
     return (
         "Collapsed ATTACHMENT, VALUATION, and WARRANT into one typed SEMANTIC_ARC relation.",
         "The three historical atoms remain distinct recoverable projections by ROLE, MEASURE, and MODALITY signatures; active atom count is one.",
+    )
+
+
+def loop_626(rb: dict[str, Any], contract: dict[str, Any]) -> tuple[str, str]:
+    ensure_arc_fields(rb)
+    concepts = table_index(rb, "TSPConceptRegistry")
+    signatures = set()
+    for ident, spec in ARC_ATOMS.items():
+        row = concepts[ident]
+        row.update(
+            {
+                "ArcSubjectSort": spec["subject"],
+                "ArcLabelSort": spec["label"],
+                "ArcTargetSort": spec["target"],
+                "ArcSignature": spec["signature"],
+                "RecoverabilityExpression": spec["recover"],
+                "IsRecoverableFromCurrentBasis": True,
+            }
+        )
+        signatures.add((spec["label"], spec["target"]))
+    if len(signatures) != 3:
+        raise AssertionError("historical atom arc signatures are not distinct")
+    register_concept(
+        rb,
+        "coined-arc-signature",
+        "Arc Signature",
+        "COINED_PREDICATE",
+        "SEMANTIC_ARC(subject:S,label:L,target:T)+SEMANTIC_ARC(label,SIGNATURE,(S,L,T))",
+        1,
+        "TSPConceptRegistry",
+        626,
+        status="ACTIVE_DERIVED",
+        category="DERIVED",
+    )
+    row = table_index(rb, "TSPConceptRegistry")["coined-arc-signature"]
+    row.update(
+        {
+            "ArcSubjectSort": "LABEL_OR_CONCEPT",
+            "ArcLabelSort": "SIGNATURE",
+            "ArcTargetSort": "SORT_TRIPLE",
+            "ArcSignature": "SEMANTIC_ARC(label,SIGNATURE,(subject_sort,label_sort,target_sort))",
+            "RecoverabilityExpression": "LOOKUP_SIGNATURE_BY_LABEL_SORT",
+            "IsRecoverableFromCurrentBasis": True,
+        }
+    )
+    add_measurement(
+        rb,
+        626,
+        "Arc Signature",
+        "ROLE-to-entity, MEASURE-to-scalar, and MODALITY-to-source signatures remain distinct. Genericization does not erase type contracts.",
+    )
+    return (
+        "Typed the semantic arc with explicit subject, label, and target sorts.",
+        "Attachment = ROLE arc, valuation = MEASURE arc, warrant = MODALITY arc; each historical atom has a distinct recovery filter, preventing a vacuous untyped triple-store collapse.",
+    )
+
+
+def loop_631(rb: dict[str, Any], contract: dict[str, Any]) -> tuple[str, str]:
+    ensure_arc_fields(rb)
+    concepts = table_index(rb, "TSPConceptRegistry")
+    classifications = {
+        "operator-closure": ("REACHABILITY_CLOSURE", "EXPANSIVE"),
+        "operator-fixpoint": ("RULE_CLOSURE_UNTIL_STABLE", "EXPANSIVE"),
+        "operator-saturate": ("SATURATION", "EXPANSIVE"),
+        "operator-aggregate": ("SUMMARY_REDUCTION", "CONTRACTIVE"),
+        "operator-quotient": ("EQUIVALENCE_REPRESENTATIVE", "CONTRACTIVE"),
+        "operator-fiber-reduce": ("FIBER_REDUCTION", "CONTRACTIVE"),
+        "operator-warranted-rewrite": ("PARAMETRIC", "PARAMETRIC"),
+    }
+    for ident, (mode, polarity) in classifications.items():
+        concepts[ident]["RewriteMode"] = mode
+        concepts[ident]["RewritePolarity"] = polarity
+    for row in rows(rb, "TSPConceptRegistry"):
+        if row.get("OperatorExpression") == "WARRANTED_REWRITE" and not row.get("RewritePolarity"):
+            row["RewriteMode"] = "COMPOSED_DERIVATION"
+            row["RewritePolarity"] = "MIXED"
+    register_concept(
+        rb,
+        "coined-rewrite-polarity",
+        "Rewrite Polarity",
+        "COINED_PREDICATE",
+        "SEMANTIC_ARC(rewrite,POLARITY,EXPANSIVE_OR_CONTRACTIVE_OR_MIXED)+WARRANT(mode)",
+        1,
+        "TSPConceptRegistry,TSPInferenceApplications",
+        631,
+        status="ACTIVE_DERIVED",
+        category="DERIVED",
+        operator_expression="WARRANTED_REWRITE",
+    )
+    coined = table_index(rb, "TSPConceptRegistry")["coined-rewrite-polarity"]
+    coined.update(
+        {
+            "RewriteMode": "POLARITY_CLASSIFICATION",
+            "RewritePolarity": "PARAMETRIC",
+            "RecoverabilityExpression": "PROJECT_REWRITE_MODE_AND_POLARITY",
+            "IsRecoverableFromCurrentBasis": True,
+        }
+    )
+    add_measurement(
+        rb,
+        631,
+        "Rewrite Polarity",
+        "Black-box internalization and saturation may be expansive; aggregate and quotient modes are contractive; mixed derivations may contain both. Coherence is not identified with one polarity.",
+    )
+    return (
+        "Typed expansive, contractive, mixed, and parametric rewrite modes.",
+        "Closure/fixed point/saturation are recoverable as expansive modes; aggregate/quotient/fiber reduction as contractive modes; local expansion is explicitly compatible with coherent rewrite composition.",
     )
