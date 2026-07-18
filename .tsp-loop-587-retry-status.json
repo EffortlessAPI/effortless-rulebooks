@@ -1,7 +1,7 @@
 {
-  "stage": "LEDGER_FINALIZATION_FAILED",
-  "attempt": 9,
-  "github_run_id": "29632874612",
-  "finalization_log": "rulebook-examples/effortless-math/domains/traveling-salesman/testing/postgres-commissioning-finalization-retry-9.log",
-  "exit_code": 1
+  "stage": "COMPLETED",
+  "attempt": 10,
+  "github_run_id": "29633034883",
+  "cli_commit": "1551cb82d5a8992ad09e4c82d08e28493f92f7b4",
+  "cli_source": "https://github.com/EffortlessAPI/cli/archive/1551cb82d5a8992ad09e4c82d08e28493f92f7b4.tar.gz"
 }

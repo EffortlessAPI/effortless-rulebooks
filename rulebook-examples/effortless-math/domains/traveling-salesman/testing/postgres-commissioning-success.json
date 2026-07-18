@@ -1,0 +1,75 @@
+{
+  "status": "SUCCEEDED",
+  "loop": 587,
+  "successful_attempt": 10,
+  "github_run_id": "29633034883",
+  "cli_source": "https://github.com/EffortlessAPI/cli/archive/1551cb82d5a8992ad09e4c82d08e28493f92f7b4.tar.gz",
+  "cli_commit": "1551cb82d5a8992ad09e4c82d08e28493f92f7b4",
+  "cli_version": "2026-06-09.06.13",
+  "database": "erb_traveling_salesman",
+  "generated_view_count": 40,
+  "live_checks": {
+    "gridville_complete": "true",
+    "reference_tour": "true,true,14",
+    "degree_two_lower_bound": "true,14"
+  },
+  "attempt_history": [
+    {
+      "attempt": 1,
+      "status": "BLOCKED",
+      "reason": "missing effortless executable"
+    },
+    {
+      "attempt": 2,
+      "status": "FAILED",
+      "reason": "npm failure before transcript"
+    },
+    {
+      "attempt": 3,
+      "status": "FAILED",
+      "reason": "shared-prefix npm ENOTDIR"
+    },
+    {
+      "attempt": 4,
+      "status": "FAILED",
+      "reason": "isolated-prefix git-preparation ENOTDIR"
+    },
+    {
+      "attempt": 5,
+      "status": "FAILED",
+      "reason": "unpersisted downstream failure"
+    },
+    {
+      "attempt": 6,
+      "status": "FAILED",
+      "reason": "unbound cross-step npm prefix"
+    },
+    {
+      "attempt": 7,
+      "status": "FAILED",
+      "reason": "stale frontier-count oracle"
+    },
+    {
+      "attempt": 8,
+      "status": "FAILED",
+      "reason": "chained post-conformance finalizer"
+    },
+    {
+      "attempt": 9,
+      "status": "FAILED",
+      "reason": "NUMERIC text presentation mismatch"
+    },
+    {
+      "attempt": 10,
+      "status": "SUCCEEDED",
+      "reason": "Decimal-normalized standalone finalizer"
+    }
+  ],
+  "hashes": {
+    "build_input_rulebook": "9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
+    "postgres_projection_tree": "52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
+    "rulespeak_tree": "0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
+    "commissioning_transcript": "ae8190f4c6084cbd1d2a3e9ae359a2b1966cf99dfcb2423d92cf98e6aaf8f7a5",
+    "retry_9_finalization_failure_transcript": "6516deab2de42c971cc55ef2d752d3d5cb2154dd343cd7827803e1bd6ed8bd2b"
+  }
+}

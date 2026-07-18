@@ -1,0 +1,3979 @@
+{
+  "Cities": {
+    "Description": "Cities provide the outer spatial boundary for TSP instances.",
+    "schema": [
+      {
+        "name": "CityId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable city identifier."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Human-readable city label.",
+        "formula": "={{DisplayName}}"
+      },
+      {
+        "name": "DisplayName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Human-readable city name."
+      },
+      {
+        "name": "CountryCode",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "ISO-style country code for the city."
+      },
+      {
+        "name": "CoordinateSystem",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Coordinate convention used by addresses in this city."
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Purpose of the city fixture."
+      }
+    ]
+  },
+  "Neighborhoods": {
+    "Description": "Neighborhoods partition a city into first-class spatial clusters.",
+    "schema": [
+      {
+        "name": "NeighborhoodId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable neighborhood identifier."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Human-readable neighborhood label.",
+        "formula": "={{DisplayName}}"
+      },
+      {
+        "name": "DisplayName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Human-readable neighborhood name."
+      },
+      {
+        "name": "City",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "City containing this neighborhood.",
+        "RelatedTo": "Cities"
+      },
+      {
+        "name": "CityName",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Display name of the containing city.",
+        "formula": "=INDEX(Cities!{{Name}}, MATCH({{City}}, Cities!{{CityId}}, 0))",
+        "RelatedTo": "Cities"
+      },
+      {
+        "name": "ClusterKind",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Semantic role of the neighborhood in the initial fixture."
+      }
+    ]
+  },
+  "Addresses": {
+    "Description": "Addresses are visitable physical locations. Coordinates support visualization; edge costs remain explicit graph data.",
+    "schema": [
+      {
+        "name": "AddressId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable address identifier."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Human-readable address label.",
+        "formula": "={{StreetLabel}}"
+      },
+      {
+        "name": "StreetLabel",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Human-readable street or place label."
+      },
+      {
+        "name": "Neighborhood",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Neighborhood containing this address.",
+        "RelatedTo": "Neighborhoods"
+      },
+      {
+        "name": "NeighborhoodName",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Display name of the containing neighborhood.",
+        "formula": "=INDEX(Neighborhoods!{{Name}}, MATCH({{Neighborhood}}, Neighborhoods!{{NeighborhoodId}}, 0))",
+        "RelatedTo": "Neighborhoods"
+      },
+      {
+        "name": "City",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "City reached through the address\u0027s neighborhood.",
+        "formula": "=INDEX(Neighborhoods!{{City}}, MATCH({{Neighborhood}}, Neighborhoods!{{NeighborhoodId}}, 0))",
+        "RelatedTo": "Neighborhoods"
+      },
+      {
+        "name": "XCoordinate",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Local X coordinate for visualization and later geometric experiments."
+      },
+      {
+        "name": "YCoordinate",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Local Y coordinate for visualization and later geometric experiments."
+      },
+      {
+        "name": "IsDepotCandidate",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Whether this address may serve as a depot."
+      }
+    ]
+  },
+  "TSPInstances": {
+    "Description": "One finite Traveling Salesman problem instance over required city addresses.",
+    "schema": [
+      {
+        "name": "TSPInstanceId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable TSP instance identifier."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Human-readable instance label.",
+        "formula": "={{DisplayName}}"
+      },
+      {
+        "name": "DisplayName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Human-readable TSP instance name."
+      },
+      {
+        "name": "City",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "City containing the instance.",
+        "RelatedTo": "Cities"
+      },
+      {
+        "name": "DepotAddress",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Address fixed as the tour depot.",
+        "RelatedTo": "Addresses"
+      },
+      {
+        "name": "DistanceModel",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Interpretation of TravelEdges.TravelCost."
+      },
+      {
+        "name": "IsSymmetric",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Whether each canonical edge cost applies in both directions."
+      },
+      {
+        "name": "Status",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Current semantic-normalization status."
+      },
+      {
+        "name": "SearchPolicy",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Research policy governing when search is allowed."
+      },
+      {
+        "name": "CountOfStops",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of normalized instance-stop rows.",
+        "formula": "=COUNTIFS(InstanceStops!{{TSPInstance}}, {{TSPInstanceId}})"
+      },
+      {
+        "name": "CountOfRequiredStops",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of required visit stops.",
+        "formula": "=COUNTIFS(InstanceStops!{{TSPInstance}}, {{TSPInstanceId}}, InstanceStops!{{IsRequired}}, TRUE())"
+      },
+      {
+        "name": "CountOfTravelEdges",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of canonical undirected travel edges.",
+        "formula": "=COUNTIFS(TravelEdges!{{TSPInstance}}, {{TSPInstanceId}})"
+      },
+      {
+        "name": "CountOfInadmissibleEdges",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Edge rows failing canonical pair, endpoint, availability, or instance checks.",
+        "formula": "=COUNTIFS(TravelEdges!{{TSPInstance}}, {{TSPInstanceId}}, TravelEdges!{{IsAdmissible}}, FALSE())"
+      },
+      {
+        "name": "CountOfNonUniqueEdgePairRows",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Rows participating in a duplicated canonical unordered edge pair.",
+        "formula": "=COUNTIFS(TravelEdges!{{TSPInstance}}, {{TSPInstanceId}}, TravelEdges!{{IsUniqueCanonicalPair}}, FALSE())"
+      },
+      {
+        "name": "ExpectedUndirectedEdgeCount",
+        "datatype": "integer",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "n(n-1)/2 expected edges for a complete undirected graph.",
+        "formula": "=({{CountOfStops}} * ({{CountOfStops}} - 1)) / 2"
+      },
+      {
+        "name": "IsCompleteUndirectedGraph",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether the instance has the expected edge count, no inadmissible rows, and no duplicated unordered pair rows.",
+        "formula": "=AND({{CountOfTravelEdges}} = {{ExpectedUndirectedEdgeCount}}, {{CountOfInadmissibleEdges}} = 0, {{CountOfNonUniqueEdgePairRows}} = 0)"
+      },
+      {
+        "name": "Notes",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Scope and caveats for the instance."
+      }
+    ]
+  },
+  "TSPGraphInvariantChecks": {
+    "Description": "Graph-normalization acceptance checks, including a count-preserving duplicate-pair counterexample.",
+    "schema": [
+      {
+        "name": "TSPGraphInvariantCheckId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable graph-invariant identifier."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Human-readable invariant label.",
+        "formula": "={{DisplayName}}"
+      },
+      {
+        "name": "DisplayName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Human-readable graph-invariant name."
+      },
+      {
+        "name": "TSPInstance",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Instance under graph-normalization test.",
+        "RelatedTo": "TSPInstances"
+      },
+      {
+        "name": "ExpectedCompleteUndirectedGraph",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Expected graph-completeness status."
+      },
+      {
+        "name": "ActualCompleteUndirectedGraph",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Derived graph-completeness status.",
+        "formula": "=INDEX(TSPInstances!{{IsCompleteUndirectedGraph}}, MATCH({{TSPInstance}}, TSPInstances!{{TSPInstanceId}}, 0))",
+        "RelatedTo": "TSPInstances"
+      },
+      {
+        "name": "ExpectedTravelEdgeCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Expected raw edge-row count."
+      },
+      {
+        "name": "ActualTravelEdgeCount",
+        "datatype": "integer",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Derived raw edge-row count.",
+        "formula": "=INDEX(TSPInstances!{{CountOfTravelEdges}}, MATCH({{TSPInstance}}, TSPInstances!{{TSPInstanceId}}, 0))",
+        "RelatedTo": "TSPInstances"
+      },
+      {
+        "name": "ExpectedNonUniqueEdgePairRows",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Expected number of rows participating in duplicated pair keys."
+      },
+      {
+        "name": "ActualNonUniqueEdgePairRows",
+        "datatype": "integer",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Derived duplicated-pair row count.",
+        "formula": "=INDEX(TSPInstances!{{CountOfNonUniqueEdgePairRows}}, MATCH({{TSPInstance}}, TSPInstances!{{TSPInstanceId}}, 0))",
+        "RelatedTo": "TSPInstances"
+      },
+      {
+        "name": "IsPassing",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether all graph expectations agree with derived values.",
+        "formula": "=AND({{ExpectedCompleteUndirectedGraph}} = {{ActualCompleteUndirectedGraph}}, {{ExpectedTravelEdgeCount}} = {{ActualTravelEdgeCount}}, {{ExpectedNonUniqueEdgePairRows}} = {{ActualNonUniqueEdgePairRows}})"
+      }
+    ]
+  },
+  "InstanceStops": {
+    "Description": "Junction entity selecting addresses into a TSP instance without introducing a many-to-many relationship.",
+    "schema": [
+      {
+        "name": "InstanceStopId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable instance-stop identifier."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display alias for the selected stop.",
+        "formula": "={{InstanceStopId}}"
+      },
+      {
+        "name": "TSPInstance",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "TSP instance containing the stop.",
+        "RelatedTo": "TSPInstances"
+      },
+      {
+        "name": "Address",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Address selected into the instance.",
+        "RelatedTo": "Addresses"
+      },
+      {
+        "name": "IsRequired",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Whether the tour must visit this stop exactly once."
+      },
+      {
+        "name": "InstanceCity",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "City declared by the TSP instance.",
+        "formula": "=INDEX(TSPInstances!{{City}}, MATCH({{TSPInstance}}, TSPInstances!{{TSPInstanceId}}, 0))",
+        "RelatedTo": "TSPInstances"
+      },
+      {
+        "name": "InstanceDepotAddress",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Depot address declared by the TSP instance.",
+        "formula": "=INDEX(TSPInstances!{{DepotAddress}}, MATCH({{TSPInstance}}, TSPInstances!{{TSPInstanceId}}, 0))",
+        "RelatedTo": "TSPInstances"
+      },
+      {
+        "name": "AddressName",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Human-readable address label.",
+        "formula": "=INDEX(Addresses!{{Name}}, MATCH({{Address}}, Addresses!{{AddressId}}, 0))",
+        "RelatedTo": "Addresses"
+      },
+      {
+        "name": "AddressCity",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "City reached through the selected address.",
+        "formula": "=INDEX(Addresses!{{City}}, MATCH({{Address}}, Addresses!{{AddressId}}, 0))",
+        "RelatedTo": "Addresses"
+      },
+      {
+        "name": "Neighborhood",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Neighborhood of the selected address.",
+        "formula": "=INDEX(Addresses!{{Neighborhood}}, MATCH({{Address}}, Addresses!{{AddressId}}, 0))",
+        "RelatedTo": "Addresses"
+      },
+      {
+        "name": "XCoordinate",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "X coordinate of the selected address.",
+        "formula": "=INDEX(Addresses!{{XCoordinate}}, MATCH({{Address}}, Addresses!{{AddressId}}, 0))",
+        "RelatedTo": "Addresses"
+      },
+      {
+        "name": "YCoordinate",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Y coordinate of the selected address.",
+        "formula": "=INDEX(Addresses!{{YCoordinate}}, MATCH({{Address}}, Addresses!{{AddressId}}, 0))",
+        "RelatedTo": "Addresses"
+      },
+      {
+        "name": "IsWithinInstanceCity",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether the selected address belongs to the instance city.",
+        "formula": "={{AddressCity}} = {{InstanceCity}}"
+      },
+      {
+        "name": "IsDepot",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether this stop is the instance depot.",
+        "formula": "={{Address}} = {{InstanceDepotAddress}}"
+      },
+      {
+        "name": "CountOfCanonicalEdgesFrom",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Canonical edge rows whose first endpoint is this stop.",
+        "formula": "=COUNTIFS(TravelEdges!{{TSPInstance}}, {{TSPInstance}}, TravelEdges!{{FromStop}}, {{InstanceStopId}})"
+      },
+      {
+        "name": "CountOfCanonicalEdgesTo",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Canonical edge rows whose second endpoint is this stop.",
+        "formula": "=COUNTIFS(TravelEdges!{{TSPInstance}}, {{TSPInstance}}, TravelEdges!{{ToStop}}, {{InstanceStopId}})"
+      },
+      {
+        "name": "CountOfIncidentEdges",
+        "datatype": "integer",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Total canonical incident edge rows at this stop.",
+        "formula": "={{CountOfCanonicalEdgesFrom}} \u002B {{CountOfCanonicalEdgesTo}}"
+      },
+      {
+        "name": "CountOfAdmissibleEdgesFrom",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Admissible edge rows whose first endpoint is this stop.",
+        "formula": "=COUNTIFS(TravelEdges!{{TSPInstance}}, {{TSPInstance}}, TravelEdges!{{FromStop}}, {{InstanceStopId}}, TravelEdges!{{IsAdmissible}}, TRUE())"
+      },
+      {
+        "name": "CountOfAdmissibleEdgesTo",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Admissible edge rows whose second endpoint is this stop.",
+        "formula": "=COUNTIFS(TravelEdges!{{TSPInstance}}, {{TSPInstance}}, TravelEdges!{{ToStop}}, {{InstanceStopId}}, TravelEdges!{{IsAdmissible}}, TRUE())"
+      },
+      {
+        "name": "CountOfAdmissibleIncidentEdges",
+        "datatype": "integer",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Total currently admissible edges incident to this stop.",
+        "formula": "={{CountOfAdmissibleEdgesFrom}} \u002B {{CountOfAdmissibleEdgesTo}}"
+      }
+    ]
+  },
+  "TravelEdges": {
+    "Description": "Canonical undirected weighted edges between instance stops. The edge entity resolves the address-to-address many-to-many relation.",
+    "schema": [
+      {
+        "name": "TravelEdgeId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable canonical edge identifier."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display alias for the edge.",
+        "formula": "={{TravelEdgeId}}"
+      },
+      {
+        "name": "TSPInstance",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "TSP instance owning the edge.",
+        "RelatedTo": "TSPInstances"
+      },
+      {
+        "name": "FromStop",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "First canonical endpoint.",
+        "RelatedTo": "InstanceStops"
+      },
+      {
+        "name": "ToStop",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Second canonical endpoint.",
+        "RelatedTo": "InstanceStops"
+      },
+      {
+        "name": "DistanceMeters",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Observed or supplied travel distance for the edge."
+      },
+      {
+        "name": "TravelCost",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Optimization cost used by the initial TSP objective."
+      },
+      {
+        "name": "IsAvailable",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Whether the edge remains available after current normalization."
+      },
+      {
+        "name": "EdgeSource",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Provenance of the edge weight."
+      },
+      {
+        "name": "CanonicalPairKey",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Canonical unordered endpoint identity supplied as data and checked against the two endpoint rows."
+      },
+      {
+        "name": "ExpectedCanonicalPairKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Endpoint-derived canonical pair key used to verify the supplied pair identity.",
+        "formula": "=IF({{FromStop}} \u003C {{ToStop}}, CONCAT({{FromStop}}, \u0022|\u0022, {{ToStop}}), CONCAT({{ToStop}}, \u0022|\u0022, {{FromStop}}))"
+      },
+      {
+        "name": "IsCanonicalPairKeyCorrect",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether CanonicalPairKey agrees with the sorted endpoint identities.",
+        "formula": "={{CanonicalPairKey}} = {{ExpectedCanonicalPairKey}}"
+      },
+      {
+        "name": "IsCanonicalEndpointOrder",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether the stored FromStop/ToStop order is the declared canonical lexical order.",
+        "formula": "={{FromStop}} \u003C {{ToStop}}"
+      },
+      {
+        "name": "PairMultiplicity",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of edge rows in this instance carrying the same canonical unordered pair key.",
+        "formula": "=COUNTIFS(TravelEdges!{{TSPInstance}}, {{TSPInstance}}, TravelEdges!{{CanonicalPairKey}}, {{CanonicalPairKey}})"
+      },
+      {
+        "name": "IsUniqueCanonicalPair",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether exactly one edge row represents this unordered stop pair in the instance.",
+        "formula": "={{PairMultiplicity}} = 1"
+      },
+      {
+        "name": "FromTSPInstance",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Instance of the first endpoint.",
+        "formula": "=INDEX(InstanceStops!{{TSPInstance}}, MATCH({{FromStop}}, InstanceStops!{{InstanceStopId}}, 0))",
+        "RelatedTo": "InstanceStops"
+      },
+      {
+        "name": "ToTSPInstance",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Instance of the second endpoint.",
+        "formula": "=INDEX(InstanceStops!{{TSPInstance}}, MATCH({{ToStop}}, InstanceStops!{{InstanceStopId}}, 0))",
+        "RelatedTo": "InstanceStops"
+      },
+      {
+        "name": "IsSelfLoop",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether both endpoints are the same stop.",
+        "formula": "={{FromStop}} = {{ToStop}}"
+      },
+      {
+        "name": "IsWithinInstance",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether the edge and both endpoints belong to one instance.",
+        "formula": "=AND({{TSPInstance}} = {{FromTSPInstance}}, {{TSPInstance}} = {{ToTSPInstance}})"
+      },
+      {
+        "name": "IsAdmissible",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "First-order edge admissibility including availability, instance membership, canonical endpoint order, correct pair identity, and pair uniqueness.",
+        "formula": "=AND({{IsAvailable}}, NOT({{IsSelfLoop}}), {{IsWithinInstance}}, {{IsCanonicalEndpointOrder}}, {{IsCanonicalPairKeyCorrect}}, {{IsUniqueCanonicalPair}})"
+      }
+    ]
+  },
+  "CandidateTours": {
+    "Description": "Explicit candidate tours. Validity is derived; optimality is deliberately not inferred.",
+    "schema": [
+      {
+        "name": "CandidateTourId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable candidate-tour identifier."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Human-readable tour label.",
+        "formula": "={{DisplayName}}"
+      },
+      {
+        "name": "DisplayName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Human-readable candidate-tour name."
+      },
+      {
+        "name": "TSPInstance",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "TSP instance evaluated by this candidate.",
+        "RelatedTo": "TSPInstances"
+      },
+      {
+        "name": "CandidateKind",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Role of this candidate in the fixture."
+      },
+      {
+        "name": "SearchBranchesExplored",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Branches explored to obtain this candidate; zero means supplied witness, not solved."
+      },
+      {
+        "name": "BacktrackCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Backtracking performed to obtain this candidate."
+      },
+      {
+        "name": "RequiredStopCount",
+        "datatype": "integer",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Required stop count supplied by the instance.",
+        "formula": "=INDEX(TSPInstances!{{CountOfRequiredStops}}, MATCH({{TSPInstance}}, TSPInstances!{{TSPInstanceId}}, 0))",
+        "RelatedTo": "TSPInstances"
+      },
+      {
+        "name": "CountOfTourStops",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of ordered tour-stop rows.",
+        "formula": "=COUNTIFS(TourStops!{{CandidateTour}}, {{CandidateTourId}})"
+      },
+      {
+        "name": "CountOfTourLegs",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of ordered tour-leg rows.",
+        "formula": "=COUNTIFS(TourLegs!{{CandidateTour}}, {{CandidateTourId}})"
+      },
+      {
+        "name": "CountOfNonUniqueVisits",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Tour-stop rows whose instance stop appears more than once.",
+        "formula": "=COUNTIFS(TourStops!{{CandidateTour}}, {{CandidateTourId}}, TourStops!{{IsUniqueVisit}}, FALSE())"
+      },
+      {
+        "name": "CountOfNonUniqueSequences",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Tour-stop rows whose sequence position is duplicated.",
+        "formula": "=COUNTIFS(TourStops!{{CandidateTour}}, {{CandidateTourId}}, TourStops!{{IsUniqueSequence}}, FALSE())"
+      },
+      {
+        "name": "CountOfOutOfInstanceStops",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Tour stops that do not belong to the candidate\u0027s instance.",
+        "formula": "=COUNTIFS(TourStops!{{CandidateTour}}, {{CandidateTourId}}, TourStops!{{IsInTourInstance}}, FALSE())"
+      },
+      {
+        "name": "CountOfNonRequiredStops",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Tour stops not marked required by the instance.",
+        "formula": "=COUNTIFS(TourStops!{{CandidateTour}}, {{CandidateTourId}}, TourStops!{{StopIsRequired}}, FALSE())"
+      },
+      {
+        "name": "CountOfDepotStops",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of depot visits in the ordered stop list.",
+        "formula": "=COUNTIFS(TourStops!{{CandidateTour}}, {{CandidateTourId}}, TourStops!{{StopIsDepot}}, TRUE())"
+      },
+      {
+        "name": "CountOfDepotPositionViolations",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Depot rows not placed at sequence position one.",
+        "formula": "=COUNTIFS(TourStops!{{CandidateTour}}, {{CandidateTourId}}, TourStops!{{IsDepotAtFirstPosition}}, FALSE())"
+      },
+      {
+        "name": "CountOfInvalidLegs",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Tour legs failing membership, sequence, edge, or instance checks.",
+        "formula": "=COUNTIFS(TourLegs!{{CandidateTour}}, {{CandidateTourId}}, TourLegs!{{IsValid}}, FALSE())"
+      },
+      {
+        "name": "CountOfCycleDegreeViolations",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Ordered visits lacking exactly one incoming and one outgoing candidate leg.",
+        "formula": "=COUNTIFS(TourStops!{{CandidateTour}}, {{CandidateTourId}}, TourStops!{{IsCycleDegreeSatisfied}}, FALSE())"
+      },
+      {
+        "name": "CountOfNonUniqueLegOrders",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Leg rows whose LegOrder is duplicated within the candidate.",
+        "formula": "=COUNTIFS(TourLegs!{{CandidateTour}}, {{CandidateTourId}}, TourLegs!{{IsUniqueLegOrder}}, FALSE())"
+      },
+      {
+        "name": "TotalTravelCost",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Sum of validated tour-leg costs.",
+        "formula": "=SUMIFS(TourLegs!{{TravelCost}}, TourLegs!{{CandidateTour}}, {{CandidateTourId}})"
+      },
+      {
+        "name": "IsHamiltonianCycleWitness",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether the supplied ordered rows form one globally covered Hamiltonian cycle for the declared instance.",
+        "formula": "=AND({{CountOfTourStops}} = {{RequiredStopCount}}, {{CountOfTourLegs}} = {{RequiredStopCount}}, {{CountOfNonUniqueVisits}} = 0, {{CountOfNonUniqueSequences}} = 0, {{CountOfOutOfInstanceStops}} = 0, {{CountOfNonRequiredStops}} = 0, {{CountOfDepotStops}} = 1, {{CountOfDepotPositionViolations}} = 0, {{CountOfInvalidLegs}} = 0, {{CountOfCycleDegreeViolations}} = 0, {{CountOfNonUniqueLegOrders}} = 0)"
+      },
+      {
+        "name": "CountOfPassingOptimalityCertificates",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Passing finite-instance optimality certificates attached to this candidate.",
+        "formula": "=COUNTIFS(OptimalityCertificates!{{CandidateTour}}, {{CandidateTourId}}, OptimalityCertificates!{{IsPassing}}, TRUE())"
+      },
+      {
+        "name": "IsOptimalityProved",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether at least one passing finite-instance optimality certificate closes this candidate\u0027s scope.",
+        "formula": "=AND({{IsHamiltonianCycleWitness}}, {{CountOfPassingOptimalityCertificates}} \u003E 0)"
+      },
+      {
+        "name": "ResidualClaim",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Honest current epistemic status of the candidate.",
+        "formula": "=IF({{IsOptimalityProved}}, \u0022OPTIMAL_FOR_DECLARED_FINITE_INSTANCE\u0022, IF({{IsHamiltonianCycleWitness}}, \u0022VALID_TOUR_NOT_OPTIMALITY_PROOF\u0022, \u0022INVALID_TOUR\u0022))"
+      }
+    ]
+  },
+  "TourStops": {
+    "Description": "Ordered candidate-tour visits. Multiplicity and sequence uniqueness are derived from the row set.",
+    "schema": [
+      {
+        "name": "TourStopId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable ordered tour-stop identifier."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display alias for the ordered visit.",
+        "formula": "={{TourStopId}}"
+      },
+      {
+        "name": "CandidateTour",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Candidate tour containing the ordered visit.",
+        "RelatedTo": "CandidateTours"
+      },
+      {
+        "name": "InstanceStop",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Instance stop visited at this position.",
+        "RelatedTo": "InstanceStops"
+      },
+      {
+        "name": "SequencePosition",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "One-based position in the ordered visit list."
+      },
+      {
+        "name": "TourTSPInstance",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "TSP instance owned by the candidate tour.",
+        "formula": "=INDEX(CandidateTours!{{TSPInstance}}, MATCH({{CandidateTour}}, CandidateTours!{{CandidateTourId}}, 0))",
+        "RelatedTo": "CandidateTours"
+      },
+      {
+        "name": "StopTSPInstance",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "TSP instance owning the visited stop.",
+        "formula": "=INDEX(InstanceStops!{{TSPInstance}}, MATCH({{InstanceStop}}, InstanceStops!{{InstanceStopId}}, 0))",
+        "RelatedTo": "InstanceStops"
+      },
+      {
+        "name": "StopIsRequired",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether the visited stop is required.",
+        "formula": "=INDEX(InstanceStops!{{IsRequired}}, MATCH({{InstanceStop}}, InstanceStops!{{InstanceStopId}}, 0))",
+        "RelatedTo": "InstanceStops"
+      },
+      {
+        "name": "StopIsDepot",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether the visited stop is the depot.",
+        "formula": "=INDEX(InstanceStops!{{IsDepot}}, MATCH({{InstanceStop}}, InstanceStops!{{InstanceStopId}}, 0))",
+        "RelatedTo": "InstanceStops"
+      },
+      {
+        "name": "IsInTourInstance",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether the visited stop belongs to the candidate\u0027s instance.",
+        "formula": "={{TourTSPInstance}} = {{StopTSPInstance}}"
+      },
+      {
+        "name": "VisitMultiplicity",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of times this instance stop appears in the candidate.",
+        "formula": "=COUNTIFS(TourStops!{{CandidateTour}}, {{CandidateTour}}, TourStops!{{InstanceStop}}, {{InstanceStop}})"
+      },
+      {
+        "name": "SequenceMultiplicity",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of rows using this sequence position in the candidate.",
+        "formula": "=COUNTIFS(TourStops!{{CandidateTour}}, {{CandidateTour}}, TourStops!{{SequencePosition}}, {{SequencePosition}})"
+      },
+      {
+        "name": "IsUniqueVisit",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether this stop appears exactly once.",
+        "formula": "={{VisitMultiplicity}} = 1"
+      },
+      {
+        "name": "IsUniqueSequence",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether this sequence position appears exactly once.",
+        "formula": "={{SequenceMultiplicity}} = 1"
+      },
+      {
+        "name": "IsDepotAtFirstPosition",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Non-depot rows pass automatically; the depot must be position one.",
+        "formula": "=OR(NOT({{StopIsDepot}}), {{SequencePosition}} = 1)"
+      },
+      {
+        "name": "CountOfOutgoingLegs",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Tour-leg rows in this candidate whose FromTourStop is this ordered visit.",
+        "formula": "=COUNTIFS(TourLegs!{{CandidateTour}}, {{CandidateTour}}, TourLegs!{{FromTourStop}}, {{TourStopId}})"
+      },
+      {
+        "name": "CountOfIncomingLegs",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Tour-leg rows in this candidate whose ToTourStop is this ordered visit.",
+        "formula": "=COUNTIFS(TourLegs!{{CandidateTour}}, {{CandidateTour}}, TourLegs!{{ToTourStop}}, {{TourStopId}})"
+      },
+      {
+        "name": "HasExactlyOneOutgoingLeg",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether this ordered visit has exactly one outgoing candidate leg.",
+        "formula": "={{CountOfOutgoingLegs}} = 1"
+      },
+      {
+        "name": "HasExactlyOneIncomingLeg",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether this ordered visit has exactly one incoming candidate leg.",
+        "formula": "={{CountOfIncomingLegs}} = 1"
+      },
+      {
+        "name": "IsCycleDegreeSatisfied",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether this ordered visit participates in exactly one incoming and one outgoing transition.",
+        "formula": "=AND({{HasExactlyOneOutgoingLeg}}, {{HasExactlyOneIncomingLeg}})"
+      }
+    ]
+  },
+  "TourLegs": {
+    "Description": "Ordered directed traversal legs bound to canonical undirected travel edges.",
+    "schema": [
+      {
+        "name": "TourLegId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable ordered tour-leg identifier."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display alias for the leg.",
+        "formula": "={{TourLegId}}"
+      },
+      {
+        "name": "CandidateTour",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Candidate tour containing the leg.",
+        "RelatedTo": "CandidateTours"
+      },
+      {
+        "name": "FromTourStop",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Ordered visit at the start of the leg.",
+        "RelatedTo": "TourStops"
+      },
+      {
+        "name": "ToTourStop",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Ordered visit at the end of the leg.",
+        "RelatedTo": "TourStops"
+      },
+      {
+        "name": "TravelEdge",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Canonical undirected edge traversed by the leg.",
+        "RelatedTo": "TravelEdges"
+      },
+      {
+        "name": "LegOrder",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "One-based order of the leg."
+      },
+      {
+        "name": "TourTSPInstance",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "TSP instance owned by the candidate tour.",
+        "formula": "=INDEX(CandidateTours!{{TSPInstance}}, MATCH({{CandidateTour}}, CandidateTours!{{CandidateTourId}}, 0))",
+        "RelatedTo": "CandidateTours"
+      },
+      {
+        "name": "RequiredStopCount",
+        "datatype": "integer",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Required stop count reached through the candidate\u0027s TSP instance and used to recognize the closing leg.",
+        "formula": "=INDEX(TSPInstances!{{CountOfRequiredStops}}, MATCH({{TourTSPInstance}}, TSPInstances!{{TSPInstanceId}}, 0))",
+        "RelatedTo": "TSPInstances"
+      },
+      {
+        "name": "FromTourCandidate",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Candidate tour owning the from visit.",
+        "formula": "=INDEX(TourStops!{{CandidateTour}}, MATCH({{FromTourStop}}, TourStops!{{TourStopId}}, 0))",
+        "RelatedTo": "TourStops"
+      },
+      {
+        "name": "ToTourCandidate",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Candidate tour owning the to visit.",
+        "formula": "=INDEX(TourStops!{{CandidateTour}}, MATCH({{ToTourStop}}, TourStops!{{TourStopId}}, 0))",
+        "RelatedTo": "TourStops"
+      },
+      {
+        "name": "FromInstanceStop",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Instance stop at the start of the leg.",
+        "formula": "=INDEX(TourStops!{{InstanceStop}}, MATCH({{FromTourStop}}, TourStops!{{TourStopId}}, 0))",
+        "RelatedTo": "TourStops"
+      },
+      {
+        "name": "ToInstanceStop",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Instance stop at the end of the leg.",
+        "formula": "=INDEX(TourStops!{{InstanceStop}}, MATCH({{ToTourStop}}, TourStops!{{TourStopId}}, 0))",
+        "RelatedTo": "TourStops"
+      },
+      {
+        "name": "FromSequencePosition",
+        "datatype": "integer",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Sequence position at the start of the leg.",
+        "formula": "=INDEX(TourStops!{{SequencePosition}}, MATCH({{FromTourStop}}, TourStops!{{TourStopId}}, 0))",
+        "RelatedTo": "TourStops"
+      },
+      {
+        "name": "ToSequencePosition",
+        "datatype": "integer",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Sequence position at the end of the leg.",
+        "formula": "=INDEX(TourStops!{{SequencePosition}}, MATCH({{ToTourStop}}, TourStops!{{TourStopId}}, 0))",
+        "RelatedTo": "TourStops"
+      },
+      {
+        "name": "EdgeTSPInstance",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "TSP instance owning the selected edge.",
+        "formula": "=INDEX(TravelEdges!{{TSPInstance}}, MATCH({{TravelEdge}}, TravelEdges!{{TravelEdgeId}}, 0))",
+        "RelatedTo": "TravelEdges"
+      },
+      {
+        "name": "EdgeFromStop",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "First canonical edge endpoint.",
+        "formula": "=INDEX(TravelEdges!{{FromStop}}, MATCH({{TravelEdge}}, TravelEdges!{{TravelEdgeId}}, 0))",
+        "RelatedTo": "TravelEdges"
+      },
+      {
+        "name": "EdgeToStop",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Second canonical edge endpoint.",
+        "formula": "=INDEX(TravelEdges!{{ToStop}}, MATCH({{TravelEdge}}, TravelEdges!{{TravelEdgeId}}, 0))",
+        "RelatedTo": "TravelEdges"
+      },
+      {
+        "name": "EdgeTravelCost",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Optimization cost of the selected edge.",
+        "formula": "=INDEX(TravelEdges!{{TravelCost}}, MATCH({{TravelEdge}}, TravelEdges!{{TravelEdgeId}}, 0))",
+        "RelatedTo": "TravelEdges"
+      },
+      {
+        "name": "EdgeIsAdmissible",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether the selected edge passes first-order normalization.",
+        "formula": "=INDEX(TravelEdges!{{IsAdmissible}}, MATCH({{TravelEdge}}, TravelEdges!{{TravelEdgeId}}, 0))",
+        "RelatedTo": "TravelEdges"
+      },
+      {
+        "name": "LegOrderMultiplicity",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of leg rows in this candidate carrying the same LegOrder.",
+        "formula": "=COUNTIFS(TourLegs!{{CandidateTour}}, {{CandidateTour}}, TourLegs!{{LegOrder}}, {{LegOrder}})"
+      },
+      {
+        "name": "IsUniqueLegOrder",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether this leg order appears exactly once in the candidate.",
+        "formula": "={{LegOrderMultiplicity}} = 1"
+      },
+      {
+        "name": "IsCandidateMembershipValid",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether both ordered visits belong to this candidate.",
+        "formula": "=AND({{CandidateTour}} = {{FromTourCandidate}}, {{CandidateTour}} = {{ToTourCandidate}})"
+      },
+      {
+        "name": "IsSequenceTransition",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether the leg follows the next visit or closes the route from n back to one.",
+        "formula": "=OR({{ToSequencePosition}} = {{FromSequencePosition}} \u002B 1, AND({{FromSequencePosition}} = {{RequiredStopCount}}, {{ToSequencePosition}} = 1))"
+      },
+      {
+        "name": "IsEdgeEndpointMatch",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether the directed leg traverses the selected undirected edge in either direction.",
+        "formula": "=OR(AND({{FromInstanceStop}} = {{EdgeFromStop}}, {{ToInstanceStop}} = {{EdgeToStop}}), AND({{FromInstanceStop}} = {{EdgeToStop}}, {{ToInstanceStop}} = {{EdgeFromStop}}))"
+      },
+      {
+        "name": "IsInTourInstance",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether the edge belongs to the candidate\u0027s TSP instance.",
+        "formula": "={{EdgeTSPInstance}} = {{TourTSPInstance}}"
+      },
+      {
+        "name": "IsValid",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether the leg passes candidate membership, sequence, endpoint, instance, admissibility, and unique-order checks.",
+        "formula": "=AND({{IsCandidateMembershipValid}}, {{IsSequenceTransition}}, {{IsEdgeEndpointMatch}}, {{IsInTourInstance}}, {{EdgeIsAdmissible}}, {{IsUniqueLegOrder}})"
+      },
+      {
+        "name": "TravelCost",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Cost contributed by a valid leg; invalid legs contribute zero and are counted separately.",
+        "formula": "=IF({{IsValid}}, {{EdgeTravelCost}}, 0)"
+      }
+    ]
+  },
+  "LocalDegreeBounds": {
+    "Description": "One degree-two lower-bound witness per required stop. Each row names two incident edges and proves all other incident edges are no cheaper than the second selected edge.",
+    "schema": [
+      {
+        "name": "LocalDegreeBoundId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable local-bound identifier."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display alias for the local bound.",
+        "formula": "={{LocalDegreeBoundId}}"
+      },
+      {
+        "name": "TSPInstance",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Instance whose tour degree requirement is being bounded.",
+        "RelatedTo": "TSPInstances"
+      },
+      {
+        "name": "InstanceStop",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Required stop receiving the local degree-two bound.",
+        "RelatedTo": "InstanceStops"
+      },
+      {
+        "name": "FirstEdge",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Cheapest selected incident edge.",
+        "RelatedTo": "TravelEdges"
+      },
+      {
+        "name": "SecondEdge",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Second-cheapest selected incident edge.",
+        "RelatedTo": "TravelEdges"
+      },
+      {
+        "name": "StopTSPInstance",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Instance owning the bounded stop.",
+        "formula": "=INDEX(InstanceStops!{{TSPInstance}}, MATCH({{InstanceStop}}, InstanceStops!{{InstanceStopId}}, 0))",
+        "RelatedTo": "InstanceStops"
+      },
+      {
+        "name": "StopAdmissibleIncidentEdgeCount",
+        "datatype": "integer",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Current admissible incident-edge count at the stop.",
+        "formula": "=INDEX(InstanceStops!{{CountOfAdmissibleIncidentEdges}}, MATCH({{InstanceStop}}, InstanceStops!{{InstanceStopId}}, 0))",
+        "RelatedTo": "InstanceStops"
+      },
+      {
+        "name": "FirstEdgeFromStop",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "First selected edge\u0027s canonical first endpoint.",
+        "formula": "=INDEX(TravelEdges!{{FromStop}}, MATCH({{FirstEdge}}, TravelEdges!{{TravelEdgeId}}, 0))",
+        "RelatedTo": "TravelEdges"
+      },
+      {
+        "name": "FirstEdgeToStop",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "First selected edge\u0027s canonical second endpoint.",
+        "formula": "=INDEX(TravelEdges!{{ToStop}}, MATCH({{FirstEdge}}, TravelEdges!{{TravelEdgeId}}, 0))",
+        "RelatedTo": "TravelEdges"
+      },
+      {
+        "name": "SecondEdgeFromStop",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Second selected edge\u0027s canonical first endpoint.",
+        "formula": "=INDEX(TravelEdges!{{FromStop}}, MATCH({{SecondEdge}}, TravelEdges!{{TravelEdgeId}}, 0))",
+        "RelatedTo": "TravelEdges"
+      },
+      {
+        "name": "SecondEdgeToStop",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Second selected edge\u0027s canonical second endpoint.",
+        "formula": "=INDEX(TravelEdges!{{ToStop}}, MATCH({{SecondEdge}}, TravelEdges!{{TravelEdgeId}}, 0))",
+        "RelatedTo": "TravelEdges"
+      },
+      {
+        "name": "FirstEdgeCost",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Cost of the first selected edge.",
+        "formula": "=INDEX(TravelEdges!{{TravelCost}}, MATCH({{FirstEdge}}, TravelEdges!{{TravelEdgeId}}, 0))",
+        "RelatedTo": "TravelEdges"
+      },
+      {
+        "name": "SecondEdgeCost",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Cost of the second selected edge.",
+        "formula": "=INDEX(TravelEdges!{{TravelCost}}, MATCH({{SecondEdge}}, TravelEdges!{{TravelEdgeId}}, 0))",
+        "RelatedTo": "TravelEdges"
+      },
+      {
+        "name": "IsFirstEdgeIncident",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether the first selected edge is incident to the bounded stop.",
+        "formula": "=OR({{InstanceStop}} = {{FirstEdgeFromStop}}, {{InstanceStop}} = {{FirstEdgeToStop}})"
+      },
+      {
+        "name": "IsSecondEdgeIncident",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether the second selected edge is incident to the bounded stop.",
+        "formula": "=OR({{InstanceStop}} = {{SecondEdgeFromStop}}, {{InstanceStop}} = {{SecondEdgeToStop}})"
+      },
+      {
+        "name": "AreSelectedEdgesDistinct",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether the two selected edge rows are distinct.",
+        "formula": "={{FirstEdge}} \u003C\u003E {{SecondEdge}}"
+      },
+      {
+        "name": "AreSelectedCostsOrdered",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether the first selected edge is no more expensive than the second.",
+        "formula": "={{FirstEdgeCost}} \u003C= {{SecondEdgeCost}}"
+      },
+      {
+        "name": "RequiredDominanceCheckCount",
+        "datatype": "integer",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Number of other incident edges that must be compared against the second selected cost.",
+        "formula": "={{StopAdmissibleIncidentEdgeCount}} - 2"
+      },
+      {
+        "name": "CountOfDominanceChecks",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Represented comparisons against other incident edges.",
+        "formula": "=COUNTIFS(IncidentDominanceChecks!{{LocalDegreeBound}}, {{LocalDegreeBoundId}})"
+      },
+      {
+        "name": "CountOfFailedDominanceChecks",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Dominance comparisons that fail incidence, distinctness, uniqueness, or cost ordering.",
+        "formula": "=COUNTIFS(IncidentDominanceChecks!{{LocalDegreeBound}}, {{LocalDegreeBoundId}}, IncidentDominanceChecks!{{IsPassing}}, FALSE())"
+      },
+      {
+        "name": "IsTwoCheapestWitness",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether this row and its child comparisons certify the two cheapest admissible incident edges.",
+        "formula": "=AND({{TSPInstance}} = {{StopTSPInstance}}, {{IsFirstEdgeIncident}}, {{IsSecondEdgeIncident}}, {{AreSelectedEdgesDistinct}}, {{AreSelectedCostsOrdered}}, {{CountOfDominanceChecks}} = {{RequiredDominanceCheckCount}}, {{CountOfFailedDominanceChecks}} = 0)"
+      },
+      {
+        "name": "LocalBoundCost",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Certified sum of the two cheapest incident edge costs; zero when the witness is invalid.",
+        "formula": "=IF({{IsTwoCheapestWitness}}, {{FirstEdgeCost}} \u002B {{SecondEdgeCost}}, 0)"
+      }
+    ]
+  },
+  "IncidentDominanceChecks": {
+    "Description": "Witness rows proving every unselected incident edge is at least as expensive as the second edge named by a LocalDegreeBound.",
+    "schema": [
+      {
+        "name": "IncidentDominanceCheckId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable dominance-check identifier."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display alias for the dominance check.",
+        "formula": "={{IncidentDominanceCheckId}}"
+      },
+      {
+        "name": "LocalDegreeBound",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Local lower-bound witness being supported.",
+        "RelatedTo": "LocalDegreeBounds"
+      },
+      {
+        "name": "OtherEdge",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Unselected incident edge compared against the second selected edge.",
+        "RelatedTo": "TravelEdges"
+      },
+      {
+        "name": "BoundStop",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Stop bounded by the parent witness.",
+        "formula": "=INDEX(LocalDegreeBounds!{{InstanceStop}}, MATCH({{LocalDegreeBound}}, LocalDegreeBounds!{{LocalDegreeBoundId}}, 0))",
+        "RelatedTo": "LocalDegreeBounds"
+      },
+      {
+        "name": "FirstSelectedEdge",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "First edge selected by the parent witness.",
+        "formula": "=INDEX(LocalDegreeBounds!{{FirstEdge}}, MATCH({{LocalDegreeBound}}, LocalDegreeBounds!{{LocalDegreeBoundId}}, 0))",
+        "RelatedTo": "LocalDegreeBounds"
+      },
+      {
+        "name": "SecondSelectedEdge",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Second edge selected by the parent witness.",
+        "formula": "=INDEX(LocalDegreeBounds!{{SecondEdge}}, MATCH({{LocalDegreeBound}}, LocalDegreeBounds!{{LocalDegreeBoundId}}, 0))",
+        "RelatedTo": "LocalDegreeBounds"
+      },
+      {
+        "name": "SecondSelectedEdgeCost",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Cost of the second selected edge.",
+        "formula": "=INDEX(LocalDegreeBounds!{{SecondEdgeCost}}, MATCH({{LocalDegreeBound}}, LocalDegreeBounds!{{LocalDegreeBoundId}}, 0))",
+        "RelatedTo": "LocalDegreeBounds"
+      },
+      {
+        "name": "OtherEdgeFromStop",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Other edge\u0027s first endpoint.",
+        "formula": "=INDEX(TravelEdges!{{FromStop}}, MATCH({{OtherEdge}}, TravelEdges!{{TravelEdgeId}}, 0))",
+        "RelatedTo": "TravelEdges"
+      },
+      {
+        "name": "OtherEdgeToStop",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Other edge\u0027s second endpoint.",
+        "formula": "=INDEX(TravelEdges!{{ToStop}}, MATCH({{OtherEdge}}, TravelEdges!{{TravelEdgeId}}, 0))",
+        "RelatedTo": "TravelEdges"
+      },
+      {
+        "name": "OtherEdgeCost",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Cost of the unselected incident edge.",
+        "formula": "=INDEX(TravelEdges!{{TravelCost}}, MATCH({{OtherEdge}}, TravelEdges!{{TravelEdgeId}}, 0))",
+        "RelatedTo": "TravelEdges"
+      },
+      {
+        "name": "OtherEdgeMultiplicity",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of comparison rows in the same local witness naming this other edge.",
+        "formula": "=COUNTIFS(IncidentDominanceChecks!{{LocalDegreeBound}}, {{LocalDegreeBound}}, IncidentDominanceChecks!{{OtherEdge}}, {{OtherEdge}})"
+      },
+      {
+        "name": "IsOtherEdgeIncident",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether the compared edge is incident to the bounded stop.",
+        "formula": "=OR({{BoundStop}} = {{OtherEdgeFromStop}}, {{BoundStop}} = {{OtherEdgeToStop}})"
+      },
+      {
+        "name": "IsOtherEdgeUnselected",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether the compared edge differs from both selected edges.",
+        "formula": "=AND({{OtherEdge}} \u003C\u003E {{FirstSelectedEdge}}, {{OtherEdge}} \u003C\u003E {{SecondSelectedEdge}})"
+      },
+      {
+        "name": "IsOtherEdgeUnique",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether this unselected edge appears exactly once among the parent\u0027s comparisons.",
+        "formula": "={{OtherEdgeMultiplicity}} = 1"
+      },
+      {
+        "name": "IsDominatedBySecondCost",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether the unselected edge is no cheaper than the second selected edge.",
+        "formula": "={{OtherEdgeCost}} \u003E= {{SecondSelectedEdgeCost}}"
+      },
+      {
+        "name": "IsPassing",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether the comparison is incident, unselected, unique, and cost-dominated.",
+        "formula": "=AND({{IsOtherEdgeIncident}}, {{IsOtherEdgeUnselected}}, {{IsOtherEdgeUnique}}, {{IsDominatedBySecondCost}})"
+      }
+    ]
+  },
+  "InstanceLowerBounds": {
+    "Description": "Global lower bounds obtained by summing certified local degree-two bounds and dividing by two because each tour edge is incident to two stops.",
+    "schema": [
+      {
+        "name": "InstanceLowerBoundId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable instance-lower-bound identifier."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display alias for the lower bound.",
+        "formula": "={{InstanceLowerBoundId}}"
+      },
+      {
+        "name": "TSPInstance",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Instance receiving the lower bound.",
+        "RelatedTo": "TSPInstances"
+      },
+      {
+        "name": "BoundKind",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Kind of reusable lower-bound geometry."
+      },
+      {
+        "name": "RequiredStopCount",
+        "datatype": "integer",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Required stop count of the instance.",
+        "formula": "=INDEX(TSPInstances!{{CountOfRequiredStops}}, MATCH({{TSPInstance}}, TSPInstances!{{TSPInstanceId}}, 0))",
+        "RelatedTo": "TSPInstances"
+      },
+      {
+        "name": "CountOfLocalDegreeBounds",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Local degree-bound rows represented for the instance.",
+        "formula": "=COUNTIFS(LocalDegreeBounds!{{TSPInstance}}, {{TSPInstance}})"
+      },
+      {
+        "name": "CountOfInvalidLocalDegreeBounds",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Local degree-bound rows that do not carry a valid two-cheapest witness.",
+        "formula": "=COUNTIFS(LocalDegreeBounds!{{TSPInstance}}, {{TSPInstance}}, LocalDegreeBounds!{{IsTwoCheapestWitness}}, FALSE())"
+      },
+      {
+        "name": "TotalLocalDegreeBoundCost",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Sum of the local two-edge lower bounds across all required stops.",
+        "formula": "=SUMIFS(LocalDegreeBounds!{{LocalBoundCost}}, LocalDegreeBounds!{{TSPInstance}}, {{TSPInstance}})"
+      },
+      {
+        "name": "LowerBoundCost",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Certified global tour lower bound after double-count correction.",
+        "formula": "={{TotalLocalDegreeBoundCost}} / 2"
+      },
+      {
+        "name": "IsCertified",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether every required stop has one valid local witness and the global double-counting aggregation is closed.",
+        "formula": "=AND({{CountOfLocalDegreeBounds}} = {{RequiredStopCount}}, {{CountOfInvalidLocalDegreeBounds}} = 0)"
+      }
+    ]
+  },
+  "OptimalityCertificates": {
+    "Description": "Finite-instance optimality certificates. Passing requires a valid Hamiltonian witness, a certified lower bound for the same instance, and equality between candidate cost and lower bound.",
+    "schema": [
+      {
+        "name": "OptimalityCertificateId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable optimality-certificate identifier."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display alias for the certificate.",
+        "formula": "={{OptimalityCertificateId}}"
+      },
+      {
+        "name": "CandidateTour",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Candidate whose optimality is being certified.",
+        "RelatedTo": "CandidateTours"
+      },
+      {
+        "name": "InstanceLowerBound",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Certified lower bound compared with the candidate cost.",
+        "RelatedTo": "InstanceLowerBounds"
+      },
+      {
+        "name": "CandidateTSPInstance",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Instance owned by the candidate.",
+        "formula": "=INDEX(CandidateTours!{{TSPInstance}}, MATCH({{CandidateTour}}, CandidateTours!{{CandidateTourId}}, 0))",
+        "RelatedTo": "CandidateTours"
+      },
+      {
+        "name": "LowerBoundTSPInstance",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Instance owned by the lower-bound certificate.",
+        "formula": "=INDEX(InstanceLowerBounds!{{TSPInstance}}, MATCH({{InstanceLowerBound}}, InstanceLowerBounds!{{InstanceLowerBoundId}}, 0))",
+        "RelatedTo": "InstanceLowerBounds"
+      },
+      {
+        "name": "CandidateTravelCost",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Derived travel cost of the candidate.",
+        "formula": "=INDEX(CandidateTours!{{TotalTravelCost}}, MATCH({{CandidateTour}}, CandidateTours!{{CandidateTourId}}, 0))",
+        "RelatedTo": "CandidateTours"
+      },
+      {
+        "name": "LowerBoundCost",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Certified lower-bound cost.",
+        "formula": "=INDEX(InstanceLowerBounds!{{LowerBoundCost}}, MATCH({{InstanceLowerBound}}, InstanceLowerBounds!{{InstanceLowerBoundId}}, 0))",
+        "RelatedTo": "InstanceLowerBounds"
+      },
+      {
+        "name": "CandidateIsHamiltonianCycleWitness",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether the candidate is a valid Hamiltonian-cycle witness.",
+        "formula": "=INDEX(CandidateTours!{{IsHamiltonianCycleWitness}}, MATCH({{CandidateTour}}, CandidateTours!{{CandidateTourId}}, 0))",
+        "RelatedTo": "CandidateTours"
+      },
+      {
+        "name": "LowerBoundIsCertified",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether the lower-bound construction is certified.",
+        "formula": "=INDEX(InstanceLowerBounds!{{IsCertified}}, MATCH({{InstanceLowerBound}}, InstanceLowerBounds!{{InstanceLowerBoundId}}, 0))",
+        "RelatedTo": "InstanceLowerBounds"
+      },
+      {
+        "name": "IsSameInstance",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether candidate and lower bound refer to the same TSP instance.",
+        "formula": "={{CandidateTSPInstance}} = {{LowerBoundTSPInstance}}"
+      },
+      {
+        "name": "IsBoundTight",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether the candidate cost equals the certified lower bound.",
+        "formula": "={{CandidateTravelCost}} = {{LowerBoundCost}}"
+      },
+      {
+        "name": "IsPassing",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether bound equality certifies this candidate as optimal for the declared finite instance.",
+        "formula": "=AND({{CandidateIsHamiltonianCycleWitness}}, {{LowerBoundIsCertified}}, {{IsSameInstance}}, {{IsBoundTight}})"
+      },
+      {
+        "name": "ScopeClaim",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Honest scope of the certificate.",
+        "formula": "=IF({{IsPassing}}, \u0022OPTIMAL_FOR_DECLARED_FINITE_INSTANCE\u0022, \u0022OPTIMALITY_NOT_CERTIFIED\u0022)"
+      }
+    ]
+  },
+  "TSPExecutionRuns": {
+    "Description": "Execution attempts against a concrete substrate; blocked and failed runs remain first-class evidence.",
+    "schema": [
+      {
+        "name": "TSPExecutionRunId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable TSPExecutionRunId identifier."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display alias.",
+        "formula": "={{TSPExecutionRunId}}"
+      },
+      {
+        "name": "TSPLoop",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Loop owning the attempt.",
+        "RelatedTo": "TSPLoops"
+      },
+      {
+        "name": "Substrate",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Execution substrate."
+      },
+      {
+        "name": "AttemptedAt",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Attempt timestamp or deterministic run marker."
+      },
+      {
+        "name": "BuildCommand",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Command attempted."
+      },
+      {
+        "name": "BuildSucceeded",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Whether generation succeeded."
+      },
+      {
+        "name": "DatabaseInitialized",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Whether the database initialized."
+      },
+      {
+        "name": "ConformanceSucceeded",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Whether peer conformance passed."
+      },
+      {
+        "name": "Status",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "SUCCEEDED, FAILED, or BLOCKED."
+      },
+      {
+        "name": "FailureReason",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Exact blocking or failure reason."
+      },
+      {
+        "name": "IsSuccessful",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether all three commissioning stages succeeded.",
+        "formula": "=AND({{BuildSucceeded}}, {{DatabaseInitialized}}, {{ConformanceSucceeded}})"
+      }
+    ]
+  },
+  "TSPArtifacts": {
+    "Description": "Content-addressed artifacts emitted or expected from substrate execution.",
+    "schema": [
+      {
+        "name": "TSPArtifactId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable TSPArtifactId identifier."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display alias.",
+        "formula": "={{TSPArtifactId}}"
+      },
+      {
+        "name": "ExecutionRun",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Owning execution run.",
+        "RelatedTo": "TSPExecutionRuns"
+      },
+      {
+        "name": "ArtifactKind",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Artifact category."
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Repository-relative path."
+      },
+      {
+        "name": "SHA256",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Content hash when present."
+      },
+      {
+        "name": "IsPresent",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Whether the artifact existed."
+      }
+    ]
+  },
+  "TSPConformanceChecks": {
+    "Description": "Expected-versus-actual checks for a substrate run.",
+    "schema": [
+      {
+        "name": "TSPConformanceCheckId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable TSPConformanceCheckId identifier."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display alias.",
+        "formula": "={{TSPConformanceCheckId}}"
+      },
+      {
+        "name": "ExecutionRun",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Owning execution run.",
+        "RelatedTo": "TSPExecutionRuns"
+      },
+      {
+        "name": "CheckKind",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Check category."
+      },
+      {
+        "name": "SubjectId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Subject under comparison."
+      },
+      {
+        "name": "ExpectedValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Expected value."
+      },
+      {
+        "name": "ActualValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Observed value."
+      },
+      {
+        "name": "Status",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "PASS, FAIL, or BLOCKED."
+      },
+      {
+        "name": "IsPassing",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether expected and actual agree.",
+        "formula": "={{Status}} = \u0022PASS\u0022"
+      }
+    ]
+  },
+  "TSPInferenceStates": {
+    "Description": "Named immutable snapshots of the current deterministic inference frontier.",
+    "schema": [
+      {
+        "name": "TSPInferenceStateId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable TSPInferenceStateId identifier."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display alias.",
+        "formula": "={{TSPInferenceStateId}}"
+      },
+      {
+        "name": "TSPInstance",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Instance under inference.",
+        "RelatedTo": "TSPInstances"
+      },
+      {
+        "name": "TSPLoop",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Loop that emitted the state.",
+        "RelatedTo": "TSPLoops"
+      },
+      {
+        "name": "StateKind",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Semantic stage."
+      },
+      {
+        "name": "ParentStateId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Prior state identifier without a self-relationship cycle."
+      },
+      {
+        "name": "Status",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "OPEN, CLOSED, or FIXED_POINT."
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "State meaning."
+      }
+    ]
+  },
+  "TSPInferenceApplications": {
+    "Description": "Individual applications of declared inference rules.",
+    "schema": [
+      {
+        "name": "TSPInferenceApplicationId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable TSPInferenceApplicationId identifier."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display alias.",
+        "formula": "={{TSPInferenceApplicationId}}"
+      },
+      {
+        "name": "InferenceState",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "State receiving the conclusion.",
+        "RelatedTo": "TSPInferenceStates"
+      },
+      {
+        "name": "InferenceRule",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Applied rule.",
+        "RelatedTo": "TSPInferenceRules"
+      },
+      {
+        "name": "TSPLoop",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Loop executing the application.",
+        "RelatedTo": "TSPLoops"
+      },
+      {
+        "name": "SubjectType",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Subject category."
+      },
+      {
+        "name": "SubjectId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Subject identifier."
+      },
+      {
+        "name": "ApplicabilityPassed",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Whether preconditions passed."
+      },
+      {
+        "name": "Conclusion",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Locally simple conclusion."
+      },
+      {
+        "name": "CertificateType",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Certificate emitted."
+      }
+    ]
+  },
+  "TSPInferenceAntecedents": {
+    "Description": "Antecedent facts consumed by one inference application.",
+    "schema": [
+      {
+        "name": "TSPInferenceAntecedentId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable TSPInferenceAntecedentId identifier."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display alias.",
+        "formula": "={{TSPInferenceAntecedentId}}"
+      },
+      {
+        "name": "InferenceApplication",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Owning application.",
+        "RelatedTo": "TSPInferenceApplications"
+      },
+      {
+        "name": "AntecedentKind",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Fact kind."
+      },
+      {
+        "name": "AntecedentId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Fact identifier."
+      },
+      {
+        "name": "Statement",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Antecedent statement."
+      }
+    ]
+  },
+  "TSPEdgeStates": {
+    "Description": "Epistemically typed state of one edge in one inference snapshot.",
+    "schema": [
+      {
+        "name": "TSPEdgeStateId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable TSPEdgeStateId identifier."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display alias.",
+        "formula": "={{TSPEdgeStateId}}"
+      },
+      {
+        "name": "InferenceState",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Owning state.",
+        "RelatedTo": "TSPInferenceStates"
+      },
+      {
+        "name": "TravelEdge",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Edge receiving state.",
+        "RelatedTo": "TravelEdges"
+      },
+      {
+        "name": "DecisionStatus",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "UNKNOWN, SELECTED, FORCED, FORBIDDEN, CONTRADICTED, or SUPERSEDED."
+      },
+      {
+        "name": "EpistemicStatus",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Why that decision status is justified."
+      },
+      {
+        "name": "InferenceApplication",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Application producing the state.",
+        "RelatedTo": "TSPInferenceApplications"
+      },
+      {
+        "name": "IsDecided",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether the edge is no longer unknown.",
+        "formula": "=NOT({{DecisionStatus}} = \u0022UNKNOWN\u0022)"
+      }
+    ]
+  },
+  "TSPEdgeSupports": {
+    "Description": "Witness rows supporting an edge-state conclusion.",
+    "schema": [
+      {
+        "name": "TSPEdgeSupportId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable TSPEdgeSupportId identifier."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display alias.",
+        "formula": "={{TSPEdgeSupportId}}"
+      },
+      {
+        "name": "EdgeState",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Supported edge-state row.",
+        "RelatedTo": "TSPEdgeStates"
+      },
+      {
+        "name": "LocalDegreeBound",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Local bound supplying support.",
+        "RelatedTo": "LocalDegreeBounds"
+      },
+      {
+        "name": "InferenceApplication",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Application consuming the support.",
+        "RelatedTo": "TSPInferenceApplications"
+      },
+      {
+        "name": "SupportKind",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Support category."
+      },
+      {
+        "name": "Statement",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Support statement."
+      }
+    ]
+  },
+  "TSPDerivedEdgeSets": {
+    "Description": "First-class edge sets derived from inference rows rather than supplied route order.",
+    "schema": [
+      {
+        "name": "TSPDerivedEdgeSetId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable TSPDerivedEdgeSetId identifier."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display alias.",
+        "formula": "={{TSPDerivedEdgeSetId}}"
+      },
+      {
+        "name": "TSPInstance",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Owning instance.",
+        "RelatedTo": "TSPInstances"
+      },
+      {
+        "name": "InferenceState",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "State that emitted the set.",
+        "RelatedTo": "TSPInferenceStates"
+      },
+      {
+        "name": "DerivationKind",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Construction used."
+      },
+      {
+        "name": "EdgeCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Distinct member count."
+      },
+      {
+        "name": "RequiredStopCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Required stops in scope."
+      },
+      {
+        "name": "TotalCost",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Sum of distinct edge costs."
+      },
+      {
+        "name": "DegreeViolationCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Stops not having selected degree two."
+      },
+      {
+        "name": "ConnectedComponentCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Connected components."
+      },
+      {
+        "name": "ProperSubtourCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Proper cycle components."
+      },
+      {
+        "name": "Status",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "DERIVED_UNCERTIFIED, CONNECTED_DEGREE_TWO, DISCONNECTED_SUBTOURS, or CONTRADICTED."
+      },
+      {
+        "name": "IsConnectedDegreeTwo",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether this is one connected degree-two cycle.",
+        "formula": "=AND({{DegreeViolationCount}} = 0, {{ConnectedComponentCount}} = 1, {{ProperSubtourCount}} = 0)"
+      }
+    ]
+  },
+  "TSPDerivedEdgeSetMembers": {
+    "Description": "Member edges and support counts for a derived edge set.",
+    "schema": [
+      {
+        "name": "TSPDerivedEdgeSetMemberId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable TSPDerivedEdgeSetMemberId identifier."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display alias.",
+        "formula": "={{TSPDerivedEdgeSetMemberId}}"
+      },
+      {
+        "name": "DerivedEdgeSet",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Owning edge set.",
+        "RelatedTo": "TSPDerivedEdgeSets"
+      },
+      {
+        "name": "TravelEdge",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Member edge.",
+        "RelatedTo": "TravelEdges"
+      },
+      {
+        "name": "SupportCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Independent support rows."
+      },
+      {
+        "name": "SelectedAtBothEndpoints",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Whether both endpoint local bounds selected it."
+      },
+      {
+        "name": "MemberStatus",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "SELECTED, FORCED, or FORBIDDEN."
+      }
+    ]
+  },
+  "TSPEdgeSetStopDegrees": {
+    "Description": "Selected degree of each required stop in a derived edge set.",
+    "schema": [
+      {
+        "name": "TSPEdgeSetStopDegreeId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable TSPEdgeSetStopDegreeId identifier."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display alias.",
+        "formula": "={{TSPEdgeSetStopDegreeId}}"
+      },
+      {
+        "name": "DerivedEdgeSet",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Owning set.",
+        "RelatedTo": "TSPDerivedEdgeSets"
+      },
+      {
+        "name": "InstanceStop",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Stop under degree check.",
+        "RelatedTo": "InstanceStops"
+      },
+      {
+        "name": "SelectedDegree",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Member edges incident to the stop."
+      },
+      {
+        "name": "IsDegreeTwo",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether selected degree is two.",
+        "formula": "={{SelectedDegree}} = 2"
+      }
+    ]
+  },
+  "TSPSpanningTreeEdges": {
+    "Description": "Spanning-tree witness proving connectedness of a selected edge set.",
+    "schema": [
+      {
+        "name": "TSPSpanningTreeEdgeId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable TSPSpanningTreeEdgeId identifier."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display alias.",
+        "formula": "={{TSPSpanningTreeEdgeId}}"
+      },
+      {
+        "name": "DerivedEdgeSet",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Owning set.",
+        "RelatedTo": "TSPDerivedEdgeSets"
+      },
+      {
+        "name": "ParentStop",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Parent stop.",
+        "RelatedTo": "InstanceStops"
+      },
+      {
+        "name": "ChildStop",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Child stop.",
+        "RelatedTo": "InstanceStops"
+      },
+      {
+        "name": "TravelEdge",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Selected edge used by the tree.",
+        "RelatedTo": "TravelEdges"
+      },
+      {
+        "name": "Depth",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Child depth from root."
+      }
+    ]
+  },
+  "TSPConnectedDegreeTwoCertificates": {
+    "Description": "Certificates that a derived edge set is one connected degree-two cycle.",
+    "schema": [
+      {
+        "name": "TSPConnectedDegreeTwoCertificateId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable TSPConnectedDegreeTwoCertificateId identifier."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display alias.",
+        "formula": "={{TSPConnectedDegreeTwoCertificateId}}"
+      },
+      {
+        "name": "DerivedEdgeSet",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Certified set.",
+        "RelatedTo": "TSPDerivedEdgeSets"
+      },
+      {
+        "name": "RequiredStopCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Required stop count."
+      },
+      {
+        "name": "EdgeCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Selected edge count."
+      },
+      {
+        "name": "DegreeViolationCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Degree violations."
+      },
+      {
+        "name": "ComponentCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Connected components."
+      },
+      {
+        "name": "ProperSubtourCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Proper subtours."
+      },
+      {
+        "name": "SpanningTreeEdgeCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Tree witness edge count."
+      },
+      {
+        "name": "IsPassing",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether the graph is one connected cycle.",
+        "formula": "=AND({{EdgeCount}} = {{RequiredStopCount}}, {{DegreeViolationCount}} = 0, {{ComponentCount}} = 1, {{ProperSubtourCount}} = 0, {{SpanningTreeEdgeCount}} = {{RequiredStopCount}} - 1)"
+      }
+    ]
+  },
+  "TSPRouteReconstructions": {
+    "Description": "Ordered cycles reconstructed from certified edge sets.",
+    "schema": [
+      {
+        "name": "TSPRouteReconstructionId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable TSPRouteReconstructionId identifier."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display alias.",
+        "formula": "={{TSPRouteReconstructionId}}"
+      },
+      {
+        "name": "TSPInstance",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Owning instance.",
+        "RelatedTo": "TSPInstances"
+      },
+      {
+        "name": "DerivedEdgeSet",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Antecedent edge set.",
+        "RelatedTo": "TSPDerivedEdgeSets"
+      },
+      {
+        "name": "StartStop",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Depot stop.",
+        "RelatedTo": "InstanceStops"
+      },
+      {
+        "name": "OrientationRule",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Deterministic orientation rule."
+      },
+      {
+        "name": "RequiredStopCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Required stops."
+      },
+      {
+        "name": "ReconstructedStopCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Unique stops reconstructed."
+      },
+      {
+        "name": "ReconstructedLegCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Legs reconstructed."
+      },
+      {
+        "name": "TotalCost",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Reconstructed cycle cost."
+      },
+      {
+        "name": "CandidateUsedAsAntecedent",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Must remain false."
+      },
+      {
+        "name": "ComparisonCandidate",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Optional downstream comparison only.",
+        "RelatedTo": "CandidateTours"
+      },
+      {
+        "name": "MatchesComparisonCandidate",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Whether the reconstructed cycle matches the comparison candidate up to orientation."
+      },
+      {
+        "name": "Status",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "RECONSTRUCTED, NOT_EVALUABLE, or CONTRADICTED."
+      },
+      {
+        "name": "IsPassing",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether reconstruction closes without a supplied-route antecedent.",
+        "formula": "=AND({{ReconstructedStopCount}} = {{RequiredStopCount}}, {{ReconstructedLegCount}} = {{RequiredStopCount}}, NOT({{CandidateUsedAsAntecedent}}), {{Status}} = \u0022RECONSTRUCTED\u0022)"
+      }
+    ]
+  },
+  "TSPRouteReconstructionSteps": {
+    "Description": "Ordered traversal steps emitted from an inferred edge set.",
+    "schema": [
+      {
+        "name": "TSPRouteReconstructionStepId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable TSPRouteReconstructionStepId identifier."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display alias.",
+        "formula": "={{TSPRouteReconstructionStepId}}"
+      },
+      {
+        "name": "RouteReconstruction",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Owning reconstruction.",
+        "RelatedTo": "TSPRouteReconstructions"
+      },
+      {
+        "name": "StepOrder",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "One-based step order."
+      },
+      {
+        "name": "FromStop",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Step origin.",
+        "RelatedTo": "InstanceStops"
+      },
+      {
+        "name": "ToStop",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Step destination.",
+        "RelatedTo": "InstanceStops"
+      },
+      {
+        "name": "TravelEdge",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Traversed inferred edge.",
+        "RelatedTo": "TravelEdges"
+      },
+      {
+        "name": "IsClosingStep",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Whether the step returns to the depot."
+      }
+    ]
+  },
+  "TSPSearchCertificates": {
+    "Description": "Derived accounting of route classes, branch decisions, backtracks, and residual ambiguity.",
+    "schema": [
+      {
+        "name": "TSPSearchCertificateId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable TSPSearchCertificateId identifier."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display alias.",
+        "formula": "={{TSPSearchCertificateId}}"
+      },
+      {
+        "name": "TSPInstance",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Measured instance.",
+        "RelatedTo": "TSPInstances"
+      },
+      {
+        "name": "TSPLoop",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Loop producing the measurement.",
+        "RelatedTo": "TSPLoops"
+      },
+      {
+        "name": "DerivedEdgeSet",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Structural result supporting the measurement.",
+        "RelatedTo": "TSPDerivedEdgeSets"
+      },
+      {
+        "name": "QuestionKind",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Discovery or verification question."
+      },
+      {
+        "name": "InitialRouteClassCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Symmetry-reduced classes initially possible."
+      },
+      {
+        "name": "SurvivingRouteClassCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Classes after deterministic closure."
+      },
+      {
+        "name": "BranchDecisionCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Explicit branch choices."
+      },
+      {
+        "name": "BacktrackCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Backtracks."
+      },
+      {
+        "name": "ResidualAmbiguityCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Unresolved alternatives."
+      },
+      {
+        "name": "BranchingAvoidedPct",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Percentage of branch search avoided."
+      },
+      {
+        "name": "RouteClassEliminationPct",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Percentage of route classes removed.",
+        "formula": "=IF({{InitialRouteClassCount}} = 0, 0, ROUND(({{InitialRouteClassCount}} - {{SurvivingRouteClassCount}}) / {{InitialRouteClassCount}} * 100, 2))"
+      },
+      {
+        "name": "Status",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "CERTIFIED or RESIDUAL_SEARCH."
+      }
+    ]
+  },
+  "TSPConstraintRounds": {
+    "Description": "Fixed-point rounds for forced and forbidden edge propagation.",
+    "schema": [
+      {
+        "name": "TSPConstraintRoundId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable TSPConstraintRoundId identifier."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display alias.",
+        "formula": "={{TSPConstraintRoundId}}"
+      },
+      {
+        "name": "TSPInstance",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Owning instance.",
+        "RelatedTo": "TSPInstances"
+      },
+      {
+        "name": "TSPLoop",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Loop emitting the round.",
+        "RelatedTo": "TSPLoops"
+      },
+      {
+        "name": "RoundOrder",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Round order."
+      },
+      {
+        "name": "InputState",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Input state identifier."
+      },
+      {
+        "name": "ForcedDecisionCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "New forced decisions."
+      },
+      {
+        "name": "ForbiddenDecisionCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "New forbidden decisions."
+      },
+      {
+        "name": "BranchDecisionCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Branches taken."
+      },
+      {
+        "name": "Status",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "ADVANCED or FIXED_POINT."
+      }
+    ]
+  },
+  "TSPConstraintDecisions": {
+    "Description": "Replayable forced or forbidden edge decisions with reason codes.",
+    "schema": [
+      {
+        "name": "TSPConstraintDecisionId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable TSPConstraintDecisionId identifier."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display alias.",
+        "formula": "={{TSPConstraintDecisionId}}"
+      },
+      {
+        "name": "ConstraintRound",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Owning closure round.",
+        "RelatedTo": "TSPConstraintRounds"
+      },
+      {
+        "name": "TravelEdge",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Decided edge.",
+        "RelatedTo": "TravelEdges"
+      },
+      {
+        "name": "InstanceStop",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Stop exposing the decision.",
+        "RelatedTo": "InstanceStops"
+      },
+      {
+        "name": "InferenceRule",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Rule applied.",
+        "RelatedTo": "TSPInferenceRules"
+      },
+      {
+        "name": "DecisionStatus",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "FORCED or FORBIDDEN."
+      },
+      {
+        "name": "ReasonCode",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Machine-readable justification."
+      },
+      {
+        "name": "AntecedentSummary",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Human-readable antecedents."
+      },
+      {
+        "name": "IsDeterministic",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Whether no branch was used."
+      }
+    ]
+  },
+  "TSPClusterBoundaryStates": {
+    "Description": "Finite undirected entry/exit Hamiltonian-path states for a neighborhood cluster.",
+    "schema": [
+      {
+        "name": "TSPClusterBoundaryStateId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable TSPClusterBoundaryStateId identifier."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display alias.",
+        "formula": "={{TSPClusterBoundaryStateId}}"
+      },
+      {
+        "name": "TSPInstance",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Owning instance.",
+        "RelatedTo": "TSPInstances"
+      },
+      {
+        "name": "Neighborhood",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Contracted neighborhood.",
+        "RelatedTo": "Neighborhoods"
+      },
+      {
+        "name": "EntryStop",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Canonical first boundary stop.",
+        "RelatedTo": "InstanceStops"
+      },
+      {
+        "name": "ExitStop",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Canonical second boundary stop.",
+        "RelatedTo": "InstanceStops"
+      },
+      {
+        "name": "InternalViaStop",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Internal stop between entry and exit.",
+        "RelatedTo": "InstanceStops"
+      },
+      {
+        "name": "InternalPathCost",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Certified internal path cost."
+      },
+      {
+        "name": "InternalStopCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stops covered inside the cluster."
+      },
+      {
+        "name": "IsHamiltonianPath",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Whether all cluster stops are covered exactly once."
+      },
+      {
+        "name": "IsDominated",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Whether a cheaper state with the same boundary exists."
+      },
+      {
+        "name": "Status",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "SURVIVES or DOMINATED."
+      }
+    ]
+  },
+  "TSPClusterBoundaryStateMembers": {
+    "Description": "Ordered internal edges supporting a cluster boundary state.",
+    "schema": [
+      {
+        "name": "TSPClusterBoundaryStateMemberId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable TSPClusterBoundaryStateMemberId identifier."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display alias.",
+        "formula": "={{TSPClusterBoundaryStateMemberId}}"
+      },
+      {
+        "name": "ClusterBoundaryState",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Owning state.",
+        "RelatedTo": "TSPClusterBoundaryStates"
+      },
+      {
+        "name": "TravelEdge",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Internal path edge.",
+        "RelatedTo": "TravelEdges"
+      },
+      {
+        "name": "MemberOrder",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Path order."
+      }
+    ]
+  },
+  "TSPClusterContractionCertificates": {
+    "Description": "Finite-fixture certificates measuring neighborhood-state contraction.",
+    "schema": [
+      {
+        "name": "TSPClusterContractionCertificateId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable TSPClusterContractionCertificateId identifier."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display alias.",
+        "formula": "={{TSPClusterContractionCertificateId}}"
+      },
+      {
+        "name": "TSPInstance",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Owning instance.",
+        "RelatedTo": "TSPInstances"
+      },
+      {
+        "name": "Neighborhood",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Neighborhood for local scope; null for instance composition.",
+        "RelatedTo": "Neighborhoods"
+      },
+      {
+        "name": "ScopeKind",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "NEIGHBORHOOD or INSTANCE_COMPOSITION."
+      },
+      {
+        "name": "RawInternalOrderCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Raw internal orders."
+      },
+      {
+        "name": "SurvivingBoundaryStateCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "States after canonicalization/dominance."
+      },
+      {
+        "name": "RawCombinationCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Raw cross-cluster combinations."
+      },
+      {
+        "name": "ContractedCombinationCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Boundary-state combinations."
+      },
+      {
+        "name": "ReductionPct",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Measured reduction."
+      },
+      {
+        "name": "IsPassing",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Whether coverage and cost preservation checks pass."
+      },
+      {
+        "name": "ScopeClaim",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Finite scope of the certificate."
+      }
+    ]
+  },
+  "TSPInferenceRules": {
+    "Description": "Declared structural inference contracts, including soundness, completeness, runtime, memory, applicability, and certificate shape.",
+    "schema": [
+      {
+        "name": "TSPInferenceRuleId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable inference-rule identifier."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Human-readable inference-rule label.",
+        "formula": "={{DisplayName}}"
+      },
+      {
+        "name": "DisplayName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Human-readable inference-rule name."
+      },
+      {
+        "name": "InferenceLayer",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Pipeline layer in which the rule applies."
+      },
+      {
+        "name": "ImplementationStatus",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Whether the rule is executable in the current rulebook."
+      },
+      {
+        "name": "Soundness",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Current soundness claim."
+      },
+      {
+        "name": "Completeness",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Current completeness claim."
+      },
+      {
+        "name": "RuntimeClass",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Declared asymptotic runtime for the represented step."
+      },
+      {
+        "name": "MemoryClass",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Declared asymptotic memory for the represented step."
+      },
+      {
+        "name": "Applicability",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Preconditions for using the rule."
+      },
+      {
+        "name": "CertificateType",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Witness or certificate emitted by the rule."
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Operational meaning of the rule."
+      }
+    ]
+  },
+  "TSPFrontierObligations": {
+    "Description": "Typed ledger of open and closed semantic frontier obligations. Imported dependencies are used only when an external provider conclusion is actually consumed.",
+    "schema": [
+      {
+        "name": "TSPFrontierObligationId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable frontier-obligation identifier."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Human-readable obligation label.",
+        "formula": "={{DisplayName}}"
+      },
+      {
+        "name": "DisplayName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Human-readable frontier-obligation name."
+      },
+      {
+        "name": "ObligationKind",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Typed class: imported dependency, inference, certificate, substrate, generalization, or residual search."
+      },
+      {
+        "name": "Status",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "OPEN, CLOSED, BLOCKED, DEFERRED, or FALSIFIED."
+      },
+      {
+        "name": "InferenceRule",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Inference contract primarily responsible for closure.",
+        "RelatedTo": "TSPInferenceRules"
+      },
+      {
+        "name": "OpenedByLoop",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Loop that exposed this frontier obligation.",
+        "RelatedTo": "TSPLoops"
+      },
+      {
+        "name": "ClosedByLoop",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Loop that closed the obligation, when closed.",
+        "RelatedTo": "TSPLoops"
+      },
+      {
+        "name": "TrustDisposition",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "How the obligation is expected to close or where trust remains."
+      },
+      {
+        "name": "ClosureCriterion",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Concrete, auditable condition required for closure."
+      },
+      {
+        "name": "CertificateType",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Certificate expected or emitted by closure."
+      },
+      {
+        "name": "IsImportedDependency",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether this row consumes an external provider conclusion.",
+        "formula": "={{ObligationKind}} = \u0022IMPORTED_DEPENDENCY\u0022"
+      },
+      {
+        "name": "IsClosed",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether the frontier obligation is closed.",
+        "formula": "={{Status}} = \u0022CLOSED\u0022"
+      }
+    ]
+  },
+  "TSPLoops": {
+    "Description": "Named semantic loops that establish the initial Traveling Salesman architecture.",
+    "schema": [
+      {
+        "name": "TSPLoopId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable loop identifier."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Human-readable loop label.",
+        "formula": "={{DisplayName}}"
+      },
+      {
+        "name": "LoopOrder",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Global Effortless Math loop number."
+      },
+      {
+        "name": "DisplayName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Human-readable loop name."
+      },
+      {
+        "name": "Status",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Completion status of this loop."
+      },
+      {
+        "name": "PrimaryInferenceRule",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Primary inference contract advanced by the loop.",
+        "RelatedTo": "TSPInferenceRules"
+      },
+      {
+        "name": "NewConcept",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Semantic structure added by the loop."
+      },
+      {
+        "name": "WitnessSummary",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Concrete evidence produced by the loop."
+      },
+      {
+        "name": "NextFrontier",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Unclosed edge exposed by the loop."
+      },
+      {
+        "name": "PlannedClosureCriterion",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Auditable condition declared before loop execution."
+      },
+      {
+        "name": "BeforeState",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Frontier state recorded before loop execution."
+      },
+      {
+        "name": "AfterState",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Observed state after execution."
+      },
+      {
+        "name": "CompletionDisposition",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "CLOSED, BLOCKED, FALSIFIED, or DEFERRED."
+      }
+    ]
+  },
+  "SearchMetrics": {
+    "Description": "Quantitative record of how much combinatorial search remains after each represented inference stage.",
+    "schema": [
+      {
+        "name": "SearchMetricId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable search-metric identifier."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display alias for the metric row.",
+        "formula": "={{SearchMetricId}}"
+      },
+      {
+        "name": "TSPInstance",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "TSP instance being measured.",
+        "RelatedTo": "TSPInstances"
+      },
+      {
+        "name": "TSPLoop",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Loop that produced the measurement.",
+        "RelatedTo": "TSPLoops"
+      },
+      {
+        "name": "SearchQuestion",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Exact question whose remaining branch count is being measured."
+      },
+      {
+        "name": "CandidateTour",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Candidate involved when measuring verification rather than route discovery.",
+        "RelatedTo": "CandidateTours"
+      },
+      {
+        "name": "RawNodeCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Required stop count before inference."
+      },
+      {
+        "name": "RawEdgeCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Canonical edge count before inference."
+      },
+      {
+        "name": "ForcedEdgeCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Edges forced by represented inference."
+      },
+      {
+        "name": "ForbiddenEdgeCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Edges forbidden by represented inference."
+      },
+      {
+        "name": "SymmetryClassCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Route classes after fixing depot and reversal symmetry."
+      },
+      {
+        "name": "ComponentContractionCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Components or clusters contracted."
+      },
+      {
+        "name": "BranchCountBefore",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Branches before the current inference stage."
+      },
+      {
+        "name": "BranchCountAfter",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Branches after the current inference stage."
+      },
+      {
+        "name": "BacktrackCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Backtracks consumed by search."
+      },
+      {
+        "name": "ResidualAmbiguityCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Remaining unresolved route classes or boundary states."
+      },
+      {
+        "name": "SearchEliminationPct",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Percentage of branches removed without search.",
+        "formula": "=IF({{BranchCountBefore}} = 0, 0, ROUND(({{BranchCountBefore}} - {{BranchCountAfter}}) / {{BranchCountBefore}} * 100, 2))"
+      },
+      {
+        "name": "Status",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Interpretation of the metric row."
+      }
+    ]
+  },
+  "TSPInvariantChecks": {
+    "Description": "Rulebook-native acceptance checks comparing expected raw outcomes to derived candidate-tour fields.",
+    "schema": [
+      {
+        "name": "TSPInvariantCheckId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable invariant-check identifier."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Human-readable invariant label.",
+        "formula": "={{DisplayName}}"
+      },
+      {
+        "name": "DisplayName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Human-readable invariant name."
+      },
+      {
+        "name": "CandidateTour",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Candidate tour under test.",
+        "RelatedTo": "CandidateTours"
+      },
+      {
+        "name": "ExpectedHamiltonianCycleWitness",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Expected derived route-validity result."
+      },
+      {
+        "name": "ActualHamiltonianCycleWitness",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Derived route-validity result from the candidate-tour view.",
+        "formula": "=INDEX(CandidateTours!{{IsHamiltonianCycleWitness}}, MATCH({{CandidateTour}}, CandidateTours!{{CandidateTourId}}, 0))",
+        "RelatedTo": "CandidateTours"
+      },
+      {
+        "name": "ExpectedOptimalityProved",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Expected optimality-certificate status."
+      },
+      {
+        "name": "ActualOptimalityProved",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Derived optimality-certificate status from the candidate-tour view.",
+        "formula": "=INDEX(CandidateTours!{{IsOptimalityProved}}, MATCH({{CandidateTour}}, CandidateTours!{{CandidateTourId}}, 0))",
+        "RelatedTo": "CandidateTours"
+      },
+      {
+        "name": "ExpectedTotalTravelCost",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Expected sum of represented valid leg costs."
+      },
+      {
+        "name": "ActualTotalTravelCost",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Derived total tour cost from the candidate-tour view.",
+        "formula": "=INDEX(CandidateTours!{{TotalTravelCost}}, MATCH({{CandidateTour}}, CandidateTours!{{CandidateTourId}}, 0))",
+        "RelatedTo": "CandidateTours"
+      },
+      {
+        "name": "IsHamiltonianStatusCorrect",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether expected and actual route validity agree.",
+        "formula": "={{ExpectedHamiltonianCycleWitness}} = {{ActualHamiltonianCycleWitness}}"
+      },
+      {
+        "name": "IsOptimalityStatusCorrect",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether expected and actual optimality status agree.",
+        "formula": "={{ExpectedOptimalityProved}} = {{ActualOptimalityProved}}"
+      },
+      {
+        "name": "IsCostCorrect",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether expected and actual total cost agree.",
+        "formula": "={{ExpectedTotalTravelCost}} = {{ActualTotalTravelCost}}"
+      },
+      {
+        "name": "IsPassing",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether all represented expectations agree with derived values.",
+        "formula": "=AND({{IsHamiltonianStatusCorrect}}, {{IsOptimalityStatusCorrect}}, {{IsCostCorrect}})"
+      }
+    ]
+  }
+}

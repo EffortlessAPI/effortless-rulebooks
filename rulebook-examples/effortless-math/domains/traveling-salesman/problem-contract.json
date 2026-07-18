@@ -1,11 +1,11 @@
 {
   "ProblemId": "traveling-salesman-semantic-geometry",
-  "Version": "0.3.0",
+  "Version": "0.3.1",
   "Title": "Traveling Salesman — City / Neighborhood / Address Semantic Geometry",
   "Status": "RESEARCH_PROGRAM",
   "Statement": "Given finite city-scale weighted graphs, represent graph normalization, supplied tours, typed frontier obligations, local-to-global lower bounds, finite optimality certificates, and residual search as executable structural data.",
-  "Scope": "Primary scope is the five-stop symmetric complete Gridville fixture with a fixed depot and explicit canonical undirected edge rows. A three-stop count-preserving broken graph and two invalid tour witnesses are negative certificates. The scope validates supplied cycles and proves the reference route optimal for this finite instance; it does not yet reconstruct the route from inference or provide a general solver. Loops 587-596 are recorded before execution with explicit before-state and closure criteria.",
-  "TrustBoundary": "InputGraphKernel: city/neighborhood/address membership, required-stop selection, and TravelEdges weights are trusted input data. Pair identity, cycle coverage, local two-cheapest witnesses, double-counting, and bound equality are represented internally. Live Postgres commissioning remains an open substrate obligation.",
+  "Scope": "The represented scope includes Gridville route reconstruction from inferred edges, finite optimality by bound equality, negative non-tight and subtour fixtures, deterministic forcing/forbidding, neighborhood contraction, and a commissioned generated-Postgres peer substrate. No general solver or complexity-class claim is made.",
+  "TrustBoundary": "InputGraphKernel remains trusted input data. Structural certificates are internalized in the rulebook. Generated Postgres is commissioned as a peer substrate using EffortlessAPI/cli 2026-06-09.06.13 (1551cb82d5a8992ad09e4c82d08e28493f92f7b4) and checked against Python.",
   "Claims": {
     "PEqualsNP": false,
     "UniversalPolynomialNormalization": false,
@@ -16,73 +16,84 @@
     "ActiveImportedDependencyCount": 0,
     "RouteReconstructedWithoutSuppliedAntecedent": true,
     "GridvilleRouteDiscoveryBranchCount": 0,
-    "NeighborhoodContractionFixtureCertified": true
+    "NeighborhoodContractionFixtureCertified": true,
+    "PostgresConformanceCommissioned": true
   },
   "CanonicalAsset": "effortless-rulebook/traveling-salesman-rulebook.json",
   "ExecutionSubstrates": [
-    "postgres:generated vw_* views",
+    "postgres:generated vw_* views (commissioned via EffortlessAPI/cli 2026-06-09.06.13)",
     "python:scripts/reference_model.py"
   ],
   "Loops": [
     {
       "LoopOrder": 577,
       "LoopId": "tsp-loop-577",
-      "Result": "City -> Neighborhood -> Address hierarchy closed for the fixture."
+      "Result": "City -> Neighborhood -> Address hierarchy closed for the fixture.",
+      "Status": "CLOSED"
     },
     {
       "LoopOrder": 578,
       "LoopId": "tsp-loop-578",
-      "Result": "Five-stop complete symmetric weighted graph normalized as ten canonical edges."
+      "Result": "Five-stop complete symmetric weighted graph normalized as ten canonical edges.",
+      "Status": "CLOSED"
     },
     {
       "LoopOrder": 579,
       "LoopId": "tsp-loop-579",
-      "Result": "Candidate tours represented as ordered stops plus edge-bound legs."
+      "Result": "Candidate tours represented as ordered stops plus edge-bound legs.",
+      "Status": "CLOSED"
     },
     {
       "LoopOrder": 580,
       "LoopId": "tsp-loop-580",
-      "Result": "Valid reference route accepted; duplicate-stop route rejected; optimality remained open."
+      "Result": "Valid reference route accepted; duplicate-stop route rejected; optimality remained open.",
+      "Status": "CLOSED"
     },
     {
       "LoopOrder": 581,
       "LoopId": "tsp-loop-581",
-      "Result": "Baseline recorded twelve symmetry-reduced route-discovery classes."
+      "Result": "Baseline recorded twelve symmetry-reduced route-discovery classes.",
+      "Status": "CLOSED"
     },
     {
       "LoopOrder": 582,
       "LoopId": "tsp-loop-582",
-      "Result": "Frontier obligations typed separately from imported dependencies; imported count remains zero."
+      "Result": "Frontier obligations typed separately from imported dependencies; imported count remains zero.",
+      "Status": "CLOSED"
     },
     {
       "LoopOrder": 583,
       "LoopId": "tsp-loop-583",
-      "Result": "Global one-in/one-out transition coverage rejects a locally legal but globally incomplete cycle."
+      "Result": "Global one-in/one-out transition coverage rejects a locally legal but globally incomplete cycle.",
+      "Status": "CLOSED"
     },
     {
       "LoopOrder": 584,
       "LoopId": "tsp-loop-584",
-      "Result": "Canonical pair multiplicity rejects a count-preserving duplicate-edge graph."
+      "Result": "Canonical pair multiplicity rejects a count-preserving duplicate-edge graph.",
+      "Status": "CLOSED"
     },
     {
       "LoopOrder": 585,
       "LoopId": "tsp-loop-585",
-      "Result": "Degree-two local bounds certify a global tour lower bound of 14."
+      "Result": "Degree-two local bounds certify a global tour lower bound of 14.",
+      "Status": "CLOSED"
     },
     {
       "LoopOrder": 586,
       "LoopId": "tsp-loop-586",
-      "Result": "Reference candidate cost 14 equals the certified lower bound, proving finite-instance optimality."
+      "Result": "Reference candidate cost 14 equals the certified lower bound, proving finite-instance optimality.",
+      "Status": "CLOSED"
     },
     {
       "LoopOrder": 587,
       "LoopId": "tsp-loop-587",
-      "Status": "BLOCKED",
+      "Status": "CLOSED",
       "BeforeState": "frontier-postgres-commissioning is OPEN; no execution-run certificate exists",
       "ClosureCriterion": "Run the generated Postgres projection, recreate erb_traveling_salesman, compare vw_* results with Python, and record artifact hashes; otherwise record the exact blocking substrate condition.",
-      "AfterState": "Commissioning attempted and recorded as BLOCKED: missing required executable(s): effortless. No green substrate claim was made.",
-      "Result": "Commissioning attempted and recorded as BLOCKED: missing required executable(s): effortless. No green substrate claim was made.",
-      "CompletionDisposition": "BLOCKED"
+      "AfterState": "Attempts 1-9 preserve missing-CLI, npm, workflow, stale-oracle, chained-finalizer, and numeric-presentation failures. Retry 10 installed the pinned CLI archive, generated the complete vw_* projection, initialized erb_traveling_salesman, passed rulebook-derived Python/Postgres conformance, normalized NUMERIC text through Decimal, and durably sealed the substrate certificate.",
+      "Result": "Generated Postgres and Python agree on all declared semantics; Decimal-normalized live checks and append-only attempt history close the substrate obligation.",
+      "CompletionDisposition": "CLOSED_ON_RETRY_10"
     },
     {
       "LoopOrder": 588,
@@ -210,25 +221,29 @@
       "CertificateId": "gridville-finite-optimality",
       "Kind": "finite-instance-optimality-certificate",
       "Conclusion": "The valid reference route cost 14 equals the certified lower bound 14, so the route is optimal for tsp-gridville-5."
+    },
+    {
+      "CertificateId": "gridville-postgres-substrate-conformance",
+      "Kind": "substrate-conformance-certificate",
+      "Conclusion": "Generated Postgres (40 vw_* views) and Python agree on the declared TSP acceptance surface using EffortlessAPI/cli 2026-06-09.06.13."
     }
   ],
   "RemainingFrontier": [
-    "live Postgres build and Python/Postgres conformance remains blocked until the Effortless CLI and generated database path are available",
     "generalize neighborhood boundary-state soundness beyond symmetric three-stop clusters",
     "strengthen non-tight lower bounds with crossing and component constraints",
     "branch only after deterministic closure on fixtures whose residual ambiguity remains positive"
   ],
   "Acceptance": {
-    "RulebookTables": 19,
+    "RulebookTables": 40,
     "Cities": 1,
-    "Neighborhoods": 3,
-    "Addresses": 5,
-    "TSPInstances": 2,
-    "InstanceStops": 8,
-    "TravelEdges": 13,
-    "CandidateTours": 3,
-    "TSPLoops": 10,
-    "FrontierObligations": 8,
+    "Neighborhoods": 5,
+    "Addresses": 11,
+    "TSPInstances": 4,
+    "InstanceStops": 19,
+    "TravelEdges": 38,
+    "CandidateTours": 4,
+    "TSPLoops": 20,
+    "FrontierObligations": 16,
     "ActiveImportedDependencies": 0,
     "ReferenceTourValid": true,
     "ReferenceTourCost": 14,
@@ -241,7 +256,7 @@
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 596,
     "HighestCompletedLoop": 596,
-    "PostgresCommissioningStatus": "BLOCKED",
+    "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 5,
     "SelectedNotForcedEdgeStates": 5,
     "GridvilleInferredEdgeCount": 5,
@@ -264,10 +279,34 @@
     "ForbiddenEdgeCertificates": 2,
     "ClusterBoundaryStates": 6,
     "NeighborhoodOrderReductionPct": 50,
-    "TwinClusterCombinationReductionPct": 75
+    "TwinClusterCombinationReductionPct": 75,
+    "TourStops": 21,
+    "TourLegs": 21,
+    "ExecutionRuns": 10,
+    "InferenceStates": 4,
+    "InferenceAntecedents": 5,
+    "EdgeStates": 10,
+    "EdgeSupports": 10,
+    "DerivedEdgeSets": 2,
+    "DerivedEdgeSetMembers": 11,
+    "ConnectedDegreeTwoCertificates": 2,
+    "RouteReconstructions": 1,
+    "RouteReconstructionSteps": 5,
+    "SearchCertificates": 2,
+    "ConstraintRounds": 3,
+    "ConstraintDecisions": 7,
+    "ClusterBoundaryStateMembers": 12,
+    "ClusterContractionCertificates": 3
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90"
+    "rulebook": "sha256:e22bb655d62fbef1fe6dc89e1813ea0ad1a1cbed231085d4df9bd200579915db",
+    "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
+    "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
+    "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
+    "commissioning_transcript": "sha256:ae8190f4c6084cbd1d2a3e9ae359a2b1966cf99dfcb2423d92cf98e6aaf8f7a5",
+    "effortless_cli_commit": "1551cb82d5a8992ad09e4c82d08e28493f92f7b4",
+    "effortless_cli_archive": "https://github.com/EffortlessAPI/cli/archive/1551cb82d5a8992ad09e4c82d08e28493f92f7b4.tar.gz",
+    "retry_9_finalization_failure_transcript": "sha256:6516deab2de42c971cc55ef2d752d3d5cb2154dd343cd7827803e1bd6ed8bd2b"
   },
   "GeneratedTimestamp": null,
   "Vocabulary": {

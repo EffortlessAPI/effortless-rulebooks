@@ -1,7 +1,7 @@
 # Traveling Salesman — Semantic Geometry Starter
 
 **Status:** Research program  
-**Version:** 0.3.0  
+**Version:** 0.3.1
 **Current finite claim:** Gridville's five-stop cycle is reconstructed from inferred structural edges with `CandidateUsedAsAntecedent=false`, uses zero branch decisions, and is optimal for its declared finite instance by a witnessed degree-two lower-bound equality. No general solver or complexity claim is made.
 
 The canonical object is not a solver and not a route. It is an executable dependency graph describing the city, selected stops, canonical weighted edges, supplied and reconstructed route witnesses, typed frontier obligations, local inference certificates, finite optimality certificates, constraint closure, neighborhood boundary states, and residual search.
@@ -158,7 +158,7 @@ The local database is `erb_traveling_salesman`, unless `TSP_DB` explicitly overr
 
 ## Honest frontier
 
-The nearest open obligations are live Postgres commissioning, route reconstruction from inferred edge rows, a deliberately non-tight lower-bound fixture, degree-two forcing after pruning, neighborhood boundary-state contraction, subtour certificates, and explicit residual branching.
+The nearest open obligations are stronger component/crossing lower bounds, general neighborhood-state soundness beyond symmetric three-stop clusters, and explicit branching only after deterministic closure leaves positive residual ambiguity.
 
 ---
 
@@ -172,6 +172,7 @@ The nearest open obligations are live Postgres commissioning, route reconstructi
 
 ## Loops 587–596 — inference geometry and contraction
 
-The rulebook records every loop first as PLANNED with a before-state and closure criterion, then preserves the after-state in the same row. Gridville is reconstructed from inferred edges with zero branch decisions; twin triangles preserves a sound non-tight lower bound and yields the first finite neighborhood boundary-state contraction certificate. Loop 587 remains honestly BLOCKED when live generated Postgres cannot be commissioned in the execution environment.
+The rulebook records every loop first as PLANNED with a before-state and closure criterion, then preserves the after-state in the same row. Gridville is reconstructed from inferred edges with zero branch decisions; twin triangles preserves a sound non-tight lower bound and yields the first finite neighborhood boundary-state contraction certificate.
 
-**Postgres commissioning: BLOCKED.** The generated backend and peer comparisons have executed successfully in retry 8, but the canonical substrate obligation remains blocked until the success certificate, execution history, artifact hashes, and summary projections are durably sealed and validated.
+**Postgres commissioning: CLOSED.** Attempts 1–9 remain explicit blocked or failed execution rows. Retry 10 installed the pinned EffortlessAPI/cli archive with npm, generated Postgres and RuleSpeak, initialized `erb_traveling_salesman`, passed the complete Python/Postgres conformance surface, normalized PostgreSQL NUMERIC text through `Decimal`, and durably sealed the canonical certificate. Generated artifact hashes and all available failure/success transcripts are retained.
+

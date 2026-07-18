@@ -1,0 +1,38 @@
+graph substrate agreement: 4/4
+tour substrate agreement: 4/4
+local-bound substrate agreement: 11/11
+instance-bound substrate agreement: 2/2
+optimality-certificate agreement: 1/1
+tour invariants passing: 3/3
+graph invariants passing: 2/2
+search substrate agreement: 2/2
+frontier obligations: 16 total, 0 imported, 13 closed
+
+traveling-salesman Postgres conformance: PASS
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+traveling-salesman summary reconciliation: PASS
+tables=40 loops=20 highest=596 rulebook_sha256=2af8f87b1f12f4f64a74afb975dc67951fbca0db61ae29440726c38abc82b3fb
+traveling-salesman rulebook v3 validation: PASS
+tables: 40
+loops 587-596: 587:CLOSED, 588:CLOSED, 589:CLOSED, 590:CLOSED, 591:CLOSED, 592:CLOSED, 593:CLOSED, 594:CLOSED, 595:CLOSED, 596:CLOSED
+traveling-salesman summary alignment: PASS
+tables=40 loops=20 instances=4 edges=38 postgres=CLOSED
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+traveling-salesman summary reconciliation: PASS
+tables=40 loops=20 highest=596 rulebook_sha256=e22bb655d62fbef1fe6dc89e1813ea0ad1a1cbed231085d4df9bd200579915db
+traveling-salesman rulebook v3 validation: PASS
+tables: 40
+loops 587-596: 587:CLOSED, 588:CLOSED, 589:CLOSED, 590:CLOSED, 591:CLOSED, 592:CLOSED, 593:CLOSED, 594:CLOSED, 595:CLOSED, 596:CLOSED
+traveling-salesman summary alignment: PASS
+tables=40 loops=20 instances=4 edges=38 postgres=CLOSED
+TSP loop 587 standalone finalization: PASS
+  views=40 database=erb_traveling_salesman
+  cli=2026-06-09.06.13@1551cb82d5a8992ad09e4c82d08e28493f92f7b4
+  postgres_tree_sha256=52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427
+TSP loop 587 finalization retry 10: PASS
+  cli=2026-06-09.06.13@1551cb82d5a8992ad09e4c82d08e28493f92f7b4
+traveling-salesman rulebook v3 validation: PASS
+tables: 40
+loops 587-596: 587:CLOSED, 588:CLOSED, 589:CLOSED, 590:CLOSED, 591:CLOSED, 592:CLOSED, 593:CLOSED, 594:CLOSED, 595:CLOSED, 596:CLOSED
+traveling-salesman summary alignment: PASS
+tables=40 loops=20 instances=4 edges=38 postgres=CLOSED
