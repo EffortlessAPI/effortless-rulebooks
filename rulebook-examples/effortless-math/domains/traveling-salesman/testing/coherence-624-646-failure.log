@@ -1,16 +1,109 @@
 formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
-[agent/tsp-semantic-foundation 8d4d76b2] TSP loop 626: type semantic arc signatures
- 2 files changed, 16 insertions(+), 14 deletions(-)
+[agent/tsp-semantic-foundation 420b820f] TSP loop 627: certify basis recoverability
+ 2 files changed, 90 insertions(+), 87 deletions(-)
 To https://github.com/EffortlessAPI/effortless-rulebooks
-   27301f68..8d4d76b2  HEAD -> agent/tsp-semantic-foundation
+   c690cb69..420b820f  HEAD -> agent/tsp-semantic-foundation
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+[agent/tsp-semantic-foundation 9fe5f054] TSP loop 628: collapse closure into saturation
+ 2 files changed, 33 insertions(+), 30 deletions(-)
+To https://github.com/EffortlessAPI/effortless-rulebooks
+   420b820f..9fe5f054  HEAD -> agent/tsp-semantic-foundation
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+[agent/tsp-semantic-foundation 019cde2d] TSP loop 629: collapse aggregation into fiber reduction
+ 2 files changed, 59 insertions(+), 56 deletions(-)
+To https://github.com/EffortlessAPI/effortless-rulebooks
+   9fe5f054..019cde2d  HEAD -> agent/tsp-semantic-foundation
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+[agent/tsp-semantic-foundation f42bd78d] TSP loop 630: derive warranted rewrite
+ 2 files changed, 69 insertions(+), 66 deletions(-)
+To https://github.com/EffortlessAPI/effortless-rulebooks
+   019cde2d..f42bd78d  HEAD -> agent/tsp-semantic-foundation
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+[agent/tsp-semantic-foundation 0367470f] TSP loop 631: classify rewrite polarity
+ 2 files changed, 43 insertions(+), 41 deletions(-)
+To https://github.com/EffortlessAPI/effortless-rulebooks
+   f42bd78d..0367470f  HEAD -> agent/tsp-semantic-foundation
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+[agent/tsp-semantic-foundation 208f4a3a] TSP loop 632: certify one-arc one-rewrite basis
+ 2 files changed, 35 insertions(+), 29 deletions(-)
+To https://github.com/EffortlessAPI/effortless-rulebooks
+   0367470f..208f4a3a  HEAD -> agent/tsp-semantic-foundation
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+[agent/tsp-semantic-foundation 2905b5d7] TSP loop 633: normalize region interfaces
+ 2 files changed, 27 insertions(+), 20 deletions(-)
+To https://github.com/EffortlessAPI/effortless-rulebooks
+   208f4a3a..2905b5d7  HEAD -> agent/tsp-semantic-foundation
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+[agent/tsp-semantic-foundation bd27f1c2] TSP loop 634: represent three-region fixture
+ 2 files changed, 177 insertions(+), 33 deletions(-)
+To https://github.com/EffortlessAPI/effortless-rulebooks
+   2905b5d7..bd27f1c2  HEAD -> agent/tsp-semantic-foundation
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+[agent/tsp-semantic-foundation ed851acc] TSP loop 635: derive region quotients
+ 2 files changed, 57 insertions(+), 24 deletions(-)
+To https://github.com/EffortlessAPI/effortless-rulebooks
+   bd27f1c2..ed851acc  HEAD -> agent/tsp-semantic-foundation
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+[agent/tsp-semantic-foundation b7ef4ed4] TSP loop 636: expose quotient incidence budget
+ 2 files changed, 40 insertions(+), 32 deletions(-)
+To https://github.com/EffortlessAPI/effortless-rulebooks
+   ed851acc..b7ef4ed4  HEAD -> agent/tsp-semantic-foundation
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+[agent/tsp-semantic-foundation 87937a62] TSP loop 637: derive boundary handshake
+ 2 files changed, 19 insertions(+), 16 deletions(-)
+To https://github.com/EffortlessAPI/effortless-rulebooks
+   b7ef4ed4..87937a62  HEAD -> agent/tsp-semantic-foundation
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+[agent/tsp-semantic-foundation 593a4430] TSP loop 638: derive region repair equation
+ 2 files changed, 26 insertions(+), 20 deletions(-)
+To https://github.com/EffortlessAPI/effortless-rulebooks
+   87937a62..593a4430  HEAD -> agent/tsp-semantic-foundation
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+[agent/tsp-semantic-foundation 370dc9dd] TSP loop 639: apply balanced edge exchange
+ 2 files changed, 80 insertions(+), 39 deletions(-)
+To https://github.com/EffortlessAPI/effortless-rulebooks
+   593a4430..370dc9dd  HEAD -> agent/tsp-semantic-foundation
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+[agent/tsp-semantic-foundation cd09b7a7] TSP loop 640: reconstruct repair cycle
+ 2 files changed, 57 insertions(+), 25 deletions(-)
+To https://github.com/EffortlessAPI/effortless-rulebooks
+   370dc9dd..cd09b7a7  HEAD -> agent/tsp-semantic-foundation
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
 traveling-salesman coherence convergence validation: PASS
 loops=70 tables=45 atoms=1 operators=4
+traveling-salesman coherence convergence validation: PASS
+loops=70 tables=45 atoms=1 operators=3
+traveling-salesman coherence convergence validation: PASS
+loops=70 tables=45 atoms=1 operators=2
+traveling-salesman coherence convergence validation: PASS
+loops=70 tables=45 atoms=1 operators=1
+traveling-salesman coherence convergence validation: PASS
+loops=70 tables=45 atoms=1 operators=1
+traveling-salesman coherence convergence validation: PASS
+loops=70 tables=45 atoms=1 operators=1
+traveling-salesman coherence convergence validation: PASS
+loops=70 tables=45 atoms=1 operators=1
+traveling-salesman coherence convergence validation: PASS
+loops=70 tables=45 atoms=1 operators=1
+traveling-salesman coherence convergence validation: PASS
+loops=70 tables=45 atoms=1 operators=1
+traveling-salesman coherence convergence validation: PASS
+loops=70 tables=45 atoms=1 operators=1
+traveling-salesman coherence convergence validation: PASS
+loops=70 tables=45 atoms=1 operators=1
+traveling-salesman coherence convergence validation: PASS
+loops=70 tables=45 atoms=1 operators=1
+traveling-salesman coherence convergence validation: PASS
+loops=70 tables=45 atoms=1 operators=1
+traveling-salesman coherence convergence validation: PASS
+loops=70 tables=45 atoms=1 operators=1
 Traceback (most recent call last):
-  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_624_646_coherence.py", line 4001, in <module>
+  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_624_646_coherence.py", line 4079, in <module>
     main()
-  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_624_646_coherence.py", line 3981, in main
-    after, witness = LOOP_FUNCS[order](rb, contract)
-                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_624_646_coherence.py", line 969, in loop_627
-    raise AssertionError(f"unrecovered atom tokens remain: {unresolved[:10]}")
-AssertionError: unrecovered atom tokens remain: ['coined-recoverability-witness']
+  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_624_646_coherence.py", line 4062, in main
+    validate_repository_state()
+  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_624_646_coherence.py", line 3853, in validate_repository_state
+    validate_state(rb, contract)
+  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_624_646_coherence.py", line 3783, in validate_state
+    raise AssertionError("quotient incidence budget mismatch")
+AssertionError: quotient incidence budget mismatch
