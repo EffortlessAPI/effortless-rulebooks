@@ -1,0 +1,1254 @@
+
+# Preserve the epistemic distinction between an unwitnessed cost coordinate and
+# a certified interval.  The original defect-vector table had no witness flags,
+# so the three-region pass adds them without adding a physical table.
+_original_loop_636 = loop_636
+_original_loop_638 = loop_638
+_original_loop_639 = loop_639
+
+
+def ensure_cost_witness_fields(rb: dict[str, Any]) -> None:
+    ensure_fields(
+        rb["TSPDefectProfiles"],
+        [
+            base.field("LowerBoundWitnessed", "boolean", "raw", True, "Whether the lower coordinate has a represented certificate."),
+            base.field("UpperBoundWitnessed", "boolean", "raw", True, "Whether the upper coordinate has a represented feasible witness."),
+        ],
+    )
+    base.replace_formula(
+        rb["TSPDefectProfiles"],
+        "CostGap",
+        "=IF(AND({{LowerBoundWitnessed}}, {{UpperBoundWitnessed}}), {{UpperBoundCost}} - {{LowerBoundCost}}, 0)",
+    )
+    for row in rows(rb, "TSPDefectProfiles"):
+        relevant = row.get("SubjectKind") in {"INSTANCE", "EDGE_SET", "WITNESS"} and (
+            float(row.get("LowerBoundCost") or 0) != 0 or float(row.get("UpperBoundCost") or 0) != 0
+        )
+        row.setdefault("LowerBoundWitnessed", relevant)
+        row.setdefault("UpperBoundWitnessed", relevant)
+
+
+def loop_636(rb: dict[str, Any], contract: dict[str, Any]) -> tuple[str, str]:
+    ensure_cost_witness_fields(rb)
+    after, witness = _original_loop_636(rb, contract)
+    profile = table_index(rb, "TSPDefectProfiles")["defect-three-region-local-two-factor"]
+    profile.update(
+        {
+            "LowerBoundCost": 0,
+            "UpperBoundCost": 0,
+            "LowerBoundWitnessed": False,
+            "UpperBoundWitnessed": False,
+            "Status": "INTERNAL_INCIDENCE_CLOSED_QUOTIENT_INCIDENCE_OPEN_COST_INTERVAL_NOT_YET_WITNESSED",
+        }
+    )
+    for region in ("a", "b", "c"):
+        row = table_index(rb, "TSPDefectProfiles")[f"quotient-incidence-region-{region}"]
+        row["LowerBoundWitnessed"] = False
+        row["UpperBoundWitnessed"] = False
+    return after, witness + " Cost coordinates remain explicitly unwitnessed at this stage."
+
+
+def loop_638(rb: dict[str, Any], contract: dict[str, Any]) -> tuple[str, str]:
+    ensure_cost_witness_fields(rb)
+    after, witness = _original_loop_638(rb, contract)
+    profile = table_index(rb, "TSPDefectProfiles")["defect-three-region-local-two-factor"]
+    profile.update(
+        {
+            "LowerBoundCost": 36,
+            "UpperBoundCost": 0,
+            "LowerBoundWitnessed": True,
+            "UpperBoundWitnessed": False,
+            "Status": "REGION_REPAIR_LOWER_BOUND_CERTIFIED_UPPER_WITNESS_OPEN",
+        }
+    )
+    return after, witness + " The lower coordinate is witnessed; the feasible upper coordinate remains open until construction."
+
+
+def loop_639(rb: dict[str, Any], contract: dict[str, Any]) -> tuple[str, str]:
+    ensure_cost_witness_fields(rb)
+    after, witness = _original_loop_639(rb, contract)
+    profile = table_index(rb, "TSPDefectProfiles")["defect-three-region-local-two-factor"]
+    profile.update(
+        {
+            "LowerBoundCost": 36,
+            "UpperBoundCost": 36,
+            "LowerBoundWitnessed": True,
+            "UpperBoundWitnessed": True,
+            "Status": "REGION_REPAIR_BOUND_AND_STRUCTURAL_CYCLE_WITNESSED",
+        }
+    )
+    return after, witness + " The connected degree-two exchange now supplies the cost-thirty-six feasible upper witness."
+
+
+FACE_INSTANCE = "tsp-optimal-face-4"
+FACE_NEIGHBORHOOD = "gridville-optimal-face"
+FACE_STOPS = ["face-stop-a", "face-stop-b", "face-stop-c", "face-stop-d"]
+FACE_COSTS = {
+    edge_key("face-stop-a", "face-stop-b"): 1.5,
+    edge_key("face-stop-a", "face-stop-c"): 1.5,
+    edge_key("face-stop-a", "face-stop-d"): 0.5,
+    edge_key("face-stop-b", "face-stop-c"): 0.5,
+    edge_key("face-stop-b", "face-stop-d"): 1.5,
+    edge_key("face-stop-c", "face-stop-d"): 1.5,
+}
+FACE_ROUTES = {
+    "tour-optimal-face-abcd-4": ["face-stop-a", "face-stop-b", "face-stop-c", "face-stop-d"],
+    "tour-optimal-face-acbd-4": ["face-stop-a", "face-stop-c", "face-stop-b", "face-stop-d"],
+    "tour-optimal-face-abdc-6": ["face-stop-a", "face-stop-b", "face-stop-d", "face-stop-c"],
+}
+
+
+def face_short(stop: str) -> str:
+    return stop.removeprefix("face-stop-")
+
+
+def face_edge_id(a: str, b: str) -> str:
+    x, y = edge_key(a, b)
+    return f"face-edge-{face_short(x)}-{face_short(y)}"
+
+
+def loop_642(rb: dict[str, Any], contract: dict[str, Any]) -> tuple[str, str]:
+    ensure_region_fields(rb)
+    upsert_rows(
+        rb["Neighborhoods"],
+        "NeighborhoodId",
+        [
+            {
+                "NeighborhoodId": FACE_NEIGHBORHOOD,
+                "DisplayName": "Optimal Face",
+                "City": "gridville",
+                "ClusterKind": "MULTIPLE_OPTIMAL_ROUTE_FIXTURE",
+                "IsQuotientNode": False,
+                "QuotientNodeKind": None,
+                "RequiredBoundaryDegree": None,
+                "QuotientScopeId": FACE_INSTANCE,
+                "RegionInterfaceKind": None,
+                "BoundaryPortCount": None,
+                "InternalCoverageCount": 4,
+                "ExpansionWitnessKind": "SUPPLIED_ORDERED_CYCLE",
+                "InterfaceStatus": "NORMALIZED",
+            }
+        ],
+    )
+    address_rows = []
+    stop_rows = []
+    for index, stop in enumerate(FACE_STOPS):
+        suffix = face_short(stop)
+        address_id = f"addr-face-{suffix}"
+        address_rows.append(
+            {
+                "AddressId": address_id,
+                "StreetLabel": f"Optimal Face {suffix.upper()}",
+                "Neighborhood": FACE_NEIGHBORHOOD,
+                "XCoordinate": 80 + index,
+                "YCoordinate": (index * 3) % 5,
+                "IsDepotCandidate": stop == "face-stop-a",
+            }
+        )
+        stop_rows.append(
+            {
+                "InstanceStopId": stop,
+                "TSPInstance": FACE_INSTANCE,
+                "Address": address_id,
+                "IsRequired": True,
+            }
+        )
+    upsert_rows(rb["Addresses"], "AddressId", address_rows)
+    upsert_rows(
+        rb["TSPInstances"],
+        "TSPInstanceId",
+        [
+            {
+                "TSPInstanceId": FACE_INSTANCE,
+                "DisplayName": "Four-Stop Optimal Face",
+                "City": "gridville",
+                "DepotAddress": "addr-face-a",
+                "DistanceModel": "EXPLICIT_SYMMETRIC_COST",
+                "IsSymmetric": True,
+                "Status": "NORMALIZED",
+                "SearchPolicy": "CERTIFY_VALUE_BEFORE_REPRESENTATIVE_SELECTION",
+                "Notes": "Two non-reversal-equivalent Hamiltonian cycles attain the same optimum value four; a third class costs six.",
+            }
+        ],
+    )
+    upsert_rows(rb["InstanceStops"], "InstanceStopId", stop_rows)
+    edge_rows = []
+    for (a, b), cost in FACE_COSTS.items():
+        edge_rows.append(
+            {
+                "TravelEdgeId": face_edge_id(a, b),
+                "TSPInstance": FACE_INSTANCE,
+                "FromStop": a,
+                "ToStop": b,
+                "CanonicalPairKey": f"{a}|{b}",
+                "DistanceMeters": int(cost * 1000),
+                "TravelCost": cost,
+                "IsAvailable": True,
+                "EdgeSource": "OPTIMAL_FACE_FIXTURE",
+            }
+        )
+    upsert_rows(rb["TravelEdges"], "TravelEdgeId", edge_rows)
+
+    bound_specs = {
+        "face-stop-a": ("face-stop-d", "face-stop-b"),
+        "face-stop-b": ("face-stop-c", "face-stop-a"),
+        "face-stop-c": ("face-stop-b", "face-stop-a"),
+        "face-stop-d": ("face-stop-a", "face-stop-b"),
+    }
+    local_rows = []
+    dominance_rows = []
+    for stop, (first_peer, second_peer) in bound_specs.items():
+        first_edge = face_edge_id(stop, first_peer)
+        second_edge = face_edge_id(stop, second_peer)
+        bound_id = f"local-bound-face-{face_short(stop)}"
+        local_rows.append(
+            {
+                "LocalDegreeBoundId": bound_id,
+                "TSPInstance": FACE_INSTANCE,
+                "InstanceStop": stop,
+                "FirstEdge": first_edge,
+                "SecondEdge": second_edge,
+            }
+        )
+        selected = {first_edge, second_edge}
+        for other in sorted(
+            row["TravelEdgeId"]
+            for row in edge_rows
+            if stop in {row["FromStop"], row["ToStop"]} and row["TravelEdgeId"] not in selected
+        ):
+            dominance_rows.append(
+                {
+                    "IncidentDominanceCheckId": f"dom-{bound_id}-{other}",
+                    "LocalDegreeBound": bound_id,
+                    "OtherEdge": other,
+                }
+            )
+    upsert_rows(rb["LocalDegreeBounds"], "LocalDegreeBoundId", local_rows)
+    upsert_rows(rb["IncidentDominanceChecks"], "IncidentDominanceCheckId", dominance_rows)
+    upsert_rows(
+        rb["InstanceLowerBounds"],
+        "InstanceLowerBoundId",
+        [
+            {
+                "InstanceLowerBoundId": "degree-two-lower-bound-optimal-face-4",
+                "TSPInstance": FACE_INSTANCE,
+                "BoundKind": "SUM_TWO_CHEAPEST_INCIDENT_EDGES_DIVIDED_BY_TWO",
+                "RequiredSupplementalTermCount": 0,
+                "BoundCompositionKind": "DEGREE_TWO_ONLY",
+                "SupplementalBoundAdjustment": 0,
+            }
+        ],
+    )
+    displays = {
+        "tour-optimal-face-abcd-4": "Optimal face cycle A-B-C-D-A cost 4",
+        "tour-optimal-face-acbd-4": "Optimal face cycle A-C-B-D-A cost 4",
+        "tour-optimal-face-abdc-6": "Optimal face cycle A-B-D-C-A cost 6",
+    }
+    kinds = {
+        "tour-optimal-face-abcd-4": "OPTIMAL_FACE_MEMBER",
+        "tour-optimal-face-acbd-4": "OPTIMAL_FACE_MEMBER",
+        "tour-optimal-face-abdc-6": "NONOPTIMAL_FACE_CONTROL",
+    }
+    for index, (candidate_id, route) in enumerate(FACE_ROUTES.items(), start=1):
+        add_candidate_route(
+            rb,
+            candidate_id=candidate_id,
+            display=displays[candidate_id],
+            instance=FACE_INSTANCE,
+            kind=kinds[candidate_id],
+            route=route,
+            prefix=f"face{index}",
+        )
+    upsert_rows(
+        rb["TSPWitnessNormalForms"],
+        "TSPWitnessNormalFormId",
+        [
+            {
+                "TSPWitnessNormalFormId": f"normal-cycle-{candidate_id}",
+                "TSPInstance": FACE_INSTANCE,
+                "TSPLoop": "tsp-loop-642",
+                "WitnessShape": "CYCLE",
+                "OriginKind": "SUPPLIED",
+                "SourceKind": "CandidateTours",
+                "SourceId": candidate_id,
+                "BoundarySignature": None,
+                "CoveredStopCount": 4,
+                "RequiredStopCount": 4,
+                "EdgeCount": 4,
+                "TotalCost": raw_tour_cost(rb, candidate_id),
+                "IncidenceDefect": 0,
+                "ConnectivityDefect": 0,
+                "OrderDefect": 0,
+                "ProvenanceSummary": "Supplied optimal-face fixture witness; value and representative-choice status remain separate.",
+            }
+            for candidate_id in FACE_ROUTES
+        ],
+    )
+    upsert_rows(
+        rb["TSPInferenceStates"],
+        "TSPInferenceStateId",
+        [
+            {
+                "TSPInferenceStateId": "state-optimal-face-witnesses",
+                "TSPInstance": FACE_INSTANCE,
+                "TSPLoop": "tsp-loop-642",
+                "StateKind": "OPTIMAL_FACE_WITNESS_SET",
+                "ParentStateId": None,
+                "Status": "CLOSED",
+                "Description": "Three symmetry-reduced Hamiltonian witness classes are represented: costs four, four, and six.",
+            }
+        ],
+    )
+    table_index(rb, "TSPInferenceRules")["tsp-rule-optimal-face"]["ImplementationStatus"] = "EXECUTABLE"
+    register_concept(
+        rb,
+        "coined-optimal-face",
+        "Optimal Face",
+        "COINED_PREDICATE",
+        "SEMANTIC_ARC(witness,COST,value)+WARRANTED_REWRITE(witnesses,MINIMUM_VALUE_FIBER,optimal_face,value_warrant)",
+        1,
+        "CandidateTours,TourStops,TourLegs,InstanceLowerBounds",
+        642,
+        status="ACTIVE_DERIVED",
+        category="DERIVED",
+        operator_expression="WARRANTED_REWRITE",
+    )
+    mark_current_basis_concept(rb, "coined-optimal-face", mode="MINIMUM_VALUE_FIBER", polarity="CONTRACTIVE")
+    add_measurement(
+        rb,
+        642,
+        "Optimal Face",
+        "A four-stop complete graph exposes three symmetry-reduced route classes with costs four, four, and six. No optimality or unique-route claim is emitted yet.",
+    )
+    return (
+        "Represented a four-stop optimal face with two non-reversal-equivalent cost-four cycles and one cost-six control cycle.",
+        "The degree-two lower-bound ingredients total eight before double-counting, and the three valid Hamiltonian witnesses have raw costs [4, 4, 6]; value and witness identity remain open.",
+    )
+
+
+def ensure_choice_state_fields(rb: dict[str, Any]) -> None:
+    ensure_fields(
+        rb["TSPInferenceStates"],
+        [
+            base.field("AlternativeCount", "integer", "raw", True, "Alternatives represented in this inference state."),
+            base.field("ResidualAmbiguityCount", "integer", "raw", True, "Alternatives remaining after deterministic closure."),
+            base.field("BranchDecisionCount", "integer", "raw", True, "Mathematical branch decisions used to reach this state."),
+            base.field("ValueStatus", "string", "raw", True, "OPEN or CLOSED optimum-value status."),
+            base.field("ChoiceStatus", "string", "raw", True, "Representative-choice status."),
+            base.field("ChoiceOrbitId", "string", "raw", True, "Residual value-preserving choice orbit identifier."),
+        ],
+    )
+    for row in rows(rb, "TSPInferenceStates"):
+        row.setdefault("AlternativeCount", None)
+        row.setdefault("ResidualAmbiguityCount", None)
+        row.setdefault("BranchDecisionCount", None)
+        row.setdefault("ValueStatus", None)
+        row.setdefault("ChoiceStatus", None)
+        row.setdefault("ChoiceOrbitId", None)
+
+
+def loop_643(rb: dict[str, Any], contract: dict[str, Any]) -> tuple[str, str]:
+    ensure_choice_state_fields(rb)
+    optimal_candidates = ["tour-optimal-face-abcd-4", "tour-optimal-face-acbd-4"]
+    upsert_rows(
+        rb["OptimalityCertificates"],
+        "OptimalityCertificateId",
+        [
+            {
+                "OptimalityCertificateId": f"optimality-{candidate_id}",
+                "CandidateTour": candidate_id,
+                "InstanceLowerBound": "degree-two-lower-bound-optimal-face-4",
+            }
+            for candidate_id in optimal_candidates
+        ],
+    )
+    invariant_rows = []
+    for candidate_id, expected_optimal, cost in [
+        ("tour-optimal-face-abcd-4", True, 4),
+        ("tour-optimal-face-acbd-4", True, 4),
+        ("tour-optimal-face-abdc-6", False, 6),
+    ]:
+        invariant_rows.append(
+            {
+                "TSPInvariantCheckId": f"check-{candidate_id}",
+                "DisplayName": f"Optimal-face invariant for {candidate_id}",
+                "CandidateTour": candidate_id,
+                "ExpectedHamiltonianCycleWitness": True,
+                "ExpectedOptimalityProved": expected_optimal,
+                "ExpectedTotalTravelCost": cost,
+            }
+        )
+    upsert_rows(rb["TSPInvariantChecks"], "TSPInvariantCheckId", invariant_rows)
+    upsert_rows(
+        rb["TSPInferenceStates"],
+        "TSPInferenceStateId",
+        [
+            {
+                "TSPInferenceStateId": "state-optimal-face-value-closed-choice-open",
+                "TSPInstance": FACE_INSTANCE,
+                "TSPLoop": "tsp-loop-643",
+                "StateKind": "VALUE_CLOSED_CHOICE_OPEN",
+                "ParentStateId": "state-optimal-face-witnesses",
+                "Status": "FIXED_POINT",
+                "Description": "Optimum value four is certified; two non-reversal optimal witness classes remain.",
+                "AlternativeCount": 2,
+                "ResidualAmbiguityCount": 2,
+                "BranchDecisionCount": 0,
+                "ValueStatus": "CLOSED_AT_4",
+                "ChoiceStatus": "OPEN_TWO_OPTIMAL_CLASSES",
+                "ChoiceOrbitId": "choice-orbit-optimal-face-4",
+            }
+        ],
+    )
+    upsert_rows(
+        rb["TSPDefectProfiles"],
+        "TSPDefectProfileId",
+        [
+            {
+                "TSPDefectProfileId": "defect-optimal-face-value-choice",
+                "TSPInstance": FACE_INSTANCE,
+                "TSPLoop": "tsp-loop-643",
+                "SubjectKind": "INSTANCE",
+                "SubjectId": "choice-orbit-optimal-face-4",
+                "RequiredIncidence": 2,
+                "ObservedIncidence": 2,
+                "ComponentCount": 1,
+                "RequiredBoundaryCrossings": 0,
+                "ObservedBoundaryCrossings": 0,
+                "LowerBoundCost": 4,
+                "UpperBoundCost": 4,
+                "Status": "VALUE_ZERO_DEFECT_CHOICE_ORBIT_TWO",
+                "LowerBoundWitnessed": True,
+                "UpperBoundWitnessed": True,
+            }
+        ],
+    )
+    register_concept(
+        rb,
+        "coined-value-choice-split",
+        "Value/Choice Split",
+        "COINED_PREDICATE",
+        "SEMANTIC_ARC(instance,OPTIMUM_VALUE,4)+SEMANTIC_ARC(optimal_face,CHOICE_ORBIT_SIZE,2)+WARRANTED_REWRITE(value_proof,CLOSE_VALUE,choice_open,warrant)",
+        1,
+        "OptimalityCertificates,TSPInferenceStates,TSPDefectProfiles",
+        643,
+        status="ACTIVE_DERIVED",
+        category="DERIVED",
+        operator_expression="WARRANTED_REWRITE",
+    )
+    mark_current_basis_concept(rb, "coined-value-choice-split", mode="VALUE_CHOICE_SEPARATION", polarity="MIXED")
+    claims = contract.setdefault("Claims", {})
+    claims.update(
+        {
+            "OptimalFaceValueCertified": True,
+            "OptimalFaceUniqueRouteProved": False,
+            "OptimalFaceChoiceOrbitSize": 2,
+        }
+    )
+    contract.setdefault("Acceptance", {}).update(
+        {
+            "OptimalFaceLowerBound": 4,
+            "OptimalFaceOptimalWitnessCount": 2,
+            "OptimalFaceChoiceOrbitSize": 2,
+        }
+    )
+    add_measurement(
+        rb,
+        643,
+        "Value/Choice Split",
+        "Two valid cost-four witnesses independently equal the certified lower bound. Optimum value is closed while representative choice remains a two-class orbit.",
+    )
+    add_frontier(
+        rb,
+        "frontier-optimal-face-value",
+        "Optimal-face value certificate",
+        642,
+        643,
+        "tsp-rule-optimal-face",
+        "At least two non-equivalent valid witnesses equal the certified finite-instance lower bound four, closing value but not uniqueness.",
+        "optimal-face-certificate",
+    )
+    return (
+        "Closed the optimum value at four while preserving two distinct optimal witness classes.",
+        "Both A-B-C-D-A and A-C-B-D-A carry passing finite optimality certificates; A-B-D-C-A costs six. ValueStatus=CLOSED_AT_4, ChoiceStatus=OPEN_TWO_OPTIMAL_CLASSES, branch decisions=0.",
+    )
+
+
+def ensure_choice_search_fields(rb: dict[str, Any]) -> None:
+    ensure_fields(
+        rb["TSPSearchCertificates"],
+        [
+            base.field("OrbitKind", "string", "raw", True, "Residual orbit classification."),
+            base.field("ValueCertified", "boolean", "raw", True, "Whether the optimum value is already certified."),
+            base.field("RepresentativeSelectionRequired", "boolean", "raw", True, "Whether a downstream consumer demands one representative."),
+            base.field("ExternalPolicyRequired", "boolean", "raw", True, "Whether a non-mathematical policy is required to choose among equal witnesses."),
+            base.field("BranchWarrantStatus", "string", "raw", True, "WARRANTED, REJECTED, or CONDITIONAL_ON_EXTERNAL_POLICY."),
+        ],
+    )
+    for row in rows(rb, "TSPSearchCertificates"):
+        row.setdefault("OrbitKind", None)
+        row.setdefault("ValueCertified", None)
+        row.setdefault("RepresentativeSelectionRequired", None)
+        row.setdefault("ExternalPolicyRequired", None)
+        row.setdefault("BranchWarrantStatus", None)
+    ensure_fields(
+        rb["CandidateTours"],
+        [
+            base.field("ChoiceOrbitId", "string", "raw", True, "Value-preserving choice orbit, when applicable."),
+            base.field("OptimalFaceValue", "number", "raw", True, "Certified optimum value of the face containing this witness."),
+            base.field("ChoiceOrbitStatus", "string", "raw", True, "MEMBER, NONOPTIMAL, or NOT_APPLICABLE."),
+        ],
+    )
+    for row in rows(rb, "CandidateTours"):
+        row.setdefault("ChoiceOrbitId", None)
+        row.setdefault("OptimalFaceValue", None)
+        row.setdefault("ChoiceOrbitStatus", None)
+
+
+def loop_644(rb: dict[str, Any], contract: dict[str, Any]) -> tuple[str, str]:
+    ensure_choice_search_fields(rb)
+    candidates = table_index(rb, "CandidateTours")
+    for candidate_id in ("tour-optimal-face-abcd-4", "tour-optimal-face-acbd-4"):
+        candidates[candidate_id].update(
+            {
+                "ChoiceOrbitId": "choice-orbit-optimal-face-4",
+                "OptimalFaceValue": 4,
+                "ChoiceOrbitStatus": "MEMBER",
+            }
+        )
+    candidates["tour-optimal-face-abdc-6"].update(
+        {
+            "ChoiceOrbitId": "choice-orbit-optimal-face-4",
+            "OptimalFaceValue": 4,
+            "ChoiceOrbitStatus": "NONOPTIMAL",
+        }
+    )
+    upsert_rows(
+        rb["TSPSearchCertificates"],
+        "TSPSearchCertificateId",
+        [
+            {
+                "TSPSearchCertificateId": "search-optimal-face-choice-orbit",
+                "TSPInstance": FACE_INSTANCE,
+                "TSPLoop": "tsp-loop-644",
+                "DerivedEdgeSet": None,
+                "QuestionKind": "CERTIFY_VALUE_WITH_NONUNIQUE_OPTIMAL_WITNESS",
+                "InitialRouteClassCount": 3,
+                "SurvivingRouteClassCount": 2,
+                "BranchDecisionCount": 0,
+                "BacktrackCount": 0,
+                "ResidualAmbiguityCount": 2,
+                "BranchingAvoidedPct": 100,
+                "Status": "VALUE_CERTIFIED_CHOICE_ORBIT",
+                "OrbitKind": "NON_REVERSAL_OPTIMAL_WITNESS_ORBIT",
+                "ValueCertified": True,
+                "RepresentativeSelectionRequired": True,
+                "ExternalPolicyRequired": True,
+                "BranchWarrantStatus": "NOT_WARRANTED_FOR_VALUE_PROOF",
+            }
+        ],
+    )
+    register_concept(
+        rb,
+        "coined-choice-orbit",
+        "Choice Orbit",
+        "COINED_PREDICATE",
+        "SEMANTIC_ARC(witness,ORBIT_MEMBER,choice_orbit)+SEMANTIC_ARC(choice_orbit,VALUE,4)+WARRANTED_REWRITE(route_classes,MINIMUM_FACE,two_survivors,warrant)",
+        1,
+        "CandidateTours,TSPSearchCertificates,TSPInferenceStates",
+        644,
+        status="ACTIVE_DERIVED",
+        category="DERIVED",
+        operator_expression="WARRANTED_REWRITE",
+    )
+    mark_current_basis_concept(rb, "coined-choice-orbit", mode="VALUE_PRESERVING_ORBIT", polarity="CONTRACTIVE")
+    add_measurement(
+        rb,
+        644,
+        "Choice Orbit",
+        "Three symmetry-reduced route classes contract to a two-member optimal face; optimum value is certified and residual ambiguity is choice-only.",
+    )
+    return (
+        "Named and measured the two-member value-preserving optimal witness orbit.",
+        "Initial route classes=3, surviving optimal classes=2, residual ambiguity=2, certified value=4, branch decisions=0. The remaining orbit is not an unresolved optimum-value defect.",
+    )
+
+
+def ensure_branch_warrant_fields(rb: dict[str, Any]) -> None:
+    ensure_fields(
+        rb["TSPInferenceApplications"],
+        [
+            base.field("BranchPurpose", "string", "raw", True, "VALUE_PROOF or REPRESENTATIVE_SELECTION."),
+            base.field("BranchWarrant", "string", "raw", True, "WARRANTED, REJECTED, or CONDITIONAL."),
+            base.field("PolicyStatus", "string", "raw", True, "External selection-policy status."),
+        ],
+    )
+    for row in rows(rb, "TSPInferenceApplications"):
+        row.setdefault("BranchPurpose", None)
+        row.setdefault("BranchWarrant", None)
+        row.setdefault("PolicyStatus", None)
+
+
+def loop_645(rb: dict[str, Any], contract: dict[str, Any]) -> tuple[str, str]:
+    ensure_branch_warrant_fields(rb)
+    ensure_choice_search_fields(rb)
+    upsert_rows(
+        rb["TSPInferenceApplications"],
+        "TSPInferenceApplicationId",
+        [
+            {
+                "TSPInferenceApplicationId": "event-optimal-face-branch-rejected",
+                "InferenceState": "state-optimal-face-value-closed-choice-open",
+                "InferenceRule": "tsp-rule-branch-warrant",
+                "TSPLoop": "tsp-loop-645",
+                "SubjectType": "CHOICE_ORBIT",
+                "SubjectId": "choice-orbit-optimal-face-4",
+                "ApplicabilityPassed": False,
+                "Conclusion": "No mathematical branch is warranted for optimum-value proof; selecting one equal optimum requires a separately supplied external policy.",
+                "CertificateType": "branch-warrant-certificate",
+                "EventKind": "BRANCH_REJECTION",
+                "InputStateId": "state-optimal-face-value-closed-choice-open",
+                "OutputStateId": "state-optimal-face-value-closed-choice-open",
+                "AntecedentCount": 3,
+                "DecisionCount": 0,
+                "EventStatus": "REJECTED",
+                "BranchPurpose": "VALUE_PROOF",
+                "BranchWarrant": "REJECTED_VALUE_ALREADY_CERTIFIED",
+                "PolicyStatus": "EXTERNAL_TIE_BREAK_NOT_SUPPLIED",
+            }
+        ],
+    )
+    search = table_index(rb, "TSPSearchCertificates")["search-optimal-face-choice-orbit"]
+    search["BranchWarrantStatus"] = "CONDITIONAL_ON_EXTERNAL_REPRESENTATIVE_POLICY"
+    table_index(rb, "TSPInferenceRules")["tsp-rule-branch-warrant"]["ImplementationStatus"] = "EXECUTABLE"
+    register_concept(
+        rb,
+        "coined-branch-warrant",
+        "Branch Warrant",
+        "COINED_PREDICATE",
+        "SEMANTIC_ARC(branch,PURPOSE,value_or_choice)+SEMANTIC_ARC(state,VALUE_STATUS,closed)+WARRANTED_REWRITE(branch_request,REJECT_OR_CONDITION,decision,warrant)",
+        1,
+        "TSPInferenceApplications,TSPSearchCertificates,TSPInferenceStates",
+        645,
+        status="ACTIVE_DERIVED",
+        category="DERIVED",
+        operator_expression="WARRANTED_REWRITE",
+    )
+    mark_current_basis_concept(rb, "coined-branch-warrant", mode="BRANCH_GOVERNANCE", polarity="CONTRACTIVE")
+    add_measurement(
+        rb,
+        645,
+        "Branch Warrant",
+        "The system rejects a branch for value proof after value closure. Representative selection is conditional on an external tie-break policy and emits no mathematical decision.",
+    )
+    add_frontier(
+        rb,
+        "frontier-optimal-face-branch-warrant",
+        "Optimal-face residual branch warrant",
+        644,
+        645,
+        "tsp-rule-branch-warrant",
+        "Reject branching for certified value and require an explicit external policy before selecting one equal optimal representative.",
+        "branch-warrant-certificate",
+        kind="RESIDUAL_SEARCH",
+    )
+    return (
+        "Rejected mathematical branching for the value-closed optimal face.",
+        "BranchPurpose=VALUE_PROOF is rejected because value four is already certified. Representative choice remains conditional on an external tie-break policy; DecisionCount=0 and the two-member orbit is preserved.",
+    )
+
+
+def append_readme_section() -> None:
+    text = README.read_text()
+    marker = "## Loops 624–646 — coherence convergence"
+    if marker in text:
+        return
+    text += '''
+
+## Loops 624–646 — coherence convergence
+
+This pass records the stronger prediction that convergence is movement toward coherent reusable geometry, **not** monotone shrinkage of tables, rows, or names.  Internalizing an opaque node may expand the explicit DAG while reducing semantic basis size and trust opacity.
+
+### One typed arc and one warranted rewrite
+
+```text
+ATTACHMENT   VALUATION   WARRANT
+      ↓ typed recoverable signatures
+SEMANTIC_ARC(subject, label, target)
+
+CLOSURE   FIXPOINT   AGGREGATE   QUOTIENT
+      ↓ saturation / fiber-reduction modes
+WARRANTED_REWRITE(input, rule, polarity, output, warrant)
+```
+
+Every registered historical and derived concept retains a typed recoverability expression.  The current represented basis is therefore:
+
+```text
+active relational atoms     1  (Semantic Arc)
+active semantic operators   1  (Warranted Rewrite)
+physical rulebook tables   45  (unchanged)
+surface-to-atom reduction 96.88%
+```
+
+This is empirical coverage for the represented TSP domain.  It is not a theorem of minimality or universality.
+
+### Three-region repair
+
+Three cost-one local triangles produce a disconnected degree-two structure:
+
+```text
+local degree-two base                       9
+quotient boundary demand      3 crossings
+minimum crossing insertion     3 × 10     +30
+necessary internal releases    3 ×  1      -3
+------------------------------------------------
+three-region repair lower bound              36
+balanced-exchange cycle                      36
+finite-instance optimum                      36
+```
+
+The **Boundary Handshake** derives three crossing edges from three quotient nodes of required boundary degree two.  A **Balanced Edge Exchange** adds three crossings and releases one internal edge per region while preserving degree two and connecting all nine stops.
+
+### Optimal value versus optimal choice
+
+The four-stop **Optimal Face** contains three symmetry-reduced Hamiltonian classes:
+
+```text
+A-B-C-D-A   cost 4   optimal
+A-C-B-D-A   cost 4   optimal
+A-B-D-C-A   cost 6   nonoptimal control
+```
+
+The optimum value four is certified, but the two optimal witnesses form a **Choice Orbit** of size two.  The **Branch Warrant** rejects mathematical branching for value proof; choosing one representative is conditional on an external tie-break policy.
+
+**Coherence status:** one active arc, one active rewrite, unchanged physical table count, substantially more explicit witness machinery, three-region finite optimality at 36, optimal-face value 4, choice-orbit size 2, and zero mathematical branch decisions for value proof.
+'''
+    README.write_text(text)
+
+
+def loop_646(rb: dict[str, Any], contract: dict[str, Any]) -> tuple[str, str]:
+    register_concept(
+        rb,
+        "coined-coherence-event-two",
+        "Coherence Event II",
+        "COINED_PREDICATE",
+        "SEMANTIC_ARC(program,ACTIVE_ATOMS,1)+SEMANTIC_ARC(program,ACTIVE_OPERATORS,1)+SEMANTIC_ARC(program,PHYSICAL_TABLES,45)+WARRANTED_REWRITE(evidence,COHERENCE_SUMMARY,event,warrant)",
+        1,
+        "TSPConvergenceMeasurements,TSPConceptRegistry,TSPFrontierObligations,OptimalityCertificates,TSPSearchCertificates",
+        646,
+        status="ACTIVE_DERIVED",
+        category="DERIVED",
+        operator_expression="WARRANTED_REWRITE",
+    )
+    mark_current_basis_concept(rb, "coined-coherence-event-two", mode="COHERENCE_SUMMARY", polarity="MIXED")
+    unresolved = refresh_recoverability(rb)
+    if unresolved:
+        raise AssertionError(f"final current-basis recoverability failed: {unresolved[:10]}")
+    set_meta(rb, "active_predicate_atom_count", "integer", integer=1)
+    set_meta(rb, "active_semantic_operator_count", "integer", integer=1)
+    set_meta(rb, "physical_table_count_loop_646", "integer", integer=len(base.canonical_tables(rb)))
+    set_meta(rb, "named_concept_count_loop_646", "integer", integer=named_concept_count(rb))
+    set_meta(rb, "coherence_program_status", "string", string="CLOSED_624_646")
+    set_meta(rb, "coherence_event_two_status", "string", string="EARLY_EMPIRICAL_SUPPORT_FOR_CURRENT_TSP_DOMAIN")
+    claims = contract.setdefault("Claims", {})
+    claims.update(
+        {
+            "OneArcOneRewriteObserved": True,
+            "OneArcOneRewriteProved": False,
+            "CurrentPredicateAtomCount": 1,
+            "CurrentSemanticOperatorCount": 1,
+            "CurrentSemanticCompressionPct": 96.88,
+            "PhysicalTableCountLoop646": len(base.canonical_tables(rb)),
+            "PhysicalTableCountIncreasedSinceLoop610": False,
+            "ExplicitDagRowsMayIncrease": True,
+            "ThreeRegionOptimalityProved": True,
+            "GeneralKRegionRepairProved": False,
+            "OptimalFaceValueCertified": True,
+            "OptimalFaceUniqueRouteProved": False,
+            "OptimalFaceChoiceOrbitSize": 2,
+            "OptimalFaceValueProofBranchDecisionCount": 0,
+            "CoherenceConvergenceObserved": True,
+            "CoherenceConvergenceProvedUniversally": False,
+        }
+    )
+    acceptance = contract.setdefault("Acceptance", {})
+    acceptance.update(
+        {
+            "CurrentPredicateAtomCount": 1,
+            "CurrentSemanticOperatorCount": 1,
+            "PhysicalTableCount": len(base.canonical_tables(rb)),
+            "ThreeRegionLowerBound": 36,
+            "ThreeRegionCandidateCost": 36,
+            "ThreeRegionOptimalityProved": True,
+            "OptimalFaceLowerBound": 4,
+            "OptimalFaceOptimalWitnessCount": 2,
+            "OptimalFaceChoiceOrbitSize": 2,
+            "OptimalFaceValueProofBranchDecisionCount": 0,
+        }
+    )
+    contract["Version"] = "0.6.0"
+    contract["Scope"] = "The represented scope includes a typed one-arc/one-rewrite semantic basis, finite three-region repair optimality, and an optimal face whose value is certified while two equal optimal witness classes remain. No general TSP solver, basis-minimality theorem, universal k-region repair theorem, or complexity-class claim is made."
+    contract["TrustBoundary"] = "Input graph weights and membership remain trusted data. Semantic-arc collapse is accepted only through typed signatures and explicit recoverability witnesses. Warranted rewrites retain polarity, termination, and expansion provenance. Generated Postgres remains a peer projection. Coherence convergence is empirical for this domain."
+    certs = {row["CertificateId"]: row for row in contract.setdefault("CurrentCertificates", [])}
+    for cert in [
+        {
+            "CertificateId": "tsp-one-arc-one-rewrite",
+            "Kind": "semantic-basis-certificate",
+            "Conclusion": "Every registered concept is recoverable from one typed Semantic Arc and one Warranted Rewrite for the current represented domain.",
+        },
+        {
+            "CertificateId": "three-region-repair-bound",
+            "Kind": "region-repair-equation-certificate",
+            "Conclusion": "Boundary handshake and signed repair terms certify lower bound 36 for tsp-three-regions-9.",
+        },
+        {
+            "CertificateId": "three-region-finite-optimality",
+            "Kind": "finite-instance-optimality-certificate",
+            "Conclusion": "The reconstructed balanced-exchange cycle cost 36 equals the certified three-region lower bound 36.",
+        },
+        {
+            "CertificateId": "optimal-face-value-choice",
+            "Kind": "optimal-face-certificate",
+            "Conclusion": "The optimum value is 4 while two non-reversal optimal witness classes remain in one choice orbit.",
+        },
+        {
+            "CertificateId": "optimal-face-branch-warrant",
+            "Kind": "branch-warrant-certificate",
+            "Conclusion": "No mathematical branch is warranted for value proof; representative selection requires an external tie-break policy.",
+        },
+        {
+            "CertificateId": "tsp-coherence-event-two",
+            "Kind": "coherence-vector-certificate",
+            "Conclusion": "The active basis contracts to one arc and one rewrite while physical tables remain 45 and explicit witness rows expand coherently.",
+        },
+    ]:
+        certs[cert["CertificateId"]] = cert
+    contract["CurrentCertificates"] = list(certs.values())
+    contract["RemainingFrontier"] = [
+        "stress the one-arc/one-rewrite basis on heterogeneous region sizes and asymmetric crossing costs",
+        "generalize the three-region repair equation beyond equal internal release costs and a ring minimum",
+        "represent explicit external representative-selection policies without confusing policy choice with mathematical proof",
+        "branch only when a witnessed optimum-value defect or an explicit downstream policy warrants it",
+    ]
+    append_readme_section()
+    add_measurement(
+        rb,
+        646,
+        "Coherence Event II",
+        "One active arc and one active rewrite recover the current vocabulary; physical tables remain forty-five while explicit witness rows grow; three-region optimum is thirty-six; optimal-face value is four with choice orbit two and zero proof branches.",
+        kind="COHERENCE_EVENT_II",
+        prediction="SUPPORTED_FOR_CURRENT_DOMAIN",
+    )
+    add_frontier(
+        rb,
+        "frontier-coherence-event-two",
+        "Second coherence-convergence event",
+        624,
+        646,
+        "tsp-rule-coherence-measurement",
+        "One active arc, one active rewrite, unchanged physical tables, complete recoverability, three-region optimality, and value/choice branch accounting all agree.",
+        "coherence-vector-certificate",
+    )
+    return (
+        "Certified the second coherence event: one typed arc, one warranted rewrite, forty-five physical tables, three-region optimum thirty-six, and optimal-face value four with a two-member choice orbit.",
+        f"Named concepts={named_concept_count(rb)} and witness rows increased, but active atoms=1, active operators=1, tables=45, recoverability is complete, proof branch decisions=0, and no universal convergence or TSP-complexity theorem is claimed.",
+    )
+
+
+LOOP_FUNCS = {
+    624: loop_624,
+    625: loop_625,
+    626: loop_626,
+    627: loop_627,
+    628: loop_628,
+    629: loop_629,
+    630: loop_630,
+    631: loop_631,
+    632: loop_632,
+    633: loop_633,
+    634: loop_634,
+    635: loop_635,
+    636: loop_636,
+    637: loop_637,
+    638: loop_638,
+    639: loop_639,
+    640: loop_640,
+    641: loop_641,
+    642: loop_642,
+    643: loop_643,
+    644: loop_644,
+    645: loop_645,
+    646: loop_646,
+}
+
+
+def validate_state(rb: dict[str, Any], contract: dict[str, Any]) -> None:
+    loop_map = {int(row["LoopOrder"]): row for row in rows(rb, "TSPLoops")}
+    planned = base.meta_int(rb, "last_planned_loop")
+    if sorted(loop_map) != list(range(577, planned + 1)):
+        raise AssertionError(f"loop sequence is not contiguous through {planned}")
+    contract_map = {int(row["LoopOrder"]): row for row in contract["Loops"]}
+    if set(loop_map) != set(contract_map):
+        raise AssertionError("contract/rulebook loop set mismatch")
+    for order in range(624, planned + 1):
+        row = loop_map[order]
+        if not row.get("BeforeState") or not row.get("PlannedClosureCriterion"):
+            raise AssertionError(f"loop {order} missing before-state or criterion")
+        if contract_map[order]["Status"] != row["Status"]:
+            raise AssertionError(f"loop {order} status mismatch")
+        if row["Status"] == "CLOSED" and not row.get("AfterState"):
+            raise AssertionError(f"loop {order} closed without after-state")
+
+    closed = lambda order: loop_map.get(order, {}).get("Status") == "CLOSED"
+    if closed(624):
+        fields = {field["name"] for field in rb["TSPConvergenceMeasurements"]["schema"]}
+        if not {"ActiveAtomCount", "ActiveOperatorCount", "PhysicalTableDeltaFromLoop610", "OpenFrontierCount", "NamedConceptCount", "AllowsLocalExpansion"} <= fields:
+            raise AssertionError("coherence-vector fields missing")
+    if closed(625) and {row["DisplayName"] for row in active_primitives(rb)} != {"Semantic Arc"}:
+        raise AssertionError("semantic-arc active basis mismatch")
+    if closed(626):
+        concepts = table_index(rb, "TSPConceptRegistry")
+        signatures = {(concepts[ident]["ArcLabelSort"], concepts[ident]["ArcTargetSort"]) for ident in ARC_ATOMS}
+        if len(signatures) != 3:
+            raise AssertionError("historical atom signatures are not recoverably distinct")
+    if closed(627):
+        unrecovered = [row["TSPConceptId"] for row in rows(rb, "TSPConceptRegistry") if row.get("IsRecoverableFromCurrentBasis") is False]
+        if unrecovered:
+            raise AssertionError(f"unrecovered concepts after loop 627: {unrecovered[:10]}")
+    if closed(628) and len(active_operators(rb)) > 3:
+        raise AssertionError("saturation reduction did not reduce operator count")
+    if closed(629) and len(active_operators(rb)) > 2:
+        raise AssertionError("fiber reduction did not reduce operator count")
+    if closed(630) and {row["DisplayName"] for row in active_operators(rb)} != {"Warranted Rewrite"}:
+        raise AssertionError("warranted-rewrite active basis mismatch")
+    if closed(631):
+        concepts = table_index(rb, "TSPConceptRegistry")
+        required = {"operator-closure", "operator-fixpoint", "operator-aggregate", "operator-quotient", "operator-warranted-rewrite"}
+        if any(not concepts[ident].get("RewritePolarity") for ident in required):
+            raise AssertionError("rewrite polarity classification incomplete")
+    if closed(632):
+        if len(active_primitives(rb)) != 1 or len(active_operators(rb)) != 1:
+            raise AssertionError("one-arc/one-rewrite counts mismatch")
+        unresolved = refresh_recoverability(rb)
+        if unresolved:
+            raise AssertionError(f"current-basis recovery incomplete: {unresolved[:10]}")
+        if contract["Claims"].get("OneArcOneRewriteProved") is not False:
+            raise AssertionError("one-arc/one-rewrite observation was promoted to a theorem")
+    if closed(633):
+        quotient_nodes = [row for row in rows(rb, "Neighborhoods") if row.get("IsQuotientNode")]
+        if any(row.get("RegionInterfaceKind") != "PORT_BEARING_QUOTIENT_REGION" for row in quotient_nodes):
+            raise AssertionError("region-interface normalization incomplete")
+    if closed(634):
+        stops = [row for row in rows(rb, "InstanceStops") if row["TSPInstance"] == R3_INSTANCE]
+        edges = [row for row in rows(rb, "TravelEdges") if row["TSPInstance"] == R3_INSTANCE]
+        bounds = [row for row in rows(rb, "LocalDegreeBounds") if row["TSPInstance"] == R3_INSTANCE]
+        local_set = table_index(rb, "TSPDerivedEdgeSets")["edge-set-three-region-local-two-factor"]
+        if (len(stops), len(edges), len(bounds)) != (9, 36, 9):
+            raise AssertionError(f"three-region fixture counts mismatch: {(len(stops), len(edges), len(bounds))}")
+        if (local_set["EdgeCount"], local_set["TotalCost"], local_set["ConnectedComponentCount"], local_set["ProperSubtourCount"]) != (9, 9, 3, 3):
+            raise AssertionError("three-region local two-factor mismatch")
+    if closed(635):
+        states = [row for row in rows(rb, "TSPClusterBoundaryStates") if row["TSPInstance"] == R3_INSTANCE]
+        certs = [row for row in rows(rb, "TSPClusterContractionCertificates") if row["TSPInstance"] == R3_INSTANCE]
+        if len(states) != 9 or len(certs) != 3 or any(not row["IsPassing"] for row in certs):
+            raise AssertionError("three-region quotient mismatch")
+    if closed(636):
+        profiles = [table_index(rb, "TSPDefectProfiles")[f"quotient-incidence-region-{region}"] for region in ("a", "b", "c")]
+        if any((row["RequiredIncidence"], row["ObservedIncidence"]) != (2, 0) for row in profiles):
+            raise AssertionError("quotient incidence budget mismatch")
+    if closed(637):
+        term = table_index(rb, "TSPBoundTerms")["bound-term-three-region-boundary-handshake"]
+        if term["ConstraintValue"] != 3 or not term["IsCertified"]:
+            raise AssertionError("boundary handshake mismatch")
+    if closed(638):
+        lower = table_index(rb, "InstanceLowerBounds")["degree-two-lower-bound-three-regions-9"]
+        terms = [row for row in rows(rb, "TSPBoundTerms") if row["BoundCertificate"] == lower["InstanceLowerBoundId"] and row["CountsTowardAdjustment"]]
+        signed = sum(float(row["Quantity"]) * float(row["UnitWeight"]) * int(row["Sign"]) for row in terms if row["IsCertified"])
+        if lower["SupplementalBoundAdjustment"] != 27 or signed != 27:
+            raise AssertionError("three-region repair equation mismatch")
+    if closed(639):
+        repaired = table_index(rb, "TSPDerivedEdgeSets")["edge-set-three-region-balanced-exchange"]
+        exchange_states = [row for row in rows(rb, "TSPEdgeStates") if row.get("ExchangeSetId") == repaired["TSPDerivedEdgeSetId"]]
+        if (repaired["EdgeCount"], repaired["TotalCost"], repaired["ConnectedComponentCount"], repaired["ProperSubtourCount"]) != (9, 36, 1, 0):
+            raise AssertionError("balanced-exchange edge set mismatch")
+        if Counter(row["ExchangeModality"] for row in exchange_states) != Counter({"ADDED": 3, "RELEASED": 3}):
+            raise AssertionError("balanced-exchange modality counts mismatch")
+    if closed(640):
+        reconstruction = table_index(rb, "TSPRouteReconstructions")["reconstruction-three-region-balanced-exchange"]
+        if reconstruction["CandidateUsedAsAntecedent"] or reconstruction["TotalCost"] != 36 or reconstruction["ReconstructedLegCount"] != 9:
+            raise AssertionError("three-region route reconstruction mismatch")
+    if closed(641):
+        if contract["Claims"].get("ThreeRegionOptimalityProved") is not True:
+            raise AssertionError("three-region finite optimality claim missing")
+        if "optimality-three-region-repair-36" not in table_index(rb, "OptimalityCertificates"):
+            raise AssertionError("three-region optimality certificate missing")
+    if closed(642):
+        face_edges = [row for row in rows(rb, "TravelEdges") if row["TSPInstance"] == FACE_INSTANCE]
+        face_bounds = [row for row in rows(rb, "LocalDegreeBounds") if row["TSPInstance"] == FACE_INSTANCE]
+        costs = sorted(raw_tour_cost(rb, candidate) for candidate in FACE_ROUTES)
+        if len(face_edges) != 6 or len(face_bounds) != 4 or costs != [4.0, 4.0, 6.0]:
+            raise AssertionError(f"optimal-face fixture mismatch: edges={len(face_edges)} bounds={len(face_bounds)} costs={costs}")
+    if closed(643):
+        state = table_index(rb, "TSPInferenceStates")["state-optimal-face-value-closed-choice-open"]
+        if (state["AlternativeCount"], state["ResidualAmbiguityCount"], state["BranchDecisionCount"], state["ValueStatus"]) != (2, 2, 0, "CLOSED_AT_4"):
+            raise AssertionError("value/choice split state mismatch")
+        certs = [row for row in rows(rb, "OptimalityCertificates") if row["CandidateTour"] in {"tour-optimal-face-abcd-4", "tour-optimal-face-acbd-4"}]
+        if len(certs) != 2:
+            raise AssertionError("optimal-face passing certificate rows missing")
+    if closed(644):
+        search = table_index(rb, "TSPSearchCertificates")["search-optimal-face-choice-orbit"]
+        if (search["InitialRouteClassCount"], search["SurvivingRouteClassCount"], search["ResidualAmbiguityCount"], search["BranchDecisionCount"]) != (3, 2, 2, 0):
+            raise AssertionError("choice-orbit search accounting mismatch")
+    if closed(645):
+        event = table_index(rb, "TSPInferenceApplications")["event-optimal-face-branch-rejected"]
+        if event["ApplicabilityPassed"] or event["EventStatus"] != "REJECTED" or event["DecisionCount"] != 0:
+            raise AssertionError("branch-warrant rejection mismatch")
+    if closed(646):
+        if len(base.canonical_tables(rb)) != 45:
+            raise AssertionError(f"coherence pass added a physical table: {len(base.canonical_tables(rb))}")
+        claims = contract["Claims"]
+        expected = {
+            "CurrentPredicateAtomCount": 1,
+            "CurrentSemanticOperatorCount": 1,
+            "ThreeRegionOptimalityProved": True,
+            "OptimalFaceValueCertified": True,
+            "OptimalFaceUniqueRouteProved": False,
+            "OptimalFaceChoiceOrbitSize": 2,
+            "OptimalFaceValueProofBranchDecisionCount": 0,
+            "CoherenceConvergenceProvedUniversally": False,
+        }
+        for key, value in expected.items():
+            if claims.get(key) != value:
+                raise AssertionError(f"final claim {key}={claims.get(key)!r}, expected {value!r}")
+
+
+def validate_repository_state() -> None:
+    rb = load(RULEBOOK)
+    contract = load(CONTRACT)
+    validate_state(rb, contract)
+    print("traveling-salesman coherence convergence validation: PASS")
+    print(f"loops={len(rows(rb, 'TSPLoops'))} tables={len(base.canonical_tables(rb))} atoms={len(active_primitives(rb))} operators={len(active_operators(rb))}")
+
+
+def validate_summary_alignment() -> None:
+    rb = load(RULEBOOK)
+    contract = load(CONTRACT)
+    loops = {int(row["LoopOrder"]): row for row in rows(rb, "TSPLoops")}
+    contract_loops = {int(row["LoopOrder"]): row for row in contract["Loops"]}
+    if set(loops) != set(contract_loops):
+        raise AssertionError("summary loop set mismatch")
+    for order, row in loops.items():
+        if contract_loops[order]["Status"] != row["Status"]:
+            raise AssertionError(f"summary loop status mismatch at {order}")
+    if loops.get(646, {}).get("Status") == "CLOSED":
+        text = README.read_text()
+        for marker in (
+            "Loops 624–646",
+            "SEMANTIC_ARC",
+            "WARRANTED_REWRITE",
+            "Boundary Handshake",
+            "Balanced Edge Exchange",
+            "Optimal Face",
+            "Choice Orbit",
+            "Branch Warrant",
+        ):
+            if marker not in text:
+                raise AssertionError(f"README missing {marker!r}")
+        claims = contract["Claims"]
+        if claims.get("CurrentPredicateAtomCount") != 1 or claims.get("CurrentSemanticOperatorCount") != 1:
+            raise AssertionError("contract one-arc/one-rewrite summary mismatch")
+        if claims.get("OneArcOneRewriteProved") is not False or claims.get("CoherenceConvergenceProvedUniversally") is not False:
+            raise AssertionError("empirical coherence basis was promoted to a theorem")
+    print("traveling-salesman coherence summary alignment: PASS")
+
+
+def write_validation_files() -> None:
+    (DOMAIN / "scripts" / "validate_rulebook_v5_temporal.py").write_text(
+        '''#!/usr/bin/env python3
+"""Replay loop-623 semantic claims against their historical projection."""
+from __future__ import annotations
+import copy
+import apply_loops_611_623_refinement as v5
+
+BASIS = {
+    "concept-attachment": ("PRIMITIVE", "ACTIVE_PRIMITIVE", "ATOM", "ATTACHMENT(subject,object,role)", ""),
+    "concept-valuation": ("PRIMITIVE", "ACTIVE_PRIMITIVE", "ATOM", "VALUATION(subject,measure,value)", ""),
+    "concept-warrant": ("PRIMITIVE", "ACTIVE_PRIMITIVE", "ATOM", "WARRANT(conclusion,source,modality)", ""),
+    "operator-closure": ("OPERATOR", "ACTIVE_OPERATOR", "OPERATOR", "CLOSURE(ATTACHMENT,scope)", "CLOSURE"),
+    "operator-aggregate": ("OPERATOR", "ACTIVE_OPERATOR", "OPERATOR", "AGGREGATE(ATTACHMENT,VALUATION,reducer)", "AGGREGATE"),
+    "operator-quotient": ("OPERATOR", "ACTIVE_OPERATOR", "OPERATOR", "QUOTIENT(ATTACHMENT,equivalence,representative,WARRANT(expansion))", "QUOTIENT"),
+    "operator-fixpoint": ("OPERATOR", "ACTIVE_OPERATOR", "OPERATOR", "FIXPOINT(WARRANT,ATTACHMENT,VALUATION)", "FIXPOINT"),
+}
+
+def loop_number(value):
+    try:
+        return int(str(value).rsplit("-", 1)[-1])
+    except Exception:
+        return 0
+
+def main():
+    rb = v5.load(v5.RULEBOOK)
+    contract = v5.load(v5.CONTRACT)
+    historical = copy.deepcopy(rb)
+    historical_contract = copy.deepcopy(contract)
+    historical["TSPLoops"]["data"] = [row for row in historical["TSPLoops"]["data"] if int(row["LoopOrder"]) <= 623]
+    historical_contract["Loops"] = [row for row in historical_contract["Loops"] if int(row["LoopOrder"]) <= 623]
+    historical["TSPConceptRegistry"]["data"] = [
+        row for row in historical["TSPConceptRegistry"]["data"] if loop_number(row.get("IntroducedByLoop")) <= 623
+    ]
+    index = v5.table_index(historical, "TSPConceptRegistry")
+    for ident, (kind, status, category, expression, operator) in BASIS.items():
+        row = index[ident]
+        row["ConceptKind"] = kind
+        row["Status"] = status
+        row["SemanticCategory"] = category
+        row["ReducedBasisExpression"] = expression
+        row["OperatorExpression"] = operator
+        row["SupersededByConcept"] = None
+    v5.set_meta(historical, "last_planned_loop", "integer", integer=623)
+    v5.set_meta(historical, "last_loop", "integer", integer=623)
+    v5.set_meta(historical, "highest_completed_loop", "integer", integer=623)
+    v5.set_meta(historical, "active_predicate_atom_count", "integer", integer=3)
+    v5.set_meta(historical, "active_semantic_operator_count", "integer", integer=4)
+    historical_contract.setdefault("Claims", {}).update({
+        "ThreeAtomBasisObserved": True,
+        "ThreeAtomBasisProved": False,
+        "CurrentPredicateAtomCount": 3,
+        "CurrentSemanticOperatorCount": 4,
+        "CurrentSemanticCompressionPct": 90.63,
+        "AsymmetricFourStopQuotientCertified": True,
+    })
+    v5.validate_state(historical, historical_contract)
+    print("traveling-salesman temporal v5 validation: PASS")
+
+if __name__ == "__main__":
+    main()
+'''
+    )
+    VALIDATOR_V6.write_text(
+        '''#!/usr/bin/env python3
+from apply_loops_624_646_coherence import validate_repository_state
+
+if __name__ == "__main__":
+    validate_repository_state()
+'''
+    )
+    SUMMARY_V6.write_text(
+        '''#!/usr/bin/env python3
+from apply_loops_624_646_coherence import validate_summary_alignment
+
+if __name__ == "__main__":
+    validate_summary_alignment()
+'''
+    )
+    VALIDATOR_WRAPPER.write_text(
+        '''#!/usr/bin/env python3
+from validate_rulebook_v3_temporal import main as validate_v3
+from validate_rulebook_v5_temporal import main as validate_v5
+from validate_rulebook_v6 import validate_repository_state
+from validate_summary_alignment_v6 import validate_summary_alignment
+
+if __name__ == "__main__":
+    validate_v3()
+    validate_v5()
+    validate_repository_state()
+    validate_summary_alignment()
+'''
+    )
+
+
+def rebuild_postgres_and_record(contract: dict[str, Any]) -> None:
+    base.rebuild_postgres_and_record(contract)
+    region = run(
+        [
+            "psql", "-h", os.environ.get("PGHOST", "localhost"),
+            "-U", os.environ.get("PGUSER", "postgres"),
+            "-d", os.environ.get("TSP_DB", "erb_traveling_salesman"),
+            "-tA", "-F", ",", "-v", "ON_ERROR_STOP=1", "-c",
+            "SELECT lower_bound_cost::text,is_certified::text FROM vw_instance_lower_bounds WHERE instance_lower_bound_id='degree-two-lower-bound-three-regions-9'",
+        ],
+        capture=True,
+    ).stdout.strip()
+    if region not in {"36,true", "36.0,true", "36.0000000000000000,true"}:
+        raise AssertionError(f"live three-region lower bound mismatch: {region!r}")
+    face = run(
+        [
+            "psql", "-h", os.environ.get("PGHOST", "localhost"),
+            "-U", os.environ.get("PGUSER", "postgres"),
+            "-d", os.environ.get("TSP_DB", "erb_traveling_salesman"),
+            "-tA", "-F", ",", "-v", "ON_ERROR_STOP=1", "-c",
+            "SELECT candidate_tour_id,total_travel_cost::text,is_optimality_proved::text FROM vw_candidate_tours WHERE tsp_instance='tsp-optimal-face-4' ORDER BY candidate_tour_id",
+        ],
+        capture=True,
+    ).stdout.strip().splitlines()
+    normalized = {row.split(",")[0]: (float(row.split(",")[1]), row.split(",")[2]) for row in face}
+    expected = {
+        "tour-optimal-face-abcd-4": (4.0, "true"),
+        "tour-optimal-face-acbd-4": (4.0, "true"),
+        "tour-optimal-face-abdc-6": (6.0, "false"),
+    }
+    if normalized != expected:
+        raise AssertionError(f"live optimal-face mismatch: {normalized}")
+    contract.setdefault("ArtifactHashes", {}).update(
+        {
+            "loop_646_postgres_projection_tree": "sha256:" + base.sha256_tree(PG_DIR),
+            "loop_646_rulespeak_tree": "sha256:" + base.sha256_tree(RULESPEAK_DIR),
+            "loop_646_live_three_region_lower_bound": region,
+            "loop_646_live_optimal_face": normalized,
+        }
+    )
+    base.write(CONTRACT, contract)
+
+
+def main() -> None:
+    rb = load(RULEBOOK)
+    contract = load(CONTRACT)
+    if base.meta_int(rb, "last_loop") < 623:
+        raise AssertionError("loop 623 must be canonical before coherence refinement")
+    prerequisite = DOMAIN / "testing" / "refinement-611-623-verified.json"
+    if not prerequisite.is_file() or json.loads(prerequisite.read_text()).get("status") != "VERIFIED":
+        raise AssertionError("independent loop-623 refinement certificate is missing")
+    loop_map = {int(row["LoopOrder"]): row for row in rows(rb, "TSPLoops")}
+    if 624 not in loop_map:
+        plan_loops(rb, contract)
+        write_validation_files()
+        save(rb, contract)
+        validate_repository_state()
+        commit(
+            "TSP loops 624-646: register coherence convergence experiment",
+            [
+                RULEBOOK,
+                CONTRACT,
+                DOMAIN / "scripts" / "validate_rulebook_v5_temporal.py",
+                VALIDATOR_V6,
+                SUMMARY_V6,
+                VALIDATOR_WRAPPER,
+            ],
+        )
+    for order in range(624, 647):
+        rb = load(RULEBOOK)
+        contract = load(CONTRACT)
+        loop = next(row for row in rows(rb, "TSPLoops") if int(row["LoopOrder"]) == order)
+        if loop["Status"] == "CLOSED":
+            continue
+        after, witness = LOOP_FUNCS[order](rb, contract)
+        finish_loop(rb, contract, order, after, witness)
+        save(rb, contract)
+        validate_repository_state()
+        paths = [RULEBOOK, CONTRACT]
+        if order == 646:
+            validate_summary_alignment()
+            rebuild_postgres_and_record(contract)
+            paths = [DOMAIN]
+        commit(COMMIT_MESSAGES[order], paths)
+    validate_repository_state()
+    validate_summary_alignment()
+    print("TSP coherence convergence loops 624-646: PASS")
+    print("  current atom: SEMANTIC_ARC")
+    print("  current operator: WARRANTED_REWRITE")
+    print("  three-region optimum: 36")
+    print("  optimal-face value: 4; choice orbit: 2; proof branches: 0")
+
+
+if __name__ == "__main__":
+    main()
