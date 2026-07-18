@@ -696,12 +696,12 @@
     {
       "LoopOrder": 645,
       "LoopId": "tsp-loop-645",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "A residual choice orbit exists, but the system does not distinguish a branch needed for proof from a conditional tie-break needed only to select one representative.",
       "ClosureCriterion": "Reject mathematical branching for value proof, require an external tie-break policy before representative selection, and emit a replayable rejected-branch event with zero branch decisions.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Rejected mathematical branching for the value-closed optimal face.",
+      "Result": "BranchPurpose=VALUE_PROOF is rejected because value four is already certified. Representative choice remains conditional on an external tie-break policy; DecisionCount=0 and the two-member orbit is preserved.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 646,
@@ -811,7 +811,7 @@
     "TravelEdges": 86,
     "CandidateTours": 8,
     "TSPLoops": 70,
-    "FrontierObligations": 29,
+    "FrontierObligations": 30,
     "ActiveImportedDependencies": 0,
     "ReferenceTourValid": true,
     "ReferenceTourCost": 14,
@@ -823,9 +823,9 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 646,
-    "HighestCompletedLoop": 644,
+    "HighestCompletedLoop": 645,
     "PostgresCommissioningStatus": "CLOSED",
-    "InferenceApplications": 15,
+    "InferenceApplications": 16,
     "SelectedNotForcedEdgeStates": 5,
     "GridvilleInferredEdgeCount": 5,
     "GridvilleConnectedComponents": 1,
@@ -865,8 +865,8 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 66,
     "ClusterContractionCertificates": 7,
-    "ConvergenceMeasurements": 48,
-    "ConceptRegistry": 99,
+    "ConvergenceMeasurements": 49,
+    "ConceptRegistry": 100,
     "DefectProfiles": 21,
     "BoundTerms": 8,
     "WitnessNormalForms": 13,
@@ -894,7 +894,7 @@
     "OptimalFaceChoiceOrbitSize": 2
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:b4007fa29f55170f9afb0c675f9baf8114ff2c9cc4fdd81c97ccf40d5c3738e7",
+    "rulebook": "sha256:6bbe7b1f57b20cea25c4e0166e12a959dcc3d4f30a13c11b3c7caea32ddbe7ed",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
