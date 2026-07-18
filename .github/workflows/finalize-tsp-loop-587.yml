@@ -1,0 +1,220 @@
+name: Finalize TSP loop 587 Postgres commissioning
+
+on:
+  push:
+    branches:
+      - agent/tsp-semantic-foundation
+    paths:
+      - .github/workflows/finalize-tsp-loop-587.yml
+      - .tsp-loop-587-final-trigger
+
+permissions:
+  contents: write
+
+concurrency:
+  group: tsp-loop-587-final-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      TARGET_BRANCH: agent/tsp-semantic-foundation
+      PGHOST: localhost
+      PGUSER: postgres
+      PGPASSWORD: postgres
+      TSP_DB: erb_traveling_salesman
+      EFFORTLESS_CLI_SOURCE: https://github.com/EffortlessAPI/cli/archive/1551cb82d5a8992ad09e4c82d08e28493f92f7b4.tar.gz
+      EFFORTLESS_CLI_COMMIT: 1551cb82d5a8992ad09e4c82d08e28493f92f7b4
+      EFFORTLESS_CLI_VERSION: 2026-06-09.06.13
+      NPM_CONFIG_PREFIX: /tmp/effortless-npm-global
+      NPM_CONFIG_CACHE: /tmp/effortless-npm-cache
+      DOTNET_SKIP_FIRST_TIME_EXPERIENCE: '1'
+      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TARGET_BRANCH }}
+          fetch-depth: 0
+
+      - name: Configure final commit
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.410'
+
+      - name: Install pinned Effortless CLI archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          export PATH="$NPM_CONFIG_PREFIX/bin:$PATH"
+          mkdir -p "$NPM_CONFIG_PREFIX/bin" "$NPM_CONFIG_PREFIX/lib" "$NPM_CONFIG_CACHE"
+          echo "$NPM_CONFIG_PREFIX/bin" >> "$GITHUB_PATH"
+          npm install -g "$EFFORTLESS_CLI_SOURCE"
+          command -v effortless
+          npm list -g ssotme --depth=0
+          effortless -info
+
+      - name: Validate pre-closure semantics and compile finalizer
+        shell: bash
+        run: |
+          set -euo pipefail
+          domain='rulebook-examples/effortless-math/domains/traveling-salesman'
+          python3 "$domain/scripts/validate_rulebook_v3.py"
+          python3 -m py_compile \
+            "$domain/scripts/complete_loop_587.py" \
+            "$domain/scripts/complete_loop_587_final.py" \
+            "$domain/scripts/complete_loop_587_final_v2.py" \
+            "$domain/scripts/validate_summary_alignment.py" \
+            "$domain/testing/take-test.py"
+
+      - name: Generate, initialize, and prove peer conformance
+        id: substrate
+        shell: bash
+        run: |
+          set -uo pipefail
+          domain='rulebook-examples/effortless-math/domains/traveling-salesman'
+          log="$domain/testing/postgres-commissioning-retry-9.log"
+          mkdir -p "$(dirname "$log")"
+          set +e
+          (
+            set -e
+            echo "loop=587 retry=9"
+            echo "cli_source=$EFFORTLESS_CLI_SOURCE"
+            echo "cli_commit=$EFFORTLESS_CLI_COMMIT"
+            echo "cli_version=$EFFORTLESS_CLI_VERSION"
+            echo "github_run_id=$GITHUB_RUN_ID"
+            cd "$domain"
+            bash start.sh build
+            bash start.sh db
+            bash start.sh test
+            bash start.sh show
+          ) 2>&1 | tee "$log"
+          status=${PIPESTATUS[0]}
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          if [ "$status" -eq 0 ]; then
+            mv "$log" "$domain/testing/postgres-commissioning-success.log"
+          fi
+          exit 0
+
+      - name: Persist substrate failure
+        if: steps.substrate.outputs.status != '0'
+        shell: bash
+        run: |
+          set -euo pipefail
+          domain='rulebook-examples/effortless-math/domains/traveling-salesman'
+          cat > .tsp-loop-587-retry-status.json <<EOF
+          {
+            "stage": "BUILD_OR_CONFORMANCE_FAILED",
+            "attempt": 9,
+            "github_run_id": "$GITHUB_RUN_ID",
+            "build_log": "$domain/testing/postgres-commissioning-retry-9.log",
+            "exit_code": ${{ steps.substrate.outputs.status }}
+          }
+          EOF
+          git add .tsp-loop-587-retry-status.json "$domain/testing/postgres-commissioning-retry-9.log"
+          git commit -m 'Record TSP loop 587 retry-9 substrate failure'
+          git reset --hard HEAD
+          git clean -fd -- "$domain/effortless-postgres" "$domain/rulespeak"
+          git pull --rebase origin "$TARGET_BRANCH"
+          git push origin HEAD:"$TARGET_BRANCH"
+          exit 1
+
+      - name: Seal canonical loop certificate
+        if: steps.substrate.outputs.status == '0'
+        id: seal
+        shell: bash
+        run: |
+          set -uo pipefail
+          domain='rulebook-examples/effortless-math/domains/traveling-salesman'
+          log="$domain/testing/postgres-commissioning-finalization-retry-9.log"
+          set +e
+          (
+            set -e
+            python3 "$domain/scripts/complete_loop_587_final_v2.py"
+            python3 "$domain/scripts/validate_rulebook.py"
+            python3 -m py_compile \
+              "$domain/scripts/complete_loop_587_final.py" \
+              "$domain/scripts/complete_loop_587_final_v2.py" \
+              "$domain/scripts/validate_rulebook.py" \
+              "$domain/scripts/validate_rulebook_v3.py" \
+              "$domain/scripts/validate_summary_alignment.py" \
+              "$domain/scripts/reconcile_summary.py" \
+              "$domain/testing/take-test.py"
+            bash -n "$domain/start.sh"
+          ) 2>&1 | tee "$log"
+          status=${PIPESTATUS[0]}
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Persist finalization failure
+        if: steps.substrate.outputs.status == '0' && steps.seal.outputs.status != '0'
+        shell: bash
+        run: |
+          set -euo pipefail
+          domain='rulebook-examples/effortless-math/domains/traveling-salesman'
+          cat > .tsp-loop-587-retry-status.json <<EOF
+          {
+            "stage": "LEDGER_FINALIZATION_FAILED",
+            "attempt": 9,
+            "github_run_id": "$GITHUB_RUN_ID",
+            "finalization_log": "$domain/testing/postgres-commissioning-finalization-retry-9.log",
+            "exit_code": ${{ steps.seal.outputs.status }}
+          }
+          EOF
+          git add .tsp-loop-587-retry-status.json "$domain/testing/postgres-commissioning-finalization-retry-9.log"
+          git commit -m 'Record TSP loop 587 retry-9 finalization failure'
+          git reset --hard HEAD
+          git clean -fd -- "$domain/effortless-postgres" "$domain/rulespeak"
+          git pull --rebase origin "$TARGET_BRANCH"
+          git push origin HEAD:"$TARGET_BRANCH"
+          exit 1
+
+      - name: Commit commissioned backend and closed loop
+        if: steps.substrate.outputs.status == '0' && steps.seal.outputs.status == '0'
+        shell: bash
+        run: |
+          set -euo pipefail
+          domain='rulebook-examples/effortless-math/domains/traveling-salesman'
+          cat > .tsp-loop-587-retry-status.json <<EOF
+          {
+            "stage": "COMPLETED",
+            "attempt": 9,
+            "github_run_id": "$GITHUB_RUN_ID",
+            "cli_commit": "$EFFORTLESS_CLI_COMMIT",
+            "cli_source": "$EFFORTLESS_CLI_SOURCE"
+          }
+          EOF
+          git add -A -- "$domain" .tsp-loop-587-retry-status.json
+          git diff --cached --stat
+          git diff --cached --quiet && {
+            echo 'commissioning produced no durable changes' >&2
+            exit 1
+          }
+          git commit -m 'TSP loop 587 retry: commission generated Postgres substrate'
+          git pull --rebase origin "$TARGET_BRANCH"
+          git push origin HEAD:"$TARGET_BRANCH"
