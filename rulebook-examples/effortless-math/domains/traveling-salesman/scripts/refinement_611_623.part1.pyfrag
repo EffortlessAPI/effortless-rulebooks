@@ -1,0 +1,360 @@
+#!/usr/bin/env python3
+"""Execute TSP loops 611-623 as an atom/operator refinement experiment.
+
+The rulebook remains canonical.  All loops are registered as PLANNED before
+execution, then each loop is closed and committed separately.  The experiment
+asks whether the loop-610 eight-predicate basis itself factors into a smaller
+set of relational atoms plus reusable operators, then stress-tests that factor
+on an asymmetric four-stop neighborhood without adding a new physical table.
+"""
+from __future__ import annotations
+
+import json
+import os
+import subprocess
+import sys
+from collections import Counter, defaultdict
+from pathlib import Path
+from typing import Any, Iterable
+
+import apply_loops_597_610_convergence_v2 as base
+
+REPO = base.REPO
+DOMAIN = base.DOMAIN
+RULEBOOK = base.RULEBOOK
+CONTRACT = base.CONTRACT
+README = base.README
+VALIDATOR_V3 = base.VALIDATOR_V3
+VALIDATOR_V5 = DOMAIN / "scripts" / "validate_rulebook_v5.py"
+SUMMARY_V5 = DOMAIN / "scripts" / "validate_summary_alignment_v5.py"
+VALIDATOR_WRAPPER = base.VALIDATOR_WRAPPER
+VALIDATION_WORKFLOW = base.VALIDATION_WORKFLOW
+TARGET_BRANCH = os.environ.get("TARGET_BRANCH", "agent/tsp-semantic-foundation")
+
+OLD_PRIMITIVES = {
+    "concept-membership": "MEMBERSHIP",
+    "concept-incidence": "INCIDENCE",
+    "concept-cardinality": "CARDINALITY",
+    "concept-order": "ORDER",
+    "concept-weight": "WEIGHT",
+    "concept-commitment": "COMMITMENT",
+    "concept-connectivity": "CONNECTIVITY",
+    "concept-provenance": "PROVENANCE",
+}
+
+LOOPS: dict[int, dict[str, str]] = {
+    611: {
+        "name": "Predicate/operator split",
+        "term": "Predicate–Operator Split",
+        "rule": "tsp-rule-atom-operator-refinement",
+        "before": "Loop 610 records eight canonical predicates, but relational atoms and reusable closure operators are not distinguished.",
+        "criterion": "Classify the eight historical predicates as candidate atoms or operator-derived concepts, preserve their loop-610 provenance, and record a reduction plan without changing the active basis yet.",
+        "next": "Test whether membership and incidence share one typed attachment atom.",
+    },
+    612: {
+        "name": "Attachment atom",
+        "term": "Attachment Atom",
+        "rule": "tsp-rule-atom-operator-refinement",
+        "before": "Membership and incidence are separate primitives even though both attach one object to a typed scope or endpoint.",
+        "criterion": "Introduce ATTACHMENT(subject, object, role), reduce MEMBERSHIP and INCIDENCE to typed attachment roles, and preserve every historical surface definition.",
+        "next": "Test whether cardinality, order, and weight share one valuation atom.",
+    },
+    613: {
+        "name": "Valuation atom",
+        "term": "Valuation Atom",
+        "rule": "tsp-rule-atom-operator-refinement",
+        "before": "Cardinality, order, and weight remain separate primitives despite all assigning values under a named measure.",
+        "criterion": "Introduce VALUATION(subject, measure, value), reduce count, ordinal, and cost predicates to valuation forms, and retain aggregation as an explicit pending operator.",
+        "next": "Test whether commitment and provenance share one warrant atom.",
+    },
+    614: {
+        "name": "Warrant atom",
+        "term": "Warrant Atom",
+        "rule": "tsp-rule-atom-operator-refinement",
+        "before": "Commitment and provenance are separate primitives even though every commitment is a scoped conclusion warranted by sources and rules.",
+        "criterion": "Introduce WARRANT(conclusion, source, modality), reduce commitment and provenance to warrant projections, and preserve necessity scope distinctions.",
+        "next": "Move connectivity from the atom basis into a closure operator.",
+    },
+    615: {
+        "name": "Closure operator",
+        "term": "Closure Operator",
+        "rule": "tsp-rule-operator-lift",
+        "before": "Connectivity is still treated as a primitive rather than reachability closure over typed attachments.",
+        "criterion": "Register CLOSURE as an operator over attachment relations, reduce CONNECTIVITY to closure, and leave exactly three active relational atoms.",
+        "next": "Lift count, sum, minimum, and parity into one aggregation operator.",
+    },
+    616: {
+        "name": "Aggregate operator",
+        "term": "Aggregate Operator",
+        "rule": "tsp-rule-operator-lift",
+        "before": "Counts, sums, minima, degrees, and repair totals are expressed through many surface formulas without one operator identity.",
+        "criterion": "Register AGGREGATE as the common count/sum/min/max/parity operator over attachments and valuations, with no new atom.",
+        "next": "Lift symmetry and dominance contraction into one quotient operator.",
+    },
+    617: {
+        "name": "Quotient operator",
+        "term": "Quotient Operator",
+        "rule": "tsp-rule-operator-lift",
+        "before": "Semantic Quotient and Component Quotient are coined predicates but quotienting is not represented as a reusable operator.",
+        "criterion": "Register QUOTIENT as the operator that identifies witnesses under an explicit equivalence relation and retains representatives plus expansion provenance.",
+        "next": "Lift repeated closure rounds into one fixed-point operator.",
+    },
+    618: {
+        "name": "Fixed-point operator",
+        "term": "Fixed-Point Operator",
+        "rule": "tsp-rule-operator-lift",
+        "before": "Closure events and constraint rounds expose repeated application, but fixed-point iteration is not explicit in the semantic basis.",
+        "criterion": "Register FIXPOINT as repeated warranted closure until no commitment changes, and map inference rounds and closure events onto it.",
+        "next": "Certify the current three-atom/four-operator factorization.",
+    },
+    619: {
+        "name": "Three-atom basis",
+        "term": "Three-Atom Basis",
+        "rule": "tsp-rule-atom-operator-refinement",
+        "before": "Three active atoms and four operators have emerged incrementally, but their coverage of the historical vocabulary is not certified.",
+        "criterion": "Certify ATTACHMENT, VALUATION, and WARRANT as the current atoms; CLOSURE, AGGREGATE, QUOTIENT, and FIXPOINT as operators; and express every registered concept without the old eight primitive tokens.",
+        "next": "Stress the reduced basis on a general boundary-port interface.",
+    },
+    620: {
+        "name": "Boundary port",
+        "term": "Boundary Port",
+        "rule": "tsp-rule-boundary-fiber",
+        "before": "Entry and exit stops remain special cluster fields rather than typed attachments with a reusable port contract.",
+        "criterion": "Represent every existing cluster path through typed entry/exit ports, a common port contract, orientation multiplicity, and a boundary-fiber key.",
+        "next": "Build a non-symmetric four-stop neighborhood and group its path witnesses by boundary fiber.",
+    },
+    621: {
+        "name": "Boundary fiber",
+        "term": "Boundary Fiber",
+        "rule": "tsp-rule-boundary-fiber",
+        "before": "The three-stop fixture has one path per unordered boundary, so it cannot distinguish quotienting by symmetry from competing internal valuations.",
+        "criterion": "Represent an asymmetric four-stop complete neighborhood with twelve reversal-quotient path states grouped into six boundary fibers, retaining twenty-four directed orientations and explicit expansion members.",
+        "next": "Collapse each boundary fiber by valuation dominance.",
+    },
+    622: {
+        "name": "Fiber minimum",
+        "term": "Fiber Minimum",
+        "rule": "tsp-rule-fiber-dominance",
+        "before": "Each asymmetric boundary fiber contains two non-equivalent internal path valuations and no canonical survivor.",
+        "criterion": "Within each of six boundary fibers, warrant the unique minimum-cost path, mark the other path dominated, and record the exact dominance delta.",
+        "next": "Certify the combined reversal and valuation quotient.",
+    },
+    623: {
+        "name": "Asymmetric semantic quotient",
+        "term": "Asymmetric Quotient",
+        "rule": "tsp-rule-fiber-dominance",
+        "before": "The original contraction certificate only demonstrates three-stop reversal symmetry and does not test the reduced basis against asymmetric valuations.",
+        "criterion": "Certify 24 directed paths to 12 reversal classes to 6 boundary-fiber minima, with expansion, coverage, and cost preservation, while the physical table count remains unchanged.",
+        "next": "Generalize region repair across more than two quotient components, then expose a genuine residual branch orbit.",
+    },
+}
+
+COMMIT_MESSAGES = {
+    611: "TSP loop 611: split predicates from operators",
+    612: "TSP loop 612: derive attachment atom",
+    613: "TSP loop 613: derive valuation atom",
+    614: "TSP loop 614: derive warrant atom",
+    615: "TSP loop 615: lift connectivity to closure",
+    616: "TSP loop 616: lift measures to aggregate",
+    617: "TSP loop 617: lift contraction to quotient",
+    618: "TSP loop 618: lift closure rounds to fixed point",
+    619: "TSP loop 619: certify three-atom basis",
+    620: "TSP loop 620: normalize boundary ports",
+    621: "TSP loop 621: derive asymmetric boundary fibers",
+    622: "TSP loop 622: collapse boundary fibers by value",
+    623: "TSP loop 623: certify asymmetric quotient",
+}
+
+RULE_ROWS = [
+    {
+        "TSPInferenceRuleId": "tsp-rule-atom-operator-refinement",
+        "DisplayName": "Atom/operator semantic refinement",
+        "InferenceLayer": "SEMANTIC_REDUCTION",
+        "ImplementationStatus": "PLANNED",
+        "Soundness": "DEFINITIONAL_REFACTOR_WITH_EXPLICIT_HISTORICAL_PROJECTIONS",
+        "Completeness": "EMPIRICAL_FOR_REGISTERED_CURRENT_DOMAIN",
+        "RuntimeClass": "O(C)",
+        "MemoryClass": "O(C)",
+        "Applicability": "Registered concepts admit explicit definitions over fewer relational atoms and named operators.",
+        "CertificateType": "atom-operator-basis-certificate",
+        "Description": "Separate relational atoms from closure operators while preserving every historical concept as a replayable definition.",
+    },
+    {
+        "TSPInferenceRuleId": "tsp-rule-operator-lift",
+        "DisplayName": "Semantic operator lift",
+        "InferenceLayer": "SEMANTIC_REDUCTION",
+        "ImplementationStatus": "PLANNED",
+        "Soundness": "SOUND_WHEN_OPERATOR_INPUT_OUTPUT_AND_WARRANT_ARE_EXPLICIT",
+        "Completeness": "CURRENT_CLOSURE_AGGREGATE_QUOTIENT_FIXPOINT_FAMILIES",
+        "RuntimeClass": "OPERATOR_DEPENDENT",
+        "MemoryClass": "OPERATOR_DEPENDENT",
+        "Applicability": "A recurring derived relation is produced by a reusable transformation over typed atoms.",
+        "CertificateType": "semantic-operator-certificate",
+        "Description": "Promote closure, aggregation, quotient, and fixed-point transformations to reusable operators rather than primitive predicates.",
+    },
+    {
+        "TSPInferenceRuleId": "tsp-rule-boundary-fiber",
+        "DisplayName": "Boundary-fiber normalization",
+        "InferenceLayer": "SEMANTIC_QUOTIENT",
+        "ImplementationStatus": "PLANNED",
+        "Soundness": "SOUND_FOR_EXPLICIT_HAMILTONIAN_PATH_EXPANSIONS",
+        "Completeness": "FINITE_DECLARED_CLUSTER",
+        "RuntimeClass": "O(P)",
+        "MemoryClass": "O(P)",
+        "Applicability": "Internal path witnesses expose a scope, two ports, full coverage, edge members, order, and cost.",
+        "CertificateType": "boundary-fiber-certificate",
+        "Description": "Group internal path witnesses that share the same typed boundary ports and coverage scope.",
+    },
+    {
+        "TSPInferenceRuleId": "tsp-rule-fiber-dominance",
+        "DisplayName": "Boundary-fiber valuation dominance",
+        "InferenceLayer": "SEMANTIC_QUOTIENT",
+        "ImplementationStatus": "PLANNED",
+        "Soundness": "SOUND_FOR_EQUAL_PORT_EQUAL_COVERAGE_PATHS_WITH_ADDITIVE_COST",
+        "Completeness": "FINITE_DECLARED_FIBERS",
+        "RuntimeClass": "O(P_LOG_P)",
+        "MemoryClass": "O(P)",
+        "Applicability": "Two or more valid path witnesses share a boundary fiber and differ only in internal order and valuation.",
+        "CertificateType": "fiber-minimum-certificate",
+        "Description": "Retain minimum-valued representatives within each boundary fiber and preserve dominated witnesses as expandable provenance.",
+    },
+]
+
+
+def run(cmd: list[str], *, cwd: Path = REPO, check: bool = True, capture: bool = False) -> subprocess.CompletedProcess[str]:
+    return base.run(cmd, cwd=cwd, check=check, capture=capture)
+
+
+def load(path: Path) -> dict[str, Any]:
+    return base.load(path)
+
+
+def rows(rb: dict[str, Any], name: str) -> list[dict[str, Any]]:
+    return base.rows(rb, name)
+
+
+def table_index(rb: dict[str, Any], name: str) -> dict[str, dict[str, Any]]:
+    return base.table_index(rb, name)
+
+
+def upsert_rows(tbl: dict[str, Any], ident: str, additions: Iterable[dict[str, Any]]) -> None:
+    base.upsert_rows(tbl, ident, additions)
+
+
+def set_meta(rb: dict[str, Any], key: str, value_type: str, *, string: str | None = None, integer: int | None = None, boolean: bool | None = None) -> None:
+    base.set_meta(rb, key, value_type, string=string, integer=integer, boolean=boolean)
+
+
+def active_primitives(rb: dict[str, Any]) -> list[dict[str, Any]]:
+    return [row for row in rows(rb, "TSPConceptRegistry") if row.get("Status") == "ACTIVE_PRIMITIVE"]
+
+
+def active_operators(rb: dict[str, Any]) -> list[dict[str, Any]]:
+    return [row for row in rows(rb, "TSPConceptRegistry") if row.get("Status") == "ACTIVE_OPERATOR"]
+
+
+def ensure_registry_fields(rb: dict[str, Any]) -> None:
+    base.ensure_fields(
+        rb["TSPConceptRegistry"],
+        [
+            base.field("HistoricalConceptKind", "string", "raw", True, "Concept kind at the time of its historical certificate."),
+            base.field("SemanticCategory", "string", "raw", True, "ATOM, OPERATOR, DERIVED, or HISTORICAL."),
+            base.field("ReducedBasisExpression", "string", "raw", True, "Current definition over active atoms and operators."),
+            base.field("OperatorExpression", "string", "raw", True, "Operators required to derive the concept from atoms."),
+            base.field("ReductionGeneration", "integer", "raw", True, "Reduction generation introducing the current definition."),
+            base.field("IsCurrentBasisMember", "boolean", "calculated", True, "Whether the row is an active atom or operator.", formula='=OR({{Status}} = "ACTIVE_PRIMITIVE", {{Status}} = "ACTIVE_OPERATOR")'),
+        ],
+    )
+    for row in rows(rb, "TSPConceptRegistry"):
+        row.setdefault("HistoricalConceptKind", row.get("ConceptKind"))
+        row.setdefault("SemanticCategory", "DERIVED")
+        row.setdefault("ReducedBasisExpression", row.get("BasisExpression", ""))
+        row.setdefault("OperatorExpression", "")
+        row.setdefault("ReductionGeneration", 1)
+
+
+def register_concept(
+    rb: dict[str, Any],
+    ident: str,
+    display: str,
+    kind: str,
+    expression: str,
+    arity: int,
+    sources: str,
+    loop: int,
+    *,
+    status: str,
+    category: str,
+    operator_expression: str = "",
+) -> None:
+    base.register_concept(rb, ident, display, kind, expression, arity, sources, loop, status=status)
+    row = table_index(rb, "TSPConceptRegistry")[ident]
+    row["HistoricalConceptKind"] = kind
+    row["SemanticCategory"] = category
+    row["ReducedBasisExpression"] = expression
+    row["OperatorExpression"] = operator_expression
+    row["ReductionGeneration"] = 2
+
+
+def add_measurement(rb: dict[str, Any], order: int, term: str, notes: str, status: str = "EARLY_SUPPORT") -> None:
+    upsert_rows(
+        rb["TSPConvergenceMeasurements"],
+        "TSPConvergenceMeasurementId",
+        [
+            {
+                "TSPConvergenceMeasurementId": f"convergence-loop-{order}",
+                "TSPLoop": f"tsp-loop-{order}",
+                "MeasurementKind": "ATOM_OPERATOR_REFINEMENT" if order < 623 else "ASYMMETRIC_STRESS_EVENT",
+                "SurfaceConceptCountBefore": 32,
+                "PrimitiveCountAfter": len(active_primitives(rb)),
+                "NewPrimitiveCount": 0 if order not in {612, 613, 614} else 1,
+                "DerivedAliasCount": sum(row.get("ConceptKind") not in {"PRIMITIVE", "OPERATOR"} for row in rows(rb, "TSPConceptRegistry")),
+                "PhysicalTableCount": len(base.canonical_tables(rb)),
+                "NovelTerm": term,
+                "PredictionStatus": status,
+                "Notes": notes,
+            }
+        ],
+    )
+
+
+def plan_loops(rb: dict[str, Any], contract: dict[str, Any]) -> None:
+    upsert_rows(rb["TSPInferenceRules"], "TSPInferenceRuleId", RULE_ROWS)
+    existing = {int(row["LoopOrder"]) for row in rows(rb, "TSPLoops")}
+    for order, spec in LOOPS.items():
+        if order not in existing:
+            rows(rb, "TSPLoops").append(
+                {
+                    "TSPLoopId": f"tsp-loop-{order}",
+                    "LoopOrder": order,
+                    "DisplayName": spec["name"],
+                    "Status": "PLANNED",
+                    "PrimaryInferenceRule": spec["rule"],
+                    "NewConcept": spec["term"],
+                    "WitnessSummary": "Planned predicate-refinement loop; no closure claim yet.",
+                    "NextFrontier": spec["next"],
+                    "PlannedClosureCriterion": spec["criterion"],
+                    "BeforeState": spec["before"],
+                    "AfterState": None,
+                    "CompletionDisposition": None,
+                }
+            )
+    contract_loops = {int(row["LoopOrder"]): row for row in contract["Loops"]}
+    for order, spec in LOOPS.items():
+        if order not in contract_loops:
+            contract["Loops"].append(
+                {
+                    "LoopOrder": order,
+                    "LoopId": f"tsp-loop-{order}",
+                    "Status": "PLANNED",
+                    "BeforeState": spec["before"],
+                    "ClosureCriterion": spec["criterion"],
+                    "AfterState": None,
+                    "Result": "Planned; no conclusion recorded.",
+                    "CompletionDisposition": None,
+                }
+            )
+    contract["Loops"] = sorted(contract["Loops"], key=lambda row: int(row["LoopOrder"]))
+    set_meta(rb, "last_planned_loop", "integer", integer=623)
+    set_meta(rb, "refinement_program_status", "string", string="PLANNED_611_623")
+    contract["Version"] = "0.5.0-alpha"
