@@ -1,0 +1,180 @@
+    set_meta(rb, "semantic_compression_pct_current", "string", string="90.63")
+    claims = contract.setdefault("Claims", {})
+    claims.update(
+        {
+            "ThreeAtomBasisObserved": True,
+            "ThreeAtomBasisProved": False,
+            "CurrentPredicateAtomCount": 3,
+            "CurrentSemanticOperatorCount": 4,
+            "HistoricalLoop610PredicateBasisCount": 8,
+            "CurrentSemanticCompressionPct": 90.63,
+        }
+    )
+    acceptance = contract.setdefault("Acceptance", {})
+    acceptance.update(
+        {
+            "CurrentPredicateAtomCount": 3,
+            "CurrentSemanticOperatorCount": 4,
+            "HistoricalLoop610PredicateBasisCount": 8,
+            "CurrentSemanticCompressionPct": 90.63,
+        }
+    )
+    return (
+        "Certified a current basis of three atoms and four operators while preserving the historical eight-predicate certificate.",
+        "Atoms = ATTACHMENT, VALUATION, WARRANT. Operators = CLOSURE, AGGREGATE, QUOTIENT, FIXPOINT. Thirty-two baseline surfaces compress to three active atoms (90.63%) for the represented domain.",
+    )
+
+
+def ensure_boundary_fields(rb: dict[str, Any]) -> None:
+    base.ensure_fields(
+        rb["TSPClusterBoundaryStates"],
+        [
+            base.field("SecondInternalViaStop", "string", "relationship", True, "Second internal stop for clusters larger than three.", related_to="InstanceStops"),
+            base.field("EntryPortRole", "string", "raw", True, "Typed role of the entry boundary attachment."),
+            base.field("ExitPortRole", "string", "raw", True, "Typed role of the exit boundary attachment."),
+            base.field("PortContract", "string", "raw", True, "Coverage and incidence contract exposed at the boundary."),
+            base.field("BoundaryFiberKey", "string", "raw", True, "Scope plus canonical unordered boundary ports."),
+            base.field("InternalOrderKey", "string", "raw", True, "Canonical represented internal order."),
+            base.field("RawOrientationMultiplicity", "integer", "raw", True, "Directed orientations represented by this quotient row."),
+            base.field("DominatedByStateId", "string", "raw", True, "Canonical lower-valued representative in the same fiber."),
+            base.field("DominanceDelta", "number", "raw", True, "Cost difference from the fiber minimum."),
+            base.field("IsFiberMinimum", "boolean", "calculated", True, "Whether the state is the surviving minimum in its fiber.", formula="=AND({{IsQuotientRepresentative}}, NOT({{IsDominated}}))"),
+        ],
+    )
+
+
+def loop_620(rb: dict[str, Any], contract: dict[str, Any]) -> tuple[str, str]:
+    ensure_boundary_fields(rb)
+    for state in rows(rb, "TSPClusterBoundaryStates"):
+        entry, exit_ = state["EntryStop"], state["ExitStop"]
+        state["EntryPortRole"] = "BOUNDARY_ENTRY"
+        state["ExitPortRole"] = "BOUNDARY_EXIT"
+        state["PortContract"] = "ONE_ENTRY_ONE_EXIT_FULL_INTERNAL_COVERAGE"
+        state["BoundaryFiberKey"] = f"{state['Neighborhood']}|{min(entry, exit_)}|{max(entry, exit_)}"
+        state["InternalOrderKey"] = f"{entry}>{state['InternalViaStop']}>{exit_}"
+        state["RawOrientationMultiplicity"] = state.get("OrientationMultiplicity") or 2
+        state["DominatedByStateId"] = None
+        state["DominanceDelta"] = 0
+    register_concept(rb, "coined-boundary-port", "Boundary Port", "COINED_PREDICATE", "ATTACHMENT(witness,scope,entry_or_exit)+VALUATION(port_degree)+WARRANT(contract)", 1, "TSPClusterBoundaryStates,TSPWitnessNormalForms", 620, status="ACTIVE_DERIVED", category="DERIVED")
+    add_measurement(rb, 620, "Boundary Port", "Entry and exit become typed attachment roles under one port contract; no table is added.")
+    return (
+        "Normalized existing cluster entries and exits as typed boundary ports over ATTACHMENT, VALUATION, and WARRANT.",
+        "All six existing triangle path states expose one entry, one exit, full internal coverage, orientation multiplicity two, and a canonical boundary-fiber key.",
+    )
+
+
+ASYM_EDGES = {
+    ("asym-stop-1", "asym-stop-2"): ("asym-edge-1-2", 1),
+    ("asym-stop-1", "asym-stop-3"): ("asym-edge-1-3", 4),
+    ("asym-stop-1", "asym-stop-4"): ("asym-edge-1-4", 8),
+    ("asym-stop-2", "asym-stop-3"): ("asym-edge-2-3", 2),
+    ("asym-stop-2", "asym-stop-4"): ("asym-edge-2-4", 5),
+    ("asym-stop-3", "asym-stop-4"): ("asym-edge-3-4", 3),
+}
+
+
+def edge_for(a: str, b: str) -> tuple[str, int]:
+    return ASYM_EDGES[tuple(sorted((a, b)))]
+
+
+def asym_path_specs() -> list[tuple[str, str, tuple[str, str]]]:
+    nodes = [f"asym-stop-{i}" for i in range(1, 5)]
+    result: list[tuple[str, str, tuple[str, str]]] = []
+    for i, entry in enumerate(nodes):
+        for exit_ in nodes[i + 1 :]:
+            internal = [node for node in nodes if node not in {entry, exit_}]
+            result.append((entry, exit_, (internal[0], internal[1])))
+            result.append((entry, exit_, (internal[1], internal[0])))
+    return result
+
+
+def loop_621(rb: dict[str, Any], contract: dict[str, Any]) -> tuple[str, str]:
+    ensure_boundary_fields(rb)
+    upsert_rows(
+        rb["Neighborhoods"],
+        "NeighborhoodId",
+        [
+            {
+                "NeighborhoodId": "gridville-asymmetric-four",
+                "DisplayName": "Asymmetric Four",
+                "City": "gridville",
+                "ClusterKind": "ASYMMETRIC_BOUNDARY_FIBER_FIXTURE",
+                "IsQuotientNode": True,
+                "QuotientNodeKind": "BOUNDARY_FIBER_REGION",
+                "RequiredBoundaryDegree": 2,
+                "QuotientScopeId": "tsp-asymmetric-four-4",
+            }
+        ],
+    )
+    addresses = []
+    for i in range(1, 5):
+        addresses.append(
+            {
+                "AddressId": f"addr-asym-{i}",
+                "StreetLabel": f"Asymmetric {i}",
+                "Neighborhood": "gridville-asymmetric-four",
+                "XCoordinate": 30 + i,
+                "YCoordinate": (i * i) % 5,
+                "IsDepotCandidate": i == 1,
+            }
+        )
+    upsert_rows(rb["Addresses"], "AddressId", addresses)
+    upsert_rows(
+        rb["TSPInstances"],
+        "TSPInstanceId",
+        [
+            {
+                "TSPInstanceId": "tsp-asymmetric-four-4",
+                "DisplayName": "Asymmetric Four-Stop Boundary Fiber",
+                "City": "gridville",
+                "DepotAddress": "addr-asym-1",
+                "DistanceModel": "EXPLICIT_SYMMETRIC_COST",
+                "IsSymmetric": True,
+                "Status": "NORMALIZED",
+                "SearchPolicy": "LOCAL_QUOTIENT_BEFORE_CITY_SEARCH",
+                "Notes": "Four-stop complete internal cluster with unequal path valuations used to separate reversal quotienting from fiber dominance.",
+            }
+        ],
+    )
+    upsert_rows(
+        rb["InstanceStops"],
+        "InstanceStopId",
+        [
+            {
+                "InstanceStopId": f"asym-stop-{i}",
+                "TSPInstance": "tsp-asymmetric-four-4",
+                "Address": f"addr-asym-{i}",
+                "IsRequired": True,
+            }
+            for i in range(1, 5)
+        ],
+    )
+    edge_rows = []
+    for (a, b), (edge_id, cost) in ASYM_EDGES.items():
+        edge_rows.append(
+            {
+                "TravelEdgeId": edge_id,
+                "TSPInstance": "tsp-asymmetric-four-4",
+                "FromStop": a,
+                "ToStop": b,
+                "DistanceMeters": cost * 1000,
+                "TravelCost": cost,
+                "IsAvailable": True,
+                "EdgeSource": "ASYMMETRIC_FIBER_FIXTURE",
+                "CanonicalPairKey": f"{a}|{b}",
+            }
+        )
+    upsert_rows(rb["TravelEdges"], "TravelEdgeId", edge_rows)
+
+    state_rows = []
+    member_rows = []
+    for entry, exit_, internal in asym_path_specs():
+        first, second = internal
+        sequence = [entry, first, second, exit_]
+        members = [edge_for(sequence[index], sequence[index + 1]) for index in range(3)]
+        cost = sum(item[1] for item in members)
+        suffix = "-".join(node.rsplit("-", 1)[-1] for node in sequence)
+        state_id = f"cluster-state-asym-{suffix}"
+        fiber = f"gridville-asymmetric-four|{entry}|{exit_}"
+        state_rows.append(
+            {
