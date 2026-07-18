@@ -1,6 +1,9 @@
 {
-  "status": "FAILED",
-  "github_run_id": "29659923582",
-  "exit_code": 1,
-  "log": "testing/refinement-611-623-failure.log"
+  "status": "SUCCEEDED",
+  "github_run_id": "29660053230",
+  "last_loop": 623,
+  "atoms": ["ATTACHMENT", "VALUATION", "WARRANT"],
+  "operators": ["CLOSURE", "AGGREGATE", "QUOTIENT", "FIXPOINT"],
+  "asymmetric_paths": "24->12->6",
+  "new_physical_tables": 0
 }
