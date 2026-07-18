@@ -455,12 +455,12 @@
     {
       "LoopOrder": 622,
       "LoopId": "tsp-loop-622",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Each asymmetric boundary fiber contains two non-equivalent internal path valuations and no canonical survivor.",
       "ClosureCriterion": "Within each of six boundary fibers, warrant the unique minimum-cost path, mark the other path dominated, and record the exact dominance delta.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Collapsed each asymmetric boundary fiber to its unique minimum-valued path while preserving the dominated alternative.",
+      "Result": "Six fibers each contain one SURVIVES row and one DOMINATED row; dominance deltas are 1, 6, 5, 5, 6, and 1 under the declared edge costs.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 623,
@@ -572,7 +572,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 623,
-    "HighestCompletedLoop": 621,
+    "HighestCompletedLoop": 622,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 14,
     "SelectedNotForcedEdgeStates": 5,
@@ -614,8 +614,8 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 48,
     "ClusterContractionCertificates": 3,
-    "ConvergenceMeasurements": 25,
-    "ConceptRegistry": 72,
+    "ConvergenceMeasurements": 26,
+    "ConceptRegistry": 73,
     "DefectProfiles": 16,
     "BoundTerms": 4,
     "WitnessNormalForms": 9,
@@ -631,7 +631,7 @@
     "CurrentSemanticCompressionPct": 90.63
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:f413ed1f3c8cc0a49c6a03e8d3bb269cbf887d0378ec07ba78267c8dd1eb4de0",
+    "rulebook": "sha256:d3ac3b4f33e8bdf71db28a010ca82a290c19d590a60c408d5099e8b7ad976cf0",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
