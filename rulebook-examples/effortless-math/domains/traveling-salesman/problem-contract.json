@@ -16,7 +16,7 @@
     "ActiveImportedDependencyCount": 0,
     "RouteReconstructedWithoutSuppliedAntecedent": true,
     "GridvilleRouteDiscoveryBranchCount": 0,
-    "NeighborhoodContractionFixtureCertified": false
+    "NeighborhoodContractionFixtureCertified": true
   },
   "CanonicalAsset": "effortless-rulebook/traveling-salesman-rulebook.json",
   "ExecutionSubstrates": [
@@ -167,12 +167,12 @@
     {
       "LoopOrder": 596,
       "LoopId": "tsp-loop-596",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Neighborhood rows are geographic labels only; no executable entry/exit path states or contraction certificate exists.",
       "ClosureCriterion": "For each three-stop twin-triangle neighborhood, derive three undirected entry/exit Hamiltonian-path states, reduce six internal orders to three states, and reduce 36 paired internal orders to nine paired boundary-state combinations.",
-      "AfterState": null,
-      "Result": null,
-      "CompletionDisposition": null
+      "AfterState": "Each twin-triangle neighborhood contracts six raw internal orders to three undirected boundary states (50%); paired composition contracts 36 combinations to nine (75%) with cost-preserving path witnesses.",
+      "Result": "Each twin-triangle neighborhood contracts six raw internal orders to three undirected boundary states (50%); paired composition contracts 36 combinations to nine (75%) with cost-preserving path witnesses.",
+      "CompletionDisposition": "CLOSED"
     }
   ],
   "CurrentCertificates": [
@@ -213,13 +213,10 @@
     }
   ],
   "RemainingFrontier": [
-    "live Postgres build and Python/Postgres conformance with artifact hashes",
-    "route reconstruction from inferred edge rows rather than a supplied candidate",
-    "degree-two forced-edge closure after admissibility pruning",
-    "forbidden-edge propagation",
-    "neighborhood boundary-state inference and component contraction",
-    "subtour exclusion certificates for unordered inferred edge sets",
-    "non-tight lower-bound fixtures requiring stronger inference or explicit residual branching"
+    "live Postgres build and Python/Postgres conformance remains blocked until the Effortless CLI and generated database path are available",
+    "generalize neighborhood boundary-state soundness beyond symmetric three-stop clusters",
+    "strengthen non-tight lower bounds with crossing and component constraints",
+    "branch only after deterministic closure on fixtures whose residual ambiguity remains positive"
   ],
   "Acceptance": {
     "RulebookTables": 19,
@@ -243,7 +240,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 596,
-    "HighestCompletedLoop": 586,
+    "HighestCompletedLoop": 596,
     "PostgresCommissioningStatus": "BLOCKED",
     "InferenceApplications": 5,
     "SelectedNotForcedEdgeStates": 5,
@@ -264,10 +261,13 @@
     "TwinTriangleSelectedComponents": 2,
     "TwinTriangleOptimalityProved": false,
     "SparseForcedEdges": 5,
-    "ForbiddenEdgeCertificates": 2
+    "ForbiddenEdgeCertificates": 2,
+    "ClusterBoundaryStates": 6,
+    "NeighborhoodOrderReductionPct": 50,
+    "TwinClusterCombinationReductionPct": 75
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:73598d2c5e2b9845da8e4c1f423fc2608a1dcff12589c2751987a7378d27fb26"
+    "rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90"
   },
   "GeneratedTimestamp": null,
   "Vocabulary": {

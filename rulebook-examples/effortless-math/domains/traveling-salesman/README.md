@@ -132,3 +132,7 @@ The nearest open obligations are live Postgres commissioning, route reconstructi
 > transpiler — `rulebook-to-postgres`, `rulebook-to-python`, `rulebook-to-golang`,
 > `rulebook-to-cobol`, `rulebook-to-owl`, and more — as first-class `ssotme://`
 > routes any `effortless build` can call.
+
+## Loops 587–596 — inference geometry and contraction
+
+The rulebook records every loop first as PLANNED with a before-state and closure criterion, then preserves the after-state in the same row. Gridville is reconstructed from inferred edges with zero branch decisions; twin triangles preserves a sound non-tight lower bound and yields the first finite neighborhood boundary-state contraction certificate. Loop 587 remains honestly BLOCKED when live generated Postgres cannot be commissioned in the execution environment.
