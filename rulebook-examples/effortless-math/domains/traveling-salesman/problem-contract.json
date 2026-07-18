@@ -1,10 +1,10 @@
 {
   "ProblemId": "traveling-salesman-semantic-geometry",
-  "Version": "0.2.0",
-  "Title": "Traveling Salesman \u2014 City / Neighborhood / Address Semantic Geometry",
+  "Version": "0.3.0",
+  "Title": "Traveling Salesman — City / Neighborhood / Address Semantic Geometry",
   "Status": "RESEARCH_PROGRAM",
   "Statement": "Given finite city-scale weighted graphs, represent graph normalization, supplied tours, typed frontier obligations, local-to-global lower bounds, finite optimality certificates, and residual search as executable structural data.",
-  "Scope": "Primary scope is the five-stop symmetric complete Gridville fixture with a fixed depot and explicit canonical undirected edge rows. A three-stop count-preserving broken graph and two invalid tour witnesses are negative certificates. The scope validates supplied cycles and proves the reference route optimal for this finite instance; it does not yet reconstruct the route from inference or provide a general solver.",
+  "Scope": "Primary scope is the five-stop symmetric complete Gridville fixture with a fixed depot and explicit canonical undirected edge rows. A three-stop count-preserving broken graph and two invalid tour witnesses are negative certificates. The scope validates supplied cycles and proves the reference route optimal for this finite instance; it does not yet reconstruct the route from inference or provide a general solver. Loops 587-596 are recorded before execution with explicit before-state and closure criteria.",
   "TrustBoundary": "InputGraphKernel: city/neighborhood/address membership, required-stop selection, and TravelEdges weights are trusted input data. Pair identity, cycle coverage, local two-cheapest witnesses, double-counting, and bound equality are represented internally. Live Postgres commissioning remains an open substrate obligation.",
   "Claims": {
     "PEqualsNP": false,
@@ -13,7 +13,10 @@
     "Gridville5OptimalityProved": true,
     "HamiltonianWitnessValidationImplemented": true,
     "SearchEliminationMeasured": true,
-    "ActiveImportedDependencyCount": 0
+    "ActiveImportedDependencyCount": 0,
+    "RouteReconstructedWithoutSuppliedAntecedent": false,
+    "GridvilleRouteDiscoveryBranchCount": 12,
+    "NeighborhoodContractionFixtureCertified": false
   },
   "CanonicalAsset": "effortless-rulebook/traveling-salesman-rulebook.json",
   "ExecutionSubstrates": [
@@ -70,6 +73,106 @@
       "LoopOrder": 586,
       "LoopId": "tsp-loop-586",
       "Result": "Reference candidate cost 14 equals the certified lower bound, proving finite-instance optimality."
+    },
+    {
+      "LoopOrder": 587,
+      "LoopId": "tsp-loop-587",
+      "Status": "PLANNED",
+      "BeforeState": "frontier-postgres-commissioning is OPEN; no execution-run certificate exists",
+      "ClosureCriterion": "Run the generated Postgres projection, recreate erb_traveling_salesman, compare vw_* results with Python, and record artifact hashes; otherwise record the exact blocking substrate condition.",
+      "AfterState": null,
+      "Result": null,
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 588,
+      "LoopId": "tsp-loop-588",
+      "Status": "PLANNED",
+      "BeforeState": "Inference rules exist, but individual applications, antecedents, edge decisions, and supports are not first-class rows.",
+      "ClosureCriterion": "Represent local-bound applications, antecedents, selected edge states, and support rows without upgrading selected edges to forced edges.",
+      "AfterState": null,
+      "Result": null,
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 589,
+      "LoopId": "tsp-loop-589",
+      "Status": "PLANNED",
+      "BeforeState": "Local degree bounds identify edges independently at stops, but their deduplicated union is not a first-class object.",
+      "ClosureCriterion": "Derive exactly five unique Gridville edges from LocalDegreeBounds and support rows, without using CandidateTour, TourStop, or TourLeg as antecedents.",
+      "AfterState": null,
+      "Result": null,
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 590,
+      "LoopId": "tsp-loop-590",
+      "Status": "PLANNED",
+      "BeforeState": "The inferred Gridville edge union has no represented degree, component, spanning-tree, or subtour certificate.",
+      "ClosureCriterion": "Witness selected degree two at all five stops, one connected component, a four-edge spanning tree, and zero proper subtours.",
+      "AfterState": null,
+      "Result": null,
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 591,
+      "LoopId": "tsp-loop-591",
+      "Status": "PLANNED",
+      "BeforeState": "Gridville has a certified cycle edge set, but the only ordered route rows are supplied candidates.",
+      "ClosureCriterion": "Starting at the depot with deterministic orientation, project five ordered reconstruction steps from the inferred edge set with CandidateUsedAsAntecedent=false.",
+      "AfterState": null,
+      "Result": null,
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 592,
+      "LoopId": "tsp-loop-592",
+      "Status": "PLANNED",
+      "BeforeState": "Route-discovery counts are recorded as baseline data and are not tied to a structural reconstruction certificate.",
+      "ClosureCriterion": "Derive 12 initial symmetry-reduced classes, one surviving reconstructed class, zero branch decisions, zero backtracks, and zero residual ambiguity for Gridville.",
+      "AfterState": null,
+      "Result": null,
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 593,
+      "LoopId": "tsp-loop-593",
+      "Status": "PLANNED",
+      "BeforeState": "The only positive fixture has a tight degree-two lower bound, so failure behavior is not represented.",
+      "ClosureCriterion": "Represent six stops in two cheap triangles with expensive crossings; certify lower bound 6, candidate cost 24, two selected components, and no optimality or route-reconstruction certificate.",
+      "AfterState": null,
+      "Result": null,
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 594,
+      "LoopId": "tsp-loop-594",
+      "Status": "PLANNED",
+      "BeforeState": "Degree-two forcing is declared but has no executable state, round, or decision certificates.",
+      "ClosureCriterion": "On a sparse five-stop fixture, stops with exactly two available incident edges force the five cycle edges with zero branching.",
+      "AfterState": null,
+      "Result": null,
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 595,
+      "LoopId": "tsp-loop-595",
+      "Status": "PLANNED",
+      "BeforeState": "Forced edges do not yet emit deterministic forbidden-edge consequences or premature-subtour exclusions.",
+      "ClosureCriterion": "Forbid the sparse B-D chord by degree saturation and forbid a twin-triangle closing edge because it would close a proper subtour, with replayable reason codes.",
+      "AfterState": null,
+      "Result": null,
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 596,
+      "LoopId": "tsp-loop-596",
+      "Status": "PLANNED",
+      "BeforeState": "Neighborhood rows are geographic labels only; no executable entry/exit path states or contraction certificate exists.",
+      "ClosureCriterion": "For each three-stop twin-triangle neighborhood, derive three undirected entry/exit Hamiltonian-path states, reduce six internal orders to three states, and reduce 36 paired internal orders to nine paired boundary-state combinations.",
+      "AfterState": null,
+      "Result": null,
+      "CompletionDisposition": null
     }
   ],
   "CurrentCertificates": [
@@ -138,10 +241,12 @@
     "MissingCloseTourValid": false,
     "BrokenGraphComplete": false,
     "RouteDiscoverySearchEliminationPct": 0,
-    "SuppliedCandidateOptimalityVerificationEliminationPct": 100
+    "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
+    "LastPlannedLoop": 596,
+    "HighestCompletedLoop": 586
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:133be28b3d9a32e25fedfe7817a808d0ba2033257d8de39f4578a6f7d857dc5f"
+    "rulebook": "sha256:8dd7c88383b9be4e765b03ea0ecf6e18dc5ca1f560e8dc021a026ea83f3932da"
   },
   "GeneratedTimestamp": null,
   "Vocabulary": {
