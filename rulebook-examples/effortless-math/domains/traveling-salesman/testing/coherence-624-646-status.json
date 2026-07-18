@@ -1,6 +1,7 @@
 {
-  "status": "RUNNER_STARTED",
+  "status": "FAILED",
   "driver": "coherence-v1-push-each-loop",
   "github_run_id": "29661410290",
-  "head_sha": "e84a35002f3dd8b77147314e4678dc2437b58c8f"
+  "exit_code": 1,
+  "log": "testing/coherence-624-646-failure.log"
 }
