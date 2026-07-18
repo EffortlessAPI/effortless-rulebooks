@@ -97,12 +97,12 @@
     {
       "LoopOrder": 589,
       "LoopId": "tsp-loop-589",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Local degree bounds identify edges independently at stops, but their deduplicated union is not a first-class object.",
       "ClosureCriterion": "Derive exactly five unique Gridville edges from LocalDegreeBounds and support rows, without using CandidateTour, TourStop, or TourLeg as antecedents.",
-      "AfterState": null,
-      "Result": null,
-      "CompletionDisposition": null
+      "AfterState": "Derived 5 unique edges ['edge-a-b', 'edge-a-e', 'edge-b-c', 'edge-c-d', 'edge-d-e'] at total cost 14; no CandidateTour/TourStop/TourLeg row was an antecedent.",
+      "Result": "Derived 5 unique edges ['edge-a-b', 'edge-a-e', 'edge-b-c', 'edge-c-d', 'edge-d-e'] at total cost 14; no CandidateTour/TourStop/TourLeg row was an antecedent.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 590,
@@ -246,10 +246,11 @@
     "HighestCompletedLoop": 586,
     "PostgresCommissioningStatus": "BLOCKED",
     "InferenceApplications": 5,
-    "SelectedNotForcedEdgeStates": 5
+    "SelectedNotForcedEdgeStates": 5,
+    "GridvilleInferredEdgeCount": 5
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:ecb684eab398643e69673ad2a290ce90bb6743c542aa6c3934f124eb72d043d8"
+    "rulebook": "sha256:1f8cdeef9c775b1196dcf698c970da42c8259a62d606c08f68a52b7d41fd3b8d"
   },
   "GeneratedTimestamp": null,
   "Vocabulary": {
