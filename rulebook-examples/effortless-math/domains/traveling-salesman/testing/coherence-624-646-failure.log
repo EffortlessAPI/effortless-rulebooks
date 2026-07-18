@@ -1,27 +1,17 @@
 formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
-[agent/tsp-semantic-foundation 75883e2f] TSP loops 624-646: register coherence convergence experiment
- 6 files changed, 350 insertions(+), 11 deletions(-)
- create mode 100644 rulebook-examples/effortless-math/domains/traveling-salesman/scripts/validate_rulebook_v5_temporal.py
- create mode 100644 rulebook-examples/effortless-math/domains/traveling-salesman/scripts/validate_rulebook_v6.py
- create mode 100644 rulebook-examples/effortless-math/domains/traveling-salesman/scripts/validate_summary_alignment_v6.py
+[agent/tsp-semantic-foundation 6c209cbe] TSP loop 625: collapse atoms to semantic arc
+ 2 files changed, 100 insertions(+), 89 deletions(-)
 To https://github.com/EffortlessAPI/effortless-rulebooks
-   a1ac09fa..75883e2f  HEAD -> agent/tsp-semantic-foundation
-formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
-[agent/tsp-semantic-foundation c719534c] TSP loop 624: define coherence vector
- 2 files changed, 28 insertions(+), 16 deletions(-)
-To https://github.com/EffortlessAPI/effortless-rulebooks
-   75883e2f..c719534c  HEAD -> agent/tsp-semantic-foundation
+   d5340567..6c209cbe  HEAD -> agent/tsp-semantic-foundation
 traveling-salesman coherence convergence validation: PASS
-loops=70 tables=45 atoms=3 operators=4
-traveling-salesman coherence convergence validation: PASS
-loops=70 tables=45 atoms=3 operators=4
+loops=70 tables=45 atoms=1 operators=4
 Traceback (most recent call last):
-  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_624_646_coherence.py", line 3806, in <module>
+  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_624_646_coherence.py", line 3898, in <module>
     main()
-  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_624_646_coherence.py", line 3786, in main
+  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_624_646_coherence.py", line 3878, in main
     after, witness = LOOP_FUNCS[order](rb, contract)
                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_624_646_coherence.py", line 852, in loop_625
-    coined = concepts["coined-semantic-arc"]
-             ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
-KeyError: 'coined-semantic-arc'
+  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_624_646_coherence.py", line 907, in loop_626
+    row = concepts["coined-arc-signature"]
+          ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'coined-arc-signature'
