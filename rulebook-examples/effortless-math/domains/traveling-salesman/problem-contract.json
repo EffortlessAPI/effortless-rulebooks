@@ -381,12 +381,12 @@
     {
       "LoopOrder": 615,
       "LoopId": "tsp-loop-615",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Connectivity is still treated as a primitive rather than reachability closure over typed attachments.",
       "ClosureCriterion": "Register CLOSURE as an operator over attachment relations, reduce CONNECTIVITY to closure, and leave exactly three active relational atoms.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Lifted connectivity from the primitive basis into CLOSURE over typed attachments.",
+      "Result": "The current active atom count is three: ATTACHMENT, VALUATION, WARRANT. Connectedness, components, cuts, and reachability are closure results.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 616,
@@ -568,7 +568,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 623,
-    "HighestCompletedLoop": 614,
+    "HighestCompletedLoop": 615,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 14,
     "SelectedNotForcedEdgeStates": 5,
@@ -610,8 +610,8 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 12,
     "ClusterContractionCertificates": 3,
-    "ConvergenceMeasurements": 18,
-    "ConceptRegistry": 61,
+    "ConvergenceMeasurements": 19,
+    "ConceptRegistry": 63,
     "DefectProfiles": 16,
     "BoundTerms": 4,
     "WitnessNormalForms": 9,
@@ -623,7 +623,7 @@
     "ConvergencePredictionStatus": "EARLY_EMPIRICAL_SUPPORT_FOR_CURRENT_TSP_DOMAIN"
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:5643aa20ff843bbcda3e66f0c4598551c4a0d93e0363c7657719b57de3b7c7c5",
+    "rulebook": "sha256:69a78940271d10d9f57076187c844b40ac5ba4783e325cf6d85b756de8d1bdb7",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
