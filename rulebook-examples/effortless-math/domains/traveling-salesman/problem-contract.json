@@ -18,7 +18,8 @@
     "GridvilleRouteDiscoveryBranchCount": 0,
     "NeighborhoodContractionFixtureCertified": true,
     "PostgresConformanceCommissioned": true,
-    "ConceptConvergencePredictionRecorded": false
+    "ConceptConvergencePredictionRecorded": true,
+    "ConceptConvergenceProved": false
   },
   "CanonicalAsset": "effortless-rulebook/traveling-salesman-rulebook.json",
   "ExecutionSubstrates": [
@@ -189,12 +190,12 @@
     {
       "LoopOrder": 597,
       "LoopId": "tsp-loop-597",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Forty physical tables expose at least thirty-two recurring surface predicates, but no explicit convergence hypothesis or semantic compression baseline is recorded.",
       "ClosureCriterion": "Record the working prediction, baseline thirty-two surface predicates, target eight-predicate basis, and DAG-based predicate-invention method without claiming a theorem.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Recorded a thirty-two-surface-predicate baseline, an eight-predicate target, and the prediction that DAG inference will invent derived predicates while the primitive basis stabilizes.",
+      "Result": "The convergence hypothesis is now versioned data, explicitly exploratory and not a theorem.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 598,
@@ -375,7 +376,7 @@
     "branch only after deterministic closure on fixtures whose residual ambiguity remains positive"
   ],
   "Acceptance": {
-    "RulebookTables": 40,
+    "RulebookTables": 41,
     "Cities": 1,
     "Neighborhoods": 5,
     "Addresses": 11,
@@ -396,7 +397,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 610,
-    "HighestCompletedLoop": 596,
+    "HighestCompletedLoop": 597,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 5,
     "SelectedNotForcedEdgeStates": 5,
@@ -437,10 +438,11 @@
     "ConstraintRounds": 3,
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 12,
-    "ClusterContractionCertificates": 3
+    "ClusterContractionCertificates": 3,
+    "ConvergenceMeasurements": 1
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:7f312cf1aafb50a00eb3c2eb55e6df10605f84d5a185dfa9ff56ccbaa50f4440",
+    "rulebook": "sha256:b428f0704e50b7099ce4fcd1dab4581bee8f8e8231269e972a101d0208d3998a",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
