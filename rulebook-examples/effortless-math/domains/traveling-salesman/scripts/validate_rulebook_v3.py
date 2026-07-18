@@ -1,3 +1,153 @@
+#!/usr/bin/env python3
+"""Fail-loud validator for the TSP rulebook through planned loop 596.
+
+This validator is intentionally state-aware: loops 587-596 may be PLANNED,
+BLOCKED, or CLOSED. Every completed loop activates its own acceptance checks,
+while the planned state still validates table shape, relationships, formulas,
+and before/closure records.
+"""
+from __future__ import annotations
+
+import json
+import math
+import re
+import sys
+from collections import defaultdict, deque
+from pathlib import Path
+from typing import Any
+
+HERE = Path(__file__).resolve().parent
+DOMAIN = HERE.parent
+RULEBOOK = DOMAIN / "effortless-rulebook" / "traveling-salesman-rulebook.json"
+CONTRACT = DOMAIN / "problem-contract.json"
+sys.path.insert(0, str(HERE))
+from reference_model import evaluate_graph, evaluate_tours  # noqa: E402
+
+ALLOWED_FUNCTIONS = {
+    "ABS", "AND", "AVERAGEIFS", "COALESCE", "CONCAT", "COUNT", "COUNTIFS",
+    "FALSE", "FIND", "IF", "IFERROR", "INDEX", "LEFT", "LEN", "LOG",
+    "LOG10", "LOWER", "MATCH", "MAX", "MID", "MIN", "NOT", "OR",
+    "POWER", "RIGHT", "ROUND", "SEARCH", "SUBSTITUTE", "SUM", "SUMIFS",
+    "TEXT", "TRIM", "TRUE", "UPPER", "VALUE",
+}
+
+
+def fail(message: str) -> None:
+    raise AssertionError(message)
+
+
+def load(path: Path) -> dict[str, Any]:
+    if not path.is_file():
+        raise FileNotFoundError(path)
+    return json.loads(path.read_text())
+
+
+def tables(rb: dict[str, Any]) -> dict[str, dict[str, Any]]:
+    return {k: v for k, v in rb.items() if k != "__meta__" and isinstance(v, dict) and isinstance(v.get("schema"), list) and isinstance(v.get("data"), list)}
+
+
+def id_field(tbl: dict[str, Any]) -> str:
+    if not tbl["schema"]:
+        fail("empty schema")
+    return tbl["schema"][0]["name"]
+
+
+def table_index(rb: dict[str, Any], name: str) -> dict[str, dict[str, Any]]:
+    fld = id_field(rb[name])
+    return {r[fld]: r for r in rb[name]["data"]}
+
+
+def meta_int(rb: dict[str, Any], key: str) -> int:
+    for row in rb["__meta__"]["data"]:
+        if row["MetaKey"] == key:
+            return int(row["IntegerValue"])
+    fail(f"missing meta key {key}")
+
+
+def validate_shapes(rb: dict[str, Any]) -> None:
+    all_tables = tables(rb)
+    if len(all_tables) < 19:
+        fail(f"expected at least 19 tables, got {len(all_tables)}")
+    for name, tbl in all_tables.items():
+        if not tbl.get("Description"):
+            fail(f"{name}: missing Description")
+        first = tbl["schema"][0]
+        if first.get("type") != "raw" or first.get("nullable") is not False:
+            fail(f"{name}: first field must be non-null raw identifier")
+        names = [f.get("name") for f in tbl["schema"]]
+        if len(names) != len(set(names)):
+            fail(f"{name}: duplicate field")
+        if "Name" not in names:
+            fail(f"{name}: missing Name")
+        if next(f for f in tbl["schema"] if f["name"] == "Name").get("type") != "calculated":
+            fail(f"{name}.Name must be calculated")
+        for f in tbl["schema"]:
+            if not f.get("Description"):
+                fail(f"{name}.{f.get('name')}: missing Description")
+            if f.get("type") == "relationship" and not f.get("RelatedTo"):
+                fail(f"{name}.{f.get('name')}: relationship missing RelatedTo")
+            if f.get("type") in {"calculated", "lookup", "aggregation"} and not f.get("formula"):
+                fail(f"{name}.{f.get('name')}: derived field missing formula")
+        identifier = first["name"]
+        values = [r.get(identifier) for r in tbl["data"]]
+        if any(v is None for v in values):
+            fail(f"{name}: row missing {identifier}")
+        if len(values) != len(set(values)):
+            fail(f"{name}: duplicate {identifier}")
+
+
+def validate_relationships(rb: dict[str, Any]) -> None:
+    all_tables = tables(rb)
+    ids = {name: set(table_index(rb, name)) for name in all_tables}
+    graph: dict[str, set[str]] = defaultdict(set)
+    for name, tbl in all_tables.items():
+        for f in tbl["schema"]:
+            if f.get("type") != "relationship":
+                continue
+            target = f["RelatedTo"]
+            if target not in all_tables:
+                fail(f"{name}.{f['name']}: unknown target {target}")
+            if target == name:
+                fail(f"{name}.{f['name']}: self relationships are not allowed")
+            graph[name].add(target)
+            for row in tbl["data"]:
+                value = row.get(f["name"])
+                if value is None:
+                    if not f.get("nullable"):
+                        fail(f"{name}.{f['name']}: null non-null relationship")
+                elif value not in ids[target]:
+                    fail(f"{name}.{f['name']}: {value!r} missing from {target}")
+    indegree = {n: 0 for n in all_tables}
+    outgoing: dict[str, set[str]] = defaultdict(set)
+    for child, parents in graph.items():
+        for parent in parents:
+            outgoing[child].add(parent)
+            indegree[parent] += 1
+    q = deque(n for n, d in indegree.items() if d == 0)
+    seen = 0
+    while q:
+        n = q.popleft(); seen += 1
+        for parent in outgoing[n]:
+            indegree[parent] -= 1
+            if indegree[parent] == 0:
+                q.append(parent)
+    if seen != len(all_tables):
+        fail(f"relationship DAG cycle: {sorted(n for n,d in indegree.items() if d)}")
+
+
+def validate_formulas(rb: dict[str, Any]) -> None:
+    all_tables = tables(rb)
+    fields = {n: {f["name"] for f in t["schema"]} for n, t in all_tables.items()}
+    cross = re.compile(r"([A-Za-z][A-Za-z0-9_]*)!\{\{([A-Za-z][A-Za-z0-9_]*)\}\}")
+    local = re.compile(r"\{\{([A-Za-z][A-Za-z0-9_]*)\}\}")
+    funcs = re.compile(r"(?<![A-Za-z0-9_])([A-Z][A-Z0-9_]*)\s*\(")
+    for name, tbl in all_tables.items():
+        for f in tbl["schema"]:
+            formula = f.get("formula")
+            if not formula:
+                continue
+            if not formula.startswith("="):
+                fail(f"{name}.{f['name']}: formula must start '='")
             for tn, fn in cross.findall(formula):
                 if tn not in fields or fn not in fields[tn]:
                     fail(f"{name}.{f['name']}: unknown cross reference {tn}.{fn}")
