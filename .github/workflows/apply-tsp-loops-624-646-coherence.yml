@@ -67,13 +67,13 @@ jobs:
           cat > "$domain/testing/coherence-624-646-status.json" <<EOF
           {
             "status": "RUNNER_STARTED",
-            "driver": "coherence-v1-push-each-loop",
+            "driver": "coherence-v3-temporal-primary",
             "github_run_id": "$GITHUB_RUN_ID",
             "head_sha": "$GITHUB_SHA"
           }
           EOF
           git add "$domain/testing/coherence-624-646-status.json"
-          git commit -m 'Record TSP coherence v1 runner checkpoint'
+          git commit -m 'Record TSP coherence v3 runner checkpoint'
           git pull --rebase origin "$TARGET_BRANCH"
           git push origin HEAD:"$TARGET_BRANCH"
 
@@ -104,12 +104,9 @@ jobs:
           import json
           from pathlib import Path
           domain = Path('rulebook-examples/effortless-math/domains/traveling-salesman')
-          verified = domain / 'testing/refinement-611-623-verified.json'
-          if not verified.is_file():
-              raise FileNotFoundError(verified)
-          payload = json.loads(verified.read_text())
-          if payload.get('status') != 'VERIFIED':
-              raise AssertionError(payload)
+          verified = json.loads((domain/'testing/refinement-611-623-verified.json').read_text())
+          if verified.get('status') != 'VERIFIED':
+              raise AssertionError(verified)
           rb = json.loads((domain/'effortless-rulebook/traveling-salesman-rulebook.json').read_text())
           loops = {int(row['LoopOrder']): row for row in rb['TSPLoops']['data']}
           if loops[623]['Status'] != 'CLOSED':
@@ -117,32 +114,39 @@ jobs:
           print('verified loop-623 prerequisite: PASS')
           PY
 
-      - name: Assemble and compile transparent coherence executor
+      - name: Assemble temporal coherence executor
         shell: bash
         run: |
           set -euo pipefail
           domain='rulebook-examples/effortless-math/domains/traveling-salesman'
           scripts="$domain/scripts"
+          output="$scripts/apply_loops_624_646_coherence.py"
           cat \
             "$scripts/coherence_624_646.part1.pyfrag" \
             "$scripts/coherence_624_646.part2.pyfrag" \
             "$scripts/coherence_624_646.part2fix.pyfrag" \
             "$scripts/coherence_624_646.part2fixlate.pyfrag" \
             "$scripts/coherence_624_646.part3.pyfrag" \
-            "$scripts/coherence_624_646.part4.pyfrag" \
-            > "$scripts/apply_loops_624_646_coherence.py"
-          python3 -m py_compile "$scripts/apply_loops_624_646_coherence.py"
-          git add "$scripts/apply_loops_624_646_coherence.py"
-          git diff --cached --quiet || git commit -m 'Assemble TSP coherence-convergence executor'
+            > "$output"
+          sed '/^if __name__ == "__main__":$/,$d' "$scripts/coherence_624_646.part4.pyfrag" >> "$output"
+          cat "$scripts/coherence_624_646.part5.pyfrag" >> "$output"
+          cat >> "$output" <<'PY'
+
+if __name__ == "__main__":
+    main()
+PY
+          python3 -m py_compile "$output"
+          git add "$output"
+          git diff --cached --quiet || git commit -m 'Assemble temporal TSP coherence executor'
           git push origin HEAD:"$TARGET_BRANCH"
 
-      - name: Execute and publish every coherence loop
+      - name: Execute and publish every remaining coherence loop
         id: execute
         shell: bash
         run: |
           set -uo pipefail
           domain='rulebook-examples/effortless-math/domains/traveling-salesman'
-          log="$RUNNER_TEMP/tsp-coherence-624-646.log"
+          log="$RUNNER_TEMP/tsp-coherence-624-646-v3.log"
           set +e
           python3 "$domain/scripts/apply_loops_624_646_coherence.py" 2>&1 | tee "$log"
           status=${PIPESTATUS[0]}
@@ -150,31 +154,31 @@ jobs:
           echo "log=$log" >> "$GITHUB_OUTPUT"
           exit 0
 
-      - name: Persist partial-run failure after durable loop commits
+      - name: Persist partial-run failure
         if: steps.execute.outputs.status != '0'
         shell: bash
         run: |
           set -euo pipefail
           domain='rulebook-examples/effortless-math/domains/traveling-salesman'
-          cp '${{ steps.execute.outputs.log }}' /tmp/tsp-coherence-624-646-failure.log
+          cp '${{ steps.execute.outputs.log }}' /tmp/tsp-coherence-624-646-v3-failure.log
           git fetch origin "$TARGET_BRANCH"
           git reset --hard "origin/$TARGET_BRANCH"
-          cp /tmp/tsp-coherence-624-646-failure.log "$domain/testing/coherence-624-646-failure.log"
+          cp /tmp/tsp-coherence-624-646-v3-failure.log "$domain/testing/coherence-624-646-failure.log"
           cat > "$domain/testing/coherence-624-646-status.json" <<EOF
           {
             "status": "FAILED",
-            "driver": "coherence-v1-push-each-loop",
+            "driver": "coherence-v3-temporal-primary",
             "github_run_id": "$GITHUB_RUN_ID",
             "exit_code": ${{ steps.execute.outputs.status }},
             "log": "testing/coherence-624-646-failure.log"
           }
           EOF
           git add "$domain/testing/coherence-624-646-failure.log" "$domain/testing/coherence-624-646-status.json"
-          git commit -m 'Record TSP coherence-convergence partial failure'
+          git commit -m 'Record TSP coherence v3 partial failure'
           git push origin HEAD:"$TARGET_BRANCH"
           exit 1
 
-      - name: Record execution success, remove fragments, and push
+      - name: Record execution success and remove fragments
         if: steps.execute.outputs.status == '0'
         shell: bash
         run: |
@@ -183,7 +187,7 @@ jobs:
           cat > "$domain/testing/coherence-624-646-status.json" <<EOF
           {
             "status": "SUCCEEDED",
-            "driver": "coherence-v1-push-each-loop",
+            "driver": "coherence-v3-temporal-primary",
             "github_run_id": "$GITHUB_RUN_ID",
             "last_loop": 646,
             "active_atoms": ["SEMANTIC_ARC"],
@@ -201,7 +205,8 @@ jobs:
             "$domain/scripts/coherence_624_646.part2fix.pyfrag" \
             "$domain/scripts/coherence_624_646.part2fixlate.pyfrag" \
             "$domain/scripts/coherence_624_646.part3.pyfrag" \
-            "$domain/scripts/coherence_624_646.part4.pyfrag"
+            "$domain/scripts/coherence_624_646.part4.pyfrag" \
+            "$domain/scripts/coherence_624_646.part5.pyfrag"
           rm -f "$domain/testing/coherence-624-646-failure.log"
           git add -A -- "$domain"
           git commit -m 'Record TSP coherence convergence loops 624-646 success'
