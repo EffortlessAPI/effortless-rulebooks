@@ -2,8 +2,8 @@
 """Validate that TSP summary projections agree with the canonical rulebook.
 
 The rulebook remains canonical. This guard prevents problem-contract.json and
-README.md from silently retaining stale counts, loop statuses, or headline
-claims after later semantic loops.
+README.md from silently retaining stale counts, loop statuses, substrate state,
+or headline claims after later semantic loops.
 """
 from __future__ import annotations
 
@@ -96,17 +96,47 @@ def main() -> None:
 
     assert_equal("highest completed loop", acceptance["HighestCompletedLoop"], 596)
     assert_equal("last planned loop", acceptance["LastPlannedLoop"], 596)
-    assert_equal("Postgres commissioning status", acceptance["PostgresCommissioningStatus"], "BLOCKED")
+    postgres_status = rulebook_loops[587]["Status"]
+    if postgres_status not in {"BLOCKED", "CLOSED"}:
+        raise AssertionError(f"unexpected Postgres commissioning status: {postgres_status}")
+    assert_equal("Postgres commissioning status", acceptance["PostgresCommissioningStatus"], postgres_status)
     assert_equal("active imports", acceptance["ActiveImportedDependencies"], 0)
+
     if contract["Claims"]["RouteReconstructedWithoutSuppliedAntecedent"] is not True:
         raise AssertionError("route-reconstruction claim must remain true after loop 591")
-    if contract["Claims"]["PostgresConformanceCommissioned"] is not False:
-        raise AssertionError("Postgres conformance must remain false until the substrate obligation closes")
+    commissioned = postgres_status == "CLOSED"
+    if contract["Claims"].get("PostgresConformanceCommissioned") is not commissioned:
+        raise AssertionError(
+            "PostgresConformanceCommissioned must agree with the canonical loop-587 status"
+        )
+
+    loop_587_runs = [
+        row for row in rulebook["TSPExecutionRuns"]["data"]
+        if row["TSPLoop"] == "tsp-loop-587"
+    ]
+    if not loop_587_runs:
+        raise AssertionError("loop 587 has no execution-attempt rows")
+    if commissioned:
+        successful = [
+            row for row in loop_587_runs
+            if row["Status"] == "SUCCEEDED"
+            and row["BuildSucceeded"] is True
+            and row["DatabaseInitialized"] is True
+            and row["ConformanceSucceeded"] is True
+        ]
+        if not successful:
+            raise AssertionError("closed loop 587 lacks a successful execution run")
+        postgres_marker = "Postgres commissioning: CLOSED"
+    else:
+        blocked = [row for row in loop_587_runs if row["Status"] == "BLOCKED"]
+        if not blocked or any(not row.get("FailureReason") for row in blocked):
+            raise AssertionError("blocked loop 587 lacks an exact failure record")
+        postgres_marker = "Postgres commissioning: BLOCKED"
 
     required_markers = [
         "Loops 577–596",
         "12 → 1",
-        "BLOCKED: missing required executable(s): effortless",
+        postgres_marker,
         "36 → 9",
         "CandidateUsedAsAntecedent=false",
     ]
@@ -118,7 +148,8 @@ def main() -> None:
     print(
         f"tables={len(tables)} loops={len(rulebook_loops)} "
         f"instances={len(rulebook['TSPInstances']['data'])} "
-        f"edges={len(rulebook['TravelEdges']['data'])}"
+        f"edges={len(rulebook['TravelEdges']['data'])} "
+        f"postgres={postgres_status}"
     )
 
 
