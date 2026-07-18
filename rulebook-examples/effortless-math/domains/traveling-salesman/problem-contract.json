@@ -391,12 +391,12 @@
     {
       "LoopOrder": 616,
       "LoopId": "tsp-loop-616",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Counts, sums, minima, degrees, and repair totals are expressed through many surface formulas without one operator identity.",
       "ClosureCriterion": "Register AGGREGATE as the common count/sum/min/max/parity operator over attachments and valuations, with no new atom.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Lifted count, sum, minimum, maximum, parity, and signed repair arithmetic into AGGREGATE.",
+      "Result": "Degree, edge count, lower-bound sum, fiber minimum, and convergence measurement now differ by measure and reducer, not by primitive type.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 617,
@@ -568,7 +568,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 623,
-    "HighestCompletedLoop": 615,
+    "HighestCompletedLoop": 616,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 14,
     "SelectedNotForcedEdgeStates": 5,
@@ -610,8 +610,8 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 12,
     "ClusterContractionCertificates": 3,
-    "ConvergenceMeasurements": 19,
-    "ConceptRegistry": 63,
+    "ConvergenceMeasurements": 20,
+    "ConceptRegistry": 65,
     "DefectProfiles": 16,
     "BoundTerms": 4,
     "WitnessNormalForms": 9,
@@ -623,7 +623,7 @@
     "ConvergencePredictionStatus": "EARLY_EMPIRICAL_SUPPORT_FOR_CURRENT_TSP_DOMAIN"
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:69a78940271d10d9f57076187c844b40ac5ba4783e325cf6d85b756de8d1bdb7",
+    "rulebook": "sha256:2ce82b4d3c223da264b3571566aa5a5d4e7cbb5372716203bcad353577625654",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
