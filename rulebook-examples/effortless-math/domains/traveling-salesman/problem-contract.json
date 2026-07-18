@@ -411,12 +411,12 @@
     {
       "LoopOrder": 618,
       "LoopId": "tsp-loop-618",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Closure events and constraint rounds expose repeated application, but fixed-point iteration is not explicit in the semantic basis.",
       "ClosureCriterion": "Register FIXPOINT as repeated warranted closure until no commitment changes, and map inference rounds and closure events onto it.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Lifted repeated constraint and inference closure into FIXPOINT.",
+      "Result": "Forcing, forbidding, repair, and quotient events can now be described as warranted transformations iterated until state stability.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 619,
@@ -568,7 +568,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 623,
-    "HighestCompletedLoop": 617,
+    "HighestCompletedLoop": 618,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 14,
     "SelectedNotForcedEdgeStates": 5,
@@ -610,8 +610,8 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 12,
     "ClusterContractionCertificates": 3,
-    "ConvergenceMeasurements": 21,
-    "ConceptRegistry": 67,
+    "ConvergenceMeasurements": 22,
+    "ConceptRegistry": 69,
     "DefectProfiles": 16,
     "BoundTerms": 4,
     "WitnessNormalForms": 9,
@@ -623,7 +623,7 @@
     "ConvergencePredictionStatus": "EARLY_EMPIRICAL_SUPPORT_FOR_CURRENT_TSP_DOMAIN"
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:56f94179c0f997c7aad0a6bac910a9390967891adcc0520e69b93f60564a84de",
+    "rulebook": "sha256:c7ccedaa5e66b940a934930870a1165ca9221a297d15ee8770bfae9acfea732b",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
