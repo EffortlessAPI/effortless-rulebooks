@@ -371,12 +371,12 @@
     {
       "LoopOrder": 614,
       "LoopId": "tsp-loop-614",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Commitment and provenance are separate primitives even though every commitment is a scoped conclusion warranted by sources and rules.",
       "ClosureCriterion": "Introduce WARRANT(conclusion, source, modality), reduce commitment and provenance to warrant projections, and preserve necessity scope distinctions.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Collapsed commitment and provenance into WARRANT with explicit source, modality, and scope.",
+      "Result": "SELECTED remains a current-witness warrant, FORCED remains an all-feasible-tours warrant, and historical provenance remains queryable; active primitive count becomes four.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 615,
@@ -568,7 +568,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 623,
-    "HighestCompletedLoop": 613,
+    "HighestCompletedLoop": 614,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 14,
     "SelectedNotForcedEdgeStates": 5,
@@ -610,8 +610,8 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 12,
     "ClusterContractionCertificates": 3,
-    "ConvergenceMeasurements": 17,
-    "ConceptRegistry": 59,
+    "ConvergenceMeasurements": 18,
+    "ConceptRegistry": 61,
     "DefectProfiles": 16,
     "BoundTerms": 4,
     "WitnessNormalForms": 9,
@@ -623,7 +623,7 @@
     "ConvergencePredictionStatus": "EARLY_EMPIRICAL_SUPPORT_FOR_CURRENT_TSP_DOMAIN"
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:525690f125b7c9389da0a3a3a433548de8a782597a2a9a4d812fca8c0bb13747",
+    "rulebook": "sha256:5643aa20ff843bbcda3e66f0c4598551c4a0d93e0363c7657719b57de3b7c7c5",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
