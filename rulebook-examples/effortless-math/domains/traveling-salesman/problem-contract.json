@@ -513,12 +513,12 @@
     {
       "LoopOrder": 627,
       "LoopId": "tsp-loop-627",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "The arc signatures are represented, but lossless recovery of the historical vocabulary has not been certified across the concept registry.",
       "ClosureCriterion": "Give every registered concept an explicit recovery expression over semantic arcs and operators, reject unreduced historical tokens, and preserve source-table provenance.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Certified lossless recovery of the historical and derived vocabulary from semantic arcs plus the current operators.",
+      "Result": "Recoverability coverage is 79/79; no retired atom token remains in a current reduced definition.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 628,
@@ -808,7 +808,7 @@
     "TravelEdges": 44,
     "CandidateTours": 4,
     "TSPLoops": 70,
-    "FrontierObligations": 23,
+    "FrontierObligations": 24,
     "ActiveImportedDependencies": 0,
     "ReferenceTourValid": true,
     "ReferenceTourCost": 14,
@@ -820,7 +820,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 646,
-    "HighestCompletedLoop": 626,
+    "HighestCompletedLoop": 627,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 14,
     "SelectedNotForcedEdgeStates": 5,
@@ -862,8 +862,8 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 48,
     "ClusterContractionCertificates": 4,
-    "ConvergenceMeasurements": 30,
-    "ConceptRegistry": 78,
+    "ConvergenceMeasurements": 31,
+    "ConceptRegistry": 79,
     "DefectProfiles": 16,
     "BoundTerms": 4,
     "WitnessNormalForms": 9,
@@ -884,7 +884,7 @@
     "AsymmetricQuotientReductionPct": 75
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:ee827e53f919c25ff572e8155b7daab2dcc66e21094848d9ffc0820a30020520",
+    "rulebook": "sha256:5ffc789a049040b4d8bf108ce2ae7e4de780c2309fb942ebb40bb9a5e17309f1",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
