@@ -1,5 +1,0 @@
-traveling-salesman rulebook v3 validation: PASS
-tables: 40
-loops 587-596: 587:CLOSED, 588:CLOSED, 589:CLOSED, 590:CLOSED, 591:CLOSED, 592:CLOSED, 593:CLOSED, 594:CLOSED, 595:CLOSED, 596:CLOSED
-traveling-salesman summary alignment: PASS
-tables=40 loops=20 instances=4 edges=38 postgres=CLOSED
