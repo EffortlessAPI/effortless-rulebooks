@@ -14,7 +14,7 @@
     "HamiltonianWitnessValidationImplemented": true,
     "SearchEliminationMeasured": true,
     "ActiveImportedDependencyCount": 0,
-    "RouteReconstructedWithoutSuppliedAntecedent": false,
+    "RouteReconstructedWithoutSuppliedAntecedent": true,
     "GridvilleRouteDiscoveryBranchCount": 12,
     "NeighborhoodContractionFixtureCertified": false
   },
@@ -117,12 +117,12 @@
     {
       "LoopOrder": 591,
       "LoopId": "tsp-loop-591",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Gridville has a certified cycle edge set, but the only ordered route rows are supplied candidates.",
       "ClosureCriterion": "Starting at the depot with deterministic orientation, project five ordered reconstruction steps from the inferred edge set with CandidateUsedAsAntecedent=false.",
-      "AfterState": null,
-      "Result": null,
-      "CompletionDisposition": null
+      "AfterState": "Reconstructed stop-a -> stop-b -> stop-c -> stop-d -> stop-e -> stop-a at cost 14; CandidateUsedAsAntecedent=false and the supplied route is comparison-only.",
+      "Result": "Reconstructed stop-a -> stop-b -> stop-c -> stop-d -> stop-e -> stop-a at cost 14; CandidateUsedAsAntecedent=false and the supplied route is comparison-only.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 592,
@@ -249,10 +249,18 @@
     "SelectedNotForcedEdgeStates": 5,
     "GridvilleInferredEdgeCount": 5,
     "GridvilleConnectedComponents": 1,
-    "GridvilleProperSubtours": 0
+    "GridvilleProperSubtours": 0,
+    "ReconstructedRoute": [
+      "stop-a",
+      "stop-b",
+      "stop-c",
+      "stop-d",
+      "stop-e",
+      "stop-a"
+    ]
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:03eca22d001462ee76b26a2ca98351d2c7c43d2e494fcba194383db7d7c58b8b"
+    "rulebook": "sha256:0f108a473ea5978515cb7bdcdd7051e6bd8d49ed7ff5d6de540bea4f3988a75e"
   },
   "GeneratedTimestamp": null,
   "Vocabulary": {
