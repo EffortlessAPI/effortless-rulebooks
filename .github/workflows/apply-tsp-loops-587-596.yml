@@ -6,6 +6,7 @@ on:
       - agent/tsp-semantic-foundation
     paths:
       - .github/workflows/apply-tsp-loops-587-596.yml
+      - .tsp-loop-587-596-trigger
   pull_request:
     branches:
       - main
