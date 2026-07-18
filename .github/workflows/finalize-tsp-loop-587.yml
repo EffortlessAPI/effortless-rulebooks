@@ -88,7 +88,7 @@ jobs:
           python3 -m py_compile \
             "$domain/scripts/complete_loop_587.py" \
             "$domain/scripts/complete_loop_587_final.py" \
-            "$domain/scripts/complete_loop_587_final_v2.py" \
+            "$domain/scripts/complete_loop_587_final_v3.py" \
             "$domain/scripts/validate_summary_alignment.py" \
             "$domain/testing/take-test.py"
 
@@ -98,12 +98,12 @@ jobs:
         run: |
           set -uo pipefail
           domain='rulebook-examples/effortless-math/domains/traveling-salesman'
-          log="$domain/testing/postgres-commissioning-retry-9.log"
+          log="$domain/testing/postgres-commissioning-retry-10.log"
           mkdir -p "$(dirname "$log")"
           set +e
           (
             set -e
-            echo "loop=587 retry=9"
+            echo "loop=587 retry=10"
             echo "cli_source=$EFFORTLESS_CLI_SOURCE"
             echo "cli_commit=$EFFORTLESS_CLI_COMMIT"
             echo "cli_version=$EFFORTLESS_CLI_VERSION"
@@ -130,14 +130,14 @@ jobs:
           cat > .tsp-loop-587-retry-status.json <<EOF
           {
             "stage": "BUILD_OR_CONFORMANCE_FAILED",
-            "attempt": 9,
+            "attempt": 10,
             "github_run_id": "$GITHUB_RUN_ID",
-            "build_log": "$domain/testing/postgres-commissioning-retry-9.log",
+            "build_log": "$domain/testing/postgres-commissioning-retry-10.log",
             "exit_code": ${{ steps.substrate.outputs.status }}
           }
           EOF
-          git add .tsp-loop-587-retry-status.json "$domain/testing/postgres-commissioning-retry-9.log"
-          git commit -m 'Record TSP loop 587 retry-9 substrate failure'
+          git add .tsp-loop-587-retry-status.json "$domain/testing/postgres-commissioning-retry-10.log"
+          git commit -m 'Record TSP loop 587 retry-10 substrate failure'
           git reset --hard HEAD
           git clean -fd -- "$domain/effortless-postgres" "$domain/rulespeak"
           git pull --rebase origin "$TARGET_BRANCH"
@@ -151,15 +151,15 @@ jobs:
         run: |
           set -uo pipefail
           domain='rulebook-examples/effortless-math/domains/traveling-salesman'
-          log="$domain/testing/postgres-commissioning-finalization-retry-9.log"
+          log="$domain/testing/postgres-commissioning-finalization-retry-10.log"
           set +e
           (
             set -e
-            python3 "$domain/scripts/complete_loop_587_final_v2.py"
+            python3 "$domain/scripts/complete_loop_587_final_v3.py"
             python3 "$domain/scripts/validate_rulebook.py"
             python3 -m py_compile \
               "$domain/scripts/complete_loop_587_final.py" \
-              "$domain/scripts/complete_loop_587_final_v2.py" \
+              "$domain/scripts/complete_loop_587_final_v3.py" \
               "$domain/scripts/validate_rulebook.py" \
               "$domain/scripts/validate_rulebook_v3.py" \
               "$domain/scripts/validate_summary_alignment.py" \
@@ -180,14 +180,14 @@ jobs:
           cat > .tsp-loop-587-retry-status.json <<EOF
           {
             "stage": "LEDGER_FINALIZATION_FAILED",
-            "attempt": 9,
+            "attempt": 10,
             "github_run_id": "$GITHUB_RUN_ID",
-            "finalization_log": "$domain/testing/postgres-commissioning-finalization-retry-9.log",
+            "finalization_log": "$domain/testing/postgres-commissioning-finalization-retry-10.log",
             "exit_code": ${{ steps.seal.outputs.status }}
           }
           EOF
-          git add .tsp-loop-587-retry-status.json "$domain/testing/postgres-commissioning-finalization-retry-9.log"
-          git commit -m 'Record TSP loop 587 retry-9 finalization failure'
+          git add .tsp-loop-587-retry-status.json "$domain/testing/postgres-commissioning-finalization-retry-10.log"
+          git commit -m 'Record TSP loop 587 retry-10 finalization failure'
           git reset --hard HEAD
           git clean -fd -- "$domain/effortless-postgres" "$domain/rulespeak"
           git pull --rebase origin "$TARGET_BRANCH"
@@ -203,7 +203,7 @@ jobs:
           cat > .tsp-loop-587-retry-status.json <<EOF
           {
             "stage": "COMPLETED",
-            "attempt": 9,
+            "attempt": 10,
             "github_run_id": "$GITHUB_RUN_ID",
             "cli_commit": "$EFFORTLESS_CLI_COMMIT",
             "cli_source": "$EFFORTLESS_CLI_SOURCE"
