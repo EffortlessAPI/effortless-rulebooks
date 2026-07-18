@@ -115,11 +115,13 @@ jobs:
             "$scripts/refinement_611_623.part3a.pyfrag" \
             "$scripts/refinement_611_623.part3b.pyfrag" \
             > "$scripts/apply_loops_611_623_refinement.py"
-          python3 -m py_compile "$scripts/apply_loops_611_623_refinement.py"
+          python3 -m py_compile \
+            "$scripts/apply_loops_611_623_refinement.py" \
+            "$scripts/apply_loops_611_623_refinement_push_each.py"
           git add "$scripts/apply_loops_611_623_refinement.py"
           git diff --cached --quiet || git commit -m 'Assemble TSP atom-operator refinement executor'
 
-      - name: Execute loops 611-623
+      - name: Execute and publish loops 611-623
         id: execute
         shell: bash
         run: |
@@ -127,19 +129,20 @@ jobs:
           domain='rulebook-examples/effortless-math/domains/traveling-salesman'
           log="$RUNNER_TEMP/tsp-refinement-611-623.log"
           set +e
-          python3 "$domain/scripts/apply_loops_611_623_refinement.py" 2>&1 | tee "$log"
+          python3 "$domain/scripts/apply_loops_611_623_refinement_push_each.py" 2>&1 | tee "$log"
           status=${PIPESTATUS[0]}
           echo "status=$status" >> "$GITHUB_OUTPUT"
           echo "log=$log" >> "$GITHUB_OUTPUT"
           exit 0
 
-      - name: Persist refinement failure
+      - name: Persist refinement failure after durable loop commits
         if: steps.execute.outputs.status != '0'
         shell: bash
         run: |
           set -euo pipefail
           domain='rulebook-examples/effortless-math/domains/traveling-salesman'
           cp '${{ steps.execute.outputs.log }}' /tmp/tsp-refinement-failure.log
+          git fetch origin "$TARGET_BRANCH"
           git reset --hard "origin/$TARGET_BRANCH"
           mkdir -p "$domain/testing"
           cp /tmp/tsp-refinement-failure.log "$domain/testing/refinement-611-623-failure.log"
@@ -153,7 +156,6 @@ jobs:
           EOF
           git add "$domain/testing/refinement-611-623-failure.log" "$domain/testing/refinement-611-623-status.json"
           git commit -m 'Record TSP atom-operator refinement failure'
-          git pull --rebase origin "$TARGET_BRANCH"
           git push origin HEAD:"$TARGET_BRANCH"
           exit 1
 
@@ -181,5 +183,4 @@ jobs:
                 "$domain/scripts/refinement_611_623.part3b.pyfrag"
           git add -A -- "$domain"
           git commit -m 'Record TSP atom-operator refinement success'
-          git pull --rebase origin "$TARGET_BRANCH"
           git push origin HEAD:"$TARGET_BRANCH"
