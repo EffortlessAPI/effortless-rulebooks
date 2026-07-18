@@ -16,44 +16,26 @@ on:
       - .github/workflows/validate-tsp-domain.yml
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   validate:
     runs-on: ubuntu-latest
-    env:
-      TARGET_BRANCH: ${{ github.head_ref || github.ref_name }}
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref || github.ref_name }}
           fetch-depth: 0
 
-      - name: Validate semantic rulebook and persist diagnostics
-        id: semantic
+      - name: Validate semantic rulebook and summary projections
         shell: bash
         run: |
-          set +e
+          set -euo pipefail
           domain='rulebook-examples/effortless-math/domains/traveling-salesman'
-          python3 "$domain/scripts/validate_rulebook.py" > .tsp-validation-result.txt 2>&1
-          status=$?
-          cat .tsp-validation-result.txt
-          echo "status=$status" >> "$GITHUB_OUTPUT"
-          exit 0
+          python3 "$domain/scripts/validate_rulebook.py"
 
-      - name: Commit diagnostic result
-        run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add .tsp-validation-result.txt
-          git diff --cached --quiet || git commit -m 'Record TSP validation diagnostic'
-          git push origin HEAD:"$TARGET_BRANCH"
-
-      - name: Stop on semantic failure
-        if: steps.semantic.outputs.status != '0'
-        run: exit "${{ steps.semantic.outputs.status }}"
-
-      - name: Compile replay and validation programs
+      - name: Compile replay, commissioning, and validation programs
+        shell: bash
         run: |
           set -euo pipefail
           domain='rulebook-examples/effortless-math/domains/traveling-salesman'
@@ -61,13 +43,18 @@ jobs:
             "$domain/scripts/apply_loops_582_586.py" \
             "$domain/scripts/apply_loops_587_596.py" \
             "$domain/scripts/reference_model.py" \
+            "$domain/scripts/complete_loop_587.py" \
+            "$domain/scripts/complete_loop_587_final.py" \
+            "$domain/scripts/complete_loop_587_final_v3.py" \
             "$domain/scripts/validate_rulebook.py" \
             "$domain/scripts/validate_rulebook_v3.py" \
             "$domain/scripts/validate_summary_alignment.py" \
+            "$domain/scripts/reconcile_summary.py" \
             "$domain/testing/take-test.py"
           bash -n "$domain/start.sh"
 
       - name: Verify ordered loop commit history
+        shell: bash
         run: |
           set -euo pipefail
           python3 - <<'PY'
@@ -101,6 +88,7 @@ jobs:
               print(' ', message)
           PY
 
-      - name: Ensure validation is read-only except diagnostic artifact
+      - name: Ensure validation is read-only
+        shell: bash
         run: |
           test -z "$(git status --porcelain)"
