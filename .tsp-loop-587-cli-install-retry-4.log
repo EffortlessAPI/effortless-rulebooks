@@ -9,5 +9,5 @@ npm error npm error path /home/runner/work/_temp/npm-global/lib/node_modules/sso
 npm error npm error dest /home/runner/work/_temp/npm-global/lib/node_modules/.ssotme-ltl0zfSX
 npm error npm error errno -20
 npm error npm error ENOTDIR: not a directory, rename '/home/runner/work/_temp/npm-global/lib/node_modules/ssotme' -> '/home/runner/work/_temp/npm-global/lib/node_modules/.ssotme-ltl0zfSX'
-npm error npm error A complete log of this run can be found in: /home/runner/.npm/_logs/2026-07-18T05_07_44_713Z-debug-0.log
-npm error A complete log of this run can be found in: /home/runner/.npm/_logs/2026-07-18T05_07_39_543Z-debug-0.log
+npm error npm error A complete log of this run can be found in: /home/runner/.npm/_logs/2026-07-18T05_09_42_559Z-debug-0.log
+npm error A complete log of this run can be found in: /home/runner/.npm/_logs/2026-07-18T05_09_40_031Z-debug-0.log
