@@ -137,12 +137,12 @@
     {
       "LoopOrder": 593,
       "LoopId": "tsp-loop-593",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "The only positive fixture has a tight degree-two lower bound, so failure behavior is not represented.",
       "ClosureCriterion": "Represent six stops in two cheap triangles with expensive crossings; certify lower bound 6, candidate cost 24, two selected components, and no optimality or route-reconstruction certificate.",
-      "AfterState": null,
-      "Result": null,
-      "CompletionDisposition": null
+      "AfterState": "Twin triangles: certified degree-two lower bound 6, feasible candidate cost 24, selected component count 2, proper subtours 2; no optimality or reconstruction certificate emitted.",
+      "Result": "Twin triangles: certified degree-two lower bound 6, feasible candidate cost 24, selected component count 2, proper subtours 2; no optimality or reconstruction certificate emitted.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 594,
@@ -258,10 +258,14 @@
       "stop-e",
       "stop-a"
     ],
-    "GridvilleSurvivingRouteClasses": 1
+    "GridvilleSurvivingRouteClasses": 1,
+    "TwinTriangleLowerBound": 6,
+    "TwinTriangleCandidateCost": 24,
+    "TwinTriangleSelectedComponents": 2,
+    "TwinTriangleOptimalityProved": false
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:a4a5799074d4d9da53f6cfe46c1a4b85e245afed270db9c689c1abb975d379c6"
+    "rulebook": "sha256:b29e95037f3b3ac6a9afbf9a18dddc262f423e8de091398bac5a3dafdb1a423f"
   },
   "GeneratedTimestamp": null,
   "Vocabulary": {
