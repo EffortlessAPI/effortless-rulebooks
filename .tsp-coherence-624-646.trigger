@@ -1,2 +1,2 @@
-run-id: tsp-coherence-624-646-attempt-4
-intent: resume at loop 627 using current-basis-only recoverability definitions, preserve durable loops 624-626, and continue publishing each loop through Postgres verification at 646
+run-id: tsp-coherence-624-646-attempt-5
+intent: resume at loop 641 with temporal quotient-incidence replay, preserve durable loops 624-640, close optimal-face and branch-warrant semantics, rebuild Postgres, and emit the loop-646 execution certificate
