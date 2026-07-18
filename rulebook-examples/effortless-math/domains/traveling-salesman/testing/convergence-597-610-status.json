@@ -1,5 +1,5 @@
 {
-  "status": "RUNNER_STARTED",
+  "status": "SEMANTIC_REPLAY_STARTED",
   "driver": "v11-checkpointed",
   "github_run_id": "29650854869",
   "head_sha": "0cc83f981576faf9e0de9106a5ac6b55166d81a1"
