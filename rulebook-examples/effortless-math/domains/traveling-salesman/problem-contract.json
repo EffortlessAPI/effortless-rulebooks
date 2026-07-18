@@ -281,12 +281,12 @@
     {
       "LoopOrder": 606,
       "LoopId": "tsp-loop-606",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Neighborhood boundary states are special-purpose rows rather than path witnesses in the common normal form.",
       "ClosureCriterion": "Project all six cluster boundary states into valid path normal forms keyed by scope, entry, exit, coverage, and cost.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Projected all six neighborhood boundary states into valid path witness normal forms.",
+      "Result": "Each path normal form records scope, canonical entry/exit, three-stop coverage, two edges, cost two, zero defects, and expansion provenance.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 607,
@@ -398,7 +398,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 610,
-    "HighestCompletedLoop": 605,
+    "HighestCompletedLoop": 606,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 5,
     "SelectedNotForcedEdgeStates": 5,
@@ -440,14 +440,14 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 12,
     "ClusterContractionCertificates": 3,
-    "ConvergenceMeasurements": 9,
-    "ConceptRegistry": 49,
+    "ConvergenceMeasurements": 10,
+    "ConceptRegistry": 50,
     "DefectProfiles": 14,
     "BoundTerms": 4,
-    "WitnessNormalForms": 3
+    "WitnessNormalForms": 9
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:f068fa08c4db93e9c1986c50f43b43811c3643e56cef0c53915fb3cd76a6f147",
+    "rulebook": "sha256:f9bf755f52e5c8e0cf4be2e327a395eca53fbf13c0aa9b20b277407524cf7911",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
