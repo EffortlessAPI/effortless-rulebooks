@@ -127,6 +127,7 @@ jobs:
             "$scripts/coherence_624_646.part1.pyfrag" \
             "$scripts/coherence_624_646.part2.pyfrag" \
             "$scripts/coherence_624_646.part2fix.pyfrag" \
+            "$scripts/coherence_624_646.part2fixlate.pyfrag" \
             "$scripts/coherence_624_646.part3.pyfrag" \
             "$scripts/coherence_624_646.part4.pyfrag" \
             > "$scripts/apply_loops_624_646_coherence.py"
@@ -198,6 +199,7 @@ jobs:
             "$domain/scripts/coherence_624_646.part1.pyfrag" \
             "$domain/scripts/coherence_624_646.part2.pyfrag" \
             "$domain/scripts/coherence_624_646.part2fix.pyfrag" \
+            "$domain/scripts/coherence_624_646.part2fixlate.pyfrag" \
             "$domain/scripts/coherence_624_646.part3.pyfrag" \
             "$domain/scripts/coherence_624_646.part4.pyfrag"
           rm -f "$domain/testing/coherence-624-646-failure.log"
