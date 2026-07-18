@@ -351,12 +351,12 @@
     {
       "LoopOrder": 612,
       "LoopId": "tsp-loop-612",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Membership and incidence are separate primitives even though both attach one object to a typed scope or endpoint.",
       "ClosureCriterion": "Introduce ATTACHMENT(subject, object, role), reduce MEMBERSHIP and INCIDENCE to typed attachment roles, and preserve every historical surface definition.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Collapsed membership and incidence into ATTACHMENT with typed roles such as member, endpoint, entry, exit, and uses.",
+      "Result": "Every historical membership/incidence surface retains a reduced expression, while the active primitive count becomes seven.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 613,
@@ -568,7 +568,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 623,
-    "HighestCompletedLoop": 611,
+    "HighestCompletedLoop": 612,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 14,
     "SelectedNotForcedEdgeStates": 5,
@@ -610,8 +610,8 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 12,
     "ClusterContractionCertificates": 3,
-    "ConvergenceMeasurements": 15,
-    "ConceptRegistry": 55,
+    "ConvergenceMeasurements": 16,
+    "ConceptRegistry": 57,
     "DefectProfiles": 16,
     "BoundTerms": 4,
     "WitnessNormalForms": 9,
@@ -623,7 +623,7 @@
     "ConvergencePredictionStatus": "EARLY_EMPIRICAL_SUPPORT_FOR_CURRENT_TSP_DOMAIN"
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:44764b95a4aa807292c943b92bd5175cff457f0554a87614f9c737482fe41e44",
+    "rulebook": "sha256:6ee7a5d123874ea64b27f238e3ec670f966e92ce5594c3c2aa78951487d6c916",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
