@@ -220,12 +220,12 @@
     {
       "LoopOrder": 600,
       "LoopId": "tsp-loop-600",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Cycle degree, selected degree, remaining degree, local lower-bound incidence, and forcing applicability are represented as separate concepts.",
       "ClosureCriterion": "Represent required incidence, observed incidence, and incidence defect uniformly for every Gridville and twin-triangle stop.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Projected local degree bounds, cycle degree, selected degree, and forcing applicability onto one incidence budget.",
+      "Result": "All five Gridville and all six twin-triangle stops have required incidence 2, observed incidence 2, and incidence defect 0; connectivity remains a separate coordinate.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 601,
@@ -376,7 +376,7 @@
     "branch only after deterministic closure on fixtures whose residual ambiguity remains positive"
   ],
   "Acceptance": {
-    "RulebookTables": 42,
+    "RulebookTables": 43,
     "Cities": 1,
     "Neighborhoods": 5,
     "Addresses": 11,
@@ -397,7 +397,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 610,
-    "HighestCompletedLoop": 599,
+    "HighestCompletedLoop": 600,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 5,
     "SelectedNotForcedEdgeStates": 5,
@@ -439,11 +439,12 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 12,
     "ClusterContractionCertificates": 3,
-    "ConvergenceMeasurements": 3,
-    "ConceptRegistry": 43
+    "ConvergenceMeasurements": 4,
+    "ConceptRegistry": 44,
+    "DefectProfiles": 11
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:86c81ac901f9cb643385b1d8b3a63452612bd92f7e9e0ec77cd585e948b1533e",
+    "rulebook": "sha256:1072ee49b0cb455ba4d01fcbe3549a1c54a69fa8b3377aca4dc7b154144e4736",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
