@@ -200,12 +200,12 @@
     {
       "LoopOrder": 598,
       "LoopId": "tsp-loop-598",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "The convergence prediction is recorded, but the candidate primitive vocabulary and surface-to-basis map do not exist.",
       "ClosureCriterion": "Represent exactly eight canonical primitives and map all thirty-two baseline surface predicates to finite basis expressions.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Mapped thirty-two recurring surface predicates to eight canonical primitives; historical names remain queryable projections rather than independent primitives.",
+      "Result": "Predicate basis = {MEMBERSHIP, INCIDENCE, CARDINALITY, ORDER, WEIGHT, COMMITMENT, CONNECTIVITY, PROVENANCE}; measured semantic compression is 75%.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 599,
@@ -376,7 +376,7 @@
     "branch only after deterministic closure on fixtures whose residual ambiguity remains positive"
   ],
   "Acceptance": {
-    "RulebookTables": 41,
+    "RulebookTables": 42,
     "Cities": 1,
     "Neighborhoods": 5,
     "Addresses": 11,
@@ -385,7 +385,7 @@
     "TravelEdges": 38,
     "CandidateTours": 4,
     "TSPLoops": 34,
-    "FrontierObligations": 16,
+    "FrontierObligations": 17,
     "ActiveImportedDependencies": 0,
     "ReferenceTourValid": true,
     "ReferenceTourCost": 14,
@@ -397,7 +397,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 610,
-    "HighestCompletedLoop": 597,
+    "HighestCompletedLoop": 598,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 5,
     "SelectedNotForcedEdgeStates": 5,
@@ -439,10 +439,11 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 12,
     "ClusterContractionCertificates": 3,
-    "ConvergenceMeasurements": 1
+    "ConvergenceMeasurements": 2,
+    "ConceptRegistry": 42
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:b428f0704e50b7099ce4fcd1dab4581bee8f8e8231269e972a101d0208d3998a",
+    "rulebook": "sha256:b0484c841f43eaf7c60983c99598dcc9060b1a8f631f395f98af553d321bd6ca",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
