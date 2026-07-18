@@ -25,7 +25,7 @@ jobs:
       PGUSER: postgres
       PGPASSWORD: postgres
       TSP_DB: erb_traveling_salesman
-      EFFORTLESS_CLI_SOURCE: https://github.com/EffortlessAPI/cli.git#1551cb82d5a8992ad09e4c82d08e28493f92f7b4
+      EFFORTLESS_CLI_SOURCE: git+https://github.com/EffortlessAPI/cli.git#1551cb82d5a8992ad09e4c82d08e28493f92f7b4
       EFFORTLESS_CLI_COMMIT: 1551cb82d5a8992ad09e4c82d08e28493f92f7b4
       EFFORTLESS_CLI_VERSION: 2026-06-09.06.13
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: '1'
@@ -83,11 +83,35 @@ jobs:
       - name: Install pinned Effortless CLI from GitHub
         shell: bash
         run: |
-          set -euo pipefail
-          npm install -g "$EFFORTLESS_CLI_SOURCE"
-          command -v effortless
-          npm list -g ssotme --depth=0
-          effortless -info
+          set -uo pipefail
+          install_log='.tsp-loop-587-cli-install.log'
+          set +e
+          {
+            npm install -g "$EFFORTLESS_CLI_SOURCE"
+            command -v effortless
+            npm list -g ssotme --depth=0
+            effortless -info
+          } 2>&1 | tee "$install_log"
+          status=${PIPESTATUS[0]}
+          set -e
+          if [ "$status" -ne 0 ]; then
+            cat > .tsp-loop-587-retry-status.json <<EOF
+          {
+            "stage": "CLI_INSTALL_FAILED",
+            "github_run_id": "$GITHUB_RUN_ID",
+            "cli_source": "$EFFORTLESS_CLI_SOURCE",
+            "cli_commit": "$EFFORTLESS_CLI_COMMIT",
+            "install_log": "$install_log",
+            "exit_code": $status
+          }
+          EOF
+            git add .tsp-loop-587-retry-status.json "$install_log"
+            git commit -m 'Record TSP loop 587 CLI installation failure'
+            git pull --rebase origin "$TARGET_BRANCH"
+            git push origin HEAD:"$TARGET_BRANCH"
+            exit "$status"
+          fi
+          rm -f "$install_log"
           cat > .tsp-loop-587-retry-status.json <<EOF
           {
             "stage": "CLI_INSTALLED",
@@ -99,6 +123,7 @@ jobs:
           EOF
           git add .tsp-loop-587-retry-status.json
           git commit -m 'Record TSP loop 587 pinned CLI checkpoint'
+          git pull --rebase origin "$TARGET_BRANCH"
           git push origin HEAD:"$TARGET_BRANCH"
 
       - name: Validate canonical pre-retry semantics
@@ -124,6 +149,7 @@ jobs:
           EOF
           git add .tsp-loop-587-retry-status.json
           git commit -m 'Record TSP loop 587 live commissioning checkpoint'
+          git pull --rebase origin "$TARGET_BRANCH"
           git push origin HEAD:"$TARGET_BRANCH"
 
       - name: Generate Postgres, initialize database, and run peer conformance
