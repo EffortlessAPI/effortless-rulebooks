@@ -157,12 +157,12 @@
     {
       "LoopOrder": 595,
       "LoopId": "tsp-loop-595",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Forced edges do not yet emit deterministic forbidden-edge consequences or premature-subtour exclusions.",
       "ClosureCriterion": "Forbid the sparse B-D chord by degree saturation and forbid a twin-triangle closing edge because it would close a proper subtour, with replayable reason codes.",
-      "AfterState": null,
-      "Result": null,
-      "CompletionDisposition": null
+      "AfterState": "Forbade sparse B-D by degree saturation and twin WA-WC by proper-subtour prevention; both decisions are deterministic and branch-free.",
+      "Result": "Forbade sparse B-D by degree saturation and twin WA-WC by proper-subtour prevention; both decisions are deterministic and branch-free.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 596,
@@ -263,10 +263,11 @@
     "TwinTriangleCandidateCost": 24,
     "TwinTriangleSelectedComponents": 2,
     "TwinTriangleOptimalityProved": false,
-    "SparseForcedEdges": 5
+    "SparseForcedEdges": 5,
+    "ForbiddenEdgeCertificates": 2
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:8a295c62ebc51e458586f5b118ed8eefea1fc0a34f3116ef2a43c5eb447567a6"
+    "rulebook": "sha256:73598d2c5e2b9845da8e4c1f423fc2608a1dcff12589c2751987a7378d27fb26"
   },
   "GeneratedTimestamp": null,
   "Vocabulary": {
