@@ -1,9 +1,7 @@
 {
-  "stage": "CLI_INSTALLED",
+  "stage": "LIVE_BUILD_AND_CONFORMANCE_STARTED",
   "attempt": 5,
   "github_run_id": "29631879613",
-  "cli_source": "https://github.com/EffortlessAPI/cli/archive/1551cb82d5a8992ad09e4c82d08e28493f92f7b4.tar.gz",
   "cli_commit": "1551cb82d5a8992ad09e4c82d08e28493f92f7b4",
-  "cli_version": "2026-06-09.06.13",
-  "npm_prefix": "/home/runner/work/_temp/npm-global"
+  "cli_source": "https://github.com/EffortlessAPI/cli/archive/1551cb82d5a8992ad09e4c82d08e28493f92f7b4.tar.gz"
 }
