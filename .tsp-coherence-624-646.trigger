@@ -1,2 +1,2 @@
-run-id: tsp-coherence-624-646-attempt-2
-intent: resume at loop 625 with the corrected semantic-arc index refresh, preserve the durable planning and loop-624 commits, then publish each remaining loop through Postgres verification at 646
+run-id: tsp-coherence-624-646-attempt-3
+intent: resume at loop 626 with all semantic-registry index refreshes corrected, preserve durable loops 624-625, and continue publishing each loop through Postgres verification at 646
