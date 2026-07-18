@@ -113,6 +113,17 @@ ALTER TABLE instance_lower_bounds DROP CONSTRAINT IF EXISTS fk_instance_lower_bo
 ALTER TABLE instance_lower_bounds ADD CONSTRAINT fk_instance_lower_bounds_tsp_instance
   FOREIGN KEY (tsp_instance) REFERENCES tsp_instances (tsp_instance_id);
 
+-- TSPBoundTerms
+ALTER TABLE tsp_bound_terms DROP CONSTRAINT IF EXISTS fk_tsp_bound_terms_bound_certificate;
+ALTER TABLE tsp_bound_terms ADD CONSTRAINT fk_tsp_bound_terms_bound_certificate
+  FOREIGN KEY (bound_certificate) REFERENCES instance_lower_bounds (instance_lower_bound_id);
+ALTER TABLE tsp_bound_terms DROP CONSTRAINT IF EXISTS fk_tsp_bound_terms_tsp_instance;
+ALTER TABLE tsp_bound_terms ADD CONSTRAINT fk_tsp_bound_terms_tsp_instance
+  FOREIGN KEY (tsp_instance) REFERENCES tsp_instances (tsp_instance_id);
+ALTER TABLE tsp_bound_terms DROP CONSTRAINT IF EXISTS fk_tsp_bound_terms_tsp_loop;
+ALTER TABLE tsp_bound_terms ADD CONSTRAINT fk_tsp_bound_terms_tsp_loop
+  FOREIGN KEY (tsp_loop) REFERENCES tsp_loops (tsp_loop_id);
+
 -- OptimalityCertificates
 ALTER TABLE optimality_certificates DROP CONSTRAINT IF EXISTS fk_optimality_certificates_candidate_tour;
 ALTER TABLE optimality_certificates ADD CONSTRAINT fk_optimality_certificates_candidate_tour
@@ -190,6 +201,14 @@ ALTER TABLE tsp_derived_edge_sets DROP CONSTRAINT IF EXISTS fk_tsp_derived_edge_
 ALTER TABLE tsp_derived_edge_sets ADD CONSTRAINT fk_tsp_derived_edge_sets_inference_state
   FOREIGN KEY (inference_state) REFERENCES tsp_inference_states (tsp_inference_state_id);
 
+-- TSPDefectProfiles
+ALTER TABLE tsp_defect_profiles DROP CONSTRAINT IF EXISTS fk_tsp_defect_profiles_tsp_instance;
+ALTER TABLE tsp_defect_profiles ADD CONSTRAINT fk_tsp_defect_profiles_tsp_instance
+  FOREIGN KEY (tsp_instance) REFERENCES tsp_instances (tsp_instance_id);
+ALTER TABLE tsp_defect_profiles DROP CONSTRAINT IF EXISTS fk_tsp_defect_profiles_tsp_loop;
+ALTER TABLE tsp_defect_profiles ADD CONSTRAINT fk_tsp_defect_profiles_tsp_loop
+  FOREIGN KEY (tsp_loop) REFERENCES tsp_loops (tsp_loop_id);
+
 -- TSPDerivedEdgeSetMembers
 ALTER TABLE tsp_derived_edge_set_members DROP CONSTRAINT IF EXISTS fk_tsp_derived_edge_set_members_derived_edge_set;
 ALTER TABLE tsp_derived_edge_set_members ADD CONSTRAINT fk_tsp_derived_edge_set_members_derived_edge_set
@@ -252,6 +271,14 @@ ALTER TABLE tsp_route_reconstruction_steps ADD CONSTRAINT fk_tsp_route_reconstru
 ALTER TABLE tsp_route_reconstruction_steps DROP CONSTRAINT IF EXISTS fk_tsp_route_reconstruction_steps_travel_edge;
 ALTER TABLE tsp_route_reconstruction_steps ADD CONSTRAINT fk_tsp_route_reconstruction_steps_travel_edge
   FOREIGN KEY (travel_edge) REFERENCES travel_edges (travel_edge_id);
+
+-- TSPWitnessNormalForms
+ALTER TABLE tsp_witness_normal_forms DROP CONSTRAINT IF EXISTS fk_tsp_witness_normal_forms_tsp_instance;
+ALTER TABLE tsp_witness_normal_forms ADD CONSTRAINT fk_tsp_witness_normal_forms_tsp_instance
+  FOREIGN KEY (tsp_instance) REFERENCES tsp_instances (tsp_instance_id);
+ALTER TABLE tsp_witness_normal_forms DROP CONSTRAINT IF EXISTS fk_tsp_witness_normal_forms_tsp_loop;
+ALTER TABLE tsp_witness_normal_forms ADD CONSTRAINT fk_tsp_witness_normal_forms_tsp_loop
+  FOREIGN KEY (tsp_loop) REFERENCES tsp_loops (tsp_loop_id);
 
 -- TSPSearchCertificates
 ALTER TABLE tsp_search_certificates DROP CONSTRAINT IF EXISTS fk_tsp_search_certificates_tsp_instance;
@@ -335,6 +362,19 @@ ALTER TABLE tsp_loops DROP CONSTRAINT IF EXISTS fk_tsp_loops_primary_inference_r
 ALTER TABLE tsp_loops ADD CONSTRAINT fk_tsp_loops_primary_inference_rule
   FOREIGN KEY (primary_inference_rule) REFERENCES tsp_inference_rules (tsp_inference_rule_id);
 
+-- TSPConvergenceMeasurements
+ALTER TABLE tsp_convergence_measurements DROP CONSTRAINT IF EXISTS fk_tsp_convergence_measurements_tsp_loop;
+ALTER TABLE tsp_convergence_measurements ADD CONSTRAINT fk_tsp_convergence_measurements_tsp_loop
+  FOREIGN KEY (tsp_loop) REFERENCES tsp_loops (tsp_loop_id);
+
+-- TSPConceptRegistry
+ALTER TABLE tsp_concept_registry DROP CONSTRAINT IF EXISTS fk_tsp_concept_registry_introduced_by_loop;
+ALTER TABLE tsp_concept_registry ADD CONSTRAINT fk_tsp_concept_registry_introduced_by_loop
+  FOREIGN KEY (introduced_by_loop) REFERENCES tsp_loops (tsp_loop_id);
+ALTER TABLE tsp_concept_registry DROP CONSTRAINT IF EXISTS fk_tsp_concept_registry_superseded_by_concept;
+ALTER TABLE tsp_concept_registry ADD CONSTRAINT fk_tsp_concept_registry_superseded_by_concept
+  FOREIGN KEY (superseded_by_concept) REFERENCES tsp_concept_registry (tsp_concept_id);
+
 -- SearchMetrics
 ALTER TABLE search_metrics DROP CONSTRAINT IF EXISTS fk_search_metrics_tsp_instance;
 ALTER TABLE search_metrics ADD CONSTRAINT fk_search_metrics_tsp_instance
@@ -351,4 +391,4 @@ ALTER TABLE tsp_invariant_checks DROP CONSTRAINT IF EXISTS fk_tsp_invariant_chec
 ALTER TABLE tsp_invariant_checks ADD CONSTRAINT fk_tsp_invariant_checks_candidate_tour
   FOREIGN KEY (candidate_tour) REFERENCES candidate_tours (candidate_tour_id);
 
--- 87 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
+-- 97 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).

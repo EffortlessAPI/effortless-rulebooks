@@ -156,8 +156,13 @@ _Traveling Salesman research domain at city/neighborhood/address scale. The rule
 | Count of Local Degree Bounds | The number of local degree bounds related to the instance lower bound. | _Local degree-bound rows represented for the instance._ |
 | Count of Invalid Local Degree Bounds | The number of the instance lower bound's local degree bounds that are not two cheapest witnesses. | _Local degree-bound rows that do not carry a valid two-cheapest witness._ |
 | Total Local Degree Bound Cost | The total local bound cost across the local degree bounds related to the instance lower bound. | _Sum of the local two-edge lower bounds across all required stops._ |
-| Lower Bound Cost | Computed as the total local degree bound cost divided by 2. | _Certified global tour lower bound after double-count correction._ |
-| Is Certified | True when all of the following hold: the count of local degree bounds is the required stop count and the count of invalid local degree bounds is 0. | _Whether every required stop has one valid local witness and the global double-counting aggregation is closed._ |
+| Lower Bound Cost | Computed as the base lower bound cost plus the supplemental bound adjustment. | _Certified global tour lower bound after double-count correction._ |
+| Is Certified | True when all of the following hold: the count of local degree bounds is the required stop count; the count of invalid local degree bounds is 0; and the supplemental bound certified flag is set. | _Whether every required stop has one valid local witness and the global double-counting aggregation is closed._ |
+| Base Lower Bound Cost | Computed as the total local degree bound cost divided by 2. | _Degree-two base lower bound._ |
+| Count of Certified Supplemental Terms | The number of the instance lower bound's TSP bound terms that count a toward adjustment and are certified. | _Certified terms contributing to the adjustment._ |
+| Is Supplemental Bound Certified | True when the count of certified supplemental terms is the required supplemental term count. | _Whether the required repair terms are all certified._ |
+| **TSP Bound Term** | Signed additive and constraint terms composing reusable lower-bound certificates. | — |
+| Term Value | Computed as the quantity times the unit weight times the sign. | _Signed additive contribution._ |
 | **Optimality Certificate** | Finite-instance optimality certificates. Passing requires a valid Hamiltonian witness, a certified lower bound for the same instance, and equality between candidate cost and lower bound. | — |
 | Candidate TSP Instance | Taken from the linked candidate tour. | _Instance owned by the candidate._ |
 | Lower Bound TSP Instance | Taken from the linked instance lower bound. | _Instance owned by the lower-bound certificate._ |
@@ -179,9 +184,19 @@ _Traveling Salesman research domain at city/neighborhood/address scale. The rule
 | **TSP Inference Antecedent** | Antecedent facts consumed by one inference application. | — |
 | **TSP Edge State** | Epistemically typed state of one edge in one inference snapshot. | — |
 | Is Decided | True when it is not the case that the decision status is “UNKNOWN”. | _Whether the edge is no longer unknown._ |
+| Commitment Rank | Determined by priority: 0 if the decision status is “UNKNOWN”; 1 if the decision status is “SELECTED”; 2 if at least one of the following holds: the decision status is “FORCED” or the decision status is “FORBIDDEN”; in all other cases, 3. | _Ordered strength in the edge commitment lattice._ |
+| Commitment Polarity | Determined by priority: the negative of 1 if the decision status is “FORBIDDEN”; 0 if the decision status is “UNKNOWN”; in all other cases, 1. | _Positive inclusion, zero unknown, or negative exclusion._ |
+| Necessity Scope | Determined by priority: “ALL_FEASIBLE_TOURS” if the decision status is “FORCED”; “NO_FEASIBLE_TOUR” if the decision status is “FORBIDDEN”; “CURRENT_WITNESS” if the decision status is “SELECTED”; in all other cases, “UNRESOLVED_OR_HISTORICAL”. | _Scope in which the commitment holds._ |
+| Is Terminal Commitment | True when at least one of the following holds: the decision status is “FORCED”; the decision status is “FORBIDDEN”; the decision status is “CONTRADICTED”; or the decision status is “SUPERSEDED”. | _Whether deterministic closure no longer treats the edge as open._ |
 | **TSP Edge Support** | Witness rows supporting an edge-state conclusion. | — |
 | **TSP Derived Edge Set** | First-class edge sets derived from inference rows rather than supplied route order. | — |
 | Is Connected Degree Two | True when all of the following hold: the degree violation count is 0; the connected component count is 1; and the proper subtour count is 0. | _Whether this is one connected degree-two cycle._ |
+| **TSP Defect Profile** | Uniform incidence, connectivity, boundary, and cost defects for stops, instances, witnesses, and quotient nodes. | — |
+| Incidence Defect | Computed as the absolute value of the required incidence minus the observed incidence. | _Absolute incidence deficit or excess._ |
+| Connectivity Defect | Computed as the largest of the component count minus 1 and 0. | _Components beyond the required one._ |
+| Boundary Defect | Computed as the largest of the required boundary crossings minus the observed boundary crossings and 0. | _Missing required boundary crossings._ |
+| Cost Gap | Computed as the upper bound cost minus the lower bound cost. | _Upper minus lower value._ |
+| Defect Vector | Computed as the incidence defect, followed by “|”, followed by the connectivity defect, followed by “|”, followed by the boundary defect, followed by “|”, followed by the cost gap. | _Canonical four-coordinate defect vector._ |
 | **TSP Derived Edge Set Member** | Member edges and support counts for a derived edge set. | — |
 | **TSP Edge Set Stop Degree** | Selected degree of each required stop in a derived edge set. | — |
 | Is Degree Two | True when the selected degree is 2. | _Whether selected degree is two._ |
@@ -191,11 +206,16 @@ _Traveling Salesman research domain at city/neighborhood/address scale. The rule
 | **TSP Route Reconstruction** | Ordered cycles reconstructed from certified edge sets. | — |
 | Is Passing | True when all of the following hold: the reconstructed stop count is the required stop count; the reconstructed leg count is the required stop count; the candidate used as antecedent flag is not set; and the status is “RECONSTRUCTED”. | _Whether reconstruction closes without a supplied-route antecedent._ |
 | **TSP Route Reconstruction Step** | Ordered traversal steps emitted from an inferred edge set. | — |
+| **TSP Witness Normal Form** | Common semantic normal form for supplied, reconstructed, and contracted cycle or path witnesses. | — |
+| Semantic Key | Computed as the witness shape, followed by “|”, followed by the TSP instance, followed by “|”, followed by the covered stop count, followed by “|”, followed by the required stop count, followed by “|”, followed by the edge count, followed by “|”, followed by the total cost, followed by “|”, followed by the incidence defect, followed by “|”, followed by the connectivity defect, followed by “|”, followed by the order defect, followed by “|”, followed by the boundary signature (a missing value counts as an empty string). ⚠︎ mechanical <!-- rulespeak:reword --> | _Provenance-independent witness signature._ |
+| Is Valid | True when all of the following hold: the covered stop count is the required stop count; the incidence defect is 0; the connectivity defect is 0; the order defect is 0; and at least one of the following holds: all of the following hold: the witness shape is “CYCLE” and the edge count is the required stop count or all of the following hold: the witness shape is “PATH” and the edge count is the required stop count minus 1. | _Whether the normal form is a valid cycle or path._ |
 | **TSP Search Certificate** | Derived accounting of route classes, branch decisions, backtracks, and residual ambiguity. | — |
 | Route Class Elimination Pct | Determined by priority: 0 if the initial route class count is 0; in all other cases, the initial route class count minus the surviving route class count divided by the initial route class count times 100 rounded to 2 decimal place(s). | _Percentage of route classes removed._ |
 | **TSP Constraint Round** | Fixed-point rounds for forced and forbidden edge propagation. | — |
 | **TSP Constraint Decision** | Replayable forced or forbidden edge decisions with reason codes. | — |
 | **TSP Cluster Boundary State** | Finite undirected entry/exit Hamiltonian-path states for a neighborhood cluster. | — |
+| Boundary Signature | Computed as the neighborhood, followed by “|”, followed by the entry stop, followed by “|”, followed by the exit stop, followed by “|”, followed by the internal stop count, followed by “|”, followed by the internal path cost. | _Scope/entry/exit/coverage/cost signature._ |
+| Semantic Quotient Key | Computed as the neighborhood, followed by “|”, followed by the entry stop, followed by “|”, followed by the exit stop, followed by “|”, followed by the internal stop count, followed by “|”, followed by the internal path cost. | _Equivalence key preserving boundary signature and cost._ |
 | **TSP Cluster Boundary State Member** | Ordered internal edges supporting a cluster boundary state. | — |
 | **TSP Cluster Contraction Certificate** | Finite-fixture certificates measuring neighborhood-state contraction. | — |
 | **TSP Inference Rule** | Declared structural inference contracts, including soundness, completeness, runtime, memory, applicability, and certificate shape. | — |
@@ -206,6 +226,9 @@ _Traveling Salesman research domain at city/neighborhood/address scale. The rule
 | Is Closed | True when the status is “CLOSED”. | _Whether the frontier obligation is closed._ |
 | **TSP Loop** | Named semantic loops that establish the initial Traveling Salesman architecture. | — |
 | Name | The same as its display name. | _Human-readable loop label._ |
+| **TSP Convergence Measurement** | Measurements testing whether surface concepts compress onto a stable predicate basis. | — |
+| Semantic Compression Pct | Determined by priority: 0 if the surface concept count before is 0; in all other cases, the surface concept count before minus the primitive count after divided by the surface concept count before times 100 rounded to 2 decimal place(s). | _Surface-to-basis reduction percentage._ |
+| **TSP Concept Registry** | Registry of primitive, derived, coined, and historical concepts with explicit basis expressions. | — |
 | **Search Metric** | Quantitative record of how much combinatorial search remains after each represented inference stage. | — |
 | Search Elimination Pct | Determined by priority: 0 if the branch count before is 0; in all other cases, the branch count before minus the branch count after divided by the branch count before times 100 rounded to 2 decimal place(s). | _Percentage of branches removed without search._ |
 | **TSP Invariant Check** | Rulebook-native acceptance checks comparing expected raw outcomes to derived candidate-tour fields. | — |
@@ -241,6 +264,9 @@ _Traveling Salesman research domain at city/neighborhood/address scale. The rule
 - an **incident dominance check** references exactly one **local degree bound**
 - an **incident dominance check** references exactly one **travel edge**
 - an **instance lower bound** references exactly one **TSP instance**
+- a **TSP bound term** references exactly one **instance lower bound**
+- a **TSP bound term** references exactly one **TSP instance**
+- a **TSP bound term** references exactly one **TSP loop**
 - an **optimality certificate** references exactly one **candidate tour**
 - an **optimality certificate** references exactly one **instance lower bound**
 - a **TSP execution run** references exactly one **TSP loop**
@@ -260,6 +286,8 @@ _Traveling Salesman research domain at city/neighborhood/address scale. The rule
 - a **TSP edge support** references exactly one **TSP inference application**
 - a **TSP derived edge set** references exactly one **TSP instance**
 - a **TSP derived edge set** references exactly one **TSP inference state**
+- a **TSP defect profile** references exactly one **TSP instance**
+- a **TSP defect profile** references exactly one **TSP loop**
 - a **TSP derived edge set member** references exactly one **TSP derived edge set**
 - a **TSP derived edge set member** references exactly one **travel edge**
 - a **TSP edge set stop degree** references exactly one **TSP derived edge set**
@@ -275,6 +303,8 @@ _Traveling Salesman research domain at city/neighborhood/address scale. The rule
 - a **TSP route reconstruction step** references exactly one **TSP route reconstruction**
 - a **TSP route reconstruction step** references exactly one **instance stop**
 - a **TSP route reconstruction step** references exactly one **travel edge**
+- a **TSP witness normal form** references exactly one **TSP instance**
+- a **TSP witness normal form** references exactly one **TSP loop**
 - a **TSP search certificate** references exactly one **TSP instance**
 - a **TSP search certificate** references exactly one **TSP loop**
 - a **TSP search certificate** may reference one **TSP derived edge set**
@@ -294,6 +324,8 @@ _Traveling Salesman research domain at city/neighborhood/address scale. The rule
 - a **TSP frontier obligation** may reference one **TSP inference rule**
 - a **TSP frontier obligation** references exactly one **TSP loop**
 - a **TSP loop** references exactly one **TSP inference rule**
+- a **TSP convergence measurement** references exactly one **TSP loop**
+- a **TSP concept registry** references exactly one **TSP loop**
 - a **search metric** references exactly one **TSP instance**
 - a **search metric** references exactly one **TSP loop**
 - a **search metric** may reference one **candidate tour**
@@ -342,7 +374,11 @@ already computes (cross-referenced as DR-N in the Definitional Rules below)._
 - An incident dominance check **must** reference exactly one local degree bound.
 - An incident dominance check **must** reference exactly one travel edge as its other edge.
 - An instance lower bound **must** reference exactly one TSP instance.
-- An instance lower bound **must** have a bound kind.
+- An instance lower bound **must** have a bound kind, a required supplemental term count, a supplemental bound adjustment, and a bound composition kind.
+- A TSP bound term **must** reference exactly one instance lower bound as its bound certificate.
+- A TSP bound term **must** reference exactly one TSP instance.
+- A TSP bound term **must** reference exactly one TSP loop.
+- A TSP bound term **must** have a term kind, a quantity, a unit weight, a sign, a constraint kind, a constraint value, and a justification, and record whether it is counts toward adjustment and whether it is certified.
 - An optimality certificate **must** reference exactly one candidate tour.
 - An optimality certificate **must** reference exactly one instance lower bound.
 - A TSP execution run **must** reference exactly one TSP loop.
@@ -369,6 +405,9 @@ already computes (cross-referenced as DR-N in the Definitional Rules below)._
 - A TSP derived edge set **must** reference exactly one TSP instance.
 - A TSP derived edge set **must** reference exactly one TSP inference state as its inference state.
 - A TSP derived edge set **must** have a derivation kind, an edge count, a required stop count, a total cost, and a status.
+- A TSP defect profile **must** reference exactly one TSP instance.
+- A TSP defect profile **must** reference exactly one TSP loop.
+- A TSP defect profile **must** have a subject kind, a required incidence, an observed incidence, a component count, a required boundary crossings, an observed boundary crossings, a lower bound cost, an upper bound cost, and a status.
 - A TSP derived edge set member **must** reference exactly one TSP derived edge set as its derived edge set.
 - A TSP derived edge set member **must** reference exactly one travel edge.
 - A TSP derived edge set member **must** have a support count and a member status, and record whether it is selected at both endpoints.
@@ -391,6 +430,9 @@ already computes (cross-referenced as DR-N in the Definitional Rules below)._
 - A TSP route reconstruction step **must** reference exactly one instance stop as its to stop.
 - A TSP route reconstruction step **must** reference exactly one travel edge.
 - A TSP route reconstruction step **must** have a step order, and record whether it is a closing step.
+- A TSP witness normal form **must** reference exactly one TSP instance.
+- A TSP witness normal form **must** reference exactly one TSP loop.
+- A TSP witness normal form **must** have a witness shape, an origin kind, a source kind, a covered stop count, a required stop count, an edge count, a total cost, an incidence defect, a connectivity defect, an order defect, and a provenance summary.
 - A TSP search certificate **must** reference exactly one TSP instance.
 - A TSP search certificate **must** reference exactly one TSP loop.
 - A TSP search certificate **must** have a question kind, an initial route class count, a surviving route class count, a branch decision count, a backtrack count, a residual ambiguity count, a branching avoided pct, and a status.
@@ -406,17 +448,21 @@ already computes (cross-referenced as DR-N in the Definitional Rules below)._
 - A TSP cluster boundary state **must** reference exactly one instance stop as its entry stop.
 - A TSP cluster boundary state **must** reference exactly one instance stop as its exit stop.
 - A TSP cluster boundary state **must** reference exactly one instance stop as its internal via stop.
-- A TSP cluster boundary state **must** have an internal path cost, an internal stop count, and a status, and record whether it is a hamiltonian path and whether it is dominated.
+- A TSP cluster boundary state **must** have an internal path cost, an internal stop count, a status, and an orientation multiplicity, and record whether it is a hamiltonian path, whether it is dominated, and whether it is quotient representative.
 - A TSP cluster boundary state member **must** reference exactly one TSP cluster boundary state as its cluster boundary state.
 - A TSP cluster boundary state member **must** reference exactly one travel edge.
 - A TSP cluster boundary state member **must** have a member order.
 - A TSP cluster contraction certificate **must** reference exactly one TSP instance.
-- A TSP cluster contraction certificate **must** have a scope kind, a raw internal order count, a surviving boundary state count, a reduction pct, and a scope claim, and record whether it is passing.
+- A TSP cluster contraction certificate **must** have a scope kind, a raw internal order count, a surviving boundary state count, a reduction pct, a scope claim, an equivalence relation, and a quotient class count, and record whether it is passing.
 - A TSP inference rule **must** have a display name, an inference layer, an implementation status, a soundness, a completeness, a runtime class, a memory class, an applicability, a certificate type, and a description.
 - A TSP frontier obligation **must** reference exactly one TSP loop as its opened by loop.
 - A TSP frontier obligation **must** have a display name, an obligation kind, a status, a trust disposition, a closure criterion, and a certificate type.
 - A TSP loop **must** reference exactly one TSP inference rule as its primary inference rule.
 - A TSP loop **must** have a loop order, a display name, a status, a new concept, a witness summary, and a next frontier.
+- A TSP convergence measurement **must** reference exactly one TSP loop.
+- A TSP convergence measurement **must** have a measurement kind, a surface concept count before, a primitive count after, a new primitive count, a derived alias count, a physical table count, a novel term, a prediction status, and a notes.
+- A TSP concept registry **must** reference exactly one TSP loop as its introduced by loop.
+- A TSP concept registry **must** have a display name, a concept kind, a basis expression, an arity, a source tables, and a status.
 - A search metric **must** reference exactly one TSP instance.
 - A search metric **must** reference exactly one TSP loop.
 - A search metric **must** have a search question, a raw node count, a raw edge count, a forced edge count, a forbidden edge count, a symmetry class count, a component contraction count, a branch count before, a branch count after, a backtrack count, a residual ambiguity count, and a status.
@@ -565,40 +611,58 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-130 Count of Local Degree Bounds** | An instance lower bound's count of local degree bounds is the number of local degree bounds related to the instance lower bound. |
 | **DR-131 Count of Invalid Local Degree Bounds** | An instance lower bound's count of invalid local degree bounds is the number of the instance lower bound's local degree bounds that are not two cheapest witnesses. |
 | **DR-132 Total Local Degree Bound Cost** | An instance lower bound's total local degree bound cost is the total local bound cost across the local degree bounds related to the instance lower bound. |
-| **DR-133 Lower Bound Cost** | An instance lower bound's lower bound cost is computed as the total local degree bound cost divided by 2. |
-| **DR-134 Is Certified** | An instance lower bound is considered certified if all of the following hold: the count of local degree bounds is the required stop count and the count of invalid local degree bounds is 0. |
-| **DR-135 Candidate TSP Instance** | An optimality certificate's candidate TSP instance — taken from the linked candidate tour. |
-| **DR-136 Lower Bound TSP Instance** | An optimality certificate's lower bound TSP instance — taken from the linked instance lower bound. |
-| **DR-137 Candidate Travel Cost** | An optimality certificate's candidate travel cost is the total travel cost of the optimality certificate's candidate tour. |
-| **DR-138 Lower Bound Cost** | An optimality certificate's lower bound cost — taken from the linked instance lower bound. |
-| **DR-139 Candidate is Hamiltonian Cycle Witness** | An optimality certificate's candidate is hamiltonian cycle witness when the linked candidate tour is a hamiltonian cycle witness. |
-| **DR-140 Lower Bound is Certified** | An optimality certificate's lower bound is certified when the linked instance lower bound is certified. |
-| **DR-141 Is Same Instance** | An optimality certificate is considered a same instance if the candidate TSP instance is the lower bound TSP instance. |
-| **DR-142 Is Bound Tight** | An optimality certificate is considered a bound tight if the candidate travel cost is the lower bound cost. |
-| **DR-143 Is Passing** | An optimality certificate is considered passing if all of the following hold: the candidate is hamiltonian cycle witness flag is set; the lower bound is certified flag is set; the same instance flag is set; and the bound tight flag is set. |
-| **DR-144 Scope Claim** | The optimality certificate's scope claim is determined by the following priority:<br>1. “OPTIMAL_FOR_DECLARED_FINITE_INSTANCE”, if the passing flag is set;<br>2. in all other cases, “OPTIMALITY_NOT_CERTIFIED”. |
-| **DR-145 Is Successful** | A TSP execution run is considered a successful if all of the following hold: the build succeeded flag is set; the database initialized flag is set; and the conformance succeeded flag is set. |
-| **DR-146 Is Passing** | A TSP conformance check is considered passing if the status is “PASS”. |
-| **DR-147 Is Decided** | A TSP edge state is considered decided if it is not the case that the decision status is “UNKNOWN”. |
-| **DR-148 Is Connected Degree Two** | A TSP derived edge set is considered a connected degree two if all of the following hold: the degree violation count is 0; the connected component count is 1; and the proper subtour count is 0. |
-| **DR-149 Is Degree Two** | A TSP edge set stop degree is considered a degree two if the selected degree is 2. |
-| **DR-150 Is Passing** | A TSP connected degree two certificate is considered passing if all of the following hold: the edge count is the required stop count; the degree violation count is 0; the component count is 1; the proper subtour count is 0; and the spanning tree edge count is the required stop count minus 1. |
-| **DR-151 Is Passing** | A TSP route reconstruction is considered passing if all of the following hold: the reconstructed stop count is the required stop count; the reconstructed leg count is the required stop count; the candidate used as antecedent flag is not set; and the status is “RECONSTRUCTED”. |
-| **DR-152 Route Class Elimination Pct** | The TSP search certificate's route class elimination pct is determined by the following priority:<br>1. 0, if the initial route class count is 0;<br>2. in all other cases, the initial route class count minus the surviving route class count divided by the initial route class count times 100 rounded to 2 decimal place(s). |
-| **DR-153 Name** | A TSP inference rule's name is the same as its display name. |
-| **DR-154 Name** | A TSP frontier obligation's name is the same as its display name. |
-| **DR-155 Is Imported Dependency** | A TSP frontier obligation is considered an imported dependency if the obligation kind is “IMPORTED_DEPENDENCY”. |
-| **DR-156 Is Closed** | A TSP frontier obligation is considered closed if the status is “CLOSED”. |
-| **DR-157 Name** | A TSP loop's name is the same as its display name. |
-| **DR-158 Search Elimination Pct** | The search metric's search elimination pct is determined by the following priority:<br>1. 0, if the branch count before is 0;<br>2. in all other cases, the branch count before minus the branch count after divided by the branch count before times 100 rounded to 2 decimal place(s). |
-| **DR-159 Name** | A TSP invariant check's name is the same as its display name. |
-| **DR-160 Actual Hamiltonian Cycle Witness** | A TSP invariant check's actual hamiltonian cycle witness is true when the TSP invariant check's candidate tour is a hamiltonian cycle witness. |
-| **DR-161 Actual Optimality Proved** | A TSP invariant check's actual optimality proved when the linked candidate tour is optimality proved. |
-| **DR-162 Actual Total Travel Cost** | A TSP invariant check's actual total travel cost — taken from the linked candidate tour. |
-| **DR-163 Is Hamiltonian Status Correct** | A TSP invariant check is considered a hamiltonian status correct if the expected hamiltonian cycle witness is the actual hamiltonian cycle witness. |
-| **DR-164 Is Optimality Status Correct** | A TSP invariant check is considered an optimality status correct if the expected optimality proved is the actual optimality proved. |
-| **DR-165 Is Cost Correct** | A TSP invariant check is considered a cost correct if the expected total travel cost is the actual total travel cost. |
-| **DR-166 Is Passing** | A TSP invariant check is considered passing if all of the following hold: the hamiltonian status correct flag is set; the optimality status correct flag is set; and the cost correct flag is set. |
+| **DR-133 Lower Bound Cost** | An instance lower bound's lower bound cost is computed as the base lower bound cost plus the supplemental bound adjustment. |
+| **DR-134 Is Certified** | An instance lower bound is considered certified if all of the following hold: the count of local degree bounds is the required stop count; the count of invalid local degree bounds is 0; and the supplemental bound certified flag is set. |
+| **DR-135 Base Lower Bound Cost** | An instance lower bound's base lower bound cost is computed as the total local degree bound cost divided by 2. |
+| **DR-136 Count of Certified Supplemental Terms** | An instance lower bound's count of certified supplemental terms is the number of the instance lower bound's TSP bound terms that count a toward adjustment and are certified. |
+| **DR-137 Is Supplemental Bound Certified** | An instance lower bound is considered supplemental-bound-certified if the count of certified supplemental terms is the required supplemental term count. |
+| **DR-138 Term Value** | A TSP bound term's term value is computed as the quantity times the unit weight times the sign. |
+| **DR-139 Candidate TSP Instance** | An optimality certificate's candidate TSP instance — taken from the linked candidate tour. |
+| **DR-140 Lower Bound TSP Instance** | An optimality certificate's lower bound TSP instance — taken from the linked instance lower bound. |
+| **DR-141 Candidate Travel Cost** | An optimality certificate's candidate travel cost is the total travel cost of the optimality certificate's candidate tour. |
+| **DR-142 Lower Bound Cost** | An optimality certificate's lower bound cost — taken from the linked instance lower bound. |
+| **DR-143 Candidate is Hamiltonian Cycle Witness** | An optimality certificate's candidate is hamiltonian cycle witness when the linked candidate tour is a hamiltonian cycle witness. |
+| **DR-144 Lower Bound is Certified** | An optimality certificate's lower bound is certified when the linked instance lower bound is certified. |
+| **DR-145 Is Same Instance** | An optimality certificate is considered a same instance if the candidate TSP instance is the lower bound TSP instance. |
+| **DR-146 Is Bound Tight** | An optimality certificate is considered a bound tight if the candidate travel cost is the lower bound cost. |
+| **DR-147 Is Passing** | An optimality certificate is considered passing if all of the following hold: the candidate is hamiltonian cycle witness flag is set; the lower bound is certified flag is set; the same instance flag is set; and the bound tight flag is set. |
+| **DR-148 Scope Claim** | The optimality certificate's scope claim is determined by the following priority:<br>1. “OPTIMAL_FOR_DECLARED_FINITE_INSTANCE”, if the passing flag is set;<br>2. in all other cases, “OPTIMALITY_NOT_CERTIFIED”. |
+| **DR-149 Is Successful** | A TSP execution run is considered a successful if all of the following hold: the build succeeded flag is set; the database initialized flag is set; and the conformance succeeded flag is set. |
+| **DR-150 Is Passing** | A TSP conformance check is considered passing if the status is “PASS”. |
+| **DR-151 Is Decided** | A TSP edge state is considered decided if it is not the case that the decision status is “UNKNOWN”. |
+| **DR-152 Commitment Rank** | The TSP edge state's commitment rank is determined by the following priority:<br>1. 0, if the decision status is “UNKNOWN”;<br>2. 1, if the decision status is “SELECTED”;<br>3. 2, if at least one of the following holds: the decision status is “FORCED” or the decision status is “FORBIDDEN”;<br>4. in all other cases, 3. |
+| **DR-153 Commitment Polarity** | The TSP edge state's commitment polarity is determined by the following priority:<br>1. the negative of 1, if the decision status is “FORBIDDEN”;<br>2. 0, if the decision status is “UNKNOWN”;<br>3. in all other cases, 1. |
+| **DR-154 Necessity Scope** | The TSP edge state's necessity scope is determined by the following priority:<br>1. “ALL_FEASIBLE_TOURS”, if the decision status is “FORCED”;<br>2. “NO_FEASIBLE_TOUR”, if the decision status is “FORBIDDEN”;<br>3. “CURRENT_WITNESS”, if the decision status is “SELECTED”;<br>4. in all other cases, “UNRESOLVED_OR_HISTORICAL”. |
+| **DR-155 Is Terminal Commitment** | A TSP edge state is considered a terminal commitment if at least one of the following holds: the decision status is “FORCED”; the decision status is “FORBIDDEN”; the decision status is “CONTRADICTED”; or the decision status is “SUPERSEDED”. |
+| **DR-156 Is Connected Degree Two** | A TSP derived edge set is considered a connected degree two if all of the following hold: the degree violation count is 0; the connected component count is 1; and the proper subtour count is 0. |
+| **DR-157 Incidence Defect** | A TSP defect profile's incidence defect is computed as the absolute value of the required incidence minus the observed incidence. |
+| **DR-158 Connectivity Defect** | A TSP defect profile's connectivity defect is computed as the largest of the component count minus 1 and 0. |
+| **DR-159 Boundary Defect** | A TSP defect profile's boundary defect is computed as the largest of the required boundary crossings minus the observed boundary crossings and 0. |
+| **DR-160 Cost Gap** | A TSP defect profile's cost gap is computed as the upper bound cost minus the lower bound cost. |
+| **DR-161 Defect Vector** | A TSP defect profile's defect vector is computed as the incidence defect, followed by “|”, followed by the connectivity defect, followed by “|”, followed by the boundary defect, followed by “|”, followed by the cost gap. |
+| **DR-162 Is Degree Two** | A TSP edge set stop degree is considered a degree two if the selected degree is 2. |
+| **DR-163 Is Passing** | A TSP connected degree two certificate is considered passing if all of the following hold: the edge count is the required stop count; the degree violation count is 0; the component count is 1; the proper subtour count is 0; and the spanning tree edge count is the required stop count minus 1. |
+| **DR-164 Is Passing** | A TSP route reconstruction is considered passing if all of the following hold: the reconstructed stop count is the required stop count; the reconstructed leg count is the required stop count; the candidate used as antecedent flag is not set; and the status is “RECONSTRUCTED”. |
+| **DR-165 Semantic Key** | A TSP witness normal form's semantic key is computed as the witness shape, followed by “|”, followed by the TSP instance, followed by “|”, followed by the covered stop count, followed by “|”, followed by the required stop count, followed by “|”, followed by the edge count, followed by “|”, followed by the total cost, followed by “|”, followed by the incidence defect, followed by “|”, followed by the connectivity defect, followed by “|”, followed by the order defect, followed by “|”, followed by the boundary signature (a missing value counts as an empty string). ⚠︎ mechanical <!-- rulespeak:reword --> |
+| **DR-166 Is Valid** | A TSP witness normal form is considered valid if all of the following hold: the covered stop count is the required stop count; the incidence defect is 0; the connectivity defect is 0; the order defect is 0; and at least one of the following holds: all of the following hold: the witness shape is “CYCLE” and the edge count is the required stop count or all of the following hold: the witness shape is “PATH” and the edge count is the required stop count minus 1. |
+| **DR-167 Route Class Elimination Pct** | The TSP search certificate's route class elimination pct is determined by the following priority:<br>1. 0, if the initial route class count is 0;<br>2. in all other cases, the initial route class count minus the surviving route class count divided by the initial route class count times 100 rounded to 2 decimal place(s). |
+| **DR-168 Boundary Signature** | A TSP cluster boundary state's boundary signature is computed as the neighborhood, followed by “|”, followed by the entry stop, followed by “|”, followed by the exit stop, followed by “|”, followed by the internal stop count, followed by “|”, followed by the internal path cost. |
+| **DR-169 Semantic Quotient Key** | A TSP cluster boundary state's semantic quotient key is computed as the neighborhood, followed by “|”, followed by the entry stop, followed by “|”, followed by the exit stop, followed by “|”, followed by the internal stop count, followed by “|”, followed by the internal path cost. |
+| **DR-170 Name** | A TSP inference rule's name is the same as its display name. |
+| **DR-171 Name** | A TSP frontier obligation's name is the same as its display name. |
+| **DR-172 Is Imported Dependency** | A TSP frontier obligation is considered an imported dependency if the obligation kind is “IMPORTED_DEPENDENCY”. |
+| **DR-173 Is Closed** | A TSP frontier obligation is considered closed if the status is “CLOSED”. |
+| **DR-174 Name** | A TSP loop's name is the same as its display name. |
+| **DR-175 Semantic Compression Pct** | The TSP convergence measurement's semantic compression pct is determined by the following priority:<br>1. 0, if the surface concept count before is 0;<br>2. in all other cases, the surface concept count before minus the primitive count after divided by the surface concept count before times 100 rounded to 2 decimal place(s). |
+| **DR-176 Search Elimination Pct** | The search metric's search elimination pct is determined by the following priority:<br>1. 0, if the branch count before is 0;<br>2. in all other cases, the branch count before minus the branch count after divided by the branch count before times 100 rounded to 2 decimal place(s). |
+| **DR-177 Name** | A TSP invariant check's name is the same as its display name. |
+| **DR-178 Actual Hamiltonian Cycle Witness** | A TSP invariant check's actual hamiltonian cycle witness is true when the TSP invariant check's candidate tour is a hamiltonian cycle witness. |
+| **DR-179 Actual Optimality Proved** | A TSP invariant check's actual optimality proved when the linked candidate tour is optimality proved. |
+| **DR-180 Actual Total Travel Cost** | A TSP invariant check's actual total travel cost — taken from the linked candidate tour. |
+| **DR-181 Is Hamiltonian Status Correct** | A TSP invariant check is considered a hamiltonian status correct if the expected hamiltonian cycle witness is the actual hamiltonian cycle witness. |
+| **DR-182 Is Optimality Status Correct** | A TSP invariant check is considered an optimality status correct if the expected optimality proved is the actual optimality proved. |
+| **DR-183 Is Cost Correct** | A TSP invariant check is considered a cost correct if the expected total travel cost is the actual total travel cost. |
+| **DR-184 Is Passing** | A TSP invariant check is considered passing if all of the following hold: the hamiltonian status correct flag is set; the optimality status correct flag is set; and the cost correct flag is set. |
 
 ## 5 Traceability to Schema
 
@@ -739,8 +803,12 @@ the same logic the rulebook stores, written for a business reader._
 | **InstanceLowerBounds.CountOfLocalDegreeBounds** | rollup | `Count(LocalDegreeBounds via TSPInstance)` |
 | **InstanceLowerBounds.CountOfInvalidLocalDegreeBounds** | rollup | `Count(LocalDegreeBounds via TSPInstance)` |
 | **InstanceLowerBounds.TotalLocalDegreeBoundCost** | rollup | `Sum(LocalDegreeBounds.LocalBoundCost via TSPInstance)` |
-| **InstanceLowerBounds.LowerBoundCost** | formula | `TotalLocalDegreeBoundCost / 2` |
-| **InstanceLowerBounds.IsCertified** | formula | `And(CountOfLocalDegreeBounds = RequiredStopCount, CountOfInvalidLocalDegreeBounds = 0)` |
+| **InstanceLowerBounds.LowerBoundCost** | formula | `BaseLowerBoundCost + SupplementalBoundAdjustment` |
+| **InstanceLowerBounds.IsCertified** | formula | `And(CountOfLocalDegreeBounds = RequiredStopCount, CountOfInvalidLocalDegreeBounds = 0, IsSupplementalBoundCertified)` |
+| **InstanceLowerBounds.BaseLowerBoundCost** | formula | `TotalLocalDegreeBoundCost / 2` |
+| **InstanceLowerBounds.CountOfCertifiedSupplementalTerms** | rollup | `Count(TSPBoundTerms via BoundCertificate)` |
+| **InstanceLowerBounds.IsSupplementalBoundCertified** | formula | `CountOfCertifiedSupplementalTerms = RequiredSupplementalTermCount` |
+| **TSPBoundTerms.TermValue** | formula | `Quantity * UnitWeight * Sign` |
 | **OptimalityCertificates.CandidateTSPInstance** | lookup | `Lookup(CandidateTours.TSPInstance via CandidateTour)` |
 | **OptimalityCertificates.LowerBoundTSPInstance** | lookup | `Lookup(InstanceLowerBounds.TSPInstance via InstanceLowerBound)` |
 | **OptimalityCertificates.CandidateTravelCost** | lookup | `Lookup(CandidateTours.TotalTravelCost via CandidateTour)` |
@@ -754,16 +822,30 @@ the same logic the rulebook stores, written for a business reader._
 | **TSPExecutionRuns.IsSuccessful** | formula | `And(BuildSucceeded, DatabaseInitialized, ConformanceSucceeded)` |
 | **TSPConformanceChecks.IsPassing** | formula | `Status = "PASS"` |
 | **TSPEdgeStates.IsDecided** | formula | `Not(DecisionStatus = "UNKNOWN")` |
+| **TSPEdgeStates.CommitmentRank** | formula | `If(DecisionStatus = "UNKNOWN", 0, If(DecisionStatus = "SELECTED", 1, If(Or(DecisionStatus = "FORCED", DecisionStatus = "FORBIDDEN"), 2, 3)))` |
+| **TSPEdgeStates.CommitmentPolarity** | formula | `If(DecisionStatus = "FORBIDDEN", -1, If(DecisionStatus = "UNKNOWN", 0, 1))` |
+| **TSPEdgeStates.NecessityScope** | formula | `If(DecisionStatus = "FORCED", "ALL_FEASIBLE_TOURS", If(DecisionStatus = "FORBIDDEN", "NO_FEASIBLE_TOUR", If(DecisionStatus = "SELECTED", "CURRENT_WITNESS", "UNRESOLVED_OR_HISTORICAL")))` |
+| **TSPEdgeStates.IsTerminalCommitment** | formula | `Or(DecisionStatus = "FORCED", DecisionStatus = "FORBIDDEN", DecisionStatus = "CONTRADICTED", DecisionStatus = "SUPERSEDED")` |
 | **TSPDerivedEdgeSets.IsConnectedDegreeTwo** | formula | `And(DegreeViolationCount = 0, ConnectedComponentCount = 1, ProperSubtourCount = 0)` |
+| **TSPDefectProfiles.IncidenceDefect** | formula | `Abs(RequiredIncidence - ObservedIncidence)` |
+| **TSPDefectProfiles.ConnectivityDefect** | formula | `Max(ComponentCount - 1, 0)` |
+| **TSPDefectProfiles.BoundaryDefect** | formula | `Max(RequiredBoundaryCrossings - ObservedBoundaryCrossings, 0)` |
+| **TSPDefectProfiles.CostGap** | formula | `UpperBoundCost - LowerBoundCost` |
+| **TSPDefectProfiles.DefectVector** | formula | `Concat(IncidenceDefect, "\|", ConnectivityDefect, "\|", BoundaryDefect, "\|", CostGap)` |
 | **TSPEdgeSetStopDegrees.IsDegreeTwo** | formula | `SelectedDegree = 2` |
 | **TSPConnectedDegreeTwoCertificates.IsPassing** | formula | `And(EdgeCount = RequiredStopCount, DegreeViolationCount = 0, ComponentCount = 1, ProperSubtourCount = 0, SpanningTreeEdgeCount = RequiredStopCount - 1)` |
 | **TSPRouteReconstructions.IsPassing** | formula | `And(ReconstructedStopCount = RequiredStopCount, ReconstructedLegCount = RequiredStopCount, Not(CandidateUsedAsAntecedent), Status = "RECONSTRUCTED")` |
+| **TSPWitnessNormalForms.SemanticKey** | formula | `Concat(WitnessShape, "\|", TSPInstance, "\|", CoveredStopCount, "\|", RequiredStopCount, "\|", EdgeCount, "\|", TotalCost, "\|", IncidenceDefect, "\|", ConnectivityDefect, "\|", OrderDefect, "\|", Coalesce(BoundarySignature, ""))` |
+| **TSPWitnessNormalForms.IsValid** | formula | `And(CoveredStopCount = RequiredStopCount, IncidenceDefect = 0, ConnectivityDefect = 0, OrderDefect = 0, Or(And(WitnessShape = "CYCLE", EdgeCount = RequiredStopCount), And(WitnessShape = "PATH", EdgeCount = RequiredStopCount - 1)))` |
 | **TSPSearchCertificates.RouteClassEliminationPct** | formula | `If(InitialRouteClassCount = 0, 0, Round(InitialRouteClassCount - SurvivingRouteClassCount / InitialRouteClassCount * 100, 2))` |
+| **TSPClusterBoundaryStates.BoundarySignature** | formula | `Concat(Neighborhood, "\|", EntryStop, "\|", ExitStop, "\|", InternalStopCount, "\|", InternalPathCost)` |
+| **TSPClusterBoundaryStates.SemanticQuotientKey** | formula | `Concat(Neighborhood, "\|", EntryStop, "\|", ExitStop, "\|", InternalStopCount, "\|", InternalPathCost)` |
 | **TSPInferenceRules.Name** | formula | `DisplayName` |
 | **TSPFrontierObligations.Name** | formula | `DisplayName` |
 | **TSPFrontierObligations.IsImportedDependency** | formula | `ObligationKind = "IMPORTED_DEPENDENCY"` |
 | **TSPFrontierObligations.IsClosed** | formula | `Status = "CLOSED"` |
 | **TSPLoops.Name** | formula | `DisplayName` |
+| **TSPConvergenceMeasurements.SemanticCompressionPct** | formula | `If(SurfaceConceptCountBefore = 0, 0, Round(SurfaceConceptCountBefore - PrimitiveCountAfter / SurfaceConceptCountBefore * 100, 2))` |
 | **SearchMetrics.SearchEliminationPct** | formula | `If(BranchCountBefore = 0, 0, Round(BranchCountBefore - BranchCountAfter / BranchCountBefore * 100, 2))` |
 | **TSPInvariantChecks.Name** | formula | `DisplayName` |
 | **TSPInvariantChecks.ActualHamiltonianCycleWitness** | lookup | `Lookup(CandidateTours.IsHamiltonianCycleWitness via CandidateTour)` |

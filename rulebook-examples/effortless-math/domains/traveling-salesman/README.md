@@ -175,3 +175,57 @@ The nearest open obligations are stronger component/crossing lower bounds, gener
 The rulebook records every loop first as PLANNED with a before-state and closure criterion, then preserves the after-state in the same row. Gridville is reconstructed from inferred edges with zero branch decisions; twin triangles preserves a sound non-tight lower bound and yields the first finite neighborhood boundary-state contraction certificate.
 
 **Postgres commissioning: CLOSED.** Attempts 1–9 remain explicit blocked or failed execution rows. Retry 10 installed the pinned EffortlessAPI/cli archive with npm, generated Postgres and RuleSpeak, initialized `erb_traveling_salesman`, passed the complete Python/Postgres conformance surface, normalized PostgreSQL NUMERIC text through `Decimal`, and durably sealed the canonical certificate. Generated artifact hashes and all available failure/success transcripts are retained.
+
+
+## Loops 597–610 — predicate convergence
+
+The user prediction was recorded before execution: recurring TSP concepts would begin to collapse, while useful new terms would continue to be coined. This remains an empirical working prediction, not a theorem.
+
+The experiment began with **32 recurring surface predicates** and derived an eight-predicate basis:
+
+```text
+MEMBERSHIP   INCIDENCE   CARDINALITY   ORDER
+WEIGHT       COMMITMENT  CONNECTIVITY  PROVENANCE
+```
+
+```text
+32 surface predicates → 8 primitives
+semantic compression  = 75%
+new primitives after loop 598 = 0
+physical tables        = 45
+```
+
+The physical rulebook grew by five generic tables so that the old projections remain replayable. The active semantic basis did not grow after it was identified.
+
+| Loop | Coined predicate | Reduction |
+|---:|---|---|
+| 597 | Convergence Prediction | Makes the prediction and baseline executable data. |
+| 598 | Predicate Basis | Maps 32 surface names to eight primitives. |
+| 599 | Commitment Lattice | Unifies selected, forced, forbidden, unknown, and superseded edge states. |
+| 600 | Incidence Budget | Unifies degree checks, degree bounds, and degree forcing. |
+| 601 | Defect Vector | Unifies incidence, connectivity, boundary, and cost gaps. |
+| 602 | Cut Parity | Derives a positive even crossing demand. |
+| 603 | Component Repair Bound | Composes local degree and global component repair costs. |
+| 604 | Bound Sandwich | Collapses lower bound, upper witness, and equality rigidity. |
+| 605 | Witness Normal Form | Makes supplied versus reconstructed a provenance distinction. |
+| 606 | Boundary Signature | Makes cluster paths instances of the witness normal form. |
+| 607 | Semantic Quotient | Explains 6→3 and 36→9 through an explicit equivalence relation. |
+| 608 | Component Quotient | Unifies neighborhoods and graph components as boundary objects. |
+| 609 | Closure Event | Unifies applications, rounds, supports, antecedents, and decisions. |
+| 610 | Convergence Event | Certifies basis stability and records the residual kernel. |
+
+Twin triangles now has a composed optimality proof:
+
+```text
+degree-two base                         6
+mandatory crossings       2 × 10      +20
+released internal edges   2 ×  1       -2
+component-repair lower bound            24
+feasible Hamiltonian cycle              24
+------------------------------------------
+finite-instance optimum                 24
+```
+
+The original degree-only lower bound of 6 remains preserved as a non-tight counterexample. The stronger conclusion comes from composing cut parity with a witnessed repair cost.
+
+**Convergence status:** early empirical support for this represented TSP domain. It is not a universal theorem about mathematical vocabularies or computational complexity.

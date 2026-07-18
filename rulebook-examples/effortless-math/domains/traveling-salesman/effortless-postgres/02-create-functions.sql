@@ -125,6 +125,33 @@ RETURNS TEXT AS $$
   SELECT (SELECT cluster_kind FROM neighborhoods WHERE neighborhood_id = p_neighborhood_id);
 $$ LANGUAGE sql STABLE;
 
+-- get_neighborhoods_is_quotient_node
+-- Helper function: Get IsQuotientNode from Neighborhoods by NeighborhoodId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_neighborhoods_is_quotient_node(p_neighborhood_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT is_quotient_node FROM neighborhoods WHERE neighborhood_id = p_neighborhood_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_neighborhoods_quotient_node_kind
+-- Helper function: Get QuotientNodeKind from Neighborhoods by NeighborhoodId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_neighborhoods_quotient_node_kind(p_neighborhood_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT quotient_node_kind FROM neighborhoods WHERE neighborhood_id = p_neighborhood_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_neighborhoods_required_boundary_degree
+-- Helper function: Get RequiredBoundaryDegree from Neighborhoods by NeighborhoodId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_neighborhoods_required_boundary_degree(p_neighborhood_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT required_boundary_degree FROM neighborhoods WHERE neighborhood_id = p_neighborhood_id);
+$$ LANGUAGE sql STABLE;
+
 -- calc_addresses_name
 -- Field: Addresses.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -1707,7 +1734,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_instance_lower_bounds_lower_bound_cost(p_instance_lower_bound_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_instance_lower_bounds_total_local_degree_bound_cost(p_instance_lower_bound_id) AS val) SELECT ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(2, 0), 0)))::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_instance_lower_bounds_base_lower_bound_cost(p_instance_lower_bound_id) AS val) SELECT ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT supplemental_bound_adjustment FROM instance_lower_bounds WHERE instance_lower_bound_id = p_instance_lower_bound_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT supplemental_bound_adjustment FROM instance_lower_bounds WHERE instance_lower_bound_id = p_instance_lower_bound_id))::numeric ELSE NULL END, 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_instance_lower_bounds_is_certified
@@ -1717,73 +1744,37 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_instance_lower_bounds_is_certified(p_instance_lower_bound_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_instance_lower_bounds_count_of_local_degree_bounds(p_instance_lower_bound_id) = calc_instance_lower_bounds_required_stop_count(p_instance_lower_bound_id) AND (calc_instance_lower_bounds_count_of_invalid_local_degree_bounds(p_instance_lower_bound_id))::NUMERIC = 0));
+  SELECT ((calc_instance_lower_bounds_count_of_local_degree_bounds(p_instance_lower_bound_id) = calc_instance_lower_bounds_required_stop_count(p_instance_lower_bound_id) AND (calc_instance_lower_bounds_count_of_invalid_local_degree_bounds(p_instance_lower_bound_id))::NUMERIC = 0 AND calc_instance_lower_bounds_is_supplemental_bound_certified(p_instance_lower_bound_id)));
 $$ LANGUAGE sql STABLE;
 
--- calc_optimality_certificates_candidate_tsp_instance
--- Field: OptimalityCertificates.CandidateTSPInstance
--- Type: lookup | DataType: string | Returns: TEXT
--- Lookup: TSPInstance from related CandidateTours
+-- calc_instance_lower_bounds_base_lower_bound_cost
+-- Field: InstanceLowerBounds.BaseLowerBoundCost
+-- Type: calculated | DataType: number | Returns: NUMERIC
 
 
-CREATE OR REPLACE FUNCTION calc_optimality_certificates_candidate_tsp_instance(p_optimality_certificate_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT tsp_instance::text FROM candidate_tours WHERE candidate_tour_id = (SELECT candidate_tour FROM optimality_certificates WHERE optimality_certificate_id = p_optimality_certificate_id));
-$$ LANGUAGE sql STABLE;
-
--- calc_optimality_certificates_lower_bound_tsp_instance
--- Field: OptimalityCertificates.LowerBoundTSPInstance
--- Type: lookup | DataType: string | Returns: TEXT
--- Lookup: TSPInstance from related InstanceLowerBounds
-
-
-CREATE OR REPLACE FUNCTION calc_optimality_certificates_lower_bound_tsp_instance(p_optimality_certificate_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT tsp_instance::text FROM instance_lower_bounds WHERE instance_lower_bound_id = (SELECT instance_lower_bound FROM optimality_certificates WHERE optimality_certificate_id = p_optimality_certificate_id));
-$$ LANGUAGE sql STABLE;
-
--- calc_optimality_certificates_candidate_travel_cost
--- Field: OptimalityCertificates.CandidateTravelCost
--- Type: lookup | DataType: number | Returns: NUMERIC
--- Lookup: TotalTravelCost from related CandidateTours
-
-
-CREATE OR REPLACE FUNCTION calc_optimality_certificates_candidate_travel_cost(p_optimality_certificate_id TEXT)
+CREATE OR REPLACE FUNCTION calc_instance_lower_bounds_base_lower_bound_cost(p_instance_lower_bound_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT calc_candidate_tours_total_travel_cost((SELECT candidate_tour FROM optimality_certificates WHERE optimality_certificate_id = p_optimality_certificate_id));
+  WITH __erb_dedup_v1 AS (SELECT calc_instance_lower_bounds_total_local_degree_bound_cost(p_instance_lower_bound_id) AS val) SELECT ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(2, 0), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
--- calc_optimality_certificates_lower_bound_cost
--- Field: OptimalityCertificates.LowerBoundCost
--- Type: lookup | DataType: number | Returns: NUMERIC
--- Lookup: LowerBoundCost from related InstanceLowerBounds
+-- calc_instance_lower_bounds_count_of_certified_supplemental_term
+-- Field: InstanceLowerBounds.CountOfCertifiedSupplementalTerms
+-- Type: aggregation | DataType: integer | Returns: INTEGER
 
 
-CREATE OR REPLACE FUNCTION calc_optimality_certificates_lower_bound_cost(p_optimality_certificate_id TEXT)
-RETURNS NUMERIC AS $$
-  SELECT calc_instance_lower_bounds_lower_bound_cost((SELECT instance_lower_bound FROM optimality_certificates WHERE optimality_certificate_id = p_optimality_certificate_id));
+CREATE OR REPLACE FUNCTION calc_instance_lower_bounds_count_of_certified_supplemental_term(p_instance_lower_bound_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM tsp_bound_terms WHERE bound_certificate = (SELECT NULLIF(instance_lower_bound_id, '') FROM instance_lower_bounds WHERE instance_lower_bound_id = p_instance_lower_bound_id) AND counts_toward_adjustment = TRUE AND is_certified = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
--- calc_optimality_certificates_candidate_is_hamiltonian_cycle_wit
--- Field: OptimalityCertificates.CandidateIsHamiltonianCycleWitness
--- Type: lookup | DataType: boolean | Returns: BOOLEAN
--- Lookup: IsHamiltonianCycleWitness from related CandidateTours
+-- calc_instance_lower_bounds_is_supplemental_bound_certified
+-- Field: InstanceLowerBounds.IsSupplementalBoundCertified
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
 
 
-CREATE OR REPLACE FUNCTION calc_optimality_certificates_candidate_is_hamiltonian_cycle_wit(p_optimality_certificate_id TEXT)
+CREATE OR REPLACE FUNCTION calc_instance_lower_bounds_is_supplemental_bound_certified(p_instance_lower_bound_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT calc_candidate_tours_is_hamiltonian_cycle_witness((SELECT candidate_tour FROM optimality_certificates WHERE optimality_certificate_id = p_optimality_certificate_id));
-$$ LANGUAGE sql STABLE;
-
--- calc_optimality_certificates_lower_bound_is_certified
--- Field: OptimalityCertificates.LowerBoundIsCertified
--- Type: lookup | DataType: boolean | Returns: BOOLEAN
--- Lookup: IsCertified from related InstanceLowerBounds
-
-
-CREATE OR REPLACE FUNCTION calc_optimality_certificates_lower_bound_is_certified(p_optimality_certificate_id TEXT)
-RETURNS BOOLEAN AS $$
-  SELECT calc_instance_lower_bounds_is_certified((SELECT instance_lower_bound FROM optimality_certificates WHERE optimality_certificate_id = p_optimality_certificate_id));
+  SELECT (calc_instance_lower_bounds_count_of_certified_supplemental_term(p_instance_lower_bound_id) = (SELECT required_supplemental_term_count FROM instance_lower_bounds WHERE instance_lower_bound_id = p_instance_lower_bound_id))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- get_instance_lower_bounds_bound_kind
@@ -1795,54 +1786,31 @@ RETURNS TEXT AS $$
   SELECT (SELECT bound_kind FROM instance_lower_bounds WHERE instance_lower_bound_id = p_instance_lower_bound_id);
 $$ LANGUAGE sql STABLE;
 
--- calc_optimality_certificates_name
--- Field: OptimalityCertificates.Name
--- Type: calculated | DataType: string | Returns: TEXT
+-- get_instance_lower_bounds_required_supplemental_term_count
+-- Helper function: Get RequiredSupplementalTermCount from InstanceLowerBounds by InstanceLowerBoundId
+-- Used for join-free cross-table references in aggregations
 
+CREATE OR REPLACE FUNCTION get_instance_lower_bounds_required_supplemental_term_count(p_instance_lower_bound_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT required_supplemental_term_count FROM instance_lower_bounds WHERE instance_lower_bound_id = p_instance_lower_bound_id);
+$$ LANGUAGE sql STABLE;
 
-CREATE OR REPLACE FUNCTION calc_optimality_certificates_name(p_optimality_certificate_id TEXT)
+-- get_instance_lower_bounds_supplemental_bound_adjustment
+-- Helper function: Get SupplementalBoundAdjustment from InstanceLowerBounds by InstanceLowerBoundId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_instance_lower_bounds_supplemental_bound_adjustment(p_instance_lower_bound_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT supplemental_bound_adjustment FROM instance_lower_bounds WHERE instance_lower_bound_id = p_instance_lower_bound_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_instance_lower_bounds_bound_composition_kind
+-- Helper function: Get BoundCompositionKind from InstanceLowerBounds by InstanceLowerBoundId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_instance_lower_bounds_bound_composition_kind(p_instance_lower_bound_id TEXT)
 RETURNS TEXT AS $$
-  SELECT ((SELECT NULLIF(optimality_certificate_id, '') FROM optimality_certificates WHERE optimality_certificate_id = p_optimality_certificate_id))::text;
-$$ LANGUAGE sql STABLE;
-
--- calc_optimality_certificates_is_same_instance
--- Field: OptimalityCertificates.IsSameInstance
--- Type: calculated | DataType: boolean | Returns: BOOLEAN
-
-
-CREATE OR REPLACE FUNCTION calc_optimality_certificates_is_same_instance(p_optimality_certificate_id TEXT)
-RETURNS BOOLEAN AS $$
-  SELECT (calc_optimality_certificates_candidate_tsp_instance(p_optimality_certificate_id) = calc_optimality_certificates_lower_bound_tsp_instance(p_optimality_certificate_id))::boolean;
-$$ LANGUAGE sql STABLE;
-
--- calc_optimality_certificates_is_bound_tight
--- Field: OptimalityCertificates.IsBoundTight
--- Type: calculated | DataType: boolean | Returns: BOOLEAN
-
-
-CREATE OR REPLACE FUNCTION calc_optimality_certificates_is_bound_tight(p_optimality_certificate_id TEXT)
-RETURNS BOOLEAN AS $$
-  SELECT (calc_optimality_certificates_candidate_travel_cost(p_optimality_certificate_id) = calc_optimality_certificates_lower_bound_cost(p_optimality_certificate_id))::boolean;
-$$ LANGUAGE sql STABLE;
-
--- calc_optimality_certificates_is_passing
--- Field: OptimalityCertificates.IsPassing
--- Type: calculated | DataType: boolean | Returns: BOOLEAN
-
-
-CREATE OR REPLACE FUNCTION calc_optimality_certificates_is_passing(p_optimality_certificate_id TEXT)
-RETURNS BOOLEAN AS $$
-  SELECT (((calc_optimality_certificates_candidate_is_hamiltonian_cycle_wit(p_optimality_certificate_id) = 'true') AND calc_optimality_certificates_lower_bound_is_certified(p_optimality_certificate_id) AND calc_optimality_certificates_is_same_instance(p_optimality_certificate_id) AND calc_optimality_certificates_is_bound_tight(p_optimality_certificate_id)))::boolean;
-$$ LANGUAGE sql STABLE;
-
--- calc_optimality_certificates_scope_claim
--- Field: OptimalityCertificates.ScopeClaim
--- Type: calculated | DataType: string | Returns: TEXT
-
-
-CREATE OR REPLACE FUNCTION calc_optimality_certificates_scope_claim(p_optimality_certificate_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (CASE WHEN calc_optimality_certificates_is_passing(p_optimality_certificate_id) THEN ('OPTIMAL_FOR_DECLARED_FINITE_INSTANCE')::text ELSE ('OPTIMALITY_NOT_CERTIFIED')::text END)::text;
+  SELECT (SELECT bound_composition_kind FROM instance_lower_bounds WHERE instance_lower_bound_id = p_instance_lower_bound_id);
 $$ LANGUAGE sql STABLE;
 
 -- get_tsp_loops_loop_order
@@ -1933,6 +1901,142 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION get_tsp_loops_completion_disposition(p_tsp_loop_id TEXT)
 RETURNS TEXT AS $$
   SELECT (SELECT completion_disposition FROM tsp_loops WHERE tsp_loop_id = p_tsp_loop_id);
+$$ LANGUAGE sql STABLE;
+
+-- calc_tsp_bound_terms_name
+-- Field: TSPBoundTerms.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_tsp_bound_terms_name(p_tsp_bound_term_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(tsp_bound_term_id, '') FROM tsp_bound_terms WHERE tsp_bound_term_id = p_tsp_bound_term_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_tsp_bound_terms_term_value
+-- Field: TSPBoundTerms.TermValue
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_tsp_bound_terms_term_value(p_tsp_bound_term_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((COALESCE(CASE WHEN ((SELECT quantity FROM tsp_bound_terms WHERE tsp_bound_term_id = p_tsp_bound_term_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT quantity FROM tsp_bound_terms WHERE tsp_bound_term_id = p_tsp_bound_term_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((SELECT unit_weight FROM tsp_bound_terms WHERE tsp_bound_term_id = p_tsp_bound_term_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT unit_weight FROM tsp_bound_terms WHERE tsp_bound_term_id = p_tsp_bound_term_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((SELECT sign FROM tsp_bound_terms WHERE tsp_bound_term_id = p_tsp_bound_term_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT sign FROM tsp_bound_terms WHERE tsp_bound_term_id = p_tsp_bound_term_id))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((SELECT unit_weight FROM tsp_bound_terms WHERE tsp_bound_term_id = p_tsp_bound_term_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT unit_weight FROM tsp_bound_terms WHERE tsp_bound_term_id = p_tsp_bound_term_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((SELECT sign FROM tsp_bound_terms WHERE tsp_bound_term_id = p_tsp_bound_term_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT sign FROM tsp_bound_terms WHERE tsp_bound_term_id = p_tsp_bound_term_id))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_optimality_certificates_candidate_tsp_instance
+-- Field: OptimalityCertificates.CandidateTSPInstance
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: TSPInstance from related CandidateTours
+
+
+CREATE OR REPLACE FUNCTION calc_optimality_certificates_candidate_tsp_instance(p_optimality_certificate_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT tsp_instance::text FROM candidate_tours WHERE candidate_tour_id = (SELECT candidate_tour FROM optimality_certificates WHERE optimality_certificate_id = p_optimality_certificate_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_optimality_certificates_lower_bound_tsp_instance
+-- Field: OptimalityCertificates.LowerBoundTSPInstance
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: TSPInstance from related InstanceLowerBounds
+
+
+CREATE OR REPLACE FUNCTION calc_optimality_certificates_lower_bound_tsp_instance(p_optimality_certificate_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT tsp_instance::text FROM instance_lower_bounds WHERE instance_lower_bound_id = (SELECT instance_lower_bound FROM optimality_certificates WHERE optimality_certificate_id = p_optimality_certificate_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_optimality_certificates_candidate_travel_cost
+-- Field: OptimalityCertificates.CandidateTravelCost
+-- Type: lookup | DataType: number | Returns: NUMERIC
+-- Lookup: TotalTravelCost from related CandidateTours
+
+
+CREATE OR REPLACE FUNCTION calc_optimality_certificates_candidate_travel_cost(p_optimality_certificate_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT calc_candidate_tours_total_travel_cost((SELECT candidate_tour FROM optimality_certificates WHERE optimality_certificate_id = p_optimality_certificate_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_optimality_certificates_lower_bound_cost
+-- Field: OptimalityCertificates.LowerBoundCost
+-- Type: lookup | DataType: number | Returns: NUMERIC
+-- Lookup: LowerBoundCost from related InstanceLowerBounds
+
+
+CREATE OR REPLACE FUNCTION calc_optimality_certificates_lower_bound_cost(p_optimality_certificate_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT calc_instance_lower_bounds_lower_bound_cost((SELECT instance_lower_bound FROM optimality_certificates WHERE optimality_certificate_id = p_optimality_certificate_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_optimality_certificates_candidate_is_hamiltonian_cycle_wit
+-- Field: OptimalityCertificates.CandidateIsHamiltonianCycleWitness
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: IsHamiltonianCycleWitness from related CandidateTours
+
+
+CREATE OR REPLACE FUNCTION calc_optimality_certificates_candidate_is_hamiltonian_cycle_wit(p_optimality_certificate_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_candidate_tours_is_hamiltonian_cycle_witness((SELECT candidate_tour FROM optimality_certificates WHERE optimality_certificate_id = p_optimality_certificate_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_optimality_certificates_lower_bound_is_certified
+-- Field: OptimalityCertificates.LowerBoundIsCertified
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: IsCertified from related InstanceLowerBounds
+
+
+CREATE OR REPLACE FUNCTION calc_optimality_certificates_lower_bound_is_certified(p_optimality_certificate_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_instance_lower_bounds_is_certified((SELECT instance_lower_bound FROM optimality_certificates WHERE optimality_certificate_id = p_optimality_certificate_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_optimality_certificates_name
+-- Field: OptimalityCertificates.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_optimality_certificates_name(p_optimality_certificate_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(optimality_certificate_id, '') FROM optimality_certificates WHERE optimality_certificate_id = p_optimality_certificate_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_optimality_certificates_is_same_instance
+-- Field: OptimalityCertificates.IsSameInstance
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_optimality_certificates_is_same_instance(p_optimality_certificate_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (calc_optimality_certificates_candidate_tsp_instance(p_optimality_certificate_id) = calc_optimality_certificates_lower_bound_tsp_instance(p_optimality_certificate_id))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_optimality_certificates_is_bound_tight
+-- Field: OptimalityCertificates.IsBoundTight
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_optimality_certificates_is_bound_tight(p_optimality_certificate_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (calc_optimality_certificates_candidate_travel_cost(p_optimality_certificate_id) = calc_optimality_certificates_lower_bound_cost(p_optimality_certificate_id))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_optimality_certificates_is_passing
+-- Field: OptimalityCertificates.IsPassing
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_optimality_certificates_is_passing(p_optimality_certificate_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((calc_optimality_certificates_candidate_is_hamiltonian_cycle_wit(p_optimality_certificate_id) = 'true') AND calc_optimality_certificates_lower_bound_is_certified(p_optimality_certificate_id) AND calc_optimality_certificates_is_same_instance(p_optimality_certificate_id) AND calc_optimality_certificates_is_bound_tight(p_optimality_certificate_id)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_optimality_certificates_scope_claim
+-- Field: OptimalityCertificates.ScopeClaim
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_optimality_certificates_scope_claim(p_optimality_certificate_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_optimality_certificates_is_passing(p_optimality_certificate_id) THEN ('OPTIMAL_FOR_DECLARED_FINITE_INSTANCE')::text ELSE ('OPTIMALITY_NOT_CERTIFIED')::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_tsp_execution_runs_name
@@ -2230,6 +2334,42 @@ RETURNS TEXT AS $$
   SELECT (SELECT certificate_type FROM tsp_inference_applications WHERE tsp_inference_application_id = p_tsp_inference_application_id);
 $$ LANGUAGE sql STABLE;
 
+-- get_tsp_inference_applications_event_kind
+-- Helper function: Get EventKind from TSPInferenceApplications by TSPInferenceApplicationId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_inference_applications_event_kind(p_tsp_inference_application_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT event_kind FROM tsp_inference_applications WHERE tsp_inference_application_id = p_tsp_inference_application_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_inference_applications_antecedent_count
+-- Helper function: Get AntecedentCount from TSPInferenceApplications by TSPInferenceApplicationId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_inference_applications_antecedent_count(p_tsp_inference_application_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT antecedent_count FROM tsp_inference_applications WHERE tsp_inference_application_id = p_tsp_inference_application_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_inference_applications_decision_count
+-- Helper function: Get DecisionCount from TSPInferenceApplications by TSPInferenceApplicationId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_inference_applications_decision_count(p_tsp_inference_application_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT decision_count FROM tsp_inference_applications WHERE tsp_inference_application_id = p_tsp_inference_application_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_inference_applications_event_status
+-- Helper function: Get EventStatus from TSPInferenceApplications by TSPInferenceApplicationId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_inference_applications_event_status(p_tsp_inference_application_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT event_status FROM tsp_inference_applications WHERE tsp_inference_application_id = p_tsp_inference_application_id);
+$$ LANGUAGE sql STABLE;
+
 -- calc_tsp_inference_antecedents_name
 -- Field: TSPInferenceAntecedents.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -2258,6 +2398,46 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_tsp_edge_states_is_decided(p_tsp_edge_state_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT (NOT ((SELECT NULLIF(decision_status, '') FROM tsp_edge_states WHERE tsp_edge_state_id = p_tsp_edge_state_id) = 'UNKNOWN'))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_tsp_edge_states_commitment_rank
+-- Field: TSPEdgeStates.CommitmentRank
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_tsp_edge_states_commitment_rank(p_tsp_edge_state_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (CASE WHEN (SELECT NULLIF(decision_status, '') FROM tsp_edge_states WHERE tsp_edge_state_id = p_tsp_edge_state_id) = 'UNKNOWN' THEN (0)::text ELSE (CASE WHEN (SELECT NULLIF(decision_status, '') FROM tsp_edge_states WHERE tsp_edge_state_id = p_tsp_edge_state_id) = 'SELECTED' THEN (1)::text ELSE (CASE WHEN ((SELECT NULLIF(decision_status, '') FROM tsp_edge_states WHERE tsp_edge_state_id = p_tsp_edge_state_id) = 'FORCED' OR (SELECT NULLIF(decision_status, '') FROM tsp_edge_states WHERE tsp_edge_state_id = p_tsp_edge_state_id) = 'FORBIDDEN') THEN (2)::text ELSE (3)::text END)::text END)::text END)::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_tsp_edge_states_commitment_polarity
+-- Field: TSPEdgeStates.CommitmentPolarity
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_tsp_edge_states_commitment_polarity(p_tsp_edge_state_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (CASE WHEN (SELECT NULLIF(decision_status, '') FROM tsp_edge_states WHERE tsp_edge_state_id = p_tsp_edge_state_id) = 'FORBIDDEN' THEN (-1)::text ELSE (CASE WHEN (SELECT NULLIF(decision_status, '') FROM tsp_edge_states WHERE tsp_edge_state_id = p_tsp_edge_state_id) = 'UNKNOWN' THEN (0)::text ELSE (1)::text END)::text END)::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_tsp_edge_states_necessity_scope
+-- Field: TSPEdgeStates.NecessityScope
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_tsp_edge_states_necessity_scope(p_tsp_edge_state_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN (SELECT NULLIF(decision_status, '') FROM tsp_edge_states WHERE tsp_edge_state_id = p_tsp_edge_state_id) = 'FORCED' THEN ('ALL_FEASIBLE_TOURS')::text ELSE (CASE WHEN (SELECT NULLIF(decision_status, '') FROM tsp_edge_states WHERE tsp_edge_state_id = p_tsp_edge_state_id) = 'FORBIDDEN' THEN ('NO_FEASIBLE_TOUR')::text ELSE (CASE WHEN (SELECT NULLIF(decision_status, '') FROM tsp_edge_states WHERE tsp_edge_state_id = p_tsp_edge_state_id) = 'SELECTED' THEN ('CURRENT_WITNESS')::text ELSE ('UNRESOLVED_OR_HISTORICAL')::text END)::text END)::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_tsp_edge_states_is_terminal_commitment
+-- Field: TSPEdgeStates.IsTerminalCommitment
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_tsp_edge_states_is_terminal_commitment(p_tsp_edge_state_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((SELECT NULLIF(decision_status, '') FROM tsp_edge_states WHERE tsp_edge_state_id = p_tsp_edge_state_id) = 'FORCED' OR (SELECT NULLIF(decision_status, '') FROM tsp_edge_states WHERE tsp_edge_state_id = p_tsp_edge_state_id) = 'FORBIDDEN' OR (SELECT NULLIF(decision_status, '') FROM tsp_edge_states WHERE tsp_edge_state_id = p_tsp_edge_state_id) = 'CONTRADICTED' OR (SELECT NULLIF(decision_status, '') FROM tsp_edge_states WHERE tsp_edge_state_id = p_tsp_edge_state_id) = 'SUPERSEDED'))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- get_tsp_edge_states_decision_status
@@ -2306,6 +2486,66 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_tsp_derived_edge_sets_is_connected_degree_two(p_tsp_derived_edge_set_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT ((((SELECT degree_violation_count FROM tsp_derived_edge_sets WHERE tsp_derived_edge_set_id = p_tsp_derived_edge_set_id))::NUMERIC = 0 AND ((SELECT connected_component_count FROM tsp_derived_edge_sets WHERE tsp_derived_edge_set_id = p_tsp_derived_edge_set_id))::NUMERIC = 1 AND ((SELECT proper_subtour_count FROM tsp_derived_edge_sets WHERE tsp_derived_edge_set_id = p_tsp_derived_edge_set_id))::NUMERIC = 0));
+$$ LANGUAGE sql STABLE;
+
+-- calc_tsp_defect_profiles_name
+-- Field: TSPDefectProfiles.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_tsp_defect_profiles_name(p_tsp_defect_profile_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(tsp_defect_profile_id, '') FROM tsp_defect_profiles WHERE tsp_defect_profile_id = p_tsp_defect_profile_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_tsp_defect_profiles_incidence_defect
+-- Field: TSPDefectProfiles.IncidenceDefect
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_tsp_defect_profiles_incidence_defect(p_tsp_defect_profile_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (ABS((COALESCE(CASE WHEN ((SELECT required_incidence FROM tsp_defect_profiles WHERE tsp_defect_profile_id = p_tsp_defect_profile_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT required_incidence FROM tsp_defect_profiles WHERE tsp_defect_profile_id = p_tsp_defect_profile_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN ((SELECT observed_incidence FROM tsp_defect_profiles WHERE tsp_defect_profile_id = p_tsp_defect_profile_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT observed_incidence FROM tsp_defect_profiles WHERE tsp_defect_profile_id = p_tsp_defect_profile_id))::numeric ELSE NULL END, 0))))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_tsp_defect_profiles_connectivity_defect
+-- Field: TSPDefectProfiles.ConnectivityDefect
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_tsp_defect_profiles_connectivity_defect(p_tsp_defect_profile_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (GREATEST((COALESCE(CASE WHEN ((SELECT component_count FROM tsp_defect_profiles WHERE tsp_defect_profile_id = p_tsp_defect_profile_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT component_count FROM tsp_defect_profiles WHERE tsp_defect_profile_id = p_tsp_defect_profile_id))::numeric ELSE NULL END, 0) - COALESCE(1, 0)), 0))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_tsp_defect_profiles_boundary_defect
+-- Field: TSPDefectProfiles.BoundaryDefect
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_tsp_defect_profiles_boundary_defect(p_tsp_defect_profile_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (GREATEST((COALESCE(CASE WHEN ((SELECT required_boundary_crossings FROM tsp_defect_profiles WHERE tsp_defect_profile_id = p_tsp_defect_profile_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT required_boundary_crossings FROM tsp_defect_profiles WHERE tsp_defect_profile_id = p_tsp_defect_profile_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN ((SELECT observed_boundary_crossings FROM tsp_defect_profiles WHERE tsp_defect_profile_id = p_tsp_defect_profile_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT observed_boundary_crossings FROM tsp_defect_profiles WHERE tsp_defect_profile_id = p_tsp_defect_profile_id))::numeric ELSE NULL END, 0)), 0))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_tsp_defect_profiles_cost_gap
+-- Field: TSPDefectProfiles.CostGap
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_tsp_defect_profiles_cost_gap(p_tsp_defect_profile_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((COALESCE(CASE WHEN ((SELECT upper_bound_cost FROM tsp_defect_profiles WHERE tsp_defect_profile_id = p_tsp_defect_profile_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT upper_bound_cost FROM tsp_defect_profiles WHERE tsp_defect_profile_id = p_tsp_defect_profile_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN ((SELECT lower_bound_cost FROM tsp_defect_profiles WHERE tsp_defect_profile_id = p_tsp_defect_profile_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT lower_bound_cost FROM tsp_defect_profiles WHERE tsp_defect_profile_id = p_tsp_defect_profile_id))::numeric ELSE NULL END, 0)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_tsp_defect_profiles_defect_vector
+-- Field: TSPDefectProfiles.DefectVector
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_tsp_defect_profiles_defect_vector(p_tsp_defect_profile_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT(calc_tsp_defect_profiles_incidence_defect(p_tsp_defect_profile_id), '|', calc_tsp_defect_profiles_connectivity_defect(p_tsp_defect_profile_id), '|', calc_tsp_defect_profiles_boundary_defect(p_tsp_defect_profile_id), '|', calc_tsp_defect_profiles_cost_gap(p_tsp_defect_profile_id)))::text;
 $$ LANGUAGE sql STABLE;
 
 -- get_tsp_derived_edge_sets_derivation_kind
@@ -2542,6 +2782,36 @@ RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(tsp_route_reconstruction_step_id, '') FROM tsp_route_reconstruction_steps WHERE tsp_route_reconstruction_step_id = p_tsp_route_reconstruction_step_id))::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_tsp_witness_normal_forms_name
+-- Field: TSPWitnessNormalForms.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_tsp_witness_normal_forms_name(p_tsp_witness_normal_form_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(tsp_witness_normal_form_id, '') FROM tsp_witness_normal_forms WHERE tsp_witness_normal_form_id = p_tsp_witness_normal_form_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_tsp_witness_normal_forms_semantic_key
+-- Field: TSPWitnessNormalForms.SemanticKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_tsp_witness_normal_forms_semantic_key(p_tsp_witness_normal_form_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT((SELECT NULLIF(witness_shape, '') FROM tsp_witness_normal_forms WHERE tsp_witness_normal_form_id = p_tsp_witness_normal_form_id), '|', (SELECT NULLIF(tsp_instance, '') FROM tsp_witness_normal_forms WHERE tsp_witness_normal_form_id = p_tsp_witness_normal_form_id), '|', (SELECT covered_stop_count FROM tsp_witness_normal_forms WHERE tsp_witness_normal_form_id = p_tsp_witness_normal_form_id), '|', (SELECT required_stop_count FROM tsp_witness_normal_forms WHERE tsp_witness_normal_form_id = p_tsp_witness_normal_form_id), '|', (SELECT edge_count FROM tsp_witness_normal_forms WHERE tsp_witness_normal_form_id = p_tsp_witness_normal_form_id), '|', (SELECT total_cost FROM tsp_witness_normal_forms WHERE tsp_witness_normal_form_id = p_tsp_witness_normal_form_id), '|', (SELECT incidence_defect FROM tsp_witness_normal_forms WHERE tsp_witness_normal_form_id = p_tsp_witness_normal_form_id), '|', (SELECT connectivity_defect FROM tsp_witness_normal_forms WHERE tsp_witness_normal_form_id = p_tsp_witness_normal_form_id), '|', (SELECT order_defect FROM tsp_witness_normal_forms WHERE tsp_witness_normal_form_id = p_tsp_witness_normal_form_id), '|', COALESCE((SELECT NULLIF(boundary_signature, '') FROM tsp_witness_normal_forms WHERE tsp_witness_normal_form_id = p_tsp_witness_normal_form_id), '')))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_tsp_witness_normal_forms_is_valid
+-- Field: TSPWitnessNormalForms.IsValid
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_tsp_witness_normal_forms_is_valid(p_tsp_witness_normal_form_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((SELECT covered_stop_count FROM tsp_witness_normal_forms WHERE tsp_witness_normal_form_id = p_tsp_witness_normal_form_id) = (SELECT required_stop_count FROM tsp_witness_normal_forms WHERE tsp_witness_normal_form_id = p_tsp_witness_normal_form_id) AND ((SELECT incidence_defect FROM tsp_witness_normal_forms WHERE tsp_witness_normal_form_id = p_tsp_witness_normal_form_id))::NUMERIC = 0 AND ((SELECT connectivity_defect FROM tsp_witness_normal_forms WHERE tsp_witness_normal_form_id = p_tsp_witness_normal_form_id))::NUMERIC = 0 AND ((SELECT order_defect FROM tsp_witness_normal_forms WHERE tsp_witness_normal_form_id = p_tsp_witness_normal_form_id))::NUMERIC = 0 AND (((SELECT NULLIF(witness_shape, '') FROM tsp_witness_normal_forms WHERE tsp_witness_normal_form_id = p_tsp_witness_normal_form_id) = 'CYCLE' AND (SELECT edge_count FROM tsp_witness_normal_forms WHERE tsp_witness_normal_form_id = p_tsp_witness_normal_form_id) = (SELECT required_stop_count FROM tsp_witness_normal_forms WHERE tsp_witness_normal_form_id = p_tsp_witness_normal_form_id)) OR ((SELECT NULLIF(witness_shape, '') FROM tsp_witness_normal_forms WHERE tsp_witness_normal_form_id = p_tsp_witness_normal_form_id) = 'PATH' AND (SELECT edge_count FROM tsp_witness_normal_forms WHERE tsp_witness_normal_form_id = p_tsp_witness_normal_form_id) = (COALESCE(CASE WHEN ((SELECT required_stop_count FROM tsp_witness_normal_forms WHERE tsp_witness_normal_form_id = p_tsp_witness_normal_form_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT required_stop_count FROM tsp_witness_normal_forms WHERE tsp_witness_normal_form_id = p_tsp_witness_normal_form_id))::numeric ELSE NULL END, 0) - COALESCE(1, 0))))));
+$$ LANGUAGE sql STABLE;
+
 -- calc_tsp_search_certificates_name
 -- Field: TSPSearchCertificates.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -2646,6 +2916,26 @@ RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(tsp_cluster_boundary_state_id, '') FROM tsp_cluster_boundary_states WHERE tsp_cluster_boundary_state_id = p_tsp_cluster_boundary_state_id))::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_tsp_cluster_boundary_states_boundary_signature
+-- Field: TSPClusterBoundaryStates.BoundarySignature
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_tsp_cluster_boundary_states_boundary_signature(p_tsp_cluster_boundary_state_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT((SELECT NULLIF(neighborhood, '') FROM tsp_cluster_boundary_states WHERE tsp_cluster_boundary_state_id = p_tsp_cluster_boundary_state_id), '|', (SELECT NULLIF(entry_stop, '') FROM tsp_cluster_boundary_states WHERE tsp_cluster_boundary_state_id = p_tsp_cluster_boundary_state_id), '|', (SELECT NULLIF(exit_stop, '') FROM tsp_cluster_boundary_states WHERE tsp_cluster_boundary_state_id = p_tsp_cluster_boundary_state_id), '|', (SELECT internal_stop_count FROM tsp_cluster_boundary_states WHERE tsp_cluster_boundary_state_id = p_tsp_cluster_boundary_state_id), '|', (SELECT internal_path_cost FROM tsp_cluster_boundary_states WHERE tsp_cluster_boundary_state_id = p_tsp_cluster_boundary_state_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_tsp_cluster_boundary_states_semantic_quotient_key
+-- Field: TSPClusterBoundaryStates.SemanticQuotientKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_tsp_cluster_boundary_states_semantic_quotient_key(p_tsp_cluster_boundary_state_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT((SELECT NULLIF(neighborhood, '') FROM tsp_cluster_boundary_states WHERE tsp_cluster_boundary_state_id = p_tsp_cluster_boundary_state_id), '|', (SELECT NULLIF(entry_stop, '') FROM tsp_cluster_boundary_states WHERE tsp_cluster_boundary_state_id = p_tsp_cluster_boundary_state_id), '|', (SELECT NULLIF(exit_stop, '') FROM tsp_cluster_boundary_states WHERE tsp_cluster_boundary_state_id = p_tsp_cluster_boundary_state_id), '|', (SELECT internal_stop_count FROM tsp_cluster_boundary_states WHERE tsp_cluster_boundary_state_id = p_tsp_cluster_boundary_state_id), '|', (SELECT internal_path_cost FROM tsp_cluster_boundary_states WHERE tsp_cluster_boundary_state_id = p_tsp_cluster_boundary_state_id)))::text;
+$$ LANGUAGE sql STABLE;
+
 -- get_tsp_cluster_boundary_states_internal_path_cost
 -- Helper function: Get InternalPathCost from TSPClusterBoundaryStates by TSPClusterBoundaryStateId
 -- Used for join-free cross-table references in aggregations
@@ -2689,6 +2979,24 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION get_tsp_cluster_boundary_states_status(p_tsp_cluster_boundary_state_id TEXT)
 RETURNS TEXT AS $$
   SELECT (SELECT status FROM tsp_cluster_boundary_states WHERE tsp_cluster_boundary_state_id = p_tsp_cluster_boundary_state_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_cluster_boundary_states_orientation_multiplicity
+-- Helper function: Get OrientationMultiplicity from TSPClusterBoundaryStates by TSPClusterBoundaryStateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_cluster_boundary_states_orientation_multiplicity(p_tsp_cluster_boundary_state_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT orientation_multiplicity FROM tsp_cluster_boundary_states WHERE tsp_cluster_boundary_state_id = p_tsp_cluster_boundary_state_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_cluster_boundary_states_is_quotient_representative
+-- Helper function: Get IsQuotientRepresentative from TSPClusterBoundaryStates by TSPClusterBoundaryStateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_cluster_boundary_states_is_quotient_representative(p_tsp_cluster_boundary_state_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT is_quotient_representative FROM tsp_cluster_boundary_states WHERE tsp_cluster_boundary_state_id = p_tsp_cluster_boundary_state_id);
 $$ LANGUAGE sql STABLE;
 
 -- calc_tsp_cluster_boundary_state_members_name
@@ -2759,6 +3067,36 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_tsp_loops_name(p_tsp_loop_id TEXT)
 RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(display_name, '') FROM tsp_loops WHERE tsp_loop_id = p_tsp_loop_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_tsp_convergence_measurements_name
+-- Field: TSPConvergenceMeasurements.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_tsp_convergence_measurements_name(p_tsp_convergence_measurement_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(tsp_convergence_measurement_id, '') FROM tsp_convergence_measurements WHERE tsp_convergence_measurement_id = p_tsp_convergence_measurement_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_tsp_convergence_measurements_semantic_compression_pct
+-- Field: TSPConvergenceMeasurements.SemanticCompressionPct
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_tsp_convergence_measurements_semantic_compression_pct(p_tsp_convergence_measurement_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN ((SELECT surface_concept_count_before FROM tsp_convergence_measurements WHERE tsp_convergence_measurement_id = p_tsp_convergence_measurement_id))::NUMERIC = 0 THEN (0)::text ELSE (ROUND(((COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((SELECT surface_concept_count_before FROM tsp_convergence_measurements WHERE tsp_convergence_measurement_id = p_tsp_convergence_measurement_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT surface_concept_count_before FROM tsp_convergence_measurements WHERE tsp_convergence_measurement_id = p_tsp_convergence_measurement_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN ((SELECT primitive_count_after FROM tsp_convergence_measurements WHERE tsp_convergence_measurement_id = p_tsp_convergence_measurement_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT primitive_count_after FROM tsp_convergence_measurements WHERE tsp_convergence_measurement_id = p_tsp_convergence_measurement_id))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((SELECT surface_concept_count_before FROM tsp_convergence_measurements WHERE tsp_convergence_measurement_id = p_tsp_convergence_measurement_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT surface_concept_count_before FROM tsp_convergence_measurements WHERE tsp_convergence_measurement_id = p_tsp_convergence_measurement_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN ((SELECT primitive_count_after FROM tsp_convergence_measurements WHERE tsp_convergence_measurement_id = p_tsp_convergence_measurement_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT primitive_count_after FROM tsp_convergence_measurements WHERE tsp_convergence_measurement_id = p_tsp_convergence_measurement_id))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT surface_concept_count_before FROM tsp_convergence_measurements WHERE tsp_convergence_measurement_id = p_tsp_convergence_measurement_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT surface_concept_count_before FROM tsp_convergence_measurements WHERE tsp_convergence_measurement_id = p_tsp_convergence_measurement_id))::numeric ELSE NULL END, 0), 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((SELECT surface_concept_count_before FROM tsp_convergence_measurements WHERE tsp_convergence_measurement_id = p_tsp_convergence_measurement_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT surface_concept_count_before FROM tsp_convergence_measurements WHERE tsp_convergence_measurement_id = p_tsp_convergence_measurement_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN ((SELECT primitive_count_after FROM tsp_convergence_measurements WHERE tsp_convergence_measurement_id = p_tsp_convergence_measurement_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT primitive_count_after FROM tsp_convergence_measurements WHERE tsp_convergence_measurement_id = p_tsp_convergence_measurement_id))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((SELECT surface_concept_count_before FROM tsp_convergence_measurements WHERE tsp_convergence_measurement_id = p_tsp_convergence_measurement_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT surface_concept_count_before FROM tsp_convergence_measurements WHERE tsp_convergence_measurement_id = p_tsp_convergence_measurement_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN ((SELECT primitive_count_after FROM tsp_convergence_measurements WHERE tsp_convergence_measurement_id = p_tsp_convergence_measurement_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT primitive_count_after FROM tsp_convergence_measurements WHERE tsp_convergence_measurement_id = p_tsp_convergence_measurement_id))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT surface_concept_count_before FROM tsp_convergence_measurements WHERE tsp_convergence_measurement_id = p_tsp_convergence_measurement_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT surface_concept_count_before FROM tsp_convergence_measurements WHERE tsp_convergence_measurement_id = p_tsp_convergence_measurement_id))::numeric ELSE NULL END, 0), 0)))::numeric ELSE NULL END, 0) * COALESCE(100, 0)))::NUMERIC, (2)::INTEGER))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_tsp_concept_registry_name
+-- Field: TSPConceptRegistry.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_tsp_concept_registry_name(p_tsp_concept_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(tsp_concept_id, '') FROM tsp_concept_registry WHERE tsp_concept_id = p_tsp_concept_id))::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_search_metrics_name

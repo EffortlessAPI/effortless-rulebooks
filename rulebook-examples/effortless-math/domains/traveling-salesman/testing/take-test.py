@@ -225,19 +225,25 @@ def main() -> None:
     )
     frontier_closed = sum(item["Status"] == "CLOSED" for item in frontier_data)
     expected_frontier_counts = (frontier_total, frontier_imported, frontier_closed)
+    # TSP_RULEBOOK_DERIVED_FRONTIER_EXPECTATION_FINAL
     frontier_rows = psql(
         "SELECT count(*), count(*) FILTER (WHERE is_imported_dependency), "
         "count(*) FILTER (WHERE is_closed) FROM vw_tsp_frontier_obligations"
     )
-    if len(frontier_rows) != 1:
-        failures.append(f"[frontier] expected one aggregate row, got {frontier_rows}")
-        actual_frontier: tuple[int, int, int] | None = None
-    else:
-        actual_frontier = tuple(int(value) for value in frontier_rows[0].split(","))
-        if actual_frontier != expected_frontier_counts:
-            failures.append(
-                f"[frontier] canonical={expected_frontier_counts} postgres={actual_frontier}"
-            )
+    expected_frontier_total = len(rulebook["TSPFrontierObligations"]["data"])
+    expected_frontier_imported = sum(
+        row.get("IsImportedDependency") is True
+        for row in rulebook["TSPFrontierObligations"]["data"]
+    )
+    expected_frontier_closed = sum(
+        row.get("Status") == "CLOSED"
+        for row in rulebook["TSPFrontierObligations"]["data"]
+    )
+    expected_frontier = [
+        f"{expected_frontier_total},{expected_frontier_imported},{expected_frontier_closed}"
+    ]
+    if frontier_rows != expected_frontier:
+        failures.append(f"[frontier] expected {expected_frontier}, got {frontier_rows}")
 
     metric_rows = psql(
         "SELECT search_metric_id, search_question, branch_count_before, "

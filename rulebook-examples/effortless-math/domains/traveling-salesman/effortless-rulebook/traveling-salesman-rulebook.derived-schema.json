@@ -95,6 +95,34 @@
         "type": "raw",
         "nullable": false,
         "Description": "Semantic role of the neighborhood in the initial fixture."
+      },
+      {
+        "name": "IsQuotientNode",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Whether the neighborhood is currently used as a quotient-graph node."
+      },
+      {
+        "name": "QuotientNodeKind",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Boundary object kind."
+      },
+      {
+        "name": "RequiredBoundaryDegree",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Required external incidence in the quotient cycle."
+      },
+      {
+        "name": "QuotientScopeId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Instance scope without introducing a relationship cycle."
       }
     ]
   },
@@ -1743,7 +1771,7 @@
         "type": "calculated",
         "nullable": true,
         "Description": "Certified global tour lower bound after double-count correction.",
-        "formula": "={{TotalLocalDegreeBoundCost}} / 2"
+        "formula": "={{BaseLowerBoundCost}} \u002B {{SupplementalBoundAdjustment}}"
       },
       {
         "name": "IsCertified",
@@ -1751,7 +1779,167 @@
         "type": "calculated",
         "nullable": true,
         "Description": "Whether every required stop has one valid local witness and the global double-counting aggregation is closed.",
-        "formula": "=AND({{CountOfLocalDegreeBounds}} = {{RequiredStopCount}}, {{CountOfInvalidLocalDegreeBounds}} = 0)"
+        "formula": "=AND({{CountOfLocalDegreeBounds}} = {{RequiredStopCount}}, {{CountOfInvalidLocalDegreeBounds}} = 0, {{IsSupplementalBoundCertified}})"
+      },
+      {
+        "name": "BaseLowerBoundCost",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Degree-two base lower bound.",
+        "formula": "={{TotalLocalDegreeBoundCost}} / 2"
+      },
+      {
+        "name": "RequiredSupplementalTermCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Required additive repair terms."
+      },
+      {
+        "name": "CountOfCertifiedSupplementalTerms",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Certified terms contributing to the adjustment.",
+        "formula": "=COUNTIFS(TSPBoundTerms!{{BoundCertificate}}, {{InstanceLowerBoundId}}, TSPBoundTerms!{{CountsTowardAdjustment}}, TRUE(), TSPBoundTerms!{{IsCertified}}, TRUE())"
+      },
+      {
+        "name": "SupplementalBoundAdjustment",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Signed sum of certified repair terms."
+      },
+      {
+        "name": "IsSupplementalBoundCertified",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether the required repair terms are all certified.",
+        "formula": "={{CountOfCertifiedSupplementalTerms}} = {{RequiredSupplementalTermCount}}"
+      },
+      {
+        "name": "BoundCompositionKind",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Degree-only or degree-plus-repair composition."
+      }
+    ]
+  },
+  "TSPBoundTerms": {
+    "Description": "Signed additive and constraint terms composing reusable lower-bound certificates.",
+    "schema": [
+      {
+        "name": "TSPBoundTermId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable TSPBoundTermId identifier."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display alias.",
+        "formula": "={{TSPBoundTermId}}"
+      },
+      {
+        "name": "BoundCertificate",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Owning instance lower bound.",
+        "RelatedTo": "InstanceLowerBounds"
+      },
+      {
+        "name": "TSPInstance",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Owning instance.",
+        "RelatedTo": "TSPInstances"
+      },
+      {
+        "name": "TSPLoop",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Loop introducing the term.",
+        "RelatedTo": "TSPLoops"
+      },
+      {
+        "name": "TermKind",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Base, insertion, release, parity, or summary term."
+      },
+      {
+        "name": "Quantity",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Witnessed quantity."
+      },
+      {
+        "name": "UnitWeight",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Cost per unit."
+      },
+      {
+        "name": "Sign",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Positive or negative contribution."
+      },
+      {
+        "name": "TermValue",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Signed additive contribution.",
+        "formula": "={{Quantity}} * {{UnitWeight}} * {{Sign}}"
+      },
+      {
+        "name": "ConstraintKind",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Constraint witnessed by the term."
+      },
+      {
+        "name": "ConstraintValue",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Numeric constraint value."
+      },
+      {
+        "name": "CountsTowardAdjustment",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Whether TermValue contributes to the supplemental adjustment."
+      },
+      {
+        "name": "IsCertified",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Whether the term has a represented witness."
+      },
+      {
+        "name": "Justification",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Witnessed reason for the term."
       }
     ]
   },
@@ -2236,6 +2424,48 @@
         "type": "raw",
         "nullable": false,
         "Description": "Certificate emitted."
+      },
+      {
+        "name": "EventKind",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Normalized closure-event kind."
+      },
+      {
+        "name": "InputStateId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Input state identifier."
+      },
+      {
+        "name": "OutputStateId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Output state identifier."
+      },
+      {
+        "name": "AntecedentCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Antecedent fact count."
+      },
+      {
+        "name": "DecisionCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Decisions emitted by the event."
+      },
+      {
+        "name": "EventStatus",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "APPLIED, FIXED_POINT, or REJECTED."
       }
     ]
   },
@@ -2351,6 +2581,38 @@
         "nullable": true,
         "Description": "Whether the edge is no longer unknown.",
         "formula": "=NOT({{DecisionStatus}} = \u0022UNKNOWN\u0022)"
+      },
+      {
+        "name": "CommitmentRank",
+        "datatype": "integer",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Ordered strength in the edge commitment lattice.",
+        "formula": "=IF({{DecisionStatus}} = \u0022UNKNOWN\u0022, 0, IF({{DecisionStatus}} = \u0022SELECTED\u0022, 1, IF(OR({{DecisionStatus}} = \u0022FORCED\u0022, {{DecisionStatus}} = \u0022FORBIDDEN\u0022), 2, 3)))"
+      },
+      {
+        "name": "CommitmentPolarity",
+        "datatype": "integer",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Positive inclusion, zero unknown, or negative exclusion.",
+        "formula": "=IF({{DecisionStatus}} = \u0022FORBIDDEN\u0022, -1, IF({{DecisionStatus}} = \u0022UNKNOWN\u0022, 0, 1))"
+      },
+      {
+        "name": "NecessityScope",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Scope in which the commitment holds.",
+        "formula": "=IF({{DecisionStatus}} = \u0022FORCED\u0022, \u0022ALL_FEASIBLE_TOURS\u0022, IF({{DecisionStatus}} = \u0022FORBIDDEN\u0022, \u0022NO_FEASIBLE_TOUR\u0022, IF({{DecisionStatus}} = \u0022SELECTED\u0022, \u0022CURRENT_WITNESS\u0022, \u0022UNRESOLVED_OR_HISTORICAL\u0022)))"
+      },
+      {
+        "name": "IsTerminalCommitment",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether deterministic closure no longer treats the edge as open.",
+        "formula": "=OR({{DecisionStatus}} = \u0022FORCED\u0022, {{DecisionStatus}} = \u0022FORBIDDEN\u0022, {{DecisionStatus}} = \u0022CONTRADICTED\u0022, {{DecisionStatus}} = \u0022SUPERSEDED\u0022)"
       }
     ]
   },
@@ -2509,6 +2771,152 @@
         "nullable": true,
         "Description": "Whether this is one connected degree-two cycle.",
         "formula": "=AND({{DegreeViolationCount}} = 0, {{ConnectedComponentCount}} = 1, {{ProperSubtourCount}} = 0)"
+      }
+    ]
+  },
+  "TSPDefectProfiles": {
+    "Description": "Uniform incidence, connectivity, boundary, and cost defects for stops, instances, witnesses, and quotient nodes.",
+    "schema": [
+      {
+        "name": "TSPDefectProfileId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable TSPDefectProfileId identifier."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display alias.",
+        "formula": "={{TSPDefectProfileId}}"
+      },
+      {
+        "name": "TSPInstance",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Owning instance.",
+        "RelatedTo": "TSPInstances"
+      },
+      {
+        "name": "TSPLoop",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Loop emitting the profile.",
+        "RelatedTo": "TSPLoops"
+      },
+      {
+        "name": "SubjectKind",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "STOP, EDGE_SET, WITNESS, INSTANCE, or QUOTIENT_NODE."
+      },
+      {
+        "name": "SubjectId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Polymorphic subject identifier."
+      },
+      {
+        "name": "RequiredIncidence",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Required incident choices."
+      },
+      {
+        "name": "ObservedIncidence",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Observed incident choices."
+      },
+      {
+        "name": "IncidenceDefect",
+        "datatype": "integer",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Absolute incidence deficit or excess.",
+        "formula": "=ABS({{RequiredIncidence}} - {{ObservedIncidence}})"
+      },
+      {
+        "name": "ComponentCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Connected components represented by the subject."
+      },
+      {
+        "name": "ConnectivityDefect",
+        "datatype": "integer",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Components beyond the required one.",
+        "formula": "=MAX({{ComponentCount}} - 1, 0)"
+      },
+      {
+        "name": "RequiredBoundaryCrossings",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Required cut or boundary crossings."
+      },
+      {
+        "name": "ObservedBoundaryCrossings",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Observed cut or boundary crossings."
+      },
+      {
+        "name": "BoundaryDefect",
+        "datatype": "integer",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Missing required boundary crossings.",
+        "formula": "=MAX({{RequiredBoundaryCrossings}} - {{ObservedBoundaryCrossings}}, 0)"
+      },
+      {
+        "name": "LowerBoundCost",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Current certified lower value."
+      },
+      {
+        "name": "UpperBoundCost",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Current witnessed upper value."
+      },
+      {
+        "name": "CostGap",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Upper minus lower value.",
+        "formula": "={{UpperBoundCost}} - {{LowerBoundCost}}"
+      },
+      {
+        "name": "DefectVector",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Canonical four-coordinate defect vector.",
+        "formula": "=CONCAT({{IncidenceDefect}}, \u0022|\u0022, {{ConnectivityDefect}}, \u0022|\u0022, {{BoundaryDefect}}, \u0022|\u0022, {{CostGap}})"
+      },
+      {
+        "name": "Status",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Interpretation of the vector."
       }
     ]
   },
@@ -2939,6 +3347,149 @@
       }
     ]
   },
+  "TSPWitnessNormalForms": {
+    "Description": "Common semantic normal form for supplied, reconstructed, and contracted cycle or path witnesses.",
+    "schema": [
+      {
+        "name": "TSPWitnessNormalFormId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable TSPWitnessNormalFormId identifier."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display alias.",
+        "formula": "={{TSPWitnessNormalFormId}}"
+      },
+      {
+        "name": "TSPInstance",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Owning instance.",
+        "RelatedTo": "TSPInstances"
+      },
+      {
+        "name": "TSPLoop",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Loop normalizing the witness.",
+        "RelatedTo": "TSPLoops"
+      },
+      {
+        "name": "WitnessShape",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "CYCLE or PATH."
+      },
+      {
+        "name": "OriginKind",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "SUPPLIED, RECONSTRUCTED, or CONTRACTED."
+      },
+      {
+        "name": "SourceKind",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Historical source projection."
+      },
+      {
+        "name": "SourceId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Historical source identifier."
+      },
+      {
+        "name": "BoundarySignature",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Scope/entry/exit signature for path witnesses."
+      },
+      {
+        "name": "CoveredStopCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Covered distinct stops."
+      },
+      {
+        "name": "RequiredStopCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Required stops in witness scope."
+      },
+      {
+        "name": "EdgeCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Witness edge count."
+      },
+      {
+        "name": "TotalCost",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Witness cost."
+      },
+      {
+        "name": "IncidenceDefect",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Incidence defect."
+      },
+      {
+        "name": "ConnectivityDefect",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Connectivity defect."
+      },
+      {
+        "name": "OrderDefect",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Order defect."
+      },
+      {
+        "name": "SemanticKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Provenance-independent witness signature.",
+        "formula": "=CONCAT({{WitnessShape}}, \u0022|\u0022, {{TSPInstance}}, \u0022|\u0022, {{CoveredStopCount}}, \u0022|\u0022, {{RequiredStopCount}}, \u0022|\u0022, {{EdgeCount}}, \u0022|\u0022, {{TotalCost}}, \u0022|\u0022, {{IncidenceDefect}}, \u0022|\u0022, {{ConnectivityDefect}}, \u0022|\u0022, {{OrderDefect}}, \u0022|\u0022, COALESCE({{BoundarySignature}}, \u0022\u0022))"
+      },
+      {
+        "name": "IsValid",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether the normal form is a valid cycle or path.",
+        "formula": "=AND({{CoveredStopCount}} = {{RequiredStopCount}}, {{IncidenceDefect}} = 0, {{ConnectivityDefect}} = 0, {{OrderDefect}} = 0, OR(AND({{WitnessShape}} = \u0022CYCLE\u0022, {{EdgeCount}} = {{RequiredStopCount}}), AND({{WitnessShape}} = \u0022PATH\u0022, {{EdgeCount}} = {{RequiredStopCount}} - 1)))"
+      },
+      {
+        "name": "ProvenanceSummary",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Origin and trust lineage."
+      }
+    ]
+  },
   "TSPSearchCertificates": {
     "Description": "Derived accounting of route classes, branch decisions, backtracks, and residual ambiguity.",
     "schema": [
@@ -3297,6 +3848,43 @@
         "type": "raw",
         "nullable": false,
         "Description": "SURVIVES or DOMINATED."
+      },
+      {
+        "name": "NormalizedWitnessId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Witness-normal-form projection identifier."
+      },
+      {
+        "name": "BoundarySignature",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Scope/entry/exit/coverage/cost signature.",
+        "formula": "=CONCAT({{Neighborhood}}, \u0022|\u0022, {{EntryStop}}, \u0022|\u0022, {{ExitStop}}, \u0022|\u0022, {{InternalStopCount}}, \u0022|\u0022, {{InternalPathCost}})"
+      },
+      {
+        "name": "SemanticQuotientKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Equivalence key preserving boundary signature and cost.",
+        "formula": "=CONCAT({{Neighborhood}}, \u0022|\u0022, {{EntryStop}}, \u0022|\u0022, {{ExitStop}}, \u0022|\u0022, {{InternalStopCount}}, \u0022|\u0022, {{InternalPathCost}})"
+      },
+      {
+        "name": "OrientationMultiplicity",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Raw directed orientations represented by the undirected state."
+      },
+      {
+        "name": "IsQuotientRepresentative",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Whether this state is the canonical quotient representative."
       }
     ]
   },
@@ -3432,6 +4020,20 @@
         "type": "raw",
         "nullable": false,
         "Description": "Finite scope of the certificate."
+      },
+      {
+        "name": "EquivalenceRelation",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Explicit semantic equivalence relation."
+      },
+      {
+        "name": "QuotientClassCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Number of equivalence classes."
       }
     ]
   },
@@ -3722,6 +4324,182 @@
         "type": "raw",
         "nullable": true,
         "Description": "CLOSED, BLOCKED, FALSIFIED, or DEFERRED."
+      }
+    ]
+  },
+  "TSPConvergenceMeasurements": {
+    "Description": "Measurements testing whether surface concepts compress onto a stable predicate basis.",
+    "schema": [
+      {
+        "name": "TSPConvergenceMeasurementId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable TSPConvergenceMeasurementId identifier."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display alias.",
+        "formula": "={{TSPConvergenceMeasurementId}}"
+      },
+      {
+        "name": "TSPLoop",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Loop emitting the measurement.",
+        "RelatedTo": "TSPLoops"
+      },
+      {
+        "name": "MeasurementKind",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Baseline, reduction, stability, or final convergence measurement."
+      },
+      {
+        "name": "SurfaceConceptCountBefore",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Surface vocabulary count before quotienting."
+      },
+      {
+        "name": "PrimitiveCountAfter",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Active primitive count after reduction."
+      },
+      {
+        "name": "NewPrimitiveCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "New primitives introduced by this loop."
+      },
+      {
+        "name": "DerivedAliasCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Named derived concepts retained above the basis."
+      },
+      {
+        "name": "PhysicalTableCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Canonical physical table count at this loop."
+      },
+      {
+        "name": "SemanticCompressionPct",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Surface-to-basis reduction percentage.",
+        "formula": "=IF({{SurfaceConceptCountBefore}} = 0, 0, ROUND(({{SurfaceConceptCountBefore}} - {{PrimitiveCountAfter}}) / {{SurfaceConceptCountBefore}} * 100, 2))"
+      },
+      {
+        "name": "NovelTerm",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Predicate coined or stabilized by the loop."
+      },
+      {
+        "name": "PredictionStatus",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "NOT_TESTED, EARLY_SUPPORT, COUNTEREVIDENCE, or SUPPORTED_FOR_CURRENT_DOMAIN."
+      },
+      {
+        "name": "Notes",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Scope and interpretation."
+      }
+    ]
+  },
+  "TSPConceptRegistry": {
+    "Description": "Registry of primitive, derived, coined, and historical concepts with explicit basis expressions.",
+    "schema": [
+      {
+        "name": "TSPConceptId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable TSPConceptId identifier."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display alias.",
+        "formula": "={{TSPConceptId}}"
+      },
+      {
+        "name": "DisplayName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Human-readable concept name."
+      },
+      {
+        "name": "ConceptKind",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "PRIMITIVE, DERIVED_ALIAS, COINED_PREDICATE, or HISTORICAL_PROJECTION."
+      },
+      {
+        "name": "BasisExpression",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Definition over the eight primitive predicates."
+      },
+      {
+        "name": "Arity",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Declared argument count for the concept."
+      },
+      {
+        "name": "SourceTables",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Comma-separated historical source projections."
+      },
+      {
+        "name": "IntroducedByLoop",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Loop introducing or registering the concept.",
+        "RelatedTo": "TSPLoops"
+      },
+      {
+        "name": "SupersededByConcept",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Canonical coined concept replacing this surface name, when applicable."
+      },
+      {
+        "name": "Status",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "ACTIVE_PRIMITIVE, ACTIVE_DERIVED, or HISTORICAL_PROJECTION."
       }
     ]
   },

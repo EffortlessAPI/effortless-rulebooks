@@ -1,11 +1,11 @@
 {
   "ProblemId": "traveling-salesman-semantic-geometry",
-  "Version": "0.4.0-alpha",
+  "Version": "0.4.0",
   "Title": "Traveling Salesman — City / Neighborhood / Address Semantic Geometry",
   "Status": "RESEARCH_PROGRAM",
   "Statement": "Given finite city-scale weighted graphs, represent graph normalization, supplied tours, typed frontier obligations, local-to-global lower bounds, finite optimality certificates, and residual search as executable structural data.",
-  "Scope": "The represented scope includes Gridville route reconstruction from inferred edges, finite optimality by bound equality, negative non-tight and subtour fixtures, deterministic forcing/forbidding, neighborhood contraction, and a commissioned generated-Postgres peer substrate. No general solver or complexity-class claim is made.",
-  "TrustBoundary": "InputGraphKernel remains trusted input data. Structural certificates are internalized in the rulebook. Generated Postgres is commissioned as a peer substrate using EffortlessAPI/cli 2026-06-09.06.13 (1551cb82d5a8992ad09e4c82d08e28493f92f7b4) and checked against Python.",
+  "Scope": "The represented scope includes two finite optimality certificates, deterministic inference closure, neighborhood/component quotients, a common witness normal form, and an eight-predicate semantic basis. No general TSP solver or complexity-class claim is made.",
+  "TrustBoundary": "Input graph weights and membership remain trusted data. Predicate reductions are explicit definitions over witnessed structures. Generated Postgres remains a peer projection; concept convergence is early empirical support for this domain, not a universal theorem.",
   "Claims": {
     "PEqualsNP": false,
     "UniversalPolynomialNormalization": false,
@@ -20,7 +20,12 @@
     "PostgresConformanceCommissioned": true,
     "ConceptConvergencePredictionRecorded": true,
     "ConceptConvergenceProved": false,
-    "TwinTrianglesOptimalityProved": true
+    "TwinTrianglesOptimalityProved": true,
+    "ConceptConvergenceObserved": true,
+    "PredicateBasisCount": 8,
+    "SurfacePredicateBaseline": 32,
+    "SemanticCompressionPct": 75,
+    "NovelTermsCoined597To610": 14
   },
   "CanonicalAsset": "effortless-rulebook/traveling-salesman-rulebook.json",
   "ExecutionSubstrates": [
@@ -321,12 +326,12 @@
     {
       "LoopOrder": 610,
       "LoopId": "tsp-loop-610",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Thirteen reduction loops have coined derived predicates, but their cumulative compression and primitive-basis stability are not certified.",
       "ClosureCriterion": "Certify thirty-two-to-eight semantic compression, fourteen coined terms, zero new primitives after the basis loop, bounded physical schema growth, and an explicit residual kernel.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Certified a stable eight-predicate basis across fourteen reduction loops: thirty-two baseline surface predicates compress to eight primitives, fourteen useful terms were coined, and no new primitive appeared after loop 598.",
+      "Result": "Convergence event: semantic compression 75%, physical tables 40 to 45, coined terms 14, new primitives after basis discovery 0; status is early empirical support for this finite TSP domain.",
+      "CompletionDisposition": "CLOSED"
     }
   ],
   "CurrentCertificates": [
@@ -369,12 +374,42 @@
       "CertificateId": "gridville-postgres-substrate-conformance",
       "Kind": "substrate-conformance-certificate",
       "Conclusion": "Generated Postgres (40 vw_* views) and Python agree on the declared TSP acceptance surface using EffortlessAPI/cli 2026-06-09.06.13."
+    },
+    {
+      "CertificateId": "tsp-eight-predicate-basis",
+      "Kind": "predicate-basis-certificate",
+      "Conclusion": "Thirty-two baseline surface predicates are explicitly defined over eight canonical primitives."
+    },
+    {
+      "CertificateId": "twin-component-repair-bound",
+      "Kind": "component-repair-bound-certificate",
+      "Conclusion": "Cut parity and witnessed insertion/release costs strengthen the twin lower bound from 6 to 24."
+    },
+    {
+      "CertificateId": "twin-finite-optimality",
+      "Kind": "finite-instance-optimality-certificate",
+      "Conclusion": "The valid twin cycle cost 24 equals the certified component-repair lower bound 24."
+    },
+    {
+      "CertificateId": "tsp-witness-normal-form",
+      "Kind": "witness-normal-form-certificate",
+      "Conclusion": "Supplied cycles, reconstructed cycles, and contracted paths share one coverage/incidence/order/connectivity/cost form."
+    },
+    {
+      "CertificateId": "tsp-semantic-quotient",
+      "Kind": "semantic-quotient-certificate",
+      "Conclusion": "Boundary reversal classes explain 6 to 3 local and 36 to 9 composed contraction."
+    },
+    {
+      "CertificateId": "tsp-convergence-event",
+      "Kind": "convergence-event-certificate",
+      "Conclusion": "The primitive basis remains eight while fourteen derived terms are coined; this is early empirical support for the current domain."
     }
   ],
   "RemainingFrontier": [
-    "generalize neighborhood boundary-state soundness beyond symmetric three-stop clusters",
-    "strengthen non-tight lower bounds with crossing and component constraints",
-    "branch only after deterministic closure on fixtures whose residual ambiguity remains positive"
+    "stress the eight-predicate basis on larger and asymmetric neighborhood clusters",
+    "generalize component-repair bounds to multiple components and heterogeneous crossing costs",
+    "emit explicit branch certificates only after closure leaves a witnessed residual kernel"
   ],
   "Acceptance": {
     "RulebookTables": 45,
@@ -386,7 +421,7 @@
     "TravelEdges": 38,
     "CandidateTours": 4,
     "TSPLoops": 34,
-    "FrontierObligations": 22,
+    "FrontierObligations": 23,
     "ActiveImportedDependencies": 0,
     "ReferenceTourValid": true,
     "ReferenceTourCost": 14,
@@ -398,7 +433,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 610,
-    "HighestCompletedLoop": 609,
+    "HighestCompletedLoop": 610,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 14,
     "SelectedNotForcedEdgeStates": 5,
@@ -440,21 +475,30 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 12,
     "ClusterContractionCertificates": 3,
-    "ConvergenceMeasurements": 13,
-    "ConceptRegistry": 53,
+    "ConvergenceMeasurements": 14,
+    "ConceptRegistry": 54,
     "DefectProfiles": 16,
     "BoundTerms": 4,
-    "WitnessNormalForms": 9
+    "WitnessNormalForms": 9,
+    "PredicateBasisCount": 8,
+    "SurfacePredicateBaseline": 32,
+    "SemanticCompressionPct": 75,
+    "NovelTermsCoined597To610": 14,
+    "NewPrimitivesAfterLoop598": 0,
+    "ConvergencePredictionStatus": "EARLY_EMPIRICAL_SUPPORT_FOR_CURRENT_TSP_DOMAIN"
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:ca4ea137dbdfbdebf53b8aae968e73f10e11003c17c6488fc5cb02b827d9beac",
+    "rulebook": "sha256:4ec4cfd86c49a50349ee048c7f9fcc62760cffee9cf4207b06490343c80f9f89",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
     "commissioning_transcript": "sha256:ae8190f4c6084cbd1d2a3e9ae359a2b1966cf99dfcb2423d92cf98e6aaf8f7a5",
     "effortless_cli_commit": "1551cb82d5a8992ad09e4c82d08e28493f92f7b4",
     "effortless_cli_archive": "https://github.com/EffortlessAPI/cli/archive/1551cb82d5a8992ad09e4c82d08e28493f92f7b4.tar.gz",
-    "retry_9_finalization_failure_transcript": "sha256:6516deab2de42c971cc55ef2d752d3d5cb2154dd343cd7827803e1bd6ed8bd2b"
+    "retry_9_finalization_failure_transcript": "sha256:6516deab2de42c971cc55ef2d752d3d5cb2154dd343cd7827803e1bd6ed8bd2b",
+    "loop_610_postgres_projection_tree": "sha256:2de4690ef9803b7ffbe230d7e4478e81eee0a42e151e79dc95b7b213ee2baddd",
+    "loop_610_rulespeak_tree": "sha256:57a42720e3de7a43f0790df0a78279628a7b21bd5dc6ae1a281149d8b2b03122",
+    "loop_610_generated_view_count": 45
   },
   "GeneratedTimestamp": null,
   "Vocabulary": {
