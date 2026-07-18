@@ -230,12 +230,12 @@
     {
       "LoopOrder": 601,
       "LoopId": "tsp-loop-601",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Degree violations, connected-component count, boundary crossings, and cost gaps are separate acceptance surfaces.",
       "ClosureCriterion": "Represent incidence, connectivity, boundary, and cost defects as one vector and distinguish zero-defect Gridville from twin triangles.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Collapsed incidence violations, component excess, missing boundary crossings, and bound gap into one defect vector.",
+      "Result": "Gridville vector = 0|0|0|0; twin local two-factor vector = 0|1|2|18, locating the exact unresolved geometry without inventing a new primitive.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 602,
@@ -397,7 +397,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 610,
-    "HighestCompletedLoop": 600,
+    "HighestCompletedLoop": 601,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 5,
     "SelectedNotForcedEdgeStates": 5,
@@ -439,12 +439,12 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 12,
     "ClusterContractionCertificates": 3,
-    "ConvergenceMeasurements": 4,
-    "ConceptRegistry": 44,
-    "DefectProfiles": 11
+    "ConvergenceMeasurements": 5,
+    "ConceptRegistry": 45,
+    "DefectProfiles": 13
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:1072ee49b0cb455ba4d01fcbe3549a1c54a69fa8b3377aca4dc7b154144e4736",
+    "rulebook": "sha256:ca09432c3f2124eaeb703ae24a42e86eddb90811f2d7daad240e1654a30c286c",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
