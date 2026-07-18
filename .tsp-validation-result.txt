@@ -1,0 +1,11 @@
+traveling-salesman rulebook v3 validation: PASS
+tables: 40
+loops 587-596: 587:BLOCKED, 588:CLOSED, 589:CLOSED, 590:CLOSED, 591:CLOSED, 592:CLOSED, 593:CLOSED, 594:CLOSED, 595:CLOSED, 596:CLOSED
+Traceback (most recent call last):
+  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/validate_rulebook.py", line 8, in <module>
+    validate_summary()
+  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/validate_summary_alignment.py", line 82, in main
+    assert_equal(key, acceptance.get(key), expected)
+  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/validate_summary_alignment.py", line 40, in assert_equal
+    raise AssertionError(f"{label}: contract={actual!r}, rulebook={expected!r}")
+AssertionError: RulebookTables: contract=19, rulebook=40
