@@ -40,11 +40,12 @@
     "OneArcOneRewriteObserved": true,
     "OneArcOneRewriteProved": false,
     "ThreeRegionOptimalityProved": true,
-    "OptimalFaceValueCertified": false,
+    "OptimalFaceValueCertified": true,
     "OptimalFaceUniqueRouteProved": false,
     "CoherenceVectorRecorded": true,
     "TypedArcRecoverabilityCertified": true,
-    "GeneralKRegionRepairProved": false
+    "GeneralKRegionRepairProved": false,
+    "OptimalFaceChoiceOrbitSize": 2
   },
   "CanonicalAsset": "effortless-rulebook/traveling-salesman-rulebook.json",
   "ExecutionSubstrates": [
@@ -675,12 +676,12 @@
     {
       "LoopOrder": 643,
       "LoopId": "tsp-loop-643",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "The optimal-face fixture has two equal-cost witnesses, but proof status and witness-selection status are not independently represented.",
       "ClosureCriterion": "Attach passing optimality certificates to both cost-four cycles and represent value status CLOSED while choice status remains a two-alternative non-reversal orbit.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Closed the optimum value at four while preserving two distinct optimal witness classes.",
+      "Result": "Both A-B-C-D-A and A-C-B-D-A carry passing finite optimality certificates; A-B-D-C-A costs six. ValueStatus=CLOSED_AT_4, ChoiceStatus=OPEN_TWO_OPTIMAL_CLASSES, branch decisions=0.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 644,
@@ -810,7 +811,7 @@
     "TravelEdges": 86,
     "CandidateTours": 8,
     "TSPLoops": 70,
-    "FrontierObligations": 28,
+    "FrontierObligations": 29,
     "ActiveImportedDependencies": 0,
     "ReferenceTourValid": true,
     "ReferenceTourCost": 14,
@@ -822,7 +823,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 646,
-    "HighestCompletedLoop": 642,
+    "HighestCompletedLoop": 643,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 15,
     "SelectedNotForcedEdgeStates": 5,
@@ -850,7 +851,7 @@
     "TourStops": 42,
     "TourLegs": 42,
     "ExecutionRuns": 10,
-    "InferenceStates": 16,
+    "InferenceStates": 17,
     "InferenceAntecedents": 5,
     "EdgeStates": 16,
     "EdgeSupports": 10,
@@ -864,9 +865,9 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 66,
     "ClusterContractionCertificates": 7,
-    "ConvergenceMeasurements": 46,
-    "ConceptRegistry": 97,
-    "DefectProfiles": 20,
+    "ConvergenceMeasurements": 47,
+    "ConceptRegistry": 98,
+    "DefectProfiles": 21,
     "BoundTerms": 8,
     "WitnessNormalForms": 13,
     "PredicateBasisCount": 8,
@@ -887,10 +888,13 @@
     "RecoverableConceptCount": 87,
     "ThreeRegionLowerBound": 36,
     "ThreeRegionCandidateCost": 36,
-    "ThreeRegionOptimalityProved": true
+    "ThreeRegionOptimalityProved": true,
+    "OptimalFaceLowerBound": 4,
+    "OptimalFaceOptimalWitnessCount": 2,
+    "OptimalFaceChoiceOrbitSize": 2
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:b9f6a83df17509f07a6905bc4cf01020825722af18fce243f0ccb1ea6b20e05c",
+    "rulebook": "sha256:cdb3df8124d748773ceb01851ab226c127b7963c14bbe706a951b91fb7712dc9",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
