@@ -301,12 +301,12 @@
     {
       "LoopOrder": 608,
       "LoopId": "tsp-loop-608",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Neighborhood clusters and selected connected components are treated as different kinds of objects despite exposing the same boundary-degree contract.",
       "ClosureCriterion": "Represent the two twin neighborhoods as quotient nodes with boundary degree two, unifying cluster and component interfaces.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Unified the two neighborhoods and the two selected connected components as quotient nodes with required boundary degree two.",
+      "Result": "The city-level object is now a two-node quotient graph; cluster versus component is provenance, while boundary degree and expansion signature carry the semantics.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 609,
@@ -386,7 +386,7 @@
     "TravelEdges": 38,
     "CandidateTours": 4,
     "TSPLoops": 34,
-    "FrontierObligations": 20,
+    "FrontierObligations": 21,
     "ActiveImportedDependencies": 0,
     "ReferenceTourValid": true,
     "ReferenceTourCost": 14,
@@ -398,7 +398,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 610,
-    "HighestCompletedLoop": 607,
+    "HighestCompletedLoop": 608,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 5,
     "SelectedNotForcedEdgeStates": 5,
@@ -440,14 +440,14 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 12,
     "ClusterContractionCertificates": 3,
-    "ConvergenceMeasurements": 11,
-    "ConceptRegistry": 51,
-    "DefectProfiles": 14,
+    "ConvergenceMeasurements": 12,
+    "ConceptRegistry": 52,
+    "DefectProfiles": 16,
     "BoundTerms": 4,
     "WitnessNormalForms": 9
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:8ef85a31c9695132310738e8f2671075e98ce5008c86fe361723428f6260ac50",
+    "rulebook": "sha256:59e42ad1ca652eacb9d69e251ebce1f8ad77a584c7c3ab6d90b2fde3f091d72e",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
