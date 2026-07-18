@@ -1,0 +1,51 @@
+name: Debug TSP summary reconciliation
+
+on:
+  push:
+    branches:
+      - agent/tsp-semantic-foundation
+    paths:
+      - .github/workflows/debug-tsp-summary.yml
+      - .tsp-reconcile-debug-trigger
+
+permissions:
+  contents: write
+
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/tsp-semantic-foundation
+          fetch-depth: 0
+
+      - name: Reconcile and capture exact validation output
+        id: diagnose
+        shell: bash
+        run: |
+          set +e
+          domain='rulebook-examples/effortless-math/domains/traveling-salesman'
+          python3 "$domain/scripts/reconcile_summary.py" > /tmp/reconcile.txt 2>&1
+          reconcile_status=$?
+          python3 "$domain/scripts/validate_rulebook.py" > .tsp-reconcile-result.txt 2>&1
+          validate_status=$?
+          cat /tmp/reconcile.txt
+          cat .tsp-reconcile-result.txt
+          last_line="$(tail -1 .tsp-reconcile-result.txt | tr '\n' ' ' | tr -cd '[:alnum:] _=.,:;()[]{}+*/<>!?-')"
+          echo "validate_status=$validate_status" >> "$GITHUB_OUTPUT"
+          echo "last_line=$last_line" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Commit diagnostic evidence
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .tsp-reconcile-result.txt
+          git commit -m "TSP reconcile diagnostic: ${{ steps.diagnose.outputs.last_line }}"
+          git push origin HEAD:agent/tsp-semantic-foundation
+
+      - name: Preserve failed status
+        if: steps.diagnose.outputs.validate_status != '0'
+        run: exit "${{ steps.diagnose.outputs.validate_status }}"
