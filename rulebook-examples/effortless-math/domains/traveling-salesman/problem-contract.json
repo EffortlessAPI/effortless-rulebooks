@@ -87,12 +87,12 @@
     {
       "LoopOrder": 588,
       "LoopId": "tsp-loop-588",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Inference rules exist, but individual applications, antecedents, edge decisions, and supports are not first-class rows.",
       "ClosureCriterion": "Represent local-bound applications, antecedents, selected edge states, and support rows without upgrading selected edges to forced edges.",
-      "AfterState": null,
-      "Result": null,
-      "CompletionDisposition": null
+      "AfterState": "Represented 5 applications, 5 antecedents, 5 selected edge states, and 10 supports; no edge was labeled FORCED.",
+      "Result": "Represented 5 applications, 5 antecedents, 5 selected edge states, and 10 supports; no edge was labeled FORCED.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 589,
@@ -244,10 +244,12 @@
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 596,
     "HighestCompletedLoop": 586,
-    "PostgresCommissioningStatus": "BLOCKED"
+    "PostgresCommissioningStatus": "BLOCKED",
+    "InferenceApplications": 5,
+    "SelectedNotForcedEdgeStates": 5
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:2a83987db82743fd23b7d1b61136400ea71d6b745ba074f294b236b06df0ff2e"
+    "rulebook": "sha256:ecb684eab398643e69673ad2a290ce90bb6743c542aa6c3934f124eb72d043d8"
   },
   "GeneratedTimestamp": null,
   "Vocabulary": {
