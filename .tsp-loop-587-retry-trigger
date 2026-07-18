@@ -1,4 +1,4 @@
-run-id: tsp-loop-587-retry-5
+run-id: tsp-loop-587-retry-6
 cli: https://github.com/EffortlessAPI/cli/archive/1551cb82d5a8992ad09e4c82d08e28493f92f7b4.tar.gz
 npm-prefix: isolated $RUNNER_TEMP/npm-global
-intent: preserve attempts 1-4, close only after live generated Postgres conformance
+intent: preserve attempts 1-5; persist downstream transcript; close only after live generated Postgres conformance
