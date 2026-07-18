@@ -493,12 +493,12 @@
     {
       "LoopOrder": 625,
       "LoopId": "tsp-loop-625",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "ATTACHMENT, VALUATION, and WARRANT are three active ternary atoms with the same subject-label-target shape but different label and target sorts.",
       "ClosureCriterion": "Introduce SEMANTIC_ARC(subject,label,target), reduce the three atoms to typed arc projections, preserve all historical definitions, and leave exactly one active relational atom.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Collapsed ATTACHMENT, VALUATION, and WARRANT into one typed SEMANTIC_ARC relation.",
+      "Result": "The three historical atoms remain distinct recoverable projections by ROLE, MEASURE, and MODALITY signatures; active atom count is one.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 626,
@@ -820,7 +820,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 646,
-    "HighestCompletedLoop": 624,
+    "HighestCompletedLoop": 625,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 14,
     "SelectedNotForcedEdgeStates": 5,
@@ -862,8 +862,8 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 48,
     "ClusterContractionCertificates": 4,
-    "ConvergenceMeasurements": 28,
-    "ConceptRegistry": 75,
+    "ConvergenceMeasurements": 29,
+    "ConceptRegistry": 77,
     "DefectProfiles": 16,
     "BoundTerms": 4,
     "WitnessNormalForms": 9,
@@ -884,7 +884,7 @@
     "AsymmetricQuotientReductionPct": 75
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:0d08329eba0f67324ffd3ae60ae3a70ccac2b7aa06ccf48bf601187a9254eec9",
+    "rulebook": "sha256:8f83f1ba3e7ee2821e54a714ce5f76123c32fc4b3357e8b25f98d6c263519c85",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
