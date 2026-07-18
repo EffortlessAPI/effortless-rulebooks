@@ -543,12 +543,12 @@
     {
       "LoopOrder": 630,
       "LoopId": "tsp-loop-630",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "SATURATE and FIBER_REDUCE remain separate operators even though both transform one semantic-arc state into another under an explicit warrant.",
       "ClosureCriterion": "Introduce WARRANTED_REWRITE(input,rule,polarity,output,warrant), reduce saturation and fiber reduction to rewrite modes, and leave exactly one active semantic operator.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Collapsed SATURATE and FIBER_REDUCE into one WARRANTED_REWRITE operator.",
+      "Result": "Every transformation now exposes input, rule, polarity, output, and warrant; saturation and fiber reduction remain recoverable modes, and active operator count is one.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 631,
@@ -820,7 +820,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 646,
-    "HighestCompletedLoop": 629,
+    "HighestCompletedLoop": 630,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 14,
     "SelectedNotForcedEdgeStates": 5,
@@ -862,8 +862,8 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 48,
     "ClusterContractionCertificates": 4,
-    "ConvergenceMeasurements": 33,
-    "ConceptRegistry": 83,
+    "ConvergenceMeasurements": 34,
+    "ConceptRegistry": 85,
     "DefectProfiles": 16,
     "BoundTerms": 4,
     "WitnessNormalForms": 9,
@@ -884,7 +884,7 @@
     "AsymmetricQuotientReductionPct": 75
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:2766b35c1650c9e61df90dd6498ab997fe154ad62d7ff4fb790d9dbeff7e852d",
+    "rulebook": "sha256:913222b93127a3c093c60274e29553857a180ee347c4cffd689eef4e82ae975c",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
