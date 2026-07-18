@@ -1585,6 +1585,84 @@ def loop_631(rb: dict[str, Any], contract: dict[str, Any]) -> tuple[str, str]:
         "Closure/fixed point/saturation are recoverable as expansive modes; aggregate/quotient/fiber reduction as contractive modes; local expansion is explicitly compatible with coherent rewrite composition.",
     )
 
+# New predicates coined after the atom collapse must themselves use the current
+# basis.  These late redefinitions prevent a retired atom name from re-entering
+# through the prose of a new certificate.
+def loop_627(rb: dict[str, Any], contract: dict[str, Any]) -> tuple[str, str]:
+    ensure_arc_fields(rb)
+    register_concept(
+        rb,
+        "coined-recoverability-witness",
+        "Recoverability Witness",
+        "COINED_PREDICATE",
+        "SEMANTIC_ARC(concept,RECOVERABILITY_EXPRESSION,projection)+SEMANTIC_ARC(projection,LOSSLESS_SCOPE,current_scope)",
+        1,
+        "TSPConceptRegistry",
+        627,
+        status="ACTIVE_DERIVED",
+        category="DERIVED",
+    )
+    row = table_index(rb, "TSPConceptRegistry")["coined-recoverability-witness"]
+    row.update(
+        {
+            "ArcSubjectSort": "CONCEPT",
+            "ArcLabelSort": "RECOVERABILITY_EXPRESSION",
+            "ArcTargetSort": "PROJECTION",
+            "ArcSignature": "SEMANTIC_ARC(concept,RECOVERABILITY_EXPRESSION,projection)",
+            "RecoverabilityExpression": "IDENTITY",
+            "IsRecoverableFromCurrentBasis": True,
+        }
+    )
+    unresolved = []
+    for concept in rows(rb, "TSPConceptRegistry"):
+        expression = concept.get("ReducedBasisExpression") or concept.get("BasisExpression") or ""
+        if any(contains_legacy_basis_symbol(expression, token) for token in OLD_ATOM_TOKENS):
+            unresolved.append(concept["TSPConceptId"])
+            concept["IsRecoverableFromCurrentBasis"] = False
+        else:
+            concept["RecoverabilityExpression"] = concept.get("RecoverabilityExpression") or (
+                f"PROJECT_{concept['TSPConceptId']}_FROM_SEMANTIC_ARC_AND_ACTIVE_OPERATORS"
+            )
+            concept["IsRecoverableFromCurrentBasis"] = True
+    if unresolved:
+        raise AssertionError(f"unrecovered atom tokens remain: {unresolved[:10]}")
+    add_measurement(
+        rb,
+        627,
+        "Recoverability Witness",
+        f"All {len(rows(rb, 'TSPConceptRegistry'))} registered concepts have explicit current-basis recovery expressions and source-table provenance.",
+    )
+    add_frontier(
+        rb,
+        "frontier-semantic-arc-recoverability",
+        "Typed semantic-arc recoverability",
+        625,
+        627,
+        "tsp-rule-semantic-arc-refinement",
+        "Every registered concept is recoverable from semantic arcs plus the active operators, and attachment/valuation/warrant retain distinct signatures.",
+        "semantic-arc-recoverability-certificate",
+    )
+    return (
+        "Certified lossless recovery of the historical and derived vocabulary from semantic arcs plus the current operators.",
+        f"Recoverability coverage is {len(rows(rb, 'TSPConceptRegistry'))}/{len(rows(rb, 'TSPConceptRegistry'))}; no retired atom token remains in a current reduced definition.",
+    )
+
+
+_loop_631_with_index_refresh = loop_631
+
+
+def loop_631(rb: dict[str, Any], contract: dict[str, Any]) -> tuple[str, str]:
+    after, witness = _loop_631_with_index_refresh(rb, contract)
+    row = table_index(rb, "TSPConceptRegistry")["coined-rewrite-polarity"]
+    row["BasisExpression"] = (
+        "SEMANTIC_ARC(rewrite,POLARITY,EXPANSIVE_OR_CONTRACTIVE_OR_MIXED)"
+        "+SEMANTIC_ARC(rewrite,MODE,mode)"
+    )
+    row["ReducedBasisExpression"] = row["BasisExpression"]
+    row["RecoverabilityExpression"] = "PROJECT_REWRITE_MODE_AND_POLARITY"
+    row["IsRecoverableFromCurrentBasis"] = True
+    return after, witness
+
 def mark_current_basis_concept(
     rb: dict[str, Any],
     ident: str,
