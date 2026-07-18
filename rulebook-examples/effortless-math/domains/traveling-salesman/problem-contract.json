@@ -291,12 +291,12 @@
     {
       "LoopOrder": 607,
       "LoopId": "tsp-loop-607",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "The measured six-to-three neighborhood contraction is stored as a count reduction without an explicit equivalence relation.",
       "ClosureCriterion": "Represent reversal-equivalent internal orders as quotient classes and derive three classes per neighborhood and nine product classes.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Recast neighborhood contraction as a semantic quotient by path reversal with fixed unordered boundary, coverage, and cost.",
+      "Result": "Each neighborhood has six directed orders / orientation multiplicity two = three quotient classes; the product quotient has 3 x 3 = 9 classes.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 608,
@@ -398,7 +398,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 610,
-    "HighestCompletedLoop": 606,
+    "HighestCompletedLoop": 607,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 5,
     "SelectedNotForcedEdgeStates": 5,
@@ -440,14 +440,14 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 12,
     "ClusterContractionCertificates": 3,
-    "ConvergenceMeasurements": 10,
-    "ConceptRegistry": 50,
+    "ConvergenceMeasurements": 11,
+    "ConceptRegistry": 51,
     "DefectProfiles": 14,
     "BoundTerms": 4,
     "WitnessNormalForms": 9
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:f9bf755f52e5c8e0cf4be2e327a395eca53fbf13c0aa9b20b277407524cf7911",
+    "rulebook": "sha256:8ef85a31c9695132310738e8f2671075e98ce5008c86fe361723428f6260ac50",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
