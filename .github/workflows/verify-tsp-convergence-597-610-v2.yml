@@ -98,8 +98,11 @@ jobs:
 
           bounds = {row['InstanceLowerBoundId']: row for row in rb['InstanceLowerBounds']['data']}
           twin = bounds['degree-two-lower-bound-twin-triangles-6']
-          print(f"twin_base={twin.get('BaseLowerBoundCost')!r} twin_adjustment={twin.get('SupplementalBoundAdjustment')!r}")
-          if float(twin['BaseLowerBoundCost']) != 6 or float(twin['SupplementalBoundAdjustment']) != 18:
+          final_bound = float(twin['LowerBoundCost'])
+          supplemental = float(twin['SupplementalBoundAdjustment'])
+          represented_base = final_bound - supplemental
+          print(f'twin_final={final_bound} twin_adjustment={supplemental} represented_base={represented_base}')
+          if represented_base != 6 or supplemental != 18 or final_bound != 24:
               raise AssertionError('twin repair-bound composition mismatch')
 
           subjects = subprocess.check_output(['git', 'log', '--format=%s', '--reverse'], text=True).splitlines()
@@ -138,6 +141,7 @@ jobs:
               'semantic_compression_pct': 75,
               'coined_predicates': coined_count,
               'twin_optimality': True,
+              'twin_bound_composition': {'base': represented_base, 'adjustment': supplemental, 'final': final_bound},
               'concept_convergence_proved': False,
           }
           (domain / 'testing/convergence-597-610-verified.json').write_text(json.dumps(payload, indent=2) + '\n')
@@ -193,6 +197,7 @@ jobs:
             "verifier": "v2-checkpointed"
           }
           EOF
-          git add "$domain/testing/convergence-597-610-verified.json" "$domain/testing/convergence-597-610-verification-status.json"
+          rm -f "$domain/testing/convergence-597-610-verification-failure.log"
+          git add -A -- "$domain/testing/convergence-597-610-verified.json" "$domain/testing/convergence-597-610-verification-status.json" "$domain/testing/convergence-597-610-verification-failure.log"
           git commit -m 'Verify TSP convergence loops 597-610'
           git push origin HEAD:"$TARGET_BRANCH"
