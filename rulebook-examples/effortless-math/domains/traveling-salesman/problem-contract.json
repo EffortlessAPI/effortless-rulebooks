@@ -19,7 +19,8 @@
     "NeighborhoodContractionFixtureCertified": true,
     "PostgresConformanceCommissioned": true,
     "ConceptConvergencePredictionRecorded": true,
-    "ConceptConvergenceProved": false
+    "ConceptConvergenceProved": false,
+    "TwinTrianglesOptimalityProved": true
   },
   "CanonicalAsset": "effortless-rulebook/traveling-salesman-rulebook.json",
   "ExecutionSubstrates": [
@@ -260,12 +261,12 @@
     {
       "LoopOrder": 604,
       "LoopId": "tsp-loop-604",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Twin triangles has a repaired lower bound of twenty-four and a feasible candidate of cost twenty-four, but no finite optimality certificate.",
       "ClosureCriterion": "Close twin-triangle finite optimality by lower-bound/upper-bound equality while retaining the original non-tight local-bound counterexample.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Closed twin-triangle optimality by the sandwich 24 <= candidate cost 24 <= 24.",
+      "Result": "The original degree-only bound remains recorded as non-tight; the composed component-repair bound equals the valid candidate and proves optimality only for tsp-twin-triangles-6.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 605,
@@ -385,7 +386,7 @@
     "TravelEdges": 38,
     "CandidateTours": 4,
     "TSPLoops": 34,
-    "FrontierObligations": 18,
+    "FrontierObligations": 19,
     "ActiveImportedDependencies": 0,
     "ReferenceTourValid": true,
     "ReferenceTourCost": 14,
@@ -397,7 +398,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 610,
-    "HighestCompletedLoop": 603,
+    "HighestCompletedLoop": 604,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 5,
     "SelectedNotForcedEdgeStates": 5,
@@ -413,10 +414,10 @@
       "stop-a"
     ],
     "GridvilleSurvivingRouteClasses": 1,
-    "TwinTriangleLowerBound": 6,
+    "TwinTriangleLowerBound": 24,
     "TwinTriangleCandidateCost": 24,
     "TwinTriangleSelectedComponents": 2,
-    "TwinTriangleOptimalityProved": false,
+    "TwinTriangleOptimalityProved": true,
     "SparseForcedEdges": 5,
     "ForbiddenEdgeCertificates": 2,
     "ClusterBoundaryStates": 6,
@@ -439,13 +440,13 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 12,
     "ClusterContractionCertificates": 3,
-    "ConvergenceMeasurements": 7,
-    "ConceptRegistry": 47,
-    "DefectProfiles": 13,
+    "ConvergenceMeasurements": 8,
+    "ConceptRegistry": 48,
+    "DefectProfiles": 14,
     "BoundTerms": 4
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:9430826a42be70d2d125b58043c99060bfbf7f29ac86f5376283407152865ee8",
+    "rulebook": "sha256:c2ca1604a8b8f75c528988e77cf7ef5b53f578f01fd6bbfa6851cca27daff043",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
