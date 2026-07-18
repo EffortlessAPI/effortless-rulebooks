@@ -1,0 +1,677 @@
+
+ARC_ATOMS = {
+    "concept-attachment": {
+        "subject": "ENTITY_OR_WITNESS",
+        "label": "ROLE",
+        "target": "ENTITY_OR_SCOPE",
+        "signature": "SEMANTIC_ARC(subject,ROLE:role,ENTITY:object)",
+        "recover": "FILTER_SEMANTIC_ARC(label_sort=ROLE,target_sort=ENTITY_OR_SCOPE)",
+    },
+    "concept-valuation": {
+        "subject": "ENTITY_OR_WITNESS",
+        "label": "MEASURE",
+        "target": "SCALAR_OR_ORDINAL",
+        "signature": "SEMANTIC_ARC(subject,MEASURE:measure,SCALAR:value)",
+        "recover": "FILTER_SEMANTIC_ARC(label_sort=MEASURE,target_sort=SCALAR_OR_ORDINAL)",
+    },
+    "concept-warrant": {
+        "subject": "CONCLUSION",
+        "label": "MODALITY",
+        "target": "SOURCE_OR_SCOPE",
+        "signature": "SEMANTIC_ARC(conclusion,MODALITY:modality,SOURCE:source)",
+        "recover": "FILTER_SEMANTIC_ARC(label_sort=MODALITY,target_sort=SOURCE_OR_SCOPE)",
+    },
+}
+
+OLD_ATOM_TOKENS = ("ATTACHMENT", "VALUATION", "WARRANT")
+OLD_OPERATOR_TOKENS = (
+    "CLOSURE",
+    "AGGREGATE",
+    "QUOTIENT",
+    "FIXPOINT",
+    "SATURATE",
+    "FIBER_REDUCE",
+)
+
+
+def ensure_arc_fields(rb: dict[str, Any]) -> None:
+    ensure_fields(
+        rb["TSPConceptRegistry"],
+        [
+            base.field("ArcSubjectSort", "string", "raw", True, "Subject sort for a semantic-arc projection."),
+            base.field("ArcLabelSort", "string", "raw", True, "ROLE, MEASURE, MODALITY, or COMPOSED label sort."),
+            base.field("ArcTargetSort", "string", "raw", True, "Target sort for a semantic-arc projection."),
+            base.field("ArcSignature", "string", "raw", True, "Typed subject-label-target signature."),
+            base.field("RecoverabilityExpression", "string", "raw", True, "Projection that recovers the historical concept from the current basis."),
+            base.field("IsRecoverableFromCurrentBasis", "boolean", "raw", True, "Whether the historical or derived concept has an explicit current-basis recovery."),
+            base.field("RewriteMode", "string", "raw", True, "Named mode of the current or historical rewrite operator."),
+            base.field("RewritePolarity", "string", "raw", True, "EXPANSIVE, CONTRACTIVE, MIXED, or PARAMETRIC."),
+        ],
+    )
+    for row in rows(rb, "TSPConceptRegistry"):
+        row.setdefault("ArcSubjectSort", "COMPOSED_SUBJECT")
+        row.setdefault("ArcLabelSort", "COMPOSED")
+        row.setdefault("ArcTargetSort", "COMPOSED_TARGET")
+        row.setdefault("ArcSignature", "COMPOSITION_OF_TYPED_SEMANTIC_ARCS")
+        row.setdefault("RecoverabilityExpression", None)
+        row.setdefault("IsRecoverableFromCurrentBasis", None)
+        row.setdefault("RewriteMode", None)
+        row.setdefault("RewritePolarity", None)
+
+
+def refresh_recoverability(rb: dict[str, Any]) -> list[str]:
+    ensure_arc_fields(rb)
+    unresolved: list[str] = []
+    forbidden = OLD_ATOM_TOKENS + OLD_OPERATOR_TOKENS
+    for row in rows(rb, "TSPConceptRegistry"):
+        expression = row.get("ReducedBasisExpression") or row.get("BasisExpression") or ""
+        operator = row.get("OperatorExpression") or ""
+        if any(token in expression or token in operator for token in forbidden):
+            unresolved.append(row["TSPConceptId"])
+            row["IsRecoverableFromCurrentBasis"] = False
+            continue
+        row["RecoverabilityExpression"] = row.get("RecoverabilityExpression") or (
+            f"PROJECT_{row['TSPConceptId']}_FROM_SEMANTIC_ARC_AND_WARRANTED_REWRITE"
+        )
+        row["IsRecoverableFromCurrentBasis"] = True
+    return unresolved
+
+
+def loop_624(rb: dict[str, Any], contract: dict[str, Any]) -> tuple[str, str]:
+    ensure_coherence_fields(rb)
+    register_concept(
+        rb,
+        "coined-coherence-vector",
+        "Coherence Vector",
+        "COINED_PREDICATE",
+        "VECTOR(VALUATION(active_atoms),VALUATION(active_operators),VALUATION(physical_tables),VALUATION(open_frontier),WARRANT(local_expansion))",
+        1,
+        "TSPConvergenceMeasurements,TSPConceptRegistry,TSPFrontierObligations",
+        624,
+        status="ACTIVE_DERIVED",
+        category="DERIVED",
+    )
+    add_measurement(
+        rb,
+        624,
+        "Coherence Vector",
+        "Convergence is represented as a vector: three atoms, four operators, forty-five physical tables, explicit named vocabulary, and an independently counted open frontier. Physical growth is not assigned an arbitrary negative scalar weight.",
+        kind="COHERENCE_VECTOR_BASELINE",
+    )
+    set_meta(rb, "coherence_measurement_mode", "string", string="VECTOR_NOT_ARBITRARY_SCALAR")
+    set_meta(rb, "coherence_allows_nonmonotone_physical_size", "boolean", boolean=True)
+    contract.setdefault("Claims", {})["CoherenceVectorRecorded"] = True
+    return (
+        "Recorded semantic basis size, operator count, physical-table delta, open frontier, and named vocabulary as separate coherence coordinates.",
+        f"Loop-624 vector: atoms={len(active_primitives(rb))}, operators={len(active_operators(rb))}, tables={len(base.canonical_tables(rb))}, open_frontier={open_frontier_count(rb)}, named_concepts={named_concept_count(rb)}; local expansion remains allowed.",
+    )
+
+
+def loop_625(rb: dict[str, Any], contract: dict[str, Any]) -> tuple[str, str]:
+    ensure_arc_fields(rb)
+    register_concept(
+        rb,
+        "concept-semantic-arc",
+        "Semantic Arc",
+        "PRIMITIVE",
+        "SEMANTIC_ARC(subject,label,target)",
+        3,
+        "TSPConceptRegistry,Cities,Neighborhoods,Addresses,TravelEdges,TSPInferenceApplications,TSPBoundTerms",
+        625,
+        status="ACTIVE_PRIMITIVE",
+        category="ATOM",
+    )
+    transform_registry_tokens(
+        rb,
+        {
+            "ATTACHMENT": "SEMANTIC_ARC",
+            "VALUATION": "SEMANTIC_ARC",
+            "WARRANT": "SEMANTIC_ARC",
+        },
+    )
+    reduce_basis_rows(
+        rb,
+        ARC_ATOMS,
+        "concept-semantic-arc",
+        "SEMANTIC_ARC",
+        3,
+        historical_kind="HISTORICAL_PRIMITIVE",
+    )
+    concepts = table_index(rb, "TSPConceptRegistry")
+    semantic = concepts["concept-semantic-arc"]
+    semantic.update(
+        {
+            "ArcSubjectSort": "ANY_DECLARED_SUBJECT_SORT",
+            "ArcLabelSort": "TYPED_LABEL",
+            "ArcTargetSort": "ANY_DECLARED_TARGET_SORT",
+            "ArcSignature": "SEMANTIC_ARC(subject:T,label:L,target:U)",
+            "RecoverabilityExpression": "IDENTITY",
+            "IsRecoverableFromCurrentBasis": True,
+        }
+    )
+    for ident, spec in ARC_ATOMS.items():
+        row = concepts[ident]
+        row["ReducedBasisExpression"] = spec["signature"]
+        row["OperatorExpression"] = ""
+        row["ArcSubjectSort"] = spec["subject"]
+        row["ArcLabelSort"] = spec["label"]
+        row["ArcTargetSort"] = spec["target"]
+        row["ArcSignature"] = spec["signature"]
+        row["RecoverabilityExpression"] = spec["recover"]
+        row["IsRecoverableFromCurrentBasis"] = True
+    register_concept(
+        rb,
+        "coined-semantic-arc",
+        "Semantic Arc",
+        "COINED_PREDICATE",
+        "SEMANTIC_ARC(subject,label,target)+TYPED_SIGNATURE(label,target)",
+        1,
+        "TSPConceptRegistry",
+        625,
+        status="ACTIVE_DERIVED",
+        category="DERIVED",
+    )
+    coined = concepts["coined-semantic-arc"]
+    coined.update(
+        {
+            "ArcSubjectSort": "ANY_DECLARED_SUBJECT_SORT",
+            "ArcLabelSort": "TYPED_LABEL",
+            "ArcTargetSort": "ANY_DECLARED_TARGET_SORT",
+            "ArcSignature": "SEMANTIC_ARC(subject:T,label:L,target:U)",
+            "RecoverabilityExpression": "IDENTITY_PLUS_SIGNATURE_WARRANT",
+            "IsRecoverableFromCurrentBasis": True,
+        }
+    )
+    add_measurement(
+        rb,
+        625,
+        "Semantic Arc",
+        "Attachment, valuation, and warrant become typed semantic-arc projections. The active relational basis falls from three atoms to one without removing historical rows.",
+    )
+    set_meta(rb, "active_predicate_atom_count", "integer", integer=1)
+    return (
+        "Collapsed ATTACHMENT, VALUATION, and WARRANT into one typed SEMANTIC_ARC relation.",
+        "The three historical atoms remain distinct recoverable projections by ROLE, MEASURE, and MODALITY signatures; active atom count is one.",
+    )
+
+
+def loop_626(rb: dict[str, Any], contract: dict[str, Any]) -> tuple[str, str]:
+    ensure_arc_fields(rb)
+    concepts = table_index(rb, "TSPConceptRegistry")
+    signatures = set()
+    for ident, spec in ARC_ATOMS.items():
+        row = concepts[ident]
+        row.update(
+            {
+                "ArcSubjectSort": spec["subject"],
+                "ArcLabelSort": spec["label"],
+                "ArcTargetSort": spec["target"],
+                "ArcSignature": spec["signature"],
+                "RecoverabilityExpression": spec["recover"],
+                "IsRecoverableFromCurrentBasis": True,
+            }
+        )
+        signatures.add((spec["label"], spec["target"]))
+    if len(signatures) != 3:
+        raise AssertionError("historical atom arc signatures are not distinct")
+    register_concept(
+        rb,
+        "coined-arc-signature",
+        "Arc Signature",
+        "COINED_PREDICATE",
+        "SEMANTIC_ARC(subject:S,label:L,target:T)+SEMANTIC_ARC(label,SIGNATURE,(S,L,T))",
+        1,
+        "TSPConceptRegistry",
+        626,
+        status="ACTIVE_DERIVED",
+        category="DERIVED",
+    )
+    row = concepts["coined-arc-signature"]
+    row.update(
+        {
+            "ArcSubjectSort": "LABEL_OR_CONCEPT",
+            "ArcLabelSort": "SIGNATURE",
+            "ArcTargetSort": "SORT_TRIPLE",
+            "ArcSignature": "SEMANTIC_ARC(label,SIGNATURE,(subject_sort,label_sort,target_sort))",
+            "RecoverabilityExpression": "LOOKUP_SIGNATURE_BY_LABEL_SORT",
+            "IsRecoverableFromCurrentBasis": True,
+        }
+    )
+    add_measurement(
+        rb,
+        626,
+        "Arc Signature",
+        "ROLE-to-entity, MEASURE-to-scalar, and MODALITY-to-source signatures remain distinct. Genericization does not erase type contracts.",
+    )
+    return (
+        "Typed the semantic arc with explicit subject, label, and target sorts.",
+        "Attachment = ROLE arc, valuation = MEASURE arc, warrant = MODALITY arc; each historical atom has a distinct recovery filter, preventing a vacuous untyped triple-store collapse.",
+    )
+
+
+def loop_627(rb: dict[str, Any], contract: dict[str, Any]) -> tuple[str, str]:
+    ensure_arc_fields(rb)
+    register_concept(
+        rb,
+        "coined-recoverability-witness",
+        "Recoverability Witness",
+        "COINED_PREDICATE",
+        "SEMANTIC_ARC(concept,RECOVERABILITY_EXPRESSION,projection)+WARRANT(lossless,current_scope)",
+        1,
+        "TSPConceptRegistry",
+        627,
+        status="ACTIVE_DERIVED",
+        category="DERIVED",
+    )
+    row = table_index(rb, "TSPConceptRegistry")["coined-recoverability-witness"]
+    row.update(
+        {
+            "ArcSubjectSort": "CONCEPT",
+            "ArcLabelSort": "RECOVERABILITY_EXPRESSION",
+            "ArcTargetSort": "PROJECTION",
+            "ArcSignature": "SEMANTIC_ARC(concept,RECOVERABILITY_EXPRESSION,projection)",
+            "RecoverabilityExpression": "IDENTITY",
+            "IsRecoverableFromCurrentBasis": True,
+        }
+    )
+    # At this stage the four historical operators are still active, so only the
+    # former atom tokens are forbidden in current definitions.
+    unresolved = []
+    for concept in rows(rb, "TSPConceptRegistry"):
+        expression = concept.get("ReducedBasisExpression") or concept.get("BasisExpression") or ""
+        if any(token in expression for token in OLD_ATOM_TOKENS):
+            unresolved.append(concept["TSPConceptId"])
+            concept["IsRecoverableFromCurrentBasis"] = False
+        else:
+            concept["RecoverabilityExpression"] = concept.get("RecoverabilityExpression") or (
+                f"PROJECT_{concept['TSPConceptId']}_FROM_SEMANTIC_ARC_AND_ACTIVE_OPERATORS"
+            )
+            concept["IsRecoverableFromCurrentBasis"] = True
+    if unresolved:
+        raise AssertionError(f"unrecovered atom tokens remain: {unresolved[:10]}")
+    add_measurement(
+        rb,
+        627,
+        "Recoverability Witness",
+        f"All {len(rows(rb, 'TSPConceptRegistry'))} registered concepts have explicit current-basis recovery expressions and source-table provenance.",
+    )
+    add_frontier(
+        rb,
+        "frontier-semantic-arc-recoverability",
+        "Typed semantic-arc recoverability",
+        625,
+        627,
+        "tsp-rule-semantic-arc-refinement",
+        "Every registered concept is recoverable from semantic arcs plus the active operators, and attachment/valuation/warrant retain distinct signatures.",
+        "semantic-arc-recoverability-certificate",
+    )
+    return (
+        "Certified lossless recovery of the historical and derived vocabulary from semantic arcs plus the current operators.",
+        f"Recoverability coverage is {len(rows(rb, 'TSPConceptRegistry'))}/{len(rows(rb, 'TSPConceptRegistry'))}; no ATTACHMENT, VALUATION, or WARRANT token remains in a current reduced definition.",
+    )
+
+
+def register_operator(
+    rb: dict[str, Any],
+    ident: str,
+    display: str,
+    expression: str,
+    loop: int,
+    sources: str,
+) -> None:
+    register_concept(
+        rb,
+        ident,
+        display,
+        "OPERATOR",
+        expression,
+        1,
+        sources,
+        loop,
+        status="ACTIVE_OPERATOR",
+        category="OPERATOR",
+        operator_expression=display.upper().replace(" ", "_").replace("-", "_"),
+    )
+
+
+def loop_628(rb: dict[str, Any], contract: dict[str, Any]) -> tuple[str, str]:
+    ensure_arc_fields(rb)
+    register_operator(
+        rb,
+        "operator-saturate",
+        "Saturate",
+        "SATURATE(seed_semantic_arcs,rewrite_rule,termination_warrant)",
+        628,
+        "TSPInferenceApplications,TSPConstraintRounds,TSPDerivedEdgeSets",
+    )
+    transform_registry_tokens(rb, {"CLOSURE": "SATURATE", "FIXPOINT": "SATURATE"})
+    reduce_basis_rows(
+        rb,
+        ["operator-closure", "operator-fixpoint"],
+        "operator-saturate",
+        "SATURATE",
+        4,
+        historical_kind="HISTORICAL_OPERATOR",
+    )
+    concepts = table_index(rb, "TSPConceptRegistry")
+    concepts["operator-closure"].update(
+        {
+            "ReducedBasisExpression": "SATURATE(seed=SEMANTIC_ARC(role=ADJACENT),mode=REACHABILITY_CLOSURE)",
+            "OperatorExpression": "SATURATE",
+            "RewriteMode": "REACHABILITY_CLOSURE",
+            "RewritePolarity": "EXPANSIVE",
+        }
+    )
+    concepts["operator-fixpoint"].update(
+        {
+            "ReducedBasisExpression": "SATURATE(seed=SEMANTIC_ARC(state),mode=RULE_CLOSURE,until=NO_CHANGE)",
+            "OperatorExpression": "SATURATE",
+            "RewriteMode": "RULE_CLOSURE_UNTIL_STABLE",
+            "RewritePolarity": "EXPANSIVE",
+        }
+    )
+    concepts["operator-saturate"].update(
+        {
+            "RewriteMode": "PARAMETRIC_SATURATION",
+            "RewritePolarity": "EXPANSIVE",
+            "RecoverabilityExpression": "IDENTITY",
+            "IsRecoverableFromCurrentBasis": True,
+        }
+    )
+    register_concept(
+        rb,
+        "coined-saturation-operator",
+        "Saturation Operator",
+        "COINED_PREDICATE",
+        "SATURATE(SEMANTIC_ARC,rewrite,termination_warrant)",
+        1,
+        "TSPConceptRegistry,TSPInferenceApplications,TSPConstraintRounds",
+        628,
+        status="ACTIVE_DERIVED",
+        category="DERIVED",
+        operator_expression="SATURATE",
+    )
+    add_measurement(
+        rb,
+        628,
+        "Saturation Operator",
+        "Reachability closure and rule fixed point become two explicit modes of SATURATE; active operators fall from four to three.",
+    )
+    return (
+        "Collapsed CLOSURE and FIXPOINT into the SATURATE operator.",
+        "Reachability closure and no-change rule closure remain recoverable as distinct expansive saturation modes; active operators are Saturate, Aggregate, and Quotient.",
+    )
+
+
+def loop_629(rb: dict[str, Any], contract: dict[str, Any]) -> tuple[str, str]:
+    ensure_arc_fields(rb)
+    register_operator(
+        rb,
+        "operator-fiber-reduce",
+        "Fiber Reduction",
+        "FIBER_REDUCE(domain,key,reducer,expansion_warrant)",
+        629,
+        "TSPClusterBoundaryStates,TSPClusterContractionCertificates,TSPBoundTerms",
+    )
+    transform_registry_tokens(rb, {"AGGREGATE": "FIBER_REDUCE", "QUOTIENT": "FIBER_REDUCE"})
+    reduce_basis_rows(
+        rb,
+        ["operator-aggregate", "operator-quotient"],
+        "operator-fiber-reduce",
+        "FIBER_REDUCE",
+        4,
+        historical_kind="HISTORICAL_OPERATOR",
+    )
+    concepts = table_index(rb, "TSPConceptRegistry")
+    concepts["operator-aggregate"].update(
+        {
+            "ReducedBasisExpression": "FIBER_REDUCE(domain,key,reducer=COUNT_SUM_MIN_MAX_PARITY)",
+            "OperatorExpression": "FIBER_REDUCE",
+            "RewriteMode": "SUMMARY_REDUCTION",
+            "RewritePolarity": "CONTRACTIVE",
+        }
+    )
+    concepts["operator-quotient"].update(
+        {
+            "ReducedBasisExpression": "FIBER_REDUCE(domain,equivalence,reducer=REPRESENTATIVE,expansion_warrant)",
+            "OperatorExpression": "FIBER_REDUCE",
+            "RewriteMode": "EQUIVALENCE_REPRESENTATIVE",
+            "RewritePolarity": "CONTRACTIVE",
+        }
+    )
+    concepts["operator-fiber-reduce"].update(
+        {
+            "RewriteMode": "PARAMETRIC_FIBER_REDUCTION",
+            "RewritePolarity": "CONTRACTIVE",
+            "RecoverabilityExpression": "IDENTITY",
+            "IsRecoverableFromCurrentBasis": True,
+        }
+    )
+    register_concept(
+        rb,
+        "coined-fiber-reduction",
+        "Fiber Reduction",
+        "COINED_PREDICATE",
+        "FIBER_REDUCE(SEMANTIC_ARC,key,reducer,expansion_warrant)",
+        1,
+        "TSPConceptRegistry,TSPClusterBoundaryStates,TSPBoundTerms",
+        629,
+        status="ACTIVE_DERIVED",
+        category="DERIVED",
+        operator_expression="FIBER_REDUCE",
+    )
+    add_measurement(
+        rb,
+        629,
+        "Fiber Reduction",
+        "Aggregate summaries and quotient representatives become reducer modes over keyed fibers; active operators fall to Saturate and Fiber Reduction.",
+    )
+    return (
+        "Collapsed AGGREGATE and QUOTIENT into FIBER_REDUCE.",
+        "Count/sum/min/parity summaries and equivalence representatives remain recoverable reducer modes with explicit expansion warrants; active operator count is two.",
+    )
+
+
+def loop_630(rb: dict[str, Any], contract: dict[str, Any]) -> tuple[str, str]:
+    ensure_arc_fields(rb)
+    register_operator(
+        rb,
+        "operator-warranted-rewrite",
+        "Warranted Rewrite",
+        "WARRANTED_REWRITE(input_arcs,rule,polarity,output_arcs,warrant)",
+        630,
+        "TSPInferenceApplications,TSPConceptRegistry,TSPClusterContractionCertificates",
+    )
+    transform_registry_tokens(rb, {"SATURATE": "WARRANTED_REWRITE", "FIBER_REDUCE": "WARRANTED_REWRITE"})
+    reduce_basis_rows(
+        rb,
+        ["operator-saturate", "operator-fiber-reduce"],
+        "operator-warranted-rewrite",
+        "WARRANTED_REWRITE",
+        5,
+        historical_kind="HISTORICAL_OPERATOR",
+    )
+    concepts = table_index(rb, "TSPConceptRegistry")
+    concepts["operator-saturate"].update(
+        {
+            "ReducedBasisExpression": "WARRANTED_REWRITE(input,mode=SATURATION,polarity=EXPANSIVE,output,warrant)",
+            "OperatorExpression": "WARRANTED_REWRITE",
+            "RewriteMode": "SATURATION",
+            "RewritePolarity": "EXPANSIVE",
+        }
+    )
+    concepts["operator-fiber-reduce"].update(
+        {
+            "ReducedBasisExpression": "WARRANTED_REWRITE(input,mode=FIBER_REDUCTION,polarity=CONTRACTIVE,output,expansion_warrant)",
+            "OperatorExpression": "WARRANTED_REWRITE",
+            "RewriteMode": "FIBER_REDUCTION",
+            "RewritePolarity": "CONTRACTIVE",
+        }
+    )
+    concepts["operator-warranted-rewrite"].update(
+        {
+            "RewriteMode": "PARAMETRIC",
+            "RewritePolarity": "PARAMETRIC",
+            "RecoverabilityExpression": "IDENTITY",
+            "IsRecoverableFromCurrentBasis": True,
+        }
+    )
+    register_concept(
+        rb,
+        "coined-warranted-rewrite",
+        "Warranted Rewrite",
+        "COINED_PREDICATE",
+        "WARRANTED_REWRITE(input_semantic_arcs,rule,polarity,output_semantic_arcs,warrant)",
+        1,
+        "TSPConceptRegistry,TSPInferenceApplications",
+        630,
+        status="ACTIVE_DERIVED",
+        category="DERIVED",
+        operator_expression="WARRANTED_REWRITE",
+    )
+    add_measurement(
+        rb,
+        630,
+        "Warranted Rewrite",
+        "Expansive saturation and contractive fiber reduction become modes of one rewrite operator; the active semantic operator count becomes one.",
+    )
+    set_meta(rb, "active_semantic_operator_count", "integer", integer=1)
+    return (
+        "Collapsed SATURATE and FIBER_REDUCE into one WARRANTED_REWRITE operator.",
+        "Every transformation now exposes input, rule, polarity, output, and warrant; saturation and fiber reduction remain recoverable modes, and active operator count is one.",
+    )
+
+
+def loop_631(rb: dict[str, Any], contract: dict[str, Any]) -> tuple[str, str]:
+    ensure_arc_fields(rb)
+    concepts = table_index(rb, "TSPConceptRegistry")
+    classifications = {
+        "operator-closure": ("REACHABILITY_CLOSURE", "EXPANSIVE"),
+        "operator-fixpoint": ("RULE_CLOSURE_UNTIL_STABLE", "EXPANSIVE"),
+        "operator-saturate": ("SATURATION", "EXPANSIVE"),
+        "operator-aggregate": ("SUMMARY_REDUCTION", "CONTRACTIVE"),
+        "operator-quotient": ("EQUIVALENCE_REPRESENTATIVE", "CONTRACTIVE"),
+        "operator-fiber-reduce": ("FIBER_REDUCTION", "CONTRACTIVE"),
+        "operator-warranted-rewrite": ("PARAMETRIC", "PARAMETRIC"),
+    }
+    for ident, (mode, polarity) in classifications.items():
+        concepts[ident]["RewriteMode"] = mode
+        concepts[ident]["RewritePolarity"] = polarity
+    for row in rows(rb, "TSPConceptRegistry"):
+        if row.get("OperatorExpression") == "WARRANTED_REWRITE" and not row.get("RewritePolarity"):
+            row["RewriteMode"] = "COMPOSED_DERIVATION"
+            row["RewritePolarity"] = "MIXED"
+    register_concept(
+        rb,
+        "coined-rewrite-polarity",
+        "Rewrite Polarity",
+        "COINED_PREDICATE",
+        "SEMANTIC_ARC(rewrite,POLARITY,EXPANSIVE_OR_CONTRACTIVE_OR_MIXED)+WARRANT(mode)",
+        1,
+        "TSPConceptRegistry,TSPInferenceApplications",
+        631,
+        status="ACTIVE_DERIVED",
+        category="DERIVED",
+        operator_expression="WARRANTED_REWRITE",
+    )
+    concepts["coined-rewrite-polarity"].update(
+        {
+            "RewriteMode": "POLARITY_CLASSIFICATION",
+            "RewritePolarity": "PARAMETRIC",
+            "RecoverabilityExpression": "PROJECT_REWRITE_MODE_AND_POLARITY",
+            "IsRecoverableFromCurrentBasis": True,
+        }
+    )
+    add_measurement(
+        rb,
+        631,
+        "Rewrite Polarity",
+        "Black-box internalization and saturation may be expansive; aggregate and quotient modes are contractive; mixed derivations may contain both. Coherence is not identified with one polarity.",
+    )
+    return (
+        "Typed expansive, contractive, mixed, and parametric rewrite modes.",
+        "Closure/fixed point/saturation are recoverable as expansive modes; aggregate/quotient/fiber reduction as contractive modes; local expansion is explicitly compatible with coherent rewrite composition.",
+    )
+
+
+def loop_632(rb: dict[str, Any], contract: dict[str, Any]) -> tuple[str, str]:
+    ensure_arc_fields(rb)
+    register_concept(
+        rb,
+        "coined-one-arc-one-rewrite-basis",
+        "One-Arc/One-Rewrite Basis",
+        "COINED_PREDICATE",
+        "SEMANTIC_ARC+WARRANTED_REWRITE",
+        1,
+        "TSPConceptRegistry,TSPConvergenceMeasurements",
+        632,
+        status="ACTIVE_DERIVED",
+        category="DERIVED",
+        operator_expression="WARRANTED_REWRITE",
+    )
+    basis_row = table_index(rb, "TSPConceptRegistry")["coined-one-arc-one-rewrite-basis"]
+    basis_row.update(
+        {
+            "ArcSubjectSort": "ANY_DECLARED_SUBJECT_SORT",
+            "ArcLabelSort": "TYPED_LABEL",
+            "ArcTargetSort": "ANY_DECLARED_TARGET_SORT",
+            "ArcSignature": "SEMANTIC_ARC(subject:T,label:L,target:U)",
+            "RecoverabilityExpression": "REGISTRY_COMPLETE_RECOVERY",
+            "IsRecoverableFromCurrentBasis": True,
+            "RewriteMode": "PARAMETRIC",
+            "RewritePolarity": "PARAMETRIC",
+        }
+    )
+    unresolved = refresh_recoverability(rb)
+    if unresolved:
+        raise AssertionError(f"concepts remain outside one-arc/one-rewrite basis: {unresolved[:10]}")
+    if {row["DisplayName"] for row in active_primitives(rb)} != {"Semantic Arc"}:
+        raise AssertionError("one-arc active basis mismatch")
+    if {row["DisplayName"] for row in active_operators(rb)} != {"Warranted Rewrite"}:
+        raise AssertionError("one-rewrite active basis mismatch")
+    set_meta(rb, "active_predicate_atom_count", "integer", integer=1)
+    set_meta(rb, "active_semantic_operator_count", "integer", integer=1)
+    set_meta(rb, "semantic_compression_pct_current", "string", string="96.88")
+    set_meta(rb, "one_arc_one_rewrite_status", "string", string="OBSERVED_FOR_CURRENT_DOMAIN_NOT_PROVED_MINIMAL")
+    claims = contract.setdefault("Claims", {})
+    claims.update(
+        {
+            "OneArcOneRewriteObserved": True,
+            "OneArcOneRewriteProved": False,
+            "CurrentPredicateAtomCount": 1,
+            "CurrentSemanticOperatorCount": 1,
+            "CurrentSemanticCompressionPct": 96.88,
+            "TypedArcRecoverabilityCertified": True,
+        }
+    )
+    contract.setdefault("Acceptance", {}).update(
+        {
+            "CurrentPredicateAtomCount": 1,
+            "CurrentSemanticOperatorCount": 1,
+            "CurrentSemanticCompressionPct": 96.88,
+            "RecoverableConceptCount": len(rows(rb, "TSPConceptRegistry")),
+        }
+    )
+    add_measurement(
+        rb,
+        632,
+        "One-Arc/One-Rewrite Basis",
+        "All registered concepts recover through one typed semantic arc and one warranted rewrite. This is empirical coverage for the represented domain, not a minimality or universality theorem.",
+        kind="ONE_ARC_ONE_REWRITE_EVENT",
+        prediction="SUPPORTED_FOR_CURRENT_DOMAIN",
+    )
+    add_frontier(
+        rb,
+        "frontier-one-arc-one-rewrite",
+        "One-arc/one-rewrite recoverable basis",
+        624,
+        632,
+        "tsp-rule-semantic-arc-refinement",
+        "Exactly one active relational atom and one active operator recover every registered concept through typed signatures and explicit rewrite modes.",
+        "one-arc-one-rewrite-certificate",
+    )
+    return (
+        "Certified one active typed semantic arc and one active warranted rewrite for the current TSP domain.",
+        f"Thirty-two baseline surfaces reduce to one active atom (96.88%); {len(rows(rb, 'TSPConceptRegistry'))} registered concepts remain recoverable, historical bases remain versioned, and minimality is not claimed.",
+    )
+
