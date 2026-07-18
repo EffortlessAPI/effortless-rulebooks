@@ -11,25 +11,30 @@ def append_reference_override_fixed() -> None:
     """Install the final lower-bound override and normalize its result field mapping."""
     final.append_reference_override()
     text = base.REFERENCE_MODEL.read_text()
+    marker = "# TSP_COMPONENT_REPAIR_BOUND_OVERRIDE_FINAL"
+    if marker not in text:
+        raise AssertionError("component-repair override marker is missing")
 
-    old_filter = "item.tsp_instance == iid"
-    new_filter = "item.tsp_instance_id == iid"
-    if old_filter in text:
-        text = text.replace(old_filter, new_filter)
-    elif new_filter not in text:
-        raise AssertionError("component-repair override lacks a recognized TSP instance field")
+    prefix, suffix = text.split(marker, 1)
+    suffix = suffix.replace(
+        "item.tsp_instance == iid",
+        "item.tsp_instance_id == iid",
+    )
 
     old_mapping = '            "tsp_instance": iid,\n'
-    new_mapping = (
+    mapped = (
         '            "tsp_instance": iid,\n'
         '            "tsp_instance_id": iid,\n'
     )
-    if '            "tsp_instance_id": iid,\n' not in text:
-        if old_mapping not in text:
+    if '            "tsp_instance_id": iid,\n' not in suffix:
+        if old_mapping not in suffix:
             raise AssertionError("component-repair override lacks the instance result mapping")
-        text = text.replace(old_mapping, new_mapping, 1)
+        suffix = suffix.replace(old_mapping, mapped, 1)
 
-    base.REFERENCE_MODEL.write_text(text)
+    repaired = prefix + marker + suffix
+    if "item.tsp_instance_id == iid" not in repaired:
+        raise AssertionError("component-repair override filter was not repaired")
+    base.REFERENCE_MODEL.write_text(repaired)
 
 
 base.patch_reference_model_for_terms = append_reference_override_fixed
