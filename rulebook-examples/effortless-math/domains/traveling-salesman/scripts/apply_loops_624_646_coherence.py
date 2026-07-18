@@ -1361,9 +1361,9 @@ def contains_legacy_basis_symbol(text: str, token: str) -> bool:
     """Recognize an old basis symbol, not a substring inside a newer coined term.
 
     Examples:
-      WARRANT(...)          -> legacy symbol
+      WARRANT(...)           -> legacy symbol
       WARRANTED_REWRITE(...) -> current operator, not legacy WARRANT
-      REACHABILITY_CLOSURE   -> rewrite-mode label, not active CLOSURE(...)
+      REACHABILITY_CLOSURE    -> rewrite-mode label, not active CLOSURE(...)
     """
     pattern = rf"(?<![A-Z0-9_]){re.escape(token)}(?=\s*(?:\(|\+|$))"
     return re.search(pattern, text or "") is not None
@@ -1389,6 +1389,98 @@ def refresh_recoverability(rb: dict[str, Any]) -> list[str]:
         )
         row["IsRecoverableFromCurrentBasis"] = True
     return unresolved
+
+
+# The first executor version captured the registry index before registering the
+# coined Semantic Arc row.  Redefine only loop 625; later LOOP_FUNCS binding
+# resolves this corrected function while preserving the durable loop-624 state.
+def loop_625(rb: dict[str, Any], contract: dict[str, Any]) -> tuple[str, str]:
+    ensure_arc_fields(rb)
+    register_concept(
+        rb,
+        "concept-semantic-arc",
+        "Semantic Arc",
+        "PRIMITIVE",
+        "SEMANTIC_ARC(subject,label,target)",
+        3,
+        "TSPConceptRegistry,Cities,Neighborhoods,Addresses,TravelEdges,TSPInferenceApplications,TSPBoundTerms",
+        625,
+        status="ACTIVE_PRIMITIVE",
+        category="ATOM",
+    )
+    transform_registry_tokens(
+        rb,
+        {
+            "ATTACHMENT": "SEMANTIC_ARC",
+            "VALUATION": "SEMANTIC_ARC",
+            "WARRANT": "SEMANTIC_ARC",
+        },
+    )
+    reduce_basis_rows(
+        rb,
+        ARC_ATOMS,
+        "concept-semantic-arc",
+        "SEMANTIC_ARC",
+        3,
+        historical_kind="HISTORICAL_PRIMITIVE",
+    )
+    concepts = table_index(rb, "TSPConceptRegistry")
+    semantic = concepts["concept-semantic-arc"]
+    semantic.update(
+        {
+            "ArcSubjectSort": "ANY_DECLARED_SUBJECT_SORT",
+            "ArcLabelSort": "TYPED_LABEL",
+            "ArcTargetSort": "ANY_DECLARED_TARGET_SORT",
+            "ArcSignature": "SEMANTIC_ARC(subject:T,label:L,target:U)",
+            "RecoverabilityExpression": "IDENTITY",
+            "IsRecoverableFromCurrentBasis": True,
+        }
+    )
+    for ident, spec in ARC_ATOMS.items():
+        row = concepts[ident]
+        row["ReducedBasisExpression"] = spec["signature"]
+        row["OperatorExpression"] = ""
+        row["ArcSubjectSort"] = spec["subject"]
+        row["ArcLabelSort"] = spec["label"]
+        row["ArcTargetSort"] = spec["target"]
+        row["ArcSignature"] = spec["signature"]
+        row["RecoverabilityExpression"] = spec["recover"]
+        row["IsRecoverableFromCurrentBasis"] = True
+    register_concept(
+        rb,
+        "coined-semantic-arc",
+        "Semantic Arc",
+        "COINED_PREDICATE",
+        "SEMANTIC_ARC(subject,label,target)+TYPED_SIGNATURE(label,target)",
+        1,
+        "TSPConceptRegistry",
+        625,
+        status="ACTIVE_DERIVED",
+        category="DERIVED",
+    )
+    concepts = table_index(rb, "TSPConceptRegistry")
+    coined = concepts["coined-semantic-arc"]
+    coined.update(
+        {
+            "ArcSubjectSort": "ANY_DECLARED_SUBJECT_SORT",
+            "ArcLabelSort": "TYPED_LABEL",
+            "ArcTargetSort": "ANY_DECLARED_TARGET_SORT",
+            "ArcSignature": "SEMANTIC_ARC(subject:T,label:L,target:U)",
+            "RecoverabilityExpression": "IDENTITY_PLUS_SIGNATURE_WARRANT",
+            "IsRecoverableFromCurrentBasis": True,
+        }
+    )
+    add_measurement(
+        rb,
+        625,
+        "Semantic Arc",
+        "Attachment, valuation, and warrant become typed semantic-arc projections. The active relational basis falls from three atoms to one without removing historical rows.",
+    )
+    set_meta(rb, "active_predicate_atom_count", "integer", integer=1)
+    return (
+        "Collapsed ATTACHMENT, VALUATION, and WARRANT into one typed SEMANTIC_ARC relation.",
+        "The three historical atoms remain distinct recoverable projections by ROLE, MEASURE, and MODALITY signatures; active atom count is one.",
+    )
 
 def mark_current_basis_concept(
     rb: dict[str, Any],
