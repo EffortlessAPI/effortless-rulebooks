@@ -1,0 +1,36 @@
+
+import re
+
+
+def contains_legacy_basis_symbol(text: str, token: str) -> bool:
+    """Recognize an old basis symbol, not a substring inside a newer coined term.
+
+    Examples:
+      WARRANT(...)          -> legacy symbol
+      WARRANTED_REWRITE(...) -> current operator, not legacy WARRANT
+      REACHABILITY_CLOSURE   -> rewrite-mode label, not active CLOSURE(...)
+    """
+    pattern = rf"(?<![A-Z0-9_]){re.escape(token)}(?=\s*(?:\(|\+|$))"
+    return re.search(pattern, text or "") is not None
+
+
+def refresh_recoverability(rb: dict[str, Any]) -> list[str]:
+    ensure_arc_fields(rb)
+    unresolved: list[str] = []
+    forbidden = OLD_ATOM_TOKENS + OLD_OPERATOR_TOKENS
+    for row in rows(rb, "TSPConceptRegistry"):
+        expression = row.get("ReducedBasisExpression") or row.get("BasisExpression") or ""
+        operator = row.get("OperatorExpression") or ""
+        if any(
+            contains_legacy_basis_symbol(expression, token)
+            or contains_legacy_basis_symbol(operator, token)
+            for token in forbidden
+        ):
+            unresolved.append(row["TSPConceptId"])
+            row["IsRecoverableFromCurrentBasis"] = False
+            continue
+        row["RecoverabilityExpression"] = row.get("RecoverabilityExpression") or (
+            f"PROJECT_{row['TSPConceptId']}_FROM_SEMANTIC_ARC_AND_WARRANTED_REWRITE"
+        )
+        row["IsRecoverableFromCurrentBasis"] = True
+    return unresolved
