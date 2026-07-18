@@ -240,12 +240,12 @@
     {
       "LoopOrder": 602,
       "LoopId": "tsp-loop-602",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Twin triangles exposes two selected components, but the mandatory number of crossings between them is not represented.",
       "ClosureCriterion": "Derive that a Hamiltonian cycle crosses a nontrivial component cut a positive even number of times, hence at least twice.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Derived a positive-even cut-crossing certificate for the two twin components, with minimum crossing demand two.",
+      "Result": "Twin component cut: crossing count is even for every cycle and nonzero for connected coverage; therefore crossing count >= 2.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 603,
@@ -376,7 +376,7 @@
     "branch only after deterministic closure on fixtures whose residual ambiguity remains positive"
   ],
   "Acceptance": {
-    "RulebookTables": 43,
+    "RulebookTables": 44,
     "Cities": 1,
     "Neighborhoods": 5,
     "Addresses": 11,
@@ -397,7 +397,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 610,
-    "HighestCompletedLoop": 601,
+    "HighestCompletedLoop": 602,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 5,
     "SelectedNotForcedEdgeStates": 5,
@@ -439,12 +439,13 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 12,
     "ClusterContractionCertificates": 3,
-    "ConvergenceMeasurements": 5,
-    "ConceptRegistry": 45,
-    "DefectProfiles": 13
+    "ConvergenceMeasurements": 6,
+    "ConceptRegistry": 46,
+    "DefectProfiles": 13,
+    "BoundTerms": 1
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:ca09432c3f2124eaeb703ae24a42e86eddb90811f2d7daad240e1654a30c286c",
+    "rulebook": "sha256:e836f0b084d14b456be90ece0ed8e9d230afc77c1c2facdfe358529ce9de9817",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
