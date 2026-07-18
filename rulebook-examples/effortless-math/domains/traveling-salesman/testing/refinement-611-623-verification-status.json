@@ -1,5 +1,6 @@
 {
-  "status": "RUNNER_STARTED",
+  "status": "FAILED",
   "github_run_id": "29660304541",
-  "verifier": "canonical-witness-v2"
+  "verifier": "canonical-witness-v2",
+  "log": "testing/refinement-611-623-verification-failure.log"
 }
