@@ -1,17 +1,16 @@
 formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
-[agent/tsp-semantic-foundation 6c209cbe] TSP loop 625: collapse atoms to semantic arc
- 2 files changed, 100 insertions(+), 89 deletions(-)
+[agent/tsp-semantic-foundation 8d4d76b2] TSP loop 626: type semantic arc signatures
+ 2 files changed, 16 insertions(+), 14 deletions(-)
 To https://github.com/EffortlessAPI/effortless-rulebooks
-   d5340567..6c209cbe  HEAD -> agent/tsp-semantic-foundation
+   27301f68..8d4d76b2  HEAD -> agent/tsp-semantic-foundation
 traveling-salesman coherence convergence validation: PASS
 loops=70 tables=45 atoms=1 operators=4
 Traceback (most recent call last):
-  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_624_646_coherence.py", line 3898, in <module>
+  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_624_646_coherence.py", line 4001, in <module>
     main()
-  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_624_646_coherence.py", line 3878, in main
+  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_624_646_coherence.py", line 3981, in main
     after, witness = LOOP_FUNCS[order](rb, contract)
                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_624_646_coherence.py", line 907, in loop_626
-    row = concepts["coined-arc-signature"]
-          ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
-KeyError: 'coined-arc-signature'
+  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_624_646_coherence.py", line 969, in loop_627
+    raise AssertionError(f"unrecovered atom tokens remain: {unresolved[:10]}")
+AssertionError: unrecovered atom tokens remain: ['coined-recoverability-witness']
