@@ -15,7 +15,7 @@
     "SearchEliminationMeasured": true,
     "ActiveImportedDependencyCount": 0,
     "RouteReconstructedWithoutSuppliedAntecedent": true,
-    "GridvilleRouteDiscoveryBranchCount": 12,
+    "GridvilleRouteDiscoveryBranchCount": 0,
     "NeighborhoodContractionFixtureCertified": false
   },
   "CanonicalAsset": "effortless-rulebook/traveling-salesman-rulebook.json",
@@ -127,12 +127,12 @@
     {
       "LoopOrder": 592,
       "LoopId": "tsp-loop-592",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Route-discovery counts are recorded as baseline data and are not tied to a structural reconstruction certificate.",
       "ClosureCriterion": "Derive 12 initial symmetry-reduced classes, one surviving reconstructed class, zero branch decisions, zero backtracks, and zero residual ambiguity for Gridville.",
-      "AfterState": null,
-      "Result": null,
-      "CompletionDisposition": null
+      "AfterState": "Derived 12 initial route classes, one surviving reconstructed class, zero branch decisions, zero backtracks, and zero residual ambiguity.",
+      "Result": "Derived 12 initial route classes, one surviving reconstructed class, zero branch decisions, zero backtracks, and zero residual ambiguity.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 593,
@@ -257,10 +257,11 @@
       "stop-d",
       "stop-e",
       "stop-a"
-    ]
+    ],
+    "GridvilleSurvivingRouteClasses": 1
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:0f108a473ea5978515cb7bdcdd7051e6bd8d49ed7ff5d6de540bea4f3988a75e"
+    "rulebook": "sha256:a4a5799074d4d9da53f6cfe46c1a4b85e245afed270db9c689c1abb975d379c6"
   },
   "GeneratedTimestamp": null,
   "Vocabulary": {
