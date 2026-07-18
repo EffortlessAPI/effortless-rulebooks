@@ -1,2 +1,2 @@
-run-id: tsp-refinement-611-623-verify-attempt-1
-intent: independently verify the three-atom/four-operator basis, coherence-over-size guardrail, asymmetric 24-to-12-to-6 quotient, no-table-growth claim, and ordered loop commits
+run-id: tsp-refinement-611-623-verify-attempt-2
+intent: validate current structure directly, replay loop-593 no-optimality against its historical projection, then verify the three-atom/four-operator and asymmetric 24-to-12-to-6 certificates
