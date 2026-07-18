@@ -1,23 +1,23 @@
 formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
-[agent/tsp-semantic-foundation 2fafb77] TSP loops 597-610: register convergence experiment
+[agent/tsp-semantic-foundation 84507c6] TSP loops 597-610: register convergence experiment
  6 files changed, 203 insertions(+), 528 deletions(-)
 formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
-[agent/tsp-semantic-foundation 29047c3] TSP loop 597: record convergence prediction
+[agent/tsp-semantic-foundation 14e7027] TSP loop 597: record convergence prediction
  2 files changed, 41 insertions(+), 13 deletions(-)
 formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
-[agent/tsp-semantic-foundation a4cee8f] TSP loop 598: derive eight-predicate basis
+[agent/tsp-semantic-foundation d1045c5] TSP loop 598: derive eight-predicate basis
  2 files changed, 78 insertions(+), 15 deletions(-)
 formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
-[agent/tsp-semantic-foundation 7bf79d6] TSP loop 599: collapse edge commitment lattice
+[agent/tsp-semantic-foundation 10f2f25] TSP loop 599: collapse edge commitment lattice
  2 files changed, 24 insertions(+), 18 deletions(-)
 formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
-[agent/tsp-semantic-foundation 37428de] TSP loop 600: collapse incidence budget
+[agent/tsp-semantic-foundation f25b4be] TSP loop 600: collapse incidence budget
  2 files changed, 56 insertions(+), 16 deletions(-)
 formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
-[agent/tsp-semantic-foundation 086ac01] TSP loop 601: derive defect vector
+[agent/tsp-semantic-foundation 6cb692d] TSP loop 601: derive defect vector
  2 files changed, 22 insertions(+), 18 deletions(-)
 formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
-[agent/tsp-semantic-foundation 2eeff9e] TSP loop 602: derive cut parity
+[agent/tsp-semantic-foundation 057d46e] TSP loop 602: derive cut parity
  2 files changed, 42 insertions(+), 16 deletions(-)
 formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
 traveling-salesman state-aware convergence validation: PASS
@@ -28,7 +28,7 @@ traveling-salesman state-aware convergence validation: PASS
 traveling-salesman state-aware convergence validation: PASS
 traveling-salesman state-aware convergence validation: PASS
 Traceback (most recent call last):
-  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_597_610_convergence_final3.py", line 27, in <module>
+  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_597_610_convergence_final3.py", line 39, in <module>
     base.main()
   File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_597_610_convergence_v2.py", line 1790, in main
     validate_repository_state()
