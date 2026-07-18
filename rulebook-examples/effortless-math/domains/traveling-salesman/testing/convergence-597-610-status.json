@@ -1,7 +1,7 @@
 {
   "status": "FAILED",
-  "driver": "v6-adaptive",
-  "github_run_id": "29638833014",
+  "driver": "v7-rulebook-derived",
+  "github_run_id": "29639044820",
   "exit_code": 1,
-  "log": "testing/convergence-597-610-v6-failure.log"
+  "log": "testing/convergence-597-610-v7-failure.log"
 }
