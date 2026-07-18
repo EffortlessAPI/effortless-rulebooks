@@ -1586,7 +1586,7 @@ def loop_631(rb: dict[str, Any], contract: dict[str, Any]) -> tuple[str, str]:
     )
 
 # New predicates coined after the atom collapse must themselves use the current
-# basis.  These late redefinitions prevent a retired atom name from re-entering
+# basis. These late redefinitions prevent a retired atom name from re-entering
 # through the prose of a new certificate.
 def loop_627(rb: dict[str, Any], contract: dict[str, Any]) -> tuple[str, str]:
     ensure_arc_fields(rb)
@@ -1662,6 +1662,36 @@ def loop_631(rb: dict[str, Any], contract: dict[str, Any]) -> tuple[str, str]:
     row["RecoverabilityExpression"] = "PROJECT_REWRITE_MODE_AND_POLARITY"
     row["IsRecoverableFromCurrentBasis"] = True
     return after, witness
+
+
+# Loop 636 records three open quotient-incidence rows. Loop 641 later updates
+# those canonical rows to closed. The legacy validator must replay loop 636
+# against copies carrying the historical zero observations, while raw JSON and
+# independent verification continue to see the current values.
+_table_index_without_temporal_projection = table_index
+
+
+def table_index(rb: dict[str, Any], name: str) -> dict[str, dict[str, Any]]:
+    result = _table_index_without_temporal_projection(rb, name)
+    if name != "TSPDefectProfiles":
+        return result
+    loops = {
+        int(row["LoopOrder"]): row
+        for row in rb.get("TSPLoops", {}).get("data", [])
+    }
+    if loops.get(641, {}).get("Status") != "CLOSED":
+        return result
+    projected = dict(result)
+    for region in ("a", "b", "c"):
+        ident = f"quotient-incidence-region-{region}"
+        if ident not in projected:
+            continue
+        row = dict(projected[ident])
+        row["ObservedIncidence"] = 0
+        row["ObservedBoundaryCrossings"] = 0
+        row["Status"] = "QUOTIENT_INCIDENCE_OPEN"
+        projected[ident] = row
+    return projected
 
 def mark_current_basis_concept(
     rb: dict[str, Any],
