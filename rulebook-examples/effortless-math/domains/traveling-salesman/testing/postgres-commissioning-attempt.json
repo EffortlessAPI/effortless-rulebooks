@@ -1,0 +1,7 @@
+{
+  "status": "BLOCKED",
+  "failure": "missing required executable(s): effortless",
+  "has_effortless": false,
+  "has_psql": true,
+  "output_tail": ""
+}

@@ -77,12 +77,12 @@
     {
       "LoopOrder": 587,
       "LoopId": "tsp-loop-587",
-      "Status": "PLANNED",
+      "Status": "BLOCKED",
       "BeforeState": "frontier-postgres-commissioning is OPEN; no execution-run certificate exists",
       "ClosureCriterion": "Run the generated Postgres projection, recreate erb_traveling_salesman, compare vw_* results with Python, and record artifact hashes; otherwise record the exact blocking substrate condition.",
-      "AfterState": null,
-      "Result": null,
-      "CompletionDisposition": null
+      "AfterState": "Commissioning attempted and recorded as BLOCKED: missing required executable(s): effortless. No green substrate claim was made.",
+      "Result": "Commissioning attempted and recorded as BLOCKED: missing required executable(s): effortless. No green substrate claim was made.",
+      "CompletionDisposition": "BLOCKED"
     },
     {
       "LoopOrder": 588,
@@ -243,10 +243,11 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 596,
-    "HighestCompletedLoop": 586
+    "HighestCompletedLoop": 586,
+    "PostgresCommissioningStatus": "BLOCKED"
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:8dd7c88383b9be4e765b03ea0ecf6e18dc5ca1f560e8dc021a026ea83f3932da"
+    "rulebook": "sha256:2a83987db82743fd23b7d1b61136400ea71d6b745ba074f294b236b06df0ff2e"
   },
   "GeneratedTimestamp": null,
   "Vocabulary": {
