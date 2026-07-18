@@ -1,0 +1,93 @@
+name: Finalize TSP summary projections
+
+on:
+  push:
+    branches:
+      - agent/tsp-semantic-foundation
+    paths:
+      - .github/workflows/finalize-tsp-summary.yml
+      - .tsp-finalize-trigger
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/tsp-semantic-foundation
+          fetch-depth: 0
+
+      - name: Reconcile contract and exact README certificate markers
+        run: |
+          set -euo pipefail
+          domain='rulebook-examples/effortless-math/domains/traveling-salesman'
+          python3 "$domain/scripts/reconcile_summary.py"
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('rulebook-examples/effortless-math/domains/traveling-salesman/README.md')
+          text = path.read_text()
+          marker = 'CandidateUsedAsAntecedent=false'
+          if marker not in text:
+              anchor = 'The supplied candidate is comparison-only and is not an antecedent of reconstruction.\n'
+              replacement = anchor + '\n```text\n' + marker + '\n```\n'
+              if anchor not in text:
+                  raise AssertionError('README route-reconstruction anchor missing')
+              text = text.replace(anchor, replacement, 1)
+              path.write_text(text)
+          PY
+          rm -f .tsp-validation-result.txt .tsp-reconcile-result.txt
+
+      - name: Validate final working tree
+        run: |
+          set -euo pipefail
+          domain='rulebook-examples/effortless-math/domains/traveling-salesman'
+          python3 "$domain/scripts/validate_rulebook.py"
+          python3 -m py_compile \
+            "$domain/scripts/apply_loops_582_586.py" \
+            "$domain/scripts/apply_loops_587_596.py" \
+            "$domain/scripts/reconcile_summary.py" \
+            "$domain/scripts/reference_model.py" \
+            "$domain/scripts/validate_rulebook.py" \
+            "$domain/scripts/validate_rulebook_v3.py" \
+            "$domain/scripts/validate_summary_alignment.py" \
+            "$domain/testing/take-test.py"
+          bash -n "$domain/start.sh"
+
+      - name: Verify loop commit order
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import subprocess
+          subjects = subprocess.check_output(['git', 'log', '--format=%s', '--reverse'], text=True).splitlines()
+          expected = [
+              'TSP loops 587-596: register planned frontier',
+              'TSP loop 587: record Postgres commissioning attempt',
+              'TSP loop 588: add inference application spine',
+              'TSP loop 589: derive Gridville edge set',
+              'TSP loop 590: certify connected degree-two geometry',
+              'TSP loop 591: reconstruct route from inferred edges',
+              'TSP loop 592: derive search-elimination certificate',
+              'TSP loop 593: add non-tight twin-triangles fixture',
+              'TSP loop 594: execute degree-two forced-edge closure',
+              'TSP loop 595: propagate forbidden edges',
+              'TSP loop 596: contract neighborhood boundary states',
+          ]
+          positions = [subjects.index(message) for message in expected]
+          if positions != sorted(positions):
+              raise AssertionError(f'loop commits are not ordered: {positions}')
+          print('ordered TSP loop commits: PASS')
+          PY
+
+      - name: Commit finalized projections
+        run: |
+          set -euo pipefail
+          domain='rulebook-examples/effortless-math/domains/traveling-salesman'
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add "$domain/problem-contract.json" "$domain/README.md"
+          git add -u .tsp-validation-result.txt .tsp-reconcile-result.txt || true
+          git diff --cached --quiet || git commit -m 'Finalize TSP loops 587-596 projections [skip ci]'
+          git push origin HEAD:agent/tsp-semantic-foundation
