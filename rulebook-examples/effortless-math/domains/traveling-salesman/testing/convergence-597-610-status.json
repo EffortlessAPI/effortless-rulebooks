@@ -1,7 +1,6 @@
 {
-  "status": "FAILED",
-  "driver": "v10-corrected-adapter",
-  "github_run_id": "29649328558",
-  "exit_code": 1,
-  "log": "testing/convergence-597-610-v10-failure.log"
+  "status": "RUNNER_STARTED",
+  "driver": "v11-checkpointed",
+  "github_run_id": "29650666930",
+  "head_sha": "7ee9b876e7aa0211c31938245a1847d50947b77a"
 }
