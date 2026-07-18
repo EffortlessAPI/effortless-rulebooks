@@ -1,0 +1,180 @@
+                "TSPClusterBoundaryStateId": state_id,
+                "TSPInstance": "tsp-asymmetric-four-4",
+                "Neighborhood": "gridville-asymmetric-four",
+                "EntryStop": entry,
+                "ExitStop": exit_,
+                "InternalViaStop": first,
+                "SecondInternalViaStop": second,
+                "InternalPathCost": cost,
+                "InternalStopCount": 4,
+                "IsHamiltonianPath": True,
+                "IsDominated": False,
+                "Status": "FIBER_CANDIDATE",
+                "OrientationMultiplicity": 2,
+                "IsQuotientRepresentative": True,
+                "EntryPortRole": "BOUNDARY_ENTRY",
+                "ExitPortRole": "BOUNDARY_EXIT",
+                "PortContract": "ONE_ENTRY_ONE_EXIT_FULL_INTERNAL_COVERAGE",
+                "BoundaryFiberKey": fiber,
+                "InternalOrderKey": ">".join(sequence),
+                "RawOrientationMultiplicity": 2,
+                "DominatedByStateId": None,
+                "DominanceDelta": 0,
+            }
+        )
+        for order, (edge_id, _) in enumerate(members, start=1):
+            member_rows.append(
+                {
+                    "TSPClusterBoundaryStateMemberId": f"member-{state_id}-{order}",
+                    "ClusterBoundaryState": state_id,
+                    "TravelEdge": edge_id,
+                    "MemberOrder": order,
+                }
+            )
+    upsert_rows(rb["TSPClusterBoundaryStates"], "TSPClusterBoundaryStateId", state_rows)
+    upsert_rows(rb["TSPClusterBoundaryStateMembers"], "TSPClusterBoundaryStateMemberId", member_rows)
+    register_concept(rb, "coined-boundary-fiber", "Boundary Fiber", "COINED_PREDICATE", "QUOTIENT(ATTACHMENT(paths,ports),equal_ports_and_coverage)+VALUATION(cost)+WARRANT(expansion)", 1, "TSPClusterBoundaryStates,TSPClusterBoundaryStateMembers", 621, status="ACTIVE_DERIVED", category="DERIVED", operator_expression="QUOTIENT")
+    add_measurement(rb, 621, "Boundary Fiber", "An asymmetric four-stop cluster yields six fibers, two internal-order representatives per fiber, and twenty-four raw directed orientations without adding a table.")
+    return (
+        "Represented an asymmetric four-stop complete cluster as six boundary fibers containing twelve reversal-quotient path witnesses.",
+        "The twelve path rows retain twenty-four raw directed orientations, full four-stop coverage, explicit three-edge expansions, and unequal costs within every boundary fiber.",
+    )
+
+
+def loop_622(rb: dict[str, Any], contract: dict[str, Any]) -> tuple[str, str]:
+    states = [row for row in rows(rb, "TSPClusterBoundaryStates") if row["TSPInstance"] == "tsp-asymmetric-four-4"]
+    fibers: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for state in states:
+        fibers[state["BoundaryFiberKey"]].append(state)
+    if len(fibers) != 6 or any(len(group) != 2 for group in fibers.values()):
+        raise AssertionError("asymmetric boundary fibers must contain six pairs")
+    for group in fibers.values():
+        ordered = sorted(group, key=lambda row: (row["InternalPathCost"], row["InternalOrderKey"]))
+        survivor, dominated = ordered
+        if survivor["InternalPathCost"] == dominated["InternalPathCost"]:
+            raise AssertionError("fixture must expose strict fiber dominance")
+        survivor.update({"IsDominated": False, "Status": "SURVIVES", "DominatedByStateId": None, "DominanceDelta": 0})
+        dominated.update(
+            {
+                "IsDominated": True,
+                "Status": "DOMINATED",
+                "DominatedByStateId": survivor["TSPClusterBoundaryStateId"],
+                "DominanceDelta": dominated["InternalPathCost"] - survivor["InternalPathCost"],
+            }
+        )
+    register_concept(rb, "coined-fiber-minimum", "Fiber Minimum", "COINED_PREDICATE", "AGGREGATE(VALUATION(path,cost),MIN) within BoundaryFiber + WARRANT(dominance)", 1, "TSPClusterBoundaryStates", 622, status="ACTIVE_DERIVED", category="DERIVED", operator_expression="AGGREGATE+QUOTIENT")
+    add_measurement(rb, 622, "Fiber Minimum", "Six strict minimum-cost representatives survive and six higher-valued paths remain as dominated expansion provenance.")
+    return (
+        "Collapsed each asymmetric boundary fiber to its unique minimum-valued path while preserving the dominated alternative.",
+        "Six fibers each contain one SURVIVES row and one DOMINATED row; dominance deltas are 1, 6, 5, 5, 6, and 1 under the declared edge costs.",
+    )
+
+
+def loop_623(rb: dict[str, Any], contract: dict[str, Any]) -> tuple[str, str]:
+    upsert_rows(
+        rb["TSPClusterContractionCertificates"],
+        "TSPClusterContractionCertificateId",
+        [
+            {
+                "TSPClusterContractionCertificateId": "contraction-asymmetric-four-boundary-fibers",
+                "TSPInstance": "tsp-asymmetric-four-4",
+                "Neighborhood": "gridville-asymmetric-four",
+                "ScopeKind": "NEIGHBORHOOD",
+                "RawInternalOrderCount": 24,
+                "SurvivingBoundaryStateCount": 6,
+                "RawCombinationCount": None,
+                "ContractedCombinationCount": None,
+                "ReductionPct": 75,
+                "IsPassing": True,
+                "ScopeClaim": "CERTIFIED_FOR_ASYMMETRIC_FOUR_STOP_CLUSTER",
+                "EquivalenceRelation": "PATH_REVERSAL_THEN_EQUAL_PORT_EQUAL_COVERAGE_COST_DOMINANCE",
+                "QuotientClassCount": 12,
+            }
+        ],
+    )
+    register_concept(rb, "coined-asymmetric-quotient", "Asymmetric Quotient", "COINED_PREDICATE", "QUOTIENT(raw_orientations,reversal) then QUOTIENT(boundary_fiber,minimum_VALUATION)+WARRANT(expansion)", 1, "TSPClusterBoundaryStates,TSPClusterContractionCertificates", 623, status="ACTIVE_DERIVED", category="DERIVED", operator_expression="QUOTIENT+AGGREGATE")
+    add_measurement(rb, 623, "Asymmetric Quotient", "Twenty-four directed paths reduce to twelve reversal classes and six valuation-minimal boundary states with the same three atoms and four operators.", status="SUPPORTED_FOR_CURRENT_DOMAIN")
+    set_meta(rb, "coined_predicate_count_611_623", "integer", integer=13)
+    set_meta(rb, "current_predicate_atom_count", "integer", integer=3)
+    set_meta(rb, "current_operator_count", "integer", integer=4)
+    set_meta(rb, "physical_table_count_loop_623", "integer", integer=len(base.canonical_tables(rb)))
+    contract["Version"] = "0.5.0"
+    contract["Scope"] = "The represented scope includes the loop-610 eight-predicate historical basis, a current three-atom/four-operator factorization, and asymmetric four-stop boundary-fiber quotienting. No universal convergence or general TSP claim is made."
+    claims = contract.setdefault("Claims", {})
+    claims.update(
+        {
+            "ThreeAtomBasisObserved": True,
+            "ThreeAtomBasisProved": False,
+            "CurrentPredicateAtomCount": 3,
+            "CurrentSemanticOperatorCount": 4,
+            "HistoricalLoop610PredicateBasisCount": 8,
+            "CurrentSemanticCompressionPct": 90.63,
+            "NovelTermsCoined611To623": 13,
+            "AsymmetricFourStopQuotientCertified": True,
+        }
+    )
+    acceptance = contract.setdefault("Acceptance", {})
+    acceptance.update(
+        {
+            "CurrentPredicateAtomCount": 3,
+            "CurrentSemanticOperatorCount": 4,
+            "HistoricalLoop610PredicateBasisCount": 8,
+            "CurrentSemanticCompressionPct": 90.63,
+            "NovelTermsCoined611To623": 13,
+            "AsymmetricRawDirectedOrders": 24,
+            "AsymmetricReversalClasses": 12,
+            "AsymmetricFiberMinima": 6,
+            "AsymmetricQuotientReductionPct": 75,
+        }
+    )
+    certs = {row["CertificateId"]: row for row in contract.setdefault("CurrentCertificates", [])}
+    certs["tsp-three-atom-basis"] = {
+        "CertificateId": "tsp-three-atom-basis",
+        "Kind": "atom-operator-basis-certificate",
+        "Conclusion": "The current registered TSP vocabulary is explicitly defined over ATTACHMENT, VALUATION, WARRANT and four named operators; this is empirical for the represented domain.",
+    }
+    certs["asymmetric-four-boundary-quotient"] = {
+        "CertificateId": "asymmetric-four-boundary-quotient",
+        "Kind": "asymmetric-semantic-quotient-certificate",
+        "Conclusion": "Twenty-four directed Hamiltonian paths reduce to twelve reversal classes and six strict boundary-fiber minima with expansion provenance.",
+    }
+    contract["CurrentCertificates"] = list(certs.values())
+    contract["RemainingFrontier"] = [
+        "generalize repair equations to three or more quotient components",
+        "represent compatibility constraints between boundary fibers without introducing a new primitive",
+        "emit a branch orbit only when fixed-point closure leaves multiple non-equivalent minimum warrants",
+    ]
+    append_readme_section()
+    return (
+        "Certified an asymmetric semantic quotient: 24 directed internal paths to 12 reversal classes to 6 fiber minima, with no physical table growth.",
+        "The current semantic vocabulary remains three atoms plus four operators; asymmetric costs coin new predicates without adding a primitive. The certificate is finite and scoped to tsp-asymmetric-four-4.",
+    )
+
+
+LOOP_FUNCS = {
+    611: loop_611,
+    612: loop_612,
+    613: loop_613,
+    614: loop_614,
+    615: loop_615,
+    616: loop_616,
+    617: loop_617,
+    618: loop_618,
+    619: loop_619,
+    620: loop_620,
+    621: loop_621,
+    622: loop_622,
+    623: loop_623,
+}
+
+
+def append_readme_section() -> None:
+    text = README.read_text()
+    marker = "## Loops 611–623 — atoms, operators, and asymmetric fibers"
+    if marker in text:
+        return
+    text += f'''\n\n{marker}\n\nThe loop-610 eight-predicate basis was retained as a historical certificate and factored again. The current candidate basis is:\n\n```text\nATOMS:      ATTACHMENT   VALUATION   WARRANT\nOPERATORS:  CLOSURE      AGGREGATE   QUOTIENT   FIXPOINT\n```\n\nThis is **90.63% surface-to-atom compression** from the original 32 recurring surface predicates. It remains empirical for the represented TSP domain, not a theorem of universal minimality.\n\nThe asymmetric four-stop stress fixture separates two reductions that were conflated by the three-stop triangles:\n\n```text\n24 directed Hamiltonian paths\n        ↓ path-reversal quotient\n12 unordered-boundary path classes\n        ↓ minimum valuation within each boundary fiber\n 6 surviving port-to-port states\n```\n\nNo new physical table is introduced by loops 611–623. Historical projections remain replayable while the active semantic basis shrinks.\n'''
+    README.write_text(text)
+
+
+def validate_state(rb: dict[str, Any], contract: dict[str, Any]) -> None:
