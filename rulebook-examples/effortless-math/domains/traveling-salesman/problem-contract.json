@@ -604,12 +604,12 @@
     {
       "LoopOrder": 636,
       "LoopId": "tsp-loop-636",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Every local stop has degree two, yet the quotient graph has no external incidence; the resulting global defect is not represented in the common budget vocabulary.",
       "ClosureCriterion": "Give each of three region nodes required boundary degree two, observed degree zero, and a shared global profile separating closed internal incidence from open quotient incidence.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Lifted the three-component defect into quotient incidence budgets.",
+      "Result": "Every stop retains internal degree two, every region requires external degree two and currently has zero, and the global profile records component count three with crossing deficit three. Cost coordinates remain explicitly unwitnessed at this stage.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 637,
@@ -821,7 +821,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 646,
-    "HighestCompletedLoop": 635,
+    "HighestCompletedLoop": 636,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 14,
     "SelectedNotForcedEdgeStates": 5,
@@ -863,9 +863,9 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 66,
     "ClusterContractionCertificates": 7,
-    "ConvergenceMeasurements": 39,
-    "ConceptRegistry": 90,
-    "DefectProfiles": 16,
+    "ConvergenceMeasurements": 40,
+    "ConceptRegistry": 91,
+    "DefectProfiles": 20,
     "BoundTerms": 4,
     "WitnessNormalForms": 9,
     "PredicateBasisCount": 8,
@@ -886,7 +886,7 @@
     "RecoverableConceptCount": 87
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:7e0d5535910e33853617bb03298263881db85d48aa09e442dd867dea1515639d",
+    "rulebook": "sha256:69ef39b9b7536be06b75191f680eb88ebeb69d8b55333d77e04b2dc8c2015283",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
