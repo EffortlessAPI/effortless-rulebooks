@@ -28,8 +28,8 @@ jobs:
       EFFORTLESS_CLI_SOURCE: https://github.com/EffortlessAPI/cli/archive/1551cb82d5a8992ad09e4c82d08e28493f92f7b4.tar.gz
       EFFORTLESS_CLI_COMMIT: 1551cb82d5a8992ad09e4c82d08e28493f92f7b4
       EFFORTLESS_CLI_VERSION: 2026-06-09.06.13
-      NPM_CONFIG_PREFIX: ${{ runner.temp }}/npm-global
-      NPM_CONFIG_CACHE: ${{ runner.temp }}/npm-cache
+      NPM_CONFIG_PREFIX: /tmp/effortless-npm-global
+      NPM_CONFIG_CACHE: /tmp/effortless-npm-cache
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: '1'
       DOTNET_CLI_TELEMETRY_OPTOUT: '1'
     services:
