@@ -553,12 +553,12 @@
     {
       "LoopOrder": 631,
       "LoopId": "tsp-loop-631",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "The single rewrite operator is parametric, but the distinction between black-box internalization growth, saturation growth, and quotient contraction is not typed.",
       "ClosureCriterion": "Classify historical and current operators as EXPANSIVE, CONTRACTIVE, MIXED, or PARAMETRIC, with modes that recover closure, fixed point, aggregate, quotient, saturation, and fiber reduction.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Typed expansive, contractive, mixed, and parametric rewrite modes.",
+      "Result": "Closure/fixed point/saturation are recoverable as expansive modes; aggregate/quotient/fiber reduction as contractive modes; local expansion is explicitly compatible with coherent rewrite composition.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 632,
@@ -820,7 +820,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 646,
-    "HighestCompletedLoop": 630,
+    "HighestCompletedLoop": 631,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 14,
     "SelectedNotForcedEdgeStates": 5,
@@ -862,8 +862,8 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 48,
     "ClusterContractionCertificates": 4,
-    "ConvergenceMeasurements": 34,
-    "ConceptRegistry": 85,
+    "ConvergenceMeasurements": 35,
+    "ConceptRegistry": 86,
     "DefectProfiles": 16,
     "BoundTerms": 4,
     "WitnessNormalForms": 9,
@@ -884,7 +884,7 @@
     "AsymmetricQuotientReductionPct": 75
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:913222b93127a3c093c60274e29553857a180ee347c4cffd689eef4e82ae975c",
+    "rulebook": "sha256:3f9752533346e8f69b45dbd7f797a4f1bfcecb04c4a47e7d6b0f2deeea9aaede",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
