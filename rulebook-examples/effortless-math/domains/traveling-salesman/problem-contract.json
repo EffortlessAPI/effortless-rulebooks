@@ -26,11 +26,15 @@
     "SurfacePredicateBaseline": 32,
     "SemanticCompressionPct": 75,
     "NovelTermsCoined597To610": 14,
-    "ThreeAtomBasisObserved": false,
+    "ThreeAtomBasisObserved": true,
     "ThreeAtomBasisProved": false,
     "CoherenceConvergencePredictionRecorded": true,
     "LocalExpansionDuringInternalizationAllowed": true,
-    "MonotoneSchemaShrinkageClaimed": false
+    "MonotoneSchemaShrinkageClaimed": false,
+    "CurrentPredicateAtomCount": 3,
+    "CurrentSemanticOperatorCount": 4,
+    "HistoricalLoop610PredicateBasisCount": 8,
+    "CurrentSemanticCompressionPct": 90.63
   },
   "CanonicalAsset": "effortless-rulebook/traveling-salesman-rulebook.json",
   "ExecutionSubstrates": [
@@ -421,12 +425,12 @@
     {
       "LoopOrder": 619,
       "LoopId": "tsp-loop-619",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Three active atoms and four operators have emerged incrementally, but their coverage of the historical vocabulary is not certified.",
       "ClosureCriterion": "Certify ATTACHMENT, VALUATION, and WARRANT as the current atoms; CLOSURE, AGGREGATE, QUOTIENT, and FIXPOINT as operators; and express every registered concept without the old eight primitive tokens.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Certified a current basis of three atoms and four operators while preserving the historical eight-predicate certificate.",
+      "Result": "Atoms = ATTACHMENT, VALUATION, WARRANT. Operators = CLOSURE, AGGREGATE, QUOTIENT, FIXPOINT. Thirty-two baseline surfaces compress to three active atoms (90.63%) for the represented domain.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 620,
@@ -568,7 +572,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 623,
-    "HighestCompletedLoop": 618,
+    "HighestCompletedLoop": 619,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 14,
     "SelectedNotForcedEdgeStates": 5,
@@ -610,8 +614,8 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 12,
     "ClusterContractionCertificates": 3,
-    "ConvergenceMeasurements": 22,
-    "ConceptRegistry": 69,
+    "ConvergenceMeasurements": 23,
+    "ConceptRegistry": 70,
     "DefectProfiles": 16,
     "BoundTerms": 4,
     "WitnessNormalForms": 9,
@@ -620,10 +624,14 @@
     "SemanticCompressionPct": 75,
     "NovelTermsCoined597To610": 14,
     "NewPrimitivesAfterLoop598": 0,
-    "ConvergencePredictionStatus": "EARLY_EMPIRICAL_SUPPORT_FOR_CURRENT_TSP_DOMAIN"
+    "ConvergencePredictionStatus": "EARLY_EMPIRICAL_SUPPORT_FOR_CURRENT_TSP_DOMAIN",
+    "CurrentPredicateAtomCount": 3,
+    "CurrentSemanticOperatorCount": 4,
+    "HistoricalLoop610PredicateBasisCount": 8,
+    "CurrentSemanticCompressionPct": 90.63
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:c7ccedaa5e66b940a934930870a1165ca9221a297d15ee8770bfae9acfea732b",
+    "rulebook": "sha256:00745ff6d409cd6403e7f75fa534aa8698bebeb99f6667dde92f8d7bdc7390e1",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
