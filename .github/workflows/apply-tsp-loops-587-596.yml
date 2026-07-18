@@ -1,6 +1,11 @@
 name: Reconcile TSP loops 587-596 projections
 
 on:
+  push:
+    branches:
+      - agent/tsp-semantic-foundation
+    paths:
+      - .github/workflows/apply-tsp-loops-587-596.yml
   pull_request:
     branches:
       - main
@@ -25,7 +30,7 @@ jobs:
       - name: Configure corrective commit
         run: |
           git config user.name 'github-actions[bot]'
-          git config user.email '4189828+github-actions[bot]@users.noreply.github.com'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
 
       - name: Reconcile contract, README, and durable summary validation
         shell: bash
