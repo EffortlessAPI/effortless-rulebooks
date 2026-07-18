@@ -1,2 +1,2 @@
-run-id: tsp-loops-587-596-v1
-requested: record planned before-state, then one commit per executed loop
+run-id: tsp-loops-587-596-reconcile-v2
+requested: reconcile contract counts, README claims, and durable summary validation
