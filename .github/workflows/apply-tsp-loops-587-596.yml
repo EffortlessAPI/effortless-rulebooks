@@ -1,0 +1,67 @@
+name: Apply TSP loops 587-596
+
+on:
+  push:
+    branches:
+      - agent/tsp-semantic-foundation
+    paths:
+      - .tsp-loop-587-596-trigger
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      PGHOST: localhost
+      PGUSER: postgres
+      PGPASSWORD: postgres
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+
+      - name: Configure loop commits
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+      - name: Assemble and commit migration programs
+        run: |
+          set -euo pipefail
+          domain='rulebook-examples/effortless-math/domains/traveling-salesman'
+          cat .tsp-loop-587-596-migration-b64/part-* | base64 -d > "$domain/scripts/apply_loops_587_596.py"
+          cat .tsp-loop-587-596-validator/part-* > "$domain/scripts/validate_rulebook_v3.py"
+          chmod +x "$domain/scripts/apply_loops_587_596.py" "$domain/scripts/validate_rulebook_v3.py"
+          python3 -m py_compile \
+            "$domain/scripts/apply_loops_587_596.py" \
+            "$domain/scripts/validate_rulebook_v3.py"
+          git add "$domain/scripts/apply_loops_587_596.py" "$domain/scripts/validate_rulebook_v3.py"
+          git rm -r .tsp-loop-587-596-migration .tsp-loop-587-596-migration-b64 .tsp-loop-587-596-validator
+          git commit -m 'Add TSP loops 587-596 migration programs'
+
+      - name: Record plan, execute loops, and commit each loop
+        run: |
+          domain='rulebook-examples/effortless-math/domains/traveling-salesman'
+          python3 "$domain/scripts/apply_loops_587_596.py"
+
+      - name: Push ordered loop history
+        run: |
+          git push origin HEAD:${{ github.ref_name }}
+          git log -12 --oneline
