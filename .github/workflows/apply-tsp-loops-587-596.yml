@@ -53,14 +53,29 @@ jobs:
         run: |
           set -euo pipefail
           domain='rulebook-examples/effortless-math/domains/traveling-salesman'
-          cat .tsp-loop-587-596-migration-b64/part-* | base64 -d > "$domain/scripts/apply_loops_587_596.py"
+          cat \
+            .tsp-loop-587-596-migration-b64/part-000 \
+            .tsp-loop-587-596-migration-b64/part-001 \
+            .tsp-loop-587-596-migration-b64/part-002 \
+            | base64 -d > "$domain/scripts/apply_loops_587_596.py"
+          cat .tsp-loop-587-596-migration-plain/part-* \
+            >> "$domain/scripts/apply_loops_587_596.py"
+          cat \
+            .tsp-loop-587-596-migration-b64/part-004 \
+            .tsp-loop-587-596-migration-b64/part-005 \
+            .tsp-loop-587-596-migration-b64/part-006 \
+            | base64 -d >> "$domain/scripts/apply_loops_587_596.py"
           cat .tsp-loop-587-596-validator/part-* > "$domain/scripts/validate_rulebook_v3.py"
           chmod +x "$domain/scripts/apply_loops_587_596.py" "$domain/scripts/validate_rulebook_v3.py"
           python3 -m py_compile \
             "$domain/scripts/apply_loops_587_596.py" \
             "$domain/scripts/validate_rulebook_v3.py"
           git add "$domain/scripts/apply_loops_587_596.py" "$domain/scripts/validate_rulebook_v3.py"
-          git rm -r .tsp-loop-587-596-migration .tsp-loop-587-596-migration-b64 .tsp-loop-587-596-validator
+          git rm -r \
+            .tsp-loop-587-596-migration \
+            .tsp-loop-587-596-migration-b64 \
+            .tsp-loop-587-596-migration-plain \
+            .tsp-loop-587-596-validator
           git commit -m 'Add TSP loops 587-596 migration programs'
 
       - name: Record plan, execute loops, and commit each loop
