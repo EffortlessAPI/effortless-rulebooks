@@ -87,7 +87,12 @@ SELECT
   t.is_quotient_node,                                                           -- Whether the neighborhood is currently used as a quotient-graph node.
   t.quotient_node_kind,                                                         -- Boundary object kind.
   t.required_boundary_degree,                                                   -- Required external incidence in the quotient cycle.
-  t.quotient_scope_id                                                           -- Instance scope without introducing a relationship cycle.
+  t.quotient_scope_id,                                                          -- Instance scope without introducing a relationship cycle.
+  t.region_interface_kind,                                                      -- Port-bearing semantic region kind.
+  t.boundary_port_count,                                                        -- Number of external ports required by the region interface.
+  t.internal_coverage_count,                                                    -- Required internal stops covered by every valid expansion.
+  t.expansion_witness_kind,                                                     -- How a region representative expands to underlying graph structure.
+  t.interface_status                                                            -- OPEN, NORMALIZED, or CERTIFIED.
 FROM neighborhoods t;
 
 -- ----------------------------------------------------------------------------
@@ -242,7 +247,10 @@ SELECT
   calc_candidate_tours_is_hamiltonian_cycle_witness(t.candidate_tour_id) AS is_hamiltonian_cycle_witness,-- Whether the supplied ordered rows form one globally covered Hamiltonian cycle for the declared instance.
   calc_candidate_tours_count_of_passing_optimality_certificates(t.candidate_tour_id) AS count_of_passing_optimality_certificates,-- Passing finite-instance optimality certificates attached to this candidate.
   calc_candidate_tours_is_optimality_proved(t.candidate_tour_id) AS is_optimality_proved,-- Whether at least one passing finite-instance optimality certificate closes this candidate's scope.
-  calc_candidate_tours_residual_claim(t.candidate_tour_id) AS residual_claim    -- Honest current epistemic status of the candidate.
+  calc_candidate_tours_residual_claim(t.candidate_tour_id) AS residual_claim,   -- Honest current epistemic status of the candidate.
+  t.choice_orbit_id,                                                            -- Value-preserving choice orbit, when applicable.
+  t.optimal_face_value,                                                         -- Certified optimum value of the face containing this witness.
+  t.choice_orbit_status                                                         -- MEMBER, NONOPTIMAL, or NOT_APPLICABLE.
 FROM candidate_tours t;
 
 -- ----------------------------------------------------------------------------
@@ -510,7 +518,13 @@ SELECT
   t.state_kind,                                                                 -- Semantic stage.
   t.parent_state_id,                                                            -- Prior state identifier without a self-relationship cycle.
   t.status,                                                                     -- OPEN, CLOSED, or FIXED_POINT.
-  t.description                                                                 -- State meaning.
+  t.description,                                                                -- State meaning.
+  t.alternative_count,                                                          -- Alternatives represented in this inference state.
+  t.residual_ambiguity_count,                                                   -- Alternatives remaining after deterministic closure.
+  t.branch_decision_count,                                                      -- Mathematical branch decisions used to reach this state.
+  t.value_status,                                                               -- OPEN or CLOSED optimum-value status.
+  t.choice_status,                                                              -- Representative-choice status.
+  t.choice_orbit_id                                                             -- Residual value-preserving choice orbit identifier.
 FROM tsp_inference_states t;
 
 -- ----------------------------------------------------------------------------
@@ -535,7 +549,10 @@ SELECT
   t.output_state_id,                                                            -- Output state identifier.
   t.antecedent_count,                                                           -- Antecedent fact count.
   t.decision_count,                                                             -- Decisions emitted by the event.
-  t.event_status                                                                -- APPLIED, FIXED_POINT, or REJECTED.
+  t.event_status,                                                               -- APPLIED, FIXED_POINT, or REJECTED.
+  t.branch_purpose,                                                             -- VALUE_PROOF or REPRESENTATIVE_SELECTION.
+  t.branch_warrant,                                                             -- WARRANTED, REJECTED, or CONDITIONAL.
+  t.policy_status                                                               -- External selection-policy status.
 FROM tsp_inference_applications t;
 
 -- ----------------------------------------------------------------------------
@@ -571,7 +588,10 @@ SELECT
   calc_tsp_edge_states_commitment_rank(t.tsp_edge_state_id) AS commitment_rank, -- Ordered strength in the edge commitment lattice.
   calc_tsp_edge_states_commitment_polarity(t.tsp_edge_state_id) AS commitment_polarity,-- Positive inclusion, zero unknown, or negative exclusion.
   calc_tsp_edge_states_necessity_scope(t.tsp_edge_state_id) AS necessity_scope, -- Scope in which the commitment holds.
-  calc_tsp_edge_states_is_terminal_commitment(t.tsp_edge_state_id) AS is_terminal_commitment-- Whether deterministic closure no longer treats the edge as open.
+  calc_tsp_edge_states_is_terminal_commitment(t.tsp_edge_state_id) AS is_terminal_commitment,-- Whether deterministic closure no longer treats the edge as open.
+  t.exchange_modality,                                                          -- ADDED, RELEASED, or RETAINED in a balanced exchange witness.
+  t.exchange_set_id,                                                            -- Balanced-exchange identifier.
+  t.exchange_warrant                                                            -- Local incidence and connectivity warrant for the exchange decision.
 FROM tsp_edge_states t;
 
 -- ----------------------------------------------------------------------------
@@ -637,7 +657,9 @@ SELECT
   t.upper_bound_cost,                                                           -- Current witnessed upper value.
   calc_tsp_defect_profiles_cost_gap(t.tsp_defect_profile_id) AS cost_gap,       -- Upper minus lower value.
   calc_tsp_defect_profiles_defect_vector(t.tsp_defect_profile_id) AS defect_vector,-- Canonical four-coordinate defect vector.
-  t.status                                                                      -- Interpretation of the vector.
+  t.status,                                                                     -- Interpretation of the vector.
+  t.lower_bound_witnessed,                                                      -- Whether the lower coordinate has a represented certificate.
+  t.upper_bound_witnessed                                                       -- Whether the upper coordinate has a represented feasible witness.
 FROM tsp_defect_profiles t;
 
 -- ----------------------------------------------------------------------------
@@ -795,7 +817,12 @@ SELECT
   t.residual_ambiguity_count,                                                   -- Unresolved alternatives.
   t.branching_avoided_pct,                                                      -- Percentage of branch search avoided.
   calc_tsp_search_certificates_route_class_elimination_pct(t.tsp_search_certificate_id) AS route_class_elimination_pct,-- Percentage of route classes removed.
-  t.status                                                                      -- CERTIFIED or RESIDUAL_SEARCH.
+  t.status,                                                                     -- CERTIFIED or RESIDUAL_SEARCH.
+  t.orbit_kind,                                                                 -- Residual orbit classification.
+  t.value_certified,                                                            -- Whether the optimum value is already certified.
+  t.representative_selection_required,                                          -- Whether a downstream consumer demands one representative.
+  t.external_policy_required,                                                   -- Whether a non-mathematical policy is required to choose among equal witnesses.
+  t.branch_warrant_status                                                       -- WARRANTED, REJECTED, or CONDITIONAL_ON_EXTERNAL_POLICY.
 FROM tsp_search_certificates t;
 
 -- ----------------------------------------------------------------------------
@@ -993,7 +1020,14 @@ SELECT
   calc_tsp_convergence_measurements_semantic_compression_pct(t.tsp_convergence_measurement_id) AS semantic_compression_pct,-- Surface-to-basis reduction percentage.
   t.novel_term,                                                                 -- Predicate coined or stabilized by the loop.
   t.prediction_status,                                                          -- NOT_TESTED, EARLY_SUPPORT, COUNTEREVIDENCE, or SUPPORTED_FOR_CURRENT_DOMAIN.
-  t.notes                                                                       -- Scope and interpretation.
+  t.notes,                                                                      -- Scope and interpretation.
+  t.active_atom_count,                                                          -- Active relational atom count at this measurement.
+  t.active_operator_count,                                                      -- Active semantic operator count at this measurement.
+  t.physical_table_delta_from_loop610,                                          -- Physical table count minus the loop-610 count of forty-five.
+  t.open_frontier_count,                                                        -- Open frontier obligations at this measurement.
+  t.named_concept_count,                                                        -- Versioned concept-registry row count.
+  t.allows_local_expansion,                                                     -- Whether local representational expansion is compatible with the measurement.
+  t.coherence_direction                                                         -- Multidimensional interpretation without arbitrary scalar weighting.
 FROM tsp_convergence_measurements t;
 
 -- ----------------------------------------------------------------------------
@@ -1018,7 +1052,15 @@ SELECT
   t.reduced_basis_expression,                                                   -- Current definition over active atoms and operators.
   t.operator_expression,                                                        -- Operators required to derive the concept from atoms.
   t.reduction_generation,                                                       -- Reduction generation introducing the current definition.
-  calc_tsp_concept_registry_is_current_basis_member(t.tsp_concept_id) AS is_current_basis_member-- Whether the row is an active atom or operator.
+  calc_tsp_concept_registry_is_current_basis_member(t.tsp_concept_id) AS is_current_basis_member,-- Whether the row is an active atom or operator.
+  t.arc_subject_sort,                                                           -- Subject sort for a semantic-arc projection.
+  t.arc_label_sort,                                                             -- ROLE, MEASURE, MODALITY, or COMPOSED label sort.
+  t.arc_target_sort,                                                            -- Target sort for a semantic-arc projection.
+  t.arc_signature,                                                              -- Typed subject-label-target signature.
+  t.recoverability_expression,                                                  -- Projection that recovers the historical concept from the current basis.
+  t.is_recoverable_from_current_basis,                                          -- Whether the historical or derived concept has an explicit current-basis recovery.
+  t.rewrite_mode,                                                               -- Named mode of the current or historical rewrite operator.
+  t.rewrite_polarity                                                            -- EXPANSIVE, CONTRACTIVE, MIXED, or PARAMETRIC.
 FROM tsp_concept_registry t;
 
 -- ----------------------------------------------------------------------------

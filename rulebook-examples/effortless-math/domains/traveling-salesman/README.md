@@ -258,3 +258,62 @@ No new physical table is introduced by loops 611–623. Historical projections r
 **Boundary Fiber.** The asymmetric stress fixture groups equal-port, equal-coverage paths into boundary fibers before minimum valuation selects the surviving representative.
 
 **Coherence guardrail.** Convergence is not defined as monotonically decreasing tables, rows, or named predicates. Internalizing one opaque black box may temporarily expand the explicit DAG. The represented trend is toward greater reuse, clearer warrants, smaller opaque trust boundaries, and less residual ambiguity—not toward superficial brevity.
+
+
+## Loops 624–646 — coherence convergence
+
+This pass records the stronger prediction that convergence is movement toward coherent reusable geometry, **not** monotone shrinkage of tables, rows, or names.  Internalizing an opaque node may expand the explicit DAG while reducing semantic basis size and trust opacity.
+
+### One typed arc and one warranted rewrite
+
+```text
+ATTACHMENT   VALUATION   WARRANT
+      ↓ typed recoverable signatures
+SEMANTIC_ARC(subject, label, target)
+
+CLOSURE   FIXPOINT   AGGREGATE   QUOTIENT
+      ↓ saturation / fiber-reduction modes
+WARRANTED_REWRITE(input, rule, polarity, output, warrant)
+```
+
+Every registered historical and derived concept retains a typed recoverability expression.  The current represented basis is therefore:
+
+```text
+active relational atoms     1  (Semantic Arc)
+active semantic operators   1  (Warranted Rewrite)
+physical rulebook tables   45  (unchanged)
+surface-to-atom reduction 96.88%
+```
+
+This is empirical coverage for the represented TSP domain.  It is not a theorem of minimality or universality.
+
+### Three-region repair
+
+Three cost-one local triangles produce a disconnected degree-two structure:
+
+```text
+local degree-two base                       9
+quotient boundary demand      3 crossings
+minimum crossing insertion     3 × 10     +30
+necessary internal releases    3 ×  1      -3
+------------------------------------------------
+three-region repair lower bound              36
+balanced-exchange cycle                      36
+finite-instance optimum                      36
+```
+
+The **Boundary Handshake** derives three crossing edges from three quotient nodes of required boundary degree two.  A **Balanced Edge Exchange** adds three crossings and releases one internal edge per region while preserving degree two and connecting all nine stops.
+
+### Optimal value versus optimal choice
+
+The four-stop **Optimal Face** contains three symmetry-reduced Hamiltonian classes:
+
+```text
+A-B-C-D-A   cost 4   optimal
+A-C-B-D-A   cost 4   optimal
+A-B-D-C-A   cost 6   nonoptimal control
+```
+
+The optimum value four is certified, but the two optimal witnesses form a **Choice Orbit** of size two.  The **Branch Warrant** rejects mathematical branching for value proof; choosing one representative is conditional on an external tie-break policy.
+
+**Coherence status:** one active arc, one active rewrite, unchanged physical table count, substantially more explicit witness machinery, three-region finite optimality at 36, optimal-face value 4, choice-orbit size 2, and zero mathematical branch decisions for value proof.

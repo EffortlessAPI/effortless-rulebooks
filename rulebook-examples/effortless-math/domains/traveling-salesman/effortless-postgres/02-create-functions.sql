@@ -152,6 +152,51 @@ RETURNS INTEGER AS $$
   SELECT (SELECT required_boundary_degree FROM neighborhoods WHERE neighborhood_id = p_neighborhood_id);
 $$ LANGUAGE sql STABLE;
 
+-- get_neighborhoods_region_interface_kind
+-- Helper function: Get RegionInterfaceKind from Neighborhoods by NeighborhoodId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_neighborhoods_region_interface_kind(p_neighborhood_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT region_interface_kind FROM neighborhoods WHERE neighborhood_id = p_neighborhood_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_neighborhoods_boundary_port_count
+-- Helper function: Get BoundaryPortCount from Neighborhoods by NeighborhoodId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_neighborhoods_boundary_port_count(p_neighborhood_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT boundary_port_count FROM neighborhoods WHERE neighborhood_id = p_neighborhood_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_neighborhoods_internal_coverage_count
+-- Helper function: Get InternalCoverageCount from Neighborhoods by NeighborhoodId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_neighborhoods_internal_coverage_count(p_neighborhood_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT internal_coverage_count FROM neighborhoods WHERE neighborhood_id = p_neighborhood_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_neighborhoods_expansion_witness_kind
+-- Helper function: Get ExpansionWitnessKind from Neighborhoods by NeighborhoodId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_neighborhoods_expansion_witness_kind(p_neighborhood_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT expansion_witness_kind FROM neighborhoods WHERE neighborhood_id = p_neighborhood_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_neighborhoods_interface_status
+-- Helper function: Get InterfaceStatus from Neighborhoods by NeighborhoodId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_neighborhoods_interface_status(p_neighborhood_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT interface_status FROM neighborhoods WHERE neighborhood_id = p_neighborhood_id);
+$$ LANGUAGE sql STABLE;
+
 -- calc_addresses_name
 -- Field: Addresses.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -932,6 +977,24 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION get_candidate_tours_backtrack_count(p_candidate_tour_id TEXT)
 RETURNS INTEGER AS $$
   SELECT (SELECT backtrack_count FROM candidate_tours WHERE candidate_tour_id = p_candidate_tour_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_candidate_tours_optimal_face_value
+-- Helper function: Get OptimalFaceValue from CandidateTours by CandidateTourId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_candidate_tours_optimal_face_value(p_candidate_tour_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT optimal_face_value FROM candidate_tours WHERE candidate_tour_id = p_candidate_tour_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_candidate_tours_choice_orbit_status
+-- Helper function: Get ChoiceOrbitStatus from CandidateTours by CandidateTourId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_candidate_tours_choice_orbit_status(p_candidate_tour_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT choice_orbit_status FROM candidate_tours WHERE candidate_tour_id = p_candidate_tour_id);
 $$ LANGUAGE sql STABLE;
 
 -- calc_tour_stops_name
@@ -2198,6 +2261,51 @@ RETURNS TEXT AS $$
   SELECT (SELECT description FROM tsp_inference_states WHERE tsp_inference_state_id = p_tsp_inference_state_id);
 $$ LANGUAGE sql STABLE;
 
+-- get_tsp_inference_states_alternative_count
+-- Helper function: Get AlternativeCount from TSPInferenceStates by TSPInferenceStateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_inference_states_alternative_count(p_tsp_inference_state_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT alternative_count FROM tsp_inference_states WHERE tsp_inference_state_id = p_tsp_inference_state_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_inference_states_residual_ambiguity_count
+-- Helper function: Get ResidualAmbiguityCount from TSPInferenceStates by TSPInferenceStateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_inference_states_residual_ambiguity_count(p_tsp_inference_state_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT residual_ambiguity_count FROM tsp_inference_states WHERE tsp_inference_state_id = p_tsp_inference_state_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_inference_states_branch_decision_count
+-- Helper function: Get BranchDecisionCount from TSPInferenceStates by TSPInferenceStateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_inference_states_branch_decision_count(p_tsp_inference_state_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT branch_decision_count FROM tsp_inference_states WHERE tsp_inference_state_id = p_tsp_inference_state_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_inference_states_value_status
+-- Helper function: Get ValueStatus from TSPInferenceStates by TSPInferenceStateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_inference_states_value_status(p_tsp_inference_state_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT value_status FROM tsp_inference_states WHERE tsp_inference_state_id = p_tsp_inference_state_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_inference_states_choice_status
+-- Helper function: Get ChoiceStatus from TSPInferenceStates by TSPInferenceStateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_inference_states_choice_status(p_tsp_inference_state_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT choice_status FROM tsp_inference_states WHERE tsp_inference_state_id = p_tsp_inference_state_id);
+$$ LANGUAGE sql STABLE;
+
 -- get_tsp_inference_rules_display_name
 -- Helper function: Get DisplayName from TSPInferenceRules by TSPInferenceRuleId
 -- Used for join-free cross-table references in aggregations
@@ -2370,6 +2478,33 @@ RETURNS TEXT AS $$
   SELECT (SELECT event_status FROM tsp_inference_applications WHERE tsp_inference_application_id = p_tsp_inference_application_id);
 $$ LANGUAGE sql STABLE;
 
+-- get_tsp_inference_applications_branch_purpose
+-- Helper function: Get BranchPurpose from TSPInferenceApplications by TSPInferenceApplicationId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_inference_applications_branch_purpose(p_tsp_inference_application_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT branch_purpose FROM tsp_inference_applications WHERE tsp_inference_application_id = p_tsp_inference_application_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_inference_applications_branch_warrant
+-- Helper function: Get BranchWarrant from TSPInferenceApplications by TSPInferenceApplicationId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_inference_applications_branch_warrant(p_tsp_inference_application_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT branch_warrant FROM tsp_inference_applications WHERE tsp_inference_application_id = p_tsp_inference_application_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_inference_applications_policy_status
+-- Helper function: Get PolicyStatus from TSPInferenceApplications by TSPInferenceApplicationId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_inference_applications_policy_status(p_tsp_inference_application_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT policy_status FROM tsp_inference_applications WHERE tsp_inference_application_id = p_tsp_inference_application_id);
+$$ LANGUAGE sql STABLE;
+
 -- calc_tsp_inference_antecedents_name
 -- Field: TSPInferenceAntecedents.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -2458,6 +2593,24 @@ RETURNS TEXT AS $$
   SELECT (SELECT epistemic_status FROM tsp_edge_states WHERE tsp_edge_state_id = p_tsp_edge_state_id);
 $$ LANGUAGE sql STABLE;
 
+-- get_tsp_edge_states_exchange_modality
+-- Helper function: Get ExchangeModality from TSPEdgeStates by TSPEdgeStateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_edge_states_exchange_modality(p_tsp_edge_state_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT exchange_modality FROM tsp_edge_states WHERE tsp_edge_state_id = p_tsp_edge_state_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_edge_states_exchange_warrant
+-- Helper function: Get ExchangeWarrant from TSPEdgeStates by TSPEdgeStateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_edge_states_exchange_warrant(p_tsp_edge_state_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT exchange_warrant FROM tsp_edge_states WHERE tsp_edge_state_id = p_tsp_edge_state_id);
+$$ LANGUAGE sql STABLE;
+
 -- calc_tsp_edge_supports_name
 -- Field: TSPEdgeSupports.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -2535,7 +2688,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_tsp_defect_profiles_cost_gap(p_tsp_defect_profile_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE(CASE WHEN ((SELECT upper_bound_cost FROM tsp_defect_profiles WHERE tsp_defect_profile_id = p_tsp_defect_profile_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT upper_bound_cost FROM tsp_defect_profiles WHERE tsp_defect_profile_id = p_tsp_defect_profile_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN ((SELECT lower_bound_cost FROM tsp_defect_profiles WHERE tsp_defect_profile_id = p_tsp_defect_profile_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT lower_bound_cost FROM tsp_defect_profiles WHERE tsp_defect_profile_id = p_tsp_defect_profile_id))::numeric ELSE NULL END, 0)))::numeric;
+  SELECT (CASE WHEN (COALESCE((SELECT lower_bound_witnessed FROM tsp_defect_profiles WHERE tsp_defect_profile_id = p_tsp_defect_profile_id), FALSE) AND COALESCE((SELECT upper_bound_witnessed FROM tsp_defect_profiles WHERE tsp_defect_profile_id = p_tsp_defect_profile_id), FALSE)) THEN ((COALESCE(CASE WHEN ((SELECT upper_bound_cost FROM tsp_defect_profiles WHERE tsp_defect_profile_id = p_tsp_defect_profile_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT upper_bound_cost FROM tsp_defect_profiles WHERE tsp_defect_profile_id = p_tsp_defect_profile_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN ((SELECT lower_bound_cost FROM tsp_defect_profiles WHERE tsp_defect_profile_id = p_tsp_defect_profile_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT lower_bound_cost FROM tsp_defect_profiles WHERE tsp_defect_profile_id = p_tsp_defect_profile_id))::numeric ELSE NULL END, 0)))::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_tsp_defect_profiles_defect_vector

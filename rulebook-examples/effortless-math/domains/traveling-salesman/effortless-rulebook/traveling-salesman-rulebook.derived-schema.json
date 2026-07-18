@@ -123,6 +123,41 @@
         "type": "raw",
         "nullable": true,
         "Description": "Instance scope without introducing a relationship cycle."
+      },
+      {
+        "name": "RegionInterfaceKind",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Port-bearing semantic region kind."
+      },
+      {
+        "name": "BoundaryPortCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Number of external ports required by the region interface."
+      },
+      {
+        "name": "InternalCoverageCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Required internal stops covered by every valid expansion."
+      },
+      {
+        "name": "ExpansionWitnessKind",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "How a region representative expands to underlying graph structure."
+      },
+      {
+        "name": "InterfaceStatus",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "OPEN, NORMALIZED, or CERTIFIED."
       }
     ]
   },
@@ -946,6 +981,27 @@
         "nullable": true,
         "Description": "Honest current epistemic status of the candidate.",
         "formula": "=IF({{IsOptimalityProved}}, \u0022OPTIMAL_FOR_DECLARED_FINITE_INSTANCE\u0022, IF({{IsHamiltonianCycleWitness}}, \u0022VALID_TOUR_NOT_OPTIMALITY_PROOF\u0022, \u0022INVALID_TOUR\u0022))"
+      },
+      {
+        "name": "ChoiceOrbitId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Value-preserving choice orbit, when applicable."
+      },
+      {
+        "name": "OptimalFaceValue",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Certified optimum value of the face containing this witness."
+      },
+      {
+        "name": "ChoiceOrbitStatus",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "MEMBER, NONOPTIMAL, or NOT_APPLICABLE."
       }
     ]
   },
@@ -2345,6 +2401,48 @@
         "type": "raw",
         "nullable": false,
         "Description": "State meaning."
+      },
+      {
+        "name": "AlternativeCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Alternatives represented in this inference state."
+      },
+      {
+        "name": "ResidualAmbiguityCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Alternatives remaining after deterministic closure."
+      },
+      {
+        "name": "BranchDecisionCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Mathematical branch decisions used to reach this state."
+      },
+      {
+        "name": "ValueStatus",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "OPEN or CLOSED optimum-value status."
+      },
+      {
+        "name": "ChoiceStatus",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Representative-choice status."
+      },
+      {
+        "name": "ChoiceOrbitId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Residual value-preserving choice orbit identifier."
       }
     ]
   },
@@ -2466,6 +2564,27 @@
         "type": "raw",
         "nullable": true,
         "Description": "APPLIED, FIXED_POINT, or REJECTED."
+      },
+      {
+        "name": "BranchPurpose",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "VALUE_PROOF or REPRESENTATIVE_SELECTION."
+      },
+      {
+        "name": "BranchWarrant",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "WARRANTED, REJECTED, or CONDITIONAL."
+      },
+      {
+        "name": "PolicyStatus",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "External selection-policy status."
       }
     ]
   },
@@ -2613,6 +2732,27 @@
         "nullable": true,
         "Description": "Whether deterministic closure no longer treats the edge as open.",
         "formula": "=OR({{DecisionStatus}} = \u0022FORCED\u0022, {{DecisionStatus}} = \u0022FORBIDDEN\u0022, {{DecisionStatus}} = \u0022CONTRADICTED\u0022, {{DecisionStatus}} = \u0022SUPERSEDED\u0022)"
+      },
+      {
+        "name": "ExchangeModality",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "ADDED, RELEASED, or RETAINED in a balanced exchange witness."
+      },
+      {
+        "name": "ExchangeSetId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Balanced-exchange identifier."
+      },
+      {
+        "name": "ExchangeWarrant",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Local incidence and connectivity warrant for the exchange decision."
       }
     ]
   },
@@ -2901,7 +3041,7 @@
         "type": "calculated",
         "nullable": true,
         "Description": "Upper minus lower value.",
-        "formula": "={{UpperBoundCost}} - {{LowerBoundCost}}"
+        "formula": "=IF(AND({{LowerBoundWitnessed}}, {{UpperBoundWitnessed}}), {{UpperBoundCost}} - {{LowerBoundCost}}, 0)"
       },
       {
         "name": "DefectVector",
@@ -2917,6 +3057,20 @@
         "type": "raw",
         "nullable": false,
         "Description": "Interpretation of the vector."
+      },
+      {
+        "name": "LowerBoundWitnessed",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Whether the lower coordinate has a represented certificate."
+      },
+      {
+        "name": "UpperBoundWitnessed",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Whether the upper coordinate has a represented feasible witness."
       }
     ]
   },
@@ -3595,6 +3749,41 @@
         "type": "raw",
         "nullable": false,
         "Description": "CERTIFIED or RESIDUAL_SEARCH."
+      },
+      {
+        "name": "OrbitKind",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Residual orbit classification."
+      },
+      {
+        "name": "ValueCertified",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Whether the optimum value is already certified."
+      },
+      {
+        "name": "RepresentativeSelectionRequired",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Whether a downstream consumer demands one representative."
+      },
+      {
+        "name": "ExternalPolicyRequired",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Whether a non-mathematical policy is required to choose among equal witnesses."
+      },
+      {
+        "name": "BranchWarrantStatus",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "WARRANTED, REJECTED, or CONDITIONAL_ON_EXTERNAL_POLICY."
       }
     ]
   },
@@ -4495,6 +4684,55 @@
         "type": "raw",
         "nullable": false,
         "Description": "Scope and interpretation."
+      },
+      {
+        "name": "ActiveAtomCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Active relational atom count at this measurement."
+      },
+      {
+        "name": "ActiveOperatorCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Active semantic operator count at this measurement."
+      },
+      {
+        "name": "PhysicalTableDeltaFromLoop610",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Physical table count minus the loop-610 count of forty-five."
+      },
+      {
+        "name": "OpenFrontierCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Open frontier obligations at this measurement."
+      },
+      {
+        "name": "NamedConceptCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Versioned concept-registry row count."
+      },
+      {
+        "name": "AllowsLocalExpansion",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Whether local representational expansion is compatible with the measurement."
+      },
+      {
+        "name": "CoherenceDirection",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Multidimensional interpretation without arbitrary scalar weighting."
       }
     ]
   },
@@ -4615,6 +4853,62 @@
         "nullable": true,
         "Description": "Whether the row is an active atom or operator.",
         "formula": "=OR({{Status}} = \u0022ACTIVE_PRIMITIVE\u0022, {{Status}} = \u0022ACTIVE_OPERATOR\u0022)"
+      },
+      {
+        "name": "ArcSubjectSort",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Subject sort for a semantic-arc projection."
+      },
+      {
+        "name": "ArcLabelSort",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "ROLE, MEASURE, MODALITY, or COMPOSED label sort."
+      },
+      {
+        "name": "ArcTargetSort",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Target sort for a semantic-arc projection."
+      },
+      {
+        "name": "ArcSignature",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Typed subject-label-target signature."
+      },
+      {
+        "name": "RecoverabilityExpression",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Projection that recovers the historical concept from the current basis."
+      },
+      {
+        "name": "IsRecoverableFromCurrentBasis",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Whether the historical or derived concept has an explicit current-basis recovery."
+      },
+      {
+        "name": "RewriteMode",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Named mode of the current or historical rewrite operator."
+      },
+      {
+        "name": "RewritePolarity",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "EXPANSIVE, CONTRACTIVE, MIXED, or PARAMETRIC."
       }
     ]
   },

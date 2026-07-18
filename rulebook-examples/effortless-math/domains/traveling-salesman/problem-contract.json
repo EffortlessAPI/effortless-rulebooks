@@ -1,11 +1,11 @@
 {
   "ProblemId": "traveling-salesman-semantic-geometry",
-  "Version": "0.6.0-alpha",
+  "Version": "0.6.0",
   "Title": "Traveling Salesman — City / Neighborhood / Address Semantic Geometry",
   "Status": "RESEARCH_PROGRAM",
   "Statement": "Given finite city-scale weighted graphs, represent graph normalization, supplied tours, typed frontier obligations, local-to-global lower bounds, finite optimality certificates, and residual search as executable structural data.",
-  "Scope": "The represented scope includes the loop-610 eight-predicate historical basis, a current three-atom/four-operator factorization, and asymmetric four-stop boundary-fiber quotienting. No universal convergence or general TSP claim is made.",
-  "TrustBoundary": "Input graph weights and membership remain trusted data. Predicate reductions are explicit definitions over witnessed structures. Generated Postgres remains a peer projection; concept convergence is early empirical support for this domain, not a universal theorem.",
+  "Scope": "The represented scope includes a typed one-arc/one-rewrite semantic basis, finite three-region repair optimality, and an optimal face whose value is certified while two equal optimal witness classes remain. No general TSP solver, basis-minimality theorem, universal k-region repair theorem, or complexity-class claim is made.",
+  "TrustBoundary": "Input graph weights and membership remain trusted data. Semantic-arc collapse is accepted only through typed signatures and explicit recoverability witnesses. Warranted rewrites retain polarity, termination, and expansion provenance. Generated Postgres remains a peer projection. Coherence convergence is empirical for this domain.",
   "Claims": {
     "PEqualsNP": false,
     "UniversalPolynomialNormalization": false,
@@ -45,7 +45,13 @@
     "CoherenceVectorRecorded": true,
     "TypedArcRecoverabilityCertified": true,
     "GeneralKRegionRepairProved": false,
-    "OptimalFaceChoiceOrbitSize": 2
+    "OptimalFaceChoiceOrbitSize": 2,
+    "PhysicalTableCountLoop646": 45,
+    "PhysicalTableCountIncreasedSinceLoop610": false,
+    "ExplicitDagRowsMayIncrease": true,
+    "OptimalFaceValueProofBranchDecisionCount": 0,
+    "CoherenceConvergenceObserved": true,
+    "CoherenceConvergenceProvedUniversally": false
   },
   "CanonicalAsset": "effortless-rulebook/traveling-salesman-rulebook.json",
   "ExecutionSubstrates": [
@@ -706,12 +712,12 @@
     {
       "LoopOrder": 646,
       "LoopId": "tsp-loop-646",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "The pass has coined new machinery and added many witness rows, but its effect on basis size, physical schema, trust, multi-region repair, and residual choice has not been summarized.",
       "ClosureCriterion": "Certify one active arc, one active rewrite, unchanged physical-table count, explicit local expansion, three-region optimum thirty-six, optimal-face value four with choice orbit two, and zero branch decisions for value proof.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Certified the second coherence event: one typed arc, one warranted rewrite, forty-five physical tables, three-region optimum thirty-six, and optimal-face value four with a two-member choice orbit.",
+      "Result": "Named concepts=101 and witness rows increased, but active atoms=1, active operators=1, tables=45, recoverability is complete, proof branch decisions=0, and no universal convergence or TSP-complexity theorem is claimed.",
+      "CompletionDisposition": "CLOSED"
     }
   ],
   "CurrentCertificates": [
@@ -794,12 +800,43 @@
       "CertificateId": "asymmetric-four-boundary-quotient",
       "Kind": "asymmetric-semantic-quotient-certificate",
       "Conclusion": "Twenty-four directed Hamiltonian paths reduce to twelve reversal classes and six strict boundary-fiber minima with expansion provenance."
+    },
+    {
+      "CertificateId": "tsp-one-arc-one-rewrite",
+      "Kind": "semantic-basis-certificate",
+      "Conclusion": "Every registered concept is recoverable from one typed Semantic Arc and one Warranted Rewrite for the current represented domain."
+    },
+    {
+      "CertificateId": "three-region-repair-bound",
+      "Kind": "region-repair-equation-certificate",
+      "Conclusion": "Boundary handshake and signed repair terms certify lower bound 36 for tsp-three-regions-9."
+    },
+    {
+      "CertificateId": "three-region-finite-optimality",
+      "Kind": "finite-instance-optimality-certificate",
+      "Conclusion": "The reconstructed balanced-exchange cycle cost 36 equals the certified three-region lower bound 36."
+    },
+    {
+      "CertificateId": "optimal-face-value-choice",
+      "Kind": "optimal-face-certificate",
+      "Conclusion": "The optimum value is 4 while two non-reversal optimal witness classes remain in one choice orbit."
+    },
+    {
+      "CertificateId": "optimal-face-branch-warrant",
+      "Kind": "branch-warrant-certificate",
+      "Conclusion": "No mathematical branch is warranted for value proof; representative selection requires an external tie-break policy."
+    },
+    {
+      "CertificateId": "tsp-coherence-event-two",
+      "Kind": "coherence-vector-certificate",
+      "Conclusion": "The active basis contracts to one arc and one rewrite while physical tables remain 45 and explicit witness rows expand coherently."
     }
   ],
   "RemainingFrontier": [
-    "generalize repair equations to three or more quotient components",
-    "represent compatibility constraints between boundary fibers without introducing a new primitive",
-    "emit a branch orbit only when fixed-point closure leaves multiple non-equivalent minimum warrants"
+    "stress the one-arc/one-rewrite basis on heterogeneous region sizes and asymmetric crossing costs",
+    "generalize the three-region repair equation beyond equal internal release costs and a ring minimum",
+    "represent explicit external representative-selection policies without confusing policy choice with mathematical proof",
+    "branch only when a witnessed optimum-value defect or an explicit downstream policy warrants it"
   ],
   "Acceptance": {
     "RulebookTables": 45,
@@ -811,7 +848,7 @@
     "TravelEdges": 86,
     "CandidateTours": 8,
     "TSPLoops": 70,
-    "FrontierObligations": 30,
+    "FrontierObligations": 31,
     "ActiveImportedDependencies": 0,
     "ReferenceTourValid": true,
     "ReferenceTourCost": 14,
@@ -823,7 +860,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 646,
-    "HighestCompletedLoop": 645,
+    "HighestCompletedLoop": 646,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 16,
     "SelectedNotForcedEdgeStates": 5,
@@ -865,8 +902,8 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 66,
     "ClusterContractionCertificates": 7,
-    "ConvergenceMeasurements": 49,
-    "ConceptRegistry": 100,
+    "ConvergenceMeasurements": 50,
+    "ConceptRegistry": 101,
     "DefectProfiles": 21,
     "BoundTerms": 8,
     "WitnessNormalForms": 13,
@@ -891,10 +928,12 @@
     "ThreeRegionOptimalityProved": true,
     "OptimalFaceLowerBound": 4,
     "OptimalFaceOptimalWitnessCount": 2,
-    "OptimalFaceChoiceOrbitSize": 2
+    "OptimalFaceChoiceOrbitSize": 2,
+    "PhysicalTableCount": 45,
+    "OptimalFaceValueProofBranchDecisionCount": 0
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:6bbe7b1f57b20cea25c4e0166e12a959dcc3d4f30a13c11b3c7caea32ddbe7ed",
+    "rulebook": "sha256:1f6fa7930a1cd4564a87e37b1f8c8ad0ad629a3b303165e51bcfe9d5417e1cd0",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
@@ -902,9 +941,26 @@
     "effortless_cli_commit": "1551cb82d5a8992ad09e4c82d08e28493f92f7b4",
     "effortless_cli_archive": "https://github.com/EffortlessAPI/cli/archive/1551cb82d5a8992ad09e4c82d08e28493f92f7b4.tar.gz",
     "retry_9_finalization_failure_transcript": "sha256:6516deab2de42c971cc55ef2d752d3d5cb2154dd343cd7827803e1bd6ed8bd2b",
-    "loop_610_postgres_projection_tree": "sha256:bd0366e0f16572acca7c332e9a8203c6da2a46eb91e511965c95a9332e119096",
-    "loop_610_rulespeak_tree": "sha256:b3b21435a19981442fb782d5c44a28bdeadea74ea25f108e4c799c0739c110b8",
-    "loop_610_generated_view_count": 45
+    "loop_610_postgres_projection_tree": "sha256:820fc671a825379a4661ad333fd83b03f6f578f094f15a5e1193db293ae38194",
+    "loop_610_rulespeak_tree": "sha256:7312ad39093f44a34d8ef4bf8f15a92334d04b3d5c2681597db91c773d6f7f1c",
+    "loop_610_generated_view_count": 45,
+    "loop_646_postgres_projection_tree": "sha256:820fc671a825379a4661ad333fd83b03f6f578f094f15a5e1193db293ae38194",
+    "loop_646_rulespeak_tree": "sha256:7312ad39093f44a34d8ef4bf8f15a92334d04b3d5c2681597db91c773d6f7f1c",
+    "loop_646_live_three_region_lower_bound": "36.0000000000000000,true",
+    "loop_646_live_optimal_face": {
+      "tour-optimal-face-abcd-4": [
+        4.0,
+        "true"
+      ],
+      "tour-optimal-face-abdc-6": [
+        6.0,
+        "false"
+      ],
+      "tour-optimal-face-acbd-4": [
+        4.0,
+        "true"
+      ]
+    }
   },
   "GeneratedTimestamp": null,
   "Vocabulary": {

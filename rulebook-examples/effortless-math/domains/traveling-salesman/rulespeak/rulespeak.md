@@ -195,7 +195,7 @@ _Traveling Salesman research domain at city/neighborhood/address scale. The rule
 | Incidence Defect | Computed as the absolute value of the required incidence minus the observed incidence. | _Absolute incidence deficit or excess._ |
 | Connectivity Defect | Computed as the largest of the component count minus 1 and 0. | _Components beyond the required one._ |
 | Boundary Defect | Computed as the largest of the required boundary crossings minus the observed boundary crossings and 0. | _Missing required boundary crossings._ |
-| Cost Gap | Computed as the upper bound cost minus the lower bound cost. | _Upper minus lower value._ |
+| Cost Gap | Determined by priority: the upper bound cost minus the lower bound cost if all of the following hold: the lower bound witnessed flag is set and the upper bound witnessed flag is set; in all other cases, 0. | _Upper minus lower value._ |
 | Defect Vector | Computed as the incidence defect, followed by “|”, followed by the connectivity defect, followed by “|”, followed by the boundary defect, followed by “|”, followed by the cost gap. | _Canonical four-coordinate defect vector._ |
 | **TSP Derived Edge Set Member** | Member edges and support counts for a derived edge set. | — |
 | **TSP Edge Set Stop Degree** | Selected degree of each required stop in a derived edge set. | — |
@@ -640,7 +640,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-157 Incidence Defect** | A TSP defect profile's incidence defect is computed as the absolute value of the required incidence minus the observed incidence. |
 | **DR-158 Connectivity Defect** | A TSP defect profile's connectivity defect is computed as the largest of the component count minus 1 and 0. |
 | **DR-159 Boundary Defect** | A TSP defect profile's boundary defect is computed as the largest of the required boundary crossings minus the observed boundary crossings and 0. |
-| **DR-160 Cost Gap** | A TSP defect profile's cost gap is computed as the upper bound cost minus the lower bound cost. |
+| **DR-160 Cost Gap** | The TSP defect profile's cost gap is determined by the following priority:<br>1. the upper bound cost minus the lower bound cost, if all of the following hold: the lower bound witnessed flag is set and the upper bound witnessed flag is set;<br>2. in all other cases, 0. |
 | **DR-161 Defect Vector** | A TSP defect profile's defect vector is computed as the incidence defect, followed by “|”, followed by the connectivity defect, followed by “|”, followed by the boundary defect, followed by “|”, followed by the cost gap. |
 | **DR-162 Is Degree Two** | A TSP edge set stop degree is considered a degree two if the selected degree is 2. |
 | **DR-163 Is Passing** | A TSP connected degree two certificate is considered passing if all of the following hold: the edge count is the required stop count; the degree violation count is 0; the component count is 1; the proper subtour count is 0; and the spanning tree edge count is the required stop count minus 1. |
@@ -834,7 +834,7 @@ the same logic the rulebook stores, written for a business reader._
 | **TSPDefectProfiles.IncidenceDefect** | formula | `Abs(RequiredIncidence - ObservedIncidence)` |
 | **TSPDefectProfiles.ConnectivityDefect** | formula | `Max(ComponentCount - 1, 0)` |
 | **TSPDefectProfiles.BoundaryDefect** | formula | `Max(RequiredBoundaryCrossings - ObservedBoundaryCrossings, 0)` |
-| **TSPDefectProfiles.CostGap** | formula | `UpperBoundCost - LowerBoundCost` |
+| **TSPDefectProfiles.CostGap** | formula | `If(And(LowerBoundWitnessed, UpperBoundWitnessed), UpperBoundCost - LowerBoundCost, 0)` |
 | **TSPDefectProfiles.DefectVector** | formula | `Concat(IncidenceDefect, "\|", ConnectivityDefect, "\|", BoundaryDefect, "\|", CostGap)` |
 | **TSPEdgeSetStopDegrees.IsDegreeTwo** | formula | `SelectedDegree = 2` |
 | **TSPConnectedDegreeTwoCertificates.IsPassing** | formula | `And(EdgeCount = RequiredStopCount, DegreeViolationCount = 0, ComponentCount = 1, ProperSubtourCount = 0, SpanningTreeEdgeCount = RequiredStopCount - 1)` |

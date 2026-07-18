@@ -612,6 +612,66 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     </div>
     <p class="field-note elem elem-desc">Required external incidence in the quotient cycle.</p>
     </article>
+  <article class="field tone-raw" id="en-f-neighborhoods-regioninterfacekind" data-entity="Neighborhood" data-field="Region Interface Kind">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Region Interface Kind</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Port-bearing semantic region kind.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-neighborhoods-boundaryportcount" data-entity="Neighborhood" data-field="Boundary Port Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Boundary Port Count</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Number of external ports required by the region interface.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-neighborhoods-internalcoveragecount" data-entity="Neighborhood" data-field="Internal Coverage Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Internal Coverage Count</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Required internal stops covered by every valid expansion.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-neighborhoods-expansionwitnesskind" data-entity="Neighborhood" data-field="Expansion Witness Kind">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Expansion Witness Kind</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">How a region representative expands to underlying graph structure.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-neighborhoods-interfacestatus" data-entity="Neighborhood" data-field="Interface Status">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Interface Status</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">OPEN, NORMALIZED, or CERTIFIED.</p>
+    </article>
 </section>
 <section class="entity" id="en-t-addresses" data-entity="Address">
   <header class="entity-head">
@@ -5766,6 +5826,30 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
     </details>
     <p class="field-note elem elem-desc">Honest current epistemic status of the candidate.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-candidatetours-optimalfacevalue" data-entity="Candidate Tour" data-field="Optimal Face Value">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Optimal Face Value</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">number</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Certified optimum value of the face containing this witness.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-candidatetours-choiceorbitstatus" data-entity="Candidate Tour" data-field="Choice Orbit Status">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Choice Orbit Status</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">MEMBER, NONOPTIMAL, or NOT_APPLICABLE.</p>
     </article>
 </section>
 <section class="entity" id="en-t-tourstops" data-entity="Tour Stop">
@@ -13694,6 +13778,66 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     </div>
     <p class="field-note elem elem-desc">State meaning.</p>
     </article>
+  <article class="field tone-raw" id="en-f-tspinferencestates-alternativecount" data-entity="TSP Inference State" data-field="Alternative Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Alternative Count</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Alternatives represented in this inference state.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinferencestates-residualambiguitycount" data-entity="TSP Inference State" data-field="Residual Ambiguity Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Residual Ambiguity Count</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Alternatives remaining after deterministic closure.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinferencestates-branchdecisioncount" data-entity="TSP Inference State" data-field="Branch Decision Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Branch Decision Count</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Mathematical branch decisions used to reach this state.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinferencestates-valuestatus" data-entity="TSP Inference State" data-field="Value Status">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Value Status</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">OPEN or CLOSED optimum-value status.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinferencestates-choicestatus" data-entity="TSP Inference State" data-field="Choice Status">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Choice Status</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Representative-choice status.</p>
+    </article>
 </section>
 <section class="entity" id="en-t-tspinferenceapplications" data-entity="TSP Inference Application">
   <header class="entity-head">
@@ -13831,6 +13975,42 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">APPLIED, FIXED_POINT, or REJECTED.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinferenceapplications-branchpurpose" data-entity="TSP Inference Application" data-field="Branch Purpose">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Branch Purpose</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">VALUE_PROOF or REPRESENTATIVE_SELECTION.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinferenceapplications-branchwarrant" data-entity="TSP Inference Application" data-field="Branch Warrant">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Branch Warrant</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">WARRANTED, REJECTED, or CONDITIONAL.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinferenceapplications-policystatus" data-entity="TSP Inference Application" data-field="Policy Status">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Policy Status</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">External selection-policy status.</p>
     </article>
 </section>
 <section class="entity" id="en-t-tspinferenceantecedents" data-entity="TSP Inference Antecedent">
@@ -14149,6 +14329,30 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
     </details>
     <p class="field-note elem elem-desc">Whether deterministic closure no longer treats the edge as open.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspedgestates-exchangemodality" data-entity="TSP Edge State" data-field="Exchange Modality">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Exchange Modality</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">ADDED, RELEASED, or RETAINED in a balanced exchange witness.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspedgestates-exchangewarrant" data-entity="TSP Edge State" data-field="Exchange Warrant">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Exchange Warrant</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Local incidence and connectivity warrant for the exchange decision.</p>
     </article>
 </section>
 <section class="entity" id="en-t-tspedgesupports" data-entity="TSP Edge Support">
@@ -14745,20 +14949,28 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
         <span class="view-label">In RuleSpeak</span>
-        <p class="view-body">A TSP defect profile's <a class="ref" href="#en-f-tspdefectprofiles-costgap">cost gap</a> is computed as the <a class="ref" href="#en-f-tspdefectprofiles-upperboundcost">upper bound cost</a> minus the <a class="ref" href="#en-f-tspdefectprofiles-lowerboundcost">lower bound cost</a>.</p>
+        <div class="view-body"><p class="rt-headline">The TSP defect profile's <a class="ref" href="#en-f-tspdefectprofiles-costgap">cost gap</a> is determined by the following priority:</p><ol class="rt-priority"><li><span class="rt-value">the <a class="ref" href="#en-f-tspdefectprofiles-upperboundcost">upper bound cost</a> minus the <a class="ref" href="#en-f-tspdefectprofiles-lowerboundcost">lower bound cost</a></span> <span class="rt-when">if <span class="rt-group-label">all of these hold:</span><ul class="rt-group"><li>the <a class="ref" href="#en-f-tspdefectprofiles-lowerboundwitnessed">lower bound witnessed</a> flag is set</li><li>the <a class="ref" href="#en-f-tspdefectprofiles-upperboundwitnessed">upper bound witnessed</a> flag is set</li></ul></span></li><li><span class="rt-value">0</span> <span class="rt-when">in all other cases</span></li></ol></div>
       </div>
       <div class="view elem elem-english">
         <span class="view-label">In plain words</span>
-        <p class="view-body"><a class="ref" href="#en-f-tspdefectprofiles-upperboundcost">Upper bound cost</a> minus <a class="ref" href="#en-f-tspdefectprofiles-lowerboundcost">lower bound cost</a>.</p>
+        <p class="view-body">If <a class="ref" href="#en-f-tspdefectprofiles-lowerboundwitnessed">lower bound witnessed</a> and <a class="ref" href="#en-f-tspdefectprofiles-upperboundwitnessed">upper bound witnessed</a> then (<a class="ref" href="#en-f-tspdefectprofiles-upperboundcost">upper bound cost</a> minus <a class="ref" href="#en-f-tspdefectprofiles-lowerboundcost">lower bound cost</a>), otherwise 0.</p>
       </div>
       <div class="view elem elem-formula">
         <span class="view-label">As a formula</span>
-        <div class="view-body fx"><span class="fx-eq">= </span><a class="fx-chip" href="#en-f-tspdefectprofiles-upperboundcost">Upper Bound Cost</a> - <a class="fx-chip" href="#en-f-tspdefectprofiles-lowerboundcost">Lower Bound Cost</a></div>
+        <div class="view-body fx"><span class="fx-eq">= </span>IF(AND(<a class="fx-chip" href="#en-f-tspdefectprofiles-lowerboundwitnessed">Lower Bound Witnessed</a>, <a class="fx-chip" href="#en-f-tspdefectprofiles-upperboundwitnessed">Upper Bound Witnessed</a>), <a class="fx-chip" href="#en-f-tspdefectprofiles-upperboundcost">Upper Bound Cost</a> - <a class="fx-chip" href="#en-f-tspdefectprofiles-lowerboundcost">Lower Bound Cost</a>, 0)</div>
       </div>
     </div>
     <details class="prov prov-inputs elem elem-inputs" open>
-      <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <summary>Inputs <span class="count">4</span> <span class="prov-hint">fields this rule reads</span></summary>
       <div class="prov-grid">
+        <a class="input tone-raw" href="#en-f-tspdefectprofiles-lowerboundwitnessed">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Lower Bound Witnessed</span><span class="input-table">TSP Defect Profile</span></span>
+          <span class="input-en muted">Whether the lower coordinate has a represented certificate.</span>
+        </a>
+        <a class="input tone-raw" href="#en-f-tspdefectprofiles-upperboundwitnessed">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Upper Bound Witnessed</span><span class="input-table">TSP Defect Profile</span></span>
+          <span class="input-en muted">Whether the upper coordinate has a represented feasible witness.</span>
+        </a>
         <a class="input tone-raw" href="#en-f-tspdefectprofiles-upperboundcost">
           <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Upper Bound Cost</span><span class="input-table">TSP Defect Profile</span></span>
           <span class="input-en muted">Current witnessed upper value.</span>
@@ -14776,8 +14988,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
-      <summary>Ground truth at the leaves <span class="count">2</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <summary>Ground truth at the leaves <span class="count">4</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#en-f-tspdefectprofiles-lowerboundwitnessed">● Lower Bound Witnessed <span class="ref-pill-tbl">TSP Defect Profile</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-tspdefectprofiles-upperboundwitnessed">● Upper Bound Witnessed <span class="ref-pill-tbl">TSP Defect Profile</span></a>
         <a class="ref-pill tone-raw" href="#en-f-tspdefectprofiles-upperboundcost">● Upper Bound Cost <span class="ref-pill-tbl">TSP Defect Profile</span></a>
         <a class="ref-pill tone-raw" href="#en-f-tspdefectprofiles-lowerboundcost">● Lower Bound Cost <span class="ref-pill-tbl">TSP Defect Profile</span></a>
       </div>
@@ -14824,18 +15038,20 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         </a>
         <a class="input tone-calc" href="#en-f-tspdefectprofiles-costgap">
           <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Cost Gap</span><span class="input-table">TSP Defect Profile</span></span>
-          <span class="input-en">Upper bound cost minus lower bound cost.</span>
+          <span class="input-en">If lower bound witnessed and upper bound witnessed then (upper bound cost minus lower bound cost), otherwise 0.</span>
         </a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
-      <summary>Ground truth at the leaves <span class="count">7</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <summary>Ground truth at the leaves <span class="count">9</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-raw" href="#en-f-tspdefectprofiles-requiredincidence">● Required Incidence <span class="ref-pill-tbl">TSP Defect Profile</span></a>
         <a class="ref-pill tone-raw" href="#en-f-tspdefectprofiles-observedincidence">● Observed Incidence <span class="ref-pill-tbl">TSP Defect Profile</span></a>
         <a class="ref-pill tone-raw" href="#en-f-tspdefectprofiles-componentcount">● Component Count <span class="ref-pill-tbl">TSP Defect Profile</span></a>
         <a class="ref-pill tone-raw" href="#en-f-tspdefectprofiles-requiredboundarycrossings">● Required Boundary Crossings <span class="ref-pill-tbl">TSP Defect Profile</span></a>
         <a class="ref-pill tone-raw" href="#en-f-tspdefectprofiles-observedboundarycrossings">● Observed Boundary Crossings <span class="ref-pill-tbl">TSP Defect Profile</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-tspdefectprofiles-lowerboundwitnessed">● Lower Bound Witnessed <span class="ref-pill-tbl">TSP Defect Profile</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-tspdefectprofiles-upperboundwitnessed">● Upper Bound Witnessed <span class="ref-pill-tbl">TSP Defect Profile</span></a>
         <a class="ref-pill tone-raw" href="#en-f-tspdefectprofiles-upperboundcost">● Upper Bound Cost <span class="ref-pill-tbl">TSP Defect Profile</span></a>
         <a class="ref-pill tone-raw" href="#en-f-tspdefectprofiles-lowerboundcost">● Lower Bound Cost <span class="ref-pill-tbl">TSP Defect Profile</span></a>
       </div>
@@ -14853,6 +15069,44 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">Interpretation of the vector.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspdefectprofiles-lowerboundwitnessed" data-entity="TSP Defect Profile" data-field="Lower Bound Witnessed">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Lower Bound Witnessed</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>boolean</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <details class="prov prov-consumers elem elem-consumers" open>
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#en-f-tspdefectprofiles-costgap">ƒ Cost Gap <span class="ref-pill-tbl">TSP Defect Profile</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tspdefectprofiles-defectvector">Defect Vector <span class="ref-pill-tbl">TSP Defect Profile</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Whether the lower coordinate has a represented certificate.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspdefectprofiles-upperboundwitnessed" data-entity="TSP Defect Profile" data-field="Upper Bound Witnessed">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Upper Bound Witnessed</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>boolean</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <details class="prov prov-consumers elem elem-consumers" open>
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#en-f-tspdefectprofiles-costgap">ƒ Cost Gap <span class="ref-pill-tbl">TSP Defect Profile</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tspdefectprofiles-defectvector">Defect Vector <span class="ref-pill-tbl">TSP Defect Profile</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Whether the upper coordinate has a represented feasible witness.</p>
     </article>
 </section>
 <section class="entity" id="en-t-tspderivededgesetmembers" data-entity="TSP Derived Edge Set Member">
@@ -16173,6 +16427,66 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">CERTIFIED or RESIDUAL_SEARCH.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspsearchcertificates-orbitkind" data-entity="TSP Search Certificate" data-field="Orbit Kind">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Orbit Kind</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Residual orbit classification.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspsearchcertificates-valuecertified" data-entity="TSP Search Certificate" data-field="Value Certified">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Value Certified</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>boolean</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Whether the optimum value is already certified.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspsearchcertificates-representativeselectionrequired" data-entity="TSP Search Certificate" data-field="Representative Selection Required">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Representative Selection Required</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>boolean</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Whether a downstream consumer demands one representative.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspsearchcertificates-externalpolicyrequired" data-entity="TSP Search Certificate" data-field="External Policy Required">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">External Policy Required</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>boolean</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Whether a non-mathematical policy is required to choose among equal witnesses.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspsearchcertificates-branchwarrantstatus" data-entity="TSP Search Certificate" data-field="Branch Warrant Status">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Branch Warrant Status</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">WARRANTED, REJECTED, or CONDITIONAL_ON_EXTERNAL_POLICY.</p>
     </article>
 </section>
 <section class="entity" id="en-t-tspconstraintrounds" data-entity="TSP Constraint Round">
@@ -17819,6 +18133,90 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     </div>
     <p class="field-note elem elem-desc">Scope and interpretation.</p>
     </article>
+  <article class="field tone-raw" id="en-f-tspconvergencemeasurements-activeatomcount" data-entity="TSP Convergence Measurement" data-field="Active Atom Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Active Atom Count</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Active relational atom count at this measurement.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspconvergencemeasurements-activeoperatorcount" data-entity="TSP Convergence Measurement" data-field="Active Operator Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Active Operator Count</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Active semantic operator count at this measurement.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspconvergencemeasurements-physicaltabledeltafromloop610" data-entity="TSP Convergence Measurement" data-field="Physical Table Delta From Loop610">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Physical Table Delta From Loop610</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Physical table count minus the loop-610 count of forty-five.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspconvergencemeasurements-openfrontiercount" data-entity="TSP Convergence Measurement" data-field="Open Frontier Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Open Frontier Count</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Open frontier obligations at this measurement.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspconvergencemeasurements-namedconceptcount" data-entity="TSP Convergence Measurement" data-field="Named Concept Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Named Concept Count</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Versioned concept-registry row count.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspconvergencemeasurements-allowslocalexpansion" data-entity="TSP Convergence Measurement" data-field="Allows Local Expansion">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Allows Local Expansion</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>boolean</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Whether local representational expansion is compatible with the measurement.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspconvergencemeasurements-coherencedirection" data-entity="TSP Convergence Measurement" data-field="Coherence Direction">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Coherence Direction</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Multidimensional interpretation without arbitrary scalar weighting.</p>
+    </article>
 </section>
 <section class="entity" id="en-t-tspconceptregistry" data-entity="TSP Concept Registry">
   <header class="entity-head">
@@ -18026,6 +18424,102 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
     </details>
     <p class="field-note elem elem-desc">Whether the row is an active atom or operator.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspconceptregistry-arcsubjectsort" data-entity="TSP Concept Registry" data-field="Arc Subject Sort">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Arc Subject Sort</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Subject sort for a semantic-arc projection.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspconceptregistry-arclabelsort" data-entity="TSP Concept Registry" data-field="Arc Label Sort">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Arc Label Sort</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">ROLE, MEASURE, MODALITY, or COMPOSED label sort.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspconceptregistry-arctargetsort" data-entity="TSP Concept Registry" data-field="Arc Target Sort">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Arc Target Sort</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Target sort for a semantic-arc projection.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspconceptregistry-arcsignature" data-entity="TSP Concept Registry" data-field="Arc Signature">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Arc Signature</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Typed subject-label-target signature.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspconceptregistry-recoverabilityexpression" data-entity="TSP Concept Registry" data-field="Recoverability Expression">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Recoverability Expression</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Projection that recovers the historical concept from the current basis.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspconceptregistry-isrecoverablefromcurrentbasis" data-entity="TSP Concept Registry" data-field="Is Recoverable From Current Basis">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Is Recoverable From Current Basis</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>boolean</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Whether the historical or derived concept has an explicit current-basis recovery.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspconceptregistry-rewritemode" data-entity="TSP Concept Registry" data-field="Rewrite Mode">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Rewrite Mode</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Named mode of the current or historical rewrite operator.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspconceptregistry-rewritepolarity" data-entity="TSP Concept Registry" data-field="Rewrite Polarity">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Rewrite Polarity</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">EXPANSIVE, CONTRACTIVE, MIXED, or PARAMETRIC.</p>
     </article>
 </section>
 <section class="entity" id="en-t-searchmetrics" data-entity="Search Metric">
