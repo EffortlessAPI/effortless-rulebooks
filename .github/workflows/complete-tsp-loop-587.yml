@@ -64,12 +64,14 @@ jobs:
           cat > .tsp-loop-587-retry-status.json <<EOF
           {
             "stage": "RUNNER_STARTED",
+            "attempt": 4,
             "github_run_id": "$GITHUB_RUN_ID",
             "cli_commit": "$EFFORTLESS_CLI_COMMIT"
           }
           EOF
           git add .tsp-loop-587-retry-status.json
-          git commit -m 'Record TSP loop 587 retry runner checkpoint'
+          git commit -m 'Record TSP loop 587 retry-4 runner checkpoint'
+          git pull --rebase origin "$TARGET_BRANCH"
           git push origin HEAD:"$TARGET_BRANCH"
 
       - uses: actions/setup-node@v4
@@ -80,33 +82,40 @@ jobs:
         with:
           dotnet-version: '8.0.410'
 
-      - name: Install pinned Effortless CLI from GitHub
+      - name: Install pinned Effortless CLI into isolated npm prefix
         shell: bash
         run: |
           set -uo pipefail
-          install_log='.tsp-loop-587-cli-install.log'
+          export NPM_CONFIG_PREFIX="$RUNNER_TEMP/npm-global"
+          export PATH="$NPM_CONFIG_PREFIX/bin:$PATH"
+          mkdir -p "$NPM_CONFIG_PREFIX/bin" "$NPM_CONFIG_PREFIX/lib"
+          echo "$NPM_CONFIG_PREFIX/bin" >> "$GITHUB_PATH"
+          install_log='.tsp-loop-587-cli-install-retry-4.log'
           set +e
-          {
+          (
+            set -e
             npm install -g "$EFFORTLESS_CLI_SOURCE"
             command -v effortless
             npm list -g ssotme --depth=0
             effortless -info
-          } 2>&1 | tee "$install_log"
+          ) 2>&1 | tee "$install_log"
           status=${PIPESTATUS[0]}
           set -e
           if [ "$status" -ne 0 ]; then
             cat > .tsp-loop-587-retry-status.json <<EOF
           {
             "stage": "CLI_INSTALL_FAILED",
+            "attempt": 4,
             "github_run_id": "$GITHUB_RUN_ID",
             "cli_source": "$EFFORTLESS_CLI_SOURCE",
             "cli_commit": "$EFFORTLESS_CLI_COMMIT",
+            "npm_prefix": "$NPM_CONFIG_PREFIX",
             "install_log": "$install_log",
             "exit_code": $status
           }
           EOF
             git add .tsp-loop-587-retry-status.json "$install_log"
-            git commit -m 'Record TSP loop 587 CLI installation failure'
+            git commit -m 'Record TSP loop 587 retry-4 CLI installation failure'
             git pull --rebase origin "$TARGET_BRANCH"
             git push origin HEAD:"$TARGET_BRANCH"
             exit "$status"
@@ -115,14 +124,16 @@ jobs:
           cat > .tsp-loop-587-retry-status.json <<EOF
           {
             "stage": "CLI_INSTALLED",
+            "attempt": 4,
             "github_run_id": "$GITHUB_RUN_ID",
             "cli_source": "$EFFORTLESS_CLI_SOURCE",
             "cli_commit": "$EFFORTLESS_CLI_COMMIT",
-            "cli_version": "$EFFORTLESS_CLI_VERSION"
+            "cli_version": "$EFFORTLESS_CLI_VERSION",
+            "npm_prefix": "$NPM_CONFIG_PREFIX"
           }
           EOF
           git add .tsp-loop-587-retry-status.json
-          git commit -m 'Record TSP loop 587 pinned CLI checkpoint'
+          git commit -m 'Record TSP loop 587 retry-4 pinned CLI checkpoint'
           git pull --rebase origin "$TARGET_BRANCH"
           git push origin HEAD:"$TARGET_BRANCH"
 
@@ -134,6 +145,7 @@ jobs:
           python3 "$domain/scripts/validate_rulebook_v3.py"
           python3 -m py_compile \
             "$domain/scripts/complete_loop_587.py" \
+            "$domain/scripts/complete_loop_587_retry4.py" \
             "$domain/scripts/validate_summary_alignment.py"
 
       - name: Record live-run checkpoint
@@ -143,12 +155,13 @@ jobs:
           cat > .tsp-loop-587-retry-status.json <<EOF
           {
             "stage": "LIVE_BUILD_AND_CONFORMANCE_STARTED",
+            "attempt": 4,
             "github_run_id": "$GITHUB_RUN_ID",
             "cli_commit": "$EFFORTLESS_CLI_COMMIT"
           }
           EOF
           git add .tsp-loop-587-retry-status.json
-          git commit -m 'Record TSP loop 587 live commissioning checkpoint'
+          git commit -m 'Record TSP loop 587 retry-4 live commissioning checkpoint'
           git pull --rebase origin "$TARGET_BRANCH"
           git push origin HEAD:"$TARGET_BRANCH"
 
@@ -160,10 +173,11 @@ jobs:
           log="$domain/testing/postgres-commissioning-success.log"
           mkdir -p "$(dirname "$log")"
           {
-            echo "loop=587 retry=2"
+            echo "loop=587 retry=4"
             echo "cli_source=$EFFORTLESS_CLI_SOURCE"
             echo "cli_commit=$EFFORTLESS_CLI_COMMIT"
             echo "cli_version=$EFFORTLESS_CLI_VERSION"
+            echo "npm_prefix=$NPM_CONFIG_PREFIX"
             echo "github_run_id=$GITHUB_RUN_ID"
             cd "$domain"
             bash start.sh build
@@ -177,10 +191,11 @@ jobs:
         run: |
           set -euo pipefail
           domain='rulebook-examples/effortless-math/domains/traveling-salesman'
-          python3 "$domain/scripts/complete_loop_587.py"
+          python3 "$domain/scripts/complete_loop_587_retry4.py"
           python3 "$domain/scripts/validate_rulebook.py"
           python3 -m py_compile \
             "$domain/scripts/complete_loop_587.py" \
+            "$domain/scripts/complete_loop_587_retry4.py" \
             "$domain/scripts/validate_rulebook.py" \
             "$domain/scripts/validate_rulebook_v3.py" \
             "$domain/scripts/validate_summary_alignment.py" \
@@ -196,6 +211,7 @@ jobs:
           cat > .tsp-loop-587-retry-status.json <<EOF
           {
             "stage": "COMPLETED",
+            "attempt": 4,
             "github_run_id": "$GITHUB_RUN_ID",
             "cli_commit": "$EFFORTLESS_CLI_COMMIT",
             "semantic_commit": "pending"
