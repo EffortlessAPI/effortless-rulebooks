@@ -435,12 +435,12 @@
     {
       "LoopOrder": 620,
       "LoopId": "tsp-loop-620",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Entry and exit stops remain special cluster fields rather than typed attachments with a reusable port contract.",
       "ClosureCriterion": "Represent every existing cluster path through typed entry/exit ports, a common port contract, orientation multiplicity, and a boundary-fiber key.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Normalized existing cluster entries and exits as typed boundary ports over ATTACHMENT, VALUATION, and WARRANT.",
+      "Result": "All six existing triangle path states expose one entry, one exit, full internal coverage, orientation multiplicity two, and a canonical boundary-fiber key.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 621,
@@ -572,7 +572,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 623,
-    "HighestCompletedLoop": 619,
+    "HighestCompletedLoop": 620,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 14,
     "SelectedNotForcedEdgeStates": 5,
@@ -614,8 +614,8 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 12,
     "ClusterContractionCertificates": 3,
-    "ConvergenceMeasurements": 23,
-    "ConceptRegistry": 70,
+    "ConvergenceMeasurements": 24,
+    "ConceptRegistry": 71,
     "DefectProfiles": 16,
     "BoundTerms": 4,
     "WitnessNormalForms": 9,
@@ -631,7 +631,7 @@
     "CurrentSemanticCompressionPct": 90.63
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:00745ff6d409cd6403e7f75fa534aa8698bebeb99f6667dde92f8d7bdc7390e1",
+    "rulebook": "sha256:3243c5475b3632f51a841bb0a9fe83202780b8d62831712cbb55edc29e4e0bec",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
