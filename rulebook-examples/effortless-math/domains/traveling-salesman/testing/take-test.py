@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
-"""Postgres/Python conformance test for TSP loops 577-586."""
+"""Postgres/Python conformance test for the current TSP rulebook.
+
+Expected semantic counts come from the canonical raw rulebook rows. The test does
+not carry a second, hand-maintained answer key for evolving ledgers such as
+TSPFrontierObligations.
+"""
 from __future__ import annotations
 
 import os
@@ -213,12 +218,25 @@ def main() -> None:
             f"[graph-invariants] {graph_invariant_passes}/{len(graph_invariant_rows)} passing"
         )
 
+    frontier_data = rulebook["TSPFrontierObligations"]["data"]
+    expected_frontier = (
+        len(frontier_data),
+        sum(row["ObligationKind"] == "IMPORTED_DEPENDENCY" for row in frontier_data),
+        sum(row["Status"] == "CLOSED" for row in frontier_data),
+    )
     frontier_rows = psql(
         "SELECT count(*), count(*) FILTER (WHERE is_imported_dependency), "
         "count(*) FILTER (WHERE is_closed) FROM vw_tsp_frontier_obligations"
     )
-    if frontier_rows != ["8,0,4"]:
-        failures.append(f"[frontier] expected 8 total / 0 imported / 4 closed, got {frontier_rows}")
+    if len(frontier_rows) != 1:
+        failures.append(f"[frontier] expected one aggregate row, got {frontier_rows}")
+        actual_frontier: tuple[int, int, int] | None = None
+    else:
+        actual_frontier = tuple(int(value) for value in frontier_rows[0].split(","))
+        if actual_frontier != expected_frontier:
+            failures.append(
+                f"[frontier] canonical={expected_frontier} postgres={actual_frontier}"
+            )
 
     metric_rows = psql(
         "SELECT search_metric_id, search_question, branch_count_before, "
@@ -252,7 +270,11 @@ def main() -> None:
     print(f"tour invariants passing: {invariant_passes}/{len(invariant_rows)}")
     print(f"graph invariants passing: {graph_invariant_passes}/{len(graph_invariant_rows)}")
     print(f"search substrate agreement: {search_agreements}/{len(py_search)}")
-    print("frontier obligations: 8 total, 0 imported, 4 closed")
+    print(
+        "frontier obligations: "
+        f"{expected_frontier[0]} total, {expected_frontier[1]} imported, "
+        f"{expected_frontier[2]} closed"
+    )
 
     if failures:
         print("\nFAIL:")
