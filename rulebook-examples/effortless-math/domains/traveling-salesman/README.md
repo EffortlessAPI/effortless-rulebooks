@@ -1,7 +1,7 @@
 # Traveling Salesman — Semantic Geometry Starter
 
 **Status:** Research program  
-**Version:** 0.3.1
+**Version:** 0.3.1  
 **Current finite claim:** Gridville's five-stop cycle is reconstructed from inferred structural edges with `CandidateUsedAsAntecedent=false`, uses zero branch decisions, and is optimal for its declared finite instance by a witnessed degree-two lower-bound equality. No general solver or complexity claim is made.
 
 The canonical object is not a solver and not a route. It is an executable dependency graph describing the city, selected stops, canonical weighted edges, supplied and reconstructed route witnesses, typed frontier obligations, local inference certificates, finite optimality certificates, constraint closure, neighborhood boundary states, and residual search.
@@ -45,7 +45,7 @@ The pieces still to close are generally **frontier obligations**, not imported e
 | Kernel assumption | Trusted primitive input semantics recorded at the declared trust boundary. |
 | Residual search | Explicit ambiguity remaining after all represented deterministic obligations reach closure. |
 
-The active imported-dependency count is **zero**. Live Postgres commissioning remains an open `SUBSTRATE_OBLIGATION`; the mathematical route-reconstruction obligation is closed.
+The active imported-dependency count is **zero**. Generated Postgres is a commissioned `SUBSTRATE_OBLIGATION`; the mathematical route-reconstruction obligation is also closed.
 
 ## Loops 577–596
 
@@ -53,7 +53,7 @@ The active imported-dependency count is **zero**. Live Postgres commissioning re
 |---:|---|
 | 577–581 | City hierarchy, weighted graph, supplied route witness, validity, and search baseline. |
 | 582–586 | Typed frontier, global cycle coverage, pair completeness, degree-two lower bound, and finite Gridville optimality. |
-| 587 | Generated Postgres commissioning; currently BLOCKED in canonical status until the live certificate is durably sealed. |
+| 587 | Generated Postgres commissioning, database initialization, and Python/Postgres conformance. |
 | 588–591 | Inference application spine, inferred edge union, connected degree-two certificate, and route reconstruction. |
 | 592 | Derived search certificate. |
 | 593 | Non-tight twin-triangles counterexample. |
@@ -175,4 +175,3 @@ The nearest open obligations are stronger component/crossing lower bounds, gener
 The rulebook records every loop first as PLANNED with a before-state and closure criterion, then preserves the after-state in the same row. Gridville is reconstructed from inferred edges with zero branch decisions; twin triangles preserves a sound non-tight lower bound and yields the first finite neighborhood boundary-state contraction certificate.
 
 **Postgres commissioning: CLOSED.** Attempts 1–9 remain explicit blocked or failed execution rows. Retry 10 installed the pinned EffortlessAPI/cli archive with npm, generated Postgres and RuleSpeak, initialized `erb_traveling_salesman`, passed the complete Python/Postgres conformance surface, normalized PostgreSQL NUMERIC text through `Decimal`, and durably sealed the canonical certificate. Generated artifact hashes and all available failure/success transcripts are retained.
-
