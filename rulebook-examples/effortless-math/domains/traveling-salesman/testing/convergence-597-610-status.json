@@ -1,6 +1,7 @@
 {
   "status": "FAILED",
-  "github_run_id": "29638498429",
+  "driver": "v4-hardened",
+  "github_run_id": "29638628261",
   "exit_code": 1,
-  "log": "testing/convergence-597-610-failure.log"
+  "log": "testing/convergence-597-610-v4-failure.log"
 }

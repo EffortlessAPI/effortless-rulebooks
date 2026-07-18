@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_597_610_convergence_v3.py", line 329, in <module>
+    base.main()
+  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_597_610_convergence_v2.py", line 1774, in main
+    write_validation_files()
+  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_597_610_convergence_v3.py", line 304, in write_validation_files
+    base.write_validation_files()
+  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_597_610_convergence_v3.py", line 304, in write_validation_files
+    base.write_validation_files()
+  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_597_610_convergence_v3.py", line 304, in write_validation_files
+    base.write_validation_files()
+  [Previous line repeated 995 more times]
+RecursionError: maximum recursion depth exceeded
