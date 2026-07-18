@@ -11,6 +11,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: tsp-loop-587-postgres-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   commission:
     runs-on: ubuntu-latest
@@ -47,6 +51,27 @@ jobs:
           ref: ${{ env.TARGET_BRANCH }}
           fetch-depth: 0
 
+      - name: Configure retry commits
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+      - name: Record runner checkpoint
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > .tsp-loop-587-retry-status.json <<EOF
+          {
+            "stage": "RUNNER_STARTED",
+            "github_run_id": "$GITHUB_RUN_ID",
+            "cli_commit": "$EFFORTLESS_CLI_COMMIT"
+          }
+          EOF
+          git add .tsp-loop-587-retry-status.json
+          git commit -m 'Record TSP loop 587 retry runner checkpoint'
+          git push origin HEAD:"$TARGET_BRANCH"
+
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -63,6 +88,18 @@ jobs:
           command -v effortless
           npm list -g ssotme --depth=0
           effortless -info
+          cat > .tsp-loop-587-retry-status.json <<EOF
+          {
+            "stage": "CLI_INSTALLED",
+            "github_run_id": "$GITHUB_RUN_ID",
+            "cli_source": "$EFFORTLESS_CLI_SOURCE",
+            "cli_commit": "$EFFORTLESS_CLI_COMMIT",
+            "cli_version": "$EFFORTLESS_CLI_VERSION"
+          }
+          EOF
+          git add .tsp-loop-587-retry-status.json
+          git commit -m 'Record TSP loop 587 pinned CLI checkpoint'
+          git push origin HEAD:"$TARGET_BRANCH"
 
       - name: Validate canonical pre-retry semantics
         shell: bash
@@ -73,6 +110,21 @@ jobs:
           python3 -m py_compile \
             "$domain/scripts/complete_loop_587.py" \
             "$domain/scripts/validate_summary_alignment.py"
+
+      - name: Record live-run checkpoint
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > .tsp-loop-587-retry-status.json <<EOF
+          {
+            "stage": "LIVE_BUILD_AND_CONFORMANCE_STARTED",
+            "github_run_id": "$GITHUB_RUN_ID",
+            "cli_commit": "$EFFORTLESS_CLI_COMMIT"
+          }
+          EOF
+          git add .tsp-loop-587-retry-status.json
+          git commit -m 'Record TSP loop 587 live commissioning checkpoint'
+          git push origin HEAD:"$TARGET_BRANCH"
 
       - name: Generate Postgres, initialize database, and run peer conformance
         shell: bash
@@ -115,13 +167,20 @@ jobs:
         run: |
           set -euo pipefail
           domain='rulebook-examples/effortless-math/domains/traveling-salesman'
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -A -- "$domain"
+          cat > .tsp-loop-587-retry-status.json <<EOF
+          {
+            "stage": "COMPLETED",
+            "github_run_id": "$GITHUB_RUN_ID",
+            "cli_commit": "$EFFORTLESS_CLI_COMMIT",
+            "semantic_commit": "pending"
+          }
+          EOF
+          git add -A -- "$domain" .tsp-loop-587-retry-status.json
           git diff --cached --stat
           git diff --cached --quiet && {
             echo 'loop 587 retry produced no changes' >&2
             exit 1
           }
           git commit -m 'TSP loop 587 retry: commission generated Postgres substrate'
+          git pull --rebase origin "$TARGET_BRANCH"
           git push origin HEAD:"$TARGET_BRANCH"
