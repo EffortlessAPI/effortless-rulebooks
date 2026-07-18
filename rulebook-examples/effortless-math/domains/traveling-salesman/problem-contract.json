@@ -271,12 +271,12 @@
     {
       "LoopOrder": 605,
       "LoopId": "tsp-loop-605",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Candidate tours, reconstructed tours, and cluster paths use separate object vocabularies despite sharing coverage, incidence, order, connectivity, cost, and provenance.",
       "ClosureCriterion": "Project supplied and reconstructed cycles into one normal form whose semantic key differs only by provenance where the underlying cycle is identical.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Normalized supplied and reconstructed cycles into one semantic witness shape.",
+      "Result": "The supplied and reconstructed Gridville cycles share coverage, edge count, cost, and zero-defect semantic key; only provenance differs.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 606,
@@ -377,7 +377,7 @@
     "branch only after deterministic closure on fixtures whose residual ambiguity remains positive"
   ],
   "Acceptance": {
-    "RulebookTables": 44,
+    "RulebookTables": 45,
     "Cities": 1,
     "Neighborhoods": 5,
     "Addresses": 11,
@@ -386,7 +386,7 @@
     "TravelEdges": 38,
     "CandidateTours": 4,
     "TSPLoops": 34,
-    "FrontierObligations": 19,
+    "FrontierObligations": 20,
     "ActiveImportedDependencies": 0,
     "ReferenceTourValid": true,
     "ReferenceTourCost": 14,
@@ -398,7 +398,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 610,
-    "HighestCompletedLoop": 604,
+    "HighestCompletedLoop": 605,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 5,
     "SelectedNotForcedEdgeStates": 5,
@@ -440,13 +440,14 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 12,
     "ClusterContractionCertificates": 3,
-    "ConvergenceMeasurements": 8,
-    "ConceptRegistry": 48,
+    "ConvergenceMeasurements": 9,
+    "ConceptRegistry": 49,
     "DefectProfiles": 14,
-    "BoundTerms": 4
+    "BoundTerms": 4,
+    "WitnessNormalForms": 3
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:c2ca1604a8b8f75c528988e77cf7ef5b53f578f01fd6bbfa6851cca27daff043",
+    "rulebook": "sha256:f068fa08c4db93e9c1986c50f43b43811c3643e56cef0c53915fb3cd76a6f147",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
