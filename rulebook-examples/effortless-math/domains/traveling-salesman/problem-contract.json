@@ -837,12 +837,12 @@
     {
       "LoopOrder": 658,
       "LoopId": "tsp-loop-658",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Instrument quality is described narratively rather than through exact coverage, value closure, route closure, gap, choice orbit, and residual search coordinates.",
       "ClosureCriterion": "Add reusable calibration coordinates without collapsing them into one arbitrary scalar score.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Defined a multidimensional calibration vector.",
+      "Result": "Instrument quality is no longer summarized by route-found or one scalar score; value, choice, gap, closure, and branch coordinates remain separable.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 659,
@@ -1505,7 +1505,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 710,
-    "HighestCompletedLoop": 657,
+    "HighestCompletedLoop": 658,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 16,
     "SelectedNotForcedEdgeStates": 5,
@@ -1547,8 +1547,8 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 66,
     "ClusterContractionCertificates": 7,
-    "ConvergenceMeasurements": 61,
-    "ConceptRegistry": 112,
+    "ConvergenceMeasurements": 62,
+    "ConceptRegistry": 113,
     "DefectProfiles": 21,
     "BoundTerms": 8,
     "WitnessNormalForms": 19,
@@ -1578,7 +1578,7 @@
     "OptimalFaceValueProofBranchDecisionCount": 0
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:6bc453628dc9c84c108c6e5a151847b4f5b62b1488172341d65656ee72088621",
+    "rulebook": "sha256:672691f774228bd63aba1dc14a176b044c2664591b1b7bf232066e8dcacc870f",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
