@@ -1147,12 +1147,12 @@
     {
       "LoopOrder": 689,
       "LoopId": "tsp-loop-689",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
       "ClosureCriterion": "Distinguish a certified optimum value from the multiplicity of optimal route witnesses.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Derived Value Rigidity across the exact held-out corpus.",
+      "Result": "Value closed on 5/12; 4 exact optimal faces contain multiple route classes.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 690,
@@ -1505,7 +1505,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 710,
-    "HighestCompletedLoop": 688,
+    "HighestCompletedLoop": 689,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 16,
     "SelectedNotForcedEdgeStates": 5,
@@ -1547,8 +1547,8 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 66,
     "ClusterContractionCertificates": 7,
-    "ConvergenceMeasurements": 92,
-    "ConceptRegistry": 144,
+    "ConvergenceMeasurements": 93,
+    "ConceptRegistry": 145,
     "DefectProfiles": 33,
     "BoundTerms": 8,
     "WitnessNormalForms": 35,
@@ -1582,7 +1582,7 @@
     "DevelopmentMaxExactClassCount": 20160
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:f80789cea89a607f74bf1ce6ded8450c67a97ef58654f883df63100081063404",
+    "rulebook": "sha256:130a38e05ef01abdf51e3118897423e0dad3e8e57541f5ba767ff076f791d5a0",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
