@@ -186,6 +186,8 @@ SELECT
   calc_role_assignments_as_of_instant(t.role_assignment_id) AS as_of_instant,   -- The evaluation instant this assignment's currency is judged against.
   calc_role_assignments_is_current(t.role_assignment_id) AS is_current,         -- TRUE when the assignment is valid now.
   calc_role_assignments_current_agent_key(t.role_assignment_id) AS current_agent_key,-- Echoes the Agent id only while this assignment is current; empty otherwise. Lets a parent count CURRENT assignments with a single-criterion COUNTIFS, which is the only shape this transpiler translates correctly.
+  calc_role_assignments_is_currently_valid(t.role_assignment_id) AS is_currently_valid,-- TRUE when this role assignment is active and has not lapsed.
+  calc_role_assignments_agent_role_key(t.role_assignment_id) AS agent_role_key, -- Composite agent+role key, emitted only for currently-valid assignments.
   t.semantic_type_iri                                                           -- Exact class IRI for the assignment event.
 FROM role_assignments t;
 
@@ -282,6 +284,7 @@ SELECT
   calc_procedure_versions_count_of_steps(t.procedure_version_id) AS count_of_steps,-- Number of steps in this version.
   calc_procedure_versions_count_of_open_knowledge_gaps(t.procedure_version_id) AS count_of_open_knowledge_gaps,-- Open knowledge gaps for this version.
   calc_procedure_versions_is_ready_for_execution(t.procedure_version_id) AS is_ready_for_execution,-- TRUE when approved, populated, and free of blocking knowledge gaps.
+  calc_procedure_versions_specified_step_count(t.procedure_version_id) AS specified_step_count,-- How many steps the specification defines for this version.
   t.semantic_type_iri                                                           -- Exact PKO class IRI.
 FROM procedure_versions t;
 
@@ -343,6 +346,8 @@ SELECT
   calc_steps_authoritative_stale_count(t.step_id) AS authoritative_stale_count, -- How many authoritative bindings for this step are currently stale.
   calc_steps_available_exception_count(t.step_id) AS available_exception_count, -- How many active exceptions the specification defines for this step.
   calc_steps_declared_verification_count(t.step_id) AS declared_verification_count,-- How many verifications the specification declares for this step.
+  calc_steps_is_preparation_step(t.step_id) AS is_preparation_step,             -- TRUE for steps whose assigned role produces the work product rather than reviewing it.
+  calc_steps_is_approval_step(t.step_id) AS is_approval_step,                   -- TRUE for steps whose assigned role is an approval authority.
   t.semantic_type_iri                                                           -- Exact P-Plan class IRI.
 FROM steps t;
 
@@ -460,6 +465,13 @@ SELECT
   t.statement,                                                                  -- Normative requirement statement.
   t.rationale,                                                                  -- Why the requirement exists.
   t.is_blocking,                                                                -- TRUE when unsatisfied requirement blocks execution or approval.
+  calc_requirements_satisfaction_record_count(t.requirement_id) AS satisfaction_record_count,-- How many times this requirement has ever been evaluated against an execution.
+  calc_requirements_step_binding_count(t.requirement_id) AS step_binding_count, -- How many steps the specification binds this requirement to.
+  calc_requirements_is_bound_to_any_step(t.requirement_id) AS is_bound_to_any_step,-- TRUE when at least one step carries this requirement.
+  calc_requirements_has_ever_been_evaluated(t.requirement_id) AS has_ever_been_evaluated,-- TRUE when this requirement has at least one satisfaction record in the model.
+  calc_requirements_negative_outcome_count(t.requirement_id) AS negative_outcome_count,-- How many times this requirement has ever produced a less-than-satisfied outcome.
+  calc_requirements_is_inoperative_control(t.requirement_id) AS is_inoperative_control,-- TRUE for a blocking requirement that is attached to a step in the specification but has never once been evaluated on any execution.
+  calc_requirements_is_decorative_control(t.requirement_id) AS is_decorative_control,-- TRUE for a blocking requirement that is not attached to any step at all.
   t.semantic_type_iri                                                           -- Exact PKO class IRI.
 FROM requirements t;
 
@@ -684,6 +696,12 @@ SELECT
   t.executed_by_agent,                                                          -- Agent accountable for the overall execution; maps to pko:wasExecutedBy.
   t.context,                                                                    -- Execution-specific scope or target.
   t.operational_record_uri,                                                     -- Identifier in the operational execution system.
+  calc_procedure_executions_expected_step_count(t.procedure_execution_id) AS expected_step_count,-- How many steps this execution was supposed to perform.
+  calc_procedure_executions_completed_step_count(t.procedure_execution_id) AS completed_step_count,-- How many steps of this execution actually reached Completed.
+  calc_procedure_executions_control_breach_count(t.procedure_execution_id) AS control_breach_count,-- Total step executions in this run that carry at least one control breach.
+  calc_procedure_executions_late_step_count(t.procedure_execution_id) AS late_step_count,-- How many steps in this execution ran long.
+  calc_procedure_executions_is_structurally_complete(t.procedure_execution_id) AS is_structurally_complete,-- TRUE when every specified step of the procedure version reached Completed in this execution.
+  calc_procedure_executions_diverged_from_specification(t.procedure_execution_id) AS diverged_from_specification,-- TRUE when the execution either skipped specified steps or carried at least one control breach.
   t.semantic_type_iri                                                           -- Exact PKO class IRI.
 FROM procedure_executions t;
 
@@ -725,6 +743,25 @@ SELECT
   calc_step_executions_skipped_verification_count(t.step_execution_id) AS skipped_verification_count,-- Declared verifications with no recorded outcome on this execution.
   calc_step_executions_has_skipped_verification(t.step_execution_id) AS has_skipped_verification,-- TRUE when a declared verification was never performed on this execution.
   calc_step_executions_claims_pass_without_evidence(t.step_execution_id) AS claims_pass_without_evidence,-- TRUE when an execution asserts PASS while at least one declared verification has no recorded outcome.
+  calc_step_executions_step_is_preparation(t.step_execution_id) AS step_is_preparation,-- Whether this execution ran a preparation step.
+  calc_step_executions_step_is_approval(t.step_execution_id) AS step_is_approval,-- Whether this execution ran an approval step.
+  calc_step_executions_preparer_agent_key(t.step_execution_id) AS preparer_agent_key,-- Composite execution+agent key, emitted only for preparation steps.
+  calc_step_executions_approver_agent_key(t.step_execution_id) AS approver_agent_key,-- Composite execution+agent key, emitted only for approval steps.
+  calc_step_executions_prepared_by_this_agent_count(t.step_execution_id) AS prepared_by_this_agent_count,-- On an approval row, how many preparation steps in the SAME procedure execution were run by this same agent.
+  calc_step_executions_violates_separation_of_duties(t.step_execution_id) AS violates_separation_of_duties,-- TRUE when the agent approving this step also prepared work earlier in the same procedure execution.
+  calc_step_executions_required_role_for_step(t.step_execution_id) AS required_role_for_step,-- The role the specification assigns to this step.
+  calc_step_executions_executor_role_key(t.step_execution_id) AS executor_role_key,-- The agent+role pair that would need to exist as a valid assignment for this execution to be properly authorized.
+  calc_step_executions_executor_authority_count(t.step_execution_id) AS executor_authority_count,-- How many currently-valid role assignments grant this executor the role their step required.
+  calc_step_executions_executor_held_required_role(t.step_execution_id) AS executor_held_required_role,-- TRUE when the executing agent holds a currently-valid assignment to the role the step required.
+  calc_step_executions_is_unauthorized_approval(t.step_execution_id) AS is_unauthorized_approval,-- TRUE when an approval step was executed by an agent who does not hold the required approving role.
+  calc_step_executions_completed_execution_key(t.step_execution_id) AS completed_execution_key,-- Echoes the parent execution id only for completed steps.
+  calc_step_executions_control_breach_execution_key(t.step_execution_id) AS control_breach_execution_key,-- Echoes the parent execution id when this step execution carries ANY control breach.
+  calc_step_executions_late_execution_key(t.step_execution_id) AS late_execution_key,-- Echoes the parent execution id only for steps that ran past their expected duration.
+  calc_step_executions_executor_agent_kind(t.step_execution_id) AS executor_agent_kind,-- Human, AIAgent, or AutomatedPipeline — what kind of agent actually ran this step.
+  calc_step_executions_executor_is_human(t.step_execution_id) AS executor_is_human,-- TRUE when a human executed this step.
+  calc_step_executions_step_requires_human_confirmation(t.step_execution_id) AS step_requires_human_confirmation,-- Whether the specification requires this step to be human-confirmed.
+  calc_step_executions_non_human_ran_human_step(t.step_execution_id) AS non_human_ran_human_step,-- TRUE when a step requiring human confirmation was executed by an AI agent or automated pipeline.
+  calc_step_executions_non_human_approval(t.step_execution_id) AS non_human_approval,-- TRUE when an approval-authority step was executed by a non-human agent, regardless of the RequiresHumanConfirmation flag.
   t.semantic_type_iri                                                           -- Exact PKO class IRI.
 FROM step_executions t;
 
@@ -748,6 +785,9 @@ SELECT
   calc_requirement_satisfactions_is_blocking_and_unmet(t.requirement_satisfaction_id) AS is_blocking_and_unmet,-- TRUE when a blocking requirement is recorded at anything less than fully Satisfied. This is the control-failure witness at the requirement grain.
   calc_requirement_satisfactions_blocking_unmet_step_key(t.requirement_satisfaction_id) AS blocking_unmet_step_key,-- Echoes the parent StepExecution id only when this row is a blocking-unmet violation; empty string otherwise.
   calc_requirement_satisfactions_blocking_satisfaction_step_key(t.requirement_satisfaction_id) AS blocking_satisfaction_step_key,-- Echoes the parent StepExecution id when this satisfaction row concerns a blocking requirement.
+  calc_requirement_satisfactions_negative_outcome_requirement_key(t.requirement_satisfaction_id) AS negative_outcome_requirement_key,-- Echoes the Requirement id only when this evaluation came out at less than fully Satisfied.
+  calc_requirement_satisfactions_evaluator_agent_kind(t.requirement_satisfaction_id) AS evaluator_agent_kind,-- What kind of agent evaluated this requirement satisfaction.
+  calc_requirement_satisfactions_non_human_evaluated_human_contro(t.requirement_satisfaction_id) AS non_human_evaluated_human_control,-- TRUE when a blocking requirement was evaluated by a non-human agent.
   t.semantic_type_iri                                                           -- Exact PKO class IRI.
 FROM requirement_satisfactions t;
 

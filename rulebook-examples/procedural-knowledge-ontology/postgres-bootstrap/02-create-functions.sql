@@ -283,6 +283,26 @@ RETURNS TEXT AS $$
   SELECT (CASE WHEN calc_role_assignments_is_current(p_role_assignment_id) THEN ((SELECT NULLIF(agent, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::text ELSE ('')::text END)::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_role_assignments_is_currently_valid
+-- Field: RoleAssignments.IsCurrentlyValid
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_is_currently_valid(p_role_assignment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((SELECT NULLIF(status, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) = 'Active' AND ((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) IS NULL OR (SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) > CURRENT_TIMESTAMP)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_assignments_agent_role_key
+-- Field: RoleAssignments.AgentRoleKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_agent_role_key(p_role_assignment_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_role_assignments_is_currently_valid(p_role_assignment_id) THEN (CONCAT((SELECT NULLIF(agent, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id), '|', (SELECT NULLIF(role, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
 -- calc_communities_of_practice_name
 -- Field: CommunitiesOfPractice.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -480,6 +500,16 @@ RETURNS BOOLEAN AS $$
   SELECT (((SELECT NULLIF(status, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id) = 'Approved' AND (calc_procedure_versions_count_of_steps(p_procedure_version_id))::NUMERIC > 0 AND (calc_procedure_versions_count_of_open_knowledge_gaps(p_procedure_version_id))::NUMERIC = 0));
 $$ LANGUAGE sql STABLE;
 
+-- calc_procedure_versions_specified_step_count
+-- Field: ProcedureVersions.SpecifiedStepCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_versions_specified_step_count(p_procedure_version_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM steps WHERE procedure_version = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
 -- get_procedure_versions_version_number
 -- Helper function: Get VersionNumber from ProcedureVersions by ProcedureVersionId
 -- Used for join-free cross-table references in aggregations
@@ -661,6 +691,26 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_steps_declared_verification_count(p_step_id TEXT)
 RETURNS NUMERIC AS $$
   SELECT ((SELECT COUNT(*) FROM step_verifications WHERE step = (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_steps_is_preparation_step
+-- Field: Steps.IsPreparationStep
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_steps_is_preparation_step(p_step_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((SELECT NULLIF(assigned_role, '') FROM steps WHERE step_id = p_step_id) = 'finance-analyst' OR (SELECT NULLIF(assigned_role, '') FROM steps WHERE step_id = p_step_id) = 'variance-review-agent'))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_steps_is_approval_step
+-- Field: Steps.IsApprovalStep
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_steps_is_approval_step(p_step_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((SELECT NULLIF(assigned_role, '') FROM steps WHERE step_id = p_step_id) = 'controller' OR (SELECT NULLIF(assigned_role, '') FROM steps WHERE step_id = p_step_id) = 'cfo'))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- get_steps_step_number
@@ -903,6 +953,76 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_requirements_name(p_requirement_id TEXT)
 RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(label, '') FROM requirements WHERE requirement_id = p_requirement_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_requirements_satisfaction_record_count
+-- Field: Requirements.SatisfactionRecordCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_requirements_satisfaction_record_count(p_requirement_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM requirement_satisfactions WHERE requirement = (SELECT NULLIF(requirement_id, '') FROM requirements WHERE requirement_id = p_requirement_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_requirements_step_binding_count
+-- Field: Requirements.StepBindingCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_requirements_step_binding_count(p_requirement_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM step_requirements WHERE requirement = (SELECT NULLIF(requirement_id, '') FROM requirements WHERE requirement_id = p_requirement_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_requirements_is_bound_to_any_step
+-- Field: Requirements.IsBoundToAnyStep
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_requirements_is_bound_to_any_step(p_requirement_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_requirements_step_binding_count(p_requirement_id))::NUMERIC > 0)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_requirements_has_ever_been_evaluated
+-- Field: Requirements.HasEverBeenEvaluated
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_requirements_has_ever_been_evaluated(p_requirement_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_requirements_satisfaction_record_count(p_requirement_id))::NUMERIC > 0)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_requirements_negative_outcome_count
+-- Field: Requirements.NegativeOutcomeCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_requirements_negative_outcome_count(p_requirement_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM requirement_satisfactions WHERE calc_requirement_satisfactions_negative_outcome_requirement_key(requirement_satisfaction_id) = (SELECT NULLIF(requirement_id, '') FROM requirements WHERE requirement_id = p_requirement_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_requirements_is_inoperative_control
+-- Field: Requirements.IsInoperativeControl
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_requirements_is_inoperative_control(p_requirement_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((COALESCE((SELECT is_blocking FROM requirements WHERE requirement_id = p_requirement_id), FALSE) AND calc_requirements_is_bound_to_any_step(p_requirement_id) AND NOT (calc_requirements_has_ever_been_evaluated(p_requirement_id))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_requirements_is_decorative_control
+-- Field: Requirements.IsDecorativeControl
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_requirements_is_decorative_control(p_requirement_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((COALESCE((SELECT is_blocking FROM requirements WHERE requirement_id = p_requirement_id), FALSE) AND NOT (calc_requirements_is_bound_to_any_step(p_requirement_id))))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_step_requirements_requirement_is_blocking
@@ -1258,6 +1378,17 @@ RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(title, '') FROM explanations WHERE explanation_id = p_explanation_id))::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_procedure_executions_expected_step_count
+-- Field: ProcedureExecutions.ExpectedStepCount
+-- Type: lookup | DataType: number | Returns: NUMERIC
+-- Lookup: SpecifiedStepCount from related ProcedureVersions
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_executions_expected_step_count(p_procedure_execution_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT calc_procedure_versions_specified_step_count((SELECT procedure_version FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id));
+$$ LANGUAGE sql STABLE;
+
 -- calc_procedure_executions_name
 -- Field: ProcedureExecutions.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -1266,6 +1397,56 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_procedure_executions_name(p_procedure_execution_id TEXT)
 RETURNS TEXT AS $$
   SELECT (CONCAT((SELECT NULLIF(procedure_version, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id), ' / ', (SELECT NULLIF(context, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_executions_completed_step_count
+-- Field: ProcedureExecutions.CompletedStepCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_executions_completed_step_count(p_procedure_execution_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM step_executions WHERE calc_step_executions_completed_execution_key(step_execution_id) = (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_executions_control_breach_count
+-- Field: ProcedureExecutions.ControlBreachCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_executions_control_breach_count(p_procedure_execution_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM step_executions WHERE calc_step_executions_control_breach_execution_key(step_execution_id) = (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_executions_late_step_count
+-- Field: ProcedureExecutions.LateStepCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_executions_late_step_count(p_procedure_execution_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM step_executions WHERE calc_step_executions_late_execution_key(step_execution_id) = (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_executions_is_structurally_complete
+-- Field: ProcedureExecutions.IsStructurallyComplete
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_executions_is_structurally_complete(p_procedure_execution_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (calc_procedure_executions_completed_step_count(p_procedure_execution_id) >= calc_procedure_executions_expected_step_count(p_procedure_execution_id))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_executions_diverged_from_specification
+-- Field: ProcedureExecutions.DivergedFromSpecification
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_executions_diverged_from_specification(p_procedure_execution_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((NOT (calc_procedure_executions_is_structurally_complete(p_procedure_execution_id)) OR (calc_procedure_executions_control_breach_count(p_procedure_execution_id))::NUMERIC > 0));
 $$ LANGUAGE sql STABLE;
 
 -- calc_step_executions_expected_duration_minutes
@@ -1321,6 +1502,61 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_step_executions_expected_verification_count(p_step_execution_id TEXT)
 RETURNS NUMERIC AS $$
   SELECT calc_steps_declared_verification_count((SELECT step FROM step_executions WHERE step_execution_id = p_step_execution_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_step_executions_step_is_preparation
+-- Field: StepExecutions.StepIsPreparation
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: IsPreparationStep from related Steps
+
+
+CREATE OR REPLACE FUNCTION calc_step_executions_step_is_preparation(p_step_execution_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_steps_is_preparation_step((SELECT step FROM step_executions WHERE step_execution_id = p_step_execution_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_step_executions_step_is_approval
+-- Field: StepExecutions.StepIsApproval
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: IsApprovalStep from related Steps
+
+
+CREATE OR REPLACE FUNCTION calc_step_executions_step_is_approval(p_step_execution_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_steps_is_approval_step((SELECT step FROM step_executions WHERE step_execution_id = p_step_execution_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_step_executions_required_role_for_step
+-- Field: StepExecutions.RequiredRoleForStep
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: AssignedRole from related Steps
+
+
+CREATE OR REPLACE FUNCTION calc_step_executions_required_role_for_step(p_step_execution_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT assigned_role::text FROM steps WHERE step_id = (SELECT step FROM step_executions WHERE step_execution_id = p_step_execution_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_step_executions_executor_agent_kind
+-- Field: StepExecutions.ExecutorAgentKind
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: AgentKind from related Agents
+
+
+CREATE OR REPLACE FUNCTION calc_step_executions_executor_agent_kind(p_step_execution_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT agent_kind::text FROM agents WHERE agent_id = (SELECT executed_by_agent FROM step_executions WHERE step_execution_id = p_step_execution_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_step_executions_step_requires_human_confirmation
+-- Field: StepExecutions.StepRequiresHumanConfirmation
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: RequiresHumanConfirmation from related Steps
+
+
+CREATE OR REPLACE FUNCTION calc_step_executions_step_requires_human_confirmation(p_step_execution_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT requires_human_confirmation::boolean FROM steps WHERE step_id = (SELECT step FROM step_executions WHERE step_execution_id = p_step_execution_id));
 $$ LANGUAGE sql STABLE;
 
 -- get_procedure_executions_execution_status
@@ -1547,6 +1783,146 @@ RETURNS BOOLEAN AS $$
   SELECT (((SELECT NULLIF(verification_result, '') FROM step_executions WHERE step_execution_id = p_step_execution_id) = 'PASS' AND calc_step_executions_has_skipped_verification(p_step_execution_id)))::boolean;
 $$ LANGUAGE sql STABLE;
 
+-- calc_step_executions_preparer_agent_key
+-- Field: StepExecutions.PreparerAgentKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_step_executions_preparer_agent_key(p_step_execution_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_step_executions_step_is_preparation(p_step_execution_id) THEN (CONCAT((SELECT NULLIF(procedure_execution, '') FROM step_executions WHERE step_execution_id = p_step_execution_id), '|', (SELECT NULLIF(executed_by_agent, '') FROM step_executions WHERE step_execution_id = p_step_execution_id)))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_step_executions_approver_agent_key
+-- Field: StepExecutions.ApproverAgentKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_step_executions_approver_agent_key(p_step_execution_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_step_executions_step_is_approval(p_step_execution_id) THEN (CONCAT((SELECT NULLIF(procedure_execution, '') FROM step_executions WHERE step_execution_id = p_step_execution_id), '|', (SELECT NULLIF(executed_by_agent, '') FROM step_executions WHERE step_execution_id = p_step_execution_id)))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_step_executions_prepared_by_this_agent_count
+-- Field: StepExecutions.PreparedByThisAgentCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_step_executions_prepared_by_this_agent_count(p_step_execution_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM step_executions WHERE calc_step_executions_preparer_agent_key(step_execution_id) = calc_step_executions_approver_agent_key(p_step_execution_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_step_executions_violates_separation_of_duties
+-- Field: StepExecutions.ViolatesSeparationOfDuties
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_step_executions_violates_separation_of_duties(p_step_execution_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_step_executions_step_is_approval(p_step_execution_id) AND (calc_step_executions_prepared_by_this_agent_count(p_step_execution_id))::NUMERIC > 0));
+$$ LANGUAGE sql STABLE;
+
+-- calc_step_executions_executor_role_key
+-- Field: StepExecutions.ExecutorRoleKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_step_executions_executor_role_key(p_step_execution_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT((SELECT NULLIF(executed_by_agent, '') FROM step_executions WHERE step_execution_id = p_step_execution_id), '|', calc_step_executions_required_role_for_step(p_step_execution_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_step_executions_executor_authority_count
+-- Field: StepExecutions.ExecutorAuthorityCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_step_executions_executor_authority_count(p_step_execution_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM role_assignments WHERE calc_role_assignments_agent_role_key(role_assignment_id) = calc_step_executions_executor_role_key(p_step_execution_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_step_executions_executor_held_required_role
+-- Field: StepExecutions.ExecutorHeldRequiredRole
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_step_executions_executor_held_required_role(p_step_execution_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_step_executions_executor_authority_count(p_step_execution_id))::NUMERIC > 0)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_step_executions_is_unauthorized_approval
+-- Field: StepExecutions.IsUnauthorizedApproval
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_step_executions_is_unauthorized_approval(p_step_execution_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_step_executions_step_is_approval(p_step_execution_id) AND NOT (calc_step_executions_executor_held_required_role(p_step_execution_id))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_step_executions_completed_execution_key
+-- Field: StepExecutions.CompletedExecutionKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_step_executions_completed_execution_key(p_step_execution_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN (SELECT NULLIF(execution_status, '') FROM step_executions WHERE step_execution_id = p_step_execution_id) = 'Completed' THEN ((SELECT NULLIF(procedure_execution, '') FROM step_executions WHERE step_execution_id = p_step_execution_id))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_step_executions_control_breach_execution_key
+-- Field: StepExecutions.ControlBreachExecutionKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_step_executions_control_breach_execution_key(p_step_execution_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN (calc_step_executions_proceeded_past_blocking_control(p_step_execution_id) OR calc_step_executions_violates_separation_of_duties(p_step_execution_id) OR calc_step_executions_is_unauthorized_approval(p_step_execution_id) OR calc_step_executions_claims_pass_without_evidence(p_step_execution_id)) THEN ((SELECT NULLIF(procedure_execution, '') FROM step_executions WHERE step_execution_id = p_step_execution_id))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_step_executions_late_execution_key
+-- Field: StepExecutions.LateExecutionKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_step_executions_late_execution_key(p_step_execution_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_step_executions_is_late(p_step_execution_id) THEN ((SELECT NULLIF(procedure_execution, '') FROM step_executions WHERE step_execution_id = p_step_execution_id))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_step_executions_executor_is_human
+-- Field: StepExecutions.ExecutorIsHuman
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_step_executions_executor_is_human(p_step_execution_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (calc_step_executions_executor_agent_kind(p_step_execution_id) = 'Human')::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_step_executions_non_human_ran_human_step
+-- Field: StepExecutions.NonHumanRanHumanStep
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_step_executions_non_human_ran_human_step(p_step_execution_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_step_executions_step_requires_human_confirmation(p_step_execution_id) AND NOT (calc_step_executions_executor_is_human(p_step_execution_id))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_step_executions_non_human_approval
+-- Field: StepExecutions.NonHumanApproval
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_step_executions_non_human_approval(p_step_execution_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_step_executions_step_is_approval(p_step_execution_id) AND NOT (calc_step_executions_executor_is_human(p_step_execution_id))))::boolean;
+$$ LANGUAGE sql STABLE;
+
 -- calc_requirement_satisfactions_requirement_is_blocking
 -- Field: RequirementSatisfactions.RequirementIsBlocking
 -- Type: lookup | DataType: boolean | Returns: BOOLEAN
@@ -1556,6 +1932,17 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_requirement_satisfactions_requirement_is_blocking(p_requirement_satisfaction_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT (SELECT is_blocking::boolean FROM requirements WHERE requirement_id = (SELECT requirement FROM requirement_satisfactions WHERE requirement_satisfaction_id = p_requirement_satisfaction_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_requirement_satisfactions_evaluator_agent_kind
+-- Field: RequirementSatisfactions.EvaluatorAgentKind
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: AgentKind from related Agents
+
+
+CREATE OR REPLACE FUNCTION calc_requirement_satisfactions_evaluator_agent_kind(p_requirement_satisfaction_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT agent_kind::text FROM agents WHERE agent_id = (SELECT evaluated_by_agent FROM requirement_satisfactions WHERE requirement_satisfaction_id = p_requirement_satisfaction_id));
 $$ LANGUAGE sql STABLE;
 
 -- get_step_executions_execution_status
@@ -1660,6 +2047,26 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_requirement_satisfactions_blocking_satisfaction_step_key(p_requirement_satisfaction_id TEXT)
 RETURNS TEXT AS $$
   SELECT (CASE WHEN calc_requirement_satisfactions_requirement_is_blocking(p_requirement_satisfaction_id) THEN ((SELECT NULLIF(step_execution, '') FROM requirement_satisfactions WHERE requirement_satisfaction_id = p_requirement_satisfaction_id))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_requirement_satisfactions_negative_outcome_requirement_key
+-- Field: RequirementSatisfactions.NegativeOutcomeRequirementKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_requirement_satisfactions_negative_outcome_requirement_key(p_requirement_satisfaction_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN NOT (calc_requirement_satisfactions_is_fully_satisfied(p_requirement_satisfaction_id)) THEN ((SELECT NULLIF(requirement, '') FROM requirement_satisfactions WHERE requirement_satisfaction_id = p_requirement_satisfaction_id))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_requirement_satisfactions_non_human_evaluated_human_contro
+-- Field: RequirementSatisfactions.NonHumanEvaluatedHumanControl
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_requirement_satisfactions_non_human_evaluated_human_contro(p_requirement_satisfaction_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_requirement_satisfactions_requirement_is_blocking(p_requirement_satisfaction_id) AND calc_requirement_satisfactions_evaluator_agent_kind(p_requirement_satisfaction_id) <> 'Human'))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_errors_name

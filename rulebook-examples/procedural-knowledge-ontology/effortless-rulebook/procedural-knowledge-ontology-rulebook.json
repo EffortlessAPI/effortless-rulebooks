@@ -824,6 +824,22 @@
         "formula": "=IF({{IsCurrent}}, {{Agent}}, \"\")"
       },
       {
+        "name": "IsCurrentlyValid",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this role assignment is active and has not lapsed.",
+        "formula": "=AND({{Status}} = \"Active\", OR({{ValidTo}} = \"\", {{ValidTo}} > NOW()))"
+      },
+      {
+        "name": "AgentRoleKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Composite agent+role key, emitted only for currently-valid assignments.",
+        "formula": "=IF({{IsCurrentlyValid}}, {{Agent}} & \"|\" & {{Role}}, \"\")"
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -1393,6 +1409,14 @@
         "formula": "=AND({{Status}} = \"Approved\", {{CountOfSteps}} > 0, {{CountOfOpenKnowledgeGaps}} = 0)"
       },
       {
+        "name": "SpecifiedStepCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many steps the specification defines for this version.",
+        "formula": "=COUNTIFS(Steps!{{ProcedureVersion}}, {{ProcedureVersionId}})"
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -1771,6 +1795,22 @@
         "nullable": true,
         "Description": "How many verifications the specification declares for this step.",
         "formula": "=COUNTIFS(StepVerifications!{{Step}}, {{StepId}})"
+      },
+      {
+        "name": "IsPreparationStep",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE for steps whose assigned role produces the work product rather than reviewing it.",
+        "formula": "=OR({{AssignedRole}} = \"finance-analyst\", {{AssignedRole}} = \"variance-review-agent\")"
+      },
+      {
+        "name": "IsApprovalStep",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE for steps whose assigned role is an approval authority.",
+        "formula": "=OR({{AssignedRole}} = \"controller\", {{AssignedRole}} = \"cfo\")"
       },
       {
         "name": "SemanticTypeIri",
@@ -2871,6 +2911,62 @@
         "type": "raw",
         "nullable": true,
         "Description": "TRUE when unsatisfied requirement blocks execution or approval."
+      },
+      {
+        "name": "SatisfactionRecordCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many times this requirement has ever been evaluated against an execution.",
+        "formula": "=COUNTIFS(RequirementSatisfactions!{{Requirement}}, {{RequirementId}})"
+      },
+      {
+        "name": "StepBindingCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many steps the specification binds this requirement to.",
+        "formula": "=COUNTIFS(StepRequirements!{{Requirement}}, {{RequirementId}})"
+      },
+      {
+        "name": "IsBoundToAnyStep",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when at least one step carries this requirement.",
+        "formula": "={{StepBindingCount}} > 0"
+      },
+      {
+        "name": "HasEverBeenEvaluated",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this requirement has at least one satisfaction record in the model.",
+        "formula": "={{SatisfactionRecordCount}} > 0"
+      },
+      {
+        "name": "NegativeOutcomeCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many times this requirement has ever produced a less-than-satisfied outcome.",
+        "formula": "=COUNTIFS(RequirementSatisfactions!{{NegativeOutcomeRequirementKey}}, {{RequirementId}})"
+      },
+      {
+        "name": "IsInoperativeControl",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE for a blocking requirement that is attached to a step in the specification but has never once been evaluated on any execution.",
+        "formula": "=AND({{IsBlocking}}, {{IsBoundToAnyStep}}, NOT({{HasEverBeenEvaluated}}))"
+      },
+      {
+        "name": "IsDecorativeControl",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE for a blocking requirement that is not attached to any step at all.",
+        "formula": "=AND({{IsBlocking}}, NOT({{IsBoundToAnyStep}}))"
       },
       {
         "name": "SemanticTypeIri",
@@ -4299,6 +4395,20 @@
         "IdentifiedAt": "2026-07-18T16:00:00-05:00",
         "ResolutionPlan": "Pilot secondary delivery-status reconciliation.",
         "SemanticTypeIri": "urn:effortless:pko-extension#KnowledgeGap"
+      },
+      {
+        "KnowledgeGapId": "gap-close-sod-unwitnessed",
+        "ProcedureVersion": "close-v1.1.0",
+        "Step": "close-05",
+        "Statement": "req-close-separation stated the preparer may not be the final approver, but nothing evaluated it. The control existed only as prose in a Requirements row, so a violation would have been invisible.",
+        "Severity": "High",
+        "BlockingKind": "Blocking",
+        "Status": "Resolved",
+        "OwnerRole": "controller",
+        "IdentifiedAt": "2026-07-19T17:30:00-05:00",
+        "ResolutionPlan": "Resolved by StepExecutions.ViolatesSeparationOfDuties, which counts preparation steps in the same procedure execution performed by the agent now approving. Verified by staging a breach (maria-chen approving se-close05 after preparing se-close03): the witness read TRUE. The staged breach was reverted; the control now reads FALSE because separation genuinely holds, not because nothing is checking.",
+        "EvaluationContext": "eval-current",
+        "SemanticTypeIri": "urn:effortless:pko-extension#KnowledgeGap"
       }
     ]
   },
@@ -4551,6 +4661,54 @@
         "type": "raw",
         "nullable": true,
         "Description": "Identifier in the operational execution system."
+      },
+      {
+        "name": "ExpectedStepCount",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "How many steps this execution was supposed to perform.",
+        "formula": "=INDEX(ProcedureVersions!{{SpecifiedStepCount}}, MATCH({{ProcedureVersion}}, ProcedureVersions!{{ProcedureVersionId}}, 0))"
+      },
+      {
+        "name": "CompletedStepCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many steps of this execution actually reached Completed.",
+        "formula": "=COUNTIFS(StepExecutions!{{CompletedExecutionKey}}, {{ProcedureExecutionId}})"
+      },
+      {
+        "name": "ControlBreachCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Total step executions in this run that carry at least one control breach.",
+        "formula": "=COUNTIFS(StepExecutions!{{ControlBreachExecutionKey}}, {{ProcedureExecutionId}})"
+      },
+      {
+        "name": "LateStepCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many steps in this execution ran long.",
+        "formula": "=COUNTIFS(StepExecutions!{{LateExecutionKey}}, {{ProcedureExecutionId}})"
+      },
+      {
+        "name": "IsStructurallyComplete",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when every specified step of the procedure version reached Completed in this execution.",
+        "formula": "={{CompletedStepCount}} >= {{ExpectedStepCount}}"
+      },
+      {
+        "name": "DivergedFromSpecification",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the execution either skipped specified steps or carried at least one control breach.",
+        "formula": "=OR(NOT({{IsStructurallyComplete}}), {{ControlBreachCount}} > 0)"
       },
       {
         "name": "SemanticTypeIri",
@@ -4832,6 +4990,158 @@
         "formula": "=AND({{VerificationResult}} = \"PASS\", {{HasSkippedVerification}})"
       },
       {
+        "name": "StepIsPreparation",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether this execution ran a preparation step.",
+        "formula": "=INDEX(Steps!{{IsPreparationStep}}, MATCH({{Step}}, Steps!{{StepId}}, 0))"
+      },
+      {
+        "name": "StepIsApproval",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether this execution ran an approval step.",
+        "formula": "=INDEX(Steps!{{IsApprovalStep}}, MATCH({{Step}}, Steps!{{StepId}}, 0))"
+      },
+      {
+        "name": "PreparerAgentKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Composite execution+agent key, emitted only for preparation steps.",
+        "formula": "=IF({{StepIsPreparation}}, {{ProcedureExecution}} & \"|\" & {{ExecutedByAgent}}, \"\")"
+      },
+      {
+        "name": "ApproverAgentKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Composite execution+agent key, emitted only for approval steps.",
+        "formula": "=IF({{StepIsApproval}}, {{ProcedureExecution}} & \"|\" & {{ExecutedByAgent}}, \"\")"
+      },
+      {
+        "name": "PreparedByThisAgentCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "On an approval row, how many preparation steps in the SAME procedure execution were run by this same agent.",
+        "formula": "=COUNTIFS(StepExecutions!{{PreparerAgentKey}}, {{ApproverAgentKey}})"
+      },
+      {
+        "name": "ViolatesSeparationOfDuties",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the agent approving this step also prepared work earlier in the same procedure execution.",
+        "formula": "=AND({{StepIsApproval}}, {{PreparedByThisAgentCount}} > 0)"
+      },
+      {
+        "name": "RequiredRoleForStep",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The role the specification assigns to this step.",
+        "formula": "=INDEX(Steps!{{AssignedRole}}, MATCH({{Step}}, Steps!{{StepId}}, 0))"
+      },
+      {
+        "name": "ExecutorRoleKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "The agent+role pair that would need to exist as a valid assignment for this execution to be properly authorized.",
+        "formula": "={{ExecutedByAgent}} & \"|\" & {{RequiredRoleForStep}}"
+      },
+      {
+        "name": "ExecutorAuthorityCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many currently-valid role assignments grant this executor the role their step required.",
+        "formula": "=COUNTIFS(RoleAssignments!{{AgentRoleKey}}, {{ExecutorRoleKey}})"
+      },
+      {
+        "name": "ExecutorHeldRequiredRole",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the executing agent holds a currently-valid assignment to the role the step required.",
+        "formula": "={{ExecutorAuthorityCount}} > 0"
+      },
+      {
+        "name": "IsUnauthorizedApproval",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when an approval step was executed by an agent who does not hold the required approving role.",
+        "formula": "=AND({{StepIsApproval}}, NOT({{ExecutorHeldRequiredRole}}))"
+      },
+      {
+        "name": "CompletedExecutionKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Echoes the parent execution id only for completed steps.",
+        "formula": "=IF({{ExecutionStatus}} = \"Completed\", {{ProcedureExecution}}, \"\")"
+      },
+      {
+        "name": "ControlBreachExecutionKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Echoes the parent execution id when this step execution carries ANY control breach.",
+        "formula": "=IF(OR({{ProceededPastBlockingControl}}, {{ViolatesSeparationOfDuties}}, {{IsUnauthorizedApproval}}, {{ClaimsPassWithoutEvidence}}), {{ProcedureExecution}}, \"\")"
+      },
+      {
+        "name": "LateExecutionKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Echoes the parent execution id only for steps that ran past their expected duration.",
+        "formula": "=IF({{IsLate}}, {{ProcedureExecution}}, \"\")"
+      },
+      {
+        "name": "ExecutorAgentKind",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Human, AIAgent, or AutomatedPipeline \u2014 what kind of agent actually ran this step.",
+        "formula": "=INDEX(Agents!{{AgentKind}}, MATCH({{ExecutedByAgent}}, Agents!{{AgentId}}, 0))"
+      },
+      {
+        "name": "ExecutorIsHuman",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a human executed this step.",
+        "formula": "={{ExecutorAgentKind}} = \"Human\""
+      },
+      {
+        "name": "StepRequiresHumanConfirmation",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether the specification requires this step to be human-confirmed.",
+        "formula": "=INDEX(Steps!{{RequiresHumanConfirmation}}, MATCH({{Step}}, Steps!{{StepId}}, 0))"
+      },
+      {
+        "name": "NonHumanRanHumanStep",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a step requiring human confirmation was executed by an AI agent or automated pipeline.",
+        "formula": "=AND({{StepRequiresHumanConfirmation}}, NOT({{ExecutorIsHuman}}))"
+      },
+      {
+        "name": "NonHumanApproval",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when an approval-authority step was executed by a non-human agent, regardless of the RequiresHumanConfirmation flag.",
+        "formula": "=AND({{StepIsApproval}}, NOT({{ExecutorIsHuman}}))"
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -5089,6 +5399,30 @@
         "nullable": true,
         "Description": "Echoes the parent StepExecution id when this satisfaction row concerns a blocking requirement.",
         "formula": "=IF({{RequirementIsBlocking}}, {{StepExecution}}, \"\")"
+      },
+      {
+        "name": "NegativeOutcomeRequirementKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Echoes the Requirement id only when this evaluation came out at less than fully Satisfied.",
+        "formula": "=IF(NOT({{IsFullySatisfied}}), {{Requirement}}, \"\")"
+      },
+      {
+        "name": "EvaluatorAgentKind",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "What kind of agent evaluated this requirement satisfaction.",
+        "formula": "=INDEX(Agents!{{AgentKind}}, MATCH({{EvaluatedByAgent}}, Agents!{{AgentId}}, 0))"
+      },
+      {
+        "name": "NonHumanEvaluatedHumanControl",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a blocking requirement was evaluated by a non-human agent.",
+        "formula": "=AND({{RequirementIsBlocking}}, {{EvaluatorAgentKind}} <> \"Human\")"
       },
       {
         "name": "SemanticTypeIri",
@@ -7029,6 +7363,51 @@
         "WhyItMatters": "StepVerifications is entirely spec-side. verify-reconciliation declares that close-03 must show unexplained-material-variance = 0. I ran close-03. My StepExecution says VerificationResult=PASS. But there is no row anywhere recording what the signal ACTUALLY read. The PASS is an unbacked assertion typed into a field. If an auditor asks me to produce the observed value, the model has nothing \u2014 and a skipped verification looks identical to a passed one.",
         "AnswerableBefore": false,
         "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-controller-separation-of-duties",
+        "AskingRole": "controller",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "Did the same agent both prepare and approve any part of this close? req-close-separation says the preparer may not be the final approver \u2014 show me that it actually held, on exec-close-2026-q2, computed and not asserted.",
+        "WhyItMatters": "This is the single highest-value gap in the model and it is my control. req-close-separation is IsBlocking=true, bound to close-05 via sr-c05, and sat-close-separation records SatisfactionLevel='Satisfied' with the evidence string 'Preparer and reviewer were different agents.' That string is a human typing a conclusion into a text field. NOTHING compares se-close03.ExecutedByAgent (maria-chen) against se-close05.ExecutedByAgent (devon-okafor) or se-close06.ExecutedByAgent (priya-raman). Segregation of duties is the control SOX cares about most and in this model it is prose. If maria-chen executed both the preparation and the approval tomorrow, sat-close-separation would still say 'Satisfied' and the model would agree.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-controller-approval-authority-valid",
+        "AskingRole": "controller",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "Every approval on this close \u2014 was it given by an agent who actually held the required role AT THE TIME they approved, not just someone who holds it today?",
+        "WhyItMatters": "req-close-human-approval is blocking and says controller and CFO approvals must be human-confirmed. sat-close-human records 'Satisfied' because a human name appears in a field. But nothing checks that the approving agent held the approving role. RoleAssignments proves this is not paranoia: ra-old-variance shows maria-chen held variance-review-agent until 2026-03-31 and ra-new-variance shows variance-ai took it on 2026-04-01. Role-holding is time-bounded and it genuinely changes. If someone approves close-06 who is not the CFO, or who was the CFO last quarter but not this one, I need that computed. And exc-cfo-unavailable explicitly permits delegation to an Acting CFO 'never to the preparer' \u2014 so an authority check that cannot see delegation is incomplete.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-controller-blocking-control-inoperative",
+        "AskingRole": "controller",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "Which of my blocking close controls are structurally incapable of failing \u2014 declared, bound to a step, and yet with no mechanism that could ever produce a negative result?",
+        "WhyItMatters": "req-close-cutoff, req-close-balance, req-close-separation, and req-close-evidence are all IsBlocking=true. All four are pure prose. A control that cannot fail is not a control, it is a comment. Before I sign anything I want a list of my own controls ranked by whether they can actually operate. This is the meta-question \u2014 it is about the model's ability to hold me accountable, and it is the one I would ask first if I were the external auditor rather than the controller.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-controller-execution-diverged-from-spec",
+        "AskingRole": "controller",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "Give me one number per close: did exec-close-2026-q2 actually conform to close-v1.1.0, and if not, how far off was it?",
+        "WhyItMatters": "ProcedureExecutions has ZERO derived fields. The parent of the entire execution story makes no claim whatsoever \u2014 it has a status someone typed and two timestamps. Every failure signal in this model lives on child rows, so to know whether a close was clean I have to read twelve StepExecutions and six RequirementSatisfactions by hand. That is not a control environment, that is a filing cabinet. I want conformance to be a computed property of the execution, so that 'the close was clean' is a claim the model makes and can be wrong about.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-controller-ai-agent-approved-meaning",
+        "AskingRole": "controller",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "Did any AI agent or automated pipeline execute a step that requires human confirmation, or sign off on something a human was supposed to own?",
+        "WhyItMatters": "req-close-human-approval and req-policy-human-approval both say a human must approve. Steps carries RequiresHumanConfirmation as a raw boolean and Agents carries AgentKind \u2014 Human, AIAgent, AutomatedPipeline \u2014 and NOTHING compares them. variance-ai executed se-close04. policy-drafting-ai executed se-policy03. Both fine today because those steps are not approval steps. But ra-old-variance to ra-new-variance shows this org actively migrates work from humans to AI agents, and the control that is supposed to stop that migration reaching an approval step is prose. This is the control I expect to matter most over the next two years and it currently does not exist.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
       }
     ]
   },
@@ -7719,6 +8098,26 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "RoleAssignments.IsCurrentlyValid",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "IsCurrentlyValid",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{Status}} = \"Active\", OR({{ValidTo}} = \"\", {{ValidTo}} > NOW()))",
+        "InventedForQuestion": "q-controller-approval-authority-valid",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.AgentRoleKey",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "AgentRoleKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{IsCurrentlyValid}}, {{Agent}} & \"|\" & {{Role}}, \"\")",
+        "InventedForQuestion": "q-controller-approval-authority-valid",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "RoleAssignments.SemanticTypeIri",
         "TargetTable": "RoleAssignments",
         "FieldName": "SemanticTypeIri",
@@ -8229,6 +8628,16 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "ProcedureVersions.SpecifiedStepCount",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "SpecifiedStepCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(Steps!{{ProcedureVersion}}, {{ProcedureVersionId}})",
+        "InventedForQuestion": "q-controller-execution-diverged-from-spec",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "ProcedureVersions.SemanticTypeIri",
         "TargetTable": "ProcedureVersions",
         "FieldName": "SemanticTypeIri",
@@ -8566,6 +8975,26 @@
         "Datatype": "number",
         "Formula": "=COUNTIFS(StepVerifications!{{Step}}, {{StepId}})",
         "InventedForQuestion": "q-analyst-verification-declared-never-performed",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Steps.IsPreparationStep",
+        "TargetTable": "Steps",
+        "FieldName": "IsPreparationStep",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=OR({{AssignedRole}} = \"finance-analyst\", {{AssignedRole}} = \"variance-review-agent\")",
+        "InventedForQuestion": "q-controller-separation-of-duties",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Steps.IsApprovalStep",
+        "TargetTable": "Steps",
+        "FieldName": "IsApprovalStep",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=OR({{AssignedRole}} = \"controller\", {{AssignedRole}} = \"cfo\")",
+        "InventedForQuestion": "q-controller-separation-of-duties",
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
@@ -9016,6 +9445,76 @@
         "Datatype": "boolean",
         "Formula": null,
         "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Requirements.SatisfactionRecordCount",
+        "TargetTable": "Requirements",
+        "FieldName": "SatisfactionRecordCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(RequirementSatisfactions!{{Requirement}}, {{RequirementId}})",
+        "InventedForQuestion": "q-controller-blocking-control-inoperative",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Requirements.StepBindingCount",
+        "TargetTable": "Requirements",
+        "FieldName": "StepBindingCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(StepRequirements!{{Requirement}}, {{RequirementId}})",
+        "InventedForQuestion": "q-controller-blocking-control-inoperative",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Requirements.IsBoundToAnyStep",
+        "TargetTable": "Requirements",
+        "FieldName": "IsBoundToAnyStep",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{StepBindingCount}} > 0",
+        "InventedForQuestion": "q-controller-blocking-control-inoperative",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Requirements.HasEverBeenEvaluated",
+        "TargetTable": "Requirements",
+        "FieldName": "HasEverBeenEvaluated",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{SatisfactionRecordCount}} > 0",
+        "InventedForQuestion": "q-controller-blocking-control-inoperative",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Requirements.NegativeOutcomeCount",
+        "TargetTable": "Requirements",
+        "FieldName": "NegativeOutcomeCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(RequirementSatisfactions!{{NegativeOutcomeRequirementKey}}, {{RequirementId}})",
+        "InventedForQuestion": "q-controller-blocking-control-inoperative",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Requirements.IsInoperativeControl",
+        "TargetTable": "Requirements",
+        "FieldName": "IsInoperativeControl",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsBlocking}}, {{IsBoundToAnyStep}}, NOT({{HasEverBeenEvaluated}}))",
+        "InventedForQuestion": "q-controller-blocking-control-inoperative",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Requirements.IsDecorativeControl",
+        "TargetTable": "Requirements",
+        "FieldName": "IsDecorativeControl",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsBlocking}}, NOT({{IsBoundToAnyStep}}))",
+        "InventedForQuestion": "q-controller-blocking-control-inoperative",
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
@@ -10179,6 +10678,66 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "ProcedureExecutions.ExpectedStepCount",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "ExpectedStepCount",
+        "FieldType": "lookup",
+        "Datatype": "number",
+        "Formula": "=INDEX(ProcedureVersions!{{SpecifiedStepCount}}, MATCH({{ProcedureVersion}}, ProcedureVersions!{{ProcedureVersionId}}, 0))",
+        "InventedForQuestion": "q-controller-execution-diverged-from-spec",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureExecutions.CompletedStepCount",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "CompletedStepCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(StepExecutions!{{CompletedExecutionKey}}, {{ProcedureExecutionId}})",
+        "InventedForQuestion": "q-controller-execution-diverged-from-spec",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureExecutions.ControlBreachCount",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "ControlBreachCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(StepExecutions!{{ControlBreachExecutionKey}}, {{ProcedureExecutionId}})",
+        "InventedForQuestion": "q-controller-execution-diverged-from-spec",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureExecutions.LateStepCount",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "LateStepCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(StepExecutions!{{LateExecutionKey}}, {{ProcedureExecutionId}})",
+        "InventedForQuestion": "q-controller-execution-diverged-from-spec",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureExecutions.IsStructurallyComplete",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "IsStructurallyComplete",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{CompletedStepCount}} >= {{ExpectedStepCount}}",
+        "InventedForQuestion": "q-controller-execution-diverged-from-spec",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureExecutions.DivergedFromSpecification",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "DivergedFromSpecification",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=OR(NOT({{IsStructurallyComplete}}), {{ControlBreachCount}} > 0)",
+        "InventedForQuestion": "q-controller-execution-diverged-from-spec",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "ProcedureExecutions.SemanticTypeIri",
         "TargetTable": "ProcedureExecutions",
         "FieldName": "SemanticTypeIri",
@@ -10499,6 +11058,196 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "StepExecutions.StepIsPreparation",
+        "TargetTable": "StepExecutions",
+        "FieldName": "StepIsPreparation",
+        "FieldType": "lookup",
+        "Datatype": "boolean",
+        "Formula": "=INDEX(Steps!{{IsPreparationStep}}, MATCH({{Step}}, Steps!{{StepId}}, 0))",
+        "InventedForQuestion": "q-controller-separation-of-duties",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.StepIsApproval",
+        "TargetTable": "StepExecutions",
+        "FieldName": "StepIsApproval",
+        "FieldType": "lookup",
+        "Datatype": "boolean",
+        "Formula": "=INDEX(Steps!{{IsApprovalStep}}, MATCH({{Step}}, Steps!{{StepId}}, 0))",
+        "InventedForQuestion": "q-controller-separation-of-duties",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.PreparerAgentKey",
+        "TargetTable": "StepExecutions",
+        "FieldName": "PreparerAgentKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{StepIsPreparation}}, {{ProcedureExecution}} & \"|\" & {{ExecutedByAgent}}, \"\")",
+        "InventedForQuestion": "q-controller-separation-of-duties",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.ApproverAgentKey",
+        "TargetTable": "StepExecutions",
+        "FieldName": "ApproverAgentKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{StepIsApproval}}, {{ProcedureExecution}} & \"|\" & {{ExecutedByAgent}}, \"\")",
+        "InventedForQuestion": "q-controller-separation-of-duties",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.PreparedByThisAgentCount",
+        "TargetTable": "StepExecutions",
+        "FieldName": "PreparedByThisAgentCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(StepExecutions!{{PreparerAgentKey}}, {{ApproverAgentKey}})",
+        "InventedForQuestion": "q-controller-separation-of-duties",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.ViolatesSeparationOfDuties",
+        "TargetTable": "StepExecutions",
+        "FieldName": "ViolatesSeparationOfDuties",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{StepIsApproval}}, {{PreparedByThisAgentCount}} > 0)",
+        "InventedForQuestion": "q-controller-separation-of-duties",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.RequiredRoleForStep",
+        "TargetTable": "StepExecutions",
+        "FieldName": "RequiredRoleForStep",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(Steps!{{AssignedRole}}, MATCH({{Step}}, Steps!{{StepId}}, 0))",
+        "InventedForQuestion": "q-controller-approval-authority-valid",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.ExecutorRoleKey",
+        "TargetTable": "StepExecutions",
+        "FieldName": "ExecutorRoleKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{ExecutedByAgent}} & \"|\" & {{RequiredRoleForStep}}",
+        "InventedForQuestion": "q-controller-approval-authority-valid",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.ExecutorAuthorityCount",
+        "TargetTable": "StepExecutions",
+        "FieldName": "ExecutorAuthorityCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(RoleAssignments!{{AgentRoleKey}}, {{ExecutorRoleKey}})",
+        "InventedForQuestion": "q-controller-approval-authority-valid",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.ExecutorHeldRequiredRole",
+        "TargetTable": "StepExecutions",
+        "FieldName": "ExecutorHeldRequiredRole",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{ExecutorAuthorityCount}} > 0",
+        "InventedForQuestion": "q-controller-approval-authority-valid",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.IsUnauthorizedApproval",
+        "TargetTable": "StepExecutions",
+        "FieldName": "IsUnauthorizedApproval",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{StepIsApproval}}, NOT({{ExecutorHeldRequiredRole}}))",
+        "InventedForQuestion": "q-controller-approval-authority-valid",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.CompletedExecutionKey",
+        "TargetTable": "StepExecutions",
+        "FieldName": "CompletedExecutionKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{ExecutionStatus}} = \"Completed\", {{ProcedureExecution}}, \"\")",
+        "InventedForQuestion": "q-controller-execution-diverged-from-spec",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.ControlBreachExecutionKey",
+        "TargetTable": "StepExecutions",
+        "FieldName": "ControlBreachExecutionKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF(OR({{ProceededPastBlockingControl}}, {{ViolatesSeparationOfDuties}}, {{IsUnauthorizedApproval}}, {{ClaimsPassWithoutEvidence}}), {{ProcedureExecution}}, \"\")",
+        "InventedForQuestion": "q-controller-execution-diverged-from-spec",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.LateExecutionKey",
+        "TargetTable": "StepExecutions",
+        "FieldName": "LateExecutionKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{IsLate}}, {{ProcedureExecution}}, \"\")",
+        "InventedForQuestion": "q-controller-execution-diverged-from-spec",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.ExecutorAgentKind",
+        "TargetTable": "StepExecutions",
+        "FieldName": "ExecutorAgentKind",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(Agents!{{AgentKind}}, MATCH({{ExecutedByAgent}}, Agents!{{AgentId}}, 0))",
+        "InventedForQuestion": "q-controller-ai-agent-approved-meaning",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.ExecutorIsHuman",
+        "TargetTable": "StepExecutions",
+        "FieldName": "ExecutorIsHuman",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{ExecutorAgentKind}} = \"Human\"",
+        "InventedForQuestion": "q-controller-ai-agent-approved-meaning",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.StepRequiresHumanConfirmation",
+        "TargetTable": "StepExecutions",
+        "FieldName": "StepRequiresHumanConfirmation",
+        "FieldType": "lookup",
+        "Datatype": "boolean",
+        "Formula": "=INDEX(Steps!{{RequiresHumanConfirmation}}, MATCH({{Step}}, Steps!{{StepId}}, 0))",
+        "InventedForQuestion": "q-controller-ai-agent-approved-meaning",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.NonHumanRanHumanStep",
+        "TargetTable": "StepExecutions",
+        "FieldName": "NonHumanRanHumanStep",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{StepRequiresHumanConfirmation}}, NOT({{ExecutorIsHuman}}))",
+        "InventedForQuestion": "q-controller-ai-agent-approved-meaning",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.NonHumanApproval",
+        "TargetTable": "StepExecutions",
+        "FieldName": "NonHumanApproval",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{StepIsApproval}}, NOT({{ExecutorIsHuman}}))",
+        "InventedForQuestion": "q-controller-ai-agent-approved-meaning",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "StepExecutions.SemanticTypeIri",
         "TargetTable": "StepExecutions",
         "FieldName": "SemanticTypeIri",
@@ -10636,6 +11385,36 @@
         "Datatype": "string",
         "Formula": "=IF({{RequirementIsBlocking}}, {{StepExecution}}, \"\")",
         "InventedForQuestion": "q-analyst-blocking-never-evaluated",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RequirementSatisfactions.NegativeOutcomeRequirementKey",
+        "TargetTable": "RequirementSatisfactions",
+        "FieldName": "NegativeOutcomeRequirementKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF(NOT({{IsFullySatisfied}}), {{Requirement}}, \"\")",
+        "InventedForQuestion": "q-controller-blocking-control-inoperative",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RequirementSatisfactions.EvaluatorAgentKind",
+        "TargetTable": "RequirementSatisfactions",
+        "FieldName": "EvaluatorAgentKind",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(Agents!{{AgentKind}}, MATCH({{EvaluatedByAgent}}, Agents!{{AgentId}}, 0))",
+        "InventedForQuestion": "q-controller-ai-agent-approved-meaning",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RequirementSatisfactions.NonHumanEvaluatedHumanControl",
+        "TargetTable": "RequirementSatisfactions",
+        "FieldName": "NonHumanEvaluatedHumanControl",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{RequirementIsBlocking}}, {{EvaluatorAgentKind}} <> \"Human\")",
+        "InventedForQuestion": "q-controller-ai-agent-approved-meaning",
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
