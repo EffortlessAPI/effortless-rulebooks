@@ -40,6 +40,55 @@ The mock data contains two complete procedure families:
 1. **Quarter-End Financial Close**
 2. **Workforce Policy Change and Employee Notification**
 
+## Every derived field exists because a named role asked a question
+
+The model was always good at *specifying* obligations and bad at *witnessing*
+their breach. A requirement could say "the preparer may not be the final
+approver" and nothing evaluated it; a communication policy could require
+consent and nothing could tell a lawful send from an unlawful one.
+
+Three tables record the fix and its provenance:
+
+```text
+WitnessLoops -> RoleQuestions -> RulebookFields
+    ^               ^                  ^
+  loop N      asked by a Role   InventedForQuestion FK
+```
+
+Each of the twelve roles in the model — the controller, the CFO, the process
+steward, the knowledge authority, employment counsel, the notification
+pipeline, the variance-review AI — asks questions in its own voice, and every
+predicate invented to answer one traces back through `InventedForQuestion`.
+Fields that predate the exercise carry null rather than a fabricated
+motivation.
+
+Some of what the witnesses found, all from data that was already in the model:
+
+| Witness | Reading |
+|---|---|
+| `Requirements.IsInoperativeControl` | 6 of 13 blocking controls bound to steps with **zero** satisfaction records ever — structurally incapable of failing |
+| `Requirements.HasComputedWitness` | only 4 of 13 requirements have any computed predicate evaluating them |
+| `StepExecutions.ProceededPastBlockingControl` | the reconciliation step closed with a 7-year evidence-retention control unsatisfied |
+| `VerificationOutcomes.IsUnbackedObservation` | a reconciliation reported PASS with no workpaper attached |
+| `MessageDeliveries.IsConsentViolation` | an SMS delivered to a recipient who never consented — while correctly *not* flagging the send that was properly suppressed |
+| `StepTransitions.IsUnwalkedRecoveryPath` | 4 recovery paths never once exercised, including the route taken when reconciliation fails |
+| `KnowledgeFragments.IsUndefendableTacitClaim` | tacit know-how whose only source has no current role assignment |
+| `RoleAssignments.IsHumanToNonHumanHandover` | an AI agent took over a control function from a named human, on a date, with the approving authority recorded |
+
+Two rules keep this honest:
+
+- **Non-vacuity.** A boolean that is all-true or all-false over the seed data
+  states nothing about the procedures. `tools/verify_witnesses.sh` reports every
+  witness's distribution and flags the ones that cannot discriminate.
+- **Violations are seeded, proven, then remediated *in model*.** The violating
+  rows stay — deleting them would destroy the evidence — with the exception
+  invoked and the knowledge gap resolved alongside. The arc is the story.
+
+```bash
+tools/verify_witnesses.sh            # rebuild, reload, report every witness
+python3 tools/reconcile_field_catalog.py --check   # catalog drift is an error
+```
+
 ## Native PKO versus the ERB-PKO extension
 
 The project does not relabel every enterprise concept as PKO.

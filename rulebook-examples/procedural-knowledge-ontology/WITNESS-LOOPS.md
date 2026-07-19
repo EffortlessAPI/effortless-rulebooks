@@ -80,19 +80,20 @@ Always confirm the column discriminates in Postgres.
 |---|---|---|
 | finance-analyst | 33 | yes |
 | controller | 40 | yes |
-| cfo | | |
-| process-steward | | |
-| knowledge-authority | | |
-| hr-policy-owner | | |
-| employment-counsel | | |
-| communications-manager | | |
-| notification-publisher | | |
-| close-automation | | |
-| variance-review-agent | | |
-| policy-drafting-agent | | |
+| cfo | 40 | yes |
+| process-steward | 37 | yes |
+| knowledge-authority | 40 | yes |
+| employment-counsel | 43 | yes |
+| communications-manager | 46 | yes |
+| notification-publisher | 44 | yes |
+| close-automation | 35 | yes |
+| hr-policy-owner | 34 | yes |
+| variance-review-agent | 40 | yes |
+| policy-drafting-agent | 31 | yes |
 
-Non-vacuity: baseline 10 discriminating -> 33 after two roles.
-Fields: 496 -> 601. Witnessed: 0 -> 73.
+**LOOP 1 COMPLETE.** 12 roles, 60 questions, 462 witnessed predicates,
+65 tables, 1096 fields, 559 derived, 753 functions.
+Non-vacuity: 10 discriminating booleans at baseline -> 135.
 
 ## Findings the model surfaced (all from data that was already there)
 

@@ -9465,6 +9465,15 @@
         "FieldsAfter": 1096,
         "WitnessedAfter": 462,
         "DerivedAfter": 559
+      },
+      {
+        "WitnessLoopId": "loop-02",
+        "LoopNumber": 2,
+        "Title": "Questions only loop 1 made askable",
+        "Premise": "Loop 1 established WHAT can go wrong: a blocking control unmet, a verification skipped, a send refused, a claim whose source has left. Loop 2 asks the questions that only exist once those columns do \u2014 about the QUALITY of the assurance rather than its presence. Three examples that had no expressible form before loop 1 ran: only 4 of 13 requirements have any computed witness at all, so which controls are still trusted purely on assertion; verification_outcomes.is_self_witnessed reads 3/4, so how much of the evidence is the executor vouching for themselves; and send_intents.is_silently_dropped reads 4/7, a failure mode that could not be named until IsClearedToSend existed to refuse a send in the first place. Every loop-2 question records, in its own provenance, the loop-1 predicates that made it possible.",
+        "StartedAt": "2026-07-19T19:45:00-05:00",
+        "CompletedAt": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#WitnessLoop"
       }
     ]
   },
