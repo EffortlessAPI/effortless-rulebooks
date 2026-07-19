@@ -70,7 +70,7 @@ jobs:
             "status": "RUNNER_STARTED",
             "github_run_id": "$GITHUB_RUN_ID",
             "head_sha": "$GITHUB_SHA",
-            "driver": "content-addressed-provider-ledger-v3"
+            "driver": "content-addressed-provider-ledger-v4"
           }
           EOF
           git add "$domain/testing/provider-711-836-status.json"
@@ -127,6 +127,7 @@ jobs:
               if len(parts) != expected_count:
                   raise AssertionError(f'{stem}: expected {expected_count} parts, found {len(parts)}')
               encoded = ''.join(part.read_text().strip() for part in parts)
+              encoded += '=' * (-len(encoded) % 4)
               compressed = base64.b64decode(encoded, validate=True)
               decoded = gzip.decompress(compressed)
               output.parent.mkdir(parents=True, exist_ok=True)
