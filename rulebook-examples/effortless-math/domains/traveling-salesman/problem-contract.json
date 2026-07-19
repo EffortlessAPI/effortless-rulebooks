@@ -1067,12 +1067,12 @@
     {
       "LoopOrder": 681,
       "LoopId": "tsp-loop-681",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "The FOUR_REGION_RING family is declared but tsp-holdout-fourregion8-8 has no canonical graph rows.",
       "ClosureCriterion": "Materialize a deterministic 8-stop FOUR_REGION_RING graph as HELD_OUT data without using its exact optimum to alter weights or the semantic basis.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Materialized tsp-holdout-fourregion8-8 as frozen held-out graph data.",
+      "Result": "8 stops, 28 canonical edge rows, family FOUR_REGION_RING, OracleStatus=PENDING; no weight was selected from an optimum result.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 682,
@@ -1486,11 +1486,11 @@
   "Acceptance": {
     "RulebookTables": 45,
     "Cities": 1,
-    "Neighborhoods": 29,
-    "Addresses": 97,
-    "TSPInstances": 17,
-    "InstanceStops": 105,
-    "TravelEdges": 293,
+    "Neighborhoods": 33,
+    "Addresses": 105,
+    "TSPInstances": 18,
+    "InstanceStops": 113,
+    "TravelEdges": 321,
     "CandidateTours": 21,
     "TSPLoops": 134,
     "FrontierObligations": 33,
@@ -1505,7 +1505,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 710,
-    "HighestCompletedLoop": 680,
+    "HighestCompletedLoop": 681,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 16,
     "SelectedNotForcedEdgeStates": 5,
@@ -1547,8 +1547,8 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 66,
     "ClusterContractionCertificates": 7,
-    "ConvergenceMeasurements": 84,
-    "ConceptRegistry": 136,
+    "ConvergenceMeasurements": 85,
+    "ConceptRegistry": 137,
     "DefectProfiles": 31,
     "BoundTerms": 8,
     "WitnessNormalForms": 32,
@@ -1582,7 +1582,7 @@
     "DevelopmentMaxExactClassCount": 20160
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:95f87a366cb4bb77bacdf461ed797b26c93334e7a51688e212bfe535afd310a4",
+    "rulebook": "sha256:908c8a6ff50451fe03ac7baad701d6c53cf6454fd060c6818aaa413e83e4c6a5",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
