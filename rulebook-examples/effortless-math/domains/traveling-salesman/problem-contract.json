@@ -1237,12 +1237,12 @@
     {
       "LoopOrder": 698,
       "LoopId": "tsp-loop-698",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
       "ClosureCriterion": "Record feasible classes to deterministic residue, value classes to residual values, and optimal witnesses to choice orbit.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Derived Search Compression Profile across the exact held-out corpus.",
+      "Result": "Every held-out instance now exposes one class/value/choice compression trace rather than one untyped search count.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 699,
@@ -1505,7 +1505,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 710,
-    "HighestCompletedLoop": 697,
+    "HighestCompletedLoop": 698,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 16,
     "SelectedNotForcedEdgeStates": 5,
@@ -1547,8 +1547,8 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 66,
     "ClusterContractionCertificates": 7,
-    "ConvergenceMeasurements": 101,
-    "ConceptRegistry": 153,
+    "ConvergenceMeasurements": 102,
+    "ConceptRegistry": 154,
     "DefectProfiles": 33,
     "BoundTerms": 8,
     "WitnessNormalForms": 35,
@@ -1582,7 +1582,7 @@
     "DevelopmentMaxExactClassCount": 20160
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:b4f9d1148425903fef2be13226ed4c296183ada85f1c499c3f61e7638b41b8bc",
+    "rulebook": "sha256:962dba165e8c92cafc51d9d0696808d24a01d7652a0eef1e97ac5210fe75ac0b",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
