@@ -462,7 +462,27 @@ def add_frontier(rb: dict[str, Any], ident: str, display: str, opened: int, clos
 
 
 def finish_loop(rb: dict[str, Any], contract: dict[str, Any], order: int, after: str, witness: str) -> None:
-    base.finish_loop(rb, contract, order, after, witness)
+    loop = next(row for row in rows(rb, "TSPLoops") if int(row["LoopOrder"]) == order)
+    loop.update(
+        {
+            "Status": "CLOSED",
+            "AfterState": after,
+            "WitnessSummary": witness,
+            "CompletionDisposition": "CLOSED",
+            "NextFrontier": LOOPS[order]["next"],
+        }
+    )
+    contract_loop = next(row for row in contract["Loops"] if int(row["LoopOrder"]) == order)
+    contract_loop.update(
+        {
+            "Status": "CLOSED",
+            "AfterState": after,
+            "Result": witness,
+            "CompletionDisposition": "CLOSED",
+        }
+    )
+    set_meta(rb, "last_loop", "integer", integer=order)
+    set_meta(rb, "highest_completed_loop", "integer", integer=order)
 
 
 def save(rb: dict[str, Any], contract: dict[str, Any]) -> None:
