@@ -193,6 +193,10 @@ def main() -> int:
             for msg in check_formula(rb, tbl, p.get("formula", ""), pending_by_table):
                 problems.append(f"{tbl}.{fname}: {msg}")
 
+            if p["field_type"] == "relationship" and not p.get("related_to"):
+                problems.append(f"{tbl}.{fname}: relationship field needs related_to "
+                                "(or should be raw/lookup if it would create a table cycle)")
+                continue
             field = OrderedDict([
                 ("name", fname),
                 ("datatype", p["datatype"]),

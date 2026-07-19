@@ -7975,9 +7975,9 @@
       {
         "name": "LastValidApproval",
         "datatype": "string",
-        "type": "relationship",
+        "type": "raw",
         "nullable": true,
-        "Description": "The most recent properly-authorized approval on this template."
+        "Description": "The TemplateApprovals id of the approval this template is currently sendable under. Deliberately a raw identifier, not a relationship: TemplateApprovals already points at MessageTemplates, so declaring an FK back would make the two tables mutually dependent and the rulebook is required to stay acyclic. The value is still resolved by INDEX/MATCH in LastApprovedBodyHash."
       },
       {
         "name": "HasBodyDrifted",
@@ -8020,7 +8020,9 @@
         "BodyTemplate": "A workforce policy affecting your work has changed. Review the complete policy at {{PolicyUrl}}. Required action: {{RequiredAction}}. Questions: {{ContactAddress}}.",
         "Locale": "en-US",
         "Status": "Approved",
-        "SemanticTypeIri": "http://www.w3.org/ns/dcat#Resource"
+        "SemanticTypeIri": "http://www.w3.org/ns/dcat#Resource",
+        "LastValidApproval": "tap-email-001",
+        "CurrentBodyHash": "h-email-v1"
       },
       {
         "MessageTemplateId": "tmpl-policy-sms",
@@ -8030,7 +8032,9 @@
         "BodyTemplate": "ACME policy update effective {{EffectiveDate}}. Review: {{ShortUrl}}. Reply STOP to opt out of SMS; email notices continue.",
         "Locale": "en-US",
         "Status": "Approved",
-        "SemanticTypeIri": "http://www.w3.org/ns/dcat#Resource"
+        "SemanticTypeIri": "http://www.w3.org/ns/dcat#Resource",
+        "LastValidApproval": null,
+        "CurrentBodyHash": "h-sms-v1"
       }
     ]
   },
@@ -15424,7 +15428,7 @@
         "RulebookFieldId": "MessageTemplates.LastValidApproval",
         "TargetTable": "MessageTemplates",
         "FieldName": "LastValidApproval",
-        "FieldType": "relationship",
+        "FieldType": "raw",
         "Datatype": "string",
         "Formula": null,
         "InventedForQuestion": "q-comms-template-drift",

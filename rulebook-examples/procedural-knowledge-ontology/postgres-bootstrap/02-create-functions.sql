@@ -4899,6 +4899,15 @@ RETURNS TEXT AS $$
   SELECT (SELECT current_body_hash FROM message_templates WHERE message_template_id = p_message_template_id);
 $$ LANGUAGE sql STABLE;
 
+-- get_message_templates_last_valid_approval
+-- Helper function: Get LastValidApproval from MessageTemplates by MessageTemplateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_message_templates_last_valid_approval(p_message_template_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT last_valid_approval FROM message_templates WHERE message_template_id = p_message_template_id);
+$$ LANGUAGE sql STABLE;
+
 -- get_message_templates_semantic_type_iri
 -- Helper function: Get SemanticTypeIri from MessageTemplates by MessageTemplateId
 -- Used for join-free cross-table references in aggregations

@@ -1145,7 +1145,7 @@ SELECT
   calc_message_templates_is_claiming_unbacked_approval(t.message_template_id) AS is_claiming_unbacked_approval,-- TRUE when a template's Status says Approved but no properly-authorized approval record backs it. The phantom-approval witness.
   t.current_body_hash,                                                          -- Digest of the template's current body text, maintained whenever the body is edited.
   calc_message_templates_last_approved_body_hash(t.message_template_id) AS last_approved_body_hash,-- Digest of the body text as it stood at the most recent valid approval.
-  t.last_valid_approval,                                                        -- The most recent properly-authorized approval on this template.
+  t.last_valid_approval,                                                        -- The TemplateApprovals id of the approval this template is currently sendable under. Deliberately a raw identifier, not a relationship: TemplateApprovals already points at MessageTemplates, so declaring an FK back would make the two tables mutually dependent and the rulebook is required to stay acyclic. The value is still resolved by INDEX/MATCH in LastApprovedBodyHash.
   calc_message_templates_has_body_drifted(t.message_template_id) AS has_body_drifted,-- TRUE when the template body no longer matches what was approved.
   calc_message_templates_is_sendable_under_approval(t.message_template_id) AS is_sendable_under_approval,-- TRUE only when the template is marked Approved, has a properly-authorized approval, AND its body still matches what was approved.
   calc_message_templates_drifted_send_count(t.message_template_id) AS drifted_send_count,-- How many messages went out from this template while it was not validly sendable.
