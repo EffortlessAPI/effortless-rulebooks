@@ -1087,12 +1087,12 @@
     {
       "LoopOrder": 683,
       "LoopId": "tsp-loop-683",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "The RESIDUAL_VALUE_KERNEL family is declared but tsp-holdout-residual8-8 has no canonical graph rows.",
       "ClosureCriterion": "Materialize a deterministic 8-stop RESIDUAL_VALUE_KERNEL graph as HELD_OUT data without using its exact optimum to alter weights or the semantic basis.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Materialized tsp-holdout-residual8-8 as frozen held-out graph data.",
+      "Result": "8 stops, 28 canonical edge rows, family RESIDUAL_VALUE_KERNEL, OracleStatus=PENDING; no weight was selected from an optimum result.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 684,
@@ -1486,11 +1486,11 @@
   "Acceptance": {
     "RulebookTables": 45,
     "Cities": 1,
-    "Neighborhoods": 33,
-    "Addresses": 105,
-    "TSPInstances": 18,
-    "InstanceStops": 113,
-    "TravelEdges": 321,
+    "Neighborhoods": 34,
+    "Addresses": 113,
+    "TSPInstances": 19,
+    "InstanceStops": 121,
+    "TravelEdges": 349,
     "CandidateTours": 23,
     "TSPLoops": 134,
     "FrontierObligations": 33,
@@ -1505,7 +1505,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 710,
-    "HighestCompletedLoop": 682,
+    "HighestCompletedLoop": 683,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 16,
     "SelectedNotForcedEdgeStates": 5,
@@ -1547,8 +1547,8 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 66,
     "ClusterContractionCertificates": 7,
-    "ConvergenceMeasurements": 86,
-    "ConceptRegistry": 138,
+    "ConvergenceMeasurements": 87,
+    "ConceptRegistry": 139,
     "DefectProfiles": 32,
     "BoundTerms": 8,
     "WitnessNormalForms": 34,
@@ -1582,7 +1582,7 @@
     "DevelopmentMaxExactClassCount": 20160
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:58a67a47a12488dd6addd2e09fa2cc3b0cd7a0e01569ef57439eb5326b891df8",
+    "rulebook": "sha256:fc5282096ce2986da9d61d4d9211ee40aa99d70a942ba01f45a13dd48a92dfde",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
