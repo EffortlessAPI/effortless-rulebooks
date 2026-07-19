@@ -726,12 +726,12 @@
     {
       "LoopOrder": 647,
       "LoopId": "tsp-loop-647",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Loop 646 has a successful execution certificate, but the held-out campaign has not independently rechecked its raw one-arc/one-rewrite, three-region, and optimal-face witnesses.",
       "ClosureCriterion": "Recompute the loop-646 basis and finite fixture claims from canonical rows, preserve the nonclaims, and close a raw-witness prerequisite for calibration.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Sealed the loop-646 execution state as the held-out campaign prerequisite.",
+      "Result": "One active Semantic Arc, one active Warranted Rewrite, three-region optimum 36, optimal-face value 4 with choice orbit 2, and all universal nonclaims agree.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 648,
@@ -1492,7 +1492,7 @@
     "TravelEdges": 86,
     "CandidateTours": 8,
     "TSPLoops": 134,
-    "FrontierObligations": 31,
+    "FrontierObligations": 32,
     "ActiveImportedDependencies": 0,
     "ReferenceTourValid": true,
     "ReferenceTourCost": 14,
@@ -1504,7 +1504,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 710,
-    "HighestCompletedLoop": 646,
+    "HighestCompletedLoop": 647,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 16,
     "SelectedNotForcedEdgeStates": 5,
@@ -1546,8 +1546,8 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 66,
     "ClusterContractionCertificates": 7,
-    "ConvergenceMeasurements": 50,
-    "ConceptRegistry": 101,
+    "ConvergenceMeasurements": 51,
+    "ConceptRegistry": 102,
     "DefectProfiles": 21,
     "BoundTerms": 8,
     "WitnessNormalForms": 13,
@@ -1577,7 +1577,7 @@
     "OptimalFaceValueProofBranchDecisionCount": 0
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:67622ae3bb0ed8a459585177a7b0afd1f2a6d87ad00bf27480d20563bae6dc8a",
+    "rulebook": "sha256:4472fcfd488f59a9deb52e01cb703df4cddcb724a7b53cf5728bb6fe527878e4",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
