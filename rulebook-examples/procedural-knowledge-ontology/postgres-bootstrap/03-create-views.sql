@@ -1306,6 +1306,9 @@ SELECT
   t.completed_at,                                                               -- Time this loop was committed. Null while in progress.
   calc_witness_loops_question_count(t.witness_loop_id) AS question_count,       -- How many role questions were posed in this loop.
   calc_witness_loops_is_complete(t.witness_loop_id) AS is_complete,             -- TRUE once the loop has been committed.
+  t.fields_after,                                                               -- Total fields in the rulebook after this loop completed.
+  t.derived_after,                                                              -- Derived fields after this loop completed.
+  t.witnessed_after,                                                            -- Fields invented for a role question after this loop completed.
   t.semantic_type_iri                                                           -- Extension class IRI.
 FROM witness_loops t;
 
@@ -1325,6 +1328,7 @@ SELECT
   t.answerable_before,                                                          -- TRUE if the model could already answer this before its loop ran. FALSE means the loop had to invent predicates for it.
   calc_role_questions_predicate_count(t.role_question_id) AS predicate_count,   -- How many fields were invented to answer this question.
   calc_role_questions_is_answered(t.role_question_id) AS is_answered,           -- TRUE when at least one predicate exists to answer this question.
+  t.witnessed_answer,                                                           -- The current reading of this question's predicates, extracted from the substrate after the loop ran: which witness columns fire, on how many rows out of how many. Written by tools/extract_computed_answers.py from values Postgres computed — never recomputed in Python. This is what lets a later loop plan against materialized answers instead of imagined ones.
   t.semantic_type_iri                                                           -- Extension class IRI.
 FROM role_questions t;
 

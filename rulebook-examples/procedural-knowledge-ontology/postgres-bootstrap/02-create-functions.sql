@@ -5257,6 +5257,33 @@ RETURNS TIMESTAMPTZ AS $$
   SELECT (SELECT completed_at FROM witness_loops WHERE witness_loop_id = p_witness_loop_id);
 $$ LANGUAGE sql STABLE;
 
+-- get_witness_loops_fields_after
+-- Helper function: Get FieldsAfter from WitnessLoops by WitnessLoopId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_witness_loops_fields_after(p_witness_loop_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT fields_after FROM witness_loops WHERE witness_loop_id = p_witness_loop_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_witness_loops_derived_after
+-- Helper function: Get DerivedAfter from WitnessLoops by WitnessLoopId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_witness_loops_derived_after(p_witness_loop_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT derived_after FROM witness_loops WHERE witness_loop_id = p_witness_loop_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_witness_loops_witnessed_after
+-- Helper function: Get WitnessedAfter from WitnessLoops by WitnessLoopId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_witness_loops_witnessed_after(p_witness_loop_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT witnessed_after FROM witness_loops WHERE witness_loop_id = p_witness_loop_id);
+$$ LANGUAGE sql STABLE;
+
 -- get_witness_loops_semantic_type_iri
 -- Helper function: Get SemanticTypeIri from WitnessLoops by WitnessLoopId
 -- Used for join-free cross-table references in aggregations
@@ -5321,6 +5348,15 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION get_role_questions_answerable_before(p_role_question_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT (SELECT answerable_before FROM role_questions WHERE role_question_id = p_role_question_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_role_questions_witnessed_answer
+-- Helper function: Get WitnessedAnswer from RoleQuestions by RoleQuestionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_role_questions_witnessed_answer(p_role_question_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT witnessed_answer FROM role_questions WHERE role_question_id = p_role_question_id);
 $$ LANGUAGE sql STABLE;
 
 -- get_role_questions_semantic_type_iri
