@@ -317,6 +317,60 @@ RETURNS TEXT AS $$
   SELECT (SELECT status FROM role_assignments WHERE role_assignment_id = p_role_assignment_id);
 $$ LANGUAGE sql STABLE;
 
+-- get_role_assignments_minimum_decisions_for_comparison
+-- Helper function: Get MinimumDecisionsForComparison from RoleAssignments by RoleAssignmentId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_role_assignments_minimum_decisions_for_comparison(p_role_assignment_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT minimum_decisions_for_comparison FROM role_assignments WHERE role_assignment_id = p_role_assignment_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_role_assignments_authorization_decided_at
+-- Helper function: Get AuthorizationDecidedAt from RoleAssignments by RoleAssignmentId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_role_assignments_authorization_decided_at(p_role_assignment_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT authorization_decided_at FROM role_assignments WHERE role_assignment_id = p_role_assignment_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_role_assignments_authorization_reviewed_at
+-- Helper function: Get AuthorizationReviewedAt from RoleAssignments by RoleAssignmentId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_role_assignments_authorization_reviewed_at(p_role_assignment_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT authorization_reviewed_at FROM role_assignments WHERE role_assignment_id = p_role_assignment_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_role_assignments_authorization_review_cadence_days
+-- Helper function: Get AuthorizationReviewCadenceDays from RoleAssignments by RoleAssignmentId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_role_assignments_authorization_review_cadence_days(p_role_assignment_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT authorization_review_cadence_days FROM role_assignments WHERE role_assignment_id = p_role_assignment_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_role_assignments_max_tolerable_error_rate_percent
+-- Helper function: Get MaxTolerableErrorRatePercent from RoleAssignments by RoleAssignmentId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_role_assignments_max_tolerable_error_rate_percent(p_role_assignment_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT max_tolerable_error_rate_percent FROM role_assignments WHERE role_assignment_id = p_role_assignment_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_role_assignments_is_enforcement_role
+-- Helper function: Get IsEnforcementRole from RoleAssignments by RoleAssignmentId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_role_assignments_is_enforcement_role(p_role_assignment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT is_enforcement_role FROM role_assignments WHERE role_assignment_id = p_role_assignment_id);
+$$ LANGUAGE sql STABLE;
+
 -- get_role_assignments_semantic_type_iri
 -- Helper function: Get SemanticTypeIri from RoleAssignments by RoleAssignmentId
 -- Used for join-free cross-table references in aggregations
@@ -426,6 +480,56 @@ RETURNS BOOLEAN AS $$
   SELECT ((calc_roles_has_lost_a_holder(p_role_id) AND calc_roles_has_no_current_holder(p_role_id)))::boolean;
 $$ LANGUAGE sql STABLE;
 
+-- calc_roles_ungrounded_boundary_count
+-- Field: Roles.UngroundedBoundaryCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_roles_ungrounded_boundary_count(p_role_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM authority_boundaries WHERE calc_authority_boundaries_constrained_role_assignment_key(authority_boundary_id) = (SELECT NULLIF(role_id, '') FROM roles WHERE role_id = p_role_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_roles_is_governed_by_lapsed_authority
+-- Field: Roles.IsGovernedByLapsedAuthority
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_roles_is_governed_by_lapsed_authority(p_role_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_roles_ungrounded_boundary_count(p_role_id) > 0))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_roles_unescalated_refusal_count
+-- Field: Roles.UnescalatedRefusalCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_roles_unescalated_refusal_count(p_role_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM send_intents WHERE calc_send_intents_unescalated_refusal_role_key(send_intent_id) = (SELECT NULLIF(role_id, '') FROM roles WHERE role_id = p_role_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_roles_unauthorized_enforcement_assignment_count
+-- Field: Roles.UnauthorizedEnforcementAssignmentCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_roles_unauthorized_enforcement_assignment_count(p_role_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM role_assignments WHERE calc_role_assignments_unauthorized_enforcement_role_key(role_assignment_id) = (SELECT NULLIF(role_id, '') FROM roles WHERE role_id = p_role_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_roles_is_ungoverned_enforcement_role
+-- Field: Roles.IsUngovernedEnforcementRole
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_roles_is_ungoverned_enforcement_role(p_role_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_roles_unauthorized_enforcement_assignment_count(p_role_id) > 0))::boolean;
+$$ LANGUAGE sql STABLE;
+
 -- calc_role_assignments_as_of_instant
 -- Field: RoleAssignments.AsOfInstant
 -- Type: lookup | DataType: datetime | Returns: TIMESTAMPTZ
@@ -468,6 +572,28 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_role_assignments_predecessor_override_rate_percent(p_role_assignment_id TEXT)
 RETURNS NUMERIC AS $$
   SELECT calc_role_assignments_override_rate_percent((SELECT supersedes_assignment FROM role_assignments WHERE role_assignment_id = p_role_assignment_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_assignments_predecessor_decision_count
+-- Field: RoleAssignments.PredecessorDecisionCount
+-- Type: lookup | DataType: number | Returns: NUMERIC
+-- Lookup: DecisionCount from related RoleAssignments
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_predecessor_decision_count(p_role_assignment_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT calc_role_assignments_decision_count((SELECT supersedes_assignment FROM role_assignments WHERE role_assignment_id = p_role_assignment_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_assignments_has_ungrounded_governing_boundary
+-- Field: RoleAssignments.HasUngroundedGoverningBoundary
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+-- Lookup: IsGovernedByLapsedAuthority from related Roles
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_has_ungrounded_governing_boundary(p_role_assignment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_roles_is_governed_by_lapsed_authority((SELECT role FROM role_assignments WHERE role_assignment_id = p_role_assignment_id));
 $$ LANGUAGE sql STABLE;
 
 -- get_roles_label
@@ -730,7 +856,17 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_role_assignments_is_unauthorized_non_human_assignment(p_role_assignment_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_role_assignments_is_non_human_assignment(p_role_assignment_id) AND ((SELECT NULLIF(approving_authority_role, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) IS NULL OR (SELECT NULLIF(authorizing_change_request, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) IS NULL)))::boolean;
+  SELECT ((calc_role_assignments_is_non_human_assignment(p_role_assignment_id) AND NOT (calc_role_assignments_has_approving_authority(p_role_assignment_id))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_assignments_was_authorized_by_change_request
+-- Field: RoleAssignments.WasAuthorizedByChangeRequest
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_was_authorized_by_change_request(p_role_assignment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_role_assignments_has_approving_authority(p_role_assignment_id) AND (SELECT NULLIF(authorizing_change_request, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) IS NOT NULL))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_role_assignments_decision_count
@@ -781,6 +917,246 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_role_assignments_departed_role_key(p_role_assignment_id TEXT)
 RETURNS TEXT AS $$
   SELECT (CASE WHEN calc_role_assignments_has_departed(p_role_assignment_id) THEN ((SELECT NULLIF(role, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_assignments_has_sufficient_sample
+-- Field: RoleAssignments.HasSufficientSample
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_has_sufficient_sample(p_role_assignment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (calc_role_assignments_decision_count(p_role_assignment_id) >= (SELECT minimum_decisions_for_comparison FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_assignments_predecessor_has_sufficient_sample
+-- Field: RoleAssignments.PredecessorHasSufficientSample
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_predecessor_has_sufficient_sample(p_role_assignment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (calc_role_assignments_predecessor_decision_count(p_role_assignment_id) >= (SELECT minimum_decisions_for_comparison FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_assignments_comparison_is_evidentially_sound
+-- Field: RoleAssignments.ComparisonIsEvidentiallySound
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_comparison_is_evidentially_sound(p_role_assignment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_role_assignments_has_sufficient_sample(p_role_assignment_id) AND calc_role_assignments_predecessor_has_sufficient_sample(p_role_assignment_id)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_assignments_single_override_swing_percent
+-- Field: RoleAssignments.SingleOverrideSwingPercent
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_single_override_swing_percent(p_role_assignment_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN (calc_role_assignments_decision_count(p_role_assignment_id))::NUMERIC > 0 THEN ((COALESCE(100, 0) / NULLIF(COALESCE(CASE WHEN (calc_role_assignments_decision_count(p_role_assignment_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_role_assignments_decision_count(p_role_assignment_id))::numeric ELSE NULL END, 0), 0)))::text ELSE (0)::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_assignments_quality_verdict_is_unsupported
+-- Field: RoleAssignments.QualityVerdictIsUnsupported
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_quality_verdict_is_unsupported(p_role_assignment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((NOT (calc_role_assignments_comparison_is_evidentially_sound(p_role_assignment_id)) AND NOT (calc_role_assignments_quality_regressed_vs_predecessor(p_role_assignment_id))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_assignments_is_unmeasured_automation_handover
+-- Field: RoleAssignments.IsUnmeasuredAutomationHandover
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_is_unmeasured_automation_handover(p_role_assignment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_role_assignments_is_human_to_non_human_handover(p_role_assignment_id) AND NOT (calc_role_assignments_comparison_is_evidentially_sound(p_role_assignment_id))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_assignments_error_correction_count
+-- Field: RoleAssignments.ErrorCorrectionCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_error_correction_count(p_role_assignment_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM agent_decision_records WHERE calc_agent_decision_records_error_correction_role_assignment_ke(agent_decision_record_id) = (SELECT NULLIF(role_assignment_id, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_assignments_error_rate_percent
+-- Field: RoleAssignments.ErrorRatePercent
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_error_rate_percent(p_role_assignment_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN (calc_role_assignments_decision_count(p_role_assignment_id))::NUMERIC > 0 THEN ((COALESCE(CASE WHEN (calc_role_assignments_error_correction_count(p_role_assignment_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_role_assignments_error_correction_count(p_role_assignment_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((COALESCE(100, 0) / NULLIF(COALESCE(CASE WHEN (calc_role_assignments_decision_count(p_role_assignment_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_role_assignments_decision_count(p_role_assignment_id))::numeric ELSE NULL END, 0), 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(100, 0) / NULLIF(COALESCE(CASE WHEN (calc_role_assignments_decision_count(p_role_assignment_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_role_assignments_decision_count(p_role_assignment_id))::numeric ELSE NULL END, 0), 0)))::numeric ELSE NULL END, 0)))::text ELSE (0)::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_assignments_has_dated_authorization
+-- Field: RoleAssignments.HasDatedAuthorization
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_has_dated_authorization(p_role_assignment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((SELECT NULLIF(approving_authority_role, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) IS NOT NULL AND (SELECT authorization_decided_at::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) IS NOT NULL))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_assignments_days_since_authorization_review
+-- Field: RoleAssignments.DaysSinceAuthorizationReview
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_days_since_authorization_review(p_role_assignment_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (CASE WHEN (SELECT authorization_reviewed_at::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) IS NOT NULL THEN ((CURRENT_TIMESTAMP::date - (SELECT authorization_reviewed_at::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)::date))::text ELSE ((CURRENT_TIMESTAMP::date - (SELECT valid_from::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)::date))::text END)::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_assignments_authorization_is_overdue_for_review
+-- Field: RoleAssignments.AuthorizationIsOverdueForReview
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_authorization_is_overdue_for_review(p_role_assignment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((((SELECT authorization_review_cadence_days FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::NUMERIC > 0 AND calc_role_assignments_days_since_authorization_review(p_role_assignment_id) > (SELECT authorization_review_cadence_days FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)));
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_assignments_is_standing_unreviewed_automation
+-- Field: RoleAssignments.IsStandingUnreviewedAutomation
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_is_standing_unreviewed_automation(p_role_assignment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_role_assignments_covers_now(p_role_assignment_id) AND (calc_role_assignments_is_non_human_assignment(p_role_assignment_id) AND calc_role_assignments_authorization_is_overdue_for_review(p_role_assignment_id))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_assignments_is_unconditioned_automation_handover
+-- Field: RoleAssignments.IsUnconditionedAutomationHandover
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_is_unconditioned_automation_handover(p_role_assignment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_role_assignments_is_human_to_non_human_handover(p_role_assignment_id) AND ((SELECT authorization_review_cadence_days FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::NUMERIC = 0));
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_assignments_exceeds_tolerable_error_rate
+-- Field: RoleAssignments.ExceedsTolerableErrorRate
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_exceeds_tolerable_error_rate(p_role_assignment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((((SELECT max_tolerable_error_rate_percent FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::NUMERIC > 0 AND calc_role_assignments_error_rate_percent(p_role_assignment_id) >= (SELECT max_tolerable_error_rate_percent FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)));
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_assignments_boundary_violation_count_for_assignment
+-- Field: RoleAssignments.BoundaryViolationCountForAssignment
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_boundary_violation_count_for_assignment(p_role_assignment_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM agent_decision_records WHERE calc_agent_decision_records_boundary_violation_role_assignment_(agent_decision_record_id) = (SELECT NULLIF(role_assignment_id, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_assignments_has_any_boundary_violation
+-- Field: RoleAssignments.HasAnyBoundaryViolation
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_has_any_boundary_violation(p_role_assignment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_role_assignments_boundary_violation_count_for_assignment(p_role_assignment_id) > 0))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_assignments_suspension_condition_met
+-- Field: RoleAssignments.SuspensionConditionMet
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_suspension_condition_met(p_role_assignment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_role_assignments_exceeds_tolerable_error_rate(p_role_assignment_id) OR (calc_role_assignments_has_any_boundary_violation(p_role_assignment_id) OR calc_role_assignments_has_ungrounded_governing_boundary(p_role_assignment_id))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_assignments_is_operating_under_met_suspension_conditi
+-- Field: RoleAssignments.IsOperatingUnderMetSuspensionCondition
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_is_operating_under_met_suspension_conditi(p_role_assignment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_role_assignments_suspension_condition_met(p_role_assignment_id) AND (calc_role_assignments_covers_now(p_role_assignment_id) AND calc_role_assignments_is_non_human_assignment(p_role_assignment_id))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_assignments_has_declared_suspension_condition
+-- Field: RoleAssignments.HasDeclaredSuspensionCondition
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_has_declared_suspension_condition(p_role_assignment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((SELECT max_tolerable_error_rate_percent FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::NUMERIC > 0)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_assignments_has_approving_authority
+-- Field: RoleAssignments.HasApprovingAuthority
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_has_approving_authority(p_role_assignment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((SELECT NULLIF(approving_authority_role, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) IS NOT NULL)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_assignments_has_authorizing_change_request
+-- Field: RoleAssignments.HasAuthorizingChangeRequest
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_has_authorizing_change_request(p_role_assignment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((SELECT NULLIF(authorizing_change_request, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) IS NOT NULL)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_assignments_is_unauthorized_enforcement_agent
+-- Field: RoleAssignments.IsUnauthorizedEnforcementAgent
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_is_unauthorized_enforcement_agent(p_role_assignment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((COALESCE((SELECT is_enforcement_role FROM role_assignments WHERE role_assignment_id = p_role_assignment_id), FALSE) AND calc_role_assignments_is_unauthorized_non_human_assignment(p_role_assignment_id)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_assignments_governance_evidence_count
+-- Field: RoleAssignments.GovernanceEvidenceCount
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_governance_evidence_count(p_role_assignment_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((COALESCE(CASE WHEN (CASE WHEN calc_role_assignments_has_approving_authority(p_role_assignment_id) THEN (1)::text ELSE (0)::text END)::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (CASE WHEN calc_role_assignments_has_approving_authority(p_role_assignment_id) THEN (1)::text ELSE (0)::text END)::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN (CASE WHEN calc_role_assignments_has_authorizing_change_request(p_role_assignment_id) THEN (1)::text ELSE (0)::text END)::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (CASE WHEN calc_role_assignments_has_authorizing_change_request(p_role_assignment_id) THEN (1)::text ELSE (0)::text END)::numeric ELSE NULL END, 0)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_assignments_unauthorized_enforcement_role_key
+-- Field: RoleAssignments.UnauthorizedEnforcementRoleKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_unauthorized_enforcement_role_key(p_role_assignment_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_role_assignments_is_unauthorized_non_human_assignment(p_role_assignment_id) THEN ((SELECT NULLIF(role, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::text ELSE ('')::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_communities_of_practice_name
@@ -4693,6 +5069,96 @@ RETURNS BOOLEAN AS $$
   SELECT ((calc_procedure_executions_basis_changed_after_signature(p_procedure_execution_id) AND NOT (calc_procedure_executions_is_attestation_ready(p_procedure_execution_id))))::boolean;
 $$ LANGUAGE sql STABLE;
 
+-- calc_procedure_executions_intended_recipient_count
+-- Field: ProcedureExecutions.IntendedRecipientCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_executions_intended_recipient_count(p_procedure_execution_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM send_intents WHERE calc_send_intents_intent_execution_key(send_intent_id) = (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_executions_reached_recipient_count
+-- Field: ProcedureExecutions.ReachedRecipientCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_executions_reached_recipient_count(p_procedure_execution_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM send_intents WHERE calc_send_intents_delivered_intent_execution_key(send_intent_id) = (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_executions_silently_dropped_count
+-- Field: ProcedureExecutions.SilentlyDroppedCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_executions_silently_dropped_count(p_procedure_execution_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM send_intents WHERE calc_send_intents_dropped_intent_execution_key(send_intent_id) = (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_executions_delivery_yield_percent
+-- Field: ProcedureExecutions.DeliveryYieldPercent
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_executions_delivery_yield_percent(p_procedure_execution_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN (calc_procedure_executions_intended_recipient_count(p_procedure_execution_id))::NUMERIC > 0 THEN ((COALESCE(CASE WHEN (calc_procedure_executions_reached_recipient_count(p_procedure_execution_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_procedure_executions_reached_recipient_count(p_procedure_execution_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((COALESCE(100, 0) / NULLIF(COALESCE(CASE WHEN (calc_procedure_executions_intended_recipient_count(p_procedure_execution_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_procedure_executions_intended_recipient_count(p_procedure_execution_id))::numeric ELSE NULL END, 0), 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(100, 0) / NULLIF(COALESCE(CASE WHEN (calc_procedure_executions_intended_recipient_count(p_procedure_execution_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_procedure_executions_intended_recipient_count(p_procedure_execution_id))::numeric ELSE NULL END, 0), 0)))::numeric ELSE NULL END, 0)))::text ELSE (0)::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_executions_campaign_silently_lost_audience
+-- Field: ProcedureExecutions.CampaignSilentlyLostAudience
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_executions_campaign_silently_lost_audience(p_procedure_execution_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_procedure_executions_silently_dropped_count(p_procedure_execution_id) > 0))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_executions_unrecorded_refusal_count
+-- Field: ProcedureExecutions.UnrecordedRefusalCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_executions_unrecorded_refusal_count(p_procedure_execution_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM send_intents WHERE calc_send_intents_unrecorded_refusal_execution_key(send_intent_id) = (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_executions_has_unrecorded_refusals
+-- Field: ProcedureExecutions.HasUnrecordedRefusals
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_executions_has_unrecorded_refusals(p_procedure_execution_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_procedure_executions_unrecorded_refusal_count(p_procedure_execution_id) > 0))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_executions_independently_confirmed_intent_count
+-- Field: ProcedureExecutions.IndependentlyConfirmedIntentCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_executions_independently_confirmed_intent_count(p_procedure_execution_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM send_intents WHERE calc_send_intents_independently_confirmed_execution_key(send_intent_id) = (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_executions_send_decisions_are_entirely_self_witn
+-- Field: ProcedureExecutions.SendDecisionsAreEntirelySelfWitnessed
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_executions_send_decisions_are_entirely_self_witn(p_procedure_execution_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((calc_procedure_executions_intended_recipient_count(p_procedure_execution_id))::NUMERIC > 0 AND (calc_procedure_executions_independently_confirmed_intent_count(p_procedure_execution_id))::NUMERIC = 0));
+$$ LANGUAGE sql STABLE;
+
 -- calc_step_executions_expected_duration_minutes
 -- Field: StepExecutions.ExpectedDurationMinutes
 -- Type: lookup | DataType: integer | Returns: INTEGER
@@ -6997,6 +7463,17 @@ RETURNS TEXT AS $$
   SELECT (SELECT approved_body_hash::text FROM template_approvals WHERE template_approval_id = (SELECT last_valid_approval FROM message_templates WHERE message_template_id = p_message_template_id));
 $$ LANGUAGE sql STABLE;
 
+-- calc_message_templates_last_approval_at
+-- Field: MessageTemplates.LastApprovalAt
+-- Type: lookup | DataType: datetime | Returns: TIMESTAMPTZ
+-- Lookup: DecidedAt from related TemplateApprovals
+
+
+CREATE OR REPLACE FUNCTION calc_message_templates_last_approval_at(p_message_template_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT decided_at::timestamptz FROM template_approvals WHERE template_approval_id = (SELECT last_valid_approval FROM message_templates WHERE message_template_id = p_message_template_id));
+$$ LANGUAGE sql STABLE;
+
 -- get_communication_policies_channel
 -- Helper function: Get Channel from CommunicationPolicies by CommunicationPolicyId
 -- Used for join-free cross-table references in aggregations
@@ -7265,6 +7742,36 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_message_templates_drifted_send_count(p_message_template_id TEXT)
 RETURNS NUMERIC AS $$
   SELECT ((SELECT COUNT(*) FROM message_deliveries WHERE calc_message_deliveries_drifted_send_template_key(message_delivery_id) = (SELECT NULLIF(message_template_id, '') FROM message_templates WHERE message_template_id = p_message_template_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_templates_unanswered_delivery_count
+-- Field: MessageTemplates.UnansweredDeliveryCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_message_templates_unanswered_delivery_count(p_message_template_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM message_deliveries WHERE calc_message_deliveries_unanswered_template_key(message_delivery_id) = (SELECT NULLIF(message_template_id, '') FROM message_templates WHERE message_template_id = p_message_template_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_templates_transmitted_delivery_count
+-- Field: MessageTemplates.TransmittedDeliveryCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_message_templates_transmitted_delivery_count(p_message_template_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM message_deliveries WHERE calc_message_deliveries_transmitted_template_key(message_delivery_id) = (SELECT NULLIF(message_template_id, '') FROM message_templates WHERE message_template_id = p_message_template_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_templates_template_draws_no_response
+-- Field: MessageTemplates.TemplateDrawsNoResponse
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_message_templates_template_draws_no_response(p_message_template_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((calc_message_templates_transmitted_delivery_count(p_message_template_id))::NUMERIC > 0 AND calc_message_templates_unanswered_delivery_count(p_message_template_id) = calc_message_templates_transmitted_delivery_count(p_message_template_id)));
 $$ LANGUAGE sql STABLE;
 
 -- get_ontology_profiles_label
@@ -8098,6 +8605,16 @@ RETURNS BOOLEAN AS $$
   SELECT ((NOT (calc_recipients_is_email_reachable(p_recipient_id)) AND NOT (calc_recipients_is_sms_reachable(p_recipient_id))))::boolean;
 $$ LANGUAGE sql STABLE;
 
+-- calc_recipients_is_communicationally_stranded
+-- Field: Recipients.IsCommunicationallyStranded
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_recipients_is_communicationally_stranded(p_recipient_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((NOT (calc_recipients_is_sms_reachable(p_recipient_id)) AND NOT (calc_recipients_is_email_reachable(p_recipient_id))))::boolean;
+$$ LANGUAGE sql STABLE;
+
 -- calc_message_deliveries_policy_channel
 -- Field: MessageDeliveries.PolicyChannel
 -- Type: lookup | DataType: string | Returns: TEXT
@@ -8272,6 +8789,17 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_message_deliveries_template_was_sendable(p_message_delivery_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT calc_message_templates_is_sendable_under_approval((SELECT message_template FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_current_last_approval_at
+-- Field: MessageDeliveries.CurrentLastApprovalAt
+-- Type: lookup | DataType: datetime | Returns: TIMESTAMPTZ
+-- Lookup: LastApprovalAt from related MessageTemplates
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_current_last_approval_at(p_message_delivery_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT calc_message_templates_last_approval_at((SELECT message_template FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id));
 $$ LANGUAGE sql STABLE;
 
 -- get_recipients_display_name
@@ -8781,6 +9309,176 @@ RETURNS TEXT AS $$
   SELECT (CASE WHEN calc_message_deliveries_is_drifted_send(p_message_delivery_id) THEN ((SELECT NULLIF(message_template, '') FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id))::text ELSE ('')::text END)::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_message_deliveries_was_sent_outside_business_hours
+-- Field: MessageDeliveries.WasSentOutsideBusinessHours
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_was_sent_outside_business_hours(p_message_delivery_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((((SELECT sent_at_local_hour FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id))::NUMERIC < 8 OR ((SELECT sent_at_local_hour FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id))::NUMERIC > 18));
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_was_delivered_and_unanswered
+-- Field: MessageDeliveries.WasDeliveredAndUnanswered
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_was_delivered_and_unanswered(p_message_delivery_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_message_deliveries_was_actually_transmitted(p_message_delivery_id) AND NOT (calc_message_deliveries_is_acknowledged(p_message_delivery_id))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_is_poorly_timed_unanswered
+-- Field: MessageDeliveries.IsPoorlyTimedUnanswered
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_is_poorly_timed_unanswered(p_message_delivery_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_message_deliveries_was_delivered_and_unanswered(p_message_delivery_id) AND calc_message_deliveries_was_sent_outside_business_hours(p_message_delivery_id)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_is_well_timed_unanswered
+-- Field: MessageDeliveries.IsWellTimedUnanswered
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_is_well_timed_unanswered(p_message_delivery_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_message_deliveries_was_delivered_and_unanswered(p_message_delivery_id) AND NOT (calc_message_deliveries_was_sent_outside_business_hours(p_message_delivery_id))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_unanswered_template_key
+-- Field: MessageDeliveries.UnansweredTemplateKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_unanswered_template_key(p_message_delivery_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_message_deliveries_was_delivered_and_unanswered(p_message_delivery_id) THEN ((SELECT NULLIF(message_template, '') FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_transmitted_template_key
+-- Field: MessageDeliveries.TransmittedTemplateKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_transmitted_template_key(p_message_delivery_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_message_deliveries_was_actually_transmitted(p_message_delivery_id) THEN ((SELECT NULLIF(message_template, '') FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_approval_preceded_send
+-- Field: MessageDeliveries.ApprovalPrecededSend
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_approval_preceded_send(p_message_delivery_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((SELECT approval_decided_at_send::timestamptz FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id) IS NOT NULL AND (SELECT sent_at::timestamptz FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id) > (SELECT approval_decided_at_send::timestamptz FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_has_frozen_approval_evidence
+-- Field: MessageDeliveries.HasFrozenApprovalEvidence
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_has_frozen_approval_evidence(p_message_delivery_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((SELECT NULLIF(approving_agent_at_send, '') FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id) IS NOT NULL AND (SELECT approval_decided_at_send::timestamptz FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id) IS NOT NULL))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_provenance_is_live_derived
+-- Field: MessageDeliveries.ProvenanceIsLiveDerived
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_provenance_is_live_derived(p_message_delivery_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (NOT (calc_message_deliveries_has_frozen_approval_evidence(p_message_delivery_id)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_template_reapproved_since_send
+-- Field: MessageDeliveries.TemplateReapprovedSinceSend
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_template_reapproved_since_send(p_message_delivery_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_message_deliveries_current_last_approval_at(p_message_delivery_id) IS NOT NULL AND calc_message_deliveries_current_last_approval_at(p_message_delivery_id) > (SELECT sent_at::timestamptz FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_is_unprovable_approval_claim
+-- Field: MessageDeliveries.IsUnprovableApprovalClaim
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_is_unprovable_approval_claim(p_message_delivery_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_message_deliveries_provenance_is_live_derived(p_message_delivery_id) AND (calc_message_deliveries_template_reapproved_since_send(p_message_delivery_id) AND calc_message_deliveries_template_has_valid_approval(p_message_delivery_id))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_has_sent_reminder
+-- Field: MessageDeliveries.HasSentReminder
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_has_sent_reminder(p_message_delivery_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((SELECT reminder_count FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id))::NUMERIC > 0)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_acknowledgement_is_outstanding
+-- Field: MessageDeliveries.AcknowledgementIsOutstanding
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_acknowledgement_is_outstanding(p_message_delivery_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_message_deliveries_was_actually_transmitted(p_message_delivery_id) AND (calc_message_deliveries_is_evidence_required(p_message_delivery_id) AND NOT (calc_message_deliveries_is_acknowledged(p_message_delivery_id)))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_outstanding_age_days
+-- Field: MessageDeliveries.OutstandingAgeDays
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_outstanding_age_days(p_message_delivery_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (CASE WHEN calc_message_deliveries_acknowledgement_is_outstanding(p_message_delivery_id) THEN ((CURRENT_TIMESTAMP::date - (SELECT sent_at::timestamptz FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id)::date))::text ELSE (0)::text END)::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_is_unchased_acknowledgement
+-- Field: MessageDeliveries.IsUnchasedAcknowledgement
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_is_unchased_acknowledgement(p_message_delivery_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_message_deliveries_acknowledgement_is_outstanding(p_message_delivery_id) AND ((calc_message_deliveries_outstanding_age_days(p_message_delivery_id))::NUMERIC > 7 AND NOT (calc_message_deliveries_has_sent_reminder(p_message_delivery_id)))));
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_is_exhausted_follow_up
+-- Field: MessageDeliveries.IsExhaustedFollowUp
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_is_exhausted_follow_up(p_message_delivery_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_message_deliveries_acknowledgement_is_outstanding(p_message_delivery_id) AND ((SELECT reminder_count FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id))::NUMERIC >= 3));
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_needs_human_escalation
+-- Field: MessageDeliveries.NeedsHumanEscalation
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_needs_human_escalation(p_message_delivery_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_message_deliveries_is_exhausted_follow_up(p_message_delivery_id) AND NOT (calc_message_deliveries_has_unreachable_exception_invoked(p_message_delivery_id))))::boolean;
+$$ LANGUAGE sql STABLE;
+
 -- calc_template_approvals_template_policy
 -- Field: TemplateApprovals.TemplatePolicy
 -- Type: lookup | DataType: string | Returns: TEXT
@@ -9041,6 +9739,50 @@ RETURNS TEXT AS $$
   SELECT (SELECT invoked_exception::text FROM message_deliveries WHERE message_delivery_id = (SELECT resulting_delivery FROM send_intents WHERE send_intent_id = p_send_intent_id));
 $$ LANGUAGE sql STABLE;
 
+-- calc_send_intents_alternate_attempt_was_cleared
+-- Field: SendIntents.AlternateAttemptWasCleared
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: IsClearedToSend from related SendIntents
+
+
+CREATE OR REPLACE FUNCTION calc_send_intents_alternate_attempt_was_cleared(p_send_intent_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_send_intents_is_cleared_to_send((SELECT alternate_channel_intent FROM send_intents WHERE send_intent_id = p_send_intent_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_send_intents_retry_was_cleared
+-- Field: SendIntents.RetryWasCleared
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: IsClearedToSend from related SendIntents
+
+
+CREATE OR REPLACE FUNCTION calc_send_intents_retry_was_cleared(p_send_intent_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_send_intents_is_cleared_to_send((SELECT retry_intent FROM send_intents WHERE send_intent_id = p_send_intent_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_send_intents_enforced_by_unauthorized_agent
+-- Field: SendIntents.EnforcedByUnauthorizedAgent
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: IsUnauthorizedEnforcementAgent from related RoleAssignments
+
+
+CREATE OR REPLACE FUNCTION calc_send_intents_enforced_by_unauthorized_agent(p_send_intent_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_role_assignments_is_unauthorized_enforcement_agent((SELECT evaluating_role_assignment FROM send_intents WHERE send_intent_id = p_send_intent_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_send_intents_recipient_consent_status_raw
+-- Field: SendIntents.RecipientConsentStatusRaw
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: SmsConsentStatus from related Recipients
+
+
+CREATE OR REPLACE FUNCTION calc_send_intents_recipient_consent_status_raw(p_send_intent_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT sms_consent_status::text FROM recipients WHERE recipient_id = (SELECT recipient FROM send_intents WHERE send_intent_id = p_send_intent_id));
+$$ LANGUAGE sql STABLE;
+
 -- get_message_deliveries_rendered_body
 -- Helper function: Get RenderedBody from MessageDeliveries by MessageDeliveryId
 -- Used for join-free cross-table references in aggregations
@@ -9095,6 +9837,51 @@ RETURNS TIMESTAMPTZ AS $$
   SELECT (SELECT acknowledged_at FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id);
 $$ LANGUAGE sql STABLE;
 
+-- get_message_deliveries_approving_agent_at_send
+-- Helper function: Get ApprovingAgentAtSend from MessageDeliveries by MessageDeliveryId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_message_deliveries_approving_agent_at_send(p_message_delivery_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT approving_agent_at_send FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_message_deliveries_approving_role_at_send
+-- Helper function: Get ApprovingRoleAtSend from MessageDeliveries by MessageDeliveryId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_message_deliveries_approving_role_at_send(p_message_delivery_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT approving_role_at_send FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_message_deliveries_approval_decided_at_send
+-- Helper function: Get ApprovalDecidedAtSend from MessageDeliveries by MessageDeliveryId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_message_deliveries_approval_decided_at_send(p_message_delivery_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT approval_decided_at_send FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_message_deliveries_reminder_sent_at
+-- Helper function: Get ReminderSentAt from MessageDeliveries by MessageDeliveryId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_message_deliveries_reminder_sent_at(p_message_delivery_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT reminder_sent_at FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_message_deliveries_reminder_count
+-- Helper function: Get ReminderCount from MessageDeliveries by MessageDeliveryId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_message_deliveries_reminder_count(p_message_delivery_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT reminder_count FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id);
+$$ LANGUAGE sql STABLE;
+
 -- get_message_deliveries_semantic_type_iri
 -- Helper function: Get SemanticTypeIri from MessageDeliveries by MessageDeliveryId
 -- Used for join-free cross-table references in aggregations
@@ -9102,6 +9889,123 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION get_message_deliveries_semantic_type_iri(p_message_delivery_id TEXT)
 RETURNS TEXT AS $$
   SELECT (SELECT semantic_type_iri FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_send_intents_proposed_body
+-- Helper function: Get ProposedBody from SendIntents by SendIntentId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_send_intents_proposed_body(p_send_intent_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT proposed_body FROM send_intents WHERE send_intent_id = p_send_intent_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_send_intents_proposed_send_at_local_hour
+-- Helper function: Get ProposedSendAtLocalHour from SendIntents by SendIntentId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_send_intents_proposed_send_at_local_hour(p_send_intent_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT proposed_send_at_local_hour FROM send_intents WHERE send_intent_id = p_send_intent_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_send_intents_evaluated_at
+-- Helper function: Get EvaluatedAt from SendIntents by SendIntentId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_send_intents_evaluated_at(p_send_intent_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT evaluated_at FROM send_intents WHERE send_intent_id = p_send_intent_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_send_intents_proposed_body_length
+-- Helper function: Get ProposedBodyLength from SendIntents by SendIntentId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_send_intents_proposed_body_length(p_send_intent_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT proposed_body_length FROM send_intents WHERE send_intent_id = p_send_intent_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_send_intents_proposed_segment_count
+-- Helper function: Get ProposedSegmentCount from SendIntents by SendIntentId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_send_intents_proposed_segment_count(p_send_intent_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT proposed_segment_count FROM send_intents WHERE send_intent_id = p_send_intent_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_send_intents_proposed_opt_out_position
+-- Helper function: Get ProposedOptOutPosition from SendIntents by SendIntentId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_send_intents_proposed_opt_out_position(p_send_intent_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT proposed_opt_out_position FROM send_intents WHERE send_intent_id = p_send_intent_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_send_intents_approver_was_notified
+-- Helper function: Get ApproverWasNotified from SendIntents by SendIntentId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_send_intents_approver_was_notified(p_send_intent_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT approver_was_notified FROM send_intents WHERE send_intent_id = p_send_intent_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_send_intents_alternate_channel_intent
+-- Helper function: Get AlternateChannelIntent from SendIntents by SendIntentId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_send_intents_alternate_channel_intent(p_send_intent_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT alternate_channel_intent FROM send_intents WHERE send_intent_id = p_send_intent_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_send_intents_refusal_recorded_at
+-- Helper function: Get RefusalRecordedAt from SendIntents by SendIntentId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_send_intents_refusal_recorded_at(p_send_intent_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT refusal_recorded_at FROM send_intents WHERE send_intent_id = p_send_intent_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_send_intents_retry_intent
+-- Helper function: Get RetryIntent from SendIntents by SendIntentId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_send_intents_retry_intent(p_send_intent_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT retry_intent FROM send_intents WHERE send_intent_id = p_send_intent_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_send_intents_evaluating_role_assignment
+-- Helper function: Get EvaluatingRoleAssignment from SendIntents by SendIntentId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_send_intents_evaluating_role_assignment(p_send_intent_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT evaluating_role_assignment FROM send_intents WHERE send_intent_id = p_send_intent_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_send_intents_gate_result_was_independently_confirmed
+-- Helper function: Get GateResultWasIndependentlyConfirmed from SendIntents by SendIntentId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_send_intents_gate_result_was_independently_confirmed(p_send_intent_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT gate_result_was_independently_confirmed FROM send_intents WHERE send_intent_id = p_send_intent_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_send_intents_semantic_type_iri
+-- Helper function: Get SemanticTypeIri from SendIntents by SendIntentId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_send_intents_semantic_type_iri(p_send_intent_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT semantic_type_iri FROM send_intents WHERE send_intent_id = p_send_intent_id);
 $$ LANGUAGE sql STABLE;
 
 -- calc_send_intents_name
@@ -9324,6 +10228,346 @@ RETURNS TEXT AS $$
   SELECT (CASE WHEN (calc_send_intents_is_overridden_refusal(p_send_intent_id) OR calc_send_intents_is_silently_dropped(p_send_intent_id)) THEN ((SELECT NULLIF(procedure_execution, '') FROM send_intents WHERE send_intent_id = p_send_intent_id))::text ELSE ('')::text END)::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_send_intents_intent_execution_key
+-- Field: SendIntents.IntentExecutionKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_send_intents_intent_execution_key(p_send_intent_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(procedure_execution, '') FROM send_intents WHERE send_intent_id = p_send_intent_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_send_intents_delivered_intent_execution_key
+-- Field: SendIntents.DeliveredIntentExecutionKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_send_intents_delivered_intent_execution_key(p_send_intent_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN (calc_send_intents_has_resulting_delivery(p_send_intent_id) AND calc_send_intents_resulting_delivery_was_transmitted(p_send_intent_id)) THEN ((SELECT NULLIF(procedure_execution, '') FROM send_intents WHERE send_intent_id = p_send_intent_id))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_send_intents_dropped_intent_execution_key
+-- Field: SendIntents.DroppedIntentExecutionKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_send_intents_dropped_intent_execution_key(p_send_intent_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_send_intents_is_silently_dropped(p_send_intent_id) THEN ((SELECT NULLIF(procedure_execution, '') FROM send_intents WHERE send_intent_id = p_send_intent_id))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_send_intents_my_approval_was_in_force
+-- Field: SendIntents.MyApprovalWasInForce
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_send_intents_my_approval_was_in_force(p_send_intent_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (calc_send_intents_template_is_sendable(p_send_intent_id))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_send_intents_refused_on_approved_content
+-- Field: SendIntents.RefusedOnApprovedContent
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_send_intents_refused_on_approved_content(p_send_intent_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_send_intents_my_approval_was_in_force(p_send_intent_id) AND NOT (calc_send_intents_content_gate_passed(p_send_intent_id))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_send_intents_refused_on_opt_out_only
+-- Field: SendIntents.RefusedOnOptOutOnly
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_send_intents_refused_on_opt_out_only(p_send_intent_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((NOT (calc_send_intents_opt_out_gate_passed(p_send_intent_id)) AND calc_send_intents_length_gate_passed(p_send_intent_id)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_send_intents_refusal_was_on_my_rules
+-- Field: SendIntents.RefusalWasOnMyRules
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_send_intents_refusal_was_on_my_rules(p_send_intent_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((NOT (calc_send_intents_is_cleared_to_send(p_send_intent_id)) AND (NOT (calc_send_intents_content_gate_passed(p_send_intent_id)) OR NOT (calc_send_intents_timing_gate_passed(p_send_intent_id)))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_send_intents_refusal_was_outside_my_control
+-- Field: SendIntents.RefusalWasOutsideMyControl
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_send_intents_refusal_was_outside_my_control(p_send_intent_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((NOT (calc_send_intents_is_cleared_to_send(p_send_intent_id)) AND (NOT (calc_send_intents_permission_gate_passed(p_send_intent_id)) OR NOT (calc_send_intents_authorization_gate_passed(p_send_intent_id)))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_send_intents_is_unreported_refusal_on_my_rules
+-- Field: SendIntents.IsUnreportedRefusalOnMyRules
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_send_intents_is_unreported_refusal_on_my_rules(p_send_intent_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_send_intents_refusal_was_on_my_rules(p_send_intent_id) AND NOT (COALESCE((SELECT approver_was_notified FROM send_intents WHERE send_intent_id = p_send_intent_id), FALSE))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_send_intents_is_approval_overridden_silently
+-- Field: SendIntents.IsApprovalOverriddenSilently
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_send_intents_is_approval_overridden_silently(p_send_intent_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_send_intents_refused_on_approved_content(p_send_intent_id) AND NOT (COALESCE((SELECT approver_was_notified FROM send_intents WHERE send_intent_id = p_send_intent_id), FALSE))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_send_intents_has_alternate_channel_attempt
+-- Field: SendIntents.HasAlternateChannelAttempt
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_send_intents_has_alternate_channel_attempt(p_send_intent_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((SELECT NULLIF(alternate_channel_intent, '') FROM send_intents WHERE send_intent_id = p_send_intent_id) IS NOT NULL)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_send_intents_is_refused_with_no_alternative
+-- Field: SendIntents.IsRefusedWithNoAlternative
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_send_intents_is_refused_with_no_alternative(p_send_intent_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((NOT (calc_send_intents_is_cleared_to_send(p_send_intent_id)) AND NOT (calc_send_intents_has_alternate_channel_attempt(p_send_intent_id))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_send_intents_exception_prescribed_an_alternative
+-- Field: SendIntents.ExceptionPrescribedAnAlternative
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_send_intents_exception_prescribed_an_alternative(p_send_intent_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_send_intents_refusal_cited_an_exception(p_send_intent_id) AND calc_send_intents_resulting_delivery_exception(p_send_intent_id) IS NOT NULL))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_send_intents_prescribed_handling_was_performed
+-- Field: SendIntents.PrescribedHandlingWasPerformed
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_send_intents_prescribed_handling_was_performed(p_send_intent_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_send_intents_exception_prescribed_an_alternative(p_send_intent_id) AND (calc_send_intents_has_alternate_channel_attempt(p_send_intent_id) AND calc_send_intents_alternate_attempt_was_cleared(p_send_intent_id))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_send_intents_is_suppression_without_remedy
+-- Field: SendIntents.IsSuppressionWithoutRemedy
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_send_intents_is_suppression_without_remedy(p_send_intent_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_send_intents_exception_prescribed_an_alternative(p_send_intent_id) AND NOT (calc_send_intents_prescribed_handling_was_performed(p_send_intent_id))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_send_intents_has_durable_refusal_record
+-- Field: SendIntents.HasDurableRefusalRecord
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_send_intents_has_durable_refusal_record(p_send_intent_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((SELECT refusal_recorded_at::timestamptz FROM send_intents WHERE send_intent_id = p_send_intent_id) IS NOT NULL)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_send_intents_refusal_was_escalated
+-- Field: SendIntents.RefusalWasEscalated
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_send_intents_refusal_was_escalated(p_send_intent_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((SELECT NULLIF(refusal_notified_role, '') FROM send_intents WHERE send_intent_id = p_send_intent_id) IS NOT NULL)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_send_intents_is_unrecorded_refusal
+-- Field: SendIntents.IsUnrecordedRefusal
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_send_intents_is_unrecorded_refusal(p_send_intent_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_send_intents_is_silently_dropped(p_send_intent_id) AND (NOT (calc_send_intents_has_durable_refusal_record(p_send_intent_id)) AND NOT (calc_send_intents_refusal_cited_an_exception(p_send_intent_id)))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_send_intents_is_unescalated_refusal
+-- Field: SendIntents.IsUnescalatedRefusal
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_send_intents_is_unescalated_refusal(p_send_intent_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((NOT (calc_send_intents_is_cleared_to_send(p_send_intent_id)) AND NOT (calc_send_intents_refusal_was_escalated(p_send_intent_id))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_send_intents_unescalated_refusal_role_key
+-- Field: SendIntents.UnescalatedRefusalRoleKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_send_intents_unescalated_refusal_role_key(p_send_intent_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_send_intents_is_unrecorded_refusal(p_send_intent_id) THEN ((SELECT NULLIF(refusal_notified_role, '') FROM send_intents WHERE send_intent_id = p_send_intent_id))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_send_intents_unrecorded_refusal_execution_key
+-- Field: SendIntents.UnrecordedRefusalExecutionKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_send_intents_unrecorded_refusal_execution_key(p_send_intent_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_send_intents_is_unrecorded_refusal(p_send_intent_id) THEN ((SELECT NULLIF(procedure_execution, '') FROM send_intents WHERE send_intent_id = p_send_intent_id))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_send_intents_was_deferred_on_timing
+-- Field: SendIntents.WasDeferredOnTiming
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_send_intents_was_deferred_on_timing(p_send_intent_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((NOT (calc_send_intents_timing_gate_passed(p_send_intent_id)) AND (calc_send_intents_permission_gate_passed(p_send_intent_id) AND calc_send_intents_content_gate_passed(p_send_intent_id))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_send_intents_window_has_since_reopened
+-- Field: SendIntents.WindowHasSinceReopened
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_send_intents_window_has_since_reopened(p_send_intent_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((calc_send_intents_hours_until_window_opens(p_send_intent_id))::NUMERIC > 0 AND (EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP::timestamp - (SELECT evaluated_at::timestamptz FROM send_intents WHERE send_intent_id = p_send_intent_id)::timestamp)) / 3600) > calc_send_intents_hours_until_window_opens(p_send_intent_id)));
+$$ LANGUAGE sql STABLE;
+
+-- calc_send_intents_has_retry_attempt
+-- Field: SendIntents.HasRetryAttempt
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_send_intents_has_retry_attempt(p_send_intent_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((SELECT NULLIF(retry_intent, '') FROM send_intents WHERE send_intent_id = p_send_intent_id) IS NOT NULL)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_send_intents_is_abandoned_deferral
+-- Field: SendIntents.IsAbandonedDeferral
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_send_intents_is_abandoned_deferral(p_send_intent_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_send_intents_was_deferred_on_timing(p_send_intent_id) AND (calc_send_intents_window_has_since_reopened(p_send_intent_id) AND NOT (calc_send_intents_has_retry_attempt(p_send_intent_id)))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_send_intents_deferral_age_hours
+-- Field: SendIntents.DeferralAgeHours
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_send_intents_deferral_age_hours(p_send_intent_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP::timestamp - (SELECT evaluated_at::timestamptz FROM send_intents WHERE send_intent_id = p_send_intent_id)::timestamp)) / 3600))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_send_intents_is_stale_deferral
+-- Field: SendIntents.IsStaleDeferral
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_send_intents_is_stale_deferral(p_send_intent_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_send_intents_was_deferred_on_timing(p_send_intent_id) AND (calc_send_intents_deferral_age_hours(p_send_intent_id))::NUMERIC > 24));
+$$ LANGUAGE sql STABLE;
+
+-- calc_send_intents_consent_input_was_resolvable
+-- Field: SendIntents.ConsentInputWasResolvable
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_send_intents_consent_input_was_resolvable(p_send_intent_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (calc_send_intents_recipient_consent_status_raw(p_send_intent_id) IS NOT NULL)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_send_intents_policy_input_was_resolvable
+-- Field: SendIntents.PolicyInputWasResolvable
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_send_intents_policy_input_was_resolvable(p_send_intent_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (calc_send_intents_intent_policy(p_send_intent_id) IS NOT NULL)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_send_intents_all_gate_inputs_resolved
+-- Field: SendIntents.AllGateInputsResolved
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_send_intents_all_gate_inputs_resolved(p_send_intent_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_send_intents_consent_input_was_resolvable(p_send_intent_id) AND calc_send_intents_policy_input_was_resolvable(p_send_intent_id)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_send_intents_is_unevaluable_refusal
+-- Field: SendIntents.IsUnevaluableRefusal
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_send_intents_is_unevaluable_refusal(p_send_intent_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((NOT (calc_send_intents_is_cleared_to_send(p_send_intent_id)) AND NOT (calc_send_intents_all_gate_inputs_resolved(p_send_intent_id))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_send_intents_is_self_witnessed_decision
+-- Field: SendIntents.IsSelfWitnessedDecision
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_send_intents_is_self_witnessed_decision(p_send_intent_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (NOT (COALESCE((SELECT gate_result_was_independently_confirmed FROM send_intents WHERE send_intent_id = p_send_intent_id), FALSE)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_send_intents_is_independently_confirmed
+-- Field: SendIntents.IsIndependentlyConfirmed
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_send_intents_is_independently_confirmed(p_send_intent_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_send_intents_has_resulting_delivery(p_send_intent_id) AND calc_send_intents_resulting_delivery_was_transmitted(p_send_intent_id)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_send_intents_independently_confirmed_execution_key
+-- Field: SendIntents.IndependentlyConfirmedExecutionKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_send_intents_independently_confirmed_execution_key(p_send_intent_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_send_intents_is_independently_confirmed(p_send_intent_id) THEN ((SELECT NULLIF(procedure_execution, '') FROM send_intents WHERE send_intent_id = p_send_intent_id))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
 -- calc_agent_decision_records_deciding_agent_kind
 -- Field: AgentDecisionRecords.DecidingAgentKind
 -- Type: lookup | DataType: string | Returns: TEXT
@@ -9537,6 +10781,66 @@ RETURNS TEXT AS $$
   SELECT (CASE WHEN calc_agent_decision_records_is_draft_kind(p_agent_decision_record_id) THEN ((SELECT NULLIF(deciding_agent, '') FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id))::text ELSE ('')::text END)::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_agent_decision_records_is_error_correction
+-- Field: AgentDecisionRecords.IsErrorCorrection
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_agent_decision_records_is_error_correction(p_agent_decision_record_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_agent_decision_records_was_overridden(p_agent_decision_record_id) AND (SELECT NULLIF(override_reason_kind, '') FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id) = 'ErrorCorrection'))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_agent_decision_records_is_reserved_judgment_override
+-- Field: AgentDecisionRecords.IsReservedJudgmentOverride
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_agent_decision_records_is_reserved_judgment_override(p_agent_decision_record_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_agent_decision_records_was_overridden(p_agent_decision_record_id) AND (SELECT NULLIF(override_reason_kind, '') FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id) = 'JudgmentReserved'))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_agent_decision_records_override_reason_is_recorded
+-- Field: AgentDecisionRecords.OverrideReasonIsRecorded
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_agent_decision_records_override_reason_is_recorded(p_agent_decision_record_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_agent_decision_records_was_overridden(p_agent_decision_record_id) AND (SELECT NULLIF(override_reason_kind, '') FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id) IS NOT NULL))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_agent_decision_records_is_unexplained_override
+-- Field: AgentDecisionRecords.IsUnexplainedOverride
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_agent_decision_records_is_unexplained_override(p_agent_decision_record_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_agent_decision_records_was_overridden(p_agent_decision_record_id) AND NOT (calc_agent_decision_records_override_reason_is_recorded(p_agent_decision_record_id))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_agent_decision_records_error_correction_role_assignment_ke
+-- Field: AgentDecisionRecords.ErrorCorrectionRoleAssignmentKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_agent_decision_records_error_correction_role_assignment_ke(p_agent_decision_record_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_agent_decision_records_is_error_correction(p_agent_decision_record_id) THEN ((SELECT NULLIF(under_role_assignment, '') FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_agent_decision_records_boundary_violation_role_assignment_
+-- Field: AgentDecisionRecords.BoundaryViolationRoleAssignmentKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_agent_decision_records_boundary_violation_role_assignment_(p_agent_decision_record_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_agent_decision_records_violated_authority_boundary(p_agent_decision_record_id) THEN ((SELECT NULLIF(under_role_assignment, '') FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
 -- calc_delivered_communications_authorized_at
 -- Field: DeliveredCommunications.AuthorizedAt
 -- Type: lookup | DataType: datetime | Returns: TIMESTAMPTZ
@@ -9640,6 +10944,17 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_authority_boundaries_ratifying_fragment_is_single_witness(p_authority_boundary_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT calc_knowledge_fragments_is_from_single_witness((SELECT ratified_by_knowledge_fragment FROM authority_boundaries WHERE authority_boundary_id = p_authority_boundary_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_authority_boundaries_ratifying_fragment_status
+-- Field: AuthorityBoundaries.RatifyingFragmentStatus
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Status from related KnowledgeFragments
+
+
+CREATE OR REPLACE FUNCTION calc_authority_boundaries_ratifying_fragment_status(p_authority_boundary_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT status::text FROM knowledge_fragments WHERE knowledge_fragment_id = (SELECT ratified_by_knowledge_fragment FROM authority_boundaries WHERE authority_boundary_id = p_authority_boundary_id));
 $$ LANGUAGE sql STABLE;
 
 -- get_knowledge_fragments_knowledge_form
@@ -9832,6 +11147,46 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_authority_boundaries_ratifying_fragment_key(p_authority_boundary_id TEXT)
 RETURNS TEXT AS $$
   SELECT (CASE WHEN calc_authority_boundaries_is_currently_binding(p_authority_boundary_id) THEN ((SELECT NULLIF(ratified_by_knowledge_fragment, '') FROM authority_boundaries WHERE authority_boundary_id = p_authority_boundary_id))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_authority_boundaries_ratification_lapsed
+-- Field: AuthorityBoundaries.RatificationLapsed
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_authority_boundaries_ratification_lapsed(p_authority_boundary_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_authority_boundaries_has_ratifying_fragment(p_authority_boundary_id) AND NOT (calc_authority_boundaries_ratifying_fragment_is_valid(p_authority_boundary_id))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_authority_boundaries_binds_despite_lapsed_ratification
+-- Field: AuthorityBoundaries.BindsDespiteLapsedRatification
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_authority_boundaries_binds_despite_lapsed_ratification(p_authority_boundary_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_authority_boundaries_is_currently_binding(p_authority_boundary_id) AND calc_authority_boundaries_ratification_lapsed(p_authority_boundary_id)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_authority_boundaries_is_ungrounded_and_untested
+-- Field: AuthorityBoundaries.IsUngroundedAndUntested
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_authority_boundaries_is_ungrounded_and_untested(p_authority_boundary_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_authority_boundaries_binds_despite_lapsed_ratification(p_authority_boundary_id) AND calc_authority_boundaries_is_untested(p_authority_boundary_id)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_authority_boundaries_constrained_role_assignment_key
+-- Field: AuthorityBoundaries.ConstrainedRoleAssignmentKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_authority_boundaries_constrained_role_assignment_key(p_authority_boundary_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_authority_boundaries_binds_despite_lapsed_ratification(p_authority_boundary_id) THEN ((SELECT NULLIF(authority_role, '') FROM authority_boundaries WHERE authority_boundary_id = p_authority_boundary_id))::text ELSE ('')::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_binding_observations_sla_minutes_at_run

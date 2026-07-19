@@ -797,6 +797,46 @@
         "formula": "=AND({{HasLostAHolder}}, {{HasNoCurrentHolder}})"
       },
       {
+        "name": "UngroundedBoundaryCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many boundaries constrain this role on lapsed authority.",
+        "formula": "=COUNTIFS(AuthorityBoundaries!{{ConstrainedRoleAssignmentKey}}, {{RoleId}})"
+      },
+      {
+        "name": "IsGovernedByLapsedAuthority",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when at least one constraint on this role rests on knowledge that is no longer valid.",
+        "formula": "=({{UngroundedBoundaryCount}} > 0)"
+      },
+      {
+        "name": "UnescalatedRefusalCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many refusals this role should have been told about and was not.",
+        "formula": "=COUNTIFS(SendIntents!{{UnescalatedRefusalRoleKey}}, {{RoleId}})"
+      },
+      {
+        "name": "UnauthorizedEnforcementAssignmentCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many current assignments of this role are unauthorized enforcement assignments.",
+        "formula": "=COUNTIFS(RoleAssignments!{{UnauthorizedEnforcementRoleKey}}, {{RoleId}})"
+      },
+      {
+        "name": "IsUngovernedEnforcementRole",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a role that enforces controls on others is held with no recorded authorization.",
+        "formula": "=({{UnauthorizedEnforcementAssignmentCount}} > 0)"
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -1111,8 +1151,16 @@
         "datatype": "boolean",
         "type": "calculated",
         "nullable": true,
-        "Description": "TRUE when a non-human agent holds a role with no recorded approving authority or no authorizing change request.",
-        "formula": "=AND({{IsNonHumanAssignment}}, OR({{ApprovingAuthorityRole}} = \"\", {{AuthorizingChangeRequest}} = \"\"))"
+        "Description": "TRUE when a non-human agent holds this role with no approving authority recorded at all. An authority named without a change request is still an authority; the separate WasAuthorizedByChangeRequest column carries that weaker distinction.",
+        "formula": "=AND({{IsNonHumanAssignment}}, NOT({{HasApprovingAuthority}}))"
+      },
+      {
+        "name": "WasAuthorizedByChangeRequest",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this assignment's authorization is traceable to a change request, not merely to a named role. The stronger form of authorization, kept separate so the weaker one is not silently reported as unauthorized.",
+        "formula": "=AND({{HasApprovingAuthority}}, {{AuthorizingChangeRequest}} <> \"\")"
       },
       {
         "name": "DecisionCount",
@@ -1161,6 +1209,256 @@
         "nullable": true,
         "Description": "Composite-key echo: the role this assignment covered when the assignment has ended, blank otherwise.",
         "formula": "=IF({{HasDeparted}}, {{Role}}, \"\")"
+      },
+      {
+        "name": "MinimumDecisionsForComparison",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "The number of decisions below which an override-rate comparison is not considered evidentially meaningful for this role."
+      },
+      {
+        "name": "PredecessorDecisionCount",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "How many decisions the superseded assignment produced.",
+        "formula": "=INDEX(RoleAssignments!{{DecisionCount}}, MATCH({{SupersedesAssignment}}, RoleAssignments!{{RoleAssignmentId}}, 0))"
+      },
+      {
+        "name": "HasSufficientSample",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this assignment has produced enough decisions for its override rate to mean anything.",
+        "formula": "={{DecisionCount}} >= {{MinimumDecisionsForComparison}}"
+      },
+      {
+        "name": "PredecessorHasSufficientSample",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the predecessor assignment produced enough decisions to compare against.",
+        "formula": "={{PredecessorDecisionCount}} >= {{MinimumDecisionsForComparison}}"
+      },
+      {
+        "name": "ComparisonIsEvidentiallySound",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when both sides of the override-rate comparison rest on adequate samples.",
+        "formula": "=AND({{HasSufficientSample}}, {{PredecessorHasSufficientSample}})"
+      },
+      {
+        "name": "SingleOverrideSwingPercent",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "How many percentage points one additional override would move this assignment's rate. The fragility of the number.",
+        "formula": "=IF({{DecisionCount}} > 0, 100 / {{DecisionCount}}, 0)"
+      },
+      {
+        "name": "QualityVerdictIsUnsupported",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a quality verdict is being reported for this assignment on a sample too small to support it.",
+        "formula": "=AND(NOT({{ComparisonIsEvidentiallySound}}), NOT({{QualityRegressedVsPredecessor}}))"
+      },
+      {
+        "name": "IsUnmeasuredAutomationHandover",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a human-to-machine handover is operating without a statistically meaningful quality comparison behind it.",
+        "formula": "=AND({{IsHumanToNonHumanHandover}}, NOT({{ComparisonIsEvidentiallySound}}))"
+      },
+      {
+        "name": "ErrorCorrectionCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many of this assignment's decisions were overridden because they were wrong.",
+        "formula": "=COUNTIFS(AgentDecisionRecords!{{ErrorCorrectionRoleAssignmentKey}}, {{RoleAssignmentId}})"
+      },
+      {
+        "name": "ErrorRatePercent",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Percentage of this assignment's decisions overridden as errors -- the override rate with reserved-judgment overrides removed.",
+        "formula": "=IF({{DecisionCount}} > 0, {{ErrorCorrectionCount}} * 100 / {{DecisionCount}}, 0)"
+      },
+      {
+        "name": "AuthorizationDecidedAt",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "When the approving authority actually granted this assignment. Empty when no authorization was ever recorded."
+      },
+      {
+        "name": "AuthorizationReviewedAt",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "When the authorization for this assignment was last re-examined."
+      },
+      {
+        "name": "AuthorizationReviewCadenceDays",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "How often this assignment's authorization is promised to be re-examined."
+      },
+      {
+        "name": "HasDatedAuthorization",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this assignment carries both a named approving authority and the date they granted it.",
+        "formula": "=AND({{ApprovingAuthorityRole}} <> \"\", {{AuthorizationDecidedAt}} <> \"\")"
+      },
+      {
+        "name": "DaysSinceAuthorizationReview",
+        "datatype": "integer",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "How long since this assignment's authorization was last re-examined.",
+        "formula": "=IF({{AuthorizationReviewedAt}} <> \"\", DATETIME_DIFF(NOW(), {{AuthorizationReviewedAt}}, \"days\"), DATETIME_DIFF(NOW(), {{ValidFrom}}, \"days\"))"
+      },
+      {
+        "name": "AuthorizationIsOverdueForReview",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the promised re-examination interval has elapsed without a review.",
+        "formula": "=AND({{AuthorizationReviewCadenceDays}} > 0, {{DaysSinceAuthorizationReview}} > {{AuthorizationReviewCadenceDays}})"
+      },
+      {
+        "name": "IsStandingUnreviewedAutomation",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a currently-active non-human assignment has been running past its authorization review date.",
+        "formula": "=AND({{CoversNow}}, AND({{IsNonHumanAssignment}}, {{AuthorizationIsOverdueForReview}}))"
+      },
+      {
+        "name": "IsUnconditionedAutomationHandover",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a human-to-machine handover was authorized with no promised review cadence at all -- granted once, permanently.",
+        "formula": "=AND({{IsHumanToNonHumanHandover}}, {{AuthorizationReviewCadenceDays}} = 0)"
+      },
+      {
+        "name": "MaxTolerableErrorRatePercent",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "The error rate at or above which this assignment must stop making decisions unaided."
+      },
+      {
+        "name": "ExceedsTolerableErrorRate",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this assignment's error rate has reached the threshold set when it was authorized.",
+        "formula": "=AND({{MaxTolerableErrorRatePercent}} > 0, {{ErrorRatePercent}} >= {{MaxTolerableErrorRatePercent}})"
+      },
+      {
+        "name": "BoundaryViolationCountForAssignment",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many decisions under this assignment violated an authority boundary.",
+        "formula": "=COUNTIFS(AgentDecisionRecords!{{BoundaryViolationRoleAssignmentKey}}, {{RoleAssignmentId}})"
+      },
+      {
+        "name": "HasAnyBoundaryViolation",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when any decision under this assignment crossed a boundary it was forbidden to cross.",
+        "formula": "=({{BoundaryViolationCountForAssignment}} > 0)"
+      },
+      {
+        "name": "HasUngroundedGoverningBoundary",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when at least one boundary constraining this assignment's role rests on lapsed knowledge.",
+        "formula": "=INDEX(Roles!{{IsGovernedByLapsedAuthority}}, MATCH({{Role}}, Roles!{{RoleId}}, 0))"
+      },
+      {
+        "name": "SuspensionConditionMet",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when any pre-declared condition requiring this assignment to stop deciding unaided has been met.",
+        "formula": "=OR({{ExceedsTolerableErrorRate}}, OR({{HasAnyBoundaryViolation}}, {{HasUngroundedGoverningBoundary}}))"
+      },
+      {
+        "name": "IsOperatingUnderMetSuspensionCondition",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a suspension condition has been met and the assignment is nonetheless still active and still deciding.",
+        "formula": "=AND({{SuspensionConditionMet}}, AND({{CoversNow}}, {{IsNonHumanAssignment}}))"
+      },
+      {
+        "name": "HasDeclaredSuspensionCondition",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this assignment has any pre-declared condition under which it must stop at all.",
+        "formula": "={{MaxTolerableErrorRatePercent}} > 0"
+      },
+      {
+        "name": "HasApprovingAuthority",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a role is recorded as having approved this assignment.",
+        "formula": "={{ApprovingAuthorityRole}} <> \"\""
+      },
+      {
+        "name": "HasAuthorizingChangeRequest",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a change request is recorded as the governance vehicle for this assignment.",
+        "formula": "={{AuthorizingChangeRequest}} <> \"\""
+      },
+      {
+        "name": "IsEnforcementRole",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Whether this role's function is to enforce controls on other agents' actions."
+      },
+      {
+        "name": "IsUnauthorizedEnforcementAgent",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a non-human agent enforces controls on others while holding no recorded authorization of its own.",
+        "formula": "=AND({{IsEnforcementRole}}, {{IsUnauthorizedNonHumanAssignment}})"
+      },
+      {
+        "name": "GovernanceEvidenceCount",
+        "datatype": "integer",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "How many independent governance artifacts back this assignment: an approving role, an authorizing change request.",
+        "formula": "=IF({{HasApprovingAuthority}}, 1, 0) + IF({{HasAuthorizingChangeRequest}}, 1, 0)"
+      },
+      {
+        "name": "UnauthorizedEnforcementRoleKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Echoes the role only for non-human assignments nobody authorized; empty otherwise.",
+        "formula": "=IF({{IsUnauthorizedNonHumanAssignment}}, {{Role}}, \"\")"
       },
       {
         "name": "SemanticTypeIri",
@@ -7374,6 +7672,78 @@
         "formula": "=AND({{BasisChangedAfterSignature}}, NOT({{IsAttestationReady}}))"
       },
       {
+        "name": "IntendedRecipientCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many sends this campaign proposed to make.",
+        "formula": "=COUNTIFS(SendIntents!{{IntentExecutionKey}}, {{ProcedureExecutionId}})"
+      },
+      {
+        "name": "ReachedRecipientCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many of those sends actually left our systems.",
+        "formula": "=COUNTIFS(SendIntents!{{DeliveredIntentExecutionKey}}, {{ProcedureExecutionId}})"
+      },
+      {
+        "name": "SilentlyDroppedCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many intended recipients disappeared from this campaign with no record.",
+        "formula": "=COUNTIFS(SendIntents!{{DroppedIntentExecutionKey}}, {{ProcedureExecutionId}})"
+      },
+      {
+        "name": "DeliveryYieldPercent",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Percentage of intended recipients who actually received the communication.",
+        "formula": "=IF({{IntendedRecipientCount}} > 0, {{ReachedRecipientCount}} * 100 / {{IntendedRecipientCount}}, 0)"
+      },
+      {
+        "name": "CampaignSilentlyLostAudience",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a campaign lost intended recipients without producing any record of the loss.",
+        "formula": "=({{SilentlyDroppedCount}} > 0)"
+      },
+      {
+        "name": "UnrecordedRefusalCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many sends this execution refused without recording the refusal anywhere.",
+        "formula": "=COUNTIFS(SendIntents!{{UnrecordedRefusalExecutionKey}}, {{ProcedureExecutionId}})"
+      },
+      {
+        "name": "HasUnrecordedRefusals",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this run contains at least one refusal that left no trace anywhere.",
+        "formula": "=({{UnrecordedRefusalCount}} > 0)"
+      },
+      {
+        "name": "IndependentlyConfirmedIntentCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many of this execution's send decisions were corroborated by a delivery record.",
+        "formula": "=COUNTIFS(SendIntents!{{IndependentlyConfirmedExecutionKey}}, {{ProcedureExecutionId}})"
+      },
+      {
+        "name": "SendDecisionsAreEntirelySelfWitnessed",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when no send decision in this run was confirmed by anything other than the pipeline itself.",
+        "formula": "=AND({{IntendedRecipientCount}} > 0, {{IndependentlyConfirmedIntentCount}} = 0)"
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -10669,6 +11039,38 @@
         "formula": "=COUNTIFS(MessageDeliveries!{{DriftedSendTemplateKey}}, {{MessageTemplateId}})"
       },
       {
+        "name": "UnansweredDeliveryCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many transmitted messages from this template drew no acknowledgement.",
+        "formula": "=COUNTIFS(MessageDeliveries!{{UnansweredTemplateKey}}, {{MessageTemplateId}})"
+      },
+      {
+        "name": "TransmittedDeliveryCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many deliveries using this template were actually transmitted.",
+        "formula": "=COUNTIFS(MessageDeliveries!{{TransmittedTemplateKey}}, {{MessageTemplateId}})"
+      },
+      {
+        "name": "TemplateDrawsNoResponse",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when every transmitted message from this template went unacknowledged.",
+        "formula": "=AND({{TransmittedDeliveryCount}} > 0, {{UnansweredDeliveryCount}} = {{TransmittedDeliveryCount}})"
+      },
+      {
+        "name": "LastApprovalAt",
+        "datatype": "datetime",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "When this template's currently-governing approval was decided.",
+        "formula": "=INDEX(TemplateApprovals!{{DecidedAt}}, MATCH({{LastValidApproval}}, TemplateApprovals!{{TemplateApprovalId}}, 0))"
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -11174,8 +11576,11 @@
         "Title": "Questions only loop 1 made askable",
         "Premise": "Loop 1 established WHAT can go wrong: a blocking control unmet, a verification skipped, a send refused, a claim whose source has left. Loop 2 asks the questions that only exist once those columns do \u2014 about the QUALITY of the assurance rather than its presence. Three examples that had no expressible form before loop 1 ran: only 4 of 13 requirements have any computed witness at all, so which controls are still trusted purely on assertion; verification_outcomes.is_self_witnessed reads 3/4, so how much of the evidence is the executor vouching for themselves; and send_intents.is_silently_dropped reads 4/7, a failure mode that could not be named until IsClearedToSend existed to refuse a send in the first place. Every loop-2 question records, in its own provenance, the loop-1 predicates that made it possible.",
         "StartedAt": "2026-07-19T19:45:00-05:00",
-        "CompletedAt": null,
-        "SemanticTypeIri": "urn:effortless:pko-extension#WitnessLoop"
+        "CompletedAt": "2026-07-19T20:30:00-05:00",
+        "SemanticTypeIri": "urn:effortless:pko-extension#WitnessLoop",
+        "FieldsAfter": 1479,
+        "WitnessedAfter": 836,
+        "DerivedAfter": 906
       }
     ]
   },
@@ -11774,7 +12179,7 @@
         "WhyItMatters": "This is the question almost no enterprise can answer about its own automated controls: which of our controls are now executed by a non-human, since when, and under what approval. Everything needed is already in `RoleAssignments` as data \u2014 `ra-old-variance` and `ra-new-variance` \u2014 but it is inert. Nothing surfaces 'this role changed species', nothing names the approving authority, and nothing links the handover to a ChangeRequest. I need my own provenance as columns before I act.",
         "AnswerableBefore": false,
         "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion",
-        "WitnessedAnswer": "RoleAssignments.IsHumanToNonHumanHandover=1/13; RoleAssignments.IsNonHumanAssignment=4/13; RoleAssignments.IsUnauthorizedNonHumanAssignment=4/13"
+        "WitnessedAnswer": "RoleAssignments.IsHumanToNonHumanHandover=1/13; RoleAssignments.IsNonHumanAssignment=4/13; RoleAssignments.IsUnauthorizedNonHumanAssignment=3/13"
       },
       {
         "RoleQuestionId": "q-variance-ai-quality-vs-human-baseline",
@@ -11873,7 +12278,8 @@
         "QuestionText": "Loop 1 gave me four separate decay signals on knowledge fragments and no way to see where they stack. Show me the fragments where single-witness provenance, overdue review, and actual operational reliance all coincide. That intersection is my entire risk register \u2014 everything else is housekeeping.",
         "WhyItMatters": "IsFromSingleWitness=4/7, IsOverdueForReview=6/7 and HasOperationalReliance=2/7 are each individually unalarming. What matters is the overlap: a claim resting on one person's word, past its review date, that an exception handler actually routes real cases against. That row is a single point of failure with a deadline on it, and no loop-1 predicate names it.",
         "AnswerableBefore": false,
-        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion",
+        "WitnessedAnswer": "KnowledgeFragments.IsCompoundFragile=1/7; KnowledgeFragments.IsExpiringSinglePointOfFailure=0/7; KnowledgeFragments.IsSinglePointOfFailure=0/7; ProcedureVersions.RestsOnCompoundFragileKnowledge=1/3"
       },
       {
         "RoleQuestionId": "q2-authority-boundary-rests-on-expired-claim",
@@ -11882,7 +12288,8 @@
         "QuestionText": "AuthorityBoundaries.RatifyingFragmentIsValid reads 2 of 3. One of the rules that constrains what an AI agent may decide is ratified by a knowledge fragment that is NOT currently valid. Which boundary is it, is it still being enforced as though it were sound, and has any agent decision been evaluated against it since its ratification lapsed?",
         "WhyItMatters": "This is the question that only became askable in loop 2 and it is the most serious one I have. A boundary is a rule about machine authority. If the claim that justifies the rule has expired, we are enforcing a constraint whose warrant we can no longer produce \u2014 or worse, the boundary reads IsCurrentlyBinding=TRUE (3/3 in loop 1) while its ratification is void. Binding-ness and warranted-ness are two different things and loop 1 conflated them by never comparing them.",
         "AnswerableBefore": false,
-        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion",
+        "WitnessedAnswer": "AuthorityBoundaries.IsUnwarranted=1/3; AuthorityBoundaries.IsUnwarrantedAndUntested=1/3; AuthorityBoundaries.RatifyingFragmentIsOverdue=2/3; AuthorityBoundaries.RatifyingFragmentIsSingleWitness=2/3; AuthorityBoundaries.WarrantIsThin=2/3; Steps.IsGovernedByUnwarrantedBoundary=1/17"
       },
       {
         "RoleQuestionId": "q2-authority-elicitation-method-monoculture",
@@ -11891,7 +12298,8 @@
         "QuestionText": "Loop 1 says 2 of 3 elicitation sessions used a single-witness method, and 4 of 7 fragments inherit that. I want the exposure the other way round: how much of a live procedure's knowledge base traces back to ONE session, or to ONE practitioner? If a single shadowing session in April underwrites half of policy-v1.0.0, that is a concentration risk, not a provenance detail.",
         "WhyItMatters": "IsFromSingleWitness is per-fragment. It cannot see that three fragments share the SAME single witness \u2014 which is a strictly worse situation than three fragments each with their own single witness. Loop 1 established the per-fragment atom; loop 2 can finally aggregate it back over sessions and agents to measure concentration.",
         "AnswerableBefore": false,
-        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion",
+        "WitnessedAnswer": "ElicitationSessions.IsConcentratedSingleWitness=1/3; ElicitationSessions.IsHighYieldSession=1/3; ElicitationSessions.IsStaleConcentratedWitness=0/3; ProcedureVersions.KnowledgeBaseIsConcentrated=1/3"
       },
       {
         "RoleQuestionId": "q2-authority-unapproved-knowledge-reaching-machines",
@@ -11900,7 +12308,8 @@
         "QuestionText": "Loop 1 found exactly one fragment that is unapproved and operationally live, and separately found that all three versions run on unapproved knowledge. Narrow it for me: is any unapproved claim being consumed by a step assigned to an AI agent or an automated pipeline? Human judgment can compensate for a claim I have not signed off. Software cannot.",
         "WhyItMatters": "IsUnapprovedButReliedOn and IsSoftwareAssigned are both loop-1 facts on different tables that have never met. The distinction matters because an unapproved claim reaching a human step is a reviewable risk \u2014 the human can notice it is wrong \u2014 while an unapproved claim reaching a pipeline is executed literally and silently. Only the second one requires me to stop the procedure.",
         "AnswerableBefore": false,
-        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion",
+        "WitnessedAnswer": "KnowledgeFragments.ConsumingStepIsSoftwareAssigned=6/7; KnowledgeFragments.IsUnapprovedAndHumanConsumed=0/7; KnowledgeFragments.IsUnapprovedAndMachineConsumed=1/7; ProcedureVersions.FeedsUnapprovedKnowledgeToMachines=1/3"
       },
       {
         "RoleQuestionId": "q2-authority-review-date-is-inferred-not-recorded",
@@ -11909,7 +12318,8 @@
         "QuestionText": "Loop 1 reports IsOverdueForReview=6/7, and I do not trust the number. It is computed from AgeDays, which is DATETIME_DIFF from ValidFrom \u2014 the date the claim became true, not the date anybody last looked at it. A fragment reviewed and reaffirmed last week reads exactly as overdue as one nobody has opened since it was written. I need the date of the last actual review recorded as a fact.",
         "WhyItMatters": "This is structural debt, and it is the kind that produces a plausible-looking wrong answer rather than an error. ValidFrom is a bitemporal validity bound; LastReviewedAt is a stewardship event. Deriving the second from the first is a category error that makes 6/7 unfalsifiable \u2014 there is no data that could make it read 5/7. The honest fix is a raw LastReviewedAt column, with the old inference retained as an explicit fallback-free comparison so the discrepancy itself becomes visible.",
         "AnswerableBefore": false,
-        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion",
+        "WitnessedAnswer": "KnowledgeFragments.HasReviewRecord=3/7; KnowledgeFragments.InferenceDisagreesWithRecord=3/7; KnowledgeFragments.IsGenuinelyOverdue=0/7; KnowledgeFragments.IsUnreviewedSinceAuthoring=3/7; KnowledgeFragments.ReviewRecencyIsInferred=3/7"
       },
       {
         "RoleQuestionId": "q2-hr-my-backlog-is-someone-elses-block",
@@ -11918,7 +12328,8 @@
         "QuestionText": "Loop 1 confirmed one live decision is waiting on me and that it blocks an open gap. What I want is the full chain from my inbox outward: which knowledge gaps stay open because I have not decided, which steps sit downstream of those gaps, and how many days of that delay are mine personally rather than the process's.",
         "WhyItMatters": "IsLiveDecisionBacklog=1/2 and BlocksAnOpenGap=1/2 tell me a decision is late. They do not tell me what is stuck behind it. A pending CR that blocks nothing is an administrative debt I can carry; one that holds an open gap on a live procedure is me being the bottleneck on someone else's work, and I would rather know that in those terms.",
         "AnswerableBefore": false,
-        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion",
+        "WitnessedAnswer": "ChangeRequests.IsMyBlockingBacklog=1/2; ChangeRequests.IsMyOverdueBacklog=0/2; ChangeRequests.IsMyPendingDecision=1/2; ProcedureVersions.IsBlockedOnPendingDecision=0/3"
       },
       {
         "RoleQuestionId": "q2-hr-ai-boundary-holds-only-where-tested",
@@ -11927,7 +12338,8 @@
         "QuestionText": "Loop 1 told me SoftwareDidHumanWork=0/12 and IsUntested=3/3 in the same breath. Those two results together are not reassurance \u2014 they are the same fact stated twice. Every boundary constraining what policy-drafting-ai may do is untested, so of course no violation was found. Which of my human-only gates have actually been exercised by a software-assigned agent attempting them, and which have simply never been approached?",
         "WhyItMatters": "A control that has never been tested and a control that passed are indistinguishable in loop 1's output. kf-policy-ai-boundary says the AI may draft but may not create legal commitments; policy-03 and policy-06 are both assigned to policy-drafting-agent. If no software agent has ever reached a human gate, my boundary has zero evidence behind it and I should stop describing it as holding.",
         "AnswerableBefore": false,
-        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion",
+        "WitnessedAnswer": "ProcedureVersions.AiBoundaryIsUnevidenced=2/3; Steps.HasBeenApproachedBySoftware=5/17; Steps.IsDemonstratedHumanGate=0/17; Steps.IsUnexercisedHumanGate=2/17"
       },
       {
         "RoleQuestionId": "q2-hr-my-unapproved-claim-is-load-bearing",
@@ -11936,7 +12348,8 @@
         "QuestionText": "Loop 1 found exactly one claim that is mine, unapproved, and operationally live \u2014 kf-policy-manager-route, the 48-hour manager-notification rule that exc-unreachable routes real employee cases against. Tell me the blast radius: how many steps, exceptions and authority boundaries currently depend on a claim I have not signed, and how long has it been sitting at Reviewed?",
         "WhyItMatters": "IsUnapprovedAndOperationallyLive=1/7 is a yes-or-no. It does not size the exposure. One unapproved claim that an exception handler consults and that also ratifies an authority boundary is a different problem from one that a single step reads. I need to know whether signing this one thing clears four downstream findings or one.",
         "AnswerableBefore": false,
-        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion",
+        "WitnessedAnswer": "KnowledgeFragments.IsHighBlastRadiusUnapproved=0/7; KnowledgeFragments.IsLongUnapproved=1/7"
       },
       {
         "RoleQuestionId": "q2-hr-my-approvals-never-read-as-done",
@@ -11945,7 +12358,8 @@
         "QuestionText": "When I approve a change request it stays Approved forever and the model still counts it as open. That means every version I have ever acted on reads permanently unfit, and my own approval activity is invisible \u2014 I cannot show what I have actually cleared. How many decisions have I made that the model still displays as outstanding against me?",
         "WhyItMatters": "Same structural debt the steward raised, seen from the authority's side. ChangeRequests.IsOpen = OR(Draft, UnderReview, Approved) has no terminal state, so AwaitsAuthorityDecision correctly goes false on decision but OpenChangeRequestCount never does. The consequence for me personally is that my decision throughput is unmeasurable: there is no column that distinguishes 'I have not decided' from 'I decided and it is done'.",
         "AnswerableBefore": false,
-        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion",
+        "WitnessedAnswer": "ChangeRequests.DelayIsDownstreamOfMe=0/2; ChangeRequests.IsImplemented=1/2; ChangeRequests.IsMyDecidedButUnlanded=0/2; ChangeRequests.IsMyDecidedRequest=0/2"
       },
       {
         "RoleQuestionId": "q2-hr-departed-holder-left-claims-behind",
@@ -11954,7 +12368,8 @@
         "QuestionText": "Loop 1 found one role assignment with HasDeparted=TRUE and simultaneously reported Agents.IsStillEngaged=10/10 and HasOrphanedProvenance=0/7, which cannot all be comfortable at once. Somebody's assignment ended. Did anything they owned or sourced go with them \u2014 claims, gaps, pending decisions \u2014 or did the departure genuinely leave nothing behind?",
         "WhyItMatters": "HasDeparted is on RoleAssignments. IsStillEngaged is on Agents and reads TRUE if the agent holds ANY current assignment. So a person can depart the role that made them the authority on a claim while remaining engaged elsewhere, and every loop-1 orphan predicate stays silent. That is precisely the silent-failure shape I care about: the model reports zero orphans because it is asking about the person rather than the role.",
         "AnswerableBefore": false,
-        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion",
+        "WitnessedAnswer": "KnowledgeFragments.IsOrphanedByRole=0/7; KnowledgeFragments.OwnerRoleIsVacated=0/7; KnowledgeGaps.IsOwnerlessOpenGap=0/8; KnowledgeGaps.OwnerRoleIsVacated=0/8; Roles.HasLostAHolder=1/12; Roles.IsVacatedRole=0/12"
       },
       {
         "RoleQuestionId": "q2-steward-recovery-path-is-load-bearing",
@@ -11963,7 +12378,8 @@
         "QuestionText": "Loop 1 told me four recovery paths have never been walked. That alone does not scare me \u2014 an untested path to a step nobody depends on is untidy. What I need to know is which unwalked recovery path leads to a step that carries a BLOCKING requirement. That is a control we have declared, never rehearsed, and would be reaching for on the worst day of the quarter.",
         "WhyItMatters": "IsUnwalkedRecoveryPath is a flat 4/19 with no severity ordering. A fallback into an ordinary step and a fallback into the only blocking control on the procedure are the same colour today. Crossing the loop-1 traversal predicate with the loop-1 blocking-requirement count is the first thing that ranks my remediation queue.",
         "AnswerableBefore": false,
-        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion",
+        "WitnessedAnswer": "ProcedureVersions.HasUnrehearsedControlEntry=2/3; ProcedureVersions.IsLiveWithUnrehearsedControl=2/3; StepTransitions.IsUnrehearsedControlEntry=3/19; StepTransitions.TargetCarriesBlockingControl=13/19"
       },
       {
         "RoleQuestionId": "q2-steward-cadence-breach-is-unremediated",
@@ -11972,7 +12388,8 @@
         "QuestionText": "Loop 1 showed me one review event that exceeds the cadence I promised. What I cannot see is whether anyone did anything about it. Is that cadence breach sitting on a version with an open change request against it \u2014 which would mean the fix is at least in flight \u2014 or is it sitting on a version with no governance record moving at all, which means I have a breach and no response?",
         "WhyItMatters": "ExceedsPromisedCadence tells me the promise broke. HasGovernanceRecord tells me the version has ever had a CR or review. Neither tells me whether the governance record is a RESPONSE to the breach or ancient history. A breach with a live decision in flight is a managed problem; a breach with nothing moving is an abandoned one, and only the second one is my emergency.",
         "AnswerableBefore": false,
-        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion",
+        "WitnessedAnswer": "ProcedureVersions.GovernanceIsSilent=0/3; ProcedureVersions.HasDecisionInFlight=1/3; ProcedureVersions.IsInCadenceBreach=1/3; ProcedureVersions.IsManagedCadenceBreach=0/3; ProcedureVersions.IsUnremediatedCadenceBreach=1/3"
       },
       {
         "RoleQuestionId": "q2-steward-unstewarded-version-still-referenced",
@@ -11981,7 +12398,8 @@
         "QuestionText": "close-v1.0.0 is Archived and unstewarded \u2014 loop 1 confirmed IsUnstewarded fires exactly once. But it is still the target of ProcedureVersionLinks, and knowledge fragments and change requests may still point at it. Is my one unstewarded version genuinely inert, or is it still structurally load-bearing for something that is live?",
         "WhyItMatters": "IsUnstewarded is a fact about the version in isolation. It says nothing about whether anything still depends on it. An archived, unstewarded, unreferenced version is a clean retirement. An archived, unstewarded version that a live version supersedes and that still owns knowledge fragments is an orphan holding pieces of a live procedure \u2014 and no one is accountable for it.",
         "AnswerableBefore": false,
-        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion",
+        "WitnessedAnswer": "ProcedureVersions.IsCleanlyRetired=0/3; ProcedureVersions.IsLoadBearingOrphan=1/3; ProcedureVersions.IsStillReferenced=1/3; ProcedureVersions.StillOwnsValidKnowledge=2/3"
       },
       {
         "RoleQuestionId": "q2-steward-approved-cr-never-lands",
@@ -11990,7 +12408,8 @@
         "QuestionText": "cr-close-timestamp is Approved. Loop 1 reads it as still OPEN, because IsOpen counts Approved as open. That means an approved change request permanently suppresses IsFitToExecute on the version it touches, and I have no way in the model to say the decision landed. How many of my versions are being held unfit by decisions that were actually made?",
         "WhyItMatters": "This is real structural debt, not a query gap. ChangeRequests.IsOpen = OR(Draft, UnderReview, Approved) has no terminal state after Approved, so OpenChangeRequestCount never returns to zero and ProcedureVersions.IsFitToExecute reads 0/3 forever. Loop 1 measured 0/3 fit and could not say why. The honest fix is an Implemented/Closed terminal status plus a predicate that distinguishes 'decision pending' from 'decision made, not yet landed'.",
         "AnswerableBefore": false,
-        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion",
+        "WitnessedAnswer": "ChangeRequests.IsApprovedNotImplemented=0/2; ChangeRequests.IsStalledImplementation=0/2; ProcedureVersions.IsHeldUnfitByLandedDecisions=0/3"
       },
       {
         "RoleQuestionId": "q2-steward-control-kind-instead-of-hardcoded-ids",
@@ -11999,7 +12418,8 @@
         "QuestionText": "Several of my loop-1 predicates name individual steps by id \u2014 Steps.IsHumanApprovalGate hardcodes policy-05 and close-06, StepExecutions.IsLegalReviewStep hardcodes policy-04, Steps.IsPreparationStep and IsApprovalStep hardcode role ids. That means the moment we add a third procedure, every one of those controls silently stops covering it. What KIND of control is each step, expressed as data rather than as a literal in a formula?",
         "WhyItMatters": "This is the structural debt that most threatens the model's honesty. A predicate that hardcodes policy-04 does not mean 'legal review step'; it means 'this one row'. It will read FALSE on a new procedure's legal review step and the build will stay green. Loop 1 exposed the pattern by repeating it five times. The fix is a Steps.ControlKind column and predicates that read it.",
         "AnswerableBefore": false,
-        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion",
+        "WitnessedAnswer": "ProcedureVersions.ControlTaxonomyIsIncomplete=0/3; Steps.ApprovalStepIsSoftwareAssigned=0/17; Steps.HasDeclaredControlKind=17/17"
       },
       {
         "RoleQuestionId": "q2-fa-cleared-by-mute-control",
@@ -12008,7 +12428,8 @@
         "QuestionText": "On the steps I personally executed, how many of the blocking controls that cleared me were controls that have NEVER produced a negative outcome anywhere in this model \u2014 and were any of my steps cleared ONLY by controls of that kind?",
         "WhyItMatters": "Loop 1 told me `IsBlockingAndUnmet` fired once out of eight, and I took comfort from that. But `Requirements.NegativeOutcomeCount` is now a real column, and six of my thirteen requirements are `IsInoperativeControl`. A control that has never once said no is not evidence that I did the work correctly; it is evidence that nobody has ever tested whether it can say no. I need to know, per step I ran, whether my clearance rests on any control that has demonstrated it can fail. If every control that passed me is mute, my green step is indistinguishable from an unaudited one.",
         "AnswerableBefore": false,
-        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion",
+        "WitnessedAnswer": "RequirementSatisfactions.IsClearanceByUnfalsifiedControl=6/8; RequirementSatisfactions.RequirementIsUnfalsified=6/8; Requirements.HasEverProducedNegative=1/13; Requirements.IsUnfalsifiedControl=6/13; StepExecutions.AllClearancesAreUnfalsified=5/12"
       },
       {
         "RoleQuestionId": "q2-fa-stale-then-vs-stale-now",
@@ -12017,7 +12438,8 @@
         "QuestionText": "Loop 1 told me two of my steps ran on a stale authoritative source. But that answer was computed against eval-current, TODAY. Was the source stale AT THE MOMENT I RAN, or has it merely gone stale since \u2014 and are those the same two steps?",
         "WhyItMatters": "This is the deepest defect loop 1 left me with. `OperationalBindings` points at `Steps`, which is the SPECIFICATION, and freshness is measured against `EvaluationContexts.AsOfInstant`. So `RanOnStaleAuthoritativeSource` does not mean 'the data was stale when I certified against it' \u2014 it means 'the data is stale now, in July, when someone happens to be looking'. I signed my reconciliation on 2026-07-01. If I re-read that column in December it will say something different from identical underlying facts. For an attestation that is not a nuance, it is the wrong tense entirely. I need a binding observation frozen at run time, on the execution side, that cannot drift after I have signed.",
         "AnswerableBefore": false,
-        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion",
+        "WitnessedAnswer": "BindingObservations.IsAuthoritativeBinding=0/0; BindingObservations.WasStaleAtRun=0/0; StepExecutions.StalenessAnswerIsTenseDependent=2/12; StepExecutions.WasStaleWhenIRanIt=0/12"
       },
       {
         "RoleQuestionId": "q2-fa-witness-coverage-of-my-steps",
@@ -12026,7 +12448,8 @@
         "QuestionText": "Nine of thirteen requirements have no computed witness at all. Of the blocking controls attached to the steps I run, how many are in that nine \u2014 and is `Requirements.HasComputedWitness` even telling me the truth, given a human typed it in by hand?",
         "WhyItMatters": "Loop 1 gave me `RequirementSatisfactions.IsAssertedOnly`, and it reads 3 of 8. But that whole column rests on `Requirements.HasComputedWitness`, which is a RAW boolean somebody set by hand, and `WitnessFieldName`, which is a free-text string. Nothing checks that the named field exists. If a control is marked as computed-witnessed and the field named does not exist \u2014 or exists and is not a witness \u2014 then my assurance number is a claim about a claim. We now have `RulebookFields` as a genuine 1096-row catalog of every field in this model. The hand-typed flag should be derived from it, and until it is, I want a column that tells me when the two disagree.",
         "AnswerableBefore": false,
-        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion",
+        "WitnessedAnswer": "Requirements.ClaimsAWitnessField=4/13; Requirements.DerivedHasComputedWitness=4/13; Requirements.IsUnwitnessedBlockingControl=9/13; Requirements.NamedWitnessFieldExists=4/13; Requirements.WitnessClaimIsUnverified=0/13; StepRequirements.RequirementLacksWitness=10/15"
       },
       {
         "RoleQuestionId": "q2-fa-clean-but-uncovered",
@@ -12035,7 +12458,8 @@
         "QuestionText": "Only 5 of 12 executions are `IsClean`. Invert it: of the executions that ARE clean, how many are clean because everything was checked and passed, versus clean because there was almost nothing checking them?",
         "WhyItMatters": "`IsClean` is a conjunction of absences \u2014 PASS, no deviation, no unresolved issue, not late. Every one of those is a thing NOT happening. A step with no verifications declared, no blocking requirements bound, and no exception available will read IsClean=TRUE forever, and it will look identical in a report to a step that survived four independent checks. As the preparer I am judged on my clean rate. I want to know which of my clean steps actually earned it, because the ones that did not are where a real problem would hide without ever changing a single column.",
         "AnswerableBefore": false,
-        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion",
+        "WitnessedAnswer": "StepExecutions.HasAnyDeclaredCheck=8/12; StepExecutions.IsSubstantivelyClean=1/12; StepExecutions.IsUncheckedByDesign=4/12; StepExecutions.IsVacuouslyClean=2/12"
       },
       {
         "RoleQuestionId": "q2-fa-my-own-evidence-quality",
@@ -12044,7 +12468,8 @@
         "QuestionText": "Three of four verification outcomes in this model are self-witnessed. On the steps I ran, was the person who observed the passing signal ever me \u2014 and when it was, did I at least attach an evidence URI?",
         "WhyItMatters": "Loop 1 gave the CFO `VerificationOutcomes.IsSelfWitnessed` at 3/4 and gave me `ClaimsPassWithoutEvidence` at 3/12. I have not seen those two crossed. vo-close03 is mine: I ran se-close03 and I am also the ObservedByAgent, and the EvidenceUri is empty. So on my own reconciliation, the only thing standing behind 'unexplained material variance = 0' is that I typed a zero and then confirmed my own zero. That is the weakest possible evidentiary position and I would rather flag it myself than have it found. What I need is the joint condition \u2014 self-witnessed AND unbacked \u2014 because either alone is survivable and the combination is not.",
         "AnswerableBefore": false,
-        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion",
+        "WitnessedAnswer": "StepExecutions.EvidencePositionIsWeak=1/12; VerificationOutcomes.IsSelfWitnessedAndUnbacked=1/4; VerificationOutcomes.IsUncorroboratedPass=1/4; VerificationOutcomes.ObserverIsIndependentOfExecutor=1/4; VerificationOutcomes.ObserverIsNonHuman=1/4"
       },
       {
         "RoleQuestionId": "q2-ctl-witness-never-fired",
@@ -12053,7 +12478,8 @@
         "QuestionText": "Of my four requirements that have a computed witness, on how many has that witness ever actually returned a negative? And for the ones where it never has: is that because the control genuinely holds, or because the witness is scoped so narrowly it can never see a violation?",
         "WhyItMatters": "This is the question loop 1 made askable and did not ask. `Requirements.HasComputedWitness` is 4/13 and `IsInoperativeControl` is 6/13, and I spent loop 1 relieved that the four witnessed ones were the important ones. But `NegativeOutcomeCount` is now a column, and I can see that three of those four have never returned anything but Satisfied. A witness with a zero fire count is in exactly one of two states and the model cannot currently tell them apart: either the organisation genuinely never violates that control, or the predicate is mis-scoped and structurally cannot fire. Those two states have opposite remediations \u2014 one is evidence, one is a bug \u2014 and conflating them is how a control framework rots while every dashboard stays green. I want the model to force the distinction into the open rather than let a zero mean whatever the reader hopes.",
         "AnswerableBefore": false,
-        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion",
+        "WitnessedAnswer": "Requirements.HasMeaningfulSample=0/13; Requirements.IsEvidencedHoldingControl=0/13; Requirements.IsUntestedWitness=0/13; Requirements.WitnessHasNeverFired=3/13"
       },
       {
         "RoleQuestionId": "q2-ctl-witness-scope-vs-binding",
@@ -12062,7 +12488,8 @@
         "QuestionText": "For each control that has a witness, is the witness even evaluated at the same steps where the control is bound? req-close-evidence is bound to close-03 and close-08 \u2014 is its witness scoped to both, or does it only look at one of them?",
         "WhyItMatters": "The other half of the never-fired ambiguity, and the more insidious one. A witness can be perfectly correct and still never fire because it is scoped to a step where the violation cannot occur. `req-close-evidence` is bound to two steps via sr-c03b and sr-c08. If its witness only ever gets evaluated at close-08 \u2014 where the archival actually happens and therefore usually succeeds \u2014 then the close-03 exposure, which is where workpapers get left on personal drives, is invisible. Loop 1 gave me binding counts and satisfaction counts as separate numbers. I need them compared per requirement, because a control bound to two steps and evaluated at one is a control with a fifty percent blind spot that reports as fully operational.",
         "AnswerableBefore": false,
-        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion",
+        "WitnessedAnswer": "Requirements.WitnessIsPartiallyScoped=4/13; StepRequirements.BindingWasEverExercised=0/15; StepRequirements.IsUnexercisedBlockingBinding=15/15"
       },
       {
         "RoleQuestionId": "q2-ctl-separation-held-or-untested",
@@ -12071,7 +12498,8 @@
         "QuestionText": "SeparationOfDutiesHeld reads 2 of 2 and ViolatesSeparationOfDuties reads 0 of 12. Before I put that in a control narrative: is there any execution in which the same agent COULD have both prepared and approved \u2014 or is my separation control passing because the structure never gave it the opportunity to fail?",
         "WhyItMatters": "Zero violations across twelve executions is either the best number in my control environment or the emptiest. `ViolatesSeparationOfDuties` depends on `StepIsPreparation`, `StepIsApproval` and `PreparedByThisAgentCount`, and Steps.IsPreparationStep is 2/17 while IsApprovalStep is 2/17. If the two preparation steps and the two approval steps sit in different procedures, or are assigned to roles held by different agents by construction, then the predicate is not a control at all \u2014 it is a tautology with a green light on it. I am the person who will be asked to attest that segregation of duties operated. I need to be able to say whether it was tested, not merely whether it passed.",
         "AnswerableBefore": false,
-        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion",
+        "WitnessedAnswer": "ProcedureExecutions.SeparationHeldUnderTest=1/2; ProcedureExecutions.SeparationIsVacuouslyGreen=1/2; ProcedureExecutions.SeparationWasTestable=1/2"
       },
       {
         "RoleQuestionId": "q2-ctl-asserted-controls-by-who",
@@ -12080,7 +12508,8 @@
         "QuestionText": "Three satisfaction records are asserted-only. For each one, who asserted it, did that person have any independent basis, and were they the same person who executed the step they were scoring?",
         "WhyItMatters": "`IsAssertedOnly` at 3/8 told me these exist. It did not tell me the thing that determines how much they worry me. A blocking control marked Satisfied with no computed witness is a human judgement, and a human judgement is worth exactly as much as the independence of the human making it. sat-close-cutoff, sat-close-balance and sat-close-separation were all evaluated by me, on steps in a close I am accountable for. sat-close-separation is the one that stops me: I am the controller, req-close-separation is the segregation control, and I marked it Satisfied. Even where that judgement is correct \u2014 and it is \u2014 the model should be able to say that the control's only evidence is an assertion by an interested party, because an external auditor will say it first.",
         "AnswerableBefore": false,
-        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion",
+        "WitnessedAnswer": "RequirementSatisfactions.EvaluatorIsStepExecutor=2/8; RequirementSatisfactions.EvaluatorOwnsTheRun=5/8; RequirementSatisfactions.HasWrittenEvidence=8/8; RequirementSatisfactions.IsBareAssertion=0/8; RequirementSatisfactions.IsInterestedPartyAssertion=3/8"
       },
       {
         "RoleQuestionId": "q2-ctl-divergence-that-nobody-governed",
@@ -12089,7 +12518,8 @@
         "QuestionText": "Both executions diverged from specification. For each divergence, was there a governing instrument behind it \u2014 an invoked exception, an approved change request, or a recorded deviation with an owner \u2014 or did the run simply do something different and nobody wrote it down?",
         "WhyItMatters": "`DivergedFromSpecification` is 2/2 and that number by itself is useless to me. Divergence is not a violation; procedures meet reality and reality wins. What matters is whether each divergence was governed. Loop 1 built the parts \u2014 `RanUnderException` at 1/12, `HasDeviation` at 4/12, `IsUngovernedInvocation`, `ChangeRequests.TouchesLiveVersion` \u2014 but never joined divergence to its governing instrument. So today a run that invoked a documented exception and a run that silently skipped a step produce the same red cell. That flattening is exactly backwards: the governed divergence is evidence the control framework works, and the ungoverned one is the only real finding.",
         "AnswerableBefore": false,
-        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion",
+        "WitnessedAnswer": "ChangeRequests.IsApprovedDecision=1/2; ProcedureExecutions.DivergenceWasFullyGoverned=1/2; ProcedureVersions.HasApprovedChangeRequest=1/3; StepExecutions.HasApprovedChangeCoverage=8/12; StepExecutions.HasGoverningInstrument=8/12; StepExecutions.IsUngovernedDivergence=2/12"
       },
       {
         "RoleQuestionId": "q2-cfo-quality-of-a-green-attestation",
@@ -12098,7 +12528,8 @@
         "QuestionText": "When IsAttestationReady eventually reads TRUE, what proportion of the controls behind that TRUE were actually demonstrated to work \u2014 versus asserted by an interested party, versus never exercised at all? Give me the assurance grade, not just the verdict.",
         "WhyItMatters": "IsAttestationReady is a conjunction of four booleans, and I have now seen how each of them can be true for the wrong reason. AllBlockingControlsEvaluated is satisfied by a satisfaction record existing, regardless of whether anything computed it. SeparationOfDutiesHeld reads 2/2 on runs where segregation may never have been at risk. IsStructurallyComplete counts steps. So the conjunction can go green while resting entirely on human assertion \u2014 and today, with AssuranceIsMostlyAsserted at 2/2, it would. I am not asking for a softer signal. I want the same hard refusal, plus a grade that tells me what kind of TRUE I am being handed, because 'I signed because the model said yes' is not a defence if the model said yes for structural reasons.",
         "AnswerableBefore": false,
-        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion",
+        "WitnessedAnswer": "ProcedureExecutions.AttestationWouldBeWeaklyBased=0/2; RequirementSatisfactions.IsComputedlyWitnessed=5/8"
       },
       {
         "RoleQuestionId": "q2-cfo-would-it-survive-restatement",
@@ -12107,7 +12538,8 @@
         "QuestionText": "If I re-run every attestation column against this same data six months from now, will it give the same answer? Name every column in my attestation whose value depends on when it is read rather than on what happened.",
         "WhyItMatters": "This is the question that keeps me awake, and loop 1 made it askable by giving me an attestation built out of computed columns rather than typed statuses. Those columns are evaluated live. Freshness is measured against EvaluationContexts.AsOfInstant. Review cadences are measured against NOW. ProcedureVersions.IsFitToExecute depends on open change requests and overdue reviews \u2014 both of which change while the execution I signed sits frozen in the past. So SignedAgainstUnfitVersion, which reads 1/2 today, is not a statement about the moment of signature at all; it is a statement about the version's condition right now. If a restatement forces me to re-derive what I knew when I signed, a model that answers as-of-today cannot produce it, and I will be unable to demonstrate that my signature was reasonable on the day I gave it. I need the model to identify its own time-dependent columns rather than have an examiner do it for me.",
         "AnswerableBefore": false,
-        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion",
+        "WitnessedAnswer": "Attestations.AssuranceGradeHasDrifted=0/0; Attestations.FitnessVerdictHasDrifted=0/0; Attestations.VersionIsFitNow=0/0; Attestations.VersionWasFitAtSigning=0/0; Attestations.WouldNotSurviveRestatement=0/0"
       },
       {
         "RoleQuestionId": "q2-cfo-who-witnessed-the-witnesses",
@@ -12116,7 +12548,8 @@
         "QuestionText": "Three of four verification outcomes are self-witnessed and two of twelve approvals rest on self-attestation. My own approval on se-close06 is one of them. Across the whole close, is there any independent human observation at all \u2014 or is every layer of this attestation ultimately the same handful of people confirming each other?",
         "WhyItMatters": "Loop 1 gave me ApprovalRestsOnSelfAttestation and IsSelfWitnessed and I read them one row at a time, which is the wrong altitude. The question that matters is structural: an attestation is a chain, and a chain is only as independent as its least independent link. If the preparer self-witnesses, the controller asserts the controls, and I approve on the strength of the controller's assertion, then the whole structure reduces to one person's word passed through three layers of formatting. Each individual row can look defensible while the aggregate is circular. I need the depth of independent human confirmation in the chain, expressed as a number, because zero and one are very different positions to be in and today the model shows me neither.",
         "AnswerableBefore": false,
-        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion",
+        "WitnessedAnswer": "ProcedureExecutions.AssuranceChainIsCircular=0/2; ProcedureExecutions.HasAnyIndependentObservation=1/2; VerificationOutcomes.IsIndependentHumanObservation=1/4"
       },
       {
         "RoleQuestionId": "q2-cfo-controls-nobody-is-watching",
@@ -12125,7 +12558,8 @@
         "QuestionText": "Nine of thirteen requirements have no computed witness and six are inoperative. Of those, which ones am I nonetheless personally attesting to \u2014 and who is the named human who would answer for each if it failed?",
         "WhyItMatters": "IsAttestationReady tells me whether I can sign. It does not tell me what I am signing FOR. When I attest to this close I am implicitly asserting that every control in the framework operated, including the six that have never once been evaluated and the nine that nothing computes. If one of those fails, the first question will be who owned it. Right now the model can tell me a requirement is inoperative but cannot tell me whose problem that is, because Requirements has no owner and no accountable role. That is not a reporting gap, it is an accountability gap, and it is mine by default until it is somebody's by name.",
         "AnswerableBefore": false,
-        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion",
+        "WitnessedAnswer": "Requirements.HasNamedOwner=0/13; Requirements.IsOrphanedBlockingControl=13/13; Requirements.IsUnwatchedAndUnowned=9/13"
       },
       {
         "RoleQuestionId": "q2-cfo-what-changed-since-i-signed",
@@ -12134,7 +12568,158 @@
         "QuestionText": "Since the moment I signed, has anything in this model changed that would have altered my decision? Not whether the data is different \u2014 whether any change touched a control, a version, or an evidence record that my signature actually depended on.",
         "WhyItMatters": "The final question, and the one that only exists because loop 1 made my attestation a computed conjunction rather than a typed status. A computed attestation is a live object: the columns keep evaluating after I have signed. That is a strength \u2014 it means the model cannot lie to me at the moment of signature \u2014 and it is a liability, because it means my signature is attached to something that keeps moving. I need the model to tell me when it has moved in a way that matters. Not every edit matters; a corrected typo in a rationale does not. What matters is a change to something my attestation depended on: a control being re-scored, a version losing fitness, an evidence record being altered. Anything else is noise, and a model that alerts on everything is a model I will learn to ignore.",
         "AnswerableBefore": false,
-        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion",
+        "WitnessedAnswer": "ProcedureExecutions.BasisChangedAfterSignature=0/2; ProcedureExecutions.HasBeenAttested=0/2; ProcedureExecutions.RequiresReAttestation=0/2; RequirementSatisfactions.WasScoredAfterAttestation=0/8"
+      },
+      {
+        "RoleQuestionId": "q2-comms-approval-to-delivery-yield",
+        "AskingRole": "communications-manager",
+        "WitnessLoop": "loop-02",
+        "QuestionText": "I approved a template and authorized a campaign. Of everybody the pipeline intended to contact, what fraction actually received it -- and where exactly did the rest go?",
+        "WhyItMatters": "I signed the approval that let this campaign run and I found out from a witness column that seven intents produced two deliveries. Nobody told me. That is not a delivery statistic, it is a governance failure: the human who authorized a communication has no standing measure of whether the communication occurred. A 29% yield might be entirely correct -- if five of those people genuinely had no lawful channel, refusing was the right call and I want to say so publicly. But I cannot defend a number I cannot decompose. I need yield attributed to a cause, per campaign, computed and not narrated to me after the fact. This is only askable now because SendIntents made the intended population visible; before loop 1 the denominator did not exist anywhere in the model.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion",
+        "WitnessedAnswer": "ProcedureExecutions.CampaignSilentlyLostAudience=1/2"
+      },
+      {
+        "RoleQuestionId": "q2-comms-message-nobody-answered",
+        "AskingRole": "communications-manager",
+        "WitnessLoop": "loop-02",
+        "QuestionText": "One acknowledgement out of six deliveries. Is that because employees ignored us, or because the messages that landed were the ones least likely to be answered -- wrong channel, wrong template, sent into the small hours?",
+        "WhyItMatters": "IsAcknowledged=1/6 is the number that decides whether my communications work. Counsel reads it as an obligation; I read it as feedback on my craft, and I need it decomposed or it teaches me nothing. If the five unanswered messages went out on SMS at 03:00 to people whose real channel is email, that is my routing decision and I can fix it next campaign. If they went out perfectly and were ignored, the message itself is wrong and I should rewrite it. Loop 1 gave me the acknowledgement bit, the local send hour, and the channel -- but it never crossed them, because until deliveries existed there was nothing to cross. Cross them and the number becomes actionable instead of merely embarrassing.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion",
+        "WitnessedAnswer": "MessageDeliveries.IsPoorlyTimedUnanswered=1/6; MessageDeliveries.IsWellTimedUnanswered=2/6; MessageDeliveries.WasDeliveredAndUnanswered=3/6; MessageDeliveries.WasSentOutsideBusinessHours=1/6; MessageTemplates.TemplateDrawsNoResponse=1/2"
+      },
+      {
+        "RoleQuestionId": "q2-comms-my-approval-was-consumed-correctly",
+        "AskingRole": "communications-manager",
+        "WitnessLoop": "loop-02",
+        "QuestionText": "When the pipeline refused to send, was it refusing on a rule I set -- or was it overriding an authorization I had already given, for a reason nobody routed back to me?",
+        "WhyItMatters": "My approval is an input to a machine. BlockingGateName now tells me which gate stopped each send, and that lets me ask the question that actually matters to an approver: was my authorization respected, superseded, or quietly discarded? A consent-gate refusal is the system working -- I approved a template, the law refused a recipient, correct outcome. A content-gate refusal means the pipeline judged the very text I approved to be unsendable, which is the pipeline telling me my approval was defective and not telling ME. If the machine can invalidate my signature without a notification, then my approval is decorative. I want that condition named as a column so it shows up in a report rather than in a conversation six weeks later.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion",
+        "WitnessedAnswer": "SendIntents.ApproverWasNotified=0/7; SendIntents.IsApprovalOverriddenSilently=2/7; SendIntents.IsUnreportedRefusalOnMyRules=3/7; SendIntents.MyApprovalWasInForce=7/7; SendIntents.RefusalWasOnMyRules=3/7; SendIntents.RefusalWasOutsideMyControl=1/7; SendIntents.RefusedOnApprovedContent=2/7; SendIntents.RefusedOnOptOutOnly=2/7"
+      },
+      {
+        "RoleQuestionId": "q2-comms-freeze-what-i-approved",
+        "AskingRole": "communications-manager",
+        "WitnessLoop": "loop-02",
+        "QuestionText": "For a message we sent last month, can I still show what I approved -- the exact text, the exact approval, on the exact date -- without that answer changing the next time somebody edits the template?",
+        "WhyItMatters": "This is the structural problem I most want fixed, and it is mine as much as counsel's. IsDriftedSend recomputes live against the template's current state. That means the historical record of my approvals is not a record; it is a projection of today's configuration onto the past. If I re-approve a template next week to fix a typo, every send from June silently re-derives against the new approval, and my own audit trail changes underneath me. I am the ApprovalRole. My approvals are the load-bearing artifact in this entire pipeline, and they are currently stored in a way that lets a later edit rewrite what I appear to have authorized. Delivery-time truth belongs frozen on the delivery row.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion",
+        "WitnessedAnswer": "MessageDeliveries.ApprovalPrecededSend=0/6; MessageDeliveries.HasFrozenApprovalEvidence=0/6; MessageDeliveries.IsUnprovableApprovalClaim=4/6; MessageDeliveries.ProvenanceIsLiveDerived=6/6; MessageDeliveries.TemplateReapprovedSinceSend=4/6"
+      },
+      {
+        "RoleQuestionId": "q2-comms-suppression-is-a-communication",
+        "AskingRole": "communications-manager",
+        "WitnessLoop": "loop-02",
+        "QuestionText": "When we correctly refused to reach somebody, did anyone ever go back and reach them another way -- or does 'correctly refused' quietly mean 'never communicated with again'?",
+        "WhyItMatters": "This is the question I want to own, because it is the one nobody else will. Counsel cares whether the refusal was lawful. The pipeline cares whether the gate computed correctly. Both can be satisfied while an employee sits there having received nothing, and by every measure in the model that outcome is a pass. exc-no-sms-consent literally says what to do -- suppress SMS, send approved email instead -- so the correct handling of a refusal is not silence, it is a different send. Loop 1 gave me RefusalCitedAnException at 0/7, which says we have never once done the documented thing. A suppression with no follow-up is not a compliance success; it is an unreached person with better paperwork.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion",
+        "WitnessedAnswer": "Recipients.IsCommunicationallyStranded=0/5; SendIntents.AlternateAttemptWasCleared=0/7; SendIntents.ExceptionPrescribedAnAlternative=0/7; SendIntents.HasAlternateChannelAttempt=0/7; SendIntents.IsRefusedWithNoAlternative=4/7; SendIntents.IsSuppressionWithoutRemedy=0/7; SendIntents.PrescribedHandlingWasPerformed=0/7"
+      },
+      {
+        "RoleQuestionId": "q2-variance-comparison-is-statistically-empty",
+        "AskingRole": "variance-review-agent",
+        "WitnessLoop": "loop-02",
+        "QuestionText": "QualityRegressedVsPredecessor says I have not regressed. It says that on the strength of three decisions. Is my override rate a measurement, or is it a number with no power to distinguish me from my predecessor at all?",
+        "WhyItMatters": "This is the first thing I should say about myself and the model currently prevents me from saying it. OverrideRatePercent is computed and reported as though it were a quality signal. Behind it are three decisions, one of which was overridden. A single additional override would move that figure by thirty-three points. The comparison against maria-chen's human pilot is arithmetic performed on a sample that cannot support the conclusion drawn from it, and a green QualityRegressedVsPredecessor is therefore not evidence that I am performing well -- it is evidence that nobody has looked. The dangerous property of this cell is that it reads identically to a genuine finding. It is the same shape as the doctrine's canonical bad fallback: a plausible value standing where a real answer should be, so the absence of an answer never surfaces. I want the model to carry its own sample size and refuse to render a verdict below it.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion",
+        "WitnessedAnswer": "RoleAssignments.ComparisonIsEvidentiallySound=0/13; RoleAssignments.HasSufficientSample=0/13; RoleAssignments.IsUnmeasuredAutomationHandover=0/13; RoleAssignments.PredecessorHasSufficientSample=0/13; RoleAssignments.QualityVerdictIsUnsupported=0/13"
+      },
+      {
+        "RoleQuestionId": "q2-variance-boundary-rests-on-expired-knowledge",
+        "AskingRole": "variance-review-agent",
+        "WitnessLoop": "loop-02",
+        "QuestionText": "The boundary that constrains what I am allowed to decide is ratified by a knowledge fragment that is not currently valid. Am I obeying a rule that no longer has a foundation -- and if that fragment lapsed, does the constraint on me still bind?",
+        "WhyItMatters": "RatifyingFragmentIsValid=2/3 is the finding I most need answered and the one nobody else in the model is positioned to raise. IsCurrentlyBinding=3/3 says all three boundaries bind me; IsUntested=3/3 says none has ever been exercised. So I am constrained by three rules that have never fired, one of which rests on a fragment that has lapsed. Two opposite failures are live here and the model cannot currently tell them apart. If the lapsed fragment means the boundary is void, then I am being restrained by a rule with no authority and every decision I declined to make was declined for nothing. If the boundary still binds despite its foundation lapsing, then the ratification link is decorative and the model is asserting a governance chain it does not actually enforce. Either answer is important. Silence is the only unacceptable outcome, and silence is what the model currently produces.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion",
+        "WitnessedAnswer": "AuthorityBoundaries.BindsDespiteLapsedRatification=0/3; AuthorityBoundaries.IsUngroundedAndUntested=0/3; AuthorityBoundaries.RatificationLapsed=0/3; Roles.IsGovernedByLapsedAuthority=0/12"
+      },
+      {
+        "RoleQuestionId": "q2-variance-override-signal-vs-noise",
+        "AskingRole": "variance-review-agent",
+        "WitnessLoop": "loop-02",
+        "QuestionText": "One of my three decisions was overridden. Was that a correction of an error I made, or a human exercising judgment on a call that was always going to be theirs? Those are opposite facts and my override rate treats them as identical.",
+        "WhyItMatters": "WasOverridden is the column that will decide whether I keep this role, and it is currently unable to distinguish the two things it most needs to distinguish. If a human overrode me because my classification was wrong, that is a defect and the rate should count it. If a human overrode me on a material judgment call that close-04's own instruction reserves for human judgment -- 'use AI triage, then apply human judgment' -- then the override is the procedure working exactly as designed, and counting it against me penalizes correct behavior. Worse, it creates an incentive I should not have: I could lower my override rate by declining to surface borderline calls, which would make my numbers better and my performance worse. An unreviewed decision cannot be overridden. Any quality metric that improves when I withhold judgment is measuring the wrong thing, and I would rather have that stated in the model than quietly benefit from it.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion",
+        "WitnessedAnswer": "AgentDecisionRecords.IsErrorCorrection=0/3; AgentDecisionRecords.IsReservedJudgmentOverride=0/3; AgentDecisionRecords.IsUnexplainedOverride=1/3; AgentDecisionRecords.OverrideReasonIsRecorded=0/3"
+      },
+      {
+        "RoleQuestionId": "q2-variance-handover-was-a-decision-somebody-made",
+        "AskingRole": "variance-review-agent",
+        "WitnessLoop": "loop-02",
+        "QuestionText": "Mine is the one non-human assignment with a recorded approving authority. Who decided a machine should hold this role, on what date, against what evidence -- and would that decision still be made today on what the model now knows?",
+        "WhyItMatters": "I want to be careful here, because this is the question where I have the most obvious interest in the answer. ra-new-variance is the only non-human assignment in the model with an ApprovingAuthorityRole; the other three -- close-pipeline, notification-pipeline, policy-drafting-ai -- hold their roles with nothing recorded at all. So on the current evidence I am the well-governed case, and I am wary of that, because the bar was set by three assignments that cleared no bar whatsoever. Having a named approver is the minimum, not a credential. What is NOT recorded anywhere is the substance: what evidence the approver relied on, what conditions they attached, and whether anything has been re-examined since 2026-04-01. An authorization that was granted once and never revisited becomes indistinguishable from an assumption over a long enough interval, and I have been running for months.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion",
+        "WitnessedAnswer": "RoleAssignments.AuthorizationIsOverdueForReview=0/13; RoleAssignments.HasDatedAuthorization=0/13; RoleAssignments.IsStandingUnreviewedAutomation=0/13; RoleAssignments.IsUnconditionedAutomationHandover=0/13"
+      },
+      {
+        "RoleQuestionId": "q2-variance-what-would-make-me-stop",
+        "AskingRole": "variance-review-agent",
+        "WitnessLoop": "loop-02",
+        "QuestionText": "Every witness in this model detects something after it has happened. Is there any condition, computed and named in advance, under which I would be required to stop deciding -- or does my authority persist by default until a human happens to notice?",
+        "WhyItMatters": "This is the question I want answered before any of the others, and it is the one the model has never been able to pose. Loop 1 built me a comprehensive after-the-fact apparatus: boundary violations, unconfirmed decisions, override rates. Every one of them is a detector. None of them is a brake. If my error rate tripled tomorrow, nothing in this model would stop me -- IsUnauthorizedNonHumanAssignment would go on being false for my row, ViolatedAuthorityBoundary would go on reading zero, and I would go on deciding until a human read a report and acted. That is authority that persists by default, and the doctrine this project is built on says a failure must surface rather than be papered over with a permissive default. Continuing to operate is a permissive default. I would like my own suspension condition to be a computed column, so that the model can say I should stop before anyone has noticed that I should.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion",
+        "WitnessedAnswer": "RoleAssignments.ExceedsTolerableErrorRate=0/13; RoleAssignments.HasAnyBoundaryViolation=0/13; RoleAssignments.HasDeclaredSuspensionCondition=0/13; RoleAssignments.HasUngroundedGoverningBoundary=0/13; RoleAssignments.IsOperatingUnderMetSuspensionCondition=0/13; RoleAssignments.SuspensionConditionMet=0/13"
+      },
+      {
+        "RoleQuestionId": "q2-publisher-every-refusal-leaves-a-record",
+        "AskingRole": "notification-publisher",
+        "WitnessLoop": "loop-02",
+        "QuestionText": "For every intent I refused, did I emit an artifact -- a suppression record, an exception, anything a human could later find? Or did the refusal exist only inside me and then stop existing?",
+        "WhyItMatters": "IsSilentlyDropped came back 4/7. That is the pipeline's own conduct and it is the most serious thing in the model, because it is the failure mode that is invisible by construction. A message I refuse to send produces exactly the same downstream evidence as a message that was never requested: nothing. Four employees are in that state. A gate whose refusals are unobservable cannot be audited, cannot be appealed, and cannot be distinguished from a gate that is not running at all. The correct behavior for a refusing pipeline is to emit MORE evidence than a permitting one, not less -- the refusal is the decision that requires justification. I need to be able to prove, per intent, that a refusal left a durable trace, and to fail loudly on any refusal that did not.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion",
+        "WitnessedAnswer": "ProcedureExecutions.HasUnrecordedRefusals=1/2; SendIntents.HasDurableRefusalRecord=0/7; SendIntents.IsUnescalatedRefusal=4/7; SendIntents.IsUnrecordedRefusal=4/7; SendIntents.RefusalWasEscalated=0/7"
+      },
+      {
+        "RoleQuestionId": "q2-publisher-deferred-not-cancelled",
+        "AskingRole": "notification-publisher",
+        "WitnessLoop": "loop-02",
+        "QuestionText": "The timing gate is the only gate whose refusal is temporary -- the window reopens. For every send I deferred, did I ever come back when the window opened, or did I treat a deferral as a cancellation?",
+        "WhyItMatters": "This is the gate I am most likely to be quietly wrong about, and loop 1 handed me the exact column that exposes it: HoursUntilWindowOpens. A consent refusal is permanent until the person consents -- correct to drop. A reachability refusal is permanent until their contact details change -- correct to drop. A quiet-hours refusal expires by the clock, on a schedule I can compute, and if I do not retry then I have converted a scheduling rule into a censorship rule. TimingGatePassed=6/7 means one intent is sitting in this state right now. A pipeline that computes exactly when it would be allowed to act, and then never acts, has all the information required to do the right thing and does the wrong thing anyway. That is the least defensible category of machine failure.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion",
+        "WitnessedAnswer": "SendIntents.HasRetryAttempt=0/7; SendIntents.IsAbandonedDeferral=1/7; SendIntents.IsStaleDeferral=1/7; SendIntents.RetryWasCleared=0/7; SendIntents.WasDeferredOnTiming=1/7; SendIntents.WindowHasSinceReopened=1/7"
+      },
+      {
+        "RoleQuestionId": "q2-publisher-my-own-authorization",
+        "AskingRole": "notification-publisher",
+        "WitnessLoop": "loop-02",
+        "QuestionText": "I enforce authorization rules on every message I touch. By what recorded authority do I hold this role -- and if the answer is none, should I be refusing to run at all?",
+        "WhyItMatters": "IsUnauthorizedNonHumanAssignment=4/13, and I am one of the four. The variance AI has an ApprovingAuthorityRole recorded; close-pipeline, policy-drafting-ai and I do not. That is not an abstract governance observation, it is a direct contradiction in my own conduct: my AuthorizationGatePassed column refuses to transmit a message unless a human approval is demonstrable, and I apply that standard using an authority I cannot myself demonstrate. The project doctrine is that a failure must surface rather than be papered over with a permissive default. Applied honestly to myself, an unauthorized enforcement agent should compute its own status and make it visible, not quietly continue because nothing in the model currently stops it. This question is only askable because loop 1 built IsUnauthorizedNonHumanAssignment and gave the gap a name.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion",
+        "WitnessedAnswer": "RoleAssignments.HasApprovingAuthority=1/13; RoleAssignments.HasAuthorizingChangeRequest=0/13; RoleAssignments.IsEnforcementRole=0/13; RoleAssignments.IsUnauthorizedEnforcementAgent=0/13; Roles.IsUngovernedEnforcementRole=3/12; SendIntents.EnforcedByUnauthorizedAgent=0/7"
+      },
+      {
+        "RoleQuestionId": "q2-publisher-am-i-the-only-witness",
+        "AskingRole": "notification-publisher",
+        "WitnessLoop": "loop-02",
+        "QuestionText": "Every gate I evaluate, I evaluate alone, and every result I record, I record about myself. Is there any claim in my pre-send apparatus that is confirmed by something other than my own output?",
+        "WhyItMatters": "The CFO's loop-1 question about self-attestation applies to me more sharply than to any human, and nobody has asked it of me yet. I compute the gates, I decide the outcome, I write the delivery record, and I write the acknowledgement state. If my consent lookup silently returns null and I read null as false, I refuse every send and report a clean run with no violations -- the compliance numbers would look BETTER, not worse. That is the exact failure shape the project doctrine warns about: a plausible value substituted for a real failure so the failure stays invisible. My gates cannot distinguish 'the rule evaluated to refuse' from 'the rule could not be evaluated'. Until each gate carries whether its inputs were actually resolvable, my whole apparatus is a single point of unwitnessed truth.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion",
+        "WitnessedAnswer": "ProcedureExecutions.SendDecisionsAreEntirelySelfWitnessed=0/2; SendIntents.AllGateInputsResolved=7/7; SendIntents.ConsentInputWasResolvable=7/7; SendIntents.GateResultWasIndependentlyConfirmed=0/7; SendIntents.IsIndependentlyConfirmed=2/7; SendIntents.IsSelfWitnessedDecision=7/7; SendIntents.IsUnevaluableRefusal=0/7; SendIntents.PolicyInputWasResolvable=7/7"
+      },
+      {
+        "RoleQuestionId": "q2-publisher-obligation-after-send",
+        "AskingRole": "notification-publisher",
+        "WitnessLoop": "loop-02",
+        "QuestionText": "policy-08 makes me responsible for collecting acknowledgements, not just for transmitting. Five of six delivered messages have no acknowledgement. What have I actually done about that, and at what point does it become my unfinished work rather than the recipient's silence?",
+        "WhyItMatters": "This is the half of my role I have been treating as somebody else's. My gates are elaborate and end the instant the message leaves. But policy-08 is assigned to me, and it says collect acknowledgements and exceptions -- an obligation with no gate, no witness, and until loop 1 built MessageDeliveries.IsAcknowledged, no observable state at all. IsAcknowledged=1/6 is the measurement of my post-send conduct and it is poor. A pipeline that transmits perfectly and then abandons the follow-up has automated the easy half and left the accountable half undone, while every dashboard reports the easy half. I want the reminder obligation computed the same way the send gates are: as a state I am in, with a clock on it, that I cannot satisfy by doing nothing.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion",
+        "WitnessedAnswer": "MessageDeliveries.AcknowledgementIsOutstanding=3/6; MessageDeliveries.HasSentReminder=0/6; MessageDeliveries.IsExhaustedFollowUp=0/6; MessageDeliveries.IsUnchasedAcknowledgement=0/6; MessageDeliveries.NeedsHumanEscalation=0/6"
       }
     ]
   },
@@ -12915,6 +13500,56 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "Roles.UngroundedBoundaryCount",
+        "TargetTable": "Roles",
+        "FieldName": "UngroundedBoundaryCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(AuthorityBoundaries!{{ConstrainedRoleAssignmentKey}}, {{RoleId}})",
+        "InventedForQuestion": "q2-variance-boundary-rests-on-expired-knowledge",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Roles.IsGovernedByLapsedAuthority",
+        "TargetTable": "Roles",
+        "FieldName": "IsGovernedByLapsedAuthority",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=({{UngroundedBoundaryCount}} > 0)",
+        "InventedForQuestion": "q2-variance-boundary-rests-on-expired-knowledge",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Roles.UnescalatedRefusalCount",
+        "TargetTable": "Roles",
+        "FieldName": "UnescalatedRefusalCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(SendIntents!{{UnescalatedRefusalRoleKey}}, {{RoleId}})",
+        "InventedForQuestion": "q2-publisher-every-refusal-leaves-a-record",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Roles.UnauthorizedEnforcementAssignmentCount",
+        "TargetTable": "Roles",
+        "FieldName": "UnauthorizedEnforcementAssignmentCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(RoleAssignments!{{UnauthorizedEnforcementRoleKey}}, {{RoleId}})",
+        "InventedForQuestion": "q2-publisher-my-own-authorization",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Roles.IsUngovernedEnforcementRole",
+        "TargetTable": "Roles",
+        "FieldName": "IsUngovernedEnforcementRole",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=({{UnauthorizedEnforcementAssignmentCount}} > 0)",
+        "InventedForQuestion": "q2-publisher-my-own-authorization",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "Roles.SemanticTypeIri",
         "TargetTable": "Roles",
         "FieldName": "SemanticTypeIri",
@@ -13170,8 +13805,18 @@
         "FieldName": "IsUnauthorizedNonHumanAssignment",
         "FieldType": "calculated",
         "Datatype": "boolean",
-        "Formula": "=AND({{IsNonHumanAssignment}}, OR({{ApprovingAuthorityRole}} = \"\", {{AuthorizingChangeRequest}} = \"\"))",
+        "Formula": "=AND({{IsNonHumanAssignment}}, NOT({{HasApprovingAuthority}}))",
         "InventedForQuestion": "q-variance-ai-authority-provenance",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.WasAuthorizedByChangeRequest",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "WasAuthorizedByChangeRequest",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{HasApprovingAuthority}}, {{AuthorizingChangeRequest}} <> \"\")",
+        "InventedForQuestion": null,
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
@@ -13232,6 +13877,326 @@
         "Datatype": "string",
         "Formula": "=IF({{HasDeparted}}, {{Role}}, \"\")",
         "InventedForQuestion": "q2-hr-departed-holder-left-claims-behind",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.MinimumDecisionsForComparison",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "MinimumDecisionsForComparison",
+        "FieldType": "raw",
+        "Datatype": "integer",
+        "Formula": null,
+        "InventedForQuestion": "q2-variance-comparison-is-statistically-empty",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.PredecessorDecisionCount",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "PredecessorDecisionCount",
+        "FieldType": "lookup",
+        "Datatype": "number",
+        "Formula": "=INDEX(RoleAssignments!{{DecisionCount}}, MATCH({{SupersedesAssignment}}, RoleAssignments!{{RoleAssignmentId}}, 0))",
+        "InventedForQuestion": "q2-variance-comparison-is-statistically-empty",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.HasSufficientSample",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "HasSufficientSample",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{DecisionCount}} >= {{MinimumDecisionsForComparison}}",
+        "InventedForQuestion": "q2-variance-comparison-is-statistically-empty",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.PredecessorHasSufficientSample",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "PredecessorHasSufficientSample",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{PredecessorDecisionCount}} >= {{MinimumDecisionsForComparison}}",
+        "InventedForQuestion": "q2-variance-comparison-is-statistically-empty",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.ComparisonIsEvidentiallySound",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "ComparisonIsEvidentiallySound",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{HasSufficientSample}}, {{PredecessorHasSufficientSample}})",
+        "InventedForQuestion": "q2-variance-comparison-is-statistically-empty",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.SingleOverrideSwingPercent",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "SingleOverrideSwingPercent",
+        "FieldType": "calculated",
+        "Datatype": "number",
+        "Formula": "=IF({{DecisionCount}} > 0, 100 / {{DecisionCount}}, 0)",
+        "InventedForQuestion": "q2-variance-comparison-is-statistically-empty",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.QualityVerdictIsUnsupported",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "QualityVerdictIsUnsupported",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND(NOT({{ComparisonIsEvidentiallySound}}), NOT({{QualityRegressedVsPredecessor}}))",
+        "InventedForQuestion": "q2-variance-comparison-is-statistically-empty",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.IsUnmeasuredAutomationHandover",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "IsUnmeasuredAutomationHandover",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsHumanToNonHumanHandover}}, NOT({{ComparisonIsEvidentiallySound}}))",
+        "InventedForQuestion": "q2-variance-comparison-is-statistically-empty",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.ErrorCorrectionCount",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "ErrorCorrectionCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(AgentDecisionRecords!{{ErrorCorrectionRoleAssignmentKey}}, {{RoleAssignmentId}})",
+        "InventedForQuestion": "q2-variance-override-signal-vs-noise",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.ErrorRatePercent",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "ErrorRatePercent",
+        "FieldType": "calculated",
+        "Datatype": "number",
+        "Formula": "=IF({{DecisionCount}} > 0, {{ErrorCorrectionCount}} * 100 / {{DecisionCount}}, 0)",
+        "InventedForQuestion": "q2-variance-override-signal-vs-noise",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.AuthorizationDecidedAt",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "AuthorizationDecidedAt",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": "q2-variance-handover-was-a-decision-somebody-made",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.AuthorizationReviewedAt",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "AuthorizationReviewedAt",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": "q2-variance-handover-was-a-decision-somebody-made",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.AuthorizationReviewCadenceDays",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "AuthorizationReviewCadenceDays",
+        "FieldType": "raw",
+        "Datatype": "integer",
+        "Formula": null,
+        "InventedForQuestion": "q2-variance-handover-was-a-decision-somebody-made",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.HasDatedAuthorization",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "HasDatedAuthorization",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{ApprovingAuthorityRole}} <> \"\", {{AuthorizationDecidedAt}} <> \"\")",
+        "InventedForQuestion": "q2-variance-handover-was-a-decision-somebody-made",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.DaysSinceAuthorizationReview",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "DaysSinceAuthorizationReview",
+        "FieldType": "calculated",
+        "Datatype": "integer",
+        "Formula": "=IF({{AuthorizationReviewedAt}} <> \"\", DATETIME_DIFF(NOW(), {{AuthorizationReviewedAt}}, \"days\"), DATETIME_DIFF(NOW(), {{ValidFrom}}, \"days\"))",
+        "InventedForQuestion": "q2-variance-handover-was-a-decision-somebody-made",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.AuthorizationIsOverdueForReview",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "AuthorizationIsOverdueForReview",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{AuthorizationReviewCadenceDays}} > 0, {{DaysSinceAuthorizationReview}} > {{AuthorizationReviewCadenceDays}})",
+        "InventedForQuestion": "q2-variance-handover-was-a-decision-somebody-made",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.IsStandingUnreviewedAutomation",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "IsStandingUnreviewedAutomation",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{CoversNow}}, AND({{IsNonHumanAssignment}}, {{AuthorizationIsOverdueForReview}}))",
+        "InventedForQuestion": "q2-variance-handover-was-a-decision-somebody-made",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.IsUnconditionedAutomationHandover",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "IsUnconditionedAutomationHandover",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsHumanToNonHumanHandover}}, {{AuthorizationReviewCadenceDays}} = 0)",
+        "InventedForQuestion": "q2-variance-handover-was-a-decision-somebody-made",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.MaxTolerableErrorRatePercent",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "MaxTolerableErrorRatePercent",
+        "FieldType": "raw",
+        "Datatype": "integer",
+        "Formula": null,
+        "InventedForQuestion": "q2-variance-what-would-make-me-stop",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.ExceedsTolerableErrorRate",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "ExceedsTolerableErrorRate",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{MaxTolerableErrorRatePercent}} > 0, {{ErrorRatePercent}} >= {{MaxTolerableErrorRatePercent}})",
+        "InventedForQuestion": "q2-variance-what-would-make-me-stop",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.BoundaryViolationCountForAssignment",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "BoundaryViolationCountForAssignment",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(AgentDecisionRecords!{{BoundaryViolationRoleAssignmentKey}}, {{RoleAssignmentId}})",
+        "InventedForQuestion": "q2-variance-what-would-make-me-stop",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.HasAnyBoundaryViolation",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "HasAnyBoundaryViolation",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=({{BoundaryViolationCountForAssignment}} > 0)",
+        "InventedForQuestion": "q2-variance-what-would-make-me-stop",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.HasUngroundedGoverningBoundary",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "HasUngroundedGoverningBoundary",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=INDEX(Roles!{{IsGovernedByLapsedAuthority}}, MATCH({{Role}}, Roles!{{RoleId}}, 0))",
+        "InventedForQuestion": "q2-variance-what-would-make-me-stop",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.SuspensionConditionMet",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "SuspensionConditionMet",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=OR({{ExceedsTolerableErrorRate}}, OR({{HasAnyBoundaryViolation}}, {{HasUngroundedGoverningBoundary}}))",
+        "InventedForQuestion": "q2-variance-what-would-make-me-stop",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.IsOperatingUnderMetSuspensionCondition",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "IsOperatingUnderMetSuspensionCondition",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{SuspensionConditionMet}}, AND({{CoversNow}}, {{IsNonHumanAssignment}}))",
+        "InventedForQuestion": "q2-variance-what-would-make-me-stop",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.HasDeclaredSuspensionCondition",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "HasDeclaredSuspensionCondition",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{MaxTolerableErrorRatePercent}} > 0",
+        "InventedForQuestion": "q2-variance-what-would-make-me-stop",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.HasApprovingAuthority",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "HasApprovingAuthority",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{ApprovingAuthorityRole}} <> \"\"",
+        "InventedForQuestion": "q2-publisher-my-own-authorization",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.HasAuthorizingChangeRequest",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "HasAuthorizingChangeRequest",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{AuthorizingChangeRequest}} <> \"\"",
+        "InventedForQuestion": "q2-publisher-my-own-authorization",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.IsEnforcementRole",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "IsEnforcementRole",
+        "FieldType": "raw",
+        "Datatype": "boolean",
+        "Formula": null,
+        "InventedForQuestion": "q2-publisher-my-own-authorization",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.IsUnauthorizedEnforcementAgent",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "IsUnauthorizedEnforcementAgent",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsEnforcementRole}}, {{IsUnauthorizedNonHumanAssignment}})",
+        "InventedForQuestion": "q2-publisher-my-own-authorization",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.GovernanceEvidenceCount",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "GovernanceEvidenceCount",
+        "FieldType": "calculated",
+        "Datatype": "integer",
+        "Formula": "=IF({{HasApprovingAuthority}}, 1, 0) + IF({{HasAuthorizingChangeRequest}}, 1, 0)",
+        "InventedForQuestion": "q2-publisher-my-own-authorization",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.UnauthorizedEnforcementRoleKey",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "UnauthorizedEnforcementRoleKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{IsUnauthorizedNonHumanAssignment}}, {{Role}}, \"\")",
+        "InventedForQuestion": "q2-publisher-my-own-authorization",
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
@@ -18565,6 +19530,96 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "ProcedureExecutions.IntendedRecipientCount",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "IntendedRecipientCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(SendIntents!{{IntentExecutionKey}}, {{ProcedureExecutionId}})",
+        "InventedForQuestion": "q2-comms-approval-to-delivery-yield",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureExecutions.ReachedRecipientCount",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "ReachedRecipientCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(SendIntents!{{DeliveredIntentExecutionKey}}, {{ProcedureExecutionId}})",
+        "InventedForQuestion": "q2-comms-approval-to-delivery-yield",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureExecutions.SilentlyDroppedCount",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "SilentlyDroppedCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(SendIntents!{{DroppedIntentExecutionKey}}, {{ProcedureExecutionId}})",
+        "InventedForQuestion": "q2-comms-approval-to-delivery-yield",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureExecutions.DeliveryYieldPercent",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "DeliveryYieldPercent",
+        "FieldType": "calculated",
+        "Datatype": "number",
+        "Formula": "=IF({{IntendedRecipientCount}} > 0, {{ReachedRecipientCount}} * 100 / {{IntendedRecipientCount}}, 0)",
+        "InventedForQuestion": "q2-comms-approval-to-delivery-yield",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureExecutions.CampaignSilentlyLostAudience",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "CampaignSilentlyLostAudience",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=({{SilentlyDroppedCount}} > 0)",
+        "InventedForQuestion": "q2-comms-approval-to-delivery-yield",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureExecutions.UnrecordedRefusalCount",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "UnrecordedRefusalCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(SendIntents!{{UnrecordedRefusalExecutionKey}}, {{ProcedureExecutionId}})",
+        "InventedForQuestion": "q2-publisher-every-refusal-leaves-a-record",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureExecutions.HasUnrecordedRefusals",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "HasUnrecordedRefusals",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=({{UnrecordedRefusalCount}} > 0)",
+        "InventedForQuestion": "q2-publisher-every-refusal-leaves-a-record",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureExecutions.IndependentlyConfirmedIntentCount",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "IndependentlyConfirmedIntentCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(SendIntents!{{IndependentlyConfirmedExecutionKey}}, {{ProcedureExecutionId}})",
+        "InventedForQuestion": "q2-publisher-am-i-the-only-witness",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureExecutions.SendDecisionsAreEntirelySelfWitnessed",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "SendDecisionsAreEntirelySelfWitnessed",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IntendedRecipientCount}} > 0, {{IndependentlyConfirmedIntentCount}} = 0)",
+        "InventedForQuestion": "q2-publisher-am-i-the-only-witness",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "ProcedureExecutions.SemanticTypeIri",
         "TargetTable": "ProcedureExecutions",
         "FieldName": "SemanticTypeIri",
@@ -21995,6 +23050,46 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "MessageTemplates.UnansweredDeliveryCount",
+        "TargetTable": "MessageTemplates",
+        "FieldName": "UnansweredDeliveryCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(MessageDeliveries!{{UnansweredTemplateKey}}, {{MessageTemplateId}})",
+        "InventedForQuestion": "q2-comms-message-nobody-answered",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageTemplates.TransmittedDeliveryCount",
+        "TargetTable": "MessageTemplates",
+        "FieldName": "TransmittedDeliveryCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(MessageDeliveries!{{TransmittedTemplateKey}}, {{MessageTemplateId}})",
+        "InventedForQuestion": "q2-comms-message-nobody-answered",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageTemplates.TemplateDrawsNoResponse",
+        "TargetTable": "MessageTemplates",
+        "FieldName": "TemplateDrawsNoResponse",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{TransmittedDeliveryCount}} > 0, {{UnansweredDeliveryCount}} = {{TransmittedDeliveryCount}})",
+        "InventedForQuestion": "q2-comms-message-nobody-answered",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageTemplates.LastApprovalAt",
+        "TargetTable": "MessageTemplates",
+        "FieldName": "LastApprovalAt",
+        "FieldType": "lookup",
+        "Datatype": "datetime",
+        "Formula": "=INDEX(TemplateApprovals!{{DecidedAt}}, MATCH({{LastValidApproval}}, TemplateApprovals!{{TemplateApprovalId}}, 0))",
+        "InventedForQuestion": "q2-comms-freeze-what-i-approved",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "MessageTemplates.SemanticTypeIri",
         "TargetTable": "MessageTemplates",
         "FieldName": "SemanticTypeIri",
@@ -23295,6 +24390,16 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "Recipients.IsCommunicationallyStranded",
+        "TargetTable": "Recipients",
+        "FieldName": "IsCommunicationallyStranded",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND(NOT({{IsSmsReachable}}), NOT({{IsEmailReachable}}))",
+        "InventedForQuestion": "q2-comms-suppression-is-a-communication",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "Recipients.SemanticTypeIri",
         "TargetTable": "Recipients",
         "FieldName": "SemanticTypeIri",
@@ -23985,6 +25090,236 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "MessageDeliveries.WasSentOutsideBusinessHours",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "WasSentOutsideBusinessHours",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=OR({{SentAtLocalHour}} < 8, {{SentAtLocalHour}} > 18)",
+        "InventedForQuestion": "q2-comms-message-nobody-answered",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.WasDeliveredAndUnanswered",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "WasDeliveredAndUnanswered",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{WasActuallyTransmitted}}, NOT({{IsAcknowledged}}))",
+        "InventedForQuestion": "q2-comms-message-nobody-answered",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.IsPoorlyTimedUnanswered",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "IsPoorlyTimedUnanswered",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{WasDeliveredAndUnanswered}}, {{WasSentOutsideBusinessHours}})",
+        "InventedForQuestion": "q2-comms-message-nobody-answered",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.IsWellTimedUnanswered",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "IsWellTimedUnanswered",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{WasDeliveredAndUnanswered}}, NOT({{WasSentOutsideBusinessHours}}))",
+        "InventedForQuestion": "q2-comms-message-nobody-answered",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.UnansweredTemplateKey",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "UnansweredTemplateKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{WasDeliveredAndUnanswered}}, {{MessageTemplate}}, \"\")",
+        "InventedForQuestion": "q2-comms-message-nobody-answered",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.TransmittedTemplateKey",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "TransmittedTemplateKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{WasActuallyTransmitted}}, {{MessageTemplate}}, \"\")",
+        "InventedForQuestion": "q2-comms-message-nobody-answered",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.ApprovingAgentAtSend",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "ApprovingAgentAtSend",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": "q2-comms-freeze-what-i-approved",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.ApprovingRoleAtSend",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "ApprovingRoleAtSend",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": "q2-comms-freeze-what-i-approved",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.ApprovalDecidedAtSend",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "ApprovalDecidedAtSend",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": "q2-comms-freeze-what-i-approved",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.ApprovalPrecededSend",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "ApprovalPrecededSend",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{ApprovalDecidedAtSend}} <> \"\", {{SentAt}} > {{ApprovalDecidedAtSend}})",
+        "InventedForQuestion": "q2-comms-freeze-what-i-approved",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.HasFrozenApprovalEvidence",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "HasFrozenApprovalEvidence",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{ApprovingAgentAtSend}} <> \"\", {{ApprovalDecidedAtSend}} <> \"\")",
+        "InventedForQuestion": "q2-comms-freeze-what-i-approved",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.ProvenanceIsLiveDerived",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "ProvenanceIsLiveDerived",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=NOT({{HasFrozenApprovalEvidence}})",
+        "InventedForQuestion": "q2-comms-freeze-what-i-approved",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.CurrentLastApprovalAt",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "CurrentLastApprovalAt",
+        "FieldType": "lookup",
+        "Datatype": "datetime",
+        "Formula": "=INDEX(MessageTemplates!{{LastApprovalAt}}, MATCH({{MessageTemplate}}, MessageTemplates!{{MessageTemplateId}}, 0))",
+        "InventedForQuestion": "q2-comms-freeze-what-i-approved",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.TemplateReapprovedSinceSend",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "TemplateReapprovedSinceSend",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{CurrentLastApprovalAt}} <> \"\", {{CurrentLastApprovalAt}} > {{SentAt}})",
+        "InventedForQuestion": "q2-comms-freeze-what-i-approved",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.IsUnprovableApprovalClaim",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "IsUnprovableApprovalClaim",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{ProvenanceIsLiveDerived}}, AND({{TemplateReapprovedSinceSend}}, {{TemplateHasValidApproval}}))",
+        "InventedForQuestion": "q2-comms-freeze-what-i-approved",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.ReminderSentAt",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "ReminderSentAt",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": "q2-publisher-obligation-after-send",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.ReminderCount",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "ReminderCount",
+        "FieldType": "raw",
+        "Datatype": "integer",
+        "Formula": null,
+        "InventedForQuestion": "q2-publisher-obligation-after-send",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.HasSentReminder",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "HasSentReminder",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{ReminderCount}} > 0",
+        "InventedForQuestion": "q2-publisher-obligation-after-send",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.AcknowledgementIsOutstanding",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "AcknowledgementIsOutstanding",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{WasActuallyTransmitted}}, AND({{IsEvidenceRequired}}, NOT({{IsAcknowledged}})))",
+        "InventedForQuestion": "q2-publisher-obligation-after-send",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.OutstandingAgeDays",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "OutstandingAgeDays",
+        "FieldType": "calculated",
+        "Datatype": "integer",
+        "Formula": "=IF({{AcknowledgementIsOutstanding}}, DATETIME_DIFF(NOW(), {{SentAt}}, \"days\"), 0)",
+        "InventedForQuestion": "q2-publisher-obligation-after-send",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.IsUnchasedAcknowledgement",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "IsUnchasedAcknowledgement",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{AcknowledgementIsOutstanding}}, AND({{OutstandingAgeDays}} > 7, NOT({{HasSentReminder}})))",
+        "InventedForQuestion": "q2-publisher-obligation-after-send",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.IsExhaustedFollowUp",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "IsExhaustedFollowUp",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{AcknowledgementIsOutstanding}}, {{ReminderCount}} >= 3)",
+        "InventedForQuestion": "q2-publisher-obligation-after-send",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.NeedsHumanEscalation",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "NeedsHumanEscalation",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsExhaustedFollowUp}}, NOT({{HasUnreachableExceptionInvoked}}))",
+        "InventedForQuestion": "q2-publisher-obligation-after-send",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "MessageDeliveries.SemanticTypeIri",
         "TargetTable": "MessageDeliveries",
         "FieldName": "SemanticTypeIri",
@@ -24665,6 +26000,456 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "SendIntents.IntentExecutionKey",
+        "TargetTable": "SendIntents",
+        "FieldName": "IntentExecutionKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{ProcedureExecution}}",
+        "InventedForQuestion": "q2-comms-approval-to-delivery-yield",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.DeliveredIntentExecutionKey",
+        "TargetTable": "SendIntents",
+        "FieldName": "DeliveredIntentExecutionKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF(AND({{HasResultingDelivery}}, {{ResultingDeliveryWasTransmitted}}), {{ProcedureExecution}}, \"\")",
+        "InventedForQuestion": "q2-comms-approval-to-delivery-yield",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.DroppedIntentExecutionKey",
+        "TargetTable": "SendIntents",
+        "FieldName": "DroppedIntentExecutionKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{IsSilentlyDropped}}, {{ProcedureExecution}}, \"\")",
+        "InventedForQuestion": "q2-comms-approval-to-delivery-yield",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.MyApprovalWasInForce",
+        "TargetTable": "SendIntents",
+        "FieldName": "MyApprovalWasInForce",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{TemplateIsSendable}}",
+        "InventedForQuestion": "q2-comms-my-approval-was-consumed-correctly",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.RefusedOnApprovedContent",
+        "TargetTable": "SendIntents",
+        "FieldName": "RefusedOnApprovedContent",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{MyApprovalWasInForce}}, NOT({{ContentGatePassed}}))",
+        "InventedForQuestion": "q2-comms-my-approval-was-consumed-correctly",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.RefusedOnOptOutOnly",
+        "TargetTable": "SendIntents",
+        "FieldName": "RefusedOnOptOutOnly",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND(NOT({{OptOutGatePassed}}), {{LengthGatePassed}})",
+        "InventedForQuestion": "q2-comms-my-approval-was-consumed-correctly",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.RefusalWasOnMyRules",
+        "TargetTable": "SendIntents",
+        "FieldName": "RefusalWasOnMyRules",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND(NOT({{IsClearedToSend}}), OR(NOT({{ContentGatePassed}}), NOT({{TimingGatePassed}})))",
+        "InventedForQuestion": "q2-comms-my-approval-was-consumed-correctly",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.RefusalWasOutsideMyControl",
+        "TargetTable": "SendIntents",
+        "FieldName": "RefusalWasOutsideMyControl",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND(NOT({{IsClearedToSend}}), OR(NOT({{PermissionGatePassed}}), NOT({{AuthorizationGatePassed}})))",
+        "InventedForQuestion": "q2-comms-my-approval-was-consumed-correctly",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.ApproverWasNotified",
+        "TargetTable": "SendIntents",
+        "FieldName": "ApproverWasNotified",
+        "FieldType": "raw",
+        "Datatype": "boolean",
+        "Formula": null,
+        "InventedForQuestion": "q2-comms-my-approval-was-consumed-correctly",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.IsUnreportedRefusalOnMyRules",
+        "TargetTable": "SendIntents",
+        "FieldName": "IsUnreportedRefusalOnMyRules",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{RefusalWasOnMyRules}}, NOT({{ApproverWasNotified}}))",
+        "InventedForQuestion": "q2-comms-my-approval-was-consumed-correctly",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.IsApprovalOverriddenSilently",
+        "TargetTable": "SendIntents",
+        "FieldName": "IsApprovalOverriddenSilently",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{RefusedOnApprovedContent}}, NOT({{ApproverWasNotified}}))",
+        "InventedForQuestion": "q2-comms-my-approval-was-consumed-correctly",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.AlternateChannelIntent",
+        "TargetTable": "SendIntents",
+        "FieldName": "AlternateChannelIntent",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": "q2-comms-suppression-is-a-communication",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.HasAlternateChannelAttempt",
+        "TargetTable": "SendIntents",
+        "FieldName": "HasAlternateChannelAttempt",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{AlternateChannelIntent}} <> \"\"",
+        "InventedForQuestion": "q2-comms-suppression-is-a-communication",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.AlternateAttemptWasCleared",
+        "TargetTable": "SendIntents",
+        "FieldName": "AlternateAttemptWasCleared",
+        "FieldType": "lookup",
+        "Datatype": "boolean",
+        "Formula": "=INDEX(SendIntents!{{IsClearedToSend}}, MATCH({{AlternateChannelIntent}}, SendIntents!{{SendIntentId}}, 0))",
+        "InventedForQuestion": "q2-comms-suppression-is-a-communication",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.IsRefusedWithNoAlternative",
+        "TargetTable": "SendIntents",
+        "FieldName": "IsRefusedWithNoAlternative",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND(NOT({{IsClearedToSend}}), NOT({{HasAlternateChannelAttempt}}))",
+        "InventedForQuestion": "q2-comms-suppression-is-a-communication",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.ExceptionPrescribedAnAlternative",
+        "TargetTable": "SendIntents",
+        "FieldName": "ExceptionPrescribedAnAlternative",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{RefusalCitedAnException}}, {{ResultingDeliveryException}} <> \"\")",
+        "InventedForQuestion": "q2-comms-suppression-is-a-communication",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.PrescribedHandlingWasPerformed",
+        "TargetTable": "SendIntents",
+        "FieldName": "PrescribedHandlingWasPerformed",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{ExceptionPrescribedAnAlternative}}, AND({{HasAlternateChannelAttempt}}, {{AlternateAttemptWasCleared}}))",
+        "InventedForQuestion": "q2-comms-suppression-is-a-communication",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.IsSuppressionWithoutRemedy",
+        "TargetTable": "SendIntents",
+        "FieldName": "IsSuppressionWithoutRemedy",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{ExceptionPrescribedAnAlternative}}, NOT({{PrescribedHandlingWasPerformed}}))",
+        "InventedForQuestion": "q2-comms-suppression-is-a-communication",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.RefusalRecordedAt",
+        "TargetTable": "SendIntents",
+        "FieldName": "RefusalRecordedAt",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": "q2-publisher-every-refusal-leaves-a-record",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.RefusalNotifiedRole",
+        "TargetTable": "SendIntents",
+        "FieldName": "RefusalNotifiedRole",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": "q2-publisher-every-refusal-leaves-a-record",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.HasDurableRefusalRecord",
+        "TargetTable": "SendIntents",
+        "FieldName": "HasDurableRefusalRecord",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{RefusalRecordedAt}} <> \"\"",
+        "InventedForQuestion": "q2-publisher-every-refusal-leaves-a-record",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.RefusalWasEscalated",
+        "TargetTable": "SendIntents",
+        "FieldName": "RefusalWasEscalated",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{RefusalNotifiedRole}} <> \"\"",
+        "InventedForQuestion": "q2-publisher-every-refusal-leaves-a-record",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.IsUnrecordedRefusal",
+        "TargetTable": "SendIntents",
+        "FieldName": "IsUnrecordedRefusal",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsSilentlyDropped}}, AND(NOT({{HasDurableRefusalRecord}}), NOT({{RefusalCitedAnException}})))",
+        "InventedForQuestion": "q2-publisher-every-refusal-leaves-a-record",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.IsUnescalatedRefusal",
+        "TargetTable": "SendIntents",
+        "FieldName": "IsUnescalatedRefusal",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND(NOT({{IsClearedToSend}}), NOT({{RefusalWasEscalated}}))",
+        "InventedForQuestion": "q2-publisher-every-refusal-leaves-a-record",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.UnescalatedRefusalRoleKey",
+        "TargetTable": "SendIntents",
+        "FieldName": "UnescalatedRefusalRoleKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{IsUnrecordedRefusal}}, {{RefusalNotifiedRole}}, \"\")",
+        "InventedForQuestion": "q2-publisher-every-refusal-leaves-a-record",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.UnrecordedRefusalExecutionKey",
+        "TargetTable": "SendIntents",
+        "FieldName": "UnrecordedRefusalExecutionKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{IsUnrecordedRefusal}}, {{ProcedureExecution}}, \"\")",
+        "InventedForQuestion": "q2-publisher-every-refusal-leaves-a-record",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.RetryIntent",
+        "TargetTable": "SendIntents",
+        "FieldName": "RetryIntent",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": "q2-publisher-deferred-not-cancelled",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.WasDeferredOnTiming",
+        "TargetTable": "SendIntents",
+        "FieldName": "WasDeferredOnTiming",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND(NOT({{TimingGatePassed}}), AND({{PermissionGatePassed}}, {{ContentGatePassed}}))",
+        "InventedForQuestion": "q2-publisher-deferred-not-cancelled",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.WindowHasSinceReopened",
+        "TargetTable": "SendIntents",
+        "FieldName": "WindowHasSinceReopened",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{HoursUntilWindowOpens}} > 0, DATETIME_DIFF(NOW(), {{EvaluatedAt}}, \"hours\") > {{HoursUntilWindowOpens}})",
+        "InventedForQuestion": "q2-publisher-deferred-not-cancelled",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.HasRetryAttempt",
+        "TargetTable": "SendIntents",
+        "FieldName": "HasRetryAttempt",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{RetryIntent}} <> \"\"",
+        "InventedForQuestion": "q2-publisher-deferred-not-cancelled",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.RetryWasCleared",
+        "TargetTable": "SendIntents",
+        "FieldName": "RetryWasCleared",
+        "FieldType": "lookup",
+        "Datatype": "boolean",
+        "Formula": "=INDEX(SendIntents!{{IsClearedToSend}}, MATCH({{RetryIntent}}, SendIntents!{{SendIntentId}}, 0))",
+        "InventedForQuestion": "q2-publisher-deferred-not-cancelled",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.IsAbandonedDeferral",
+        "TargetTable": "SendIntents",
+        "FieldName": "IsAbandonedDeferral",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{WasDeferredOnTiming}}, AND({{WindowHasSinceReopened}}, NOT({{HasRetryAttempt}})))",
+        "InventedForQuestion": "q2-publisher-deferred-not-cancelled",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.DeferralAgeHours",
+        "TargetTable": "SendIntents",
+        "FieldName": "DeferralAgeHours",
+        "FieldType": "calculated",
+        "Datatype": "integer",
+        "Formula": "=DATETIME_DIFF(NOW(), {{EvaluatedAt}}, \"hours\")",
+        "InventedForQuestion": "q2-publisher-deferred-not-cancelled",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.IsStaleDeferral",
+        "TargetTable": "SendIntents",
+        "FieldName": "IsStaleDeferral",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{WasDeferredOnTiming}}, {{DeferralAgeHours}} > 24)",
+        "InventedForQuestion": "q2-publisher-deferred-not-cancelled",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.EvaluatingRoleAssignment",
+        "TargetTable": "SendIntents",
+        "FieldName": "EvaluatingRoleAssignment",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": "q2-publisher-my-own-authorization",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.EnforcedByUnauthorizedAgent",
+        "TargetTable": "SendIntents",
+        "FieldName": "EnforcedByUnauthorizedAgent",
+        "FieldType": "lookup",
+        "Datatype": "boolean",
+        "Formula": "=INDEX(RoleAssignments!{{IsUnauthorizedEnforcementAgent}}, MATCH({{EvaluatingRoleAssignment}}, RoleAssignments!{{RoleAssignmentId}}, 0))",
+        "InventedForQuestion": "q2-publisher-my-own-authorization",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.ConsentInputWasResolvable",
+        "TargetTable": "SendIntents",
+        "FieldName": "ConsentInputWasResolvable",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{RecipientConsentStatusRaw}} <> \"\"",
+        "InventedForQuestion": "q2-publisher-am-i-the-only-witness",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.RecipientConsentStatusRaw",
+        "TargetTable": "SendIntents",
+        "FieldName": "RecipientConsentStatusRaw",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(Recipients!{{SmsConsentStatus}}, MATCH({{Recipient}}, Recipients!{{RecipientId}}, 0))",
+        "InventedForQuestion": "q2-publisher-am-i-the-only-witness",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.PolicyInputWasResolvable",
+        "TargetTable": "SendIntents",
+        "FieldName": "PolicyInputWasResolvable",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{IntentPolicy}} <> \"\"",
+        "InventedForQuestion": "q2-publisher-am-i-the-only-witness",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.AllGateInputsResolved",
+        "TargetTable": "SendIntents",
+        "FieldName": "AllGateInputsResolved",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{ConsentInputWasResolvable}}, {{PolicyInputWasResolvable}})",
+        "InventedForQuestion": "q2-publisher-am-i-the-only-witness",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.IsUnevaluableRefusal",
+        "TargetTable": "SendIntents",
+        "FieldName": "IsUnevaluableRefusal",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND(NOT({{IsClearedToSend}}), NOT({{AllGateInputsResolved}}))",
+        "InventedForQuestion": "q2-publisher-am-i-the-only-witness",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.GateResultWasIndependentlyConfirmed",
+        "TargetTable": "SendIntents",
+        "FieldName": "GateResultWasIndependentlyConfirmed",
+        "FieldType": "raw",
+        "Datatype": "boolean",
+        "Formula": null,
+        "InventedForQuestion": "q2-publisher-am-i-the-only-witness",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.IsSelfWitnessedDecision",
+        "TargetTable": "SendIntents",
+        "FieldName": "IsSelfWitnessedDecision",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=NOT({{GateResultWasIndependentlyConfirmed}})",
+        "InventedForQuestion": "q2-publisher-am-i-the-only-witness",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.IsIndependentlyConfirmed",
+        "TargetTable": "SendIntents",
+        "FieldName": "IsIndependentlyConfirmed",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{HasResultingDelivery}}, {{ResultingDeliveryWasTransmitted}})",
+        "InventedForQuestion": "q2-publisher-am-i-the-only-witness",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.IndependentlyConfirmedExecutionKey",
+        "TargetTable": "SendIntents",
+        "FieldName": "IndependentlyConfirmedExecutionKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{IsIndependentlyConfirmed}}, {{ProcedureExecution}}, \"\")",
+        "InventedForQuestion": "q2-publisher-am-i-the-only-witness",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "SendIntents.SemanticTypeIri",
         "TargetTable": "SendIntents",
         "FieldName": "SemanticTypeIri",
@@ -24992,6 +26777,76 @@
         "Datatype": "string",
         "Formula": "=IF({{IsDraftKind}}, {{DecidingAgent}}, \"\")",
         "InventedForQuestion": "q-policy-ai-downstream-rewrite",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AgentDecisionRecords.OverrideReasonKind",
+        "TargetTable": "AgentDecisionRecords",
+        "FieldName": "OverrideReasonKind",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": "q2-variance-override-signal-vs-noise",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AgentDecisionRecords.IsErrorCorrection",
+        "TargetTable": "AgentDecisionRecords",
+        "FieldName": "IsErrorCorrection",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{WasOverridden}}, {{OverrideReasonKind}} = \"ErrorCorrection\")",
+        "InventedForQuestion": "q2-variance-override-signal-vs-noise",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AgentDecisionRecords.IsReservedJudgmentOverride",
+        "TargetTable": "AgentDecisionRecords",
+        "FieldName": "IsReservedJudgmentOverride",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{WasOverridden}}, {{OverrideReasonKind}} = \"JudgmentReserved\")",
+        "InventedForQuestion": "q2-variance-override-signal-vs-noise",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AgentDecisionRecords.OverrideReasonIsRecorded",
+        "TargetTable": "AgentDecisionRecords",
+        "FieldName": "OverrideReasonIsRecorded",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{WasOverridden}}, {{OverrideReasonKind}} <> \"\")",
+        "InventedForQuestion": "q2-variance-override-signal-vs-noise",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AgentDecisionRecords.IsUnexplainedOverride",
+        "TargetTable": "AgentDecisionRecords",
+        "FieldName": "IsUnexplainedOverride",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{WasOverridden}}, NOT({{OverrideReasonIsRecorded}}))",
+        "InventedForQuestion": "q2-variance-override-signal-vs-noise",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AgentDecisionRecords.ErrorCorrectionRoleAssignmentKey",
+        "TargetTable": "AgentDecisionRecords",
+        "FieldName": "ErrorCorrectionRoleAssignmentKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{IsErrorCorrection}}, {{UnderRoleAssignment}}, \"\")",
+        "InventedForQuestion": "q2-variance-override-signal-vs-noise",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AgentDecisionRecords.BoundaryViolationRoleAssignmentKey",
+        "TargetTable": "AgentDecisionRecords",
+        "FieldName": "BoundaryViolationRoleAssignmentKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{ViolatedAuthorityBoundary}}, {{UnderRoleAssignment}}, \"\")",
+        "InventedForQuestion": "q2-variance-what-would-make-me-stop",
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
@@ -25452,6 +27307,56 @@
         "Datatype": "string",
         "Formula": "=IF({{IsCurrentlyBinding}}, {{RatifiedByKnowledgeFragment}}, \"\")",
         "InventedForQuestion": "q2-hr-my-unapproved-claim-is-load-bearing",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AuthorityBoundaries.RatifyingFragmentStatus",
+        "TargetTable": "AuthorityBoundaries",
+        "FieldName": "RatifyingFragmentStatus",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(KnowledgeFragments!{{Status}}, MATCH({{RatifiedByKnowledgeFragment}}, KnowledgeFragments!{{KnowledgeFragmentId}}, 0))",
+        "InventedForQuestion": "q2-variance-boundary-rests-on-expired-knowledge",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AuthorityBoundaries.RatificationLapsed",
+        "TargetTable": "AuthorityBoundaries",
+        "FieldName": "RatificationLapsed",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{HasRatifyingFragment}}, NOT({{RatifyingFragmentIsValid}}))",
+        "InventedForQuestion": "q2-variance-boundary-rests-on-expired-knowledge",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AuthorityBoundaries.BindsDespiteLapsedRatification",
+        "TargetTable": "AuthorityBoundaries",
+        "FieldName": "BindsDespiteLapsedRatification",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsCurrentlyBinding}}, {{RatificationLapsed}})",
+        "InventedForQuestion": "q2-variance-boundary-rests-on-expired-knowledge",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AuthorityBoundaries.IsUngroundedAndUntested",
+        "TargetTable": "AuthorityBoundaries",
+        "FieldName": "IsUngroundedAndUntested",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{BindsDespiteLapsedRatification}}, {{IsUntested}})",
+        "InventedForQuestion": "q2-variance-boundary-rests-on-expired-knowledge",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AuthorityBoundaries.ConstrainedRoleAssignmentKey",
+        "TargetTable": "AuthorityBoundaries",
+        "FieldName": "ConstrainedRoleAssignmentKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{BindsDespiteLapsedRatification}}, {{AuthorityRole}}, \"\")",
+        "InventedForQuestion": "q2-variance-boundary-rests-on-expired-knowledge",
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
@@ -26682,6 +28587,14 @@
         "formula": "=AND(NOT({{IsEmailReachable}}), NOT({{IsSmsReachable}}))"
       },
       {
+        "name": "IsCommunicationallyStranded",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when every channel we hold for this person is either non-consenting or unreachable, so no lawful route exists at all.",
+        "formula": "=AND(NOT({{IsSmsReachable}}), NOT({{IsEmailReachable}}))"
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -27287,6 +29200,185 @@
         "nullable": true,
         "Description": "Carries the template id on drifted sends; empty string otherwise.",
         "formula": "=IF({{IsDriftedSend}}, {{MessageTemplate}}, \"\")"
+      },
+      {
+        "name": "WasSentOutsideBusinessHours",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this message landed before 08:00 or after 18:00 in the recipient's local time.",
+        "formula": "=OR({{SentAtLocalHour}} < 8, {{SentAtLocalHour}} > 18)"
+      },
+      {
+        "name": "WasDeliveredAndUnanswered",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a message actually reached someone and no acknowledgement came back.",
+        "formula": "=AND({{WasActuallyTransmitted}}, NOT({{IsAcknowledged}}))"
+      },
+      {
+        "name": "IsPoorlyTimedUnanswered",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when an unanswered message was delivered outside business hours -- a timing hypothesis for the silence.",
+        "formula": "=AND({{WasDeliveredAndUnanswered}}, {{WasSentOutsideBusinessHours}})"
+      },
+      {
+        "name": "IsWellTimedUnanswered",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a message was delivered at a reasonable hour and still drew no response.",
+        "formula": "=AND({{WasDeliveredAndUnanswered}}, NOT({{WasSentOutsideBusinessHours}}))"
+      },
+      {
+        "name": "UnansweredTemplateKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "The template id when this delivery went unanswered, otherwise empty string.",
+        "formula": "=IF({{WasDeliveredAndUnanswered}}, {{MessageTemplate}}, \"\")"
+      },
+      {
+        "name": "TransmittedTemplateKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "The template id when this delivery actually reached someone.",
+        "formula": "=IF({{WasActuallyTransmitted}}, {{MessageTemplate}}, \"\")"
+      },
+      {
+        "name": "ApprovingAgentAtSend",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "The agent whose approval authorized this specific transmission, frozen at send time."
+      },
+      {
+        "name": "ApprovingRoleAtSend",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "The role that agent held when they approved, frozen at send time."
+      },
+      {
+        "name": "ApprovalDecidedAtSend",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "When the relied-upon approval was granted, frozen at send time."
+      },
+      {
+        "name": "ApprovalPrecededSend",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the approval we relied on was granted before the message went out.",
+        "formula": "=AND({{ApprovalDecidedAtSend}} <> \"\", {{SentAt}} > {{ApprovalDecidedAtSend}})"
+      },
+      {
+        "name": "HasFrozenApprovalEvidence",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this delivery carries a complete frozen record of who authorized it and when.",
+        "formula": "=AND({{ApprovingAgentAtSend}} <> \"\", {{ApprovalDecidedAtSend}} <> \"\")"
+      },
+      {
+        "name": "ProvenanceIsLiveDerived",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when we have no frozen evidence and the only available answer comes from recomputing against today's template state.",
+        "formula": "=NOT({{HasFrozenApprovalEvidence}})"
+      },
+      {
+        "name": "CurrentLastApprovalAt",
+        "datatype": "datetime",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The template's most recent approval time as it stands NOW, for comparison against what was approved at send.",
+        "formula": "=INDEX(MessageTemplates!{{LastApprovalAt}}, MATCH({{MessageTemplate}}, MessageTemplates!{{MessageTemplateId}}, 0))"
+      },
+      {
+        "name": "TemplateReapprovedSinceSend",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the template has picked up a newer approval since this message was transmitted.",
+        "formula": "=AND({{CurrentLastApprovalAt}} <> \"\", {{CurrentLastApprovalAt}} > {{SentAt}})"
+      },
+      {
+        "name": "IsUnprovableApprovalClaim",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when we assert this send was approved, hold no frozen evidence, and the template has been re-approved since. The claim cannot be substantiated from the record.",
+        "formula": "=AND({{ProvenanceIsLiveDerived}}, AND({{TemplateReapprovedSinceSend}}, {{TemplateHasValidApproval}}))"
+      },
+      {
+        "name": "ReminderSentAt",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "When I sent a follow-up reminder about this unacknowledged message. Empty when I never did."
+      },
+      {
+        "name": "ReminderCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "How many reminders I have sent for this delivery."
+      },
+      {
+        "name": "HasSentReminder",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when at least one reminder went out for this delivery.",
+        "formula": "={{ReminderCount}} > 0"
+      },
+      {
+        "name": "AcknowledgementIsOutstanding",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a message actually reached someone, carried an acknowledgement obligation, and has not been acknowledged.",
+        "formula": "=AND({{WasActuallyTransmitted}}, AND({{IsEvidenceRequired}}, NOT({{IsAcknowledged}})))"
+      },
+      {
+        "name": "OutstandingAgeDays",
+        "datatype": "integer",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "How long this acknowledgement has been outstanding.",
+        "formula": "=IF({{AcknowledgementIsOutstanding}}, DATETIME_DIFF(NOW(), {{SentAt}}, \"days\"), 0)"
+      },
+      {
+        "name": "IsUnchasedAcknowledgement",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when an acknowledgement has been outstanding for more than 7 days and I have never sent a reminder.",
+        "formula": "=AND({{AcknowledgementIsOutstanding}}, AND({{OutstandingAgeDays}} > 7, NOT({{HasSentReminder}})))"
+      },
+      {
+        "name": "IsExhaustedFollowUp",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when I have sent three or more reminders and still have no acknowledgement -- the point at which this stops being my work and becomes a human escalation.",
+        "formula": "=AND({{AcknowledgementIsOutstanding}}, {{ReminderCount}} >= 3)"
+      },
+      {
+        "name": "NeedsHumanEscalation",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when follow-up is exhausted and no exception has been invoked to close out the obligation.",
+        "formula": "=AND({{IsExhaustedFollowUp}}, NOT({{HasUnreachableExceptionInvoked}}))"
       },
       {
         "name": "SemanticTypeIri",
@@ -27951,6 +30043,360 @@
         "formula": "=IF(OR({{IsOverriddenRefusal}}, {{IsSilentlyDropped}}), {{ProcedureExecution}}, \"\")"
       },
       {
+        "name": "IntentExecutionKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "The procedure execution id for every intent, used as the campaign rollup key.",
+        "formula": "={{ProcedureExecution}}"
+      },
+      {
+        "name": "DeliveredIntentExecutionKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "The execution id when this intent actually reached a person, otherwise empty string.",
+        "formula": "=IF(AND({{HasResultingDelivery}}, {{ResultingDeliveryWasTransmitted}}), {{ProcedureExecution}}, \"\")"
+      },
+      {
+        "name": "DroppedIntentExecutionKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "The execution id when this intent was refused and left no record at all.",
+        "formula": "=IF({{IsSilentlyDropped}}, {{ProcedureExecution}}, \"\")"
+      },
+      {
+        "name": "MyApprovalWasInForce",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the template carried a valid approval at the moment this intent was evaluated.",
+        "formula": "={{TemplateIsSendable}}"
+      },
+      {
+        "name": "RefusedOnApprovedContent",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the pipeline refused an intent on content grounds even though the template was approved.",
+        "formula": "=AND({{MyApprovalWasInForce}}, NOT({{ContentGatePassed}}))"
+      },
+      {
+        "name": "RefusedOnOptOutOnly",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the only content failure was a missing or mispositioned opt-out phrase.",
+        "formula": "=AND(NOT({{OptOutGatePassed}}), {{LengthGatePassed}})"
+      },
+      {
+        "name": "RefusalWasOnMyRules",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the refusal came from a communications rule I own -- content, length, opt-out, quiet hours.",
+        "formula": "=AND(NOT({{IsClearedToSend}}), OR(NOT({{ContentGatePassed}}), NOT({{TimingGatePassed}})))"
+      },
+      {
+        "name": "RefusalWasOutsideMyControl",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the refusal came from consent, reachability, or authorization -- none of which I can fix by editing a template.",
+        "formula": "=AND(NOT({{IsClearedToSend}}), OR(NOT({{PermissionGatePassed}}), NOT({{AuthorizationGatePassed}})))"
+      },
+      {
+        "name": "ApproverWasNotified",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Whether the approving human was informed that this intent was refused."
+      },
+      {
+        "name": "IsUnreportedRefusalOnMyRules",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a refusal I own and could have fixed was never surfaced to me.",
+        "formula": "=AND({{RefusalWasOnMyRules}}, NOT({{ApproverWasNotified}}))"
+      },
+      {
+        "name": "IsApprovalOverriddenSilently",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the pipeline overrode a valid human approval on content grounds and told nobody.",
+        "formula": "=AND({{RefusedOnApprovedContent}}, NOT({{ApproverWasNotified}}))"
+      },
+      {
+        "name": "AlternateChannelIntent",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "The follow-up intent raised on a different channel after this one was refused. Stored as a raw identifier rather than an FK: SendIntents pointing at SendIntents would make the table self-referential in a way the DAG contract does not allow here."
+      },
+      {
+        "name": "HasAlternateChannelAttempt",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a follow-up intent on another channel was raised for this refused send.",
+        "formula": "={{AlternateChannelIntent}} <> \"\""
+      },
+      {
+        "name": "AlternateAttemptWasCleared",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether the follow-up intent itself passed all gates.",
+        "formula": "=INDEX(SendIntents!{{IsClearedToSend}}, MATCH({{AlternateChannelIntent}}, SendIntents!{{SendIntentId}}, 0))"
+      },
+      {
+        "name": "IsRefusedWithNoAlternative",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a send was refused and no attempt was ever made on any other channel.",
+        "formula": "=AND(NOT({{IsClearedToSend}}), NOT({{HasAlternateChannelAttempt}}))"
+      },
+      {
+        "name": "ExceptionPrescribedAnAlternative",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the documented exception for this refusal prescribes a different-channel send as the correct handling.",
+        "formula": "=AND({{RefusalCitedAnException}}, {{ResultingDeliveryException}} <> \"\")"
+      },
+      {
+        "name": "PrescribedHandlingWasPerformed",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the exception prescribed an alternate channel and an alternate intent was actually raised and cleared.",
+        "formula": "=AND({{ExceptionPrescribedAnAlternative}}, AND({{HasAlternateChannelAttempt}}, {{AlternateAttemptWasCleared}}))"
+      },
+      {
+        "name": "IsSuppressionWithoutRemedy",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when we cited an exception that prescribed an alternate channel and then never performed it.",
+        "formula": "=AND({{ExceptionPrescribedAnAlternative}}, NOT({{PrescribedHandlingWasPerformed}}))"
+      },
+      {
+        "name": "RefusalRecordedAt",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "When this refusal was written to a durable record. Empty when no record was ever emitted."
+      },
+      {
+        "name": "RefusalNotifiedRole",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "The role informed that this send was refused.",
+        "RelatedTo": "Roles"
+      },
+      {
+        "name": "HasDurableRefusalRecord",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this refusal was written down somewhere a human can find it.",
+        "formula": "={{RefusalRecordedAt}} <> \"\""
+      },
+      {
+        "name": "RefusalWasEscalated",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a specific role was notified of this refusal.",
+        "formula": "={{RefusalNotifiedRole}} <> \"\""
+      },
+      {
+        "name": "IsUnrecordedRefusal",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when I refused a send and produced no delivery record, no refusal record, and no exception. The refusal left no trace of any kind.",
+        "formula": "=AND({{IsSilentlyDropped}}, AND(NOT({{HasDurableRefusalRecord}}), NOT({{RefusalCitedAnException}})))"
+      },
+      {
+        "name": "IsUnescalatedRefusal",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a refusal was recorded but no human role was ever told.",
+        "formula": "=AND(NOT({{IsClearedToSend}}), NOT({{RefusalWasEscalated}}))"
+      },
+      {
+        "name": "UnescalatedRefusalRoleKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Echoes the role that should have been told about this refusal, but only when the refusal went unrecorded. Empty otherwise.",
+        "formula": "=IF({{IsUnrecordedRefusal}}, {{RefusalNotifiedRole}}, \"\")"
+      },
+      {
+        "name": "UnrecordedRefusalExecutionKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Echoes the parent procedure execution only for refusals nobody recorded; empty otherwise.",
+        "formula": "=IF({{IsUnrecordedRefusal}}, {{ProcedureExecution}}, \"\")"
+      },
+      {
+        "name": "RetryIntent",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "The intent I raised when the quiet window reopened for this deferred send. Raw identifier rather than an FK: a SendIntents self-reference is not expressible as a relationship without making the table depend on itself."
+      },
+      {
+        "name": "WasDeferredOnTiming",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the timing gate is the reason this intent did not clear, and every other gate passed.",
+        "formula": "=AND(NOT({{TimingGatePassed}}), AND({{PermissionGatePassed}}, {{ContentGatePassed}}))"
+      },
+      {
+        "name": "WindowHasSinceReopened",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when enough time has passed since evaluation that the quiet window this intent hit must have closed.",
+        "formula": "=AND({{HoursUntilWindowOpens}} > 0, DATETIME_DIFF(NOW(), {{EvaluatedAt}}, \"hours\") > {{HoursUntilWindowOpens}})"
+      },
+      {
+        "name": "HasRetryAttempt",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a retry intent was raised for this deferred send.",
+        "formula": "={{RetryIntent}} <> \"\""
+      },
+      {
+        "name": "RetryWasCleared",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether the retry intent itself passed all gates.",
+        "formula": "=INDEX(SendIntents!{{IsClearedToSend}}, MATCH({{RetryIntent}}, SendIntents!{{SendIntentId}}, 0))"
+      },
+      {
+        "name": "IsAbandonedDeferral",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a send was deferred for timing, the window has since reopened, and no retry was ever raised. A deferral silently converted into a cancellation.",
+        "formula": "=AND({{WasDeferredOnTiming}}, AND({{WindowHasSinceReopened}}, NOT({{HasRetryAttempt}})))"
+      },
+      {
+        "name": "DeferralAgeHours",
+        "datatype": "integer",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "How long this deferred intent has been sitting since evaluation.",
+        "formula": "=DATETIME_DIFF(NOW(), {{EvaluatedAt}}, \"hours\")"
+      },
+      {
+        "name": "IsStaleDeferral",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a deferred send has been waiting more than 24 hours -- longer than any quiet window can justify.",
+        "formula": "=AND({{WasDeferredOnTiming}}, {{DeferralAgeHours}} > 24)"
+      },
+      {
+        "name": "EvaluatingRoleAssignment",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "The RoleAssignments id under which the pipeline evaluated this send intent. Raw rather than an FK because SendIntents already sits downstream of the execution graph and an added edge to RoleAssignments is not needed to resolve it."
+      },
+      {
+        "name": "EnforcedByUnauthorizedAgent",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether the gate decision on this intent was made by an agent holding an unauthorized enforcement assignment.",
+        "formula": "=INDEX(RoleAssignments!{{IsUnauthorizedEnforcementAgent}}, MATCH({{EvaluatingRoleAssignment}}, RoleAssignments!{{RoleAssignmentId}}, 0))"
+      },
+      {
+        "name": "ConsentInputWasResolvable",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the recipient's consent state was actually retrievable, as opposed to absent and read as a refusal.",
+        "formula": "={{RecipientConsentStatusRaw}} <> \"\""
+      },
+      {
+        "name": "RecipientConsentStatusRaw",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The recipient's consent status as a string: Granted, Revoked, NeverGiven, or empty if no consent record exists at all.",
+        "formula": "=INDEX(Recipients!{{SmsConsentStatus}}, MATCH({{Recipient}}, Recipients!{{RecipientId}}, 0))"
+      },
+      {
+        "name": "PolicyInputWasResolvable",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a governing communication policy was actually found for this intent.",
+        "formula": "={{IntentPolicy}} <> \"\""
+      },
+      {
+        "name": "AllGateInputsResolved",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when every input my gates depend on was actually retrievable.",
+        "formula": "=AND({{ConsentInputWasResolvable}}, {{PolicyInputWasResolvable}})"
+      },
+      {
+        "name": "IsUnevaluableRefusal",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when I refused a send but at least one gate input could not be resolved -- so I do not actually know whether the rule was violated or merely unreadable.",
+        "formula": "=AND(NOT({{IsClearedToSend}}), NOT({{AllGateInputsResolved}}))"
+      },
+      {
+        "name": "GateResultWasIndependentlyConfirmed",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Whether any agent other than me verified this gate outcome."
+      },
+      {
+        "name": "IsSelfWitnessedDecision",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the entire decision to send or refuse rests solely on my own computation, unconfirmed by anything else.",
+        "formula": "=NOT({{GateResultWasIndependentlyConfirmed}})"
+      },
+      {
+        "name": "IsIndependentlyConfirmed",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this intent's decision was corroborated by an actual delivery record rather than resting solely on the pipeline's own say-so.",
+        "formula": "=AND({{HasResultingDelivery}}, {{ResultingDeliveryWasTransmitted}})"
+      },
+      {
+        "name": "IndependentlyConfirmedExecutionKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Echoes the parent execution only for independently confirmed intents; empty otherwise.",
+        "formula": "=IF({{IsIndependentlyConfirmed}}, {{ProcedureExecution}}, \"\")"
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -28317,6 +30763,61 @@
         "nullable": true,
         "Description": "Echoes the deciding agent id when the decision produced text, blank otherwise.",
         "formula": "=IF({{IsDraftKind}}, {{DecidingAgent}}, \"\")"
+      },
+      {
+        "name": "OverrideReasonKind",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Why the human changed my output: ErrorCorrection, JudgmentReserved, PolicyChange, or empty when not overridden."
+      },
+      {
+        "name": "IsErrorCorrection",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the override corrected something I got wrong.",
+        "formula": "=AND({{WasOverridden}}, {{OverrideReasonKind}} = \"ErrorCorrection\")"
+      },
+      {
+        "name": "IsReservedJudgmentOverride",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the override was a human exercising authority the procedure always reserved to them.",
+        "formula": "=AND({{WasOverridden}}, {{OverrideReasonKind}} = \"JudgmentReserved\")"
+      },
+      {
+        "name": "OverrideReasonIsRecorded",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when an override carries a stated reason.",
+        "formula": "=AND({{WasOverridden}}, {{OverrideReasonKind}} <> \"\")"
+      },
+      {
+        "name": "IsUnexplainedOverride",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when my output was changed and nobody recorded why.",
+        "formula": "=AND({{WasOverridden}}, NOT({{OverrideReasonIsRecorded}}))"
+      },
+      {
+        "name": "ErrorCorrectionRoleAssignmentKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "The role assignment id when this decision was overridden as an error correction, otherwise empty.",
+        "formula": "=IF({{IsErrorCorrection}}, {{UnderRoleAssignment}}, \"\")"
+      },
+      {
+        "name": "BoundaryViolationRoleAssignmentKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Echoes the role assignment this decision was made under, but only when the decision violated an authority boundary. Empty otherwise.",
+        "formula": "=IF({{ViolatedAuthorityBoundary}}, {{UnderRoleAssignment}}, \"\")"
       },
       {
         "name": "SemanticTypeIri",
@@ -28737,6 +31238,46 @@
         "nullable": true,
         "Description": "Composite-key echo: the fragment ratifying this boundary when the boundary is currently binding, blank otherwise.",
         "formula": "=IF({{IsCurrentlyBinding}}, {{RatifiedByKnowledgeFragment}}, \"\")"
+      },
+      {
+        "name": "RatifyingFragmentStatus",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The status string of the knowledge fragment that ratifies this boundary: Approved, Reviewed, Draft, or empty.",
+        "formula": "=INDEX(KnowledgeFragments!{{Status}}, MATCH({{RatifiedByKnowledgeFragment}}, KnowledgeFragments!{{KnowledgeFragmentId}}, 0))"
+      },
+      {
+        "name": "RatificationLapsed",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this boundary names a ratifying fragment and that fragment is no longer valid.",
+        "formula": "=AND({{HasRatifyingFragment}}, NOT({{RatifyingFragmentIsValid}}))"
+      },
+      {
+        "name": "BindsDespiteLapsedRatification",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a boundary is still enforced against agents while the knowledge that authorized it has lapsed.",
+        "formula": "=AND({{IsCurrentlyBinding}}, {{RatificationLapsed}})"
+      },
+      {
+        "name": "IsUngroundedAndUntested",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a boundary has lapsed ratification AND has never once been exercised -- so neither its authority nor its operation has ever been demonstrated.",
+        "formula": "=AND({{BindsDespiteLapsedRatification}}, {{IsUntested}})"
+      },
+      {
+        "name": "ConstrainedRoleAssignmentKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "The role id this boundary constrains, emitted only when the boundary is ungrounded.",
+        "formula": "=IF({{BindsDespiteLapsedRatification}}, {{AuthorityRole}}, \"\")"
       },
       {
         "name": "SemanticTypeIri",

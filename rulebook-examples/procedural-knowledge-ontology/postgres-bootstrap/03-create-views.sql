@@ -196,6 +196,11 @@ SELECT
   calc_roles_departed_assignment_count(t.role_id) AS departed_assignment_count, -- How many assignments to this role have ended.
   calc_roles_has_lost_a_holder(t.role_id) AS has_lost_a_holder,                 -- Whether anyone has ever departed this role.
   calc_roles_is_vacated_role(t.role_id) AS is_vacated_role,                     -- A role somebody departed and that nobody currently covers.
+  calc_roles_ungrounded_boundary_count(t.role_id) AS ungrounded_boundary_count, -- How many boundaries constrain this role on lapsed authority.
+  calc_roles_is_governed_by_lapsed_authority(t.role_id) AS is_governed_by_lapsed_authority,-- TRUE when at least one constraint on this role rests on knowledge that is no longer valid.
+  calc_roles_unescalated_refusal_count(t.role_id) AS unescalated_refusal_count, -- How many refusals this role should have been told about and was not.
+  calc_roles_unauthorized_enforcement_assignment_count(t.role_id) AS unauthorized_enforcement_assignment_count,-- How many current assignments of this role are unauthorized enforcement assignments.
+  calc_roles_is_ungoverned_enforcement_role(t.role_id) AS is_ungoverned_enforcement_role,-- TRUE when a role that enforces controls on others is held with no recorded authorization.
   t.semantic_type_iri                                                           -- Exact semantic type IRI for the role.
 FROM roles t;
 
@@ -230,13 +235,46 @@ SELECT
   calc_role_assignments_is_human_to_non_human_handover(t.role_assignment_id) AS is_human_to_non_human_handover,-- TRUE when this assignment handed a role from a human to a non-human agent.
   t.approving_authority_role,                                                   -- Role that approved this assignment.
   t.authorizing_change_request,                                                 -- Change request under which this assignment was approved.
-  calc_role_assignments_is_unauthorized_non_human_assignment(t.role_assignment_id) AS is_unauthorized_non_human_assignment,-- TRUE when a non-human agent holds a role with no recorded approving authority or no authorizing change request.
+  calc_role_assignments_is_unauthorized_non_human_assignment(t.role_assignment_id) AS is_unauthorized_non_human_assignment,-- TRUE when a non-human agent holds this role with no approving authority recorded at all. An authority named without a change request is still an authority; the separate WasAuthorizedByChangeRequest column carries that weaker distinction.
+  calc_role_assignments_was_authorized_by_change_request(t.role_assignment_id) AS was_authorized_by_change_request,-- TRUE when this assignment's authorization is traceable to a change request, not merely to a named role. The stronger form of authorization, kept separate so the weaker one is not silently reported as unauthorized.
   calc_role_assignments_decision_count(t.role_assignment_id) AS decision_count, -- Decisions made under this assignment.
   calc_role_assignments_overridden_decision_count(t.role_assignment_id) AS overridden_decision_count,-- Decisions made under this assignment that a human corrected or reversed.
   calc_role_assignments_override_rate_percent(t.role_assignment_id) AS override_rate_percent,-- Percentage of decisions under this assignment that a human overrode.
   calc_role_assignments_predecessor_override_rate_percent(t.role_assignment_id) AS predecessor_override_rate_percent,-- Override rate of the assignment this one superseded.
   calc_role_assignments_quality_regressed_vs_predecessor(t.role_assignment_id) AS quality_regressed_vs_predecessor,-- TRUE when this assignment is overridden by humans more often than the assignment it replaced.
   calc_role_assignments_departed_role_key(t.role_assignment_id) AS departed_role_key,-- Composite-key echo: the role this assignment covered when the assignment has ended, blank otherwise.
+  t.minimum_decisions_for_comparison,                                           -- The number of decisions below which an override-rate comparison is not considered evidentially meaningful for this role.
+  calc_role_assignments_predecessor_decision_count(t.role_assignment_id) AS predecessor_decision_count,-- How many decisions the superseded assignment produced.
+  calc_role_assignments_has_sufficient_sample(t.role_assignment_id) AS has_sufficient_sample,-- TRUE when this assignment has produced enough decisions for its override rate to mean anything.
+  calc_role_assignments_predecessor_has_sufficient_sample(t.role_assignment_id) AS predecessor_has_sufficient_sample,-- TRUE when the predecessor assignment produced enough decisions to compare against.
+  calc_role_assignments_comparison_is_evidentially_sound(t.role_assignment_id) AS comparison_is_evidentially_sound,-- TRUE when both sides of the override-rate comparison rest on adequate samples.
+  calc_role_assignments_single_override_swing_percent(t.role_assignment_id) AS single_override_swing_percent,-- How many percentage points one additional override would move this assignment's rate. The fragility of the number.
+  calc_role_assignments_quality_verdict_is_unsupported(t.role_assignment_id) AS quality_verdict_is_unsupported,-- TRUE when a quality verdict is being reported for this assignment on a sample too small to support it.
+  calc_role_assignments_is_unmeasured_automation_handover(t.role_assignment_id) AS is_unmeasured_automation_handover,-- TRUE when a human-to-machine handover is operating without a statistically meaningful quality comparison behind it.
+  calc_role_assignments_error_correction_count(t.role_assignment_id) AS error_correction_count,-- How many of this assignment's decisions were overridden because they were wrong.
+  calc_role_assignments_error_rate_percent(t.role_assignment_id) AS error_rate_percent,-- Percentage of this assignment's decisions overridden as errors -- the override rate with reserved-judgment overrides removed.
+  t.authorization_decided_at,                                                   -- When the approving authority actually granted this assignment. Empty when no authorization was ever recorded.
+  t.authorization_reviewed_at,                                                  -- When the authorization for this assignment was last re-examined.
+  t.authorization_review_cadence_days,                                          -- How often this assignment's authorization is promised to be re-examined.
+  calc_role_assignments_has_dated_authorization(t.role_assignment_id) AS has_dated_authorization,-- TRUE when this assignment carries both a named approving authority and the date they granted it.
+  calc_role_assignments_days_since_authorization_review(t.role_assignment_id) AS days_since_authorization_review,-- How long since this assignment's authorization was last re-examined.
+  calc_role_assignments_authorization_is_overdue_for_review(t.role_assignment_id) AS authorization_is_overdue_for_review,-- TRUE when the promised re-examination interval has elapsed without a review.
+  calc_role_assignments_is_standing_unreviewed_automation(t.role_assignment_id) AS is_standing_unreviewed_automation,-- TRUE when a currently-active non-human assignment has been running past its authorization review date.
+  calc_role_assignments_is_unconditioned_automation_handover(t.role_assignment_id) AS is_unconditioned_automation_handover,-- TRUE when a human-to-machine handover was authorized with no promised review cadence at all -- granted once, permanently.
+  t.max_tolerable_error_rate_percent,                                           -- The error rate at or above which this assignment must stop making decisions unaided.
+  calc_role_assignments_exceeds_tolerable_error_rate(t.role_assignment_id) AS exceeds_tolerable_error_rate,-- TRUE when this assignment's error rate has reached the threshold set when it was authorized.
+  calc_role_assignments_boundary_violation_count_for_assignment(t.role_assignment_id) AS boundary_violation_count_for_assignment,-- How many decisions under this assignment violated an authority boundary.
+  calc_role_assignments_has_any_boundary_violation(t.role_assignment_id) AS has_any_boundary_violation,-- TRUE when any decision under this assignment crossed a boundary it was forbidden to cross.
+  calc_role_assignments_has_ungrounded_governing_boundary(t.role_assignment_id) AS has_ungrounded_governing_boundary,-- TRUE when at least one boundary constraining this assignment's role rests on lapsed knowledge.
+  calc_role_assignments_suspension_condition_met(t.role_assignment_id) AS suspension_condition_met,-- TRUE when any pre-declared condition requiring this assignment to stop deciding unaided has been met.
+  calc_role_assignments_is_operating_under_met_suspension_conditi(t.role_assignment_id) AS is_operating_under_met_suspension_condition,-- TRUE when a suspension condition has been met and the assignment is nonetheless still active and still deciding.
+  calc_role_assignments_has_declared_suspension_condition(t.role_assignment_id) AS has_declared_suspension_condition,-- TRUE when this assignment has any pre-declared condition under which it must stop at all.
+  calc_role_assignments_has_approving_authority(t.role_assignment_id) AS has_approving_authority,-- TRUE when a role is recorded as having approved this assignment.
+  calc_role_assignments_has_authorizing_change_request(t.role_assignment_id) AS has_authorizing_change_request,-- TRUE when a change request is recorded as the governance vehicle for this assignment.
+  t.is_enforcement_role,                                                        -- Whether this role's function is to enforce controls on other agents' actions.
+  calc_role_assignments_is_unauthorized_enforcement_agent(t.role_assignment_id) AS is_unauthorized_enforcement_agent,-- TRUE when a non-human agent enforces controls on others while holding no recorded authorization of its own.
+  calc_role_assignments_governance_evidence_count(t.role_assignment_id) AS governance_evidence_count,-- How many independent governance artifacts back this assignment: an approving role, an authorizing change request.
+  calc_role_assignments_unauthorized_enforcement_role_key(t.role_assignment_id) AS unauthorized_enforcement_role_key,-- Echoes the role only for non-human assignments nobody authorized; empty otherwise.
   t.semantic_type_iri                                                           -- Exact class IRI for the assignment event.
 FROM role_assignments t;
 
@@ -1022,6 +1060,15 @@ SELECT
   calc_procedure_executions_post_attestation_score_count(t.procedure_execution_id) AS post_attestation_score_count,-- How many controls were scored after this execution was signed.
   calc_procedure_executions_basis_changed_after_signature(t.procedure_execution_id) AS basis_changed_after_signature,-- TRUE when controls this attestation depended on were scored after the signature was given.
   calc_procedure_executions_requires_re_attestation(t.procedure_execution_id) AS requires_re_attestation,-- TRUE when the basis changed after signature AND the execution no longer reads as attestable.
+  calc_procedure_executions_intended_recipient_count(t.procedure_execution_id) AS intended_recipient_count,-- How many sends this campaign proposed to make.
+  calc_procedure_executions_reached_recipient_count(t.procedure_execution_id) AS reached_recipient_count,-- How many of those sends actually left our systems.
+  calc_procedure_executions_silently_dropped_count(t.procedure_execution_id) AS silently_dropped_count,-- How many intended recipients disappeared from this campaign with no record.
+  calc_procedure_executions_delivery_yield_percent(t.procedure_execution_id) AS delivery_yield_percent,-- Percentage of intended recipients who actually received the communication.
+  calc_procedure_executions_campaign_silently_lost_audience(t.procedure_execution_id) AS campaign_silently_lost_audience,-- TRUE when a campaign lost intended recipients without producing any record of the loss.
+  calc_procedure_executions_unrecorded_refusal_count(t.procedure_execution_id) AS unrecorded_refusal_count,-- How many sends this execution refused without recording the refusal anywhere.
+  calc_procedure_executions_has_unrecorded_refusals(t.procedure_execution_id) AS has_unrecorded_refusals,-- TRUE when this run contains at least one refusal that left no trace anywhere.
+  calc_procedure_executions_independently_confirmed_intent_count(t.procedure_execution_id) AS independently_confirmed_intent_count,-- How many of this execution's send decisions were corroborated by a delivery record.
+  calc_procedure_executions_send_decisions_are_entirely_self_witn(t.procedure_execution_id) AS send_decisions_are_entirely_self_witnessed,-- TRUE when no send decision in this run was confirmed by anything other than the pipeline itself.
   t.semantic_type_iri                                                           -- Exact PKO class IRI.
 FROM procedure_executions t;
 
@@ -1482,6 +1529,10 @@ SELECT
   calc_message_templates_has_body_drifted(t.message_template_id) AS has_body_drifted,-- TRUE when the template body no longer matches what was approved.
   calc_message_templates_is_sendable_under_approval(t.message_template_id) AS is_sendable_under_approval,-- TRUE only when the template is marked Approved, has a properly-authorized approval, AND its body still matches what was approved.
   calc_message_templates_drifted_send_count(t.message_template_id) AS drifted_send_count,-- How many messages went out from this template while it was not validly sendable.
+  calc_message_templates_unanswered_delivery_count(t.message_template_id) AS unanswered_delivery_count,-- How many transmitted messages from this template drew no acknowledgement.
+  calc_message_templates_transmitted_delivery_count(t.message_template_id) AS transmitted_delivery_count,-- How many deliveries using this template were actually transmitted.
+  calc_message_templates_template_draws_no_response(t.message_template_id) AS template_draws_no_response,-- TRUE when every transmitted message from this template went unacknowledged.
+  calc_message_templates_last_approval_at(t.message_template_id) AS last_approval_at,-- When this template's currently-governing approval was decided.
   t.semantic_type_iri                                                           -- Resource class IRI.
 FROM message_templates t;
 
@@ -1666,6 +1717,7 @@ SELECT
   calc_recipients_is_email_reachable(t.recipient_id) AS is_email_reachable,     -- TRUE when a corporate email address is on file for this recipient.
   calc_recipients_is_sms_reachable(t.recipient_id) AS is_sms_reachable,         -- TRUE when a mobile number is on file for this recipient.
   calc_recipients_is_unreachable(t.recipient_id) AS is_unreachable,             -- TRUE when the recipient has neither an email address nor a mobile number -- the exc-unreachable trigger condition.
+  calc_recipients_is_communicationally_stranded(t.recipient_id) AS is_communicationally_stranded,-- TRUE when every channel we hold for this person is either non-consenting or unreachable, so no lawful route exists at all.
   t.semantic_type_iri                                                           -- Extension IRI; recipients are not a PKO 2.0.0 native class.
 FROM recipients t;
 
@@ -1744,6 +1796,29 @@ SELECT
   calc_message_deliveries_template_was_sendable(t.message_delivery_id) AS template_was_sendable,-- Whether the template used for this delivery was fully sendable under a current, matching approval.
   calc_message_deliveries_is_drifted_send(t.message_delivery_id) AS is_drifted_send,-- TRUE when a message was transmitted from a template that was not validly sendable at the time. The drift witness.
   calc_message_deliveries_drifted_send_template_key(t.message_delivery_id) AS drifted_send_template_key,-- Carries the template id on drifted sends; empty string otherwise.
+  calc_message_deliveries_was_sent_outside_business_hours(t.message_delivery_id) AS was_sent_outside_business_hours,-- TRUE when this message landed before 08:00 or after 18:00 in the recipient's local time.
+  calc_message_deliveries_was_delivered_and_unanswered(t.message_delivery_id) AS was_delivered_and_unanswered,-- TRUE when a message actually reached someone and no acknowledgement came back.
+  calc_message_deliveries_is_poorly_timed_unanswered(t.message_delivery_id) AS is_poorly_timed_unanswered,-- TRUE when an unanswered message was delivered outside business hours -- a timing hypothesis for the silence.
+  calc_message_deliveries_is_well_timed_unanswered(t.message_delivery_id) AS is_well_timed_unanswered,-- TRUE when a message was delivered at a reasonable hour and still drew no response.
+  calc_message_deliveries_unanswered_template_key(t.message_delivery_id) AS unanswered_template_key,-- The template id when this delivery went unanswered, otherwise empty string.
+  calc_message_deliveries_transmitted_template_key(t.message_delivery_id) AS transmitted_template_key,-- The template id when this delivery actually reached someone.
+  t.approving_agent_at_send,                                                    -- The agent whose approval authorized this specific transmission, frozen at send time.
+  t.approving_role_at_send,                                                     -- The role that agent held when they approved, frozen at send time.
+  t.approval_decided_at_send,                                                   -- When the relied-upon approval was granted, frozen at send time.
+  calc_message_deliveries_approval_preceded_send(t.message_delivery_id) AS approval_preceded_send,-- TRUE when the approval we relied on was granted before the message went out.
+  calc_message_deliveries_has_frozen_approval_evidence(t.message_delivery_id) AS has_frozen_approval_evidence,-- TRUE when this delivery carries a complete frozen record of who authorized it and when.
+  calc_message_deliveries_provenance_is_live_derived(t.message_delivery_id) AS provenance_is_live_derived,-- TRUE when we have no frozen evidence and the only available answer comes from recomputing against today's template state.
+  calc_message_deliveries_current_last_approval_at(t.message_delivery_id) AS current_last_approval_at,-- The template's most recent approval time as it stands NOW, for comparison against what was approved at send.
+  calc_message_deliveries_template_reapproved_since_send(t.message_delivery_id) AS template_reapproved_since_send,-- TRUE when the template has picked up a newer approval since this message was transmitted.
+  calc_message_deliveries_is_unprovable_approval_claim(t.message_delivery_id) AS is_unprovable_approval_claim,-- TRUE when we assert this send was approved, hold no frozen evidence, and the template has been re-approved since. The claim cannot be substantiated from the record.
+  t.reminder_sent_at,                                                           -- When I sent a follow-up reminder about this unacknowledged message. Empty when I never did.
+  t.reminder_count,                                                             -- How many reminders I have sent for this delivery.
+  calc_message_deliveries_has_sent_reminder(t.message_delivery_id) AS has_sent_reminder,-- TRUE when at least one reminder went out for this delivery.
+  calc_message_deliveries_acknowledgement_is_outstanding(t.message_delivery_id) AS acknowledgement_is_outstanding,-- TRUE when a message actually reached someone, carried an acknowledgement obligation, and has not been acknowledged.
+  calc_message_deliveries_outstanding_age_days(t.message_delivery_id) AS outstanding_age_days,-- How long this acknowledgement has been outstanding.
+  calc_message_deliveries_is_unchased_acknowledgement(t.message_delivery_id) AS is_unchased_acknowledgement,-- TRUE when an acknowledgement has been outstanding for more than 7 days and I have never sent a reminder.
+  calc_message_deliveries_is_exhausted_follow_up(t.message_delivery_id) AS is_exhausted_follow_up,-- TRUE when I have sent three or more reminders and still have no acknowledgement -- the point at which this stops being my work and becomes a human escalation.
+  calc_message_deliveries_needs_human_escalation(t.message_delivery_id) AS needs_human_escalation,-- TRUE when follow-up is exhausted and no exception has been invoked to close out the obligation.
   t.semantic_type_iri                                                           -- Extension IRI; per-recipient delivery events are not a PKO 2.0.0 native class.
 FROM message_deliveries t;
 
@@ -1830,6 +1905,51 @@ SELECT
   calc_send_intents_refusal_cited_an_exception(t.send_intent_id) AS refusal_cited_an_exception,-- TRUE when the suppression produced by this refusal cited a documented exception.
   calc_send_intents_is_properly_handled_refusal(t.send_intent_id) AS is_properly_handled_refusal,-- TRUE when a refusal correctly resulted in a non-transmitted delivery record citing a documented exception. The positive witness.
   calc_send_intents_refusal_failure_execution_key(t.send_intent_id) AS refusal_failure_execution_key,-- Carries the execution id on any mishandled refusal; empty string otherwise.
+  calc_send_intents_intent_execution_key(t.send_intent_id) AS intent_execution_key,-- The procedure execution id for every intent, used as the campaign rollup key.
+  calc_send_intents_delivered_intent_execution_key(t.send_intent_id) AS delivered_intent_execution_key,-- The execution id when this intent actually reached a person, otherwise empty string.
+  calc_send_intents_dropped_intent_execution_key(t.send_intent_id) AS dropped_intent_execution_key,-- The execution id when this intent was refused and left no record at all.
+  calc_send_intents_my_approval_was_in_force(t.send_intent_id) AS my_approval_was_in_force,-- TRUE when the template carried a valid approval at the moment this intent was evaluated.
+  calc_send_intents_refused_on_approved_content(t.send_intent_id) AS refused_on_approved_content,-- TRUE when the pipeline refused an intent on content grounds even though the template was approved.
+  calc_send_intents_refused_on_opt_out_only(t.send_intent_id) AS refused_on_opt_out_only,-- TRUE when the only content failure was a missing or mispositioned opt-out phrase.
+  calc_send_intents_refusal_was_on_my_rules(t.send_intent_id) AS refusal_was_on_my_rules,-- TRUE when the refusal came from a communications rule I own -- content, length, opt-out, quiet hours.
+  calc_send_intents_refusal_was_outside_my_control(t.send_intent_id) AS refusal_was_outside_my_control,-- TRUE when the refusal came from consent, reachability, or authorization -- none of which I can fix by editing a template.
+  t.approver_was_notified,                                                      -- Whether the approving human was informed that this intent was refused.
+  calc_send_intents_is_unreported_refusal_on_my_rules(t.send_intent_id) AS is_unreported_refusal_on_my_rules,-- TRUE when a refusal I own and could have fixed was never surfaced to me.
+  calc_send_intents_is_approval_overridden_silently(t.send_intent_id) AS is_approval_overridden_silently,-- TRUE when the pipeline overrode a valid human approval on content grounds and told nobody.
+  t.alternate_channel_intent,                                                   -- The follow-up intent raised on a different channel after this one was refused. Stored as a raw identifier rather than an FK: SendIntents pointing at SendIntents would make the table self-referential in a way the DAG contract does not allow here.
+  calc_send_intents_has_alternate_channel_attempt(t.send_intent_id) AS has_alternate_channel_attempt,-- TRUE when a follow-up intent on another channel was raised for this refused send.
+  calc_send_intents_alternate_attempt_was_cleared(t.send_intent_id) AS alternate_attempt_was_cleared,-- Whether the follow-up intent itself passed all gates.
+  calc_send_intents_is_refused_with_no_alternative(t.send_intent_id) AS is_refused_with_no_alternative,-- TRUE when a send was refused and no attempt was ever made on any other channel.
+  calc_send_intents_exception_prescribed_an_alternative(t.send_intent_id) AS exception_prescribed_an_alternative,-- TRUE when the documented exception for this refusal prescribes a different-channel send as the correct handling.
+  calc_send_intents_prescribed_handling_was_performed(t.send_intent_id) AS prescribed_handling_was_performed,-- TRUE when the exception prescribed an alternate channel and an alternate intent was actually raised and cleared.
+  calc_send_intents_is_suppression_without_remedy(t.send_intent_id) AS is_suppression_without_remedy,-- TRUE when we cited an exception that prescribed an alternate channel and then never performed it.
+  t.refusal_recorded_at,                                                        -- When this refusal was written to a durable record. Empty when no record was ever emitted.
+  t.refusal_notified_role,                                                      -- The role informed that this send was refused.
+  calc_send_intents_has_durable_refusal_record(t.send_intent_id) AS has_durable_refusal_record,-- TRUE when this refusal was written down somewhere a human can find it.
+  calc_send_intents_refusal_was_escalated(t.send_intent_id) AS refusal_was_escalated,-- TRUE when a specific role was notified of this refusal.
+  calc_send_intents_is_unrecorded_refusal(t.send_intent_id) AS is_unrecorded_refusal,-- TRUE when I refused a send and produced no delivery record, no refusal record, and no exception. The refusal left no trace of any kind.
+  calc_send_intents_is_unescalated_refusal(t.send_intent_id) AS is_unescalated_refusal,-- TRUE when a refusal was recorded but no human role was ever told.
+  calc_send_intents_unescalated_refusal_role_key(t.send_intent_id) AS unescalated_refusal_role_key,-- Echoes the role that should have been told about this refusal, but only when the refusal went unrecorded. Empty otherwise.
+  calc_send_intents_unrecorded_refusal_execution_key(t.send_intent_id) AS unrecorded_refusal_execution_key,-- Echoes the parent procedure execution only for refusals nobody recorded; empty otherwise.
+  t.retry_intent,                                                               -- The intent I raised when the quiet window reopened for this deferred send. Raw identifier rather than an FK: a SendIntents self-reference is not expressible as a relationship without making the table depend on itself.
+  calc_send_intents_was_deferred_on_timing(t.send_intent_id) AS was_deferred_on_timing,-- TRUE when the timing gate is the reason this intent did not clear, and every other gate passed.
+  calc_send_intents_window_has_since_reopened(t.send_intent_id) AS window_has_since_reopened,-- TRUE when enough time has passed since evaluation that the quiet window this intent hit must have closed.
+  calc_send_intents_has_retry_attempt(t.send_intent_id) AS has_retry_attempt,   -- TRUE when a retry intent was raised for this deferred send.
+  calc_send_intents_retry_was_cleared(t.send_intent_id) AS retry_was_cleared,   -- Whether the retry intent itself passed all gates.
+  calc_send_intents_is_abandoned_deferral(t.send_intent_id) AS is_abandoned_deferral,-- TRUE when a send was deferred for timing, the window has since reopened, and no retry was ever raised. A deferral silently converted into a cancellation.
+  calc_send_intents_deferral_age_hours(t.send_intent_id) AS deferral_age_hours, -- How long this deferred intent has been sitting since evaluation.
+  calc_send_intents_is_stale_deferral(t.send_intent_id) AS is_stale_deferral,   -- TRUE when a deferred send has been waiting more than 24 hours -- longer than any quiet window can justify.
+  t.evaluating_role_assignment,                                                 -- The RoleAssignments id under which the pipeline evaluated this send intent. Raw rather than an FK because SendIntents already sits downstream of the execution graph and an added edge to RoleAssignments is not needed to resolve it.
+  calc_send_intents_enforced_by_unauthorized_agent(t.send_intent_id) AS enforced_by_unauthorized_agent,-- Whether the gate decision on this intent was made by an agent holding an unauthorized enforcement assignment.
+  calc_send_intents_consent_input_was_resolvable(t.send_intent_id) AS consent_input_was_resolvable,-- TRUE when the recipient's consent state was actually retrievable, as opposed to absent and read as a refusal.
+  calc_send_intents_recipient_consent_status_raw(t.send_intent_id) AS recipient_consent_status_raw,-- The recipient's consent status as a string: Granted, Revoked, NeverGiven, or empty if no consent record exists at all.
+  calc_send_intents_policy_input_was_resolvable(t.send_intent_id) AS policy_input_was_resolvable,-- TRUE when a governing communication policy was actually found for this intent.
+  calc_send_intents_all_gate_inputs_resolved(t.send_intent_id) AS all_gate_inputs_resolved,-- TRUE when every input my gates depend on was actually retrievable.
+  calc_send_intents_is_unevaluable_refusal(t.send_intent_id) AS is_unevaluable_refusal,-- TRUE when I refused a send but at least one gate input could not be resolved -- so I do not actually know whether the rule was violated or merely unreadable.
+  t.gate_result_was_independently_confirmed,                                    -- Whether any agent other than me verified this gate outcome.
+  calc_send_intents_is_self_witnessed_decision(t.send_intent_id) AS is_self_witnessed_decision,-- TRUE when the entire decision to send or refuse rests solely on my own computation, unconfirmed by anything else.
+  calc_send_intents_is_independently_confirmed(t.send_intent_id) AS is_independently_confirmed,-- TRUE when this intent's decision was corroborated by an actual delivery record rather than resting solely on the pipeline's own say-so.
+  calc_send_intents_independently_confirmed_execution_key(t.send_intent_id) AS independently_confirmed_execution_key,-- Echoes the parent execution only for independently confirmed intents; empty otherwise.
   t.semantic_type_iri                                                           -- Extension IRI; pre-send intents are not a PKO 2.0.0 native class.
 FROM send_intents t;
 
@@ -1872,6 +1992,13 @@ SELECT
   calc_agent_decision_records_is_draft_kind(t.agent_decision_record_id) AS is_draft_kind,-- TRUE when this decision produced text — the drafter's own output class.
   calc_agent_decision_records_agent_when_draft_overridden(t.agent_decision_record_id) AS agent_when_draft_overridden,-- Echoes the deciding agent id when a drafting decision was overridden, blank otherwise.
   calc_agent_decision_records_agent_when_draft(t.agent_decision_record_id) AS agent_when_draft,-- Echoes the deciding agent id when the decision produced text, blank otherwise.
+  t.override_reason_kind,                                                       -- Why the human changed my output: ErrorCorrection, JudgmentReserved, PolicyChange, or empty when not overridden.
+  calc_agent_decision_records_is_error_correction(t.agent_decision_record_id) AS is_error_correction,-- TRUE when the override corrected something I got wrong.
+  calc_agent_decision_records_is_reserved_judgment_override(t.agent_decision_record_id) AS is_reserved_judgment_override,-- TRUE when the override was a human exercising authority the procedure always reserved to them.
+  calc_agent_decision_records_override_reason_is_recorded(t.agent_decision_record_id) AS override_reason_is_recorded,-- TRUE when an override carries a stated reason.
+  calc_agent_decision_records_is_unexplained_override(t.agent_decision_record_id) AS is_unexplained_override,-- TRUE when my output was changed and nobody recorded why.
+  calc_agent_decision_records_error_correction_role_assignment_ke(t.agent_decision_record_id) AS error_correction_role_assignment_key,-- The role assignment id when this decision was overridden as an error correction, otherwise empty.
+  calc_agent_decision_records_boundary_violation_role_assignment_(t.agent_decision_record_id) AS boundary_violation_role_assignment_key,-- Echoes the role assignment this decision was made under, but only when the decision violated an authority boundary. Empty otherwise.
   t.semantic_type_iri                                                           -- Extension class IRI for an agent decision record.
 FROM agent_decision_records t;
 
@@ -1936,6 +2063,11 @@ SELECT
   calc_authority_boundaries_is_unwarranted_and_untested(t.authority_boundary_id) AS is_unwarranted_and_untested,-- A boundary whose ratification has lapsed and which no agent decision has ever been evaluated against — we cannot show it works and we cannot show why it exists.
   calc_authority_boundaries_unwarranted_boundary_step_key(t.authority_boundary_id) AS unwarranted_boundary_step_key,-- Composite-key echo: the step this boundary governs when the boundary is unwarranted, blank otherwise.
   calc_authority_boundaries_ratifying_fragment_key(t.authority_boundary_id) AS ratifying_fragment_key,-- Composite-key echo: the fragment ratifying this boundary when the boundary is currently binding, blank otherwise.
+  calc_authority_boundaries_ratifying_fragment_status(t.authority_boundary_id) AS ratifying_fragment_status,-- The status string of the knowledge fragment that ratifies this boundary: Approved, Reviewed, Draft, or empty.
+  calc_authority_boundaries_ratification_lapsed(t.authority_boundary_id) AS ratification_lapsed,-- TRUE when this boundary names a ratifying fragment and that fragment is no longer valid.
+  calc_authority_boundaries_binds_despite_lapsed_ratification(t.authority_boundary_id) AS binds_despite_lapsed_ratification,-- TRUE when a boundary is still enforced against agents while the knowledge that authorized it has lapsed.
+  calc_authority_boundaries_is_ungrounded_and_untested(t.authority_boundary_id) AS is_ungrounded_and_untested,-- TRUE when a boundary has lapsed ratification AND has never once been exercised -- so neither its authority nor its operation has ever been demonstrated.
+  calc_authority_boundaries_constrained_role_assignment_key(t.authority_boundary_id) AS constrained_role_assignment_key,-- The role id this boundary constrains, emitted only when the boundary is ungrounded.
   t.semantic_type_iri                                                           -- Extension class IRI for an authority boundary.
 FROM authority_boundaries t;
 

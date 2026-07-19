@@ -521,6 +521,18 @@ ALTER TABLE send_intents ADD CONSTRAINT fk_send_intents_message_template
 ALTER TABLE send_intents DROP CONSTRAINT IF EXISTS fk_send_intents_resulting_delivery;
 ALTER TABLE send_intents ADD CONSTRAINT fk_send_intents_resulting_delivery
   FOREIGN KEY (resulting_delivery) REFERENCES message_deliveries (message_delivery_id);
+ALTER TABLE send_intents DROP CONSTRAINT IF EXISTS fk_send_intents_alternate_channel_intent;
+ALTER TABLE send_intents ADD CONSTRAINT fk_send_intents_alternate_channel_intent
+  FOREIGN KEY (alternate_channel_intent) REFERENCES send_intents (send_intent_id);
+ALTER TABLE send_intents DROP CONSTRAINT IF EXISTS fk_send_intents_refusal_notified_role;
+ALTER TABLE send_intents ADD CONSTRAINT fk_send_intents_refusal_notified_role
+  FOREIGN KEY (refusal_notified_role) REFERENCES roles (role_id);
+ALTER TABLE send_intents DROP CONSTRAINT IF EXISTS fk_send_intents_retry_intent;
+ALTER TABLE send_intents ADD CONSTRAINT fk_send_intents_retry_intent
+  FOREIGN KEY (retry_intent) REFERENCES send_intents (send_intent_id);
+ALTER TABLE send_intents DROP CONSTRAINT IF EXISTS fk_send_intents_evaluating_role_assignment;
+ALTER TABLE send_intents ADD CONSTRAINT fk_send_intents_evaluating_role_assignment
+  FOREIGN KEY (evaluating_role_assignment) REFERENCES role_assignments (role_assignment_id);
 
 -- AgentDecisionRecords
 ALTER TABLE agent_decision_records DROP CONSTRAINT IF EXISTS fk_agent_decision_records_step_execution;
@@ -583,4 +595,4 @@ ALTER TABLE attestations DROP CONSTRAINT IF EXISTS fk_attestations_signed_by_age
 ALTER TABLE attestations ADD CONSTRAINT fk_attestations_signed_by_agent
   FOREIGN KEY (signed_by_agent) REFERENCES agents (agent_id);
 
--- 155 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
+-- 159 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
