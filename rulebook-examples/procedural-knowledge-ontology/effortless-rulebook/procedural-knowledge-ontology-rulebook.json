@@ -1417,6 +1417,38 @@
         "formula": "=COUNTIFS(Steps!{{ProcedureVersion}}, {{ProcedureVersionId}})"
       },
       {
+        "name": "OverdueReviewCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many reviews of this procedure version are past due.",
+        "formula": "=COUNTIFS(ReviewEvents!{{OverdueVersionKey}}, {{ProcedureVersionId}})"
+      },
+      {
+        "name": "OpenChangeRequestCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many change requests are open against this version.",
+        "formula": "=COUNTIFS(ChangeRequests!{{OpenChangeVersionKey}}, {{ProcedureVersionId}})"
+      },
+      {
+        "name": "OpenHighSeverityGapCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many high-severity knowledge gaps are open against this version.",
+        "formula": "=COUNTIFS(KnowledgeGaps!{{OpenGapVersionKey}}, {{ProcedureVersionId}})"
+      },
+      {
+        "name": "IsFitToExecute",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this version is approved, current on review, and carries no open change request or high-severity gap.",
+        "formula": "=AND({{Status}} = \"Approved\", {{OverdueReviewCount}} = 0, {{OpenChangeRequestCount}} = 0, {{OpenHighSeverityGapCount}} = 0)"
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -2969,6 +3001,20 @@
         "formula": "=AND({{IsBlocking}}, NOT({{IsBoundToAnyStep}}))"
       },
       {
+        "name": "HasComputedWitness",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Whether a computed predicate in this rulebook evaluates this requirement, as opposed to it being satisfied by human assertion only."
+      },
+      {
+        "name": "WitnessFieldName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "The fully-qualified Table.Field of the predicate that computes this requirement, when one exists."
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -2984,7 +3030,9 @@
         "Statement": "No ledger entry may be posted after cutoff without controller-approved reopening.",
         "Rationale": "SOX control design",
         "IsBlocking": true,
-        "SemanticTypeIri": "https://w3id.org/pko#Requirement"
+        "SemanticTypeIri": "https://w3id.org/pko#Requirement",
+        "HasComputedWitness": true,
+        "WitnessFieldName": "VerificationOutcomes.SignalMatchesExpected"
       },
       {
         "RequirementId": "req-close-balance",
@@ -2993,7 +3041,9 @@
         "Statement": "Every material account must reconcile or carry an approved exception.",
         "Rationale": "Financial reporting accuracy",
         "IsBlocking": true,
-        "SemanticTypeIri": "https://w3id.org/pko#Requirement"
+        "SemanticTypeIri": "https://w3id.org/pko#Requirement",
+        "HasComputedWitness": true,
+        "WitnessFieldName": "VerificationOutcomes.IsUnbackedObservation"
       },
       {
         "RequirementId": "req-close-separation",
@@ -3002,7 +3052,9 @@
         "Statement": "The preparer may not be the final approver.",
         "Rationale": "Segregation of duties",
         "IsBlocking": true,
-        "SemanticTypeIri": "https://w3id.org/pko#Requirement"
+        "SemanticTypeIri": "https://w3id.org/pko#Requirement",
+        "HasComputedWitness": true,
+        "WitnessFieldName": "StepExecutions.ViolatesSeparationOfDuties"
       },
       {
         "RequirementId": "req-close-evidence",
@@ -3011,7 +3063,9 @@
         "Statement": "Evidence must remain retrievable for 7 years.",
         "Rationale": "Audit and legal retention",
         "IsBlocking": true,
-        "SemanticTypeIri": "https://w3id.org/pko#Requirement"
+        "SemanticTypeIri": "https://w3id.org/pko#Requirement",
+        "HasComputedWitness": true,
+        "WitnessFieldName": "RequirementSatisfactions.IsBlockingAndUnmet"
       },
       {
         "RequirementId": "req-close-human-approval",
@@ -3020,7 +3074,9 @@
         "Statement": "Controller and CFO approvals must be human-confirmed.",
         "Rationale": "Accountability",
         "IsBlocking": true,
-        "SemanticTypeIri": "https://w3id.org/pko#Requirement"
+        "SemanticTypeIri": "https://w3id.org/pko#Requirement",
+        "HasComputedWitness": false,
+        "WitnessFieldName": null
       },
       {
         "RequirementId": "req-policy-source",
@@ -3029,7 +3085,9 @@
         "Statement": "Drafting may use only approved source resources and validated elicitation records.",
         "Rationale": "Semantic integrity",
         "IsBlocking": true,
-        "SemanticTypeIri": "https://w3id.org/pko#Requirement"
+        "SemanticTypeIri": "https://w3id.org/pko#Requirement",
+        "HasComputedWitness": false,
+        "WitnessFieldName": null
       },
       {
         "RequirementId": "req-policy-legal",
@@ -3038,7 +3096,9 @@
         "Statement": "Employment counsel must approve legal and privacy commitments.",
         "Rationale": "Legal accountability",
         "IsBlocking": true,
-        "SemanticTypeIri": "https://w3id.org/pko#Requirement"
+        "SemanticTypeIri": "https://w3id.org/pko#Requirement",
+        "HasComputedWitness": false,
+        "WitnessFieldName": null
       },
       {
         "RequirementId": "req-policy-human-approval",
@@ -3047,7 +3107,9 @@
         "Statement": "An AI agent may draft, but a human policy owner must approve meaning.",
         "Rationale": "Human accountability",
         "IsBlocking": true,
-        "SemanticTypeIri": "https://w3id.org/pko#Requirement"
+        "SemanticTypeIri": "https://w3id.org/pko#Requirement",
+        "HasComputedWitness": false,
+        "WitnessFieldName": null
       },
       {
         "RequirementId": "req-policy-consent",
@@ -3056,7 +3118,9 @@
         "Statement": "SMS may be sent only to recipients with active consent.",
         "Rationale": "Consent and privacy",
         "IsBlocking": true,
-        "SemanticTypeIri": "https://w3id.org/pko#Requirement"
+        "SemanticTypeIri": "https://w3id.org/pko#Requirement",
+        "HasComputedWitness": false,
+        "WitnessFieldName": null
       },
       {
         "RequirementId": "req-policy-quiet-hours",
@@ -3065,7 +3129,9 @@
         "Statement": "SMS delivery must not occur between 20:00 and 08:00 recipient-local time.",
         "Rationale": "Employee experience",
         "IsBlocking": true,
-        "SemanticTypeIri": "https://w3id.org/pko#Requirement"
+        "SemanticTypeIri": "https://w3id.org/pko#Requirement",
+        "HasComputedWitness": false,
+        "WitnessFieldName": null
       },
       {
         "RequirementId": "req-policy-optout",
@@ -3074,7 +3140,9 @@
         "Statement": "Every SMS must include approved opt-out language.",
         "Rationale": "Consent management",
         "IsBlocking": true,
-        "SemanticTypeIri": "https://w3id.org/pko#Requirement"
+        "SemanticTypeIri": "https://w3id.org/pko#Requirement",
+        "HasComputedWitness": false,
+        "WitnessFieldName": null
       },
       {
         "RequirementId": "req-policy-retention",
@@ -3083,7 +3151,9 @@
         "Statement": "Rendered messages, approvals, recipient scope, and delivery results must be retained for 7 years.",
         "Rationale": "Auditability",
         "IsBlocking": true,
-        "SemanticTypeIri": "https://w3id.org/pko#Requirement"
+        "SemanticTypeIri": "https://w3id.org/pko#Requirement",
+        "HasComputedWitness": false,
+        "WitnessFieldName": null
       },
       {
         "RequirementId": "req-policy-accessibility",
@@ -3092,7 +3162,9 @@
         "Statement": "Email content must be readable, accessible, and include an alternate contact method.",
         "Rationale": "Inclusive communication",
         "IsBlocking": true,
-        "SemanticTypeIri": "https://w3id.org/pko#Requirement"
+        "SemanticTypeIri": "https://w3id.org/pko#Requirement",
+        "HasComputedWitness": false,
+        "WitnessFieldName": null
       }
     ]
   },
@@ -4362,6 +4434,14 @@
         "formula": "=OR({{Status}} = \"Open\", {{Status}} = \"Investigating\")"
       },
       {
+        "name": "OpenGapVersionKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Echoes the ProcedureVersion id for open high-severity knowledge gaps.",
+        "formula": "=IF(AND({{IsOpen}}, {{Severity}} = \"High\"), {{ProcedureVersion}}, \"\")"
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -4709,6 +4789,86 @@
         "nullable": true,
         "Description": "TRUE when the execution either skipped specified steps or carried at least one control breach.",
         "formula": "=OR(NOT({{IsStructurallyComplete}}), {{ControlBreachCount}} > 0)"
+      },
+      {
+        "name": "AllBlockingControlsEvaluated",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when every blocking requirement bound to every step of this execution received a satisfaction record.",
+        "formula": "={{UnevaluatedBlockingTotal}} = 0"
+      },
+      {
+        "name": "UnevaluatedBlockingTotal",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many step executions in this run left at least one blocking control unevaluated.",
+        "formula": "=COUNTIFS(StepExecutions!{{UnevaluatedBlockingExecutionKey}}, {{ProcedureExecutionId}})"
+      },
+      {
+        "name": "SeparationOfDutiesHeld",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when no agent both prepared and approved within this execution.",
+        "formula": "={{SeparationViolationCount}} = 0"
+      },
+      {
+        "name": "SeparationViolationCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of segregation-of-duties violations in this execution.",
+        "formula": "=COUNTIFS(StepExecutions!{{SeparationViolationExecutionKey}}, {{ProcedureExecutionId}})"
+      },
+      {
+        "name": "IsAttestationReady",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE only when every step completed, no control breached, every blocking control was actually evaluated, and segregation of duties held.",
+        "formula": "=AND({{IsStructurallyComplete}}, NOT({{DivergedFromSpecification}}), {{AllBlockingControlsEvaluated}}, {{SeparationOfDutiesHeld}})"
+      },
+      {
+        "name": "AttestationBlockerSummary",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Names the highest-severity reason the attestation cannot be signed, or empty when it can.",
+        "formula": "=IF({{IsAttestationReady}}, \"\", IF(NOT({{IsStructurallyComplete}}), \"Incomplete: specified steps did not all complete.\", IF({{SeparationViolationCount}} > 0, \"Segregation of duties violated.\", IF({{UnevaluatedBlockingTotal}} > 0, \"Blocking controls were never evaluated.\", \"Control breach recorded on one or more steps.\"))))"
+      },
+      {
+        "name": "ExecutedVersionIsFit",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether the procedure version this execution ran against is currently fit to execute.",
+        "formula": "=INDEX(ProcedureVersions!{{IsFitToExecute}}, MATCH({{ProcedureVersion}}, ProcedureVersions!{{ProcedureVersionId}}, 0))"
+      },
+      {
+        "name": "SignedAgainstUnfitVersion",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a completed execution was run against a procedure version the organization no longer stands behind.",
+        "formula": "=AND({{ExecutionStatus}} = \"Completed\", NOT({{ExecutedVersionIsFit}}))"
+      },
+      {
+        "name": "AssertedOnlyControlCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many blocking controls in this execution passed on human assertion alone.",
+        "formula": "=COUNTIFS(RequirementSatisfactions!{{AssertedOnlyExecutionKey}}, {{ProcedureExecutionId}})"
+      },
+      {
+        "name": "AssuranceIsMostlyAsserted",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when any blocking control in this execution passed without a computed witness behind it.",
+        "formula": "={{AssertedOnlyControlCount}} > 0"
       },
       {
         "name": "SemanticTypeIri",
@@ -5142,6 +5302,62 @@
         "formula": "=AND({{StepIsApproval}}, NOT({{ExecutorIsHuman}}))"
       },
       {
+        "name": "UnevaluatedBlockingExecutionKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Echoes the parent execution id when this step left a blocking control unevaluated.",
+        "formula": "=IF({{HasUnevaluatedBlockingControl}}, {{ProcedureExecution}}, \"\")"
+      },
+      {
+        "name": "SeparationViolationExecutionKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Echoes the parent execution id when this step execution violates segregation of duties.",
+        "formula": "=IF({{ViolatesSeparationOfDuties}}, {{ProcedureExecution}}, \"\")"
+      },
+      {
+        "name": "SelfWitnessedVerificationCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many of this execution's verifications were observed by the same agent who ran the step.",
+        "formula": "=COUNTIFS(VerificationOutcomes!{{SelfWitnessedStepKey}}, {{StepExecutionId}})"
+      },
+      {
+        "name": "UnbackedVerificationCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many verifications on this execution recorded a matching signal with no retained evidence artifact.",
+        "formula": "=COUNTIFS(VerificationOutcomes!{{UnbackedStepKey}}, {{StepExecutionId}})"
+      },
+      {
+        "name": "ApprovalRestsOnSelfAttestation",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when an approval step's verification was either self-witnessed by the approver or never performed at all.",
+        "formula": "=AND({{StepIsApproval}}, OR({{SelfWitnessedVerificationCount}} > 0, {{HasSkippedVerification}}))"
+      },
+      {
+        "name": "ExceptionInvocationCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many specified exceptions were invoked during this step execution.",
+        "formula": "=COUNTIFS(ExceptionInvocations!{{StepExecution}}, {{StepExecutionId}})"
+      },
+      {
+        "name": "RanUnderException",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this execution invoked at least one specified exception.",
+        "formula": "={{ExceptionInvocationCount}} > 0"
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -5423,6 +5639,38 @@
         "nullable": true,
         "Description": "TRUE when a blocking requirement was evaluated by a non-human agent.",
         "formula": "=AND({{RequirementIsBlocking}}, {{EvaluatorAgentKind}} <> \"Human\")"
+      },
+      {
+        "name": "RequirementHasComputedWitness",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether the requirement this row evaluates has a computed witness behind it.",
+        "formula": "=INDEX(Requirements!{{HasComputedWitness}}, MATCH({{Requirement}}, Requirements!{{RequirementId}}, 0))"
+      },
+      {
+        "name": "IsAssertedOnly",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a blocking requirement is recorded as Satisfied purely on human assertion, with no computed predicate behind it.",
+        "formula": "=AND({{RequirementIsBlocking}}, {{IsFullySatisfied}}, NOT({{RequirementHasComputedWitness}}))"
+      },
+      {
+        "name": "AssertedOnlyExecutionKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Echoes the grandparent procedure execution id for assertion-only satisfactions.",
+        "formula": "=IF({{IsAssertedOnly}}, {{ParentProcedureExecution}}, \"\")"
+      },
+      {
+        "name": "ParentProcedureExecution",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The procedure execution this satisfaction ultimately belongs to.",
+        "formula": "=INDEX(StepExecutions!{{ProcedureExecution}}, MATCH({{StepExecution}}, StepExecutions!{{StepExecutionId}}, 0))"
       },
       {
         "name": "SemanticTypeIri",
@@ -6072,6 +6320,14 @@
         "formula": "=OR({{Status}} = \"Draft\", {{Status}} = \"UnderReview\", {{Status}} = \"Approved\")"
       },
       {
+        "name": "OpenChangeVersionKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Echoes the ProcedureVersion id only for change requests still open.",
+        "formula": "=IF({{IsOpen}}, {{ProcedureVersion}}, \"\")"
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -6202,6 +6458,14 @@
         "nullable": true,
         "Description": "TRUE when review is overdue.",
         "formula": "={{NextReviewDue}} < {{AsOfInstant}}"
+      },
+      {
+        "name": "OverdueVersionKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Echoes the ProcedureVersion id only when this review is past its next-due date.",
+        "formula": "=IF({{IsOverdue}}, {{ProcedureVersion}}, \"\")"
       },
       {
         "name": "SemanticTypeIri",
@@ -7406,6 +7670,51 @@
         "WitnessLoop": "loop-01",
         "QuestionText": "Did any AI agent or automated pipeline execute a step that requires human confirmation, or sign off on something a human was supposed to own?",
         "WhyItMatters": "req-close-human-approval and req-policy-human-approval both say a human must approve. Steps carries RequiresHumanConfirmation as a raw boolean and Agents carries AgentKind \u2014 Human, AIAgent, AutomatedPipeline \u2014 and NOTHING compares them. variance-ai executed se-close04. policy-drafting-ai executed se-policy03. Both fine today because those steps are not approval steps. But ra-old-variance to ra-new-variance shows this org actively migrates work from humans to AI agents, and the control that is supposed to stop that migration reaching an approval step is prose. This is the control I expect to matter most over the next two years and it currently does not exist.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-cfo-can-i-sign",
+        "AskingRole": "cfo",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "Can I sign the attestation for exec-close-2026-q2 \u2014 yes or no \u2014 and if no, name the blocker.",
+        "WhyItMatters": "This is the only question I actually have. Today the model answers it with ProcedureExecutions.ExecutionStatus='Completed', which is a string somebody typed into a field. My signature carries personal liability under Section 302. I need attestation-readiness to be a computed conjunction of every blocking control, such that if ANY control did not operate, the model says no and names it. A green status that cannot go red is worse than no status at all, because it manufactures false comfort at exactly the moment I am least able to verify it myself.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-cfo-approving-on-unfit-version",
+        "AskingRole": "cfo",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "Am I being asked to approve an execution of a procedure version that is itself overdue for review, or that has an open change request against it?",
+        "WhyItMatters": "I sign against close-v1.1.0. If that version's periodic review lapsed, or if there is an open ChangeRequest saying the procedure is known to be wrong, then I am attesting to conformance with a specification that the organization itself no longer stands behind. ReviewEvents.IsOverdue already works and ChangeRequests.IsOpen already works, but neither is connected to the execution I am signing. The version's fitness and the execution's conformance are two different questions and I need both answered before I sign, not one.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-cfo-approval-was-actually-verified",
+        "AskingRole": "cfo",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "My own approval on se-close06 \u2014 is there anything behind it other than the fact that I clicked approve?",
+        "WhyItMatters": "verify-cfo declares that close-06 must show cfo-approval = APPROVED. se-close06 says VerificationResult=PASS. But the PASS and the approval are the same act: I approved, therefore the verification that I approved passes. That is circular, and it is my name on the circle. sat-close-human's evidence reads 'Human CFO approval recorded' \u2014 recorded by whom, against what? I want to know whether my approval rests on independently verified upstream evidence or whether the model is simply reflecting my own click back at me.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-cfo-who-actually-held-authority",
+        "AskingRole": "cfo",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "For every approval in this close, tell me the human who was personally accountable \u2014 and whether an exception was used to route authority away from the person who normally holds it.",
+        "WhyItMatters": "exc-cfo-unavailable exists and says approval may be delegated to a designated Acting CFO, 'never to the preparer'. That last clause is a control and it is prose inside a text field. If I was unavailable and someone approved in my place, I need the model to show me who, under what authority, and whether the never-to-the-preparer condition held. Right now an exception can be invoked with no trace at all \u2014 nothing links an execution back to the exception it used. From my seat that means delegated authority is entirely invisible, which is the exposure I am least willing to carry.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-cfo-am-i-being-told-everything",
+        "AskingRole": "cfo",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "Across everything I am signing, is there any control claim in this model that rests on a human typing a conclusion rather than on something computed?",
+        "WhyItMatters": "This is the question behind all my other questions. sat-close-separation says 'Preparer and reviewer were different agents.' sat-close-human says 'Human CFO approval recorded.' Both are prose conclusions in an Evidence field, both assert that a control operated, and neither is checkable. I want the model to distinguish between a control that was COMPUTED to have held and one that was ASSERTED to have held, and to tell me how much of my attestation rests on the second kind. If most of my assurance is assertion, I want to know that before I sign, not after.",
         "AnswerableBefore": false,
         "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
       }
@@ -8638,6 +8947,46 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "ProcedureVersions.OverdueReviewCount",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "OverdueReviewCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(ReviewEvents!{{OverdueVersionKey}}, {{ProcedureVersionId}})",
+        "InventedForQuestion": "q-cfo-approving-on-unfit-version",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.OpenChangeRequestCount",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "OpenChangeRequestCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(ChangeRequests!{{OpenChangeVersionKey}}, {{ProcedureVersionId}})",
+        "InventedForQuestion": "q-cfo-approving-on-unfit-version",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.OpenHighSeverityGapCount",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "OpenHighSeverityGapCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(KnowledgeGaps!{{OpenGapVersionKey}}, {{ProcedureVersionId}})",
+        "InventedForQuestion": "q-cfo-approving-on-unfit-version",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.IsFitToExecute",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "IsFitToExecute",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{Status}} = \"Approved\", {{OverdueReviewCount}} = 0, {{OpenChangeRequestCount}} = 0, {{OpenHighSeverityGapCount}} = 0)",
+        "InventedForQuestion": "q-cfo-approving-on-unfit-version",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "ProcedureVersions.SemanticTypeIri",
         "TargetTable": "ProcedureVersions",
         "FieldName": "SemanticTypeIri",
@@ -9515,6 +9864,26 @@
         "Datatype": "boolean",
         "Formula": "=AND({{IsBlocking}}, NOT({{IsBoundToAnyStep}}))",
         "InventedForQuestion": "q-controller-blocking-control-inoperative",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Requirements.HasComputedWitness",
+        "TargetTable": "Requirements",
+        "FieldName": "HasComputedWitness",
+        "FieldType": "raw",
+        "Datatype": "boolean",
+        "Formula": null,
+        "InventedForQuestion": "q-cfo-am-i-being-told-everything",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Requirements.WitnessFieldName",
+        "TargetTable": "Requirements",
+        "FieldName": "WitnessFieldName",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": "q-cfo-am-i-being-told-everything",
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
@@ -10418,6 +10787,16 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "KnowledgeGaps.OpenGapVersionKey",
+        "TargetTable": "KnowledgeGaps",
+        "FieldName": "OpenGapVersionKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF(AND({{IsOpen}}, {{Severity}} = \"High\"), {{ProcedureVersion}}, \"\")",
+        "InventedForQuestion": "q-cfo-approving-on-unfit-version",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "KnowledgeGaps.SemanticTypeIri",
         "TargetTable": "KnowledgeGaps",
         "FieldName": "SemanticTypeIri",
@@ -10735,6 +11114,106 @@
         "Datatype": "boolean",
         "Formula": "=OR(NOT({{IsStructurallyComplete}}), {{ControlBreachCount}} > 0)",
         "InventedForQuestion": "q-controller-execution-diverged-from-spec",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureExecutions.AllBlockingControlsEvaluated",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "AllBlockingControlsEvaluated",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{UnevaluatedBlockingTotal}} = 0",
+        "InventedForQuestion": "q-cfo-can-i-sign",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureExecutions.UnevaluatedBlockingTotal",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "UnevaluatedBlockingTotal",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(StepExecutions!{{UnevaluatedBlockingExecutionKey}}, {{ProcedureExecutionId}})",
+        "InventedForQuestion": "q-cfo-can-i-sign",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureExecutions.SeparationOfDutiesHeld",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "SeparationOfDutiesHeld",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{SeparationViolationCount}} = 0",
+        "InventedForQuestion": "q-cfo-can-i-sign",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureExecutions.SeparationViolationCount",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "SeparationViolationCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(StepExecutions!{{SeparationViolationExecutionKey}}, {{ProcedureExecutionId}})",
+        "InventedForQuestion": "q-cfo-can-i-sign",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureExecutions.IsAttestationReady",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "IsAttestationReady",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsStructurallyComplete}}, NOT({{DivergedFromSpecification}}), {{AllBlockingControlsEvaluated}}, {{SeparationOfDutiesHeld}})",
+        "InventedForQuestion": "q-cfo-can-i-sign",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureExecutions.AttestationBlockerSummary",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "AttestationBlockerSummary",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{IsAttestationReady}}, \"\", IF(NOT({{IsStructurallyComplete}}), \"Incomplete: specified steps did not all complete.\", IF({{SeparationViolationCount}} > 0, \"Segregation of duties violated.\", IF({{UnevaluatedBlockingTotal}} > 0, \"Blocking controls were never evaluated.\", \"Control breach recorded on one or more steps.\"))))",
+        "InventedForQuestion": "q-cfo-can-i-sign",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureExecutions.ExecutedVersionIsFit",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "ExecutedVersionIsFit",
+        "FieldType": "lookup",
+        "Datatype": "boolean",
+        "Formula": "=INDEX(ProcedureVersions!{{IsFitToExecute}}, MATCH({{ProcedureVersion}}, ProcedureVersions!{{ProcedureVersionId}}, 0))",
+        "InventedForQuestion": "q-cfo-approving-on-unfit-version",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureExecutions.SignedAgainstUnfitVersion",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "SignedAgainstUnfitVersion",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{ExecutionStatus}} = \"Completed\", NOT({{ExecutedVersionIsFit}}))",
+        "InventedForQuestion": "q-cfo-approving-on-unfit-version",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureExecutions.AssertedOnlyControlCount",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "AssertedOnlyControlCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(RequirementSatisfactions!{{AssertedOnlyExecutionKey}}, {{ProcedureExecutionId}})",
+        "InventedForQuestion": "q-cfo-am-i-being-told-everything",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureExecutions.AssuranceIsMostlyAsserted",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "AssuranceIsMostlyAsserted",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{AssertedOnlyControlCount}} > 0",
+        "InventedForQuestion": "q-cfo-am-i-being-told-everything",
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
@@ -11248,6 +11727,76 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "StepExecutions.UnevaluatedBlockingExecutionKey",
+        "TargetTable": "StepExecutions",
+        "FieldName": "UnevaluatedBlockingExecutionKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{HasUnevaluatedBlockingControl}}, {{ProcedureExecution}}, \"\")",
+        "InventedForQuestion": "q-cfo-can-i-sign",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.SeparationViolationExecutionKey",
+        "TargetTable": "StepExecutions",
+        "FieldName": "SeparationViolationExecutionKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{ViolatesSeparationOfDuties}}, {{ProcedureExecution}}, \"\")",
+        "InventedForQuestion": "q-cfo-can-i-sign",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.SelfWitnessedVerificationCount",
+        "TargetTable": "StepExecutions",
+        "FieldName": "SelfWitnessedVerificationCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(VerificationOutcomes!{{SelfWitnessedStepKey}}, {{StepExecutionId}})",
+        "InventedForQuestion": "q-cfo-approval-was-actually-verified",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.UnbackedVerificationCount",
+        "TargetTable": "StepExecutions",
+        "FieldName": "UnbackedVerificationCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(VerificationOutcomes!{{UnbackedStepKey}}, {{StepExecutionId}})",
+        "InventedForQuestion": "q-cfo-approval-was-actually-verified",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.ApprovalRestsOnSelfAttestation",
+        "TargetTable": "StepExecutions",
+        "FieldName": "ApprovalRestsOnSelfAttestation",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{StepIsApproval}}, OR({{SelfWitnessedVerificationCount}} > 0, {{HasSkippedVerification}}))",
+        "InventedForQuestion": "q-cfo-approval-was-actually-verified",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.ExceptionInvocationCount",
+        "TargetTable": "StepExecutions",
+        "FieldName": "ExceptionInvocationCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(ExceptionInvocations!{{StepExecution}}, {{StepExecutionId}})",
+        "InventedForQuestion": "q-cfo-who-actually-held-authority",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.RanUnderException",
+        "TargetTable": "StepExecutions",
+        "FieldName": "RanUnderException",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{ExceptionInvocationCount}} > 0",
+        "InventedForQuestion": "q-cfo-who-actually-held-authority",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "StepExecutions.SemanticTypeIri",
         "TargetTable": "StepExecutions",
         "FieldName": "SemanticTypeIri",
@@ -11415,6 +11964,46 @@
         "Datatype": "boolean",
         "Formula": "=AND({{RequirementIsBlocking}}, {{EvaluatorAgentKind}} <> \"Human\")",
         "InventedForQuestion": "q-controller-ai-agent-approved-meaning",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RequirementSatisfactions.RequirementHasComputedWitness",
+        "TargetTable": "RequirementSatisfactions",
+        "FieldName": "RequirementHasComputedWitness",
+        "FieldType": "lookup",
+        "Datatype": "boolean",
+        "Formula": "=INDEX(Requirements!{{HasComputedWitness}}, MATCH({{Requirement}}, Requirements!{{RequirementId}}, 0))",
+        "InventedForQuestion": "q-cfo-am-i-being-told-everything",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RequirementSatisfactions.IsAssertedOnly",
+        "TargetTable": "RequirementSatisfactions",
+        "FieldName": "IsAssertedOnly",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{RequirementIsBlocking}}, {{IsFullySatisfied}}, NOT({{RequirementHasComputedWitness}}))",
+        "InventedForQuestion": "q-cfo-am-i-being-told-everything",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RequirementSatisfactions.AssertedOnlyExecutionKey",
+        "TargetTable": "RequirementSatisfactions",
+        "FieldName": "AssertedOnlyExecutionKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{IsAssertedOnly}}, {{ParentProcedureExecution}}, \"\")",
+        "InventedForQuestion": "q-cfo-am-i-being-told-everything",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RequirementSatisfactions.ParentProcedureExecution",
+        "TargetTable": "RequirementSatisfactions",
+        "FieldName": "ParentProcedureExecution",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(StepExecutions!{{ProcedureExecution}}, MATCH({{StepExecution}}, StepExecutions!{{StepExecutionId}}, 0))",
+        "InventedForQuestion": "q-cfo-am-i-being-told-everything",
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
@@ -11988,6 +12577,16 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "ChangeRequests.OpenChangeVersionKey",
+        "TargetTable": "ChangeRequests",
+        "FieldName": "OpenChangeVersionKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{IsOpen}}, {{ProcedureVersion}}, \"\")",
+        "InventedForQuestion": "q-cfo-approving-on-unfit-version",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "ChangeRequests.SemanticTypeIri",
         "TargetTable": "ChangeRequests",
         "FieldName": "SemanticTypeIri",
@@ -12115,6 +12714,16 @@
         "Datatype": "boolean",
         "Formula": "={{NextReviewDue}} < {{AsOfInstant}}",
         "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ReviewEvents.OverdueVersionKey",
+        "TargetTable": "ReviewEvents",
+        "FieldName": "OverdueVersionKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{IsOverdue}}, {{ProcedureVersion}}, \"\")",
+        "InventedForQuestion": "q-cfo-approving-on-unfit-version",
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
@@ -13358,6 +13967,66 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "ExceptionInvocations.InvokerAgentKind",
+        "TargetTable": "ExceptionInvocations",
+        "FieldName": "InvokerAgentKind",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(Agents!{{AgentKind}}, MATCH({{InvokedByAgent}}, Agents!{{AgentId}}, 0))",
+        "InventedForQuestion": "q-cfo-who-actually-held-authority",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ExceptionInvocations.InvokerAlsoPreparedKey",
+        "TargetTable": "ExceptionInvocations",
+        "FieldName": "InvokerAlsoPreparedKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{ParentProcedureExecution}} & \"|\" & {{ApprovedByAgent}}",
+        "InventedForQuestion": "q-cfo-who-actually-held-authority",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ExceptionInvocations.ParentProcedureExecution",
+        "TargetTable": "ExceptionInvocations",
+        "FieldName": "ParentProcedureExecution",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(StepExecutions!{{ProcedureExecution}}, MATCH({{StepExecution}}, StepExecutions!{{StepExecutionId}}, 0))",
+        "InventedForQuestion": "q-cfo-who-actually-held-authority",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ExceptionInvocations.ApproverPreparedCount",
+        "TargetTable": "ExceptionInvocations",
+        "FieldName": "ApproverPreparedCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(StepExecutions!{{PreparerAgentKey}}, {{InvokerAlsoPreparedKey}})",
+        "InventedForQuestion": "q-cfo-who-actually-held-authority",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ExceptionInvocations.DelegatedToPreparer",
+        "TargetTable": "ExceptionInvocations",
+        "FieldName": "DelegatedToPreparer",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{ApproverPreparedCount}} > 0",
+        "InventedForQuestion": "q-cfo-who-actually-held-authority",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ExceptionInvocations.IsUngovernedInvocation",
+        "TargetTable": "ExceptionInvocations",
+        "FieldName": "IsUngovernedInvocation",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=OR({{IsImproperlyApproved}}, {{DelegatedToPreparer}})",
+        "InventedForQuestion": "q-cfo-who-actually-held-authority",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "ExceptionInvocations.SemanticTypeIri",
         "TargetTable": "ExceptionInvocations",
         "FieldName": "SemanticTypeIri",
@@ -13495,6 +14164,46 @@
         "Datatype": "boolean",
         "Formula": "=AND({{SignalMatchesExpected}}, NOT({{HasEvidence}}))",
         "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "VerificationOutcomes.IsSelfWitnessed",
+        "TargetTable": "VerificationOutcomes",
+        "FieldName": "IsSelfWitnessed",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{ObservedByAgent}} = {{StepExecutorAgent}}",
+        "InventedForQuestion": "q-cfo-approval-was-actually-verified",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "VerificationOutcomes.StepExecutorAgent",
+        "TargetTable": "VerificationOutcomes",
+        "FieldName": "StepExecutorAgent",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(StepExecutions!{{ExecutedByAgent}}, MATCH({{StepExecution}}, StepExecutions!{{StepExecutionId}}, 0))",
+        "InventedForQuestion": "q-cfo-approval-was-actually-verified",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "VerificationOutcomes.SelfWitnessedStepKey",
+        "TargetTable": "VerificationOutcomes",
+        "FieldName": "SelfWitnessedStepKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{IsSelfWitnessed}}, {{StepExecution}}, \"\")",
+        "InventedForQuestion": "q-cfo-approval-was-actually-verified",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "VerificationOutcomes.UnbackedStepKey",
+        "TargetTable": "VerificationOutcomes",
+        "FieldName": "UnbackedStepKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{IsUnbackedObservation}}, {{StepExecution}}, \"\")",
+        "InventedForQuestion": "q-cfo-approval-was-actually-verified",
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
@@ -13916,6 +14625,54 @@
         "formula": "=OR(NOT({{IsApproved}}), NOT({{ApprovalRoleMatches}}))"
       },
       {
+        "name": "InvokerAgentKind",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "What kind of agent invoked the exception.",
+        "formula": "=INDEX(Agents!{{AgentKind}}, MATCH({{InvokedByAgent}}, Agents!{{AgentId}}, 0))"
+      },
+      {
+        "name": "InvokerAlsoPreparedKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Composite execution+approver key, in the same key space as StepExecutions.PreparerAgentKey.",
+        "formula": "={{ParentProcedureExecution}} & \"|\" & {{ApprovedByAgent}}"
+      },
+      {
+        "name": "ParentProcedureExecution",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The procedure execution this invocation belongs to.",
+        "formula": "=INDEX(StepExecutions!{{ProcedureExecution}}, MATCH({{StepExecution}}, StepExecutions!{{StepExecutionId}}, 0))"
+      },
+      {
+        "name": "ApproverPreparedCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many preparation steps in the same execution were run by the agent who approved this exception.",
+        "formula": "=COUNTIFS(StepExecutions!{{PreparerAgentKey}}, {{InvokerAlsoPreparedKey}})"
+      },
+      {
+        "name": "DelegatedToPreparer",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when an exception routed approval authority to an agent who prepared work in the same execution.",
+        "formula": "={{ApproverPreparedCount}} > 0"
+      },
+      {
+        "name": "IsUngovernedInvocation",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when an exception was invoked without proper role authority, or routed authority to the preparer.",
+        "formula": "=OR({{IsImproperlyApproved}}, {{DelegatedToPreparer}})"
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -14039,6 +14796,38 @@
         "nullable": true,
         "Description": "TRUE when a verification was recorded as matching but no evidence artifact was retained.",
         "formula": "=AND({{SignalMatchesExpected}}, NOT({{HasEvidence}}))"
+      },
+      {
+        "name": "IsSelfWitnessed",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the agent who observed the verification signal is the same agent who executed the step being verified.",
+        "formula": "={{ObservedByAgent}} = {{StepExecutorAgent}}"
+      },
+      {
+        "name": "StepExecutorAgent",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The agent who executed the step this verification outcome concerns.",
+        "formula": "=INDEX(StepExecutions!{{ExecutedByAgent}}, MATCH({{StepExecution}}, StepExecutions!{{StepExecutionId}}, 0))"
+      },
+      {
+        "name": "SelfWitnessedStepKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Echoes the StepExecution id only for self-witnessed verifications.",
+        "formula": "=IF({{IsSelfWitnessed}}, {{StepExecution}}, \"\")"
+      },
+      {
+        "name": "UnbackedStepKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Echoes the StepExecution id when a verification matched but retained no evidence.",
+        "formula": "=IF({{IsUnbackedObservation}}, {{StepExecution}}, \"\")"
       },
       {
         "name": "SemanticTypeIri",

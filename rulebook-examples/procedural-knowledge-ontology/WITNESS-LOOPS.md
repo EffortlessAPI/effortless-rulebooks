@@ -56,6 +56,75 @@ other regardless of git. So:
   `.witness-specs/<role>.json`.
 - **Serial**: I apply each spec to the rulebook, build, verify, commit.
 
+## VERIFIED TRANSPILER DEFECTS (read before writing any formula)
+
+1. **`IIF` is not supported.** It emits a warning comment, returns NULL, and the
+   build still reports SUCCESS. Seven committed predicates were silently dead
+   this way, and four witnesses read "vacuously false" when in fact the formula
+   never ran. Use `IF(cond, a, b)`. `verify_witnesses.sh` now hard-fails on any
+   "Formula translation failed" in the generated SQL.
+2. **A lookup whose MATCH key is a string literal generates no function** while
+   the view that calls it is still emitted — green build, dead database. Match
+   on a relationship column.
+3. **Multi-criteria `COUNTIFS` silently drops the 2nd+ criteria.** Use the
+   composite-key echo: `IF(cond, {{ParentFk}}, "")` on the child, then a
+   single-criterion COUNTIFS against that column.
+4. `INDEX/MATCH` only matches the target table's primary key.
+
+The lesson generalizes: **a green build is not evidence that a formula ran.**
+Always confirm the column discriminates in Postgres.
+
+## Progress
+
+| Role | Predicates | Committed |
+|---|---|---|
+| finance-analyst | 33 | yes |
+| controller | 40 | yes |
+| cfo | | |
+| process-steward | | |
+| knowledge-authority | | |
+| hr-policy-owner | | |
+| employment-counsel | | |
+| communications-manager | | |
+| notification-publisher | | |
+| close-automation | | |
+| variance-review-agent | | |
+| policy-drafting-agent | | |
+
+Non-vacuity: baseline 10 discriminating -> 33 after two roles.
+Fields: 496 -> 601. Witnessed: 0 -> 73.
+
+## Findings the model surfaced (all from data that was already there)
+
+- `se-close03` closed with `req-close-evidence` (blocking, 7-year retention)
+  unsatisfied. Zero satisfaction records existed for it across a completed close.
+- Six blocking policy controls — consent, quiet-hours, opt-out, retention,
+  human-approval, accessibility — are bound to steps and have NEVER been
+  evaluated. They are structurally incapable of failing.
+- `vo-close03`: reconciliation reported PASS with no workpaper attached.
+- Segregation of duties was prose; now computed, and proven to fire.
+- Per the comms spec: no template has ever had an approval record, so every
+  send intent computes `IsClearedToSend = FALSE`. The pipeline was never
+  authorized to send.
+
+## Deferred to loop 2 (structural, flagged by the drafting agents)
+
+- `OperationalBindings` points at `Steps` (spec) not `StepExecutions` (event), so
+  staleness answers "is it stale now" rather than "was it stale when I ran."
+  Wrong tense for an attestation.
+- `MessageDeliveries.IsDriftedSend` would recompute live, retroactively flipping
+  historical sends when a template is re-approved. Delivery-time truth should
+  freeze on the delivery row.
+- `ChangeRequests.IsOpen` counts `Approved` as open; needs an Implemented/Closed
+  terminal state.
+- `Recipients.HasSmsConsent` is per-channel-as-column; multi-channel consent
+  wants per-channel rows.
+- Composite string keys encode joins in delimiter-separated strings. If an id
+  ever contains a `|`, the join silently returns wrong answers. Junction tables
+  are the principled fix once the COUNTIFS defect is addressed.
+- `Steps` has no field expressing what KIND of control a step is, so two
+  questions hardcode step ids. A `Steps.ControlKind` column would fix both.
+
 ## Known issues to fix during the run
 
 - `OperationalBindings.IsFresh` is all-false because `AgeMinutes` uses `NOW()`

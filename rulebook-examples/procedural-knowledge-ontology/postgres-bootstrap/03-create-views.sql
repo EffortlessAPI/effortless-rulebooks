@@ -285,6 +285,10 @@ SELECT
   calc_procedure_versions_count_of_open_knowledge_gaps(t.procedure_version_id) AS count_of_open_knowledge_gaps,-- Open knowledge gaps for this version.
   calc_procedure_versions_is_ready_for_execution(t.procedure_version_id) AS is_ready_for_execution,-- TRUE when approved, populated, and free of blocking knowledge gaps.
   calc_procedure_versions_specified_step_count(t.procedure_version_id) AS specified_step_count,-- How many steps the specification defines for this version.
+  calc_procedure_versions_overdue_review_count(t.procedure_version_id) AS overdue_review_count,-- How many reviews of this procedure version are past due.
+  calc_procedure_versions_open_change_request_count(t.procedure_version_id) AS open_change_request_count,-- How many change requests are open against this version.
+  calc_procedure_versions_open_high_severity_gap_count(t.procedure_version_id) AS open_high_severity_gap_count,-- How many high-severity knowledge gaps are open against this version.
+  calc_procedure_versions_is_fit_to_execute(t.procedure_version_id) AS is_fit_to_execute,-- TRUE when this version is approved, current on review, and carries no open change request or high-severity gap.
   t.semantic_type_iri                                                           -- Exact PKO class IRI.
 FROM procedure_versions t;
 
@@ -472,6 +476,8 @@ SELECT
   calc_requirements_negative_outcome_count(t.requirement_id) AS negative_outcome_count,-- How many times this requirement has ever produced a less-than-satisfied outcome.
   calc_requirements_is_inoperative_control(t.requirement_id) AS is_inoperative_control,-- TRUE for a blocking requirement that is attached to a step in the specification but has never once been evaluated on any execution.
   calc_requirements_is_decorative_control(t.requirement_id) AS is_decorative_control,-- TRUE for a blocking requirement that is not attached to any step at all.
+  t.has_computed_witness,                                                       -- Whether a computed predicate in this rulebook evaluates this requirement, as opposed to it being satisfied by human assertion only.
+  t.witness_field_name,                                                         -- The fully-qualified Table.Field of the predicate that computes this requirement, when one exists.
   t.semantic_type_iri                                                           -- Exact PKO class IRI.
 FROM requirements t;
 
@@ -643,6 +649,7 @@ SELECT
   t.identified_at,                                                              -- Time the gap was identified.
   t.resolution_plan,                                                            -- Resolution plan or final resolution.
   calc_knowledge_gaps_is_open(t.knowledge_gap_id) AS is_open,                   -- TRUE when the gap remains open.
+  calc_knowledge_gaps_open_gap_version_key(t.knowledge_gap_id) AS open_gap_version_key,-- Echoes the ProcedureVersion id for open high-severity knowledge gaps.
   t.semantic_type_iri                                                           -- Extension class IRI.
 FROM knowledge_gaps t;
 
@@ -702,6 +709,16 @@ SELECT
   calc_procedure_executions_late_step_count(t.procedure_execution_id) AS late_step_count,-- How many steps in this execution ran long.
   calc_procedure_executions_is_structurally_complete(t.procedure_execution_id) AS is_structurally_complete,-- TRUE when every specified step of the procedure version reached Completed in this execution.
   calc_procedure_executions_diverged_from_specification(t.procedure_execution_id) AS diverged_from_specification,-- TRUE when the execution either skipped specified steps or carried at least one control breach.
+  calc_procedure_executions_all_blocking_controls_evaluated(t.procedure_execution_id) AS all_blocking_controls_evaluated,-- TRUE when every blocking requirement bound to every step of this execution received a satisfaction record.
+  calc_procedure_executions_unevaluated_blocking_total(t.procedure_execution_id) AS unevaluated_blocking_total,-- How many step executions in this run left at least one blocking control unevaluated.
+  calc_procedure_executions_separation_of_duties_held(t.procedure_execution_id) AS separation_of_duties_held,-- TRUE when no agent both prepared and approved within this execution.
+  calc_procedure_executions_separation_violation_count(t.procedure_execution_id) AS separation_violation_count,-- Number of segregation-of-duties violations in this execution.
+  calc_procedure_executions_is_attestation_ready(t.procedure_execution_id) AS is_attestation_ready,-- TRUE only when every step completed, no control breached, every blocking control was actually evaluated, and segregation of duties held.
+  calc_procedure_executions_attestation_blocker_summary(t.procedure_execution_id) AS attestation_blocker_summary,-- Names the highest-severity reason the attestation cannot be signed, or empty when it can.
+  calc_procedure_executions_executed_version_is_fit(t.procedure_execution_id) AS executed_version_is_fit,-- Whether the procedure version this execution ran against is currently fit to execute.
+  calc_procedure_executions_signed_against_unfit_version(t.procedure_execution_id) AS signed_against_unfit_version,-- TRUE when a completed execution was run against a procedure version the organization no longer stands behind.
+  calc_procedure_executions_asserted_only_control_count(t.procedure_execution_id) AS asserted_only_control_count,-- How many blocking controls in this execution passed on human assertion alone.
+  calc_procedure_executions_assurance_is_mostly_asserted(t.procedure_execution_id) AS assurance_is_mostly_asserted,-- TRUE when any blocking control in this execution passed without a computed witness behind it.
   t.semantic_type_iri                                                           -- Exact PKO class IRI.
 FROM procedure_executions t;
 
@@ -762,6 +779,13 @@ SELECT
   calc_step_executions_step_requires_human_confirmation(t.step_execution_id) AS step_requires_human_confirmation,-- Whether the specification requires this step to be human-confirmed.
   calc_step_executions_non_human_ran_human_step(t.step_execution_id) AS non_human_ran_human_step,-- TRUE when a step requiring human confirmation was executed by an AI agent or automated pipeline.
   calc_step_executions_non_human_approval(t.step_execution_id) AS non_human_approval,-- TRUE when an approval-authority step was executed by a non-human agent, regardless of the RequiresHumanConfirmation flag.
+  calc_step_executions_unevaluated_blocking_execution_key(t.step_execution_id) AS unevaluated_blocking_execution_key,-- Echoes the parent execution id when this step left a blocking control unevaluated.
+  calc_step_executions_separation_violation_execution_key(t.step_execution_id) AS separation_violation_execution_key,-- Echoes the parent execution id when this step execution violates segregation of duties.
+  calc_step_executions_self_witnessed_verification_count(t.step_execution_id) AS self_witnessed_verification_count,-- How many of this execution's verifications were observed by the same agent who ran the step.
+  calc_step_executions_unbacked_verification_count(t.step_execution_id) AS unbacked_verification_count,-- How many verifications on this execution recorded a matching signal with no retained evidence artifact.
+  calc_step_executions_approval_rests_on_self_attestation(t.step_execution_id) AS approval_rests_on_self_attestation,-- TRUE when an approval step's verification was either self-witnessed by the approver or never performed at all.
+  calc_step_executions_exception_invocation_count(t.step_execution_id) AS exception_invocation_count,-- How many specified exceptions were invoked during this step execution.
+  calc_step_executions_ran_under_exception(t.step_execution_id) AS ran_under_exception,-- TRUE when this execution invoked at least one specified exception.
   t.semantic_type_iri                                                           -- Exact PKO class IRI.
 FROM step_executions t;
 
@@ -788,6 +812,10 @@ SELECT
   calc_requirement_satisfactions_negative_outcome_requirement_key(t.requirement_satisfaction_id) AS negative_outcome_requirement_key,-- Echoes the Requirement id only when this evaluation came out at less than fully Satisfied.
   calc_requirement_satisfactions_evaluator_agent_kind(t.requirement_satisfaction_id) AS evaluator_agent_kind,-- What kind of agent evaluated this requirement satisfaction.
   calc_requirement_satisfactions_non_human_evaluated_human_contro(t.requirement_satisfaction_id) AS non_human_evaluated_human_control,-- TRUE when a blocking requirement was evaluated by a non-human agent.
+  calc_requirement_satisfactions_requirement_has_computed_witness(t.requirement_satisfaction_id) AS requirement_has_computed_witness,-- Whether the requirement this row evaluates has a computed witness behind it.
+  calc_requirement_satisfactions_is_asserted_only(t.requirement_satisfaction_id) AS is_asserted_only,-- TRUE when a blocking requirement is recorded as Satisfied purely on human assertion, with no computed predicate behind it.
+  calc_requirement_satisfactions_asserted_only_execution_key(t.requirement_satisfaction_id) AS asserted_only_execution_key,-- Echoes the grandparent procedure execution id for assertion-only satisfactions.
+  calc_requirement_satisfactions_parent_procedure_execution(t.requirement_satisfaction_id) AS parent_procedure_execution,-- The procedure execution this satisfaction ultimately belongs to.
   t.semantic_type_iri                                                           -- Exact PKO class IRI.
 FROM requirement_satisfactions t;
 
@@ -899,6 +927,7 @@ SELECT
   t.decided_at,                                                                 -- Decision time.
   t.impact_assessment,                                                          -- Expected effect on commitments, data, projections, and tests.
   calc_change_requests_is_open(t.change_request_id) AS is_open,                 -- TRUE while the request remains active.
+  calc_change_requests_open_change_version_key(t.change_request_id) AS open_change_version_key,-- Echoes the ProcedureVersion id only for change requests still open.
   t.semantic_type_iri                                                           -- Extension class IRI.
 FROM change_requests t;
 
@@ -921,6 +950,7 @@ SELECT
   t.evaluation_context,                                                         -- The evaluation context this row's time-dependent witnesses are judged under.
   calc_review_events_as_of_instant(t.review_event_id) AS as_of_instant,         -- The evaluation instant this row's time-dependent witnesses are judged against.
   calc_review_events_is_overdue(t.review_event_id) AS is_overdue,               -- TRUE when review is overdue.
+  calc_review_events_overdue_version_key(t.review_event_id) AS overdue_version_key,-- Echoes the ProcedureVersion id only when this review is past its next-due date.
   t.semantic_type_iri                                                           -- Class IRI used in projection.
 FROM review_events t;
 
@@ -1108,6 +1138,12 @@ SELECT
   calc_exception_invocations_approval_role_matches(t.exception_invocation_id) AS approval_role_matches,-- TRUE when the agent who approved is the holder of the role the exception requires.
   calc_exception_invocations_is_approved(t.exception_invocation_id) AS is_approved,-- TRUE when an approver was recorded at all.
   calc_exception_invocations_is_improperly_approved(t.exception_invocation_id) AS is_improperly_approved,-- TRUE when an exception was invoked without an approver, or approved by an agent who does not hold the required role.
+  calc_exception_invocations_invoker_agent_kind(t.exception_invocation_id) AS invoker_agent_kind,-- What kind of agent invoked the exception.
+  calc_exception_invocations_invoker_also_prepared_key(t.exception_invocation_id) AS invoker_also_prepared_key,-- Composite execution+approver key, in the same key space as StepExecutions.PreparerAgentKey.
+  calc_exception_invocations_parent_procedure_execution(t.exception_invocation_id) AS parent_procedure_execution,-- The procedure execution this invocation belongs to.
+  calc_exception_invocations_approver_prepared_count(t.exception_invocation_id) AS approver_prepared_count,-- How many preparation steps in the same execution were run by the agent who approved this exception.
+  calc_exception_invocations_delegated_to_preparer(t.exception_invocation_id) AS delegated_to_preparer,-- TRUE when an exception routed approval authority to an agent who prepared work in the same execution.
+  calc_exception_invocations_is_ungoverned_invocation(t.exception_invocation_id) AS is_ungoverned_invocation,-- TRUE when an exception was invoked without proper role authority, or routed authority to the preparer.
   t.semantic_type_iri                                                           -- Extension IRI — PKO does not define exception invocation.
 FROM exception_invocations t;
 
@@ -1131,6 +1167,10 @@ SELECT
   calc_verification_outcomes_signal_matches_expected(t.verification_outcome_id) AS signal_matches_expected,-- TRUE when the observed value equals the expected value.
   calc_verification_outcomes_has_evidence(t.verification_outcome_id) AS has_evidence,-- TRUE when a retained artifact backs this observation.
   calc_verification_outcomes_is_unbacked_observation(t.verification_outcome_id) AS is_unbacked_observation,-- TRUE when a verification was recorded as matching but no evidence artifact was retained.
+  calc_verification_outcomes_is_self_witnessed(t.verification_outcome_id) AS is_self_witnessed,-- TRUE when the agent who observed the verification signal is the same agent who executed the step being verified.
+  calc_verification_outcomes_step_executor_agent(t.verification_outcome_id) AS step_executor_agent,-- The agent who executed the step this verification outcome concerns.
+  calc_verification_outcomes_self_witnessed_step_key(t.verification_outcome_id) AS self_witnessed_step_key,-- Echoes the StepExecution id only for self-witnessed verifications.
+  calc_verification_outcomes_unbacked_step_key(t.verification_outcome_id) AS unbacked_step_key,-- Echoes the StepExecution id when a verification matched but retained no evidence.
   t.semantic_type_iri                                                           -- Extension IRI — PKO 2.0.0 has no execution-side verification outcome class.
 FROM verification_outcomes t;
 

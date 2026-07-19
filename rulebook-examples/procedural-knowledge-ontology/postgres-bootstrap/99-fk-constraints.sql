@@ -139,6 +139,11 @@ ALTER TABLE step_tools DROP CONSTRAINT IF EXISTS fk_step_tools_tool;
 ALTER TABLE step_tools ADD CONSTRAINT fk_step_tools_tool
   FOREIGN KEY (tool) REFERENCES tools (tool_id);
 
+-- Requirements
+ALTER TABLE requirements DROP CONSTRAINT IF EXISTS fk_requirements_witness_field_name;
+ALTER TABLE requirements ADD CONSTRAINT fk_requirements_witness_field_name
+  FOREIGN KEY (witness_field_name) REFERENCES rulebook_fields (rulebook_field_id);
+
 -- StepRequirements
 ALTER TABLE step_requirements DROP CONSTRAINT IF EXISTS fk_step_requirements_step;
 ALTER TABLE step_requirements ADD CONSTRAINT fk_step_requirements_step
@@ -432,4 +437,4 @@ ALTER TABLE verification_outcomes DROP CONSTRAINT IF EXISTS fk_verification_outc
 ALTER TABLE verification_outcomes ADD CONSTRAINT fk_verification_outcomes_observed_by_agent
   FOREIGN KEY (observed_by_agent) REFERENCES agents (agent_id);
 
--- 112 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
+-- 113 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
