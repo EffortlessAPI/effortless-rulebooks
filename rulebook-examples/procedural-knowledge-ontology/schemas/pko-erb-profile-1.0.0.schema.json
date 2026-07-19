@@ -1,0 +1,221 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:effortless:pko-erb-profile:1.0.0",
+  "title": "Effortless PKO Rulebook Profile 1.0.0",
+  "description": "Profile schema for an Effortless Rulebook aligned to PKO core 2.0.0 and PKO industry 2.0.0.",
+  "type": "object",
+  "required": [
+    "$schema",
+    "Name",
+    "Description",
+    "RulebookReleases",
+    "OntologyProfiles",
+    "SemanticMappings",
+    "Procedures",
+    "ProcedureVersions",
+    "Steps",
+    "StepTransitions",
+    "Requirements",
+    "ProcedureExecutions",
+    "StepExecutions",
+    "Resources",
+    "Agents",
+    "Roles",
+    "RoleAssignments"
+  ],
+  "properties": {
+    "$schema": {
+      "const": "https://example.com/cmcc-schema/v1"
+    },
+    "Name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "Description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "RulebookReleases": {
+      "$ref": "#/$defs/table"
+    },
+    "OntologyProfiles": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/table"
+        },
+        {
+          "properties": {
+            "data": {
+              "contains": {
+                "type": "object",
+                "required": [
+                  "OntologyProfileId",
+                  "Version",
+                  "VersionIri"
+                ],
+                "properties": {
+                  "OntologyProfileId": {
+                    "const": "pko-core-2.0.0"
+                  },
+                  "Version": {
+                    "const": "2.0.0"
+                  },
+                  "VersionIri": {
+                    "const": "https://w3id.org/pko/2.0.0"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "SemanticMappings": {
+      "$ref": "#/$defs/table"
+    },
+    "Procedures": {
+      "$ref": "#/$defs/table"
+    },
+    "ProcedureVersions": {
+      "$ref": "#/$defs/table"
+    },
+    "Steps": {
+      "$ref": "#/$defs/table"
+    },
+    "StepTransitions": {
+      "$ref": "#/$defs/table"
+    },
+    "Requirements": {
+      "$ref": "#/$defs/table"
+    },
+    "ProcedureExecutions": {
+      "$ref": "#/$defs/table"
+    },
+    "StepExecutions": {
+      "$ref": "#/$defs/table"
+    },
+    "Resources": {
+      "$ref": "#/$defs/table"
+    },
+    "Agents": {
+      "$ref": "#/$defs/table"
+    },
+    "Roles": {
+      "$ref": "#/$defs/table"
+    },
+    "RoleAssignments": {
+      "$ref": "#/$defs/table"
+    }
+  },
+  "$defs": {
+    "field": {
+      "type": "object",
+      "required": [
+        "name",
+        "datatype",
+        "type",
+        "nullable",
+        "Description"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Za-z0-9]*$"
+        },
+        "datatype": {
+          "enum": [
+            "string",
+            "integer",
+            "number",
+            "boolean",
+            "datetime"
+          ]
+        },
+        "type": {
+          "enum": [
+            "raw",
+            "calculated",
+            "lookup",
+            "relationship",
+            "aggregation"
+          ]
+        },
+        "nullable": {
+          "type": "boolean"
+        },
+        "Description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "formula": {
+          "type": "string"
+        },
+        "RelatedTo": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Za-z0-9]*$"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "relationship"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "RelatedTo"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "enum": [
+                  "calculated",
+                  "lookup",
+                  "aggregation"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "formula"
+            ]
+          }
+        }
+      ]
+    },
+    "table": {
+      "type": "object",
+      "required": [
+        "Description",
+        "schema",
+        "data"
+      ],
+      "properties": {
+        "Description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "schema": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "$ref": "#/$defs/field"
+          }
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    }
+  }
+}

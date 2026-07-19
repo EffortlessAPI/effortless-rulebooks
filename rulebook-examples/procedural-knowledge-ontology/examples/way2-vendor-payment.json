@@ -1,0 +1,152 @@
+{
+  "$schema": "urn:example:way2:1.0.0",
+  "standard": {
+    "name": "Way2 Process Rules",
+    "version": "1.0.0"
+  },
+  "organization": {
+    "id": "acme-corp",
+    "name": "ACME Corporation",
+    "type": "Company",
+    "external_identifier": "org-001"
+  },
+  "processes": [
+    {
+      "id": "vendor-payment-approval",
+      "title": "Vendor Payment Approval",
+      "type": "financial-sop",
+      "type_label": "Financial Standard Operating Procedure",
+      "owner_organization": "acme-finance",
+      "adopted_by": "acme-corp",
+      "purpose": "Approve valid vendor payments while preventing duplicate, unauthorized, or self-approved disbursements.",
+      "target": "Vendor invoices and payment batches",
+      "version": "1.0.0",
+      "status": "Approved",
+      "created_by_agent": "devon-okafor",
+      "modified_by_agent": "devon-okafor",
+      "issued_at": "2026-07-19T12:00:00-05:00",
+      "version_motivation": "Demonstrate a Way2-to-PKO adapter.",
+      "roles": [
+        {
+          "id": "accounts-payable-specialist",
+          "label": "Accounts Payable Specialist",
+          "organization": "acme-finance",
+          "responsibility": "Validate invoice identity, purchase order, receipt, and payment details.",
+          "agent": {
+            "id": "maria-chen",
+            "name": "Maria Chen",
+            "kind": "Human",
+            "organization": "acme-finance"
+          }
+        },
+        {
+          "id": "payment-approver",
+          "label": "Payment Approver",
+          "organization": "acme-finance",
+          "responsibility": "Independently approve or reject the payment batch.",
+          "agent": {
+            "id": "devon-okafor",
+            "name": "Devon Okafor",
+            "kind": "Human",
+            "organization": "acme-finance"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "id": "capture-invoice",
+          "number": 1,
+          "title": "Capture invoice",
+          "role": "accounts-payable-specialist",
+          "instruction": "Capture the vendor invoice and link it to the vendor master record.",
+          "expected_minutes": 10,
+          "requirements": [
+            {
+              "id": "req-payment-invoice-id",
+              "label": "Unique invoice identifier",
+              "type": "DataQuality",
+              "statement": "The vendor invoice number must be present and unique for the vendor.",
+              "rationale": "Prevents duplicate payment.",
+              "blocking": true
+            }
+          ]
+        },
+        {
+          "id": "three-way-match",
+          "number": 2,
+          "title": "Perform three-way match",
+          "role": "accounts-payable-specialist",
+          "instruction": "Match invoice, purchase order, and receipt; document any exception.",
+          "expected_minutes": 20,
+          "kind": "MultiStep",
+          "requirements": [
+            {
+              "id": "req-payment-match",
+              "label": "Three-way match",
+              "type": "Control",
+              "statement": "Invoice, purchase order, and receipt must agree within the approved tolerance.",
+              "rationale": "Validates the liability.",
+              "blocking": true
+            }
+          ]
+        },
+        {
+          "id": "approve-payment",
+          "number": 3,
+          "title": "Approve payment",
+          "role": "payment-approver",
+          "instruction": "Independently approve the payment batch after reviewing evidence and exceptions.",
+          "expected_minutes": 15,
+          "requires_human_confirmation": true,
+          "requirements": [
+            {
+              "id": "req-payment-separation",
+              "label": "Independent approval",
+              "type": "Governance",
+              "statement": "The payment approver must not be the preparer.",
+              "rationale": "Segregation of duties.",
+              "blocking": true
+            }
+          ]
+        }
+      ],
+      "transitions": [
+        {
+          "from": "capture-invoice",
+          "to": "three-way-match",
+          "kind": "Next"
+        },
+        {
+          "from": "three-way-match",
+          "to": "approve-payment",
+          "kind": "Next"
+        },
+        {
+          "from": "approve-payment",
+          "to": "three-way-match",
+          "kind": "Alternative",
+          "condition": "Approver rejects evidence or exception handling",
+          "priority": 2
+        }
+      ],
+      "rationales": [
+        {
+          "title": "Why approval is independent",
+          "step": "approve-payment",
+          "statement": "Payment preparation and approval are separated so no person can create and authorize the same disbursement.",
+          "authority_role": "payment-approver",
+          "status": "Approved"
+        }
+      ],
+      "exceptions": [
+        {
+          "step": "three-way-match",
+          "condition": "Receipt is unavailable for an approved service invoice",
+          "handling": "Require a documented service-owner confirmation before approval.",
+          "approval_role": "payment-approver",
+          "fallback_role": "accounts-payable-specialist"
+        }
+      ]
+    }
+  ]
+}
