@@ -827,12 +827,12 @@
     {
       "LoopOrder": 657,
       "LoopId": "tsp-loop-657",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Instance diversity is prose and cannot support family-stratified conclusions.",
       "ClosureCriterion": "Represent ring, Euclidean-like, clustered, heterogeneous-region, sparse, bottleneck, tie-rich, dominance, nested, nonmetric, four-region, and residual-kernel families.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Made instance-family diversity first-class calibration data.",
+      "Result": "The corpus can now separate ring, region-repair, sparse, boundary, tie-rich, nonmetric, nested, bottleneck, and residual-kernel behavior.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 658,
@@ -1505,7 +1505,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 710,
-    "HighestCompletedLoop": 656,
+    "HighestCompletedLoop": 657,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 16,
     "SelectedNotForcedEdgeStates": 5,
@@ -1547,8 +1547,8 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 66,
     "ClusterContractionCertificates": 7,
-    "ConvergenceMeasurements": 60,
-    "ConceptRegistry": 111,
+    "ConvergenceMeasurements": 61,
+    "ConceptRegistry": 112,
     "DefectProfiles": 21,
     "BoundTerms": 8,
     "WitnessNormalForms": 19,
@@ -1578,7 +1578,7 @@
     "OptimalFaceValueProofBranchDecisionCount": 0
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:2b17c4dfb6033a380d2657b03bcc67c29a1b59aa2418a1d1ed9be76c2a079077",
+    "rulebook": "sha256:6bc453628dc9c84c108c6e5a151847b4f5b62b1488172341d65656ee72088621",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
