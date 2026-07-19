@@ -410,6 +410,420 @@ RETURNS TEXT AS $$
   SELECT (SELECT notes FROM tsp_instances WHERE tsp_instance_id = p_tsp_instance_id);
 $$ LANGUAGE sql STABLE;
 
+-- get_tsp_instances_experiment_split
+-- Helper function: Get ExperimentSplit from TSPInstances by TSPInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_instances_experiment_split(p_tsp_instance_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT experiment_split FROM tsp_instances WHERE tsp_instance_id = p_tsp_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_instances_instance_family
+-- Helper function: Get InstanceFamily from TSPInstances by TSPInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_instances_instance_family(p_tsp_instance_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT instance_family FROM tsp_instances WHERE tsp_instance_id = p_tsp_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_instances_oracle_status
+-- Helper function: Get OracleStatus from TSPInstances by TSPInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_instances_oracle_status(p_tsp_instance_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT oracle_status FROM tsp_instances WHERE tsp_instance_id = p_tsp_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_instances_exact_tour_class_count
+-- Helper function: Get ExactTourClassCount from TSPInstances by TSPInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_instances_exact_tour_class_count(p_tsp_instance_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT exact_tour_class_count FROM tsp_instances WHERE tsp_instance_id = p_tsp_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_instances_exact_feasible_class_count
+-- Helper function: Get ExactFeasibleClassCount from TSPInstances by TSPInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_instances_exact_feasible_class_count(p_tsp_instance_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT exact_feasible_class_count FROM tsp_instances WHERE tsp_instance_id = p_tsp_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_instances_exact_optimum_cost
+-- Helper function: Get ExactOptimumCost from TSPInstances by TSPInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_instances_exact_optimum_cost(p_tsp_instance_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT exact_optimum_cost FROM tsp_instances WHERE tsp_instance_id = p_tsp_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_instances_exact_optimal_class_count
+-- Helper function: Get ExactOptimalClassCount from TSPInstances by TSPInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_instances_exact_optimal_class_count(p_tsp_instance_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT exact_optimal_class_count FROM tsp_instances WHERE tsp_instance_id = p_tsp_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_instances_exact_second_best_cost
+-- Helper function: Get ExactSecondBestCost from TSPInstances by TSPInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_instances_exact_second_best_cost(p_tsp_instance_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT exact_second_best_cost FROM tsp_instances WHERE tsp_instance_id = p_tsp_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_instances_exact_distinct_value_count
+-- Helper function: Get ExactDistinctValueCount from TSPInstances by TSPInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_instances_exact_distinct_value_count(p_tsp_instance_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT exact_distinct_value_count FROM tsp_instances WHERE tsp_instance_id = p_tsp_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_instances_exact_oracle_witness_route
+-- Helper function: Get ExactOracleWitnessRoute from TSPInstances by TSPInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_instances_exact_oracle_witness_route(p_tsp_instance_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT exact_oracle_witness_route FROM tsp_instances WHERE tsp_instance_id = p_tsp_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_instances_exact_oracle_checksum
+-- Helper function: Get ExactOracleChecksum from TSPInstances by TSPInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_instances_exact_oracle_checksum(p_tsp_instance_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT exact_oracle_checksum FROM tsp_instances WHERE tsp_instance_id = p_tsp_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_instances_degree_two_oracle_lower_bound
+-- Helper function: Get DegreeTwoOracleLowerBound from TSPInstances by TSPInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_instances_degree_two_oracle_lower_bound(p_tsp_instance_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT degree_two_oracle_lower_bound FROM tsp_instances WHERE tsp_instance_id = p_tsp_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_instances_degree_two_oracle_gap
+-- Helper function: Get DegreeTwoOracleGap from TSPInstances by TSPInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_instances_degree_two_oracle_gap(p_tsp_instance_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT degree_two_oracle_gap FROM tsp_instances WHERE tsp_instance_id = p_tsp_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_instances_local_minimum_union_edge_count
+-- Helper function: Get LocalMinimumUnionEdgeCount from TSPInstances by TSPInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_instances_local_minimum_union_edge_count(p_tsp_instance_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT local_minimum_union_edge_count FROM tsp_instances WHERE tsp_instance_id = p_tsp_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_instances_local_minimum_union_cost
+-- Helper function: Get LocalMinimumUnionCost from TSPInstances by TSPInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_instances_local_minimum_union_cost(p_tsp_instance_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT local_minimum_union_cost FROM tsp_instances WHERE tsp_instance_id = p_tsp_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_instances_local_minimum_union_component_count
+-- Helper function: Get LocalMinimumUnionComponentCount from TSPInstances by TSPInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_instances_local_minimum_union_component_count(p_tsp_instance_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT local_minimum_union_component_count FROM tsp_instances WHERE tsp_instance_id = p_tsp_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_instances_local_minimum_union_degree_violation_count
+-- Helper function: Get LocalMinimumUnionDegreeViolationCount from TSPInstances by TSPInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_instances_local_minimum_union_degree_violation_count(p_tsp_instance_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT local_minimum_union_degree_violation_count FROM tsp_instances WHERE tsp_instance_id = p_tsp_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_instances_local_minimum_union_is_hamiltonian
+-- Helper function: Get LocalMinimumUnionIsHamiltonian from TSPInstances by TSPInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_instances_local_minimum_union_is_hamiltonian(p_tsp_instance_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT local_minimum_union_is_hamiltonian FROM tsp_instances WHERE tsp_instance_id = p_tsp_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_instances_deterministic_forced_edge_count
+-- Helper function: Get DeterministicForcedEdgeCount from TSPInstances by TSPInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_instances_deterministic_forced_edge_count(p_tsp_instance_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT deterministic_forced_edge_count FROM tsp_instances WHERE tsp_instance_id = p_tsp_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_instances_deterministic_forbidden_edge_count
+-- Helper function: Get DeterministicForbiddenEdgeCount from TSPInstances by TSPInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_instances_deterministic_forbidden_edge_count(p_tsp_instance_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT deterministic_forbidden_edge_count FROM tsp_instances WHERE tsp_instance_id = p_tsp_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_instances_deterministic_closure_round_count
+-- Helper function: Get DeterministicClosureRoundCount from TSPInstances by TSPInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_instances_deterministic_closure_round_count(p_tsp_instance_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT deterministic_closure_round_count FROM tsp_instances WHERE tsp_instance_id = p_tsp_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_instances_deterministic_residual_class_count
+-- Helper function: Get DeterministicResidualClassCount from TSPInstances by TSPInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_instances_deterministic_residual_class_count(p_tsp_instance_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT deterministic_residual_class_count FROM tsp_instances WHERE tsp_instance_id = p_tsp_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_instances_deterministic_residual_value_count
+-- Helper function: Get DeterministicResidualValueCount from TSPInstances by TSPInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_instances_deterministic_residual_value_count(p_tsp_instance_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT deterministic_residual_value_count FROM tsp_instances WHERE tsp_instance_id = p_tsp_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_instances_deterministic_residual_optimal_count
+-- Helper function: Get DeterministicResidualOptimalCount from TSPInstances by TSPInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_instances_deterministic_residual_optimal_count(p_tsp_instance_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT deterministic_residual_optimal_count FROM tsp_instances WHERE tsp_instance_id = p_tsp_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_instances_deterministic_value_closed
+-- Helper function: Get DeterministicValueClosed from TSPInstances by TSPInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_instances_deterministic_value_closed(p_tsp_instance_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT deterministic_value_closed FROM tsp_instances WHERE tsp_instance_id = p_tsp_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_instances_deterministic_route_closed
+-- Helper function: Get DeterministicRouteClosed from TSPInstances by TSPInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_instances_deterministic_route_closed(p_tsp_instance_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT deterministic_route_closed FROM tsp_instances WHERE tsp_instance_id = p_tsp_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_instances_branch_warrant_status
+-- Helper function: Get BranchWarrantStatus from TSPInstances by TSPInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_instances_branch_warrant_status(p_tsp_instance_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT branch_warrant_status FROM tsp_instances WHERE tsp_instance_id = p_tsp_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_instances_closure_yield_pct
+-- Helper function: Get ClosureYieldPct from TSPInstances by TSPInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_instances_closure_yield_pct(p_tsp_instance_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT closure_yield_pct FROM tsp_instances WHERE tsp_instance_id = p_tsp_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_instances_rule_leverage
+-- Helper function: Get RuleLeverage from TSPInstances by TSPInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_instances_rule_leverage(p_tsp_instance_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT rule_leverage FROM tsp_instances WHERE tsp_instance_id = p_tsp_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_instances_structural_sufficiency
+-- Helper function: Get StructuralSufficiency from TSPInstances by TSPInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_instances_structural_sufficiency(p_tsp_instance_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT structural_sufficiency FROM tsp_instances WHERE tsp_instance_id = p_tsp_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_instances_choice_entropy_bits
+-- Helper function: Get ChoiceEntropyBits from TSPInstances by TSPInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_instances_choice_entropy_bits(p_tsp_instance_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT choice_entropy_bits FROM tsp_instances WHERE tsp_instance_id = p_tsp_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_instances_defect_support
+-- Helper function: Get DefectSupport from TSPInstances by TSPInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_instances_defect_support(p_tsp_instance_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT defect_support FROM tsp_instances WHERE tsp_instance_id = p_tsp_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_instances_repair_potential
+-- Helper function: Get RepairPotential from TSPInstances by TSPInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_instances_repair_potential(p_tsp_instance_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT repair_potential FROM tsp_instances WHERE tsp_instance_id = p_tsp_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_instances_boundary_demand
+-- Helper function: Get BoundaryDemand from TSPInstances by TSPInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_instances_boundary_demand(p_tsp_instance_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT boundary_demand FROM tsp_instances WHERE tsp_instance_id = p_tsp_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_instances_port_compatibility_count
+-- Helper function: Get PortCompatibilityCount from TSPInstances by TSPInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_instances_port_compatibility_count(p_tsp_instance_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT port_compatibility_count FROM tsp_instances WHERE tsp_instance_id = p_tsp_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_instances_quotient_width
+-- Helper function: Get QuotientWidth from TSPInstances by TSPInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_instances_quotient_width(p_tsp_instance_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT quotient_width FROM tsp_instances WHERE tsp_instance_id = p_tsp_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_instances_residual_kernel
+-- Helper function: Get ResidualKernel from TSPInstances by TSPInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_instances_residual_kernel(p_tsp_instance_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT residual_kernel FROM tsp_instances WHERE tsp_instance_id = p_tsp_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_instances_branch_necessary_for_value
+-- Helper function: Get BranchNecessaryForValue from TSPInstances by TSPInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_instances_branch_necessary_for_value(p_tsp_instance_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT branch_necessary_for_value FROM tsp_instances WHERE tsp_instance_id = p_tsp_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_instances_search_compression_profile
+-- Helper function: Get SearchCompressionProfile from TSPInstances by TSPInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_instances_search_compression_profile(p_tsp_instance_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT search_compression_profile FROM tsp_instances WHERE tsp_instance_id = p_tsp_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_instances_calibration_branch_edge
+-- Helper function: Get CalibrationBranchEdge from TSPInstances by TSPInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_instances_calibration_branch_edge(p_tsp_instance_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT calibration_branch_edge FROM tsp_instances WHERE tsp_instance_id = p_tsp_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_instances_branch_include_class_count
+-- Helper function: Get BranchIncludeClassCount from TSPInstances by TSPInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_instances_branch_include_class_count(p_tsp_instance_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT branch_include_class_count FROM tsp_instances WHERE tsp_instance_id = p_tsp_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_instances_branch_exclude_class_count
+-- Helper function: Get BranchExcludeClassCount from TSPInstances by TSPInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_instances_branch_exclude_class_count(p_tsp_instance_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT branch_exclude_class_count FROM tsp_instances WHERE tsp_instance_id = p_tsp_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_instances_branch_include_best_cost
+-- Helper function: Get BranchIncludeBestCost from TSPInstances by TSPInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_instances_branch_include_best_cost(p_tsp_instance_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT branch_include_best_cost FROM tsp_instances WHERE tsp_instance_id = p_tsp_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_instances_branch_exclude_best_cost
+-- Helper function: Get BranchExcludeBestCost from TSPInstances by TSPInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_instances_branch_exclude_best_cost(p_tsp_instance_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT branch_exclude_best_cost FROM tsp_instances WHERE tsp_instance_id = p_tsp_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_instances_calibration_branch_decision_count
+-- Helper function: Get CalibrationBranchDecisionCount from TSPInstances by TSPInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_instances_calibration_branch_decision_count(p_tsp_instance_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT calibration_branch_decision_count FROM tsp_instances WHERE tsp_instance_id = p_tsp_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_tsp_instances_calibration_branch_status
+-- Helper function: Get CalibrationBranchStatus from TSPInstances by TSPInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_tsp_instances_calibration_branch_status(p_tsp_instance_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT calibration_branch_status FROM tsp_instances WHERE tsp_instance_id = p_tsp_instance_id);
+$$ LANGUAGE sql STABLE;
+
 -- calc_tsp_graph_invariant_checks_name
 -- Field: TSPGraphInvariantChecks.Name
 -- Type: calculated | DataType: string | Returns: TEXT

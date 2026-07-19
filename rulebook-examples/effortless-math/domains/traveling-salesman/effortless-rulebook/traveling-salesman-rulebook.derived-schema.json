@@ -366,6 +366,328 @@
         "type": "raw",
         "nullable": true,
         "Description": "Scope and caveats for the instance."
+      },
+      {
+        "name": "ExperimentSplit",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "DEVELOPMENT, HELD_OUT, or NEGATIVE_CONTROL evidence partition."
+      },
+      {
+        "name": "InstanceFamily",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Family used for stratified calibration."
+      },
+      {
+        "name": "OracleStatus",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "PENDING, EXACT, INVALID_GRAPH, or NOT_IN_SCOPE."
+      },
+      {
+        "name": "ExactTourClassCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Depot-fixed reversal-quotient route classes before availability filtering."
+      },
+      {
+        "name": "ExactFeasibleClassCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Canonical classes whose every route edge is available."
+      },
+      {
+        "name": "ExactOptimumCost",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Exact finite optimum from exhaustive calibration enumeration."
+      },
+      {
+        "name": "ExactOptimalClassCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Number of non-reversal canonical route classes attaining the exact optimum."
+      },
+      {
+        "name": "ExactSecondBestCost",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Second distinct feasible route value, when present."
+      },
+      {
+        "name": "ExactDistinctValueCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Distinct feasible route values in the exact oracle."
+      },
+      {
+        "name": "ExactOracleWitnessRoute",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Canonical first exact optimal route, encoded as stop ids."
+      },
+      {
+        "name": "ExactOracleChecksum",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "SHA-256 of the normalized exact-oracle payload."
+      },
+      {
+        "name": "DegreeTwoOracleLowerBound",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Independent recomputation of the two-cheapest incident-edge bound."
+      },
+      {
+        "name": "DegreeTwoOracleGap",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Exact optimum minus the degree-two lower bound."
+      },
+      {
+        "name": "LocalMinimumUnionEdgeCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Distinct edges in the union of all local two-cheapest selections."
+      },
+      {
+        "name": "LocalMinimumUnionCost",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Cost of the local-minimum edge union."
+      },
+      {
+        "name": "LocalMinimumUnionComponentCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Connected components in the local-minimum union."
+      },
+      {
+        "name": "LocalMinimumUnionDegreeViolationCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Stops not having degree two in the local-minimum union."
+      },
+      {
+        "name": "LocalMinimumUnionIsHamiltonian",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Whether the local-minimum union is one Hamiltonian cycle."
+      },
+      {
+        "name": "DeterministicForcedEdgeCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Edges forced by generic degree closure."
+      },
+      {
+        "name": "DeterministicForbiddenEdgeCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Edges forbidden by generic degree and proper-subtour closure."
+      },
+      {
+        "name": "DeterministicClosureRoundCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Rounds required to reach deterministic fixed point."
+      },
+      {
+        "name": "DeterministicResidualClassCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Canonical route classes remaining after represented deterministic closure."
+      },
+      {
+        "name": "DeterministicResidualValueCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Distinct route values remaining after deterministic closure."
+      },
+      {
+        "name": "DeterministicResidualOptimalCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Exact optimal classes remaining after deterministic closure."
+      },
+      {
+        "name": "DeterministicValueClosed",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Whether represented structure closes the optimum value without branching."
+      },
+      {
+        "name": "DeterministicRouteClosed",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Whether represented structure identifies one route class without branching."
+      },
+      {
+        "name": "BranchWarrantStatus",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Whether a branch is required for value, rejected because value is closed, or policy-only."
+      },
+      {
+        "name": "ClosureYieldPct",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Percentage of exact feasible route classes removed before branching."
+      },
+      {
+        "name": "RuleLeverage",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Eliminated classes per deterministic edge decision or structural route closure."
+      },
+      {
+        "name": "StructuralSufficiency",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "VALUE_AND_ROUTE, VALUE_ONLY, ROUTE_ONLY, or OPEN."
+      },
+      {
+        "name": "ChoiceEntropyBits",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true,
+        "Description": "log2 of the exact optimal choice-orbit size."
+      },
+      {
+        "name": "DefectSupport",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Typed coordinates supporting the residual kernel."
+      },
+      {
+        "name": "RepairPotential",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Observed exact optimum minus local degree-two union cost when the union is a disconnected two-factor."
+      },
+      {
+        "name": "BoundaryDemand",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Minimum quotient crossing-edge demand from component handshake accounting."
+      },
+      {
+        "name": "PortCompatibilityCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Region-pair relations with at least one available crossing edge."
+      },
+      {
+        "name": "QuotientWidth",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Distinct optimal boundary-port pairs exposed across quotient regions."
+      },
+      {
+        "name": "ResidualKernel",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Canonical value|choice|connectivity|gap|warrant residual signature."
+      },
+      {
+        "name": "BranchNecessaryForValue",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Whether deterministic closure leaves more than one value."
+      },
+      {
+        "name": "SearchCompressionProfile",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Class and value compression trace."
+      },
+      {
+        "name": "CalibrationBranchEdge",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Undecided edge selected by the exact calibration branch."
+      },
+      {
+        "name": "BranchIncludeClassCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Residual classes in the include branch."
+      },
+      {
+        "name": "BranchExcludeClassCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Residual classes in the exclude branch."
+      },
+      {
+        "name": "BranchIncludeBestCost",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Best exact value in the include branch."
+      },
+      {
+        "name": "BranchExcludeBestCost",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Best exact value in the exclude branch."
+      },
+      {
+        "name": "CalibrationBranchDecisionCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Branches executed by the calibration-only exact search witness."
+      },
+      {
+        "name": "CalibrationBranchStatus",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Calibration-only branch conclusion."
       }
     ]
   },
@@ -3071,6 +3393,34 @@
         "type": "raw",
         "nullable": true,
         "Description": "Whether the upper coordinate has a represented feasible witness."
+      },
+      {
+        "name": "ResidualValueCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Distinct values remaining after deterministic closure."
+      },
+      {
+        "name": "ResidualChoiceCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Exact optimal route choices remaining."
+      },
+      {
+        "name": "ClosureYieldPct",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Percentage of exact feasible classes eliminated before branching."
+      },
+      {
+        "name": "RepairPotential",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Observed exact repair delta for a disconnected local two-factor."
       }
     ]
   },
@@ -3784,6 +4134,34 @@
         "type": "raw",
         "nullable": true,
         "Description": "WARRANTED, REJECTED, or CONDITIONAL_ON_EXTERNAL_POLICY."
+      },
+      {
+        "name": "ValueClassCountBefore",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Distinct feasible values before deterministic closure."
+      },
+      {
+        "name": "ValueClassCountAfter",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Distinct values after deterministic closure."
+      },
+      {
+        "name": "ChoiceOrbitSize",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Optimal route classes remaining after value closure."
+      },
+      {
+        "name": "OracleChecksum",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Exact-oracle payload checksum supporting this calibration row."
       }
     ]
   },
@@ -4733,6 +5111,69 @@
         "type": "raw",
         "nullable": true,
         "Description": "Multidimensional interpretation without arbitrary scalar weighting."
+      },
+      {
+        "name": "DevelopmentInstanceCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Development instances in scope."
+      },
+      {
+        "name": "HeldOutInstanceCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Held-out instances in scope."
+      },
+      {
+        "name": "ExactOracleCoveragePct",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Percentage of in-scope instances with exact oracle rows."
+      },
+      {
+        "name": "ValueClosedCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Instances whose value closes deterministically."
+      },
+      {
+        "name": "RouteClosedCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Instances whose route class closes deterministically."
+      },
+      {
+        "name": "BranchRequiredCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Instances requiring a value-relevant branch after deterministic closure."
+      },
+      {
+        "name": "MeanClosureYieldPct",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Mean exact route-class elimination percentage."
+      },
+      {
+        "name": "MaxExactClassCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Largest exact canonical route-class count in the measured corpus."
+      },
+      {
+        "name": "BasisGrowthCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "New primitive or operator rows introduced after the basis freeze."
       }
     ]
   },

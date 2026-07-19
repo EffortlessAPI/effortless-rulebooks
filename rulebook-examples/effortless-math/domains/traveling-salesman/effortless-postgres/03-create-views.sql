@@ -136,7 +136,53 @@ SELECT
   calc_tsp_instances_count_of_non_unique_edge_pair_rows(t.tsp_instance_id) AS count_of_non_unique_edge_pair_rows,-- Rows participating in a duplicated canonical unordered edge pair.
   calc_tsp_instances_expected_undirected_edge_count(t.tsp_instance_id) AS expected_undirected_edge_count,-- n(n-1)/2 expected edges for a complete undirected graph.
   calc_tsp_instances_is_complete_undirected_graph(t.tsp_instance_id) AS is_complete_undirected_graph,-- Whether the instance has the expected edge count, no inadmissible rows, and no duplicated unordered pair rows.
-  t.notes                                                                       -- Scope and caveats for the instance.
+  t.notes,                                                                      -- Scope and caveats for the instance.
+  t.experiment_split,                                                           -- DEVELOPMENT, HELD_OUT, or NEGATIVE_CONTROL evidence partition.
+  t.instance_family,                                                            -- Family used for stratified calibration.
+  t.oracle_status,                                                              -- PENDING, EXACT, INVALID_GRAPH, or NOT_IN_SCOPE.
+  t.exact_tour_class_count,                                                     -- Depot-fixed reversal-quotient route classes before availability filtering.
+  t.exact_feasible_class_count,                                                 -- Canonical classes whose every route edge is available.
+  t.exact_optimum_cost,                                                         -- Exact finite optimum from exhaustive calibration enumeration.
+  t.exact_optimal_class_count,                                                  -- Number of non-reversal canonical route classes attaining the exact optimum.
+  t.exact_second_best_cost,                                                     -- Second distinct feasible route value, when present.
+  t.exact_distinct_value_count,                                                 -- Distinct feasible route values in the exact oracle.
+  t.exact_oracle_witness_route,                                                 -- Canonical first exact optimal route, encoded as stop ids.
+  t.exact_oracle_checksum,                                                      -- SHA-256 of the normalized exact-oracle payload.
+  t.degree_two_oracle_lower_bound,                                              -- Independent recomputation of the two-cheapest incident-edge bound.
+  t.degree_two_oracle_gap,                                                      -- Exact optimum minus the degree-two lower bound.
+  t.local_minimum_union_edge_count,                                             -- Distinct edges in the union of all local two-cheapest selections.
+  t.local_minimum_union_cost,                                                   -- Cost of the local-minimum edge union.
+  t.local_minimum_union_component_count,                                        -- Connected components in the local-minimum union.
+  t.local_minimum_union_degree_violation_count,                                 -- Stops not having degree two in the local-minimum union.
+  t.local_minimum_union_is_hamiltonian,                                         -- Whether the local-minimum union is one Hamiltonian cycle.
+  t.deterministic_forced_edge_count,                                            -- Edges forced by generic degree closure.
+  t.deterministic_forbidden_edge_count,                                         -- Edges forbidden by generic degree and proper-subtour closure.
+  t.deterministic_closure_round_count,                                          -- Rounds required to reach deterministic fixed point.
+  t.deterministic_residual_class_count,                                         -- Canonical route classes remaining after represented deterministic closure.
+  t.deterministic_residual_value_count,                                         -- Distinct route values remaining after deterministic closure.
+  t.deterministic_residual_optimal_count,                                       -- Exact optimal classes remaining after deterministic closure.
+  t.deterministic_value_closed,                                                 -- Whether represented structure closes the optimum value without branching.
+  t.deterministic_route_closed,                                                 -- Whether represented structure identifies one route class without branching.
+  t.branch_warrant_status,                                                      -- Whether a branch is required for value, rejected because value is closed, or policy-only.
+  t.closure_yield_pct,                                                          -- Percentage of exact feasible route classes removed before branching.
+  t.rule_leverage,                                                              -- Eliminated classes per deterministic edge decision or structural route closure.
+  t.structural_sufficiency,                                                     -- VALUE_AND_ROUTE, VALUE_ONLY, ROUTE_ONLY, or OPEN.
+  t.choice_entropy_bits,                                                        -- log2 of the exact optimal choice-orbit size.
+  t.defect_support,                                                             -- Typed coordinates supporting the residual kernel.
+  t.repair_potential,                                                           -- Observed exact optimum minus local degree-two union cost when the union is a disconnected two-factor.
+  t.boundary_demand,                                                            -- Minimum quotient crossing-edge demand from component handshake accounting.
+  t.port_compatibility_count,                                                   -- Region-pair relations with at least one available crossing edge.
+  t.quotient_width,                                                             -- Distinct optimal boundary-port pairs exposed across quotient regions.
+  t.residual_kernel,                                                            -- Canonical value|choice|connectivity|gap|warrant residual signature.
+  t.branch_necessary_for_value,                                                 -- Whether deterministic closure leaves more than one value.
+  t.search_compression_profile,                                                 -- Class and value compression trace.
+  t.calibration_branch_edge,                                                    -- Undecided edge selected by the exact calibration branch.
+  t.branch_include_class_count,                                                 -- Residual classes in the include branch.
+  t.branch_exclude_class_count,                                                 -- Residual classes in the exclude branch.
+  t.branch_include_best_cost,                                                   -- Best exact value in the include branch.
+  t.branch_exclude_best_cost,                                                   -- Best exact value in the exclude branch.
+  t.calibration_branch_decision_count,                                          -- Branches executed by the calibration-only exact search witness.
+  t.calibration_branch_status                                                   -- Calibration-only branch conclusion.
 FROM tsp_instances t;
 
 -- ----------------------------------------------------------------------------
@@ -659,7 +705,11 @@ SELECT
   calc_tsp_defect_profiles_defect_vector(t.tsp_defect_profile_id) AS defect_vector,-- Canonical four-coordinate defect vector.
   t.status,                                                                     -- Interpretation of the vector.
   t.lower_bound_witnessed,                                                      -- Whether the lower coordinate has a represented certificate.
-  t.upper_bound_witnessed                                                       -- Whether the upper coordinate has a represented feasible witness.
+  t.upper_bound_witnessed,                                                      -- Whether the upper coordinate has a represented feasible witness.
+  t.residual_value_count,                                                       -- Distinct values remaining after deterministic closure.
+  t.residual_choice_count,                                                      -- Exact optimal route choices remaining.
+  t.closure_yield_pct,                                                          -- Percentage of exact feasible classes eliminated before branching.
+  t.repair_potential                                                            -- Observed exact repair delta for a disconnected local two-factor.
 FROM tsp_defect_profiles t;
 
 -- ----------------------------------------------------------------------------
@@ -822,7 +872,11 @@ SELECT
   t.value_certified,                                                            -- Whether the optimum value is already certified.
   t.representative_selection_required,                                          -- Whether a downstream consumer demands one representative.
   t.external_policy_required,                                                   -- Whether a non-mathematical policy is required to choose among equal witnesses.
-  t.branch_warrant_status                                                       -- WARRANTED, REJECTED, or CONDITIONAL_ON_EXTERNAL_POLICY.
+  t.branch_warrant_status,                                                      -- WARRANTED, REJECTED, or CONDITIONAL_ON_EXTERNAL_POLICY.
+  t.value_class_count_before,                                                   -- Distinct feasible values before deterministic closure.
+  t.value_class_count_after,                                                    -- Distinct values after deterministic closure.
+  t.choice_orbit_size,                                                          -- Optimal route classes remaining after value closure.
+  t.oracle_checksum                                                             -- Exact-oracle payload checksum supporting this calibration row.
 FROM tsp_search_certificates t;
 
 -- ----------------------------------------------------------------------------
@@ -1027,7 +1081,16 @@ SELECT
   t.open_frontier_count,                                                        -- Open frontier obligations at this measurement.
   t.named_concept_count,                                                        -- Versioned concept-registry row count.
   t.allows_local_expansion,                                                     -- Whether local representational expansion is compatible with the measurement.
-  t.coherence_direction                                                         -- Multidimensional interpretation without arbitrary scalar weighting.
+  t.coherence_direction,                                                        -- Multidimensional interpretation without arbitrary scalar weighting.
+  t.development_instance_count,                                                 -- Development instances in scope.
+  t.held_out_instance_count,                                                    -- Held-out instances in scope.
+  t.exact_oracle_coverage_pct,                                                  -- Percentage of in-scope instances with exact oracle rows.
+  t.value_closed_count,                                                         -- Instances whose value closes deterministically.
+  t.route_closed_count,                                                         -- Instances whose route class closes deterministically.
+  t.branch_required_count,                                                      -- Instances requiring a value-relevant branch after deterministic closure.
+  t.mean_closure_yield_pct,                                                     -- Mean exact route-class elimination percentage.
+  t.max_exact_class_count,                                                      -- Largest exact canonical route-class count in the measured corpus.
+  t.basis_growth_count                                                          -- New primitive or operator rows introduced after the basis freeze.
 FROM tsp_convergence_measurements t;
 
 -- ----------------------------------------------------------------------------

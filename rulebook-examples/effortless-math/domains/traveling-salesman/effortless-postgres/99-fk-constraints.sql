@@ -34,6 +34,9 @@ ALTER TABLE tsp_instances ADD CONSTRAINT fk_tsp_instances_city
 ALTER TABLE tsp_instances DROP CONSTRAINT IF EXISTS fk_tsp_instances_depot_address;
 ALTER TABLE tsp_instances ADD CONSTRAINT fk_tsp_instances_depot_address
   FOREIGN KEY (depot_address) REFERENCES addresses (address_id);
+ALTER TABLE tsp_instances DROP CONSTRAINT IF EXISTS fk_tsp_instances_calibration_branch_edge;
+ALTER TABLE tsp_instances ADD CONSTRAINT fk_tsp_instances_calibration_branch_edge
+  FOREIGN KEY (calibration_branch_edge) REFERENCES travel_edges (travel_edge_id);
 
 -- TSPGraphInvariantChecks
 ALTER TABLE tsp_graph_invariant_checks DROP CONSTRAINT IF EXISTS fk_tsp_graph_invariant_checks_tsp_instance;
@@ -391,4 +394,4 @@ ALTER TABLE tsp_invariant_checks DROP CONSTRAINT IF EXISTS fk_tsp_invariant_chec
 ALTER TABLE tsp_invariant_checks ADD CONSTRAINT fk_tsp_invariant_checks_candidate_tour
   FOREIGN KEY (candidate_tour) REFERENCES candidate_tours (candidate_tour_id);
 
--- 97 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
+-- 98 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).

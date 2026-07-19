@@ -1524,6 +1524,558 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     </div>
     <p class="field-note elem elem-desc">Scope and caveats for the instance.</p>
     </article>
+  <article class="field tone-raw" id="en-f-tspinstances-experimentsplit" data-entity="TSP Instance" data-field="Experiment Split">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Experiment Split</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">DEVELOPMENT, HELD_OUT, or NEGATIVE_CONTROL evidence partition.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinstances-instancefamily" data-entity="TSP Instance" data-field="Instance Family">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Instance Family</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Family used for stratified calibration.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinstances-oraclestatus" data-entity="TSP Instance" data-field="Oracle Status">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Oracle Status</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">PENDING, EXACT, INVALID_GRAPH, or NOT_IN_SCOPE.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinstances-exacttourclasscount" data-entity="TSP Instance" data-field="Exact Tour Class Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Exact Tour Class Count</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Depot-fixed reversal-quotient route classes before availability filtering.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinstances-exactfeasibleclasscount" data-entity="TSP Instance" data-field="Exact Feasible Class Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Exact Feasible Class Count</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Canonical classes whose every route edge is available.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinstances-exactoptimumcost" data-entity="TSP Instance" data-field="Exact Optimum Cost">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Exact Optimum Cost</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">number</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Exact finite optimum from exhaustive calibration enumeration.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinstances-exactoptimalclasscount" data-entity="TSP Instance" data-field="Exact Optimal Class Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Exact Optimal Class Count</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Number of non-reversal canonical route classes attaining the exact optimum.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinstances-exactsecondbestcost" data-entity="TSP Instance" data-field="Exact Second Best Cost">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Exact Second Best Cost</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">number</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Second distinct feasible route value, when present.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinstances-exactdistinctvaluecount" data-entity="TSP Instance" data-field="Exact Distinct Value Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Exact Distinct Value Count</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Distinct feasible route values in the exact oracle.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinstances-exactoraclewitnessroute" data-entity="TSP Instance" data-field="Exact Oracle Witness Route">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Exact Oracle Witness Route</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Canonical first exact optimal route, encoded as stop ids.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinstances-exactoraclechecksum" data-entity="TSP Instance" data-field="Exact Oracle Checksum">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Exact Oracle Checksum</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">SHA-256 of the normalized exact-oracle payload.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinstances-degreetwooraclelowerbound" data-entity="TSP Instance" data-field="Degree Two Oracle Lower Bound">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Degree Two Oracle Lower Bound</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">number</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Independent recomputation of the two-cheapest incident-edge bound.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinstances-degreetwooraclegap" data-entity="TSP Instance" data-field="Degree Two Oracle Gap">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Degree Two Oracle Gap</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">number</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Exact optimum minus the degree-two lower bound.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinstances-localminimumunionedgecount" data-entity="TSP Instance" data-field="Local Minimum Union Edge Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Local Minimum Union Edge Count</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Distinct edges in the union of all local two-cheapest selections.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinstances-localminimumunioncost" data-entity="TSP Instance" data-field="Local Minimum Union Cost">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Local Minimum Union Cost</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">number</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Cost of the local-minimum edge union.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinstances-localminimumunioncomponentcount" data-entity="TSP Instance" data-field="Local Minimum Union Component Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Local Minimum Union Component Count</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Connected components in the local-minimum union.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinstances-localminimumuniondegreeviolationcount" data-entity="TSP Instance" data-field="Local Minimum Union Degree Violation Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Local Minimum Union Degree Violation Count</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Stops not having degree two in the local-minimum union.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinstances-localminimumunionishamiltonian" data-entity="TSP Instance" data-field="Local Minimum Union is Hamiltonian">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Local Minimum Union is Hamiltonian</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>boolean</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Whether the local-minimum union is one Hamiltonian cycle.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinstances-deterministicforcededgecount" data-entity="TSP Instance" data-field="Deterministic Forced Edge Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Deterministic Forced Edge Count</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Edges forced by generic degree closure.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinstances-deterministicforbiddenedgecount" data-entity="TSP Instance" data-field="Deterministic Forbidden Edge Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Deterministic Forbidden Edge Count</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Edges forbidden by generic degree and proper-subtour closure.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinstances-deterministicclosureroundcount" data-entity="TSP Instance" data-field="Deterministic Closure Round Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Deterministic Closure Round Count</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Rounds required to reach deterministic fixed point.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinstances-deterministicresidualclasscount" data-entity="TSP Instance" data-field="Deterministic Residual Class Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Deterministic Residual Class Count</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Canonical route classes remaining after represented deterministic closure.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinstances-deterministicresidualvaluecount" data-entity="TSP Instance" data-field="Deterministic Residual Value Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Deterministic Residual Value Count</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Distinct route values remaining after deterministic closure.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinstances-deterministicresidualoptimalcount" data-entity="TSP Instance" data-field="Deterministic Residual Optimal Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Deterministic Residual Optimal Count</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Exact optimal classes remaining after deterministic closure.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinstances-deterministicvalueclosed" data-entity="TSP Instance" data-field="Deterministic Value Closed">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Deterministic Value Closed</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>boolean</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Whether represented structure closes the optimum value without branching.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinstances-deterministicrouteclosed" data-entity="TSP Instance" data-field="Deterministic Route Closed">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Deterministic Route Closed</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>boolean</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Whether represented structure identifies one route class without branching.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinstances-branchwarrantstatus" data-entity="TSP Instance" data-field="Branch Warrant Status">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Branch Warrant Status</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Whether a branch is required for value, rejected because value is closed, or policy-only.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinstances-closureyieldpct" data-entity="TSP Instance" data-field="Closure Yield Pct">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Closure Yield Pct</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">number</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Percentage of exact feasible route classes removed before branching.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinstances-ruleleverage" data-entity="TSP Instance" data-field="Rule Leverage">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Rule Leverage</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">number</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Eliminated classes per deterministic edge decision or structural route closure.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinstances-structuralsufficiency" data-entity="TSP Instance" data-field="Structural Sufficiency">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Structural Sufficiency</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">VALUE_AND_ROUTE, VALUE_ONLY, ROUTE_ONLY, or OPEN.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinstances-choiceentropybits" data-entity="TSP Instance" data-field="Choice Entropy Bits">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Choice Entropy Bits</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">number</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">log2 of the exact optimal choice-orbit size.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinstances-defectsupport" data-entity="TSP Instance" data-field="Defect Support">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Defect Support</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Typed coordinates supporting the residual kernel.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinstances-repairpotential" data-entity="TSP Instance" data-field="Repair Potential">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Repair Potential</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">number</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Observed exact optimum minus local degree-two union cost when the union is a disconnected two-factor.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinstances-boundarydemand" data-entity="TSP Instance" data-field="Boundary Demand">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Boundary Demand</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Minimum quotient crossing-edge demand from component handshake accounting.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinstances-portcompatibilitycount" data-entity="TSP Instance" data-field="Port Compatibility Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Port Compatibility Count</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Region-pair relations with at least one available crossing edge.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinstances-quotientwidth" data-entity="TSP Instance" data-field="Quotient Width">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Quotient Width</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Distinct optimal boundary-port pairs exposed across quotient regions.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinstances-residualkernel" data-entity="TSP Instance" data-field="Residual Kernel">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Residual Kernel</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Canonical value|choice|connectivity|gap|warrant residual signature.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinstances-branchnecessaryforvalue" data-entity="TSP Instance" data-field="Branch Necessary for Value">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Branch Necessary for Value</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>boolean</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Whether deterministic closure leaves more than one value.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinstances-searchcompressionprofile" data-entity="TSP Instance" data-field="Search Compression Profile">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Search Compression Profile</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Class and value compression trace.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinstances-calibrationbranchedge" data-entity="TSP Instance" data-field="Calibration Branch Edge">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Calibration Branch Edge</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Undecided edge selected by the exact calibration branch.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinstances-branchincludeclasscount" data-entity="TSP Instance" data-field="Branch Include Class Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Branch Include Class Count</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Residual classes in the include branch.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinstances-branchexcludeclasscount" data-entity="TSP Instance" data-field="Branch Exclude Class Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Branch Exclude Class Count</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Residual classes in the exclude branch.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinstances-branchincludebestcost" data-entity="TSP Instance" data-field="Branch Include Best Cost">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Branch Include Best Cost</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">number</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Best exact value in the include branch.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinstances-branchexcludebestcost" data-entity="TSP Instance" data-field="Branch Exclude Best Cost">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Branch Exclude Best Cost</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">number</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Best exact value in the exclude branch.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinstances-calibrationbranchdecisioncount" data-entity="TSP Instance" data-field="Calibration Branch Decision Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Calibration Branch Decision Count</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Branches executed by the calibration-only exact search witness.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspinstances-calibrationbranchstatus" data-entity="TSP Instance" data-field="Calibration Branch Status">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Calibration Branch Status</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Calibration-only branch conclusion.</p>
+    </article>
 </section>
 <section class="entity" id="en-t-tspgraphinvariantchecks" data-entity="TSP Graph Invariant Check">
   <header class="entity-head">
@@ -15108,6 +15660,54 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     </details>
     <p class="field-note elem elem-desc">Whether the upper coordinate has a represented feasible witness.</p>
     </article>
+  <article class="field tone-raw" id="en-f-tspdefectprofiles-residualvaluecount" data-entity="TSP Defect Profile" data-field="Residual Value Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Residual Value Count</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Distinct values remaining after deterministic closure.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspdefectprofiles-residualchoicecount" data-entity="TSP Defect Profile" data-field="Residual Choice Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Residual Choice Count</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Exact optimal route choices remaining.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspdefectprofiles-closureyieldpct" data-entity="TSP Defect Profile" data-field="Closure Yield Pct">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Closure Yield Pct</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">number</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Percentage of exact feasible classes eliminated before branching.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspdefectprofiles-repairpotential" data-entity="TSP Defect Profile" data-field="Repair Potential">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Repair Potential</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">number</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Observed exact repair delta for a disconnected local two-factor.</p>
+    </article>
 </section>
 <section class="entity" id="en-t-tspderivededgesetmembers" data-entity="TSP Derived Edge Set Member">
   <header class="entity-head">
@@ -16487,6 +17087,54 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">WARRANTED, REJECTED, or CONDITIONAL_ON_EXTERNAL_POLICY.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspsearchcertificates-valueclasscountbefore" data-entity="TSP Search Certificate" data-field="Value Class Count Before">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Value Class Count Before</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Distinct feasible values before deterministic closure.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspsearchcertificates-valueclasscountafter" data-entity="TSP Search Certificate" data-field="Value Class Count After">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Value Class Count After</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Distinct values after deterministic closure.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspsearchcertificates-choiceorbitsize" data-entity="TSP Search Certificate" data-field="Choice Orbit Size">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Choice Orbit Size</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Optimal route classes remaining after value closure.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspsearchcertificates-oraclechecksum" data-entity="TSP Search Certificate" data-field="Oracle Checksum">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Oracle Checksum</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Exact-oracle payload checksum supporting this calibration row.</p>
     </article>
 </section>
 <section class="entity" id="en-t-tspconstraintrounds" data-entity="TSP Constraint Round">
@@ -18216,6 +18864,114 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">Multidimensional interpretation without arbitrary scalar weighting.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspconvergencemeasurements-developmentinstancecount" data-entity="TSP Convergence Measurement" data-field="Development Instance Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Development Instance Count</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Development instances in scope.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspconvergencemeasurements-heldoutinstancecount" data-entity="TSP Convergence Measurement" data-field="Held Out Instance Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Held Out Instance Count</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Held-out instances in scope.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspconvergencemeasurements-exactoraclecoveragepct" data-entity="TSP Convergence Measurement" data-field="Exact Oracle Coverage Pct">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Exact Oracle Coverage Pct</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">number</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Percentage of in-scope instances with exact oracle rows.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspconvergencemeasurements-valueclosedcount" data-entity="TSP Convergence Measurement" data-field="Value Closed Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Value Closed Count</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Instances whose value closes deterministically.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspconvergencemeasurements-routeclosedcount" data-entity="TSP Convergence Measurement" data-field="Route Closed Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Route Closed Count</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Instances whose route class closes deterministically.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspconvergencemeasurements-branchrequiredcount" data-entity="TSP Convergence Measurement" data-field="Branch Required Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Branch Required Count</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Instances requiring a value-relevant branch after deterministic closure.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspconvergencemeasurements-meanclosureyieldpct" data-entity="TSP Convergence Measurement" data-field="Mean Closure Yield Pct">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Mean Closure Yield Pct</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">number</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Mean exact route-class elimination percentage.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspconvergencemeasurements-maxexactclasscount" data-entity="TSP Convergence Measurement" data-field="Max Exact Class Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Max Exact Class Count</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Largest exact canonical route-class count in the measured corpus.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tspconvergencemeasurements-basisgrowthcount" data-entity="TSP Convergence Measurement" data-field="Basis Growth Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Basis Growth Count</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">New primitive or operator rows introduced after the basis freeze.</p>
     </article>
 </section>
 <section class="entity" id="en-t-tspconceptregistry" data-entity="TSP Concept Registry">

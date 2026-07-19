@@ -1347,12 +1347,12 @@
     {
       "LoopOrder": 709,
       "LoopId": "tsp-loop-709",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
       "ClosureCriterion": "Rebuild Postgres and require generated views, Python reference semantics, and exact-oracle raw fields to agree.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Prepared loop-709 live substrate conformance.",
+      "Result": "The semantic loop closes only after the main executor rebuilds Postgres, runs existing Python/Postgres tests, and queries all twelve exact held-out rows.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 710,
@@ -1505,7 +1505,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 710,
-    "HighestCompletedLoop": 708,
+    "HighestCompletedLoop": 709,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 16,
     "SelectedNotForcedEdgeStates": 5,
@@ -1547,8 +1547,8 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 66,
     "ClusterContractionCertificates": 7,
-    "ConvergenceMeasurements": 112,
-    "ConceptRegistry": 164,
+    "ConvergenceMeasurements": 113,
+    "ConceptRegistry": 165,
     "DefectProfiles": 33,
     "BoundTerms": 8,
     "WitnessNormalForms": 35,
@@ -1589,7 +1589,7 @@
     "HeldOutMaxExactClassCount": 2520
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:f91b2f1ad97bdcbedd0f675e342cfc3002bdc92d0d796d43184c2640eb395957",
+    "rulebook": "sha256:7f9e46eda8c216dbb10be271ba901a22244e62cb57bd7dcde8e0b63be37f676f",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
@@ -1616,7 +1616,25 @@
         4.0,
         "true"
       ]
-    }
+    },
+    "loop_709_postgres_projection_tree": "sha256:21161cf595207344af096782102a7fc738dfef1adba1882298541f601ee9470d",
+    "loop_709_rulespeak_tree": "sha256:bc9b33ac5cfef2ecf99cea18a48fe9572c47f9b2e746c22a009a264248d749fb",
+    "loop_709_generated_view_count": 45,
+    "loop_709_live_heldout_exact_count": 12,
+    "loop_709_live_oracle_rows": [
+      "tsp-holdout-bottleneck7-7,20.0,1,360,REQUIRED_FOR_VALUE",
+      "tsp-holdout-cluster7-7,29.0,2,360,REQUIRED_FOR_VALUE",
+      "tsp-holdout-dominance7-7,29.0,1,360,REQUIRED_FOR_VALUE",
+      "tsp-holdout-fourregion8-8,24.0,2,2520,REJECTED_VALUE_ALREADY_CERTIFIED",
+      "tsp-holdout-hetero8-8,31.0,1,2520,REQUIRED_FOR_VALUE",
+      "tsp-holdout-metric6-6,152.0,1,1,REJECTED_VALUE_ALREADY_CERTIFIED",
+      "tsp-holdout-nested8-8,31.0,2,2520,REQUIRED_FOR_VALUE",
+      "tsp-holdout-nonmetric6-6,37.0,1,60,REQUIRED_FOR_VALUE",
+      "tsp-holdout-residual8-8,38.0,1,2520,REQUIRED_FOR_VALUE",
+      "tsp-holdout-ring6-6,6.0,1,1,REJECTED_VALUE_ALREADY_CERTIFIED",
+      "tsp-holdout-sparse8-8,8.0,1,1,REJECTED_VALUE_ALREADY_CERTIFIED",
+      "tsp-holdout-tie6-6,6.0,60,60,REJECTED_VALUE_ALREADY_CERTIFIED"
+    ]
   },
   "GeneratedTimestamp": null,
   "Vocabulary": {
