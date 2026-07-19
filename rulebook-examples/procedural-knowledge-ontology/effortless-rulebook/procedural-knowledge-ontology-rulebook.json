@@ -773,6 +773,30 @@
         "formula": "=AND({{IsNonHumanHeld}}, {{HasNoCurrentHolder}})"
       },
       {
+        "name": "DepartedAssignmentCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many assignments to this role have ended.",
+        "formula": "=COUNTIFS(RoleAssignments!{{DepartedRoleKey}}, {{RoleId}})"
+      },
+      {
+        "name": "HasLostAHolder",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether anyone has ever departed this role.",
+        "formula": "={{DepartedAssignmentCount}} > 0"
+      },
+      {
+        "name": "IsVacatedRole",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "A role somebody departed and that nobody currently covers.",
+        "formula": "=AND({{HasLostAHolder}}, {{HasNoCurrentHolder}})"
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -1129,6 +1153,14 @@
         "nullable": true,
         "Description": "TRUE when this assignment is overridden by humans more often than the assignment it replaced.",
         "formula": "=AND({{SupersedesAssignment}} <> \"\", {{OverrideRatePercent}} > {{PredecessorOverrideRatePercent}})"
+      },
+      {
+        "name": "DepartedRoleKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Composite-key echo: the role this assignment covered when the assignment has ended, blank otherwise.",
+        "formula": "=IF({{HasDeparted}}, {{Role}}, \"\")"
       },
       {
         "name": "SemanticTypeIri",
@@ -1982,6 +2014,270 @@
         "formula": "={{CountOfStaleFragments}} > 0"
       },
       {
+        "name": "CompoundFragileFragmentCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many compound-fragile knowledge fragments this version rests on.",
+        "formula": "=COUNTIFS(KnowledgeFragments!{{CompoundFragileVersionKey}}, {{ProcedureVersionId}})"
+      },
+      {
+        "name": "RestsOnCompoundFragileKnowledge",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "A live procedure version resting on at least one knowledge fragment that carries three or more decay signals.",
+        "formula": "=AND({{IsLive}}, {{CompoundFragileFragmentCount}} > 0)"
+      },
+      {
+        "name": "ConcentratedWitnessSessionCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many concentrated single-witness sessions underwrite this version's knowledge base.",
+        "formula": "=COUNTIFS(ElicitationSessions!{{ConcentratedSessionVersionKey}}, {{ProcedureVersionId}})"
+      },
+      {
+        "name": "KnowledgeBaseIsConcentrated",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "A live version where at least one single-witness session alone underwrites three or more of its live claims.",
+        "formula": "=AND({{IsLive}}, {{ConcentratedWitnessSessionCount}} > 0)"
+      },
+      {
+        "name": "MachineConsumedUnapprovedCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many unapproved claims this version feeds directly to software-assigned steps.",
+        "formula": "=COUNTIFS(KnowledgeFragments!{{MachineConsumedUnapprovedVersionKey}}, {{ProcedureVersionId}})"
+      },
+      {
+        "name": "FeedsUnapprovedKnowledgeToMachines",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "A live version that hands unapproved knowledge to a step no human is positioned to review.",
+        "formula": "=AND({{IsLive}}, {{MachineConsumedUnapprovedCount}} > 0)"
+      },
+      {
+        "name": "GenuinelyOverdueFragmentCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many of this version's claims are overdue by actual review record rather than by inference.",
+        "formula": "=COUNTIFS(KnowledgeFragments!{{GenuinelyOverdueVersionKey}}, {{ProcedureVersionId}})"
+      },
+      {
+        "name": "AwaitedDecisionCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many decisions are pending against this live version.",
+        "formula": "=COUNTIFS(ChangeRequests!{{BacklogVersionKey}}, {{ProcedureVersionId}})"
+      },
+      {
+        "name": "ScopedOpenBlockingGapCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many open blocking gaps belong to THIS version, correctly scoped.",
+        "formula": "=COUNTIFS(KnowledgeGaps!{{OpenBlockingGapVersionKey}}, {{ProcedureVersionId}})"
+      },
+      {
+        "name": "IsBlockedOnPendingDecision",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "A live version carrying both an undecided change request and an open blocking gap \u2014 the gap cannot close until the decision lands.",
+        "formula": "=AND({{AwaitedDecisionCount}} > 0, {{ScopedOpenBlockingGapCount}} > 0)"
+      },
+      {
+        "name": "UnexercisedHumanGateCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many of this version's human-only gates have never been approached by software.",
+        "formula": "=COUNTIFS(Steps!{{UnexercisedGateVersionKey}}, {{ProcedureVersionId}})"
+      },
+      {
+        "name": "AiBoundaryIsUnevidenced",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "A live version whose human-only gates rest on assertion rather than on any observed attempt by software.",
+        "formula": "=AND({{IsLive}}, {{UnexercisedHumanGateCount}} > 0)"
+      },
+      {
+        "name": "LoadBearingUnapprovedCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many high-blast-radius unapproved claims this version rests on.",
+        "formula": "=COUNTIFS(KnowledgeFragments!{{UnapprovedLoadBearingVersionKey}}, {{ProcedureVersionId}})"
+      },
+      {
+        "name": "UnlandedDecisionCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many decided-but-unimplemented change requests hold this version's fitness down.",
+        "formula": "=COUNTIFS(ChangeRequests!{{UnlandedVersionKey}}, {{ProcedureVersionId}})"
+      },
+      {
+        "name": "UnrehearsedControlEntryCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many unrehearsed control entries exist in this procedure version.",
+        "formula": "=COUNTIFS(StepTransitions!{{UnrehearsedControlVersionKey}}, {{ProcedureVersionId}})"
+      },
+      {
+        "name": "HasUnrehearsedControlEntry",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether this live version has at least one blocking control that is only reachable by a path nobody has ever walked.",
+        "formula": "={{UnrehearsedControlEntryCount}} > 0"
+      },
+      {
+        "name": "IsLiveWithUnrehearsedControl",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "A version that is live for execution while carrying at least one never-rehearsed blocking control entry.",
+        "formula": "=AND({{IsLive}}, {{HasUnrehearsedControlEntry}})"
+      },
+      {
+        "name": "CadenceBreachCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many review events on this version are past their promised cadence.",
+        "formula": "=COUNTIFS(ReviewEvents!{{CadenceBreachVersionKey}}, {{ProcedureVersionId}})"
+      },
+      {
+        "name": "IsInCadenceBreach",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether this version currently has at least one review event past the cadence its steward promised.",
+        "formula": "={{CadenceBreachCount}} > 0"
+      },
+      {
+        "name": "HasDecisionInFlight",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether this version has at least one change request that is still open.",
+        "formula": "={{OpenChangeRequestCount}} > 0"
+      },
+      {
+        "name": "IsUnremediatedCadenceBreach",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "A cadence breach with no open change request against the version \u2014 a broken promise with no response in motion.",
+        "formula": "=AND({{IsInCadenceBreach}}, NOT({{HasDecisionInFlight}}))"
+      },
+      {
+        "name": "IsManagedCadenceBreach",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "A cadence breach where a change request is at least open against the version.",
+        "formula": "=AND({{IsInCadenceBreach}}, {{HasDecisionInFlight}})"
+      },
+      {
+        "name": "GovernanceIsSilent",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "A live version with neither a change request nor a review event ever recorded against it.",
+        "formula": "=AND({{IsLive}}, NOT({{HasGovernanceRecord}}))"
+      },
+      {
+        "name": "ValidFragmentCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many currently-valid knowledge fragments are attached to this version.",
+        "formula": "=COUNTIFS(KnowledgeFragments!{{ValidFragmentVersionKey}}, {{ProcedureVersionId}})"
+      },
+      {
+        "name": "StillOwnsValidKnowledge",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether this version still holds at least one knowledge fragment that is currently valid.",
+        "formula": "={{ValidFragmentCount}} > 0"
+      },
+      {
+        "name": "IncomingSupersessionCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many other versions declare that they supersede this one.",
+        "formula": "=COUNTIFS(ProcedureVersionLinks!{{SupersededVersionKey}}, {{ProcedureVersionId}})"
+      },
+      {
+        "name": "IsStillReferenced",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether any other version points at this one through a supersession link.",
+        "formula": "={{IncomingSupersessionCount}} > 0"
+      },
+      {
+        "name": "IsLoadBearingOrphan",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "An unstewarded version that is still referenced by a supersession link or still owns currently-valid knowledge \u2014 nobody is accountable for it and something still depends on it.",
+        "formula": "=AND({{IsUnstewarded}}, OR({{StillOwnsValidKnowledge}}, {{IsStillReferenced}}))"
+      },
+      {
+        "name": "IsCleanlyRetired",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "An unstewarded version that nothing depends on \u2014 a genuine, safe retirement.",
+        "formula": "=AND({{IsUnstewarded}}, NOT({{StillOwnsValidKnowledge}}), NOT({{IsStillReferenced}}))"
+      },
+      {
+        "name": "StalledImplementationCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many approved-but-unimplemented change requests are stalled against this version.",
+        "formula": "=COUNTIFS(ChangeRequests!{{StalledImplementationVersionKey}}, {{ProcedureVersionId}})"
+      },
+      {
+        "name": "IsHeldUnfitByLandedDecisions",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "A version reading unfit to execute specifically because approved changes have not been marked implemented.",
+        "formula": "=AND(NOT({{IsFitToExecute}}), {{StalledImplementationCount}} > 0)"
+      },
+      {
+        "name": "UndeclaredControlKindCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many steps in this version have not declared a control kind.",
+        "formula": "=COUNTIFS(Steps!{{UndeclaredControlVersionKey}}, {{ProcedureVersionId}})"
+      },
+      {
+        "name": "ControlTaxonomyIsIncomplete",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether this version contains any step whose control kind is unstated \u2014 meaning role-based and id-based control predicates cannot be trusted to cover it.",
+        "formula": "={{UndeclaredControlKindCount}} > 0"
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -2085,6 +2381,14 @@
         "type": "raw",
         "nullable": true,
         "Description": "Summary of semantic change across the edge."
+      },
+      {
+        "name": "SupersededVersionKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Echoes the superseded (previous) version id for rows that express a next-version relation. Supersession is carried by RelationIri here, not by a separate link-kind column.",
+        "formula": "=IF({{RelationIri}} = \"https://w3id.org/pko#nextVersion\", {{PreviousProcedureVersion}}, \"\")"
       }
     ],
     "data": [
@@ -2450,6 +2754,93 @@
         "formula": "={{UnusableBindingCount}} = 0"
       },
       {
+        "name": "ControlKind",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "What kind of control this step is: Preparation, Approval, LegalReview, Verification, Extraction, Publication, Retrospective, or None. That policy-04 is a legal review is a property OF policy-04, not of a formula that happens to name it; storing it as data makes downstream predicates portable to procedures that do not exist yet."
+      },
+      {
+        "name": "UnwarrantedBoundaryCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many boundaries governing this step are being enforced without a valid ratifying claim.",
+        "formula": "=COUNTIFS(AuthorityBoundaries!{{UnwarrantedBoundaryStepKey}}, {{StepId}})"
+      },
+      {
+        "name": "IsGovernedByUnwarrantedBoundary",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether this step's constraints on machine authority rest on a claim that is no longer valid.",
+        "formula": "={{UnwarrantedBoundaryCount}} > 0"
+      },
+      {
+        "name": "SoftwareExecutionCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many times a software agent has actually executed this step.",
+        "formula": "=COUNTIFS(StepExecutions!{{SoftwareExecutionStepKey}}, {{StepId}})"
+      },
+      {
+        "name": "HasBeenApproachedBySoftware",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether any software agent has ever executed this step.",
+        "formula": "={{SoftwareExecutionCount}} > 0"
+      },
+      {
+        "name": "IsUnexercisedHumanGate",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "A human-only approval gate that no software agent has ever attempted \u2014 the control is asserted, not demonstrated.",
+        "formula": "=AND({{IsHumanApprovalGate}}, NOT({{HasBeenApproachedBySoftware}}))"
+      },
+      {
+        "name": "IsDemonstratedHumanGate",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "A human gate that software has actually reached and that a human nevertheless held.",
+        "formula": "=AND({{IsHumanApprovalGate}}, {{HasBeenApproachedBySoftware}}, {{GateHeldByHuman}})"
+      },
+      {
+        "name": "UnexercisedGateVersionKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Composite-key echo: this step's procedure version when the step is an unexercised human gate, blank otherwise.",
+        "formula": "=IF({{IsUnexercisedHumanGate}}, {{ProcedureVersion}}, \"\")"
+      },
+      {
+        "name": "HasDeclaredControlKind",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether this step declares what kind of control it is.",
+        "formula": "={{ControlKind}} <> \"\""
+      },
+      {
+        "name": "UndeclaredControlVersionKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Composite-key echo: this step's procedure version when the step has no declared control kind, blank otherwise.",
+        "formula": "=IF({{HasDeclaredControlKind}}, \"\", {{ProcedureVersion}})"
+      },
+      {
+        "name": "ApprovalStepIsSoftwareAssigned",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "An approval-kind step whose assigned role is currently held by an AI agent or automated pipeline.",
+        "formula": "=AND({{ControlKind}} = \"Approval\", {{IsSoftwareAssigned}})"
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -2469,7 +2860,8 @@
         "ExpectedDurationMinutes": 5,
         "ExpertiseLevel": "Senior",
         "RequiresHumanConfirmation": false,
-        "SemanticTypeIri": "http://purl.org/net/p-plan#Step"
+        "SemanticTypeIri": "http://purl.org/net/p-plan#Step",
+        "ControlKind": "Extraction"
       },
       {
         "StepId": "close-02",
@@ -2482,7 +2874,8 @@
         "ExpectedDurationMinutes": 10,
         "ExpertiseLevel": "Senior",
         "RequiresHumanConfirmation": false,
-        "SemanticTypeIri": "http://purl.org/net/p-plan#Step"
+        "SemanticTypeIri": "http://purl.org/net/p-plan#Step",
+        "ControlKind": "Extraction"
       },
       {
         "StepId": "close-03",
@@ -2495,7 +2888,8 @@
         "ExpectedDurationMinutes": 120,
         "ExpertiseLevel": "Senior",
         "RequiresHumanConfirmation": false,
-        "SemanticTypeIri": "http://purl.org/net/p-plan#MultiStep"
+        "SemanticTypeIri": "http://purl.org/net/p-plan#MultiStep",
+        "ControlKind": "Preparation"
       },
       {
         "StepId": "close-04",
@@ -2508,7 +2902,8 @@
         "ExpectedDurationMinutes": 90,
         "ExpertiseLevel": "Expert",
         "RequiresHumanConfirmation": false,
-        "SemanticTypeIri": "http://purl.org/net/p-plan#MultiStep"
+        "SemanticTypeIri": "http://purl.org/net/p-plan#MultiStep",
+        "ControlKind": "Preparation"
       },
       {
         "StepId": "close-05",
@@ -2521,7 +2916,8 @@
         "ExpectedDurationMinutes": 60,
         "ExpertiseLevel": "Expert",
         "RequiresHumanConfirmation": true,
-        "SemanticTypeIri": "http://purl.org/net/p-plan#Step"
+        "SemanticTypeIri": "http://purl.org/net/p-plan#Step",
+        "ControlKind": "Approval"
       },
       {
         "StepId": "close-06",
@@ -2534,7 +2930,8 @@
         "ExpectedDurationMinutes": 30,
         "ExpertiseLevel": "Master",
         "RequiresHumanConfirmation": true,
-        "SemanticTypeIri": "http://purl.org/net/p-plan#Step"
+        "SemanticTypeIri": "http://purl.org/net/p-plan#Step",
+        "ControlKind": "Approval"
       },
       {
         "StepId": "close-07",
@@ -2547,7 +2944,8 @@
         "ExpectedDurationMinutes": 20,
         "ExpertiseLevel": "Senior",
         "RequiresHumanConfirmation": false,
-        "SemanticTypeIri": "http://purl.org/net/p-plan#Step"
+        "SemanticTypeIri": "http://purl.org/net/p-plan#Step",
+        "ControlKind": "Publication"
       },
       {
         "StepId": "close-08",
@@ -2560,7 +2958,8 @@
         "ExpectedDurationMinutes": 45,
         "ExpertiseLevel": "Senior",
         "RequiresHumanConfirmation": false,
-        "SemanticTypeIri": "http://purl.org/net/p-plan#MultiStep"
+        "SemanticTypeIri": "http://purl.org/net/p-plan#MultiStep",
+        "ControlKind": "Retrospective"
       },
       {
         "StepId": "policy-01",
@@ -2573,7 +2972,8 @@
         "ExpectedDurationMinutes": 30,
         "ExpertiseLevel": "Senior",
         "RequiresHumanConfirmation": false,
-        "SemanticTypeIri": "http://purl.org/net/p-plan#Step"
+        "SemanticTypeIri": "http://purl.org/net/p-plan#Step",
+        "ControlKind": "Preparation"
       },
       {
         "StepId": "policy-02",
@@ -2586,7 +2986,8 @@
         "ExpectedDurationMinutes": 180,
         "ExpertiseLevel": "Expert",
         "RequiresHumanConfirmation": false,
-        "SemanticTypeIri": "http://purl.org/net/p-plan#MultiStep"
+        "SemanticTypeIri": "http://purl.org/net/p-plan#MultiStep",
+        "ControlKind": "Preparation"
       },
       {
         "StepId": "policy-03",
@@ -2599,7 +3000,8 @@
         "ExpectedDurationMinutes": 90,
         "ExpertiseLevel": "Senior",
         "RequiresHumanConfirmation": false,
-        "SemanticTypeIri": "http://purl.org/net/p-plan#MultiStep"
+        "SemanticTypeIri": "http://purl.org/net/p-plan#MultiStep",
+        "ControlKind": "Preparation"
       },
       {
         "StepId": "policy-04",
@@ -2612,7 +3014,8 @@
         "ExpectedDurationMinutes": 120,
         "ExpertiseLevel": "Expert",
         "RequiresHumanConfirmation": true,
-        "SemanticTypeIri": "http://purl.org/net/p-plan#Step"
+        "SemanticTypeIri": "http://purl.org/net/p-plan#Step",
+        "ControlKind": "LegalReview"
       },
       {
         "StepId": "policy-05",
@@ -2625,7 +3028,8 @@
         "ExpectedDurationMinutes": 45,
         "ExpertiseLevel": "Master",
         "RequiresHumanConfirmation": true,
-        "SemanticTypeIri": "http://purl.org/net/p-plan#Step"
+        "SemanticTypeIri": "http://purl.org/net/p-plan#Step",
+        "ControlKind": "Approval"
       },
       {
         "StepId": "policy-06",
@@ -2638,7 +3042,8 @@
         "ExpectedDurationMinutes": 30,
         "ExpertiseLevel": "Senior",
         "RequiresHumanConfirmation": false,
-        "SemanticTypeIri": "http://purl.org/net/p-plan#Step"
+        "SemanticTypeIri": "http://purl.org/net/p-plan#Step",
+        "ControlKind": "Publication"
       },
       {
         "StepId": "policy-07",
@@ -2651,7 +3056,8 @@
         "ExpectedDurationMinutes": 60,
         "ExpertiseLevel": "Senior",
         "RequiresHumanConfirmation": false,
-        "SemanticTypeIri": "http://purl.org/net/p-plan#MultiStep"
+        "SemanticTypeIri": "http://purl.org/net/p-plan#MultiStep",
+        "ControlKind": "Publication"
       },
       {
         "StepId": "policy-08",
@@ -2664,7 +3070,8 @@
         "ExpectedDurationMinutes": 1440,
         "ExpertiseLevel": "Senior",
         "RequiresHumanConfirmation": false,
-        "SemanticTypeIri": "http://purl.org/net/p-plan#Step"
+        "SemanticTypeIri": "http://purl.org/net/p-plan#Step",
+        "ControlKind": "Verification"
       },
       {
         "StepId": "policy-09",
@@ -2677,7 +3084,8 @@
         "ExpectedDurationMinutes": 120,
         "ExpertiseLevel": "Expert",
         "RequiresHumanConfirmation": false,
-        "SemanticTypeIri": "http://purl.org/net/p-plan#MultiStep"
+        "SemanticTypeIri": "http://purl.org/net/p-plan#MultiStep",
+        "ControlKind": "Retrospective"
       }
     ]
   },
@@ -2824,6 +3232,38 @@
         "nullable": true,
         "Description": "TRUE for a Fallback/Alternative transition with zero recorded traversals.",
         "formula": "=AND({{IsRecoveryPath}}, NOT({{HasBeenTraversed}}))"
+      },
+      {
+        "name": "TargetBlockingRequirementCount",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "How many blocking requirements are attached to the step this transition lands on.",
+        "formula": "=INDEX(Steps!{{BlockingRequirementCount}}, MATCH({{ToStep}}, Steps!{{StepId}}, 0))"
+      },
+      {
+        "name": "TargetCarriesBlockingControl",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether the destination step of this transition carries at least one blocking control.",
+        "formula": "={{TargetBlockingRequirementCount}} > 0"
+      },
+      {
+        "name": "IsUnrehearsedControlEntry",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "A recovery path that has never been traversed and that leads into a step carrying a blocking control.",
+        "formula": "=AND({{IsUnwalkedRecoveryPath}}, {{TargetCarriesBlockingControl}})"
+      },
+      {
+        "name": "UnrehearsedControlVersionKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Composite-key echo: this transition's procedure version when it is an unrehearsed control entry, blank otherwise.",
+        "formula": "=IF({{IsUnrehearsedControlEntry}}, {{ProcedureVersion}}, \"\")"
       },
       {
         "name": "SemanticTypeIri",
@@ -4778,6 +5218,46 @@
         "formula": "=INDEX(Agents!{{IsStillEngaged}}, MATCH({{PractitionerAgent}}, Agents!{{AgentId}}, 0))"
       },
       {
+        "name": "ValidFragmentsProduced",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many currently-valid knowledge fragments this one session produced.",
+        "formula": "=COUNTIFS(KnowledgeFragments!{{ValidFragmentSessionKey}}, {{ElicitationSessionId}})"
+      },
+      {
+        "name": "IsHighYieldSession",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "A session that alone underwrites three or more currently-valid claims.",
+        "formula": "={{ValidFragmentsProduced}} >= 3"
+      },
+      {
+        "name": "IsConcentratedSingleWitness",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "One unrepeated session with one witness that underwrites three or more live claims.",
+        "formula": "=AND({{IsSingleWitnessMethod}}, {{IsHighYieldSession}})"
+      },
+      {
+        "name": "IsStaleConcentratedWitness",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "A concentrated single-witness session more than 180 days old \u2014 matching the single-witness expiry horizon loop 1 already established.",
+        "formula": "=AND({{IsConcentratedSingleWitness}}, {{DaysSinceElicited}} > 180)"
+      },
+      {
+        "name": "ConcentratedSessionVersionKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Composite-key echo: this session's procedure version when the session is a concentrated single witness, blank otherwise.",
+        "formula": "=IF({{IsConcentratedSingleWitness}}, {{ProcedureVersion}}, \"\")"
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -5230,6 +5710,229 @@
         "formula": "=INDEX(Roles!{{CurrentAssignmentValidFrom}}, MATCH({{OwnerRole}}, Roles!{{RoleId}}, 0))"
       },
       {
+        "name": "LastReviewedAt",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "When this fragment was last actually reviewed and reaffirmed by its owning role. Null when it has never been reviewed since authoring. IsOverdueForReview infers recency from ValidFrom, which records when the claim became TRUE, not when anyone last looked at it. Those are different events, and the inference is deliberately left in place under its own name rather than silently rewritten to fall back on this column."
+      },
+      {
+        "name": "FragilitySignalCount",
+        "datatype": "integer",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "How many of the four loop-1 decay signals are simultaneously true for this fragment: single witness, overdue for review, low confidence, operational reliance.",
+        "formula": "=IF({{IsFromSingleWitness}}, 1, 0) + IF({{IsOverdueForReview}}, 1, 0) + IF({{IsLowConfidence}}, 1, 0) + IF({{HasOperationalReliance}}, 1, 0)"
+      },
+      {
+        "name": "IsCompoundFragile",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "A fragment carrying at least three of the four decay signals at once.",
+        "formula": "={{FragilitySignalCount}} >= 3"
+      },
+      {
+        "name": "IsSinglePointOfFailure",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "A claim that rests on exactly one person's word and that an active exception handler actually routes cases against.",
+        "formula": "=AND({{IsFromSingleWitness}}, {{HasOperationalReliance}})"
+      },
+      {
+        "name": "IsExpiringSinglePointOfFailure",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "A single-sourced, operationally relied-upon claim that is also past its review date.",
+        "formula": "=AND({{IsSinglePointOfFailure}}, {{IsOverdueForReview}})"
+      },
+      {
+        "name": "CompoundFragileVersionKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Composite-key echo: this fragment's procedure version when the fragment is compound-fragile, blank otherwise.",
+        "formula": "=IF({{IsCompoundFragile}}, {{ProcedureVersion}}, \"\")"
+      },
+      {
+        "name": "ValidFragmentSessionKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Composite-key echo: the elicitation session behind this fragment when the fragment is currently valid, blank otherwise.",
+        "formula": "=IF({{IsCurrentlyValid}}, {{ElicitationSession}}, \"\")"
+      },
+      {
+        "name": "ConsumingStepIsSoftwareAssigned",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether the step that consumes this fragment is assigned to an AI agent or an automated pipeline.",
+        "formula": "=INDEX(Steps!{{IsSoftwareAssigned}}, MATCH({{Step}}, Steps!{{StepId}}, 0))"
+      },
+      {
+        "name": "ConsumingStepAgentKind",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The kind of agent currently holding the role assigned to the step that consumes this fragment.",
+        "formula": "=INDEX(Steps!{{AssignedAgentKind}}, MATCH({{Step}}, Steps!{{StepId}}, 0))"
+      },
+      {
+        "name": "IsUnapprovedAndMachineConsumed",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "An unapproved claim that a software-assigned step actually relies on \u2014 executed literally, with no human in position to notice it is wrong.",
+        "formula": "=AND({{IsUnapprovedButReliedOn}}, {{ConsumingStepIsSoftwareAssigned}})"
+      },
+      {
+        "name": "IsUnapprovedAndHumanConsumed",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "An unapproved claim relied on by a human-assigned step \u2014 a reviewable risk rather than a silent one.",
+        "formula": "=AND({{IsUnapprovedButReliedOn}}, NOT({{ConsumingStepIsSoftwareAssigned}}))"
+      },
+      {
+        "name": "MachineConsumedUnapprovedVersionKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Composite-key echo: this fragment's procedure version when the fragment is unapproved and machine-consumed, blank otherwise.",
+        "formula": "=IF({{IsUnapprovedAndMachineConsumed}}, {{ProcedureVersion}}, \"\")"
+      },
+      {
+        "name": "HasReviewRecord",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether this fragment has ever had an actual review recorded, as opposed to merely having a ValidFrom date.",
+        "formula": "={{LastReviewedAt}} <> \"\""
+      },
+      {
+        "name": "DaysSinceActualReview",
+        "datatype": "integer",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Days elapsed since this fragment was last actually reviewed. Zero when no review has ever been recorded \u2014 read this only alongside HasReviewRecord, never on its own.",
+        "formula": "=IF({{HasReviewRecord}}, DATETIME_DIFF(NOW(), {{LastReviewedAt}}, \"days\"), 0)"
+      },
+      {
+        "name": "IsUnreviewedSinceAuthoring",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "A currently-valid claim that nobody has ever reviewed since it was written.",
+        "formula": "=AND({{IsCurrentlyValid}}, NOT({{HasReviewRecord}}))"
+      },
+      {
+        "name": "IsGenuinelyOverdue",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "A valid claim whose LAST ACTUAL REVIEW is older than the cadence its owning version promised.",
+        "formula": "=AND({{IsCurrentlyValid}}, {{HasReviewRecord}}, {{DaysSinceActualReview}} > {{ReviewCadenceDays}})"
+      },
+      {
+        "name": "ReviewRecencyIsInferred",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "A fragment reported overdue by the loop-1 inference purely because no review has ever been recorded \u2014 the number is an artifact of missing data, not evidence of neglect.",
+        "formula": "=AND({{IsOverdueForReview}}, NOT({{HasReviewRecord}}))"
+      },
+      {
+        "name": "InferenceDisagreesWithRecord",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "A fragment the ValidFrom inference calls overdue but which was in fact reviewed inside its cadence \u2014 a false positive in the loop-1 predicate, now provable.",
+        "formula": "=AND({{HasReviewRecord}}, {{IsOverdueForReview}}, NOT({{IsGenuinelyOverdue}}))"
+      },
+      {
+        "name": "GenuinelyOverdueVersionKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Composite-key echo: this fragment's procedure version when the fragment is genuinely overdue, blank otherwise.",
+        "formula": "=IF({{IsGenuinelyOverdue}}, {{ProcedureVersion}}, \"\")"
+      },
+      {
+        "name": "RatifiedBoundaryCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many currently-binding authority boundaries this fragment ratifies.",
+        "formula": "=COUNTIFS(AuthorityBoundaries!{{RatifyingFragmentKey}}, {{KnowledgeFragmentId}})"
+      },
+      {
+        "name": "RelianceSurfaceCount",
+        "datatype": "integer",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Total number of distinct downstream dependents on this claim: exception handlers plus ratified authority boundaries.",
+        "formula": "={{IsInvokedByAnException}} + {{RatifiedBoundaryCount}}"
+      },
+      {
+        "name": "DaysAwaitingMyApproval",
+        "datatype": "integer",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "How long a claim of mine has been sitting at Reviewed without my approval. Zero when the claim is not mine or is already decided.",
+        "formula": "=IF({{IsMyUnfinishedApproval}}, DATETIME_DIFF(NOW(), {{ValidFrom}}, \"days\"), 0)"
+      },
+      {
+        "name": "IsHighBlastRadiusUnapproved",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "An unapproved, operationally live claim of mine with more than one distinct downstream dependent.",
+        "formula": "=AND({{IsUnapprovedAndOperationallyLive}}, {{RelianceSurfaceCount}} > 1)"
+      },
+      {
+        "name": "IsLongUnapproved",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "A claim that has waited on my signature for more than thirty days.",
+        "formula": "=AND({{IsMyUnfinishedApproval}}, {{DaysAwaitingMyApproval}} > 30)"
+      },
+      {
+        "name": "UnapprovedLoadBearingVersionKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Composite-key echo: this fragment's procedure version when it is a high-blast-radius unapproved claim, blank otherwise.",
+        "formula": "=IF({{IsHighBlastRadiusUnapproved}}, {{ProcedureVersion}}, \"\")"
+      },
+      {
+        "name": "OwnerRoleIsVacated",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether the role that owns this claim is currently vacated.",
+        "formula": "=INDEX(Roles!{{IsVacatedRole}}, MATCH({{OwnerRole}}, Roles!{{RoleId}}, 0))"
+      },
+      {
+        "name": "IsOrphanedByRole",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "A currently-valid claim whose owning role nobody holds \u2014 accountable to a vacancy.",
+        "formula": "=AND({{IsCurrentlyValid}}, {{OwnerRoleIsVacated}})"
+      },
+      {
+        "name": "ValidFragmentVersionKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Composite-key echo: this fragment's owning procedure version when the fragment is currently valid, blank otherwise.",
+        "formula": "=IF({{IsCurrentlyValid}}, {{ProcedureVersion}}, \"\")"
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -5252,7 +5955,8 @@
         "Status": "Approved",
         "OwnerRole": "controller",
         "SemanticTypeIri": "urn:effortless:pko-extension#KnowledgeFragment",
-        "EvaluationContext": "eval-current"
+        "EvaluationContext": "eval-current",
+        "LastReviewedAt": "2026-07-02T16:00:00-05:00"
       },
       {
         "KnowledgeFragmentId": "kf-close-top-ten",
@@ -5268,7 +5972,8 @@
         "Status": "Approved",
         "OwnerRole": "controller",
         "SemanticTypeIri": "urn:effortless:pko-extension#KnowledgeFragment",
-        "EvaluationContext": "eval-current"
+        "EvaluationContext": "eval-current",
+        "LastReviewedAt": "2026-07-02T16:00:00-05:00"
       },
       {
         "KnowledgeFragmentId": "kf-close-retention",
@@ -5284,7 +5989,8 @@
         "Status": "Approved",
         "OwnerRole": "controller",
         "SemanticTypeIri": "urn:effortless:pko-extension#KnowledgeFragment",
-        "EvaluationContext": "eval-current"
+        "EvaluationContext": "eval-current",
+        "LastReviewedAt": null
       },
       {
         "KnowledgeFragmentId": "kf-close-judgment",
@@ -5300,7 +6006,8 @@
         "Status": "Approved",
         "OwnerRole": "controller",
         "SemanticTypeIri": "urn:effortless:pko-extension#KnowledgeFragment",
-        "EvaluationContext": "eval-current"
+        "EvaluationContext": "eval-current",
+        "LastReviewedAt": null
       },
       {
         "KnowledgeFragmentId": "kf-policy-ai-boundary",
@@ -5316,7 +6023,8 @@
         "Status": "Approved",
         "OwnerRole": "employment-counsel",
         "SemanticTypeIri": "urn:effortless:pko-extension#KnowledgeFragment",
-        "EvaluationContext": "eval-current"
+        "EvaluationContext": "eval-current",
+        "LastReviewedAt": null
       },
       {
         "KnowledgeFragmentId": "kf-policy-channel",
@@ -5332,7 +6040,8 @@
         "Status": "Approved",
         "OwnerRole": "communications-manager",
         "SemanticTypeIri": "urn:effortless:pko-extension#KnowledgeFragment",
-        "EvaluationContext": "eval-current"
+        "EvaluationContext": "eval-current",
+        "LastReviewedAt": "2026-07-18T16:00:00-05:00"
       },
       {
         "KnowledgeFragmentId": "kf-policy-manager-route",
@@ -5348,7 +6057,8 @@
         "Status": "Reviewed",
         "OwnerRole": "hr-policy-owner",
         "SemanticTypeIri": "urn:effortless:pko-extension#KnowledgeFragment",
-        "EvaluationContext": "eval-current"
+        "EvaluationContext": "eval-current",
+        "LastReviewedAt": null
       }
     ]
   },
@@ -5524,6 +6234,30 @@
         "nullable": true,
         "Description": "TRUE when an overdue gap has either no plan or no living owner \u2014 an admission of ignorance that nobody is acting on.",
         "formula": "=AND({{IsOverdueGap}}, OR(NOT({{HasResolutionPlan}}), NOT({{OwnerIsStillEngaged}})))"
+      },
+      {
+        "name": "OpenBlockingGapVersionKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Composite-key echo: this gap's procedure version when the gap is both open and blocking, blank otherwise.",
+        "formula": "=IF({{IsOpenAndBlocking}}, {{ProcedureVersion}}, \"\")"
+      },
+      {
+        "name": "OwnerRoleIsVacated",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether the role that owns this gap is currently vacated.",
+        "formula": "=INDEX(Roles!{{IsVacatedRole}}, MATCH({{OwnerRole}}, Roles!{{RoleId}}, 0))"
+      },
+      {
+        "name": "IsOwnerlessOpenGap",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "An open gap whose owning role nobody currently holds \u2014 an acknowledged unknown with nobody accountable for closing it.",
+        "formula": "=AND({{IsOpen}}, {{OwnerRoleIsVacated}})"
       },
       {
         "name": "SemanticTypeIri",
@@ -6872,6 +7606,22 @@
         "formula": "=INDEX(Steps!{{AllSourcesUsable}}, MATCH({{Step}}, Steps!{{StepId}}, 0))"
       },
       {
+        "name": "SoftwareExecutionStepKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Composite-key echo: the step this execution ran when it was carried out by software, blank otherwise.",
+        "formula": "=IF({{WasExecutedBySoftware}}, {{Step}}, \"\")"
+      },
+      {
+        "name": "StepControlKind",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The control kind of the step this execution ran.",
+        "formula": "=INDEX(Steps!{{ControlKind}}, MATCH({{Step}}, Steps!{{StepId}}, 0))"
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -7918,8 +8668,8 @@
         "datatype": "boolean",
         "type": "calculated",
         "nullable": true,
-        "Description": "TRUE while the request remains active.",
-        "formula": "=OR({{Status}} = \"Draft\", {{Status}} = \"UnderReview\", {{Status}} = \"Approved\")"
+        "Description": "TRUE while the change request is still outstanding. An Approved request stays open until ImplementedAt records that it actually landed \u2014 approval is a decision, not an outcome.",
+        "formula": "=AND(OR({{Status}} = \"Draft\", {{Status}} = \"UnderReview\", {{Status}} = \"Approved\"), {{ImplementedAt}} = \"\")"
       },
       {
         "name": "OpenChangeVersionKey",
@@ -8018,6 +8768,133 @@
         "formula": "=AND({{IsLiveDecisionBacklog}}, {{ChangeKind}} = \"Enhancement\")"
       },
       {
+        "name": "ImplementedAt",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "When the approved change was actually applied to the procedure version. Null until it lands. Distinct from DecidedAt, which records only that the authority ruled. Approval and implementation are separate events; conflating them is what left IsOpen with no terminal state."
+      },
+      {
+        "name": "BacklogVersionKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Composite-key echo: this request's procedure version when it is live decision backlog, blank otherwise.",
+        "formula": "=IF({{IsLiveDecisionBacklog}}, {{ProcedureVersion}}, \"\")"
+      },
+      {
+        "name": "IsMyPendingDecision",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "A change request awaiting a decision that is mine personally to make.",
+        "formula": "=AND({{AuthorityRole}} = \"hr-policy-owner\", {{AwaitsAuthorityDecision}})"
+      },
+      {
+        "name": "IsMyBlockingBacklog",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "A decision waiting on me that is holding an open gap on a live procedure.",
+        "formula": "=AND({{IsMyPendingDecision}}, {{BlocksAnOpenGap}})"
+      },
+      {
+        "name": "IsMyOverdueBacklog",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "A blocking decision that has waited on me for more than two weeks.",
+        "formula": "=AND({{IsMyBlockingBacklog}}, {{DaysPending}} > 14)"
+      },
+      {
+        "name": "IsImplemented",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether the approved change has actually been applied.",
+        "formula": "={{ImplementedAt}} <> \"\""
+      },
+      {
+        "name": "IsMyDecidedRequest",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "A change request I have personally ruled on.",
+        "formula": "=AND({{AuthorityRole}} = \"hr-policy-owner\", {{IsDecided}})"
+      },
+      {
+        "name": "IsMyDecidedButUnlanded",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "A decision I have made that has not yet been applied \u2014 still counted against me by the loop-1 open-request measure.",
+        "formula": "=AND({{IsMyDecidedRequest}}, NOT({{IsImplemented}}))"
+      },
+      {
+        "name": "DecisionLatencyDays",
+        "datatype": "integer",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "How many days I took to rule, once ruled. Zero when undecided \u2014 read only alongside IsDecided.",
+        "formula": "=IF({{IsDecided}}, DATETIME_DIFF({{DecidedAt}}, {{RequestedAt}}, \"days\"), 0)"
+      },
+      {
+        "name": "ImplementationLatencyDays",
+        "datatype": "integer",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "How many days elapsed between my ruling and the change actually landing. Zero when not yet implemented.",
+        "formula": "=IF({{IsImplemented}}, DATETIME_DIFF({{ImplementedAt}}, {{DecidedAt}}, \"days\"), 0)"
+      },
+      {
+        "name": "DelayIsDownstreamOfMe",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "A request I decided promptly that is nevertheless still outstanding because nobody has implemented it.",
+        "formula": "=AND({{IsMyDecidedButUnlanded}}, {{DecisionLatencyDays}} <= 14)"
+      },
+      {
+        "name": "UnlandedVersionKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Composite-key echo: this request's procedure version when I have decided it but it has not landed, blank otherwise.",
+        "formula": "=IF({{IsMyDecidedButUnlanded}}, {{ProcedureVersion}}, \"\")"
+      },
+      {
+        "name": "IsApprovedNotImplemented",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "A change request the authority approved but that has not yet been applied.",
+        "formula": "=AND({{Status}} = \"Approved\", NOT({{IsImplemented}}))"
+      },
+      {
+        "name": "DaysSinceApproval",
+        "datatype": "integer",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "How many days have elapsed since the authority decided this request. Zero when undecided.",
+        "formula": "=IF({{IsDecided}}, DATETIME_DIFF(NOW(), {{DecidedAt}}, \"days\"), 0)"
+      },
+      {
+        "name": "IsStalledImplementation",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "An approved change request that has sat unimplemented for more than two weeks.",
+        "formula": "=AND({{IsApprovedNotImplemented}}, {{DaysSinceApproval}} > 14)"
+      },
+      {
+        "name": "StalledImplementationVersionKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Composite-key echo: this request's procedure version when its implementation is stalled, blank otherwise.",
+        "formula": "=IF({{IsStalledImplementation}}, {{ProcedureVersion}}, \"\")"
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -8037,7 +8914,8 @@
         "RequestedAt": "2026-07-02T16:30:00-05:00",
         "DecidedAt": "2026-07-03T11:00:00-05:00",
         "ImpactAssessment": "Adds requirement and verification; no breaking class change.",
-        "SemanticTypeIri": "urn:effortless:pko-extension#ChangeRequest"
+        "SemanticTypeIri": "urn:effortless:pko-extension#ChangeRequest",
+        "ImplementedAt": "2026-07-03T15:00:00-05:00"
       },
       {
         "ChangeRequestId": "cr-policy-delivery",
@@ -8050,7 +8928,8 @@
         "RequestedAt": "2026-07-19T10:30:00-05:00",
         "DecidedAt": null,
         "ImpactAssessment": "May add a step or fallback transition and operational binding.",
-        "SemanticTypeIri": "urn:effortless:pko-extension#ChangeRequest"
+        "SemanticTypeIri": "urn:effortless:pko-extension#ChangeRequest",
+        "ImplementedAt": null
       }
     ]
   },
@@ -8196,6 +9075,14 @@
         "nullable": true,
         "Description": "TRUE when the promised cadence has been blown but the hand-entered NextReviewDue still says we are fine.",
         "formula": "=AND({{ExceedsPromisedCadence}}, NOT({{IsOverdue}}))"
+      },
+      {
+        "name": "CadenceBreachVersionKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Composite-key echo: this review event's procedure version when the promised cadence has been exceeded, blank otherwise.",
+        "formula": "=IF({{ExceedsPromisedCadence}}, {{ProcedureVersion}}, \"\")"
       },
       {
         "name": "SemanticTypeIri",
@@ -10163,6 +11050,141 @@
         "AnswerableBefore": false,
         "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion",
         "WitnessedAnswer": "ProcedureExecutions.ApprovalChainIsComplete=2/2; RequirementSatisfactions.IsHumanEvaluated=8/8; RequirementSatisfactions.IsInvalidApproval=0/8"
+      },
+      {
+        "RoleQuestionId": "q2-authority-compound-fragility",
+        "AskingRole": "knowledge-authority",
+        "WitnessLoop": "loop-02",
+        "QuestionText": "Loop 1 gave me four separate decay signals on knowledge fragments and no way to see where they stack. Show me the fragments where single-witness provenance, overdue review, and actual operational reliance all coincide. That intersection is my entire risk register \u2014 everything else is housekeeping.",
+        "WhyItMatters": "IsFromSingleWitness=4/7, IsOverdueForReview=6/7 and HasOperationalReliance=2/7 are each individually unalarming. What matters is the overlap: a claim resting on one person's word, past its review date, that an exception handler actually routes real cases against. That row is a single point of failure with a deadline on it, and no loop-1 predicate names it.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q2-authority-boundary-rests-on-expired-claim",
+        "AskingRole": "knowledge-authority",
+        "WitnessLoop": "loop-02",
+        "QuestionText": "AuthorityBoundaries.RatifyingFragmentIsValid reads 2 of 3. One of the rules that constrains what an AI agent may decide is ratified by a knowledge fragment that is NOT currently valid. Which boundary is it, is it still being enforced as though it were sound, and has any agent decision been evaluated against it since its ratification lapsed?",
+        "WhyItMatters": "This is the question that only became askable in loop 2 and it is the most serious one I have. A boundary is a rule about machine authority. If the claim that justifies the rule has expired, we are enforcing a constraint whose warrant we can no longer produce \u2014 or worse, the boundary reads IsCurrentlyBinding=TRUE (3/3 in loop 1) while its ratification is void. Binding-ness and warranted-ness are two different things and loop 1 conflated them by never comparing them.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q2-authority-elicitation-method-monoculture",
+        "AskingRole": "knowledge-authority",
+        "WitnessLoop": "loop-02",
+        "QuestionText": "Loop 1 says 2 of 3 elicitation sessions used a single-witness method, and 4 of 7 fragments inherit that. I want the exposure the other way round: how much of a live procedure's knowledge base traces back to ONE session, or to ONE practitioner? If a single shadowing session in April underwrites half of policy-v1.0.0, that is a concentration risk, not a provenance detail.",
+        "WhyItMatters": "IsFromSingleWitness is per-fragment. It cannot see that three fragments share the SAME single witness \u2014 which is a strictly worse situation than three fragments each with their own single witness. Loop 1 established the per-fragment atom; loop 2 can finally aggregate it back over sessions and agents to measure concentration.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q2-authority-unapproved-knowledge-reaching-machines",
+        "AskingRole": "knowledge-authority",
+        "WitnessLoop": "loop-02",
+        "QuestionText": "Loop 1 found exactly one fragment that is unapproved and operationally live, and separately found that all three versions run on unapproved knowledge. Narrow it for me: is any unapproved claim being consumed by a step assigned to an AI agent or an automated pipeline? Human judgment can compensate for a claim I have not signed off. Software cannot.",
+        "WhyItMatters": "IsUnapprovedButReliedOn and IsSoftwareAssigned are both loop-1 facts on different tables that have never met. The distinction matters because an unapproved claim reaching a human step is a reviewable risk \u2014 the human can notice it is wrong \u2014 while an unapproved claim reaching a pipeline is executed literally and silently. Only the second one requires me to stop the procedure.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q2-authority-review-date-is-inferred-not-recorded",
+        "AskingRole": "knowledge-authority",
+        "WitnessLoop": "loop-02",
+        "QuestionText": "Loop 1 reports IsOverdueForReview=6/7, and I do not trust the number. It is computed from AgeDays, which is DATETIME_DIFF from ValidFrom \u2014 the date the claim became true, not the date anybody last looked at it. A fragment reviewed and reaffirmed last week reads exactly as overdue as one nobody has opened since it was written. I need the date of the last actual review recorded as a fact.",
+        "WhyItMatters": "This is structural debt, and it is the kind that produces a plausible-looking wrong answer rather than an error. ValidFrom is a bitemporal validity bound; LastReviewedAt is a stewardship event. Deriving the second from the first is a category error that makes 6/7 unfalsifiable \u2014 there is no data that could make it read 5/7. The honest fix is a raw LastReviewedAt column, with the old inference retained as an explicit fallback-free comparison so the discrepancy itself becomes visible.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q2-hr-my-backlog-is-someone-elses-block",
+        "AskingRole": "hr-policy-owner",
+        "WitnessLoop": "loop-02",
+        "QuestionText": "Loop 1 confirmed one live decision is waiting on me and that it blocks an open gap. What I want is the full chain from my inbox outward: which knowledge gaps stay open because I have not decided, which steps sit downstream of those gaps, and how many days of that delay are mine personally rather than the process's.",
+        "WhyItMatters": "IsLiveDecisionBacklog=1/2 and BlocksAnOpenGap=1/2 tell me a decision is late. They do not tell me what is stuck behind it. A pending CR that blocks nothing is an administrative debt I can carry; one that holds an open gap on a live procedure is me being the bottleneck on someone else's work, and I would rather know that in those terms.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q2-hr-ai-boundary-holds-only-where-tested",
+        "AskingRole": "hr-policy-owner",
+        "WitnessLoop": "loop-02",
+        "QuestionText": "Loop 1 told me SoftwareDidHumanWork=0/12 and IsUntested=3/3 in the same breath. Those two results together are not reassurance \u2014 they are the same fact stated twice. Every boundary constraining what policy-drafting-ai may do is untested, so of course no violation was found. Which of my human-only gates have actually been exercised by a software-assigned agent attempting them, and which have simply never been approached?",
+        "WhyItMatters": "A control that has never been tested and a control that passed are indistinguishable in loop 1's output. kf-policy-ai-boundary says the AI may draft but may not create legal commitments; policy-03 and policy-06 are both assigned to policy-drafting-agent. If no software agent has ever reached a human gate, my boundary has zero evidence behind it and I should stop describing it as holding.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q2-hr-my-unapproved-claim-is-load-bearing",
+        "AskingRole": "hr-policy-owner",
+        "WitnessLoop": "loop-02",
+        "QuestionText": "Loop 1 found exactly one claim that is mine, unapproved, and operationally live \u2014 kf-policy-manager-route, the 48-hour manager-notification rule that exc-unreachable routes real employee cases against. Tell me the blast radius: how many steps, exceptions and authority boundaries currently depend on a claim I have not signed, and how long has it been sitting at Reviewed?",
+        "WhyItMatters": "IsUnapprovedAndOperationallyLive=1/7 is a yes-or-no. It does not size the exposure. One unapproved claim that an exception handler consults and that also ratifies an authority boundary is a different problem from one that a single step reads. I need to know whether signing this one thing clears four downstream findings or one.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q2-hr-my-approvals-never-read-as-done",
+        "AskingRole": "hr-policy-owner",
+        "WitnessLoop": "loop-02",
+        "QuestionText": "When I approve a change request it stays Approved forever and the model still counts it as open. That means every version I have ever acted on reads permanently unfit, and my own approval activity is invisible \u2014 I cannot show what I have actually cleared. How many decisions have I made that the model still displays as outstanding against me?",
+        "WhyItMatters": "Same structural debt the steward raised, seen from the authority's side. ChangeRequests.IsOpen = OR(Draft, UnderReview, Approved) has no terminal state, so AwaitsAuthorityDecision correctly goes false on decision but OpenChangeRequestCount never does. The consequence for me personally is that my decision throughput is unmeasurable: there is no column that distinguishes 'I have not decided' from 'I decided and it is done'.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q2-hr-departed-holder-left-claims-behind",
+        "AskingRole": "hr-policy-owner",
+        "WitnessLoop": "loop-02",
+        "QuestionText": "Loop 1 found one role assignment with HasDeparted=TRUE and simultaneously reported Agents.IsStillEngaged=10/10 and HasOrphanedProvenance=0/7, which cannot all be comfortable at once. Somebody's assignment ended. Did anything they owned or sourced go with them \u2014 claims, gaps, pending decisions \u2014 or did the departure genuinely leave nothing behind?",
+        "WhyItMatters": "HasDeparted is on RoleAssignments. IsStillEngaged is on Agents and reads TRUE if the agent holds ANY current assignment. So a person can depart the role that made them the authority on a claim while remaining engaged elsewhere, and every loop-1 orphan predicate stays silent. That is precisely the silent-failure shape I care about: the model reports zero orphans because it is asking about the person rather than the role.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q2-steward-recovery-path-is-load-bearing",
+        "AskingRole": "process-steward",
+        "WitnessLoop": "loop-02",
+        "QuestionText": "Loop 1 told me four recovery paths have never been walked. That alone does not scare me \u2014 an untested path to a step nobody depends on is untidy. What I need to know is which unwalked recovery path leads to a step that carries a BLOCKING requirement. That is a control we have declared, never rehearsed, and would be reaching for on the worst day of the quarter.",
+        "WhyItMatters": "IsUnwalkedRecoveryPath is a flat 4/19 with no severity ordering. A fallback into an ordinary step and a fallback into the only blocking control on the procedure are the same colour today. Crossing the loop-1 traversal predicate with the loop-1 blocking-requirement count is the first thing that ranks my remediation queue.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q2-steward-cadence-breach-is-unremediated",
+        "AskingRole": "process-steward",
+        "WitnessLoop": "loop-02",
+        "QuestionText": "Loop 1 showed me one review event that exceeds the cadence I promised. What I cannot see is whether anyone did anything about it. Is that cadence breach sitting on a version with an open change request against it \u2014 which would mean the fix is at least in flight \u2014 or is it sitting on a version with no governance record moving at all, which means I have a breach and no response?",
+        "WhyItMatters": "ExceedsPromisedCadence tells me the promise broke. HasGovernanceRecord tells me the version has ever had a CR or review. Neither tells me whether the governance record is a RESPONSE to the breach or ancient history. A breach with a live decision in flight is a managed problem; a breach with nothing moving is an abandoned one, and only the second one is my emergency.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q2-steward-unstewarded-version-still-referenced",
+        "AskingRole": "process-steward",
+        "WitnessLoop": "loop-02",
+        "QuestionText": "close-v1.0.0 is Archived and unstewarded \u2014 loop 1 confirmed IsUnstewarded fires exactly once. But it is still the target of ProcedureVersionLinks, and knowledge fragments and change requests may still point at it. Is my one unstewarded version genuinely inert, or is it still structurally load-bearing for something that is live?",
+        "WhyItMatters": "IsUnstewarded is a fact about the version in isolation. It says nothing about whether anything still depends on it. An archived, unstewarded, unreferenced version is a clean retirement. An archived, unstewarded version that a live version supersedes and that still owns knowledge fragments is an orphan holding pieces of a live procedure \u2014 and no one is accountable for it.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q2-steward-approved-cr-never-lands",
+        "AskingRole": "process-steward",
+        "WitnessLoop": "loop-02",
+        "QuestionText": "cr-close-timestamp is Approved. Loop 1 reads it as still OPEN, because IsOpen counts Approved as open. That means an approved change request permanently suppresses IsFitToExecute on the version it touches, and I have no way in the model to say the decision landed. How many of my versions are being held unfit by decisions that were actually made?",
+        "WhyItMatters": "This is real structural debt, not a query gap. ChangeRequests.IsOpen = OR(Draft, UnderReview, Approved) has no terminal state after Approved, so OpenChangeRequestCount never returns to zero and ProcedureVersions.IsFitToExecute reads 0/3 forever. Loop 1 measured 0/3 fit and could not say why. The honest fix is an Implemented/Closed terminal status plus a predicate that distinguishes 'decision pending' from 'decision made, not yet landed'.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q2-steward-control-kind-instead-of-hardcoded-ids",
+        "AskingRole": "process-steward",
+        "WitnessLoop": "loop-02",
+        "QuestionText": "Several of my loop-1 predicates name individual steps by id \u2014 Steps.IsHumanApprovalGate hardcodes policy-05 and close-06, StepExecutions.IsLegalReviewStep hardcodes policy-04, Steps.IsPreparationStep and IsApprovalStep hardcode role ids. That means the moment we add a third procedure, every one of those controls silently stops covering it. What KIND of control is each step, expressed as data rather than as a literal in a formula?",
+        "WhyItMatters": "This is the structural debt that most threatens the model's honesty. A predicate that hardcodes policy-04 does not mean 'legal review step'; it means 'this one row'. It will read FALSE on a new procedure's legal review step and the build will stay green. Loop 1 exposed the pattern by repeating it five times. The fix is a Steps.ControlKind column and predicates that read it.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
       }
     ]
   },
@@ -10913,6 +11935,36 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "Roles.DepartedAssignmentCount",
+        "TargetTable": "Roles",
+        "FieldName": "DepartedAssignmentCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(RoleAssignments!{{DepartedRoleKey}}, {{RoleId}})",
+        "InventedForQuestion": "q2-hr-departed-holder-left-claims-behind",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Roles.HasLostAHolder",
+        "TargetTable": "Roles",
+        "FieldName": "HasLostAHolder",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{DepartedAssignmentCount}} > 0",
+        "InventedForQuestion": "q2-hr-departed-holder-left-claims-behind",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Roles.IsVacatedRole",
+        "TargetTable": "Roles",
+        "FieldName": "IsVacatedRole",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{HasLostAHolder}}, {{HasNoCurrentHolder}})",
+        "InventedForQuestion": "q2-hr-departed-holder-left-claims-behind",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "Roles.SemanticTypeIri",
         "TargetTable": "Roles",
         "FieldName": "SemanticTypeIri",
@@ -11220,6 +12272,16 @@
         "Datatype": "boolean",
         "Formula": "=AND({{SupersedesAssignment}} <> \"\", {{OverrideRatePercent}} > {{PredecessorOverrideRatePercent}})",
         "InventedForQuestion": "q-variance-ai-quality-vs-human-baseline",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.DepartedRoleKey",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "DepartedRoleKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{HasDeparted}}, {{Role}}, \"\")",
+        "InventedForQuestion": "q2-hr-departed-holder-left-claims-behind",
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
@@ -12013,6 +13075,336 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "ProcedureVersions.CompoundFragileFragmentCount",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "CompoundFragileFragmentCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(KnowledgeFragments!{{CompoundFragileVersionKey}}, {{ProcedureVersionId}})",
+        "InventedForQuestion": "q2-authority-compound-fragility",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.RestsOnCompoundFragileKnowledge",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "RestsOnCompoundFragileKnowledge",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsLive}}, {{CompoundFragileFragmentCount}} > 0)",
+        "InventedForQuestion": "q2-authority-compound-fragility",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.ConcentratedWitnessSessionCount",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "ConcentratedWitnessSessionCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(ElicitationSessions!{{ConcentratedSessionVersionKey}}, {{ProcedureVersionId}})",
+        "InventedForQuestion": "q2-authority-elicitation-method-monoculture",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.KnowledgeBaseIsConcentrated",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "KnowledgeBaseIsConcentrated",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsLive}}, {{ConcentratedWitnessSessionCount}} > 0)",
+        "InventedForQuestion": "q2-authority-elicitation-method-monoculture",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.MachineConsumedUnapprovedCount",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "MachineConsumedUnapprovedCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(KnowledgeFragments!{{MachineConsumedUnapprovedVersionKey}}, {{ProcedureVersionId}})",
+        "InventedForQuestion": "q2-authority-unapproved-knowledge-reaching-machines",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.FeedsUnapprovedKnowledgeToMachines",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "FeedsUnapprovedKnowledgeToMachines",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsLive}}, {{MachineConsumedUnapprovedCount}} > 0)",
+        "InventedForQuestion": "q2-authority-unapproved-knowledge-reaching-machines",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.GenuinelyOverdueFragmentCount",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "GenuinelyOverdueFragmentCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(KnowledgeFragments!{{GenuinelyOverdueVersionKey}}, {{ProcedureVersionId}})",
+        "InventedForQuestion": "q2-authority-review-date-is-inferred-not-recorded",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.AwaitedDecisionCount",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "AwaitedDecisionCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(ChangeRequests!{{BacklogVersionKey}}, {{ProcedureVersionId}})",
+        "InventedForQuestion": "q2-hr-my-backlog-is-someone-elses-block",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.ScopedOpenBlockingGapCount",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "ScopedOpenBlockingGapCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(KnowledgeGaps!{{OpenBlockingGapVersionKey}}, {{ProcedureVersionId}})",
+        "InventedForQuestion": "q2-hr-my-backlog-is-someone-elses-block",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.IsBlockedOnPendingDecision",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "IsBlockedOnPendingDecision",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{AwaitedDecisionCount}} > 0, {{ScopedOpenBlockingGapCount}} > 0)",
+        "InventedForQuestion": "q2-hr-my-backlog-is-someone-elses-block",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.UnexercisedHumanGateCount",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "UnexercisedHumanGateCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(Steps!{{UnexercisedGateVersionKey}}, {{ProcedureVersionId}})",
+        "InventedForQuestion": "q2-hr-ai-boundary-holds-only-where-tested",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.AiBoundaryIsUnevidenced",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "AiBoundaryIsUnevidenced",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsLive}}, {{UnexercisedHumanGateCount}} > 0)",
+        "InventedForQuestion": "q2-hr-ai-boundary-holds-only-where-tested",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.LoadBearingUnapprovedCount",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "LoadBearingUnapprovedCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(KnowledgeFragments!{{UnapprovedLoadBearingVersionKey}}, {{ProcedureVersionId}})",
+        "InventedForQuestion": "q2-hr-my-unapproved-claim-is-load-bearing",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.UnlandedDecisionCount",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "UnlandedDecisionCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(ChangeRequests!{{UnlandedVersionKey}}, {{ProcedureVersionId}})",
+        "InventedForQuestion": "q2-hr-my-approvals-never-read-as-done",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.UnrehearsedControlEntryCount",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "UnrehearsedControlEntryCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(StepTransitions!{{UnrehearsedControlVersionKey}}, {{ProcedureVersionId}})",
+        "InventedForQuestion": "q2-steward-recovery-path-is-load-bearing",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.HasUnrehearsedControlEntry",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "HasUnrehearsedControlEntry",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{UnrehearsedControlEntryCount}} > 0",
+        "InventedForQuestion": "q2-steward-recovery-path-is-load-bearing",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.IsLiveWithUnrehearsedControl",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "IsLiveWithUnrehearsedControl",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsLive}}, {{HasUnrehearsedControlEntry}})",
+        "InventedForQuestion": "q2-steward-recovery-path-is-load-bearing",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.CadenceBreachCount",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "CadenceBreachCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(ReviewEvents!{{CadenceBreachVersionKey}}, {{ProcedureVersionId}})",
+        "InventedForQuestion": "q2-steward-cadence-breach-is-unremediated",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.IsInCadenceBreach",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "IsInCadenceBreach",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{CadenceBreachCount}} > 0",
+        "InventedForQuestion": "q2-steward-cadence-breach-is-unremediated",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.HasDecisionInFlight",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "HasDecisionInFlight",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{OpenChangeRequestCount}} > 0",
+        "InventedForQuestion": "q2-steward-cadence-breach-is-unremediated",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.IsUnremediatedCadenceBreach",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "IsUnremediatedCadenceBreach",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsInCadenceBreach}}, NOT({{HasDecisionInFlight}}))",
+        "InventedForQuestion": "q2-steward-cadence-breach-is-unremediated",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.IsManagedCadenceBreach",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "IsManagedCadenceBreach",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsInCadenceBreach}}, {{HasDecisionInFlight}})",
+        "InventedForQuestion": "q2-steward-cadence-breach-is-unremediated",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.GovernanceIsSilent",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "GovernanceIsSilent",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsLive}}, NOT({{HasGovernanceRecord}}))",
+        "InventedForQuestion": "q2-steward-cadence-breach-is-unremediated",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.ValidFragmentCount",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "ValidFragmentCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(KnowledgeFragments!{{ValidFragmentVersionKey}}, {{ProcedureVersionId}})",
+        "InventedForQuestion": "q2-steward-unstewarded-version-still-referenced",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.StillOwnsValidKnowledge",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "StillOwnsValidKnowledge",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{ValidFragmentCount}} > 0",
+        "InventedForQuestion": "q2-steward-unstewarded-version-still-referenced",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.IncomingSupersessionCount",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "IncomingSupersessionCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(ProcedureVersionLinks!{{SupersededVersionKey}}, {{ProcedureVersionId}})",
+        "InventedForQuestion": "q2-steward-unstewarded-version-still-referenced",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.IsStillReferenced",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "IsStillReferenced",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{IncomingSupersessionCount}} > 0",
+        "InventedForQuestion": "q2-steward-unstewarded-version-still-referenced",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.IsLoadBearingOrphan",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "IsLoadBearingOrphan",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsUnstewarded}}, OR({{StillOwnsValidKnowledge}}, {{IsStillReferenced}}))",
+        "InventedForQuestion": "q2-steward-unstewarded-version-still-referenced",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.IsCleanlyRetired",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "IsCleanlyRetired",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsUnstewarded}}, NOT({{StillOwnsValidKnowledge}}), NOT({{IsStillReferenced}}))",
+        "InventedForQuestion": "q2-steward-unstewarded-version-still-referenced",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.StalledImplementationCount",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "StalledImplementationCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(ChangeRequests!{{StalledImplementationVersionKey}}, {{ProcedureVersionId}})",
+        "InventedForQuestion": "q2-steward-approved-cr-never-lands",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.IsHeldUnfitByLandedDecisions",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "IsHeldUnfitByLandedDecisions",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND(NOT({{IsFitToExecute}}), {{StalledImplementationCount}} > 0)",
+        "InventedForQuestion": "q2-steward-approved-cr-never-lands",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.UndeclaredControlKindCount",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "UndeclaredControlKindCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(Steps!{{UndeclaredControlVersionKey}}, {{ProcedureVersionId}})",
+        "InventedForQuestion": "q2-steward-control-kind-instead-of-hardcoded-ids",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.ControlTaxonomyIsIncomplete",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "ControlTaxonomyIsIncomplete",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{UndeclaredControlKindCount}} > 0",
+        "InventedForQuestion": "q2-steward-control-kind-instead-of-hardcoded-ids",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "ProcedureVersions.SemanticTypeIri",
         "TargetTable": "ProcedureVersions",
         "FieldName": "SemanticTypeIri",
@@ -12080,6 +13472,16 @@
         "Datatype": "string",
         "Formula": null,
         "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersionLinks.SupersededVersionKey",
+        "TargetTable": "ProcedureVersionLinks",
+        "FieldName": "SupersededVersionKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{RelationIri}} = \"https://w3id.org/pko#nextVersion\", {{PreviousProcedureVersion}}, \"\")",
+        "InventedForQuestion": "q2-steward-unstewarded-version-still-referenced",
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
@@ -12463,6 +13865,116 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "Steps.ControlKind",
+        "TargetTable": "Steps",
+        "FieldName": "ControlKind",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Steps.UnwarrantedBoundaryCount",
+        "TargetTable": "Steps",
+        "FieldName": "UnwarrantedBoundaryCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(AuthorityBoundaries!{{UnwarrantedBoundaryStepKey}}, {{StepId}})",
+        "InventedForQuestion": "q2-authority-boundary-rests-on-expired-claim",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Steps.IsGovernedByUnwarrantedBoundary",
+        "TargetTable": "Steps",
+        "FieldName": "IsGovernedByUnwarrantedBoundary",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{UnwarrantedBoundaryCount}} > 0",
+        "InventedForQuestion": "q2-authority-boundary-rests-on-expired-claim",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Steps.SoftwareExecutionCount",
+        "TargetTable": "Steps",
+        "FieldName": "SoftwareExecutionCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(StepExecutions!{{SoftwareExecutionStepKey}}, {{StepId}})",
+        "InventedForQuestion": "q2-hr-ai-boundary-holds-only-where-tested",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Steps.HasBeenApproachedBySoftware",
+        "TargetTable": "Steps",
+        "FieldName": "HasBeenApproachedBySoftware",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{SoftwareExecutionCount}} > 0",
+        "InventedForQuestion": "q2-hr-ai-boundary-holds-only-where-tested",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Steps.IsUnexercisedHumanGate",
+        "TargetTable": "Steps",
+        "FieldName": "IsUnexercisedHumanGate",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsHumanApprovalGate}}, NOT({{HasBeenApproachedBySoftware}}))",
+        "InventedForQuestion": "q2-hr-ai-boundary-holds-only-where-tested",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Steps.IsDemonstratedHumanGate",
+        "TargetTable": "Steps",
+        "FieldName": "IsDemonstratedHumanGate",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsHumanApprovalGate}}, {{HasBeenApproachedBySoftware}}, {{GateHeldByHuman}})",
+        "InventedForQuestion": "q2-hr-ai-boundary-holds-only-where-tested",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Steps.UnexercisedGateVersionKey",
+        "TargetTable": "Steps",
+        "FieldName": "UnexercisedGateVersionKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{IsUnexercisedHumanGate}}, {{ProcedureVersion}}, \"\")",
+        "InventedForQuestion": "q2-hr-ai-boundary-holds-only-where-tested",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Steps.HasDeclaredControlKind",
+        "TargetTable": "Steps",
+        "FieldName": "HasDeclaredControlKind",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{ControlKind}} <> \"\"",
+        "InventedForQuestion": "q2-steward-control-kind-instead-of-hardcoded-ids",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Steps.UndeclaredControlVersionKey",
+        "TargetTable": "Steps",
+        "FieldName": "UndeclaredControlVersionKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{HasDeclaredControlKind}}, \"\", {{ProcedureVersion}})",
+        "InventedForQuestion": "q2-steward-control-kind-instead-of-hardcoded-ids",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Steps.ApprovalStepIsSoftwareAssigned",
+        "TargetTable": "Steps",
+        "FieldName": "ApprovalStepIsSoftwareAssigned",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{ControlKind}} = \"Approval\", {{IsSoftwareAssigned}})",
+        "InventedForQuestion": "q2-steward-control-kind-instead-of-hardcoded-ids",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "Steps.SemanticTypeIri",
         "TargetTable": "Steps",
         "FieldName": "SemanticTypeIri",
@@ -12650,6 +14162,46 @@
         "Datatype": "boolean",
         "Formula": "=AND({{IsRecoveryPath}}, NOT({{HasBeenTraversed}}))",
         "InventedForQuestion": "q-steward-untested-fallbacks",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepTransitions.TargetBlockingRequirementCount",
+        "TargetTable": "StepTransitions",
+        "FieldName": "TargetBlockingRequirementCount",
+        "FieldType": "lookup",
+        "Datatype": "number",
+        "Formula": "=INDEX(Steps!{{BlockingRequirementCount}}, MATCH({{ToStep}}, Steps!{{StepId}}, 0))",
+        "InventedForQuestion": "q2-steward-recovery-path-is-load-bearing",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepTransitions.TargetCarriesBlockingControl",
+        "TargetTable": "StepTransitions",
+        "FieldName": "TargetCarriesBlockingControl",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{TargetBlockingRequirementCount}} > 0",
+        "InventedForQuestion": "q2-steward-recovery-path-is-load-bearing",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepTransitions.IsUnrehearsedControlEntry",
+        "TargetTable": "StepTransitions",
+        "FieldName": "IsUnrehearsedControlEntry",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsUnwalkedRecoveryPath}}, {{TargetCarriesBlockingControl}})",
+        "InventedForQuestion": "q2-steward-recovery-path-is-load-bearing",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepTransitions.UnrehearsedControlVersionKey",
+        "TargetTable": "StepTransitions",
+        "FieldName": "UnrehearsedControlVersionKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{IsUnrehearsedControlEntry}}, {{ProcedureVersion}}, \"\")",
+        "InventedForQuestion": "q2-steward-recovery-path-is-load-bearing",
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
@@ -13763,6 +15315,56 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "ElicitationSessions.ValidFragmentsProduced",
+        "TargetTable": "ElicitationSessions",
+        "FieldName": "ValidFragmentsProduced",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(KnowledgeFragments!{{ValidFragmentSessionKey}}, {{ElicitationSessionId}})",
+        "InventedForQuestion": "q2-authority-elicitation-method-monoculture",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ElicitationSessions.IsHighYieldSession",
+        "TargetTable": "ElicitationSessions",
+        "FieldName": "IsHighYieldSession",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{ValidFragmentsProduced}} >= 3",
+        "InventedForQuestion": "q2-authority-elicitation-method-monoculture",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ElicitationSessions.IsConcentratedSingleWitness",
+        "TargetTable": "ElicitationSessions",
+        "FieldName": "IsConcentratedSingleWitness",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsSingleWitnessMethod}}, {{IsHighYieldSession}})",
+        "InventedForQuestion": "q2-authority-elicitation-method-monoculture",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ElicitationSessions.IsStaleConcentratedWitness",
+        "TargetTable": "ElicitationSessions",
+        "FieldName": "IsStaleConcentratedWitness",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsConcentratedSingleWitness}}, {{DaysSinceElicited}} > 180)",
+        "InventedForQuestion": "q2-authority-elicitation-method-monoculture",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ElicitationSessions.ConcentratedSessionVersionKey",
+        "TargetTable": "ElicitationSessions",
+        "FieldName": "ConcentratedSessionVersionKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{IsConcentratedSingleWitness}}, {{ProcedureVersion}}, \"\")",
+        "InventedForQuestion": "q2-authority-elicitation-method-monoculture",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "ElicitationSessions.SemanticTypeIri",
         "TargetTable": "ElicitationSessions",
         "FieldName": "SemanticTypeIri",
@@ -14283,6 +15885,286 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "KnowledgeFragments.LastReviewedAt",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "LastReviewedAt",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.FragilitySignalCount",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "FragilitySignalCount",
+        "FieldType": "calculated",
+        "Datatype": "integer",
+        "Formula": "=IF({{IsFromSingleWitness}}, 1, 0) + IF({{IsOverdueForReview}}, 1, 0) + IF({{IsLowConfidence}}, 1, 0) + IF({{HasOperationalReliance}}, 1, 0)",
+        "InventedForQuestion": "q2-authority-compound-fragility",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.IsCompoundFragile",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "IsCompoundFragile",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{FragilitySignalCount}} >= 3",
+        "InventedForQuestion": "q2-authority-compound-fragility",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.IsSinglePointOfFailure",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "IsSinglePointOfFailure",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsFromSingleWitness}}, {{HasOperationalReliance}})",
+        "InventedForQuestion": "q2-authority-compound-fragility",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.IsExpiringSinglePointOfFailure",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "IsExpiringSinglePointOfFailure",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsSinglePointOfFailure}}, {{IsOverdueForReview}})",
+        "InventedForQuestion": "q2-authority-compound-fragility",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.CompoundFragileVersionKey",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "CompoundFragileVersionKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{IsCompoundFragile}}, {{ProcedureVersion}}, \"\")",
+        "InventedForQuestion": "q2-authority-compound-fragility",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.ValidFragmentSessionKey",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "ValidFragmentSessionKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{IsCurrentlyValid}}, {{ElicitationSession}}, \"\")",
+        "InventedForQuestion": "q2-authority-elicitation-method-monoculture",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.ConsumingStepIsSoftwareAssigned",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "ConsumingStepIsSoftwareAssigned",
+        "FieldType": "lookup",
+        "Datatype": "boolean",
+        "Formula": "=INDEX(Steps!{{IsSoftwareAssigned}}, MATCH({{Step}}, Steps!{{StepId}}, 0))",
+        "InventedForQuestion": "q2-authority-unapproved-knowledge-reaching-machines",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.ConsumingStepAgentKind",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "ConsumingStepAgentKind",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(Steps!{{AssignedAgentKind}}, MATCH({{Step}}, Steps!{{StepId}}, 0))",
+        "InventedForQuestion": "q2-authority-unapproved-knowledge-reaching-machines",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.IsUnapprovedAndMachineConsumed",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "IsUnapprovedAndMachineConsumed",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsUnapprovedButReliedOn}}, {{ConsumingStepIsSoftwareAssigned}})",
+        "InventedForQuestion": "q2-authority-unapproved-knowledge-reaching-machines",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.IsUnapprovedAndHumanConsumed",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "IsUnapprovedAndHumanConsumed",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsUnapprovedButReliedOn}}, NOT({{ConsumingStepIsSoftwareAssigned}}))",
+        "InventedForQuestion": "q2-authority-unapproved-knowledge-reaching-machines",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.MachineConsumedUnapprovedVersionKey",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "MachineConsumedUnapprovedVersionKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{IsUnapprovedAndMachineConsumed}}, {{ProcedureVersion}}, \"\")",
+        "InventedForQuestion": "q2-authority-unapproved-knowledge-reaching-machines",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.HasReviewRecord",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "HasReviewRecord",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{LastReviewedAt}} <> \"\"",
+        "InventedForQuestion": "q2-authority-review-date-is-inferred-not-recorded",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.DaysSinceActualReview",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "DaysSinceActualReview",
+        "FieldType": "calculated",
+        "Datatype": "integer",
+        "Formula": "=IF({{HasReviewRecord}}, DATETIME_DIFF(NOW(), {{LastReviewedAt}}, \"days\"), 0)",
+        "InventedForQuestion": "q2-authority-review-date-is-inferred-not-recorded",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.IsUnreviewedSinceAuthoring",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "IsUnreviewedSinceAuthoring",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsCurrentlyValid}}, NOT({{HasReviewRecord}}))",
+        "InventedForQuestion": "q2-authority-review-date-is-inferred-not-recorded",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.IsGenuinelyOverdue",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "IsGenuinelyOverdue",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsCurrentlyValid}}, {{HasReviewRecord}}, {{DaysSinceActualReview}} > {{ReviewCadenceDays}})",
+        "InventedForQuestion": "q2-authority-review-date-is-inferred-not-recorded",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.ReviewRecencyIsInferred",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "ReviewRecencyIsInferred",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsOverdueForReview}}, NOT({{HasReviewRecord}}))",
+        "InventedForQuestion": "q2-authority-review-date-is-inferred-not-recorded",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.InferenceDisagreesWithRecord",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "InferenceDisagreesWithRecord",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{HasReviewRecord}}, {{IsOverdueForReview}}, NOT({{IsGenuinelyOverdue}}))",
+        "InventedForQuestion": "q2-authority-review-date-is-inferred-not-recorded",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.GenuinelyOverdueVersionKey",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "GenuinelyOverdueVersionKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{IsGenuinelyOverdue}}, {{ProcedureVersion}}, \"\")",
+        "InventedForQuestion": "q2-authority-review-date-is-inferred-not-recorded",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.RatifiedBoundaryCount",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "RatifiedBoundaryCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(AuthorityBoundaries!{{RatifyingFragmentKey}}, {{KnowledgeFragmentId}})",
+        "InventedForQuestion": "q2-hr-my-unapproved-claim-is-load-bearing",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.RelianceSurfaceCount",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "RelianceSurfaceCount",
+        "FieldType": "calculated",
+        "Datatype": "integer",
+        "Formula": "={{IsInvokedByAnException}} + {{RatifiedBoundaryCount}}",
+        "InventedForQuestion": "q2-hr-my-unapproved-claim-is-load-bearing",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.DaysAwaitingMyApproval",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "DaysAwaitingMyApproval",
+        "FieldType": "calculated",
+        "Datatype": "integer",
+        "Formula": "=IF({{IsMyUnfinishedApproval}}, DATETIME_DIFF(NOW(), {{ValidFrom}}, \"days\"), 0)",
+        "InventedForQuestion": "q2-hr-my-unapproved-claim-is-load-bearing",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.IsHighBlastRadiusUnapproved",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "IsHighBlastRadiusUnapproved",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsUnapprovedAndOperationallyLive}}, {{RelianceSurfaceCount}} > 1)",
+        "InventedForQuestion": "q2-hr-my-unapproved-claim-is-load-bearing",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.IsLongUnapproved",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "IsLongUnapproved",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsMyUnfinishedApproval}}, {{DaysAwaitingMyApproval}} > 30)",
+        "InventedForQuestion": "q2-hr-my-unapproved-claim-is-load-bearing",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.UnapprovedLoadBearingVersionKey",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "UnapprovedLoadBearingVersionKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{IsHighBlastRadiusUnapproved}}, {{ProcedureVersion}}, \"\")",
+        "InventedForQuestion": "q2-hr-my-unapproved-claim-is-load-bearing",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.OwnerRoleIsVacated",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "OwnerRoleIsVacated",
+        "FieldType": "lookup",
+        "Datatype": "boolean",
+        "Formula": "=INDEX(Roles!{{IsVacatedRole}}, MATCH({{OwnerRole}}, Roles!{{RoleId}}, 0))",
+        "InventedForQuestion": "q2-hr-departed-holder-left-claims-behind",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.IsOrphanedByRole",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "IsOrphanedByRole",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsCurrentlyValid}}, {{OwnerRoleIsVacated}})",
+        "InventedForQuestion": "q2-hr-departed-holder-left-claims-behind",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.ValidFragmentVersionKey",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "ValidFragmentVersionKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{IsCurrentlyValid}}, {{ProcedureVersion}}, \"\")",
+        "InventedForQuestion": "q2-steward-unstewarded-version-still-referenced",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "KnowledgeFragments.SemanticTypeIri",
         "TargetTable": "KnowledgeFragments",
         "FieldName": "SemanticTypeIri",
@@ -14510,6 +16392,36 @@
         "Datatype": "boolean",
         "Formula": "=AND({{IsOverdueGap}}, OR(NOT({{HasResolutionPlan}}), NOT({{OwnerIsStillEngaged}})))",
         "InventedForQuestion": "q-authority-known-unknowns",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeGaps.OpenBlockingGapVersionKey",
+        "TargetTable": "KnowledgeGaps",
+        "FieldName": "OpenBlockingGapVersionKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{IsOpenAndBlocking}}, {{ProcedureVersion}}, \"\")",
+        "InventedForQuestion": "q2-hr-my-backlog-is-someone-elses-block",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeGaps.OwnerRoleIsVacated",
+        "TargetTable": "KnowledgeGaps",
+        "FieldName": "OwnerRoleIsVacated",
+        "FieldType": "lookup",
+        "Datatype": "boolean",
+        "Formula": "=INDEX(Roles!{{IsVacatedRole}}, MATCH({{OwnerRole}}, Roles!{{RoleId}}, 0))",
+        "InventedForQuestion": "q2-hr-departed-holder-left-claims-behind",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeGaps.IsOwnerlessOpenGap",
+        "TargetTable": "KnowledgeGaps",
+        "FieldName": "IsOwnerlessOpenGap",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsOpen}}, {{OwnerRoleIsVacated}})",
+        "InventedForQuestion": "q2-hr-departed-holder-left-claims-behind",
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
@@ -15963,6 +17875,26 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "StepExecutions.SoftwareExecutionStepKey",
+        "TargetTable": "StepExecutions",
+        "FieldName": "SoftwareExecutionStepKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{WasExecutedBySoftware}}, {{Step}}, \"\")",
+        "InventedForQuestion": "q2-hr-ai-boundary-holds-only-where-tested",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.StepControlKind",
+        "TargetTable": "StepExecutions",
+        "FieldName": "StepControlKind",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(Steps!{{ControlKind}}, MATCH({{Step}}, Steps!{{StepId}}, 0))",
+        "InventedForQuestion": "q2-steward-control-kind-instead-of-hardcoded-ids",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "StepExecutions.SemanticTypeIri",
         "TargetTable": "StepExecutions",
         "FieldName": "SemanticTypeIri",
@@ -16848,7 +18780,7 @@
         "FieldName": "IsOpen",
         "FieldType": "calculated",
         "Datatype": "boolean",
-        "Formula": "=OR({{Status}} = \"Draft\", {{Status}} = \"UnderReview\", {{Status}} = \"Approved\")",
+        "Formula": "=AND(OR({{Status}} = \"Draft\", {{Status}} = \"UnderReview\", {{Status}} = \"Approved\"), {{ImplementedAt}} = \"\")",
         "InventedForQuestion": null,
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
@@ -16970,6 +18902,166 @@
         "Datatype": "boolean",
         "Formula": "=AND({{IsLiveDecisionBacklog}}, {{ChangeKind}} = \"Enhancement\")",
         "InventedForQuestion": "q-hr-authority-without-review",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ChangeRequests.ImplementedAt",
+        "TargetTable": "ChangeRequests",
+        "FieldName": "ImplementedAt",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ChangeRequests.BacklogVersionKey",
+        "TargetTable": "ChangeRequests",
+        "FieldName": "BacklogVersionKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{IsLiveDecisionBacklog}}, {{ProcedureVersion}}, \"\")",
+        "InventedForQuestion": "q2-hr-my-backlog-is-someone-elses-block",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ChangeRequests.IsMyPendingDecision",
+        "TargetTable": "ChangeRequests",
+        "FieldName": "IsMyPendingDecision",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{AuthorityRole}} = \"hr-policy-owner\", {{AwaitsAuthorityDecision}})",
+        "InventedForQuestion": "q2-hr-my-backlog-is-someone-elses-block",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ChangeRequests.IsMyBlockingBacklog",
+        "TargetTable": "ChangeRequests",
+        "FieldName": "IsMyBlockingBacklog",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsMyPendingDecision}}, {{BlocksAnOpenGap}})",
+        "InventedForQuestion": "q2-hr-my-backlog-is-someone-elses-block",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ChangeRequests.IsMyOverdueBacklog",
+        "TargetTable": "ChangeRequests",
+        "FieldName": "IsMyOverdueBacklog",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsMyBlockingBacklog}}, {{DaysPending}} > 14)",
+        "InventedForQuestion": "q2-hr-my-backlog-is-someone-elses-block",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ChangeRequests.IsImplemented",
+        "TargetTable": "ChangeRequests",
+        "FieldName": "IsImplemented",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{ImplementedAt}} <> \"\"",
+        "InventedForQuestion": "q2-hr-my-approvals-never-read-as-done",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ChangeRequests.IsMyDecidedRequest",
+        "TargetTable": "ChangeRequests",
+        "FieldName": "IsMyDecidedRequest",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{AuthorityRole}} = \"hr-policy-owner\", {{IsDecided}})",
+        "InventedForQuestion": "q2-hr-my-approvals-never-read-as-done",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ChangeRequests.IsMyDecidedButUnlanded",
+        "TargetTable": "ChangeRequests",
+        "FieldName": "IsMyDecidedButUnlanded",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsMyDecidedRequest}}, NOT({{IsImplemented}}))",
+        "InventedForQuestion": "q2-hr-my-approvals-never-read-as-done",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ChangeRequests.DecisionLatencyDays",
+        "TargetTable": "ChangeRequests",
+        "FieldName": "DecisionLatencyDays",
+        "FieldType": "calculated",
+        "Datatype": "integer",
+        "Formula": "=IF({{IsDecided}}, DATETIME_DIFF({{DecidedAt}}, {{RequestedAt}}, \"days\"), 0)",
+        "InventedForQuestion": "q2-hr-my-approvals-never-read-as-done",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ChangeRequests.ImplementationLatencyDays",
+        "TargetTable": "ChangeRequests",
+        "FieldName": "ImplementationLatencyDays",
+        "FieldType": "calculated",
+        "Datatype": "integer",
+        "Formula": "=IF({{IsImplemented}}, DATETIME_DIFF({{ImplementedAt}}, {{DecidedAt}}, \"days\"), 0)",
+        "InventedForQuestion": "q2-hr-my-approvals-never-read-as-done",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ChangeRequests.DelayIsDownstreamOfMe",
+        "TargetTable": "ChangeRequests",
+        "FieldName": "DelayIsDownstreamOfMe",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsMyDecidedButUnlanded}}, {{DecisionLatencyDays}} <= 14)",
+        "InventedForQuestion": "q2-hr-my-approvals-never-read-as-done",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ChangeRequests.UnlandedVersionKey",
+        "TargetTable": "ChangeRequests",
+        "FieldName": "UnlandedVersionKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{IsMyDecidedButUnlanded}}, {{ProcedureVersion}}, \"\")",
+        "InventedForQuestion": "q2-hr-my-approvals-never-read-as-done",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ChangeRequests.IsApprovedNotImplemented",
+        "TargetTable": "ChangeRequests",
+        "FieldName": "IsApprovedNotImplemented",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{Status}} = \"Approved\", NOT({{IsImplemented}}))",
+        "InventedForQuestion": "q2-steward-approved-cr-never-lands",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ChangeRequests.DaysSinceApproval",
+        "TargetTable": "ChangeRequests",
+        "FieldName": "DaysSinceApproval",
+        "FieldType": "calculated",
+        "Datatype": "integer",
+        "Formula": "=IF({{IsDecided}}, DATETIME_DIFF(NOW(), {{DecidedAt}}, \"days\"), 0)",
+        "InventedForQuestion": "q2-steward-approved-cr-never-lands",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ChangeRequests.IsStalledImplementation",
+        "TargetTable": "ChangeRequests",
+        "FieldName": "IsStalledImplementation",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsApprovedNotImplemented}}, {{DaysSinceApproval}} > 14)",
+        "InventedForQuestion": "q2-steward-approved-cr-never-lands",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ChangeRequests.StalledImplementationVersionKey",
+        "TargetTable": "ChangeRequests",
+        "FieldName": "StalledImplementationVersionKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{IsStalledImplementation}}, {{ProcedureVersion}}, \"\")",
+        "InventedForQuestion": "q2-steward-approved-cr-never-lands",
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
@@ -17160,6 +19252,16 @@
         "Datatype": "boolean",
         "Formula": "=AND({{ExceedsPromisedCadence}}, NOT({{IsOverdue}}))",
         "InventedForQuestion": "q-steward-cadence-breach",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ReviewEvents.CadenceBreachVersionKey",
+        "TargetTable": "ReviewEvents",
+        "FieldName": "CadenceBreachVersionKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{ExceedsPromisedCadence}}, {{ProcedureVersion}}, \"\")",
+        "InventedForQuestion": "q2-steward-cadence-breach-is-unremediated",
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
@@ -21143,12 +23245,32 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "AuthorityBoundaries.EvaluationContext",
+        "TargetTable": "AuthorityBoundaries",
+        "FieldName": "EvaluationContext",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AuthorityBoundaries.AsOfInstant",
+        "TargetTable": "AuthorityBoundaries",
+        "FieldName": "AsOfInstant",
+        "FieldType": "lookup",
+        "Datatype": "datetime",
+        "Formula": "=INDEX(EvaluationContexts!{{AsOfInstant}}, MATCH({{EvaluationContext}}, EvaluationContexts!{{EvaluationContextId}}, 0))",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "AuthorityBoundaries.IsCurrentlyBinding",
         "TargetTable": "AuthorityBoundaries",
         "FieldName": "IsCurrentlyBinding",
         "FieldType": "calculated",
         "Datatype": "boolean",
-        "Formula": "=AND({{Status}} = \"Approved\", {{ValidFrom}} <= NOW(), OR({{ValidTo}} = \"\", {{ValidTo}} > NOW()))",
+        "Formula": "=AND({{Status}} = \"Approved\", {{ValidFrom}} <= {{AsOfInstant}}, OR({{ValidTo}} = \"\", {{ValidTo}} > {{AsOfInstant}}))",
         "InventedForQuestion": "q-variance-ai-boundary-compliance",
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
@@ -21200,6 +23322,86 @@
         "Datatype": "boolean",
         "Formula": "=AND({{IsCurrentlyBinding}}, {{ViolationCount}} = 0)",
         "InventedForQuestion": "q-policy-ai-commitment-boundary",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AuthorityBoundaries.HasRatifyingFragment",
+        "TargetTable": "AuthorityBoundaries",
+        "FieldName": "HasRatifyingFragment",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{RatifiedByKnowledgeFragment}} <> \"\"",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AuthorityBoundaries.IsUnwarranted",
+        "TargetTable": "AuthorityBoundaries",
+        "FieldName": "IsUnwarranted",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsCurrentlyBinding}}, OR(NOT({{HasRatifyingFragment}}), NOT({{RatifyingFragmentIsValid}})))",
+        "InventedForQuestion": "q2-authority-boundary-rests-on-expired-claim",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AuthorityBoundaries.RatifyingFragmentIsOverdue",
+        "TargetTable": "AuthorityBoundaries",
+        "FieldName": "RatifyingFragmentIsOverdue",
+        "FieldType": "lookup",
+        "Datatype": "boolean",
+        "Formula": "=INDEX(KnowledgeFragments!{{IsOverdueForReview}}, MATCH({{RatifiedByKnowledgeFragment}}, KnowledgeFragments!{{KnowledgeFragmentId}}, 0))",
+        "InventedForQuestion": "q2-authority-boundary-rests-on-expired-claim",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AuthorityBoundaries.RatifyingFragmentIsSingleWitness",
+        "TargetTable": "AuthorityBoundaries",
+        "FieldName": "RatifyingFragmentIsSingleWitness",
+        "FieldType": "lookup",
+        "Datatype": "boolean",
+        "Formula": "=INDEX(KnowledgeFragments!{{IsFromSingleWitness}}, MATCH({{RatifiedByKnowledgeFragment}}, KnowledgeFragments!{{KnowledgeFragmentId}}, 0))",
+        "InventedForQuestion": "q2-authority-boundary-rests-on-expired-claim",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AuthorityBoundaries.WarrantIsThin",
+        "TargetTable": "AuthorityBoundaries",
+        "FieldName": "WarrantIsThin",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsCurrentlyBinding}}, OR({{RatifyingFragmentIsOverdue}}, {{RatifyingFragmentIsSingleWitness}}))",
+        "InventedForQuestion": "q2-authority-boundary-rests-on-expired-claim",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AuthorityBoundaries.IsUnwarrantedAndUntested",
+        "TargetTable": "AuthorityBoundaries",
+        "FieldName": "IsUnwarrantedAndUntested",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsUnwarranted}}, {{IsUntested}})",
+        "InventedForQuestion": "q2-authority-boundary-rests-on-expired-claim",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AuthorityBoundaries.UnwarrantedBoundaryStepKey",
+        "TargetTable": "AuthorityBoundaries",
+        "FieldName": "UnwarrantedBoundaryStepKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{IsUnwarranted}}, {{Step}}, \"\")",
+        "InventedForQuestion": "q2-authority-boundary-rests-on-expired-claim",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AuthorityBoundaries.RatifyingFragmentKey",
+        "TargetTable": "AuthorityBoundaries",
+        "FieldName": "RatifyingFragmentKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{IsCurrentlyBinding}}, {{RatifiedByKnowledgeFragment}}, \"\")",
+        "InventedForQuestion": "q2-hr-my-unapproved-claim-is-load-bearing",
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
@@ -24065,12 +26267,28 @@
         "Description": "Approved, Proposed, or Retired."
       },
       {
+        "name": "EvaluationContext",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "The evaluation context this boundary's currency is judged under.",
+        "RelatedTo": "EvaluationContexts"
+      },
+      {
+        "name": "AsOfInstant",
+        "datatype": "datetime",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The evaluation instant this boundary is judged against.",
+        "formula": "=INDEX(EvaluationContexts!{{AsOfInstant}}, MATCH({{EvaluationContext}}, EvaluationContexts!{{EvaluationContextId}}, 0))"
+      },
+      {
         "name": "IsCurrentlyBinding",
         "datatype": "boolean",
         "type": "calculated",
         "nullable": true,
         "Description": "TRUE when this boundary is approved and inside its valid-time window right now.",
-        "formula": "=AND({{Status}} = \"Approved\", {{ValidFrom}} <= NOW(), OR({{ValidTo}} = \"\", {{ValidTo}} > NOW()))"
+        "formula": "=AND({{Status}} = \"Approved\", {{ValidFrom}} <= {{AsOfInstant}}, OR({{ValidTo}} = \"\", {{ValidTo}} > {{AsOfInstant}}))"
       },
       {
         "name": "RatifyingFragmentIsValid",
@@ -24113,6 +26331,70 @@
         "formula": "=AND({{IsCurrentlyBinding}}, {{ViolationCount}} = 0)"
       },
       {
+        "name": "HasRatifyingFragment",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this boundary names a knowledge fragment as its justification. FALSE means the rule constrains behaviour on nobody's recorded authority \u2014 strictly worse than resting on an expired claim, and previously invisible because the ratification lookup returned NULL.",
+        "formula": "={{RatifiedByKnowledgeFragment}} <> \"\""
+      },
+      {
+        "name": "IsUnwarranted",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a binding constraint on authority rests on no ratifying claim at all, or on one that is no longer valid. Either way the rule is being enforced without a live justification.",
+        "formula": "=AND({{IsCurrentlyBinding}}, OR(NOT({{HasRatifyingFragment}}), NOT({{RatifyingFragmentIsValid}})))"
+      },
+      {
+        "name": "RatifyingFragmentIsOverdue",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether the fragment ratifying this boundary is past its review date.",
+        "formula": "=INDEX(KnowledgeFragments!{{IsOverdueForReview}}, MATCH({{RatifiedByKnowledgeFragment}}, KnowledgeFragments!{{KnowledgeFragmentId}}, 0))"
+      },
+      {
+        "name": "RatifyingFragmentIsSingleWitness",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether the fragment ratifying this boundary rests on a single witness.",
+        "formula": "=INDEX(KnowledgeFragments!{{IsFromSingleWitness}}, MATCH({{RatifiedByKnowledgeFragment}}, KnowledgeFragments!{{KnowledgeFragmentId}}, 0))"
+      },
+      {
+        "name": "WarrantIsThin",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "A binding boundary whose ratifying knowledge is either overdue for review or single-sourced \u2014 still valid, but weakly warranted.",
+        "formula": "=AND({{IsCurrentlyBinding}}, OR({{RatifyingFragmentIsOverdue}}, {{RatifyingFragmentIsSingleWitness}}))"
+      },
+      {
+        "name": "IsUnwarrantedAndUntested",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "A boundary whose ratification has lapsed and which no agent decision has ever been evaluated against \u2014 we cannot show it works and we cannot show why it exists.",
+        "formula": "=AND({{IsUnwarranted}}, {{IsUntested}})"
+      },
+      {
+        "name": "UnwarrantedBoundaryStepKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Composite-key echo: the step this boundary governs when the boundary is unwarranted, blank otherwise.",
+        "formula": "=IF({{IsUnwarranted}}, {{Step}}, \"\")"
+      },
+      {
+        "name": "RatifyingFragmentKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Composite-key echo: the fragment ratifying this boundary when the boundary is currently binding, blank otherwise.",
+        "formula": "=IF({{IsCurrentlyBinding}}, {{RatifiedByKnowledgeFragment}}, \"\")"
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -24132,7 +26414,8 @@
         "ValidFrom": "2026-04-01T00:00:00-05:00",
         "ValidTo": null,
         "Status": "Approved",
-        "SemanticTypeIri": "urn:effortless:pko-extension#AuthorityBoundary"
+        "SemanticTypeIri": "urn:effortless:pko-extension#AuthorityBoundary",
+        "EvaluationContext": "eval-current"
       },
       {
         "AuthorityBoundaryId": "bnd-close-06-no-nonhuman-approval",
@@ -24145,7 +26428,8 @@
         "ValidFrom": "2026-04-15T09:00:00-05:00",
         "ValidTo": null,
         "Status": "Approved",
-        "SemanticTypeIri": "urn:effortless:pko-extension#AuthorityBoundary"
+        "SemanticTypeIri": "urn:effortless:pko-extension#AuthorityBoundary",
+        "EvaluationContext": "eval-current"
       },
       {
         "AuthorityBoundaryId": "bnd-policy-03-no-ai-commitment",
@@ -24158,7 +26442,8 @@
         "ValidFrom": "2026-05-12T14:30:00-05:00",
         "ValidTo": null,
         "Status": "Approved",
-        "SemanticTypeIri": "urn:effortless:pko-extension#AuthorityBoundary"
+        "SemanticTypeIri": "urn:effortless:pko-extension#AuthorityBoundary",
+        "EvaluationContext": "eval-current"
       }
     ]
   }

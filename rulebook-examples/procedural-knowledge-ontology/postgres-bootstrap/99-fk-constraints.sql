@@ -560,5 +560,8 @@ ALTER TABLE authority_boundaries ADD CONSTRAINT fk_authority_boundaries_enforcin
 ALTER TABLE authority_boundaries DROP CONSTRAINT IF EXISTS fk_authority_boundaries_authority_role;
 ALTER TABLE authority_boundaries ADD CONSTRAINT fk_authority_boundaries_authority_role
   FOREIGN KEY (authority_role) REFERENCES roles (role_id);
+ALTER TABLE authority_boundaries DROP CONSTRAINT IF EXISTS fk_authority_boundaries_evaluation_context;
+ALTER TABLE authority_boundaries ADD CONSTRAINT fk_authority_boundaries_evaluation_context
+  FOREIGN KEY (evaluation_context) REFERENCES evaluation_contexts (evaluation_context_id);
 
--- 149 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
+-- 150 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).

@@ -191,6 +191,9 @@ SELECT
   calc_roles_current_assignment_valid_from(t.role_id) AS current_assignment_valid_from,-- Start of the currently-in-force assignment for this role.
   calc_roles_is_non_human_held(t.role_id) AS is_non_human_held,                 -- TRUE when the role's current agent is an AI agent or automated pipeline.
   calc_roles_is_ungoverned_non_human_role(t.role_id) AS is_ungoverned_non_human_role,-- TRUE when a role is pointed at a non-human agent but has no assignment row granting it.
+  calc_roles_departed_assignment_count(t.role_id) AS departed_assignment_count, -- How many assignments to this role have ended.
+  calc_roles_has_lost_a_holder(t.role_id) AS has_lost_a_holder,                 -- Whether anyone has ever departed this role.
+  calc_roles_is_vacated_role(t.role_id) AS is_vacated_role,                     -- A role somebody departed and that nobody currently covers.
   t.semantic_type_iri                                                           -- Exact semantic type IRI for the role.
 FROM roles t;
 
@@ -231,6 +234,7 @@ SELECT
   calc_role_assignments_override_rate_percent(t.role_assignment_id) AS override_rate_percent,-- Percentage of decisions under this assignment that a human overrode.
   calc_role_assignments_predecessor_override_rate_percent(t.role_assignment_id) AS predecessor_override_rate_percent,-- Override rate of the assignment this one superseded.
   calc_role_assignments_quality_regressed_vs_predecessor(t.role_assignment_id) AS quality_regressed_vs_predecessor,-- TRUE when this assignment is overridden by humans more often than the assignment it replaced.
+  calc_role_assignments_departed_role_key(t.role_assignment_id) AS departed_role_key,-- Composite-key echo: the role this assignment covered when the assignment has ended, blank otherwise.
   t.semantic_type_iri                                                           -- Exact class IRI for the assignment event.
 FROM role_assignments t;
 
@@ -355,6 +359,39 @@ SELECT
   calc_procedure_versions_has_unwitnessed_change(t.procedure_version_id) AS has_unwitnessed_change,-- TRUE when a live version's current content postdates every review it has had.
   calc_procedure_versions_count_of_stale_fragments(t.procedure_version_id) AS count_of_stale_fragments,-- How many supporting claims have outlived this version's review cadence.
   calc_procedure_versions_knowledge_is_staler_than_cadence(t.procedure_version_id) AS knowledge_is_staler_than_cadence,-- TRUE when this version rests on at least one claim older than its own review cadence.
+  calc_procedure_versions_compound_fragile_fragment_count(t.procedure_version_id) AS compound_fragile_fragment_count,-- How many compound-fragile knowledge fragments this version rests on.
+  calc_procedure_versions_rests_on_compound_fragile_knowledge(t.procedure_version_id) AS rests_on_compound_fragile_knowledge,-- A live procedure version resting on at least one knowledge fragment that carries three or more decay signals.
+  calc_procedure_versions_concentrated_witness_session_count(t.procedure_version_id) AS concentrated_witness_session_count,-- How many concentrated single-witness sessions underwrite this version's knowledge base.
+  calc_procedure_versions_knowledge_base_is_concentrated(t.procedure_version_id) AS knowledge_base_is_concentrated,-- A live version where at least one single-witness session alone underwrites three or more of its live claims.
+  calc_procedure_versions_machine_consumed_unapproved_count(t.procedure_version_id) AS machine_consumed_unapproved_count,-- How many unapproved claims this version feeds directly to software-assigned steps.
+  calc_procedure_versions_feeds_unapproved_knowledge_to_machines(t.procedure_version_id) AS feeds_unapproved_knowledge_to_machines,-- A live version that hands unapproved knowledge to a step no human is positioned to review.
+  calc_procedure_versions_genuinely_overdue_fragment_count(t.procedure_version_id) AS genuinely_overdue_fragment_count,-- How many of this version's claims are overdue by actual review record rather than by inference.
+  calc_procedure_versions_awaited_decision_count(t.procedure_version_id) AS awaited_decision_count,-- How many decisions are pending against this live version.
+  calc_procedure_versions_scoped_open_blocking_gap_count(t.procedure_version_id) AS scoped_open_blocking_gap_count,-- How many open blocking gaps belong to THIS version, correctly scoped.
+  calc_procedure_versions_is_blocked_on_pending_decision(t.procedure_version_id) AS is_blocked_on_pending_decision,-- A live version carrying both an undecided change request and an open blocking gap — the gap cannot close until the decision lands.
+  calc_procedure_versions_unexercised_human_gate_count(t.procedure_version_id) AS unexercised_human_gate_count,-- How many of this version's human-only gates have never been approached by software.
+  calc_procedure_versions_ai_boundary_is_unevidenced(t.procedure_version_id) AS ai_boundary_is_unevidenced,-- A live version whose human-only gates rest on assertion rather than on any observed attempt by software.
+  calc_procedure_versions_load_bearing_unapproved_count(t.procedure_version_id) AS load_bearing_unapproved_count,-- How many high-blast-radius unapproved claims this version rests on.
+  calc_procedure_versions_unlanded_decision_count(t.procedure_version_id) AS unlanded_decision_count,-- How many decided-but-unimplemented change requests hold this version's fitness down.
+  calc_procedure_versions_unrehearsed_control_entry_count(t.procedure_version_id) AS unrehearsed_control_entry_count,-- How many unrehearsed control entries exist in this procedure version.
+  calc_procedure_versions_has_unrehearsed_control_entry(t.procedure_version_id) AS has_unrehearsed_control_entry,-- Whether this live version has at least one blocking control that is only reachable by a path nobody has ever walked.
+  calc_procedure_versions_is_live_with_unrehearsed_control(t.procedure_version_id) AS is_live_with_unrehearsed_control,-- A version that is live for execution while carrying at least one never-rehearsed blocking control entry.
+  calc_procedure_versions_cadence_breach_count(t.procedure_version_id) AS cadence_breach_count,-- How many review events on this version are past their promised cadence.
+  calc_procedure_versions_is_in_cadence_breach(t.procedure_version_id) AS is_in_cadence_breach,-- Whether this version currently has at least one review event past the cadence its steward promised.
+  calc_procedure_versions_has_decision_in_flight(t.procedure_version_id) AS has_decision_in_flight,-- Whether this version has at least one change request that is still open.
+  calc_procedure_versions_is_unremediated_cadence_breach(t.procedure_version_id) AS is_unremediated_cadence_breach,-- A cadence breach with no open change request against the version — a broken promise with no response in motion.
+  calc_procedure_versions_is_managed_cadence_breach(t.procedure_version_id) AS is_managed_cadence_breach,-- A cadence breach where a change request is at least open against the version.
+  calc_procedure_versions_governance_is_silent(t.procedure_version_id) AS governance_is_silent,-- A live version with neither a change request nor a review event ever recorded against it.
+  calc_procedure_versions_valid_fragment_count(t.procedure_version_id) AS valid_fragment_count,-- How many currently-valid knowledge fragments are attached to this version.
+  calc_procedure_versions_still_owns_valid_knowledge(t.procedure_version_id) AS still_owns_valid_knowledge,-- Whether this version still holds at least one knowledge fragment that is currently valid.
+  calc_procedure_versions_incoming_supersession_count(t.procedure_version_id) AS incoming_supersession_count,-- How many other versions declare that they supersede this one.
+  calc_procedure_versions_is_still_referenced(t.procedure_version_id) AS is_still_referenced,-- Whether any other version points at this one through a supersession link.
+  calc_procedure_versions_is_load_bearing_orphan(t.procedure_version_id) AS is_load_bearing_orphan,-- An unstewarded version that is still referenced by a supersession link or still owns currently-valid knowledge — nobody is accountable for it and something still depends on it.
+  calc_procedure_versions_is_cleanly_retired(t.procedure_version_id) AS is_cleanly_retired,-- An unstewarded version that nothing depends on — a genuine, safe retirement.
+  calc_procedure_versions_stalled_implementation_count(t.procedure_version_id) AS stalled_implementation_count,-- How many approved-but-unimplemented change requests are stalled against this version.
+  calc_procedure_versions_is_held_unfit_by_landed_decisions(t.procedure_version_id) AS is_held_unfit_by_landed_decisions,-- A version reading unfit to execute specifically because approved changes have not been marked implemented.
+  calc_procedure_versions_undeclared_control_kind_count(t.procedure_version_id) AS undeclared_control_kind_count,-- How many steps in this version have not declared a control kind.
+  calc_procedure_versions_control_taxonomy_is_incomplete(t.procedure_version_id) AS control_taxonomy_is_incomplete,-- Whether this version contains any step whose control kind is unstated — meaning role-based and id-based control predicates cannot be trusted to cover it.
   t.semantic_type_iri                                                           -- Exact PKO class IRI.
 FROM procedure_versions t;
 
@@ -370,7 +407,8 @@ SELECT
   t.previous_procedure_version,                                                 -- Earlier version.
   t.next_procedure_version,                                                     -- Later version.
   t.relation_iri,                                                               -- Exact version relation IRI.
-  t.change_summary                                                              -- Summary of semantic change across the edge.
+  t.change_summary,                                                             -- Summary of semantic change across the edge.
+  calc_procedure_version_links_superseded_version_key(t.procedure_version_link_id) AS superseded_version_key-- Echoes the superseded (previous) version id for rows that express a next-version relation. Supersession is carried by RelationIri here, not by a separate link-kind column.
 FROM procedure_version_links t;
 
 -- ----------------------------------------------------------------------------
@@ -427,6 +465,17 @@ SELECT
   calc_steps_assigned_role_is_ungoverned(t.step_id) AS assigned_role_is_ungoverned,-- Whether this step's assigned role is a non-human role with no governing assignment.
   calc_steps_unusable_binding_count(t.step_id) AS unusable_binding_count,       -- Number of bindings at this step that are unapproved or stale.
   calc_steps_all_sources_usable(t.step_id) AS all_sources_usable,               -- TRUE when every binding at this step is an approved, fresh source.
+  t.control_kind,                                                               -- What kind of control this step is: Preparation, Approval, LegalReview, Verification, Extraction, Publication, Retrospective, or None. That policy-04 is a legal review is a property OF policy-04, not of a formula that happens to name it; storing it as data makes downstream predicates portable to procedures that do not exist yet.
+  calc_steps_unwarranted_boundary_count(t.step_id) AS unwarranted_boundary_count,-- How many boundaries governing this step are being enforced without a valid ratifying claim.
+  calc_steps_is_governed_by_unwarranted_boundary(t.step_id) AS is_governed_by_unwarranted_boundary,-- Whether this step's constraints on machine authority rest on a claim that is no longer valid.
+  calc_steps_software_execution_count(t.step_id) AS software_execution_count,   -- How many times a software agent has actually executed this step.
+  calc_steps_has_been_approached_by_software(t.step_id) AS has_been_approached_by_software,-- Whether any software agent has ever executed this step.
+  calc_steps_is_unexercised_human_gate(t.step_id) AS is_unexercised_human_gate, -- A human-only approval gate that no software agent has ever attempted — the control is asserted, not demonstrated.
+  calc_steps_is_demonstrated_human_gate(t.step_id) AS is_demonstrated_human_gate,-- A human gate that software has actually reached and that a human nevertheless held.
+  calc_steps_unexercised_gate_version_key(t.step_id) AS unexercised_gate_version_key,-- Composite-key echo: this step's procedure version when the step is an unexercised human gate, blank otherwise.
+  calc_steps_has_declared_control_kind(t.step_id) AS has_declared_control_kind, -- Whether this step declares what kind of control it is.
+  calc_steps_undeclared_control_version_key(t.step_id) AS undeclared_control_version_key,-- Composite-key echo: this step's procedure version when the step has no declared control kind, blank otherwise.
+  calc_steps_approval_step_is_software_assigned(t.step_id) AS approval_step_is_software_assigned,-- An approval-kind step whose assigned role is currently held by an AI agent or automated pipeline.
   t.semantic_type_iri                                                           -- Exact P-Plan class IRI.
 FROM steps t;
 
@@ -455,6 +504,10 @@ SELECT
   calc_step_transitions_count_of_observed_traversals(t.step_transition_id) AS count_of_observed_traversals,-- How many times this exact transition has actually been traversed.
   calc_step_transitions_has_been_traversed(t.step_transition_id) AS has_been_traversed,-- TRUE when this transition has been walked at least once.
   calc_step_transitions_is_unwalked_recovery_path(t.step_transition_id) AS is_unwalked_recovery_path,-- TRUE for a Fallback/Alternative transition with zero recorded traversals.
+  calc_step_transitions_target_blocking_requirement_count(t.step_transition_id) AS target_blocking_requirement_count,-- How many blocking requirements are attached to the step this transition lands on.
+  calc_step_transitions_target_carries_blocking_control(t.step_transition_id) AS target_carries_blocking_control,-- Whether the destination step of this transition carries at least one blocking control.
+  calc_step_transitions_is_unrehearsed_control_entry(t.step_transition_id) AS is_unrehearsed_control_entry,-- A recovery path that has never been traversed and that leads into a step carrying a blocking control.
+  calc_step_transitions_unrehearsed_control_version_key(t.step_transition_id) AS unrehearsed_control_version_key,-- Composite-key echo: this transition's procedure version when it is an unrehearsed control entry, blank otherwise.
   t.semantic_type_iri                                                           -- Exact PKO class IRI.
 FROM step_transitions t;
 
@@ -692,6 +745,11 @@ SELECT
   calc_elicitation_sessions_days_since_elicited(t.elicitation_session_id) AS days_since_elicited,-- Days elapsed since this elicitation session concluded.
   calc_elicitation_sessions_is_single_witness_method(t.elicitation_session_id) AS is_single_witness_method,-- TRUE when this session captured one practitioner's account rather than a group's.
   calc_elicitation_sessions_practitioner_is_still_engaged(t.elicitation_session_id) AS practitioner_is_still_engaged,-- Whether the practitioner whose knowledge this session captured still holds a role here.
+  calc_elicitation_sessions_valid_fragments_produced(t.elicitation_session_id) AS valid_fragments_produced,-- How many currently-valid knowledge fragments this one session produced.
+  calc_elicitation_sessions_is_high_yield_session(t.elicitation_session_id) AS is_high_yield_session,-- A session that alone underwrites three or more currently-valid claims.
+  calc_elicitation_sessions_is_concentrated_single_witness(t.elicitation_session_id) AS is_concentrated_single_witness,-- One unrepeated session with one witness that underwrites three or more live claims.
+  calc_elicitation_sessions_is_stale_concentrated_witness(t.elicitation_session_id) AS is_stale_concentrated_witness,-- A concentrated single-witness session more than 180 days old — matching the single-witness expiry horizon loop 1 already established.
+  calc_elicitation_sessions_concentrated_session_version_key(t.elicitation_session_id) AS concentrated_session_version_key,-- Composite-key echo: this session's procedure version when the session is a concentrated single witness, blank otherwise.
   t.semantic_type_iri                                                           -- Class IRI used in semantic projection.
 FROM elicitation_sessions t;
 
@@ -753,6 +811,34 @@ SELECT
   calc_knowledge_fragments_is_overdue_for_review(t.knowledge_fragment_id) AS is_overdue_for_review,-- TRUE when a currently-valid fragment has gone longer than its stewardship cadence without review.
   calc_knowledge_fragments_predates_current_role_holder(t.knowledge_fragment_id) AS predates_current_role_holder,-- TRUE when this knowledge became valid before the current holder of its owning role took the role.
   calc_knowledge_fragments_owner_role_assignment_valid_from(t.knowledge_fragment_id) AS owner_role_assignment_valid_from,-- When the current holder of the owning role took that role.
+  t.last_reviewed_at,                                                           -- When this fragment was last actually reviewed and reaffirmed by its owning role. Null when it has never been reviewed since authoring. IsOverdueForReview infers recency from ValidFrom, which records when the claim became TRUE, not when anyone last looked at it. Those are different events, and the inference is deliberately left in place under its own name rather than silently rewritten to fall back on this column.
+  calc_knowledge_fragments_fragility_signal_count(t.knowledge_fragment_id) AS fragility_signal_count,-- How many of the four loop-1 decay signals are simultaneously true for this fragment: single witness, overdue for review, low confidence, operational reliance.
+  calc_knowledge_fragments_is_compound_fragile(t.knowledge_fragment_id) AS is_compound_fragile,-- A fragment carrying at least three of the four decay signals at once.
+  calc_knowledge_fragments_is_single_point_of_failure(t.knowledge_fragment_id) AS is_single_point_of_failure,-- A claim that rests on exactly one person's word and that an active exception handler actually routes cases against.
+  calc_knowledge_fragments_is_expiring_single_point_of_failure(t.knowledge_fragment_id) AS is_expiring_single_point_of_failure,-- A single-sourced, operationally relied-upon claim that is also past its review date.
+  calc_knowledge_fragments_compound_fragile_version_key(t.knowledge_fragment_id) AS compound_fragile_version_key,-- Composite-key echo: this fragment's procedure version when the fragment is compound-fragile, blank otherwise.
+  calc_knowledge_fragments_valid_fragment_session_key(t.knowledge_fragment_id) AS valid_fragment_session_key,-- Composite-key echo: the elicitation session behind this fragment when the fragment is currently valid, blank otherwise.
+  calc_knowledge_fragments_consuming_step_is_software_assigned(t.knowledge_fragment_id) AS consuming_step_is_software_assigned,-- Whether the step that consumes this fragment is assigned to an AI agent or an automated pipeline.
+  calc_knowledge_fragments_consuming_step_agent_kind(t.knowledge_fragment_id) AS consuming_step_agent_kind,-- The kind of agent currently holding the role assigned to the step that consumes this fragment.
+  calc_knowledge_fragments_is_unapproved_and_machine_consumed(t.knowledge_fragment_id) AS is_unapproved_and_machine_consumed,-- An unapproved claim that a software-assigned step actually relies on — executed literally, with no human in position to notice it is wrong.
+  calc_knowledge_fragments_is_unapproved_and_human_consumed(t.knowledge_fragment_id) AS is_unapproved_and_human_consumed,-- An unapproved claim relied on by a human-assigned step — a reviewable risk rather than a silent one.
+  calc_knowledge_fragments_machine_consumed_unapproved_version_ke(t.knowledge_fragment_id) AS machine_consumed_unapproved_version_key,-- Composite-key echo: this fragment's procedure version when the fragment is unapproved and machine-consumed, blank otherwise.
+  calc_knowledge_fragments_has_review_record(t.knowledge_fragment_id) AS has_review_record,-- Whether this fragment has ever had an actual review recorded, as opposed to merely having a ValidFrom date.
+  calc_knowledge_fragments_days_since_actual_review(t.knowledge_fragment_id) AS days_since_actual_review,-- Days elapsed since this fragment was last actually reviewed. Zero when no review has ever been recorded — read this only alongside HasReviewRecord, never on its own.
+  calc_knowledge_fragments_is_unreviewed_since_authoring(t.knowledge_fragment_id) AS is_unreviewed_since_authoring,-- A currently-valid claim that nobody has ever reviewed since it was written.
+  calc_knowledge_fragments_is_genuinely_overdue(t.knowledge_fragment_id) AS is_genuinely_overdue,-- A valid claim whose LAST ACTUAL REVIEW is older than the cadence its owning version promised.
+  calc_knowledge_fragments_review_recency_is_inferred(t.knowledge_fragment_id) AS review_recency_is_inferred,-- A fragment reported overdue by the loop-1 inference purely because no review has ever been recorded — the number is an artifact of missing data, not evidence of neglect.
+  calc_knowledge_fragments_inference_disagrees_with_record(t.knowledge_fragment_id) AS inference_disagrees_with_record,-- A fragment the ValidFrom inference calls overdue but which was in fact reviewed inside its cadence — a false positive in the loop-1 predicate, now provable.
+  calc_knowledge_fragments_genuinely_overdue_version_key(t.knowledge_fragment_id) AS genuinely_overdue_version_key,-- Composite-key echo: this fragment's procedure version when the fragment is genuinely overdue, blank otherwise.
+  calc_knowledge_fragments_ratified_boundary_count(t.knowledge_fragment_id) AS ratified_boundary_count,-- How many currently-binding authority boundaries this fragment ratifies.
+  calc_knowledge_fragments_reliance_surface_count(t.knowledge_fragment_id) AS reliance_surface_count,-- Total number of distinct downstream dependents on this claim: exception handlers plus ratified authority boundaries.
+  calc_knowledge_fragments_days_awaiting_my_approval(t.knowledge_fragment_id) AS days_awaiting_my_approval,-- How long a claim of mine has been sitting at Reviewed without my approval. Zero when the claim is not mine or is already decided.
+  calc_knowledge_fragments_is_high_blast_radius_unapproved(t.knowledge_fragment_id) AS is_high_blast_radius_unapproved,-- An unapproved, operationally live claim of mine with more than one distinct downstream dependent.
+  calc_knowledge_fragments_is_long_unapproved(t.knowledge_fragment_id) AS is_long_unapproved,-- A claim that has waited on my signature for more than thirty days.
+  calc_knowledge_fragments_unapproved_load_bearing_version_key(t.knowledge_fragment_id) AS unapproved_load_bearing_version_key,-- Composite-key echo: this fragment's procedure version when it is a high-blast-radius unapproved claim, blank otherwise.
+  calc_knowledge_fragments_owner_role_is_vacated(t.knowledge_fragment_id) AS owner_role_is_vacated,-- Whether the role that owns this claim is currently vacated.
+  calc_knowledge_fragments_is_orphaned_by_role(t.knowledge_fragment_id) AS is_orphaned_by_role,-- A currently-valid claim whose owning role nobody holds — accountable to a vacancy.
+  calc_knowledge_fragments_valid_fragment_version_key(t.knowledge_fragment_id) AS valid_fragment_version_key,-- Composite-key echo: this fragment's owning procedure version when the fragment is currently valid, blank otherwise.
   t.semantic_type_iri                                                           -- Extension class IRI.
 FROM knowledge_fragments t;
 
@@ -785,6 +871,9 @@ SELECT
   calc_knowledge_gaps_owner_is_still_engaged(t.knowledge_gap_id) AS owner_is_still_engaged,-- Whether the agent responsible for closing this gap still holds a role here.
   calc_knowledge_gaps_has_resolution_plan(t.knowledge_gap_id) AS has_resolution_plan,-- TRUE when someone has written down how this gap would be closed.
   calc_knowledge_gaps_is_abandoned_unknown(t.knowledge_gap_id) AS is_abandoned_unknown,-- TRUE when an overdue gap has either no plan or no living owner — an admission of ignorance that nobody is acting on.
+  calc_knowledge_gaps_open_blocking_gap_version_key(t.knowledge_gap_id) AS open_blocking_gap_version_key,-- Composite-key echo: this gap's procedure version when the gap is both open and blocking, blank otherwise.
+  calc_knowledge_gaps_owner_role_is_vacated(t.knowledge_gap_id) AS owner_role_is_vacated,-- Whether the role that owns this gap is currently vacated.
+  calc_knowledge_gaps_is_ownerless_open_gap(t.knowledge_gap_id) AS is_ownerless_open_gap,-- An open gap whose owning role nobody currently holds — an acknowledged unknown with nobody accountable for closing it.
   t.semantic_type_iri                                                           -- Extension class IRI.
 FROM knowledge_gaps t;
 
@@ -966,6 +1055,8 @@ SELECT
   calc_step_executions_human_confirmation_missing(t.step_execution_id) AS human_confirmation_missing,-- TRUE when a step requiring human confirmation contains unconfirmed material non-human decisions.
   calc_step_executions_drafted_from_unusable_source(t.step_execution_id) AS drafted_from_unusable_source,-- TRUE when a drafting execution completed despite an unapproved or stale source at its step.
   calc_step_executions_inputs_were_usable(t.step_execution_id) AS inputs_were_usable,-- Source-usability verdict for the step this execution ran.
+  calc_step_executions_software_execution_step_key(t.step_execution_id) AS software_execution_step_key,-- Composite-key echo: the step this execution ran when it was carried out by software, blank otherwise.
+  calc_step_executions_step_control_kind(t.step_execution_id) AS step_control_kind,-- The control kind of the step this execution ran.
   t.semantic_type_iri                                                           -- Exact PKO class IRI.
 FROM step_executions t;
 
@@ -1117,7 +1208,7 @@ SELECT
   t.requested_at,                                                               -- Request time.
   t.decided_at,                                                                 -- Decision time.
   t.impact_assessment,                                                          -- Expected effect on commitments, data, projections, and tests.
-  calc_change_requests_is_open(t.change_request_id) AS is_open,                 -- TRUE while the request remains active.
+  calc_change_requests_is_open(t.change_request_id) AS is_open,                 -- TRUE while the change request is still outstanding. An Approved request stays open until ImplementedAt records that it actually landed — approval is a decision, not an outcome.
   calc_change_requests_open_change_version_key(t.change_request_id) AS open_change_version_key,-- Echoes the ProcedureVersion id only for change requests still open.
   calc_change_requests_is_decided(t.change_request_id) AS is_decided,           -- TRUE when a decision timestamp has been recorded.
   calc_change_requests_days_pending(t.change_request_id) AS days_pending,       -- Days from request to decision, or to now if still undecided.
@@ -1130,6 +1221,22 @@ SELECT
   calc_change_requests_touches_live_version(t.change_request_id) AS touches_live_version,-- Whether the version this request would alter is currently executable.
   calc_change_requests_is_live_decision_backlog(t.change_request_id) AS is_live_decision_backlog,-- TRUE when a decision I owe is blocking a change to a procedure currently in production.
   calc_change_requests_blocks_an_open_gap(t.change_request_id) AS blocks_an_open_gap,-- TRUE when an undecided request against a live version is the kind that exists to close a known gap.
+  t.implemented_at,                                                             -- When the approved change was actually applied to the procedure version. Null until it lands. Distinct from DecidedAt, which records only that the authority ruled. Approval and implementation are separate events; conflating them is what left IsOpen with no terminal state.
+  calc_change_requests_backlog_version_key(t.change_request_id) AS backlog_version_key,-- Composite-key echo: this request's procedure version when it is live decision backlog, blank otherwise.
+  calc_change_requests_is_my_pending_decision(t.change_request_id) AS is_my_pending_decision,-- A change request awaiting a decision that is mine personally to make.
+  calc_change_requests_is_my_blocking_backlog(t.change_request_id) AS is_my_blocking_backlog,-- A decision waiting on me that is holding an open gap on a live procedure.
+  calc_change_requests_is_my_overdue_backlog(t.change_request_id) AS is_my_overdue_backlog,-- A blocking decision that has waited on me for more than two weeks.
+  calc_change_requests_is_implemented(t.change_request_id) AS is_implemented,   -- Whether the approved change has actually been applied.
+  calc_change_requests_is_my_decided_request(t.change_request_id) AS is_my_decided_request,-- A change request I have personally ruled on.
+  calc_change_requests_is_my_decided_but_unlanded(t.change_request_id) AS is_my_decided_but_unlanded,-- A decision I have made that has not yet been applied — still counted against me by the loop-1 open-request measure.
+  calc_change_requests_decision_latency_days(t.change_request_id) AS decision_latency_days,-- How many days I took to rule, once ruled. Zero when undecided — read only alongside IsDecided.
+  calc_change_requests_implementation_latency_days(t.change_request_id) AS implementation_latency_days,-- How many days elapsed between my ruling and the change actually landing. Zero when not yet implemented.
+  calc_change_requests_delay_is_downstream_of_me(t.change_request_id) AS delay_is_downstream_of_me,-- A request I decided promptly that is nevertheless still outstanding because nobody has implemented it.
+  calc_change_requests_unlanded_version_key(t.change_request_id) AS unlanded_version_key,-- Composite-key echo: this request's procedure version when I have decided it but it has not landed, blank otherwise.
+  calc_change_requests_is_approved_not_implemented(t.change_request_id) AS is_approved_not_implemented,-- A change request the authority approved but that has not yet been applied.
+  calc_change_requests_days_since_approval(t.change_request_id) AS days_since_approval,-- How many days have elapsed since the authority decided this request. Zero when undecided.
+  calc_change_requests_is_stalled_implementation(t.change_request_id) AS is_stalled_implementation,-- An approved change request that has sat unimplemented for more than two weeks.
+  calc_change_requests_stalled_implementation_version_key(t.change_request_id) AS stalled_implementation_version_key,-- Composite-key echo: this request's procedure version when its implementation is stalled, blank otherwise.
   t.semantic_type_iri                                                           -- Extension class IRI.
 FROM change_requests t;
 
@@ -1158,6 +1265,7 @@ SELECT
   calc_review_events_exceeds_promised_cadence(t.review_event_id) AS exceeds_promised_cadence,-- TRUE when more days have elapsed since this review than the stewardship assignment promised as a cadence.
   calc_review_events_cadence_drift_days(t.review_event_id) AS cadence_drift_days,-- Signed drift: positive means we are past the promised cadence by this many days; negative means we are still inside it.
   calc_review_events_promise_and_behavior_disagree(t.review_event_id) AS promise_and_behavior_disagree,-- TRUE when the promised cadence has been blown but the hand-entered NextReviewDue still says we are fine.
+  calc_review_events_cadence_breach_version_key(t.review_event_id) AS cadence_breach_version_key,-- Composite-key echo: this review event's procedure version when the promised cadence has been exceeded, blank otherwise.
   t.semantic_type_iri                                                           -- Class IRI used in projection.
 FROM review_events t;
 
@@ -1700,12 +1808,22 @@ SELECT
   t.valid_from,                                                                 -- Start of the boundary's valid-time interval.
   t.valid_to,                                                                   -- End of the boundary's valid-time interval; null means open-ended.
   t.status,                                                                     -- Approved, Proposed, or Retired.
+  t.evaluation_context,                                                         -- The evaluation context this boundary's currency is judged under.
+  calc_authority_boundaries_as_of_instant(t.authority_boundary_id) AS as_of_instant,-- The evaluation instant this boundary is judged against.
   calc_authority_boundaries_is_currently_binding(t.authority_boundary_id) AS is_currently_binding,-- TRUE when this boundary is approved and inside its valid-time window right now.
   calc_authority_boundaries_ratifying_fragment_is_valid(t.authority_boundary_id) AS ratifying_fragment_is_valid,-- Whether the knowledge fragment that ratified this boundary is still valid.
   calc_authority_boundaries_step_when_binding(t.authority_boundary_id) AS step_when_binding,-- Echoes the step id when this boundary is currently binding, blank otherwise.
   calc_authority_boundaries_boundary_match_key(t.authority_boundary_id) AS boundary_match_key,-- Composite key of step, forbidden agent kind, and forbidden decision kind.
   calc_authority_boundaries_violation_count(t.authority_boundary_id) AS violation_count,-- Number of recorded decisions that this boundary forbids.
   calc_authority_boundaries_is_untested(t.authority_boundary_id) AS is_untested,-- TRUE when a binding boundary has never been triggered by any recorded decision.
+  calc_authority_boundaries_has_ratifying_fragment(t.authority_boundary_id) AS has_ratifying_fragment,-- TRUE when this boundary names a knowledge fragment as its justification. FALSE means the rule constrains behaviour on nobody's recorded authority — strictly worse than resting on an expired claim, and previously invisible because the ratification lookup returned NULL.
+  calc_authority_boundaries_is_unwarranted(t.authority_boundary_id) AS is_unwarranted,-- TRUE when a binding constraint on authority rests on no ratifying claim at all, or on one that is no longer valid. Either way the rule is being enforced without a live justification.
+  calc_authority_boundaries_ratifying_fragment_is_overdue(t.authority_boundary_id) AS ratifying_fragment_is_overdue,-- Whether the fragment ratifying this boundary is past its review date.
+  calc_authority_boundaries_ratifying_fragment_is_single_witness(t.authority_boundary_id) AS ratifying_fragment_is_single_witness,-- Whether the fragment ratifying this boundary rests on a single witness.
+  calc_authority_boundaries_warrant_is_thin(t.authority_boundary_id) AS warrant_is_thin,-- A binding boundary whose ratifying knowledge is either overdue for review or single-sourced — still valid, but weakly warranted.
+  calc_authority_boundaries_is_unwarranted_and_untested(t.authority_boundary_id) AS is_unwarranted_and_untested,-- A boundary whose ratification has lapsed and which no agent decision has ever been evaluated against — we cannot show it works and we cannot show why it exists.
+  calc_authority_boundaries_unwarranted_boundary_step_key(t.authority_boundary_id) AS unwarranted_boundary_step_key,-- Composite-key echo: the step this boundary governs when the boundary is unwarranted, blank otherwise.
+  calc_authority_boundaries_ratifying_fragment_key(t.authority_boundary_id) AS ratifying_fragment_key,-- Composite-key echo: the fragment ratifying this boundary when the boundary is currently binding, blank otherwise.
   t.semantic_type_iri                                                           -- Extension class IRI for an authority boundary.
 FROM authority_boundaries t;
 
