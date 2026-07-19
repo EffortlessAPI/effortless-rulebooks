@@ -1,2 +1,2 @@
-run-id: tsp-calibration-647-710-attempt-1
-intent: execute and commit the frozen-basis exact calibration campaign through loop 710
+run-id: tsp-calibration-647-710-attempt-2
+intent: resume the frozen-basis exact calibration campaign after correcting loop finalization
