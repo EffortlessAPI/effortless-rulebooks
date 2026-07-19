@@ -2288,6 +2288,46 @@ RETURNS BOOLEAN AS $$
   SELECT ((calc_procedure_executions_cleared_legal_review_count(p_procedure_execution_id))::NUMERIC > 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
+-- calc_procedure_executions_abandoned_failure_count
+-- Field: ProcedureExecutions.AbandonedFailureCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_executions_abandoned_failure_count(p_procedure_execution_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM message_deliveries WHERE calc_message_deliveries_abandoned_failure_execution_key(message_delivery_id) = (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_executions_delivered_count
+-- Field: ProcedureExecutions.DeliveredCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_executions_delivered_count(p_procedure_execution_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM message_deliveries WHERE calc_message_deliveries_reached_execution_key(message_delivery_id) = (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_executions_total_delivery_attempt_count
+-- Field: ProcedureExecutions.TotalDeliveryAttemptCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_executions_total_delivery_attempt_count(p_procedure_execution_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM message_deliveries WHERE procedure_execution = (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_executions_has_abandoned_failures
+-- Field: ProcedureExecutions.HasAbandonedFailures
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_executions_has_abandoned_failures(p_procedure_execution_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_procedure_executions_abandoned_failure_count(p_procedure_execution_id))::NUMERIC > 0)::boolean;
+$$ LANGUAGE sql STABLE;
+
 -- calc_step_executions_expected_duration_minutes
 -- Field: StepExecutions.ExpectedDurationMinutes
 -- Type: lookup | DataType: integer | Returns: INTEGER
@@ -3568,6 +3608,39 @@ RETURNS NUMERIC AS $$
   SELECT ((SELECT COUNT(*) FROM message_deliveries WHERE calc_message_deliveries_quiet_hours_violation_policy_key(message_delivery_id) = (SELECT NULLIF(communication_policy_id, '') FROM communication_policies WHERE communication_policy_id = p_communication_policy_id)))::numeric;
 $$ LANGUAGE sql STABLE;
 
+-- calc_message_templates_policy_max_message_length
+-- Field: MessageTemplates.PolicyMaxMessageLength
+-- Type: lookup | DataType: integer | Returns: INTEGER
+-- Lookup: MaxMessageLength from related CommunicationPolicies
+
+
+CREATE OR REPLACE FUNCTION calc_message_templates_policy_max_message_length(p_message_template_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT max_message_length::integer FROM communication_policies WHERE communication_policy_id = (SELECT communication_policy FROM message_templates WHERE message_template_id = p_message_template_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_templates_policy_max_segments
+-- Field: MessageTemplates.PolicyMaxSegments
+-- Type: lookup | DataType: integer | Returns: INTEGER
+-- Lookup: MaxSegments from related CommunicationPolicies
+
+
+CREATE OR REPLACE FUNCTION calc_message_templates_policy_max_segments(p_message_template_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT max_segments::integer FROM communication_policies WHERE communication_policy_id = (SELECT communication_policy FROM message_templates WHERE message_template_id = p_message_template_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_templates_last_approved_body_hash
+-- Field: MessageTemplates.LastApprovedBodyHash
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: ApprovedBodyHash from related TemplateApprovals
+
+
+CREATE OR REPLACE FUNCTION calc_message_templates_last_approved_body_hash(p_message_template_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT approved_body_hash::text FROM template_approvals WHERE template_approval_id = (SELECT last_valid_approval FROM message_templates WHERE message_template_id = p_message_template_id));
+$$ LANGUAGE sql STABLE;
+
 -- get_communication_policies_channel
 -- Helper function: Get Channel from CommunicationPolicies by CommunicationPolicyId
 -- Used for join-free cross-table references in aggregations
@@ -3685,6 +3758,15 @@ RETURNS INTEGER AS $$
   SELECT (SELECT quiet_hours_end_hour FROM communication_policies WHERE communication_policy_id = p_communication_policy_id);
 $$ LANGUAGE sql STABLE;
 
+-- get_communication_policies_required_opt_out_phrase
+-- Helper function: Get RequiredOptOutPhrase from CommunicationPolicies by CommunicationPolicyId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_communication_policies_required_opt_out_phrase(p_communication_policy_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT required_opt_out_phrase FROM communication_policies WHERE communication_policy_id = p_communication_policy_id);
+$$ LANGUAGE sql STABLE;
+
 -- get_communication_policies_semantic_type_iri
 -- Helper function: Get SemanticTypeIri from CommunicationPolicies by CommunicationPolicyId
 -- Used for join-free cross-table references in aggregations
@@ -3692,6 +3774,51 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION get_communication_policies_semantic_type_iri(p_communication_policy_id TEXT)
 RETURNS TEXT AS $$
   SELECT (SELECT semantic_type_iri FROM communication_policies WHERE communication_policy_id = p_communication_policy_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_template_approvals_decision
+-- Helper function: Get Decision from TemplateApprovals by TemplateApprovalId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_template_approvals_decision(p_template_approval_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT decision FROM template_approvals WHERE template_approval_id = p_template_approval_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_template_approvals_decided_at
+-- Helper function: Get DecidedAt from TemplateApprovals by TemplateApprovalId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_template_approvals_decided_at(p_template_approval_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT decided_at FROM template_approvals WHERE template_approval_id = p_template_approval_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_template_approvals_approved_body_hash
+-- Helper function: Get ApprovedBodyHash from TemplateApprovals by TemplateApprovalId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_template_approvals_approved_body_hash(p_template_approval_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT approved_body_hash FROM template_approvals WHERE template_approval_id = p_template_approval_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_template_approvals_notes
+-- Helper function: Get Notes from TemplateApprovals by TemplateApprovalId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_template_approvals_notes(p_template_approval_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT notes FROM template_approvals WHERE template_approval_id = p_template_approval_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_template_approvals_semantic_type_iri
+-- Helper function: Get SemanticTypeIri from TemplateApprovals by TemplateApprovalId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_template_approvals_semantic_type_iri(p_template_approval_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT semantic_type_iri FROM template_approvals WHERE template_approval_id = p_template_approval_id);
 $$ LANGUAGE sql STABLE;
 
 -- calc_message_templates_name
@@ -3702,6 +3829,86 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_message_templates_name(p_message_template_id TEXT)
 RETURNS TEXT AS $$
   SELECT (CONCAT((SELECT NULLIF(communication_policy, '') FROM message_templates WHERE message_template_id = p_message_template_id), ' / ', (SELECT NULLIF(locale, '') FROM message_templates WHERE message_template_id = p_message_template_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_templates_body_template_length
+-- Field: MessageTemplates.BodyTemplateLength
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_message_templates_body_template_length(p_message_template_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (LENGTH((SELECT NULLIF(body_template, '') FROM message_templates WHERE message_template_id = p_message_template_id)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_templates_is_template_over_length
+-- Field: MessageTemplates.IsTemplateOverLength
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_message_templates_is_template_over_length(p_message_template_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (calc_message_templates_body_template_length(p_message_template_id) > calc_message_templates_policy_max_message_length(p_message_template_id))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_templates_valid_approval_count
+-- Field: MessageTemplates.ValidApprovalCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_message_templates_valid_approval_count(p_message_template_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM template_approvals WHERE calc_template_approvals_valid_approval_template_key(template_approval_id) = (SELECT NULLIF(message_template_id, '') FROM message_templates WHERE message_template_id = p_message_template_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_templates_has_valid_approval
+-- Field: MessageTemplates.HasValidApproval
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_message_templates_has_valid_approval(p_message_template_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_message_templates_valid_approval_count(p_message_template_id))::NUMERIC > 0)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_templates_is_claiming_unbacked_approval
+-- Field: MessageTemplates.IsClaimingUnbackedApproval
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_message_templates_is_claiming_unbacked_approval(p_message_template_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((SELECT NULLIF(status, '') FROM message_templates WHERE message_template_id = p_message_template_id) = 'Approved' AND NOT (calc_message_templates_has_valid_approval(p_message_template_id))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_templates_has_body_drifted
+-- Field: MessageTemplates.HasBodyDrifted
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_message_templates_has_body_drifted(p_message_template_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_message_templates_last_approved_body_hash(p_message_template_id) IS NOT NULL AND (SELECT NULLIF(current_body_hash, '') FROM message_templates WHERE message_template_id = p_message_template_id) <> calc_message_templates_last_approved_body_hash(p_message_template_id)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_templates_is_sendable_under_approval
+-- Field: MessageTemplates.IsSendableUnderApproval
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_message_templates_is_sendable_under_approval(p_message_template_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((SELECT NULLIF(status, '') FROM message_templates WHERE message_template_id = p_message_template_id) = 'Approved' AND (calc_message_templates_has_valid_approval(p_message_template_id) AND NOT (calc_message_templates_has_body_drifted(p_message_template_id)))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_templates_drifted_send_count
+-- Field: MessageTemplates.DriftedSendCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_message_templates_drifted_send_count(p_message_template_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM message_deliveries WHERE calc_message_deliveries_drifted_send_template_key(message_delivery_id) = (SELECT NULLIF(message_template_id, '') FROM message_templates WHERE message_template_id = p_message_template_id)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- get_ontology_profiles_label
@@ -4538,6 +4745,61 @@ RETURNS BOOLEAN AS $$
   SELECT calc_procedure_executions_has_cleared_legal_review((SELECT procedure_execution FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id));
 $$ LANGUAGE sql STABLE;
 
+-- calc_message_deliveries_policy_max_message_length_at_send
+-- Field: MessageDeliveries.PolicyMaxMessageLengthAtSend
+-- Type: lookup | DataType: integer | Returns: INTEGER
+-- Lookup: MaxMessageLength from related CommunicationPolicies
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_policy_max_message_length_at_send(p_message_delivery_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT max_message_length::integer FROM communication_policies WHERE communication_policy_id = calc_message_deliveries_policy_channel(p_message_delivery_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_policy_max_segments_at_send
+-- Field: MessageDeliveries.PolicyMaxSegmentsAtSend
+-- Type: lookup | DataType: integer | Returns: INTEGER
+-- Lookup: MaxSegments from related CommunicationPolicies
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_policy_max_segments_at_send(p_message_delivery_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT max_segments::integer FROM communication_policies WHERE communication_policy_id = calc_message_deliveries_policy_channel(p_message_delivery_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_template_has_valid_approval
+-- Field: MessageDeliveries.TemplateHasValidApproval
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: HasValidApproval from related MessageTemplates
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_template_has_valid_approval(p_message_delivery_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_message_templates_has_valid_approval((SELECT message_template FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_policy_required_opt_out_phrase
+-- Field: MessageDeliveries.PolicyRequiredOptOutPhrase
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: RequiredOptOutPhrase from related CommunicationPolicies
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_policy_required_opt_out_phrase(p_message_delivery_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT required_opt_out_phrase::text FROM communication_policies WHERE communication_policy_id = calc_message_deliveries_policy_channel(p_message_delivery_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_template_was_sendable
+-- Field: MessageDeliveries.TemplateWasSendable
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: IsSendableUnderApproval from related MessageTemplates
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_template_was_sendable(p_message_delivery_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_message_templates_is_sendable_under_approval((SELECT message_template FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id));
+$$ LANGUAGE sql STABLE;
+
 -- get_recipients_display_name
 -- Helper function: Get DisplayName from Recipients by RecipientId
 -- Used for join-free cross-table references in aggregations
@@ -4626,6 +4888,15 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION get_message_templates_status(p_message_template_id TEXT)
 RETURNS TEXT AS $$
   SELECT (SELECT status FROM message_templates WHERE message_template_id = p_message_template_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_message_templates_current_body_hash
+-- Helper function: Get CurrentBodyHash from MessageTemplates by MessageTemplateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_message_templates_current_body_hash(p_message_template_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT current_body_hash FROM message_templates WHERE message_template_id = p_message_template_id);
 $$ LANGUAGE sql STABLE;
 
 -- get_message_templates_semantic_type_iri
@@ -4845,6 +5116,248 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_message_deliveries_is_unreviewed_send(p_message_delivery_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT ((calc_message_deliveries_was_actually_transmitted(p_message_delivery_id) AND NOT (calc_message_deliveries_execution_has_cleared_legal_review(p_message_delivery_id))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_rendered_body_length
+-- Field: MessageDeliveries.RenderedBodyLength
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_rendered_body_length(p_message_delivery_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (LENGTH((SELECT NULLIF(rendered_body, '') FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_segment_count
+-- Field: MessageDeliveries.SegmentCount
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_segment_count(p_message_delivery_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (CASE WHEN (calc_message_deliveries_rendered_body_length(p_message_delivery_id))::NUMERIC = 0 THEN (0)::text ELSE (CASE WHEN calc_message_deliveries_rendered_body_length(p_message_delivery_id) <= calc_message_deliveries_policy_max_message_length_at_send(p_message_delivery_id) THEN (1)::text ELSE (CEIL(((COALESCE(CASE WHEN (calc_message_deliveries_rendered_body_length(p_message_delivery_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_message_deliveries_rendered_body_length(p_message_delivery_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_message_deliveries_policy_max_message_length_at_send(p_message_delivery_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_message_deliveries_policy_max_message_length_at_send(p_message_delivery_id))::numeric ELSE NULL END, 0), 0)))::NUMERIC * POWER(10, (0)::INTEGER)) / POWER(10, (0)::INTEGER))::text END)::text END)::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_is_over_segment_limit
+-- Field: MessageDeliveries.IsOverSegmentLimit
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_is_over_segment_limit(p_message_delivery_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_message_deliveries_was_actually_transmitted(p_message_delivery_id) AND calc_message_deliveries_segment_count(p_message_delivery_id) > calc_message_deliveries_policy_max_segments_at_send(p_message_delivery_id)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_is_unapproved_send
+-- Field: MessageDeliveries.IsUnapprovedSend
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_is_unapproved_send(p_message_delivery_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_message_deliveries_was_actually_transmitted(p_message_delivery_id) AND NOT (calc_message_deliveries_template_has_valid_approval(p_message_delivery_id))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_policy_requires_opt_out
+-- Field: MessageDeliveries.PolicyRequiresOptOut
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_policy_requires_opt_out(p_message_delivery_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (calc_message_deliveries_policy_required_opt_out_phrase(p_message_delivery_id) IS NOT NULL)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_opt_out_phrase_position
+-- Field: MessageDeliveries.OptOutPhrasePosition
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_opt_out_phrase_position(p_message_delivery_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (POSITION(calc_message_deliveries_policy_required_opt_out_phrase(p_message_delivery_id) IN (SELECT NULLIF(rendered_body, '') FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_has_opt_out_phrase
+-- Field: MessageDeliveries.HasOptOutPhrase
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_has_opt_out_phrase(p_message_delivery_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_message_deliveries_opt_out_phrase_position(p_message_delivery_id))::NUMERIC > 0)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_is_opt_out_in_first_segment
+-- Field: MessageDeliveries.IsOptOutInFirstSegment
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_is_opt_out_in_first_segment(p_message_delivery_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_message_deliveries_has_opt_out_phrase(p_message_delivery_id) AND calc_message_deliveries_opt_out_phrase_position(p_message_delivery_id) <= calc_message_deliveries_policy_max_message_length_at_send(p_message_delivery_id)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_is_missing_required_opt_out
+-- Field: MessageDeliveries.IsMissingRequiredOptOut
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_is_missing_required_opt_out(p_message_delivery_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_message_deliveries_was_actually_transmitted(p_message_delivery_id) AND (calc_message_deliveries_policy_requires_opt_out(p_message_delivery_id) AND NOT (calc_message_deliveries_has_opt_out_phrase(p_message_delivery_id)))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_is_opt_out_at_risk_of_truncation
+-- Field: MessageDeliveries.IsOptOutAtRiskOfTruncation
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_is_opt_out_at_risk_of_truncation(p_message_delivery_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_message_deliveries_was_actually_transmitted(p_message_delivery_id) AND (calc_message_deliveries_policy_requires_opt_out(p_message_delivery_id) AND (calc_message_deliveries_has_opt_out_phrase(p_message_delivery_id) AND NOT (calc_message_deliveries_is_opt_out_in_first_segment(p_message_delivery_id))))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_is_failed_delivery
+-- Field: MessageDeliveries.IsFailedDelivery
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_is_failed_delivery(p_message_delivery_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((SELECT NULLIF(delivery_status, '') FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id) = 'Failed' OR (SELECT NULLIF(delivery_status, '') FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id) = 'Bounced'))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_is_suppressed
+-- Field: MessageDeliveries.IsSuppressed
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_is_suppressed(p_message_delivery_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((SELECT NULLIF(delivery_status, '') FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id) = 'Suppressed')::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_is_triaged
+-- Field: MessageDeliveries.IsTriaged
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_is_triaged(p_message_delivery_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((SELECT NULLIF(invoked_exception, '') FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id) IS NOT NULL)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_is_abandoned_failure
+-- Field: MessageDeliveries.IsAbandonedFailure
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_is_abandoned_failure(p_message_delivery_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_message_deliveries_is_failed_delivery(p_message_delivery_id) AND NOT (calc_message_deliveries_is_triaged(p_message_delivery_id))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_abandoned_failure_execution_key
+-- Field: MessageDeliveries.AbandonedFailureExecutionKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_abandoned_failure_execution_key(p_message_delivery_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_message_deliveries_is_abandoned_failure(p_message_delivery_id) THEN ((SELECT NULLIF(procedure_execution, '') FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_reached_execution_key
+-- Field: MessageDeliveries.ReachedExecutionKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_reached_execution_key(p_message_delivery_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN (SELECT NULLIF(delivery_status, '') FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id) = 'Delivered' THEN ((SELECT NULLIF(procedure_execution, '') FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_is_drifted_send
+-- Field: MessageDeliveries.IsDriftedSend
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_is_drifted_send(p_message_delivery_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_message_deliveries_was_actually_transmitted(p_message_delivery_id) AND NOT (calc_message_deliveries_template_was_sendable(p_message_delivery_id))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_drifted_send_template_key
+-- Field: MessageDeliveries.DriftedSendTemplateKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_drifted_send_template_key(p_message_delivery_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_message_deliveries_is_drifted_send(p_message_delivery_id) THEN ((SELECT NULLIF(message_template, '') FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_template_approvals_template_policy
+-- Field: TemplateApprovals.TemplatePolicy
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: CommunicationPolicy from related MessageTemplates
+
+
+CREATE OR REPLACE FUNCTION calc_template_approvals_template_policy(p_template_approval_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT communication_policy::text FROM message_templates WHERE message_template_id = (SELECT message_template FROM template_approvals WHERE template_approval_id = p_template_approval_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_template_approvals_required_approval_role
+-- Field: TemplateApprovals.RequiredApprovalRole
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: ApprovalRole from related CommunicationPolicies
+
+
+CREATE OR REPLACE FUNCTION calc_template_approvals_required_approval_role(p_template_approval_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT approval_role::text FROM communication_policies WHERE communication_policy_id = calc_template_approvals_template_policy(p_template_approval_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_template_approvals_name
+-- Field: TemplateApprovals.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_template_approvals_name(p_template_approval_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT((SELECT NULLIF(message_template, '') FROM template_approvals WHERE template_approval_id = p_template_approval_id), ' / ', (SELECT NULLIF(decision, '') FROM template_approvals WHERE template_approval_id = p_template_approval_id), ' / ', (SELECT decided_at::timestamptz FROM template_approvals WHERE template_approval_id = p_template_approval_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_template_approvals_is_approval_decision
+-- Field: TemplateApprovals.IsApprovalDecision
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_template_approvals_is_approval_decision(p_template_approval_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((SELECT NULLIF(decision, '') FROM template_approvals WHERE template_approval_id = p_template_approval_id) = 'Approved')::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_template_approvals_is_decided_by_required_role
+-- Field: TemplateApprovals.IsDecidedByRequiredRole
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_template_approvals_is_decided_by_required_role(p_template_approval_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((SELECT NULLIF(decided_in_role, '') FROM template_approvals WHERE template_approval_id = p_template_approval_id) = calc_template_approvals_required_approval_role(p_template_approval_id))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_template_approvals_valid_approval_template_key
+-- Field: TemplateApprovals.ValidApprovalTemplateKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_template_approvals_valid_approval_template_key(p_template_approval_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN (calc_template_approvals_is_approval_decision(p_template_approval_id) AND calc_template_approvals_is_decided_by_required_role(p_template_approval_id)) THEN ((SELECT NULLIF(message_template, '') FROM template_approvals WHERE template_approval_id = p_template_approval_id))::text ELSE ('')::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- ============================================================================

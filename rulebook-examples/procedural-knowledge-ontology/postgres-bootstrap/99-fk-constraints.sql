@@ -393,6 +393,9 @@ ALTER TABLE message_templates ADD CONSTRAINT fk_message_templates_communication_
 ALTER TABLE message_templates DROP CONSTRAINT IF EXISTS fk_message_templates_resource;
 ALTER TABLE message_templates ADD CONSTRAINT fk_message_templates_resource
   FOREIGN KEY (resource) REFERENCES resources (resource_id);
+ALTER TABLE message_templates DROP CONSTRAINT IF EXISTS fk_message_templates_last_valid_approval;
+ALTER TABLE message_templates ADD CONSTRAINT fk_message_templates_last_valid_approval
+  FOREIGN KEY (last_valid_approval) REFERENCES template_approvals (template_approval_id);
 
 -- SemanticMappings
 ALTER TABLE semantic_mappings DROP CONSTRAINT IF EXISTS fk_semantic_mappings_ontology_profile;
@@ -476,4 +479,15 @@ ALTER TABLE message_deliveries DROP CONSTRAINT IF EXISTS fk_message_deliveries_i
 ALTER TABLE message_deliveries ADD CONSTRAINT fk_message_deliveries_invoked_exception
   FOREIGN KEY (invoked_exception) REFERENCES exceptions (exception_id);
 
--- 124 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
+-- TemplateApprovals
+ALTER TABLE template_approvals DROP CONSTRAINT IF EXISTS fk_template_approvals_message_template;
+ALTER TABLE template_approvals ADD CONSTRAINT fk_template_approvals_message_template
+  FOREIGN KEY (message_template) REFERENCES message_templates (message_template_id);
+ALTER TABLE template_approvals DROP CONSTRAINT IF EXISTS fk_template_approvals_decided_by_agent;
+ALTER TABLE template_approvals ADD CONSTRAINT fk_template_approvals_decided_by_agent
+  FOREIGN KEY (decided_by_agent) REFERENCES agents (agent_id);
+ALTER TABLE template_approvals DROP CONSTRAINT IF EXISTS fk_template_approvals_decided_in_role;
+ALTER TABLE template_approvals ADD CONSTRAINT fk_template_approvals_decided_in_role
+  FOREIGN KEY (decided_in_role) REFERENCES roles (role_id);
+
+-- 128 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).

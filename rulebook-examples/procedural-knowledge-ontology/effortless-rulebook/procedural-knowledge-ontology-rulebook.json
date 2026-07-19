@@ -5510,6 +5510,38 @@
         "formula": "={{ClearedLegalReviewCount}} > 0"
       },
       {
+        "name": "AbandonedFailureCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of failed deliveries in this run that nobody picked up.",
+        "formula": "=COUNTIFS(MessageDeliveries!{{AbandonedFailureExecutionKey}}, {{ProcedureExecutionId}})"
+      },
+      {
+        "name": "DeliveredCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of confirmed-delivered messages in this run.",
+        "formula": "=COUNTIFS(MessageDeliveries!{{ReachedExecutionKey}}, {{ProcedureExecutionId}})"
+      },
+      {
+        "name": "TotalDeliveryAttemptCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Total delivery records of any status for this run.",
+        "formula": "=COUNTIFS(MessageDeliveries!{{ProcedureExecution}}, {{ProcedureExecutionId}})"
+      },
+      {
+        "name": "HasAbandonedFailures",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this run has any untriaged delivery failure.",
+        "formula": "={{AbandonedFailureCount}} > 0"
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -7747,6 +7779,13 @@
         "formula": "=COUNTIFS(MessageDeliveries!{{QuietHoursViolationPolicyKey}}, {{CommunicationPolicyId}})"
       },
       {
+        "name": "RequiredOptOutPhrase",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "The exact opt-out phrase every message on this channel must contain. Seeded 'Reply STOP' for comm-sms-policy, empty string for comm-email-policy."
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -7772,7 +7811,9 @@
         "Status": "Active",
         "SemanticTypeIri": "http://www.w3.org/ns/odrl/2/Policy",
         "QuietHoursStartHour": 0,
-        "QuietHoursEndHour": 0
+        "QuietHoursEndHour": 0,
+        "RequiredOptOutPhrase": null,
+        "RequiresOptOut": false
       },
       {
         "CommunicationPolicyId": "comm-sms-policy",
@@ -7791,7 +7832,9 @@
         "Status": "Active",
         "SemanticTypeIri": "http://www.w3.org/ns/odrl/2/Policy",
         "QuietHoursStartHour": 20,
-        "QuietHoursEndHour": 8
+        "QuietHoursEndHour": 8,
+        "RequiredOptOutPhrase": "Reply STOP to opt out",
+        "RequiresOptOut": true
       }
     ]
   },
@@ -7857,6 +7900,108 @@
         "type": "raw",
         "nullable": true,
         "Description": "Draft, Approved, Retired, or Superseded."
+      },
+      {
+        "name": "PolicyMaxMessageLength",
+        "datatype": "integer",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Per-segment character limit inherited from the governing channel policy.",
+        "formula": "=INDEX(CommunicationPolicies!{{MaxMessageLength}}, MATCH({{CommunicationPolicy}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0))"
+      },
+      {
+        "name": "PolicyMaxSegments",
+        "datatype": "integer",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Maximum permitted segment count from the governing channel policy.",
+        "formula": "=INDEX(CommunicationPolicies!{{MaxSegments}}, MATCH({{CommunicationPolicy}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0))"
+      },
+      {
+        "name": "BodyTemplateLength",
+        "datatype": "integer",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Character length of the raw template body before variable substitution.",
+        "formula": "=LEN({{BodyTemplate}})"
+      },
+      {
+        "name": "IsTemplateOverLength",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the template body alone already exceeds the single-segment limit before any variables are substituted in.",
+        "formula": "={{BodyTemplateLength}} > {{PolicyMaxMessageLength}}"
+      },
+      {
+        "name": "ValidApprovalCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of properly-authorized approvals on record for this template.",
+        "formula": "=COUNTIFS(TemplateApprovals!{{ValidApprovalTemplateKey}}, {{MessageTemplateId}})"
+      },
+      {
+        "name": "HasValidApproval",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when at least one properly-authorized approval exists for this template.",
+        "formula": "={{ValidApprovalCount}} > 0"
+      },
+      {
+        "name": "IsClaimingUnbackedApproval",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a template's Status says Approved but no properly-authorized approval record backs it. The phantom-approval witness.",
+        "formula": "=AND({{Status}} = \"Approved\", NOT({{HasValidApproval}}))"
+      },
+      {
+        "name": "CurrentBodyHash",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Digest of the template's current body text, maintained whenever the body is edited."
+      },
+      {
+        "name": "LastApprovedBodyHash",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Digest of the body text as it stood at the most recent valid approval.",
+        "formula": "=INDEX(TemplateApprovals!{{ApprovedBodyHash}}, MATCH({{LastValidApproval}}, TemplateApprovals!{{TemplateApprovalId}}, 0))"
+      },
+      {
+        "name": "LastValidApproval",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "The most recent properly-authorized approval on this template."
+      },
+      {
+        "name": "HasBodyDrifted",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the template body no longer matches what was approved.",
+        "formula": "=AND({{LastApprovedBodyHash}} <> \"\", {{CurrentBodyHash}} <> {{LastApprovedBodyHash}})"
+      },
+      {
+        "name": "IsSendableUnderApproval",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE only when the template is marked Approved, has a properly-authorized approval, AND its body still matches what was approved.",
+        "formula": "=AND({{Status}} = \"Approved\", AND({{HasValidApproval}}, NOT({{HasBodyDrifted}})))"
+      },
+      {
+        "name": "DriftedSendCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many messages went out from this template while it was not validly sendable.",
+        "formula": "=COUNTIFS(MessageDeliveries!{{DriftedSendTemplateKey}}, {{MessageTemplateId}})"
       },
       {
         "name": "SemanticTypeIri",
@@ -8679,6 +8824,51 @@
         "WitnessLoop": "loop-01",
         "QuestionText": "Did any message go out before my legal review of the underlying policy version was actually complete?",
         "WhyItMatters": "policy-04 is my step, and right now se-policy04 is InProgress with VerificationResult PENDING. If policy-07 sends started while my review was still open, then employees received a policy communication that no lawyer had cleared -- and the model would show that in black and white. This is not process pedantry: an unreviewed employment-policy communication can create a binding representation to the workforce, and once it is sent we cannot un-send it. The ordering constraint is the control.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-comms-oversized-sms",
+        "AskingRole": "communications-manager",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "Did any SMS we sent exceed 160 characters or split into more than 3 segments?",
+        "WhyItMatters": "comm-sms-policy sets MaxMessageLength=160 and MaxSegments=3, and I own that policy. An over-length SMS silently splits at the carrier, arrives out of order, and -- this is the part that actually hurts -- the opt-out language is in the LAST segment, so an over-length message can strip the STOP instruction off the end of what people actually read. I have the template body and I have the policy limit sitting in the same rulebook and nothing compares them. This is the most embarrassing category of failure because it was computable from data we already had.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-comms-approval-authority",
+        "AskingRole": "communications-manager",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "Was every template we actually sent approved by me -- the ApprovalRole the policy names -- before it went out?",
+        "WhyItMatters": "Both channel policies name communications-manager as ApprovalRole. Right now tmpl-policy-sms.Status says 'Approved' and there is not one byte of data anywhere saying WHO approved it or WHEN. A status string with no approver behind it is not an approval, it is a claim. I need to be able to point at a row and say 'that is my name, that is the timestamp, that is the version of the text I saw'. Otherwise when something goes out wrong, 'approved' means nothing and the accountability lands wherever it lands.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-comms-optout-present",
+        "AskingRole": "communications-manager",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "Did every SMS we actually transmitted carry the approved opt-out text?",
+        "WhyItMatters": "comm-sms-policy RequiredContent says 'Short notice, secure link, approved opt-out text' and the approved template ends with 'Reply STOP to opt out of SMS; email notices continue.' The opt-out is not decoration -- it is the mechanism by which consent stays meaningful, and it is the thing that gets clipped first when a message runs long. I want to check the RENDERED body, not the template, because that is what the employee saw. A policy that declares RequiredContent and never verifies it is a policy that documents an intention.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-comms-deliverability",
+        "AskingRole": "communications-manager",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "For this policy run, what fraction of the affected population actually received something -- and how many are sitting in a bounced or failed state that nobody is working?",
+        "WhyItMatters": "This is the question I get asked in the Monday stand-up and I currently answer it from a spreadsheet somebody built by hand. It is also the operational face of my own open item gap-policy-delivery-receipts and the change request I already filed, cr-policy-delivery. A bounce that nobody triages is functionally identical to never having sent the message, except that it produces a record that makes it LOOK like we did. That is the failure mode I most want visible.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-comms-template-drift",
+        "AskingRole": "communications-manager",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "Has any template been edited since I approved it, and did we send the edited version under cover of my old approval?",
+        "WhyItMatters": "This is the failure I have actually lived through. A template gets approved, then somebody makes 'a tiny wording fix' to the body, and the Status field still cheerfully says Approved because nothing ever reset it. The approval attaches to a version of the text, not to a row id. If the body changed and the approval did not, then my name is on something I never read -- and given that these are employment-policy communications, that is not a governance abstraction, that is my name on a legal notice I did not review.",
         "AnswerableBefore": false,
         "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
       }
@@ -12841,6 +13031,46 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "ProcedureExecutions.AbandonedFailureCount",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "AbandonedFailureCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(MessageDeliveries!{{AbandonedFailureExecutionKey}}, {{ProcedureExecutionId}})",
+        "InventedForQuestion": "q-comms-deliverability",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureExecutions.DeliveredCount",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "DeliveredCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(MessageDeliveries!{{ReachedExecutionKey}}, {{ProcedureExecutionId}})",
+        "InventedForQuestion": "q-comms-deliverability",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureExecutions.TotalDeliveryAttemptCount",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "TotalDeliveryAttemptCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(MessageDeliveries!{{ProcedureExecution}}, {{ProcedureExecutionId}})",
+        "InventedForQuestion": "q-comms-deliverability",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureExecutions.HasAbandonedFailures",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "HasAbandonedFailures",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{AbandonedFailureCount}} > 0",
+        "InventedForQuestion": "q-comms-deliverability",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "ProcedureExecutions.SemanticTypeIri",
         "TargetTable": "ProcedureExecutions",
         "FieldName": "SemanticTypeIri",
@@ -15001,6 +15231,16 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "CommunicationPolicies.RequiredOptOutPhrase",
+        "TargetTable": "CommunicationPolicies",
+        "FieldName": "RequiredOptOutPhrase",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": "q-comms-optout-present",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "CommunicationPolicies.SemanticTypeIri",
         "TargetTable": "CommunicationPolicies",
         "FieldName": "SemanticTypeIri",
@@ -15088,6 +15328,136 @@
         "Datatype": "string",
         "Formula": null,
         "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageTemplates.PolicyMaxMessageLength",
+        "TargetTable": "MessageTemplates",
+        "FieldName": "PolicyMaxMessageLength",
+        "FieldType": "lookup",
+        "Datatype": "integer",
+        "Formula": "=INDEX(CommunicationPolicies!{{MaxMessageLength}}, MATCH({{CommunicationPolicy}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0))",
+        "InventedForQuestion": "q-comms-oversized-sms",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageTemplates.PolicyMaxSegments",
+        "TargetTable": "MessageTemplates",
+        "FieldName": "PolicyMaxSegments",
+        "FieldType": "lookup",
+        "Datatype": "integer",
+        "Formula": "=INDEX(CommunicationPolicies!{{MaxSegments}}, MATCH({{CommunicationPolicy}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0))",
+        "InventedForQuestion": "q-comms-oversized-sms",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageTemplates.BodyTemplateLength",
+        "TargetTable": "MessageTemplates",
+        "FieldName": "BodyTemplateLength",
+        "FieldType": "calculated",
+        "Datatype": "integer",
+        "Formula": "=LEN({{BodyTemplate}})",
+        "InventedForQuestion": "q-comms-oversized-sms",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageTemplates.IsTemplateOverLength",
+        "TargetTable": "MessageTemplates",
+        "FieldName": "IsTemplateOverLength",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{BodyTemplateLength}} > {{PolicyMaxMessageLength}}",
+        "InventedForQuestion": "q-comms-oversized-sms",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageTemplates.ValidApprovalCount",
+        "TargetTable": "MessageTemplates",
+        "FieldName": "ValidApprovalCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(TemplateApprovals!{{ValidApprovalTemplateKey}}, {{MessageTemplateId}})",
+        "InventedForQuestion": "q-comms-approval-authority",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageTemplates.HasValidApproval",
+        "TargetTable": "MessageTemplates",
+        "FieldName": "HasValidApproval",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{ValidApprovalCount}} > 0",
+        "InventedForQuestion": "q-comms-approval-authority",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageTemplates.IsClaimingUnbackedApproval",
+        "TargetTable": "MessageTemplates",
+        "FieldName": "IsClaimingUnbackedApproval",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{Status}} = \"Approved\", NOT({{HasValidApproval}}))",
+        "InventedForQuestion": "q-comms-approval-authority",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageTemplates.CurrentBodyHash",
+        "TargetTable": "MessageTemplates",
+        "FieldName": "CurrentBodyHash",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": "q-comms-template-drift",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageTemplates.LastApprovedBodyHash",
+        "TargetTable": "MessageTemplates",
+        "FieldName": "LastApprovedBodyHash",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(TemplateApprovals!{{ApprovedBodyHash}}, MATCH({{LastValidApproval}}, TemplateApprovals!{{TemplateApprovalId}}, 0))",
+        "InventedForQuestion": "q-comms-template-drift",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageTemplates.LastValidApproval",
+        "TargetTable": "MessageTemplates",
+        "FieldName": "LastValidApproval",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": "q-comms-template-drift",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageTemplates.HasBodyDrifted",
+        "TargetTable": "MessageTemplates",
+        "FieldName": "HasBodyDrifted",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{LastApprovedBodyHash}} <> \"\", {{CurrentBodyHash}} <> {{LastApprovedBodyHash}})",
+        "InventedForQuestion": "q-comms-template-drift",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageTemplates.IsSendableUnderApproval",
+        "TargetTable": "MessageTemplates",
+        "FieldName": "IsSendableUnderApproval",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{Status}} = \"Approved\", AND({{HasValidApproval}}, NOT({{HasBodyDrifted}})))",
+        "InventedForQuestion": "q-comms-template-drift",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageTemplates.DriftedSendCount",
+        "TargetTable": "MessageTemplates",
+        "FieldName": "DriftedSendCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(MessageDeliveries!{{DriftedSendTemplateKey}}, {{MessageTemplateId}})",
+        "InventedForQuestion": "q-comms-template-drift",
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
@@ -16731,8 +17101,388 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "MessageDeliveries.RenderedBodyLength",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "RenderedBodyLength",
+        "FieldType": "calculated",
+        "Datatype": "integer",
+        "Formula": "=LEN({{RenderedBody}})",
+        "InventedForQuestion": "q-comms-oversized-sms",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.PolicyMaxMessageLengthAtSend",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "PolicyMaxMessageLengthAtSend",
+        "FieldType": "lookup",
+        "Datatype": "integer",
+        "Formula": "=INDEX(CommunicationPolicies!{{MaxMessageLength}}, MATCH({{PolicyChannel}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0))",
+        "InventedForQuestion": "q-comms-oversized-sms",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.SegmentCount",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "SegmentCount",
+        "FieldType": "calculated",
+        "Datatype": "integer",
+        "Formula": "=IF({{RenderedBodyLength}} = 0, 0, IF({{RenderedBodyLength}} <= {{PolicyMaxMessageLengthAtSend}}, 1, ROUNDUP({{RenderedBodyLength}} / {{PolicyMaxMessageLengthAtSend}}, 0)))",
+        "InventedForQuestion": "q-comms-oversized-sms",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.PolicyMaxSegmentsAtSend",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "PolicyMaxSegmentsAtSend",
+        "FieldType": "lookup",
+        "Datatype": "integer",
+        "Formula": "=INDEX(CommunicationPolicies!{{MaxSegments}}, MATCH({{PolicyChannel}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0))",
+        "InventedForQuestion": "q-comms-oversized-sms",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.IsOverSegmentLimit",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "IsOverSegmentLimit",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{WasActuallyTransmitted}}, {{SegmentCount}} > {{PolicyMaxSegmentsAtSend}})",
+        "InventedForQuestion": "q-comms-oversized-sms",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.TemplateHasValidApproval",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "TemplateHasValidApproval",
+        "FieldType": "lookup",
+        "Datatype": "boolean",
+        "Formula": "=INDEX(MessageTemplates!{{HasValidApproval}}, MATCH({{MessageTemplate}}, MessageTemplates!{{MessageTemplateId}}, 0))",
+        "InventedForQuestion": "q-comms-approval-authority",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.IsUnapprovedSend",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "IsUnapprovedSend",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{WasActuallyTransmitted}}, NOT({{TemplateHasValidApproval}}))",
+        "InventedForQuestion": "q-comms-approval-authority",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.PolicyRequiredOptOutPhrase",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "PolicyRequiredOptOutPhrase",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(CommunicationPolicies!{{RequiredOptOutPhrase}}, MATCH({{PolicyChannel}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0))",
+        "InventedForQuestion": "q-comms-optout-present",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.PolicyRequiresOptOut",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "PolicyRequiresOptOut",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{PolicyRequiredOptOutPhrase}} <> \"\"",
+        "InventedForQuestion": "q-comms-optout-present",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.OptOutPhrasePosition",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "OptOutPhrasePosition",
+        "FieldType": "calculated",
+        "Datatype": "integer",
+        "Formula": "=FIND({{PolicyRequiredOptOutPhrase}}, {{RenderedBody}})",
+        "InventedForQuestion": "q-comms-optout-present",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.HasOptOutPhrase",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "HasOptOutPhrase",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{OptOutPhrasePosition}} > 0",
+        "InventedForQuestion": "q-comms-optout-present",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.IsOptOutInFirstSegment",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "IsOptOutInFirstSegment",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{HasOptOutPhrase}}, {{OptOutPhrasePosition}} <= {{PolicyMaxMessageLengthAtSend}})",
+        "InventedForQuestion": "q-comms-optout-present",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.IsMissingRequiredOptOut",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "IsMissingRequiredOptOut",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{WasActuallyTransmitted}}, AND({{PolicyRequiresOptOut}}, NOT({{HasOptOutPhrase}})))",
+        "InventedForQuestion": "q-comms-optout-present",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.IsOptOutAtRiskOfTruncation",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "IsOptOutAtRiskOfTruncation",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{WasActuallyTransmitted}}, AND({{PolicyRequiresOptOut}}, AND({{HasOptOutPhrase}}, NOT({{IsOptOutInFirstSegment}}))))",
+        "InventedForQuestion": "q-comms-optout-present",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.IsFailedDelivery",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "IsFailedDelivery",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=OR({{DeliveryStatus}} = \"Failed\", {{DeliveryStatus}} = \"Bounced\")",
+        "InventedForQuestion": "q-comms-deliverability",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.IsSuppressed",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "IsSuppressed",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{DeliveryStatus}} = \"Suppressed\"",
+        "InventedForQuestion": "q-comms-deliverability",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.IsTriaged",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "IsTriaged",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{InvokedException}} <> \"\"",
+        "InventedForQuestion": "q-comms-deliverability",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.IsAbandonedFailure",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "IsAbandonedFailure",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsFailedDelivery}}, NOT({{IsTriaged}}))",
+        "InventedForQuestion": "q-comms-deliverability",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.AbandonedFailureExecutionKey",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "AbandonedFailureExecutionKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{IsAbandonedFailure}}, {{ProcedureExecution}}, \"\")",
+        "InventedForQuestion": "q-comms-deliverability",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.ReachedExecutionKey",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "ReachedExecutionKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{DeliveryStatus}} = \"Delivered\", {{ProcedureExecution}}, \"\")",
+        "InventedForQuestion": "q-comms-deliverability",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.TemplateWasSendable",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "TemplateWasSendable",
+        "FieldType": "lookup",
+        "Datatype": "boolean",
+        "Formula": "=INDEX(MessageTemplates!{{IsSendableUnderApproval}}, MATCH({{MessageTemplate}}, MessageTemplates!{{MessageTemplateId}}, 0))",
+        "InventedForQuestion": "q-comms-template-drift",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.IsDriftedSend",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "IsDriftedSend",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{WasActuallyTransmitted}}, NOT({{TemplateWasSendable}}))",
+        "InventedForQuestion": "q-comms-template-drift",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.DriftedSendTemplateKey",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "DriftedSendTemplateKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{IsDriftedSend}}, {{MessageTemplate}}, \"\")",
+        "InventedForQuestion": "q-comms-template-drift",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "MessageDeliveries.SemanticTypeIri",
         "TargetTable": "MessageDeliveries",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "TemplateApprovals.TemplateApprovalId",
+        "TargetTable": "TemplateApprovals",
+        "FieldName": "TemplateApprovalId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "TemplateApprovals.Name",
+        "TargetTable": "TemplateApprovals",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{MessageTemplate}} & \" / \" & {{Decision}} & \" / \" & {{DecidedAt}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "TemplateApprovals.MessageTemplate",
+        "TargetTable": "TemplateApprovals",
+        "FieldName": "MessageTemplate",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "TemplateApprovals.DecidedByAgent",
+        "TargetTable": "TemplateApprovals",
+        "FieldName": "DecidedByAgent",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "TemplateApprovals.DecidedInRole",
+        "TargetTable": "TemplateApprovals",
+        "FieldName": "DecidedInRole",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "TemplateApprovals.Decision",
+        "TargetTable": "TemplateApprovals",
+        "FieldName": "Decision",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "TemplateApprovals.DecidedAt",
+        "TargetTable": "TemplateApprovals",
+        "FieldName": "DecidedAt",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "TemplateApprovals.ApprovedBodyHash",
+        "TargetTable": "TemplateApprovals",
+        "FieldName": "ApprovedBodyHash",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "TemplateApprovals.Notes",
+        "TargetTable": "TemplateApprovals",
+        "FieldName": "Notes",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "TemplateApprovals.IsApprovalDecision",
+        "TargetTable": "TemplateApprovals",
+        "FieldName": "IsApprovalDecision",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{Decision}} = \"Approved\"",
+        "InventedForQuestion": "q-comms-approval-authority",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "TemplateApprovals.TemplatePolicy",
+        "TargetTable": "TemplateApprovals",
+        "FieldName": "TemplatePolicy",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(MessageTemplates!{{CommunicationPolicy}}, MATCH({{MessageTemplate}}, MessageTemplates!{{MessageTemplateId}}, 0))",
+        "InventedForQuestion": "q-comms-approval-authority",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "TemplateApprovals.RequiredApprovalRole",
+        "TargetTable": "TemplateApprovals",
+        "FieldName": "RequiredApprovalRole",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(CommunicationPolicies!{{ApprovalRole}}, MATCH({{TemplatePolicy}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0))",
+        "InventedForQuestion": "q-comms-approval-authority",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "TemplateApprovals.IsDecidedByRequiredRole",
+        "TargetTable": "TemplateApprovals",
+        "FieldName": "IsDecidedByRequiredRole",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{DecidedInRole}} = {{RequiredApprovalRole}}",
+        "InventedForQuestion": "q-comms-approval-authority",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "TemplateApprovals.ValidApprovalTemplateKey",
+        "TargetTable": "TemplateApprovals",
+        "FieldName": "ValidApprovalTemplateKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF(AND({{IsApprovalDecision}}, {{IsDecidedByRequiredRole}}), {{MessageTemplate}}, \"\")",
+        "InventedForQuestion": "q-comms-approval-authority",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "TemplateApprovals.SemanticTypeIri",
+        "TargetTable": "TemplateApprovals",
         "FieldName": "SemanticTypeIri",
         "FieldType": "raw",
         "Datatype": "string",
@@ -18087,6 +18837,190 @@
         "formula": "=AND({{WasActuallyTransmitted}}, NOT({{ExecutionHasClearedLegalReview}}))"
       },
       {
+        "name": "RenderedBodyLength",
+        "datatype": "integer",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Character length of the exact text that was actually transmitted.",
+        "formula": "=LEN({{RenderedBody}})"
+      },
+      {
+        "name": "PolicyMaxMessageLengthAtSend",
+        "datatype": "integer",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The per-segment limit that governed this specific send.",
+        "formula": "=INDEX(CommunicationPolicies!{{MaxMessageLength}}, MATCH({{PolicyChannel}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0))"
+      },
+      {
+        "name": "SegmentCount",
+        "datatype": "integer",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "How many channel segments the transmitted text occupied.",
+        "formula": "=IF({{RenderedBodyLength}} = 0, 0, IF({{RenderedBodyLength}} <= {{PolicyMaxMessageLengthAtSend}}, 1, ROUNDUP({{RenderedBodyLength}} / {{PolicyMaxMessageLengthAtSend}}, 0)))"
+      },
+      {
+        "name": "PolicyMaxSegmentsAtSend",
+        "datatype": "integer",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The segment ceiling that governed this specific send.",
+        "formula": "=INDEX(CommunicationPolicies!{{MaxSegments}}, MATCH({{PolicyChannel}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0))"
+      },
+      {
+        "name": "IsOverSegmentLimit",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a transmitted message split into more segments than the policy permits. The oversize witness.",
+        "formula": "=AND({{WasActuallyTransmitted}}, {{SegmentCount}} > {{PolicyMaxSegmentsAtSend}})"
+      },
+      {
+        "name": "TemplateHasValidApproval",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether the template used for this delivery had a properly-authorized approval.",
+        "formula": "=INDEX(MessageTemplates!{{HasValidApproval}}, MATCH({{MessageTemplate}}, MessageTemplates!{{MessageTemplateId}}, 0))"
+      },
+      {
+        "name": "IsUnapprovedSend",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a message was transmitted using a template with no valid approval behind it.",
+        "formula": "=AND({{WasActuallyTransmitted}}, NOT({{TemplateHasValidApproval}}))"
+      },
+      {
+        "name": "PolicyRequiredOptOutPhrase",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The opt-out phrase required for this delivery's channel.",
+        "formula": "=INDEX(CommunicationPolicies!{{RequiredOptOutPhrase}}, MATCH({{PolicyChannel}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0))"
+      },
+      {
+        "name": "PolicyRequiresOptOut",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the governing channel policy declares a required opt-out phrase at all.",
+        "formula": "={{PolicyRequiredOptOutPhrase}} <> \"\""
+      },
+      {
+        "name": "OptOutPhrasePosition",
+        "datatype": "integer",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Character position at which the required opt-out phrase appears in the transmitted text; 0 when absent.",
+        "formula": "=FIND({{PolicyRequiredOptOutPhrase}}, {{RenderedBody}})"
+      },
+      {
+        "name": "HasOptOutPhrase",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the required opt-out phrase appears anywhere in the transmitted text.",
+        "formula": "={{OptOutPhrasePosition}} > 0"
+      },
+      {
+        "name": "IsOptOutInFirstSegment",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the opt-out phrase falls inside the first segment, where it is guaranteed to be read.",
+        "formula": "=AND({{HasOptOutPhrase}}, {{OptOutPhrasePosition}} <= {{PolicyMaxMessageLengthAtSend}})"
+      },
+      {
+        "name": "IsMissingRequiredOptOut",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a transmitted message on an opt-out-required channel did not contain the phrase at all. The hard witness.",
+        "formula": "=AND({{WasActuallyTransmitted}}, AND({{PolicyRequiresOptOut}}, NOT({{HasOptOutPhrase}})))"
+      },
+      {
+        "name": "IsOptOutAtRiskOfTruncation",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the opt-out phrase is present but sits beyond the first segment, where carrier truncation or out-of-order delivery can hide it. The soft witness.",
+        "formula": "=AND({{WasActuallyTransmitted}}, AND({{PolicyRequiresOptOut}}, AND({{HasOptOutPhrase}}, NOT({{IsOptOutInFirstSegment}}))))"
+      },
+      {
+        "name": "IsFailedDelivery",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the message left our systems but did not land.",
+        "formula": "=OR({{DeliveryStatus}} = \"Failed\", {{DeliveryStatus}} = \"Bounced\")"
+      },
+      {
+        "name": "IsSuppressed",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when we deliberately chose not to transmit.",
+        "formula": "={{DeliveryStatus}} = \"Suppressed\""
+      },
+      {
+        "name": "IsTriaged",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when some documented exception was formally invoked on this delivery -- i.e. a human or a rule picked it up.",
+        "formula": "={{InvokedException}} <> \"\""
+      },
+      {
+        "name": "IsAbandonedFailure",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a delivery failed and no documented exception was invoked. The abandoned-bounce witness.",
+        "formula": "=AND({{IsFailedDelivery}}, NOT({{IsTriaged}}))"
+      },
+      {
+        "name": "AbandonedFailureExecutionKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Carries the execution id on abandoned failures; empty string otherwise.",
+        "formula": "=IF({{IsAbandonedFailure}}, {{ProcedureExecution}}, \"\")"
+      },
+      {
+        "name": "ReachedExecutionKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Carries the execution id on confirmed-delivered messages; empty string otherwise.",
+        "formula": "=IF({{DeliveryStatus}} = \"Delivered\", {{ProcedureExecution}}, \"\")"
+      },
+      {
+        "name": "TemplateWasSendable",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether the template used for this delivery was fully sendable under a current, matching approval.",
+        "formula": "=INDEX(MessageTemplates!{{IsSendableUnderApproval}}, MATCH({{MessageTemplate}}, MessageTemplates!{{MessageTemplateId}}, 0))"
+      },
+      {
+        "name": "IsDriftedSend",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a message was transmitted from a template that was not validly sendable at the time. The drift witness.",
+        "formula": "=AND({{WasActuallyTransmitted}}, NOT({{TemplateWasSendable}}))"
+      },
+      {
+        "name": "DriftedSendTemplateKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Carries the template id on drifted sends; empty string otherwise.",
+        "formula": "=IF({{IsDriftedSend}}, {{MessageTemplate}}, \"\")"
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -18166,7 +19100,7 @@
         "Recipient": "rec-001",
         "MessageTemplate": "tmpl-policy-sms",
         "SentByAgent": "notification-pipeline",
-        "RenderedBody": "Policy HR-4821 update. Review the notice and acknowledge: https://example.com/hr4821 Reply STOP to opt out.",
+        "RenderedBody": "Policy HR-4821 update. Review the notice and acknowledge: https://example.com/hr4821",
         "SentAt": "2026-07-18T21:00:00-05:00",
         "SentAtLocalHour": 21,
         "DeliveryStatus": "Delivered",
@@ -18190,6 +19124,138 @@
         "InvokedException": "exc-unreachable",
         "AcknowledgedAt": null,
         "SemanticTypeIri": "urn:effortless:pko-extension#MessageDelivery"
+      }
+    ]
+  },
+  "TemplateApprovals": {
+    "Description": "TemplateApprovals (added by witness loop 1).",
+    "schema": [
+      {
+        "name": "TemplateApprovalId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stored logical identifier for one TemplateApprovals row."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Human-readable calculated display alias for the TemplateApprovals row.",
+        "formula": "={{MessageTemplate}} & \" / \" & {{Decision}} & \" / \" & {{DecidedAt}}"
+      },
+      {
+        "name": "MessageTemplate",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Template this decision applies to.",
+        "RelatedTo": "MessageTemplates"
+      },
+      {
+        "name": "DecidedByAgent",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Agent who made the approval decision.",
+        "RelatedTo": "Agents"
+      },
+      {
+        "name": "DecidedInRole",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Role the agent was acting in when deciding.",
+        "RelatedTo": "Roles"
+      },
+      {
+        "name": "Decision",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Approved, Rejected, or Withdrawn."
+      },
+      {
+        "name": "DecidedAt",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "When the decision was recorded."
+      },
+      {
+        "name": "ApprovedBodyHash",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Digest of the exact template body that was approved, so later edits are detectable."
+      },
+      {
+        "name": "Notes",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Approver's rationale or conditions."
+      },
+      {
+        "name": "IsApprovalDecision",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this decision row is an approval rather than a rejection or withdrawal.",
+        "formula": "={{Decision}} = \"Approved\""
+      },
+      {
+        "name": "TemplatePolicy",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The communication policy governing the template being approved.",
+        "formula": "=INDEX(MessageTemplates!{{CommunicationPolicy}}, MATCH({{MessageTemplate}}, MessageTemplates!{{MessageTemplateId}}, 0))"
+      },
+      {
+        "name": "RequiredApprovalRole",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The role the governing policy designates as approver -- communications-manager for both current policies.",
+        "formula": "=INDEX(CommunicationPolicies!{{ApprovalRole}}, MATCH({{TemplatePolicy}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0))"
+      },
+      {
+        "name": "IsDecidedByRequiredRole",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the approving role matches the role the policy designates.",
+        "formula": "={{DecidedInRole}} = {{RequiredApprovalRole}}"
+      },
+      {
+        "name": "ValidApprovalTemplateKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Carries the template id only on approvals made by the correct role; empty string otherwise.",
+        "formula": "=IF(AND({{IsApprovalDecision}}, {{IsDecidedByRequiredRole}}), {{MessageTemplate}}, \"\")"
+      },
+      {
+        "name": "SemanticTypeIri",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Extension IRI; template approval events are not a PKO 2.0.0 native class."
+      }
+    ],
+    "data": [
+      {
+        "TemplateApprovalId": "tap-email-001",
+        "MessageTemplate": "tmpl-policy-email",
+        "DecidedByAgent": "amina-yusuf",
+        "DecidedInRole": "communications-manager",
+        "Decision": "Approved",
+        "DecidedAt": "2026-07-17T11:00:00-05:00",
+        "ApprovedBodyHash": "h-email-v1",
+        "Notes": "Reviewed against comm-email-policy required content and retention.",
+        "SemanticTypeIri": "urn:effortless:pko-extension#TemplateApproval"
       }
     ]
   }
