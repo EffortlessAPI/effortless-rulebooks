@@ -25475,6 +25475,16 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "BindingObservations.Name",
+        "TargetTable": "BindingObservations",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{StepExecution}} & \" / \" & {{BindingObservationId}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "BindingObservations.StepExecution",
         "TargetTable": "BindingObservations",
         "FieldName": "StepExecution",
@@ -25572,6 +25582,16 @@
         "Datatype": "string",
         "Formula": null,
         "InventedForQuestion": "q2-cfo-would-it-survive-restatement",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Attestations.Name",
+        "TargetTable": "Attestations",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{ProcedureExecution}} & \" / \" & {{AttestationId}}",
+        "InventedForQuestion": null,
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
@@ -28778,8 +28798,16 @@
         "name": "BindingObservationId",
         "datatype": "string",
         "type": "raw",
-        "nullable": true,
+        "nullable": false,
         "Description": "Primary key of an execution-side observation of one operational binding, frozen at the moment a step actually ran."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Human-readable calculated display alias for the BindingObservations row.",
+        "formula": "={{StepExecution}} & \" / \" & {{BindingObservationId}}"
       },
       {
         "name": "StepExecution",
@@ -28861,8 +28889,16 @@
         "name": "AttestationId",
         "datatype": "string",
         "type": "raw",
-        "nullable": true,
+        "nullable": false,
         "Description": "Primary key of a signature event: one person, one execution, one instant."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Human-readable calculated display alias for the Attestations row.",
+        "formula": "={{ProcedureExecution}} & \" / \" & {{AttestationId}}"
       },
       {
         "name": "ProcedureExecution",

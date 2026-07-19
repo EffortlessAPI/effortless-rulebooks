@@ -1947,6 +1947,7 @@ DROP VIEW IF EXISTS vw_binding_observations CASCADE;
 CREATE VIEW vw_binding_observations WITH (security_invoker = ON) AS
 SELECT
   t.binding_observation_id,                                                     -- Primary key of an execution-side observation of one operational binding, frozen at the moment a step actually ran.
+  calc_binding_observations_name(t.binding_observation_id) AS name,             -- Human-readable calculated display alias for the BindingObservations row.
   t.step_execution,                                                             -- The step execution during which this binding was read.
   t.operational_binding,                                                        -- The spec-side binding this observation instantiates.
   t.observed_source_timestamp,                                                  -- The LastObservedAt value the source actually carried at run time, captured then and never recomputed.
@@ -1966,6 +1967,7 @@ DROP VIEW IF EXISTS vw_attestations CASCADE;
 CREATE VIEW vw_attestations WITH (security_invoker = ON) AS
 SELECT
   t.attestation_id,                                                             -- Primary key of a signature event: one person, one execution, one instant.
+  calc_attestations_name(t.attestation_id) AS name,                             -- Human-readable calculated display alias for the Attestations row.
   t.procedure_execution,                                                        -- The execution being attested to.
   t.signed_by_agent,                                                            -- The human who signed.
   t.signed_at,                                                                  -- The instant of signature.

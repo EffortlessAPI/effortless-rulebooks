@@ -9856,6 +9856,16 @@ RETURNS BOOLEAN AS $$
   SELECT (SELECT is_authoritative::boolean FROM operational_bindings WHERE operational_binding_id = (SELECT operational_binding FROM binding_observations WHERE binding_observation_id = p_binding_observation_id));
 $$ LANGUAGE sql STABLE;
 
+-- calc_binding_observations_name
+-- Field: BindingObservations.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_binding_observations_name(p_binding_observation_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT((SELECT NULLIF(step_execution, '') FROM binding_observations WHERE binding_observation_id = p_binding_observation_id), ' / ', (SELECT NULLIF(binding_observation_id, '') FROM binding_observations WHERE binding_observation_id = p_binding_observation_id)))::text;
+$$ LANGUAGE sql STABLE;
+
 -- calc_binding_observations_age_at_run_minutes
 -- Field: BindingObservations.AgeAtRunMinutes
 -- Type: calculated | DataType: integer | Returns: INTEGER
@@ -9906,6 +9916,16 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_attestations_assurance_grade_now(p_attestation_id TEXT)
 RETURNS TEXT AS $$
   SELECT calc_procedure_executions_assurance_grade((SELECT procedure_execution FROM attestations WHERE attestation_id = p_attestation_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_attestations_name
+-- Field: Attestations.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_attestations_name(p_attestation_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT((SELECT NULLIF(procedure_execution, '') FROM attestations WHERE attestation_id = p_attestation_id), ' / ', (SELECT NULLIF(attestation_id, '') FROM attestations WHERE attestation_id = p_attestation_id)))::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_attestations_fitness_verdict_has_drifted

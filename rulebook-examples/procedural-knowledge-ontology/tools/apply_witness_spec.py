@@ -240,11 +240,14 @@ def main() -> int:
                 problems.append(f"{tbl}.{fname}: relationship field needs related_to "
                                 "(or should be raw/lookup if it would create a table cycle)")
                 continue
+            # A primary key is never nullable; the validator rejects the table
+            # outright if it is.
+            is_pk = fname == f"{tbl[:-1] if tbl.endswith('s') else tbl}Id"
             field = OrderedDict([
                 ("name", fname),
                 ("datatype", p["datatype"]),
                 ("type", p["field_type"]),
-                ("nullable", True),
+                ("nullable", not is_pk),
                 ("Description", p["description"]),
             ])
             if p.get("formula"):
@@ -283,6 +286,26 @@ def main() -> int:
         idx = names.index("SemanticTypeIri") if "SemanticTypeIri" in names else len(sch)
         sch.insert(idx, field)
         provenance[f"{tbl}.{field['name']}"] = qid
+
+    # Synthesized tables must satisfy the repo's structural conventions: the
+    # primary key first, then a calculated Name alias. A spec that emits its
+    # columns in prose order would otherwise fail validation after the fact.
+    for tbl in new_tables:
+        sch = rb[tbl]["schema"]
+        pk = f"{tbl[:-1] if tbl.endswith('s') else tbl}Id"
+        names = [f["name"] for f in sch if isinstance(f, dict)]
+        if pk in names and names[0] != pk:
+            sch.insert(0, sch.pop(names.index(pk)))
+        if "Name" not in names:
+            first_fk = next((f["name"] for f in sch
+                             if isinstance(f, dict) and f.get("type") == "relationship"), pk)
+            sch.insert(1, OrderedDict([
+                ("name", "Name"), ("datatype", "string"), ("type", "calculated"),
+                ("nullable", True),
+                ("Description", f"Human-readable calculated display alias for the {tbl} row."),
+                ("formula", f"={{{{{first_fk}}}}} & \" / \" & {{{{{pk}}}}}"),
+            ]))
+            provenance[f"{tbl}.Name"] = new_fields[0][2] if new_fields else None
 
     # 5. Record provenance for the catalog reconciler to preserve.
     catalog = rb["RulebookFields"]["data"]
