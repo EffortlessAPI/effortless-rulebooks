@@ -103,17 +103,33 @@ def main() -> int:
     new_fields: list[tuple[str, OrderedDict, str]] = []  # (table, field, question_id)
     new_tables: list[str] = []
 
-    # 1. New tables the spec declares.
+    # 1. New tables the spec declares. Drafting agents used three different keys
+    # for the table name and two for the seed rows, so accept all of them rather
+    # than crashing on a shape variant.
     for q in spec["questions"]:
         for nt in ([q["needs_table"]] if isinstance(q.get("needs_table"), dict)
                    else q.get("needs_table") or []):
-            name = nt["table"] if "table" in nt else nt["name"]
+            name = nt.get("table") or nt.get("name") or nt.get("table_name")
+            if not name:
+                problems.append(f"{q['id']}: needs_table has no table/name/table_name key")
+                continue
             if name in rb:
                 continue
+            schema = list(nt["schema"])
+            # Some specs separate the derived columns from the raw schema.
+            for extra in nt.get("derived_predicates", []):
+                schema.append(OrderedDict([
+                    ("name", extra["field_name"]),
+                    ("datatype", extra["datatype"]),
+                    ("type", extra["field_type"]),
+                    ("nullable", True),
+                    ("Description", extra.get("description", "")),
+                ] + ([("formula", extra["formula"])] if extra.get("formula") else [])))
             rb[name] = OrderedDict([
-                ("Description", nt.get("description", f"{name} (added by witness loop {args.loop}).")),
-                ("schema", nt["schema"]),
-                ("data", nt.get("data", [])),
+                ("Description", nt.get("description") or nt.get("why")
+                 or f"{name} (added by witness loop {args.loop})."),
+                ("schema", schema),
+                ("data", nt.get("data") or nt.get("seed_rows") or []),
             ])
             new_tables.append(name)
 

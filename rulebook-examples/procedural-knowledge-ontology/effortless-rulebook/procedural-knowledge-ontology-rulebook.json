@@ -1449,6 +1449,86 @@
         "formula": "=AND({{Status}} = \"Approved\", {{OverdueReviewCount}} = 0, {{OpenChangeRequestCount}} = 0, {{OpenHighSeverityGapCount}} = 0)"
       },
       {
+        "name": "StewardReviewCadenceDays",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "The review cadence promised by this version's stewardship assignment, in days. Summed because a version has at most one active steward; this is the hop that lets ReviewEvents resolve the promise via a primary-key match.",
+        "formula": "=SUMIFS(StewardshipAssignments!{{ReviewCadenceDays}}, StewardshipAssignments!{{ProcedureVersion}}, {{ProcedureVersionId}})"
+      },
+      {
+        "name": "CountOfStewardshipAssignments",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many stewardship assignments of any vintage point at this version.",
+        "formula": "=COUNTIFS(StewardshipAssignments!{{ProcedureVersion}}, ProcedureVersions!{{ProcedureVersionId}})"
+      },
+      {
+        "name": "HasAnySteward",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE if any stewardship assignment has ever named this version.",
+        "formula": "={{CountOfStewardshipAssignments}} > 0"
+      },
+      {
+        "name": "IsLive",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this version is in a state where somebody could execute it.",
+        "formula": "=OR({{Status}} = \"Approved\", {{Status}} = \"Published\")"
+      },
+      {
+        "name": "IsUnstewarded",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when no stewardship assignment names this version.",
+        "formula": "=NOT({{HasAnySteward}})"
+      },
+      {
+        "name": "IsLiveAndUnstewarded",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when an executable version has nobody accountable for keeping it healthy.",
+        "formula": "=AND({{IsLive}}, {{IsUnstewarded}})"
+      },
+      {
+        "name": "CountOfOpenBlockingGaps",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many open blocking gaps stand against this version.",
+        "formula": "=COUNTIFS(KnowledgeGaps!{{IsOpenAndBlocking}}, TRUE)"
+      },
+      {
+        "name": "HasOpenBlockingGap",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when at least one open blocking gap stands against this version.",
+        "formula": "={{CountOfOpenBlockingGaps}} > 0"
+      },
+      {
+        "name": "IsLiveWithBlockingGap",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when an executable version carries an unresolved blocking knowledge gap.",
+        "formula": "=AND({{IsLive}}, {{HasOpenBlockingGap}})"
+      },
+      {
+        "name": "ShouldNotBeExecutable",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the model says this version is ready to execute while a blocking gap is open against it.",
+        "formula": "=AND({{IsReadyForExecution}}, {{HasOpenBlockingGap}})"
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -2139,6 +2219,86 @@
         "type": "raw",
         "nullable": true,
         "Description": "Evaluation priority when several outgoing edges exist."
+      },
+      {
+        "name": "IsRecoveryPath",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this transition is a non-default path taken because something went wrong.",
+        "formula": "=OR({{TransitionKind}} = \"Fallback\", {{TransitionKind}} = \"Alternative\")"
+      },
+      {
+        "name": "CountOfFromStepExecutions",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many times the step this transition leaves from has actually been executed.",
+        "formula": "=COUNTIFS(StepExecutions!{{Step}}, StepTransitions!{{FromStep}})"
+      },
+      {
+        "name": "CountOfToStepExecutions",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many times the step this transition arrives at has actually been executed.",
+        "formula": "=COUNTIFS(StepExecutions!{{Step}}, StepTransitions!{{ToStep}})"
+      },
+      {
+        "name": "HasReachableOrigin",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the origin step of this transition has been executed at least once.",
+        "formula": "={{CountOfFromStepExecutions}} > 0"
+      },
+      {
+        "name": "HasReachableTarget",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the destination step of this transition has been executed at least once.",
+        "formula": "={{CountOfToStepExecutions}} > 0"
+      },
+      {
+        "name": "IsNeverExercised",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when at least one end of this transition has never appeared in any step execution.",
+        "formula": "=NOT(AND({{HasReachableOrigin}}, {{HasReachableTarget}}))"
+      },
+      {
+        "name": "IsUntestedRecoveryPath",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE for a Fallback or Alternative transition whose endpoints show no execution evidence.",
+        "formula": "=AND({{IsRecoveryPath}}, {{IsNeverExercised}})"
+      },
+      {
+        "name": "CountOfObservedTraversals",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many times this exact transition has actually been traversed.",
+        "formula": "=COUNTIFS(ObservedTransitions!{{StepTransition}}, StepTransitions!{{StepTransitionId}})"
+      },
+      {
+        "name": "HasBeenTraversed",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this transition has been walked at least once.",
+        "formula": "={{CountOfObservedTraversals}} > 0"
+      },
+      {
+        "name": "IsUnwalkedRecoveryPath",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE for a Fallback/Alternative transition with zero recorded traversals.",
+        "formula": "=AND({{IsRecoveryPath}}, NOT({{HasBeenTraversed}}))"
       },
       {
         "name": "SemanticTypeIri",
@@ -4442,6 +4602,22 @@
         "formula": "=IF(AND({{IsOpen}}, {{Severity}} = \"High\"), {{ProcedureVersion}}, \"\")"
       },
       {
+        "name": "IsBlocking",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this gap is declared blocking rather than informational.",
+        "formula": "={{BlockingKind}} = \"Blocking\""
+      },
+      {
+        "name": "IsOpenAndBlocking",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this gap is both unresolved and declared blocking.",
+        "formula": "=AND({{IsOpen}}, {{IsBlocking}})"
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -4487,6 +4663,20 @@
         "OwnerRole": "controller",
         "IdentifiedAt": "2026-07-19T17:30:00-05:00",
         "ResolutionPlan": "Resolved by StepExecutions.ViolatesSeparationOfDuties, which counts preparation steps in the same procedure execution performed by the agent now approving. Verified by staging a breach (maria-chen approving se-close05 after preparing se-close03): the witness read TRUE. The staged breach was reverted; the control now reads FALSE because separation genuinely holds, not because nothing is checking.",
+        "EvaluationContext": "eval-current",
+        "SemanticTypeIri": "urn:effortless:pko-extension#KnowledgeGap"
+      },
+      {
+        "KnowledgeGapId": "gap-close-cadence-unmeasured",
+        "ProcedureVersion": "close-v1.1.0",
+        "Step": null,
+        "Statement": "StewardshipAssignments promised a 90-day review cadence for close-v1.1.0 and 60 days for policy-v1.0.0. Both the promise and the actual review history were in the model and nothing compared them, so a lapsed cadence was invisible.",
+        "Severity": "Medium",
+        "BlockingKind": "NonBlocking",
+        "Status": "Resolved",
+        "OwnerRole": "process-steward",
+        "IdentifiedAt": "2026-07-19T18:00:00-05:00",
+        "ResolutionPlan": "Resolved by ReviewEvents.ExceedsPromisedCadence and PromiseAndBehaviorDisagree, which compare DaysSinceReviewed against the cadence promised by the version's stewardship assignment. Surfacing the real Q1 review (review-close-q1) showed the witness firing on genuine history: 121 days elapsed against a 90-day promise. The Q2 review closed the lapse, so current state reads compliant.",
         "EvaluationContext": "eval-current",
         "SemanticTypeIri": "urn:effortless:pko-extension#KnowledgeGap"
       }
@@ -5358,6 +5548,14 @@
         "formula": "={{ExceptionInvocationCount}} > 0"
       },
       {
+        "name": "IsCompleted",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this step execution reached a completed state.",
+        "formula": "={{ExecutionStatus}} = \"Completed\""
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -6196,6 +6394,30 @@
         "Description": "Required review cadence."
       },
       {
+        "name": "CountOfReviewEvents",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many review events have ever been recorded for the procedure version this assignment stewards.",
+        "formula": "=COUNTIFS(ReviewEvents!{{ProcedureVersion}}, StewardshipAssignments!{{ProcedureVersion}})"
+      },
+      {
+        "name": "HasEverBeenReviewed",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE if at least one review event exists for the stewarded procedure version.",
+        "formula": "={{CountOfReviewEvents}} > 0"
+      },
+      {
+        "name": "IsCurrentAssignment",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this stewardship assignment is in force right now.",
+        "formula": "=AND({{ValidFrom}} <= NOW(), OR({{ValidTo}} = \"\", {{ValidTo}} > NOW()))"
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -6326,6 +6548,54 @@
         "nullable": true,
         "Description": "Echoes the ProcedureVersion id only for change requests still open.",
         "formula": "=IF({{IsOpen}}, {{ProcedureVersion}}, \"\")"
+      },
+      {
+        "name": "IsDecided",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a decision timestamp has been recorded.",
+        "formula": "={{DecidedAt}} <> \"\""
+      },
+      {
+        "name": "DaysPending",
+        "datatype": "integer",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Days from request to decision, or to now if still undecided.",
+        "formula": "=IF({{IsDecided}}, DATETIME_DIFF({{DecidedAt}}, {{RequestedAt}}, \"days\"), DATETIME_DIFF(NOW(), {{RequestedAt}}, \"days\"))"
+      },
+      {
+        "name": "IsStillPending",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the request is in an open status and has no decision recorded.",
+        "formula": "=AND({{IsOpen}}, NOT({{IsDecided}}))"
+      },
+      {
+        "name": "IsStalled",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when an undecided change request has been pending more than fourteen days.",
+        "formula": "=AND({{IsStillPending}}, {{DaysPending}} > 14)"
+      },
+      {
+        "name": "AuthorityAgent",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The agent currently holding the authority role that owes a decision on this request.",
+        "formula": "=INDEX(Roles!{{CurrentAgent}}, MATCH({{AuthorityRole}}, Roles!{{RoleId}}, 0))"
+      },
+      {
+        "name": "RequesterIsAuthority",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the agent who raised the request is also the agent who decides it.",
+        "formula": "={{RequestedByAgent}} = {{AuthorityAgent}}"
       },
       {
         "name": "SemanticTypeIri",
@@ -6468,6 +6738,46 @@
         "formula": "=IF({{IsOverdue}}, {{ProcedureVersion}}, \"\")"
       },
       {
+        "name": "PromisedCadenceDays",
+        "datatype": "integer",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The review cadence promised for this procedure version, resolved via ProcedureVersions because INDEX/MATCH can only match a target table primary key.",
+        "formula": "=INDEX(ProcedureVersions!{{StewardReviewCadenceDays}}, MATCH({{ProcedureVersion}}, ProcedureVersions!{{ProcedureVersionId}}, 0))"
+      },
+      {
+        "name": "DaysSinceReviewed",
+        "datatype": "integer",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Elapsed days since this review actually happened.",
+        "formula": "=DATETIME_DIFF(NOW(), {{ReviewedAt}}, \"days\")"
+      },
+      {
+        "name": "ExceedsPromisedCadence",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when more days have elapsed since this review than the stewardship assignment promised as a cadence.",
+        "formula": "={{DaysSinceReviewed}} > {{PromisedCadenceDays}}"
+      },
+      {
+        "name": "CadenceDriftDays",
+        "datatype": "integer",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Signed drift: positive means we are past the promised cadence by this many days; negative means we are still inside it.",
+        "formula": "={{DaysSinceReviewed}} - {{PromisedCadenceDays}}"
+      },
+      {
+        "name": "PromiseAndBehaviorDisagree",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the promised cadence has been blown but the hand-entered NextReviewDue still says we are fine.",
+        "formula": "=AND({{ExceedsPromisedCadence}}, NOT({{IsOverdue}}))"
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -6476,6 +6786,18 @@
       }
     ],
     "data": [
+      {
+        "ReviewEventId": "review-close-q1",
+        "ProcedureVersion": "close-v1.1.0",
+        "ReviewKind": "QuarterlySemanticReview",
+        "ReviewedAt": "2026-03-20T16:00:00-05:00",
+        "ReviewedByAgent": "devon-okafor",
+        "Outcome": "Passed",
+        "RelatedChangeRequest": null,
+        "NextReviewDue": "2026-06-18T16:00:00-05:00",
+        "EvaluationContext": "eval-current",
+        "SemanticTypeIri": "https://w3id.org/pko#ReviewEvent"
+      },
       {
         "ReviewEventId": "review-close-q2",
         "ProcedureVersion": "close-v1.1.0",
@@ -7715,6 +8037,51 @@
         "WitnessLoop": "loop-01",
         "QuestionText": "Across everything I am signing, is there any control claim in this model that rests on a human typing a conclusion rather than on something computed?",
         "WhyItMatters": "This is the question behind all my other questions. sat-close-separation says 'Preparer and reviewer were different agents.' sat-close-human says 'Human CFO approval recorded.' Both are prose conclusions in an Evidence field, both assert that a control operated, and neither is checkable. I want the model to distinguish between a control that was COMPUTED to have held and one that was ASSERTED to have held, and to tell me how much of my attestation rests on the second kind. If most of my assurance is assertion, I want to know that before I sign, not after.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-steward-cadence-breach",
+        "AskingRole": "process-steward",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "For close-v1.1.0 I promised a 90-day review cadence and for policy-v1.0.0 a 60-day cadence. Is the ACTUAL interval since the last review already longer than the cadence I promised?",
+        "WhyItMatters": "ReviewCadenceDays is a promise. ReviewEvents.ReviewedAt is the behavior. Today the model stores both and compares neither, so a stewardship assignment can sit in permanent silent breach while ReviewEvents.IsOverdue stays FALSE because NextReviewDue was hand-set to a date that has nothing to do with the promised cadence. I need the promise and the behavior in the same row.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-steward-orphan-versions",
+        "AskingRole": "process-steward",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "Which procedure versions have no steward at all? close-v1.0.0 is Archived but still referenced by ProcedureVersionLinks \u2014 does anyone own it?",
+        "WhyItMatters": "An unstewarded version is nobody's problem until it is everybody's problem. There are 3 ProcedureVersions and only 2 StewardshipAssignments; the model has never once been asked to notice the difference. Orphaned versions accumulate silently as new versions ship and the old assignment is never extended or retired.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-steward-untested-fallbacks",
+        "AskingRole": "process-steward",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "close-04-fallback-close-03 and policy-07-fallback-policy-06 are the paths we take when things go wrong. Have they EVER been walked in a real execution?",
+        "WhyItMatters": "There are 19 StepTransitions and only 12 StepExecutions. Every Fallback and Alternative transition in this model is untested. Untested fallbacks are exactly where an outage becomes an incident \u2014 the day the ERP is down is the wrong day to discover the recovery path was never real. Nothing in the model witnesses this.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-steward-published-with-blocking-gap",
+        "AskingRole": "process-steward",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "Is any procedure version live with an Open BLOCKING knowledge gap against it?",
+        "WhyItMatters": "gap-close-dual-outage was Blocking and is now Resolved \u2014 good. But nothing stops the next one from staying Open while the version keeps shipping. ProcedureVersions.CountOfOpenKnowledgeGaps exists but is blind to BlockingKind, so a Blocking gap and a cosmetic one count the same. IsReadyForExecution then fails on trivia and stays silent on the thing that should stop the line.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-steward-stalled-change-requests",
+        "AskingRole": "process-steward",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "cr-policy-delivery was requested on 2026-07-19 and has no DecidedAt. How long has it been sitting, and is that longer than we tolerate?",
+        "WhyItMatters": "A change request with no decision is a decision \u2014 to do nothing \u2014 but it never announces itself. The model stores RequestedAt and DecidedAt and computes neither the interval nor a staleness verdict. Since cr-policy-delivery is the vehicle for closing gap-policy-delivery-receipts on a live policy version, its stall is load-bearing.",
         "AnswerableBefore": false,
         "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
       }
@@ -8987,6 +9354,106 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "ProcedureVersions.StewardReviewCadenceDays",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "StewardReviewCadenceDays",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=SUMIFS(StewardshipAssignments!{{ReviewCadenceDays}}, StewardshipAssignments!{{ProcedureVersion}}, {{ProcedureVersionId}})",
+        "InventedForQuestion": "q-steward-cadence-breach",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.CountOfStewardshipAssignments",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "CountOfStewardshipAssignments",
+        "FieldType": "aggregation",
+        "Datatype": "integer",
+        "Formula": "=COUNTIFS(StewardshipAssignments!{{ProcedureVersion}}, ProcedureVersions!{{ProcedureVersionId}})",
+        "InventedForQuestion": "q-steward-orphan-versions",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.HasAnySteward",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "HasAnySteward",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{CountOfStewardshipAssignments}} > 0",
+        "InventedForQuestion": "q-steward-orphan-versions",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.IsLive",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "IsLive",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=OR({{Status}} = \"Approved\", {{Status}} = \"Published\")",
+        "InventedForQuestion": "q-steward-orphan-versions",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.IsUnstewarded",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "IsUnstewarded",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=NOT({{HasAnySteward}})",
+        "InventedForQuestion": "q-steward-orphan-versions",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.IsLiveAndUnstewarded",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "IsLiveAndUnstewarded",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsLive}}, {{IsUnstewarded}})",
+        "InventedForQuestion": "q-steward-orphan-versions",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.CountOfOpenBlockingGaps",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "CountOfOpenBlockingGaps",
+        "FieldType": "aggregation",
+        "Datatype": "integer",
+        "Formula": "=COUNTIFS(KnowledgeGaps!{{IsOpenAndBlocking}}, TRUE)",
+        "InventedForQuestion": "q-steward-published-with-blocking-gap",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.HasOpenBlockingGap",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "HasOpenBlockingGap",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{CountOfOpenBlockingGaps}} > 0",
+        "InventedForQuestion": "q-steward-published-with-blocking-gap",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.IsLiveWithBlockingGap",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "IsLiveWithBlockingGap",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsLive}}, {{HasOpenBlockingGap}})",
+        "InventedForQuestion": "q-steward-published-with-blocking-gap",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.ShouldNotBeExecutable",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "ShouldNotBeExecutable",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsReadyForExecution}}, {{HasOpenBlockingGap}})",
+        "InventedForQuestion": "q-steward-published-with-blocking-gap",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "ProcedureVersions.SemanticTypeIri",
         "TargetTable": "ProcedureVersions",
         "FieldName": "SemanticTypeIri",
@@ -9434,6 +9901,106 @@
         "Datatype": "integer",
         "Formula": null,
         "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepTransitions.IsRecoveryPath",
+        "TargetTable": "StepTransitions",
+        "FieldName": "IsRecoveryPath",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=OR({{TransitionKind}} = \"Fallback\", {{TransitionKind}} = \"Alternative\")",
+        "InventedForQuestion": "q-steward-untested-fallbacks",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepTransitions.CountOfFromStepExecutions",
+        "TargetTable": "StepTransitions",
+        "FieldName": "CountOfFromStepExecutions",
+        "FieldType": "aggregation",
+        "Datatype": "integer",
+        "Formula": "=COUNTIFS(StepExecutions!{{Step}}, StepTransitions!{{FromStep}})",
+        "InventedForQuestion": "q-steward-untested-fallbacks",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepTransitions.CountOfToStepExecutions",
+        "TargetTable": "StepTransitions",
+        "FieldName": "CountOfToStepExecutions",
+        "FieldType": "aggregation",
+        "Datatype": "integer",
+        "Formula": "=COUNTIFS(StepExecutions!{{Step}}, StepTransitions!{{ToStep}})",
+        "InventedForQuestion": "q-steward-untested-fallbacks",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepTransitions.HasReachableOrigin",
+        "TargetTable": "StepTransitions",
+        "FieldName": "HasReachableOrigin",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{CountOfFromStepExecutions}} > 0",
+        "InventedForQuestion": "q-steward-untested-fallbacks",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepTransitions.HasReachableTarget",
+        "TargetTable": "StepTransitions",
+        "FieldName": "HasReachableTarget",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{CountOfToStepExecutions}} > 0",
+        "InventedForQuestion": "q-steward-untested-fallbacks",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepTransitions.IsNeverExercised",
+        "TargetTable": "StepTransitions",
+        "FieldName": "IsNeverExercised",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=NOT(AND({{HasReachableOrigin}}, {{HasReachableTarget}}))",
+        "InventedForQuestion": "q-steward-untested-fallbacks",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepTransitions.IsUntestedRecoveryPath",
+        "TargetTable": "StepTransitions",
+        "FieldName": "IsUntestedRecoveryPath",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsRecoveryPath}}, {{IsNeverExercised}})",
+        "InventedForQuestion": "q-steward-untested-fallbacks",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepTransitions.CountOfObservedTraversals",
+        "TargetTable": "StepTransitions",
+        "FieldName": "CountOfObservedTraversals",
+        "FieldType": "aggregation",
+        "Datatype": "integer",
+        "Formula": "=COUNTIFS(ObservedTransitions!{{StepTransition}}, StepTransitions!{{StepTransitionId}})",
+        "InventedForQuestion": "q-steward-untested-fallbacks",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepTransitions.HasBeenTraversed",
+        "TargetTable": "StepTransitions",
+        "FieldName": "HasBeenTraversed",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{CountOfObservedTraversals}} > 0",
+        "InventedForQuestion": "q-steward-untested-fallbacks",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepTransitions.IsUnwalkedRecoveryPath",
+        "TargetTable": "StepTransitions",
+        "FieldName": "IsUnwalkedRecoveryPath",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsRecoveryPath}}, NOT({{HasBeenTraversed}}))",
+        "InventedForQuestion": "q-steward-untested-fallbacks",
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
@@ -10797,6 +11364,26 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "KnowledgeGaps.IsBlocking",
+        "TargetTable": "KnowledgeGaps",
+        "FieldName": "IsBlocking",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{BlockingKind}} = \"Blocking\"",
+        "InventedForQuestion": "q-steward-published-with-blocking-gap",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeGaps.IsOpenAndBlocking",
+        "TargetTable": "KnowledgeGaps",
+        "FieldName": "IsOpenAndBlocking",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsOpen}}, {{IsBlocking}})",
+        "InventedForQuestion": "q-steward-published-with-blocking-gap",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "KnowledgeGaps.SemanticTypeIri",
         "TargetTable": "KnowledgeGaps",
         "FieldName": "SemanticTypeIri",
@@ -11797,6 +12384,16 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "StepExecutions.IsCompleted",
+        "TargetTable": "StepExecutions",
+        "FieldName": "IsCompleted",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{ExecutionStatus}} = \"Completed\"",
+        "InventedForQuestion": "q-steward-untested-fallbacks",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "StepExecutions.SemanticTypeIri",
         "TargetTable": "StepExecutions",
         "FieldName": "SemanticTypeIri",
@@ -12447,6 +13044,36 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "StewardshipAssignments.CountOfReviewEvents",
+        "TargetTable": "StewardshipAssignments",
+        "FieldName": "CountOfReviewEvents",
+        "FieldType": "aggregation",
+        "Datatype": "integer",
+        "Formula": "=COUNTIFS(ReviewEvents!{{ProcedureVersion}}, StewardshipAssignments!{{ProcedureVersion}})",
+        "InventedForQuestion": "q-steward-cadence-breach",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StewardshipAssignments.HasEverBeenReviewed",
+        "TargetTable": "StewardshipAssignments",
+        "FieldName": "HasEverBeenReviewed",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{CountOfReviewEvents}} > 0",
+        "InventedForQuestion": "q-steward-cadence-breach",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StewardshipAssignments.IsCurrentAssignment",
+        "TargetTable": "StewardshipAssignments",
+        "FieldName": "IsCurrentAssignment",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{ValidFrom}} <= NOW(), OR({{ValidTo}} = \"\", {{ValidTo}} > NOW()))",
+        "InventedForQuestion": "q-steward-orphan-versions",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "StewardshipAssignments.SemanticTypeIri",
         "TargetTable": "StewardshipAssignments",
         "FieldName": "SemanticTypeIri",
@@ -12587,6 +13214,66 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "ChangeRequests.IsDecided",
+        "TargetTable": "ChangeRequests",
+        "FieldName": "IsDecided",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{DecidedAt}} <> \"\"",
+        "InventedForQuestion": "q-steward-stalled-change-requests",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ChangeRequests.DaysPending",
+        "TargetTable": "ChangeRequests",
+        "FieldName": "DaysPending",
+        "FieldType": "calculated",
+        "Datatype": "integer",
+        "Formula": "=IF({{IsDecided}}, DATETIME_DIFF({{DecidedAt}}, {{RequestedAt}}, \"days\"), DATETIME_DIFF(NOW(), {{RequestedAt}}, \"days\"))",
+        "InventedForQuestion": "q-steward-stalled-change-requests",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ChangeRequests.IsStillPending",
+        "TargetTable": "ChangeRequests",
+        "FieldName": "IsStillPending",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsOpen}}, NOT({{IsDecided}}))",
+        "InventedForQuestion": "q-steward-stalled-change-requests",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ChangeRequests.IsStalled",
+        "TargetTable": "ChangeRequests",
+        "FieldName": "IsStalled",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsStillPending}}, {{DaysPending}} > 14)",
+        "InventedForQuestion": "q-steward-stalled-change-requests",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ChangeRequests.AuthorityAgent",
+        "TargetTable": "ChangeRequests",
+        "FieldName": "AuthorityAgent",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(Roles!{{CurrentAgent}}, MATCH({{AuthorityRole}}, Roles!{{RoleId}}, 0))",
+        "InventedForQuestion": "q-steward-stalled-change-requests",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ChangeRequests.RequesterIsAuthority",
+        "TargetTable": "ChangeRequests",
+        "FieldName": "RequesterIsAuthority",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{RequestedByAgent}} = {{AuthorityAgent}}",
+        "InventedForQuestion": "q-steward-stalled-change-requests",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "ChangeRequests.SemanticTypeIri",
         "TargetTable": "ChangeRequests",
         "FieldName": "SemanticTypeIri",
@@ -12724,6 +13411,56 @@
         "Datatype": "string",
         "Formula": "=IF({{IsOverdue}}, {{ProcedureVersion}}, \"\")",
         "InventedForQuestion": "q-cfo-approving-on-unfit-version",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ReviewEvents.PromisedCadenceDays",
+        "TargetTable": "ReviewEvents",
+        "FieldName": "PromisedCadenceDays",
+        "FieldType": "lookup",
+        "Datatype": "integer",
+        "Formula": "=INDEX(ProcedureVersions!{{StewardReviewCadenceDays}}, MATCH({{ProcedureVersion}}, ProcedureVersions!{{ProcedureVersionId}}, 0))",
+        "InventedForQuestion": "q-steward-cadence-breach",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ReviewEvents.DaysSinceReviewed",
+        "TargetTable": "ReviewEvents",
+        "FieldName": "DaysSinceReviewed",
+        "FieldType": "calculated",
+        "Datatype": "integer",
+        "Formula": "=DATETIME_DIFF(NOW(), {{ReviewedAt}}, \"days\")",
+        "InventedForQuestion": "q-steward-cadence-breach",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ReviewEvents.ExceedsPromisedCadence",
+        "TargetTable": "ReviewEvents",
+        "FieldName": "ExceedsPromisedCadence",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{DaysSinceReviewed}} > {{PromisedCadenceDays}}",
+        "InventedForQuestion": "q-steward-cadence-breach",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ReviewEvents.CadenceDriftDays",
+        "TargetTable": "ReviewEvents",
+        "FieldName": "CadenceDriftDays",
+        "FieldType": "calculated",
+        "Datatype": "integer",
+        "Formula": "={{DaysSinceReviewed}} - {{PromisedCadenceDays}}",
+        "InventedForQuestion": "q-steward-cadence-breach",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ReviewEvents.PromiseAndBehaviorDisagree",
+        "TargetTable": "ReviewEvents",
+        "FieldName": "PromiseAndBehaviorDisagree",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{ExceedsPromisedCadence}}, NOT({{IsOverdue}}))",
+        "InventedForQuestion": "q-steward-cadence-breach",
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
@@ -14215,6 +14952,86 @@
         "Formula": null,
         "InventedForQuestion": null,
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ObservedTransitions.ObservedTransitionId",
+        "TargetTable": "ObservedTransitions",
+        "FieldName": "ObservedTransitionId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ObservedTransitions.Name",
+        "TargetTable": "ObservedTransitions",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{StepTransition}} & \" @ \" & {{ObservedAt}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ObservedTransitions.ProcedureExecution",
+        "TargetTable": "ObservedTransitions",
+        "FieldName": "ProcedureExecution",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ObservedTransitions.StepTransition",
+        "TargetTable": "ObservedTransitions",
+        "FieldName": "StepTransition",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ObservedTransitions.ArrivingStepExecution",
+        "TargetTable": "ObservedTransitions",
+        "FieldName": "ArrivingStepExecution",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ObservedTransitions.ObservedAt",
+        "TargetTable": "ObservedTransitions",
+        "FieldName": "ObservedAt",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ObservedTransitions.TriggerReason",
+        "TargetTable": "ObservedTransitions",
+        "FieldName": "TriggerReason",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ObservedTransitions.SemanticTypeIri",
+        "TargetTable": "ObservedTransitions",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       }
     ]
   },
@@ -14878,6 +15695,163 @@
         "ObservedByAgent": "devon-okafor",
         "ObservedAt": "2026-07-19T12:20:00-05:00",
         "SemanticTypeIri": "urn:effortless:pko-extension#VerificationOutcome"
+      }
+    ]
+  },
+  "ObservedTransitions": {
+    "Description": "The proxy above cannot tell a walked fallback from a happy-path step that happens to share an endpoint. PKO models Transition as a first-class thing; its execution counterpart is missing. Without a table that records WHICH transition a step execution arrived by, 'has this fallback ever been walked' is permanently unanswerable rather than merely unanswered. This is an extension (urn:effortless:pko-extension#ObservedTransition), not a native PKO term.",
+    "schema": [
+      {
+        "name": "ObservedTransitionId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stored logical identifier for one ObservedTransitions row."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Human-readable calculated display alias.",
+        "formula": "={{StepTransition}} & \" @ \" & {{ObservedAt}}"
+      },
+      {
+        "name": "ProcedureExecution",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "The procedure execution during which this transition was traversed.",
+        "RelatedTo": "ProcedureExecutions"
+      },
+      {
+        "name": "StepTransition",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "The specification-level transition that was actually taken.",
+        "RelatedTo": "StepTransitions"
+      },
+      {
+        "name": "ArrivingStepExecution",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "The step execution that this traversal produced.",
+        "RelatedTo": "StepExecutions"
+      },
+      {
+        "name": "ObservedAt",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "When the traversal occurred."
+      },
+      {
+        "name": "TriggerReason",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Why this path rather than the default was taken."
+      },
+      {
+        "name": "SemanticTypeIri",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Extension class IRI."
+      }
+    ],
+    "data": [
+      {
+        "ObservedTransitionId": "obs-close-01-02-q2",
+        "ProcedureExecution": "exec-close-2026-q2",
+        "StepTransition": "close-01-to-close-02",
+        "ArrivingStepExecution": "se-close02",
+        "ObservedAt": "2026-06-30T17:04:00-05:00",
+        "TriggerReason": "Default sequence",
+        "SemanticTypeIri": "urn:effortless:pko-extension#ObservedTransition"
+      },
+      {
+        "ObservedTransitionId": "obs-close-02-03-q2",
+        "ProcedureExecution": "exec-close-2026-q2",
+        "StepTransition": "close-02-to-close-03",
+        "ArrivingStepExecution": "se-close03",
+        "ObservedAt": "2026-06-30T17:18:00-05:00",
+        "TriggerReason": "Default sequence",
+        "SemanticTypeIri": "urn:effortless:pko-extension#ObservedTransition"
+      },
+      {
+        "ObservedTransitionId": "obs-close-03-04-q2",
+        "ProcedureExecution": "exec-close-2026-q2",
+        "StepTransition": "close-03-to-close-04",
+        "ArrivingStepExecution": "se-close04",
+        "ObservedAt": "2026-07-01T12:15:00-05:00",
+        "TriggerReason": "Default sequence",
+        "SemanticTypeIri": "urn:effortless:pko-extension#ObservedTransition"
+      },
+      {
+        "ObservedTransitionId": "obs-close-04-05-q2",
+        "ProcedureExecution": "exec-close-2026-q2",
+        "StepTransition": "close-04-to-close-05",
+        "ArrivingStepExecution": "se-close05",
+        "ObservedAt": "2026-07-01T15:05:00-05:00",
+        "TriggerReason": "Default sequence",
+        "SemanticTypeIri": "urn:effortless:pko-extension#ObservedTransition"
+      },
+      {
+        "ObservedTransitionId": "obs-close-05-06-q2",
+        "ProcedureExecution": "exec-close-2026-q2",
+        "StepTransition": "close-05-to-close-06",
+        "ArrivingStepExecution": "se-close06",
+        "ObservedAt": "2026-07-02T09:00:00-05:00",
+        "TriggerReason": "Default sequence",
+        "SemanticTypeIri": "urn:effortless:pko-extension#ObservedTransition"
+      },
+      {
+        "ObservedTransitionId": "obs-close-06-07-q2",
+        "ProcedureExecution": "exec-close-2026-q2",
+        "StepTransition": "close-06-to-close-07",
+        "ArrivingStepExecution": "se-close07",
+        "ObservedAt": "2026-07-02T09:22:00-05:00",
+        "TriggerReason": "Default sequence",
+        "SemanticTypeIri": "urn:effortless:pko-extension#ObservedTransition"
+      },
+      {
+        "ObservedTransitionId": "obs-close-07-08-q2",
+        "ProcedureExecution": "exec-close-2026-q2",
+        "StepTransition": "close-07-to-close-08",
+        "ArrivingStepExecution": "se-close08",
+        "ObservedAt": "2026-07-02T14:00:00-05:00",
+        "TriggerReason": "Default sequence",
+        "SemanticTypeIri": "urn:effortless:pko-extension#ObservedTransition"
+      },
+      {
+        "ObservedTransitionId": "obs-policy-01-02-hr4821",
+        "ProcedureExecution": "exec-policy-hr4821",
+        "StepTransition": "policy-01-to-policy-02",
+        "ArrivingStepExecution": "se-policy02",
+        "ObservedAt": "2026-07-18T09:30:00-05:00",
+        "TriggerReason": "Default sequence",
+        "SemanticTypeIri": "urn:effortless:pko-extension#ObservedTransition"
+      },
+      {
+        "ObservedTransitionId": "obs-policy-02-03-hr4821",
+        "ProcedureExecution": "exec-policy-hr4821",
+        "StepTransition": "policy-02-to-policy-03",
+        "ArrivingStepExecution": "se-policy03",
+        "ObservedAt": "2026-07-18T13:00:00-05:00",
+        "TriggerReason": "Default sequence",
+        "SemanticTypeIri": "urn:effortless:pko-extension#ObservedTransition"
+      },
+      {
+        "ObservedTransitionId": "obs-policy-03-04-hr4821",
+        "ProcedureExecution": "exec-policy-hr4821",
+        "StepTransition": "policy-03-to-policy-04",
+        "ArrivingStepExecution": "se-policy04",
+        "ObservedAt": "2026-07-19T09:00:00-05:00",
+        "TriggerReason": "Default sequence",
+        "SemanticTypeIri": "urn:effortless:pko-extension#ObservedTransition"
       }
     ]
   }

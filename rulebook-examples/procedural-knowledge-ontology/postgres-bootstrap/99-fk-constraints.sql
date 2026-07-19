@@ -437,4 +437,15 @@ ALTER TABLE verification_outcomes DROP CONSTRAINT IF EXISTS fk_verification_outc
 ALTER TABLE verification_outcomes ADD CONSTRAINT fk_verification_outcomes_observed_by_agent
   FOREIGN KEY (observed_by_agent) REFERENCES agents (agent_id);
 
--- 113 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
+-- ObservedTransitions
+ALTER TABLE observed_transitions DROP CONSTRAINT IF EXISTS fk_observed_transitions_procedure_execution;
+ALTER TABLE observed_transitions ADD CONSTRAINT fk_observed_transitions_procedure_execution
+  FOREIGN KEY (procedure_execution) REFERENCES procedure_executions (procedure_execution_id);
+ALTER TABLE observed_transitions DROP CONSTRAINT IF EXISTS fk_observed_transitions_step_transition;
+ALTER TABLE observed_transitions ADD CONSTRAINT fk_observed_transitions_step_transition
+  FOREIGN KEY (step_transition) REFERENCES step_transitions (step_transition_id);
+ALTER TABLE observed_transitions DROP CONSTRAINT IF EXISTS fk_observed_transitions_arriving_step_execution;
+ALTER TABLE observed_transitions ADD CONSTRAINT fk_observed_transitions_arriving_step_execution
+  FOREIGN KEY (arriving_step_execution) REFERENCES step_executions (step_execution_id);
+
+-- 116 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).

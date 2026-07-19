@@ -550,6 +550,106 @@ RETURNS BOOLEAN AS $$
   SELECT (((SELECT NULLIF(status, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id) = 'Approved' AND (calc_procedure_versions_overdue_review_count(p_procedure_version_id))::NUMERIC = 0 AND (calc_procedure_versions_open_change_request_count(p_procedure_version_id))::NUMERIC = 0 AND (calc_procedure_versions_open_high_severity_gap_count(p_procedure_version_id))::NUMERIC = 0));
 $$ LANGUAGE sql STABLE;
 
+-- calc_procedure_versions_steward_review_cadence_days
+-- Field: ProcedureVersions.StewardReviewCadenceDays
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_versions_steward_review_cadence_days(p_procedure_version_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COALESCE(SUM((review_cadence_days)::numeric), 0) FROM stewardship_assignments WHERE procedure_version = p_procedure_version_id))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_versions_count_of_stewardship_assignments
+-- Field: ProcedureVersions.CountOfStewardshipAssignments
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_versions_count_of_stewardship_assignments(p_procedure_version_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM stewardship_assignments WHERE procedure_version = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_versions_has_any_steward
+-- Field: ProcedureVersions.HasAnySteward
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_versions_has_any_steward(p_procedure_version_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_procedure_versions_count_of_stewardship_assignments(p_procedure_version_id))::NUMERIC > 0)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_versions_is_live
+-- Field: ProcedureVersions.IsLive
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_versions_is_live(p_procedure_version_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((SELECT NULLIF(status, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id) = 'Approved' OR (SELECT NULLIF(status, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id) = 'Published'))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_versions_is_unstewarded
+-- Field: ProcedureVersions.IsUnstewarded
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_versions_is_unstewarded(p_procedure_version_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (NOT (calc_procedure_versions_has_any_steward(p_procedure_version_id)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_versions_is_live_and_unstewarded
+-- Field: ProcedureVersions.IsLiveAndUnstewarded
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_versions_is_live_and_unstewarded(p_procedure_version_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_procedure_versions_is_live(p_procedure_version_id) AND calc_procedure_versions_is_unstewarded(p_procedure_version_id)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_versions_count_of_open_blocking_gaps
+-- Field: ProcedureVersions.CountOfOpenBlockingGaps
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_versions_count_of_open_blocking_gaps(p_procedure_version_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM knowledge_gaps WHERE calc_knowledge_gaps_is_open_and_blocking(knowledge_gap_id) = TRUE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_versions_has_open_blocking_gap
+-- Field: ProcedureVersions.HasOpenBlockingGap
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_versions_has_open_blocking_gap(p_procedure_version_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_procedure_versions_count_of_open_blocking_gaps(p_procedure_version_id))::NUMERIC > 0)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_versions_is_live_with_blocking_gap
+-- Field: ProcedureVersions.IsLiveWithBlockingGap
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_versions_is_live_with_blocking_gap(p_procedure_version_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_procedure_versions_is_live(p_procedure_version_id) AND calc_procedure_versions_has_open_blocking_gap(p_procedure_version_id)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_versions_should_not_be_executable
+-- Field: ProcedureVersions.ShouldNotBeExecutable
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_versions_should_not_be_executable(p_procedure_version_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_procedure_versions_is_ready_for_execution(p_procedure_version_id) AND calc_procedure_versions_has_open_blocking_gap(p_procedure_version_id)))::boolean;
+$$ LANGUAGE sql STABLE;
+
 -- get_procedure_versions_version_number
 -- Helper function: Get VersionNumber from ProcedureVersions by ProcedureVersionId
 -- Used for join-free cross-table references in aggregations
@@ -833,6 +933,106 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_step_transitions_name(p_step_transition_id TEXT)
 RETURNS TEXT AS $$
   SELECT (CONCAT((SELECT NULLIF(from_step, '') FROM step_transitions WHERE step_transition_id = p_step_transition_id), ' -> ', (SELECT NULLIF(to_step, '') FROM step_transitions WHERE step_transition_id = p_step_transition_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_step_transitions_is_recovery_path
+-- Field: StepTransitions.IsRecoveryPath
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_step_transitions_is_recovery_path(p_step_transition_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((SELECT NULLIF(transition_kind, '') FROM step_transitions WHERE step_transition_id = p_step_transition_id) = 'Fallback' OR (SELECT NULLIF(transition_kind, '') FROM step_transitions WHERE step_transition_id = p_step_transition_id) = 'Alternative'))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_step_transitions_count_of_from_step_executions
+-- Field: StepTransitions.CountOfFromStepExecutions
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_step_transitions_count_of_from_step_executions(p_step_transition_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM step_executions WHERE step = (SELECT NULLIF(from_step, '') FROM step_transitions WHERE step_transition_id = p_step_transition_id)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_step_transitions_count_of_to_step_executions
+-- Field: StepTransitions.CountOfToStepExecutions
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_step_transitions_count_of_to_step_executions(p_step_transition_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM step_executions WHERE step = (SELECT NULLIF(to_step, '') FROM step_transitions WHERE step_transition_id = p_step_transition_id)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_step_transitions_has_reachable_origin
+-- Field: StepTransitions.HasReachableOrigin
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_step_transitions_has_reachable_origin(p_step_transition_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_step_transitions_count_of_from_step_executions(p_step_transition_id))::NUMERIC > 0)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_step_transitions_has_reachable_target
+-- Field: StepTransitions.HasReachableTarget
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_step_transitions_has_reachable_target(p_step_transition_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_step_transitions_count_of_to_step_executions(p_step_transition_id))::NUMERIC > 0)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_step_transitions_is_never_exercised
+-- Field: StepTransitions.IsNeverExercised
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_step_transitions_is_never_exercised(p_step_transition_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (NOT ((calc_step_transitions_has_reachable_origin(p_step_transition_id) AND calc_step_transitions_has_reachable_target(p_step_transition_id))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_step_transitions_is_untested_recovery_path
+-- Field: StepTransitions.IsUntestedRecoveryPath
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_step_transitions_is_untested_recovery_path(p_step_transition_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_step_transitions_is_recovery_path(p_step_transition_id) AND calc_step_transitions_is_never_exercised(p_step_transition_id)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_step_transitions_count_of_observed_traversals
+-- Field: StepTransitions.CountOfObservedTraversals
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_step_transitions_count_of_observed_traversals(p_step_transition_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM observed_transitions WHERE step_transition = (SELECT NULLIF(step_transition_id, '') FROM step_transitions WHERE step_transition_id = p_step_transition_id)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_step_transitions_has_been_traversed
+-- Field: StepTransitions.HasBeenTraversed
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_step_transitions_has_been_traversed(p_step_transition_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_step_transitions_count_of_observed_traversals(p_step_transition_id))::NUMERIC > 0)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_step_transitions_is_unwalked_recovery_path
+-- Field: StepTransitions.IsUnwalkedRecoveryPath
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_step_transitions_is_unwalked_recovery_path(p_step_transition_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_step_transitions_is_recovery_path(p_step_transition_id) AND NOT (calc_step_transitions_has_been_traversed(p_step_transition_id))))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_actions_name
@@ -1424,6 +1624,26 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_knowledge_gaps_open_gap_version_key(p_knowledge_gap_id TEXT)
 RETURNS TEXT AS $$
   SELECT (CASE WHEN (calc_knowledge_gaps_is_open(p_knowledge_gap_id) AND (SELECT NULLIF(severity, '') FROM knowledge_gaps WHERE knowledge_gap_id = p_knowledge_gap_id) = 'High') THEN ((SELECT NULLIF(procedure_version, '') FROM knowledge_gaps WHERE knowledge_gap_id = p_knowledge_gap_id))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_gaps_is_blocking
+-- Field: KnowledgeGaps.IsBlocking
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_gaps_is_blocking(p_knowledge_gap_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((SELECT NULLIF(blocking_kind, '') FROM knowledge_gaps WHERE knowledge_gap_id = p_knowledge_gap_id) = 'Blocking')::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_gaps_is_open_and_blocking
+-- Field: KnowledgeGaps.IsOpenAndBlocking
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_gaps_is_open_and_blocking(p_knowledge_gap_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_knowledge_gaps_is_open(p_knowledge_gap_id) AND calc_knowledge_gaps_is_blocking(p_knowledge_gap_id)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_faqs_name
@@ -2162,6 +2382,16 @@ RETURNS BOOLEAN AS $$
   SELECT ((calc_step_executions_exception_invocation_count(p_step_execution_id))::NUMERIC > 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
+-- calc_step_executions_is_completed
+-- Field: StepExecutions.IsCompleted
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_step_executions_is_completed(p_step_execution_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((SELECT NULLIF(execution_status, '') FROM step_executions WHERE step_execution_id = p_step_execution_id) = 'Completed')::boolean;
+$$ LANGUAGE sql STABLE;
+
 -- calc_requirement_satisfactions_requirement_is_blocking
 -- Field: RequirementSatisfactions.RequirementIsBlocking
 -- Type: lookup | DataType: boolean | Returns: BOOLEAN
@@ -2481,6 +2711,47 @@ RETURNS TEXT AS $$
   SELECT (CONCAT((SELECT NULLIF(procedure_version, '') FROM stewardship_assignments WHERE stewardship_assignment_id = p_stewardship_assignment_id), ' / steward=', (SELECT NULLIF(steward_role, '') FROM stewardship_assignments WHERE stewardship_assignment_id = p_stewardship_assignment_id)))::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_stewardship_assignments_count_of_review_events
+-- Field: StewardshipAssignments.CountOfReviewEvents
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_stewardship_assignments_count_of_review_events(p_stewardship_assignment_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM review_events WHERE procedure_version = (SELECT NULLIF(procedure_version, '') FROM stewardship_assignments WHERE stewardship_assignment_id = p_stewardship_assignment_id)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_stewardship_assignments_has_ever_been_reviewed
+-- Field: StewardshipAssignments.HasEverBeenReviewed
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_stewardship_assignments_has_ever_been_reviewed(p_stewardship_assignment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_stewardship_assignments_count_of_review_events(p_stewardship_assignment_id))::NUMERIC > 0)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_stewardship_assignments_is_current_assignment
+-- Field: StewardshipAssignments.IsCurrentAssignment
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_stewardship_assignments_is_current_assignment(p_stewardship_assignment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((SELECT valid_from::timestamptz FROM stewardship_assignments WHERE stewardship_assignment_id = p_stewardship_assignment_id) <= CURRENT_TIMESTAMP AND ((SELECT valid_to::timestamptz FROM stewardship_assignments WHERE stewardship_assignment_id = p_stewardship_assignment_id) IS NULL OR (SELECT valid_to::timestamptz FROM stewardship_assignments WHERE stewardship_assignment_id = p_stewardship_assignment_id) > CURRENT_TIMESTAMP)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_change_requests_authority_agent
+-- Field: ChangeRequests.AuthorityAgent
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: CurrentAgent from related Roles
+
+
+CREATE OR REPLACE FUNCTION calc_change_requests_authority_agent(p_change_request_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT current_agent::text FROM roles WHERE role_id = (SELECT authority_role FROM change_requests WHERE change_request_id = p_change_request_id));
+$$ LANGUAGE sql STABLE;
+
 -- calc_change_requests_name
 -- Field: ChangeRequests.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -2511,6 +2782,56 @@ RETURNS TEXT AS $$
   SELECT (CASE WHEN calc_change_requests_is_open(p_change_request_id) THEN ((SELECT NULLIF(procedure_version, '') FROM change_requests WHERE change_request_id = p_change_request_id))::text ELSE ('')::text END)::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_change_requests_is_decided
+-- Field: ChangeRequests.IsDecided
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_change_requests_is_decided(p_change_request_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((SELECT decided_at::timestamptz FROM change_requests WHERE change_request_id = p_change_request_id) IS NOT NULL)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_change_requests_days_pending
+-- Field: ChangeRequests.DaysPending
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_change_requests_days_pending(p_change_request_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (CASE WHEN calc_change_requests_is_decided(p_change_request_id) THEN (((SELECT decided_at::timestamptz FROM change_requests WHERE change_request_id = p_change_request_id)::date - (SELECT requested_at::timestamptz FROM change_requests WHERE change_request_id = p_change_request_id)::date))::text ELSE ((CURRENT_TIMESTAMP::date - (SELECT requested_at::timestamptz FROM change_requests WHERE change_request_id = p_change_request_id)::date))::text END)::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_change_requests_is_still_pending
+-- Field: ChangeRequests.IsStillPending
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_change_requests_is_still_pending(p_change_request_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_change_requests_is_open(p_change_request_id) AND NOT (calc_change_requests_is_decided(p_change_request_id))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_change_requests_is_stalled
+-- Field: ChangeRequests.IsStalled
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_change_requests_is_stalled(p_change_request_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_change_requests_is_still_pending(p_change_request_id) AND (calc_change_requests_days_pending(p_change_request_id))::NUMERIC > 14));
+$$ LANGUAGE sql STABLE;
+
+-- calc_change_requests_requester_is_authority
+-- Field: ChangeRequests.RequesterIsAuthority
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_change_requests_requester_is_authority(p_change_request_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((SELECT NULLIF(requested_by_agent, '') FROM change_requests WHERE change_request_id = p_change_request_id) = calc_change_requests_authority_agent(p_change_request_id))::boolean;
+$$ LANGUAGE sql STABLE;
+
 -- calc_review_events_as_of_instant
 -- Field: ReviewEvents.AsOfInstant
 -- Type: lookup | DataType: datetime | Returns: TIMESTAMPTZ
@@ -2520,6 +2841,17 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_review_events_as_of_instant(p_review_event_id TEXT)
 RETURNS TIMESTAMPTZ AS $$
   SELECT (SELECT as_of_instant::timestamptz FROM evaluation_contexts WHERE evaluation_context_id = (SELECT evaluation_context FROM review_events WHERE review_event_id = p_review_event_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_review_events_promised_cadence_days
+-- Field: ReviewEvents.PromisedCadenceDays
+-- Type: lookup | DataType: integer | Returns: NUMERIC
+-- Lookup: StewardReviewCadenceDays from related ProcedureVersions
+
+
+CREATE OR REPLACE FUNCTION calc_review_events_promised_cadence_days(p_review_event_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT calc_procedure_versions_steward_review_cadence_days((SELECT procedure_version FROM review_events WHERE review_event_id = p_review_event_id));
 $$ LANGUAGE sql STABLE;
 
 -- get_change_requests_title
@@ -2613,6 +2945,46 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_review_events_overdue_version_key(p_review_event_id TEXT)
 RETURNS TEXT AS $$
   SELECT (CASE WHEN calc_review_events_is_overdue(p_review_event_id) THEN ((SELECT NULLIF(procedure_version, '') FROM review_events WHERE review_event_id = p_review_event_id))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_review_events_days_since_reviewed
+-- Field: ReviewEvents.DaysSinceReviewed
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_review_events_days_since_reviewed(p_review_event_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((CURRENT_TIMESTAMP::date - (SELECT reviewed_at::timestamptz FROM review_events WHERE review_event_id = p_review_event_id)::date))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_review_events_exceeds_promised_cadence
+-- Field: ReviewEvents.ExceedsPromisedCadence
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_review_events_exceeds_promised_cadence(p_review_event_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (calc_review_events_days_since_reviewed(p_review_event_id) > calc_review_events_promised_cadence_days(p_review_event_id))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_review_events_cadence_drift_days
+-- Field: ReviewEvents.CadenceDriftDays
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_review_events_cadence_drift_days(p_review_event_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((COALESCE(CASE WHEN (calc_review_events_days_since_reviewed(p_review_event_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_review_events_days_since_reviewed(p_review_event_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN (calc_review_events_promised_cadence_days(p_review_event_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_review_events_promised_cadence_days(p_review_event_id))::numeric ELSE NULL END, 0)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_review_events_promise_and_behavior_disagree
+-- Field: ReviewEvents.PromiseAndBehaviorDisagree
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_review_events_promise_and_behavior_disagree(p_review_event_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_review_events_exceeds_promised_cadence(p_review_event_id) AND NOT (calc_review_events_is_overdue(p_review_event_id))))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_learning_activities_name
@@ -3375,6 +3747,52 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_verification_outcomes_unbacked_step_key(p_verification_outcome_id TEXT)
 RETURNS TEXT AS $$
   SELECT (CASE WHEN calc_verification_outcomes_is_unbacked_observation(p_verification_outcome_id) THEN ((SELECT NULLIF(step_execution, '') FROM verification_outcomes WHERE verification_outcome_id = p_verification_outcome_id))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- get_step_transitions_transition_kind
+-- Helper function: Get TransitionKind from StepTransitions by StepTransitionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_step_transitions_transition_kind(p_step_transition_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT transition_kind FROM step_transitions WHERE step_transition_id = p_step_transition_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_step_transitions_condition
+-- Helper function: Get Condition from StepTransitions by StepTransitionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_step_transitions_condition(p_step_transition_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT condition FROM step_transitions WHERE step_transition_id = p_step_transition_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_step_transitions_priority
+-- Helper function: Get Priority from StepTransitions by StepTransitionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_step_transitions_priority(p_step_transition_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT priority FROM step_transitions WHERE step_transition_id = p_step_transition_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_step_transitions_semantic_type_iri
+-- Helper function: Get SemanticTypeIri from StepTransitions by StepTransitionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_step_transitions_semantic_type_iri(p_step_transition_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT semantic_type_iri FROM step_transitions WHERE step_transition_id = p_step_transition_id);
+$$ LANGUAGE sql STABLE;
+
+-- calc_observed_transitions_name
+-- Field: ObservedTransitions.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_observed_transitions_name(p_observed_transition_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT((SELECT NULLIF(step_transition, '') FROM observed_transitions WHERE observed_transition_id = p_observed_transition_id), ' @ ', (SELECT observed_at::timestamptz FROM observed_transitions WHERE observed_transition_id = p_observed_transition_id)))::text;
 $$ LANGUAGE sql STABLE;
 
 -- ============================================================================
