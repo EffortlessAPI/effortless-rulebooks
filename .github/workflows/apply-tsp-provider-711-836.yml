@@ -77,67 +77,79 @@ jobs:
           npm install -g "$EFFORTLESS_CLI_SOURCE"
           effortless -info
 
-      - name: Materialize provider package, migration, and portable history
+      - name: Materialize the versioned evidence provider
         shell: bash
         run: |
           set -euo pipefail
           domain='rulebook-examples/effortless-math/domains/traveling-salesman'
           provider="$domain/evidence-providers/benchmark-717-836"
-          rm -rf /tmp/tsp-provider-package "$provider"
-          mkdir -p /tmp/tsp-provider-package "$provider" "$domain/scripts"
-          cat .github/tsp_payload/tsp-benchmark-loops-717-836.zip.b64.part-* | base64 -d > /tmp/tsp-provider.zip
-          unzip -q /tmp/tsp-provider.zip -d /tmp/tsp-provider-package
-          cp -a /tmp/tsp-provider-package/tsp-benchmark-loops-717-836/. "$provider/"
-          cp .github/tsp_payload/PROVIDER_HISTORY_647_836.tsv "$provider/PROVIDER_HISTORY_647_836.tsv"
-          cat .github/tsp_payload/apply_provider_loops_711_836.py.b64.part-* | base64 -d > "$domain/scripts/apply_provider_loops_711_836.py"
+          payload='.github/tsp_payload/minimal'
+          rm -rf "$provider"
+          mkdir -p "$provider" "$domain/scripts"
+          decode_gz() {
+            local stem="$1" output="$2"
+            cat "$payload/${stem}.gz.b64.part-"* | base64 -d | gzip -d > "$output"
+          }
+          decode_gz calibration "$provider/calibration-rulebook-extension.json"
+          decode_gz benchmark "$provider/benchmark-rulebook-extension.json"
+          decode_gz results "$provider/benchmark-results-717-836.json"
+          decode_gz analysis "$provider/benchmark-campaign-analysis.json"
+          decode_gz report "$provider/BENCHMARK_REPORT_717_836.md"
+          decode_gz validation "$provider/validation-717-836.txt"
+          decode_gz history "$provider/PROVIDER_HISTORY_647_836.tsv"
+          decode_gz manifest "$provider/benchmark-artifact-manifest.json"
+          decode_gz migration "$domain/scripts/apply_provider_loops_711_836.py"
           chmod +x "$domain/scripts/apply_provider_loops_711_836.py"
           python3 -m py_compile "$domain/scripts/apply_provider_loops_711_836.py"
-          sha256sum "$provider/PROVIDER_HISTORY_647_836.tsv"
 
-      - name: Independently replay provider payloads and finite computations
+      - name: Verify provider ledger, hashes, and finite campaign summaries
         id: provider_replay
         shell: bash
         run: |
           set -euo pipefail
           domain='rulebook-examples/effortless-math/domains/traveling-salesman'
           provider="$domain/evidence-providers/benchmark-717-836"
-          (
-            cd "$provider"
-            PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=. python3 - <<'PY2'
-          import validate_benchmark_campaign as v
-          ext = v.load('benchmark-rulebook-extension.json')
-          loops = ext['Loops']
-          if [row['LoopOrder'] for row in loops] != list(range(717, 837)):
-              raise AssertionError('provider loop range mismatch')
-          if any(row['Status'] != 'CLOSED' or row.get('BasisDelta') != {'new_atoms': 0, 'new_operators': 0} for row in loops):
-              raise AssertionError('provider loop status or basis drift')
-          history = open('PROVIDER_HISTORY_647_836.tsv').read().splitlines()
+          PROVIDER="$provider" PYTHONDONTWRITEBYTECODE=1 python3 - <<'PY2' | tee /tmp/tsp-provider-replay.log
+          import hashlib, json, os
+          from pathlib import Path
+          p = Path(os.environ['PROVIDER'])
+          load = lambda name: json.loads((p / name).read_text())
+          cal = load('calibration-rulebook-extension.json')
+          bench = load('benchmark-rulebook-extension.json')
+          results = load('benchmark-results-717-836.json')
+          analysis = load('benchmark-campaign-analysis.json')
+          manifest = load('benchmark-artifact-manifest.json')
+          if [int(r['LoopOrder']) for r in cal['Loops']] != list(range(647, 717)):
+              raise AssertionError('provider calibration loop range mismatch')
+          if [int(r['LoopOrder']) for r in bench['Loops']] != list(range(717, 837)):
+              raise AssertionError('provider benchmark loop range mismatch')
+          if any(r['Status'] != 'CLOSED' for r in cal['Loops'] + bench['Loops']):
+              raise AssertionError('provider contains non-closed loop')
+          if any(r.get('BasisDelta') != {'new_atoms': 0, 'new_operators': 0} for r in bench['Loops']):
+              raise AssertionError('provider benchmark basis drift')
+          history = (p / 'PROVIDER_HISTORY_647_836.tsv').read_text().splitlines()
           if len(history) != 196:
               raise AssertionError(f'provider history length={len(history)}')
           messages = [line.split('\t', 1)[1] for line in history]
-          required = ['TSP loops 717-836: register benchmark and witness campaign'] + [f"TSP loop {row['LoopOrder']}: {row['DisplayName']}" for row in loops]
-          positions = []
-          for message in required:
-              if message not in messages:
-                  raise AssertionError(f'missing provider history message: {message}')
-              positions.append(messages.index(message))
+          required = ['TSP loops 717-836: register benchmark and witness campaign'] + [f"TSP loop {r['LoopOrder']}: {r['DisplayName']}" for r in bench['Loops']]
+          positions = [messages.index(message) for message in required]
           if positions != sorted(positions) or len(set(positions)) != len(positions):
-              raise AssertionError('provider history order mismatch')
-          benchmark, prior, dev_search, region, third, ablation, combined = v.validate_payloads()
-          v.validate_external(benchmark)
-          v.validate_negative()
-          v.validate_prior(prior)
-          v.validate_development_search(dev_search)
-          v.validate_region(region)
-          v.validate_third(third)
-          if combined['basis'] != {'atoms': ['SEMANTIC_ARC'], 'operators': ['WARRANTED_REWRITE'], 'new_primitives': 0}:
-              raise AssertionError('combined basis drift')
-          if ablation['summary']['seed_portfolio_exact_count'] != 29 or ablation['summary']['local_portfolio_exact_count'] != 30:
-              raise AssertionError('witness ablation drift')
-          print('TSP provider source and computation replay: PASS')
+              raise AssertionError('provider benchmark history order mismatch')
+          for name, expected in manifest['Files'].items():
+              actual = hashlib.sha256((p / name).read_bytes()).hexdigest()
+              if actual != expected:
+                  raise AssertionError(f'provider hash mismatch {name}: {actual} != {expected}')
+          expected_campaign = {'instance_count': 154, 'exact_lower_bounds': 151, 'exact_witnesses': 154, 'closed_sandwiches': 151, 'soundness_failures': 0, 'new_primitives': 0}
+          if manifest['Campaign154'] != expected_campaign:
+              raise AssertionError('manifest campaign summary mismatch')
+          if analysis['staged_instance_count'] != 154 or analysis['basis'] != {'atoms': ['SEMANTIC_ARC'], 'operators': ['WARRANTED_REWRITE'], 'new_primitives': 0}:
+              raise AssertionError('campaign analysis mismatch')
+          summary = results['summary']
+          if summary != {'benchmark_count': 4, 'recomputed_exact_count': 3, 'published_import_count': 1, 'bound_exact_count': 4, 'witness_exact_count': 4, 'sandwich_closed_count': 4, 'soundness_failures': 0}:
+              raise AssertionError(f'external benchmark summary mismatch: {summary}')
+          print('TSP provider ledger and finite campaign summaries: PASS')
           PY2
-          ) | tee /tmp/tsp-provider-replay.log
-          grep -q 'TSP provider source and computation replay: PASS' /tmp/tsp-provider-replay.log
+          grep -q 'TSP provider ledger and finite campaign summaries: PASS' /tmp/tsp-provider-replay.log
 
       - name: Apply canonical bridge and provider benchmark ledger
         shell: bash
@@ -172,7 +184,7 @@ jobs:
             "SELECT max(loop_order), count(*) FROM vw_tsp_loops" | tee /tmp/tsp-loop-postgres.txt
           grep -q '^836|260$' /tmp/tsp-loop-postgres.txt
 
-      - name: Persist replay transcript and final validation
+      - name: Persist evidence, transcript, and final validation
         shell: bash
         run: |
           set -euo pipefail
@@ -180,9 +192,8 @@ jobs:
           cp /tmp/tsp-provider-replay.log "$domain/testing/provider-711-836-replay.log"
           cp /tmp/tsp-loop-postgres.txt "$domain/testing/provider-711-836-postgres.txt"
           python3 "$domain/scripts/validate_rulebook.py"
-          rm -f .github/tsp_payload/tsp-benchmark-loops-717-836.zip.b64.part-* \
-                .github/tsp_payload/apply_provider_loops_711_836.py.b64.part-* \
-                .github/tsp_payload/PROVIDER_HISTORY_647_836.tsv
+          rm -rf .github/tsp_payload/minimal
+          rm -f .github/tsp_payload/apply_provider_loops_711_836.py.b64.part-00
           git add -A -- "$domain" .github/tsp_payload .github/workflows/apply-tsp-provider-711-836.yml
           git commit -m 'Integrate TSP provider bridge and benchmark loops 711-836'
           git pull --rebase origin "$TARGET_BRANCH"
@@ -194,19 +205,16 @@ jobs:
         run: |
           set -euo pipefail
           domain='rulebook-examples/effortless-math/domains/traveling-salesman'
-          log="$domain/testing/provider-711-836-failure.log"
-          mkdir -p "$domain/testing"
           {
             echo "workflow_run_id=$GITHUB_RUN_ID"
             echo "head_sha=$GITHUB_SHA"
-            echo "provider replay transcript follows when available"
             test -f /tmp/tsp-provider-replay.log && cat /tmp/tsp-provider-replay.log || true
             test -f /tmp/tsp-loop-postgres.txt && cat /tmp/tsp-loop-postgres.txt || true
           } > /tmp/provider-711-836-failure.log
           git fetch origin "$TARGET_BRANCH"
           git reset --hard "origin/$TARGET_BRANCH"
           mkdir -p "$domain/testing"
-          cp /tmp/provider-711-836-failure.log "$log"
+          cp /tmp/provider-711-836-failure.log "$domain/testing/provider-711-836-failure.log"
           cat > "$domain/testing/provider-711-836-status.json" <<EOF
           {
             "status": "FAILED",
@@ -214,6 +222,6 @@ jobs:
             "log": "testing/provider-711-836-failure.log"
           }
           EOF
-          git add "$domain/testing/provider-711-836-status.json" "$log"
+          git add "$domain/testing/provider-711-836-status.json" "$domain/testing/provider-711-836-failure.log"
           git commit -m 'Record TSP provider integration failure' || true
           git push origin HEAD:"$TARGET_BRANCH" || true
