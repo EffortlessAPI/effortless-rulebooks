@@ -1337,12 +1337,12 @@
     {
       "LoopOrder": 708,
       "LoopId": "tsp-loop-708",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
       "ClosureCriterion": "Summarize exact canonical class growth and observed closure by stop count from four through nine stops.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Recorded exact finite class growth and closure by stop count.",
+      "Result": "Scale profile={4: {'instances': 2, 'max_classes': 3, 'value_closed': 1}, 5: {'instances': 2, 'max_classes': 12, 'value_closed': 2}, 6: {'instances': 5, 'max_classes': 60, 'value_closed': 3}, 7: {'instances': 3, 'max_classes': 360, 'value_closed': 0}, 8: {'instances': 5, 'max_classes': 2520, 'value_closed': 2}, 9: {'instances': 1, 'max_classes': 20160, 'value_closed': 0}}; it calibrates the instrument through nine stops but does not establish asymptotic behavior.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 709,
@@ -1505,7 +1505,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 710,
-    "HighestCompletedLoop": 707,
+    "HighestCompletedLoop": 708,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 16,
     "SelectedNotForcedEdgeStates": 5,
@@ -1547,8 +1547,8 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 66,
     "ClusterContractionCertificates": 7,
-    "ConvergenceMeasurements": 111,
-    "ConceptRegistry": 163,
+    "ConvergenceMeasurements": 112,
+    "ConceptRegistry": 164,
     "DefectProfiles": 33,
     "BoundTerms": 8,
     "WitnessNormalForms": 35,
@@ -1589,7 +1589,7 @@
     "HeldOutMaxExactClassCount": 2520
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:8ce734bf0c6846dec19038fbd09f933a38c45bb14469fac4d30dd839aef137d2",
+    "rulebook": "sha256:f91b2f1ad97bdcbedd0f675e342cfc3002bdc92d0d796d43184c2640eb395957",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
