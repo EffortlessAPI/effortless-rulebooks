@@ -1047,12 +1047,12 @@
     {
       "LoopOrder": 679,
       "LoopId": "tsp-loop-679",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "The NONMETRIC_WEIGHTED family is declared but tsp-holdout-nonmetric6-6 has no canonical graph rows.",
       "ClosureCriterion": "Materialize a deterministic 6-stop NONMETRIC_WEIGHTED graph as HELD_OUT data without using its exact optimum to alter weights or the semantic basis.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Materialized tsp-holdout-nonmetric6-6 as frozen held-out graph data.",
+      "Result": "6 stops, 15 canonical edge rows, family NONMETRIC_WEIGHTED, OracleStatus=PENDING; no weight was selected from an optimum result.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 680,
@@ -1486,11 +1486,11 @@
   "Acceptance": {
     "RulebookTables": 45,
     "Cities": 1,
-    "Neighborhoods": 28,
-    "Addresses": 91,
-    "TSPInstances": 16,
-    "InstanceStops": 99,
-    "TravelEdges": 278,
+    "Neighborhoods": 29,
+    "Addresses": 97,
+    "TSPInstances": 17,
+    "InstanceStops": 105,
+    "TravelEdges": 293,
     "CandidateTours": 20,
     "TSPLoops": 134,
     "FrontierObligations": 33,
@@ -1505,7 +1505,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 710,
-    "HighestCompletedLoop": 678,
+    "HighestCompletedLoop": 679,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 16,
     "SelectedNotForcedEdgeStates": 5,
@@ -1547,8 +1547,8 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 66,
     "ClusterContractionCertificates": 7,
-    "ConvergenceMeasurements": 82,
-    "ConceptRegistry": 134,
+    "ConvergenceMeasurements": 83,
+    "ConceptRegistry": 135,
     "DefectProfiles": 30,
     "BoundTerms": 8,
     "WitnessNormalForms": 31,
@@ -1582,7 +1582,7 @@
     "DevelopmentMaxExactClassCount": 20160
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:34f3c97b4c8b42373cc42170022a40ce69fdaaae6d72d69f35414436f2b91b33",
+    "rulebook": "sha256:73e71a416d44566f9ffd3f986b2e85d30cd3880176cd1683f6c15c8b1f23010d",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
