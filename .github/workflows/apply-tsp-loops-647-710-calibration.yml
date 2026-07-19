@@ -1,0 +1,214 @@
+name: Apply TSP frozen-basis exact calibration loops 647-710
+
+on:
+  push:
+    branches:
+      - agent/tsp-semantic-foundation
+    paths:
+      - .tsp-calibration-647-710.trigger
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: tsp-calibration-647-710-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  calibrate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    env:
+      TARGET_BRANCH: agent/tsp-semantic-foundation
+      PGHOST: localhost
+      PGUSER: postgres
+      PGPASSWORD: postgres
+      TSP_DB: erb_traveling_salesman
+      EFFORTLESS_CLI_SOURCE: https://github.com/EffortlessAPI/cli/archive/1551cb82d5a8992ad09e4c82d08e28493f92f7b4.tar.gz
+      NPM_CONFIG_PREFIX: /tmp/effortless-npm-global
+      NPM_CONFIG_CACHE: /tmp/effortless-npm-cache
+      DOTNET_SKIP_FIRST_TIME_EXPERIENCE: '1'
+      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TARGET_BRANCH }}
+          fetch-depth: 0
+
+      - name: Configure runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+      - name: Record durable calibration checkpoint
+        shell: bash
+        run: |
+          set -euo pipefail
+          domain='rulebook-examples/effortless-math/domains/traveling-salesman'
+          mkdir -p "$domain/testing"
+          cat > "$domain/testing/calibration-647-710-status.json" <<EOF
+          {
+            "status": "RUNNER_STARTED",
+            "driver": "frozen-basis-exact-v1",
+            "github_run_id": "$GITHUB_RUN_ID",
+            "head_sha": "$GITHUB_SHA"
+          }
+          EOF
+          git add "$domain/testing/calibration-647-710-status.json"
+          git commit -m 'Record TSP calibration 647-710 runner checkpoint'
+          git push origin HEAD:"$TARGET_BRANCH"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.410'
+
+      - name: Install pinned Effortless CLI
+        shell: bash
+        run: |
+          set -euo pipefail
+          export PATH="$NPM_CONFIG_PREFIX/bin:$PATH"
+          mkdir -p "$NPM_CONFIG_PREFIX/bin" "$NPM_CONFIG_PREFIX/lib" "$NPM_CONFIG_CACHE"
+          echo "$NPM_CONFIG_PREFIX/bin" >> "$GITHUB_PATH"
+          npm install -g "$EFFORTLESS_CLI_SOURCE"
+          effortless -info
+
+      - name: Require canonical loop-646 execution state
+        shell: bash
+        run: |
+          set -euo pipefail
+          domain='rulebook-examples/effortless-math/domains/traveling-salesman'
+          python3 - <<'PY2'
+          import json
+          from pathlib import Path
+          domain = Path('rulebook-examples/effortless-math/domains/traveling-salesman')
+          status = json.loads((domain/'testing/coherence-624-646-status.json').read_text())
+          if status.get('status') != 'SUCCEEDED' or int(status.get('last_loop', 0)) != 646:
+              raise AssertionError(status)
+          rb = json.loads((domain/'effortless-rulebook/traveling-salesman-rulebook.json').read_text())
+          loops = {int(row['LoopOrder']): row for row in rb['TSPLoops']['data']}
+          if loops[646]['Status'] != 'CLOSED':
+              raise AssertionError('loop 646 is not CLOSED')
+          print('canonical loop-646 prerequisite: PASS')
+          PY2
+
+      - name: Install and compile exact calibration executors
+        shell: bash
+        run: |
+          set -euo pipefail
+          domain='rulebook-examples/effortless-math/domains/traveling-salesman'
+          scripts="$domain/scripts"
+          cat .github/calibration_payload_647_710.part*.b64 | tr -d '\n' | base64 -d | tar -xJ -C "$scripts"
+          python3 -m py_compile \
+            "$scripts/exact_oracle_v1.py" \
+            "$scripts/apply_loops_647_710_calibration.py" \
+            "$scripts/verify_calibration_647_710.py"
+          git add "$scripts/exact_oracle_v1.py" \
+                  "$scripts/apply_loops_647_710_calibration.py" \
+                  "$scripts/verify_calibration_647_710.py"
+          git diff --cached --quiet || git commit -m 'Install TSP frozen-basis calibration executors'
+          git push origin HEAD:"$TARGET_BRANCH"
+
+      - name: Execute and publish loops 647-710
+        id: execute
+        shell: bash
+        run: |
+          set -uo pipefail
+          domain='rulebook-examples/effortless-math/domains/traveling-salesman'
+          log="$RUNNER_TEMP/tsp-calibration-647-710.log"
+          set +e
+          python3 "$domain/scripts/apply_loops_647_710_calibration.py" 2>&1 | tee "$log"
+          status=${PIPESTATUS[0]}
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          echo "log=$log" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Persist partial-run failure after durable loop commits
+        if: steps.execute.outputs.status != '0'
+        shell: bash
+        run: |
+          set -euo pipefail
+          domain='rulebook-examples/effortless-math/domains/traveling-salesman'
+          cp '${{ steps.execute.outputs.log }}' /tmp/tsp-calibration-647-710-failure.log
+          git fetch origin "$TARGET_BRANCH"
+          git reset --hard "origin/$TARGET_BRANCH"
+          cp /tmp/tsp-calibration-647-710-failure.log "$domain/testing/calibration-647-710-failure.log"
+          cat > "$domain/testing/calibration-647-710-status.json" <<EOF
+          {
+            "status": "FAILED",
+            "driver": "frozen-basis-exact-v1",
+            "github_run_id": "$GITHUB_RUN_ID",
+            "exit_code": ${{ steps.execute.outputs.status }},
+            "log": "testing/calibration-647-710-failure.log"
+          }
+          EOF
+          git add "$domain/testing/calibration-647-710-failure.log" "$domain/testing/calibration-647-710-status.json"
+          git commit -m 'Record TSP calibration 647-710 partial failure'
+          git push origin HEAD:"$TARGET_BRANCH"
+          exit 1
+
+      - name: Record execution success and request independent verification
+        if: steps.execute.outputs.status == '0'
+        shell: bash
+        run: |
+          set -euo pipefail
+          domain='rulebook-examples/effortless-math/domains/traveling-salesman'
+          python3 - <<PY2
+          import json
+          from pathlib import Path
+          domain = Path('$domain')
+          rb = json.loads((domain/'effortless-rulebook/traveling-salesman-rulebook.json').read_text())
+          instances = [row for row in rb['TSPInstances']['data'] if row.get('ExperimentSplit') == 'HELD_OUT']
+          value_closed = sum(row.get('DeterministicValueClosed') is True for row in instances)
+          route_closed = sum(row.get('DeterministicRouteClosed') is True for row in instances)
+          branch_required = sum(row.get('BranchNecessaryForValue') is True for row in instances)
+          payload = {
+              'status': 'SUCCEEDED',
+              'driver': 'frozen-basis-exact-v1',
+              'github_run_id': '$GITHUB_RUN_ID',
+              'last_loop': 710,
+              'heldout_exact': len([row for row in instances if row.get('OracleStatus') == 'EXACT']),
+              'heldout_count': len(instances),
+              'value_closed': value_closed,
+              'route_closed': route_closed,
+              'branch_required': branch_required,
+              'active_atoms': ['SEMANTIC_ARC'],
+              'active_operators': ['WARRANTED_REWRITE'],
+              'physical_tables': 45,
+          }
+          (domain/'testing/calibration-647-710-status.json').write_text(json.dumps(payload, indent=2) + '\n')
+          (domain/'testing/calibration-647-710-verify.trigger').write_text('run-id: $GITHUB_RUN_ID\nintent: independently verify loops 647-710 from raw canonical and exact-oracle witnesses\n')
+          PY2
+          rm -f "$domain/testing/calibration-647-710-failure.log" \
+                .github/calibration_payload_647_710.part1.b64 \
+                .github/calibration_payload_647_710.part2.b64 \
+                .github/calibration_payload_647_710.part3.b64 \
+                .github/calibration_payload_647_710.part4.b64 \
+                .github/calibration_payload_647_710.part5.b64 \
+                .github/calibration_payload_647_710.part6.b64 \
+                .github/calibration_payload_647_710.part7.b64 \
+                .github/calibration_payload_647_710.part8.b64
+          git add -A -- "$domain" .github
+          git commit -m 'Record TSP frozen-basis exact calibration success'
+          git push origin HEAD:"$TARGET_BRANCH"
