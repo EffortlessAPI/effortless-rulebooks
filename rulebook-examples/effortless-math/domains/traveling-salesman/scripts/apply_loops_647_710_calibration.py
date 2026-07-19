@@ -1417,6 +1417,15 @@ def loop_fixture_analyze(rb: dict[str, Any], contract: dict[str, Any], order: in
     payload = materialize_analysis(rb, instance_id, order)
     result = payload["result"]
     register_derived(rb, f"coined-{spec['key']}-calibration-witness", f"{spec['family']} Calibration Witness", "SEMANTIC_ARC(instance,EXACT_VALUE,optimum)+SEMANTIC_ARC(instance,RESIDUAL_KERNEL,kernel)+WARRANTED_REWRITE(graph,deterministic_closure,MIXED,residue,structural_rules)", order, "TSPInstances,LocalDegreeBounds,InstanceLowerBounds,CandidateTours,TSPSearchCertificates,TSPDefectProfiles")
+    if spec["key"] == "sparse8":
+        register_derived(
+            rb,
+            "coined-witness-feasibility-independence",
+            "Witness Feasibility Independence",
+            "SEMANTIC_ARC(graph,COMPLETENESS,status)+SEMANTIC_ARC(witness,EDGE_ADMISSIBILITY,all_legs_available)+WARRANTED_REWRITE(witness,validate_without_global_completeness,CONTRACTIVE,HAMILTONIAN_CYCLE_WITNESS,coverage_and_leg_checks)",
+            order,
+            "TSPInstances,TravelEdges,CandidateTours,TourStops,TourLegs,reference_model.py",
+        )
     add_measurement(rb, order, f"{spec['family']} Calibration Witness", f"{instance_id}: optimum={result['optimum_cost']}, classes={result['feasible_class_count']}, lower={result['degree_two_lower_bound']}, residual={result['deterministic_residual_class_count']}, optimal orbit={result['optimal_class_count']}.", kind="HELDOUT_ANALYSIS", prediction="OBSERVED")
     profile = aggregate_profile(heldout_rows(rb))
     update_measurement_profile(rb, order, profile)

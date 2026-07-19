@@ -252,8 +252,7 @@ def _evaluate_tour_bases(rulebook: dict[str, Any]) -> dict[str, dict[str, Any]]:
                 total_cost += Decimal(str(edge["TravelCost"]))
 
         valid = (
-            graph[iid]["is_complete_undirected_graph"]
-            and len(ordered) == len(required_stop_ids)
+            len(ordered) == len(required_stop_ids)
             and len(legs) == len(required_stop_ids)
             and unique_visits
             and unique_positions
