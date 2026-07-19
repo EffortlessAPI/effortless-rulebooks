@@ -1,0 +1,107 @@
+name: Verify TSP frozen-basis exact calibration loops 647-710
+
+on:
+  push:
+    branches:
+      - agent/tsp-semantic-foundation
+    paths:
+      - rulebook-examples/effortless-math/domains/traveling-salesman/testing/calibration-647-710-verify.trigger
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: verify-tsp-calibration-647-710-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      TARGET_BRANCH: agent/tsp-semantic-foundation
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TARGET_BRANCH }}
+          fetch-depth: 0
+
+      - name: Configure certificate commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+      - name: Independently verify canonical and exact-oracle witnesses
+        id: audit
+        shell: bash
+        run: |
+          set -uo pipefail
+          domain='rulebook-examples/effortless-math/domains/traveling-salesman'
+          log="$RUNNER_TEMP/tsp-calibration-647-710-verifier.log"
+          set +e
+          (
+            set -e
+            python3 -m py_compile \
+              "$domain/scripts/exact_oracle_v1.py" \
+              "$domain/scripts/apply_loops_647_710_calibration.py" \
+              "$domain/scripts/verify_calibration_647_710.py" \
+              "$domain/scripts/validate_rulebook.py"
+            python3 "$domain/scripts/validate_rulebook.py"
+            python3 "$domain/scripts/verify_calibration_647_710.py"
+          ) 2>&1 | tee "$log"
+          status=${PIPESTATUS[0]}
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          echo "log=$log" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Persist exact verifier failure
+        if: steps.audit.outputs.status != '0'
+        shell: bash
+        run: |
+          set -euo pipefail
+          domain='rulebook-examples/effortless-math/domains/traveling-salesman'
+          cp '${{ steps.audit.outputs.log }}' /tmp/tsp-calibration-647-710-verification-failure.log
+          git fetch origin "$TARGET_BRANCH"
+          git reset --hard "origin/$TARGET_BRANCH"
+          cp /tmp/tsp-calibration-647-710-verification-failure.log "$domain/testing/calibration-647-710-verification-failure.log"
+          cat > "$domain/testing/calibration-647-710-verification-status.json" <<EOF
+          {
+            "status": "FAILED",
+            "github_run_id": "$GITHUB_RUN_ID",
+            "verifier": "raw-exact-v1",
+            "log": "testing/calibration-647-710-verification-failure.log"
+          }
+          EOF
+          git add "$domain/testing/calibration-647-710-verification-failure.log" "$domain/testing/calibration-647-710-verification-status.json"
+          git commit -m 'Record TSP calibration 647-710 verifier failure'
+          git push origin HEAD:"$TARGET_BRANCH"
+          exit 1
+
+      - name: Commit independent verification certificate
+        if: steps.audit.outputs.status == '0'
+        shell: bash
+        run: |
+          set -euo pipefail
+          domain='rulebook-examples/effortless-math/domains/traveling-salesman'
+          python3 - <<PY2
+          import json
+          from pathlib import Path
+          path = Path('$domain/testing/calibration-647-710-verified.json')
+          value = json.loads(path.read_text())
+          value['github_run_id'] = '$GITHUB_RUN_ID'
+          path.write_text(json.dumps(value, indent=2) + '\n')
+          Path('$domain/testing/calibration-647-710-verification-status.json').write_text(json.dumps({
+              'status': 'VERIFIED',
+              'github_run_id': '$GITHUB_RUN_ID',
+              'verifier': 'raw-exact-v1',
+          }, indent=2) + '\n')
+          PY2
+          rm -f "$domain/testing/calibration-647-710-verification-failure.log"
+          git add -A -- "$domain/testing/calibration-647-710-verified.json" \
+                         "$domain/testing/calibration-647-710-verification-status.json" \
+                         "$domain/testing/calibration-647-710-verification-failure.log"
+          git commit -m 'Verify TSP frozen-basis exact calibration loops 647-710'
+          git push origin HEAD:"$TARGET_BRANCH"
