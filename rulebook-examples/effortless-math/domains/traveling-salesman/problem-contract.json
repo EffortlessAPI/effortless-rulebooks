@@ -857,12 +857,12 @@
     {
       "LoopOrder": 660,
       "LoopId": "tsp-loop-660",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "The oracle and calibration fields exist, but the basis freeze and development audits have not been sealed as one prerequisite.",
       "ClosureCriterion": "Close the pre-held-out frontier only when basis count, exact coverage, lower-bound soundness, certificate concordance, and search accounting all pass.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Sealed the calibrated instrument before held-out execution.",
+      "Result": "One arc, one rewrite, 100% exact development coverage, sound lower bounds, concordant certificates, and fixed evidence partitions are now a closed prerequisite.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 661,
@@ -1493,7 +1493,7 @@
     "TravelEdges": 86,
     "CandidateTours": 8,
     "TSPLoops": 134,
-    "FrontierObligations": 32,
+    "FrontierObligations": 33,
     "ActiveImportedDependencies": 0,
     "ReferenceTourValid": true,
     "ReferenceTourCost": 14,
@@ -1505,7 +1505,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 710,
-    "HighestCompletedLoop": 659,
+    "HighestCompletedLoop": 660,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 16,
     "SelectedNotForcedEdgeStates": 5,
@@ -1547,8 +1547,8 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 66,
     "ClusterContractionCertificates": 7,
-    "ConvergenceMeasurements": 63,
-    "ConceptRegistry": 114,
+    "ConvergenceMeasurements": 64,
+    "ConceptRegistry": 115,
     "DefectProfiles": 21,
     "BoundTerms": 8,
     "WitnessNormalForms": 19,
@@ -1582,7 +1582,7 @@
     "DevelopmentMaxExactClassCount": 20160
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:2dacc42c8264a88dad530af2a2c614d5d42cf2b5e0b0d9427c8d45d6efda50d0",
+    "rulebook": "sha256:78e562ccdc7f5a25cb4e6667c00a396390d3bc1549cc62c79b3497360b766aee",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
