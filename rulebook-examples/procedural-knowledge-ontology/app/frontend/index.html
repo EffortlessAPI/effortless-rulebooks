@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PKO Procedure Register</title>
+<link rel="stylesheet" href="/src/styles.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-in">
+    <div class="brand">
+      <span class="brand-mark" id="brandmark">PKO 2.0.0</span>
+      <span class="brand-name">Procedure Register</span>
+    </div>
+    <div class="roles" role="group" aria-label="Switch role">
+      <button class="role-btn" data-role="operator">Operator</button>
+      <button class="role-btn" data-role="author">Author</button>
+      <button class="role-btn" data-role="approver">Approver</button>
+      <button class="role-btn" data-role="steward">Steward</button>
+      <button class="role-btn" data-role="auditor">Auditor</button>
+    </div>
+  </div>
+</div>
+
+<div class="shell">
+  <div class="nav" id="nav" role="tablist"></div>
+  <div id="view"></div>
+
+  <footer>
+    <p><b>Live.</b> Every value on this page is read from a
+    <span class="mono">vw_&lt;entity&gt;</span> view in
+    <span class="mono">erb_procedural_knowledge_ontology</span>, generated from
+    <span class="mono">procedural-knowledge-ontology-rulebook.json</span> by
+    <span class="mono">rulebook-to-postgres</span>. Calculated columns
+    (<span class="mono">actual_duration_minutes</span>,
+    <span class="mono">is_late</span>,
+    <span class="mono">assigned_role_label</span>) are computed by Postgres from
+    the rulebook formulas — this UI never re-derives them.</p>
+    <p>PKO was created by Valentina Anita Carriero, Mario Scrocca, Ilaria Baroni,
+    Antonia Azzini, and Irene Celino (CC BY 4.0). This domain aligns to PKO; it is
+    not an official PKO distribution and implies no endorsement.</p>
+  </footer>
+</div>
+
+<div class="drawer-bg" id="dbg"></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="dtitle"></aside>
+
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>

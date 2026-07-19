@@ -1,0 +1,5 @@
+node_modules/
+app/frontend/dist/
+app/backend/node_modules/
+app/frontend/node_modules/
+postgres-bootstrap/.applied-manifest.json

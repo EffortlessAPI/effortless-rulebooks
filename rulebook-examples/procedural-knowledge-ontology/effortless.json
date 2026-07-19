@@ -1,0 +1,37 @@
+{
+  "ShowHidden": false,
+  "ShowAllFiles": false,
+  "CurrentPath": null,
+  "SSoTmeProjectFiles": null,
+  "SSoTmeProjectId": "44233cef-0ec9-4a78-88d5-b3b942a96176",
+  "Name": "procedural-knowledge-ontology",
+  "Description": "PKO-Native Procedural Knowledge Rulebook — an Effortless Rulebook structurally aligned to the Procedural Knowledge Ontology (PKO) 2.0.0 and its industry module, proving one canonical model projects to docs, SOPs, policies, and governance.",
+  "ProjectSettings": [
+    {
+      "Name": "project-name",
+      "Value": "procedural-knowledge-ontology"
+    }
+  ],
+  "ProjectTranspilers": [
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktorulespeak",
+      "RelativePath": "/rulespeak",
+      "CommandLine": "rulebook-to-rulespeak -i ../effortless-rulebook/procedural-knowledge-ontology-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.07.08.1458",
+      "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-07-08-1458-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "Description": "Render the rulebook as plain-English RuleSpeak (HTML + Markdown)"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebook-to-postgres",
+      "RelativePath": "/postgres-bootstrap",
+      "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/procedural-knowledge-ontology-rulebook.json",
+      "IsDisabled": false,
+      "PinnedVersion": "v2026.07.11.2146",
+      "LastVersionUsed": "v2026.07.11.2146",
+      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-07-11-2146-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    }
+  ]
+}
