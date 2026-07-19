@@ -1,0 +1,186 @@
+name: Apply TSP atom-operator refinement loops 611-623
+
+on:
+  push:
+    branches:
+      - agent/tsp-semantic-foundation
+    paths:
+      - .tsp-refinement-611-623.trigger
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: tsp-refinement-611-623-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  refine:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    env:
+      TARGET_BRANCH: agent/tsp-semantic-foundation
+      PGHOST: localhost
+      PGUSER: postgres
+      PGPASSWORD: postgres
+      TSP_DB: erb_traveling_salesman
+      EFFORTLESS_CLI_SOURCE: https://github.com/EffortlessAPI/cli/archive/1551cb82d5a8992ad09e4c82d08e28493f92f7b4.tar.gz
+      NPM_CONFIG_PREFIX: /tmp/effortless-npm-global
+      NPM_CONFIG_CACHE: /tmp/effortless-npm-cache
+      DOTNET_SKIP_FIRST_TIME_EXPERIENCE: '1'
+      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TARGET_BRANCH }}
+          fetch-depth: 0
+
+      - name: Configure runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.410'
+
+      - name: Install pinned Effortless CLI
+        shell: bash
+        run: |
+          set -euo pipefail
+          export PATH="$NPM_CONFIG_PREFIX/bin:$PATH"
+          mkdir -p "$NPM_CONFIG_PREFIX/bin" "$NPM_CONFIG_PREFIX/lib" "$NPM_CONFIG_CACHE"
+          echo "$NPM_CONFIG_PREFIX/bin" >> "$GITHUB_PATH"
+          npm install -g "$EFFORTLESS_CLI_SOURCE"
+          effortless -info
+
+      - name: Require verified loop-610 convergence state
+        shell: bash
+        run: |
+          set -euo pipefail
+          domain='rulebook-examples/effortless-math/domains/traveling-salesman'
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          domain = Path('rulebook-examples/effortless-math/domains/traveling-salesman')
+          rulebook = json.loads((domain / 'effortless-rulebook/traveling-salesman-rulebook.json').read_text())
+          meta = {row['MetaKey']: row for row in rulebook['__meta__']['data']}
+          last = int(meta['last_loop']['IntegerValue'])
+          if last < 610:
+              raise AssertionError(f'loop 610 is not canonical: last_loop={last}')
+          loops = {int(row['LoopOrder']): row for row in rulebook['TSPLoops']['data']}
+          if any(loops[n]['Status'] != 'CLOSED' for n in range(597, 611)):
+              raise AssertionError('loops 597-610 are not all CLOSED')
+          verified = domain / 'testing/convergence-597-610-verified.json'
+          if not verified.is_file():
+              raise FileNotFoundError('independent loop-610 verification certificate is missing')
+          payload = json.loads(verified.read_text())
+          if payload.get('status') != 'VERIFIED':
+              raise AssertionError(f'loop-610 verification status is {payload.get("status")!r}')
+          print('verified loop-610 prerequisite: PASS')
+          PY
+
+      - name: Assemble transparent refinement executor
+        shell: bash
+        run: |
+          set -euo pipefail
+          domain='rulebook-examples/effortless-math/domains/traveling-salesman'
+          scripts="$domain/scripts"
+          cat \
+            "$scripts/refinement_611_623.part1.pyfrag" \
+            "$scripts/refinement_611_623.part2a.pyfrag" \
+            "$scripts/refinement_611_623.part2b.pyfrag" \
+            "$scripts/refinement_611_623.part3a.pyfrag" \
+            "$scripts/refinement_611_623.part3b.pyfrag" \
+            > "$scripts/apply_loops_611_623_refinement.py"
+          python3 -m py_compile \
+            "$scripts/apply_loops_611_623_refinement.py" \
+            "$scripts/apply_loops_611_623_refinement_push_each.py"
+          git add "$scripts/apply_loops_611_623_refinement.py"
+          git diff --cached --quiet || git commit -m 'Assemble TSP atom-operator refinement executor'
+
+      - name: Execute and publish loops 611-623
+        id: execute
+        shell: bash
+        run: |
+          set -uo pipefail
+          domain='rulebook-examples/effortless-math/domains/traveling-salesman'
+          log="$RUNNER_TEMP/tsp-refinement-611-623.log"
+          set +e
+          python3 "$domain/scripts/apply_loops_611_623_refinement_push_each.py" 2>&1 | tee "$log"
+          status=${PIPESTATUS[0]}
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          echo "log=$log" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Persist refinement failure after durable loop commits
+        if: steps.execute.outputs.status != '0'
+        shell: bash
+        run: |
+          set -euo pipefail
+          domain='rulebook-examples/effortless-math/domains/traveling-salesman'
+          cp '${{ steps.execute.outputs.log }}' /tmp/tsp-refinement-failure.log
+          git fetch origin "$TARGET_BRANCH"
+          git reset --hard "origin/$TARGET_BRANCH"
+          mkdir -p "$domain/testing"
+          cp /tmp/tsp-refinement-failure.log "$domain/testing/refinement-611-623-failure.log"
+          cat > "$domain/testing/refinement-611-623-status.json" <<EOF
+          {
+            "status": "FAILED",
+            "github_run_id": "$GITHUB_RUN_ID",
+            "exit_code": ${{ steps.execute.outputs.status }},
+            "log": "testing/refinement-611-623-failure.log"
+          }
+          EOF
+          git add "$domain/testing/refinement-611-623-failure.log" "$domain/testing/refinement-611-623-status.json"
+          git commit -m 'Record TSP atom-operator refinement failure'
+          git push origin HEAD:"$TARGET_BRANCH"
+          exit 1
+
+      - name: Record success, remove assembly fragments, and push
+        if: steps.execute.outputs.status == '0'
+        shell: bash
+        run: |
+          set -euo pipefail
+          domain='rulebook-examples/effortless-math/domains/traveling-salesman'
+          cat > "$domain/testing/refinement-611-623-status.json" <<EOF
+          {
+            "status": "SUCCEEDED",
+            "github_run_id": "$GITHUB_RUN_ID",
+            "last_loop": 623,
+            "atoms": ["ATTACHMENT", "VALUATION", "WARRANT"],
+            "operators": ["CLOSURE", "AGGREGATE", "QUOTIENT", "FIXPOINT"],
+            "asymmetric_paths": "24->12->6",
+            "new_physical_tables": 0
+          }
+          EOF
+          rm -f "$domain/scripts/refinement_611_623.part1.pyfrag" \
+                "$domain/scripts/refinement_611_623.part2a.pyfrag" \
+                "$domain/scripts/refinement_611_623.part2b.pyfrag" \
+                "$domain/scripts/refinement_611_623.part3a.pyfrag" \
+                "$domain/scripts/refinement_611_623.part3b.pyfrag"
+          git add -A -- "$domain"
+          git commit -m 'Record TSP atom-operator refinement success'
+          git push origin HEAD:"$TARGET_BRANCH"

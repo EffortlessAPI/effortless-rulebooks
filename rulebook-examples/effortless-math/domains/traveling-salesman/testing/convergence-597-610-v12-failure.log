@@ -1,0 +1,19 @@
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+[agent/tsp-semantic-foundation a801169] TSP loops 597-610: register convergence experiment
+ 6 files changed, 203 insertions(+), 528 deletions(-)
+To https://github.com/EffortlessAPI/effortless-rulebooks
+ ! [remote rejected] HEAD -> agent/tsp-semantic-foundation (refusing to allow a GitHub App to create or update workflow `.github/workflows/validate-tsp-domain.yml` without `workflows` permission)
+error: failed to push some refs to 'https://github.com/EffortlessAPI/effortless-rulebooks'
+traveling-salesman state-aware convergence validation: PASS
+Traceback (most recent call last):
+  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_597_610_convergence_push_each.py", line 26, in <module>
+    base.main()
+  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_597_610_convergence_v2.py", line 1777, in main
+    commit(
+  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_597_610_convergence_push_each.py", line 19, in durable_commit
+    base.run(["git", "push", "origin", f"HEAD:{base.TARGET_BRANCH}"])
+  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_597_610_convergence_v2.py", line 56, in run
+    raise RuntimeError(f"command failed ({proc.returncode}): {' '.join(cmd)}\n{detail}")
+RuntimeError: command failed (1): git push origin HEAD:agent/tsp-semantic-foundation
+
+

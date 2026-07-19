@@ -1,0 +1,17 @@
+graph substrate agreement: 4/4
+tour substrate agreement: 4/4
+local-bound substrate agreement: 11/11
+instance-bound substrate agreement: 2/2
+optimality-certificate agreement: 1/1
+tour invariants passing: 3/3
+graph invariants passing: 2/2
+search substrate agreement: 2/2
+frontier obligations: 16 total, 0 imported, 13 closed
+
+traveling-salesman Postgres conformance: PASS
+Traceback (most recent call last):
+  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/complete_loop_587_final_v2.py", line 23, in <module>
+    final.main()
+  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/complete_loop_587_final.py", line 171, in main
+    raise AssertionError(
+AssertionError: live acceptance mismatch: expected={'gridville_complete': 'true', 'reference_tour': 'true,true,14', 'degree_two_lower_bound': 'true,14'} actual={'gridville_complete': 'true', 'reference_tour': 'true,true,14', 'degree_two_lower_bound': 'true,14.0000000000000000'}

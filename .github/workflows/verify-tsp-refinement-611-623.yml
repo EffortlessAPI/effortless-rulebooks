@@ -1,0 +1,127 @@
+name: Verify TSP atom-operator refinement loops 611-623
+
+on:
+  push:
+    branches:
+      - agent/tsp-semantic-foundation
+    paths:
+      - rulebook-examples/effortless-math/domains/traveling-salesman/testing/refinement-611-623-status.json
+      - .tsp-refinement-611-623-verify.trigger
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: verify-tsp-refinement-611-623-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      TARGET_BRANCH: agent/tsp-semantic-foundation
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TARGET_BRANCH }}
+          fetch-depth: 0
+
+      - name: Configure certificate commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+      - name: Record verifier checkpoint
+        shell: bash
+        run: |
+          set -euo pipefail
+          domain='rulebook-examples/effortless-math/domains/traveling-salesman'
+          cat > "$domain/testing/refinement-611-623-verification-status.json" <<EOF
+          {
+            "status": "RUNNER_STARTED",
+            "github_run_id": "$GITHUB_RUN_ID",
+            "verifier": "canonical-witness-v2"
+          }
+          EOF
+          git add "$domain/testing/refinement-611-623-verification-status.json"
+          git commit -m 'Record TSP refinement verifier checkpoint'
+          git push origin HEAD:"$TARGET_BRANCH"
+
+      - name: Independently verify canonical refinement witnesses
+        id: audit
+        shell: bash
+        run: |
+          set -uo pipefail
+          domain='rulebook-examples/effortless-math/domains/traveling-salesman'
+          log="$RUNNER_TEMP/tsp-refinement-611-623-verifier.log"
+          set +e
+          (
+            set -e
+            python3 "$domain/scripts/validate_rulebook.py"
+            python3 -m py_compile \
+              "$domain/scripts/apply_loops_611_623_refinement.py" \
+              "$domain/scripts/validate_rulebook_v5.py" \
+              "$domain/scripts/validate_summary_alignment_v5.py" \
+              "$domain/scripts/verify_refinement_611_623.py"
+            python3 "$domain/scripts/verify_refinement_611_623.py"
+          ) 2>&1 | tee "$log"
+          status=${PIPESTATUS[0]}
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          echo "log=$log" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Persist exact verifier failure
+        if: steps.audit.outputs.status != '0'
+        shell: bash
+        run: |
+          set -euo pipefail
+          domain='rulebook-examples/effortless-math/domains/traveling-salesman'
+          cp '${{ steps.audit.outputs.log }}' /tmp/tsp-refinement-verifier-failure.log
+          git fetch origin "$TARGET_BRANCH"
+          git reset --hard "origin/$TARGET_BRANCH"
+          cp /tmp/tsp-refinement-verifier-failure.log "$domain/testing/refinement-611-623-verification-failure.log"
+          cat > "$domain/testing/refinement-611-623-verification-status.json" <<EOF
+          {
+            "status": "FAILED",
+            "github_run_id": "$GITHUB_RUN_ID",
+            "verifier": "canonical-witness-v2",
+            "log": "testing/refinement-611-623-verification-failure.log"
+          }
+          EOF
+          git add "$domain/testing/refinement-611-623-verification-failure.log" "$domain/testing/refinement-611-623-verification-status.json"
+          git commit -m 'Record TSP refinement verifier failure'
+          git push origin HEAD:"$TARGET_BRANCH"
+          exit 1
+
+      - name: Commit independent verification certificate
+        if: steps.audit.outputs.status == '0'
+        shell: bash
+        run: |
+          set -euo pipefail
+          domain='rulebook-examples/effortless-math/domains/traveling-salesman'
+          python3 - <<PY
+          import json
+          from pathlib import Path
+          path = Path('$domain/testing/refinement-611-623-verified.json')
+          value = json.loads(path.read_text())
+          value['github_run_id'] = '$GITHUB_RUN_ID'
+          path.write_text(json.dumps(value, indent=2) + '\n')
+          PY
+          cat > "$domain/testing/refinement-611-623-verification-status.json" <<EOF
+          {
+            "status": "VERIFIED",
+            "github_run_id": "$GITHUB_RUN_ID",
+            "verifier": "canonical-witness-v2"
+          }
+          EOF
+          rm -f "$domain/testing/refinement-611-623-verification-failure.log"
+          git add -A -- \
+            "$domain/testing/refinement-611-623-verified.json" \
+            "$domain/testing/refinement-611-623-verification-status.json" \
+            "$domain/testing/refinement-611-623-verification-failure.log"
+          git commit -m 'Verify TSP atom-operator refinement loops 611-623'
+          git push origin HEAD:"$TARGET_BRANCH"

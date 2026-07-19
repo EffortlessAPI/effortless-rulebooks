@@ -1,0 +1,43 @@
+
+# Loop 636 correctly records three open quotient-incidence budgets.  Loop 641
+# later closes those same budgets after the balanced exchange.  Replay the old
+# assertion against its historical projection while independently checking the
+# current closed values.
+_validate_state_pre_temporal_incidence = validate_state
+
+
+def validate_state(rb: dict[str, Any], contract: dict[str, Any]) -> None:
+    loop_map = {int(row["LoopOrder"]): row for row in rows(rb, "TSPLoops")}
+    loop_641_closed = loop_map.get(641, {}).get("Status") == "CLOSED"
+    if not loop_641_closed:
+        _validate_state_pre_temporal_incidence(rb, contract)
+        return
+
+    profiles = [
+        table_index(rb, "TSPDefectProfiles")[f"quotient-incidence-region-{region}"]
+        for region in ("a", "b", "c")
+    ]
+    if any(
+        (
+            row["RequiredIncidence"],
+            row["ObservedIncidence"],
+            row["RequiredBoundaryCrossings"],
+            row["ObservedBoundaryCrossings"],
+            row["Status"],
+        )
+        != (2, 2, 2, 2, "QUOTIENT_INCIDENCE_CLOSED")
+        for row in profiles
+    ):
+        raise AssertionError("current quotient-incidence closure mismatch")
+
+    snapshots = [dict(row) for row in profiles]
+    try:
+        for row in profiles:
+            row["ObservedIncidence"] = 0
+            row["ObservedBoundaryCrossings"] = 0
+            row["Status"] = "QUOTIENT_INCIDENCE_OPEN"
+        _validate_state_pre_temporal_incidence(rb, contract)
+    finally:
+        for row, snapshot in zip(profiles, snapshots):
+            row.clear()
+            row.update(snapshot)

@@ -1,0 +1,50 @@
+{
+  "status": "VERIFIED",
+  "github_run_id": "29660378490",
+  "loops": "611-623",
+  "physical_table_count": 45,
+  "active_atoms": [
+    "Attachment",
+    "Valuation",
+    "Warrant"
+  ],
+  "active_operators": [
+    "Aggregate",
+    "Closure",
+    "Fixpoint",
+    "Quotient"
+  ],
+  "surface_to_atom_compression_pct": 90.63,
+  "coherence_not_monotone_shrinkage": true,
+  "local_expansion_during_internalization_allowed": true,
+  "asymmetric_quotient": {
+    "directed_paths": 24,
+    "reversal_classes": 12,
+    "fiber_minima": 6,
+    "dominance_deltas": [
+      1.0,
+      1.0,
+      5.0,
+      5.0,
+      6.0,
+      6.0
+    ]
+  },
+  "three_atom_basis_proved": false,
+  "ordered_commit_positions": [
+    364,
+    365,
+    366,
+    367,
+    368,
+    369,
+    370,
+    371,
+    372,
+    373,
+    374,
+    375,
+    376,
+    380
+  ]
+}

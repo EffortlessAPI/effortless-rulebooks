@@ -1,0 +1,5 @@
+loop=587 retry=6
+cli_source=https://github.com/EffortlessAPI/cli/archive/1551cb82d5a8992ad09e4c82d08e28493f92f7b4.tar.gz
+cli_commit=1551cb82d5a8992ad09e4c82d08e28493f92f7b4
+cli_version=2026-06-09.06.13
+/home/runner/work/_temp/ebc0959f-c859-48cb-a984-44fa1d33552f.sh: line 12: NPM_CONFIG_PREFIX: unbound variable
