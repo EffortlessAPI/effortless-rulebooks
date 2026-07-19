@@ -170,6 +170,17 @@ RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(label, '') FROM roles WHERE role_id = p_role_id))::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_role_assignments_as_of_instant
+-- Field: RoleAssignments.AsOfInstant
+-- Type: lookup | DataType: datetime | Returns: TIMESTAMPTZ
+-- Lookup: AsOfInstant from related EvaluationContexts
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_as_of_instant(p_role_assignment_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT as_of_instant::timestamptz FROM evaluation_contexts WHERE evaluation_context_id = (SELECT evaluation_context FROM role_assignments WHERE role_assignment_id = p_role_assignment_id));
+$$ LANGUAGE sql STABLE;
+
 -- get_roles_label
 -- Helper function: Get Label from Roles by RoleId
 -- Used for join-free cross-table references in aggregations
@@ -197,6 +208,51 @@ RETURNS TEXT AS $$
   SELECT (SELECT semantic_type_iri FROM roles WHERE role_id = p_role_id);
 $$ LANGUAGE sql STABLE;
 
+-- get_evaluation_contexts_label
+-- Helper function: Get Label from EvaluationContexts by EvaluationContextId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_evaluation_contexts_label(p_evaluation_context_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT label FROM evaluation_contexts WHERE evaluation_context_id = p_evaluation_context_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_evaluation_contexts_as_of_instant
+-- Helper function: Get AsOfInstant from EvaluationContexts by EvaluationContextId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_evaluation_contexts_as_of_instant(p_evaluation_context_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT as_of_instant FROM evaluation_contexts WHERE evaluation_context_id = p_evaluation_context_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_evaluation_contexts_is_current
+-- Helper function: Get IsCurrent from EvaluationContexts by EvaluationContextId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_evaluation_contexts_is_current(p_evaluation_context_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT is_current FROM evaluation_contexts WHERE evaluation_context_id = p_evaluation_context_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_evaluation_contexts_rationale
+-- Helper function: Get Rationale from EvaluationContexts by EvaluationContextId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_evaluation_contexts_rationale(p_evaluation_context_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT rationale FROM evaluation_contexts WHERE evaluation_context_id = p_evaluation_context_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_evaluation_contexts_semantic_type_iri
+-- Helper function: Get SemanticTypeIri from EvaluationContexts by EvaluationContextId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_evaluation_contexts_semantic_type_iri(p_evaluation_context_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT semantic_type_iri FROM evaluation_contexts WHERE evaluation_context_id = p_evaluation_context_id);
+$$ LANGUAGE sql STABLE;
+
 -- calc_role_assignments_name
 -- Field: RoleAssignments.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -214,7 +270,17 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_role_assignments_is_current(p_role_assignment_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((SELECT valid_from::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) <= CURRENT_TIMESTAMP AND ((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) IS NULL OR (SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) > CURRENT_TIMESTAMP)))::boolean;
+  SELECT (((SELECT valid_from::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) <= calc_role_assignments_as_of_instant(p_role_assignment_id) AND ((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) IS NULL OR (SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) > calc_role_assignments_as_of_instant(p_role_assignment_id))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_assignments_current_agent_key
+-- Field: RoleAssignments.CurrentAgentKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_current_agent_key(p_role_assignment_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_role_assignments_is_current(p_role_assignment_id) THEN ((SELECT NULLIF(agent, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::text ELSE ('')::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_communities_of_practice_name
@@ -921,11 +987,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_step_requirements_blocking_step_key(p_step_requirement_id TEXT)
 RETURNS TEXT AS $$
-  SELECT /* WARNING: Formula translation failed: Function 'IIF' is not supported yet
-   Original Airtable formula:
-   =IIF({{RequirementIsBlocking}}, {{Step}}, "")
-*/
-NULL::text;
+  SELECT (CASE WHEN calc_step_requirements_requirement_is_blocking(p_step_requirement_id) THEN ((SELECT NULLIF(step, '') FROM step_requirements WHERE step_requirement_id = p_step_requirement_id))::text ELSE ('')::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_step_verifications_name
@@ -965,11 +1027,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_exceptions_active_exception_step_key(p_exception_id TEXT)
 RETURNS TEXT AS $$
-  SELECT /* WARNING: Formula translation failed: Function 'IIF' is not supported yet
-   Original Airtable formula:
-   =IIF({{Status}} = "Active", {{TriggerStep}}, "")
-*/
-NULL::text;
+  SELECT (CASE WHEN (SELECT NULLIF(status, '') FROM exceptions WHERE exception_id = p_exception_id) = 'Active' THEN ((SELECT NULLIF(trigger_step, '') FROM exceptions WHERE exception_id = p_exception_id))::text ELSE ('')::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_resources_name
@@ -1138,51 +1196,6 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION get_elicitation_sessions_semantic_type_iri(p_elicitation_session_id TEXT)
 RETURNS TEXT AS $$
   SELECT (SELECT semantic_type_iri FROM elicitation_sessions WHERE elicitation_session_id = p_elicitation_session_id);
-$$ LANGUAGE sql STABLE;
-
--- get_evaluation_contexts_label
--- Helper function: Get Label from EvaluationContexts by EvaluationContextId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_evaluation_contexts_label(p_evaluation_context_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT label FROM evaluation_contexts WHERE evaluation_context_id = p_evaluation_context_id);
-$$ LANGUAGE sql STABLE;
-
--- get_evaluation_contexts_as_of_instant
--- Helper function: Get AsOfInstant from EvaluationContexts by EvaluationContextId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_evaluation_contexts_as_of_instant(p_evaluation_context_id TEXT)
-RETURNS TIMESTAMPTZ AS $$
-  SELECT (SELECT as_of_instant FROM evaluation_contexts WHERE evaluation_context_id = p_evaluation_context_id);
-$$ LANGUAGE sql STABLE;
-
--- get_evaluation_contexts_is_current
--- Helper function: Get IsCurrent from EvaluationContexts by EvaluationContextId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_evaluation_contexts_is_current(p_evaluation_context_id TEXT)
-RETURNS BOOLEAN AS $$
-  SELECT (SELECT is_current FROM evaluation_contexts WHERE evaluation_context_id = p_evaluation_context_id);
-$$ LANGUAGE sql STABLE;
-
--- get_evaluation_contexts_rationale
--- Helper function: Get Rationale from EvaluationContexts by EvaluationContextId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_evaluation_contexts_rationale(p_evaluation_context_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT rationale FROM evaluation_contexts WHERE evaluation_context_id = p_evaluation_context_id);
-$$ LANGUAGE sql STABLE;
-
--- get_evaluation_contexts_semantic_type_iri
--- Helper function: Get SemanticTypeIri from EvaluationContexts by EvaluationContextId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_evaluation_contexts_semantic_type_iri(p_evaluation_context_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT semantic_type_iri FROM evaluation_contexts WHERE evaluation_context_id = p_evaluation_context_id);
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_fragments_name
@@ -1636,11 +1649,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_requirement_satisfactions_blocking_unmet_step_key(p_requirement_satisfaction_id TEXT)
 RETURNS TEXT AS $$
-  SELECT /* WARNING: Formula translation failed: Function 'IIF' is not supported yet
-   Original Airtable formula:
-   =IIF({{IsBlockingAndUnmet}}, {{StepExecution}}, "")
-*/
-NULL::text;
+  SELECT (CASE WHEN calc_requirement_satisfactions_is_blocking_and_unmet(p_requirement_satisfaction_id) THEN ((SELECT NULLIF(step_execution, '') FROM requirement_satisfactions WHERE requirement_satisfaction_id = p_requirement_satisfaction_id))::text ELSE ('')::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_requirement_satisfactions_blocking_satisfaction_step_key
@@ -1650,11 +1659,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_requirement_satisfactions_blocking_satisfaction_step_key(p_requirement_satisfaction_id TEXT)
 RETURNS TEXT AS $$
-  SELECT /* WARNING: Formula translation failed: Function 'IIF' is not supported yet
-   Original Airtable formula:
-   =IIF({{RequirementIsBlocking}}, {{StepExecution}}, "")
-*/
-NULL::text;
+  SELECT (CASE WHEN calc_requirement_satisfactions_requirement_is_blocking(p_requirement_satisfaction_id) THEN ((SELECT NULLIF(step_execution, '') FROM requirement_satisfactions WHERE requirement_satisfaction_id = p_requirement_satisfaction_id))::text ELSE ('')::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_errors_name
@@ -1960,11 +1965,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_operational_bindings_stale_binding_step_key(p_operational_binding_id TEXT)
 RETURNS TEXT AS $$
-  SELECT /* WARNING: Formula translation failed: Function 'IIF' is not supported yet
-   Original Airtable formula:
-   =IIF(NOT({{IsFresh}}), {{Step}}, "")
-*/
-NULL::text;
+  SELECT (CASE WHEN NOT (calc_operational_bindings_is_fresh(p_operational_binding_id)) THEN ((SELECT NULLIF(step, '') FROM operational_bindings WHERE operational_binding_id = p_operational_binding_id))::text ELSE ('')::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_operational_bindings_authoritative_stale_step_key
@@ -1974,11 +1975,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_operational_bindings_authoritative_stale_step_key(p_operational_binding_id TEXT)
 RETURNS TEXT AS $$
-  SELECT /* WARNING: Formula translation failed: Function 'IIF' is not supported yet
-   Original Airtable formula:
-   =IIF(AND(NOT({{IsFresh}}), {{IsAuthoritative}}), {{Step}}, "")
-*/
-NULL::text;
+  SELECT (CASE WHEN (NOT (calc_operational_bindings_is_fresh(p_operational_binding_id)) AND COALESCE((SELECT is_authoritative FROM operational_bindings WHERE operational_binding_id = p_operational_binding_id), FALSE)) THEN ((SELECT NULLIF(step, '') FROM operational_bindings WHERE operational_binding_id = p_operational_binding_id))::text ELSE ('')::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_communication_policies_name

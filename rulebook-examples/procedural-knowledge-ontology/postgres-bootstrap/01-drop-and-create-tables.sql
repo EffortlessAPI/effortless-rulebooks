@@ -149,6 +149,7 @@ ALTER TABLE role_assignments ADD COLUMN IF NOT EXISTS valid_from TIMESTAMPTZ;   
 ALTER TABLE role_assignments ADD COLUMN IF NOT EXISTS valid_to TIMESTAMPTZ;                         -- End of the assignment's valid-time interval; null means open-ended.
 ALTER TABLE role_assignments ADD COLUMN IF NOT EXISTS reason TEXT;                                  -- Rationale for the assignment or reassignment.
 ALTER TABLE role_assignments ADD COLUMN IF NOT EXISTS status TEXT;                                  -- Active, Superseded, Planned, or Revoked.
+ALTER TABLE role_assignments ADD COLUMN IF NOT EXISTS evaluation_context TEXT;                      -- The evaluation context this assignment's currency is judged under.
 ALTER TABLE role_assignments ADD COLUMN IF NOT EXISTS semantic_type_iri TEXT;                       -- Exact class IRI for the assignment event.
 COMMENT ON TABLE role_assignments IS 'Time-bounded records of agents holding roles. Maps to pro:RoleInTime and preserves assignment history instead of overwriting it.';
 COMMENT ON COLUMN role_assignments.role_assignment_id IS 'Stored logical identifier for one RoleAssignments row.';
@@ -158,6 +159,7 @@ COMMENT ON COLUMN role_assignments.valid_from IS 'Start of the assignment''s val
 COMMENT ON COLUMN role_assignments.valid_to IS 'End of the assignment''s valid-time interval; null means open-ended.';
 COMMENT ON COLUMN role_assignments.reason IS 'Rationale for the assignment or reassignment.';
 COMMENT ON COLUMN role_assignments.status IS 'Active, Superseded, Planned, or Revoked.';
+COMMENT ON COLUMN role_assignments.evaluation_context IS 'The evaluation context this assignment''s currency is judged under.';
 COMMENT ON COLUMN role_assignments.semantic_type_iri IS 'Exact class IRI for the assignment event.';
 
 -- ----------------------------------------------------------------------------
@@ -1237,6 +1239,7 @@ CREATE INDEX IF NOT EXISTS idx_roles_current_agent ON roles (current_agent);
 -- RoleAssignments
 CREATE INDEX IF NOT EXISTS idx_role_assignments_role ON role_assignments (role);
 CREATE INDEX IF NOT EXISTS idx_role_assignments_agent ON role_assignments (agent);
+CREATE INDEX IF NOT EXISTS idx_role_assignments_evaluation_context ON role_assignments (evaluation_context);
 
 -- CommunitiesOfPractice
 CREATE INDEX IF NOT EXISTS idx_communities_of_practice_organization ON communities_of_practice (organization);
@@ -1422,4 +1425,4 @@ CREATE INDEX IF NOT EXISTS idx_verification_outcomes_step_execution ON verificat
 CREATE INDEX IF NOT EXISTS idx_verification_outcomes_step_verification ON verification_outcomes (step_verification);
 CREATE INDEX IF NOT EXISTS idx_verification_outcomes_observed_by_agent ON verification_outcomes (observed_by_agent);
 
--- 111 FK index(es) declared.
+-- 112 FK index(es) declared.

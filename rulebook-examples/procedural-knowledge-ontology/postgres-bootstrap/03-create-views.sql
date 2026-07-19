@@ -182,7 +182,10 @@ SELECT
   t.valid_to,                                                                   -- End of the assignment's valid-time interval; null means open-ended.
   t.reason,                                                                     -- Rationale for the assignment or reassignment.
   t.status,                                                                     -- Active, Superseded, Planned, or Revoked.
+  t.evaluation_context,                                                         -- The evaluation context this assignment's currency is judged under.
+  calc_role_assignments_as_of_instant(t.role_assignment_id) AS as_of_instant,   -- The evaluation instant this assignment's currency is judged against.
   calc_role_assignments_is_current(t.role_assignment_id) AS is_current,         -- TRUE when the assignment is valid now.
+  calc_role_assignments_current_agent_key(t.role_assignment_id) AS current_agent_key,-- Echoes the Agent id only while this assignment is current; empty otherwise. Lets a parent count CURRENT assignments with a single-criterion COUNTIFS, which is the only shape this transpiler translates correctly.
   t.semantic_type_iri                                                           -- Exact class IRI for the assignment event.
 FROM role_assignments t;
 

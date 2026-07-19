@@ -792,12 +792,36 @@
         "Description": "Active, Superseded, Planned, or Revoked."
       },
       {
+        "name": "EvaluationContext",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "The evaluation context this assignment's currency is judged under.",
+        "RelatedTo": "EvaluationContexts"
+      },
+      {
+        "name": "AsOfInstant",
+        "datatype": "datetime",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The evaluation instant this assignment's currency is judged against.",
+        "formula": "=INDEX(EvaluationContexts!{{AsOfInstant}}, MATCH({{EvaluationContext}}, EvaluationContexts!{{EvaluationContextId}}, 0))"
+      },
+      {
         "name": "IsCurrent",
         "datatype": "boolean",
         "type": "calculated",
         "nullable": true,
         "Description": "TRUE when the assignment is valid now.",
-        "formula": "=AND({{ValidFrom}} <= NOW(), OR({{ValidTo}} = \"\", {{ValidTo}} > NOW()))"
+        "formula": "=AND({{ValidFrom}} <= {{AsOfInstant}}, OR({{ValidTo}} = \"\", {{ValidTo}} > {{AsOfInstant}}))"
+      },
+      {
+        "name": "CurrentAgentKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Echoes the Agent id only while this assignment is current; empty otherwise. Lets a parent count CURRENT assignments with a single-criterion COUNTIFS, which is the only shape this transpiler translates correctly.",
+        "formula": "=IF({{IsCurrent}}, {{Agent}}, \"\")"
       },
       {
         "name": "SemanticTypeIri",
@@ -816,7 +840,8 @@
         "ValidTo": null,
         "Reason": "Assigned for fiscal 2026",
         "Status": "Active",
-        "SemanticTypeIri": "http://purl.org/spar/pro/RoleInTime"
+        "SemanticTypeIri": "http://purl.org/spar/pro/RoleInTime",
+        "EvaluationContext": "eval-current"
       },
       {
         "RoleAssignmentId": "ra-controller-2026",
@@ -826,7 +851,8 @@
         "ValidTo": null,
         "Reason": "Controller appointment",
         "Status": "Active",
-        "SemanticTypeIri": "http://purl.org/spar/pro/RoleInTime"
+        "SemanticTypeIri": "http://purl.org/spar/pro/RoleInTime",
+        "EvaluationContext": "eval-current"
       },
       {
         "RoleAssignmentId": "ra-cfo-2026",
@@ -836,7 +862,8 @@
         "ValidTo": null,
         "Reason": "CFO appointment",
         "Status": "Active",
-        "SemanticTypeIri": "http://purl.org/spar/pro/RoleInTime"
+        "SemanticTypeIri": "http://purl.org/spar/pro/RoleInTime",
+        "EvaluationContext": "eval-current"
       },
       {
         "RoleAssignmentId": "ra-policy-owner-2026",
@@ -846,7 +873,8 @@
         "ValidTo": null,
         "Reason": "Policy stewardship assignment",
         "Status": "Active",
-        "SemanticTypeIri": "http://purl.org/spar/pro/RoleInTime"
+        "SemanticTypeIri": "http://purl.org/spar/pro/RoleInTime",
+        "EvaluationContext": "eval-current"
       },
       {
         "RoleAssignmentId": "ra-counsel-2026",
@@ -856,7 +884,8 @@
         "ValidTo": null,
         "Reason": "Employment counsel assignment",
         "Status": "Active",
-        "SemanticTypeIri": "http://purl.org/spar/pro/RoleInTime"
+        "SemanticTypeIri": "http://purl.org/spar/pro/RoleInTime",
+        "EvaluationContext": "eval-current"
       },
       {
         "RoleAssignmentId": "ra-notify-pipeline-2026",
@@ -866,7 +895,8 @@
         "ValidTo": null,
         "Reason": "Notification platform release 4.4",
         "Status": "Active",
-        "SemanticTypeIri": "http://purl.org/spar/pro/RoleInTime"
+        "SemanticTypeIri": "http://purl.org/spar/pro/RoleInTime",
+        "EvaluationContext": "eval-current"
       },
       {
         "RoleAssignmentId": "ra-old-variance",
@@ -876,7 +906,8 @@
         "ValidTo": "2026-03-31T23:59:59-05:00",
         "Reason": "Human pilot before AI deployment",
         "Status": "Superseded",
-        "SemanticTypeIri": "http://purl.org/spar/pro/RoleInTime"
+        "SemanticTypeIri": "http://purl.org/spar/pro/RoleInTime",
+        "EvaluationContext": "eval-current"
       },
       {
         "RoleAssignmentId": "ra-new-variance",
@@ -886,7 +917,8 @@
         "ValidTo": null,
         "Reason": "Approved AI-assisted variance triage",
         "Status": "Active",
-        "SemanticTypeIri": "http://purl.org/spar/pro/RoleInTime"
+        "SemanticTypeIri": "http://purl.org/spar/pro/RoleInTime",
+        "EvaluationContext": "eval-current"
       }
     ]
   },
@@ -3017,7 +3049,7 @@
         "type": "calculated",
         "nullable": true,
         "Description": "Echoes the Step id only when the bound requirement is blocking; empty otherwise.",
-        "formula": "=IIF({{RequirementIsBlocking}}, {{Step}}, \"\")"
+        "formula": "=IF({{RequirementIsBlocking}}, {{Step}}, \"\")"
       }
     ],
     "data": [
@@ -3456,7 +3488,7 @@
         "type": "calculated",
         "nullable": true,
         "Description": "Echoes the TriggerStep id only for exceptions currently in Active status.",
-        "formula": "=IIF({{Status}} = \"Active\", {{TriggerStep}}, \"\")"
+        "formula": "=IF({{Status}} = \"Active\", {{TriggerStep}}, \"\")"
       },
       {
         "name": "SemanticTypeIri",
@@ -5048,7 +5080,7 @@
         "type": "calculated",
         "nullable": true,
         "Description": "Echoes the parent StepExecution id only when this row is a blocking-unmet violation; empty string otherwise.",
-        "formula": "=IIF({{IsBlockingAndUnmet}}, {{StepExecution}}, \"\")"
+        "formula": "=IF({{IsBlockingAndUnmet}}, {{StepExecution}}, \"\")"
       },
       {
         "name": "BlockingSatisfactionStepKey",
@@ -5056,7 +5088,7 @@
         "type": "calculated",
         "nullable": true,
         "Description": "Echoes the parent StepExecution id when this satisfaction row concerns a blocking requirement.",
-        "formula": "=IIF({{RequirementIsBlocking}}, {{StepExecution}}, \"\")"
+        "formula": "=IF({{RequirementIsBlocking}}, {{StepExecution}}, \"\")"
       },
       {
         "name": "SemanticTypeIri",
@@ -6093,7 +6125,7 @@
         "type": "calculated",
         "nullable": true,
         "Description": "Echoes the bound Step id only when the binding is outside its freshness SLA.",
-        "formula": "=IIF(NOT({{IsFresh}}), {{Step}}, \"\")"
+        "formula": "=IF(NOT({{IsFresh}}), {{Step}}, \"\")"
       },
       {
         "name": "AuthoritativeStaleStepKey",
@@ -6101,7 +6133,7 @@
         "type": "calculated",
         "nullable": true,
         "Description": "Echoes the bound Step id only when an AUTHORITATIVE binding is stale.",
-        "formula": "=IIF(AND(NOT({{IsFresh}}), {{IsAuthoritative}}), {{Step}}, \"\")"
+        "formula": "=IF(AND(NOT({{IsFresh}}), {{IsAuthoritative}}), {{Step}}, \"\")"
       },
       {
         "name": "SemanticTypeIri",
@@ -7647,12 +7679,42 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "RoleAssignments.EvaluationContext",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "EvaluationContext",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.AsOfInstant",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "AsOfInstant",
+        "FieldType": "lookup",
+        "Datatype": "datetime",
+        "Formula": "=INDEX(EvaluationContexts!{{AsOfInstant}}, MATCH({{EvaluationContext}}, EvaluationContexts!{{EvaluationContextId}}, 0))",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "RoleAssignments.IsCurrent",
         "TargetTable": "RoleAssignments",
         "FieldName": "IsCurrent",
         "FieldType": "calculated",
         "Datatype": "boolean",
-        "Formula": "=AND({{ValidFrom}} <= NOW(), OR({{ValidTo}} = \"\", {{ValidTo}} > NOW()))",
+        "Formula": "=AND({{ValidFrom}} <= {{AsOfInstant}}, OR({{ValidTo}} = \"\", {{ValidTo}} > {{AsOfInstant}}))",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.CurrentAgentKey",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "CurrentAgentKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{IsCurrent}}, {{Agent}}, \"\")",
         "InventedForQuestion": null,
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
@@ -9022,7 +9084,7 @@
         "FieldName": "BlockingStepKey",
         "FieldType": "calculated",
         "Datatype": "string",
-        "Formula": "=IIF({{RequirementIsBlocking}}, {{Step}}, \"\")",
+        "Formula": "=IF({{RequirementIsBlocking}}, {{Step}}, \"\")",
         "InventedForQuestion": "q-analyst-blocking-never-evaluated",
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
@@ -9292,7 +9354,7 @@
         "FieldName": "ActiveExceptionStepKey",
         "FieldType": "calculated",
         "Datatype": "string",
-        "Formula": "=IIF({{Status}} = \"Active\", {{TriggerStep}}, \"\")",
+        "Formula": "=IF({{Status}} = \"Active\", {{TriggerStep}}, \"\")",
         "InventedForQuestion": "q-analyst-my-late-steps-unexplained",
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
@@ -10562,7 +10624,7 @@
         "FieldName": "BlockingUnmetStepKey",
         "FieldType": "calculated",
         "Datatype": "string",
-        "Formula": "=IIF({{IsBlockingAndUnmet}}, {{StepExecution}}, \"\")",
+        "Formula": "=IF({{IsBlockingAndUnmet}}, {{StepExecution}}, \"\")",
         "InventedForQuestion": "q-analyst-blocking-unmet-on-my-step",
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
@@ -10572,7 +10634,7 @@
         "FieldName": "BlockingSatisfactionStepKey",
         "FieldType": "calculated",
         "Datatype": "string",
-        "Formula": "=IIF({{RequirementIsBlocking}}, {{StepExecution}}, \"\")",
+        "Formula": "=IF({{RequirementIsBlocking}}, {{StepExecution}}, \"\")",
         "InventedForQuestion": "q-analyst-blocking-never-evaluated",
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
@@ -11532,7 +11594,7 @@
         "FieldName": "StaleBindingStepKey",
         "FieldType": "calculated",
         "Datatype": "string",
-        "Formula": "=IIF(NOT({{IsFresh}}), {{Step}}, \"\")",
+        "Formula": "=IF(NOT({{IsFresh}}), {{Step}}, \"\")",
         "InventedForQuestion": "q-analyst-evidence-binding-stale",
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
@@ -11542,7 +11604,7 @@
         "FieldName": "AuthoritativeStaleStepKey",
         "FieldType": "calculated",
         "Datatype": "string",
-        "Formula": "=IIF(AND(NOT({{IsFresh}}), {{IsAuthoritative}}), {{Step}}, \"\")",
+        "Formula": "=IF(AND(NOT({{IsFresh}}), {{IsAuthoritative}}), {{Step}}, \"\")",
         "InventedForQuestion": "q-analyst-evidence-binding-stale",
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },

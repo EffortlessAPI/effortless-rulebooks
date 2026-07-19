@@ -20,6 +20,19 @@ if [ "${1:-}" != "--no-build" ]; then
   grep -oE "Generated [0-9]+ calculation/lookup functions" /tmp/erb-build.log | tail -1
 fi
 
+# A formula the transpiler cannot translate does NOT fail the build. It emits a
+# warning comment into the function body and returns NULL, so the column reads
+# as a clean false forever and the witness silently states nothing. That is the
+# exact silent-fallback shape this repo forbids, so treat it as fatal here.
+if grep -q "Formula translation failed" postgres-bootstrap/02-create-functions.sql; then
+  echo "TRANSLATION FAILURES — these columns return NULL, not an error:"
+  grep -B6 "Formula translation failed" postgres-bootstrap/02-create-functions.sql \
+    | grep -oE "FUNCTION calc_[a-z0-9_]+" | sed 's/FUNCTION /  /'
+  grep -oE "Function '[A-Z]+' is not supported yet" postgres-bootstrap/02-create-functions.sql \
+    | sort -u | sed 's/^/  /'
+  exit 1
+fi
+
 # Load from scratch. Re-running against a populated DB emits a wall of
 # "already exists" NOTICEs that make real errors easy to miss.
 echo "==> reload (dropdb + createdb)"

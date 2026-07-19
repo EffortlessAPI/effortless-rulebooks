@@ -32,6 +32,9 @@ ALTER TABLE role_assignments ADD CONSTRAINT fk_role_assignments_role
 ALTER TABLE role_assignments DROP CONSTRAINT IF EXISTS fk_role_assignments_agent;
 ALTER TABLE role_assignments ADD CONSTRAINT fk_role_assignments_agent
   FOREIGN KEY (agent) REFERENCES agents (agent_id);
+ALTER TABLE role_assignments DROP CONSTRAINT IF EXISTS fk_role_assignments_evaluation_context;
+ALTER TABLE role_assignments ADD CONSTRAINT fk_role_assignments_evaluation_context
+  FOREIGN KEY (evaluation_context) REFERENCES evaluation_contexts (evaluation_context_id);
 
 -- CommunitiesOfPractice
 ALTER TABLE communities_of_practice DROP CONSTRAINT IF EXISTS fk_communities_of_practice_organization;
@@ -429,4 +432,4 @@ ALTER TABLE verification_outcomes DROP CONSTRAINT IF EXISTS fk_verification_outc
 ALTER TABLE verification_outcomes ADD CONSTRAINT fk_verification_outcomes_observed_by_agent
   FOREIGN KEY (observed_by_agent) REFERENCES agents (agent_id);
 
--- 111 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
+-- 112 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
