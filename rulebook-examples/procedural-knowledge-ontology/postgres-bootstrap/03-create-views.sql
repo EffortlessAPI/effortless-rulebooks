@@ -148,6 +148,8 @@ SELECT
   t.organization,                                                               -- Organization to which the agent belongs.
   t.contact_address,                                                            -- Contact address when applicable.
   t.version_or_employment_key,                                                  -- Model version, pipeline release, or employment assignment key.
+  calc_agents_count_of_current_role_assignments(t.agent_id) AS count_of_current_role_assignments,-- How many role assignments this agent currently holds. Counts only CURRENT assignments via the CurrentAgentKey echo — counting all assignments would report a departed agent as engaged forever.
+  calc_agents_is_still_engaged(t.agent_id) AS is_still_engaged,                 -- TRUE when this agent currently holds at least one role in the organization.
   t.semantic_type_iri                                                           -- Exact semantic type IRI used when projecting the agent.
 FROM agents t;
 
@@ -189,6 +191,7 @@ SELECT
   calc_role_assignments_current_agent_key(t.role_assignment_id) AS current_agent_key,-- Echoes the Agent id only while this assignment is current; empty otherwise. Lets a parent count CURRENT assignments with a single-criterion COUNTIFS, which is the only shape this transpiler translates correctly.
   calc_role_assignments_is_currently_valid(t.role_assignment_id) AS is_currently_valid,-- TRUE when this role assignment is active and has not lapsed.
   calc_role_assignments_agent_role_key(t.role_assignment_id) AS agent_role_key, -- Composite agent+role key, emitted only for currently-valid assignments.
+  calc_role_assignments_has_departed(t.role_assignment_id) AS has_departed,     -- TRUE when this role assignment has ended — the agent no longer holds the role.
   t.semantic_type_iri                                                           -- Exact class IRI for the assignment event.
 FROM role_assignments t;
 
@@ -300,6 +303,17 @@ SELECT
   calc_procedure_versions_has_open_blocking_gap(t.procedure_version_id) AS has_open_blocking_gap,-- TRUE when at least one open blocking gap stands against this version.
   calc_procedure_versions_is_live_with_blocking_gap(t.procedure_version_id) AS is_live_with_blocking_gap,-- TRUE when an executable version carries an unresolved blocking knowledge gap.
   calc_procedure_versions_should_not_be_executable(t.procedure_version_id) AS should_not_be_executable,-- TRUE when the model says this version is ready to execute while a blocking gap is open against it.
+  calc_procedure_versions_count_of_unapproved_reliance_fragments(t.procedure_version_id) AS count_of_unapproved_reliance_fragments,-- How many unapproved claims this version is relying on.
+  calc_procedure_versions_runs_on_unapproved_knowledge(t.procedure_version_id) AS runs_on_unapproved_knowledge,-- TRUE when this version depends on at least one claim the knowledge authority has not approved.
+  calc_procedure_versions_count_of_overdue_gaps(t.procedure_version_id) AS count_of_overdue_gaps,-- How many acknowledged unknowns against this version have outlived their tolerance.
+  calc_procedure_versions_count_of_change_requests(t.procedure_version_id) AS count_of_change_requests,-- How many change requests have ever been raised against this version.
+  calc_procedure_versions_count_of_review_events(t.procedure_version_id) AS count_of_review_events,-- How many review events have ever been recorded against this version.
+  calc_procedure_versions_has_governance_record(t.procedure_version_id) AS has_governance_record,-- TRUE when at least one change request or review event exists for this version.
+  calc_procedure_versions_days_since_modified(t.procedure_version_id) AS days_since_modified,-- Days since this version's content was last changed.
+  calc_procedure_versions_days_since_last_review(t.procedure_version_id) AS days_since_last_review,-- Days since the most recent review of this version.
+  calc_procedure_versions_was_modified_since_last_review(t.procedure_version_id) AS was_modified_since_last_review,-- TRUE when the version was edited more recently than it was reviewed.
+  calc_procedure_versions_modifier_is_authority(t.procedure_version_id) AS modifier_is_authority,-- The kind of agent that last modified this version.
+  calc_procedure_versions_has_unwitnessed_change(t.procedure_version_id) AS has_unwitnessed_change,-- TRUE when a live version's current content postdates every review it has had.
   t.semantic_type_iri                                                           -- Exact PKO class IRI.
 FROM procedure_versions t;
 
@@ -622,6 +636,9 @@ SELECT
   t.facilitator_agent,                                                          -- Person facilitating elicitation.
   t.summary,                                                                    -- What was learned and captured.
   t.status,                                                                     -- Draft, Reviewed, Approved, or Rejected.
+  calc_elicitation_sessions_days_since_elicited(t.elicitation_session_id) AS days_since_elicited,-- Days elapsed since this elicitation session concluded.
+  calc_elicitation_sessions_is_single_witness_method(t.elicitation_session_id) AS is_single_witness_method,-- TRUE when this session captured one practitioner's account rather than a group's.
+  calc_elicitation_sessions_practitioner_is_still_engaged(t.elicitation_session_id) AS practitioner_is_still_engaged,-- Whether the practitioner whose knowledge this session captured still holds a role here.
   t.semantic_type_iri                                                           -- Class IRI used in semantic projection.
 FROM elicitation_sessions t;
 
@@ -648,6 +665,22 @@ SELECT
   t.evaluation_context,                                                         -- The evaluation context this row's time-dependent witnesses are judged under.
   calc_knowledge_fragments_as_of_instant(t.knowledge_fragment_id) AS as_of_instant,-- The evaluation instant this row's time-dependent witnesses are judged against.
   calc_knowledge_fragments_is_currently_valid(t.knowledge_fragment_id) AS is_currently_valid,-- TRUE when the fragment is approved and valid now.
+  calc_knowledge_fragments_source_agent_is_still_engaged(t.knowledge_fragment_id) AS source_agent_is_still_engaged,-- Whether the agent who is the source of this claim still holds a role here.
+  calc_knowledge_fragments_source_agent_kind(t.knowledge_fragment_id) AS source_agent_kind,-- Whether the source of this claim is a Human, an AIAgent, or an AutomatedPipeline.
+  calc_knowledge_fragments_has_human_source(t.knowledge_fragment_id) AS has_human_source,-- TRUE when the claim originates from a human practitioner rather than software.
+  calc_knowledge_fragments_has_orphaned_provenance(t.knowledge_fragment_id) AS has_orphaned_provenance,-- TRUE when we still rely on this claim but the agent who gave it to us no longer holds a role here.
+  calc_knowledge_fragments_is_undefendable_tacit_claim(t.knowledge_fragment_id) AS is_undefendable_tacit_claim,-- TRUE when an orphaned claim is of a kind that lives in a person's head rather than in a document.
+  calc_knowledge_fragments_is_approved(t.knowledge_fragment_id) AS is_approved, -- TRUE when this claim has passed knowledge-authority approval.
+  calc_knowledge_fragments_is_within_validity_window(t.knowledge_fragment_id) AS is_within_validity_window,-- TRUE when this claim's stated validity window contains the present moment.
+  calc_knowledge_fragments_is_relied_upon(t.knowledge_fragment_id) AS is_relied_upon,-- TRUE when this claim is attached to a specific step and is inside its validity window — i.e. it is operationally in play.
+  calc_knowledge_fragments_step_procedure_version_status(t.knowledge_fragment_id) AS step_procedure_version_status,-- The procedure version owning the step this claim is attached to.
+  calc_knowledge_fragments_is_attached_to_live_version(t.knowledge_fragment_id) AS is_attached_to_live_version,-- Whether the procedure version this claim belongs to is currently executable.
+  calc_knowledge_fragments_is_unapproved_but_relied_on(t.knowledge_fragment_id) AS is_unapproved_but_relied_on,-- TRUE when a live procedure is acting on a claim that has not been approved by the knowledge authority.
+  calc_knowledge_fragments_evidence_age_days(t.knowledge_fragment_id) AS evidence_age_days,-- Age in days of the elicitation session this claim came from.
+  calc_knowledge_fragments_has_recorded_elicitation(t.knowledge_fragment_id) AS has_recorded_elicitation,-- TRUE when this claim traces to a recorded elicitation session.
+  calc_knowledge_fragments_is_from_single_witness(t.knowledge_fragment_id) AS is_from_single_witness,-- Whether this claim rests on a single practitioner's account.
+  calc_knowledge_fragments_evidence_expiry_days(t.knowledge_fragment_id) AS evidence_expiry_days,-- How many days this claim's evidence is trusted for, given how it was gathered.
+  calc_knowledge_fragments_evidence_has_expired(t.knowledge_fragment_id) AS evidence_has_expired,-- TRUE when the evidence behind this claim is older than we trust evidence of its kind to be.
   t.semantic_type_iri                                                           -- Extension class IRI.
 FROM knowledge_fragments t;
 
@@ -673,6 +706,13 @@ SELECT
   calc_knowledge_gaps_open_gap_version_key(t.knowledge_gap_id) AS open_gap_version_key,-- Echoes the ProcedureVersion id for open high-severity knowledge gaps.
   calc_knowledge_gaps_is_blocking(t.knowledge_gap_id) AS is_blocking,           -- TRUE when this gap is declared blocking rather than informational.
   calc_knowledge_gaps_is_open_and_blocking(t.knowledge_gap_id) AS is_open_and_blocking,-- TRUE when this gap is both unresolved and declared blocking.
+  calc_knowledge_gaps_days_open(t.knowledge_gap_id) AS days_open,               -- Days this gap has been unresolved, or zero once closed.
+  calc_knowledge_gaps_tolerance_days(t.knowledge_gap_id) AS tolerance_days,     -- How long a gap of this severity may remain open before it becomes a governance failure in its own right.
+  calc_knowledge_gaps_is_overdue_gap(t.knowledge_gap_id) AS is_overdue_gap,     -- TRUE when this acknowledged unknown has outlived the tolerance for its severity.
+  calc_knowledge_gaps_owner_agent(t.knowledge_gap_id) AS owner_agent,           -- The agent currently holding the role that owns resolving this gap.
+  calc_knowledge_gaps_owner_is_still_engaged(t.knowledge_gap_id) AS owner_is_still_engaged,-- Whether the agent responsible for closing this gap still holds a role here.
+  calc_knowledge_gaps_has_resolution_plan(t.knowledge_gap_id) AS has_resolution_plan,-- TRUE when someone has written down how this gap would be closed.
+  calc_knowledge_gaps_is_abandoned_unknown(t.knowledge_gap_id) AS is_abandoned_unknown,-- TRUE when an overdue gap has either no plan or no living owner — an admission of ignorance that nobody is acting on.
   t.semantic_type_iri                                                           -- Extension class IRI.
 FROM knowledge_gaps t;
 

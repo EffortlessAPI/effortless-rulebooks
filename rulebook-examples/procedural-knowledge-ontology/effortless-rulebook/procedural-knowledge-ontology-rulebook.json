@@ -464,6 +464,22 @@
         "Description": "Model version, pipeline release, or employment assignment key."
       },
       {
+        "name": "CountOfCurrentRoleAssignments",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many role assignments this agent currently holds. Counts only CURRENT assignments via the CurrentAgentKey echo \u2014 counting all assignments would report a departed agent as engaged forever.",
+        "formula": "=COUNTIFS(RoleAssignments!{{CurrentAgentKey}}, {{AgentId}})"
+      },
+      {
+        "name": "IsStillEngaged",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this agent currently holds at least one role in the organization.",
+        "formula": "={{CountOfCurrentRoleAssignments}} > 0"
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -840,6 +856,14 @@
         "formula": "=IF({{IsCurrentlyValid}}, {{Agent}} & \"|\" & {{Role}}, \"\")"
       },
       {
+        "name": "HasDeparted",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this role assignment has ended \u2014 the agent no longer holds the role.",
+        "formula": "=AND({{ValidTo}} <> \"\", {{ValidTo}} <= NOW())"
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -935,6 +959,61 @@
         "Status": "Active",
         "SemanticTypeIri": "http://purl.org/spar/pro/RoleInTime",
         "EvaluationContext": "eval-current"
+      },
+      {
+        "RoleAssignmentId": "ra-comms-2026",
+        "Role": "communications-manager",
+        "Agent": "amina-yusuf",
+        "ValidFrom": "2026-02-01T00:00:00-06:00",
+        "ValidTo": null,
+        "Reason": "Communications manager appointment",
+        "Status": "Active",
+        "EvaluationContext": "eval-current",
+        "SemanticTypeIri": "http://purl.org/spar/pro/RoleInTime"
+      },
+      {
+        "RoleAssignmentId": "ra-authority-2026",
+        "Role": "knowledge-authority",
+        "Agent": "priya-raman",
+        "ValidFrom": "2026-01-01T00:00:00-06:00",
+        "ValidTo": null,
+        "Reason": "Knowledge authority vested with the CFO for financial procedures",
+        "Status": "Active",
+        "EvaluationContext": "eval-current",
+        "SemanticTypeIri": "http://purl.org/spar/pro/RoleInTime"
+      },
+      {
+        "RoleAssignmentId": "ra-steward-2026",
+        "Role": "process-steward",
+        "Agent": "elena-garcia",
+        "ValidFrom": "2026-04-15T09:00:00-05:00",
+        "ValidTo": null,
+        "Reason": "Process stewardship assignment",
+        "Status": "Active",
+        "EvaluationContext": "eval-current",
+        "SemanticTypeIri": "http://purl.org/spar/pro/RoleInTime"
+      },
+      {
+        "RoleAssignmentId": "ra-close-pipeline-2026",
+        "Role": "close-automation",
+        "Agent": "close-pipeline",
+        "ValidFrom": "2026-01-01T00:00:00-06:00",
+        "ValidTo": null,
+        "Reason": "Close automation platform release 3.2",
+        "Status": "Active",
+        "EvaluationContext": "eval-current",
+        "SemanticTypeIri": "http://purl.org/spar/pro/RoleInTime"
+      },
+      {
+        "RoleAssignmentId": "ra-policy-ai-2026",
+        "Role": "policy-drafting-agent",
+        "Agent": "policy-drafting-ai",
+        "ValidFrom": "2026-05-01T00:00:00-05:00",
+        "ValidTo": null,
+        "Reason": "Approved AI-assisted policy drafting",
+        "Status": "Active",
+        "EvaluationContext": "eval-current",
+        "SemanticTypeIri": "http://purl.org/spar/pro/RoleInTime"
       }
     ]
   },
@@ -1527,6 +1606,94 @@
         "nullable": true,
         "Description": "TRUE when the model says this version is ready to execute while a blocking gap is open against it.",
         "formula": "=AND({{IsReadyForExecution}}, {{HasOpenBlockingGap}})"
+      },
+      {
+        "name": "CountOfUnapprovedRelianceFragments",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many unapproved claims this version is relying on.",
+        "formula": "=COUNTIFS(KnowledgeFragments!{{IsUnapprovedButReliedOn}}, TRUE)"
+      },
+      {
+        "name": "RunsOnUnapprovedKnowledge",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this version depends on at least one claim the knowledge authority has not approved.",
+        "formula": "={{CountOfUnapprovedRelianceFragments}} > 0"
+      },
+      {
+        "name": "CountOfOverdueGaps",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many acknowledged unknowns against this version have outlived their tolerance.",
+        "formula": "=COUNTIFS(KnowledgeGaps!{{IsOverdueGap}}, TRUE)"
+      },
+      {
+        "name": "CountOfChangeRequests",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many change requests have ever been raised against this version.",
+        "formula": "=COUNTIFS(ChangeRequests!{{ProcedureVersion}}, ProcedureVersions!{{ProcedureVersionId}})"
+      },
+      {
+        "name": "CountOfReviewEvents",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many review events have ever been recorded against this version.",
+        "formula": "=COUNTIFS(ReviewEvents!{{ProcedureVersion}}, ProcedureVersions!{{ProcedureVersionId}})"
+      },
+      {
+        "name": "HasGovernanceRecord",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when at least one change request or review event exists for this version.",
+        "formula": "=OR({{CountOfChangeRequests}} > 0, {{CountOfReviewEvents}} > 0)"
+      },
+      {
+        "name": "DaysSinceModified",
+        "datatype": "integer",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Days since this version's content was last changed.",
+        "formula": "=DATETIME_DIFF(NOW(), {{ModifiedAt}}, \"days\")"
+      },
+      {
+        "name": "DaysSinceLastReview",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Days since the most recent review of this version.",
+        "formula": "=DATETIME_DIFF(NOW(), MAXIFS(ReviewEvents!{{ReviewedAt}}, ReviewEvents!{{ProcedureVersion}}, ProcedureVersions!{{ProcedureVersionId}}), \"days\")"
+      },
+      {
+        "name": "WasModifiedSinceLastReview",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the version was edited more recently than it was reviewed.",
+        "formula": "={{DaysSinceModified}} < {{DaysSinceLastReview}}"
+      },
+      {
+        "name": "ModifierIsAuthority",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The kind of agent that last modified this version.",
+        "formula": "=INDEX(Agents!{{AgentKind}}, MATCH({{ModifiedByAgent}}, Agents!{{AgentId}}, 0))"
+      },
+      {
+        "name": "HasUnwitnessedChange",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a live version's current content postdates every review it has had.",
+        "formula": "=AND({{IsLive}}, {{WasModifiedSinceLastReview}})"
       },
       {
         "name": "SemanticTypeIri",
@@ -4206,6 +4373,30 @@
         "Description": "Draft, Reviewed, Approved, or Rejected."
       },
       {
+        "name": "DaysSinceElicited",
+        "datatype": "integer",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Days elapsed since this elicitation session concluded.",
+        "formula": "=DATETIME_DIFF(NOW(), {{EndedAt}}, \"days\")"
+      },
+      {
+        "name": "IsSingleWitnessMethod",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this session captured one practitioner's account rather than a group's.",
+        "formula": "=OR({{Method}} = \"Shadowing\", {{Method}} = \"PractitionerInterview\")"
+      },
+      {
+        "name": "PractitionerIsStillEngaged",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether the practitioner whose knowledge this session captured still holds a role here.",
+        "formula": "=INDEX(Agents!{{IsStillEngaged}}, MATCH({{PractitionerAgent}}, Agents!{{AgentId}}, 0))"
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -4376,6 +4567,134 @@
         "nullable": true,
         "Description": "TRUE when the fragment is approved and valid now.",
         "formula": "=AND({{ValidFrom}} <= {{AsOfInstant}}, OR({{ValidTo}} = \"\", {{ValidTo}} > {{AsOfInstant}}), {{Status}} = \"Approved\")"
+      },
+      {
+        "name": "SourceAgentIsStillEngaged",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether the agent who is the source of this claim still holds a role here.",
+        "formula": "=INDEX(Agents!{{IsStillEngaged}}, MATCH({{SourceAgent}}, Agents!{{AgentId}}, 0))"
+      },
+      {
+        "name": "SourceAgentKind",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether the source of this claim is a Human, an AIAgent, or an AutomatedPipeline.",
+        "formula": "=INDEX(Agents!{{AgentKind}}, MATCH({{SourceAgent}}, Agents!{{AgentId}}, 0))"
+      },
+      {
+        "name": "HasHumanSource",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the claim originates from a human practitioner rather than software.",
+        "formula": "={{SourceAgentKind}} = \"Human\""
+      },
+      {
+        "name": "HasOrphanedProvenance",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when we still rely on this claim but the agent who gave it to us no longer holds a role here.",
+        "formula": "=AND({{IsCurrentlyValid}}, NOT({{SourceAgentIsStillEngaged}}))"
+      },
+      {
+        "name": "IsUndefendableTacitClaim",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when an orphaned claim is of a kind that lives in a person's head rather than in a document.",
+        "formula": "=AND({{HasOrphanedProvenance}}, OR({{KnowledgeForm}} = \"Tacit\", {{KnowledgeForm}} = \"SituatedJudgment\"))"
+      },
+      {
+        "name": "IsApproved",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this claim has passed knowledge-authority approval.",
+        "formula": "={{Status}} = \"Approved\""
+      },
+      {
+        "name": "IsWithinValidityWindow",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this claim's stated validity window contains the present moment.",
+        "formula": "=AND({{ValidFrom}} <= NOW(), OR({{ValidTo}} = \"\", {{ValidTo}} > NOW()))"
+      },
+      {
+        "name": "IsReliedUpon",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this claim is attached to a specific step and is inside its validity window \u2014 i.e. it is operationally in play.",
+        "formula": "=AND({{Step}} <> \"\", {{IsWithinValidityWindow}})"
+      },
+      {
+        "name": "StepProcedureVersionStatus",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The procedure version owning the step this claim is attached to.",
+        "formula": "=INDEX(Steps!{{ProcedureVersion}}, MATCH({{Step}}, Steps!{{StepId}}, 0))"
+      },
+      {
+        "name": "IsAttachedToLiveVersion",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether the procedure version this claim belongs to is currently executable.",
+        "formula": "=INDEX(ProcedureVersions!{{IsLive}}, MATCH({{ProcedureVersion}}, ProcedureVersions!{{ProcedureVersionId}}, 0))"
+      },
+      {
+        "name": "IsUnapprovedButReliedOn",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a live procedure is acting on a claim that has not been approved by the knowledge authority.",
+        "formula": "=AND({{IsReliedUpon}}, {{IsAttachedToLiveVersion}}, NOT({{IsApproved}}))"
+      },
+      {
+        "name": "EvidenceAgeDays",
+        "datatype": "integer",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Age in days of the elicitation session this claim came from.",
+        "formula": "=INDEX(ElicitationSessions!{{DaysSinceElicited}}, MATCH({{ElicitationSession}}, ElicitationSessions!{{ElicitationSessionId}}, 0))"
+      },
+      {
+        "name": "HasRecordedElicitation",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this claim traces to a recorded elicitation session.",
+        "formula": "={{ElicitationSession}} <> \"\""
+      },
+      {
+        "name": "IsFromSingleWitness",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether this claim rests on a single practitioner's account.",
+        "formula": "=INDEX(ElicitationSessions!{{IsSingleWitnessMethod}}, MATCH({{ElicitationSession}}, ElicitationSessions!{{ElicitationSessionId}}, 0))"
+      },
+      {
+        "name": "EvidenceExpiryDays",
+        "datatype": "integer",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "How many days this claim's evidence is trusted for, given how it was gathered.",
+        "formula": "=IF({{IsFromSingleWitness}}, 180, 365)"
+      },
+      {
+        "name": "EvidenceHasExpired",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the evidence behind this claim is older than we trust evidence of its kind to be.",
+        "formula": "=AND({{HasRecordedElicitation}}, {{EvidenceAgeDays}} > {{EvidenceExpiryDays}})"
       },
       {
         "name": "SemanticTypeIri",
@@ -4618,6 +4937,62 @@
         "formula": "=AND({{IsOpen}}, {{IsBlocking}})"
       },
       {
+        "name": "DaysOpen",
+        "datatype": "integer",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Days this gap has been unresolved, or zero once closed.",
+        "formula": "=IF({{IsOpen}}, DATETIME_DIFF(NOW(), {{IdentifiedAt}}, \"days\"), 0)"
+      },
+      {
+        "name": "ToleranceDays",
+        "datatype": "integer",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "How long a gap of this severity may remain open before it becomes a governance failure in its own right.",
+        "formula": "=IF({{Severity}} = \"High\", 30, IF({{Severity}} = \"Medium\", 90, 180))"
+      },
+      {
+        "name": "IsOverdueGap",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this acknowledged unknown has outlived the tolerance for its severity.",
+        "formula": "={{DaysOpen}} > {{ToleranceDays}}"
+      },
+      {
+        "name": "OwnerAgent",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The agent currently holding the role that owns resolving this gap.",
+        "formula": "=INDEX(Roles!{{CurrentAgent}}, MATCH({{OwnerRole}}, Roles!{{RoleId}}, 0))"
+      },
+      {
+        "name": "OwnerIsStillEngaged",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether the agent responsible for closing this gap still holds a role here.",
+        "formula": "=INDEX(Agents!{{IsStillEngaged}}, MATCH({{OwnerAgent}}, Agents!{{AgentId}}, 0))"
+      },
+      {
+        "name": "HasResolutionPlan",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when someone has written down how this gap would be closed.",
+        "formula": "={{ResolutionPlan}} <> \"\""
+      },
+      {
+        "name": "IsAbandonedUnknown",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when an overdue gap has either no plan or no living owner \u2014 an admission of ignorance that nobody is acting on.",
+        "formula": "=AND({{IsOverdueGap}}, OR(NOT({{HasResolutionPlan}}), NOT({{OwnerIsStillEngaged}})))"
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -4677,6 +5052,20 @@
         "OwnerRole": "process-steward",
         "IdentifiedAt": "2026-07-19T18:00:00-05:00",
         "ResolutionPlan": "Resolved by ReviewEvents.ExceedsPromisedCadence and PromiseAndBehaviorDisagree, which compare DaysSinceReviewed against the cadence promised by the version's stewardship assignment. Surfacing the real Q1 review (review-close-q1) showed the witness firing on genuine history: 121 days elapsed against a 90-day promise. The Q2 review closed the lapse, so current state reads compliant.",
+        "EvaluationContext": "eval-current",
+        "SemanticTypeIri": "urn:effortless:pko-extension#KnowledgeGap"
+      },
+      {
+        "KnowledgeGapId": "gap-roles-unauditable-holders",
+        "ProcedureVersion": "close-v1.1.0",
+        "Step": null,
+        "Statement": "Five of twelve roles were held only by a denormalized Roles.CurrentAgent pointer with no RoleAssignments row: communications-manager, knowledge-authority, process-steward, close-automation, policy-drafting-agent. The convenience pointer claimed a holder the auditable time-bounded table could not confirm, so provenance for anything those roles touched was unverifiable.",
+        "Severity": "High",
+        "BlockingKind": "NonBlocking",
+        "Status": "Resolved",
+        "OwnerRole": "knowledge-authority",
+        "IdentifiedAt": "2026-07-19T18:20:00-05:00",
+        "ResolutionPlan": "Surfaced by Agents.IsStillEngaged, which counts CURRENT RoleAssignments rather than trusting Roles.CurrentAgent. amina-yusuf read as not engaged, which made kf-policy-channel an IsUndefendableTacitClaim. Resolved by recording the five missing time-bounded assignments. The witness stays: it is the only thing that distinguishes a real appointment from a denormalized pointer.",
         "EvaluationContext": "eval-current",
         "SemanticTypeIri": "urn:effortless:pko-extension#KnowledgeGap"
       }
@@ -8084,6 +8473,51 @@
         "WhyItMatters": "A change request with no decision is a decision \u2014 to do nothing \u2014 but it never announces itself. The model stores RequestedAt and DecidedAt and computes neither the interval nor a staleness verdict. Since cr-policy-delivery is the vehicle for closing gap-policy-delivery-receipts on a live policy version, its stall is load-bearing.",
         "AnswerableBefore": false,
         "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-authority-orphaned-provenance",
+        "AskingRole": "knowledge-authority",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "kf-close-fx-time, kf-close-top-ten and kf-close-judgment all trace to devon-okafor via elicit-close-shadow. If Devon's controller role assignment ends, which of our beliefs lose their witness?",
+        "WhyItMatters": "This is institutional memory decay in its purest form. A knowledge fragment is a claim; its SourceAgent is the person who can defend it. When that person's RoleAssignment.ValidTo passes, the claim survives in the database but its warrant evaporates \u2014 nobody left can say why we believe it. The chain KnowledgeFragments -> SourceAgent -> RoleAssignments.ValidTo is fully modeled and never traversed. Three of seven fragments hang off one human.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-authority-non-approved-dependency",
+        "AskingRole": "knowledge-authority",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "kf-policy-manager-route is Status=Reviewed, not Approved, so IsCurrentlyValid is FALSE. policy-08 is a live step. Are we running a procedure on knowledge I never approved?",
+        "WhyItMatters": "This is the exact failure the separation of Reviewed and Approved exists to catch, and nothing catches it. The fragment describes the 48-hour manager-routing behavior that exc-unreachable depends on. It is attached to a step in an Approved procedure version, it is being relied upon operationally, and it has never passed my desk. The model knows every piece of this and joins none of it.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-authority-stale-elicitation",
+        "AskingRole": "knowledge-authority",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "elicit-close-shadow ran on 2026-04-03 and elicit-policy-workshop on 2026-05-10. How old is the evidence behind each belief, and at what age do I stop trusting a shadowing session I have not repeated?",
+        "WhyItMatters": "Knowledge does not announce its own expiry. Every fragment here has ValidTo=null, which reads as 'valid forever' \u2014 but a Tacit claim captured by shadowing one controller for three hours in April is a snapshot of a practice that drifts. I want the age of the EVIDENCE, not the age of the record, and I want it graded by how fragile the elicitation method was.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-authority-known-unknowns",
+        "AskingRole": "knowledge-authority",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "What do we know that we do not know? gap-policy-delivery-receipts has been Open since 2026-07-18 with a ResolutionPlan and no owner activity. How long do our acknowledged ignorances stay acknowledged and unresolved?",
+        "WhyItMatters": "A KnowledgeGap is the most honest object in this model: a written admission of what we do not know. But an admission with no clock on it converts into a permanent condition. KnowledgeGaps has IdentifiedAt and a Status and computes no age, no ownership currency, and no relationship between a gap's severity and how long we have tolerated it. Known unknowns that never age are not being managed, they are being filed.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-authority-unwitnessed-change",
+        "AskingRole": "knowledge-authority",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "cr-close-timestamp altered a blocking control on close-v1.1.0 and was decided by me. Did any semantic change to a live procedure reach production without a change request and without a review event behind it?",
+        "WhyItMatters": "My authority is over what counts as true, which means every change to the meaning of a live procedure must trace to a decision I made. close-v1.1.0 was ModifiedAt 2026-07-02T15:00 by maria-chen; review-close-q2 happened at 16:00 and cr-close-timestamp was raised at 16:30. That ordering is fine. But nothing in the model checks the ordering, so an edit that PRECEDES no review and no change request looks identical to a governed one. Provenance of change is as much an epistemic question as provenance of belief.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
       }
     ]
   },
@@ -8564,6 +8998,26 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "Agents.CountOfCurrentRoleAssignments",
+        "TargetTable": "Agents",
+        "FieldName": "CountOfCurrentRoleAssignments",
+        "FieldType": "aggregation",
+        "Datatype": "integer",
+        "Formula": "=COUNTIFS(RoleAssignments!{{CurrentAgentKey}}, {{AgentId}})",
+        "InventedForQuestion": "q-authority-orphaned-provenance",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Agents.IsStillEngaged",
+        "TargetTable": "Agents",
+        "FieldName": "IsStillEngaged",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{CountOfCurrentRoleAssignments}} > 0",
+        "InventedForQuestion": "q-authority-orphaned-provenance",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "Agents.SemanticTypeIri",
         "TargetTable": "Agents",
         "FieldName": "SemanticTypeIri",
@@ -8791,6 +9245,16 @@
         "Datatype": "string",
         "Formula": "=IF({{IsCurrentlyValid}}, {{Agent}} & \"|\" & {{Role}}, \"\")",
         "InventedForQuestion": "q-controller-approval-authority-valid",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.HasDeparted",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "HasDeparted",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{ValidTo}} <> \"\", {{ValidTo}} <= NOW())",
+        "InventedForQuestion": "q-authority-orphaned-provenance",
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
@@ -9451,6 +9915,116 @@
         "Datatype": "boolean",
         "Formula": "=AND({{IsReadyForExecution}}, {{HasOpenBlockingGap}})",
         "InventedForQuestion": "q-steward-published-with-blocking-gap",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.CountOfUnapprovedRelianceFragments",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "CountOfUnapprovedRelianceFragments",
+        "FieldType": "aggregation",
+        "Datatype": "integer",
+        "Formula": "=COUNTIFS(KnowledgeFragments!{{IsUnapprovedButReliedOn}}, TRUE)",
+        "InventedForQuestion": "q-authority-non-approved-dependency",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.RunsOnUnapprovedKnowledge",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "RunsOnUnapprovedKnowledge",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{CountOfUnapprovedRelianceFragments}} > 0",
+        "InventedForQuestion": "q-authority-non-approved-dependency",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.CountOfOverdueGaps",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "CountOfOverdueGaps",
+        "FieldType": "aggregation",
+        "Datatype": "integer",
+        "Formula": "=COUNTIFS(KnowledgeGaps!{{IsOverdueGap}}, TRUE)",
+        "InventedForQuestion": "q-authority-known-unknowns",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.CountOfChangeRequests",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "CountOfChangeRequests",
+        "FieldType": "aggregation",
+        "Datatype": "integer",
+        "Formula": "=COUNTIFS(ChangeRequests!{{ProcedureVersion}}, ProcedureVersions!{{ProcedureVersionId}})",
+        "InventedForQuestion": "q-authority-unwitnessed-change",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.CountOfReviewEvents",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "CountOfReviewEvents",
+        "FieldType": "aggregation",
+        "Datatype": "integer",
+        "Formula": "=COUNTIFS(ReviewEvents!{{ProcedureVersion}}, ProcedureVersions!{{ProcedureVersionId}})",
+        "InventedForQuestion": "q-authority-unwitnessed-change",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.HasGovernanceRecord",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "HasGovernanceRecord",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=OR({{CountOfChangeRequests}} > 0, {{CountOfReviewEvents}} > 0)",
+        "InventedForQuestion": "q-authority-unwitnessed-change",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.DaysSinceModified",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "DaysSinceModified",
+        "FieldType": "calculated",
+        "Datatype": "integer",
+        "Formula": "=DATETIME_DIFF(NOW(), {{ModifiedAt}}, \"days\")",
+        "InventedForQuestion": "q-authority-unwitnessed-change",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.DaysSinceLastReview",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "DaysSinceLastReview",
+        "FieldType": "aggregation",
+        "Datatype": "integer",
+        "Formula": "=DATETIME_DIFF(NOW(), MAXIFS(ReviewEvents!{{ReviewedAt}}, ReviewEvents!{{ProcedureVersion}}, ProcedureVersions!{{ProcedureVersionId}}), \"days\")",
+        "InventedForQuestion": "q-authority-unwitnessed-change",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.WasModifiedSinceLastReview",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "WasModifiedSinceLastReview",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{DaysSinceModified}} < {{DaysSinceLastReview}}",
+        "InventedForQuestion": "q-authority-unwitnessed-change",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.ModifierIsAuthority",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "ModifierIsAuthority",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(Agents!{{AgentKind}}, MATCH({{ModifiedByAgent}}, Agents!{{AgentId}}, 0))",
+        "InventedForQuestion": "q-authority-unwitnessed-change",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.HasUnwitnessedChange",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "HasUnwitnessedChange",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsLive}}, {{WasModifiedSinceLastReview}})",
+        "InventedForQuestion": "q-authority-unwitnessed-change",
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
@@ -11054,6 +11628,36 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "ElicitationSessions.DaysSinceElicited",
+        "TargetTable": "ElicitationSessions",
+        "FieldName": "DaysSinceElicited",
+        "FieldType": "calculated",
+        "Datatype": "integer",
+        "Formula": "=DATETIME_DIFF(NOW(), {{EndedAt}}, \"days\")",
+        "InventedForQuestion": "q-authority-stale-elicitation",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ElicitationSessions.IsSingleWitnessMethod",
+        "TargetTable": "ElicitationSessions",
+        "FieldName": "IsSingleWitnessMethod",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=OR({{Method}} = \"Shadowing\", {{Method}} = \"PractitionerInterview\")",
+        "InventedForQuestion": "q-authority-stale-elicitation",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ElicitationSessions.PractitionerIsStillEngaged",
+        "TargetTable": "ElicitationSessions",
+        "FieldName": "PractitionerIsStillEngaged",
+        "FieldType": "lookup",
+        "Datatype": "boolean",
+        "Formula": "=INDEX(Agents!{{IsStillEngaged}}, MATCH({{PractitionerAgent}}, Agents!{{AgentId}}, 0))",
+        "InventedForQuestion": "q-authority-stale-elicitation",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "ElicitationSessions.SemanticTypeIri",
         "TargetTable": "ElicitationSessions",
         "FieldName": "SemanticTypeIri",
@@ -11224,6 +11828,166 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "KnowledgeFragments.SourceAgentIsStillEngaged",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "SourceAgentIsStillEngaged",
+        "FieldType": "lookup",
+        "Datatype": "boolean",
+        "Formula": "=INDEX(Agents!{{IsStillEngaged}}, MATCH({{SourceAgent}}, Agents!{{AgentId}}, 0))",
+        "InventedForQuestion": "q-authority-orphaned-provenance",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.SourceAgentKind",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "SourceAgentKind",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(Agents!{{AgentKind}}, MATCH({{SourceAgent}}, Agents!{{AgentId}}, 0))",
+        "InventedForQuestion": "q-authority-orphaned-provenance",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.HasHumanSource",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "HasHumanSource",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{SourceAgentKind}} = \"Human\"",
+        "InventedForQuestion": "q-authority-orphaned-provenance",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.HasOrphanedProvenance",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "HasOrphanedProvenance",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsCurrentlyValid}}, NOT({{SourceAgentIsStillEngaged}}))",
+        "InventedForQuestion": "q-authority-orphaned-provenance",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.IsUndefendableTacitClaim",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "IsUndefendableTacitClaim",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{HasOrphanedProvenance}}, OR({{KnowledgeForm}} = \"Tacit\", {{KnowledgeForm}} = \"SituatedJudgment\"))",
+        "InventedForQuestion": "q-authority-orphaned-provenance",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.IsApproved",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "IsApproved",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{Status}} = \"Approved\"",
+        "InventedForQuestion": "q-authority-non-approved-dependency",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.IsWithinValidityWindow",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "IsWithinValidityWindow",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{ValidFrom}} <= NOW(), OR({{ValidTo}} = \"\", {{ValidTo}} > NOW()))",
+        "InventedForQuestion": "q-authority-non-approved-dependency",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.IsReliedUpon",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "IsReliedUpon",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{Step}} <> \"\", {{IsWithinValidityWindow}})",
+        "InventedForQuestion": "q-authority-non-approved-dependency",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.StepProcedureVersionStatus",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "StepProcedureVersionStatus",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(Steps!{{ProcedureVersion}}, MATCH({{Step}}, Steps!{{StepId}}, 0))",
+        "InventedForQuestion": "q-authority-non-approved-dependency",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.IsAttachedToLiveVersion",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "IsAttachedToLiveVersion",
+        "FieldType": "lookup",
+        "Datatype": "boolean",
+        "Formula": "=INDEX(ProcedureVersions!{{IsLive}}, MATCH({{ProcedureVersion}}, ProcedureVersions!{{ProcedureVersionId}}, 0))",
+        "InventedForQuestion": "q-authority-non-approved-dependency",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.IsUnapprovedButReliedOn",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "IsUnapprovedButReliedOn",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsReliedUpon}}, {{IsAttachedToLiveVersion}}, NOT({{IsApproved}}))",
+        "InventedForQuestion": "q-authority-non-approved-dependency",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.EvidenceAgeDays",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "EvidenceAgeDays",
+        "FieldType": "lookup",
+        "Datatype": "integer",
+        "Formula": "=INDEX(ElicitationSessions!{{DaysSinceElicited}}, MATCH({{ElicitationSession}}, ElicitationSessions!{{ElicitationSessionId}}, 0))",
+        "InventedForQuestion": "q-authority-stale-elicitation",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.HasRecordedElicitation",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "HasRecordedElicitation",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{ElicitationSession}} <> \"\"",
+        "InventedForQuestion": "q-authority-stale-elicitation",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.IsFromSingleWitness",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "IsFromSingleWitness",
+        "FieldType": "lookup",
+        "Datatype": "boolean",
+        "Formula": "=INDEX(ElicitationSessions!{{IsSingleWitnessMethod}}, MATCH({{ElicitationSession}}, ElicitationSessions!{{ElicitationSessionId}}, 0))",
+        "InventedForQuestion": "q-authority-stale-elicitation",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.EvidenceExpiryDays",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "EvidenceExpiryDays",
+        "FieldType": "calculated",
+        "Datatype": "integer",
+        "Formula": "=IF({{IsFromSingleWitness}}, 180, 365)",
+        "InventedForQuestion": "q-authority-stale-elicitation",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.EvidenceHasExpired",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "EvidenceHasExpired",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{HasRecordedElicitation}}, {{EvidenceAgeDays}} > {{EvidenceExpiryDays}})",
+        "InventedForQuestion": "q-authority-stale-elicitation",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "KnowledgeFragments.SemanticTypeIri",
         "TargetTable": "KnowledgeFragments",
         "FieldName": "SemanticTypeIri",
@@ -11381,6 +12145,76 @@
         "Datatype": "boolean",
         "Formula": "=AND({{IsOpen}}, {{IsBlocking}})",
         "InventedForQuestion": "q-steward-published-with-blocking-gap",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeGaps.DaysOpen",
+        "TargetTable": "KnowledgeGaps",
+        "FieldName": "DaysOpen",
+        "FieldType": "calculated",
+        "Datatype": "integer",
+        "Formula": "=IF({{IsOpen}}, DATETIME_DIFF(NOW(), {{IdentifiedAt}}, \"days\"), 0)",
+        "InventedForQuestion": "q-authority-known-unknowns",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeGaps.ToleranceDays",
+        "TargetTable": "KnowledgeGaps",
+        "FieldName": "ToleranceDays",
+        "FieldType": "calculated",
+        "Datatype": "integer",
+        "Formula": "=IF({{Severity}} = \"High\", 30, IF({{Severity}} = \"Medium\", 90, 180))",
+        "InventedForQuestion": "q-authority-known-unknowns",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeGaps.IsOverdueGap",
+        "TargetTable": "KnowledgeGaps",
+        "FieldName": "IsOverdueGap",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{DaysOpen}} > {{ToleranceDays}}",
+        "InventedForQuestion": "q-authority-known-unknowns",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeGaps.OwnerAgent",
+        "TargetTable": "KnowledgeGaps",
+        "FieldName": "OwnerAgent",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(Roles!{{CurrentAgent}}, MATCH({{OwnerRole}}, Roles!{{RoleId}}, 0))",
+        "InventedForQuestion": "q-authority-known-unknowns",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeGaps.OwnerIsStillEngaged",
+        "TargetTable": "KnowledgeGaps",
+        "FieldName": "OwnerIsStillEngaged",
+        "FieldType": "lookup",
+        "Datatype": "boolean",
+        "Formula": "=INDEX(Agents!{{IsStillEngaged}}, MATCH({{OwnerAgent}}, Agents!{{AgentId}}, 0))",
+        "InventedForQuestion": "q-authority-known-unknowns",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeGaps.HasResolutionPlan",
+        "TargetTable": "KnowledgeGaps",
+        "FieldName": "HasResolutionPlan",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{ResolutionPlan}} <> \"\"",
+        "InventedForQuestion": "q-authority-known-unknowns",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeGaps.IsAbandonedUnknown",
+        "TargetTable": "KnowledgeGaps",
+        "FieldName": "IsAbandonedUnknown",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsOverdueGap}}, OR(NOT({{HasResolutionPlan}}), NOT({{OwnerIsStillEngaged}})))",
+        "InventedForQuestion": "q-authority-known-unknowns",
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {

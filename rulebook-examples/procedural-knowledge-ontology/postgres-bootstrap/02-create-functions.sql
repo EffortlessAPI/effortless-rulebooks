@@ -104,6 +104,26 @@ RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(display_name, '') FROM agents WHERE agent_id = p_agent_id))::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_agents_count_of_current_role_assignments
+-- Field: Agents.CountOfCurrentRoleAssignments
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_agents_count_of_current_role_assignments(p_agent_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM role_assignments WHERE calc_role_assignments_current_agent_key(role_assignment_id) = (SELECT NULLIF(agent_id, '') FROM agents WHERE agent_id = p_agent_id)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_agents_is_still_engaged
+-- Field: Agents.IsStillEngaged
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_agents_is_still_engaged(p_agent_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_agents_count_of_current_role_assignments(p_agent_id))::NUMERIC > 0)::boolean;
+$$ LANGUAGE sql STABLE;
+
 -- calc_roles_current_agent_kind
 -- Field: Roles.CurrentAgentKind
 -- Type: lookup | DataType: string | Returns: TEXT
@@ -303,6 +323,16 @@ RETURNS TEXT AS $$
   SELECT (CASE WHEN calc_role_assignments_is_currently_valid(p_role_assignment_id) THEN (CONCAT((SELECT NULLIF(agent, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id), '|', (SELECT NULLIF(role, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)))::text ELSE ('')::text END)::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_role_assignments_has_departed
+-- Field: RoleAssignments.HasDeparted
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_has_departed(p_role_assignment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) IS NOT NULL AND (SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) <= CURRENT_TIMESTAMP))::boolean;
+$$ LANGUAGE sql STABLE;
+
 -- calc_communities_of_practice_name
 -- Field: CommunitiesOfPractice.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -404,6 +434,17 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_procedures_name(p_procedure_id TEXT)
 RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(title, '') FROM procedures WHERE procedure_id = p_procedure_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_versions_modifier_is_authority
+-- Field: ProcedureVersions.ModifierIsAuthority
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: AgentKind from related Agents
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_versions_modifier_is_authority(p_procedure_version_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT agent_kind::text FROM agents WHERE agent_id = (SELECT modified_by_agent FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id));
 $$ LANGUAGE sql STABLE;
 
 -- get_procedures_title
@@ -648,6 +689,106 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_procedure_versions_should_not_be_executable(p_procedure_version_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT ((calc_procedure_versions_is_ready_for_execution(p_procedure_version_id) AND calc_procedure_versions_has_open_blocking_gap(p_procedure_version_id)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_versions_count_of_unapproved_reliance_fragments
+-- Field: ProcedureVersions.CountOfUnapprovedRelianceFragments
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_versions_count_of_unapproved_reliance_fragments(p_procedure_version_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM knowledge_fragments WHERE calc_knowledge_fragments_is_unapproved_but_relied_on(knowledge_fragment_id) = TRUE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_versions_runs_on_unapproved_knowledge
+-- Field: ProcedureVersions.RunsOnUnapprovedKnowledge
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_versions_runs_on_unapproved_knowledge(p_procedure_version_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_procedure_versions_count_of_unapproved_reliance_fragments(p_procedure_version_id))::NUMERIC > 0)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_versions_count_of_overdue_gaps
+-- Field: ProcedureVersions.CountOfOverdueGaps
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_versions_count_of_overdue_gaps(p_procedure_version_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM knowledge_gaps WHERE calc_knowledge_gaps_is_overdue_gap(knowledge_gap_id) = TRUE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_versions_count_of_change_requests
+-- Field: ProcedureVersions.CountOfChangeRequests
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_versions_count_of_change_requests(p_procedure_version_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM change_requests WHERE procedure_version = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_versions_count_of_review_events
+-- Field: ProcedureVersions.CountOfReviewEvents
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_versions_count_of_review_events(p_procedure_version_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM review_events WHERE procedure_version = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_versions_has_governance_record
+-- Field: ProcedureVersions.HasGovernanceRecord
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_versions_has_governance_record(p_procedure_version_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((calc_procedure_versions_count_of_change_requests(p_procedure_version_id))::NUMERIC > 0 OR (calc_procedure_versions_count_of_review_events(p_procedure_version_id))::NUMERIC > 0));
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_versions_days_since_modified
+-- Field: ProcedureVersions.DaysSinceModified
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_versions_days_since_modified(p_procedure_version_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((CURRENT_TIMESTAMP::date - (SELECT modified_at::timestamptz FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)::date))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_versions_days_since_last_review
+-- Field: ProcedureVersions.DaysSinceLastReview
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_versions_days_since_last_review(p_procedure_version_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((CURRENT_TIMESTAMP::date - (SELECT MAX(reviewed_at) FROM review_events WHERE procedure_version = p_procedure_version_id)::date))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_versions_was_modified_since_last_review
+-- Field: ProcedureVersions.WasModifiedSinceLastReview
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_versions_was_modified_since_last_review(p_procedure_version_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (calc_procedure_versions_days_since_modified(p_procedure_version_id) < calc_procedure_versions_days_since_last_review(p_procedure_version_id))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_versions_has_unwitnessed_change
+-- Field: ProcedureVersions.HasUnwitnessedChange
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_versions_has_unwitnessed_change(p_procedure_version_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_procedure_versions_is_live(p_procedure_version_id) AND calc_procedure_versions_was_modified_since_last_review(p_procedure_version_id)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- get_procedure_versions_version_number
@@ -1501,6 +1642,17 @@ RETURNS TEXT AS $$
   SELECT (CASE WHEN (SELECT NULLIF(relation, '') FROM procedure_resources WHERE procedure_resource_id = p_procedure_resource_id) = 'wasExtractedFrom' THEN ('https://w3id.org/pko#wasExtractedFrom')::text ELSE ('http://purl.org/dc/terms/references')::text END)::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_elicitation_sessions_practitioner_is_still_engaged
+-- Field: ElicitationSessions.PractitionerIsStillEngaged
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: IsStillEngaged from related Agents
+
+
+CREATE OR REPLACE FUNCTION calc_elicitation_sessions_practitioner_is_still_engaged(p_elicitation_session_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_agents_is_still_engaged((SELECT practitioner_agent FROM elicitation_sessions WHERE elicitation_session_id = p_elicitation_session_id));
+$$ LANGUAGE sql STABLE;
+
 -- calc_elicitation_sessions_name
 -- Field: ElicitationSessions.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -1509,6 +1661,26 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_elicitation_sessions_name(p_elicitation_session_id TEXT)
 RETURNS TEXT AS $$
   SELECT (CONCAT((SELECT NULLIF(method, '') FROM elicitation_sessions WHERE elicitation_session_id = p_elicitation_session_id), ' / ', (SELECT started_at::timestamptz FROM elicitation_sessions WHERE elicitation_session_id = p_elicitation_session_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_elicitation_sessions_days_since_elicited
+-- Field: ElicitationSessions.DaysSinceElicited
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_elicitation_sessions_days_since_elicited(p_elicitation_session_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((CURRENT_TIMESTAMP::date - (SELECT ended_at::timestamptz FROM elicitation_sessions WHERE elicitation_session_id = p_elicitation_session_id)::date))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_elicitation_sessions_is_single_witness_method
+-- Field: ElicitationSessions.IsSingleWitnessMethod
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_elicitation_sessions_is_single_witness_method(p_elicitation_session_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((SELECT NULLIF(method, '') FROM elicitation_sessions WHERE elicitation_session_id = p_elicitation_session_id) = 'Shadowing' OR (SELECT NULLIF(method, '') FROM elicitation_sessions WHERE elicitation_session_id = p_elicitation_session_id) = 'PractitionerInterview'))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_fragments_as_of_instant
@@ -1520,6 +1692,72 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_knowledge_fragments_as_of_instant(p_knowledge_fragment_id TEXT)
 RETURNS TIMESTAMPTZ AS $$
   SELECT (SELECT as_of_instant::timestamptz FROM evaluation_contexts WHERE evaluation_context_id = (SELECT evaluation_context FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_fragments_source_agent_is_still_engaged
+-- Field: KnowledgeFragments.SourceAgentIsStillEngaged
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: IsStillEngaged from related Agents
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_fragments_source_agent_is_still_engaged(p_knowledge_fragment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_agents_is_still_engaged((SELECT source_agent FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_fragments_source_agent_kind
+-- Field: KnowledgeFragments.SourceAgentKind
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: AgentKind from related Agents
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_fragments_source_agent_kind(p_knowledge_fragment_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT agent_kind::text FROM agents WHERE agent_id = (SELECT source_agent FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_fragments_step_procedure_version_status
+-- Field: KnowledgeFragments.StepProcedureVersionStatus
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: ProcedureVersion from related Steps
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_fragments_step_procedure_version_status(p_knowledge_fragment_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT procedure_version::text FROM steps WHERE step_id = (SELECT step FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_fragments_is_attached_to_live_version
+-- Field: KnowledgeFragments.IsAttachedToLiveVersion
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: IsLive from related ProcedureVersions
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_fragments_is_attached_to_live_version(p_knowledge_fragment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_procedure_versions_is_live((SELECT procedure_version FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_fragments_evidence_age_days
+-- Field: KnowledgeFragments.EvidenceAgeDays
+-- Type: lookup | DataType: integer | Returns: INTEGER
+-- Lookup: DaysSinceElicited from related ElicitationSessions
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_fragments_evidence_age_days(p_knowledge_fragment_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT calc_elicitation_sessions_days_since_elicited((SELECT elicitation_session FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_fragments_is_from_single_witness
+-- Field: KnowledgeFragments.IsFromSingleWitness
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: IsSingleWitnessMethod from related ElicitationSessions
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_fragments_is_from_single_witness(p_knowledge_fragment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_elicitation_sessions_is_single_witness_method((SELECT elicitation_session FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id));
 $$ LANGUAGE sql STABLE;
 
 -- get_elicitation_sessions_method
@@ -1596,6 +1834,128 @@ RETURNS BOOLEAN AS $$
   SELECT (((SELECT valid_from::timestamptz FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id) <= calc_knowledge_fragments_as_of_instant(p_knowledge_fragment_id) AND ((SELECT valid_to::timestamptz FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id) IS NULL OR (SELECT valid_to::timestamptz FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id) > calc_knowledge_fragments_as_of_instant(p_knowledge_fragment_id)) AND (SELECT NULLIF(status, '') FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id) = 'Approved'))::boolean;
 $$ LANGUAGE sql STABLE;
 
+-- calc_knowledge_fragments_has_human_source
+-- Field: KnowledgeFragments.HasHumanSource
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_fragments_has_human_source(p_knowledge_fragment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (calc_knowledge_fragments_source_agent_kind(p_knowledge_fragment_id) = 'Human')::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_fragments_has_orphaned_provenance
+-- Field: KnowledgeFragments.HasOrphanedProvenance
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_fragments_has_orphaned_provenance(p_knowledge_fragment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_knowledge_fragments_is_currently_valid(p_knowledge_fragment_id) AND NOT (calc_knowledge_fragments_source_agent_is_still_engaged(p_knowledge_fragment_id))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_fragments_is_undefendable_tacit_claim
+-- Field: KnowledgeFragments.IsUndefendableTacitClaim
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_fragments_is_undefendable_tacit_claim(p_knowledge_fragment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_knowledge_fragments_has_orphaned_provenance(p_knowledge_fragment_id) AND ((SELECT NULLIF(knowledge_form, '') FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id) = 'Tacit' OR (SELECT NULLIF(knowledge_form, '') FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id) = 'SituatedJudgment')))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_fragments_is_approved
+-- Field: KnowledgeFragments.IsApproved
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_fragments_is_approved(p_knowledge_fragment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((SELECT NULLIF(status, '') FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id) = 'Approved')::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_fragments_is_within_validity_window
+-- Field: KnowledgeFragments.IsWithinValidityWindow
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_fragments_is_within_validity_window(p_knowledge_fragment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((SELECT valid_from::timestamptz FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id) <= CURRENT_TIMESTAMP AND ((SELECT valid_to::timestamptz FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id) IS NULL OR (SELECT valid_to::timestamptz FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id) > CURRENT_TIMESTAMP)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_fragments_is_relied_upon
+-- Field: KnowledgeFragments.IsReliedUpon
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_fragments_is_relied_upon(p_knowledge_fragment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((SELECT NULLIF(step, '') FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id) IS NOT NULL AND calc_knowledge_fragments_is_within_validity_window(p_knowledge_fragment_id)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_fragments_is_unapproved_but_relied_on
+-- Field: KnowledgeFragments.IsUnapprovedButReliedOn
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_fragments_is_unapproved_but_relied_on(p_knowledge_fragment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_knowledge_fragments_is_relied_upon(p_knowledge_fragment_id) AND calc_knowledge_fragments_is_attached_to_live_version(p_knowledge_fragment_id) AND NOT (calc_knowledge_fragments_is_approved(p_knowledge_fragment_id))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_fragments_has_recorded_elicitation
+-- Field: KnowledgeFragments.HasRecordedElicitation
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_fragments_has_recorded_elicitation(p_knowledge_fragment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((SELECT NULLIF(elicitation_session, '') FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id) IS NOT NULL)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_fragments_evidence_expiry_days
+-- Field: KnowledgeFragments.EvidenceExpiryDays
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_fragments_evidence_expiry_days(p_knowledge_fragment_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (CASE WHEN calc_knowledge_fragments_is_from_single_witness(p_knowledge_fragment_id) THEN (180)::text ELSE (365)::text END)::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_fragments_evidence_has_expired
+-- Field: KnowledgeFragments.EvidenceHasExpired
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_fragments_evidence_has_expired(p_knowledge_fragment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_knowledge_fragments_has_recorded_elicitation(p_knowledge_fragment_id) AND calc_knowledge_fragments_evidence_age_days(p_knowledge_fragment_id) > calc_knowledge_fragments_evidence_expiry_days(p_knowledge_fragment_id)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_gaps_owner_agent
+-- Field: KnowledgeGaps.OwnerAgent
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: CurrentAgent from related Roles
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_gaps_owner_agent(p_knowledge_gap_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT current_agent::text FROM roles WHERE role_id = (SELECT owner_role FROM knowledge_gaps WHERE knowledge_gap_id = p_knowledge_gap_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_gaps_owner_is_still_engaged
+-- Field: KnowledgeGaps.OwnerIsStillEngaged
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: IsStillEngaged from related Agents
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_gaps_owner_is_still_engaged(p_knowledge_gap_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_agents_is_still_engaged(calc_knowledge_gaps_owner_agent(p_knowledge_gap_id));
+$$ LANGUAGE sql STABLE;
+
 -- calc_knowledge_gaps_name
 -- Field: KnowledgeGaps.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -1644,6 +2004,56 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_knowledge_gaps_is_open_and_blocking(p_knowledge_gap_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT ((calc_knowledge_gaps_is_open(p_knowledge_gap_id) AND calc_knowledge_gaps_is_blocking(p_knowledge_gap_id)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_gaps_days_open
+-- Field: KnowledgeGaps.DaysOpen
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_gaps_days_open(p_knowledge_gap_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (CASE WHEN calc_knowledge_gaps_is_open(p_knowledge_gap_id) THEN ((CURRENT_TIMESTAMP::date - (SELECT identified_at::timestamptz FROM knowledge_gaps WHERE knowledge_gap_id = p_knowledge_gap_id)::date))::text ELSE (0)::text END)::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_gaps_tolerance_days
+-- Field: KnowledgeGaps.ToleranceDays
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_gaps_tolerance_days(p_knowledge_gap_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (CASE WHEN (SELECT NULLIF(severity, '') FROM knowledge_gaps WHERE knowledge_gap_id = p_knowledge_gap_id) = 'High' THEN (30)::text ELSE (CASE WHEN (SELECT NULLIF(severity, '') FROM knowledge_gaps WHERE knowledge_gap_id = p_knowledge_gap_id) = 'Medium' THEN (90)::text ELSE (180)::text END)::text END)::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_gaps_is_overdue_gap
+-- Field: KnowledgeGaps.IsOverdueGap
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_gaps_is_overdue_gap(p_knowledge_gap_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (calc_knowledge_gaps_days_open(p_knowledge_gap_id) > calc_knowledge_gaps_tolerance_days(p_knowledge_gap_id))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_gaps_has_resolution_plan
+-- Field: KnowledgeGaps.HasResolutionPlan
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_gaps_has_resolution_plan(p_knowledge_gap_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((SELECT NULLIF(resolution_plan, '') FROM knowledge_gaps WHERE knowledge_gap_id = p_knowledge_gap_id) IS NOT NULL)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_gaps_is_abandoned_unknown
+-- Field: KnowledgeGaps.IsAbandonedUnknown
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_gaps_is_abandoned_unknown(p_knowledge_gap_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_knowledge_gaps_is_overdue_gap(p_knowledge_gap_id) AND (NOT (calc_knowledge_gaps_has_resolution_plan(p_knowledge_gap_id)) OR NOT (calc_knowledge_gaps_owner_is_still_engaged(p_knowledge_gap_id)))))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_faqs_name
