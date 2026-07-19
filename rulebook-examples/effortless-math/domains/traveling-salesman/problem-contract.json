@@ -807,12 +807,12 @@
     {
       "LoopOrder": 655,
       "LoopId": "tsp-loop-655",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Search metrics are structurally recorded but not universally reconciled with exact feasible class counts and residual value counts.",
       "ClosureCriterion": "Compare existing route-class, residual ambiguity, and branch-warrant rows with exact enumeration for the development fixtures.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Audited structural search accounting against exact route classes.",
+      "Result": "Reconciled 3 compatible rows; 0 differently scoped metric rows were retained without false equivalence.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 656,
@@ -1505,7 +1505,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 710,
-    "HighestCompletedLoop": 654,
+    "HighestCompletedLoop": 655,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 16,
     "SelectedNotForcedEdgeStates": 5,
@@ -1547,8 +1547,8 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 66,
     "ClusterContractionCertificates": 7,
-    "ConvergenceMeasurements": 58,
-    "ConceptRegistry": 109,
+    "ConvergenceMeasurements": 59,
+    "ConceptRegistry": 110,
     "DefectProfiles": 21,
     "BoundTerms": 8,
     "WitnessNormalForms": 19,
@@ -1578,7 +1578,7 @@
     "OptimalFaceValueProofBranchDecisionCount": 0
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:5d49513fb1a2ec504e9376411b9a29c2b8e31fba55a1725438bc3513a4987613",
+    "rulebook": "sha256:77387a1bae78defef4ee70035e8adea53f009978ab2f272731d7fce5a4a028f4",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
