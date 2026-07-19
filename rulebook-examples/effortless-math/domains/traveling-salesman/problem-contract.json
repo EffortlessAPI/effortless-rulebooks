@@ -1137,12 +1137,12 @@
     {
       "LoopOrder": 688,
       "LoopId": "tsp-loop-688",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
       "ClosureCriterion": "Classify instances where represented structure closes value, route, both, or neither.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Derived Structural Sufficiency across the exact held-out corpus.",
+      "Result": "Structural sufficiency classes={'VALUE_AND_ROUTE': 3, 'OPEN': 7, 'VALUE_ONLY': 2}.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 689,
@@ -1505,7 +1505,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 710,
-    "HighestCompletedLoop": 687,
+    "HighestCompletedLoop": 688,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 16,
     "SelectedNotForcedEdgeStates": 5,
@@ -1547,8 +1547,8 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 66,
     "ClusterContractionCertificates": 7,
-    "ConvergenceMeasurements": 91,
-    "ConceptRegistry": 143,
+    "ConvergenceMeasurements": 92,
+    "ConceptRegistry": 144,
     "DefectProfiles": 33,
     "BoundTerms": 8,
     "WitnessNormalForms": 35,
@@ -1582,7 +1582,7 @@
     "DevelopmentMaxExactClassCount": 20160
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:a16b71bf9948c5bca0581a3ada53409b70f96b6781b305d04564fe75442a5568",
+    "rulebook": "sha256:f80789cea89a607f74bf1ce6ded8450c67a97ef58654f883df63100081063404",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
