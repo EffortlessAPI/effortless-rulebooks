@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from pathlib import Path
+import subprocess
 import sys
 
 if len(sys.argv) != 2:
@@ -33,6 +34,7 @@ if old_validity in reference_text:
 elif 'valid = (\n            len(ordered) == len(required_stop_ids)' not in reference_text:
     raise AssertionError('reference-model sparse witness patch target missing')
 reference_model.write_text(reference_text)
+subprocess.run(['git', 'add', '--', str(reference_model)], check=True)
 
 print('calibration finish_loop hotfix: PASS')
 print('sparse witness feasibility independence hotfix: PASS')
