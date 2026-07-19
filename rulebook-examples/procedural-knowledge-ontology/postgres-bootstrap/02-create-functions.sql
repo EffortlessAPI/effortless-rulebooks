@@ -1725,6 +1725,186 @@ RETURNS TEXT AS $$
   SELECT (CONCAT((SELECT NULLIF(source_path, '') FROM semantic_mappings WHERE semantic_mapping_id = p_semantic_mapping_id), ' -> ', (SELECT NULLIF(target_iri, '') FROM semantic_mappings WHERE semantic_mapping_id = p_semantic_mapping_id)))::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_witness_loops_name
+-- Field: WitnessLoops.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_witness_loops_name(p_witness_loop_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT('Loop ', (SELECT loop_number FROM witness_loops WHERE witness_loop_id = p_witness_loop_id), ': ', (SELECT NULLIF(title, '') FROM witness_loops WHERE witness_loop_id = p_witness_loop_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_witness_loops_question_count
+-- Field: WitnessLoops.QuestionCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_witness_loops_question_count(p_witness_loop_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM role_questions WHERE witness_loop = (SELECT NULLIF(witness_loop_id, '') FROM witness_loops WHERE witness_loop_id = p_witness_loop_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_witness_loops_is_complete
+-- Field: WitnessLoops.IsComplete
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_witness_loops_is_complete(p_witness_loop_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((SELECT completed_at::timestamptz FROM witness_loops WHERE witness_loop_id = p_witness_loop_id) IS NOT NULL)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- get_witness_loops_loop_number
+-- Helper function: Get LoopNumber from WitnessLoops by WitnessLoopId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_witness_loops_loop_number(p_witness_loop_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT loop_number FROM witness_loops WHERE witness_loop_id = p_witness_loop_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_witness_loops_title
+-- Helper function: Get Title from WitnessLoops by WitnessLoopId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_witness_loops_title(p_witness_loop_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT title FROM witness_loops WHERE witness_loop_id = p_witness_loop_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_witness_loops_premise
+-- Helper function: Get Premise from WitnessLoops by WitnessLoopId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_witness_loops_premise(p_witness_loop_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT premise FROM witness_loops WHERE witness_loop_id = p_witness_loop_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_witness_loops_started_at
+-- Helper function: Get StartedAt from WitnessLoops by WitnessLoopId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_witness_loops_started_at(p_witness_loop_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT started_at FROM witness_loops WHERE witness_loop_id = p_witness_loop_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_witness_loops_completed_at
+-- Helper function: Get CompletedAt from WitnessLoops by WitnessLoopId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_witness_loops_completed_at(p_witness_loop_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT completed_at FROM witness_loops WHERE witness_loop_id = p_witness_loop_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_witness_loops_semantic_type_iri
+-- Helper function: Get SemanticTypeIri from WitnessLoops by WitnessLoopId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_witness_loops_semantic_type_iri(p_witness_loop_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT semantic_type_iri FROM witness_loops WHERE witness_loop_id = p_witness_loop_id);
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_questions_name
+-- Field: RoleQuestions.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_role_questions_name(p_role_question_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT((SELECT NULLIF(asking_role, '') FROM role_questions WHERE role_question_id = p_role_question_id), ': ', LEFT(((SELECT NULLIF(question_text, '') FROM role_questions WHERE role_question_id = p_role_question_id))::text, (60)::integer)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_questions_predicate_count
+-- Field: RoleQuestions.PredicateCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_role_questions_predicate_count(p_role_question_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM rulebook_fields WHERE invented_for_question = (SELECT NULLIF(role_question_id, '') FROM role_questions WHERE role_question_id = p_role_question_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_questions_is_answered
+-- Field: RoleQuestions.IsAnswered
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_role_questions_is_answered(p_role_question_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_role_questions_predicate_count(p_role_question_id))::NUMERIC > 0)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- get_role_questions_question_text
+-- Helper function: Get QuestionText from RoleQuestions by RoleQuestionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_role_questions_question_text(p_role_question_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT question_text FROM role_questions WHERE role_question_id = p_role_question_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_role_questions_why_it_matters
+-- Helper function: Get WhyItMatters from RoleQuestions by RoleQuestionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_role_questions_why_it_matters(p_role_question_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT why_it_matters FROM role_questions WHERE role_question_id = p_role_question_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_role_questions_answerable_before
+-- Helper function: Get AnswerableBefore from RoleQuestions by RoleQuestionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_role_questions_answerable_before(p_role_question_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT answerable_before FROM role_questions WHERE role_question_id = p_role_question_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_role_questions_semantic_type_iri
+-- Helper function: Get SemanticTypeIri from RoleQuestions by RoleQuestionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_role_questions_semantic_type_iri(p_role_question_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT semantic_type_iri FROM role_questions WHERE role_question_id = p_role_question_id);
+$$ LANGUAGE sql STABLE;
+
+-- calc_rulebook_fields_name
+-- Field: RulebookFields.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_rulebook_fields_name(p_rulebook_field_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT((SELECT NULLIF(target_table, '') FROM rulebook_fields WHERE rulebook_field_id = p_rulebook_field_id), '.', (SELECT NULLIF(field_name, '') FROM rulebook_fields WHERE rulebook_field_id = p_rulebook_field_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_rulebook_fields_is_derived
+-- Field: RulebookFields.IsDerived
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_rulebook_fields_is_derived(p_rulebook_field_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((SELECT NULLIF(field_type, '') FROM rulebook_fields WHERE rulebook_field_id = p_rulebook_field_id) = 'calculated' OR (SELECT NULLIF(field_type, '') FROM rulebook_fields WHERE rulebook_field_id = p_rulebook_field_id) = 'lookup' OR (SELECT NULLIF(field_type, '') FROM rulebook_fields WHERE rulebook_field_id = p_rulebook_field_id) = 'aggregation'))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_rulebook_fields_is_witness
+-- Field: RulebookFields.IsWitness
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_rulebook_fields_is_witness(p_rulebook_field_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((SELECT NULLIF(invented_for_question, '') FROM rulebook_fields WHERE rulebook_field_id = p_rulebook_field_id) IS NOT NULL)::boolean;
+$$ LANGUAGE sql STABLE;
+
 -- ============================================================================
 -- MANY-SIDE RELATIONSHIP FUNCTIONS
 -- These functions aggregate child records for many-side relationships

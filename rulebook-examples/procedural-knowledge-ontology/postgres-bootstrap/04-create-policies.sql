@@ -55,6 +55,9 @@ ALTER TABLE operational_bindings ENABLE ROW LEVEL SECURITY;
 ALTER TABLE communication_policies ENABLE ROW LEVEL SECURITY;
 ALTER TABLE message_templates ENABLE ROW LEVEL SECURITY;
 ALTER TABLE semantic_mappings ENABLE ROW LEVEL SECURITY;
+ALTER TABLE witness_loops ENABLE ROW LEVEL SECURITY;
+ALTER TABLE role_questions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE rulebook_fields ENABLE ROW LEVEL SECURITY;
 
 -- TODO: Add specific RLS policies based on your security requirements
 -- Example:

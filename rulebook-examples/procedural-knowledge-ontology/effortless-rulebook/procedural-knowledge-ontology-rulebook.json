@@ -6373,6 +6373,5084 @@
       }
     ]
   },
+  "WitnessLoops": {
+    "Description": "One row per role-question expansion loop. Each loop poses questions that only became askable because of the previous loop's predicates.",
+    "schema": [
+      {
+        "name": "WitnessLoopId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stored logical identifier for one WitnessLoops row."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Human-readable calculated display alias for the WitnessLoops row.",
+        "formula": "=\"Loop \" & {{LoopNumber}} & \": \" & {{Title}}"
+      },
+      {
+        "name": "LoopNumber",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Ordinal of this expansion loop. Loop 1 is the founding set of role questions."
+      },
+      {
+        "name": "Title",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Short title for what this loop set out to make askable."
+      },
+      {
+        "name": "Premise",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Why this loop's questions became askable. For loop N>1 this names the loop N-1 predicates that made them possible."
+      },
+      {
+        "name": "StartedAt",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Time this loop began."
+      },
+      {
+        "name": "CompletedAt",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Time this loop was committed. Null while in progress."
+      },
+      {
+        "name": "QuestionCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many role questions were posed in this loop.",
+        "formula": "=COUNTIFS(RoleQuestions!{{WitnessLoop}}, {{WitnessLoopId}})"
+      },
+      {
+        "name": "IsComplete",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE once the loop has been committed.",
+        "formula": "={{CompletedAt}} <> \"\""
+      },
+      {
+        "name": "SemanticTypeIri",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Extension class IRI."
+      }
+    ],
+    "data": []
+  },
+  "RoleQuestions": {
+    "Description": "One row per question a named role wants answered. Every invented predicate in this rulebook traces back to one of these.",
+    "schema": [
+      {
+        "name": "RoleQuestionId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stored logical identifier for one RoleQuestions row."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Human-readable calculated display alias for the RoleQuestions row.",
+        "formula": "={{AskingRole}} & \": \" & LEFT({{QuestionText}}, 60)"
+      },
+      {
+        "name": "AskingRole",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "The role that wants this question answered.",
+        "RelatedTo": "Roles"
+      },
+      {
+        "name": "WitnessLoop",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "The expansion loop in which this question was posed.",
+        "RelatedTo": "WitnessLoops"
+      },
+      {
+        "name": "QuestionText",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "The question in the role's own words."
+      },
+      {
+        "name": "WhyItMatters",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "What goes wrong in the real world when this question cannot be answered."
+      },
+      {
+        "name": "AnswerableBefore",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": true,
+        "Description": "TRUE if the model could already answer this before its loop ran. FALSE means the loop had to invent predicates for it."
+      },
+      {
+        "name": "PredicateCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many fields were invented to answer this question.",
+        "formula": "=COUNTIFS(RulebookFields!{{InventedForQuestion}}, {{RoleQuestionId}})"
+      },
+      {
+        "name": "IsAnswered",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when at least one predicate exists to answer this question.",
+        "formula": "={{PredicateCount}} > 0"
+      },
+      {
+        "name": "SemanticTypeIri",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Extension class IRI."
+      }
+    ],
+    "data": []
+  },
+  "RulebookFields": {
+    "Description": "A complete census of every field in this rulebook. Reconciled from the real schemas by tools/reconcile_field_catalog.py \u2014 never hand-maintained. Fields invented by a witness loop carry an InventedForQuestion FK.",
+    "schema": [
+      {
+        "name": "RulebookFieldId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stored logical identifier for one RulebookFields row. Formed as <TargetTable>.<FieldName>."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Human-readable calculated display alias for the RulebookFields row.",
+        "formula": "={{TargetTable}} & \".\" & {{FieldName}}"
+      },
+      {
+        "name": "TargetTable",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "The table this field lives on."
+      },
+      {
+        "name": "FieldName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "The field's name within its table."
+      },
+      {
+        "name": "FieldType",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "raw, calculated, lookup, relationship, or aggregation."
+      },
+      {
+        "name": "Datatype",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "The field's declared datatype."
+      },
+      {
+        "name": "Formula",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "The field's formula when it is derived. Null for raw and relationship fields."
+      },
+      {
+        "name": "InventedForQuestion",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "The role question that motivated this field's existence. Null for fields that predate the witness-loop exercise.",
+        "RelatedTo": "RoleQuestions"
+      },
+      {
+        "name": "IsDerived",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this field is computed rather than stored.",
+        "formula": "=OR({{FieldType}} = \"calculated\", {{FieldType}} = \"lookup\", {{FieldType}} = \"aggregation\")"
+      },
+      {
+        "name": "IsWitness",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this field exists because a role asked a question. These are the fields the witness loops added.",
+        "formula": "={{InventedForQuestion}} <> \"\""
+      },
+      {
+        "name": "SemanticTypeIri",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Extension class IRI."
+      }
+    ],
+    "data": [
+      {
+        "RulebookFieldId": "RulebookReleases.RulebookReleaseId",
+        "TargetTable": "RulebookReleases",
+        "FieldName": "RulebookReleaseId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RulebookReleases.Name",
+        "TargetTable": "RulebookReleases",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{RulebookVersion}} & \" / PKO \" & {{PkoCoreVersionIri}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RulebookReleases.RulebookVersion",
+        "TargetTable": "RulebookReleases",
+        "FieldName": "RulebookVersion",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RulebookReleases.ProfileVersion",
+        "TargetTable": "RulebookReleases",
+        "FieldName": "ProfileVersion",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RulebookReleases.ProfileSchemaPath",
+        "TargetTable": "RulebookReleases",
+        "FieldName": "ProfileSchemaPath",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RulebookReleases.PkoCoreVersionIri",
+        "TargetTable": "RulebookReleases",
+        "FieldName": "PkoCoreVersionIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RulebookReleases.PkoIndustryVersionIri",
+        "TargetTable": "RulebookReleases",
+        "FieldName": "PkoIndustryVersionIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RulebookReleases.IssuedAt",
+        "TargetTable": "RulebookReleases",
+        "FieldName": "IssuedAt",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RulebookReleases.Status",
+        "TargetTable": "RulebookReleases",
+        "FieldName": "Status",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RulebookReleases.Changelog",
+        "TargetTable": "RulebookReleases",
+        "FieldName": "Changelog",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RulebookReleases.IsCurrent",
+        "TargetTable": "RulebookReleases",
+        "FieldName": "IsCurrent",
+        "FieldType": "raw",
+        "Datatype": "boolean",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "OntologyProfiles.OntologyProfileId",
+        "TargetTable": "OntologyProfiles",
+        "FieldName": "OntologyProfileId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "OntologyProfiles.Name",
+        "TargetTable": "OntologyProfiles",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{Label}} & \" \" & {{Version}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "OntologyProfiles.Label",
+        "TargetTable": "OntologyProfiles",
+        "FieldName": "Label",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "OntologyProfiles.Version",
+        "TargetTable": "OntologyProfiles",
+        "FieldName": "Version",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "OntologyProfiles.VersionIri",
+        "TargetTable": "OntologyProfiles",
+        "FieldName": "VersionIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "OntologyProfiles.NamespaceIri",
+        "TargetTable": "OntologyProfiles",
+        "FieldName": "NamespaceIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "OntologyProfiles.License",
+        "TargetTable": "OntologyProfiles",
+        "FieldName": "License",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "OntologyProfiles.Scope",
+        "TargetTable": "OntologyProfiles",
+        "FieldName": "Scope",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Organizations.OrganizationId",
+        "TargetTable": "Organizations",
+        "FieldName": "OrganizationId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Organizations.Name",
+        "TargetTable": "Organizations",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{DisplayName}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Organizations.DisplayName",
+        "TargetTable": "Organizations",
+        "FieldName": "DisplayName",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Organizations.OrganizationType",
+        "TargetTable": "Organizations",
+        "FieldName": "OrganizationType",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Organizations.ExternalIdentifier",
+        "TargetTable": "Organizations",
+        "FieldName": "ExternalIdentifier",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Organizations.SemanticTypeIri",
+        "TargetTable": "Organizations",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Agents.AgentId",
+        "TargetTable": "Agents",
+        "FieldName": "AgentId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Agents.Name",
+        "TargetTable": "Agents",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{DisplayName}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Agents.DisplayName",
+        "TargetTable": "Agents",
+        "FieldName": "DisplayName",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Agents.AgentKind",
+        "TargetTable": "Agents",
+        "FieldName": "AgentKind",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Agents.Organization",
+        "TargetTable": "Agents",
+        "FieldName": "Organization",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Agents.ContactAddress",
+        "TargetTable": "Agents",
+        "FieldName": "ContactAddress",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Agents.VersionOrEmploymentKey",
+        "TargetTable": "Agents",
+        "FieldName": "VersionOrEmploymentKey",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Agents.SemanticTypeIri",
+        "TargetTable": "Agents",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Roles.RoleId",
+        "TargetTable": "Roles",
+        "FieldName": "RoleId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Roles.Name",
+        "TargetTable": "Roles",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{Label}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Roles.Label",
+        "TargetTable": "Roles",
+        "FieldName": "Label",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Roles.Organization",
+        "TargetTable": "Roles",
+        "FieldName": "Organization",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Roles.CurrentAgent",
+        "TargetTable": "Roles",
+        "FieldName": "CurrentAgent",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Roles.CurrentAgentKind",
+        "TargetTable": "Roles",
+        "FieldName": "CurrentAgentKind",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(Agents!{{AgentKind}}, MATCH({{CurrentAgent}}, Agents!{{AgentId}}, 0))",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Roles.Responsibility",
+        "TargetTable": "Roles",
+        "FieldName": "Responsibility",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Roles.SemanticTypeIri",
+        "TargetTable": "Roles",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.RoleAssignmentId",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "RoleAssignmentId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.Name",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{Role}} & \" @ \" & {{ValidFrom}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.Role",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "Role",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.Agent",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "Agent",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.ValidFrom",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "ValidFrom",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.ValidTo",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "ValidTo",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.Reason",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "Reason",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.Status",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "Status",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.IsCurrent",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "IsCurrent",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{ValidFrom}} <= NOW(), OR({{ValidTo}} = \"\", {{ValidTo}} > NOW()))",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.SemanticTypeIri",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "CommunitiesOfPractice.CommunityOfPracticeId",
+        "TargetTable": "CommunitiesOfPractice",
+        "FieldName": "CommunityOfPracticeId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "CommunitiesOfPractice.Name",
+        "TargetTable": "CommunitiesOfPractice",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{Label}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "CommunitiesOfPractice.Label",
+        "TargetTable": "CommunitiesOfPractice",
+        "FieldName": "Label",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "CommunitiesOfPractice.Organization",
+        "TargetTable": "CommunitiesOfPractice",
+        "FieldName": "Organization",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "CommunitiesOfPractice.StewardRole",
+        "TargetTable": "CommunitiesOfPractice",
+        "FieldName": "StewardRole",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "CommunitiesOfPractice.Purpose",
+        "TargetTable": "CommunitiesOfPractice",
+        "FieldName": "Purpose",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "CommunitiesOfPractice.Cadence",
+        "TargetTable": "CommunitiesOfPractice",
+        "FieldName": "Cadence",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "CommunitiesOfPractice.SemanticTypeIri",
+        "TargetTable": "CommunitiesOfPractice",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Mentorships.MentorshipId",
+        "TargetTable": "Mentorships",
+        "FieldName": "MentorshipId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Mentorships.Name",
+        "TargetTable": "Mentorships",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{MentorAgent}} & \" -> \" & {{LearnerAgent}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Mentorships.CommunityOfPractice",
+        "TargetTable": "Mentorships",
+        "FieldName": "CommunityOfPractice",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Mentorships.MentorAgent",
+        "TargetTable": "Mentorships",
+        "FieldName": "MentorAgent",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Mentorships.LearnerAgent",
+        "TargetTable": "Mentorships",
+        "FieldName": "LearnerAgent",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Mentorships.ValidFrom",
+        "TargetTable": "Mentorships",
+        "FieldName": "ValidFrom",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Mentorships.ValidTo",
+        "TargetTable": "Mentorships",
+        "FieldName": "ValidTo",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Mentorships.LearningObjective",
+        "TargetTable": "Mentorships",
+        "FieldName": "LearningObjective",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Mentorships.EvidenceOfCompletion",
+        "TargetTable": "Mentorships",
+        "FieldName": "EvidenceOfCompletion",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Mentorships.SemanticTypeIri",
+        "TargetTable": "Mentorships",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureTypes.ProcedureTypeId",
+        "TargetTable": "ProcedureTypes",
+        "FieldName": "ProcedureTypeId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureTypes.Name",
+        "TargetTable": "ProcedureTypes",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{Label}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureTypes.Label",
+        "TargetTable": "ProcedureTypes",
+        "FieldName": "Label",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureTypes.Definition",
+        "TargetTable": "ProcedureTypes",
+        "FieldName": "Definition",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureTypes.SemanticTypeIri",
+        "TargetTable": "ProcedureTypes",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Procedures.ProcedureId",
+        "TargetTable": "Procedures",
+        "FieldName": "ProcedureId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Procedures.Name",
+        "TargetTable": "Procedures",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{Title}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Procedures.Title",
+        "TargetTable": "Procedures",
+        "FieldName": "Title",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Procedures.ProcedureType",
+        "TargetTable": "Procedures",
+        "FieldName": "ProcedureType",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Procedures.OwnerOrganization",
+        "TargetTable": "Procedures",
+        "FieldName": "OwnerOrganization",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Procedures.AdoptedByOrganization",
+        "TargetTable": "Procedures",
+        "FieldName": "AdoptedByOrganization",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Procedures.Purpose",
+        "TargetTable": "Procedures",
+        "FieldName": "Purpose",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Procedures.Target",
+        "TargetTable": "Procedures",
+        "FieldName": "Target",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Procedures.IsTemplate",
+        "TargetTable": "Procedures",
+        "FieldName": "IsTemplate",
+        "FieldType": "raw",
+        "Datatype": "boolean",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Procedures.CurrentVersionKey",
+        "TargetTable": "Procedures",
+        "FieldName": "CurrentVersionKey",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Procedures.SemanticTypeIri",
+        "TargetTable": "Procedures",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.ProcedureVersionId",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "ProcedureVersionId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.Name",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{Title}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.Procedure",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "Procedure",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.VersionNumber",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "VersionNumber",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.Title",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "Title",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.Status",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "Status",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.IssuedAt",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "IssuedAt",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.ModifiedAt",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "ModifiedAt",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.CreatedByAgent",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "CreatedByAgent",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.ModifiedByAgent",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "ModifiedByAgent",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.NewVersionMotivation",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "NewVersionMotivation",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.ChangelogDescription",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "ChangelogDescription",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.IsCurrent",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "IsCurrent",
+        "FieldType": "raw",
+        "Datatype": "boolean",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.CountOfSteps",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "CountOfSteps",
+        "FieldType": "aggregation",
+        "Datatype": "integer",
+        "Formula": "=COUNTIFS(Steps!{{ProcedureVersion}}, ProcedureVersions!{{ProcedureVersionId}})",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.CountOfOpenKnowledgeGaps",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "CountOfOpenKnowledgeGaps",
+        "FieldType": "aggregation",
+        "Datatype": "integer",
+        "Formula": "=COUNTIFS(KnowledgeGaps!{{ProcedureVersion}}, ProcedureVersions!{{ProcedureVersionId}}, KnowledgeGaps!{{Status}}, \"Open\")",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.IsReadyForExecution",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "IsReadyForExecution",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{Status}} = \"Approved\", {{CountOfSteps}} > 0, {{CountOfOpenKnowledgeGaps}} = 0)",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.SemanticTypeIri",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersionLinks.ProcedureVersionLinkId",
+        "TargetTable": "ProcedureVersionLinks",
+        "FieldName": "ProcedureVersionLinkId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersionLinks.Name",
+        "TargetTable": "ProcedureVersionLinks",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{PreviousProcedureVersion}} & \" -> \" & {{NextProcedureVersion}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersionLinks.PreviousProcedureVersion",
+        "TargetTable": "ProcedureVersionLinks",
+        "FieldName": "PreviousProcedureVersion",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersionLinks.NextProcedureVersion",
+        "TargetTable": "ProcedureVersionLinks",
+        "FieldName": "NextProcedureVersion",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersionLinks.RelationIri",
+        "TargetTable": "ProcedureVersionLinks",
+        "FieldName": "RelationIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersionLinks.ChangeSummary",
+        "TargetTable": "ProcedureVersionLinks",
+        "FieldName": "ChangeSummary",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureStatusChanges.ProcedureStatusChangeId",
+        "TargetTable": "ProcedureStatusChanges",
+        "FieldName": "ProcedureStatusChangeId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureStatusChanges.Name",
+        "TargetTable": "ProcedureStatusChanges",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{ProcedureVersion}} & \": \" & {{FromStatus}} & \" -> \" & {{ToStatus}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureStatusChanges.ProcedureVersion",
+        "TargetTable": "ProcedureStatusChanges",
+        "FieldName": "ProcedureVersion",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureStatusChanges.FromStatus",
+        "TargetTable": "ProcedureStatusChanges",
+        "FieldName": "FromStatus",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureStatusChanges.ToStatus",
+        "TargetTable": "ProcedureStatusChanges",
+        "FieldName": "ToStatus",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureStatusChanges.ChangedAt",
+        "TargetTable": "ProcedureStatusChanges",
+        "FieldName": "ChangedAt",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureStatusChanges.ChangedByAgent",
+        "TargetTable": "ProcedureStatusChanges",
+        "FieldName": "ChangedByAgent",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureStatusChanges.Motivation",
+        "TargetTable": "ProcedureStatusChanges",
+        "FieldName": "Motivation",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureStatusChanges.SemanticTypeIri",
+        "TargetTable": "ProcedureStatusChanges",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Steps.StepId",
+        "TargetTable": "Steps",
+        "FieldName": "StepId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Steps.Name",
+        "TargetTable": "Steps",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{StepNumber}} & \". \" & {{Title}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Steps.ProcedureVersion",
+        "TargetTable": "Steps",
+        "FieldName": "ProcedureVersion",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Steps.StepNumber",
+        "TargetTable": "Steps",
+        "FieldName": "StepNumber",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Steps.Title",
+        "TargetTable": "Steps",
+        "FieldName": "Title",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Steps.StepKind",
+        "TargetTable": "Steps",
+        "FieldName": "StepKind",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Steps.AssignedRole",
+        "TargetTable": "Steps",
+        "FieldName": "AssignedRole",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Steps.AssignedRoleLabel",
+        "TargetTable": "Steps",
+        "FieldName": "AssignedRoleLabel",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(Roles!{{Label}}, MATCH({{AssignedRole}}, Roles!{{RoleId}}, 0))",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Steps.AssignedAgentKind",
+        "TargetTable": "Steps",
+        "FieldName": "AssignedAgentKind",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(Roles!{{CurrentAgentKind}}, MATCH({{AssignedRole}}, Roles!{{RoleId}}, 0))",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Steps.Instruction",
+        "TargetTable": "Steps",
+        "FieldName": "Instruction",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Steps.ExpectedDurationMinutes",
+        "TargetTable": "Steps",
+        "FieldName": "ExpectedDurationMinutes",
+        "FieldType": "raw",
+        "Datatype": "integer",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Steps.ExpertiseLevel",
+        "TargetTable": "Steps",
+        "FieldName": "ExpertiseLevel",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Steps.RequiresHumanConfirmation",
+        "TargetTable": "Steps",
+        "FieldName": "RequiresHumanConfirmation",
+        "FieldType": "raw",
+        "Datatype": "boolean",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Steps.SemanticTypeIri",
+        "TargetTable": "Steps",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepTransitions.StepTransitionId",
+        "TargetTable": "StepTransitions",
+        "FieldName": "StepTransitionId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepTransitions.Name",
+        "TargetTable": "StepTransitions",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{FromStep}} & \" -> \" & {{ToStep}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepTransitions.ProcedureVersion",
+        "TargetTable": "StepTransitions",
+        "FieldName": "ProcedureVersion",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepTransitions.FromStep",
+        "TargetTable": "StepTransitions",
+        "FieldName": "FromStep",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepTransitions.ToStep",
+        "TargetTable": "StepTransitions",
+        "FieldName": "ToStep",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepTransitions.TransitionKind",
+        "TargetTable": "StepTransitions",
+        "FieldName": "TransitionKind",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepTransitions.Condition",
+        "TargetTable": "StepTransitions",
+        "FieldName": "Condition",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepTransitions.Priority",
+        "TargetTable": "StepTransitions",
+        "FieldName": "Priority",
+        "FieldType": "raw",
+        "Datatype": "integer",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepTransitions.SemanticTypeIri",
+        "TargetTable": "StepTransitions",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Actions.ActionId",
+        "TargetTable": "Actions",
+        "FieldName": "ActionId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Actions.Name",
+        "TargetTable": "Actions",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{Label}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Actions.Label",
+        "TargetTable": "Actions",
+        "FieldName": "Label",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Actions.Definition",
+        "TargetTable": "Actions",
+        "FieldName": "Definition",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Actions.SemanticTypeIri",
+        "TargetTable": "Actions",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Functions.FunctionId",
+        "TargetTable": "Functions",
+        "FieldName": "FunctionId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Functions.Name",
+        "TargetTable": "Functions",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{Label}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Functions.Label",
+        "TargetTable": "Functions",
+        "FieldName": "Label",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Functions.Definition",
+        "TargetTable": "Functions",
+        "FieldName": "Definition",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Functions.ImplementationKey",
+        "TargetTable": "Functions",
+        "FieldName": "ImplementationKey",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Functions.SemanticTypeIri",
+        "TargetTable": "Functions",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Tools.ToolId",
+        "TargetTable": "Tools",
+        "FieldName": "ToolId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Tools.Name",
+        "TargetTable": "Tools",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{Label}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Tools.Label",
+        "TargetTable": "Tools",
+        "FieldName": "Label",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Tools.Purpose",
+        "TargetTable": "Tools",
+        "FieldName": "Purpose",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Tools.SemanticTypeIri",
+        "TargetTable": "Tools",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepActions.StepActionId",
+        "TargetTable": "StepActions",
+        "FieldName": "StepActionId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepActions.Name",
+        "TargetTable": "StepActions",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{Step}} & \" / \" & {{Action}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepActions.Step",
+        "TargetTable": "StepActions",
+        "FieldName": "Step",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepActions.Action",
+        "TargetTable": "StepActions",
+        "FieldName": "Action",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepFunctions.StepFunctionId",
+        "TargetTable": "StepFunctions",
+        "FieldName": "StepFunctionId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepFunctions.Name",
+        "TargetTable": "StepFunctions",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{Step}} & \" / \" & {{Function}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepFunctions.Step",
+        "TargetTable": "StepFunctions",
+        "FieldName": "Step",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepFunctions.Function",
+        "TargetTable": "StepFunctions",
+        "FieldName": "Function",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepTools.StepToolId",
+        "TargetTable": "StepTools",
+        "FieldName": "StepToolId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepTools.Name",
+        "TargetTable": "StepTools",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{Step}} & \" / \" & {{Tool}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepTools.Step",
+        "TargetTable": "StepTools",
+        "FieldName": "Step",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepTools.Tool",
+        "TargetTable": "StepTools",
+        "FieldName": "Tool",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Requirements.RequirementId",
+        "TargetTable": "Requirements",
+        "FieldName": "RequirementId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Requirements.Name",
+        "TargetTable": "Requirements",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{Label}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Requirements.Label",
+        "TargetTable": "Requirements",
+        "FieldName": "Label",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Requirements.RequirementType",
+        "TargetTable": "Requirements",
+        "FieldName": "RequirementType",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Requirements.Statement",
+        "TargetTable": "Requirements",
+        "FieldName": "Statement",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Requirements.Rationale",
+        "TargetTable": "Requirements",
+        "FieldName": "Rationale",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Requirements.IsBlocking",
+        "TargetTable": "Requirements",
+        "FieldName": "IsBlocking",
+        "FieldType": "raw",
+        "Datatype": "boolean",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Requirements.SemanticTypeIri",
+        "TargetTable": "Requirements",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepRequirements.StepRequirementId",
+        "TargetTable": "StepRequirements",
+        "FieldName": "StepRequirementId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepRequirements.Name",
+        "TargetTable": "StepRequirements",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{Step}} & \" / \" & {{Requirement}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepRequirements.Step",
+        "TargetTable": "StepRequirements",
+        "FieldName": "Step",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepRequirements.Requirement",
+        "TargetTable": "StepRequirements",
+        "FieldName": "Requirement",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepVerifications.StepVerificationId",
+        "TargetTable": "StepVerifications",
+        "FieldName": "StepVerificationId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepVerifications.Name",
+        "TargetTable": "StepVerifications",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{Step}} & \" / \" & {{VerificationKind}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepVerifications.Step",
+        "TargetTable": "StepVerifications",
+        "FieldName": "Step",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepVerifications.VerificationKind",
+        "TargetTable": "StepVerifications",
+        "FieldName": "VerificationKind",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepVerifications.SignalIdentifier",
+        "TargetTable": "StepVerifications",
+        "FieldName": "SignalIdentifier",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepVerifications.ExpectedSignalValue",
+        "TargetTable": "StepVerifications",
+        "FieldName": "ExpectedSignalValue",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepVerifications.Instruction",
+        "TargetTable": "StepVerifications",
+        "FieldName": "Instruction",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepVerifications.SemanticTypeIri",
+        "TargetTable": "StepVerifications",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Rationales.RationaleId",
+        "TargetTable": "Rationales",
+        "FieldName": "RationaleId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Rationales.Name",
+        "TargetTable": "Rationales",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{Title}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Rationales.ProcedureVersion",
+        "TargetTable": "Rationales",
+        "FieldName": "ProcedureVersion",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Rationales.Step",
+        "TargetTable": "Rationales",
+        "FieldName": "Step",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Rationales.Title",
+        "TargetTable": "Rationales",
+        "FieldName": "Title",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Rationales.Statement",
+        "TargetTable": "Rationales",
+        "FieldName": "Statement",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Rationales.Status",
+        "TargetTable": "Rationales",
+        "FieldName": "Status",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Rationales.AuthorityRole",
+        "TargetTable": "Rationales",
+        "FieldName": "AuthorityRole",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Rationales.SemanticTypeIri",
+        "TargetTable": "Rationales",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Exceptions.ExceptionId",
+        "TargetTable": "Exceptions",
+        "FieldName": "ExceptionId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Exceptions.Name",
+        "TargetTable": "Exceptions",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{Condition}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Exceptions.ProcedureVersion",
+        "TargetTable": "Exceptions",
+        "FieldName": "ProcedureVersion",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Exceptions.TriggerStep",
+        "TargetTable": "Exceptions",
+        "FieldName": "TriggerStep",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Exceptions.Condition",
+        "TargetTable": "Exceptions",
+        "FieldName": "Condition",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Exceptions.Handling",
+        "TargetTable": "Exceptions",
+        "FieldName": "Handling",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Exceptions.ApprovalRole",
+        "TargetTable": "Exceptions",
+        "FieldName": "ApprovalRole",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Exceptions.FallbackRole",
+        "TargetTable": "Exceptions",
+        "FieldName": "FallbackRole",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Exceptions.Status",
+        "TargetTable": "Exceptions",
+        "FieldName": "Status",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Exceptions.SemanticTypeIri",
+        "TargetTable": "Exceptions",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Resources.ResourceId",
+        "TargetTable": "Resources",
+        "FieldName": "ResourceId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Resources.Name",
+        "TargetTable": "Resources",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{Title}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Resources.Title",
+        "TargetTable": "Resources",
+        "FieldName": "Title",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Resources.ResourceKind",
+        "TargetTable": "Resources",
+        "FieldName": "ResourceKind",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Resources.ExternalUri",
+        "TargetTable": "Resources",
+        "FieldName": "ExternalUri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Resources.CreatedAt",
+        "TargetTable": "Resources",
+        "FieldName": "CreatedAt",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Resources.ModifiedAt",
+        "TargetTable": "Resources",
+        "FieldName": "ModifiedAt",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Resources.Description",
+        "TargetTable": "Resources",
+        "FieldName": "Description",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Resources.SemanticTypeIri",
+        "TargetTable": "Resources",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureResources.ProcedureResourceId",
+        "TargetTable": "ProcedureResources",
+        "FieldName": "ProcedureResourceId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureResources.Name",
+        "TargetTable": "ProcedureResources",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{ProcedureVersion}} & \" / \" & {{Resource}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureResources.ProcedureVersion",
+        "TargetTable": "ProcedureResources",
+        "FieldName": "ProcedureVersion",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureResources.Resource",
+        "TargetTable": "ProcedureResources",
+        "FieldName": "Resource",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureResources.Relation",
+        "TargetTable": "ProcedureResources",
+        "FieldName": "Relation",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureResources.RelationIri",
+        "TargetTable": "ProcedureResources",
+        "FieldName": "RelationIri",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{Relation}} = \"wasExtractedFrom\", \"https://w3id.org/pko#wasExtractedFrom\", \"http://purl.org/dc/terms/references\")",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ElicitationSessions.ElicitationSessionId",
+        "TargetTable": "ElicitationSessions",
+        "FieldName": "ElicitationSessionId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ElicitationSessions.Name",
+        "TargetTable": "ElicitationSessions",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{Method}} & \" / \" & {{StartedAt}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ElicitationSessions.ProcedureVersion",
+        "TargetTable": "ElicitationSessions",
+        "FieldName": "ProcedureVersion",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ElicitationSessions.Method",
+        "TargetTable": "ElicitationSessions",
+        "FieldName": "Method",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ElicitationSessions.StartedAt",
+        "TargetTable": "ElicitationSessions",
+        "FieldName": "StartedAt",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ElicitationSessions.EndedAt",
+        "TargetTable": "ElicitationSessions",
+        "FieldName": "EndedAt",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ElicitationSessions.PractitionerAgent",
+        "TargetTable": "ElicitationSessions",
+        "FieldName": "PractitionerAgent",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ElicitationSessions.FacilitatorAgent",
+        "TargetTable": "ElicitationSessions",
+        "FieldName": "FacilitatorAgent",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ElicitationSessions.Summary",
+        "TargetTable": "ElicitationSessions",
+        "FieldName": "Summary",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ElicitationSessions.Status",
+        "TargetTable": "ElicitationSessions",
+        "FieldName": "Status",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ElicitationSessions.SemanticTypeIri",
+        "TargetTable": "ElicitationSessions",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.KnowledgeFragmentId",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "KnowledgeFragmentId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.Name",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{KnowledgeForm}} & \": \" & LEFT({{Statement}}, 60)",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.ProcedureVersion",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "ProcedureVersion",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.Step",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "Step",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.KnowledgeForm",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "KnowledgeForm",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.Statement",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "Statement",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.ElicitationSession",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "ElicitationSession",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.SourceAgent",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "SourceAgent",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.Confidence",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "Confidence",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.ValidFrom",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "ValidFrom",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.ValidTo",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "ValidTo",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.Status",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "Status",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.OwnerRole",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "OwnerRole",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.IsCurrentlyValid",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "IsCurrentlyValid",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{ValidFrom}} <= NOW(), OR({{ValidTo}} = \"\", {{ValidTo}} > NOW()), {{Status}} = \"Approved\")",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.SemanticTypeIri",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeGaps.KnowledgeGapId",
+        "TargetTable": "KnowledgeGaps",
+        "FieldName": "KnowledgeGapId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeGaps.Name",
+        "TargetTable": "KnowledgeGaps",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{Severity}} & \": \" & LEFT({{Statement}}, 60)",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeGaps.ProcedureVersion",
+        "TargetTable": "KnowledgeGaps",
+        "FieldName": "ProcedureVersion",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeGaps.Step",
+        "TargetTable": "KnowledgeGaps",
+        "FieldName": "Step",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeGaps.Statement",
+        "TargetTable": "KnowledgeGaps",
+        "FieldName": "Statement",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeGaps.Severity",
+        "TargetTable": "KnowledgeGaps",
+        "FieldName": "Severity",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeGaps.BlockingKind",
+        "TargetTable": "KnowledgeGaps",
+        "FieldName": "BlockingKind",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeGaps.Status",
+        "TargetTable": "KnowledgeGaps",
+        "FieldName": "Status",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeGaps.OwnerRole",
+        "TargetTable": "KnowledgeGaps",
+        "FieldName": "OwnerRole",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeGaps.IdentifiedAt",
+        "TargetTable": "KnowledgeGaps",
+        "FieldName": "IdentifiedAt",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeGaps.ResolutionPlan",
+        "TargetTable": "KnowledgeGaps",
+        "FieldName": "ResolutionPlan",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeGaps.IsOpen",
+        "TargetTable": "KnowledgeGaps",
+        "FieldName": "IsOpen",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=OR({{Status}} = \"Open\", {{Status}} = \"Investigating\")",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeGaps.SemanticTypeIri",
+        "TargetTable": "KnowledgeGaps",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "FAQs.FaqId",
+        "TargetTable": "FAQs",
+        "FieldName": "FaqId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "FAQs.Name",
+        "TargetTable": "FAQs",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{Question}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "FAQs.ProcedureVersion",
+        "TargetTable": "FAQs",
+        "FieldName": "ProcedureVersion",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "FAQs.Step",
+        "TargetTable": "FAQs",
+        "FieldName": "Step",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "FAQs.Category",
+        "TargetTable": "FAQs",
+        "FieldName": "Category",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "FAQs.TargetKind",
+        "TargetTable": "FAQs",
+        "FieldName": "TargetKind",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "FAQs.Question",
+        "TargetTable": "FAQs",
+        "FieldName": "Question",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "FAQs.Answer",
+        "TargetTable": "FAQs",
+        "FieldName": "Answer",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "FAQs.SemanticTypeIri",
+        "TargetTable": "FAQs",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Explanations.ExplanationId",
+        "TargetTable": "Explanations",
+        "FieldName": "ExplanationId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Explanations.Name",
+        "TargetTable": "Explanations",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{Title}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Explanations.ProcedureVersion",
+        "TargetTable": "Explanations",
+        "FieldName": "ProcedureVersion",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Explanations.Step",
+        "TargetTable": "Explanations",
+        "FieldName": "Step",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Explanations.Title",
+        "TargetTable": "Explanations",
+        "FieldName": "Title",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Explanations.Description",
+        "TargetTable": "Explanations",
+        "FieldName": "Description",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Explanations.SemanticTypeIri",
+        "TargetTable": "Explanations",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureExecutions.ProcedureExecutionId",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "ProcedureExecutionId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureExecutions.Name",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{ProcedureVersion}} & \" / \" & {{Context}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureExecutions.ProcedureVersion",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "ProcedureVersion",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureExecutions.ExecutionStatus",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "ExecutionStatus",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureExecutions.StartedAt",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "StartedAt",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureExecutions.EndedAt",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "EndedAt",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureExecutions.ExecutedByAgent",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "ExecutedByAgent",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureExecutions.Context",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "Context",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureExecutions.OperationalRecordUri",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "OperationalRecordUri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureExecutions.SemanticTypeIri",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.StepExecutionId",
+        "TargetTable": "StepExecutions",
+        "FieldName": "StepExecutionId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.Name",
+        "TargetTable": "StepExecutions",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{ProcedureExecution}} & \" / \" & {{Step}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.ProcedureExecution",
+        "TargetTable": "StepExecutions",
+        "FieldName": "ProcedureExecution",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.Step",
+        "TargetTable": "StepExecutions",
+        "FieldName": "Step",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.ExecutedByAgent",
+        "TargetTable": "StepExecutions",
+        "FieldName": "ExecutedByAgent",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.ExecutionStatus",
+        "TargetTable": "StepExecutions",
+        "FieldName": "ExecutionStatus",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.StartedAt",
+        "TargetTable": "StepExecutions",
+        "FieldName": "StartedAt",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.EndedAt",
+        "TargetTable": "StepExecutions",
+        "FieldName": "EndedAt",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.VerificationResult",
+        "TargetTable": "StepExecutions",
+        "FieldName": "VerificationResult",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.Deviation",
+        "TargetTable": "StepExecutions",
+        "FieldName": "Deviation",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.ActualDurationMinutes",
+        "TargetTable": "StepExecutions",
+        "FieldName": "ActualDurationMinutes",
+        "FieldType": "calculated",
+        "Datatype": "integer",
+        "Formula": "=IF({{EndedAt}} = \"\", 0, DATETIME_DIFF({{EndedAt}}, {{StartedAt}}, \"minutes\"))",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.ExpectedDurationMinutes",
+        "TargetTable": "StepExecutions",
+        "FieldName": "ExpectedDurationMinutes",
+        "FieldType": "lookup",
+        "Datatype": "integer",
+        "Formula": "=INDEX(Steps!{{ExpectedDurationMinutes}}, MATCH({{Step}}, Steps!{{StepId}}, 0))",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.IsLate",
+        "TargetTable": "StepExecutions",
+        "FieldName": "IsLate",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{ActualDurationMinutes}} > {{ExpectedDurationMinutes}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.SemanticTypeIri",
+        "TargetTable": "StepExecutions",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RequirementSatisfactions.RequirementSatisfactionId",
+        "TargetTable": "RequirementSatisfactions",
+        "FieldName": "RequirementSatisfactionId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RequirementSatisfactions.Name",
+        "TargetTable": "RequirementSatisfactions",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{Requirement}} & \" / \" & {{SatisfactionLevel}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RequirementSatisfactions.StepExecution",
+        "TargetTable": "RequirementSatisfactions",
+        "FieldName": "StepExecution",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RequirementSatisfactions.Requirement",
+        "TargetTable": "RequirementSatisfactions",
+        "FieldName": "Requirement",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RequirementSatisfactions.SatisfactionLevel",
+        "TargetTable": "RequirementSatisfactions",
+        "FieldName": "SatisfactionLevel",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RequirementSatisfactions.Evidence",
+        "TargetTable": "RequirementSatisfactions",
+        "FieldName": "Evidence",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RequirementSatisfactions.EvaluatedByAgent",
+        "TargetTable": "RequirementSatisfactions",
+        "FieldName": "EvaluatedByAgent",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RequirementSatisfactions.EvaluatedAt",
+        "TargetTable": "RequirementSatisfactions",
+        "FieldName": "EvaluatedAt",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RequirementSatisfactions.SemanticTypeIri",
+        "TargetTable": "RequirementSatisfactions",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Errors.ErrorId",
+        "TargetTable": "Errors",
+        "FieldName": "ErrorId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Errors.Name",
+        "TargetTable": "Errors",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{ErrorCode}} & \" - \" & {{Label}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Errors.Label",
+        "TargetTable": "Errors",
+        "FieldName": "Label",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Errors.ErrorCode",
+        "TargetTable": "Errors",
+        "FieldName": "ErrorCode",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Errors.ErrorCause",
+        "TargetTable": "Errors",
+        "FieldName": "ErrorCause",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Errors.SemanticTypeIri",
+        "TargetTable": "Errors",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "IssueOccurrences.IssueOccurrenceId",
+        "TargetTable": "IssueOccurrences",
+        "FieldName": "IssueOccurrenceId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "IssueOccurrences.Name",
+        "TargetTable": "IssueOccurrences",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{Error}} & \" @ \" & {{OccurredAt}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "IssueOccurrences.StepExecution",
+        "TargetTable": "IssueOccurrences",
+        "FieldName": "StepExecution",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "IssueOccurrences.Error",
+        "TargetTable": "IssueOccurrences",
+        "FieldName": "Error",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "IssueOccurrences.EncounteredByAgent",
+        "TargetTable": "IssueOccurrences",
+        "FieldName": "EncounteredByAgent",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "IssueOccurrences.OccurredAt",
+        "TargetTable": "IssueOccurrences",
+        "FieldName": "OccurredAt",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "IssueOccurrences.IssueCause",
+        "TargetTable": "IssueOccurrences",
+        "FieldName": "IssueCause",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "IssueOccurrences.IssueSolution",
+        "TargetTable": "IssueOccurrences",
+        "FieldName": "IssueSolution",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "IssueOccurrences.Status",
+        "TargetTable": "IssueOccurrences",
+        "FieldName": "Status",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "IssueOccurrences.SemanticTypeIri",
+        "TargetTable": "IssueOccurrences",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "UserQuestions.UserQuestionId",
+        "TargetTable": "UserQuestions",
+        "FieldName": "UserQuestionId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "UserQuestions.Name",
+        "TargetTable": "UserQuestions",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=LEFT({{QuestionText}}, 70)",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "UserQuestions.StepExecution",
+        "TargetTable": "UserQuestions",
+        "FieldName": "StepExecution",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "UserQuestions.AskedByAgent",
+        "TargetTable": "UserQuestions",
+        "FieldName": "AskedByAgent",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "UserQuestions.AskedAt",
+        "TargetTable": "UserQuestions",
+        "FieldName": "AskedAt",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "UserQuestions.QuestionText",
+        "TargetTable": "UserQuestions",
+        "FieldName": "QuestionText",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "UserQuestions.ResolvedByFaq",
+        "TargetTable": "UserQuestions",
+        "FieldName": "ResolvedByFaq",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "UserQuestions.AddressedByResource",
+        "TargetTable": "UserQuestions",
+        "FieldName": "AddressedByResource",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "UserQuestions.Status",
+        "TargetTable": "UserQuestions",
+        "FieldName": "Status",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "UserQuestions.SemanticTypeIri",
+        "TargetTable": "UserQuestions",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "UserFeedback.UserFeedbackId",
+        "TargetTable": "UserFeedback",
+        "FieldName": "UserFeedbackId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "UserFeedback.Name",
+        "TargetTable": "UserFeedback",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{Disposition}} & \": \" & LEFT({{FeedbackText}}, 60)",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "UserFeedback.ProcedureExecution",
+        "TargetTable": "UserFeedback",
+        "FieldName": "ProcedureExecution",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "UserFeedback.ProvidedByAgent",
+        "TargetTable": "UserFeedback",
+        "FieldName": "ProvidedByAgent",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "UserFeedback.ProvidedAt",
+        "TargetTable": "UserFeedback",
+        "FieldName": "ProvidedAt",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "UserFeedback.FeedbackText",
+        "TargetTable": "UserFeedback",
+        "FieldName": "FeedbackText",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "UserFeedback.Disposition",
+        "TargetTable": "UserFeedback",
+        "FieldName": "Disposition",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "UserFeedback.ChangeRequestKey",
+        "TargetTable": "UserFeedback",
+        "FieldName": "ChangeRequestKey",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "UserFeedback.SemanticTypeIri",
+        "TargetTable": "UserFeedback",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StewardshipAssignments.StewardshipAssignmentId",
+        "TargetTable": "StewardshipAssignments",
+        "FieldName": "StewardshipAssignmentId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StewardshipAssignments.Name",
+        "TargetTable": "StewardshipAssignments",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{ProcedureVersion}} & \" / steward=\" & {{StewardRole}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StewardshipAssignments.ProcedureVersion",
+        "TargetTable": "StewardshipAssignments",
+        "FieldName": "ProcedureVersion",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StewardshipAssignments.StewardRole",
+        "TargetTable": "StewardshipAssignments",
+        "FieldName": "StewardRole",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StewardshipAssignments.AuthorityRole",
+        "TargetTable": "StewardshipAssignments",
+        "FieldName": "AuthorityRole",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StewardshipAssignments.ValidFrom",
+        "TargetTable": "StewardshipAssignments",
+        "FieldName": "ValidFrom",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StewardshipAssignments.ValidTo",
+        "TargetTable": "StewardshipAssignments",
+        "FieldName": "ValidTo",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StewardshipAssignments.ReviewCadenceDays",
+        "TargetTable": "StewardshipAssignments",
+        "FieldName": "ReviewCadenceDays",
+        "FieldType": "raw",
+        "Datatype": "integer",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StewardshipAssignments.SemanticTypeIri",
+        "TargetTable": "StewardshipAssignments",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ChangeRequests.ChangeRequestId",
+        "TargetTable": "ChangeRequests",
+        "FieldName": "ChangeRequestId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ChangeRequests.Name",
+        "TargetTable": "ChangeRequests",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{Title}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ChangeRequests.ProcedureVersion",
+        "TargetTable": "ChangeRequests",
+        "FieldName": "ProcedureVersion",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ChangeRequests.Title",
+        "TargetTable": "ChangeRequests",
+        "FieldName": "Title",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ChangeRequests.ChangeKind",
+        "TargetTable": "ChangeRequests",
+        "FieldName": "ChangeKind",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ChangeRequests.Status",
+        "TargetTable": "ChangeRequests",
+        "FieldName": "Status",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ChangeRequests.RequestedByAgent",
+        "TargetTable": "ChangeRequests",
+        "FieldName": "RequestedByAgent",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ChangeRequests.AuthorityRole",
+        "TargetTable": "ChangeRequests",
+        "FieldName": "AuthorityRole",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ChangeRequests.RequestedAt",
+        "TargetTable": "ChangeRequests",
+        "FieldName": "RequestedAt",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ChangeRequests.DecidedAt",
+        "TargetTable": "ChangeRequests",
+        "FieldName": "DecidedAt",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ChangeRequests.ImpactAssessment",
+        "TargetTable": "ChangeRequests",
+        "FieldName": "ImpactAssessment",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ChangeRequests.IsOpen",
+        "TargetTable": "ChangeRequests",
+        "FieldName": "IsOpen",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=OR({{Status}} = \"Draft\", {{Status}} = \"UnderReview\", {{Status}} = \"Approved\")",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ChangeRequests.SemanticTypeIri",
+        "TargetTable": "ChangeRequests",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ReviewEvents.ReviewEventId",
+        "TargetTable": "ReviewEvents",
+        "FieldName": "ReviewEventId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ReviewEvents.Name",
+        "TargetTable": "ReviewEvents",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{ProcedureVersion}} & \" / \" & {{ReviewKind}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ReviewEvents.ProcedureVersion",
+        "TargetTable": "ReviewEvents",
+        "FieldName": "ProcedureVersion",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ReviewEvents.ReviewKind",
+        "TargetTable": "ReviewEvents",
+        "FieldName": "ReviewKind",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ReviewEvents.ReviewedAt",
+        "TargetTable": "ReviewEvents",
+        "FieldName": "ReviewedAt",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ReviewEvents.ReviewedByAgent",
+        "TargetTable": "ReviewEvents",
+        "FieldName": "ReviewedByAgent",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ReviewEvents.Outcome",
+        "TargetTable": "ReviewEvents",
+        "FieldName": "Outcome",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ReviewEvents.RelatedChangeRequest",
+        "TargetTable": "ReviewEvents",
+        "FieldName": "RelatedChangeRequest",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ReviewEvents.NextReviewDue",
+        "TargetTable": "ReviewEvents",
+        "FieldName": "NextReviewDue",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ReviewEvents.IsOverdue",
+        "TargetTable": "ReviewEvents",
+        "FieldName": "IsOverdue",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{NextReviewDue}} < NOW()",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ReviewEvents.SemanticTypeIri",
+        "TargetTable": "ReviewEvents",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "LearningActivities.LearningActivityId",
+        "TargetTable": "LearningActivities",
+        "FieldName": "LearningActivityId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "LearningActivities.Name",
+        "TargetTable": "LearningActivities",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{ActivityKind}} & \" / \" & {{OccurredAt}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "LearningActivities.CommunityOfPractice",
+        "TargetTable": "LearningActivities",
+        "FieldName": "CommunityOfPractice",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "LearningActivities.ProcedureVersion",
+        "TargetTable": "LearningActivities",
+        "FieldName": "ProcedureVersion",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "LearningActivities.ActivityKind",
+        "TargetTable": "LearningActivities",
+        "FieldName": "ActivityKind",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "LearningActivities.OccurredAt",
+        "TargetTable": "LearningActivities",
+        "FieldName": "OccurredAt",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "LearningActivities.FacilitatorAgent",
+        "TargetTable": "LearningActivities",
+        "FieldName": "FacilitatorAgent",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "LearningActivities.Outcome",
+        "TargetTable": "LearningActivities",
+        "FieldName": "Outcome",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "LearningActivities.EvidenceResource",
+        "TargetTable": "LearningActivities",
+        "FieldName": "EvidenceResource",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "LearningActivities.SemanticTypeIri",
+        "TargetTable": "LearningActivities",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "OperationalBindings.OperationalBindingId",
+        "TargetTable": "OperationalBindings",
+        "FieldName": "OperationalBindingId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "OperationalBindings.Name",
+        "TargetTable": "OperationalBindings",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{Step}} & \" / \" & {{RecordOrSchemaKey}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "OperationalBindings.ProcedureVersion",
+        "TargetTable": "OperationalBindings",
+        "FieldName": "ProcedureVersion",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "OperationalBindings.Step",
+        "TargetTable": "OperationalBindings",
+        "FieldName": "Step",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "OperationalBindings.Resource",
+        "TargetTable": "OperationalBindings",
+        "FieldName": "Resource",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "OperationalBindings.AccessMode",
+        "TargetTable": "OperationalBindings",
+        "FieldName": "AccessMode",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "OperationalBindings.RecordOrSchemaKey",
+        "TargetTable": "OperationalBindings",
+        "FieldName": "RecordOrSchemaKey",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "OperationalBindings.LastObservedAt",
+        "TargetTable": "OperationalBindings",
+        "FieldName": "LastObservedAt",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "OperationalBindings.FreshnessSlaMinutes",
+        "TargetTable": "OperationalBindings",
+        "FieldName": "FreshnessSlaMinutes",
+        "FieldType": "raw",
+        "Datatype": "integer",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "OperationalBindings.IsAuthoritative",
+        "TargetTable": "OperationalBindings",
+        "FieldName": "IsAuthoritative",
+        "FieldType": "raw",
+        "Datatype": "boolean",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "OperationalBindings.AgeMinutes",
+        "TargetTable": "OperationalBindings",
+        "FieldName": "AgeMinutes",
+        "FieldType": "calculated",
+        "Datatype": "integer",
+        "Formula": "=DATETIME_DIFF(NOW(), {{LastObservedAt}}, \"minutes\")",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "OperationalBindings.IsFresh",
+        "TargetTable": "OperationalBindings",
+        "FieldName": "IsFresh",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{AgeMinutes}} <= {{FreshnessSlaMinutes}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "OperationalBindings.SemanticTypeIri",
+        "TargetTable": "OperationalBindings",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "CommunicationPolicies.CommunicationPolicyId",
+        "TargetTable": "CommunicationPolicies",
+        "FieldName": "CommunicationPolicyId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "CommunicationPolicies.Name",
+        "TargetTable": "CommunicationPolicies",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{Channel}} & \" policy / \" & {{ProcedureVersion}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "CommunicationPolicies.ProcedureVersion",
+        "TargetTable": "CommunicationPolicies",
+        "FieldName": "ProcedureVersion",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "CommunicationPolicies.Channel",
+        "TargetTable": "CommunicationPolicies",
+        "FieldName": "Channel",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "CommunicationPolicies.AudienceRule",
+        "TargetTable": "CommunicationPolicies",
+        "FieldName": "AudienceRule",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "CommunicationPolicies.ConsentRequired",
+        "TargetTable": "CommunicationPolicies",
+        "FieldName": "ConsentRequired",
+        "FieldType": "raw",
+        "Datatype": "boolean",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "CommunicationPolicies.QuietHoursStart",
+        "TargetTable": "CommunicationPolicies",
+        "FieldName": "QuietHoursStart",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "CommunicationPolicies.QuietHoursEnd",
+        "TargetTable": "CommunicationPolicies",
+        "FieldName": "QuietHoursEnd",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "CommunicationPolicies.MaxMessageLength",
+        "TargetTable": "CommunicationPolicies",
+        "FieldName": "MaxMessageLength",
+        "FieldType": "raw",
+        "Datatype": "integer",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "CommunicationPolicies.MaxSegments",
+        "TargetTable": "CommunicationPolicies",
+        "FieldName": "MaxSegments",
+        "FieldType": "raw",
+        "Datatype": "integer",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "CommunicationPolicies.RetentionDays",
+        "TargetTable": "CommunicationPolicies",
+        "FieldName": "RetentionDays",
+        "FieldType": "raw",
+        "Datatype": "integer",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "CommunicationPolicies.ApprovalRole",
+        "TargetTable": "CommunicationPolicies",
+        "FieldName": "ApprovalRole",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "CommunicationPolicies.RequiredContent",
+        "TargetTable": "CommunicationPolicies",
+        "FieldName": "RequiredContent",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "CommunicationPolicies.AuthorityStatement",
+        "TargetTable": "CommunicationPolicies",
+        "FieldName": "AuthorityStatement",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "CommunicationPolicies.Status",
+        "TargetTable": "CommunicationPolicies",
+        "FieldName": "Status",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "CommunicationPolicies.SemanticTypeIri",
+        "TargetTable": "CommunicationPolicies",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageTemplates.MessageTemplateId",
+        "TargetTable": "MessageTemplates",
+        "FieldName": "MessageTemplateId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageTemplates.Name",
+        "TargetTable": "MessageTemplates",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{CommunicationPolicy}} & \" / \" & {{Locale}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageTemplates.CommunicationPolicy",
+        "TargetTable": "MessageTemplates",
+        "FieldName": "CommunicationPolicy",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageTemplates.Resource",
+        "TargetTable": "MessageTemplates",
+        "FieldName": "Resource",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageTemplates.SubjectTemplate",
+        "TargetTable": "MessageTemplates",
+        "FieldName": "SubjectTemplate",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageTemplates.BodyTemplate",
+        "TargetTable": "MessageTemplates",
+        "FieldName": "BodyTemplate",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageTemplates.Locale",
+        "TargetTable": "MessageTemplates",
+        "FieldName": "Locale",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageTemplates.Status",
+        "TargetTable": "MessageTemplates",
+        "FieldName": "Status",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageTemplates.SemanticTypeIri",
+        "TargetTable": "MessageTemplates",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SemanticMappings.SemanticMappingId",
+        "TargetTable": "SemanticMappings",
+        "FieldName": "SemanticMappingId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SemanticMappings.Name",
+        "TargetTable": "SemanticMappings",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{SourcePath}} & \" -> \" & {{TargetIri}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SemanticMappings.SourcePath",
+        "TargetTable": "SemanticMappings",
+        "FieldName": "SourcePath",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SemanticMappings.MappingKind",
+        "TargetTable": "SemanticMappings",
+        "FieldName": "MappingKind",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SemanticMappings.TargetIri",
+        "TargetTable": "SemanticMappings",
+        "FieldName": "TargetIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SemanticMappings.MappingRelation",
+        "TargetTable": "SemanticMappings",
+        "FieldName": "MappingRelation",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SemanticMappings.OntologyProfile",
+        "TargetTable": "SemanticMappings",
+        "FieldName": "OntologyProfile",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SemanticMappings.Notes",
+        "TargetTable": "SemanticMappings",
+        "FieldName": "Notes",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "WitnessLoops.WitnessLoopId",
+        "TargetTable": "WitnessLoops",
+        "FieldName": "WitnessLoopId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "WitnessLoops.Name",
+        "TargetTable": "WitnessLoops",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=\"Loop \" & {{LoopNumber}} & \": \" & {{Title}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "WitnessLoops.LoopNumber",
+        "TargetTable": "WitnessLoops",
+        "FieldName": "LoopNumber",
+        "FieldType": "raw",
+        "Datatype": "number",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "WitnessLoops.Title",
+        "TargetTable": "WitnessLoops",
+        "FieldName": "Title",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "WitnessLoops.Premise",
+        "TargetTable": "WitnessLoops",
+        "FieldName": "Premise",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "WitnessLoops.StartedAt",
+        "TargetTable": "WitnessLoops",
+        "FieldName": "StartedAt",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "WitnessLoops.CompletedAt",
+        "TargetTable": "WitnessLoops",
+        "FieldName": "CompletedAt",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "WitnessLoops.QuestionCount",
+        "TargetTable": "WitnessLoops",
+        "FieldName": "QuestionCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(RoleQuestions!{{WitnessLoop}}, {{WitnessLoopId}})",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "WitnessLoops.IsComplete",
+        "TargetTable": "WitnessLoops",
+        "FieldName": "IsComplete",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{CompletedAt}} <> \"\"",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "WitnessLoops.SemanticTypeIri",
+        "TargetTable": "WitnessLoops",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleQuestions.RoleQuestionId",
+        "TargetTable": "RoleQuestions",
+        "FieldName": "RoleQuestionId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleQuestions.Name",
+        "TargetTable": "RoleQuestions",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{AskingRole}} & \": \" & LEFT({{QuestionText}}, 60)",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleQuestions.AskingRole",
+        "TargetTable": "RoleQuestions",
+        "FieldName": "AskingRole",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleQuestions.WitnessLoop",
+        "TargetTable": "RoleQuestions",
+        "FieldName": "WitnessLoop",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleQuestions.QuestionText",
+        "TargetTable": "RoleQuestions",
+        "FieldName": "QuestionText",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleQuestions.WhyItMatters",
+        "TargetTable": "RoleQuestions",
+        "FieldName": "WhyItMatters",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleQuestions.AnswerableBefore",
+        "TargetTable": "RoleQuestions",
+        "FieldName": "AnswerableBefore",
+        "FieldType": "raw",
+        "Datatype": "boolean",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleQuestions.PredicateCount",
+        "TargetTable": "RoleQuestions",
+        "FieldName": "PredicateCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(RulebookFields!{{InventedForQuestion}}, {{RoleQuestionId}})",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleQuestions.IsAnswered",
+        "TargetTable": "RoleQuestions",
+        "FieldName": "IsAnswered",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{PredicateCount}} > 0",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleQuestions.SemanticTypeIri",
+        "TargetTable": "RoleQuestions",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RulebookFields.RulebookFieldId",
+        "TargetTable": "RulebookFields",
+        "FieldName": "RulebookFieldId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RulebookFields.Name",
+        "TargetTable": "RulebookFields",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{TargetTable}} & \".\" & {{FieldName}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RulebookFields.TargetTable",
+        "TargetTable": "RulebookFields",
+        "FieldName": "TargetTable",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RulebookFields.FieldName",
+        "TargetTable": "RulebookFields",
+        "FieldName": "FieldName",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RulebookFields.FieldType",
+        "TargetTable": "RulebookFields",
+        "FieldName": "FieldType",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RulebookFields.Datatype",
+        "TargetTable": "RulebookFields",
+        "FieldName": "Datatype",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RulebookFields.Formula",
+        "TargetTable": "RulebookFields",
+        "FieldName": "Formula",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RulebookFields.InventedForQuestion",
+        "TargetTable": "RulebookFields",
+        "FieldName": "InventedForQuestion",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RulebookFields.IsDerived",
+        "TargetTable": "RulebookFields",
+        "FieldName": "IsDerived",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=OR({{FieldType}} = \"calculated\", {{FieldType}} = \"lookup\", {{FieldType}} = \"aggregation\")",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RulebookFields.IsWitness",
+        "TargetTable": "RulebookFields",
+        "FieldName": "IsWitness",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{InventedForQuestion}} <> \"\"",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RulebookFields.SemanticTypeIri",
+        "TargetTable": "RulebookFields",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ERBVersions.ERBVersionId",
+        "TargetTable": "ERBVersions",
+        "FieldName": "ERBVersionId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ERBVersions.BaseId",
+        "TargetTable": "ERBVersions",
+        "FieldName": "BaseId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ERBVersions.Name",
+        "TargetTable": "ERBVersions",
+        "FieldName": "Name",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ERBVersions.Message",
+        "TargetTable": "ERBVersions",
+        "FieldName": "Message",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ERBVersions.Notes",
+        "TargetTable": "ERBVersions",
+        "FieldName": "Notes",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ERBVersions.CommitDate",
+        "TargetTable": "ERBVersions",
+        "FieldName": "CommitDate",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ERBVersions.IsPublished",
+        "TargetTable": "ERBVersions",
+        "FieldName": "IsPublished",
+        "FieldType": "raw",
+        "Datatype": "boolean",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ERBCustomizations.ERBCustomizationId",
+        "TargetTable": "ERBCustomizations",
+        "FieldName": "ERBCustomizationId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ERBCustomizations.Name",
+        "TargetTable": "ERBCustomizations",
+        "FieldName": "Name",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ERBCustomizations.Title",
+        "TargetTable": "ERBCustomizations",
+        "FieldName": "Title",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ERBCustomizations.SQLCode",
+        "TargetTable": "ERBCustomizations",
+        "FieldName": "SQLCode",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ERBCustomizations.SQLTarget",
+        "TargetTable": "ERBCustomizations",
+        "FieldName": "SQLTarget",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ERBCustomizations.CustomizationType",
+        "TargetTable": "ERBCustomizations",
+        "FieldName": "CustomizationType",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "__meta__.MetaKey",
+        "TargetTable": "__meta__",
+        "FieldName": "MetaKey",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "__meta__.Name",
+        "TargetTable": "__meta__",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{MetaKey}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "__meta__.ValueType",
+        "TargetTable": "__meta__",
+        "FieldName": "ValueType",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "__meta__.StringValue",
+        "TargetTable": "__meta__",
+        "FieldName": "StringValue",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "__meta__.JsonValue",
+        "TargetTable": "__meta__",
+        "FieldName": "JsonValue",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      }
+    ]
+  },
   "ERBVersions": {
     "Description": "Standard ERB semantic version history.",
     "schema": [
@@ -6599,7 +11677,7 @@
         "MetaKey": "description_rich",
         "Name": "description_rich",
         "ValueType": "string",
-        "StringValue": "A single Effortless Rulebook whose structural model is aligned to the Procedural Knowledge Ontology (PKO) 2.0.0. It keeps procedure *specifications* separate from procedure *executions*, and carries versions, lifecycle status changes, steps, transitions, alternatives and fallbacks, actions, software functions, tools, requirements and verifications, agents, roles and time-bounded role assignments, resources and provenance, errors, issues, questions, feedback, explanations, tacit/implicit/explicit/situated knowledge, elicitation provenance, knowledge gaps, stewardship, change requests, reviews, communities of practice, and communication policy. Natural-language docs, financial SOPs, email/SMS policies, and a governance handbook are all projections of this one model — never hand-maintained documents.",
+        "StringValue": "A single Effortless Rulebook whose structural model is aligned to the Procedural Knowledge Ontology (PKO) 2.0.0. It keeps procedure *specifications* separate from procedure *executions*, and carries versions, lifecycle status changes, steps, transitions, alternatives and fallbacks, actions, software functions, tools, requirements and verifications, agents, roles and time-bounded role assignments, resources and provenance, errors, issues, questions, feedback, explanations, tacit/implicit/explicit/situated knowledge, elicitation provenance, knowledge gaps, stewardship, change requests, reviews, communities of practice, and communication policy. Natural-language docs, financial SOPs, email/SMS policies, and a governance handbook are all projections of this one model \u2014 never hand-maintained documents.",
         "JsonValue": null
       },
       {
@@ -6614,7 +11692,7 @@
         "Name": "signature_rows",
         "ValueType": "array",
         "StringValue": null,
-        "JsonValue": "[{\"table\": \"Procedures\", \"why\": \"Specification of a procedure — distinct from any execution of it.\"}, {\"table\": \"ProcedureExecutions\", \"why\": \"What actually happened, linked back to the spec via pko:hasExecutedProcedure.\"}, {\"table\": \"StepTransitions\", \"why\": \"Default, alternative, and fallback edges — the control flow as data.\"}, {\"table\": \"KnowledgeGaps\", \"why\": \"Known unknowns tracked with severity, ownership, and blocking status.\"}, {\"table\": \"SemanticMappings\", \"why\": \"Every table's exact PKO term, or its explicit extension IRI.\"}]"
+        "JsonValue": "[{\"table\": \"Procedures\", \"why\": \"Specification of a procedure \u2014 distinct from any execution of it.\"}, {\"table\": \"ProcedureExecutions\", \"why\": \"What actually happened, linked back to the spec via pko:hasExecutedProcedure.\"}, {\"table\": \"StepTransitions\", \"why\": \"Default, alternative, and fallback edges \u2014 the control flow as data.\"}, {\"table\": \"KnowledgeGaps\", \"why\": \"Known unknowns tracked with severity, ownership, and blocking status.\"}, {\"table\": \"SemanticMappings\", \"why\": \"Every table's exact PKO term, or its explicit extension IRI.\"}]"
       },
       {
         "MetaKey": "procedure_families",
@@ -6662,7 +11740,7 @@
         "MetaKey": "CMCC_Summary",
         "Name": "CMCC_Summary",
         "ValueType": "string",
-        "StringValue": "Procedural knowledge is modeled as data, not prose. PKO is graph-shaped; an Effortless Rulebook is an acyclic structural graph, so repeated and many-to-many semantics are promoted to first-class junction and event entities (StepTransitions, StepRequirements, RoleAssignments). No semantics are lost — the relational shape is a faithful encoding, and each projection recovers its own native surface form from the same structure.",
+        "StringValue": "Procedural knowledge is modeled as data, not prose. PKO is graph-shaped; an Effortless Rulebook is an acyclic structural graph, so repeated and many-to-many semantics are promoted to first-class junction and event entities (StepTransitions, StepRequirements, RoleAssignments). No semantics are lost \u2014 the relational shape is a faithful encoding, and each projection recovers its own native surface form from the same structure.",
         "JsonValue": null
       }
     ]

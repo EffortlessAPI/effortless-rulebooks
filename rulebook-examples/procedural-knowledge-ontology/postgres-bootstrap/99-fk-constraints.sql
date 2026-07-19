@@ -382,4 +382,17 @@ ALTER TABLE semantic_mappings DROP CONSTRAINT IF EXISTS fk_semantic_mappings_ont
 ALTER TABLE semantic_mappings ADD CONSTRAINT fk_semantic_mappings_ontology_profile
   FOREIGN KEY (ontology_profile) REFERENCES ontology_profiles (ontology_profile_id);
 
--- 98 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
+-- RoleQuestions
+ALTER TABLE role_questions DROP CONSTRAINT IF EXISTS fk_role_questions_asking_role;
+ALTER TABLE role_questions ADD CONSTRAINT fk_role_questions_asking_role
+  FOREIGN KEY (asking_role) REFERENCES roles (role_id);
+ALTER TABLE role_questions DROP CONSTRAINT IF EXISTS fk_role_questions_witness_loop;
+ALTER TABLE role_questions ADD CONSTRAINT fk_role_questions_witness_loop
+  FOREIGN KEY (witness_loop) REFERENCES witness_loops (witness_loop_id);
+
+-- RulebookFields
+ALTER TABLE rulebook_fields DROP CONSTRAINT IF EXISTS fk_rulebook_fields_invented_for_question;
+ALTER TABLE rulebook_fields ADD CONSTRAINT fk_rulebook_fields_invented_for_question
+  FOREIGN KEY (invented_for_question) REFERENCES role_questions (role_question_id);
+
+-- 101 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
