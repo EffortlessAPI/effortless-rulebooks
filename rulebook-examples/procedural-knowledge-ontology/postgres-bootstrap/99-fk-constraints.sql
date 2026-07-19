@@ -209,6 +209,9 @@ ALTER TABLE knowledge_fragments ADD CONSTRAINT fk_knowledge_fragments_source_age
 ALTER TABLE knowledge_fragments DROP CONSTRAINT IF EXISTS fk_knowledge_fragments_owner_role;
 ALTER TABLE knowledge_fragments ADD CONSTRAINT fk_knowledge_fragments_owner_role
   FOREIGN KEY (owner_role) REFERENCES roles (role_id);
+ALTER TABLE knowledge_fragments DROP CONSTRAINT IF EXISTS fk_knowledge_fragments_evaluation_context;
+ALTER TABLE knowledge_fragments ADD CONSTRAINT fk_knowledge_fragments_evaluation_context
+  FOREIGN KEY (evaluation_context) REFERENCES evaluation_contexts (evaluation_context_id);
 
 -- KnowledgeGaps
 ALTER TABLE knowledge_gaps DROP CONSTRAINT IF EXISTS fk_knowledge_gaps_procedure_version;
@@ -335,6 +338,9 @@ ALTER TABLE review_events ADD CONSTRAINT fk_review_events_reviewed_by_agent
 ALTER TABLE review_events DROP CONSTRAINT IF EXISTS fk_review_events_related_change_request;
 ALTER TABLE review_events ADD CONSTRAINT fk_review_events_related_change_request
   FOREIGN KEY (related_change_request) REFERENCES change_requests (change_request_id);
+ALTER TABLE review_events DROP CONSTRAINT IF EXISTS fk_review_events_evaluation_context;
+ALTER TABLE review_events ADD CONSTRAINT fk_review_events_evaluation_context
+  FOREIGN KEY (evaluation_context) REFERENCES evaluation_contexts (evaluation_context_id);
 
 -- LearningActivities
 ALTER TABLE learning_activities DROP CONSTRAINT IF EXISTS fk_learning_activities_community_of_practice;
@@ -360,6 +366,9 @@ ALTER TABLE operational_bindings ADD CONSTRAINT fk_operational_bindings_step
 ALTER TABLE operational_bindings DROP CONSTRAINT IF EXISTS fk_operational_bindings_resource;
 ALTER TABLE operational_bindings ADD CONSTRAINT fk_operational_bindings_resource
   FOREIGN KEY (resource) REFERENCES resources (resource_id);
+ALTER TABLE operational_bindings DROP CONSTRAINT IF EXISTS fk_operational_bindings_evaluation_context;
+ALTER TABLE operational_bindings ADD CONSTRAINT fk_operational_bindings_evaluation_context
+  FOREIGN KEY (evaluation_context) REFERENCES evaluation_contexts (evaluation_context_id);
 
 -- CommunicationPolicies
 ALTER TABLE communication_policies DROP CONSTRAINT IF EXISTS fk_communication_policies_procedure_version;
@@ -395,4 +404,4 @@ ALTER TABLE rulebook_fields DROP CONSTRAINT IF EXISTS fk_rulebook_fields_invente
 ALTER TABLE rulebook_fields ADD CONSTRAINT fk_rulebook_fields_invented_for_question
   FOREIGN KEY (invented_for_question) REFERENCES role_questions (role_question_id);
 
--- 101 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
+-- 104 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).

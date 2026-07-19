@@ -38,6 +38,16 @@ RETURNS TEXT AS $$
   SELECT (CONCAT((SELECT NULLIF(label, '') FROM ontology_profiles WHERE ontology_profile_id = p_ontology_profile_id), ' ', (SELECT NULLIF(version, '') FROM ontology_profiles WHERE ontology_profile_id = p_ontology_profile_id)))::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_evaluation_contexts_name
+-- Field: EvaluationContexts.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_evaluation_contexts_name(p_evaluation_context_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT((SELECT NULLIF(label, '') FROM evaluation_contexts WHERE evaluation_context_id = p_evaluation_context_id), ' @ ', (SELECT as_of_instant::timestamptz FROM evaluation_contexts WHERE evaluation_context_id = p_evaluation_context_id)))::text;
+$$ LANGUAGE sql STABLE;
+
 -- calc_organizations_name
 -- Field: Organizations.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -976,6 +986,17 @@ RETURNS TEXT AS $$
   SELECT (CONCAT((SELECT NULLIF(method, '') FROM elicitation_sessions WHERE elicitation_session_id = p_elicitation_session_id), ' / ', (SELECT started_at::timestamptz FROM elicitation_sessions WHERE elicitation_session_id = p_elicitation_session_id)))::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_knowledge_fragments_as_of_instant
+-- Field: KnowledgeFragments.AsOfInstant
+-- Type: lookup | DataType: datetime | Returns: TIMESTAMPTZ
+-- Lookup: AsOfInstant from related EvaluationContexts
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_fragments_as_of_instant(p_knowledge_fragment_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT as_of_instant::timestamptz FROM evaluation_contexts WHERE evaluation_context_id = (SELECT evaluation_context FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id));
+$$ LANGUAGE sql STABLE;
+
 -- get_elicitation_sessions_method
 -- Helper function: Get Method from ElicitationSessions by ElicitationSessionId
 -- Used for join-free cross-table references in aggregations
@@ -1030,6 +1051,51 @@ RETURNS TEXT AS $$
   SELECT (SELECT semantic_type_iri FROM elicitation_sessions WHERE elicitation_session_id = p_elicitation_session_id);
 $$ LANGUAGE sql STABLE;
 
+-- get_evaluation_contexts_label
+-- Helper function: Get Label from EvaluationContexts by EvaluationContextId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_evaluation_contexts_label(p_evaluation_context_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT label FROM evaluation_contexts WHERE evaluation_context_id = p_evaluation_context_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_evaluation_contexts_as_of_instant
+-- Helper function: Get AsOfInstant from EvaluationContexts by EvaluationContextId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_evaluation_contexts_as_of_instant(p_evaluation_context_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT as_of_instant FROM evaluation_contexts WHERE evaluation_context_id = p_evaluation_context_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_evaluation_contexts_is_current
+-- Helper function: Get IsCurrent from EvaluationContexts by EvaluationContextId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_evaluation_contexts_is_current(p_evaluation_context_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT is_current FROM evaluation_contexts WHERE evaluation_context_id = p_evaluation_context_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_evaluation_contexts_rationale
+-- Helper function: Get Rationale from EvaluationContexts by EvaluationContextId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_evaluation_contexts_rationale(p_evaluation_context_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT rationale FROM evaluation_contexts WHERE evaluation_context_id = p_evaluation_context_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_evaluation_contexts_semantic_type_iri
+-- Helper function: Get SemanticTypeIri from EvaluationContexts by EvaluationContextId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_evaluation_contexts_semantic_type_iri(p_evaluation_context_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT semantic_type_iri FROM evaluation_contexts WHERE evaluation_context_id = p_evaluation_context_id);
+$$ LANGUAGE sql STABLE;
+
 -- calc_knowledge_fragments_name
 -- Field: KnowledgeFragments.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -1047,7 +1113,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_fragments_is_currently_valid(p_knowledge_fragment_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((SELECT valid_from::timestamptz FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id) <= CURRENT_TIMESTAMP AND ((SELECT valid_to::timestamptz FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id) IS NULL OR (SELECT valid_to::timestamptz FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id) > CURRENT_TIMESTAMP) AND (SELECT NULLIF(status, '') FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id) = 'Approved'))::boolean;
+  SELECT (((SELECT valid_from::timestamptz FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id) <= calc_knowledge_fragments_as_of_instant(p_knowledge_fragment_id) AND ((SELECT valid_to::timestamptz FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id) IS NULL OR (SELECT valid_to::timestamptz FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id) > calc_knowledge_fragments_as_of_instant(p_knowledge_fragment_id)) AND (SELECT NULLIF(status, '') FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id) = 'Approved'))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_gaps_name
@@ -1410,6 +1476,17 @@ RETURNS BOOLEAN AS $$
   SELECT (((SELECT NULLIF(status, '') FROM change_requests WHERE change_request_id = p_change_request_id) = 'Draft' OR (SELECT NULLIF(status, '') FROM change_requests WHERE change_request_id = p_change_request_id) = 'UnderReview' OR (SELECT NULLIF(status, '') FROM change_requests WHERE change_request_id = p_change_request_id) = 'Approved'))::boolean;
 $$ LANGUAGE sql STABLE;
 
+-- calc_review_events_as_of_instant
+-- Field: ReviewEvents.AsOfInstant
+-- Type: lookup | DataType: datetime | Returns: TIMESTAMPTZ
+-- Lookup: AsOfInstant from related EvaluationContexts
+
+
+CREATE OR REPLACE FUNCTION calc_review_events_as_of_instant(p_review_event_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT as_of_instant::timestamptz FROM evaluation_contexts WHERE evaluation_context_id = (SELECT evaluation_context FROM review_events WHERE review_event_id = p_review_event_id));
+$$ LANGUAGE sql STABLE;
+
 -- get_change_requests_title
 -- Helper function: Get Title from ChangeRequests by ChangeRequestId
 -- Used for join-free cross-table references in aggregations
@@ -1490,7 +1567,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_review_events_is_overdue(p_review_event_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT next_review_due::timestamptz FROM review_events WHERE review_event_id = p_review_event_id) < CURRENT_TIMESTAMP)::boolean;
+  SELECT ((SELECT next_review_due::timestamptz FROM review_events WHERE review_event_id = p_review_event_id) < calc_review_events_as_of_instant(p_review_event_id))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_learning_activities_name
@@ -1501,6 +1578,17 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_learning_activities_name(p_learning_activity_id TEXT)
 RETURNS TEXT AS $$
   SELECT (CONCAT((SELECT NULLIF(activity_kind, '') FROM learning_activities WHERE learning_activity_id = p_learning_activity_id), ' / ', (SELECT occurred_at::timestamptz FROM learning_activities WHERE learning_activity_id = p_learning_activity_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_operational_bindings_as_of_instant
+-- Field: OperationalBindings.AsOfInstant
+-- Type: lookup | DataType: datetime | Returns: TIMESTAMPTZ
+-- Lookup: AsOfInstant from related EvaluationContexts
+
+
+CREATE OR REPLACE FUNCTION calc_operational_bindings_as_of_instant(p_operational_binding_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT as_of_instant::timestamptz FROM evaluation_contexts WHERE evaluation_context_id = (SELECT evaluation_context FROM operational_bindings WHERE operational_binding_id = p_operational_binding_id));
 $$ LANGUAGE sql STABLE;
 
 -- calc_operational_bindings_name
@@ -1520,7 +1608,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_operational_bindings_age_minutes(p_operational_binding_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP::timestamp - (SELECT last_observed_at::timestamptz FROM operational_bindings WHERE operational_binding_id = p_operational_binding_id)::timestamp)) / 60))::integer;
+  SELECT ((EXTRACT(EPOCH FROM (calc_operational_bindings_as_of_instant(p_operational_binding_id)::timestamp - (SELECT last_observed_at::timestamptz FROM operational_bindings WHERE operational_binding_id = p_operational_binding_id)::timestamp)) / 60))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_operational_bindings_is_fresh

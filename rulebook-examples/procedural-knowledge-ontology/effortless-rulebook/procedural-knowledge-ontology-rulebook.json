@@ -264,6 +264,71 @@
       }
     ]
   },
+  "EvaluationContexts": {
+    "Description": "The instant this rulebook's time-dependent witnesses are evaluated against. Modeled as data rather than wall-clock so every freshness, overdue, and validity answer is reproducible and auditable: asking the same question tomorrow yields the same answer. Exactly one row carries IsCurrent.",
+    "schema": [
+      {
+        "name": "EvaluationContextId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stored logical identifier for one EvaluationContexts row."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Human-readable calculated display alias for the EvaluationContexts row.",
+        "formula": "={{Label}} & \" @ \" & {{AsOfInstant}}"
+      },
+      {
+        "name": "Label",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "What this evaluation instant represents."
+      },
+      {
+        "name": "AsOfInstant",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The instant all time-dependent witnesses are evaluated against."
+      },
+      {
+        "name": "IsCurrent",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": true,
+        "Description": "TRUE for the single active evaluation context."
+      },
+      {
+        "name": "Rationale",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Why this instant was chosen."
+      },
+      {
+        "name": "SemanticTypeIri",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Extension class IRI."
+      }
+    ],
+    "data": [
+      {
+        "EvaluationContextId": "eval-current",
+        "Label": "Post-close evaluation",
+        "AsOfInstant": "2026-07-19T13:00:00-05:00",
+        "IsCurrent": true,
+        "Rationale": "Shortly after the Q3 close execution and the policy notification run, so both procedure families have completed executions to witness against. Fixed as data so freshness and overdue answers are reproducible.",
+        "SemanticTypeIri": "urn:effortless:pko-extension#EvaluationContext"
+      }
+    ]
+  },
   "Organizations": {
     "Description": "Organizations that own, adopt, govern, or execute procedures. Maps to prov:Organization.",
     "important": false,
@@ -3865,12 +3930,28 @@
         "RelatedTo": "Roles"
       },
       {
+        "name": "EvaluationContext",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "The evaluation context this row's time-dependent witnesses are judged under.",
+        "RelatedTo": "EvaluationContexts"
+      },
+      {
+        "name": "AsOfInstant",
+        "datatype": "datetime",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The evaluation instant this row's time-dependent witnesses are judged against.",
+        "formula": "=INDEX(EvaluationContexts!{{AsOfInstant}}, MATCH({{EvaluationContext}}, EvaluationContexts!{{EvaluationContextId}}, 0))"
+      },
+      {
         "name": "IsCurrentlyValid",
         "datatype": "boolean",
         "type": "calculated",
         "nullable": true,
         "Description": "TRUE when the fragment is approved and valid now.",
-        "formula": "=AND({{ValidFrom}} <= NOW(), OR({{ValidTo}} = \"\", {{ValidTo}} > NOW()), {{Status}} = \"Approved\")"
+        "formula": "=AND({{ValidFrom}} <= {{AsOfInstant}}, OR({{ValidTo}} = \"\", {{ValidTo}} > {{AsOfInstant}}), {{Status}} = \"Approved\")"
       },
       {
         "name": "SemanticTypeIri",
@@ -3894,7 +3975,8 @@
         "ValidTo": null,
         "Status": "Approved",
         "OwnerRole": "controller",
-        "SemanticTypeIri": "urn:effortless:pko-extension#KnowledgeFragment"
+        "SemanticTypeIri": "urn:effortless:pko-extension#KnowledgeFragment",
+        "EvaluationContext": "eval-current"
       },
       {
         "KnowledgeFragmentId": "kf-close-top-ten",
@@ -3909,7 +3991,8 @@
         "ValidTo": null,
         "Status": "Approved",
         "OwnerRole": "controller",
-        "SemanticTypeIri": "urn:effortless:pko-extension#KnowledgeFragment"
+        "SemanticTypeIri": "urn:effortless:pko-extension#KnowledgeFragment",
+        "EvaluationContext": "eval-current"
       },
       {
         "KnowledgeFragmentId": "kf-close-retention",
@@ -3924,7 +4007,8 @@
         "ValidTo": null,
         "Status": "Approved",
         "OwnerRole": "controller",
-        "SemanticTypeIri": "urn:effortless:pko-extension#KnowledgeFragment"
+        "SemanticTypeIri": "urn:effortless:pko-extension#KnowledgeFragment",
+        "EvaluationContext": "eval-current"
       },
       {
         "KnowledgeFragmentId": "kf-close-judgment",
@@ -3939,7 +4023,8 @@
         "ValidTo": null,
         "Status": "Approved",
         "OwnerRole": "controller",
-        "SemanticTypeIri": "urn:effortless:pko-extension#KnowledgeFragment"
+        "SemanticTypeIri": "urn:effortless:pko-extension#KnowledgeFragment",
+        "EvaluationContext": "eval-current"
       },
       {
         "KnowledgeFragmentId": "kf-policy-ai-boundary",
@@ -3954,7 +4039,8 @@
         "ValidTo": null,
         "Status": "Approved",
         "OwnerRole": "employment-counsel",
-        "SemanticTypeIri": "urn:effortless:pko-extension#KnowledgeFragment"
+        "SemanticTypeIri": "urn:effortless:pko-extension#KnowledgeFragment",
+        "EvaluationContext": "eval-current"
       },
       {
         "KnowledgeFragmentId": "kf-policy-channel",
@@ -3969,7 +4055,8 @@
         "ValidTo": null,
         "Status": "Approved",
         "OwnerRole": "communications-manager",
-        "SemanticTypeIri": "urn:effortless:pko-extension#KnowledgeFragment"
+        "SemanticTypeIri": "urn:effortless:pko-extension#KnowledgeFragment",
+        "EvaluationContext": "eval-current"
       },
       {
         "KnowledgeFragmentId": "kf-policy-manager-route",
@@ -3984,7 +4071,8 @@
         "ValidTo": null,
         "Status": "Reviewed",
         "OwnerRole": "hr-policy-owner",
-        "SemanticTypeIri": "urn:effortless:pko-extension#KnowledgeFragment"
+        "SemanticTypeIri": "urn:effortless:pko-extension#KnowledgeFragment",
+        "EvaluationContext": "eval-current"
       }
     ]
   },
@@ -5458,12 +5546,28 @@
         "Description": "Next required review."
       },
       {
+        "name": "EvaluationContext",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "The evaluation context this row's time-dependent witnesses are judged under.",
+        "RelatedTo": "EvaluationContexts"
+      },
+      {
+        "name": "AsOfInstant",
+        "datatype": "datetime",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The evaluation instant this row's time-dependent witnesses are judged against.",
+        "formula": "=INDEX(EvaluationContexts!{{AsOfInstant}}, MATCH({{EvaluationContext}}, EvaluationContexts!{{EvaluationContextId}}, 0))"
+      },
+      {
         "name": "IsOverdue",
         "datatype": "boolean",
         "type": "calculated",
         "nullable": true,
         "Description": "TRUE when review is overdue.",
-        "formula": "={{NextReviewDue}} < NOW()"
+        "formula": "={{NextReviewDue}} < {{AsOfInstant}}"
       },
       {
         "name": "SemanticTypeIri",
@@ -5483,7 +5587,8 @@
         "Outcome": "PassedWithChange",
         "RelatedChangeRequest": "cr-close-timestamp",
         "NextReviewDue": "2026-09-30T16:00:00-05:00",
-        "SemanticTypeIri": "http://www.w3.org/ns/prov#Activity"
+        "SemanticTypeIri": "http://www.w3.org/ns/prov#Activity",
+        "EvaluationContext": "eval-current"
       },
       {
         "ReviewEventId": "review-policy-prelaunch",
@@ -5494,7 +5599,8 @@
         "Outcome": "Passed",
         "RelatedChangeRequest": "cr-policy-delivery",
         "NextReviewDue": "2026-09-16T16:00:00-05:00",
-        "SemanticTypeIri": "http://www.w3.org/ns/prov#Activity"
+        "SemanticTypeIri": "http://www.w3.org/ns/prov#Activity",
+        "EvaluationContext": "eval-current"
       }
     ]
   },
@@ -5682,12 +5788,28 @@
         "Description": "TRUE when the binding is authoritative for the represented fact."
       },
       {
+        "name": "EvaluationContext",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "The evaluation context this row's time-dependent witnesses are judged under.",
+        "RelatedTo": "EvaluationContexts"
+      },
+      {
+        "name": "AsOfInstant",
+        "datatype": "datetime",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The evaluation instant this row's time-dependent witnesses are judged against.",
+        "formula": "=INDEX(EvaluationContexts!{{AsOfInstant}}, MATCH({{EvaluationContext}}, EvaluationContexts!{{EvaluationContextId}}, 0))"
+      },
+      {
         "name": "AgeMinutes",
         "datatype": "integer",
         "type": "calculated",
         "nullable": true,
         "Description": "Current observed age.",
-        "formula": "=DATETIME_DIFF(NOW(), {{LastObservedAt}}, \"minutes\")"
+        "formula": "=DATETIME_DIFF({{AsOfInstant}}, {{LastObservedAt}}, \"minutes\")"
       },
       {
         "name": "IsFresh",
@@ -5716,7 +5838,8 @@
         "LastObservedAt": "2026-07-19T11:45:00-05:00",
         "FreshnessSlaMinutes": 15,
         "IsAuthoritative": true,
-        "SemanticTypeIri": "urn:effortless:pko-extension#OperationalBinding"
+        "SemanticTypeIri": "urn:effortless:pko-extension#OperationalBinding",
+        "EvaluationContext": "eval-current"
       },
       {
         "OperationalBindingId": "bind-policy-ticket",
@@ -5728,7 +5851,8 @@
         "LastObservedAt": "2026-07-19T11:50:00-05:00",
         "FreshnessSlaMinutes": 30,
         "IsAuthoritative": true,
-        "SemanticTypeIri": "urn:effortless:pko-extension#OperationalBinding"
+        "SemanticTypeIri": "urn:effortless:pko-extension#OperationalBinding",
+        "EvaluationContext": "eval-current"
       },
       {
         "OperationalBindingId": "bind-policy-consent",
@@ -5740,7 +5864,8 @@
         "LastObservedAt": "2026-07-19T11:45:00-05:00",
         "FreshnessSlaMinutes": 15,
         "IsAuthoritative": true,
-        "SemanticTypeIri": "urn:effortless:pko-extension#OperationalBinding"
+        "SemanticTypeIri": "urn:effortless:pko-extension#OperationalBinding",
+        "EvaluationContext": "eval-current"
       },
       {
         "OperationalBindingId": "bind-policy-email",
@@ -5752,7 +5877,8 @@
         "LastObservedAt": "2026-07-18T16:30:00-05:00",
         "FreshnessSlaMinutes": 1440,
         "IsAuthoritative": true,
-        "SemanticTypeIri": "urn:effortless:pko-extension#OperationalBinding"
+        "SemanticTypeIri": "urn:effortless:pko-extension#OperationalBinding",
+        "EvaluationContext": "eval-current"
       },
       {
         "OperationalBindingId": "bind-policy-sms",
@@ -5764,7 +5890,8 @@
         "LastObservedAt": "2026-07-18T16:30:00-05:00",
         "FreshnessSlaMinutes": 1440,
         "IsAuthoritative": true,
-        "SemanticTypeIri": "urn:effortless:pko-extension#OperationalBinding"
+        "SemanticTypeIri": "urn:effortless:pko-extension#OperationalBinding",
+        "EvaluationContext": "eval-current"
       }
     ]
   },
@@ -6803,6 +6930,76 @@
         "RulebookFieldId": "OntologyProfiles.Scope",
         "TargetTable": "OntologyProfiles",
         "FieldName": "Scope",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "EvaluationContexts.EvaluationContextId",
+        "TargetTable": "EvaluationContexts",
+        "FieldName": "EvaluationContextId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "EvaluationContexts.Name",
+        "TargetTable": "EvaluationContexts",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{Label}} & \" @ \" & {{AsOfInstant}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "EvaluationContexts.Label",
+        "TargetTable": "EvaluationContexts",
+        "FieldName": "Label",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "EvaluationContexts.AsOfInstant",
+        "TargetTable": "EvaluationContexts",
+        "FieldName": "AsOfInstant",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "EvaluationContexts.IsCurrent",
+        "TargetTable": "EvaluationContexts",
+        "FieldName": "IsCurrent",
+        "FieldType": "raw",
+        "Datatype": "boolean",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "EvaluationContexts.Rationale",
+        "TargetTable": "EvaluationContexts",
+        "FieldName": "Rationale",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "EvaluationContexts.SemanticTypeIri",
+        "TargetTable": "EvaluationContexts",
+        "FieldName": "SemanticTypeIri",
         "FieldType": "raw",
         "Datatype": "string",
         "Formula": null,
@@ -9080,12 +9277,32 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "KnowledgeFragments.EvaluationContext",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "EvaluationContext",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.AsOfInstant",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "AsOfInstant",
+        "FieldType": "lookup",
+        "Datatype": "datetime",
+        "Formula": "=INDEX(EvaluationContexts!{{AsOfInstant}}, MATCH({{EvaluationContext}}, EvaluationContexts!{{EvaluationContextId}}, 0))",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "KnowledgeFragments.IsCurrentlyValid",
         "TargetTable": "KnowledgeFragments",
         "FieldName": "IsCurrentlyValid",
         "FieldType": "calculated",
         "Datatype": "boolean",
-        "Formula": "=AND({{ValidFrom}} <= NOW(), OR({{ValidTo}} = \"\", {{ValidTo}} > NOW()), {{Status}} = \"Approved\")",
+        "Formula": "=AND({{ValidFrom}} <= {{AsOfInstant}}, OR({{ValidTo}} = \"\", {{ValidTo}} > {{AsOfInstant}}), {{Status}} = \"Approved\")",
         "InventedForQuestion": null,
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
@@ -10380,12 +10597,32 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "ReviewEvents.EvaluationContext",
+        "TargetTable": "ReviewEvents",
+        "FieldName": "EvaluationContext",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ReviewEvents.AsOfInstant",
+        "TargetTable": "ReviewEvents",
+        "FieldName": "AsOfInstant",
+        "FieldType": "lookup",
+        "Datatype": "datetime",
+        "Formula": "=INDEX(EvaluationContexts!{{AsOfInstant}}, MATCH({{EvaluationContext}}, EvaluationContexts!{{EvaluationContextId}}, 0))",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "ReviewEvents.IsOverdue",
         "TargetTable": "ReviewEvents",
         "FieldName": "IsOverdue",
         "FieldType": "calculated",
         "Datatype": "boolean",
-        "Formula": "={{NextReviewDue}} < NOW()",
+        "Formula": "={{NextReviewDue}} < {{AsOfInstant}}",
         "InventedForQuestion": null,
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
@@ -10600,12 +10837,32 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "OperationalBindings.EvaluationContext",
+        "TargetTable": "OperationalBindings",
+        "FieldName": "EvaluationContext",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "OperationalBindings.AsOfInstant",
+        "TargetTable": "OperationalBindings",
+        "FieldName": "AsOfInstant",
+        "FieldType": "lookup",
+        "Datatype": "datetime",
+        "Formula": "=INDEX(EvaluationContexts!{{AsOfInstant}}, MATCH({{EvaluationContext}}, EvaluationContexts!{{EvaluationContextId}}, 0))",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "OperationalBindings.AgeMinutes",
         "TargetTable": "OperationalBindings",
         "FieldName": "AgeMinutes",
         "FieldType": "calculated",
         "Datatype": "integer",
-        "Formula": "=DATETIME_DIFF(NOW(), {{LastObservedAt}}, \"minutes\")",
+        "Formula": "=DATETIME_DIFF({{AsOfInstant}}, {{LastObservedAt}}, \"minutes\")",
         "InventedForQuestion": null,
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
