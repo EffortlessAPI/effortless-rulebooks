@@ -777,12 +777,12 @@
     {
       "LoopOrder": 652,
       "LoopId": "tsp-loop-652",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Exact optimum routes are calibration outputs but are not represented in the common witness vocabulary.",
       "ClosureCriterion": "Project one exact optimal route per development instance into the witness normal form with ORACLE_CALIBRATION provenance and no theorem-status upgrade.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Normalized exact calibration routes without promoting their epistemic status.",
+      "Result": "Six ORACLE_CALIBRATION cycle witnesses now share the common coverage/incidence/order/cost form and remain distinct from structural proof antecedents.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 653,
@@ -1505,7 +1505,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 710,
-    "HighestCompletedLoop": 651,
+    "HighestCompletedLoop": 652,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 16,
     "SelectedNotForcedEdgeStates": 5,
@@ -1547,11 +1547,11 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 66,
     "ClusterContractionCertificates": 7,
-    "ConvergenceMeasurements": 55,
-    "ConceptRegistry": 106,
+    "ConvergenceMeasurements": 56,
+    "ConceptRegistry": 107,
     "DefectProfiles": 21,
     "BoundTerms": 8,
-    "WitnessNormalForms": 13,
+    "WitnessNormalForms": 19,
     "PredicateBasisCount": 8,
     "SurfacePredicateBaseline": 32,
     "SemanticCompressionPct": 75,
@@ -1578,7 +1578,7 @@
     "OptimalFaceValueProofBranchDecisionCount": 0
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:dba8debf394a47601ed40b213e3493da0a3fa0202191f8bbad27da05af893e15",
+    "rulebook": "sha256:9a2628bda4b0619572535e1b5d00b7c3064d7a6bd553bc51223a598dfca6c908",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
