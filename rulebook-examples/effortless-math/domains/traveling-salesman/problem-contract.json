@@ -1187,12 +1187,12 @@
     {
       "LoopOrder": 693,
       "LoopId": "tsp-loop-693",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
       "ClosureCriterion": "Project quotient component count to the minimum external edge count required by degree-two handshake accounting.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Derived Boundary Demand across the exact held-out corpus.",
+      "Result": "Boundary demand distribution={0: 11, 2: 1}.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 694,
@@ -1505,7 +1505,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 710,
-    "HighestCompletedLoop": 692,
+    "HighestCompletedLoop": 693,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 16,
     "SelectedNotForcedEdgeStates": 5,
@@ -1547,8 +1547,8 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 66,
     "ClusterContractionCertificates": 7,
-    "ConvergenceMeasurements": 96,
-    "ConceptRegistry": 148,
+    "ConvergenceMeasurements": 97,
+    "ConceptRegistry": 149,
     "DefectProfiles": 33,
     "BoundTerms": 8,
     "WitnessNormalForms": 35,
@@ -1582,7 +1582,7 @@
     "DevelopmentMaxExactClassCount": 20160
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:a1515d6aec03ad255d0ef46ed8dd12b8b4c649dffa6828b8f68c6399da03679e",
+    "rulebook": "sha256:0added24171fe354780cd0ccb977db3013721ee62f1fbf3b88a5ea6ffb47061d",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
