@@ -1,7 +1,6 @@
 {
-  "status": "FAILED",
+  "status": "RUNNER_STARTED",
   "driver": "frozen-basis-exact-v1",
-  "github_run_id": "29673821477",
-  "exit_code": 1,
-  "log": "testing/calibration-647-710-failure.log"
+  "github_run_id": "29674066876",
+  "head_sha": "573d4f02fe19dc4f8d2e89cf7b38c6e90185a359"
 }
