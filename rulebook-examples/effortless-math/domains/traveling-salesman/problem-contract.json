@@ -797,12 +797,12 @@
     {
       "LoopOrder": 654,
       "LoopId": "tsp-loop-654",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Passing structural optimality certificates and exact optimum data have not been compared as independent evidence.",
       "ClosureCriterion": "Require every passing certificate candidate to equal the exact optimum and every bound-tight represented witness to agree with the oracle, while preserving distinct trust provenance.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Reconciled structural finite-optimality certificates with exact values.",
+      "Result": "All 5 in-scope certificate candidates equal the exact optimum; structural and oracle provenance remain separate.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 655,
@@ -1505,7 +1505,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 710,
-    "HighestCompletedLoop": 653,
+    "HighestCompletedLoop": 654,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 16,
     "SelectedNotForcedEdgeStates": 5,
@@ -1547,8 +1547,8 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 66,
     "ClusterContractionCertificates": 7,
-    "ConvergenceMeasurements": 57,
-    "ConceptRegistry": 108,
+    "ConvergenceMeasurements": 58,
+    "ConceptRegistry": 109,
     "DefectProfiles": 21,
     "BoundTerms": 8,
     "WitnessNormalForms": 19,
@@ -1578,7 +1578,7 @@
     "OptimalFaceValueProofBranchDecisionCount": 0
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:cbcf8cddd4ea65549e18cd9dd954bd706cd073ed51157b3e1316b38ce99ff9b5",
+    "rulebook": "sha256:5d49513fb1a2ec504e9376411b9a29c2b8e31fba55a1725438bc3513a4987613",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
