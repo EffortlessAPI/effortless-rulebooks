@@ -70,6 +70,55 @@ class PkoRulebookTests(unittest.TestCase):
         self.assertIn("Vendor Payment Approval", rendered)
         self.assertIn("Independent approval", rendered)
 
+    def test_composite_keys_have_no_delimiter_collision(self) -> None:
+        """Composite keys join on "a|b" strings, so an id containing "|" would
+        silently produce wrong join results with no error anywhere.
+
+        Several witnesses route around the transpiler's multi-criteria COUNTIFS
+        defect by concatenating two ids with a pipe. That works only while no
+        identifier contains a pipe. The failure mode is a wrong answer, not a
+        crash, so it has to be asserted rather than hoped for.
+        """
+        offenders = []
+        for table, payload in self.rulebook.items():
+            if not isinstance(payload, dict) or "schema" not in payload:
+                continue
+            id_fields = [
+                f["name"] for f in payload["schema"]
+                if isinstance(f, dict) and f.get("type") in {"raw", "relationship"}
+                and f.get("datatype") == "string"
+                and (f["name"].endswith("Id") or f.get("RelatedTo"))
+            ]
+            for row in payload.get("data", []):
+                for field in id_fields:
+                    value = row.get(field)
+                    if isinstance(value, str) and "|" in value:
+                        offenders.append(f"{table}.{field} = {value!r}")
+        self.assertEqual([], offenders, "identifier contains the composite-key delimiter")
+
+    def test_every_witness_field_traces_to_a_question(self) -> None:
+        """RulebookFields.InventedForQuestion must resolve to a real question."""
+        question_ids = {q["RoleQuestionId"] for q in self.rulebook["RoleQuestions"]["data"]}
+        dangling = sorted(
+            row["RulebookFieldId"]
+            for row in self.rulebook["RulebookFields"]["data"]
+            if row.get("InventedForQuestion")
+            and row["InventedForQuestion"] not in question_ids
+        )
+        self.assertEqual([], dangling, "witness field points at a non-existent question")
+
+    def test_field_catalog_matches_the_real_schemas(self) -> None:
+        """The catalog is derived. If it has drifted it is misreporting the model."""
+        catalogued = {row["RulebookFieldId"] for row in self.rulebook["RulebookFields"]["data"]}
+        actual = {
+            f"{table}.{f['name']}"
+            for table, payload in self.rulebook.items()
+            if isinstance(payload, dict) and "schema" in payload
+            for f in payload["schema"] if isinstance(f, dict)
+        }
+        self.assertEqual(set(), actual - catalogued, "fields missing from the catalog")
+        self.assertEqual(set(), catalogued - actual, "catalog lists fields that do not exist")
+
 
 if __name__ == "__main__":
     unittest.main()
