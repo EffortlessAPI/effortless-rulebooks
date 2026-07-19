@@ -1,6 +1,6 @@
 {
   "ProblemId": "traveling-salesman-semantic-geometry",
-  "Version": "0.6.0",
+  "Version": "0.7.0-alpha",
   "Title": "Traveling Salesman — City / Neighborhood / Address Semantic Geometry",
   "Status": "RESEARCH_PROGRAM",
   "Statement": "Given finite city-scale weighted graphs, represent graph normalization, supplied tours, typed frontier obligations, local-to-global lower bounds, finite optimality certificates, and residual search as executable structural data.",
@@ -51,7 +51,11 @@
     "ExplicitDagRowsMayIncrease": true,
     "OptimalFaceValueProofBranchDecisionCount": 0,
     "CoherenceConvergenceObserved": true,
-    "CoherenceConvergenceProvedUniversally": false
+    "CoherenceConvergenceProvedUniversally": false,
+    "ExactHeldOutCalibrationCompleted": false,
+    "CalibrationBasisFrozenAtLoop646": false,
+    "ExactOracleIsStructuralProof": false,
+    "GeneralTSPAlgorithmProved": false
   },
   "CanonicalAsset": "effortless-rulebook/traveling-salesman-rulebook.json",
   "ExecutionSubstrates": [
@@ -718,6 +722,646 @@
       "AfterState": "Certified the second coherence event: one typed arc, one warranted rewrite, forty-five physical tables, three-region optimum thirty-six, and optimal-face value four with a two-member choice orbit.",
       "Result": "Named concepts=101 and witness rows increased, but active atoms=1, active operators=1, tables=45, recoverability is complete, proof branch decisions=0, and no universal convergence or TSP-complexity theorem is claimed.",
       "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 647,
+      "LoopId": "tsp-loop-647",
+      "Status": "PLANNED",
+      "BeforeState": "Loop 646 has a successful execution certificate, but the held-out campaign has not independently rechecked its raw one-arc/one-rewrite, three-region, and optimal-face witnesses.",
+      "ClosureCriterion": "Recompute the loop-646 basis and finite fixture claims from canonical rows, preserve the nonclaims, and close a raw-witness prerequisite for calibration.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 648,
+      "LoopId": "tsp-loop-648",
+      "Status": "PLANNED",
+      "BeforeState": "The one-arc/one-rewrite basis is empirical but later loops could silently add primitives while claiming held-out support.",
+      "ClosureCriterion": "Freeze SEMANTIC_ARC and WARRANTED_REWRITE as the campaign basis; require any new primitive to be accompanied by a recorded falsification and basis-revision event.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 649,
+      "LoopId": "tsp-loop-649",
+      "Status": "PLANNED",
+      "BeforeState": "Exact route enumeration exists only as an external implementation idea; its scope, normalization, and status are not canonical fields.",
+      "ClosureCriterion": "Add calibration fields for exact class count, feasible classes, optimum, optimal orbit, lower-bound gap, deterministic residue, branch warrant, and oracle checksum without treating enumeration as a structural proof.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 650,
+      "LoopId": "tsp-loop-650",
+      "Status": "PLANNED",
+      "BeforeState": "Tour counts may double-count reversal-equivalent cycles or depend on rotation.",
+      "ClosureCriterion": "Fix the declared depot, quotient reversal, and certify (n-1)!/2 canonical classes for complete symmetric n-stop instances.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 651,
+      "LoopId": "tsp-loop-651",
+      "Status": "PLANNED",
+      "BeforeState": "Existing fixtures have structural certificates but no common exact optimum and optimal-class audit fields.",
+      "ClosureCriterion": "Enumerate every canonical route class for each valid development fixture and record exact optimum, optimal orbit, second-best value, deterministic residue, and checksum.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 652,
+      "LoopId": "tsp-loop-652",
+      "Status": "PLANNED",
+      "BeforeState": "Exact optimum routes are calibration outputs but are not represented in the common witness vocabulary.",
+      "ClosureCriterion": "Project one exact optimal route per development instance into the witness normal form with ORACLE_CALIBRATION provenance and no theorem-status upgrade.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 653,
+      "LoopId": "tsp-loop-653",
+      "Status": "PLANNED",
+      "BeforeState": "Represented lower bounds are checked internally but not compared uniformly with exact optimum values.",
+      "ClosureCriterion": "Verify every represented certified lower bound is no greater than the exact optimum and record the exactness gap.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 654,
+      "LoopId": "tsp-loop-654",
+      "Status": "PLANNED",
+      "BeforeState": "Passing structural optimality certificates and exact optimum data have not been compared as independent evidence.",
+      "ClosureCriterion": "Require every passing certificate candidate to equal the exact optimum and every bound-tight represented witness to agree with the oracle, while preserving distinct trust provenance.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 655,
+      "LoopId": "tsp-loop-655",
+      "Status": "PLANNED",
+      "BeforeState": "Search metrics are structurally recorded but not universally reconciled with exact feasible class counts and residual value counts.",
+      "ClosureCriterion": "Compare existing route-class, residual ambiguity, and branch-warrant rows with exact enumeration for the development fixtures.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 656,
+      "LoopId": "tsp-loop-656",
+      "Status": "PLANNED",
+      "BeforeState": "All current fixtures influenced ontology development; no held-out evidence boundary exists.",
+      "ClosureCriterion": "Mark existing valid fixtures DEVELOPMENT, the malformed graph NEGATIVE_CONTROL, and reserve twelve not-yet-materialized instance identities as HELD_OUT.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 657,
+      "LoopId": "tsp-loop-657",
+      "Status": "PLANNED",
+      "BeforeState": "Instance diversity is prose and cannot support family-stratified conclusions.",
+      "ClosureCriterion": "Represent ring, Euclidean-like, clustered, heterogeneous-region, sparse, bottleneck, tie-rich, dominance, nested, nonmetric, four-region, and residual-kernel families.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 658,
+      "LoopId": "tsp-loop-658",
+      "Status": "PLANNED",
+      "BeforeState": "Instrument quality is described narratively rather than through exact coverage, value closure, route closure, gap, choice orbit, and residual search coordinates.",
+      "ClosureCriterion": "Add reusable calibration coordinates without collapsing them into one arbitrary scalar score.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 659,
+      "LoopId": "tsp-loop-659",
+      "Status": "PLANNED",
+      "BeforeState": "Exact development results exist per instance but have no aggregate calibration profile.",
+      "ClosureCriterion": "Aggregate exact coverage, bound soundness, value closure, route closure, optimal choice orbit, and maximum enumerated class count across the development corpus.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 660,
+      "LoopId": "tsp-loop-660",
+      "Status": "PLANNED",
+      "BeforeState": "The oracle and calibration fields exist, but the basis freeze and development audits have not been sealed as one prerequisite.",
+      "ClosureCriterion": "Close the pre-held-out frontier only when basis count, exact coverage, lower-bound soundness, certificate concordance, and search accounting all pass.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 661,
+      "LoopId": "tsp-loop-661",
+      "Status": "PLANNED",
+      "BeforeState": "The RING_DOMINANT family is declared but tsp-holdout-ring6-6 has no canonical graph rows.",
+      "ClosureCriterion": "Materialize a deterministic 6-stop RING_DOMINANT graph as HELD_OUT data without using its exact optimum to alter weights or the semantic basis.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 662,
+      "LoopId": "tsp-loop-662",
+      "Status": "PLANNED",
+      "BeforeState": "tsp-holdout-ring6-6 is canonical raw data but has no exact-oracle, lower-bound, witness, residual-kernel, or branch-warrant rows.",
+      "ClosureCriterion": "Enumerate every canonical route class, materialize structural lower-bound witnesses and one or more exact calibration routes, and record value/choice/search residue without adding a primitive.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 663,
+      "LoopId": "tsp-loop-663",
+      "Status": "PLANNED",
+      "BeforeState": "The EUCLIDEAN_LIKE family is declared but tsp-holdout-metric6-6 has no canonical graph rows.",
+      "ClosureCriterion": "Materialize a deterministic 6-stop EUCLIDEAN_LIKE graph as HELD_OUT data without using its exact optimum to alter weights or the semantic basis.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 664,
+      "LoopId": "tsp-loop-664",
+      "Status": "PLANNED",
+      "BeforeState": "tsp-holdout-metric6-6 is canonical raw data but has no exact-oracle, lower-bound, witness, residual-kernel, or branch-warrant rows.",
+      "ClosureCriterion": "Enumerate every canonical route class, materialize structural lower-bound witnesses and one or more exact calibration routes, and record value/choice/search residue without adding a primitive.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 665,
+      "LoopId": "tsp-loop-665",
+      "Status": "PLANNED",
+      "BeforeState": "The TWO_CLUSTER_ASYMMETRIC family is declared but tsp-holdout-cluster7-7 has no canonical graph rows.",
+      "ClosureCriterion": "Materialize a deterministic 7-stop TWO_CLUSTER_ASYMMETRIC graph as HELD_OUT data without using its exact optimum to alter weights or the semantic basis.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 666,
+      "LoopId": "tsp-loop-666",
+      "Status": "PLANNED",
+      "BeforeState": "tsp-holdout-cluster7-7 is canonical raw data but has no exact-oracle, lower-bound, witness, residual-kernel, or branch-warrant rows.",
+      "ClosureCriterion": "Enumerate every canonical route class, materialize structural lower-bound witnesses and one or more exact calibration routes, and record value/choice/search residue without adding a primitive.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 667,
+      "LoopId": "tsp-loop-667",
+      "Status": "PLANNED",
+      "BeforeState": "The HETEROGENEOUS_REGIONS family is declared but tsp-holdout-hetero8-8 has no canonical graph rows.",
+      "ClosureCriterion": "Materialize a deterministic 8-stop HETEROGENEOUS_REGIONS graph as HELD_OUT data without using its exact optimum to alter weights or the semantic basis.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 668,
+      "LoopId": "tsp-loop-668",
+      "Status": "PLANNED",
+      "BeforeState": "tsp-holdout-hetero8-8 is canonical raw data but has no exact-oracle, lower-bound, witness, residual-kernel, or branch-warrant rows.",
+      "ClosureCriterion": "Enumerate every canonical route class, materialize structural lower-bound witnesses and one or more exact calibration routes, and record value/choice/search residue without adding a primitive.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 669,
+      "LoopId": "tsp-loop-669",
+      "Status": "PLANNED",
+      "BeforeState": "The SPARSE_LADDER family is declared but tsp-holdout-sparse8-8 has no canonical graph rows.",
+      "ClosureCriterion": "Materialize a deterministic 8-stop SPARSE_LADDER graph as HELD_OUT data without using its exact optimum to alter weights or the semantic basis.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 670,
+      "LoopId": "tsp-loop-670",
+      "Status": "PLANNED",
+      "BeforeState": "tsp-holdout-sparse8-8 is canonical raw data but has no exact-oracle, lower-bound, witness, residual-kernel, or branch-warrant rows.",
+      "ClosureCriterion": "Enumerate every canonical route class, materialize structural lower-bound witnesses and one or more exact calibration routes, and record value/choice/search residue without adding a primitive.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 671,
+      "LoopId": "tsp-loop-671",
+      "Status": "PLANNED",
+      "BeforeState": "The CUT_BOTTLENECK family is declared but tsp-holdout-bottleneck7-7 has no canonical graph rows.",
+      "ClosureCriterion": "Materialize a deterministic 7-stop CUT_BOTTLENECK graph as HELD_OUT data without using its exact optimum to alter weights or the semantic basis.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 672,
+      "LoopId": "tsp-loop-672",
+      "Status": "PLANNED",
+      "BeforeState": "tsp-holdout-bottleneck7-7 is canonical raw data but has no exact-oracle, lower-bound, witness, residual-kernel, or branch-warrant rows.",
+      "ClosureCriterion": "Enumerate every canonical route class, materialize structural lower-bound witnesses and one or more exact calibration routes, and record value/choice/search residue without adding a primitive.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 673,
+      "LoopId": "tsp-loop-673",
+      "Status": "PLANNED",
+      "BeforeState": "The TIE_RICH_OPTIMAL_FACE family is declared but tsp-holdout-tie6-6 has no canonical graph rows.",
+      "ClosureCriterion": "Materialize a deterministic 6-stop TIE_RICH_OPTIMAL_FACE graph as HELD_OUT data without using its exact optimum to alter weights or the semantic basis.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 674,
+      "LoopId": "tsp-loop-674",
+      "Status": "PLANNED",
+      "BeforeState": "tsp-holdout-tie6-6 is canonical raw data but has no exact-oracle, lower-bound, witness, residual-kernel, or branch-warrant rows.",
+      "ClosureCriterion": "Enumerate every canonical route class, materialize structural lower-bound witnesses and one or more exact calibration routes, and record value/choice/search residue without adding a primitive.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 675,
+      "LoopId": "tsp-loop-675",
+      "Status": "PLANNED",
+      "BeforeState": "The BOUNDARY_DOMINANCE_TRAP family is declared but tsp-holdout-dominance7-7 has no canonical graph rows.",
+      "ClosureCriterion": "Materialize a deterministic 7-stop BOUNDARY_DOMINANCE_TRAP graph as HELD_OUT data without using its exact optimum to alter weights or the semantic basis.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 676,
+      "LoopId": "tsp-loop-676",
+      "Status": "PLANNED",
+      "BeforeState": "tsp-holdout-dominance7-7 is canonical raw data but has no exact-oracle, lower-bound, witness, residual-kernel, or branch-warrant rows.",
+      "ClosureCriterion": "Enumerate every canonical route class, materialize structural lower-bound witnesses and one or more exact calibration routes, and record value/choice/search residue without adding a primitive.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 677,
+      "LoopId": "tsp-loop-677",
+      "Status": "PLANNED",
+      "BeforeState": "The NESTED_NEIGHBORHOODS family is declared but tsp-holdout-nested8-8 has no canonical graph rows.",
+      "ClosureCriterion": "Materialize a deterministic 8-stop NESTED_NEIGHBORHOODS graph as HELD_OUT data without using its exact optimum to alter weights or the semantic basis.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 678,
+      "LoopId": "tsp-loop-678",
+      "Status": "PLANNED",
+      "BeforeState": "tsp-holdout-nested8-8 is canonical raw data but has no exact-oracle, lower-bound, witness, residual-kernel, or branch-warrant rows.",
+      "ClosureCriterion": "Enumerate every canonical route class, materialize structural lower-bound witnesses and one or more exact calibration routes, and record value/choice/search residue without adding a primitive.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 679,
+      "LoopId": "tsp-loop-679",
+      "Status": "PLANNED",
+      "BeforeState": "The NONMETRIC_WEIGHTED family is declared but tsp-holdout-nonmetric6-6 has no canonical graph rows.",
+      "ClosureCriterion": "Materialize a deterministic 6-stop NONMETRIC_WEIGHTED graph as HELD_OUT data without using its exact optimum to alter weights or the semantic basis.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 680,
+      "LoopId": "tsp-loop-680",
+      "Status": "PLANNED",
+      "BeforeState": "tsp-holdout-nonmetric6-6 is canonical raw data but has no exact-oracle, lower-bound, witness, residual-kernel, or branch-warrant rows.",
+      "ClosureCriterion": "Enumerate every canonical route class, materialize structural lower-bound witnesses and one or more exact calibration routes, and record value/choice/search residue without adding a primitive.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 681,
+      "LoopId": "tsp-loop-681",
+      "Status": "PLANNED",
+      "BeforeState": "The FOUR_REGION_RING family is declared but tsp-holdout-fourregion8-8 has no canonical graph rows.",
+      "ClosureCriterion": "Materialize a deterministic 8-stop FOUR_REGION_RING graph as HELD_OUT data without using its exact optimum to alter weights or the semantic basis.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 682,
+      "LoopId": "tsp-loop-682",
+      "Status": "PLANNED",
+      "BeforeState": "tsp-holdout-fourregion8-8 is canonical raw data but has no exact-oracle, lower-bound, witness, residual-kernel, or branch-warrant rows.",
+      "ClosureCriterion": "Enumerate every canonical route class, materialize structural lower-bound witnesses and one or more exact calibration routes, and record value/choice/search residue without adding a primitive.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 683,
+      "LoopId": "tsp-loop-683",
+      "Status": "PLANNED",
+      "BeforeState": "The RESIDUAL_VALUE_KERNEL family is declared but tsp-holdout-residual8-8 has no canonical graph rows.",
+      "ClosureCriterion": "Materialize a deterministic 8-stop RESIDUAL_VALUE_KERNEL graph as HELD_OUT data without using its exact optimum to alter weights or the semantic basis.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 684,
+      "LoopId": "tsp-loop-684",
+      "Status": "PLANNED",
+      "BeforeState": "tsp-holdout-residual8-8 is canonical raw data but has no exact-oracle, lower-bound, witness, residual-kernel, or branch-warrant rows.",
+      "ClosureCriterion": "Enumerate every canonical route class, materialize structural lower-bound witnesses and one or more exact calibration routes, and record value/choice/search residue without adding a primitive.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 685,
+      "LoopId": "tsp-loop-685",
+      "Status": "PLANNED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Record optimum minus strongest represented structural lower bound for every held-out instance.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 686,
+      "LoopId": "tsp-loop-686",
+      "Status": "PLANNED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Measure exact route classes eliminated before branching by local-minimum closure and deterministic degree closure.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 687,
+      "LoopId": "tsp-loop-687",
+      "Status": "PLANNED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Measure eliminated classes per deterministic commitment or structural closure event without treating the ratio as a universal constant.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 688,
+      "LoopId": "tsp-loop-688",
+      "Status": "PLANNED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Classify instances where represented structure closes value, route, both, or neither.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 689,
+      "LoopId": "tsp-loop-689",
+      "Status": "PLANNED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Distinguish a certified optimum value from the multiplicity of optimal route witnesses.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 690,
+      "LoopId": "tsp-loop-690",
+      "Status": "PLANNED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Represent log2 of the exact optimal choice-orbit size as a descriptive coordinate, not proof complexity.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 691,
+      "LoopId": "tsp-loop-691",
+      "Status": "PLANNED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Name which incidence, connectivity, cost-gap, and choice coordinates support the residual kernel.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 692,
+      "LoopId": "tsp-loop-692",
+      "Status": "PLANNED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Measure the exact cost delta from the local two-factor union to the optimum when that union is degree two but disconnected.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 693,
+      "LoopId": "tsp-loop-693",
+      "Status": "PLANNED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Project quotient component count to the minimum external edge count required by degree-two handshake accounting.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 694,
+      "LoopId": "tsp-loop-694",
+      "Status": "PLANNED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Count region-pair crossing support and record when a boundary demand lacks compatible low-cost ports.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 695,
+      "LoopId": "tsp-loop-695",
+      "Status": "PLANNED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Count distinct optimal entry/exit port pairs exposed by each region across the exact optimal face.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 696,
+      "LoopId": "tsp-loop-696",
+      "Status": "PLANNED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Normalize unresolved value count, optimal choice count, connectivity defect, exactness gap, and branch warrant into one typed residual signature.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 697,
+      "LoopId": "tsp-loop-697",
+      "Status": "PLANNED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Require a value-relevant residual or an explicit external representative policy before branching.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 698,
+      "LoopId": "tsp-loop-698",
+      "Status": "PLANNED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Record feasible classes to deterministic residue, value classes to residual values, and optimal witnesses to choice orbit.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 699,
+      "LoopId": "tsp-loop-699",
+      "Status": "PLANNED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Measure how many held-out instances close value or route under the frozen rule vocabulary.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 700,
+      "LoopId": "tsp-loop-700",
+      "Status": "PLANNED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Verify every newly coined term remains derived from one semantic arc and one warranted rewrite with zero primitive growth.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 701,
+      "LoopId": "tsp-loop-701",
+      "Status": "PLANNED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Compare repair deltas across unequal region sizes without promoting the observation to a k-region theorem.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 702,
+      "LoopId": "tsp-loop-702",
+      "Status": "PLANNED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Separate crossing insertion costs from internal release costs on asymmetric bottleneck and cluster fixtures.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 703,
+      "LoopId": "tsp-loop-703",
+      "Status": "PLANNED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Compose pair-level and superregion-level boundary summaries on the nested-neighborhood held-out fixture.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 704,
+      "LoopId": "tsp-loop-704",
+      "Status": "PLANNED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Compose degree forcing with region boundary summaries on the sparse held-out fixture.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 705,
+      "LoopId": "tsp-loop-705",
+      "Status": "PLANNED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Select a held-out instance whose deterministic residue contains more than one value and record a justified value branch.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 706,
+      "LoopId": "tsp-loop-706",
+      "Status": "PLANNED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Split the residual orbit on one undecided edge and record include/exclude class counts and best values as calibration-only search evidence.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 707,
+      "LoopId": "tsp-loop-707",
+      "Status": "PLANNED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Aggregate exact coverage, structural closure, residual kernels, branch warrants, and family support over all twelve held-out instances.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 708,
+      "LoopId": "tsp-loop-708",
+      "Status": "PLANNED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Summarize exact canonical class growth and observed closure by stop count from four through nine stops.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 709,
+      "LoopId": "tsp-loop-709",
+      "Status": "PLANNED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Rebuild Postgres and require generated views, Python reference semantics, and exact-oracle raw fields to agree.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
+    },
+    {
+      "LoopOrder": 710,
+      "LoopId": "tsp-loop-710",
+      "Status": "PLANNED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Seal the frozen-basis held-out campaign, record what generalized and what failed, and preserve all nonclaims.",
+      "AfterState": null,
+      "Result": "Planned; no conclusion recorded.",
+      "CompletionDisposition": null
     }
   ],
   "CurrentCertificates": [
@@ -847,7 +1491,7 @@
     "InstanceStops": 36,
     "TravelEdges": 86,
     "CandidateTours": 8,
-    "TSPLoops": 70,
+    "TSPLoops": 134,
     "FrontierObligations": 31,
     "ActiveImportedDependencies": 0,
     "ReferenceTourValid": true,
@@ -859,7 +1503,7 @@
     "BrokenGraphComplete": false,
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
-    "LastPlannedLoop": 646,
+    "LastPlannedLoop": 710,
     "HighestCompletedLoop": 646,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 16,
@@ -933,7 +1577,7 @@
     "OptimalFaceValueProofBranchDecisionCount": 0
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:1f6fa7930a1cd4564a87e37b1f8c8ad0ad629a3b303165e51bcfe9d5417e1cd0",
+    "rulebook": "sha256:67622ae3bb0ed8a459585177a7b0afd1f2a6d87ad00bf27480d20563bae6dc8a",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
