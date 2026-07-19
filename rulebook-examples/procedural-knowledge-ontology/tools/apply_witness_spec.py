@@ -49,6 +49,12 @@ def field_names(rb, table: str) -> list[str]:
     return [f["name"] for f in rb[table]["schema"] if isinstance(f, dict)]
 
 
+# VERIFIED unsupported by rulebook-to-postgres. These do not fail the build —
+# they emit a warning comment, return NULL, and the column reads as a clean
+# false forever. Reject them at authoring time instead.
+BANNED_FUNCS = {"IIF": "use IF(cond, a, b)"}
+
+
 def check_formula(rb, table: str, formula: str, pending: dict[str, set[str]]) -> list[str]:
     """Return a list of problems with this formula. Empty means it looks sane.
 
@@ -60,6 +66,10 @@ def check_formula(rb, table: str, formula: str, pending: dict[str, set[str]]) ->
     problems: list[str] = []
     if not formula:
         return problems
+
+    for bad, hint in BANNED_FUNCS.items():
+        if re.search(rf"\b{bad}\s*\(", formula):
+            problems.append(f"uses {bad}(), which the transpiler silently returns NULL for — {hint}")
 
     own = set(field_names(rb, table)) | pending.get(table, set())
     tables = table_names(rb)

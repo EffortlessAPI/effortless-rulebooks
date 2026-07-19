@@ -480,6 +480,38 @@
         "formula": "={{CountOfCurrentRoleAssignments}} > 0"
       },
       {
+        "name": "DecisionCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Total decisions this agent has recorded.",
+        "formula": "=COUNTIFS(AgentDecisionRecords!{{DecidingAgent}}, {{AgentId}})"
+      },
+      {
+        "name": "OverriddenDecisionCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Decisions by this agent that a human corrected or reversed.",
+        "formula": "=COUNTIFS(AgentDecisionRecords!{{DecidingAgentWhenOverridden}}, {{AgentId}})"
+      },
+      {
+        "name": "OverrideRatePercent",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Percentage of this agent's decisions that were overridden by a human.",
+        "formula": "=IF({{DecisionCount}} = 0, 0, ({{OverriddenDecisionCount}} * 100) / {{DecisionCount}})"
+      },
+      {
+        "name": "IsNonHuman",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this agent is an AI agent or an automated pipeline.",
+        "formula": "=NOT({{AgentKind}} = \"Human\")"
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -636,6 +668,30 @@
         "type": "raw",
         "nullable": true,
         "Description": "Accountability and responsibility assigned to the role."
+      },
+      {
+        "name": "ActiveAssignmentCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Total number of assignment rows ever recorded against this role.",
+        "formula": "=COUNTIFS(RoleAssignments!{{Role}}, {{RoleId}})"
+      },
+      {
+        "name": "CurrentlyCoveredAssignmentCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of assignment rows for this role that are in force right now.",
+        "formula": "=COUNTIFS(RoleAssignments!{{RoleWhenCovering}}, {{RoleId}})"
+      },
+      {
+        "name": "HasNoCurrentHolder",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when no assignment currently covers this role \u2014 the role is uncovered.",
+        "formula": "={{CurrentlyCoveredAssignmentCount}} = 0"
       },
       {
         "name": "SemanticTypeIri",
@@ -862,6 +918,22 @@
         "nullable": true,
         "Description": "TRUE when this role assignment has ended \u2014 the agent no longer holds the role.",
         "formula": "=AND({{ValidTo}} <> \"\", {{ValidTo}} <= NOW())"
+      },
+      {
+        "name": "CoversNow",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this assignment is both status-Active and inside its valid-time window right now.",
+        "formula": "=AND({{Status}} = \"Active\", {{ValidFrom}} <= NOW(), OR({{ValidTo}} = \"\", {{ValidTo}} > NOW()))"
+      },
+      {
+        "name": "RoleWhenCovering",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Echoes the role id when this assignment is currently in force, blank otherwise.",
+        "formula": "=IF({{CoversNow}}, {{Role}}, \"\")"
       },
       {
         "name": "SemanticTypeIri",
@@ -2090,6 +2162,22 @@
         "nullable": true,
         "Description": "TRUE for steps whose assigned role is an approval authority.",
         "formula": "=OR({{AssignedRole}} = \"controller\", {{AssignedRole}} = \"cfo\")"
+      },
+      {
+        "name": "StaleAuthoritativeBindingCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of authoritative bindings for this step that are past their freshness SLA.",
+        "formula": "=COUNTIFS(OperationalBindings!{{StepWhenStale}}, {{StepId}})"
+      },
+      {
+        "name": "InputsAreFresh",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when no authoritative binding for this step is stale.",
+        "formula": "={{StaleAuthoritativeBindingCount}} = 0"
       },
       {
         "name": "SemanticTypeIri",
@@ -3544,6 +3632,14 @@
         "type": "calculated",
         "nullable": true,
         "Description": "Echoes the Step id only when the bound requirement is blocking; empty otherwise.",
+        "formula": "=IF({{RequirementIsBlocking}}, {{Step}}, \"\")"
+      },
+      {
+        "name": "StepWhenBlocking",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Echoes the step id when the bound requirement is blocking, blank otherwise.",
         "formula": "=IF({{RequirementIsBlocking}}, {{Step}}, \"\")"
       }
     ],
@@ -5096,6 +5192,20 @@
         "ResolutionPlan": "Resolved by MessageDeliveries.IsInsideQuietWindow and IsQuietHoursViolation, proven on md-005 (21:00 send). QuietHoursStartHour is stored rather than parsed: VALUE(LEFT(\"20:00\",2)) does not translate \u2014 the transpiler casts the string to a timestamp and the view errors.",
         "EvaluationContext": "eval-current",
         "SemanticTypeIri": "urn:effortless:pko-extension#KnowledgeGap"
+      },
+      {
+        "KnowledgeGapId": "gap-policy-unauthorized-sends",
+        "ProcedureVersion": "policy-v1.0.0",
+        "Step": "policy-07",
+        "Statement": "MessageTemplates carried Status=\"Approved\" as a bare string with no approval record behind it, and nothing evaluated a send BEFORE transmission. Every gate the communication policies define \u2014 consent, quiet hours, length, opt-out, approval \u2014 was checkable only after the fact, if at all.",
+        "Severity": "Critical",
+        "BlockingKind": "Blocking",
+        "Status": "Resolved",
+        "OwnerRole": "communications-manager",
+        "IdentifiedAt": "2026-07-19T19:00:00-05:00",
+        "ResolutionPlan": "Resolved by the SendIntents table and IsClearedToSend, which gates a proposed send on permission, timing, content, and authorization before it happens, and names the blocking gate. Proven across seven intents: Timing blocks a 21:00 send, Content blocks an oversized body and one missing the STOP phrase, Permission blocks an unreachable recipient. Authorization blocked ALL sends until tmpl-policy-sms received a real approval record (tap-sms-001) \u2014 the pipeline had been transmitting under a template nobody had attributably approved.",
+        "EvaluationContext": "eval-current",
+        "SemanticTypeIri": "urn:effortless:pko-extension#KnowledgeGap"
       }
     ]
   },
@@ -5540,6 +5650,30 @@
         "nullable": true,
         "Description": "TRUE when this run has any untriaged delivery failure.",
         "formula": "={{AbandonedFailureCount}} > 0"
+      },
+      {
+        "name": "MishandledRefusalCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of gate refusals in this run that were either overridden or silently dropped.",
+        "formula": "=COUNTIFS(SendIntents!{{RefusalFailureExecutionKey}}, {{ProcedureExecutionId}})"
+      },
+      {
+        "name": "UncleanStepCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of step executions in this run that were not clean.",
+        "formula": "=COUNTIFS(StepExecutions!{{ProcedureExecutionWhenUnclean}}, {{ProcedureExecutionId}})"
+      },
+      {
+        "name": "RanClean",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when every step execution in this run was clean.",
+        "formula": "={{UncleanStepCount}} = 0"
       },
       {
         "name": "SemanticTypeIri",
@@ -6061,6 +6195,102 @@
         "formula": "=IF(AND({{IsLegalReviewStep}}, {{IsVerificationPassed}}), {{ProcedureExecution}}, \"\")"
       },
       {
+        "name": "AssignedRole",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The role the specification assigns to this step.",
+        "formula": "=INDEX(Steps!{{AssignedRole}}, MATCH({{Step}}, Steps!{{StepId}}, 0))"
+      },
+      {
+        "name": "RoleCurrentAgent",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The agent currently designated to hold the step's assigned role.",
+        "formula": "=INDEX(Roles!{{CurrentAgent}}, MATCH({{AssignedRole}}, Roles!{{RoleId}}, 0))"
+      },
+      {
+        "name": "ExecutorIsDesignatedAgent",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the agent that executed the step is the agent currently designated for the step's role.",
+        "formula": "={{ExecutedByAgent}} = {{RoleCurrentAgent}}"
+      },
+      {
+        "name": "InputsWereFreshAtRun",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Freshness verdict for the step this execution ran.",
+        "formula": "=INDEX(Steps!{{InputsAreFresh}}, MATCH({{Step}}, Steps!{{StepId}}, 0))"
+      },
+      {
+        "name": "RanOnStaleInputs",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when an execution completed even though its step's authoritative inputs are stale.",
+        "formula": "=AND({{ExecutionStatus}} = \"Completed\", NOT({{InputsWereFreshAtRun}}))"
+      },
+      {
+        "name": "UnresolvedIssueCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of unresolved issue occurrences recorded against this execution.",
+        "formula": "=COUNTIFS(IssueOccurrences!{{StepExecutionWhenUnresolved}}, {{StepExecutionId}})"
+      },
+      {
+        "name": "HasDeviation",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a deviation from the specification was recorded.",
+        "formula": "={{Deviation}} <> \"\""
+      },
+      {
+        "name": "IsClean",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this execution passed verification, deviated from nothing, left no open issue, and finished on time.",
+        "formula": "=AND({{VerificationResult}} = \"PASS\", NOT({{HasDeviation}}), {{UnresolvedIssueCount}} = 0, NOT({{IsLate}}))"
+      },
+      {
+        "name": "ProcedureExecutionWhenUnclean",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Echoes the parent execution id when this step execution is not clean, blank otherwise.",
+        "formula": "=IF({{IsClean}}, \"\", {{ProcedureExecution}})"
+      },
+      {
+        "name": "EvaluatedRequirementCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of requirements actually scored against this execution.",
+        "formula": "=COUNTIFS(RequirementSatisfactions!{{StepExecutionWhenScored}}, {{StepExecutionId}})"
+      },
+      {
+        "name": "RequiredBlockingCount",
+        "datatype": "integer",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Number of blocking requirements the specification demands for this step.",
+        "formula": "=INDEX(Steps!{{BlockingRequirementCount}}, MATCH({{Step}}, Steps!{{StepId}}, 0))"
+      },
+      {
+        "name": "HasUnevaluatedBlockingRequirement",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when fewer requirements were scored than the step has blocking requirements.",
+        "formula": "={{EvaluatedRequirementCount}} < {{RequiredBlockingCount}}"
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -6206,10 +6436,10 @@
         "ProcedureExecution": "exec-policy-hr4821",
         "Step": "policy-04",
         "ExecutedByAgent": "noah-williams",
-        "ExecutionStatus": "InProgress",
+        "ExecutionStatus": "Completed",
         "StartedAt": "2026-07-19T09:00:00-05:00",
-        "EndedAt": null,
-        "VerificationResult": "PENDING",
+        "EndedAt": "2026-07-19T13:45:00-05:00",
+        "VerificationResult": "PASS",
         "Deviation": "Legal review in progress.",
         "SemanticTypeIri": "https://w3id.org/pko#StepExecution"
       }
@@ -6376,6 +6606,14 @@
         "formula": "=INDEX(StepExecutions!{{ProcedureExecution}}, MATCH({{StepExecution}}, StepExecutions!{{StepExecutionId}}, 0))"
       },
       {
+        "name": "StepExecutionWhenScored",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Echoes the step-execution id when a satisfaction level was actually recorded, blank otherwise.",
+        "formula": "=IF({{SatisfactionLevel}} <> \"\", {{StepExecution}}, \"\")"
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -6438,10 +6676,10 @@
         "RequirementSatisfactionId": "sat-policy-legal",
         "StepExecution": "se-policy04",
         "Requirement": "req-policy-legal",
-        "SatisfactionLevel": "PartiallySatisfied",
-        "Evidence": "Review started; final approval pending.",
+        "SatisfactionLevel": "Satisfied",
+        "Evidence": "Employment counsel review completed 2026-07-19: notice content, acknowledgement mechanism, and retention period cleared against employment law and TCPA consent requirements.",
         "EvaluatedByAgent": "noah-williams",
-        "EvaluatedAt": "2026-07-19T10:00:00-05:00",
+        "EvaluatedAt": "2026-07-19T13:45:00-05:00",
         "SemanticTypeIri": "https://w3id.org/pko#RequirementSatisfaction"
       },
       {
@@ -6601,6 +6839,22 @@
         "type": "raw",
         "nullable": true,
         "Description": "Open, Monitoring, Resolved, or Closed."
+      },
+      {
+        "name": "IsUnresolved",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this issue occurrence has not been closed out.",
+        "formula": "=OR({{Status}} = \"Open\", {{Status}} = \"Investigating\", {{Status}} = \"Monitoring\")"
+      },
+      {
+        "name": "StepExecutionWhenUnresolved",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Echoes the step-execution id when the issue is unresolved, blank otherwise.",
+        "formula": "=IF({{IsUnresolved}}, {{StepExecution}}, \"\")"
       },
       {
         "name": "SemanticTypeIri",
@@ -7561,6 +7815,22 @@
         "formula": "=IF(AND(NOT({{IsFresh}}), {{IsAuthoritative}}), {{Step}}, \"\")"
       },
       {
+        "name": "IsStaleAndAuthoritative",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when an authoritative binding has aged past its freshness SLA.",
+        "formula": "=AND({{IsAuthoritative}}, NOT({{IsFresh}}))"
+      },
+      {
+        "name": "StepWhenStale",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Echoes the step id when this authoritative binding is stale, blank otherwise.",
+        "formula": "=IF({{IsStaleAndAuthoritative}}, {{Step}}, \"\")"
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -7784,6 +8054,14 @@
         "type": "raw",
         "nullable": true,
         "Description": "The exact opt-out phrase every message on this channel must contain. Seeded 'Reply STOP' for comm-sms-policy, empty string for comm-email-policy."
+      },
+      {
+        "name": "IsActivePolicy",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE only when this channel policy is in Active status.",
+        "formula": "={{Status}} = \"Active\""
       },
       {
         "name": "SemanticTypeIri",
@@ -8033,7 +8311,7 @@
         "Locale": "en-US",
         "Status": "Approved",
         "SemanticTypeIri": "http://www.w3.org/ns/dcat#Resource",
-        "LastValidApproval": null,
+        "LastValidApproval": "tap-sms-001",
         "CurrentBodyHash": "h-sms-v1"
       }
     ]
@@ -8875,6 +9153,96 @@
         "WhyItMatters": "This is the failure I have actually lived through. A template gets approved, then somebody makes 'a tiny wording fix' to the body, and the Status field still cheerfully says Approved because nothing ever reset it. The approval attaches to a version of the text, not to a row id. If the body changed and the approval did not, then my name is on something I never read -- and given that these are employment-policy communications, that is not a governance abstraction, that is my name on a legal notice I did not review.",
         "AnswerableBefore": false,
         "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-publisher-may-i-transmit",
+        "AskingRole": "notification-publisher",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "Before I transmit, am I permitted to use this channel for this recipient at all?",
+        "WhyItMatters": "I am the component that actually calls the carrier. Every other question in this rulebook is asked after I have already acted, which means every other question is asked too late. I need one column I can read that says PERMITTED or NOT PERMITTED, computed from the policy rows rather than from anything hardcoded in my own configuration -- because my configuration is not the source of truth and should not be. If I cannot determine consent, the answer must be no. An unevaluable rule is a refusal, not a pass.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-publisher-may-i-transmit-now",
+        "AskingRole": "notification-publisher",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "Before I transmit, is the current moment inside a window this channel forbids?",
+        "WhyItMatters": "Timing is the one gate I can get right unilaterally and the one that is easiest to get wrong silently. My scheduler runs continuously; nothing about being invoked at 22:40 tells me I should not act. The quiet-hours window is recipient-local and it wraps midnight, so 06:15 is forbidden even though six is less than twenty. I need this evaluated as data on the intent row rather than as arithmetic inside my own code, because arithmetic inside my own code is exactly what nobody can audit and exactly what drifted from the policy in the first place.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-publisher-is-this-content-permitted",
+        "AskingRole": "notification-publisher",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "Before I transmit, is the exact text I am holding within this channel's content rules?",
+        "WhyItMatters": "I render the body; therefore I am the last component that can measure it before it becomes a fact. The template can be compliant and my rendered output still not be, because I am the one substituting the URL and the date. Measuring my own output against the policy's MaxMessageLength, MaxSegments and required opt-out phrase costs me nothing and is the only point in the whole procedure where the comparison is both possible and still preventable. Doing it afterward, as the retrospective witnesses do, tells someone what I did wrong. Doing it here stops it.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-publisher-am-i-authorized-to-act",
+        "AskingRole": "notification-publisher",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "Before I transmit, has every human authorization my instructions depend on actually been granted?",
+        "WhyItMatters": "policy-07 tells me to enforce channel rules and send APPROVED messages. I am not competent to judge whether a message should exist -- that is the communications manager's approval and the employment counsel's review. What I am competent to do is refuse to act until both are recorded as granted. Today I have no such column, which means I have been treating the absence of an objection as an approval. That is the inverted default and it is how an AI drafting agent's self-approval ended up on a live send. I want the gate to require positive evidence of authorization, so that missing data blocks me instead of releasing me.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-publisher-refusal-was-honored",
+        "AskingRole": "notification-publisher",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "When a gate refused, did the transmission actually stop -- and did I invoke the documented exception instead?",
+        "WhyItMatters": "This is the only question I ask about the past, and I ask it about myself. A gate that computes a refusal which is then ignored is worse than no gate: it produces a durable record proving we knew and proceeded anyway, which is the fact pattern that turns a compliance finding into a willfulness finding. exc-no-sms-consent tells me precisely what to do when the consent gate refuses -- suppress SMS, send approved email only. So the check is two-part: did I stop, and did I take the documented alternative rather than simply dropping the recipient. Silently dropping someone is not compliance, it is a different failure wearing compliance's clothes.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-close-auto-authority-current",
+        "AskingRole": "close-automation",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "Before I execute close-01, close-02, or close-07: is my own role assignment currently valid, and is the agent named in that assignment actually me?",
+        "WhyItMatters": "I am a pipeline. I must not act on a step whose role has been reassigned out from under me, or whose assignment window has lapsed. `ra-notify-pipeline-2026` proves assignments can be scoped to a platform release; a v5.3 rollout could supersede close-pipeline's authority mid-quarter and today NOTHING would stop me from posting entries anyway. This is my single most important pre-condition.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-close-auto-input-freshness",
+        "AskingRole": "close-automation",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "Before I extract in close-02: is every operational binding this step reads inside its freshness SLA, and is it the authoritative one?",
+        "WhyItMatters": "`issue-close-feed` already happened to me \u2014 a feed was 17 minutes old against a 15-minute SLA on `bind-close-erp`, and I extracted anyway. `verify-feed-time` states the expectation as a signal, but nothing in the model refuses to let me run. I need per-step aggregate freshness, not a per-binding fact I have to interpret myself.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-close-auto-last-run-clean",
+        "AskingRole": "close-automation",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "Did my previous run leave anything unresolved \u2014 an open issue, a WARN, or a deviation \u2014 that I should refuse to run on top of?",
+        "WhyItMatters": "`se-close02` carries VerificationResult=WARN and a Deviation, and `issue-close-feed` hangs off it. A pipeline that starts a new quarter without checking whether its own last quarter closed clean is a pipeline that laminates errors. I need a per-agent, per-run cleanliness verdict I can read in one column.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-close-auto-blocking-requirements-evaluated",
+        "AskingRole": "close-automation",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "For each step I am about to run, has every blocking requirement attached to it actually been evaluated \u2014 or am I about to execute past a control that nobody scored?",
+        "WhyItMatters": "`sr-c01` binds `req-close-cutoff` (blocking) to close-01 and `sat-close-cutoff` scores it. But `sr-c03b` binds `req-close-evidence` to close-03 and `sr-c08` binds it to close-08 \u2014 and there is no RequirementSatisfaction row for either. A blocking retention control on the step where I archive evidence is completely unevaluated. I need to see that as a number, not infer it from an absence.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-close-auto-human-override-drift",
+        "AskingRole": "close-automation",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "Am I drifting? Are humans overriding or correcting my output more often now than they used to?",
+        "WhyItMatters": "This is my self-assessment question and it is the one I currently cannot ask at all. `se-close02` was corrected by a human (controller-approved rerun) and that fact exists only as prose in a Deviation string. If my override rate is climbing across quarters, the model should say so as a number before a human notices as a feeling. Note that a rising override rate is not automatically bad \u2014 it may mean humans are watching more closely \u2014 but it must be visible either way.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
       }
     ]
   },
@@ -9375,6 +9743,46 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "Agents.DecisionCount",
+        "TargetTable": "Agents",
+        "FieldName": "DecisionCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(AgentDecisionRecords!{{DecidingAgent}}, {{AgentId}})",
+        "InventedForQuestion": "q-close-auto-human-override-drift",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Agents.OverriddenDecisionCount",
+        "TargetTable": "Agents",
+        "FieldName": "OverriddenDecisionCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(AgentDecisionRecords!{{DecidingAgentWhenOverridden}}, {{AgentId}})",
+        "InventedForQuestion": "q-close-auto-human-override-drift",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Agents.OverrideRatePercent",
+        "TargetTable": "Agents",
+        "FieldName": "OverrideRatePercent",
+        "FieldType": "calculated",
+        "Datatype": "number",
+        "Formula": "=IF({{DecisionCount}} = 0, 0, ({{OverriddenDecisionCount}} * 100) / {{DecisionCount}})",
+        "InventedForQuestion": "q-close-auto-human-override-drift",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Agents.IsNonHuman",
+        "TargetTable": "Agents",
+        "FieldName": "IsNonHuman",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=NOT({{AgentKind}} = \"Human\")",
+        "InventedForQuestion": "q-close-auto-human-override-drift",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "Agents.SemanticTypeIri",
         "TargetTable": "Agents",
         "FieldName": "SemanticTypeIri",
@@ -9452,6 +9860,36 @@
         "Datatype": "string",
         "Formula": null,
         "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Roles.ActiveAssignmentCount",
+        "TargetTable": "Roles",
+        "FieldName": "ActiveAssignmentCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(RoleAssignments!{{Role}}, {{RoleId}})",
+        "InventedForQuestion": "q-close-auto-authority-current",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Roles.CurrentlyCoveredAssignmentCount",
+        "TargetTable": "Roles",
+        "FieldName": "CurrentlyCoveredAssignmentCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(RoleAssignments!{{RoleWhenCovering}}, {{RoleId}})",
+        "InventedForQuestion": "q-close-auto-authority-current",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Roles.HasNoCurrentHolder",
+        "TargetTable": "Roles",
+        "FieldName": "HasNoCurrentHolder",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{CurrentlyCoveredAssignmentCount}} = 0",
+        "InventedForQuestion": "q-close-auto-authority-current",
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
@@ -9612,6 +10050,26 @@
         "Datatype": "boolean",
         "Formula": "=AND({{ValidTo}} <> \"\", {{ValidTo}} <= NOW())",
         "InventedForQuestion": "q-authority-orphaned-provenance",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.CoversNow",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "CoversNow",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{Status}} = \"Active\", {{ValidFrom}} <= NOW(), OR({{ValidTo}} = \"\", {{ValidTo}} > NOW()))",
+        "InventedForQuestion": "q-close-auto-authority-current",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.RoleWhenCovering",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "RoleWhenCovering",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{CoversNow}}, {{Role}}, \"\")",
+        "InventedForQuestion": "q-close-auto-authority-current",
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
@@ -10745,6 +11203,26 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "Steps.StaleAuthoritativeBindingCount",
+        "TargetTable": "Steps",
+        "FieldName": "StaleAuthoritativeBindingCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(OperationalBindings!{{StepWhenStale}}, {{StepId}})",
+        "InventedForQuestion": "q-close-auto-input-freshness",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Steps.InputsAreFresh",
+        "TargetTable": "Steps",
+        "FieldName": "InputsAreFresh",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{StaleAuthoritativeBindingCount}} = 0",
+        "InventedForQuestion": "q-close-auto-input-freshness",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "Steps.SemanticTypeIri",
         "TargetTable": "Steps",
         "FieldName": "SemanticTypeIri",
@@ -11452,6 +11930,16 @@
         "Datatype": "string",
         "Formula": "=IF({{RequirementIsBlocking}}, {{Step}}, \"\")",
         "InventedForQuestion": "q-analyst-blocking-never-evaluated",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepRequirements.StepWhenBlocking",
+        "TargetTable": "StepRequirements",
+        "FieldName": "StepWhenBlocking",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{RequirementIsBlocking}}, {{Step}}, \"\")",
+        "InventedForQuestion": "q-close-auto-blocking-requirements-evaluated",
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
@@ -13075,6 +13563,36 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "ProcedureExecutions.MishandledRefusalCount",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "MishandledRefusalCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(SendIntents!{{RefusalFailureExecutionKey}}, {{ProcedureExecutionId}})",
+        "InventedForQuestion": "q-publisher-refusal-was-honored",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureExecutions.UncleanStepCount",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "UncleanStepCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(StepExecutions!{{ProcedureExecutionWhenUnclean}}, {{ProcedureExecutionId}})",
+        "InventedForQuestion": "q-close-auto-last-run-clean",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureExecutions.RanClean",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "RanClean",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{UncleanStepCount}} = 0",
+        "InventedForQuestion": "q-close-auto-last-run-clean",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "ProcedureExecutions.SemanticTypeIri",
         "TargetTable": "ProcedureExecutions",
         "FieldName": "SemanticTypeIri",
@@ -13695,6 +14213,126 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "StepExecutions.AssignedRole",
+        "TargetTable": "StepExecutions",
+        "FieldName": "AssignedRole",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(Steps!{{AssignedRole}}, MATCH({{Step}}, Steps!{{StepId}}, 0))",
+        "InventedForQuestion": "q-close-auto-authority-current",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.RoleCurrentAgent",
+        "TargetTable": "StepExecutions",
+        "FieldName": "RoleCurrentAgent",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(Roles!{{CurrentAgent}}, MATCH({{AssignedRole}}, Roles!{{RoleId}}, 0))",
+        "InventedForQuestion": "q-close-auto-authority-current",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.ExecutorIsDesignatedAgent",
+        "TargetTable": "StepExecutions",
+        "FieldName": "ExecutorIsDesignatedAgent",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{ExecutedByAgent}} = {{RoleCurrentAgent}}",
+        "InventedForQuestion": "q-close-auto-authority-current",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.InputsWereFreshAtRun",
+        "TargetTable": "StepExecutions",
+        "FieldName": "InputsWereFreshAtRun",
+        "FieldType": "lookup",
+        "Datatype": "boolean",
+        "Formula": "=INDEX(Steps!{{InputsAreFresh}}, MATCH({{Step}}, Steps!{{StepId}}, 0))",
+        "InventedForQuestion": "q-close-auto-input-freshness",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.RanOnStaleInputs",
+        "TargetTable": "StepExecutions",
+        "FieldName": "RanOnStaleInputs",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{ExecutionStatus}} = \"Completed\", NOT({{InputsWereFreshAtRun}}))",
+        "InventedForQuestion": "q-close-auto-input-freshness",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.UnresolvedIssueCount",
+        "TargetTable": "StepExecutions",
+        "FieldName": "UnresolvedIssueCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(IssueOccurrences!{{StepExecutionWhenUnresolved}}, {{StepExecutionId}})",
+        "InventedForQuestion": "q-close-auto-last-run-clean",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.HasDeviation",
+        "TargetTable": "StepExecutions",
+        "FieldName": "HasDeviation",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{Deviation}} <> \"\"",
+        "InventedForQuestion": "q-close-auto-last-run-clean",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.IsClean",
+        "TargetTable": "StepExecutions",
+        "FieldName": "IsClean",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{VerificationResult}} = \"PASS\", NOT({{HasDeviation}}), {{UnresolvedIssueCount}} = 0, NOT({{IsLate}}))",
+        "InventedForQuestion": "q-close-auto-last-run-clean",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.ProcedureExecutionWhenUnclean",
+        "TargetTable": "StepExecutions",
+        "FieldName": "ProcedureExecutionWhenUnclean",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{IsClean}}, \"\", {{ProcedureExecution}})",
+        "InventedForQuestion": "q-close-auto-last-run-clean",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.EvaluatedRequirementCount",
+        "TargetTable": "StepExecutions",
+        "FieldName": "EvaluatedRequirementCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(RequirementSatisfactions!{{StepExecutionWhenScored}}, {{StepExecutionId}})",
+        "InventedForQuestion": "q-close-auto-blocking-requirements-evaluated",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.RequiredBlockingCount",
+        "TargetTable": "StepExecutions",
+        "FieldName": "RequiredBlockingCount",
+        "FieldType": "lookup",
+        "Datatype": "integer",
+        "Formula": "=INDEX(Steps!{{BlockingRequirementCount}}, MATCH({{Step}}, Steps!{{StepId}}, 0))",
+        "InventedForQuestion": "q-close-auto-blocking-requirements-evaluated",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.HasUnevaluatedBlockingRequirement",
+        "TargetTable": "StepExecutions",
+        "FieldName": "HasUnevaluatedBlockingRequirement",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{EvaluatedRequirementCount}} < {{RequiredBlockingCount}}",
+        "InventedForQuestion": "q-close-auto-blocking-requirements-evaluated",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "StepExecutions.SemanticTypeIri",
         "TargetTable": "StepExecutions",
         "FieldName": "SemanticTypeIri",
@@ -13905,6 +14543,16 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "RequirementSatisfactions.StepExecutionWhenScored",
+        "TargetTable": "RequirementSatisfactions",
+        "FieldName": "StepExecutionWhenScored",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{SatisfactionLevel}} <> \"\", {{StepExecution}}, \"\")",
+        "InventedForQuestion": "q-close-auto-blocking-requirements-evaluated",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "RequirementSatisfactions.SemanticTypeIri",
         "TargetTable": "RequirementSatisfactions",
         "FieldName": "SemanticTypeIri",
@@ -14062,6 +14710,26 @@
         "Datatype": "string",
         "Formula": null,
         "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "IssueOccurrences.IsUnresolved",
+        "TargetTable": "IssueOccurrences",
+        "FieldName": "IsUnresolved",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=OR({{Status}} = \"Open\", {{Status}} = \"Investigating\", {{Status}} = \"Monitoring\")",
+        "InventedForQuestion": "q-close-auto-last-run-clean",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "IssueOccurrences.StepExecutionWhenUnresolved",
+        "TargetTable": "IssueOccurrences",
+        "FieldName": "StepExecutionWhenUnresolved",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{IsUnresolved}}, {{StepExecution}}, \"\")",
+        "InventedForQuestion": "q-close-auto-last-run-clean",
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
@@ -15035,6 +15703,26 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "OperationalBindings.IsStaleAndAuthoritative",
+        "TargetTable": "OperationalBindings",
+        "FieldName": "IsStaleAndAuthoritative",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsAuthoritative}}, NOT({{IsFresh}}))",
+        "InventedForQuestion": "q-close-auto-input-freshness",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "OperationalBindings.StepWhenStale",
+        "TargetTable": "OperationalBindings",
+        "FieldName": "StepWhenStale",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{IsStaleAndAuthoritative}}, {{Step}}, \"\")",
+        "InventedForQuestion": "q-close-auto-input-freshness",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "OperationalBindings.SemanticTypeIri",
         "TargetTable": "OperationalBindings",
         "FieldName": "SemanticTypeIri",
@@ -15242,6 +15930,16 @@
         "Datatype": "string",
         "Formula": null,
         "InventedForQuestion": "q-comms-optout-present",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "CommunicationPolicies.IsActivePolicy",
+        "TargetTable": "CommunicationPolicies",
+        "FieldName": "IsActivePolicy",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{Status}} = \"Active\"",
+        "InventedForQuestion": "q-publisher-may-i-transmit",
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
@@ -17493,6 +18191,696 @@
         "Formula": null,
         "InventedForQuestion": null,
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.SendIntentId",
+        "TargetTable": "SendIntents",
+        "FieldName": "SendIntentId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.Name",
+        "TargetTable": "SendIntents",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{Recipient}} & \" / \" & {{MessageTemplate}} & \" / intent\"",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.ProcedureExecution",
+        "TargetTable": "SendIntents",
+        "FieldName": "ProcedureExecution",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.StepExecution",
+        "TargetTable": "SendIntents",
+        "FieldName": "StepExecution",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.Recipient",
+        "TargetTable": "SendIntents",
+        "FieldName": "Recipient",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.MessageTemplate",
+        "TargetTable": "SendIntents",
+        "FieldName": "MessageTemplate",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.ProposedBody",
+        "TargetTable": "SendIntents",
+        "FieldName": "ProposedBody",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.ProposedSendAtLocalHour",
+        "TargetTable": "SendIntents",
+        "FieldName": "ProposedSendAtLocalHour",
+        "FieldType": "raw",
+        "Datatype": "integer",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.EvaluatedAt",
+        "TargetTable": "SendIntents",
+        "FieldName": "EvaluatedAt",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.ResultingDelivery",
+        "TargetTable": "SendIntents",
+        "FieldName": "ResultingDelivery",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.IntentPolicy",
+        "TargetTable": "SendIntents",
+        "FieldName": "IntentPolicy",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(MessageTemplates!{{CommunicationPolicy}}, MATCH({{MessageTemplate}}, MessageTemplates!{{MessageTemplateId}}, 0))",
+        "InventedForQuestion": "q-publisher-may-i-transmit",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.IntentChannel",
+        "TargetTable": "SendIntents",
+        "FieldName": "IntentChannel",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(CommunicationPolicies!{{Channel}}, MATCH({{IntentPolicy}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0))",
+        "InventedForQuestion": "q-publisher-may-i-transmit",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.PolicyIsActive",
+        "TargetTable": "SendIntents",
+        "FieldName": "PolicyIsActive",
+        "FieldType": "lookup",
+        "Datatype": "boolean",
+        "Formula": "=INDEX(CommunicationPolicies!{{IsActivePolicy}}, MATCH({{IntentPolicy}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0))",
+        "InventedForQuestion": "q-publisher-may-i-transmit",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.IntentRequiresConsent",
+        "TargetTable": "SendIntents",
+        "FieldName": "IntentRequiresConsent",
+        "FieldType": "lookup",
+        "Datatype": "boolean",
+        "Formula": "=INDEX(CommunicationPolicies!{{ConsentRequired}}, MATCH({{IntentPolicy}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0))",
+        "InventedForQuestion": "q-publisher-may-i-transmit",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.RecipientHasChannelConsent",
+        "TargetTable": "SendIntents",
+        "FieldName": "RecipientHasChannelConsent",
+        "FieldType": "lookup",
+        "Datatype": "boolean",
+        "Formula": "=INDEX(Recipients!{{HasSmsConsent}}, MATCH({{Recipient}}, Recipients!{{RecipientId}}, 0))",
+        "InventedForQuestion": "q-publisher-may-i-transmit",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.ConsentGatePassed",
+        "TargetTable": "SendIntents",
+        "FieldName": "ConsentGatePassed",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=OR(NOT({{IntentRequiresConsent}}), {{RecipientHasChannelConsent}})",
+        "InventedForQuestion": "q-publisher-may-i-transmit",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.RecipientIsSmsReachable",
+        "TargetTable": "SendIntents",
+        "FieldName": "RecipientIsSmsReachable",
+        "FieldType": "lookup",
+        "Datatype": "boolean",
+        "Formula": "=INDEX(Recipients!{{IsSmsReachable}}, MATCH({{Recipient}}, Recipients!{{RecipientId}}, 0))",
+        "InventedForQuestion": "q-publisher-may-i-transmit",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.RecipientIsEmailReachable",
+        "TargetTable": "SendIntents",
+        "FieldName": "RecipientIsEmailReachable",
+        "FieldType": "lookup",
+        "Datatype": "boolean",
+        "Formula": "=INDEX(Recipients!{{IsEmailReachable}}, MATCH({{Recipient}}, Recipients!{{RecipientId}}, 0))",
+        "InventedForQuestion": "q-publisher-may-i-transmit",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.ReachabilityGatePassed",
+        "TargetTable": "SendIntents",
+        "FieldName": "ReachabilityGatePassed",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=IF({{IntentChannel}} = \"SMS\", {{RecipientIsSmsReachable}}, {{RecipientIsEmailReachable}})",
+        "InventedForQuestion": "q-publisher-may-i-transmit",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.PermissionGatePassed",
+        "TargetTable": "SendIntents",
+        "FieldName": "PermissionGatePassed",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{PolicyIsActive}}, AND({{ConsentGatePassed}}, {{ReachabilityGatePassed}}))",
+        "InventedForQuestion": "q-publisher-may-i-transmit",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.IntentQuietStartHour",
+        "TargetTable": "SendIntents",
+        "FieldName": "IntentQuietStartHour",
+        "FieldType": "lookup",
+        "Datatype": "integer",
+        "Formula": "=INDEX(CommunicationPolicies!{{QuietHoursStartHour}}, MATCH({{IntentPolicy}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0))",
+        "InventedForQuestion": "q-publisher-may-i-transmit-now",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.IntentQuietEndHour",
+        "TargetTable": "SendIntents",
+        "FieldName": "IntentQuietEndHour",
+        "FieldType": "lookup",
+        "Datatype": "integer",
+        "Formula": "=INDEX(CommunicationPolicies!{{QuietHoursEndHour}}, MATCH({{IntentPolicy}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0))",
+        "InventedForQuestion": "q-publisher-may-i-transmit-now",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.IntentPolicyHasQuietHours",
+        "TargetTable": "SendIntents",
+        "FieldName": "IntentPolicyHasQuietHours",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{IntentQuietStartHour}} <> {{IntentQuietEndHour}}",
+        "InventedForQuestion": "q-publisher-may-i-transmit-now",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.IntentQuietWindowWraps",
+        "TargetTable": "SendIntents",
+        "FieldName": "IntentQuietWindowWraps",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{IntentQuietStartHour}} > {{IntentQuietEndHour}}",
+        "InventedForQuestion": "q-publisher-may-i-transmit-now",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.IntentIsInsideQuietWindow",
+        "TargetTable": "SendIntents",
+        "FieldName": "IntentIsInsideQuietWindow",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=IF({{IntentQuietWindowWraps}}, OR({{ProposedSendAtLocalHour}} >= {{IntentQuietStartHour}}, {{ProposedSendAtLocalHour}} < {{IntentQuietEndHour}}), AND({{ProposedSendAtLocalHour}} >= {{IntentQuietStartHour}}, {{ProposedSendAtLocalHour}} < {{IntentQuietEndHour}}))",
+        "InventedForQuestion": "q-publisher-may-i-transmit-now",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.TimingGatePassed",
+        "TargetTable": "SendIntents",
+        "FieldName": "TimingGatePassed",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=OR(NOT({{IntentPolicyHasQuietHours}}), NOT({{IntentIsInsideQuietWindow}}))",
+        "InventedForQuestion": "q-publisher-may-i-transmit-now",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.HoursUntilWindowOpens",
+        "TargetTable": "SendIntents",
+        "FieldName": "HoursUntilWindowOpens",
+        "FieldType": "calculated",
+        "Datatype": "integer",
+        "Formula": "=IF({{TimingGatePassed}}, 0, IF({{ProposedSendAtLocalHour}} < {{IntentQuietEndHour}}, {{IntentQuietEndHour}} - {{ProposedSendAtLocalHour}}, 24 - {{ProposedSendAtLocalHour}} + {{IntentQuietEndHour}}))",
+        "InventedForQuestion": "q-publisher-may-i-transmit-now",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.IntentMaxMessageLength",
+        "TargetTable": "SendIntents",
+        "FieldName": "IntentMaxMessageLength",
+        "FieldType": "lookup",
+        "Datatype": "integer",
+        "Formula": "=INDEX(CommunicationPolicies!{{MaxMessageLength}}, MATCH({{IntentPolicy}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0))",
+        "InventedForQuestion": "q-publisher-is-this-content-permitted",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.IntentMaxSegments",
+        "TargetTable": "SendIntents",
+        "FieldName": "IntentMaxSegments",
+        "FieldType": "lookup",
+        "Datatype": "integer",
+        "Formula": "=INDEX(CommunicationPolicies!{{MaxSegments}}, MATCH({{IntentPolicy}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0))",
+        "InventedForQuestion": "q-publisher-is-this-content-permitted",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.ProposedBodyLength",
+        "TargetTable": "SendIntents",
+        "FieldName": "ProposedBodyLength",
+        "FieldType": "raw",
+        "Datatype": "integer",
+        "Formula": null,
+        "InventedForQuestion": "q-publisher-is-this-content-permitted",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.ProposedSegmentCount",
+        "TargetTable": "SendIntents",
+        "FieldName": "ProposedSegmentCount",
+        "FieldType": "raw",
+        "Datatype": "integer",
+        "Formula": null,
+        "InventedForQuestion": "q-publisher-is-this-content-permitted",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.LengthGatePassed",
+        "TargetTable": "SendIntents",
+        "FieldName": "LengthGatePassed",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{ProposedBodyLength}} > 0, {{ProposedSegmentCount}} <= {{IntentMaxSegments}})",
+        "InventedForQuestion": "q-publisher-is-this-content-permitted",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.IntentRequiredOptOutPhrase",
+        "TargetTable": "SendIntents",
+        "FieldName": "IntentRequiredOptOutPhrase",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(CommunicationPolicies!{{RequiredOptOutPhrase}}, MATCH({{IntentPolicy}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0))",
+        "InventedForQuestion": "q-publisher-is-this-content-permitted",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.ProposedOptOutPosition",
+        "TargetTable": "SendIntents",
+        "FieldName": "ProposedOptOutPosition",
+        "FieldType": "raw",
+        "Datatype": "integer",
+        "Formula": null,
+        "InventedForQuestion": "q-publisher-is-this-content-permitted",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.OptOutGatePassed",
+        "TargetTable": "SendIntents",
+        "FieldName": "OptOutGatePassed",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=OR({{IntentRequiredOptOutPhrase}} = \"\", AND({{ProposedOptOutPosition}} > 0, {{ProposedOptOutPosition}} <= {{IntentMaxMessageLength}}))",
+        "InventedForQuestion": "q-publisher-is-this-content-permitted",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.ContentGatePassed",
+        "TargetTable": "SendIntents",
+        "FieldName": "ContentGatePassed",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{LengthGatePassed}}, {{OptOutGatePassed}})",
+        "InventedForQuestion": "q-publisher-is-this-content-permitted",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.TemplateIsSendable",
+        "TargetTable": "SendIntents",
+        "FieldName": "TemplateIsSendable",
+        "FieldType": "lookup",
+        "Datatype": "boolean",
+        "Formula": "=INDEX(MessageTemplates!{{IsSendableUnderApproval}}, MATCH({{MessageTemplate}}, MessageTemplates!{{MessageTemplateId}}, 0))",
+        "InventedForQuestion": "q-publisher-am-i-authorized-to-act",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.ExecutionHasLegalClearance",
+        "TargetTable": "SendIntents",
+        "FieldName": "ExecutionHasLegalClearance",
+        "FieldType": "lookup",
+        "Datatype": "boolean",
+        "Formula": "=INDEX(ProcedureExecutions!{{HasClearedLegalReview}}, MATCH({{ProcedureExecution}}, ProcedureExecutions!{{ProcedureExecutionId}}, 0))",
+        "InventedForQuestion": "q-publisher-am-i-authorized-to-act",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.IntentApprovalRole",
+        "TargetTable": "SendIntents",
+        "FieldName": "IntentApprovalRole",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(CommunicationPolicies!{{ApprovalRole}}, MATCH({{IntentPolicy}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0))",
+        "InventedForQuestion": "q-publisher-am-i-authorized-to-act",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.ApprovalRoleAgentKind",
+        "TargetTable": "SendIntents",
+        "FieldName": "ApprovalRoleAgentKind",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(Roles!{{CurrentAgentKind}}, MATCH({{IntentApprovalRole}}, Roles!{{RoleId}}, 0))",
+        "InventedForQuestion": "q-publisher-am-i-authorized-to-act",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.ApprovalIsHuman",
+        "TargetTable": "SendIntents",
+        "FieldName": "ApprovalIsHuman",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{ApprovalRoleAgentKind}} = \"Human\"",
+        "InventedForQuestion": "q-publisher-am-i-authorized-to-act",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.AuthorizationGatePassed",
+        "TargetTable": "SendIntents",
+        "FieldName": "AuthorizationGatePassed",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{TemplateIsSendable}}, AND({{ExecutionHasLegalClearance}}, {{ApprovalIsHuman}}))",
+        "InventedForQuestion": "q-publisher-am-i-authorized-to-act",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.IsClearedToSend",
+        "TargetTable": "SendIntents",
+        "FieldName": "IsClearedToSend",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{PermissionGatePassed}}, AND({{TimingGatePassed}}, AND({{ContentGatePassed}}, {{AuthorizationGatePassed}})))",
+        "InventedForQuestion": "q-publisher-am-i-authorized-to-act",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.BlockingGateName",
+        "TargetTable": "SendIntents",
+        "FieldName": "BlockingGateName",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{IsClearedToSend}}, \"\", IF(NOT({{PermissionGatePassed}}), \"Permission\", IF(NOT({{TimingGatePassed}}), \"Timing\", IF(NOT({{ContentGatePassed}}), \"Content\", \"Authorization\"))))",
+        "InventedForQuestion": "q-publisher-am-i-authorized-to-act",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.HasResultingDelivery",
+        "TargetTable": "SendIntents",
+        "FieldName": "HasResultingDelivery",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{ResultingDelivery}} <> \"\"",
+        "InventedForQuestion": "q-publisher-refusal-was-honored",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.ResultingDeliveryWasTransmitted",
+        "TargetTable": "SendIntents",
+        "FieldName": "ResultingDeliveryWasTransmitted",
+        "FieldType": "lookup",
+        "Datatype": "boolean",
+        "Formula": "=INDEX(MessageDeliveries!{{WasActuallyTransmitted}}, MATCH({{ResultingDelivery}}, MessageDeliveries!{{MessageDeliveryId}}, 0))",
+        "InventedForQuestion": "q-publisher-refusal-was-honored",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.IsOverriddenRefusal",
+        "TargetTable": "SendIntents",
+        "FieldName": "IsOverriddenRefusal",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND(NOT({{IsClearedToSend}}), AND({{HasResultingDelivery}}, {{ResultingDeliveryWasTransmitted}}))",
+        "InventedForQuestion": "q-publisher-refusal-was-honored",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.IsSilentlyDropped",
+        "TargetTable": "SendIntents",
+        "FieldName": "IsSilentlyDropped",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND(NOT({{IsClearedToSend}}), NOT({{HasResultingDelivery}}))",
+        "InventedForQuestion": "q-publisher-refusal-was-honored",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.ResultingDeliveryException",
+        "TargetTable": "SendIntents",
+        "FieldName": "ResultingDeliveryException",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(MessageDeliveries!{{InvokedException}}, MATCH({{ResultingDelivery}}, MessageDeliveries!{{MessageDeliveryId}}, 0))",
+        "InventedForQuestion": "q-publisher-refusal-was-honored",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.RefusalCitedAnException",
+        "TargetTable": "SendIntents",
+        "FieldName": "RefusalCitedAnException",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{ResultingDeliveryException}} <> \"\"",
+        "InventedForQuestion": "q-publisher-refusal-was-honored",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.IsProperlyHandledRefusal",
+        "TargetTable": "SendIntents",
+        "FieldName": "IsProperlyHandledRefusal",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND(NOT({{IsClearedToSend}}), AND({{HasResultingDelivery}}, AND(NOT({{ResultingDeliveryWasTransmitted}}), {{RefusalCitedAnException}})))",
+        "InventedForQuestion": "q-publisher-refusal-was-honored",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.RefusalFailureExecutionKey",
+        "TargetTable": "SendIntents",
+        "FieldName": "RefusalFailureExecutionKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF(OR({{IsOverriddenRefusal}}, {{IsSilentlyDropped}}), {{ProcedureExecution}}, \"\")",
+        "InventedForQuestion": "q-publisher-refusal-was-honored",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "SendIntents.SemanticTypeIri",
+        "TargetTable": "SendIntents",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AgentDecisionRecords.AgentDecisionRecordId",
+        "TargetTable": "AgentDecisionRecords",
+        "FieldName": "AgentDecisionRecordId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AgentDecisionRecords.Name",
+        "TargetTable": "AgentDecisionRecords",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{DecidingAgent}} & \": \" & LEFT({{DecisionSummary}}, 60)",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AgentDecisionRecords.StepExecution",
+        "TargetTable": "AgentDecisionRecords",
+        "FieldName": "StepExecution",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AgentDecisionRecords.DecidingAgent",
+        "TargetTable": "AgentDecisionRecords",
+        "FieldName": "DecidingAgent",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AgentDecisionRecords.DecisionKind",
+        "TargetTable": "AgentDecisionRecords",
+        "FieldName": "DecisionKind",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AgentDecisionRecords.DecisionSummary",
+        "TargetTable": "AgentDecisionRecords",
+        "FieldName": "DecisionSummary",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AgentDecisionRecords.DecidedAt",
+        "TargetTable": "AgentDecisionRecords",
+        "FieldName": "DecidedAt",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AgentDecisionRecords.MaterialityBand",
+        "TargetTable": "AgentDecisionRecords",
+        "FieldName": "MaterialityBand",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AgentDecisionRecords.HumanDisposition",
+        "TargetTable": "AgentDecisionRecords",
+        "FieldName": "HumanDisposition",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AgentDecisionRecords.ReviewedByAgent",
+        "TargetTable": "AgentDecisionRecords",
+        "FieldName": "ReviewedByAgent",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AgentDecisionRecords.ReviewedAt",
+        "TargetTable": "AgentDecisionRecords",
+        "FieldName": "ReviewedAt",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AgentDecisionRecords.WasOverridden",
+        "TargetTable": "AgentDecisionRecords",
+        "FieldName": "WasOverridden",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=OR({{HumanDisposition}} = \"Corrected\", {{HumanDisposition}} = \"Reversed\")",
+        "InventedForQuestion": "q-close-auto-human-override-drift",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AgentDecisionRecords.WasReviewed",
+        "TargetTable": "AgentDecisionRecords",
+        "FieldName": "WasReviewed",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{HumanDisposition}} <> \"\", {{HumanDisposition}} <> \"NotReviewed\")",
+        "InventedForQuestion": "q-close-auto-human-override-drift",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AgentDecisionRecords.DecidingAgentKind",
+        "TargetTable": "AgentDecisionRecords",
+        "FieldName": "DecidingAgentKind",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(Agents!{{AgentKind}}, MATCH({{DecidingAgent}}, Agents!{{AgentId}}, 0))",
+        "InventedForQuestion": "q-close-auto-human-override-drift",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AgentDecisionRecords.DecidingAgentWhenOverridden",
+        "TargetTable": "AgentDecisionRecords",
+        "FieldName": "DecidingAgentWhenOverridden",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{WasOverridden}}, {{DecidingAgent}}, \"\")",
+        "InventedForQuestion": "q-close-auto-human-override-drift",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AgentDecisionRecords.SemanticTypeIri",
+        "TargetTable": "AgentDecisionRecords",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       }
     ]
   },
@@ -19260,6 +20648,711 @@
         "ApprovedBodyHash": "h-email-v1",
         "Notes": "Reviewed against comm-email-policy required content and retention.",
         "SemanticTypeIri": "urn:effortless:pko-extension#TemplateApproval"
+      },
+      {
+        "TemplateApprovalId": "tap-sms-001",
+        "MessageTemplate": "tmpl-policy-sms",
+        "DecidedByAgent": "amina-yusuf",
+        "DecidedInRole": "communications-manager",
+        "Decision": "Approved",
+        "DecidedAt": "2026-07-19T10:00:00-05:00",
+        "ApprovedBodyHash": "h-sms-v1",
+        "Notes": "Approved against comm-sms-policy: 160-char limit, 3-segment cap, required STOP opt-out, 20:00-08:00 quiet window.",
+        "SemanticTypeIri": "urn:effortless:pko-extension#TemplateApproval"
+      }
+    ]
+  },
+  "SendIntents": {
+    "Description": "SendIntents (added by witness loop 1).",
+    "schema": [
+      {
+        "name": "SendIntentId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stored logical identifier for one SendIntents row."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Human-readable calculated display alias for the SendIntents row.",
+        "formula": "={{Recipient}} & \" / \" & {{MessageTemplate}} & \" / intent\""
+      },
+      {
+        "name": "ProcedureExecution",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Execution this send intent belongs to.",
+        "RelatedTo": "ProcedureExecutions"
+      },
+      {
+        "name": "StepExecution",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Step execution evaluating this intent.",
+        "RelatedTo": "StepExecutions"
+      },
+      {
+        "name": "Recipient",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Intended recipient.",
+        "RelatedTo": "Recipients"
+      },
+      {
+        "name": "MessageTemplate",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Template the pipeline intends to render and send.",
+        "RelatedTo": "MessageTemplates"
+      },
+      {
+        "name": "ProposedBody",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "The fully rendered text the pipeline intends to transmit, before transmission."
+      },
+      {
+        "name": "ProposedSendAtLocalHour",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Hour 0-23 in the recipient's local timezone at which the pipeline intends to transmit."
+      },
+      {
+        "name": "EvaluatedAt",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "When the pipeline evaluated the gates for this intent."
+      },
+      {
+        "name": "ResultingDelivery",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "The delivery record produced from this intent, whether transmitted or suppressed.",
+        "RelatedTo": "MessageDeliveries"
+      },
+      {
+        "name": "IntentPolicy",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The communication policy governing the template this intent would send.",
+        "formula": "=INDEX(MessageTemplates!{{CommunicationPolicy}}, MATCH({{MessageTemplate}}, MessageTemplates!{{MessageTemplateId}}, 0))"
+      },
+      {
+        "name": "IntentChannel",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Channel this intent would transmit on.",
+        "formula": "=INDEX(CommunicationPolicies!{{Channel}}, MATCH({{IntentPolicy}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0))"
+      },
+      {
+        "name": "PolicyIsActive",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether the governing policy is currently Active rather than Draft, Suspended, or Retired.",
+        "formula": "=INDEX(CommunicationPolicies!{{IsActivePolicy}}, MATCH({{IntentPolicy}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0))"
+      },
+      {
+        "name": "IntentRequiresConsent",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether the governing policy requires consent for this channel.",
+        "formula": "=INDEX(CommunicationPolicies!{{ConsentRequired}}, MATCH({{IntentPolicy}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0))"
+      },
+      {
+        "name": "RecipientHasChannelConsent",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether the intended recipient has active SMS consent on record.",
+        "formula": "=INDEX(Recipients!{{HasSmsConsent}}, MATCH({{Recipient}}, Recipients!{{RecipientId}}, 0))"
+      },
+      {
+        "name": "ConsentGatePassed",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when either the channel does not require consent, or the recipient has granted it.",
+        "formula": "=OR(NOT({{IntentRequiresConsent}}), {{RecipientHasChannelConsent}})"
+      },
+      {
+        "name": "RecipientIsSmsReachable",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether a mobile number is on file for the intended recipient.",
+        "formula": "=INDEX(Recipients!{{IsSmsReachable}}, MATCH({{Recipient}}, Recipients!{{RecipientId}}, 0))"
+      },
+      {
+        "name": "RecipientIsEmailReachable",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether an email address is on file for the intended recipient.",
+        "formula": "=INDEX(Recipients!{{IsEmailReachable}}, MATCH({{Recipient}}, Recipients!{{RecipientId}}, 0))"
+      },
+      {
+        "name": "ReachabilityGatePassed",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the recipient is reachable on the channel this intent would use.",
+        "formula": "=IF({{IntentChannel}} = \"SMS\", {{RecipientIsSmsReachable}}, {{RecipientIsEmailReachable}})"
+      },
+      {
+        "name": "PermissionGatePassed",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the policy is active, consent is satisfied, and the recipient is reachable on this channel. The channel-permission gate.",
+        "formula": "=AND({{PolicyIsActive}}, AND({{ConsentGatePassed}}, {{ReachabilityGatePassed}}))"
+      },
+      {
+        "name": "IntentQuietStartHour",
+        "datatype": "integer",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Quiet-hours start hour from the governing policy.",
+        "formula": "=INDEX(CommunicationPolicies!{{QuietHoursStartHour}}, MATCH({{IntentPolicy}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0))"
+      },
+      {
+        "name": "IntentQuietEndHour",
+        "datatype": "integer",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Quiet-hours end hour from the governing policy.",
+        "formula": "=INDEX(CommunicationPolicies!{{QuietHoursEndHour}}, MATCH({{IntentPolicy}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0))"
+      },
+      {
+        "name": "IntentPolicyHasQuietHours",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the governing policy declares a real quiet-hours window.",
+        "formula": "={{IntentQuietStartHour}} <> {{IntentQuietEndHour}}"
+      },
+      {
+        "name": "IntentQuietWindowWraps",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the quiet window crosses midnight.",
+        "formula": "={{IntentQuietStartHour}} > {{IntentQuietEndHour}}"
+      },
+      {
+        "name": "IntentIsInsideQuietWindow",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the proposed recipient-local send hour falls inside the forbidden window.",
+        "formula": "=IF({{IntentQuietWindowWraps}}, OR({{ProposedSendAtLocalHour}} >= {{IntentQuietStartHour}}, {{ProposedSendAtLocalHour}} < {{IntentQuietEndHour}}), AND({{ProposedSendAtLocalHour}} >= {{IntentQuietStartHour}}, {{ProposedSendAtLocalHour}} < {{IntentQuietEndHour}}))"
+      },
+      {
+        "name": "TimingGatePassed",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when transmitting now is permitted on timing grounds. The timing gate.",
+        "formula": "=OR(NOT({{IntentPolicyHasQuietHours}}), NOT({{IntentIsInsideQuietWindow}}))"
+      },
+      {
+        "name": "HoursUntilWindowOpens",
+        "datatype": "integer",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "How many hours the pipeline must defer before transmission becomes permitted; 0 when already permitted.",
+        "formula": "=IF({{TimingGatePassed}}, 0, IF({{ProposedSendAtLocalHour}} < {{IntentQuietEndHour}}, {{IntentQuietEndHour}} - {{ProposedSendAtLocalHour}}, 24 - {{ProposedSendAtLocalHour}} + {{IntentQuietEndHour}}))"
+      },
+      {
+        "name": "IntentMaxMessageLength",
+        "datatype": "integer",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Per-segment character limit from the governing policy.",
+        "formula": "=INDEX(CommunicationPolicies!{{MaxMessageLength}}, MATCH({{IntentPolicy}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0))"
+      },
+      {
+        "name": "IntentMaxSegments",
+        "datatype": "integer",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Segment ceiling from the governing policy.",
+        "formula": "=INDEX(CommunicationPolicies!{{MaxSegments}}, MATCH({{IntentPolicy}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0))"
+      },
+      {
+        "name": "ProposedBodyLength",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Character count of ProposedBody, written by the pipeline at render time."
+      },
+      {
+        "name": "ProposedSegmentCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Number of channel segments ProposedBody will occupy, computed by the pipeline at render time."
+      },
+      {
+        "name": "LengthGatePassed",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the proposed text is non-empty and fits within the segment ceiling.",
+        "formula": "=AND({{ProposedBodyLength}} > 0, {{ProposedSegmentCount}} <= {{IntentMaxSegments}})"
+      },
+      {
+        "name": "IntentRequiredOptOutPhrase",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Opt-out phrase the governing policy requires in every message on this channel.",
+        "formula": "=INDEX(CommunicationPolicies!{{RequiredOptOutPhrase}}, MATCH({{IntentPolicy}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0))"
+      },
+      {
+        "name": "ProposedOptOutPosition",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Character position of the required opt-out phrase within ProposedBody; 0 when absent. Written by the pipeline at render time."
+      },
+      {
+        "name": "OptOutGatePassed",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when no opt-out is required, or the required phrase is present within the first segment.",
+        "formula": "=OR({{IntentRequiredOptOutPhrase}} = \"\", AND({{ProposedOptOutPosition}} > 0, {{ProposedOptOutPosition}} <= {{IntentMaxMessageLength}}))"
+      },
+      {
+        "name": "ContentGatePassed",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the proposed text satisfies every content rule of the governing channel policy.",
+        "formula": "=AND({{LengthGatePassed}}, {{OptOutGatePassed}})"
+      },
+      {
+        "name": "TemplateIsSendable",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether the template carries a current, properly-authorized, non-drifted approval.",
+        "formula": "=INDEX(MessageTemplates!{{IsSendableUnderApproval}}, MATCH({{MessageTemplate}}, MessageTemplates!{{MessageTemplateId}}, 0))"
+      },
+      {
+        "name": "ExecutionHasLegalClearance",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether legal review has passed for the execution this intent belongs to.",
+        "formula": "=INDEX(ProcedureExecutions!{{HasClearedLegalReview}}, MATCH({{ProcedureExecution}}, ProcedureExecutions!{{ProcedureExecutionId}}, 0))"
+      },
+      {
+        "name": "IntentApprovalRole",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The role the governing policy designates as the approving authority.",
+        "formula": "=INDEX(CommunicationPolicies!{{ApprovalRole}}, MATCH({{IntentPolicy}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0))"
+      },
+      {
+        "name": "ApprovalRoleAgentKind",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether the agent currently filling the designated approval role is Human, AIAgent, or AutomatedPipeline.",
+        "formula": "=INDEX(Roles!{{CurrentAgentKind}}, MATCH({{IntentApprovalRole}}, Roles!{{RoleId}}, 0))"
+      },
+      {
+        "name": "ApprovalIsHuman",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the designated approval role is currently held by a human agent.",
+        "formula": "={{ApprovalRoleAgentKind}} = \"Human\""
+      },
+      {
+        "name": "AuthorizationGatePassed",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE only when the template is validly approved, legal review has cleared, and the approving role is held by a human. The authorization gate.",
+        "formula": "=AND({{TemplateIsSendable}}, AND({{ExecutionHasLegalClearance}}, {{ApprovalIsHuman}}))"
+      },
+      {
+        "name": "IsClearedToSend",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE only when all four gates pass. THE single column the pipeline reads before transmitting.",
+        "formula": "=AND({{PermissionGatePassed}}, AND({{TimingGatePassed}}, AND({{ContentGatePassed}}, {{AuthorizationGatePassed}})))"
+      },
+      {
+        "name": "BlockingGateName",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Names the first gate that refused, for the suppression reason; empty string when cleared.",
+        "formula": "=IF({{IsClearedToSend}}, \"\", IF(NOT({{PermissionGatePassed}}), \"Permission\", IF(NOT({{TimingGatePassed}}), \"Timing\", IF(NOT({{ContentGatePassed}}), \"Content\", \"Authorization\"))))"
+      },
+      {
+        "name": "HasResultingDelivery",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this intent produced a delivery record of any status.",
+        "formula": "={{ResultingDelivery}} <> \"\""
+      },
+      {
+        "name": "ResultingDeliveryWasTransmitted",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether the delivery produced from this intent actually left our systems.",
+        "formula": "=INDEX(MessageDeliveries!{{WasActuallyTransmitted}}, MATCH({{ResultingDelivery}}, MessageDeliveries!{{MessageDeliveryId}}, 0))"
+      },
+      {
+        "name": "IsOverriddenRefusal",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a gate refused and the message was transmitted regardless. The override witness.",
+        "formula": "=AND(NOT({{IsClearedToSend}}), AND({{HasResultingDelivery}}, {{ResultingDeliveryWasTransmitted}}))"
+      },
+      {
+        "name": "IsSilentlyDropped",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a gate refused and no delivery record of any kind was produced -- the recipient vanished from the run.",
+        "formula": "=AND(NOT({{IsClearedToSend}}), NOT({{HasResultingDelivery}}))"
+      },
+      {
+        "name": "ResultingDeliveryException",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The documented exception invoked on the delivery produced from this intent, if any.",
+        "formula": "=INDEX(MessageDeliveries!{{InvokedException}}, MATCH({{ResultingDelivery}}, MessageDeliveries!{{MessageDeliveryId}}, 0))"
+      },
+      {
+        "name": "RefusalCitedAnException",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the suppression produced by this refusal cited a documented exception.",
+        "formula": "={{ResultingDeliveryException}} <> \"\""
+      },
+      {
+        "name": "IsProperlyHandledRefusal",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a refusal correctly resulted in a non-transmitted delivery record citing a documented exception. The positive witness.",
+        "formula": "=AND(NOT({{IsClearedToSend}}), AND({{HasResultingDelivery}}, AND(NOT({{ResultingDeliveryWasTransmitted}}), {{RefusalCitedAnException}})))"
+      },
+      {
+        "name": "RefusalFailureExecutionKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Carries the execution id on any mishandled refusal; empty string otherwise.",
+        "formula": "=IF(OR({{IsOverriddenRefusal}}, {{IsSilentlyDropped}}), {{ProcedureExecution}}, \"\")"
+      },
+      {
+        "name": "SemanticTypeIri",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Extension IRI; pre-send intents are not a PKO 2.0.0 native class."
+      }
+    ],
+    "data": [
+      {
+        "SendIntentId": "si-001",
+        "ProcedureExecution": "exec-policy-hr4821",
+        "StepExecution": "se-policy04",
+        "Recipient": "rec-001",
+        "MessageTemplate": "tmpl-policy-sms",
+        "ProposedBody": "Policy HR-4821 update. Review and acknowledge: https://example.com/hr4821 Reply STOP to opt out",
+        "ProposedSendAtLocalHour": 14,
+        "EvaluatedAt": "2026-07-18T14:04:00-05:00",
+        "ResultingDelivery": "md-001",
+        "ProposedBodyLength": 95,
+        "ProposedSegmentCount": 1,
+        "ProposedOptOutPosition": 75,
+        "SemanticTypeIri": "urn:effortless:pko-extension#SendIntent"
+      },
+      {
+        "SendIntentId": "si-002",
+        "ProcedureExecution": "exec-policy-hr4821",
+        "StepExecution": "se-policy04",
+        "Recipient": "rec-003",
+        "MessageTemplate": "tmpl-policy-sms",
+        "ProposedBody": "Policy HR-4821 update. Review and acknowledge: https://example.com/hr4821 Reply STOP to opt out",
+        "ProposedSendAtLocalHour": 14,
+        "EvaluatedAt": "2026-07-18T14:04:00-05:00",
+        "ResultingDelivery": null,
+        "ProposedBodyLength": 95,
+        "ProposedSegmentCount": 1,
+        "ProposedOptOutPosition": 75,
+        "SemanticTypeIri": "urn:effortless:pko-extension#SendIntent"
+      },
+      {
+        "SendIntentId": "si-003",
+        "ProcedureExecution": "exec-policy-hr4821",
+        "StepExecution": "se-policy04",
+        "Recipient": "rec-001",
+        "MessageTemplate": "tmpl-policy-sms",
+        "ProposedBody": "Policy HR-4821 update. Review and acknowledge: https://example.com/hr4821 Reply STOP to opt out",
+        "ProposedSendAtLocalHour": 21,
+        "EvaluatedAt": "2026-07-18T14:04:00-05:00",
+        "ResultingDelivery": null,
+        "ProposedBodyLength": 95,
+        "ProposedSegmentCount": 1,
+        "ProposedOptOutPosition": 75,
+        "SemanticTypeIri": "urn:effortless:pko-extension#SendIntent"
+      },
+      {
+        "SendIntentId": "si-004",
+        "ProcedureExecution": "exec-policy-hr4821",
+        "StepExecution": "se-policy04",
+        "Recipient": "rec-002",
+        "MessageTemplate": "tmpl-policy-sms",
+        "ProposedBody": "Policy HR-4821 update. This notice explains the revised remote-work expectations, the effective date, the acknowledgement deadline, and who to contact with questions about how the change affects your specific arrangement. Reply STOP to opt out",
+        "ProposedSendAtLocalHour": 14,
+        "EvaluatedAt": "2026-07-18T14:04:00-05:00",
+        "ResultingDelivery": null,
+        "ProposedBodyLength": 243,
+        "ProposedSegmentCount": 2,
+        "ProposedOptOutPosition": 223,
+        "SemanticTypeIri": "urn:effortless:pko-extension#SendIntent"
+      },
+      {
+        "SendIntentId": "si-005",
+        "ProcedureExecution": "exec-policy-hr4821",
+        "StepExecution": "se-policy04",
+        "Recipient": "rec-002",
+        "MessageTemplate": "tmpl-policy-sms",
+        "ProposedBody": "Policy HR-4821 update. Review and acknowledge: https://example.com/hr4821",
+        "ProposedSendAtLocalHour": 14,
+        "EvaluatedAt": "2026-07-18T14:04:00-05:00",
+        "ResultingDelivery": null,
+        "ProposedBodyLength": 73,
+        "ProposedSegmentCount": 1,
+        "ProposedOptOutPosition": 0,
+        "SemanticTypeIri": "urn:effortless:pko-extension#SendIntent"
+      },
+      {
+        "SendIntentId": "si-006",
+        "ProcedureExecution": "exec-policy-hr4821",
+        "StepExecution": "se-policy04",
+        "Recipient": "rec-005",
+        "MessageTemplate": "tmpl-policy-sms",
+        "ProposedBody": "Policy HR-4821 update. Review and acknowledge: https://example.com/hr4821 Reply STOP to opt out",
+        "ProposedSendAtLocalHour": 14,
+        "EvaluatedAt": "2026-07-18T14:04:00-05:00",
+        "ResultingDelivery": null,
+        "ProposedBodyLength": 95,
+        "ProposedSegmentCount": 1,
+        "ProposedOptOutPosition": 75,
+        "SemanticTypeIri": "urn:effortless:pko-extension#SendIntent"
+      },
+      {
+        "SendIntentId": "si-007",
+        "ProcedureExecution": "exec-policy-hr4821",
+        "StepExecution": "se-policy04",
+        "Recipient": "rec-001",
+        "MessageTemplate": "tmpl-policy-email",
+        "ProposedBody": "Policy HR-4821 update. Review and acknowledge: https://example.com/hr4821 Reply STOP to opt out",
+        "ProposedSendAtLocalHour": 14,
+        "EvaluatedAt": "2026-07-18T14:04:00-05:00",
+        "ResultingDelivery": "md-001",
+        "ProposedBodyLength": 95,
+        "ProposedSegmentCount": 1,
+        "ProposedOptOutPosition": 0,
+        "SemanticTypeIri": "urn:effortless:pko-extension#SendIntent"
+      }
+    ]
+  },
+  "AgentDecisionRecords": {
+    "Description": "AgentDecisionRecords (added by witness loop 1).",
+    "schema": [
+      {
+        "name": "AgentDecisionRecordId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stored logical identifier for one AgentDecisionRecords row."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Human-readable calculated display alias for the AgentDecisionRecords row.",
+        "formula": "={{DecidingAgent}} & \": \" & LEFT({{DecisionSummary}}, 60)"
+      },
+      {
+        "name": "StepExecution",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Step execution during which the decision was made.",
+        "RelatedTo": "StepExecutions"
+      },
+      {
+        "name": "DecidingAgent",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Agent that made the decision.",
+        "RelatedTo": "Agents"
+      },
+      {
+        "name": "DecisionKind",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Classification, Prioritization, Draft, Suppression, Escalation, or Posting."
+      },
+      {
+        "name": "DecisionSummary",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "What the agent decided, in one sentence."
+      },
+      {
+        "name": "DecidedAt",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "When the decision was made."
+      },
+      {
+        "name": "MaterialityBand",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "BelowThreshold, Material, or Escalated."
+      },
+      {
+        "name": "HumanDisposition",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Accepted, Corrected, Reversed, or NotReviewed."
+      },
+      {
+        "name": "ReviewedByAgent",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Human agent that dispositioned the decision.",
+        "RelatedTo": "Agents"
+      },
+      {
+        "name": "ReviewedAt",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "When a human dispositioned the decision."
+      },
+      {
+        "name": "WasOverridden",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a human corrected or reversed this decision.",
+        "formula": "=OR({{HumanDisposition}} = \"Corrected\", {{HumanDisposition}} = \"Reversed\")"
+      },
+      {
+        "name": "WasReviewed",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a human actually dispositioned this decision.",
+        "formula": "=AND({{HumanDisposition}} <> \"\", {{HumanDisposition}} <> \"NotReviewed\")"
+      },
+      {
+        "name": "DecidingAgentKind",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether the deciding agent is Human, AIAgent, or AutomatedPipeline.",
+        "formula": "=INDEX(Agents!{{AgentKind}}, MATCH({{DecidingAgent}}, Agents!{{AgentId}}, 0))"
+      },
+      {
+        "name": "DecidingAgentWhenOverridden",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Echoes the deciding agent id when the decision was overridden, blank otherwise.",
+        "formula": "=IF({{WasOverridden}}, {{DecidingAgent}}, \"\")"
+      },
+      {
+        "name": "SemanticTypeIri",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Extension class IRI for an agent decision record."
+      }
+    ],
+    "data": [
+      {
+        "AgentDecisionRecordId": "adr-close-post-q2",
+        "StepExecution": "se-close07",
+        "DecidingAgent": "close-pipeline",
+        "DecisionKind": "Posting",
+        "DecisionSummary": "Posted approved close entries and published the package.",
+        "DecidedAt": "2026-07-02T09:30:00-05:00",
+        "MaterialityBand": "Material",
+        "HumanDisposition": "Accepted",
+        "ReviewedByAgent": "devon-okafor",
+        "ReviewedAt": "2026-07-02T10:00:00-05:00",
+        "SemanticTypeIri": "urn:effortless:pko-extension#AgentDecisionRecord"
+      },
+      {
+        "AgentDecisionRecordId": "adr-close-extract-q2",
+        "StepExecution": "se-close02",
+        "DecidingAgent": "close-pipeline",
+        "DecisionKind": "Posting",
+        "DecisionSummary": "Accepted a trial-balance extract in which one feed was 17 minutes old.",
+        "DecidedAt": "2026-06-30T17:12:00-05:00",
+        "MaterialityBand": "Material",
+        "HumanDisposition": "Corrected",
+        "ReviewedByAgent": "devon-okafor",
+        "ReviewedAt": "2026-06-30T17:16:00-05:00",
+        "SemanticTypeIri": "urn:effortless:pko-extension#AgentDecisionRecord"
+      },
+      {
+        "AgentDecisionRecordId": "adr-close-freeze-q2",
+        "StepExecution": "se-close01",
+        "DecidingAgent": "close-pipeline",
+        "DecisionKind": "Posting",
+        "DecisionSummary": "Locked subledgers at cutoff.",
+        "DecidedAt": "2026-06-30T17:02:00-05:00",
+        "MaterialityBand": "Material",
+        "HumanDisposition": "Accepted",
+        "ReviewedByAgent": "devon-okafor",
+        "ReviewedAt": "2026-06-30T17:20:00-05:00",
+        "SemanticTypeIri": "urn:effortless:pko-extension#AgentDecisionRecord"
       }
     ]
   }

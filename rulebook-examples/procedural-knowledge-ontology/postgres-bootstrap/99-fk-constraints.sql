@@ -490,4 +490,32 @@ ALTER TABLE template_approvals DROP CONSTRAINT IF EXISTS fk_template_approvals_d
 ALTER TABLE template_approvals ADD CONSTRAINT fk_template_approvals_decided_in_role
   FOREIGN KEY (decided_in_role) REFERENCES roles (role_id);
 
--- 128 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
+-- SendIntents
+ALTER TABLE send_intents DROP CONSTRAINT IF EXISTS fk_send_intents_procedure_execution;
+ALTER TABLE send_intents ADD CONSTRAINT fk_send_intents_procedure_execution
+  FOREIGN KEY (procedure_execution) REFERENCES procedure_executions (procedure_execution_id);
+ALTER TABLE send_intents DROP CONSTRAINT IF EXISTS fk_send_intents_step_execution;
+ALTER TABLE send_intents ADD CONSTRAINT fk_send_intents_step_execution
+  FOREIGN KEY (step_execution) REFERENCES step_executions (step_execution_id);
+ALTER TABLE send_intents DROP CONSTRAINT IF EXISTS fk_send_intents_recipient;
+ALTER TABLE send_intents ADD CONSTRAINT fk_send_intents_recipient
+  FOREIGN KEY (recipient) REFERENCES recipients (recipient_id);
+ALTER TABLE send_intents DROP CONSTRAINT IF EXISTS fk_send_intents_message_template;
+ALTER TABLE send_intents ADD CONSTRAINT fk_send_intents_message_template
+  FOREIGN KEY (message_template) REFERENCES message_templates (message_template_id);
+ALTER TABLE send_intents DROP CONSTRAINT IF EXISTS fk_send_intents_resulting_delivery;
+ALTER TABLE send_intents ADD CONSTRAINT fk_send_intents_resulting_delivery
+  FOREIGN KEY (resulting_delivery) REFERENCES message_deliveries (message_delivery_id);
+
+-- AgentDecisionRecords
+ALTER TABLE agent_decision_records DROP CONSTRAINT IF EXISTS fk_agent_decision_records_step_execution;
+ALTER TABLE agent_decision_records ADD CONSTRAINT fk_agent_decision_records_step_execution
+  FOREIGN KEY (step_execution) REFERENCES step_executions (step_execution_id);
+ALTER TABLE agent_decision_records DROP CONSTRAINT IF EXISTS fk_agent_decision_records_deciding_agent;
+ALTER TABLE agent_decision_records ADD CONSTRAINT fk_agent_decision_records_deciding_agent
+  FOREIGN KEY (deciding_agent) REFERENCES agents (agent_id);
+ALTER TABLE agent_decision_records DROP CONSTRAINT IF EXISTS fk_agent_decision_records_reviewed_by_agent;
+ALTER TABLE agent_decision_records ADD CONSTRAINT fk_agent_decision_records_reviewed_by_agent
+  FOREIGN KEY (reviewed_by_agent) REFERENCES agents (agent_id);
+
+-- 136 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
