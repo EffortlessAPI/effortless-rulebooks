@@ -1317,12 +1317,12 @@
     {
       "LoopOrder": 706,
       "LoopId": "tsp-loop-706",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
       "ClosureCriterion": "Split the residual orbit on one undecided edge and record include/exclude class counts and best values as calibration-only search evidence.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Executed one explicit calibration branch on a value-relevant residual orbit.",
+      "Result": "Edge holdout-residual8-edge-6-7: include branch 720 classes/best 57.0; exclude branch 1800 classes/best 38.0; this is exact-oracle calibration, not a new polynomial inference rule.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 707,
@@ -1505,7 +1505,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 710,
-    "HighestCompletedLoop": 705,
+    "HighestCompletedLoop": 706,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 16,
     "SelectedNotForcedEdgeStates": 5,
@@ -1542,13 +1542,13 @@
     "ConnectedDegreeTwoCertificates": 3,
     "RouteReconstructions": 2,
     "RouteReconstructionSteps": 14,
-    "SearchCertificates": 15,
+    "SearchCertificates": 16,
     "ConstraintRounds": 3,
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 66,
     "ClusterContractionCertificates": 7,
-    "ConvergenceMeasurements": 109,
-    "ConceptRegistry": 161,
+    "ConvergenceMeasurements": 110,
+    "ConceptRegistry": 162,
     "DefectProfiles": 33,
     "BoundTerms": 8,
     "WitnessNormalForms": 35,
@@ -1582,7 +1582,7 @@
     "DevelopmentMaxExactClassCount": 20160
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:aa3e0d5943868fe9e43dbf7469558e5e9aafe1057551964b6855b87f9f7c8537",
+    "rulebook": "sha256:ed27fa94c9c2c221579fbb15a688d2029c5b551d3a4a351374cc51696d57dfab",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
