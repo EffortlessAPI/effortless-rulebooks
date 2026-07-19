@@ -77,18 +77,21 @@ jobs:
           npm install -g "$EFFORTLESS_CLI_SOURCE"
           effortless -info
 
-      - name: Materialize provider package and portable history
+      - name: Materialize provider package, migration, and portable history
         shell: bash
         run: |
           set -euo pipefail
           domain='rulebook-examples/effortless-math/domains/traveling-salesman'
           provider="$domain/evidence-providers/benchmark-717-836"
           rm -rf /tmp/tsp-provider-package "$provider"
-          mkdir -p /tmp/tsp-provider-package "$provider"
+          mkdir -p /tmp/tsp-provider-package "$provider" "$domain/scripts"
           cat .github/tsp_payload/tsp-benchmark-loops-717-836.zip.b64.part-* | base64 -d > /tmp/tsp-provider.zip
           unzip -q /tmp/tsp-provider.zip -d /tmp/tsp-provider-package
           cp -a /tmp/tsp-provider-package/tsp-benchmark-loops-717-836/. "$provider/"
           cp .github/tsp_payload/PROVIDER_HISTORY_647_836.tsv "$provider/PROVIDER_HISTORY_647_836.tsv"
+          cat .github/tsp_payload/apply_provider_loops_711_836.py.b64.part-* | base64 -d > "$domain/scripts/apply_provider_loops_711_836.py"
+          chmod +x "$domain/scripts/apply_provider_loops_711_836.py"
+          python3 -m py_compile "$domain/scripts/apply_provider_loops_711_836.py"
           sha256sum "$provider/PROVIDER_HISTORY_647_836.tsv"
 
       - name: Independently replay provider payloads and finite computations
@@ -100,8 +103,7 @@ jobs:
           provider="$domain/evidence-providers/benchmark-717-836"
           (
             cd "$provider"
-            PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=. python3 - <<'PY'
-          import json
+            PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=. python3 - <<'PY2'
           import validate_benchmark_campaign as v
           ext = v.load('benchmark-rulebook-extension.json')
           loops = ext['Loops']
@@ -133,7 +135,7 @@ jobs:
           if ablation['summary']['seed_portfolio_exact_count'] != 29 or ablation['summary']['local_portfolio_exact_count'] != 30:
               raise AssertionError('witness ablation drift')
           print('TSP provider source and computation replay: PASS')
-          PY
+          PY2
           ) | tee /tmp/tsp-provider-replay.log
           grep -q 'TSP provider source and computation replay: PASS' /tmp/tsp-provider-replay.log
 
@@ -179,6 +181,7 @@ jobs:
           cp /tmp/tsp-loop-postgres.txt "$domain/testing/provider-711-836-postgres.txt"
           python3 "$domain/scripts/validate_rulebook.py"
           rm -f .github/tsp_payload/tsp-benchmark-loops-717-836.zip.b64.part-* \
+                .github/tsp_payload/apply_provider_loops_711_836.py.b64.part-* \
                 .github/tsp_payload/PROVIDER_HISTORY_647_836.tsv
           git add -A -- "$domain" .github/tsp_payload .github/workflows/apply-tsp-provider-711-836.yml
           git commit -m 'Integrate TSP provider bridge and benchmark loops 711-836'
