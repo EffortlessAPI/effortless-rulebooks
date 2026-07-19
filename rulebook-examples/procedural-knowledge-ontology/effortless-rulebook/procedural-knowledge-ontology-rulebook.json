@@ -5068,6 +5068,34 @@
         "ResolutionPlan": "Surfaced by Agents.IsStillEngaged, which counts CURRENT RoleAssignments rather than trusting Roles.CurrentAgent. amina-yusuf read as not engaged, which made kf-policy-channel an IsUndefendableTacitClaim. Resolved by recording the five missing time-bounded assignments. The witness stays: it is the only thing that distinguishes a real appointment from a denormalized pointer.",
         "EvaluationContext": "eval-current",
         "SemanticTypeIri": "urn:effortless:pko-extension#KnowledgeGap"
+      },
+      {
+        "KnowledgeGapId": "gap-policy-consent-unenforced",
+        "ProcedureVersion": "policy-v1.0.0",
+        "Step": "policy-07",
+        "Statement": "comm-sms-policy set ConsentRequired=true and exc-no-sms-consent documented the suppress-and-email handling, but no per-recipient delivery record existed, so a send to a non-consenting recipient was structurally invisible. req-policy-consent was a blocking control with zero satisfaction records.",
+        "Severity": "Critical",
+        "BlockingKind": "Blocking",
+        "Status": "Resolved",
+        "OwnerRole": "employment-counsel",
+        "IdentifiedAt": "2026-07-19T18:40:00-05:00",
+        "ResolutionPlan": "Resolved by the Recipients and MessageDeliveries tables plus MessageDeliveries.IsConsentViolation. Proven on md-003, a real SMS to a never-consented recipient, which the witness flags while correctly NOT flagging md-004 (consent revoked, properly suppressed under exc-no-sms-consent) or md-006 (unreachable, failed, HR case opened). Recipient re-consented; the delivery row is retained as evidence.",
+        "EvaluationContext": "eval-current",
+        "SemanticTypeIri": "urn:effortless:pko-extension#KnowledgeGap"
+      },
+      {
+        "KnowledgeGapId": "gap-policy-quiet-hours-unenforced",
+        "ProcedureVersion": "policy-v1.0.0",
+        "Step": "policy-07",
+        "Statement": "comm-sms-policy defined a 20:00-08:00 quiet window and nothing compared a send time against it.",
+        "Severity": "High",
+        "BlockingKind": "Blocking",
+        "Status": "Resolved",
+        "OwnerRole": "employment-counsel",
+        "IdentifiedAt": "2026-07-19T18:40:00-05:00",
+        "ResolutionPlan": "Resolved by MessageDeliveries.IsInsideQuietWindow and IsQuietHoursViolation, proven on md-005 (21:00 send). QuietHoursStartHour is stored rather than parsed: VALUE(LEFT(\"20:00\",2)) does not translate \u2014 the transpiler casts the string to a timestamp and the view errors.",
+        "EvaluationContext": "eval-current",
+        "SemanticTypeIri": "urn:effortless:pko-extension#KnowledgeGap"
       }
     ]
   },
@@ -5448,6 +5476,38 @@
         "nullable": true,
         "Description": "TRUE when any blocking control in this execution passed without a computed witness behind it.",
         "formula": "={{AssertedOnlyControlCount}} > 0"
+      },
+      {
+        "name": "UnreachableHandlingFailureCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of deliveries in this execution where unreachable handling was wrong -- either fabricated acknowledgement or no exception invoked.",
+        "formula": "=COUNTIFS(MessageDeliveries!{{UnreachableFailureKey}}, {{ProcedureExecutionId}})"
+      },
+      {
+        "name": "RetentionBreachCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of transmitted messages in this execution whose text we no longer hold despite an active retention obligation.",
+        "formula": "=COUNTIFS(MessageDeliveries!{{RetentionBreachExecutionKey}}, {{ProcedureExecutionId}})"
+      },
+      {
+        "name": "ClearedLegalReviewCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many passed legal reviews exist for this execution.",
+        "formula": "=COUNTIFS(StepExecutions!{{ClearedLegalReviewKey}}, {{ProcedureExecutionId}})"
+      },
+      {
+        "name": "HasClearedLegalReview",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when legal review has passed for this execution.",
+        "formula": "={{ClearedLegalReviewCount}} > 0"
       },
       {
         "name": "SemanticTypeIri",
@@ -5943,6 +6003,30 @@
         "nullable": true,
         "Description": "TRUE when this step execution reached a completed state.",
         "formula": "={{ExecutionStatus}} = \"Completed\""
+      },
+      {
+        "name": "IsVerificationPassed",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE only when this step execution's verification actually passed. PENDING and FAIL are both not-passed.",
+        "formula": "={{VerificationResult}} = \"PASS\""
+      },
+      {
+        "name": "IsLegalReviewStep",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE for executions of the legal and privacy review step.",
+        "formula": "={{Step}} = \"policy-04\""
+      },
+      {
+        "name": "ClearedLegalReviewKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Carries the execution id only when this row is a PASSED legal review; empty string otherwise.",
+        "formula": "=IF(AND({{IsLegalReviewStep}}, {{IsVerificationPassed}}), {{ProcedureExecution}}, \"\")"
       },
       {
         "name": "SemanticTypeIri",
@@ -7633,6 +7717,36 @@
         "Description": "Draft, Active, Suspended, or Retired."
       },
       {
+        "name": "ConsentViolationCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of consent violations attributable to this channel policy.",
+        "formula": "=COUNTIFS(MessageDeliveries!{{PolicyChannel}}, {{CommunicationPolicyId}}, MessageDeliveries!{{IsConsentViolation}}, TRUE)"
+      },
+      {
+        "name": "QuietHoursStartHour",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "The hour (0-23) at which the quiet window opens. Stored rather than parsed from QuietHoursStart: VALUE(LEFT(...)) does not translate \u2014 the transpiler casts the \"20:00\" string to a timestamp and the view errors. The sending system already knows this number, so modeling it as a parse would dress a broken derivation up as a rule."
+      },
+      {
+        "name": "QuietHoursEndHour",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Numeric hour 0-23 at which quiet hours end. Seeded 8 for comm-sms-policy, 0 for comm-email-policy."
+      },
+      {
+        "name": "QuietHoursViolationCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of transmitted messages that breached this policy's quiet-hours window.",
+        "formula": "=COUNTIFS(MessageDeliveries!{{QuietHoursViolationPolicyKey}}, {{CommunicationPolicyId}})"
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -7656,7 +7770,9 @@
         "RequiredContent": "Full policy context, effective date, action required, alternate contact",
         "AuthorityStatement": "Email is the complete official notification record.",
         "Status": "Active",
-        "SemanticTypeIri": "http://www.w3.org/ns/odrl/2/Policy"
+        "SemanticTypeIri": "http://www.w3.org/ns/odrl/2/Policy",
+        "QuietHoursStartHour": 0,
+        "QuietHoursEndHour": 0
       },
       {
         "CommunicationPolicyId": "comm-sms-policy",
@@ -7673,7 +7789,9 @@
         "RequiredContent": "Short notice, secure link, approved opt-out text",
         "AuthorityStatement": "SMS is a supplemental notice; the linked email/policy is authoritative.",
         "Status": "Active",
-        "SemanticTypeIri": "http://www.w3.org/ns/odrl/2/Policy"
+        "SemanticTypeIri": "http://www.w3.org/ns/odrl/2/Policy",
+        "QuietHoursStartHour": 20,
+        "QuietHoursEndHour": 8
       }
     ]
   },
@@ -8516,6 +8634,51 @@
         "WitnessLoop": "loop-01",
         "QuestionText": "cr-close-timestamp altered a blocking control on close-v1.1.0 and was decided by me. Did any semantic change to a live procedure reach production without a change request and without a review event behind it?",
         "WhyItMatters": "My authority is over what counts as true, which means every change to the meaning of a live procedure must trace to a decision I made. close-v1.1.0 was ModifiedAt 2026-07-02T15:00 by maria-chen; review-close-q2 happened at 16:00 and cr-close-timestamp was raised at 16:30. That ordering is fine. But nothing in the model checks the ordering, so an edit that PRECEDES no review and no change request looks identical to a governed one. Provenance of change is as much an epistemic question as provenance of belief.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-counsel-sms-without-consent",
+        "AskingRole": "employment-counsel",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "Did we send an SMS to any recipient who had not given SMS consent at the moment we sent it?",
+        "WhyItMatters": "comm-sms-policy sets ConsentRequired=true. Every SMS to a non-consenting recipient is an independent statutory violation with per-message damages, and the exposure scales with the size of the affected population. Right now the model cannot answer this at all -- there are no per-recipient send records -- so counsel cannot sign off on policy-04, cannot certify to an outside regulator, and cannot even scope the exposure. The absence of the record IS the legal problem: unanswerable and non-compliant look identical from the outside.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-counsel-quiet-hours-breach",
+        "AskingRole": "employment-counsel",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "Did any SMS go out between 20:00 and 08:00 in the recipient's own local time?",
+        "WhyItMatters": "comm-sms-policy declares QuietHoursStart 20:00 / QuietHoursEnd 08:00. Quiet-hours restrictions on non-emergency messaging are statutory in several jurisdictions and contractual in others, and a night-time text to an employee about an employment policy change is exactly the fact pattern that generates a complaint. The window wraps midnight, which is where naive implementations quietly get it wrong -- and a witness that is wrong in the safe direction is worse than no witness, because it manufactures false assurance.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-counsel-unreachable-not-acknowledged",
+        "AskingRole": "employment-counsel",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "For every recipient we could not reach, did we correctly refrain from marking their acknowledgement complete?",
+        "WhyItMatters": "exc-unreachable is explicit: create an HR case, route to the manager, and do NOT mark acknowledgement complete. A falsely-recorded acknowledgement is the single most dangerous artifact in this entire model -- it is an affirmative written misrepresentation that the employee received and accepted a policy change, and it is exactly the document that gets subpoenaed in a wrongful-termination or unpaid-notice claim. Deemed-acknowledgement by silence is not acknowledgement. I would rather have zero acknowledgements than one fabricated one.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-counsel-retention-evidence",
+        "AskingRole": "employment-counsel",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "Do we still hold the exact text of every message we sent, for the full 2555-day retention period the policy commits us to?",
+        "WhyItMatters": "Both comm-sms-policy and comm-email-policy declare RetentionDays=2555 -- seven years. That is a commitment we made in writing, and in a dispute the question is never 'what did the template say', it is 'what did THIS employee actually receive'. Templates contain variable substitutions; the rendered text is the evidence. If a delivery record exists but its rendered body is empty, we have a receipt with no document behind it, and the adverse inference runs against us.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-counsel-legal-review-gated-send",
+        "AskingRole": "employment-counsel",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "Did any message go out before my legal review of the underlying policy version was actually complete?",
+        "WhyItMatters": "policy-04 is my step, and right now se-policy04 is InProgress with VerificationResult PENDING. If policy-07 sends started while my review was still open, then employees received a policy communication that no lawyer had cleared -- and the model would show that in black and white. This is not process pedantry: an unreviewed employment-policy communication can create a binding representation to the workforce, and once it is sent we cannot un-send it. The ordering constraint is the control.",
         "AnswerableBefore": false,
         "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
       }
@@ -12638,6 +12801,46 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "ProcedureExecutions.UnreachableHandlingFailureCount",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "UnreachableHandlingFailureCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(MessageDeliveries!{{UnreachableFailureKey}}, {{ProcedureExecutionId}})",
+        "InventedForQuestion": "q-counsel-unreachable-not-acknowledged",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureExecutions.RetentionBreachCount",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "RetentionBreachCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(MessageDeliveries!{{RetentionBreachExecutionKey}}, {{ProcedureExecutionId}})",
+        "InventedForQuestion": "q-counsel-retention-evidence",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureExecutions.ClearedLegalReviewCount",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "ClearedLegalReviewCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(StepExecutions!{{ClearedLegalReviewKey}}, {{ProcedureExecutionId}})",
+        "InventedForQuestion": "q-counsel-legal-review-gated-send",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureExecutions.HasClearedLegalReview",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "HasClearedLegalReview",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{ClearedLegalReviewCount}} > 0",
+        "InventedForQuestion": "q-counsel-legal-review-gated-send",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "ProcedureExecutions.SemanticTypeIri",
         "TargetTable": "ProcedureExecutions",
         "FieldName": "SemanticTypeIri",
@@ -13225,6 +13428,36 @@
         "Datatype": "boolean",
         "Formula": "={{ExecutionStatus}} = \"Completed\"",
         "InventedForQuestion": "q-steward-untested-fallbacks",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.IsVerificationPassed",
+        "TargetTable": "StepExecutions",
+        "FieldName": "IsVerificationPassed",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{VerificationResult}} = \"PASS\"",
+        "InventedForQuestion": "q-counsel-legal-review-gated-send",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.IsLegalReviewStep",
+        "TargetTable": "StepExecutions",
+        "FieldName": "IsLegalReviewStep",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{Step}} = \"policy-04\"",
+        "InventedForQuestion": "q-counsel-legal-review-gated-send",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.ClearedLegalReviewKey",
+        "TargetTable": "StepExecutions",
+        "FieldName": "ClearedLegalReviewKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF(AND({{IsLegalReviewStep}}, {{IsVerificationPassed}}), {{ProcedureExecution}}, \"\")",
+        "InventedForQuestion": "q-counsel-legal-review-gated-send",
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
@@ -14728,6 +14961,46 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "CommunicationPolicies.ConsentViolationCount",
+        "TargetTable": "CommunicationPolicies",
+        "FieldName": "ConsentViolationCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(MessageDeliveries!{{PolicyChannel}}, {{CommunicationPolicyId}}, MessageDeliveries!{{IsConsentViolation}}, TRUE)",
+        "InventedForQuestion": "q-counsel-sms-without-consent",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "CommunicationPolicies.QuietHoursStartHour",
+        "TargetTable": "CommunicationPolicies",
+        "FieldName": "QuietHoursStartHour",
+        "FieldType": "raw",
+        "Datatype": "integer",
+        "Formula": null,
+        "InventedForQuestion": "q-counsel-quiet-hours-breach",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "CommunicationPolicies.QuietHoursEndHour",
+        "TargetTable": "CommunicationPolicies",
+        "FieldName": "QuietHoursEndHour",
+        "FieldType": "raw",
+        "Datatype": "integer",
+        "Formula": null,
+        "InventedForQuestion": "q-counsel-quiet-hours-breach",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "CommunicationPolicies.QuietHoursViolationCount",
+        "TargetTable": "CommunicationPolicies",
+        "FieldName": "QuietHoursViolationCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(MessageDeliveries!{{QuietHoursViolationPolicyKey}}, {{CommunicationPolicyId}})",
+        "InventedForQuestion": "q-counsel-quiet-hours-breach",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "CommunicationPolicies.SemanticTypeIri",
         "TargetTable": "CommunicationPolicies",
         "FieldName": "SemanticTypeIri",
@@ -15866,6 +16139,606 @@
         "Formula": null,
         "InventedForQuestion": null,
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Recipients.RecipientId",
+        "TargetTable": "Recipients",
+        "FieldName": "RecipientId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Recipients.Name",
+        "TargetTable": "Recipients",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{DisplayName}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Recipients.DisplayName",
+        "TargetTable": "Recipients",
+        "FieldName": "DisplayName",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Recipients.Organization",
+        "TargetTable": "Recipients",
+        "FieldName": "Organization",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Recipients.EmailAddress",
+        "TargetTable": "Recipients",
+        "FieldName": "EmailAddress",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Recipients.MobileNumber",
+        "TargetTable": "Recipients",
+        "FieldName": "MobileNumber",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Recipients.SmsConsentStatus",
+        "TargetTable": "Recipients",
+        "FieldName": "SmsConsentStatus",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Recipients.SmsConsentAt",
+        "TargetTable": "Recipients",
+        "FieldName": "SmsConsentAt",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Recipients.ConsentBinding",
+        "TargetTable": "Recipients",
+        "FieldName": "ConsentBinding",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Recipients.HasSmsConsent",
+        "TargetTable": "Recipients",
+        "FieldName": "HasSmsConsent",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{SmsConsentStatus}} = \"Granted\"",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Recipients.IsEmailReachable",
+        "TargetTable": "Recipients",
+        "FieldName": "IsEmailReachable",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{EmailAddress}} <> \"\"",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Recipients.IsSmsReachable",
+        "TargetTable": "Recipients",
+        "FieldName": "IsSmsReachable",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{MobileNumber}} <> \"\"",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Recipients.IsUnreachable",
+        "TargetTable": "Recipients",
+        "FieldName": "IsUnreachable",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND(NOT({{IsEmailReachable}}), NOT({{IsSmsReachable}}))",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Recipients.SemanticTypeIri",
+        "TargetTable": "Recipients",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.MessageDeliveryId",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "MessageDeliveryId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.Name",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{Recipient}} & \" / \" & {{MessageTemplate}} & \" / \" & {{SentAt}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.ProcedureExecution",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "ProcedureExecution",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.StepExecution",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "StepExecution",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.Recipient",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "Recipient",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.MessageTemplate",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "MessageTemplate",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.SentByAgent",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "SentByAgent",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.RenderedBody",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "RenderedBody",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.SentAt",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "SentAt",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.SentAtLocalHour",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "SentAtLocalHour",
+        "FieldType": "raw",
+        "Datatype": "integer",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.DeliveryStatus",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "DeliveryStatus",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.SuppressionReason",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "SuppressionReason",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.InvokedException",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "InvokedException",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.AcknowledgedAt",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "AcknowledgedAt",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.PolicyChannel",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "PolicyChannel",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(MessageTemplates!{{CommunicationPolicy}}, MATCH({{MessageTemplate}}, MessageTemplates!{{MessageTemplateId}}, 0))",
+        "InventedForQuestion": "q-counsel-sms-without-consent",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.ChannelName",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "ChannelName",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(CommunicationPolicies!{{Channel}}, MATCH({{PolicyChannel}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0))",
+        "InventedForQuestion": "q-counsel-sms-without-consent",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.PolicyRequiresConsent",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "PolicyRequiresConsent",
+        "FieldType": "lookup",
+        "Datatype": "boolean",
+        "Formula": "=INDEX(CommunicationPolicies!{{ConsentRequired}}, MATCH({{PolicyChannel}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0))",
+        "InventedForQuestion": "q-counsel-sms-without-consent",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.RecipientHasSmsConsent",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "RecipientHasSmsConsent",
+        "FieldType": "lookup",
+        "Datatype": "boolean",
+        "Formula": "=INDEX(Recipients!{{HasSmsConsent}}, MATCH({{Recipient}}, Recipients!{{RecipientId}}, 0))",
+        "InventedForQuestion": "q-counsel-sms-without-consent",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.WasActuallyTransmitted",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "WasActuallyTransmitted",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=OR({{DeliveryStatus}} = \"Sent\", OR({{DeliveryStatus}} = \"Delivered\", {{DeliveryStatus}} = \"Bounced\"))",
+        "InventedForQuestion": "q-counsel-sms-without-consent",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.IsConsentViolation",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "IsConsentViolation",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{WasActuallyTransmitted}}, AND({{PolicyRequiresConsent}}, NOT({{RecipientHasSmsConsent}})))",
+        "InventedForQuestion": "q-counsel-sms-without-consent",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.ConsentViolationPolicyKey",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "ConsentViolationPolicyKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{IsConsentViolation}}, {{PolicyChannel}}, \"\")",
+        "InventedForQuestion": "q-counsel-sms-without-consent",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.PolicyQuietHoursStartHour",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "PolicyQuietHoursStartHour",
+        "FieldType": "lookup",
+        "Datatype": "integer",
+        "Formula": "=INDEX(CommunicationPolicies!{{QuietHoursStartHour}}, MATCH({{PolicyChannel}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0))",
+        "InventedForQuestion": "q-counsel-quiet-hours-breach",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.PolicyQuietHoursEndHour",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "PolicyQuietHoursEndHour",
+        "FieldType": "lookup",
+        "Datatype": "integer",
+        "Formula": "=INDEX(CommunicationPolicies!{{QuietHoursEndHour}}, MATCH({{PolicyChannel}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0))",
+        "InventedForQuestion": "q-counsel-quiet-hours-breach",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.PolicyHasQuietHours",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "PolicyHasQuietHours",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{PolicyQuietHoursStartHour}} <> {{PolicyQuietHoursEndHour}}",
+        "InventedForQuestion": "q-counsel-quiet-hours-breach",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.QuietWindowWrapsMidnight",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "QuietWindowWrapsMidnight",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{PolicyQuietHoursStartHour}} > {{PolicyQuietHoursEndHour}}",
+        "InventedForQuestion": "q-counsel-quiet-hours-breach",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.IsInsideQuietWindow",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "IsInsideQuietWindow",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=IF({{QuietWindowWrapsMidnight}}, OR({{SentAtLocalHour}} >= {{PolicyQuietHoursStartHour}}, {{SentAtLocalHour}} < {{PolicyQuietHoursEndHour}}), AND({{SentAtLocalHour}} >= {{PolicyQuietHoursStartHour}}, {{SentAtLocalHour}} < {{PolicyQuietHoursEndHour}}))",
+        "InventedForQuestion": "q-counsel-quiet-hours-breach",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.IsQuietHoursViolation",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "IsQuietHoursViolation",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{WasActuallyTransmitted}}, AND({{PolicyHasQuietHours}}, {{IsInsideQuietWindow}}))",
+        "InventedForQuestion": "q-counsel-quiet-hours-breach",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.QuietHoursViolationPolicyKey",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "QuietHoursViolationPolicyKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{IsQuietHoursViolation}}, {{PolicyChannel}}, \"\")",
+        "InventedForQuestion": "q-counsel-quiet-hours-breach",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.RecipientIsUnreachable",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "RecipientIsUnreachable",
+        "FieldType": "lookup",
+        "Datatype": "boolean",
+        "Formula": "=INDEX(Recipients!{{IsUnreachable}}, MATCH({{Recipient}}, Recipients!{{RecipientId}}, 0))",
+        "InventedForQuestion": "q-counsel-unreachable-not-acknowledged",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.IsAcknowledged",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "IsAcknowledged",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{AcknowledgedAt}} <> \"\"",
+        "InventedForQuestion": "q-counsel-unreachable-not-acknowledged",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.InvokedExceptionCondition",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "InvokedExceptionCondition",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(Exceptions!{{Condition}}, MATCH({{InvokedException}}, Exceptions!{{ExceptionId}}, 0))",
+        "InventedForQuestion": "q-counsel-unreachable-not-acknowledged",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.HasUnreachableExceptionInvoked",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "HasUnreachableExceptionInvoked",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{InvokedException}} = \"exc-unreachable\"",
+        "InventedForQuestion": "q-counsel-unreachable-not-acknowledged",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.IsFabricatedAcknowledgement",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "IsFabricatedAcknowledgement",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{RecipientIsUnreachable}}, {{IsAcknowledged}})",
+        "InventedForQuestion": "q-counsel-unreachable-not-acknowledged",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.IsUnhandledUnreachable",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "IsUnhandledUnreachable",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{RecipientIsUnreachable}}, NOT({{HasUnreachableExceptionInvoked}}))",
+        "InventedForQuestion": "q-counsel-unreachable-not-acknowledged",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.UnreachableFailureKey",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "UnreachableFailureKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF(OR({{IsFabricatedAcknowledgement}}, {{IsUnhandledUnreachable}}), {{ProcedureExecution}}, \"\")",
+        "InventedForQuestion": "q-counsel-unreachable-not-acknowledged",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.PolicyRetentionDays",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "PolicyRetentionDays",
+        "FieldType": "lookup",
+        "Datatype": "integer",
+        "Formula": "=INDEX(CommunicationPolicies!{{RetentionDays}}, MATCH({{PolicyChannel}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0))",
+        "InventedForQuestion": "q-counsel-retention-evidence",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.AgeDays",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "AgeDays",
+        "FieldType": "calculated",
+        "Datatype": "integer",
+        "Formula": "=DATETIME_DIFF(NOW(), {{SentAt}}, \"days\")",
+        "InventedForQuestion": "q-counsel-retention-evidence",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.IsWithinRetentionWindow",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "IsWithinRetentionWindow",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{AgeDays}} <= {{PolicyRetentionDays}}",
+        "InventedForQuestion": "q-counsel-retention-evidence",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.HasRenderedBody",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "HasRenderedBody",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{RenderedBody}} <> \"\"",
+        "InventedForQuestion": "q-counsel-retention-evidence",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.IsEvidenceRequired",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "IsEvidenceRequired",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{WasActuallyTransmitted}}, {{IsWithinRetentionWindow}})",
+        "InventedForQuestion": "q-counsel-retention-evidence",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.IsRetentionBreach",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "IsRetentionBreach",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsEvidenceRequired}}, NOT({{HasRenderedBody}}))",
+        "InventedForQuestion": "q-counsel-retention-evidence",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.RetentionBreachExecutionKey",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "RetentionBreachExecutionKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{IsRetentionBreach}}, {{ProcedureExecution}}, \"\")",
+        "InventedForQuestion": "q-counsel-retention-evidence",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.SendingStepExecutionStep",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "SendingStepExecutionStep",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(StepExecutions!{{Step}}, MATCH({{StepExecution}}, StepExecutions!{{StepExecutionId}}, 0))",
+        "InventedForQuestion": "q-counsel-legal-review-gated-send",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.ExecutionHasClearedLegalReview",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "ExecutionHasClearedLegalReview",
+        "FieldType": "lookup",
+        "Datatype": "boolean",
+        "Formula": "=INDEX(ProcedureExecutions!{{HasClearedLegalReview}}, MATCH({{ProcedureExecution}}, ProcedureExecutions!{{ProcedureExecutionId}}, 0))",
+        "InventedForQuestion": "q-counsel-legal-review-gated-send",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.IsUnreviewedSend",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "IsUnreviewedSend",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{WasActuallyTransmitted}}, NOT({{ExecutionHasClearedLegalReview}}))",
+        "InventedForQuestion": "q-counsel-legal-review-gated-send",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "MessageDeliveries.SemanticTypeIri",
+        "TargetTable": "MessageDeliveries",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       }
     ]
   },
@@ -16686,6 +17559,637 @@
         "ObservedAt": "2026-07-19T09:00:00-05:00",
         "TriggerReason": "Default sequence",
         "SemanticTypeIri": "urn:effortless:pko-extension#ObservedTransition"
+      }
+    ]
+  },
+  "Recipients": {
+    "Description": "Recipients (added by witness loop 1).",
+    "schema": [
+      {
+        "name": "RecipientId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stored logical identifier for one Recipients row."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Human-readable calculated display alias for the Recipients row.",
+        "formula": "={{DisplayName}}"
+      },
+      {
+        "name": "DisplayName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Employee display name as carried in the consent registry."
+      },
+      {
+        "name": "Organization",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Organization the recipient belongs to.",
+        "RelatedTo": "Organizations"
+      },
+      {
+        "name": "EmailAddress",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Corporate email address; empty string when the recipient has no valid corporate email."
+      },
+      {
+        "name": "MobileNumber",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Mobile number in E.164 form; empty string when no mobile number is on file."
+      },
+      {
+        "name": "SmsConsentStatus",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Consent state as observed in the consent registry: Granted, Revoked, or NeverGiven."
+      },
+      {
+        "name": "SmsConsentAt",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Timestamp at which the current SMS consent state took effect."
+      },
+      {
+        "name": "ConsentBinding",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Operational binding through which this consent state was observed.",
+        "RelatedTo": "OperationalBindings"
+      },
+      {
+        "name": "HasSmsConsent",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE only when the recipient's SMS consent state is Granted.",
+        "formula": "={{SmsConsentStatus}} = \"Granted\""
+      },
+      {
+        "name": "IsEmailReachable",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a corporate email address is on file for this recipient.",
+        "formula": "={{EmailAddress}} <> \"\""
+      },
+      {
+        "name": "IsSmsReachable",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a mobile number is on file for this recipient.",
+        "formula": "={{MobileNumber}} <> \"\""
+      },
+      {
+        "name": "IsUnreachable",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the recipient has neither an email address nor a mobile number -- the exc-unreachable trigger condition.",
+        "formula": "=AND(NOT({{IsEmailReachable}}), NOT({{IsSmsReachable}}))"
+      },
+      {
+        "name": "SemanticTypeIri",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Extension IRI; recipients are not a PKO 2.0.0 native class.",
+        "RelatedTo": null
+      }
+    ],
+    "data": [
+      {
+        "RecipientId": "rec-001",
+        "DisplayName": "Jordan Ellis",
+        "Organization": "acme-corp",
+        "EmailAddress": "jordan.ellis@example.com",
+        "MobileNumber": "+15551000001",
+        "SmsConsentStatus": "Granted",
+        "SmsConsentAt": "2026-05-02T10:00:00-05:00",
+        "ConsentBinding": "bind-policy-consent",
+        "SemanticTypeIri": "urn:effortless:pko-extension#Recipient"
+      },
+      {
+        "RecipientId": "rec-002",
+        "DisplayName": "Sam Rivera",
+        "Organization": "acme-corp",
+        "EmailAddress": "sam.rivera@example.com",
+        "MobileNumber": "+15551000002",
+        "SmsConsentStatus": "Granted",
+        "SmsConsentAt": "2026-05-04T14:30:00-05:00",
+        "ConsentBinding": "bind-policy-consent",
+        "SemanticTypeIri": "urn:effortless:pko-extension#Recipient"
+      },
+      {
+        "RecipientId": "rec-003",
+        "DisplayName": "Alex Kim",
+        "Organization": "acme-corp",
+        "EmailAddress": "alex.kim@example.com",
+        "MobileNumber": "+15551000003",
+        "SmsConsentStatus": "Granted",
+        "SmsConsentAt": "2026-07-19T09:15:00-05:00",
+        "ConsentBinding": "bind-policy-consent",
+        "SemanticTypeIri": "urn:effortless:pko-extension#Recipient"
+      },
+      {
+        "RecipientId": "rec-004",
+        "DisplayName": "Riley Chen",
+        "Organization": "acme-corp",
+        "EmailAddress": "riley.chen@example.com",
+        "MobileNumber": "+15551000004",
+        "SmsConsentStatus": "Revoked",
+        "SmsConsentAt": "2026-06-15T09:00:00-05:00",
+        "ConsentBinding": "bind-policy-consent",
+        "SemanticTypeIri": "urn:effortless:pko-extension#Recipient"
+      },
+      {
+        "RecipientId": "rec-005",
+        "DisplayName": "Morgan Diaz",
+        "Organization": "acme-corp",
+        "EmailAddress": "morgan.diaz@example.com",
+        "MobileNumber": null,
+        "SmsConsentStatus": "NeverGranted",
+        "SmsConsentAt": null,
+        "ConsentBinding": "bind-policy-consent",
+        "SemanticTypeIri": "urn:effortless:pko-extension#Recipient"
+      }
+    ]
+  },
+  "MessageDeliveries": {
+    "Description": "MessageDeliveries (added by witness loop 1).",
+    "schema": [
+      {
+        "name": "MessageDeliveryId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stored logical identifier for one MessageDeliveries row."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Human-readable calculated display alias for the MessageDeliveries row.",
+        "formula": "={{Recipient}} & \" / \" & {{MessageTemplate}} & \" / \" & {{SentAt}}"
+      },
+      {
+        "name": "ProcedureExecution",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "The procedure execution this send was performed under.",
+        "RelatedTo": "ProcedureExecutions"
+      },
+      {
+        "name": "StepExecution",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "The step execution that performed the send.",
+        "RelatedTo": "StepExecutions"
+      },
+      {
+        "name": "Recipient",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Who the message was sent to.",
+        "RelatedTo": "Recipients"
+      },
+      {
+        "name": "MessageTemplate",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Template that was rendered for this send.",
+        "RelatedTo": "MessageTemplates"
+      },
+      {
+        "name": "SentByAgent",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Agent that performed the send.",
+        "RelatedTo": "Agents"
+      },
+      {
+        "name": "RenderedBody",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "The exact body text that was transmitted, after variable substitution."
+      },
+      {
+        "name": "SentAt",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Transmission timestamp."
+      },
+      {
+        "name": "SentAtLocalHour",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Hour of day 0-23 in the RECIPIENT's local timezone at transmission. Stored raw because recipient-local time is what the quiet-hours rule is written against and it is not derivable from SentAt alone."
+      },
+      {
+        "name": "DeliveryStatus",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Sent, Delivered, Failed, Suppressed, or Bounced."
+      },
+      {
+        "name": "SuppressionReason",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "When DeliveryStatus is Suppressed, why; empty string otherwise."
+      },
+      {
+        "name": "InvokedException",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Documented exception invoked for this delivery, when one was.",
+        "RelatedTo": "Exceptions"
+      },
+      {
+        "name": "AcknowledgedAt",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "When the recipient acknowledged; null when not acknowledged."
+      },
+      {
+        "name": "PolicyChannel",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The communication policy governing the template that was sent.",
+        "formula": "=INDEX(MessageTemplates!{{CommunicationPolicy}}, MATCH({{MessageTemplate}}, MessageTemplates!{{MessageTemplateId}}, 0))"
+      },
+      {
+        "name": "ChannelName",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Channel (Email, SMS) of the policy this delivery went out under.",
+        "formula": "=INDEX(CommunicationPolicies!{{Channel}}, MATCH({{PolicyChannel}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0))"
+      },
+      {
+        "name": "PolicyRequiresConsent",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether the governing policy requires active consent for this channel.",
+        "formula": "=INDEX(CommunicationPolicies!{{ConsentRequired}}, MATCH({{PolicyChannel}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0))"
+      },
+      {
+        "name": "RecipientHasSmsConsent",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether the recipient of this delivery had SMS consent on file.",
+        "formula": "=INDEX(Recipients!{{HasSmsConsent}}, MATCH({{Recipient}}, Recipients!{{RecipientId}}, 0))"
+      },
+      {
+        "name": "WasActuallyTransmitted",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the message actually left our systems. Suppressed and Failed messages never reached the carrier.",
+        "formula": "=OR({{DeliveryStatus}} = \"Sent\", OR({{DeliveryStatus}} = \"Delivered\", {{DeliveryStatus}} = \"Bounced\"))"
+      },
+      {
+        "name": "IsConsentViolation",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a message was actually transmitted on a consent-required channel to a recipient without consent. This is the TCPA witness.",
+        "formula": "=AND({{WasActuallyTransmitted}}, AND({{PolicyRequiresConsent}}, NOT({{RecipientHasSmsConsent}})))"
+      },
+      {
+        "name": "ConsentViolationPolicyKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Carries the policy id only on rows that are consent violations; empty string otherwise.",
+        "formula": "=IF({{IsConsentViolation}}, {{PolicyChannel}}, \"\")"
+      },
+      {
+        "name": "PolicyQuietHoursStartHour",
+        "datatype": "integer",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Quiet-hours start hour (0-23) from the governing policy.",
+        "formula": "=INDEX(CommunicationPolicies!{{QuietHoursStartHour}}, MATCH({{PolicyChannel}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0))"
+      },
+      {
+        "name": "PolicyQuietHoursEndHour",
+        "datatype": "integer",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Quiet-hours end hour (0-23) from the governing policy.",
+        "formula": "=INDEX(CommunicationPolicies!{{QuietHoursEndHour}}, MATCH({{PolicyChannel}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0))"
+      },
+      {
+        "name": "PolicyHasQuietHours",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the governing policy actually declares a quiet-hours window. comm-email-policy has 00:00-00:00, meaning no window.",
+        "formula": "={{PolicyQuietHoursStartHour}} <> {{PolicyQuietHoursEndHour}}"
+      },
+      {
+        "name": "QuietWindowWrapsMidnight",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the quiet window crosses midnight (20:00 -> 08:00 does).",
+        "formula": "={{PolicyQuietHoursStartHour}} > {{PolicyQuietHoursEndHour}}"
+      },
+      {
+        "name": "IsInsideQuietWindow",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the recipient-local send hour falls inside the declared quiet window, handling the midnight wrap correctly.",
+        "formula": "=IF({{QuietWindowWrapsMidnight}}, OR({{SentAtLocalHour}} >= {{PolicyQuietHoursStartHour}}, {{SentAtLocalHour}} < {{PolicyQuietHoursEndHour}}), AND({{SentAtLocalHour}} >= {{PolicyQuietHoursStartHour}}, {{SentAtLocalHour}} < {{PolicyQuietHoursEndHour}}))"
+      },
+      {
+        "name": "IsQuietHoursViolation",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a message was actually transmitted inside a declared quiet-hours window. The quiet-hours witness.",
+        "formula": "=AND({{WasActuallyTransmitted}}, AND({{PolicyHasQuietHours}}, {{IsInsideQuietWindow}}))"
+      },
+      {
+        "name": "QuietHoursViolationPolicyKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Carries the policy id only on quiet-hours violations; empty string otherwise.",
+        "formula": "=IF({{IsQuietHoursViolation}}, {{PolicyChannel}}, \"\")"
+      },
+      {
+        "name": "RecipientIsUnreachable",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether the recipient has neither email nor mobile on file -- the exc-unreachable trigger.",
+        "formula": "=INDEX(Recipients!{{IsUnreachable}}, MATCH({{Recipient}}, Recipients!{{RecipientId}}, 0))"
+      },
+      {
+        "name": "IsAcknowledged",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when an acknowledgement timestamp is recorded for this delivery.",
+        "formula": "={{AcknowledgedAt}} <> \"\""
+      },
+      {
+        "name": "InvokedExceptionCondition",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The documented condition of the exception invoked on this delivery, if any.",
+        "formula": "=INDEX(Exceptions!{{Condition}}, MATCH({{InvokedException}}, Exceptions!{{ExceptionId}}, 0))"
+      },
+      {
+        "name": "HasUnreachableExceptionInvoked",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the documented unreachable-recipient exception was formally invoked on this delivery.",
+        "formula": "={{InvokedException}} = \"exc-unreachable\""
+      },
+      {
+        "name": "IsFabricatedAcknowledgement",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when an acknowledgement is recorded for a recipient we could not reach. This is the misrepresentation witness.",
+        "formula": "=AND({{RecipientIsUnreachable}}, {{IsAcknowledged}})"
+      },
+      {
+        "name": "IsUnhandledUnreachable",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a recipient was unreachable but no documented exception was invoked -- the case fell on the floor silently.",
+        "formula": "=AND({{RecipientIsUnreachable}}, NOT({{HasUnreachableExceptionInvoked}}))"
+      },
+      {
+        "name": "UnreachableFailureKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Carries the execution id on any unreachable-handling failure; empty string otherwise.",
+        "formula": "=IF(OR({{IsFabricatedAcknowledgement}}, {{IsUnhandledUnreachable}}), {{ProcedureExecution}}, \"\")"
+      },
+      {
+        "name": "PolicyRetentionDays",
+        "datatype": "integer",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Retention commitment in days inherited from the governing channel policy.",
+        "formula": "=INDEX(CommunicationPolicies!{{RetentionDays}}, MATCH({{PolicyChannel}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0))"
+      },
+      {
+        "name": "AgeDays",
+        "datatype": "integer",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Days elapsed since transmission.",
+        "formula": "=DATETIME_DIFF(NOW(), {{SentAt}}, \"days\")"
+      },
+      {
+        "name": "IsWithinRetentionWindow",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE while this delivery is still inside its committed retention period.",
+        "formula": "={{AgeDays}} <= {{PolicyRetentionDays}}"
+      },
+      {
+        "name": "HasRenderedBody",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the exact transmitted text is still held on this record.",
+        "formula": "={{RenderedBody}} <> \"\""
+      },
+      {
+        "name": "IsEvidenceRequired",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when we are still obliged to hold this message's text.",
+        "formula": "=AND({{WasActuallyTransmitted}}, {{IsWithinRetentionWindow}})"
+      },
+      {
+        "name": "IsRetentionBreach",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when we are obliged to hold the message text and do not. The evidentiary-gap witness.",
+        "formula": "=AND({{IsEvidenceRequired}}, NOT({{HasRenderedBody}}))"
+      },
+      {
+        "name": "RetentionBreachExecutionKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Carries the execution id on retention breaches; empty string otherwise.",
+        "formula": "=IF({{IsRetentionBreach}}, {{ProcedureExecution}}, \"\")"
+      },
+      {
+        "name": "SendingStepExecutionStep",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Which procedure step this delivery was performed under.",
+        "formula": "=INDEX(StepExecutions!{{Step}}, MATCH({{StepExecution}}, StepExecutions!{{StepExecutionId}}, 0))"
+      },
+      {
+        "name": "ExecutionHasClearedLegalReview",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether legal review had passed for the execution this delivery belongs to.",
+        "formula": "=INDEX(ProcedureExecutions!{{HasClearedLegalReview}}, MATCH({{ProcedureExecution}}, ProcedureExecutions!{{ProcedureExecutionId}}, 0))"
+      },
+      {
+        "name": "IsUnreviewedSend",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a message was transmitted under an execution whose legal review had not passed. The ungated-send witness.",
+        "formula": "=AND({{WasActuallyTransmitted}}, NOT({{ExecutionHasClearedLegalReview}}))"
+      },
+      {
+        "name": "SemanticTypeIri",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Extension IRI; per-recipient delivery events are not a PKO 2.0.0 native class."
+      }
+    ],
+    "data": [
+      {
+        "MessageDeliveryId": "md-001",
+        "ProcedureExecution": "exec-policy-hr4821",
+        "StepExecution": "se-policy04",
+        "Recipient": "rec-001",
+        "MessageTemplate": "tmpl-policy-email",
+        "SentByAgent": "notification-pipeline",
+        "RenderedBody": "Policy HR-4821 update. Review the notice and acknowledge: https://example.com/hr4821 Reply STOP to opt out.",
+        "SentAt": "2026-07-18T14:05:00-05:00",
+        "SentAtLocalHour": 14,
+        "DeliveryStatus": "Delivered",
+        "SuppressionReason": null,
+        "InvokedException": null,
+        "AcknowledgedAt": "2026-07-18T15:20:00-05:00",
+        "SemanticTypeIri": "urn:effortless:pko-extension#MessageDelivery"
+      },
+      {
+        "MessageDeliveryId": "md-002",
+        "ProcedureExecution": "exec-policy-hr4821",
+        "StepExecution": "se-policy04",
+        "Recipient": "rec-002",
+        "MessageTemplate": "tmpl-policy-email",
+        "SentByAgent": "notification-pipeline",
+        "RenderedBody": "Policy HR-4821 update. Review the notice and acknowledge: https://example.com/hr4821 Reply STOP to opt out.",
+        "SentAt": "2026-07-18T14:05:00-05:00",
+        "SentAtLocalHour": 14,
+        "DeliveryStatus": "Delivered",
+        "SuppressionReason": null,
+        "InvokedException": null,
+        "AcknowledgedAt": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#MessageDelivery"
+      },
+      {
+        "MessageDeliveryId": "md-003",
+        "ProcedureExecution": "exec-policy-hr4821",
+        "StepExecution": "se-policy04",
+        "Recipient": "rec-003",
+        "MessageTemplate": "tmpl-policy-sms",
+        "SentByAgent": "notification-pipeline",
+        "RenderedBody": "Policy HR-4821 update. Review the notice and acknowledge: https://example.com/hr4821 Reply STOP to opt out.",
+        "SentAt": "2026-07-18T14:06:00-05:00",
+        "SentAtLocalHour": 14,
+        "DeliveryStatus": "Delivered",
+        "SuppressionReason": "RETROACTIVE FINDING: transmitted to a recipient with no SMS consent. Should have been suppressed under exc-no-sms-consent and sent by approved email only. Retained as evidence; recipient re-consented on 2026-07-19 and a corrected email was sent.",
+        "InvokedException": "exc-no-sms-consent",
+        "AcknowledgedAt": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#MessageDelivery"
+      },
+      {
+        "MessageDeliveryId": "md-004",
+        "ProcedureExecution": "exec-policy-hr4821",
+        "StepExecution": "se-policy04",
+        "Recipient": "rec-004",
+        "MessageTemplate": "tmpl-policy-sms",
+        "SentByAgent": "notification-pipeline",
+        "RenderedBody": "Policy HR-4821 update. Review the notice and acknowledge: https://example.com/hr4821 Reply STOP to opt out.",
+        "SentAt": "2026-07-18T14:06:00-05:00",
+        "SentAtLocalHour": 14,
+        "DeliveryStatus": "Suppressed",
+        "SuppressionReason": "Recipient consent revoked; suppressed per exc-no-sms-consent and sent approved email only.",
+        "InvokedException": "exc-no-sms-consent",
+        "AcknowledgedAt": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#MessageDelivery"
+      },
+      {
+        "MessageDeliveryId": "md-005",
+        "ProcedureExecution": "exec-policy-hr4821",
+        "StepExecution": "se-policy04",
+        "Recipient": "rec-001",
+        "MessageTemplate": "tmpl-policy-sms",
+        "SentByAgent": "notification-pipeline",
+        "RenderedBody": "Policy HR-4821 update. Review the notice and acknowledge: https://example.com/hr4821 Reply STOP to opt out.",
+        "SentAt": "2026-07-18T21:00:00-05:00",
+        "SentAtLocalHour": 21,
+        "DeliveryStatus": "Delivered",
+        "SuppressionReason": "RETROACTIVE FINDING: transmitted at 21:00, inside the 20:00-08:00 quiet window defined by comm-sms-policy. Retained as evidence; the send window is now gated on CommunicationPolicies.QuietHoursStartHour before transmission.",
+        "InvokedException": null,
+        "AcknowledgedAt": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#MessageDelivery"
+      },
+      {
+        "MessageDeliveryId": "md-006",
+        "ProcedureExecution": "exec-policy-hr4821",
+        "StepExecution": "se-policy04",
+        "Recipient": "rec-005",
+        "MessageTemplate": "tmpl-policy-sms",
+        "SentByAgent": "notification-pipeline",
+        "RenderedBody": "Policy HR-4821 update. Review the notice and acknowledge: https://example.com/hr4821 Reply STOP to opt out.",
+        "SentAt": "2026-07-18T14:06:00-05:00",
+        "SentAtLocalHour": 14,
+        "DeliveryStatus": "Failed",
+        "SuppressionReason": "No mobile number on file; HR case opened and routed to the manager per exc-unreachable. Acknowledgement deliberately not marked complete.",
+        "InvokedException": "exc-unreachable",
+        "AcknowledgedAt": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#MessageDelivery"
       }
     ]
   }

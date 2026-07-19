@@ -448,4 +448,32 @@ ALTER TABLE observed_transitions DROP CONSTRAINT IF EXISTS fk_observed_transitio
 ALTER TABLE observed_transitions ADD CONSTRAINT fk_observed_transitions_arriving_step_execution
   FOREIGN KEY (arriving_step_execution) REFERENCES step_executions (step_execution_id);
 
--- 116 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
+-- Recipients
+ALTER TABLE recipients DROP CONSTRAINT IF EXISTS fk_recipients_organization;
+ALTER TABLE recipients ADD CONSTRAINT fk_recipients_organization
+  FOREIGN KEY (organization) REFERENCES organizations (organization_id);
+ALTER TABLE recipients DROP CONSTRAINT IF EXISTS fk_recipients_consent_binding;
+ALTER TABLE recipients ADD CONSTRAINT fk_recipients_consent_binding
+  FOREIGN KEY (consent_binding) REFERENCES operational_bindings (operational_binding_id);
+
+-- MessageDeliveries
+ALTER TABLE message_deliveries DROP CONSTRAINT IF EXISTS fk_message_deliveries_procedure_execution;
+ALTER TABLE message_deliveries ADD CONSTRAINT fk_message_deliveries_procedure_execution
+  FOREIGN KEY (procedure_execution) REFERENCES procedure_executions (procedure_execution_id);
+ALTER TABLE message_deliveries DROP CONSTRAINT IF EXISTS fk_message_deliveries_step_execution;
+ALTER TABLE message_deliveries ADD CONSTRAINT fk_message_deliveries_step_execution
+  FOREIGN KEY (step_execution) REFERENCES step_executions (step_execution_id);
+ALTER TABLE message_deliveries DROP CONSTRAINT IF EXISTS fk_message_deliveries_recipient;
+ALTER TABLE message_deliveries ADD CONSTRAINT fk_message_deliveries_recipient
+  FOREIGN KEY (recipient) REFERENCES recipients (recipient_id);
+ALTER TABLE message_deliveries DROP CONSTRAINT IF EXISTS fk_message_deliveries_message_template;
+ALTER TABLE message_deliveries ADD CONSTRAINT fk_message_deliveries_message_template
+  FOREIGN KEY (message_template) REFERENCES message_templates (message_template_id);
+ALTER TABLE message_deliveries DROP CONSTRAINT IF EXISTS fk_message_deliveries_sent_by_agent;
+ALTER TABLE message_deliveries ADD CONSTRAINT fk_message_deliveries_sent_by_agent
+  FOREIGN KEY (sent_by_agent) REFERENCES agents (agent_id);
+ALTER TABLE message_deliveries DROP CONSTRAINT IF EXISTS fk_message_deliveries_invoked_exception;
+ALTER TABLE message_deliveries ADD CONSTRAINT fk_message_deliveries_invoked_exception
+  FOREIGN KEY (invoked_exception) REFERENCES exceptions (exception_id);
+
+-- 124 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).

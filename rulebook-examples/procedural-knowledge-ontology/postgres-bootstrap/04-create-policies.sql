@@ -62,6 +62,8 @@ ALTER TABLE rulebook_fields ENABLE ROW LEVEL SECURITY;
 ALTER TABLE exception_invocations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE verification_outcomes ENABLE ROW LEVEL SECURITY;
 ALTER TABLE observed_transitions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE recipients ENABLE ROW LEVEL SECURITY;
+ALTER TABLE message_deliveries ENABLE ROW LEVEL SECURITY;
 
 -- TODO: Add specific RLS policies based on your security requirements
 -- Example:

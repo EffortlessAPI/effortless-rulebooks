@@ -2248,6 +2248,46 @@ RETURNS BOOLEAN AS $$
   SELECT ((calc_procedure_executions_asserted_only_control_count(p_procedure_execution_id))::NUMERIC > 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
+-- calc_procedure_executions_unreachable_handling_failure_count
+-- Field: ProcedureExecutions.UnreachableHandlingFailureCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_executions_unreachable_handling_failure_count(p_procedure_execution_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM message_deliveries WHERE calc_message_deliveries_unreachable_failure_key(message_delivery_id) = (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_executions_retention_breach_count
+-- Field: ProcedureExecutions.RetentionBreachCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_executions_retention_breach_count(p_procedure_execution_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM message_deliveries WHERE calc_message_deliveries_retention_breach_execution_key(message_delivery_id) = (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_executions_cleared_legal_review_count
+-- Field: ProcedureExecutions.ClearedLegalReviewCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_executions_cleared_legal_review_count(p_procedure_execution_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM step_executions WHERE calc_step_executions_cleared_legal_review_key(step_execution_id) = (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_executions_has_cleared_legal_review
+-- Field: ProcedureExecutions.HasClearedLegalReview
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_executions_has_cleared_legal_review(p_procedure_execution_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_procedure_executions_cleared_legal_review_count(p_procedure_execution_id))::NUMERIC > 0)::boolean;
+$$ LANGUAGE sql STABLE;
+
 -- calc_step_executions_expected_duration_minutes
 -- Field: StepExecutions.ExpectedDurationMinutes
 -- Type: lookup | DataType: integer | Returns: INTEGER
@@ -2800,6 +2840,36 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_step_executions_is_completed(p_step_execution_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT ((SELECT NULLIF(execution_status, '') FROM step_executions WHERE step_execution_id = p_step_execution_id) = 'Completed')::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_step_executions_is_verification_passed
+-- Field: StepExecutions.IsVerificationPassed
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_step_executions_is_verification_passed(p_step_execution_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((SELECT NULLIF(verification_result, '') FROM step_executions WHERE step_execution_id = p_step_execution_id) = 'PASS')::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_step_executions_is_legal_review_step
+-- Field: StepExecutions.IsLegalReviewStep
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_step_executions_is_legal_review_step(p_step_execution_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((SELECT NULLIF(step, '') FROM step_executions WHERE step_execution_id = p_step_execution_id) = 'policy-04')::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_step_executions_cleared_legal_review_key
+-- Field: StepExecutions.ClearedLegalReviewKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_step_executions_cleared_legal_review_key(p_step_execution_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN (calc_step_executions_is_legal_review_step(p_step_execution_id) AND calc_step_executions_is_verification_passed(p_step_execution_id)) THEN ((SELECT NULLIF(procedure_execution, '') FROM step_executions WHERE step_execution_id = p_step_execution_id))::text ELSE ('')::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_requirement_satisfactions_requirement_is_blocking
@@ -3478,6 +3548,26 @@ RETURNS TEXT AS $$
   SELECT (CONCAT((SELECT NULLIF(channel, '') FROM communication_policies WHERE communication_policy_id = p_communication_policy_id), ' policy / ', (SELECT NULLIF(procedure_version, '') FROM communication_policies WHERE communication_policy_id = p_communication_policy_id)))::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_communication_policies_consent_violation_count
+-- Field: CommunicationPolicies.ConsentViolationCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_communication_policies_consent_violation_count(p_communication_policy_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM message_deliveries WHERE calc_message_deliveries_policy_channel(message_delivery_id) = (SELECT NULLIF(communication_policy_id, '') FROM communication_policies WHERE communication_policy_id = p_communication_policy_id) AND calc_message_deliveries_is_consent_violation(message_delivery_id) = TRUE))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_communication_policies_quiet_hours_violation_count
+-- Field: CommunicationPolicies.QuietHoursViolationCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_communication_policies_quiet_hours_violation_count(p_communication_policy_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM message_deliveries WHERE calc_message_deliveries_quiet_hours_violation_policy_key(message_delivery_id) = (SELECT NULLIF(communication_policy_id, '') FROM communication_policies WHERE communication_policy_id = p_communication_policy_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
 -- get_communication_policies_channel
 -- Helper function: Get Channel from CommunicationPolicies by CommunicationPolicyId
 -- Used for join-free cross-table references in aggregations
@@ -3575,6 +3665,24 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION get_communication_policies_status(p_communication_policy_id TEXT)
 RETURNS TEXT AS $$
   SELECT (SELECT status FROM communication_policies WHERE communication_policy_id = p_communication_policy_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_communication_policies_quiet_hours_start_hour
+-- Helper function: Get QuietHoursStartHour from CommunicationPolicies by CommunicationPolicyId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_communication_policies_quiet_hours_start_hour(p_communication_policy_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT quiet_hours_start_hour FROM communication_policies WHERE communication_policy_id = p_communication_policy_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_communication_policies_quiet_hours_end_hour
+-- Helper function: Get QuietHoursEndHour from CommunicationPolicies by CommunicationPolicyId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_communication_policies_quiet_hours_end_hour(p_communication_policy_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT quiet_hours_end_hour FROM communication_policies WHERE communication_policy_id = p_communication_policy_id);
 $$ LANGUAGE sql STABLE;
 
 -- get_communication_policies_semantic_type_iri
@@ -4203,6 +4311,540 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_observed_transitions_name(p_observed_transition_id TEXT)
 RETURNS TEXT AS $$
   SELECT (CONCAT((SELECT NULLIF(step_transition, '') FROM observed_transitions WHERE observed_transition_id = p_observed_transition_id), ' @ ', (SELECT observed_at::timestamptz FROM observed_transitions WHERE observed_transition_id = p_observed_transition_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- get_operational_bindings_access_mode
+-- Helper function: Get AccessMode from OperationalBindings by OperationalBindingId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_operational_bindings_access_mode(p_operational_binding_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT access_mode FROM operational_bindings WHERE operational_binding_id = p_operational_binding_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_operational_bindings_record_or_schema_key
+-- Helper function: Get RecordOrSchemaKey from OperationalBindings by OperationalBindingId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_operational_bindings_record_or_schema_key(p_operational_binding_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT record_or_schema_key FROM operational_bindings WHERE operational_binding_id = p_operational_binding_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_operational_bindings_last_observed_at
+-- Helper function: Get LastObservedAt from OperationalBindings by OperationalBindingId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_operational_bindings_last_observed_at(p_operational_binding_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT last_observed_at FROM operational_bindings WHERE operational_binding_id = p_operational_binding_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_operational_bindings_freshness_sla_minutes
+-- Helper function: Get FreshnessSlaMinutes from OperationalBindings by OperationalBindingId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_operational_bindings_freshness_sla_minutes(p_operational_binding_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT freshness_sla_minutes FROM operational_bindings WHERE operational_binding_id = p_operational_binding_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_operational_bindings_is_authoritative
+-- Helper function: Get IsAuthoritative from OperationalBindings by OperationalBindingId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_operational_bindings_is_authoritative(p_operational_binding_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT is_authoritative FROM operational_bindings WHERE operational_binding_id = p_operational_binding_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_operational_bindings_semantic_type_iri
+-- Helper function: Get SemanticTypeIri from OperationalBindings by OperationalBindingId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_operational_bindings_semantic_type_iri(p_operational_binding_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT semantic_type_iri FROM operational_bindings WHERE operational_binding_id = p_operational_binding_id);
+$$ LANGUAGE sql STABLE;
+
+-- calc_recipients_name
+-- Field: Recipients.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_recipients_name(p_recipient_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(display_name, '') FROM recipients WHERE recipient_id = p_recipient_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_recipients_has_sms_consent
+-- Field: Recipients.HasSmsConsent
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_recipients_has_sms_consent(p_recipient_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((SELECT NULLIF(sms_consent_status, '') FROM recipients WHERE recipient_id = p_recipient_id) = 'Granted')::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_recipients_is_email_reachable
+-- Field: Recipients.IsEmailReachable
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_recipients_is_email_reachable(p_recipient_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((SELECT NULLIF(email_address, '') FROM recipients WHERE recipient_id = p_recipient_id) IS NOT NULL)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_recipients_is_sms_reachable
+-- Field: Recipients.IsSmsReachable
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_recipients_is_sms_reachable(p_recipient_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((SELECT NULLIF(mobile_number, '') FROM recipients WHERE recipient_id = p_recipient_id) IS NOT NULL)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_recipients_is_unreachable
+-- Field: Recipients.IsUnreachable
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_recipients_is_unreachable(p_recipient_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((NOT (calc_recipients_is_email_reachable(p_recipient_id)) AND NOT (calc_recipients_is_sms_reachable(p_recipient_id))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_policy_channel
+-- Field: MessageDeliveries.PolicyChannel
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: CommunicationPolicy from related MessageTemplates
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_policy_channel(p_message_delivery_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT communication_policy::text FROM message_templates WHERE message_template_id = (SELECT message_template FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_channel_name
+-- Field: MessageDeliveries.ChannelName
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Channel from related CommunicationPolicies
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_channel_name(p_message_delivery_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT channel::text FROM communication_policies WHERE communication_policy_id = calc_message_deliveries_policy_channel(p_message_delivery_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_policy_requires_consent
+-- Field: MessageDeliveries.PolicyRequiresConsent
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: ConsentRequired from related CommunicationPolicies
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_policy_requires_consent(p_message_delivery_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT consent_required::boolean FROM communication_policies WHERE communication_policy_id = calc_message_deliveries_policy_channel(p_message_delivery_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_recipient_has_sms_consent
+-- Field: MessageDeliveries.RecipientHasSmsConsent
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: HasSmsConsent from related Recipients
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_recipient_has_sms_consent(p_message_delivery_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_recipients_has_sms_consent((SELECT recipient FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_policy_quiet_hours_start_hour
+-- Field: MessageDeliveries.PolicyQuietHoursStartHour
+-- Type: lookup | DataType: integer | Returns: INTEGER
+-- Lookup: QuietHoursStartHour from related CommunicationPolicies
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_policy_quiet_hours_start_hour(p_message_delivery_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT quiet_hours_start_hour::integer FROM communication_policies WHERE communication_policy_id = calc_message_deliveries_policy_channel(p_message_delivery_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_policy_quiet_hours_end_hour
+-- Field: MessageDeliveries.PolicyQuietHoursEndHour
+-- Type: lookup | DataType: integer | Returns: INTEGER
+-- Lookup: QuietHoursEndHour from related CommunicationPolicies
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_policy_quiet_hours_end_hour(p_message_delivery_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT quiet_hours_end_hour::integer FROM communication_policies WHERE communication_policy_id = calc_message_deliveries_policy_channel(p_message_delivery_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_recipient_is_unreachable
+-- Field: MessageDeliveries.RecipientIsUnreachable
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: IsUnreachable from related Recipients
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_recipient_is_unreachable(p_message_delivery_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_recipients_is_unreachable((SELECT recipient FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_invoked_exception_condition
+-- Field: MessageDeliveries.InvokedExceptionCondition
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Condition from related Exceptions
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_invoked_exception_condition(p_message_delivery_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT condition::text FROM exceptions WHERE exception_id = (SELECT invoked_exception FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_policy_retention_days
+-- Field: MessageDeliveries.PolicyRetentionDays
+-- Type: lookup | DataType: integer | Returns: INTEGER
+-- Lookup: RetentionDays from related CommunicationPolicies
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_policy_retention_days(p_message_delivery_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT retention_days::integer FROM communication_policies WHERE communication_policy_id = calc_message_deliveries_policy_channel(p_message_delivery_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_sending_step_execution_step
+-- Field: MessageDeliveries.SendingStepExecutionStep
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Step from related StepExecutions
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_sending_step_execution_step(p_message_delivery_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT step::text FROM step_executions WHERE step_execution_id = (SELECT step_execution FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_execution_has_cleared_legal_review
+-- Field: MessageDeliveries.ExecutionHasClearedLegalReview
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: HasClearedLegalReview from related ProcedureExecutions
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_execution_has_cleared_legal_review(p_message_delivery_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_procedure_executions_has_cleared_legal_review((SELECT procedure_execution FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id));
+$$ LANGUAGE sql STABLE;
+
+-- get_recipients_display_name
+-- Helper function: Get DisplayName from Recipients by RecipientId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_recipients_display_name(p_recipient_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT display_name FROM recipients WHERE recipient_id = p_recipient_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_recipients_email_address
+-- Helper function: Get EmailAddress from Recipients by RecipientId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_recipients_email_address(p_recipient_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT email_address FROM recipients WHERE recipient_id = p_recipient_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_recipients_mobile_number
+-- Helper function: Get MobileNumber from Recipients by RecipientId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_recipients_mobile_number(p_recipient_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT mobile_number FROM recipients WHERE recipient_id = p_recipient_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_recipients_sms_consent_status
+-- Helper function: Get SmsConsentStatus from Recipients by RecipientId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_recipients_sms_consent_status(p_recipient_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT sms_consent_status FROM recipients WHERE recipient_id = p_recipient_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_recipients_sms_consent_at
+-- Helper function: Get SmsConsentAt from Recipients by RecipientId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_recipients_sms_consent_at(p_recipient_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT sms_consent_at FROM recipients WHERE recipient_id = p_recipient_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_recipients_semantic_type_iri
+-- Helper function: Get SemanticTypeIri from Recipients by RecipientId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_recipients_semantic_type_iri(p_recipient_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT semantic_type_iri FROM recipients WHERE recipient_id = p_recipient_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_message_templates_subject_template
+-- Helper function: Get SubjectTemplate from MessageTemplates by MessageTemplateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_message_templates_subject_template(p_message_template_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT subject_template FROM message_templates WHERE message_template_id = p_message_template_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_message_templates_body_template
+-- Helper function: Get BodyTemplate from MessageTemplates by MessageTemplateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_message_templates_body_template(p_message_template_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT body_template FROM message_templates WHERE message_template_id = p_message_template_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_message_templates_locale
+-- Helper function: Get Locale from MessageTemplates by MessageTemplateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_message_templates_locale(p_message_template_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT locale FROM message_templates WHERE message_template_id = p_message_template_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_message_templates_status
+-- Helper function: Get Status from MessageTemplates by MessageTemplateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_message_templates_status(p_message_template_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT status FROM message_templates WHERE message_template_id = p_message_template_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_message_templates_semantic_type_iri
+-- Helper function: Get SemanticTypeIri from MessageTemplates by MessageTemplateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_message_templates_semantic_type_iri(p_message_template_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT semantic_type_iri FROM message_templates WHERE message_template_id = p_message_template_id);
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_name
+-- Field: MessageDeliveries.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_name(p_message_delivery_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT((SELECT NULLIF(recipient, '') FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id), ' / ', (SELECT NULLIF(message_template, '') FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id), ' / ', (SELECT sent_at::timestamptz FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_was_actually_transmitted
+-- Field: MessageDeliveries.WasActuallyTransmitted
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_was_actually_transmitted(p_message_delivery_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((SELECT NULLIF(delivery_status, '') FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id) = 'Sent' OR ((SELECT NULLIF(delivery_status, '') FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id) = 'Delivered' OR (SELECT NULLIF(delivery_status, '') FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id) = 'Bounced')))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_is_consent_violation
+-- Field: MessageDeliveries.IsConsentViolation
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_is_consent_violation(p_message_delivery_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_message_deliveries_was_actually_transmitted(p_message_delivery_id) AND (calc_message_deliveries_policy_requires_consent(p_message_delivery_id) AND NOT (calc_message_deliveries_recipient_has_sms_consent(p_message_delivery_id)))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_consent_violation_policy_key
+-- Field: MessageDeliveries.ConsentViolationPolicyKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_consent_violation_policy_key(p_message_delivery_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_message_deliveries_is_consent_violation(p_message_delivery_id) THEN (calc_message_deliveries_policy_channel(p_message_delivery_id))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_policy_has_quiet_hours
+-- Field: MessageDeliveries.PolicyHasQuietHours
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_policy_has_quiet_hours(p_message_delivery_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (calc_message_deliveries_policy_quiet_hours_start_hour(p_message_delivery_id) <> calc_message_deliveries_policy_quiet_hours_end_hour(p_message_delivery_id))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_quiet_window_wraps_midnight
+-- Field: MessageDeliveries.QuietWindowWrapsMidnight
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_quiet_window_wraps_midnight(p_message_delivery_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (calc_message_deliveries_policy_quiet_hours_start_hour(p_message_delivery_id) > calc_message_deliveries_policy_quiet_hours_end_hour(p_message_delivery_id))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_is_inside_quiet_window
+-- Field: MessageDeliveries.IsInsideQuietWindow
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_is_inside_quiet_window(p_message_delivery_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (CASE WHEN calc_message_deliveries_quiet_window_wraps_midnight(p_message_delivery_id) THEN (((SELECT sent_at_local_hour FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id) >= calc_message_deliveries_policy_quiet_hours_start_hour(p_message_delivery_id) OR (SELECT sent_at_local_hour FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id) < calc_message_deliveries_policy_quiet_hours_end_hour(p_message_delivery_id)))::text ELSE (((SELECT sent_at_local_hour FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id) >= calc_message_deliveries_policy_quiet_hours_start_hour(p_message_delivery_id) AND (SELECT sent_at_local_hour FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id) < calc_message_deliveries_policy_quiet_hours_end_hour(p_message_delivery_id)))::text END)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_is_quiet_hours_violation
+-- Field: MessageDeliveries.IsQuietHoursViolation
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_is_quiet_hours_violation(p_message_delivery_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_message_deliveries_was_actually_transmitted(p_message_delivery_id) AND (calc_message_deliveries_policy_has_quiet_hours(p_message_delivery_id) AND calc_message_deliveries_is_inside_quiet_window(p_message_delivery_id))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_quiet_hours_violation_policy_key
+-- Field: MessageDeliveries.QuietHoursViolationPolicyKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_quiet_hours_violation_policy_key(p_message_delivery_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_message_deliveries_is_quiet_hours_violation(p_message_delivery_id) THEN (calc_message_deliveries_policy_channel(p_message_delivery_id))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_is_acknowledged
+-- Field: MessageDeliveries.IsAcknowledged
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_is_acknowledged(p_message_delivery_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((SELECT acknowledged_at::timestamptz FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id) IS NOT NULL)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_has_unreachable_exception_invoked
+-- Field: MessageDeliveries.HasUnreachableExceptionInvoked
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_has_unreachable_exception_invoked(p_message_delivery_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((SELECT NULLIF(invoked_exception, '') FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id) = 'exc-unreachable')::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_is_fabricated_acknowledgement
+-- Field: MessageDeliveries.IsFabricatedAcknowledgement
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_is_fabricated_acknowledgement(p_message_delivery_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_message_deliveries_recipient_is_unreachable(p_message_delivery_id) AND calc_message_deliveries_is_acknowledged(p_message_delivery_id)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_is_unhandled_unreachable
+-- Field: MessageDeliveries.IsUnhandledUnreachable
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_is_unhandled_unreachable(p_message_delivery_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_message_deliveries_recipient_is_unreachable(p_message_delivery_id) AND NOT (calc_message_deliveries_has_unreachable_exception_invoked(p_message_delivery_id))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_unreachable_failure_key
+-- Field: MessageDeliveries.UnreachableFailureKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_unreachable_failure_key(p_message_delivery_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN (calc_message_deliveries_is_fabricated_acknowledgement(p_message_delivery_id) OR calc_message_deliveries_is_unhandled_unreachable(p_message_delivery_id)) THEN ((SELECT NULLIF(procedure_execution, '') FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_age_days
+-- Field: MessageDeliveries.AgeDays
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_age_days(p_message_delivery_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((CURRENT_TIMESTAMP::date - (SELECT sent_at::timestamptz FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id)::date))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_is_within_retention_window
+-- Field: MessageDeliveries.IsWithinRetentionWindow
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_is_within_retention_window(p_message_delivery_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (calc_message_deliveries_age_days(p_message_delivery_id) <= calc_message_deliveries_policy_retention_days(p_message_delivery_id))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_has_rendered_body
+-- Field: MessageDeliveries.HasRenderedBody
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_has_rendered_body(p_message_delivery_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((SELECT NULLIF(rendered_body, '') FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id) IS NOT NULL)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_is_evidence_required
+-- Field: MessageDeliveries.IsEvidenceRequired
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_is_evidence_required(p_message_delivery_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_message_deliveries_was_actually_transmitted(p_message_delivery_id) AND calc_message_deliveries_is_within_retention_window(p_message_delivery_id)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_is_retention_breach
+-- Field: MessageDeliveries.IsRetentionBreach
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_is_retention_breach(p_message_delivery_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_message_deliveries_is_evidence_required(p_message_delivery_id) AND NOT (calc_message_deliveries_has_rendered_body(p_message_delivery_id))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_retention_breach_execution_key
+-- Field: MessageDeliveries.RetentionBreachExecutionKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_retention_breach_execution_key(p_message_delivery_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_message_deliveries_is_retention_breach(p_message_delivery_id) THEN ((SELECT NULLIF(procedure_execution, '') FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_message_deliveries_is_unreviewed_send
+-- Field: MessageDeliveries.IsUnreviewedSend
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_is_unreviewed_send(p_message_delivery_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_message_deliveries_was_actually_transmitted(p_message_delivery_id) AND NOT (calc_message_deliveries_execution_has_cleared_legal_review(p_message_delivery_id))))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- ============================================================================

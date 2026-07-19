@@ -99,6 +99,8 @@ def main() -> int:
     loop_id = f"loop-{args.loop:02d}"
     existing_q = {r["RoleQuestionId"] for r in rb["RoleQuestions"]["data"]}
     problems: list[str] = []
+    skipped_existing: list[str] = []
+    declared_here: set[tuple[str, str]] = set()
     new_questions: list[OrderedDict] = []
     new_fields: list[tuple[str, OrderedDict, str]] = []  # (table, field, question_id)
     new_tables: list[str] = []
@@ -175,8 +177,18 @@ def main() -> int:
             if tbl not in rb:
                 problems.append(f"{fname}: unknown target table {tbl!r}")
                 continue
+            if (tbl, fname) in declared_here:
+                # The spec declared the same field twice. The transpiler happily
+                # emits both, and Postgres then rejects the view with "column
+                # specified more than once".
+                problems.append(f"{tbl}.{fname}: declared twice within this spec")
+                continue
+            declared_here.add((tbl, fname))
             if fname in field_names(rb, tbl):
-                problems.append(f"{tbl}.{fname}: field already exists")
+                # Several roles independently need the same atom (the drafting
+                # agents flagged these as "declare once"). The first role to be
+                # applied owns it; later roles simply reuse the existing column.
+                skipped_existing.append(f"{tbl}.{fname}")
                 continue
             for msg in check_formula(rb, tbl, p.get("formula", ""), pending_by_table):
                 problems.append(f"{tbl}.{fname}: {msg}")
@@ -202,6 +214,10 @@ def main() -> int:
 
     print(f"role {role}: {len(new_questions)} questions, {len(new_fields)} predicates, "
           f"{len(new_tables)} new table(s)")
+    if skipped_existing:
+        print(f"  reusing {len(skipped_existing)} shared predicate(s) already declared "
+              f"by an earlier role: {', '.join(skipped_existing[:6])}"
+              + (" ..." if len(skipped_existing) > 6 else ""))
     if args.dry_run:
         for tbl, f, qid in new_fields:
             print(f"  + {tbl}.{f['name']} ({f['type']}) <- {qid}")
