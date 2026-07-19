@@ -747,12 +747,12 @@
     {
       "LoopOrder": 649,
       "LoopId": "tsp-loop-649",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Exact route enumeration exists only as an external implementation idea; its scope, normalization, and status are not canonical fields.",
       "ClosureCriterion": "Add calibration fields for exact class count, feasible classes, optimum, optimal orbit, lower-bound gap, deterministic residue, branch warrant, and oracle checksum without treating enumeration as a structural proof.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Declared the exact small-instance oracle and its trust boundary.",
+      "Result": "The oracle is exact for the declared finite normalization, but remains calibration evidence rather than an automatic structural proof-status upgrade.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 650,
@@ -1505,7 +1505,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 710,
-    "HighestCompletedLoop": 648,
+    "HighestCompletedLoop": 649,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 16,
     "SelectedNotForcedEdgeStates": 5,
@@ -1547,8 +1547,8 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 66,
     "ClusterContractionCertificates": 7,
-    "ConvergenceMeasurements": 52,
-    "ConceptRegistry": 103,
+    "ConvergenceMeasurements": 53,
+    "ConceptRegistry": 104,
     "DefectProfiles": 21,
     "BoundTerms": 8,
     "WitnessNormalForms": 13,
@@ -1578,7 +1578,7 @@
     "OptimalFaceValueProofBranchDecisionCount": 0
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:3980558d7d108666d2cf46c8a717f8265f9589a764d74c954f610f8ffac061d4",
+    "rulebook": "sha256:3799f6049436428c7129718e866aab48f5b38c599d5c4c63c7fb9a6567fa24fb",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
