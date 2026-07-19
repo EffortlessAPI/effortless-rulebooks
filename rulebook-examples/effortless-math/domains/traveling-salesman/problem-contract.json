@@ -907,12 +907,12 @@
     {
       "LoopOrder": 665,
       "LoopId": "tsp-loop-665",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "The TWO_CLUSTER_ASYMMETRIC family is declared but tsp-holdout-cluster7-7 has no canonical graph rows.",
       "ClosureCriterion": "Materialize a deterministic 7-stop TWO_CLUSTER_ASYMMETRIC graph as HELD_OUT data without using its exact optimum to alter weights or the semantic basis.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Materialized tsp-holdout-cluster7-7 as frozen held-out graph data.",
+      "Result": "7 stops, 21 canonical edge rows, family TWO_CLUSTER_ASYMMETRIC, OracleStatus=PENDING; no weight was selected from an optimum result.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 666,
@@ -1486,11 +1486,11 @@
   "Acceptance": {
     "RulebookTables": 45,
     "Cities": 1,
-    "Neighborhoods": 12,
-    "Addresses": 40,
-    "TSPInstances": 9,
-    "InstanceStops": 48,
-    "TravelEdges": 116,
+    "Neighborhoods": 14,
+    "Addresses": 47,
+    "TSPInstances": 10,
+    "InstanceStops": 55,
+    "TravelEdges": 137,
     "CandidateTours": 10,
     "TSPLoops": 134,
     "FrontierObligations": 33,
@@ -1505,7 +1505,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 710,
-    "HighestCompletedLoop": 664,
+    "HighestCompletedLoop": 665,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 16,
     "SelectedNotForcedEdgeStates": 5,
@@ -1547,8 +1547,8 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 66,
     "ClusterContractionCertificates": 7,
-    "ConvergenceMeasurements": 68,
-    "ConceptRegistry": 119,
+    "ConvergenceMeasurements": 69,
+    "ConceptRegistry": 120,
     "DefectProfiles": 23,
     "BoundTerms": 8,
     "WitnessNormalForms": 21,
@@ -1582,7 +1582,7 @@
     "DevelopmentMaxExactClassCount": 20160
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:91a65e8da84017614e4c905b87e61d9e2fce7801d6679ce4deb78aea140a8440",
+    "rulebook": "sha256:f9ff9537979908e00c340172831a1ac600fa2108b3c99dfed6b102ff7b6c4cf7",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
