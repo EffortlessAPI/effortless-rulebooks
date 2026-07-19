@@ -116,6 +116,26 @@ The bit-calculator's own model (a separate rulebook) holds: 4 GateTypes, 14 Gate
 
 `scripts/validate_starter.py` asserts the **13-theorem** shape, **7 load-bearing + 4 corroborating-witness** dependency split, and the frozen v21 SHA-256 + SQLite counts; keep all of these in sync with this block.
 
+### traveling-salesman addendum (loops 577–586)
+
+The `traveling-salesman` optimization domain (`domains/traveling-salesman/`) remains a standalone research domain rather than a theorem/provider row in the global theorem catalog, so frozen FLT and theorem-network counts remain unchanged.
+
+Its current domain-local acceptance state is:
+
+```text
+19 TSP domain tables
+2 graph fixtures: one complete five-stop graph, one count-preserving duplicate-pair counterexample
+3 candidate tours: one optimal finite witness, two negative cycle witnesses
+10 semantic loops (577–586)
+8 typed frontier obligations
+0 active imported dependencies
+Gridville route A-B-C-D-E-A: valid=true, cost=14, optimal-for-declared-instance=true
+route discovery: 12 -> 12 branches (0% eliminated)
+supplied-candidate optimality verification: 12 -> 0 comparisons (100% enumeration avoided)
+```
+
+Never conflate an imported provider dependency with an internal frontier obligation. The current open rows are substrate commissioning, route reconstruction, neighborhood/generalization work, and residual search. The finite optimality result follows from a witnessed degree-two lower bound of 14 equaling the valid candidate cost of 14; it is not a general TSP or complexity claim.
+
 ## Host conventions
 
 - Include `rulebooktorulespeak` in `effortless.json`.
@@ -123,3 +143,7 @@ The bit-calculator's own model (a separate rulebook) holds: 4 GateTypes, 14 Gate
 - Read generated values from `vw_*` views.
 - Do not add defensive locks around `effortless build`.
 - Do not add bespoke caches. Any materialization must be first-class rulebook data with a refresh contract.
+
+### traveling-salesman loops 587–596
+
+The TSP domain now records planned and completed loop states through 596. Gridville's route is reconstructed from local-bound edge geometry with zero branch decisions. A twin-triangles counterexample keeps lower-bound soundness distinct from tightness and supplies the first finite neighborhood contraction witness. Live Postgres remains a typed substrate obligation when the build environment cannot execute it.

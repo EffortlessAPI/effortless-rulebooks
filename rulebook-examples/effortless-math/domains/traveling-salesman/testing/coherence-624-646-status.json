@@ -1,0 +1,13 @@
+{
+  "status": "SUCCEEDED",
+  "driver": "coherence-v1-push-each-loop",
+  "github_run_id": "29661710001",
+  "last_loop": 646,
+  "active_atoms": ["SEMANTIC_ARC"],
+  "active_operators": ["WARRANTED_REWRITE"],
+  "physical_tables": 45,
+  "three_region_optimum": 36,
+  "optimal_face_value": 4,
+  "optimal_face_choice_orbit": 2,
+  "value_proof_branch_decisions": 0
+}

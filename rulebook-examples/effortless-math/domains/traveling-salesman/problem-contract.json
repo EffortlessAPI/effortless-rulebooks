@@ -1,0 +1,1673 @@
+{
+  "ProblemId": "traveling-salesman-semantic-geometry",
+  "Version": "0.7.0",
+  "Title": "Traveling Salesman — City / Neighborhood / Address Semantic Geometry",
+  "Status": "RESEARCH_PROGRAM",
+  "Statement": "Given finite city-scale weighted graphs, represent graph normalization, supplied tours, typed frontier obligations, local-to-global lower bounds, finite optimality certificates, and residual search as executable structural data.",
+  "Scope": "The represented scope includes a frozen one-arc/one-rewrite basis, exact depot-fixed reversal-quotient calibration on six development and twelve held-out finite symmetric instances through nine stops, structural lower-bound and closure audits, and one explicit calibration-only value branch. No general TSP algorithm, universal region-repair theorem, basis-minimality theorem, or complexity-class claim is made.",
+  "TrustBoundary": "Input graph weights, availability, and membership remain trusted data. Exact enumeration is an independent finite calibration substrate, not an automatic structural proof. Structural certificates retain their own warrants. Held-out graphs were fixed before oracle execution. Postgres and Python are peer projections.",
+  "Claims": {
+    "PEqualsNP": false,
+    "UniversalPolynomialNormalization": false,
+    "GeneralOptimalityProved": false,
+    "Gridville5OptimalityProved": true,
+    "HamiltonianWitnessValidationImplemented": true,
+    "SearchEliminationMeasured": true,
+    "ActiveImportedDependencyCount": 0,
+    "RouteReconstructedWithoutSuppliedAntecedent": true,
+    "GridvilleRouteDiscoveryBranchCount": 0,
+    "NeighborhoodContractionFixtureCertified": true,
+    "PostgresConformanceCommissioned": true,
+    "ConceptConvergencePredictionRecorded": true,
+    "ConceptConvergenceProved": false,
+    "TwinTrianglesOptimalityProved": true,
+    "ConceptConvergenceObserved": true,
+    "PredicateBasisCount": 8,
+    "SurfacePredicateBaseline": 32,
+    "SemanticCompressionPct": 75,
+    "NovelTermsCoined597To610": 14,
+    "ThreeAtomBasisObserved": true,
+    "ThreeAtomBasisProved": false,
+    "CoherenceConvergencePredictionRecorded": true,
+    "LocalExpansionDuringInternalizationAllowed": true,
+    "MonotoneSchemaShrinkageClaimed": false,
+    "CurrentPredicateAtomCount": 1,
+    "CurrentSemanticOperatorCount": 1,
+    "HistoricalLoop610PredicateBasisCount": 8,
+    "CurrentSemanticCompressionPct": 96.88,
+    "NovelTermsCoined611To623": 13,
+    "AsymmetricFourStopQuotientCertified": true,
+    "OneArcOneRewriteObserved": true,
+    "OneArcOneRewriteProved": false,
+    "ThreeRegionOptimalityProved": true,
+    "OptimalFaceValueCertified": true,
+    "OptimalFaceUniqueRouteProved": false,
+    "CoherenceVectorRecorded": true,
+    "TypedArcRecoverabilityCertified": true,
+    "GeneralKRegionRepairProved": false,
+    "OptimalFaceChoiceOrbitSize": 2,
+    "PhysicalTableCountLoop646": 45,
+    "PhysicalTableCountIncreasedSinceLoop610": false,
+    "ExplicitDagRowsMayIncrease": true,
+    "OptimalFaceValueProofBranchDecisionCount": 0,
+    "CoherenceConvergenceObserved": true,
+    "CoherenceConvergenceProvedUniversally": false,
+    "ExactHeldOutCalibrationCompleted": true,
+    "CalibrationBasisFrozenAtLoop646": true,
+    "ExactOracleIsStructuralProof": false,
+    "GeneralTSPAlgorithmProved": false,
+    "HeldOutPrimitiveGrowthAllowedWithoutFalsification": false,
+    "HeldOutInstanceCount": 12,
+    "HeldOutExactOracleCoveragePct": 100,
+    "HeldOutValueClosedCount": 5,
+    "HeldOutRouteClosedCount": 3,
+    "HeldOutValueBranchRequiredCount": 7,
+    "FrozenBasisPrimitiveGrowthCount": 0,
+    "PhysicalTableCountLoop710": 45
+  },
+  "CanonicalAsset": "effortless-rulebook/traveling-salesman-rulebook.json",
+  "ExecutionSubstrates": [
+    "postgres:generated vw_* views (commissioned via EffortlessAPI/cli 2026-06-09.06.13)",
+    "python:scripts/reference_model.py"
+  ],
+  "Loops": [
+    {
+      "LoopOrder": 577,
+      "LoopId": "tsp-loop-577",
+      "Result": "City -> Neighborhood -> Address hierarchy closed for the fixture.",
+      "Status": "CLOSED"
+    },
+    {
+      "LoopOrder": 578,
+      "LoopId": "tsp-loop-578",
+      "Result": "Five-stop complete symmetric weighted graph normalized as ten canonical edges.",
+      "Status": "CLOSED"
+    },
+    {
+      "LoopOrder": 579,
+      "LoopId": "tsp-loop-579",
+      "Result": "Candidate tours represented as ordered stops plus edge-bound legs.",
+      "Status": "CLOSED"
+    },
+    {
+      "LoopOrder": 580,
+      "LoopId": "tsp-loop-580",
+      "Result": "Valid reference route accepted; duplicate-stop route rejected; optimality remained open.",
+      "Status": "CLOSED"
+    },
+    {
+      "LoopOrder": 581,
+      "LoopId": "tsp-loop-581",
+      "Result": "Baseline recorded twelve symmetry-reduced route-discovery classes.",
+      "Status": "CLOSED"
+    },
+    {
+      "LoopOrder": 582,
+      "LoopId": "tsp-loop-582",
+      "Result": "Frontier obligations typed separately from imported dependencies; imported count remains zero.",
+      "Status": "CLOSED"
+    },
+    {
+      "LoopOrder": 583,
+      "LoopId": "tsp-loop-583",
+      "Result": "Global one-in/one-out transition coverage rejects a locally legal but globally incomplete cycle.",
+      "Status": "CLOSED"
+    },
+    {
+      "LoopOrder": 584,
+      "LoopId": "tsp-loop-584",
+      "Result": "Canonical pair multiplicity rejects a count-preserving duplicate-edge graph.",
+      "Status": "CLOSED"
+    },
+    {
+      "LoopOrder": 585,
+      "LoopId": "tsp-loop-585",
+      "Result": "Degree-two local bounds certify a global tour lower bound of 14.",
+      "Status": "CLOSED"
+    },
+    {
+      "LoopOrder": 586,
+      "LoopId": "tsp-loop-586",
+      "Result": "Reference candidate cost 14 equals the certified lower bound, proving finite-instance optimality.",
+      "Status": "CLOSED"
+    },
+    {
+      "LoopOrder": 587,
+      "LoopId": "tsp-loop-587",
+      "Status": "CLOSED",
+      "BeforeState": "frontier-postgres-commissioning is OPEN; no execution-run certificate exists",
+      "ClosureCriterion": "Run the generated Postgres projection, recreate erb_traveling_salesman, compare vw_* results with Python, and record artifact hashes; otherwise record the exact blocking substrate condition.",
+      "AfterState": "Attempts 1-9 preserve missing-CLI, npm, workflow, stale-oracle, chained-finalizer, and numeric-presentation failures. Retry 10 installed the pinned CLI archive, generated the complete vw_* projection, initialized erb_traveling_salesman, passed rulebook-derived Python/Postgres conformance, normalized NUMERIC text through Decimal, and durably sealed the substrate certificate.",
+      "Result": "Generated Postgres and Python agree on all declared semantics; Decimal-normalized live checks and append-only attempt history close the substrate obligation.",
+      "CompletionDisposition": "CLOSED_ON_RETRY_10"
+    },
+    {
+      "LoopOrder": 588,
+      "LoopId": "tsp-loop-588",
+      "Status": "CLOSED",
+      "BeforeState": "Inference rules exist, but individual applications, antecedents, edge decisions, and supports are not first-class rows.",
+      "ClosureCriterion": "Represent local-bound applications, antecedents, selected edge states, and support rows without upgrading selected edges to forced edges.",
+      "AfterState": "Represented 5 applications, 5 antecedents, 5 selected edge states, and 10 supports; no edge was labeled FORCED.",
+      "Result": "Represented 5 applications, 5 antecedents, 5 selected edge states, and 10 supports; no edge was labeled FORCED.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 589,
+      "LoopId": "tsp-loop-589",
+      "Status": "CLOSED",
+      "BeforeState": "Local degree bounds identify edges independently at stops, but their deduplicated union is not a first-class object.",
+      "ClosureCriterion": "Derive exactly five unique Gridville edges from LocalDegreeBounds and support rows, without using CandidateTour, TourStop, or TourLeg as antecedents.",
+      "AfterState": "Derived 5 unique edges ['edge-a-b', 'edge-a-e', 'edge-b-c', 'edge-c-d', 'edge-d-e'] at total cost 14; no CandidateTour/TourStop/TourLeg row was an antecedent.",
+      "Result": "Derived 5 unique edges ['edge-a-b', 'edge-a-e', 'edge-b-c', 'edge-c-d', 'edge-d-e'] at total cost 14; no CandidateTour/TourStop/TourLeg row was an antecedent.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 590,
+      "LoopId": "tsp-loop-590",
+      "Status": "CLOSED",
+      "BeforeState": "The inferred Gridville edge union has no represented degree, component, spanning-tree, or subtour certificate.",
+      "ClosureCriterion": "Witness selected degree two at all five stops, one connected component, a four-edge spanning tree, and zero proper subtours.",
+      "AfterState": "All five stops have selected degree two; component count=1, spanning-tree edges=4, proper subtours=0.",
+      "Result": "All five stops have selected degree two; component count=1, spanning-tree edges=4, proper subtours=0.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 591,
+      "LoopId": "tsp-loop-591",
+      "Status": "CLOSED",
+      "BeforeState": "Gridville has a certified cycle edge set, but the only ordered route rows are supplied candidates.",
+      "ClosureCriterion": "Starting at the depot with deterministic orientation, project five ordered reconstruction steps from the inferred edge set with CandidateUsedAsAntecedent=false.",
+      "AfterState": "Reconstructed stop-a -> stop-b -> stop-c -> stop-d -> stop-e -> stop-a at cost 14; CandidateUsedAsAntecedent=false and the supplied route is comparison-only.",
+      "Result": "Reconstructed stop-a -> stop-b -> stop-c -> stop-d -> stop-e -> stop-a at cost 14; CandidateUsedAsAntecedent=false and the supplied route is comparison-only.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 592,
+      "LoopId": "tsp-loop-592",
+      "Status": "CLOSED",
+      "BeforeState": "Route-discovery counts are recorded as baseline data and are not tied to a structural reconstruction certificate.",
+      "ClosureCriterion": "Derive 12 initial symmetry-reduced classes, one surviving reconstructed class, zero branch decisions, zero backtracks, and zero residual ambiguity for Gridville.",
+      "AfterState": "Derived 12 initial route classes, one surviving reconstructed class, zero branch decisions, zero backtracks, and zero residual ambiguity.",
+      "Result": "Derived 12 initial route classes, one surviving reconstructed class, zero branch decisions, zero backtracks, and zero residual ambiguity.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 593,
+      "LoopId": "tsp-loop-593",
+      "Status": "CLOSED",
+      "BeforeState": "The only positive fixture has a tight degree-two lower bound, so failure behavior is not represented.",
+      "ClosureCriterion": "Represent six stops in two cheap triangles with expensive crossings; certify lower bound 6, candidate cost 24, two selected components, and no optimality or route-reconstruction certificate.",
+      "AfterState": "Twin triangles: certified degree-two lower bound 6, feasible candidate cost 24, selected component count 2, proper subtours 2; no optimality or reconstruction certificate emitted.",
+      "Result": "Twin triangles: certified degree-two lower bound 6, feasible candidate cost 24, selected component count 2, proper subtours 2; no optimality or reconstruction certificate emitted.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 594,
+      "LoopId": "tsp-loop-594",
+      "Status": "CLOSED",
+      "BeforeState": "Degree-two forcing is declared but has no executable state, round, or decision certificates.",
+      "ClosureCriterion": "On a sparse five-stop fixture, stops with exactly two available incident edges force the five cycle edges with zero branching.",
+      "AfterState": "Sparse fixture forced five ring edges from degree-two stops with zero branch decisions; B-D remains for saturation propagation.",
+      "Result": "Sparse fixture forced five ring edges from degree-two stops with zero branch decisions; B-D remains for saturation propagation.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 595,
+      "LoopId": "tsp-loop-595",
+      "Status": "CLOSED",
+      "BeforeState": "Forced edges do not yet emit deterministic forbidden-edge consequences or premature-subtour exclusions.",
+      "ClosureCriterion": "Forbid the sparse B-D chord by degree saturation and forbid a twin-triangle closing edge because it would close a proper subtour, with replayable reason codes.",
+      "AfterState": "Forbade sparse B-D by degree saturation and twin WA-WC by proper-subtour prevention; both decisions are deterministic and branch-free.",
+      "Result": "Forbade sparse B-D by degree saturation and twin WA-WC by proper-subtour prevention; both decisions are deterministic and branch-free.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 596,
+      "LoopId": "tsp-loop-596",
+      "Status": "CLOSED",
+      "BeforeState": "Neighborhood rows are geographic labels only; no executable entry/exit path states or contraction certificate exists.",
+      "ClosureCriterion": "For each three-stop twin-triangle neighborhood, derive three undirected entry/exit Hamiltonian-path states, reduce six internal orders to three states, and reduce 36 paired internal orders to nine paired boundary-state combinations.",
+      "AfterState": "Each twin-triangle neighborhood contracts six raw internal orders to three undirected boundary states (50%); paired composition contracts 36 combinations to nine (75%) with cost-preserving path witnesses.",
+      "Result": "Each twin-triangle neighborhood contracts six raw internal orders to three undirected boundary states (50%); paired composition contracts 36 combinations to nine (75%) with cost-preserving path witnesses.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 597,
+      "LoopId": "tsp-loop-597",
+      "Status": "CLOSED",
+      "BeforeState": "Forty physical tables expose at least thirty-two recurring surface predicates, but no explicit convergence hypothesis or semantic compression baseline is recorded.",
+      "ClosureCriterion": "Record the working prediction, baseline thirty-two surface predicates, target eight-predicate basis, and DAG-based predicate-invention method without claiming a theorem.",
+      "AfterState": "Recorded a thirty-two-surface-predicate baseline, an eight-predicate target, and the prediction that DAG inference will invent derived predicates while the primitive basis stabilizes.",
+      "Result": "The convergence hypothesis is now versioned data, explicitly exploratory and not a theorem.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 598,
+      "LoopId": "tsp-loop-598",
+      "Status": "CLOSED",
+      "BeforeState": "The convergence prediction is recorded, but the candidate primitive vocabulary and surface-to-basis map do not exist.",
+      "ClosureCriterion": "Represent exactly eight canonical primitives and map all thirty-two baseline surface predicates to finite basis expressions.",
+      "AfterState": "Mapped thirty-two recurring surface predicates to eight canonical primitives; historical names remain queryable projections rather than independent primitives.",
+      "Result": "Predicate basis = {MEMBERSHIP, INCIDENCE, CARDINALITY, ORDER, WEIGHT, COMMITMENT, CONNECTIVITY, PROVENANCE}; measured semantic compression is 75%.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 599,
+      "LoopId": "tsp-loop-599",
+      "Status": "CLOSED",
+      "BeforeState": "UNKNOWN, SELECTED, FORCED, FORBIDDEN, CONTRADICTED, and SUPERSEDED are separate surface statuses split across edge-state and constraint-decision projections.",
+      "ClosureCriterion": "Project all edge statuses onto one commitment rank, polarity, necessity scope, and provenance representation without conflating selected with forced.",
+      "AfterState": "Collapsed edge-state and constraint-decision vocabulary into a commitment lattice with rank, polarity, necessity scope, and provenance.",
+      "Result": "Gridville selections have rank 1 and CURRENT_WITNESS scope; sparse forced edges have rank 2 and ALL_FEASIBLE_TOURS scope; no epistemic upgrade was hidden.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 600,
+      "LoopId": "tsp-loop-600",
+      "Status": "CLOSED",
+      "BeforeState": "Cycle degree, selected degree, remaining degree, local lower-bound incidence, and forcing applicability are represented as separate concepts.",
+      "ClosureCriterion": "Represent required incidence, observed incidence, and incidence defect uniformly for every Gridville and twin-triangle stop.",
+      "AfterState": "Projected local degree bounds, cycle degree, selected degree, and forcing applicability onto one incidence budget.",
+      "Result": "All five Gridville and all six twin-triangle stops have required incidence 2, observed incidence 2, and incidence defect 0; connectivity remains a separate coordinate.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 601,
+      "LoopId": "tsp-loop-601",
+      "Status": "CLOSED",
+      "BeforeState": "Degree violations, connected-component count, boundary crossings, and cost gaps are separate acceptance surfaces.",
+      "ClosureCriterion": "Represent incidence, connectivity, boundary, and cost defects as one vector and distinguish zero-defect Gridville from twin triangles.",
+      "AfterState": "Collapsed incidence violations, component excess, missing boundary crossings, and bound gap into one defect vector.",
+      "Result": "Gridville vector = 0|0|0|0; twin local two-factor vector = 0|1|2|18, locating the exact unresolved geometry without inventing a new primitive.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 602,
+      "LoopId": "tsp-loop-602",
+      "Status": "CLOSED",
+      "BeforeState": "Twin triangles exposes two selected components, but the mandatory number of crossings between them is not represented.",
+      "ClosureCriterion": "Derive that a Hamiltonian cycle crosses a nontrivial component cut a positive even number of times, hence at least twice.",
+      "AfterState": "Derived a positive-even cut-crossing certificate for the two twin components, with minimum crossing demand two.",
+      "Result": "Twin component cut: crossing count is even for every cycle and nonzero for connected coverage; therefore crossing count >= 2.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 603,
+      "LoopId": "tsp-loop-603",
+      "Status": "CLOSED",
+      "BeforeState": "Twin triangles has a certified local degree bound of six and a two-crossing requirement, but no composed global repair cost.",
+      "ClosureCriterion": "Add two cost-ten crossings, release two cost-one internal edges, and certify an eighteen-unit repair adjustment and lower bound twenty-four.",
+      "AfterState": "Composed the local degree bound with cut repair: 6 + (2 x 10) - (2 x 1) = 24.",
+      "Result": "Twin component repair adjustment is +18; the strengthened finite-instance lower bound is 24.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 604,
+      "LoopId": "tsp-loop-604",
+      "Status": "CLOSED",
+      "BeforeState": "Twin triangles has a repaired lower bound of twenty-four and a feasible candidate of cost twenty-four, but no finite optimality certificate.",
+      "ClosureCriterion": "Close twin-triangle finite optimality by lower-bound/upper-bound equality while retaining the original non-tight local-bound counterexample.",
+      "AfterState": "Closed twin-triangle optimality by the sandwich 24 <= candidate cost 24 <= 24.",
+      "Result": "The original degree-only bound remains recorded as non-tight; the composed component-repair bound equals the valid candidate and proves optimality only for tsp-twin-triangles-6.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 605,
+      "LoopId": "tsp-loop-605",
+      "Status": "CLOSED",
+      "BeforeState": "Candidate tours, reconstructed tours, and cluster paths use separate object vocabularies despite sharing coverage, incidence, order, connectivity, cost, and provenance.",
+      "ClosureCriterion": "Project supplied and reconstructed cycles into one normal form whose semantic key differs only by provenance where the underlying cycle is identical.",
+      "AfterState": "Normalized supplied and reconstructed cycles into one semantic witness shape.",
+      "Result": "The supplied and reconstructed Gridville cycles share coverage, edge count, cost, and zero-defect semantic key; only provenance differs.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 606,
+      "LoopId": "tsp-loop-606",
+      "Status": "CLOSED",
+      "BeforeState": "Neighborhood boundary states are special-purpose rows rather than path witnesses in the common normal form.",
+      "ClosureCriterion": "Project all six cluster boundary states into valid path normal forms keyed by scope, entry, exit, coverage, and cost.",
+      "AfterState": "Projected all six neighborhood boundary states into valid path witness normal forms.",
+      "Result": "Each path normal form records scope, canonical entry/exit, three-stop coverage, two edges, cost two, zero defects, and expansion provenance.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 607,
+      "LoopId": "tsp-loop-607",
+      "Status": "CLOSED",
+      "BeforeState": "The measured six-to-three neighborhood contraction is stored as a count reduction without an explicit equivalence relation.",
+      "ClosureCriterion": "Represent reversal-equivalent internal orders as quotient classes and derive three classes per neighborhood and nine product classes.",
+      "AfterState": "Recast neighborhood contraction as a semantic quotient by path reversal with fixed unordered boundary, coverage, and cost.",
+      "Result": "Each neighborhood has six directed orders / orientation multiplicity two = three quotient classes; the product quotient has 3 x 3 = 9 classes.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 608,
+      "LoopId": "tsp-loop-608",
+      "Status": "CLOSED",
+      "BeforeState": "Neighborhood clusters and selected connected components are treated as different kinds of objects despite exposing the same boundary-degree contract.",
+      "ClosureCriterion": "Represent the two twin neighborhoods as quotient nodes with boundary degree two, unifying cluster and component interfaces.",
+      "AfterState": "Unified the two neighborhoods and the two selected connected components as quotient nodes with required boundary degree two.",
+      "Result": "The city-level object is now a two-node quotient graph; cluster versus component is provenance, while boundary degree and expansion signature carry the semantics.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 609,
+      "LoopId": "tsp-loop-609",
+      "Status": "CLOSED",
+      "BeforeState": "Inference applications, antecedents, supports, states, constraint rounds, and decisions are separate execution concepts.",
+      "ClosureCriterion": "Project representative selection, union, rigidity, reconstruction, forcing, forbidding, cut, repair, optimality, and quotient steps into one closure-event schema.",
+      "AfterState": "Collapsed applications, states, antecedents, supports, rounds, and decisions into a common closure-event projection.",
+      "Result": "14 closure events cover selection, union, rigidity, reconstruction, forcing, forbidding, cut parity, repair, optimality, and quotienting.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 610,
+      "LoopId": "tsp-loop-610",
+      "Status": "CLOSED",
+      "BeforeState": "Thirteen reduction loops have coined derived predicates, but their cumulative compression and primitive-basis stability are not certified.",
+      "ClosureCriterion": "Certify thirty-two-to-eight semantic compression, fourteen coined terms, zero new primitives after the basis loop, bounded physical schema growth, and an explicit residual kernel.",
+      "AfterState": "Certified a stable eight-predicate basis across fourteen reduction loops: thirty-two baseline surface predicates compress to eight primitives, fourteen useful terms were coined, and no new primitive appeared after loop 598.",
+      "Result": "Convergence event: semantic compression 75%, physical tables 40 to 45, coined terms 14, new primitives after basis discovery 0; status is early empirical support for this finite TSP domain.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 611,
+      "LoopId": "tsp-loop-611",
+      "Status": "CLOSED",
+      "BeforeState": "Loop 610 records eight canonical predicates, but relational atoms and reusable operators are not distinguished. Convergence could also be misread as requiring monotone table or predicate shrinkage.",
+      "ClosureCriterion": "Classify the eight historical predicates as candidate atoms or operator-derived concepts, preserve their loop-610 provenance, and record that local expansion is permitted when an opaque dependency is replaced by explicit reusable machinery. Measure convergence by coherence, reuse, trust-boundary reduction, and residual ambiguity rather than by monotone physical size.",
+      "AfterState": "Separated the historical eight-predicate basis into candidate relational atoms and operator-derived concepts without changing the active basis. Recorded that local representational growth is compatible with global semantic convergence when it replaces opacity with reusable structure.",
+      "Result": "All eight loop-610 primitives retain their historical identity and receive explicit semantic-category and reduced-expression fields; current primitive count remains eight. The convergence objective is coherence rather than monotone row, table, or predicate-count reduction.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 612,
+      "LoopId": "tsp-loop-612",
+      "Status": "CLOSED",
+      "BeforeState": "Membership and incidence are separate primitives even though both attach one object to a typed scope or endpoint.",
+      "ClosureCriterion": "Introduce ATTACHMENT(subject, object, role), reduce MEMBERSHIP and INCIDENCE to typed attachment roles, and preserve every historical surface definition.",
+      "AfterState": "Collapsed membership and incidence into ATTACHMENT with typed roles such as member, endpoint, entry, exit, and uses.",
+      "Result": "Every historical membership/incidence surface retains a reduced expression, while the active primitive count becomes seven.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 613,
+      "LoopId": "tsp-loop-613",
+      "Status": "CLOSED",
+      "BeforeState": "Cardinality, order, and weight remain separate primitives despite all assigning values under a named measure.",
+      "ClosureCriterion": "Introduce VALUATION(subject, measure, value), reduce count, ordinal, and cost predicates to valuation forms, and retain aggregation as an explicit pending operator.",
+      "AfterState": "Collapsed cardinality, order, and weight into VALUATION under explicit measures.",
+      "Result": "Degree is a valuation under incident-count, sequence is a valuation under ordinal-position, and cost is a valuation under the objective measure; active primitive count becomes five.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 614,
+      "LoopId": "tsp-loop-614",
+      "Status": "CLOSED",
+      "BeforeState": "Commitment and provenance are separate primitives even though every commitment is a scoped conclusion warranted by sources and rules.",
+      "ClosureCriterion": "Introduce WARRANT(conclusion, source, modality), reduce commitment and provenance to warrant projections, and preserve necessity scope distinctions.",
+      "AfterState": "Collapsed commitment and provenance into WARRANT with explicit source, modality, and scope.",
+      "Result": "SELECTED remains a current-witness warrant, FORCED remains an all-feasible-tours warrant, and historical provenance remains queryable; active primitive count becomes four.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 615,
+      "LoopId": "tsp-loop-615",
+      "Status": "CLOSED",
+      "BeforeState": "Connectivity is still treated as a primitive rather than reachability closure over typed attachments.",
+      "ClosureCriterion": "Register CLOSURE as an operator over attachment relations, reduce CONNECTIVITY to closure, and leave exactly three active relational atoms.",
+      "AfterState": "Lifted connectivity from the primitive basis into CLOSURE over typed attachments.",
+      "Result": "The current active atom count is three: ATTACHMENT, VALUATION, WARRANT. Connectedness, components, cuts, and reachability are closure results.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 616,
+      "LoopId": "tsp-loop-616",
+      "Status": "CLOSED",
+      "BeforeState": "Counts, sums, minima, degrees, and repair totals are expressed through many surface formulas without one operator identity.",
+      "ClosureCriterion": "Register AGGREGATE as the common count/sum/min/max/parity operator over attachments and valuations, with no new atom.",
+      "AfterState": "Lifted count, sum, minimum, maximum, parity, and signed repair arithmetic into AGGREGATE.",
+      "Result": "Degree, edge count, lower-bound sum, fiber minimum, and convergence measurement now differ by measure and reducer, not by primitive type.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 617,
+      "LoopId": "tsp-loop-617",
+      "Status": "CLOSED",
+      "BeforeState": "Semantic Quotient and Component Quotient are coined predicates but quotienting is not represented as a reusable operator.",
+      "ClosureCriterion": "Register QUOTIENT as the operator that identifies witnesses under an explicit equivalence relation and retains representatives plus expansion provenance.",
+      "AfterState": "Lifted semantic and component contraction into QUOTIENT with explicit equivalence, representatives, and expansion warrant.",
+      "Result": "Path reversal, component abstraction, and later valuation dominance now share one operator contract.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 618,
+      "LoopId": "tsp-loop-618",
+      "Status": "CLOSED",
+      "BeforeState": "Closure events and constraint rounds expose repeated application, but fixed-point iteration is not explicit in the semantic basis.",
+      "ClosureCriterion": "Register FIXPOINT as repeated warranted closure until no commitment changes, and map inference rounds and closure events onto it.",
+      "AfterState": "Lifted repeated constraint and inference closure into FIXPOINT.",
+      "Result": "Forcing, forbidding, repair, and quotient events can now be described as warranted transformations iterated until state stability.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 619,
+      "LoopId": "tsp-loop-619",
+      "Status": "CLOSED",
+      "BeforeState": "Three active atoms and four operators have emerged incrementally, but their coverage of the historical vocabulary is not certified.",
+      "ClosureCriterion": "Certify ATTACHMENT, VALUATION, and WARRANT as the current atoms; CLOSURE, AGGREGATE, QUOTIENT, and FIXPOINT as operators; and express every registered concept without the old eight primitive tokens.",
+      "AfterState": "Certified a current basis of three atoms and four operators while preserving the historical eight-predicate certificate.",
+      "Result": "Atoms = ATTACHMENT, VALUATION, WARRANT. Operators = CLOSURE, AGGREGATE, QUOTIENT, FIXPOINT. Thirty-two baseline surfaces compress to three active atoms (90.63%) for the represented domain.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 620,
+      "LoopId": "tsp-loop-620",
+      "Status": "CLOSED",
+      "BeforeState": "Entry and exit stops remain special cluster fields rather than typed attachments with a reusable port contract.",
+      "ClosureCriterion": "Represent every existing cluster path through typed entry/exit ports, a common port contract, orientation multiplicity, and a boundary-fiber key.",
+      "AfterState": "Normalized existing cluster entries and exits as typed boundary ports over ATTACHMENT, VALUATION, and WARRANT.",
+      "Result": "All six existing triangle path states expose one entry, one exit, full internal coverage, orientation multiplicity two, and a canonical boundary-fiber key.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 621,
+      "LoopId": "tsp-loop-621",
+      "Status": "CLOSED",
+      "BeforeState": "The three-stop fixture has one path per unordered boundary, so it cannot distinguish quotienting by symmetry from competing internal valuations.",
+      "ClosureCriterion": "Represent an asymmetric four-stop complete neighborhood with twelve reversal-quotient path states grouped into six boundary fibers, retaining twenty-four directed orientations and explicit expansion members.",
+      "AfterState": "Represented an asymmetric four-stop complete cluster as six boundary fibers containing twelve reversal-quotient path witnesses.",
+      "Result": "The twelve path rows retain twenty-four raw directed orientations, full four-stop coverage, explicit three-edge expansions, and unequal costs within every boundary fiber.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 622,
+      "LoopId": "tsp-loop-622",
+      "Status": "CLOSED",
+      "BeforeState": "Each asymmetric boundary fiber contains two non-equivalent internal path valuations and no canonical survivor.",
+      "ClosureCriterion": "Within each of six boundary fibers, warrant the unique minimum-cost path, mark the other path dominated, and record the exact dominance delta.",
+      "AfterState": "Collapsed each asymmetric boundary fiber to its unique minimum-valued path while preserving the dominated alternative.",
+      "Result": "Six fibers each contain one SURVIVES row and one DOMINATED row; dominance deltas are 1, 6, 5, 5, 6, and 1 under the declared edge costs.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 623,
+      "LoopId": "tsp-loop-623",
+      "Status": "CLOSED",
+      "BeforeState": "The original contraction certificate only demonstrates three-stop reversal symmetry and does not test the reduced basis against asymmetric valuations.",
+      "ClosureCriterion": "Certify 24 directed paths to 12 reversal classes to 6 boundary-fiber minima, with expansion, coverage, and cost preservation, while the physical table count remains unchanged.",
+      "AfterState": "Certified an asymmetric semantic quotient: 24 directed internal paths to 12 reversal classes to 6 fiber minima, with no physical table growth.",
+      "Result": "The current semantic vocabulary remains three atoms plus four operators; asymmetric costs coin new predicates without adding a primitive. The certificate is finite and scoped to tsp-asymmetric-four-4.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 624,
+      "LoopId": "tsp-loop-624",
+      "Status": "CLOSED",
+      "BeforeState": "Loop 623 records local expansion as compatible with convergence, but the repository has no multidimensional measurement separating semantic basis size, physical size, open frontier, and named derived vocabulary.",
+      "ClosureCriterion": "Represent a coherence vector that records active atoms, active operators, physical-table delta, open frontier, named concepts, and the non-monotone expansion guardrail without collapsing those dimensions to an arbitrary scalar.",
+      "AfterState": "Recorded semantic basis size, operator count, physical-table delta, open frontier, and named vocabulary as separate coherence coordinates.",
+      "Result": "Loop-624 vector: atoms=3, operators=4, tables=45, open_frontier=2, named_concepts=75; local expansion remains allowed.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 625,
+      "LoopId": "tsp-loop-625",
+      "Status": "CLOSED",
+      "BeforeState": "ATTACHMENT, VALUATION, and WARRANT are three active ternary atoms with the same subject-label-target shape but different label and target sorts.",
+      "ClosureCriterion": "Introduce SEMANTIC_ARC(subject,label,target), reduce the three atoms to typed arc projections, preserve all historical definitions, and leave exactly one active relational atom.",
+      "AfterState": "Collapsed ATTACHMENT, VALUATION, and WARRANT into one typed SEMANTIC_ARC relation.",
+      "Result": "The three historical atoms remain distinct recoverable projections by ROLE, MEASURE, and MODALITY signatures; active atom count is one.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 626,
+      "LoopId": "tsp-loop-626",
+      "Status": "CLOSED",
+      "BeforeState": "A single generic arc can encode the three atoms syntactically, but their role, measure, and modality constraints are not yet recoverable as typed signatures.",
+      "ClosureCriterion": "Record subject, label, and target sorts for attachment, valuation, and warrant projections and require distinct recoverable signatures for each historical atom.",
+      "AfterState": "Typed the semantic arc with explicit subject, label, and target sorts.",
+      "Result": "Attachment = ROLE arc, valuation = MEASURE arc, warrant = MODALITY arc; each historical atom has a distinct recovery filter, preventing a vacuous untyped triple-store collapse.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 627,
+      "LoopId": "tsp-loop-627",
+      "Status": "CLOSED",
+      "BeforeState": "The arc signatures are represented, but lossless recovery of the historical vocabulary has not been certified across the concept registry.",
+      "ClosureCriterion": "Give every registered concept an explicit recovery expression over semantic arcs and operators, reject unreduced historical tokens, and preserve source-table provenance.",
+      "AfterState": "Certified lossless recovery of the historical and derived vocabulary from semantic arcs plus the current operators.",
+      "Result": "Recoverability coverage is 79/79; no retired atom token remains in a current reduced definition.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 628,
+      "LoopId": "tsp-loop-628",
+      "Status": "CLOSED",
+      "BeforeState": "CLOSURE and FIXPOINT are separate active operators although both repeatedly add warranted consequences until a stability condition holds.",
+      "ClosureCriterion": "Introduce SATURATE(seed,rewrite,termination_warrant), reduce closure and fixed point to explicit saturation modes, and preserve their historical operator identities.",
+      "AfterState": "Collapsed CLOSURE and FIXPOINT into the SATURATE operator.",
+      "Result": "Reachability closure and no-change rule closure remain recoverable as distinct expansive saturation modes; active operators are Saturate, Aggregate, and Quotient.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 629,
+      "LoopId": "tsp-loop-629",
+      "Status": "CLOSED",
+      "BeforeState": "AGGREGATE and QUOTIENT are separate active operators although both group a domain by a key and replace each fiber with a warranted summary or representative.",
+      "ClosureCriterion": "Introduce FIBER_REDUCE(domain,key,reducer,expansion_warrant), reduce aggregate and quotient to reducer modes, and preserve all expansion and valuation semantics.",
+      "AfterState": "Collapsed AGGREGATE and QUOTIENT into FIBER_REDUCE.",
+      "Result": "Count/sum/min/parity summaries and equivalence representatives remain recoverable reducer modes with explicit expansion warrants; active operator count is two.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 630,
+      "LoopId": "tsp-loop-630",
+      "Status": "CLOSED",
+      "BeforeState": "SATURATE and FIBER_REDUCE remain separate operators even though both transform one semantic-arc state into another under an explicit warrant.",
+      "ClosureCriterion": "Introduce WARRANTED_REWRITE(input,rule,polarity,output,warrant), reduce saturation and fiber reduction to rewrite modes, and leave exactly one active semantic operator.",
+      "AfterState": "Collapsed SATURATE and FIBER_REDUCE into one WARRANTED_REWRITE operator.",
+      "Result": "Every transformation now exposes input, rule, polarity, output, and warrant; saturation and fiber reduction remain recoverable modes, and active operator count is one.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 631,
+      "LoopId": "tsp-loop-631",
+      "Status": "CLOSED",
+      "BeforeState": "The single rewrite operator is parametric, but the distinction between black-box internalization growth, saturation growth, and quotient contraction is not typed.",
+      "ClosureCriterion": "Classify historical and current operators as EXPANSIVE, CONTRACTIVE, MIXED, or PARAMETRIC, with modes that recover closure, fixed point, aggregate, quotient, saturation, and fiber reduction.",
+      "AfterState": "Typed expansive, contractive, mixed, and parametric rewrite modes.",
+      "Result": "Closure/fixed point/saturation are recoverable as expansive modes; aggregate/quotient/fiber reduction as contractive modes; local expansion is explicitly compatible with coherent rewrite composition.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 632,
+      "LoopId": "tsp-loop-632",
+      "Status": "CLOSED",
+      "BeforeState": "One active arc and one active rewrite have emerged incrementally, but lossless coverage, current-basis counts, and empirical scope are not yet certified.",
+      "ClosureCriterion": "Certify one active atom and one active operator, recover every registered concept without old atom/operator tokens, preserve all prior certificates, and retain the non-claim of minimality or universality.",
+      "AfterState": "Certified one active typed semantic arc and one active warranted rewrite for the current TSP domain.",
+      "Result": "Thirty-two baseline surfaces reduce to one active atom (96.88%); 87 registered concepts remain recoverable, historical bases remain versioned, and minimality is not claimed.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 633,
+      "LoopId": "tsp-loop-633",
+      "Status": "CLOSED",
+      "BeforeState": "Neighborhoods, components, and boundary fibers are quotient objects, but their shared port, coverage, valuation, and expansion contract is not represented as one region interface.",
+      "ClosureCriterion": "Add a common region-interface projection to existing quotient nodes without a new table and define ports, internal coverage, expansion witness, and interface status through semantic arcs.",
+      "AfterState": "Normalized every existing quotient node through one region-interface projection.",
+      "Result": "Region identity now carries two boundary ports, internal coverage, an ordered expansion witness kind, and a certified interface status; neighborhood versus component remains provenance.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 634,
+      "LoopId": "tsp-loop-634",
+      "Status": "CLOSED",
+      "BeforeState": "Component repair has only been tested on two three-stop regions, so crossing demand and repair composition for more than two components are unmeasured.",
+      "ClosureCriterion": "Represent a complete nine-stop graph partitioned into three cost-one triangles, three cost-ten ring crossings, expensive remaining crossings, nine valid local degree bounds, and a three-component local two-factor of cost nine.",
+      "AfterState": "Represented three cost-one local triangles inside one complete nine-stop weighted graph.",
+      "Result": "Nine valid local degree witnesses select nine internal edges of total cost nine; their union has degree two at every stop, three connected components, three proper subtours, and no route or optimality promotion.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 635,
+      "LoopId": "tsp-loop-635",
+      "Status": "CLOSED",
+      "BeforeState": "The region-triad local two-factor has three components, but the components do not yet expose reusable path states and expansion witnesses.",
+      "ClosureCriterion": "Represent three boundary-degree-two quotient nodes, three path states per region, explicit edge expansions, and one passing six-to-three contraction certificate per region.",
+      "AfterState": "Contracted each local triangle to a certified boundary-degree-two region quotient.",
+      "Result": "Three quotient nodes expose nine total boundary states and eighteen expansion edges; each regional certificate records 6 directed orders to 3 reversal classes at cost two.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 636,
+      "LoopId": "tsp-loop-636",
+      "Status": "CLOSED",
+      "BeforeState": "Every local stop has degree two, yet the quotient graph has no external incidence; the resulting global defect is not represented in the common budget vocabulary.",
+      "ClosureCriterion": "Give each of three region nodes required boundary degree two, observed degree zero, and a shared global profile separating closed internal incidence from open quotient incidence.",
+      "AfterState": "Lifted the three-component defect into quotient incidence budgets.",
+      "Result": "Every stop retains internal degree two, every region requires external degree two and currently has zero, and the global profile records component count three with crossing deficit three. Cost coordinates remain explicitly unwitnessed at this stage.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 637,
+      "LoopId": "tsp-loop-637",
+      "Status": "CLOSED",
+      "BeforeState": "Three quotient nodes each require boundary degree two, but the number of inter-region edges forced by that demand is not yet derived.",
+      "ClosureCriterion": "Apply the handshake identity to the quotient: total boundary degree six divided by two endpoints per crossing requires at least three inter-region edges.",
+      "AfterState": "Derived a three-edge crossing demand from the quotient boundary-degree handshake.",
+      "Result": "Required quotient degree is 3 regions x 2 = 6; dividing by two endpoints per crossing certifies at least 3 inter-region edges.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 638,
+      "LoopId": "tsp-loop-638",
+      "Status": "CLOSED",
+      "BeforeState": "The base degree-two lower bound is nine and crossing demand is three, but the signed cost of repairing three components is not represented.",
+      "ClosureCriterion": "Certify 9 + 3*10 - 3*1 = 36 from a base term, three mandatory crossing insertions, and one necessary cost-one internal release per region.",
+      "AfterState": "Composed the three-region repair lower bound as 9 + 3*10 - 3*1 = 36.",
+      "Result": "The signed supplemental adjustment is +27; all contributing insertion and release terms are separately certified, and no route witness has yet been used to set the bound. The lower coordinate is witnessed; the feasible upper coordinate remains open until construction.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 639,
+      "LoopId": "tsp-loop-639",
+      "Status": "CLOSED",
+      "BeforeState": "The repair equation proves a lower value, but no structural object witnesses the three added and three released edges that preserve degree while joining the regions.",
+      "ClosureCriterion": "Replace one internal edge per local triangle with the three cost-ten ring crossings, preserve every stop at degree two, and certify one connected nine-edge cycle of cost thirty-six.",
+      "AfterState": "Constructed a connected nine-edge cycle by a balanced three-add/three-release exchange.",
+      "Result": "Added=['r3-edge-a1-c3', 'r3-edge-a3-b1', 'r3-edge-b3-c1']; released=['r3-edge-a1-a3', 'r3-edge-b1-b3', 'r3-edge-c1-c3']; every stop has repaired degree two, component count is one, proper subtours are zero, and total cost is thirty-six. Released edges are superseded only for this witness, never silently forbidden globally. The connected degree-two exchange now supplies the cost-thirty-six feasible upper witness.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 640,
+      "LoopId": "tsp-loop-640",
+      "Status": "CLOSED",
+      "BeforeState": "The balanced-exchange edge set is a certified cycle, but it has no ordered reconstruction or normalized route witness.",
+      "ClosureCriterion": "Reconstruct the nine-stop cycle from the repaired edge set, emit ordered steps and a comparison candidate of cost thirty-six, and record CandidateUsedAsAntecedent=false.",
+      "AfterState": "Reconstructed the balanced-exchange cycle as an ordered nine-stop route of cost thirty-six.",
+      "Result": "Route A1-A2-A3-B1-B2-B3-C1-C2-C3-A1 has nine valid legs, zero defects, CandidateUsedAsAntecedent=false, and matches its downstream comparison candidate.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 641,
+      "LoopId": "tsp-loop-641",
+      "Status": "CLOSED",
+      "BeforeState": "The three-region lower bound and valid reconstructed cycle both equal thirty-six, but no finite optimality certificate joins them.",
+      "ClosureCriterion": "Certify the reconstructed cost-thirty-six cycle as optimal for tsp-three-regions-9 by lower-bound equality, without claiming a general k-region theorem.",
+      "AfterState": "Closed finite optimality for the three-region nine-stop fixture at cost thirty-six.",
+      "Result": "Certified lower bound 36 equals valid reconstructed witness cost 36. The certificate is scoped to tsp-three-regions-9 and does not claim a general k-region repair theorem.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 642,
+      "LoopId": "tsp-loop-642",
+      "Status": "CLOSED",
+      "BeforeState": "Every represented positive fixture has one distinguished optimal route, so optimal value and optimal witness identity have not been separated.",
+      "ClosureCriterion": "Represent a complete four-stop graph with degree-two lower bound four, two non-reversal-equivalent Hamiltonian cycles of cost four, and a third Hamiltonian cycle of cost six.",
+      "AfterState": "Represented a four-stop optimal face with two non-reversal-equivalent cost-four cycles and one cost-six control cycle.",
+      "Result": "The degree-two lower-bound ingredients total eight before double-counting, and the three valid Hamiltonian witnesses have raw costs [4, 4, 6]; value and witness identity remain open.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 643,
+      "LoopId": "tsp-loop-643",
+      "Status": "CLOSED",
+      "BeforeState": "The optimal-face fixture has two equal-cost witnesses, but proof status and witness-selection status are not independently represented.",
+      "ClosureCriterion": "Attach passing optimality certificates to both cost-four cycles and represent value status CLOSED while choice status remains a two-alternative non-reversal orbit.",
+      "AfterState": "Closed the optimum value at four while preserving two distinct optimal witness classes.",
+      "Result": "Both A-B-C-D-A and A-C-B-D-A carry passing finite optimality certificates; A-B-D-C-A costs six. ValueStatus=CLOSED_AT_4, ChoiceStatus=OPEN_TWO_OPTIMAL_CLASSES, branch decisions=0.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 644,
+      "LoopId": "tsp-loop-644",
+      "Status": "CLOSED",
+      "BeforeState": "The two optimal witnesses are recorded, but residual ambiguity is not classified as a value-preserving orbit distinct from unresolved optimality.",
+      "ClosureCriterion": "Record three initial route classes, two surviving optimal classes, certified value four, zero mathematical branch decisions, and residual choice-orbit size two.",
+      "AfterState": "Named and measured the two-member value-preserving optimal witness orbit.",
+      "Result": "Initial route classes=3, surviving optimal classes=2, residual ambiguity=2, certified value=4, branch decisions=0. The remaining orbit is not an unresolved optimum-value defect.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 645,
+      "LoopId": "tsp-loop-645",
+      "Status": "CLOSED",
+      "BeforeState": "A residual choice orbit exists, but the system does not distinguish a branch needed for proof from a conditional tie-break needed only to select one representative.",
+      "ClosureCriterion": "Reject mathematical branching for value proof, require an external tie-break policy before representative selection, and emit a replayable rejected-branch event with zero branch decisions.",
+      "AfterState": "Rejected mathematical branching for the value-closed optimal face.",
+      "Result": "BranchPurpose=VALUE_PROOF is rejected because value four is already certified. Representative choice remains conditional on an external tie-break policy; DecisionCount=0 and the two-member orbit is preserved.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 646,
+      "LoopId": "tsp-loop-646",
+      "Status": "CLOSED",
+      "BeforeState": "The pass has coined new machinery and added many witness rows, but its effect on basis size, physical schema, trust, multi-region repair, and residual choice has not been summarized.",
+      "ClosureCriterion": "Certify one active arc, one active rewrite, unchanged physical-table count, explicit local expansion, three-region optimum thirty-six, optimal-face value four with choice orbit two, and zero branch decisions for value proof.",
+      "AfterState": "Certified the second coherence event: one typed arc, one warranted rewrite, forty-five physical tables, three-region optimum thirty-six, and optimal-face value four with a two-member choice orbit.",
+      "Result": "Named concepts=101 and witness rows increased, but active atoms=1, active operators=1, tables=45, recoverability is complete, proof branch decisions=0, and no universal convergence or TSP-complexity theorem is claimed.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 647,
+      "LoopId": "tsp-loop-647",
+      "Status": "CLOSED",
+      "BeforeState": "Loop 646 has a successful execution certificate, but the held-out campaign has not independently rechecked its raw one-arc/one-rewrite, three-region, and optimal-face witnesses.",
+      "ClosureCriterion": "Recompute the loop-646 basis and finite fixture claims from canonical rows, preserve the nonclaims, and close a raw-witness prerequisite for calibration.",
+      "AfterState": "Sealed the loop-646 execution state as the held-out campaign prerequisite.",
+      "Result": "One active Semantic Arc, one active Warranted Rewrite, three-region optimum 36, optimal-face value 4 with choice orbit 2, and all universal nonclaims agree.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 648,
+      "LoopId": "tsp-loop-648",
+      "Status": "CLOSED",
+      "BeforeState": "The one-arc/one-rewrite basis is empirical but later loops could silently add primitives while claiming held-out support.",
+      "ClosureCriterion": "Freeze SEMANTIC_ARC and WARRANTED_REWRITE as the campaign basis; require any new primitive to be accompanied by a recorded falsification and basis-revision event.",
+      "AfterState": "Froze the one-arc/one-rewrite basis for held-out evaluation.",
+      "Result": "The primitive budget is zero unless a loop records a basis falsification; derived predicate invention continues normally.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 649,
+      "LoopId": "tsp-loop-649",
+      "Status": "CLOSED",
+      "BeforeState": "Exact route enumeration exists only as an external implementation idea; its scope, normalization, and status are not canonical fields.",
+      "ClosureCriterion": "Add calibration fields for exact class count, feasible classes, optimum, optimal orbit, lower-bound gap, deterministic residue, branch warrant, and oracle checksum without treating enumeration as a structural proof.",
+      "AfterState": "Declared the exact small-instance oracle and its trust boundary.",
+      "Result": "The oracle is exact for the declared finite normalization, but remains calibration evidence rather than an automatic structural proof-status upgrade.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 650,
+      "LoopId": "tsp-loop-650",
+      "Status": "CLOSED",
+      "BeforeState": "Tour counts may double-count reversal-equivalent cycles or depend on rotation.",
+      "ClosureCriterion": "Fix the declared depot, quotient reversal, and certify (n-1)!/2 canonical classes for complete symmetric n-stop instances.",
+      "AfterState": "Canonicalized symmetric tours modulo rotation and reversal.",
+      "Result": "For n=4..9, enumeration produces exactly (n-1)!/2 depot-fixed reversal classes; route identity no longer depends on presentation orientation.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 651,
+      "LoopId": "tsp-loop-651",
+      "Status": "CLOSED",
+      "BeforeState": "Existing fixtures have structural certificates but no common exact optimum and optimal-class audit fields.",
+      "ClosureCriterion": "Enumerate every canonical route class for each valid development fixture and record exact optimum, optimal orbit, second-best value, deterministic residue, and checksum.",
+      "AfterState": "Executed exact enumeration over the valid development corpus.",
+      "Result": "Six fixtures received exact optimum, optimal-class, second-best, deterministic residue, and checksum rows; maximum feasible class count was 20160.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 652,
+      "LoopId": "tsp-loop-652",
+      "Status": "CLOSED",
+      "BeforeState": "Exact optimum routes are calibration outputs but are not represented in the common witness vocabulary.",
+      "ClosureCriterion": "Project one exact optimal route per development instance into the witness normal form with ORACLE_CALIBRATION provenance and no theorem-status upgrade.",
+      "AfterState": "Normalized exact calibration routes without promoting their epistemic status.",
+      "Result": "Six ORACLE_CALIBRATION cycle witnesses now share the common coverage/incidence/order/cost form and remain distinct from structural proof antecedents.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 653,
+      "LoopId": "tsp-loop-653",
+      "Status": "CLOSED",
+      "BeforeState": "Represented lower bounds are checked internally but not compared uniformly with exact optimum values.",
+      "ClosureCriterion": "Verify every represented certified lower bound is no greater than the exact optimum and record the exactness gap.",
+      "AfterState": "Audited represented lower bounds against exact development optima.",
+      "Result": "All 4 in-scope lower bounds were <= the exact optimum; the oracle detected no unsound bound.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 654,
+      "LoopId": "tsp-loop-654",
+      "Status": "CLOSED",
+      "BeforeState": "Passing structural optimality certificates and exact optimum data have not been compared as independent evidence.",
+      "ClosureCriterion": "Require every passing certificate candidate to equal the exact optimum and every bound-tight represented witness to agree with the oracle, while preserving distinct trust provenance.",
+      "AfterState": "Reconciled structural finite-optimality certificates with exact values.",
+      "Result": "All 5 in-scope certificate candidates equal the exact optimum; structural and oracle provenance remain separate.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 655,
+      "LoopId": "tsp-loop-655",
+      "Status": "CLOSED",
+      "BeforeState": "Search metrics are structurally recorded but not universally reconciled with exact feasible class counts and residual value counts.",
+      "ClosureCriterion": "Compare existing route-class, residual ambiguity, and branch-warrant rows with exact enumeration for the development fixtures.",
+      "AfterState": "Audited structural search accounting against exact route classes.",
+      "Result": "Reconciled 3 compatible rows; 0 differently scoped metric rows were retained without false equivalence.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 656,
+      "LoopId": "tsp-loop-656",
+      "Status": "CLOSED",
+      "BeforeState": "All current fixtures influenced ontology development; no held-out evidence boundary exists.",
+      "ClosureCriterion": "Mark existing valid fixtures DEVELOPMENT, the malformed graph NEGATIVE_CONTROL, and reserve twelve not-yet-materialized instance identities as HELD_OUT.",
+      "AfterState": "Established a development/held-out/negative-control evidence boundary.",
+      "Result": "Existing valid fixtures are DEVELOPMENT, the malformed graph is NEGATIVE_CONTROL, and twelve future graphs are reserved as HELD_OUT before exact analysis.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 657,
+      "LoopId": "tsp-loop-657",
+      "Status": "CLOSED",
+      "BeforeState": "Instance diversity is prose and cannot support family-stratified conclusions.",
+      "ClosureCriterion": "Represent ring, Euclidean-like, clustered, heterogeneous-region, sparse, bottleneck, tie-rich, dominance, nested, nonmetric, four-region, and residual-kernel families.",
+      "AfterState": "Made instance-family diversity first-class calibration data.",
+      "Result": "The corpus can now separate ring, region-repair, sparse, boundary, tie-rich, nonmetric, nested, bottleneck, and residual-kernel behavior.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 658,
+      "LoopId": "tsp-loop-658",
+      "Status": "CLOSED",
+      "BeforeState": "Instrument quality is described narratively rather than through exact coverage, value closure, route closure, gap, choice orbit, and residual search coordinates.",
+      "ClosureCriterion": "Add reusable calibration coordinates without collapsing them into one arbitrary scalar score.",
+      "AfterState": "Defined a multidimensional calibration vector.",
+      "Result": "Instrument quality is no longer summarized by route-found or one scalar score; value, choice, gap, closure, and branch coordinates remain separable.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 659,
+      "LoopId": "tsp-loop-659",
+      "Status": "CLOSED",
+      "BeforeState": "Exact development results exist per instance but have no aggregate calibration profile.",
+      "ClosureCriterion": "Aggregate exact coverage, bound soundness, value closure, route closure, optimal choice orbit, and maximum enumerated class count across the development corpus.",
+      "AfterState": "Aggregated the exact development calibration profile.",
+      "Result": "Coverage=100.0%, deterministic value closure=3/6, route closure=2/6, maximum feasible classes=20160.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 660,
+      "LoopId": "tsp-loop-660",
+      "Status": "CLOSED",
+      "BeforeState": "The oracle and calibration fields exist, but the basis freeze and development audits have not been sealed as one prerequisite.",
+      "ClosureCriterion": "Close the pre-held-out frontier only when basis count, exact coverage, lower-bound soundness, certificate concordance, and search accounting all pass.",
+      "AfterState": "Sealed the calibrated instrument before held-out execution.",
+      "Result": "One arc, one rewrite, 100% exact development coverage, sound lower bounds, concordant certificates, and fixed evidence partitions are now a closed prerequisite.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 661,
+      "LoopId": "tsp-loop-661",
+      "Status": "CLOSED",
+      "BeforeState": "The RING_DOMINANT family is declared but tsp-holdout-ring6-6 has no canonical graph rows.",
+      "ClosureCriterion": "Materialize a deterministic 6-stop RING_DOMINANT graph as HELD_OUT data without using its exact optimum to alter weights or the semantic basis.",
+      "AfterState": "Materialized tsp-holdout-ring6-6 as frozen held-out graph data.",
+      "Result": "6 stops, 15 canonical edge rows, family RING_DOMINANT, OracleStatus=PENDING; no weight was selected from an optimum result.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 662,
+      "LoopId": "tsp-loop-662",
+      "Status": "CLOSED",
+      "BeforeState": "tsp-holdout-ring6-6 is canonical raw data but has no exact-oracle, lower-bound, witness, residual-kernel, or branch-warrant rows.",
+      "ClosureCriterion": "Enumerate every canonical route class, materialize structural lower-bound witnesses and one or more exact calibration routes, and record value/choice/search residue without adding a primitive.",
+      "AfterState": "Completed exact and structural calibration for tsp-holdout-ring6-6.",
+      "Result": "Exact optimum=6.0; feasible classes=60; degree-two gap=0.0; deterministic residue=1 classes/1 values; branch warrant=REJECTED_VALUE_ALREADY_CERTIFIED.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 663,
+      "LoopId": "tsp-loop-663",
+      "Status": "CLOSED",
+      "BeforeState": "The EUCLIDEAN_LIKE family is declared but tsp-holdout-metric6-6 has no canonical graph rows.",
+      "ClosureCriterion": "Materialize a deterministic 6-stop EUCLIDEAN_LIKE graph as HELD_OUT data without using its exact optimum to alter weights or the semantic basis.",
+      "AfterState": "Materialized tsp-holdout-metric6-6 as frozen held-out graph data.",
+      "Result": "6 stops, 15 canonical edge rows, family EUCLIDEAN_LIKE, OracleStatus=PENDING; no weight was selected from an optimum result.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 664,
+      "LoopId": "tsp-loop-664",
+      "Status": "CLOSED",
+      "BeforeState": "tsp-holdout-metric6-6 is canonical raw data but has no exact-oracle, lower-bound, witness, residual-kernel, or branch-warrant rows.",
+      "ClosureCriterion": "Enumerate every canonical route class, materialize structural lower-bound witnesses and one or more exact calibration routes, and record value/choice/search residue without adding a primitive.",
+      "AfterState": "Completed exact and structural calibration for tsp-holdout-metric6-6.",
+      "Result": "Exact optimum=152.0; feasible classes=60; degree-two gap=0.0; deterministic residue=1 classes/1 values; branch warrant=REJECTED_VALUE_ALREADY_CERTIFIED.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 665,
+      "LoopId": "tsp-loop-665",
+      "Status": "CLOSED",
+      "BeforeState": "The TWO_CLUSTER_ASYMMETRIC family is declared but tsp-holdout-cluster7-7 has no canonical graph rows.",
+      "ClosureCriterion": "Materialize a deterministic 7-stop TWO_CLUSTER_ASYMMETRIC graph as HELD_OUT data without using its exact optimum to alter weights or the semantic basis.",
+      "AfterState": "Materialized tsp-holdout-cluster7-7 as frozen held-out graph data.",
+      "Result": "7 stops, 21 canonical edge rows, family TWO_CLUSTER_ASYMMETRIC, OracleStatus=PENDING; no weight was selected from an optimum result.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 666,
+      "LoopId": "tsp-loop-666",
+      "Status": "CLOSED",
+      "BeforeState": "tsp-holdout-cluster7-7 is canonical raw data but has no exact-oracle, lower-bound, witness, residual-kernel, or branch-warrant rows.",
+      "ClosureCriterion": "Enumerate every canonical route class, materialize structural lower-bound witnesses and one or more exact calibration routes, and record value/choice/search residue without adding a primitive.",
+      "AfterState": "Completed exact and structural calibration for tsp-holdout-cluster7-7.",
+      "Result": "Exact optimum=29.0; feasible classes=360; degree-two gap=13.0; deterministic residue=360 classes/19 values; branch warrant=REQUIRED_FOR_VALUE.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 667,
+      "LoopId": "tsp-loop-667",
+      "Status": "CLOSED",
+      "BeforeState": "The HETEROGENEOUS_REGIONS family is declared but tsp-holdout-hetero8-8 has no canonical graph rows.",
+      "ClosureCriterion": "Materialize a deterministic 8-stop HETEROGENEOUS_REGIONS graph as HELD_OUT data without using its exact optimum to alter weights or the semantic basis.",
+      "AfterState": "Materialized tsp-holdout-hetero8-8 as frozen held-out graph data.",
+      "Result": "8 stops, 28 canonical edge rows, family HETEROGENEOUS_REGIONS, OracleStatus=PENDING; no weight was selected from an optimum result.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 668,
+      "LoopId": "tsp-loop-668",
+      "Status": "CLOSED",
+      "BeforeState": "tsp-holdout-hetero8-8 is canonical raw data but has no exact-oracle, lower-bound, witness, residual-kernel, or branch-warrant rows.",
+      "ClosureCriterion": "Enumerate every canonical route class, materialize structural lower-bound witnesses and one or more exact calibration routes, and record value/choice/search residue without adding a primitive.",
+      "AfterState": "Completed exact and structural calibration for tsp-holdout-hetero8-8.",
+      "Result": "Exact optimum=31.0; feasible classes=2520; degree-two gap=10.0; deterministic residue=2520 classes/44 values; branch warrant=REQUIRED_FOR_VALUE.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 669,
+      "LoopId": "tsp-loop-669",
+      "Status": "CLOSED",
+      "BeforeState": "The SPARSE_LADDER family is declared but tsp-holdout-sparse8-8 has no canonical graph rows.",
+      "ClosureCriterion": "Materialize a deterministic 8-stop SPARSE_LADDER graph as HELD_OUT data without using its exact optimum to alter weights or the semantic basis.",
+      "AfterState": "Materialized tsp-holdout-sparse8-8 as frozen held-out graph data.",
+      "Result": "8 stops, 28 canonical edge rows, family SPARSE_LADDER, OracleStatus=PENDING; no weight was selected from an optimum result.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 670,
+      "LoopId": "tsp-loop-670",
+      "Status": "CLOSED",
+      "BeforeState": "tsp-holdout-sparse8-8 is canonical raw data but has no exact-oracle, lower-bound, witness, residual-kernel, or branch-warrant rows.",
+      "ClosureCriterion": "Enumerate every canonical route class, materialize structural lower-bound witnesses and one or more exact calibration routes, and record value/choice/search residue without adding a primitive.",
+      "AfterState": "Completed exact and structural calibration for tsp-holdout-sparse8-8.",
+      "Result": "Exact optimum=8.0; feasible classes=11; degree-two gap=0.0; deterministic residue=1 classes/1 values; branch warrant=REJECTED_VALUE_ALREADY_CERTIFIED.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 671,
+      "LoopId": "tsp-loop-671",
+      "Status": "CLOSED",
+      "BeforeState": "The CUT_BOTTLENECK family is declared but tsp-holdout-bottleneck7-7 has no canonical graph rows.",
+      "ClosureCriterion": "Materialize a deterministic 7-stop CUT_BOTTLENECK graph as HELD_OUT data without using its exact optimum to alter weights or the semantic basis.",
+      "AfterState": "Materialized tsp-holdout-bottleneck7-7 as frozen held-out graph data.",
+      "Result": "7 stops, 21 canonical edge rows, family CUT_BOTTLENECK, OracleStatus=PENDING; no weight was selected from an optimum result.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 672,
+      "LoopId": "tsp-loop-672",
+      "Status": "CLOSED",
+      "BeforeState": "tsp-holdout-bottleneck7-7 is canonical raw data but has no exact-oracle, lower-bound, witness, residual-kernel, or branch-warrant rows.",
+      "ClosureCriterion": "Enumerate every canonical route class, materialize structural lower-bound witnesses and one or more exact calibration routes, and record value/choice/search residue without adding a primitive.",
+      "AfterState": "Completed exact and structural calibration for tsp-holdout-bottleneck7-7.",
+      "Result": "Exact optimum=20.0; feasible classes=360; degree-two gap=4.0; deterministic residue=360 classes/55 values; branch warrant=REQUIRED_FOR_VALUE.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 673,
+      "LoopId": "tsp-loop-673",
+      "Status": "CLOSED",
+      "BeforeState": "The TIE_RICH_OPTIMAL_FACE family is declared but tsp-holdout-tie6-6 has no canonical graph rows.",
+      "ClosureCriterion": "Materialize a deterministic 6-stop TIE_RICH_OPTIMAL_FACE graph as HELD_OUT data without using its exact optimum to alter weights or the semantic basis.",
+      "AfterState": "Materialized tsp-holdout-tie6-6 as frozen held-out graph data.",
+      "Result": "6 stops, 15 canonical edge rows, family TIE_RICH_OPTIMAL_FACE, OracleStatus=PENDING; no weight was selected from an optimum result.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 674,
+      "LoopId": "tsp-loop-674",
+      "Status": "CLOSED",
+      "BeforeState": "tsp-holdout-tie6-6 is canonical raw data but has no exact-oracle, lower-bound, witness, residual-kernel, or branch-warrant rows.",
+      "ClosureCriterion": "Enumerate every canonical route class, materialize structural lower-bound witnesses and one or more exact calibration routes, and record value/choice/search residue without adding a primitive.",
+      "AfterState": "Completed exact and structural calibration for tsp-holdout-tie6-6.",
+      "Result": "Exact optimum=6.0; feasible classes=60; degree-two gap=0.0; deterministic residue=60 classes/1 values; branch warrant=REJECTED_VALUE_ALREADY_CERTIFIED.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 675,
+      "LoopId": "tsp-loop-675",
+      "Status": "CLOSED",
+      "BeforeState": "The BOUNDARY_DOMINANCE_TRAP family is declared but tsp-holdout-dominance7-7 has no canonical graph rows.",
+      "ClosureCriterion": "Materialize a deterministic 7-stop BOUNDARY_DOMINANCE_TRAP graph as HELD_OUT data without using its exact optimum to alter weights or the semantic basis.",
+      "AfterState": "Materialized tsp-holdout-dominance7-7 as frozen held-out graph data.",
+      "Result": "7 stops, 21 canonical edge rows, family BOUNDARY_DOMINANCE_TRAP, OracleStatus=PENDING; no weight was selected from an optimum result.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 676,
+      "LoopId": "tsp-loop-676",
+      "Status": "CLOSED",
+      "BeforeState": "tsp-holdout-dominance7-7 is canonical raw data but has no exact-oracle, lower-bound, witness, residual-kernel, or branch-warrant rows.",
+      "ClosureCriterion": "Enumerate every canonical route class, materialize structural lower-bound witnesses and one or more exact calibration routes, and record value/choice/search residue without adding a primitive.",
+      "AfterState": "Completed exact and structural calibration for tsp-holdout-dominance7-7.",
+      "Result": "Exact optimum=29.0; feasible classes=360; degree-two gap=8.5; deterministic residue=360 classes/37 values; branch warrant=REQUIRED_FOR_VALUE.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 677,
+      "LoopId": "tsp-loop-677",
+      "Status": "CLOSED",
+      "BeforeState": "The NESTED_NEIGHBORHOODS family is declared but tsp-holdout-nested8-8 has no canonical graph rows.",
+      "ClosureCriterion": "Materialize a deterministic 8-stop NESTED_NEIGHBORHOODS graph as HELD_OUT data without using its exact optimum to alter weights or the semantic basis.",
+      "AfterState": "Materialized tsp-holdout-nested8-8 as frozen held-out graph data.",
+      "Result": "8 stops, 28 canonical edge rows, family NESTED_NEIGHBORHOODS, OracleStatus=PENDING; no weight was selected from an optimum result.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 678,
+      "LoopId": "tsp-loop-678",
+      "Status": "CLOSED",
+      "BeforeState": "tsp-holdout-nested8-8 is canonical raw data but has no exact-oracle, lower-bound, witness, residual-kernel, or branch-warrant rows.",
+      "ClosureCriterion": "Enumerate every canonical route class, materialize structural lower-bound witnesses and one or more exact calibration routes, and record value/choice/search residue without adding a primitive.",
+      "AfterState": "Completed exact and structural calibration for tsp-holdout-nested8-8.",
+      "Result": "Exact optimum=31.0; feasible classes=2520; degree-two gap=11.0; deterministic residue=2520 classes/51 values; branch warrant=REQUIRED_FOR_VALUE.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 679,
+      "LoopId": "tsp-loop-679",
+      "Status": "CLOSED",
+      "BeforeState": "The NONMETRIC_WEIGHTED family is declared but tsp-holdout-nonmetric6-6 has no canonical graph rows.",
+      "ClosureCriterion": "Materialize a deterministic 6-stop NONMETRIC_WEIGHTED graph as HELD_OUT data without using its exact optimum to alter weights or the semantic basis.",
+      "AfterState": "Materialized tsp-holdout-nonmetric6-6 as frozen held-out graph data.",
+      "Result": "6 stops, 15 canonical edge rows, family NONMETRIC_WEIGHTED, OracleStatus=PENDING; no weight was selected from an optimum result.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 680,
+      "LoopId": "tsp-loop-680",
+      "Status": "CLOSED",
+      "BeforeState": "tsp-holdout-nonmetric6-6 is canonical raw data but has no exact-oracle, lower-bound, witness, residual-kernel, or branch-warrant rows.",
+      "ClosureCriterion": "Enumerate every canonical route class, materialize structural lower-bound witnesses and one or more exact calibration routes, and record value/choice/search residue without adding a primitive.",
+      "AfterState": "Completed exact and structural calibration for tsp-holdout-nonmetric6-6.",
+      "Result": "Exact optimum=37.0; feasible classes=60; degree-two gap=0.5; deterministic residue=60 classes/27 values; branch warrant=REQUIRED_FOR_VALUE.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 681,
+      "LoopId": "tsp-loop-681",
+      "Status": "CLOSED",
+      "BeforeState": "The FOUR_REGION_RING family is declared but tsp-holdout-fourregion8-8 has no canonical graph rows.",
+      "ClosureCriterion": "Materialize a deterministic 8-stop FOUR_REGION_RING graph as HELD_OUT data without using its exact optimum to alter weights or the semantic basis.",
+      "AfterState": "Materialized tsp-holdout-fourregion8-8 as frozen held-out graph data.",
+      "Result": "8 stops, 28 canonical edge rows, family FOUR_REGION_RING, OracleStatus=PENDING; no weight was selected from an optimum result.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 682,
+      "LoopId": "tsp-loop-682",
+      "Status": "CLOSED",
+      "BeforeState": "tsp-holdout-fourregion8-8 is canonical raw data but has no exact-oracle, lower-bound, witness, residual-kernel, or branch-warrant rows.",
+      "ClosureCriterion": "Enumerate every canonical route class, materialize structural lower-bound witnesses and one or more exact calibration routes, and record value/choice/search residue without adding a primitive.",
+      "AfterState": "Completed exact and structural calibration for tsp-holdout-fourregion8-8.",
+      "Result": "Exact optimum=24.0; feasible classes=2520; degree-two gap=0.0; deterministic residue=2520 classes/1 values; branch warrant=REJECTED_VALUE_ALREADY_CERTIFIED.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 683,
+      "LoopId": "tsp-loop-683",
+      "Status": "CLOSED",
+      "BeforeState": "The RESIDUAL_VALUE_KERNEL family is declared but tsp-holdout-residual8-8 has no canonical graph rows.",
+      "ClosureCriterion": "Materialize a deterministic 8-stop RESIDUAL_VALUE_KERNEL graph as HELD_OUT data without using its exact optimum to alter weights or the semantic basis.",
+      "AfterState": "Materialized tsp-holdout-residual8-8 as frozen held-out graph data.",
+      "Result": "8 stops, 28 canonical edge rows, family RESIDUAL_VALUE_KERNEL, OracleStatus=PENDING; no weight was selected from an optimum result.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 684,
+      "LoopId": "tsp-loop-684",
+      "Status": "CLOSED",
+      "BeforeState": "tsp-holdout-residual8-8 is canonical raw data but has no exact-oracle, lower-bound, witness, residual-kernel, or branch-warrant rows.",
+      "ClosureCriterion": "Enumerate every canonical route class, materialize structural lower-bound witnesses and one or more exact calibration routes, and record value/choice/search residue without adding a primitive.",
+      "AfterState": "Completed exact and structural calibration for tsp-holdout-residual8-8.",
+      "Result": "Exact optimum=38.0; feasible classes=2520; degree-two gap=10.5; deterministic residue=2520 classes/104 values; branch warrant=REQUIRED_FOR_VALUE.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 685,
+      "LoopId": "tsp-loop-685",
+      "Status": "CLOSED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Record optimum minus strongest represented structural lower bound for every held-out instance.",
+      "AfterState": "Derived Exactness Gap across the exact held-out corpus.",
+      "Result": "Exactness gaps across 12 held-out instances: min=0.0, median=2.25, max=13.0.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 686,
+      "LoopId": "tsp-loop-686",
+      "Status": "CLOSED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Measure exact route classes eliminated before branching by local-minimum closure and deterministic degree closure.",
+      "AfterState": "Derived Closure Yield across the exact held-out corpus.",
+      "Result": "Closure yield mean=23.96%, max=98.33%, zero-yield cases=9.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 687,
+      "LoopId": "tsp-loop-687",
+      "Status": "CLOSED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Measure eliminated classes per deterministic commitment or structural closure event without treating the ratio as a universal constant.",
+      "AfterState": "Derived Rule Leverage across the exact held-out corpus.",
+      "Result": "Rule leverage is descriptive: mean=10.6667, max=59.0 eliminated classes per represented decision/closure.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 688,
+      "LoopId": "tsp-loop-688",
+      "Status": "CLOSED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Classify instances where represented structure closes value, route, both, or neither.",
+      "AfterState": "Derived Structural Sufficiency across the exact held-out corpus.",
+      "Result": "Structural sufficiency classes={'VALUE_AND_ROUTE': 3, 'OPEN': 7, 'VALUE_ONLY': 2}.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 689,
+      "LoopId": "tsp-loop-689",
+      "Status": "CLOSED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Distinguish a certified optimum value from the multiplicity of optimal route witnesses.",
+      "AfterState": "Derived Value Rigidity across the exact held-out corpus.",
+      "Result": "Value closed on 5/12; 4 exact optimal faces contain multiple route classes.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 690,
+      "LoopId": "tsp-loop-690",
+      "Status": "CLOSED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Represent log2 of the exact optimal choice-orbit size as a descriptive coordinate, not proof complexity.",
+      "AfterState": "Derived Choice Entropy across the exact held-out corpus.",
+      "Result": "Choice entropy ranges 0.0..5.906891 bits; it describes witness multiplicity, not proof complexity.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 691,
+      "LoopId": "tsp-loop-691",
+      "Status": "CLOSED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Name which incidence, connectivity, cost-gap, and choice coordinates support the residual kernel.",
+      "AfterState": "Derived Defect Support across the exact held-out corpus.",
+      "Result": "Observed 10 distinct defect-support signatures across 12 held-out cases.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 692,
+      "LoopId": "tsp-loop-692",
+      "Status": "CLOSED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Measure the exact cost delta from the local two-factor union to the optimum when that union is degree two but disconnected.",
+      "AfterState": "Derived Repair Potential across the exact held-out corpus.",
+      "Result": "Disconnected two-factor repair potential observed on 1 cases; values=[11.0].",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 693,
+      "LoopId": "tsp-loop-693",
+      "Status": "CLOSED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Project quotient component count to the minimum external edge count required by degree-two handshake accounting.",
+      "AfterState": "Derived Boundary Demand across the exact held-out corpus.",
+      "Result": "Boundary demand distribution={0: 11, 2: 1}.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 694,
+      "LoopId": "tsp-loop-694",
+      "Status": "CLOSED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Count region-pair crossing support and record when a boundary demand lacks compatible low-cost ports.",
+      "AfterState": "Derived Port Compatibility across the exact held-out corpus.",
+      "Result": "Port compatibility counts range 0..6 region pairs.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 695,
+      "LoopId": "tsp-loop-695",
+      "Status": "CLOSED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Count distinct optimal entry/exit port pairs exposed by each region across the exact optimal face.",
+      "AfterState": "Derived Quotient Width across the exact held-out corpus.",
+      "Result": "Optimal boundary quotient width ranges 0..4 represented port pairs.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 696,
+      "LoopId": "tsp-loop-696",
+      "Status": "CLOSED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Normalize unresolved value count, optimal choice count, connectivity defect, exactness gap, and branch warrant into one typed residual signature.",
+      "AfterState": "Derived Residual Kernel across the exact held-out corpus.",
+      "Result": "Residual kernels collapse 12 instances to 10 typed signatures.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 697,
+      "LoopId": "tsp-loop-697",
+      "Status": "CLOSED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Require a value-relevant residual or an explicit external representative policy before branching.",
+      "AfterState": "Derived Branch Necessity across the exact held-out corpus.",
+      "Result": "Branch-warrant distribution={'REJECTED_VALUE_ALREADY_CERTIFIED': 5, 'REQUIRED_FOR_VALUE': 7}.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 698,
+      "LoopId": "tsp-loop-698",
+      "Status": "CLOSED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Record feasible classes to deterministic residue, value classes to residual values, and optimal witnesses to choice orbit.",
+      "AfterState": "Derived Search Compression Profile across the exact held-out corpus.",
+      "Result": "Every held-out instance now exposes one class/value/choice compression trace rather than one untyped search count.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 699,
+      "LoopId": "tsp-loop-699",
+      "Status": "CLOSED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Measure how many held-out instances close value or route under the frozen rule vocabulary.",
+      "AfterState": "Derived Rule Coverage across the exact held-out corpus.",
+      "Result": "Frozen-basis coverage: value closed=5/12, route closed=3/12, branch required=7/12.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 700,
+      "LoopId": "tsp-loop-700",
+      "Status": "CLOSED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Verify every newly coined term remains derived from one semantic arc and one warranted rewrite with zero primitive growth.",
+      "AfterState": "Derived Predicate Stability across the exact held-out corpus.",
+      "Result": "No primitive/operator rows were introduced after loop 646; 156 named concepts remain recoverable from the frozen basis.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 701,
+      "LoopId": "tsp-loop-701",
+      "Status": "CLOSED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Compare repair deltas across unequal region sizes without promoting the observation to a k-region theorem.",
+      "AfterState": "Compared repair behavior across heterogeneous region sizes.",
+      "Result": "Observed profiles=[('tsp-holdout-hetero8-8', 1, None, 31.0), ('tsp-holdout-cluster7-7', 2, None, 29.0), ('tsp-holdout-fourregion8-8', 1, None, 24.0)]; the result is calibration evidence only and GeneralKRegionRepairProved remains false.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 702,
+      "LoopId": "tsp-loop-702",
+      "Status": "CLOSED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Separate crossing insertion costs from internal release costs on asymmetric bottleneck and cluster fixtures.",
+      "AfterState": "Separated asymmetric crossing support from internal repair cost.",
+      "Result": "Profiles=[('tsp-holdout-bottleneck7-7', None, 1), ('tsp-holdout-cluster7-7', None, 1), ('tsp-holdout-hetero8-8', None, 3)]; crossing asymmetry is represented without adding a new primitive or claiming a general repair equation.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 703,
+      "LoopId": "tsp-loop-703",
+      "Status": "CLOSED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Compose pair-level and superregion-level boundary summaries on the nested-neighborhood held-out fixture.",
+      "AfterState": "Composed a two-level neighborhood quotient description.",
+      "Result": "Four pair regions collapse into two superregions; hierarchy is carried by typed arcs and expansion warrants, not a new relational primitive.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 704,
+      "LoopId": "tsp-loop-704",
+      "Status": "CLOSED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Compose degree forcing with region boundary summaries on the sparse held-out fixture.",
+      "AfterState": "Composed degree closure with sparse region interfaces.",
+      "Result": "Forced=0, forbidden=0, residual classes=1; no separate sparse primitive was required.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 705,
+      "LoopId": "tsp-loop-705",
+      "Status": "CLOSED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Select a held-out instance whose deterministic residue contains more than one value and record a justified value branch.",
+      "AfterState": "Exposed a genuine value-relevant residual orbit.",
+      "Result": "tsp-holdout-residual8-8 retains 2520 route classes spanning 104 values, so a value branch is warranted.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 706,
+      "LoopId": "tsp-loop-706",
+      "Status": "CLOSED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Split the residual orbit on one undecided edge and record include/exclude class counts and best values as calibration-only search evidence.",
+      "AfterState": "Executed one explicit calibration branch on a value-relevant residual orbit.",
+      "Result": "Edge holdout-residual8-edge-6-7: include branch 720 classes/best 57.0; exclude branch 1800 classes/best 38.0; this is exact-oracle calibration, not a new polynomial inference rule.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 707,
+      "LoopId": "tsp-loop-707",
+      "Status": "CLOSED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Aggregate exact coverage, structural closure, residual kernels, branch warrants, and family support over all twelve held-out instances.",
+      "AfterState": "Aggregated the twelve-family held-out calibration event.",
+      "Result": "Exact coverage 12/12; value closed 5/12; route closed 3/12; value branch required 7/12; mean closure yield 23.96%.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 708,
+      "LoopId": "tsp-loop-708",
+      "Status": "CLOSED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Summarize exact canonical class growth and observed closure by stop count from four through nine stops.",
+      "AfterState": "Recorded exact finite class growth and closure by stop count.",
+      "Result": "Scale profile={4: {'instances': 2, 'max_classes': 3, 'value_closed': 1}, 5: {'instances': 2, 'max_classes': 12, 'value_closed': 2}, 6: {'instances': 5, 'max_classes': 60, 'value_closed': 3}, 7: {'instances': 3, 'max_classes': 360, 'value_closed': 0}, 8: {'instances': 5, 'max_classes': 2520, 'value_closed': 2}, 9: {'instances': 1, 'max_classes': 20160, 'value_closed': 0}}; it calibrates the instrument through nine stops but does not establish asymptotic behavior.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 709,
+      "LoopId": "tsp-loop-709",
+      "Status": "CLOSED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Rebuild Postgres and require generated views, Python reference semantics, and exact-oracle raw fields to agree.",
+      "AfterState": "Prepared loop-709 live substrate conformance.",
+      "Result": "The semantic loop closes only after the main executor rebuilds Postgres, runs existing Python/Postgres tests, and queries all twelve exact held-out rows.",
+      "CompletionDisposition": "CLOSED"
+    },
+    {
+      "LoopOrder": 710,
+      "LoopId": "tsp-loop-710",
+      "Status": "CLOSED",
+      "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
+      "ClosureCriterion": "Seal the frozen-basis held-out campaign, record what generalized and what failed, and preserve all nonclaims.",
+      "AfterState": "Sealed the third coherence event through loop 710.",
+      "Result": "Twelve held-out instances are exactly calibrated; value closed=5, route closed=3, value branch required=7; active basis remains one arc/one rewrite and physical tables remain 45.",
+      "CompletionDisposition": "CLOSED"
+    }
+  ],
+  "CurrentCertificates": [
+    {
+      "CertificateId": "gridville-complete-graph",
+      "Kind": "complete-undirected-graph-certificate",
+      "Conclusion": "tsp-gridville-5 has five stops and exactly one admissible canonical edge for every unordered pair."
+    },
+    {
+      "CertificateId": "gridville-broken-pair-graph",
+      "Kind": "counterexample-certificate",
+      "Conclusion": "tsp-gridville-broken-3 has the expected edge-row count but is incomplete because AB is duplicated and BC is absent."
+    },
+    {
+      "CertificateId": "gridville-reference-tour",
+      "Kind": "global-cycle-coverage-certificate",
+      "Conclusion": "A-B-C-D-E-A is a valid supplied Hamiltonian cycle of cost 14."
+    },
+    {
+      "CertificateId": "gridville-duplicate-stop-tour",
+      "Kind": "counterexample-certificate",
+      "Conclusion": "A-B-C-B-E-A is rejected because B is repeated and D is omitted."
+    },
+    {
+      "CertificateId": "gridville-missing-close-tour",
+      "Kind": "counterexample-certificate",
+      "Conclusion": "A candidate with a duplicated A-B transition and missing E-A transition is rejected despite five unique visits and five locally legal legs."
+    },
+    {
+      "CertificateId": "gridville-degree-two-bound",
+      "Kind": "degree-two-lower-bound-certificate",
+      "Conclusion": "Local bounds 5+5+6+6+6 double-count tour edges, yielding a certified global lower bound of 14."
+    },
+    {
+      "CertificateId": "gridville-finite-optimality",
+      "Kind": "finite-instance-optimality-certificate",
+      "Conclusion": "The valid reference route cost 14 equals the certified lower bound 14, so the route is optimal for tsp-gridville-5."
+    },
+    {
+      "CertificateId": "gridville-postgres-substrate-conformance",
+      "Kind": "substrate-conformance-certificate",
+      "Conclusion": "Generated Postgres (40 vw_* views) and Python agree on the declared TSP acceptance surface using EffortlessAPI/cli 2026-06-09.06.13."
+    },
+    {
+      "CertificateId": "tsp-eight-predicate-basis",
+      "Kind": "predicate-basis-certificate",
+      "Conclusion": "Thirty-two baseline surface predicates are explicitly defined over eight canonical primitives."
+    },
+    {
+      "CertificateId": "twin-component-repair-bound",
+      "Kind": "component-repair-bound-certificate",
+      "Conclusion": "Cut parity and witnessed insertion/release costs strengthen the twin lower bound from 6 to 24."
+    },
+    {
+      "CertificateId": "twin-finite-optimality",
+      "Kind": "finite-instance-optimality-certificate",
+      "Conclusion": "The valid twin cycle cost 24 equals the certified component-repair lower bound 24."
+    },
+    {
+      "CertificateId": "tsp-witness-normal-form",
+      "Kind": "witness-normal-form-certificate",
+      "Conclusion": "Supplied cycles, reconstructed cycles, and contracted paths share one coverage/incidence/order/connectivity/cost form."
+    },
+    {
+      "CertificateId": "tsp-semantic-quotient",
+      "Kind": "semantic-quotient-certificate",
+      "Conclusion": "Boundary reversal classes explain 6 to 3 local and 36 to 9 composed contraction."
+    },
+    {
+      "CertificateId": "tsp-convergence-event",
+      "Kind": "convergence-event-certificate",
+      "Conclusion": "The primitive basis remains eight while fourteen derived terms are coined; this is early empirical support for the current domain."
+    },
+    {
+      "CertificateId": "tsp-three-atom-basis",
+      "Kind": "atom-operator-basis-certificate",
+      "Conclusion": "The current registered TSP vocabulary is explicitly defined over ATTACHMENT, VALUATION, WARRANT and four named operators; this is empirical for the represented domain."
+    },
+    {
+      "CertificateId": "asymmetric-four-boundary-quotient",
+      "Kind": "asymmetric-semantic-quotient-certificate",
+      "Conclusion": "Twenty-four directed Hamiltonian paths reduce to twelve reversal classes and six strict boundary-fiber minima with expansion provenance."
+    },
+    {
+      "CertificateId": "tsp-one-arc-one-rewrite",
+      "Kind": "semantic-basis-certificate",
+      "Conclusion": "Every registered concept is recoverable from one typed Semantic Arc and one Warranted Rewrite for the current represented domain."
+    },
+    {
+      "CertificateId": "three-region-repair-bound",
+      "Kind": "region-repair-equation-certificate",
+      "Conclusion": "Boundary handshake and signed repair terms certify lower bound 36 for tsp-three-regions-9."
+    },
+    {
+      "CertificateId": "three-region-finite-optimality",
+      "Kind": "finite-instance-optimality-certificate",
+      "Conclusion": "The reconstructed balanced-exchange cycle cost 36 equals the certified three-region lower bound 36."
+    },
+    {
+      "CertificateId": "optimal-face-value-choice",
+      "Kind": "optimal-face-certificate",
+      "Conclusion": "The optimum value is 4 while two non-reversal optimal witness classes remain in one choice orbit."
+    },
+    {
+      "CertificateId": "optimal-face-branch-warrant",
+      "Kind": "branch-warrant-certificate",
+      "Conclusion": "No mathematical branch is warranted for value proof; representative selection requires an external tie-break policy."
+    },
+    {
+      "CertificateId": "tsp-coherence-event-two",
+      "Kind": "coherence-vector-certificate",
+      "Conclusion": "The active basis contracts to one arc and one rewrite while physical tables remain 45 and explicit witness rows expand coherently."
+    },
+    {
+      "CertificateId": "tsp-exact-oracle-contract",
+      "Kind": "exact-oracle-calibration-certificate",
+      "Conclusion": "Depot-fixed reversal-quotient enumeration exactly calibrates the declared finite instances without promoting oracle output to structural proof."
+    },
+    {
+      "CertificateId": "tsp-heldout-calibration-event",
+      "Kind": "heldout-calibration-certificate",
+      "Conclusion": "Twelve held-out families have exact coverage; value closes on 5 and route closes on 3 under the frozen basis."
+    },
+    {
+      "CertificateId": "tsp-residual-value-branch",
+      "Kind": "oracle-calibrated-branch-certificate",
+      "Conclusion": "At least one held-out residual kernel requires a value-relevant branch after deterministic closure; the branch is recorded explicitly as calibration-only search."
+    },
+    {
+      "CertificateId": "tsp-coherence-event-three",
+      "Kind": "coherence-vector-certificate",
+      "Conclusion": "The active basis remains one Semantic Arc and one Warranted Rewrite across a twelve-family held-out exact campaign with zero physical-table growth."
+    }
+  ],
+  "RemainingFrontier": [
+    "repeat the frozen-basis campaign on standard public TSP benchmark instances using a separately versioned importer",
+    "replace calibration-only exact branches with structural branch-and-bound certificates whose bounds are themselves witnessed",
+    "generalize region repair beyond the finite heterogeneous observations recorded here",
+    "measure runtime and memory scaling without confusing exact small-instance enumeration with a general algorithm"
+  ],
+  "Acceptance": {
+    "RulebookTables": 45,
+    "Cities": 1,
+    "Neighborhoods": 34,
+    "Addresses": 113,
+    "TSPInstances": 19,
+    "InstanceStops": 121,
+    "TravelEdges": 349,
+    "CandidateTours": 24,
+    "TSPLoops": 134,
+    "FrontierObligations": 34,
+    "ActiveImportedDependencies": 0,
+    "ReferenceTourValid": true,
+    "ReferenceTourCost": 14,
+    "ReferenceTourOptimalityProved": true,
+    "DegreeTwoLowerBound": 14,
+    "DuplicateStopTourValid": false,
+    "MissingCloseTourValid": false,
+    "BrokenGraphComplete": false,
+    "RouteDiscoverySearchEliminationPct": 0,
+    "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
+    "LastPlannedLoop": 710,
+    "HighestCompletedLoop": 710,
+    "PostgresCommissioningStatus": "CLOSED",
+    "InferenceApplications": 16,
+    "SelectedNotForcedEdgeStates": 5,
+    "GridvilleInferredEdgeCount": 5,
+    "GridvilleConnectedComponents": 1,
+    "GridvilleProperSubtours": 0,
+    "ReconstructedRoute": [
+      "stop-a",
+      "stop-b",
+      "stop-c",
+      "stop-d",
+      "stop-e",
+      "stop-a"
+    ],
+    "GridvilleSurvivingRouteClasses": 1,
+    "TwinTriangleLowerBound": 24,
+    "TwinTriangleCandidateCost": 24,
+    "TwinTriangleSelectedComponents": 2,
+    "TwinTriangleOptimalityProved": true,
+    "SparseForcedEdges": 5,
+    "ForbiddenEdgeCertificates": 2,
+    "ClusterBoundaryStates": 27,
+    "NeighborhoodOrderReductionPct": 50,
+    "TwinClusterCombinationReductionPct": 75,
+    "TourStops": 156,
+    "TourLegs": 156,
+    "ExecutionRuns": 10,
+    "InferenceStates": 17,
+    "InferenceAntecedents": 5,
+    "EdgeStates": 16,
+    "EdgeSupports": 10,
+    "DerivedEdgeSets": 4,
+    "DerivedEdgeSetMembers": 29,
+    "ConnectedDegreeTwoCertificates": 3,
+    "RouteReconstructions": 2,
+    "RouteReconstructionSteps": 14,
+    "SearchCertificates": 16,
+    "ConstraintRounds": 3,
+    "ConstraintDecisions": 7,
+    "ClusterBoundaryStateMembers": 66,
+    "ClusterContractionCertificates": 7,
+    "ConvergenceMeasurements": 114,
+    "ConceptRegistry": 166,
+    "DefectProfiles": 33,
+    "BoundTerms": 8,
+    "WitnessNormalForms": 35,
+    "PredicateBasisCount": 8,
+    "SurfacePredicateBaseline": 32,
+    "SemanticCompressionPct": 75,
+    "NovelTermsCoined597To610": 14,
+    "NewPrimitivesAfterLoop598": 0,
+    "ConvergencePredictionStatus": "EARLY_EMPIRICAL_SUPPORT_FOR_CURRENT_TSP_DOMAIN",
+    "CurrentPredicateAtomCount": 1,
+    "CurrentSemanticOperatorCount": 1,
+    "HistoricalLoop610PredicateBasisCount": 8,
+    "CurrentSemanticCompressionPct": 96.88,
+    "NovelTermsCoined611To623": 13,
+    "AsymmetricRawDirectedOrders": 24,
+    "AsymmetricReversalClasses": 12,
+    "AsymmetricFiberMinima": 6,
+    "AsymmetricQuotientReductionPct": 75,
+    "RecoverableConceptCount": 87,
+    "ThreeRegionLowerBound": 36,
+    "ThreeRegionCandidateCost": 36,
+    "ThreeRegionOptimalityProved": true,
+    "OptimalFaceLowerBound": 4,
+    "OptimalFaceOptimalWitnessCount": 2,
+    "OptimalFaceChoiceOrbitSize": 2,
+    "PhysicalTableCount": 45,
+    "OptimalFaceValueProofBranchDecisionCount": 0,
+    "DevelopmentExactCoveragePct": 100.0,
+    "DevelopmentValueClosedCount": 3,
+    "DevelopmentRouteClosedCount": 2,
+    "DevelopmentMaxExactClassCount": 20160,
+    "HeldOutInstanceCount": 12,
+    "HeldOutExactCoveragePct": 100.0,
+    "HeldOutValueClosedCount": 5,
+    "HeldOutRouteClosedCount": 3,
+    "HeldOutBranchRequiredCount": 7,
+    "HeldOutMeanClosureYieldPct": 23.96,
+    "HeldOutMaxExactClassCount": 2520
+  },
+  "ArtifactHashes": {
+    "rulebook": "sha256:71649f568248a91818b22ef25b57e7b33260f57e03605d9d8243e8ee6151ed1d",
+    "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
+    "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
+    "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
+    "commissioning_transcript": "sha256:ae8190f4c6084cbd1d2a3e9ae359a2b1966cf99dfcb2423d92cf98e6aaf8f7a5",
+    "effortless_cli_commit": "1551cb82d5a8992ad09e4c82d08e28493f92f7b4",
+    "effortless_cli_archive": "https://github.com/EffortlessAPI/cli/archive/1551cb82d5a8992ad09e4c82d08e28493f92f7b4.tar.gz",
+    "retry_9_finalization_failure_transcript": "sha256:6516deab2de42c971cc55ef2d752d3d5cb2154dd343cd7827803e1bd6ed8bd2b",
+    "loop_610_postgres_projection_tree": "sha256:820fc671a825379a4661ad333fd83b03f6f578f094f15a5e1193db293ae38194",
+    "loop_610_rulespeak_tree": "sha256:7312ad39093f44a34d8ef4bf8f15a92334d04b3d5c2681597db91c773d6f7f1c",
+    "loop_610_generated_view_count": 45,
+    "loop_646_postgres_projection_tree": "sha256:820fc671a825379a4661ad333fd83b03f6f578f094f15a5e1193db293ae38194",
+    "loop_646_rulespeak_tree": "sha256:7312ad39093f44a34d8ef4bf8f15a92334d04b3d5c2681597db91c773d6f7f1c",
+    "loop_646_live_three_region_lower_bound": "36.0000000000000000,true",
+    "loop_646_live_optimal_face": {
+      "tour-optimal-face-abcd-4": [
+        4.0,
+        "true"
+      ],
+      "tour-optimal-face-abdc-6": [
+        6.0,
+        "false"
+      ],
+      "tour-optimal-face-acbd-4": [
+        4.0,
+        "true"
+      ]
+    },
+    "loop_709_postgres_projection_tree": "sha256:21161cf595207344af096782102a7fc738dfef1adba1882298541f601ee9470d",
+    "loop_709_rulespeak_tree": "sha256:bc9b33ac5cfef2ecf99cea18a48fe9572c47f9b2e746c22a009a264248d749fb",
+    "loop_709_generated_view_count": 45,
+    "loop_709_live_heldout_exact_count": 12,
+    "loop_709_live_oracle_rows": [
+      "tsp-holdout-bottleneck7-7,20.0,1,360,REQUIRED_FOR_VALUE",
+      "tsp-holdout-cluster7-7,29.0,2,360,REQUIRED_FOR_VALUE",
+      "tsp-holdout-dominance7-7,29.0,1,360,REQUIRED_FOR_VALUE",
+      "tsp-holdout-fourregion8-8,24.0,2,2520,REJECTED_VALUE_ALREADY_CERTIFIED",
+      "tsp-holdout-hetero8-8,31.0,1,2520,REQUIRED_FOR_VALUE",
+      "tsp-holdout-metric6-6,152.0,1,1,REJECTED_VALUE_ALREADY_CERTIFIED",
+      "tsp-holdout-nested8-8,31.0,2,2520,REQUIRED_FOR_VALUE",
+      "tsp-holdout-nonmetric6-6,37.0,1,60,REQUIRED_FOR_VALUE",
+      "tsp-holdout-residual8-8,38.0,1,2520,REQUIRED_FOR_VALUE",
+      "tsp-holdout-ring6-6,6.0,1,1,REJECTED_VALUE_ALREADY_CERTIFIED",
+      "tsp-holdout-sparse8-8,8.0,1,1,REJECTED_VALUE_ALREADY_CERTIFIED",
+      "tsp-holdout-tie6-6,6.0,60,60,REJECTED_VALUE_ALREADY_CERTIFIED"
+    ]
+  },
+  "GeneratedTimestamp": null,
+  "Vocabulary": {
+    "ImportedDependency": "An external provider conclusion consumed without internal derivation in this domain.",
+    "FrontierObligation": "Any still-open semantic edge, typed as inference, certificate, substrate, generalization, or residual search.",
+    "ResidualSearch": "Explicit ambiguity remaining after all currently represented deterministic obligations reach closure.",
+    "KernelAssumption": "Trusted primitive input semantics recorded at the trust boundary, not silently promoted into a derivation."
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "status": "VERIFIED",
+  "github_run_id": "29659814752",
+  "loops": "597-610",
+  "primitive_basis_count": 8,
+  "surface_predicate_baseline": 32,
+  "semantic_compression_pct": 75,
+  "coined_predicates": 14,
+  "twin_optimality": true,
+  "twin_bound_composition": {
+    "base": 6.0,
+    "crossing_insertion": 20.0,
+    "internal_release": -2.0,
+    "supplemental_adjustment": 18.0,
+    "final": 24.0
+  },
+  "concept_convergence_proved": false,
+  "ordered_commit_positions": [
+    323,
+    324,
+    325,
+    326,
+    327,
+    328,
+    329,
+    330,
+    331,
+    332,
+    333,
+    334,
+    335,
+    336,
+    337
+  ]
+}

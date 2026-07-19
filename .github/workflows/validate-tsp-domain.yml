@@ -1,0 +1,40 @@
+name: Validate TSP domain
+
+# Temporarily manual-only while the long-form loop campaign is being integrated.
+# This prevents one validation run and notification per semantic-loop commit.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+
+      - name: Validate semantic rulebook and summary projections
+        shell: bash
+        run: |
+          set -euo pipefail
+          domain='rulebook-examples/effortless-math/domains/traveling-salesman'
+          python3 "$domain/scripts/validate_rulebook.py"
+
+      - name: Compile replay, commissioning, and validation programs
+        shell: bash
+        run: |
+          set -euo pipefail
+          domain='rulebook-examples/effortless-math/domains/traveling-salesman'
+          find "$domain/scripts" "$domain/testing" -type f -name '*.py' -print0 \
+            | xargs -0 -r python3 -m py_compile
+          bash -n "$domain/start.sh"
+
+      - name: Ensure validation is read-only
+        shell: bash
+        run: |
+          test -z "$(git status --porcelain)"

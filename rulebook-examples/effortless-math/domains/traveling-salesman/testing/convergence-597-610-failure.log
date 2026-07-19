@@ -1,0 +1,88 @@
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+traveling-salesman rulebook v3 validation: PASS
+tables: 40
+loops 587-596: 587:CLOSED, 588:CLOSED, 589:CLOSED, 590:CLOSED, 591:CLOSED, 592:CLOSED, 593:CLOSED, 594:CLOSED, 595:CLOSED, 596:CLOSED, 597:PLANNED, 598:PLANNED, 599:PLANNED, 600:PLANNED, 601:PLANNED, 602:PLANNED, 603:PLANNED, 604:PLANNED, 605:PLANNED, 606:PLANNED, 607:PLANNED, 608:PLANNED, 609:PLANNED, 610:PLANNED
+[agent/tsp-semantic-foundation fde0788] TSP loops 597-610: register convergence experiment
+ 6 files changed, 203 insertions(+), 528 deletions(-)
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+traveling-salesman rulebook v3 validation: PASS
+tables: 41
+loops 587-596: 587:CLOSED, 588:CLOSED, 589:CLOSED, 590:CLOSED, 591:CLOSED, 592:CLOSED, 593:CLOSED, 594:CLOSED, 595:CLOSED, 596:CLOSED, 597:CLOSED, 598:PLANNED, 599:PLANNED, 600:PLANNED, 601:PLANNED, 602:PLANNED, 603:PLANNED, 604:PLANNED, 605:PLANNED, 606:PLANNED, 607:PLANNED, 608:PLANNED, 609:PLANNED, 610:PLANNED
+[agent/tsp-semantic-foundation 5c710ae] TSP loop 597: record convergence prediction
+ 2 files changed, 41 insertions(+), 13 deletions(-)
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+traveling-salesman rulebook v3 validation: PASS
+tables: 42
+loops 587-596: 587:CLOSED, 588:CLOSED, 589:CLOSED, 590:CLOSED, 591:CLOSED, 592:CLOSED, 593:CLOSED, 594:CLOSED, 595:CLOSED, 596:CLOSED, 597:CLOSED, 598:CLOSED, 599:PLANNED, 600:PLANNED, 601:PLANNED, 602:PLANNED, 603:PLANNED, 604:PLANNED, 605:PLANNED, 606:PLANNED, 607:PLANNED, 608:PLANNED, 609:PLANNED, 610:PLANNED
+[agent/tsp-semantic-foundation b05245e] TSP loop 598: derive eight-predicate basis
+ 2 files changed, 78 insertions(+), 15 deletions(-)
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+traveling-salesman rulebook v3 validation: PASS
+tables: 42
+loops 587-596: 587:CLOSED, 588:CLOSED, 589:CLOSED, 590:CLOSED, 591:CLOSED, 592:CLOSED, 593:CLOSED, 594:CLOSED, 595:CLOSED, 596:CLOSED, 597:CLOSED, 598:CLOSED, 599:CLOSED, 600:PLANNED, 601:PLANNED, 602:PLANNED, 603:PLANNED, 604:PLANNED, 605:PLANNED, 606:PLANNED, 607:PLANNED, 608:PLANNED, 609:PLANNED, 610:PLANNED
+[agent/tsp-semantic-foundation ab4c186] TSP loop 599: collapse edge commitment lattice
+ 2 files changed, 24 insertions(+), 18 deletions(-)
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+traveling-salesman rulebook v3 validation: PASS
+tables: 43
+loops 587-596: 587:CLOSED, 588:CLOSED, 589:CLOSED, 590:CLOSED, 591:CLOSED, 592:CLOSED, 593:CLOSED, 594:CLOSED, 595:CLOSED, 596:CLOSED, 597:CLOSED, 598:CLOSED, 599:CLOSED, 600:CLOSED, 601:PLANNED, 602:PLANNED, 603:PLANNED, 604:PLANNED, 605:PLANNED, 606:PLANNED, 607:PLANNED, 608:PLANNED, 609:PLANNED, 610:PLANNED
+[agent/tsp-semantic-foundation 7392df0] TSP loop 600: collapse incidence budget
+ 2 files changed, 56 insertions(+), 16 deletions(-)
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+traveling-salesman rulebook v3 validation: PASS
+tables: 43
+loops 587-596: 587:CLOSED, 588:CLOSED, 589:CLOSED, 590:CLOSED, 591:CLOSED, 592:CLOSED, 593:CLOSED, 594:CLOSED, 595:CLOSED, 596:CLOSED, 597:CLOSED, 598:CLOSED, 599:CLOSED, 600:CLOSED, 601:CLOSED, 602:PLANNED, 603:PLANNED, 604:PLANNED, 605:PLANNED, 606:PLANNED, 607:PLANNED, 608:PLANNED, 609:PLANNED, 610:PLANNED
+[agent/tsp-semantic-foundation a3f2090] TSP loop 601: derive defect vector
+ 2 files changed, 22 insertions(+), 18 deletions(-)
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+traveling-salesman rulebook v3 validation: PASS
+tables: 44
+loops 587-596: 587:CLOSED, 588:CLOSED, 589:CLOSED, 590:CLOSED, 591:CLOSED, 592:CLOSED, 593:CLOSED, 594:CLOSED, 595:CLOSED, 596:CLOSED, 597:CLOSED, 598:CLOSED, 599:CLOSED, 600:CLOSED, 601:CLOSED, 602:CLOSED, 603:PLANNED, 604:PLANNED, 605:PLANNED, 606:PLANNED, 607:PLANNED, 608:PLANNED, 609:PLANNED, 610:PLANNED
+[agent/tsp-semantic-foundation 86cc32d] TSP loop 602: derive cut parity
+ 2 files changed, 42 insertions(+), 16 deletions(-)
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+traveling-salesman rulebook v3 validation: PASS
+tables: 44
+loops 587-596: 587:CLOSED, 588:CLOSED, 589:CLOSED, 590:CLOSED, 591:CLOSED, 592:CLOSED, 593:CLOSED, 594:CLOSED, 595:CLOSED, 596:CLOSED, 597:CLOSED, 598:CLOSED, 599:CLOSED, 600:CLOSED, 601:CLOSED, 602:CLOSED, 603:CLOSED, 604:PLANNED, 605:PLANNED, 606:PLANNED, 607:PLANNED, 608:PLANNED, 609:PLANNED, 610:PLANNED
+[agent/tsp-semantic-foundation 1e693d4] TSP loop 603: derive component repair bound
+ 3 files changed, 58 insertions(+), 24 deletions(-)
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+traveling-salesman v3 validation: FAIL: loop 593 must not emit twin optimality certificate
+Traceback (most recent call last):
+  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/validate_rulebook_v3.py", line 297, in <module>
+    main()
+  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/validate_rulebook_v3.py", line 287, in main
+    validate_semantics(rb, contract)
+  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/validate_rulebook_v3.py", line 256, in validate_semantics
+    fail("loop 593 must not emit twin optimality certificate")
+  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/validate_rulebook_v3.py", line 36, in fail
+    raise AssertionError(message)
+AssertionError: loop 593 must not emit twin optimality certificate
+traveling-salesman convergence validation: PASS
+tables=40 loops=34 primitives=0
+traveling-salesman convergence validation: PASS
+tables=41 loops=34 primitives=0
+traveling-salesman convergence validation: PASS
+tables=42 loops=34 primitives=8
+traveling-salesman convergence validation: PASS
+tables=42 loops=34 primitives=8
+traveling-salesman convergence validation: PASS
+tables=43 loops=34 primitives=8
+traveling-salesman convergence validation: PASS
+tables=43 loops=34 primitives=8
+traveling-salesman convergence validation: PASS
+tables=44 loops=34 primitives=8
+traveling-salesman convergence validation: PASS
+tables=44 loops=34 primitives=8
+Traceback (most recent call last):
+  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_597_610_convergence_v2.py", line 1808, in <module>
+    main()
+  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_597_610_convergence_v2.py", line 1790, in main
+    validate_repository_state()
+  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_597_610_convergence_v2.py", line 1672, in validate_repository_state
+    run([sys.executable, str(VALIDATOR_V3)])
+  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_597_610_convergence_v2.py", line 56, in run
+    raise RuntimeError(f"command failed ({proc.returncode}): {' '.join(cmd)}\n{detail}")
+RuntimeError: command failed (1): /usr/bin/python3 /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/validate_rulebook_v3.py
+
+

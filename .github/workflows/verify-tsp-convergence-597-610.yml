@@ -1,0 +1,80 @@
+name: Verify TSP convergence loops 597-610
+
+on:
+  push:
+    branches:
+      - agent/tsp-semantic-foundation
+    paths:
+      - rulebook-examples/effortless-math/domains/traveling-salesman/testing/convergence-597-610-status.json
+
+permissions:
+  contents: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/tsp-semantic-foundation
+          fetch-depth: 0
+
+      - name: Require successful execution status
+        shell: bash
+        run: |
+          set -euo pipefail
+          domain='rulebook-examples/effortless-math/domains/traveling-salesman'
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('rulebook-examples/effortless-math/domains/traveling-salesman/testing/convergence-597-610-status.json')
+          status = json.loads(p.read_text())
+          if status.get('status') != 'SUCCEEDED':
+              raise SystemExit(f"convergence executor did not succeed: {status}")
+          PY
+
+      - name: Validate canonical convergence state
+        shell: bash
+        run: |
+          set -euo pipefail
+          domain='rulebook-examples/effortless-math/domains/traveling-salesman'
+          python3 "$domain/scripts/validate_rulebook.py"
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          domain = Path('rulebook-examples/effortless-math/domains/traveling-salesman')
+          rb = json.loads((domain/'effortless-rulebook/traveling-salesman-rulebook.json').read_text())
+          contract = json.loads((domain/'problem-contract.json').read_text())
+          loops = {int(r['LoopOrder']): r for r in rb['TSPLoops']['data']}
+          assert all(loops[i]['Status'] == 'CLOSED' for i in range(597, 611))
+          concepts = rb['TSPConceptRegistry']['data']
+          assert sum(r['ConceptKind'] == 'PRIMITIVE' for r in concepts) == 8
+          assert sum(r['ConceptKind'] == 'COINED_PREDICATE' for r in concepts) == 14
+          assert contract['Claims']['SemanticCompressionPct'] == 75
+          assert contract['Claims']['TwinTrianglesOptimalityProved'] is True
+          PY
+
+      - name: Commit verified marker
+        shell: bash
+        run: |
+          set -euo pipefail
+          domain='rulebook-examples/effortless-math/domains/traveling-salesman'
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          cat > "$domain/testing/convergence-597-610-verified.json" <<EOF
+          {
+            "status": "VERIFIED",
+            "github_run_id": "$GITHUB_RUN_ID",
+            "loops": "597-610",
+            "primitive_basis_count": 8,
+            "surface_predicate_baseline": 32,
+            "semantic_compression_pct": 75,
+            "coined_predicates": 14,
+            "twin_optimality": true
+          }
+          EOF
+          git add "$domain/testing/convergence-597-610-verified.json"
+          git commit -m 'Verify TSP convergence loops 597-610'
+          git pull --rebase origin agent/tsp-semantic-foundation
+          git push origin HEAD:agent/tsp-semantic-foundation

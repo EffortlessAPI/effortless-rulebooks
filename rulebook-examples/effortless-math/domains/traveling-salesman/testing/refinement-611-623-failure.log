@@ -1,0 +1,104 @@
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+[agent/tsp-semantic-foundation ba36b2dc] TSP loops 611-623: register atom-operator refinement
+ 5 files changed, 173 insertions(+), 11 deletions(-)
+ create mode 100644 rulebook-examples/effortless-math/domains/traveling-salesman/scripts/validate_rulebook_v5.py
+ create mode 100644 rulebook-examples/effortless-math/domains/traveling-salesman/scripts/validate_summary_alignment_v5.py
+To https://github.com/EffortlessAPI/effortless-rulebooks
+   6ab2b1ba..ba36b2dc  HEAD -> agent/tsp-semantic-foundation
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+[agent/tsp-semantic-foundation 05347bd6] TSP loop 611: split predicates from operators
+ 2 files changed, 84 insertions(+), 69 deletions(-)
+To https://github.com/EffortlessAPI/effortless-rulebooks
+   ba36b2dc..05347bd6  HEAD -> agent/tsp-semantic-foundation
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+[agent/tsp-semantic-foundation eab0f4ee] TSP loop 612: derive attachment atom
+ 2 files changed, 36 insertions(+), 33 deletions(-)
+To https://github.com/EffortlessAPI/effortless-rulebooks
+   05347bd6..eab0f4ee  HEAD -> agent/tsp-semantic-foundation
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+[agent/tsp-semantic-foundation 2ade717a] TSP loop 613: derive valuation atom
+ 2 files changed, 50 insertions(+), 47 deletions(-)
+To https://github.com/EffortlessAPI/effortless-rulebooks
+   eab0f4ee..2ade717a  HEAD -> agent/tsp-semantic-foundation
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+[agent/tsp-semantic-foundation 22cf9892] TSP loop 614: derive warrant atom
+ 2 files changed, 38 insertions(+), 35 deletions(-)
+To https://github.com/EffortlessAPI/effortless-rulebooks
+   2ade717a..22cf9892  HEAD -> agent/tsp-semantic-foundation
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+[agent/tsp-semantic-foundation 6eade5f3] TSP loop 615: lift connectivity to closure
+ 2 files changed, 26 insertions(+), 23 deletions(-)
+To https://github.com/EffortlessAPI/effortless-rulebooks
+   22cf9892..6eade5f3  HEAD -> agent/tsp-semantic-foundation
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+[agent/tsp-semantic-foundation f82d77b7] TSP loop 616: lift measures to aggregate
+ 2 files changed, 44 insertions(+), 41 deletions(-)
+To https://github.com/EffortlessAPI/effortless-rulebooks
+   6eade5f3..f82d77b7  HEAD -> agent/tsp-semantic-foundation
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+[agent/tsp-semantic-foundation 926c0ca1] TSP loop 617: lift contraction to quotient
+ 2 files changed, 19 insertions(+), 16 deletions(-)
+To https://github.com/EffortlessAPI/effortless-rulebooks
+   f82d77b7..926c0ca1  HEAD -> agent/tsp-semantic-foundation
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+[agent/tsp-semantic-foundation 113903e7] TSP loop 618: lift closure rounds to fixed point
+ 2 files changed, 18 insertions(+), 15 deletions(-)
+To https://github.com/EffortlessAPI/effortless-rulebooks
+   926c0ca1..113903e7  HEAD -> agent/tsp-semantic-foundation
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+[agent/tsp-semantic-foundation 9b672645] TSP loop 619: certify three-atom basis
+ 2 files changed, 30 insertions(+), 17 deletions(-)
+To https://github.com/EffortlessAPI/effortless-rulebooks
+   113903e7..9b672645  HEAD -> agent/tsp-semantic-foundation
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+[agent/tsp-semantic-foundation ebd93020] TSP loop 620: normalize boundary ports
+ 2 files changed, 32 insertions(+), 20 deletions(-)
+To https://github.com/EffortlessAPI/effortless-rulebooks
+   9b672645..ebd93020  HEAD -> agent/tsp-semantic-foundation
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+[agent/tsp-semantic-foundation 43b706a2] TSP loop 621: derive asymmetric boundary fibers
+ 2 files changed, 93 insertions(+), 27 deletions(-)
+To https://github.com/EffortlessAPI/effortless-rulebooks
+   ebd93020..43b706a2  HEAD -> agent/tsp-semantic-foundation
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+[agent/tsp-semantic-foundation fade5e42] TSP loop 622: collapse boundary fibers by value
+ 2 files changed, 27 insertions(+), 25 deletions(-)
+To https://github.com/EffortlessAPI/effortless-rulebooks
+   43b706a2..fade5e42  HEAD -> agent/tsp-semantic-foundation
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+traveling-salesman atom/operator refinement validation: PASS
+loops=47 tables=45 atoms=8 operators=0
+traveling-salesman atom/operator refinement validation: PASS
+loops=47 tables=45 atoms=8 operators=0
+traveling-salesman atom/operator refinement validation: PASS
+loops=47 tables=45 atoms=7 operators=0
+traveling-salesman atom/operator refinement validation: PASS
+loops=47 tables=45 atoms=5 operators=0
+traveling-salesman atom/operator refinement validation: PASS
+loops=47 tables=45 atoms=4 operators=0
+traveling-salesman atom/operator refinement validation: PASS
+loops=47 tables=45 atoms=3 operators=1
+traveling-salesman atom/operator refinement validation: PASS
+loops=47 tables=45 atoms=3 operators=2
+traveling-salesman atom/operator refinement validation: PASS
+loops=47 tables=45 atoms=3 operators=3
+traveling-salesman atom/operator refinement validation: PASS
+loops=47 tables=45 atoms=3 operators=4
+traveling-salesman atom/operator refinement validation: PASS
+loops=47 tables=45 atoms=3 operators=4
+traveling-salesman atom/operator refinement validation: PASS
+loops=47 tables=45 atoms=3 operators=4
+traveling-salesman atom/operator refinement validation: PASS
+loops=47 tables=45 atoms=3 operators=4
+traveling-salesman atom/operator refinement validation: PASS
+loops=47 tables=45 atoms=3 operators=4
+traveling-salesman atom/operator refinement validation: PASS
+loops=47 tables=45 atoms=3 operators=4
+Traceback (most recent call last):
+  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_611_623_refinement_push_each.py", line 132, in <module>
+    refinement.main()
+  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_611_623_refinement.py", line 1071, in main
+    validate_summary_alignment()
+  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_611_623_refinement.py", line 1007, in validate_summary_alignment
+    raise AssertionError(f"README missing {marker!r}")
+AssertionError: README missing 'Boundary Fiber'

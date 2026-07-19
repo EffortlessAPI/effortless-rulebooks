@@ -1,0 +1,18 @@
+{
+  "status": "SUCCEEDED",
+  "driver": "frozen-basis-exact-v1",
+  "github_run_id": "29674066876",
+  "last_loop": 710,
+  "heldout_exact": 12,
+  "heldout_count": 12,
+  "value_closed": 5,
+  "route_closed": 3,
+  "branch_required": 7,
+  "active_atoms": [
+    "SEMANTIC_ARC"
+  ],
+  "active_operators": [
+    "WARRANTED_REWRITE"
+  ],
+  "physical_tables": 45
+}
