@@ -157,6 +157,27 @@ def main() -> int:
             ])
             new_tables.append(name)
 
+    # 1b. Some specs express a new table implicitly: rather than a needs_table
+    # block, they emit predicates whose target_table does not exist yet, the
+    # first of which is the primary key. Synthesize the table from those columns
+    # so the spec's own ordering defines the schema.
+    for q in spec["questions"]:
+        for p in q.get("predicates", []):
+            tbl = p["target_table"]
+            if tbl in rb or tbl in new_tables:
+                continue
+            cols = [pp for qq in spec["questions"] for pp in qq.get("predicates", [])
+                    if pp["target_table"] == tbl]
+            pk = f"{tbl[:-1] if tbl.endswith('s') else tbl}Id"
+            if not any(c["field_name"] == pk for c in cols):
+                continue  # no primary key among them — a genuine typo, let it fail
+            rb[tbl] = OrderedDict([
+                ("Description", f"{tbl} (added by witness loop {args.loop})."),
+                ("schema", []),
+                ("data", []),
+            ])
+            new_tables.append(tbl)
+
     # 2. Questions.
     for q in spec["questions"]:
         qid = q["id"]

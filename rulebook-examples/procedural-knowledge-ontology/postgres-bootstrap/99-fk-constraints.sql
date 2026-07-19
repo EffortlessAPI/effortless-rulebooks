@@ -155,6 +155,9 @@ ALTER TABLE step_tools ADD CONSTRAINT fk_step_tools_tool
 ALTER TABLE requirements DROP CONSTRAINT IF EXISTS fk_requirements_witness_field_name;
 ALTER TABLE requirements ADD CONSTRAINT fk_requirements_witness_field_name
   FOREIGN KEY (witness_field_name) REFERENCES rulebook_fields (rulebook_field_id);
+ALTER TABLE requirements DROP CONSTRAINT IF EXISTS fk_requirements_accountable_role;
+ALTER TABLE requirements ADD CONSTRAINT fk_requirements_accountable_role
+  FOREIGN KEY (accountable_role) REFERENCES roles (role_id);
 
 -- StepRequirements
 ALTER TABLE step_requirements DROP CONSTRAINT IF EXISTS fk_step_requirements_step;
@@ -564,4 +567,20 @@ ALTER TABLE authority_boundaries DROP CONSTRAINT IF EXISTS fk_authority_boundari
 ALTER TABLE authority_boundaries ADD CONSTRAINT fk_authority_boundaries_evaluation_context
   FOREIGN KEY (evaluation_context) REFERENCES evaluation_contexts (evaluation_context_id);
 
--- 150 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
+-- BindingObservations
+ALTER TABLE binding_observations DROP CONSTRAINT IF EXISTS fk_binding_observations_step_execution;
+ALTER TABLE binding_observations ADD CONSTRAINT fk_binding_observations_step_execution
+  FOREIGN KEY (step_execution) REFERENCES step_executions (step_execution_id);
+ALTER TABLE binding_observations DROP CONSTRAINT IF EXISTS fk_binding_observations_operational_binding;
+ALTER TABLE binding_observations ADD CONSTRAINT fk_binding_observations_operational_binding
+  FOREIGN KEY (operational_binding) REFERENCES operational_bindings (operational_binding_id);
+
+-- Attestations
+ALTER TABLE attestations DROP CONSTRAINT IF EXISTS fk_attestations_procedure_execution;
+ALTER TABLE attestations ADD CONSTRAINT fk_attestations_procedure_execution
+  FOREIGN KEY (procedure_execution) REFERENCES procedure_executions (procedure_execution_id);
+ALTER TABLE attestations DROP CONSTRAINT IF EXISTS fk_attestations_signed_by_agent;
+ALTER TABLE attestations ADD CONSTRAINT fk_attestations_signed_by_agent
+  FOREIGN KEY (signed_by_agent) REFERENCES agents (agent_id);
+
+-- 155 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
