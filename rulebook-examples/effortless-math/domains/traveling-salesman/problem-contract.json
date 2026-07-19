@@ -1177,12 +1177,12 @@
     {
       "LoopOrder": 692,
       "LoopId": "tsp-loop-692",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
       "ClosureCriterion": "Measure the exact cost delta from the local two-factor union to the optimum when that union is degree two but disconnected.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Derived Repair Potential across the exact held-out corpus.",
+      "Result": "Disconnected two-factor repair potential observed on 1 cases; values=[11.0].",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 693,
@@ -1505,7 +1505,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 710,
-    "HighestCompletedLoop": 691,
+    "HighestCompletedLoop": 692,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 16,
     "SelectedNotForcedEdgeStates": 5,
@@ -1547,8 +1547,8 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 66,
     "ClusterContractionCertificates": 7,
-    "ConvergenceMeasurements": 95,
-    "ConceptRegistry": 147,
+    "ConvergenceMeasurements": 96,
+    "ConceptRegistry": 148,
     "DefectProfiles": 33,
     "BoundTerms": 8,
     "WitnessNormalForms": 35,
@@ -1582,7 +1582,7 @@
     "DevelopmentMaxExactClassCount": 20160
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:d89b8206025d3049abf2af34c8099c948525997696526a7ad716d930f23b8b55",
+    "rulebook": "sha256:a1515d6aec03ad255d0ef46ed8dd12b8b4c649dffa6828b8f68c6399da03679e",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
