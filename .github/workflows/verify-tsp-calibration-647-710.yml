@@ -5,7 +5,7 @@ on:
     branches:
       - agent/tsp-semantic-foundation
     paths:
-      - rulebook-examples/effortless-math/domains/traveling-salesman/testing/calibration-647-710-verify.trigger
+      - .tsp-calibration-647-710-verify.trigger
   workflow_dispatch:
 
 permissions:
