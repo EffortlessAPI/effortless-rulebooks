@@ -1,0 +1,22 @@
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+traveling-salesman temporal v3 validation: PASS
+traveling-salesman temporal v5 validation: PASS
+[agent/tsp-semantic-foundation b593b449] TSP loops 647-710: register frozen-basis exact calibration
+ 5 files changed, 745 insertions(+), 13 deletions(-)
+ create mode 100644 rulebook-examples/effortless-math/domains/traveling-salesman/scripts/validate_rulebook_v7.py
+ create mode 100644 rulebook-examples/effortless-math/domains/traveling-salesman/scripts/validate_summary_alignment_v7.py
+To https://github.com/EffortlessAPI/effortless-rulebooks
+   a1ed2e25..b593b449  HEAD -> agent/tsp-semantic-foundation
+traveling-salesman frozen-basis calibration validation: PASS
+loops=134 tables=45 atoms=1 operators=1 heldout=0
+Traceback (most recent call last):
+  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_647_710_calibration.py", line 2170, in <module>
+    main()
+  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_647_710_calibration.py", line 2150, in main
+    finish_loop(rb, contract, order, after, witness)
+  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_647_710_calibration.py", line 465, in finish_loop
+    base.finish_loop(rb, contract, order, after, witness)
+  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/apply_loops_624_646_coherence.py", line 589, in finish_loop
+    "NextFrontier": LOOPS[order]["next"],
+                    ~~~~~^^^^^^^
+KeyError: 647
