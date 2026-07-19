@@ -67,6 +67,8 @@ ALTER TABLE message_deliveries ENABLE ROW LEVEL SECURITY;
 ALTER TABLE template_approvals ENABLE ROW LEVEL SECURITY;
 ALTER TABLE send_intents ENABLE ROW LEVEL SECURITY;
 ALTER TABLE agent_decision_records ENABLE ROW LEVEL SECURITY;
+ALTER TABLE delivered_communications ENABLE ROW LEVEL SECURITY;
+ALTER TABLE authority_boundaries ENABLE ROW LEVEL SECURITY;
 
 -- TODO: Add specific RLS policies based on your security requirements
 -- Example:

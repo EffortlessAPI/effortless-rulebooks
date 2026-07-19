@@ -512,6 +512,46 @@
         "formula": "=NOT({{AgentKind}} = \"Human\")"
       },
       {
+        "name": "BoundaryViolationCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of decisions by this agent that violated an authority boundary.",
+        "formula": "=COUNTIFS(AgentDecisionRecords!{{AgentWhenBoundaryViolated}}, {{AgentId}})"
+      },
+      {
+        "name": "IsOperatingOutsideBoundary",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this agent has made at least one decision an authority boundary forbids.",
+        "formula": "={{BoundaryViolationCount}} > 0"
+      },
+      {
+        "name": "DraftDecisionCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of drafting decisions this agent has made.",
+        "formula": "=COUNTIFS(AgentDecisionRecords!{{AgentWhenDraft}}, {{AgentId}})"
+      },
+      {
+        "name": "OverriddenDraftCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of this agent's drafting decisions a human corrected or reversed.",
+        "formula": "=COUNTIFS(AgentDecisionRecords!{{AgentWhenDraftOverridden}}, {{AgentId}})"
+      },
+      {
+        "name": "DraftRewriteRatePercent",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Percentage of this agent's drafting output that a human rewrote.",
+        "formula": "=IF({{DraftDecisionCount}} = 0, 0, ({{OverriddenDraftCount}} * 100) / {{DraftDecisionCount}})"
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -694,6 +734,45 @@
         "formula": "={{CurrentlyCoveredAssignmentCount}} = 0"
       },
       {
+        "name": "CountOfAwaitedDecisions",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many change requests name this role as the deciding authority.",
+        "formula": "=COUNTIFS(ChangeRequests!{{AuthorityRole}}, Roles!{{RoleId}})"
+      },
+      {
+        "name": "CurrentAssignment",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "The RoleAssignments id of the assignment by which this role is currently held. Deliberately a raw identifier, not a relationship: RoleAssignments already points at Roles, so an FK back would make the two mutually dependent and this rulebook must stay acyclic."
+      },
+      {
+        "name": "CurrentAssignmentValidFrom",
+        "datatype": "datetime",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Start of the currently-in-force assignment for this role.",
+        "formula": "=INDEX(RoleAssignments!{{ValidFrom}}, MATCH({{CurrentAssignment}}, RoleAssignments!{{RoleAssignmentId}}, 0))"
+      },
+      {
+        "name": "IsNonHumanHeld",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the role's current agent is an AI agent or automated pipeline.",
+        "formula": "=NOT({{CurrentAgentKind}} = \"Human\")"
+      },
+      {
+        "name": "IsUngovernedNonHumanRole",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a role is pointed at a non-human agent but has no assignment row granting it.",
+        "formula": "=AND({{IsNonHumanHeld}}, {{HasNoCurrentHolder}})"
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -708,7 +787,8 @@
         "Organization": "acme-finance",
         "CurrentAgent": "maria-chen",
         "Responsibility": "Preparer of reconciliations and variance evidence.",
-        "SemanticTypeIri": "http://purl.org/spar/pro/Role"
+        "SemanticTypeIri": "http://purl.org/spar/pro/Role",
+        "CurrentAssignment": "ra-finance-2026"
       },
       {
         "RoleId": "controller",
@@ -716,7 +796,8 @@
         "Organization": "acme-finance",
         "CurrentAgent": "devon-okafor",
         "Responsibility": "Owner of close controls and first approval authority.",
-        "SemanticTypeIri": "http://purl.org/spar/pro/Role"
+        "SemanticTypeIri": "http://purl.org/spar/pro/Role",
+        "CurrentAssignment": "ra-controller-2026"
       },
       {
         "RoleId": "cfo",
@@ -724,7 +805,8 @@
         "Organization": "acme-finance",
         "CurrentAgent": "priya-raman",
         "Responsibility": "Final authority for the financial close.",
-        "SemanticTypeIri": "http://purl.org/spar/pro/Role"
+        "SemanticTypeIri": "http://purl.org/spar/pro/Role",
+        "CurrentAssignment": "ra-cfo-2026"
       },
       {
         "RoleId": "hr-policy-owner",
@@ -732,7 +814,8 @@
         "Organization": "acme-people",
         "CurrentAgent": "elena-garcia",
         "Responsibility": "Accountable owner for employment policy content.",
-        "SemanticTypeIri": "http://purl.org/spar/pro/Role"
+        "SemanticTypeIri": "http://purl.org/spar/pro/Role",
+        "CurrentAssignment": "ra-policy-owner-2026"
       },
       {
         "RoleId": "employment-counsel",
@@ -740,7 +823,8 @@
         "Organization": "acme-legal",
         "CurrentAgent": "noah-williams",
         "Responsibility": "Legal reviewer for workforce policy changes.",
-        "SemanticTypeIri": "http://purl.org/spar/pro/Role"
+        "SemanticTypeIri": "http://purl.org/spar/pro/Role",
+        "CurrentAssignment": "ra-counsel-2026"
       },
       {
         "RoleId": "communications-manager",
@@ -748,7 +832,8 @@
         "Organization": "acme-people",
         "CurrentAgent": "amina-yusuf",
         "Responsibility": "Human owner of employee communications.",
-        "SemanticTypeIri": "http://purl.org/spar/pro/Role"
+        "SemanticTypeIri": "http://purl.org/spar/pro/Role",
+        "CurrentAssignment": "ra-comms-2026"
       },
       {
         "RoleId": "close-automation",
@@ -756,7 +841,8 @@
         "Organization": "acme-finance",
         "CurrentAgent": "close-pipeline",
         "Responsibility": "Deterministic extraction, posting, and archival operator.",
-        "SemanticTypeIri": "http://purl.org/spar/pro/Role"
+        "SemanticTypeIri": "http://purl.org/spar/pro/Role",
+        "CurrentAssignment": "ra-close-pipeline-2026"
       },
       {
         "RoleId": "variance-review-agent",
@@ -764,7 +850,8 @@
         "Organization": "acme-finance",
         "CurrentAgent": "variance-ai",
         "Responsibility": "AI assistant that classifies and prioritizes variances.",
-        "SemanticTypeIri": "http://purl.org/spar/pro/Role"
+        "SemanticTypeIri": "http://purl.org/spar/pro/Role",
+        "CurrentAssignment": "ra-new-variance"
       },
       {
         "RoleId": "policy-drafting-agent",
@@ -772,7 +859,8 @@
         "Organization": "acme-people",
         "CurrentAgent": "policy-drafting-ai",
         "Responsibility": "AI assistant that drafts policy and channel variants.",
-        "SemanticTypeIri": "http://purl.org/spar/pro/Role"
+        "SemanticTypeIri": "http://purl.org/spar/pro/Role",
+        "CurrentAssignment": "ra-policy-ai-2026"
       },
       {
         "RoleId": "notification-publisher",
@@ -780,7 +868,8 @@
         "Organization": "acme-people",
         "CurrentAgent": "notification-pipeline",
         "Responsibility": "Pipeline that applies channel rules and sends approved messages.",
-        "SemanticTypeIri": "http://purl.org/spar/pro/Role"
+        "SemanticTypeIri": "http://purl.org/spar/pro/Role",
+        "CurrentAssignment": "ra-notify-pipeline-2026"
       },
       {
         "RoleId": "process-steward",
@@ -788,7 +877,8 @@
         "Organization": "acme-people",
         "CurrentAgent": "elena-garcia",
         "Responsibility": "Maintains procedural knowledge health and review cadence.",
-        "SemanticTypeIri": "http://purl.org/spar/pro/Role"
+        "SemanticTypeIri": "http://purl.org/spar/pro/Role",
+        "CurrentAssignment": "ra-steward-2026"
       },
       {
         "RoleId": "knowledge-authority",
@@ -796,7 +886,8 @@
         "Organization": "acme-finance",
         "CurrentAgent": "priya-raman",
         "Responsibility": "Approves semantic changes that alter commitments or controls.",
-        "SemanticTypeIri": "http://purl.org/spar/pro/Role"
+        "SemanticTypeIri": "http://purl.org/spar/pro/Role",
+        "CurrentAssignment": "ra-authority-2026"
       }
     ]
   },
@@ -936,6 +1027,110 @@
         "formula": "=IF({{CoversNow}}, {{Role}}, \"\")"
       },
       {
+        "name": "AgentKind",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether the agent holding this assignment is Human, AIAgent, or AutomatedPipeline.",
+        "formula": "=INDEX(Agents!{{AgentKind}}, MATCH({{Agent}}, Agents!{{AgentId}}, 0))"
+      },
+      {
+        "name": "IsNonHumanAssignment",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this assignment places a non-human agent into the role.",
+        "formula": "=NOT({{AgentKind}} = \"Human\")"
+      },
+      {
+        "name": "SupersedesAssignment",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "The assignment this one replaced, if any.",
+        "RelatedTo": "RoleAssignments"
+      },
+      {
+        "name": "PredecessorAgentKind",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Agent kind of the assignment this one superseded.",
+        "formula": "=INDEX(RoleAssignments!{{AgentKind}}, MATCH({{SupersedesAssignment}}, RoleAssignments!{{RoleAssignmentId}}, 0))"
+      },
+      {
+        "name": "IsHumanToNonHumanHandover",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this assignment handed a role from a human to a non-human agent.",
+        "formula": "=AND({{PredecessorAgentKind}} = \"Human\", {{IsNonHumanAssignment}})"
+      },
+      {
+        "name": "ApprovingAuthorityRole",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Role that approved this assignment.",
+        "RelatedTo": "Roles"
+      },
+      {
+        "name": "AuthorizingChangeRequest",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Change request under which this assignment was approved.",
+        "RelatedTo": "ChangeRequests"
+      },
+      {
+        "name": "IsUnauthorizedNonHumanAssignment",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a non-human agent holds a role with no recorded approving authority or no authorizing change request.",
+        "formula": "=AND({{IsNonHumanAssignment}}, OR({{ApprovingAuthorityRole}} = \"\", {{AuthorizingChangeRequest}} = \"\"))"
+      },
+      {
+        "name": "DecisionCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Decisions made under this assignment.",
+        "formula": "=COUNTIFS(AgentDecisionRecords!{{RoleAssignmentWhenScored}}, {{RoleAssignmentId}})"
+      },
+      {
+        "name": "OverriddenDecisionCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Decisions made under this assignment that a human corrected or reversed.",
+        "formula": "=COUNTIFS(AgentDecisionRecords!{{RoleAssignmentWhenOverridden}}, {{RoleAssignmentId}})"
+      },
+      {
+        "name": "OverrideRatePercent",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Percentage of decisions under this assignment that a human overrode.",
+        "formula": "=IF({{DecisionCount}} = 0, 0, ({{OverriddenDecisionCount}} * 100) / {{DecisionCount}})"
+      },
+      {
+        "name": "PredecessorOverrideRatePercent",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Override rate of the assignment this one superseded.",
+        "formula": "=INDEX(RoleAssignments!{{OverrideRatePercent}}, MATCH({{SupersedesAssignment}}, RoleAssignments!{{RoleAssignmentId}}, 0))"
+      },
+      {
+        "name": "QualityRegressedVsPredecessor",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this assignment is overridden by humans more often than the assignment it replaced.",
+        "formula": "=AND({{SupersedesAssignment}} <> \"\", {{OverrideRatePercent}} > {{PredecessorOverrideRatePercent}})"
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -1030,7 +1225,10 @@
         "Reason": "Approved AI-assisted variance triage",
         "Status": "Active",
         "SemanticTypeIri": "http://purl.org/spar/pro/RoleInTime",
-        "EvaluationContext": "eval-current"
+        "EvaluationContext": "eval-current",
+        "SupersedesAssignment": "ra-old-variance",
+        "ApprovingAuthorityRole": "cfo",
+        "AuthorizingChangeRequest": null
       },
       {
         "RoleAssignmentId": "ra-comms-2026",
@@ -1768,6 +1966,22 @@
         "formula": "=AND({{IsLive}}, {{WasModifiedSinceLastReview}})"
       },
       {
+        "name": "CountOfStaleFragments",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many supporting claims have outlived this version's review cadence.",
+        "formula": "=COUNTIFS(KnowledgeFragments!{{ExceedsOwningCadence}}, TRUE)"
+      },
+      {
+        "name": "KnowledgeIsStalerThanCadence",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this version rests on at least one claim older than its own review cadence.",
+        "formula": "={{CountOfStaleFragments}} > 0"
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -2178,6 +2392,62 @@
         "nullable": true,
         "Description": "TRUE when no authoritative binding for this step is stale.",
         "formula": "={{StaleAuthoritativeBindingCount}} = 0"
+      },
+      {
+        "name": "IsSoftwareAssigned",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this step is specified to be performed by software rather than a person.",
+        "formula": "=OR({{AssignedAgentKind}} = \"AIAgent\", {{AssignedAgentKind}} = \"AutomatedPipeline\")"
+      },
+      {
+        "name": "IsHumanApprovalGate",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE for the steps that exist specifically to place a human commitment between drafting and delivery.",
+        "formula": "=AND(NOT({{IsSoftwareAssigned}}), OR({{StepId}} = \"policy-05\", {{StepId}} = \"close-06\"))"
+      },
+      {
+        "name": "GateHeldByHuman",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a designated approval gate is in fact assigned to a human role.",
+        "formula": "=AND({{IsHumanApprovalGate}}, {{AssignedAgentKind}} = \"Human\")"
+      },
+      {
+        "name": "BindingBoundaryCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of authority boundaries currently binding at this step.",
+        "formula": "=COUNTIFS(AuthorityBoundaries!{{StepWhenBinding}}, {{StepId}})"
+      },
+      {
+        "name": "AssignedRoleIsUngoverned",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether this step's assigned role is a non-human role with no governing assignment.",
+        "formula": "=INDEX(Roles!{{IsUngovernedNonHumanRole}}, MATCH({{AssignedRole}}, Roles!{{RoleId}}, 0))"
+      },
+      {
+        "name": "UnusableBindingCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of bindings at this step that are unapproved or stale.",
+        "formula": "=COUNTIFS(OperationalBindings!{{StepWhenUnusable}}, {{StepId}})"
+      },
+      {
+        "name": "AllSourcesUsable",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when every binding at this step is an approved, fresh source.",
+        "formula": "={{UnusableBindingCount}} = 0"
       },
       {
         "name": "SemanticTypeIri",
@@ -4198,6 +4468,21 @@
         "Description": "Resource description; maps to dcterms:description."
       },
       {
+        "name": "ApprovalStatus",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Approved, Draft, Deprecated, or Unvetted."
+      },
+      {
+        "name": "IsApprovedSource",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this resource is an approved source.",
+        "formula": "={{ApprovalStatus}} = \"Approved\""
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -4791,6 +5076,158 @@
         "nullable": true,
         "Description": "TRUE when the evidence behind this claim is older than we trust evidence of its kind to be.",
         "formula": "=AND({{HasRecordedElicitation}}, {{EvidenceAgeDays}} > {{EvidenceExpiryDays}})"
+      },
+      {
+        "name": "OwnerAgent",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The agent currently holding the role that owns this claim.",
+        "formula": "=INDEX(Roles!{{CurrentAgent}}, MATCH({{OwnerRole}}, Roles!{{RoleId}}, 0))"
+      },
+      {
+        "name": "IsAwaitingApproval",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this claim has been reviewed but not yet approved.",
+        "formula": "={{Status}} = \"Reviewed\""
+      },
+      {
+        "name": "OwnerIsMe",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the People Policy Owner role owns this claim.",
+        "formula": "={{OwnerRole}} = \"hr-policy-owner\""
+      },
+      {
+        "name": "IsMyUnfinishedApproval",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a claim I own has been reviewed and is waiting on my approval.",
+        "formula": "=AND({{OwnerIsMe}}, {{IsAwaitingApproval}})"
+      },
+      {
+        "name": "IsInvokedByAnException",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many documented exception handlers trigger on the same step this claim is attached to.",
+        "formula": "=COUNTIFS(Exceptions!{{TriggerStep}}, KnowledgeFragments!{{Step}})"
+      },
+      {
+        "name": "HasOperationalReliance",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when an exception handler exists on the step this claim governs.",
+        "formula": "={{IsInvokedByAnException}} > 0"
+      },
+      {
+        "name": "IsUnapprovedAndOperationallyLive",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a claim awaiting my approval is already being acted on through a documented exception path.",
+        "formula": "=AND({{IsMyUnfinishedApproval}}, {{HasOperationalReliance}})"
+      },
+      {
+        "name": "AgeDays",
+        "datatype": "integer",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Days since this claim became valid.",
+        "formula": "=DATETIME_DIFF(NOW(), {{ValidFrom}}, \"days\")"
+      },
+      {
+        "name": "IsLowConfidence",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this claim was recorded with less than high confidence.",
+        "formula": "=OR({{Confidence}} = \"Medium\", {{Confidence}} = \"Low\")"
+      },
+      {
+        "name": "OwningVersionCadenceDays",
+        "datatype": "integer",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The review cadence promised for the version this claim supports.",
+        "formula": "=INDEX(ProcedureVersions!{{StewardReviewCadenceDays}}, MATCH({{ProcedureVersion}}, ProcedureVersions!{{ProcedureVersionId}}, 0))"
+      },
+      {
+        "name": "ExceedsOwningCadence",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this claim is older than the review cadence promised for the version it supports.",
+        "formula": "={{AgeDays}} > {{OwningVersionCadenceDays}}"
+      },
+      {
+        "name": "IsAgingLowConfidenceClaim",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a claim we were never sure about has also outlived its version's review cadence.",
+        "formula": "=AND({{ExceedsOwningCadence}}, {{IsLowConfidence}})"
+      },
+      {
+        "name": "OwnerRoleAgentKind",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Agent kind of whoever currently holds the role that owns this knowledge fragment.",
+        "formula": "=INDEX(Roles!{{CurrentAgentKind}}, MATCH({{OwnerRole}}, Roles!{{RoleId}}, 0))"
+      },
+      {
+        "name": "IsHumanOwned",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the owning role is currently held by a human.",
+        "formula": "={{OwnerRoleAgentKind}} = \"Human\""
+      },
+      {
+        "name": "IsAiValidatedByAi",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when knowledge came from a non-human source AND is owned by a non-human-held role.",
+        "formula": "=AND(NOT({{SourceAgentKind}} = \"Human\"), NOT({{IsHumanOwned}}))"
+      },
+      {
+        "name": "ReviewCadenceDays",
+        "datatype": "integer",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The review cadence promised for the procedure version this fragment supports, resolved via ProcedureVersions because INDEX/MATCH only matches a target primary key.",
+        "formula": "=INDEX(ProcedureVersions!{{StewardReviewCadenceDays}}, MATCH({{ProcedureVersion}}, ProcedureVersions!{{ProcedureVersionId}}, 0))"
+      },
+      {
+        "name": "IsOverdueForReview",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a currently-valid fragment has gone longer than its stewardship cadence without review.",
+        "formula": "=AND({{IsCurrentlyValid}}, {{AgeDays}} > {{ReviewCadenceDays}})"
+      },
+      {
+        "name": "PredatesCurrentRoleHolder",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this knowledge became valid before the current holder of its owning role took the role.",
+        "formula": "=AND({{OwnerRoleAgentKind}} <> \"\", {{ValidFrom}} < {{OwnerRoleAssignmentValidFrom}})"
+      },
+      {
+        "name": "OwnerRoleAssignmentValidFrom",
+        "datatype": "datetime",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "When the current holder of the owning role took that role.",
+        "formula": "=INDEX(Roles!{{CurrentAssignmentValidFrom}}, MATCH({{OwnerRole}}, Roles!{{RoleId}}, 0))"
       },
       {
         "name": "SemanticTypeIri",
@@ -5676,6 +6113,62 @@
         "formula": "={{UncleanStepCount}} = 0"
       },
       {
+        "name": "CountOfApprovalExecutions",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many human approval gates were executed in this run.",
+        "formula": "=COUNTIFS(StepExecutions!{{IsApprovalExecution}}, TRUE)"
+      },
+      {
+        "name": "HasHumanApproval",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when at least one human approval gate was executed in this run.",
+        "formula": "={{CountOfApprovalExecutions}} > 0"
+      },
+      {
+        "name": "CountOfDeliveryExecutions",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many times the send step ran in this execution.",
+        "formula": "=COUNTIFS(StepExecutions!{{Step}}, \"policy-07\")"
+      },
+      {
+        "name": "HasDelivered",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this run has sent communications to employees.",
+        "formula": "={{CountOfDeliveryExecutions}} > 0"
+      },
+      {
+        "name": "DeliveredWithoutApproval",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a run sent employee communications without executing a human approval gate.",
+        "formula": "=AND({{HasDelivered}}, NOT({{HasHumanApproval}}))"
+      },
+      {
+        "name": "InvalidApprovalCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of approval-type requirements in this run that are incomplete or non-human-evaluated.",
+        "formula": "=COUNTIFS(RequirementSatisfactions!{{RunWhenInvalidApproval}}, {{ProcedureExecutionId}})"
+      },
+      {
+        "name": "ApprovalChainIsComplete",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when every approval-type requirement in this run is fully satisfied by a human.",
+        "formula": "={{InvalidApprovalCount}} = 0"
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -6291,6 +6784,94 @@
         "formula": "={{EvaluatedRequirementCount}} < {{RequiredBlockingCount}}"
       },
       {
+        "name": "ExecutingAgentKind",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The kind of agent that actually performed this step execution.",
+        "formula": "=INDEX(Agents!{{AgentKind}}, MATCH({{ExecutedByAgent}}, Agents!{{AgentId}}, 0))"
+      },
+      {
+        "name": "WasExecutedBySoftware",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when software actually performed this step.",
+        "formula": "=OR({{ExecutingAgentKind}} = \"AIAgent\", {{ExecutingAgentKind}} = \"AutomatedPipeline\")"
+      },
+      {
+        "name": "StepIsSoftwareAssigned",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether the step being executed was specified as a software step.",
+        "formula": "=INDEX(Steps!{{IsSoftwareAssigned}}, MATCH({{Step}}, Steps!{{StepId}}, 0))"
+      },
+      {
+        "name": "SoftwareDidHumanWork",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when software performed a step the procedure specified for a human.",
+        "formula": "=AND({{WasExecutedBySoftware}}, NOT({{StepIsSoftwareAssigned}}))"
+      },
+      {
+        "name": "IsApprovalExecution",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether this execution is of a designated human approval gate.",
+        "formula": "=INDEX(Steps!{{IsHumanApprovalGate}}, MATCH({{Step}}, Steps!{{StepId}}, 0))"
+      },
+      {
+        "name": "IsVerified",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this execution recorded a positive verification outcome.",
+        "formula": "=AND({{VerificationResult}} <> \"\", {{VerificationResult}} <> \"PENDING\", {{VerificationResult}} <> \"FAIL\")"
+      },
+      {
+        "name": "UnconfirmedNonHumanDecisionCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of material non-human decisions in this execution that no human confirmed.",
+        "formula": "=COUNTIFS(AgentDecisionRecords!{{StepExecutionWhenUnconfirmed}}, {{StepExecutionId}})"
+      },
+      {
+        "name": "RequiresHumanConfirmation",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether the specification requires human confirmation for this step.",
+        "formula": "=INDEX(Steps!{{RequiresHumanConfirmation}}, MATCH({{Step}}, Steps!{{StepId}}, 0))"
+      },
+      {
+        "name": "HumanConfirmationMissing",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a step requiring human confirmation contains unconfirmed material non-human decisions.",
+        "formula": "=AND({{RequiresHumanConfirmation}}, {{UnconfirmedNonHumanDecisionCount}} > 0)"
+      },
+      {
+        "name": "DraftedFromUnusableSource",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a drafting execution completed despite an unapproved or stale source at its step.",
+        "formula": "=AND({{ExecutionStatus}} = \"Completed\", NOT({{InputsWereUsable}}))"
+      },
+      {
+        "name": "InputsWereUsable",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Source-usability verdict for the step this execution ran.",
+        "formula": "=INDEX(Steps!{{AllSourcesUsable}}, MATCH({{Step}}, Steps!{{StepId}}, 0))"
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -6612,6 +7193,46 @@
         "nullable": true,
         "Description": "Echoes the step-execution id when a satisfaction level was actually recorded, blank otherwise.",
         "formula": "=IF({{SatisfactionLevel}} <> \"\", {{StepExecution}}, \"\")"
+      },
+      {
+        "name": "IsHumanEvaluated",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a human evaluated this requirement satisfaction.",
+        "formula": "={{EvaluatorAgentKind}} = \"Human\""
+      },
+      {
+        "name": "RequirementIsApprovalType",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The requirement's type, e.g. Approval, Control, Privacy.",
+        "formula": "=INDEX(Requirements!{{RequirementType}}, MATCH({{Requirement}}, Requirements!{{RequirementId}}, 0))"
+      },
+      {
+        "name": "IsInvalidApproval",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when an approval-type requirement is not fully satisfied, or was not evaluated by a human.",
+        "formula": "=AND({{RequirementIsApprovalType}} = \"Approval\", OR(NOT({{IsFullySatisfied}}), NOT({{IsHumanEvaluated}})))"
+      },
+      {
+        "name": "ProcedureExecutionOfSatisfaction",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The run this satisfaction belongs to.",
+        "formula": "=INDEX(StepExecutions!{{ProcedureExecution}}, MATCH({{StepExecution}}, StepExecutions!{{StepExecutionId}}, 0))"
+      },
+      {
+        "name": "RunWhenInvalidApproval",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Echoes the run id when this is an invalid approval, blank otherwise.",
+        "formula": "=IF({{IsInvalidApproval}}, {{ProcedureExecutionOfSatisfaction}}, \"\")"
       },
       {
         "name": "SemanticTypeIri",
@@ -7357,6 +7978,46 @@
         "formula": "={{RequestedByAgent}} = {{AuthorityAgent}}"
       },
       {
+        "name": "AwaitsAuthorityDecision",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this request is formally before its authority and no decision has been recorded.",
+        "formula": "=AND({{Status}} = \"UnderReview\", NOT({{IsDecided}}))"
+      },
+      {
+        "name": "AuthorityRoleLabel",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Human-readable label of the role that owes a decision.",
+        "formula": "=INDEX(Roles!{{Label}}, MATCH({{AuthorityRole}}, Roles!{{RoleId}}, 0))"
+      },
+      {
+        "name": "TouchesLiveVersion",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether the version this request would alter is currently executable.",
+        "formula": "=INDEX(ProcedureVersions!{{IsLive}}, MATCH({{ProcedureVersion}}, ProcedureVersions!{{ProcedureVersionId}}, 0))"
+      },
+      {
+        "name": "IsLiveDecisionBacklog",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a decision I owe is blocking a change to a procedure currently in production.",
+        "formula": "=AND({{AwaitsAuthorityDecision}}, {{TouchesLiveVersion}})"
+      },
+      {
+        "name": "BlocksAnOpenGap",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when an undecided request against a live version is the kind that exists to close a known gap.",
+        "formula": "=AND({{IsLiveDecisionBacklog}}, {{ChangeKind}} = \"Enhancement\")"
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -7829,6 +8490,30 @@
         "nullable": true,
         "Description": "Echoes the step id when this authoritative binding is stale, blank otherwise.",
         "formula": "=IF({{IsStaleAndAuthoritative}}, {{Step}}, \"\")"
+      },
+      {
+        "name": "ResourceIsApproved",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether the resource behind this binding is an approved source.",
+        "formula": "=INDEX(Resources!{{IsApprovedSource}}, MATCH({{Resource}}, Resources!{{ResourceId}}, 0))"
+      },
+      {
+        "name": "IsUsableForDrafting",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this binding points at an approved source that is still inside its freshness SLA.",
+        "formula": "=AND({{ResourceIsApproved}}, {{IsFresh}})"
+      },
+      {
+        "name": "StepWhenUnusable",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Echoes the step id when this binding is NOT usable for drafting, blank otherwise.",
+        "formula": "=IF({{IsUsableForDrafting}}, \"\", {{Step}})"
       },
       {
         "name": "SemanticTypeIri",
@@ -9243,6 +9928,141 @@
         "WhyItMatters": "This is my self-assessment question and it is the one I currently cannot ask at all. `se-close02` was corrected by a human (controller-approved rerun) and that fact exists only as prose in a Deviation string. If my override rate is climbing across quarters, the model should say so as a number before a human notices as a feeling. Note that a rising override rate is not automatically bad \u2014 it may mean humans are watching more closely \u2014 but it must be visible either way.",
         "AnswerableBefore": false,
         "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-hr-authority-without-review",
+        "AskingRole": "hr-policy-owner",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "I am the AuthorityRole on cr-policy-delivery and it has been UnderReview with no DecidedAt since 2026-07-19. What decisions are waiting on me personally, and how long have they been waiting?",
+        "WhyItMatters": "Being an authority means decisions queue on my name. cr-policy-delivery is the vehicle for closing gap-policy-delivery-receipts on a live policy version \u2014 my inaction is load-bearing for someone else's remediation. The model records the AuthorityRole and the RequestedAt and never once resolves the pair into 'Elena owes a decision, and it is N days late'. I would rather the model embarrass me than have the gap stay open.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-hr-ai-authored-commitments",
+        "AskingRole": "hr-policy-owner",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "kf-policy-ai-boundary says AI may draft but may not create legal commitments. policy-03 and policy-06 are both assigned to policy-drafting-agent and se-policy03 was executed by policy-drafting-ai. Is that boundary actually being held?",
+        "WhyItMatters": "This is the single commitment in the whole policy procedure that I would be asked about under oath. We wrote down the rule \u2014 AI drafts, humans commit \u2014 as an Approved Explicit fragment sourced from counsel. Then we built a procedure where an AI executes drafting steps and a pipeline sends the results. Whether the human approval step actually sits between them is a structural property nobody checks. If policy-05 were ever skipped or executed by software, the boundary would be violated and the model would say nothing.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-hr-unapproved-knowledge-in-my-name",
+        "AskingRole": "hr-policy-owner",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "kf-policy-manager-route is Status=Reviewed and I am its OwnerRole. exc-unreachable routes real employee cases on that exact 48-hour rule. Which claims am I the owner of that were never approved?",
+        "WhyItMatters": "The knowledge authority asks whether the procedure runs on unapproved knowledge. I ask a narrower and more uncomfortable version: which of those unapproved claims are mine. OwnerRole on kf-policy-manager-route is hr-policy-owner \u2014 me \u2014 and its Status is Reviewed. I own a belief that governs how we treat an unreachable employee, and I never finished approving it. That is a personal accountability question, not a governance statistic.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-hr-what-was-actually-sent",
+        "AskingRole": "hr-policy-owner",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "policy-07 sends approved communications under channel controls, and kf-policy-channel says disputes are resolved against the complete approved email. If an employee disputes what they received, can I show that what was sent matched what I approved?",
+        "WhyItMatters": "This is the question I will actually be asked in a dispute, and it is the one this model is furthest from answering. policy-05 is where I approve meaning; policy-06 renders; policy-07 sends. Between approval and delivery sit a drafting AI and a notification pipeline, and the model records no link at all from a sent message back to the approval that authorized it. MessageTemplates and CommunicationPolicies exist as specifications; nothing records an instance.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-hr-policy-knowledge-half-life",
+        "AskingRole": "hr-policy-owner",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "policy-v1.0.0 was issued 2026-06-01 on knowledge elicited in May from Amina, Noah and me. My stewardship promises a 60-day cadence. Is the policy I own now resting on knowledge older than the policy itself has been reviewed?",
+        "WhyItMatters": "Employment policy is where stale knowledge becomes legal exposure \u2014 a jurisdictional rule that changed, a consent requirement that moved, a channel constraint that a provider silently altered. My 60-day cadence is the tightest in the model precisely because policy knowledge decays fast. But cadence governs the REVIEW; nothing governs the KNOWLEDGE. A version can be reviewed perfectly on schedule while every fragment underneath it quietly ages past usefulness, and both facts live in this model without ever meeting.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-variance-ai-authority-provenance",
+        "AskingRole": "variance-review-agent",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "By what authority am I executing close-04, when did that authority begin, who approved it, and who held this role before me?",
+        "WhyItMatters": "This is the question almost no enterprise can answer about its own automated controls: which of our controls are now executed by a non-human, since when, and under what approval. Everything needed is already in `RoleAssignments` as data \u2014 `ra-old-variance` and `ra-new-variance` \u2014 but it is inert. Nothing surfaces 'this role changed species', nothing names the approving authority, and nothing links the handover to a ChangeRequest. I need my own provenance as columns before I act.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-variance-ai-quality-vs-human-baseline",
+        "AskingRole": "variance-review-agent",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "Since I took over on 2026-04-01, is my triage quality better or worse than maria-chen's during the 2025-01-01 to 2026-03-31 human pilot?",
+        "WhyItMatters": "'Did quality change at the handover' is the question a regulator asks and nobody can answer. The human pilot period was preserved deliberately \u2014 `ra-old-variance` is Superseded, not deleted \u2014 so a baseline EXISTS. But quality is currently unmeasurable for either side, because no decision-grain record exists. The same predicates must evaluate on both agents so the comparison is apples-to-apples rather than two different narratives.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-variance-ai-boundary-compliance",
+        "AskingRole": "variance-review-agent",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "Am I operating inside my approved boundary \u2014 or have I made a decision that `kf-policy-ai-boundary` says only a human may make?",
+        "WhyItMatters": "`kf-policy-ai-boundary` states: 'AI may draft from approved sources but may not create new legal commitments or approve meaning.' It is Approved, IsCurrentlyValid=TRUE, owned by employment-counsel. It is a real, ratified constraint on AI conduct \u2014 and NOTHING IN THE MODEL ENFORCES IT. It is a sentence in a Statement column. The same is true for me on the finance side: `req-close-human-approval` says controller and CFO approvals must be human-confirmed, but no column would stop an AI-held role from producing an approval. I want my own boundary to be machine-checkable, because an unenforced boundary is not a boundary.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-variance-ai-human-confirmation-present",
+        "AskingRole": "variance-review-agent",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "close-04's instruction says 'Use AI triage, then apply human judgment.' Did a human actually confirm my material and escalated calls, or did my output pass through unreviewed?",
+        "WhyItMatters": "`se-close04` records the Deviation 'Human analyst confirmed all material escalations.' \u2014 that is the entire evidence that human-in-the-loop happened, and it is a free-text string an AI wrote about itself. `Steps.RequiresHumanConfirmation` exists as a raw boolean on the specification side but nothing on the execution side tests against it. If I am the AI holding this control, the single thing that keeps me legitimate is that a human looked. I want that as a count, not a sentence.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-variance-ai-knowledge-currency",
+        "AskingRole": "variance-review-agent",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "Is the judgment knowledge I triage against still valid, still owned by someone, and has it been reviewed since I took over the role?",
+        "WhyItMatters": "I classify variances against `kf-close-fx-time`, `kf-close-top-ten`, and `kf-close-judgment` \u2014 all Approved, all sourced from devon-okafor during `elicit-close-shadow` on 2026-04-03, all owned by the controller role. Two problems I cannot currently see: whether that knowledge has been re-reviewed since the AI handover on 2026-04-01, and whether its owning role still has a human holder. If the controller role ever went non-human, AI judgment would be validated by AI-owned knowledge with no human anywhere in the loop, and nothing would say so.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-policy-ai-no-role-assignment",
+        "AskingRole": "policy-drafting-agent",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "I am named as `policy-drafting-agent`.CurrentAgent and I executed `se-policy03` \u2014 but is there any RoleAssignment row that actually grants me this role?",
+        "WhyItMatters": "There is not. `RoleAssignments` contains rows for finance-analyst, controller, cfo, hr-policy-owner, employment-counsel, notification-publisher, and both sides of variance-review-agent. There is NO row for policy-drafting-agent, close-automation, communications-manager, process-steward, or knowledge-authority. `Roles.CurrentAgent` says I hold the role; nothing time-bounds or authorizes it. An AI that drafts employment policy on the strength of a denormalized pointer, with no valid-from, no approving authority, and no change request, is exactly the gap `ra-new-variance` was built to close for the variance role \u2014 and nobody closed it for me.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-policy-ai-source-approval",
+        "AskingRole": "policy-drafting-agent",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "Before I draft: is every resource I am about to read an approved source, and is its binding still inside its freshness SLA?",
+        "WhyItMatters": "`req-policy-source` is blocking \u2014 'Drafting may use only approved source resources and validated elicitation records' \u2014 and `verify-policy-source` expects unapproved-source-count = 0. But `Resources` has no approval column at all. Eight resources exist and not one carries a status. `sat-policy-source` claims 'Draft provenance contains only approved source and elicitation records' as free text scored by a human. The blocking control on my own step is evaluated by assertion. I want it evaluated by arithmetic.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-policy-ai-commitment-boundary",
+        "AskingRole": "policy-drafting-agent",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "Did I draft language that creates a new legal commitment \u2014 the one thing `kf-policy-ai-boundary` says I may not do?",
+        "WhyItMatters": "This is my boundary and it is the model's clearest example of a ratified constraint with zero enforcement. `kf-policy-ai-boundary` is Approved, Confidence High, sourced from noah-williams during `elicit-policy-interview`, owned by employment-counsel, IsCurrentlyValid TRUE. It says AI 'may not create new legal commitments or approve meaning.' Nothing in fifty tables tests it. `req-policy-human-approval` says the same thing from the requirement side and is also blocking \u2014 and `sr-p05` binds it to policy-05, a step I do not execute, so even that requirement never looks at my output. I want my own leash to be real.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-policy-ai-downstream-rewrite",
+        "AskingRole": "policy-drafting-agent",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "Is my draft surviving human review, or is `noah-williams` rewriting my legal language every time?",
+        "WhyItMatters": "My self-assessment question. `se-policy04` is the legal review of my policy-03 draft and it is still InProgress with `sat-policy-legal` at PartiallySatisfied. If counsel systematically rewrites what I produce, I am not drafting \u2014 I am generating a first pass that costs a lawyer more time than it saves, and the org should know that as a rate rather than as a lawyer's private opinion. Note the correct reading is ambiguous: a high rewrite rate might mean I am bad, or might mean counsel is doing exactly the job the boundary assigns them. The number does not settle that; it makes the conversation possible.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-policy-ai-approval-chain-complete",
+        "AskingRole": "policy-drafting-agent",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "Before `notification-pipeline` sends anything I rendered at policy-06: has a human actually approved the MEANING at policy-05, and has counsel actually signed off at policy-04 \u2014 or is my text about to reach employees on the strength of two pending reviews?",
+        "WhyItMatters": "The exec is live right now. `se-policy04` is InProgress, `sat-policy-legal` is PartiallySatisfied ('Review started; final approval pending'), and there is no step execution for policy-05 at all. Both `req-policy-legal` and `req-policy-human-approval` are blocking. The step ordering says policy-06 comes after policy-05 \u2014 but ordering is a `StepTransitions` row, not a gate. Nothing in the model prevents policy-06 from executing while the two human approvals ahead of it are unfinished, and I am the agent that would execute it. I want the gate to exist before I am the reason it was needed.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
       }
     ]
   },
@@ -9783,6 +10603,56 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "Agents.BoundaryViolationCount",
+        "TargetTable": "Agents",
+        "FieldName": "BoundaryViolationCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(AgentDecisionRecords!{{AgentWhenBoundaryViolated}}, {{AgentId}})",
+        "InventedForQuestion": "q-policy-ai-commitment-boundary",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Agents.IsOperatingOutsideBoundary",
+        "TargetTable": "Agents",
+        "FieldName": "IsOperatingOutsideBoundary",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{BoundaryViolationCount}} > 0",
+        "InventedForQuestion": "q-policy-ai-commitment-boundary",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Agents.DraftDecisionCount",
+        "TargetTable": "Agents",
+        "FieldName": "DraftDecisionCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(AgentDecisionRecords!{{AgentWhenDraft}}, {{AgentId}})",
+        "InventedForQuestion": "q-policy-ai-downstream-rewrite",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Agents.OverriddenDraftCount",
+        "TargetTable": "Agents",
+        "FieldName": "OverriddenDraftCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(AgentDecisionRecords!{{AgentWhenDraftOverridden}}, {{AgentId}})",
+        "InventedForQuestion": "q-policy-ai-downstream-rewrite",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Agents.DraftRewriteRatePercent",
+        "TargetTable": "Agents",
+        "FieldName": "DraftRewriteRatePercent",
+        "FieldType": "calculated",
+        "Datatype": "number",
+        "Formula": "=IF({{DraftDecisionCount}} = 0, 0, ({{OverriddenDraftCount}} * 100) / {{DraftDecisionCount}})",
+        "InventedForQuestion": "q-policy-ai-downstream-rewrite",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "Agents.SemanticTypeIri",
         "TargetTable": "Agents",
         "FieldName": "SemanticTypeIri",
@@ -9890,6 +10760,56 @@
         "Datatype": "boolean",
         "Formula": "={{CurrentlyCoveredAssignmentCount}} = 0",
         "InventedForQuestion": "q-close-auto-authority-current",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Roles.CountOfAwaitedDecisions",
+        "TargetTable": "Roles",
+        "FieldName": "CountOfAwaitedDecisions",
+        "FieldType": "aggregation",
+        "Datatype": "integer",
+        "Formula": "=COUNTIFS(ChangeRequests!{{AuthorityRole}}, Roles!{{RoleId}})",
+        "InventedForQuestion": "q-hr-authority-without-review",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Roles.CurrentAssignment",
+        "TargetTable": "Roles",
+        "FieldName": "CurrentAssignment",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Roles.CurrentAssignmentValidFrom",
+        "TargetTable": "Roles",
+        "FieldName": "CurrentAssignmentValidFrom",
+        "FieldType": "lookup",
+        "Datatype": "datetime",
+        "Formula": "=INDEX(RoleAssignments!{{ValidFrom}}, MATCH({{CurrentAssignment}}, RoleAssignments!{{RoleAssignmentId}}, 0))",
+        "InventedForQuestion": "q-variance-ai-knowledge-currency",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Roles.IsNonHumanHeld",
+        "TargetTable": "Roles",
+        "FieldName": "IsNonHumanHeld",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=NOT({{CurrentAgentKind}} = \"Human\")",
+        "InventedForQuestion": "q-policy-ai-no-role-assignment",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Roles.IsUngovernedNonHumanRole",
+        "TargetTable": "Roles",
+        "FieldName": "IsUngovernedNonHumanRole",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsNonHumanHeld}}, {{HasNoCurrentHolder}})",
+        "InventedForQuestion": "q-policy-ai-no-role-assignment",
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
@@ -10070,6 +10990,136 @@
         "Datatype": "string",
         "Formula": "=IF({{CoversNow}}, {{Role}}, \"\")",
         "InventedForQuestion": "q-close-auto-authority-current",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.AgentKind",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "AgentKind",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(Agents!{{AgentKind}}, MATCH({{Agent}}, Agents!{{AgentId}}, 0))",
+        "InventedForQuestion": "q-variance-ai-authority-provenance",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.IsNonHumanAssignment",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "IsNonHumanAssignment",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=NOT({{AgentKind}} = \"Human\")",
+        "InventedForQuestion": "q-variance-ai-authority-provenance",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.SupersedesAssignment",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "SupersedesAssignment",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": "q-variance-ai-authority-provenance",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.PredecessorAgentKind",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "PredecessorAgentKind",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(RoleAssignments!{{AgentKind}}, MATCH({{SupersedesAssignment}}, RoleAssignments!{{RoleAssignmentId}}, 0))",
+        "InventedForQuestion": "q-variance-ai-authority-provenance",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.IsHumanToNonHumanHandover",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "IsHumanToNonHumanHandover",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{PredecessorAgentKind}} = \"Human\", {{IsNonHumanAssignment}})",
+        "InventedForQuestion": "q-variance-ai-authority-provenance",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.ApprovingAuthorityRole",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "ApprovingAuthorityRole",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": "q-variance-ai-authority-provenance",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.AuthorizingChangeRequest",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "AuthorizingChangeRequest",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": "q-variance-ai-authority-provenance",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.IsUnauthorizedNonHumanAssignment",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "IsUnauthorizedNonHumanAssignment",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsNonHumanAssignment}}, OR({{ApprovingAuthorityRole}} = \"\", {{AuthorizingChangeRequest}} = \"\"))",
+        "InventedForQuestion": "q-variance-ai-authority-provenance",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.DecisionCount",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "DecisionCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(AgentDecisionRecords!{{RoleAssignmentWhenScored}}, {{RoleAssignmentId}})",
+        "InventedForQuestion": "q-variance-ai-quality-vs-human-baseline",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.OverriddenDecisionCount",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "OverriddenDecisionCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(AgentDecisionRecords!{{RoleAssignmentWhenOverridden}}, {{RoleAssignmentId}})",
+        "InventedForQuestion": "q-variance-ai-quality-vs-human-baseline",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.OverrideRatePercent",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "OverrideRatePercent",
+        "FieldType": "calculated",
+        "Datatype": "number",
+        "Formula": "=IF({{DecisionCount}} = 0, 0, ({{OverriddenDecisionCount}} * 100) / {{DecisionCount}})",
+        "InventedForQuestion": "q-variance-ai-quality-vs-human-baseline",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.PredecessorOverrideRatePercent",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "PredecessorOverrideRatePercent",
+        "FieldType": "lookup",
+        "Datatype": "number",
+        "Formula": "=INDEX(RoleAssignments!{{OverrideRatePercent}}, MATCH({{SupersedesAssignment}}, RoleAssignments!{{RoleAssignmentId}}, 0))",
+        "InventedForQuestion": "q-variance-ai-quality-vs-human-baseline",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RoleAssignments.QualityRegressedVsPredecessor",
+        "TargetTable": "RoleAssignments",
+        "FieldName": "QualityRegressedVsPredecessor",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{SupersedesAssignment}} <> \"\", {{OverrideRatePercent}} > {{PredecessorOverrideRatePercent}})",
+        "InventedForQuestion": "q-variance-ai-quality-vs-human-baseline",
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
@@ -10843,6 +11893,26 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "ProcedureVersions.CountOfStaleFragments",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "CountOfStaleFragments",
+        "FieldType": "aggregation",
+        "Datatype": "integer",
+        "Formula": "=COUNTIFS(KnowledgeFragments!{{ExceedsOwningCadence}}, TRUE)",
+        "InventedForQuestion": "q-hr-policy-knowledge-half-life",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureVersions.KnowledgeIsStalerThanCadence",
+        "TargetTable": "ProcedureVersions",
+        "FieldName": "KnowledgeIsStalerThanCadence",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{CountOfStaleFragments}} > 0",
+        "InventedForQuestion": "q-hr-policy-knowledge-half-life",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "ProcedureVersions.SemanticTypeIri",
         "TargetTable": "ProcedureVersions",
         "FieldName": "SemanticTypeIri",
@@ -11220,6 +12290,76 @@
         "Datatype": "boolean",
         "Formula": "={{StaleAuthoritativeBindingCount}} = 0",
         "InventedForQuestion": "q-close-auto-input-freshness",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Steps.IsSoftwareAssigned",
+        "TargetTable": "Steps",
+        "FieldName": "IsSoftwareAssigned",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=OR({{AssignedAgentKind}} = \"AIAgent\", {{AssignedAgentKind}} = \"AutomatedPipeline\")",
+        "InventedForQuestion": "q-hr-ai-authored-commitments",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Steps.IsHumanApprovalGate",
+        "TargetTable": "Steps",
+        "FieldName": "IsHumanApprovalGate",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND(NOT({{IsSoftwareAssigned}}), OR({{StepId}} = \"policy-05\", {{StepId}} = \"close-06\"))",
+        "InventedForQuestion": "q-hr-ai-authored-commitments",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Steps.GateHeldByHuman",
+        "TargetTable": "Steps",
+        "FieldName": "GateHeldByHuman",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsHumanApprovalGate}}, {{AssignedAgentKind}} = \"Human\")",
+        "InventedForQuestion": "q-hr-ai-authored-commitments",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Steps.BindingBoundaryCount",
+        "TargetTable": "Steps",
+        "FieldName": "BindingBoundaryCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(AuthorityBoundaries!{{StepWhenBinding}}, {{StepId}})",
+        "InventedForQuestion": "q-variance-ai-boundary-compliance",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Steps.AssignedRoleIsUngoverned",
+        "TargetTable": "Steps",
+        "FieldName": "AssignedRoleIsUngoverned",
+        "FieldType": "lookup",
+        "Datatype": "boolean",
+        "Formula": "=INDEX(Roles!{{IsUngovernedNonHumanRole}}, MATCH({{AssignedRole}}, Roles!{{RoleId}}, 0))",
+        "InventedForQuestion": "q-policy-ai-no-role-assignment",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Steps.UnusableBindingCount",
+        "TargetTable": "Steps",
+        "FieldName": "UnusableBindingCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(OperationalBindings!{{StepWhenUnusable}}, {{StepId}})",
+        "InventedForQuestion": "q-policy-ai-source-approval",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Steps.AllSourcesUsable",
+        "TargetTable": "Steps",
+        "FieldName": "AllSourcesUsable",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{UnusableBindingCount}} = 0",
+        "InventedForQuestion": "q-policy-ai-source-approval",
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
@@ -12303,6 +13443,26 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "Resources.ApprovalStatus",
+        "TargetTable": "Resources",
+        "FieldName": "ApprovalStatus",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": "q-policy-ai-source-approval",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Resources.IsApprovedSource",
+        "TargetTable": "Resources",
+        "FieldName": "IsApprovedSource",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{ApprovalStatus}} = \"Approved\"",
+        "InventedForQuestion": "q-policy-ai-source-approval",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "Resources.SemanticTypeIri",
         "TargetTable": "Resources",
         "FieldName": "SemanticTypeIri",
@@ -12830,6 +13990,196 @@
         "Datatype": "boolean",
         "Formula": "=AND({{HasRecordedElicitation}}, {{EvidenceAgeDays}} > {{EvidenceExpiryDays}})",
         "InventedForQuestion": "q-authority-stale-elicitation",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.OwnerAgent",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "OwnerAgent",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(Roles!{{CurrentAgent}}, MATCH({{OwnerRole}}, Roles!{{RoleId}}, 0))",
+        "InventedForQuestion": "q-hr-unapproved-knowledge-in-my-name",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.IsAwaitingApproval",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "IsAwaitingApproval",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{Status}} = \"Reviewed\"",
+        "InventedForQuestion": "q-hr-unapproved-knowledge-in-my-name",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.OwnerIsMe",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "OwnerIsMe",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{OwnerRole}} = \"hr-policy-owner\"",
+        "InventedForQuestion": "q-hr-unapproved-knowledge-in-my-name",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.IsMyUnfinishedApproval",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "IsMyUnfinishedApproval",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{OwnerIsMe}}, {{IsAwaitingApproval}})",
+        "InventedForQuestion": "q-hr-unapproved-knowledge-in-my-name",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.IsInvokedByAnException",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "IsInvokedByAnException",
+        "FieldType": "aggregation",
+        "Datatype": "integer",
+        "Formula": "=COUNTIFS(Exceptions!{{TriggerStep}}, KnowledgeFragments!{{Step}})",
+        "InventedForQuestion": "q-hr-unapproved-knowledge-in-my-name",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.HasOperationalReliance",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "HasOperationalReliance",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{IsInvokedByAnException}} > 0",
+        "InventedForQuestion": "q-hr-unapproved-knowledge-in-my-name",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.IsUnapprovedAndOperationallyLive",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "IsUnapprovedAndOperationallyLive",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsMyUnfinishedApproval}}, {{HasOperationalReliance}})",
+        "InventedForQuestion": "q-hr-unapproved-knowledge-in-my-name",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.AgeDays",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "AgeDays",
+        "FieldType": "calculated",
+        "Datatype": "integer",
+        "Formula": "=DATETIME_DIFF(NOW(), {{ValidFrom}}, \"days\")",
+        "InventedForQuestion": "q-hr-policy-knowledge-half-life",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.IsLowConfidence",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "IsLowConfidence",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=OR({{Confidence}} = \"Medium\", {{Confidence}} = \"Low\")",
+        "InventedForQuestion": "q-hr-policy-knowledge-half-life",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.OwningVersionCadenceDays",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "OwningVersionCadenceDays",
+        "FieldType": "lookup",
+        "Datatype": "integer",
+        "Formula": "=INDEX(ProcedureVersions!{{StewardReviewCadenceDays}}, MATCH({{ProcedureVersion}}, ProcedureVersions!{{ProcedureVersionId}}, 0))",
+        "InventedForQuestion": "q-hr-policy-knowledge-half-life",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.ExceedsOwningCadence",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "ExceedsOwningCadence",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{AgeDays}} > {{OwningVersionCadenceDays}}",
+        "InventedForQuestion": "q-hr-policy-knowledge-half-life",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.IsAgingLowConfidenceClaim",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "IsAgingLowConfidenceClaim",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{ExceedsOwningCadence}}, {{IsLowConfidence}})",
+        "InventedForQuestion": "q-hr-policy-knowledge-half-life",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.OwnerRoleAgentKind",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "OwnerRoleAgentKind",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(Roles!{{CurrentAgentKind}}, MATCH({{OwnerRole}}, Roles!{{RoleId}}, 0))",
+        "InventedForQuestion": "q-variance-ai-knowledge-currency",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.IsHumanOwned",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "IsHumanOwned",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{OwnerRoleAgentKind}} = \"Human\"",
+        "InventedForQuestion": "q-variance-ai-knowledge-currency",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.IsAiValidatedByAi",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "IsAiValidatedByAi",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND(NOT({{SourceAgentKind}} = \"Human\"), NOT({{IsHumanOwned}}))",
+        "InventedForQuestion": "q-variance-ai-knowledge-currency",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.ReviewCadenceDays",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "ReviewCadenceDays",
+        "FieldType": "lookup",
+        "Datatype": "integer",
+        "Formula": "=INDEX(ProcedureVersions!{{StewardReviewCadenceDays}}, MATCH({{ProcedureVersion}}, ProcedureVersions!{{ProcedureVersionId}}, 0))",
+        "InventedForQuestion": "q-variance-ai-knowledge-currency",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.IsOverdueForReview",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "IsOverdueForReview",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsCurrentlyValid}}, {{AgeDays}} > {{ReviewCadenceDays}})",
+        "InventedForQuestion": "q-variance-ai-knowledge-currency",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.PredatesCurrentRoleHolder",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "PredatesCurrentRoleHolder",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{OwnerRoleAgentKind}} <> \"\", {{ValidFrom}} < {{OwnerRoleAssignmentValidFrom}})",
+        "InventedForQuestion": "q-variance-ai-knowledge-currency",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "KnowledgeFragments.OwnerRoleAssignmentValidFrom",
+        "TargetTable": "KnowledgeFragments",
+        "FieldName": "OwnerRoleAssignmentValidFrom",
+        "FieldType": "lookup",
+        "Datatype": "datetime",
+        "Formula": "=INDEX(Roles!{{CurrentAssignmentValidFrom}}, MATCH({{OwnerRole}}, Roles!{{RoleId}}, 0))",
+        "InventedForQuestion": "q-variance-ai-knowledge-currency",
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
@@ -13593,6 +14943,76 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "ProcedureExecutions.CountOfApprovalExecutions",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "CountOfApprovalExecutions",
+        "FieldType": "aggregation",
+        "Datatype": "integer",
+        "Formula": "=COUNTIFS(StepExecutions!{{IsApprovalExecution}}, TRUE)",
+        "InventedForQuestion": "q-hr-what-was-actually-sent",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureExecutions.HasHumanApproval",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "HasHumanApproval",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{CountOfApprovalExecutions}} > 0",
+        "InventedForQuestion": "q-hr-what-was-actually-sent",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureExecutions.CountOfDeliveryExecutions",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "CountOfDeliveryExecutions",
+        "FieldType": "aggregation",
+        "Datatype": "integer",
+        "Formula": "=COUNTIFS(StepExecutions!{{Step}}, \"policy-07\")",
+        "InventedForQuestion": "q-hr-what-was-actually-sent",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureExecutions.HasDelivered",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "HasDelivered",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{CountOfDeliveryExecutions}} > 0",
+        "InventedForQuestion": "q-hr-what-was-actually-sent",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureExecutions.DeliveredWithoutApproval",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "DeliveredWithoutApproval",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{HasDelivered}}, NOT({{HasHumanApproval}}))",
+        "InventedForQuestion": "q-hr-what-was-actually-sent",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureExecutions.InvalidApprovalCount",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "InvalidApprovalCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(RequirementSatisfactions!{{RunWhenInvalidApproval}}, {{ProcedureExecutionId}})",
+        "InventedForQuestion": "q-policy-ai-approval-chain-complete",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ProcedureExecutions.ApprovalChainIsComplete",
+        "TargetTable": "ProcedureExecutions",
+        "FieldName": "ApprovalChainIsComplete",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{InvalidApprovalCount}} = 0",
+        "InventedForQuestion": "q-policy-ai-approval-chain-complete",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "ProcedureExecutions.SemanticTypeIri",
         "TargetTable": "ProcedureExecutions",
         "FieldName": "SemanticTypeIri",
@@ -14333,6 +15753,116 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "StepExecutions.ExecutingAgentKind",
+        "TargetTable": "StepExecutions",
+        "FieldName": "ExecutingAgentKind",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(Agents!{{AgentKind}}, MATCH({{ExecutedByAgent}}, Agents!{{AgentId}}, 0))",
+        "InventedForQuestion": "q-hr-ai-authored-commitments",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.WasExecutedBySoftware",
+        "TargetTable": "StepExecutions",
+        "FieldName": "WasExecutedBySoftware",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=OR({{ExecutingAgentKind}} = \"AIAgent\", {{ExecutingAgentKind}} = \"AutomatedPipeline\")",
+        "InventedForQuestion": "q-hr-ai-authored-commitments",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.StepIsSoftwareAssigned",
+        "TargetTable": "StepExecutions",
+        "FieldName": "StepIsSoftwareAssigned",
+        "FieldType": "lookup",
+        "Datatype": "boolean",
+        "Formula": "=INDEX(Steps!{{IsSoftwareAssigned}}, MATCH({{Step}}, Steps!{{StepId}}, 0))",
+        "InventedForQuestion": "q-hr-ai-authored-commitments",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.SoftwareDidHumanWork",
+        "TargetTable": "StepExecutions",
+        "FieldName": "SoftwareDidHumanWork",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{WasExecutedBySoftware}}, NOT({{StepIsSoftwareAssigned}}))",
+        "InventedForQuestion": "q-hr-ai-authored-commitments",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.IsApprovalExecution",
+        "TargetTable": "StepExecutions",
+        "FieldName": "IsApprovalExecution",
+        "FieldType": "lookup",
+        "Datatype": "boolean",
+        "Formula": "=INDEX(Steps!{{IsHumanApprovalGate}}, MATCH({{Step}}, Steps!{{StepId}}, 0))",
+        "InventedForQuestion": "q-hr-what-was-actually-sent",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.IsVerified",
+        "TargetTable": "StepExecutions",
+        "FieldName": "IsVerified",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{VerificationResult}} <> \"\", {{VerificationResult}} <> \"PENDING\", {{VerificationResult}} <> \"FAIL\")",
+        "InventedForQuestion": "q-hr-what-was-actually-sent",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.UnconfirmedNonHumanDecisionCount",
+        "TargetTable": "StepExecutions",
+        "FieldName": "UnconfirmedNonHumanDecisionCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(AgentDecisionRecords!{{StepExecutionWhenUnconfirmed}}, {{StepExecutionId}})",
+        "InventedForQuestion": "q-variance-ai-human-confirmation-present",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.RequiresHumanConfirmation",
+        "TargetTable": "StepExecutions",
+        "FieldName": "RequiresHumanConfirmation",
+        "FieldType": "lookup",
+        "Datatype": "boolean",
+        "Formula": "=INDEX(Steps!{{RequiresHumanConfirmation}}, MATCH({{Step}}, Steps!{{StepId}}, 0))",
+        "InventedForQuestion": "q-variance-ai-human-confirmation-present",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.HumanConfirmationMissing",
+        "TargetTable": "StepExecutions",
+        "FieldName": "HumanConfirmationMissing",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{RequiresHumanConfirmation}}, {{UnconfirmedNonHumanDecisionCount}} > 0)",
+        "InventedForQuestion": "q-variance-ai-human-confirmation-present",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.DraftedFromUnusableSource",
+        "TargetTable": "StepExecutions",
+        "FieldName": "DraftedFromUnusableSource",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{ExecutionStatus}} = \"Completed\", NOT({{InputsWereUsable}}))",
+        "InventedForQuestion": "q-policy-ai-source-approval",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.InputsWereUsable",
+        "TargetTable": "StepExecutions",
+        "FieldName": "InputsWereUsable",
+        "FieldType": "lookup",
+        "Datatype": "boolean",
+        "Formula": "=INDEX(Steps!{{AllSourcesUsable}}, MATCH({{Step}}, Steps!{{StepId}}, 0))",
+        "InventedForQuestion": "q-policy-ai-source-approval",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "StepExecutions.SemanticTypeIri",
         "TargetTable": "StepExecutions",
         "FieldName": "SemanticTypeIri",
@@ -14550,6 +16080,56 @@
         "Datatype": "string",
         "Formula": "=IF({{SatisfactionLevel}} <> \"\", {{StepExecution}}, \"\")",
         "InventedForQuestion": "q-close-auto-blocking-requirements-evaluated",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RequirementSatisfactions.IsHumanEvaluated",
+        "TargetTable": "RequirementSatisfactions",
+        "FieldName": "IsHumanEvaluated",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{EvaluatorAgentKind}} = \"Human\"",
+        "InventedForQuestion": "q-policy-ai-approval-chain-complete",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RequirementSatisfactions.RequirementIsApprovalType",
+        "TargetTable": "RequirementSatisfactions",
+        "FieldName": "RequirementIsApprovalType",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(Requirements!{{RequirementType}}, MATCH({{Requirement}}, Requirements!{{RequirementId}}, 0))",
+        "InventedForQuestion": "q-policy-ai-approval-chain-complete",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RequirementSatisfactions.IsInvalidApproval",
+        "TargetTable": "RequirementSatisfactions",
+        "FieldName": "IsInvalidApproval",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{RequirementIsApprovalType}} = \"Approval\", OR(NOT({{IsFullySatisfied}}), NOT({{IsHumanEvaluated}})))",
+        "InventedForQuestion": "q-policy-ai-approval-chain-complete",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RequirementSatisfactions.ProcedureExecutionOfSatisfaction",
+        "TargetTable": "RequirementSatisfactions",
+        "FieldName": "ProcedureExecutionOfSatisfaction",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(StepExecutions!{{ProcedureExecution}}, MATCH({{StepExecution}}, StepExecutions!{{StepExecutionId}}, 0))",
+        "InventedForQuestion": "q-policy-ai-approval-chain-complete",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RequirementSatisfactions.RunWhenInvalidApproval",
+        "TargetTable": "RequirementSatisfactions",
+        "FieldName": "RunWhenInvalidApproval",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{IsInvalidApproval}}, {{ProcedureExecutionOfSatisfaction}}, \"\")",
+        "InventedForQuestion": "q-policy-ai-approval-chain-complete",
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
@@ -15243,6 +16823,56 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "ChangeRequests.AwaitsAuthorityDecision",
+        "TargetTable": "ChangeRequests",
+        "FieldName": "AwaitsAuthorityDecision",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{Status}} = \"UnderReview\", NOT({{IsDecided}}))",
+        "InventedForQuestion": "q-hr-authority-without-review",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ChangeRequests.AuthorityRoleLabel",
+        "TargetTable": "ChangeRequests",
+        "FieldName": "AuthorityRoleLabel",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(Roles!{{Label}}, MATCH({{AuthorityRole}}, Roles!{{RoleId}}, 0))",
+        "InventedForQuestion": "q-hr-authority-without-review",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ChangeRequests.TouchesLiveVersion",
+        "TargetTable": "ChangeRequests",
+        "FieldName": "TouchesLiveVersion",
+        "FieldType": "lookup",
+        "Datatype": "boolean",
+        "Formula": "=INDEX(ProcedureVersions!{{IsLive}}, MATCH({{ProcedureVersion}}, ProcedureVersions!{{ProcedureVersionId}}, 0))",
+        "InventedForQuestion": "q-hr-authority-without-review",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ChangeRequests.IsLiveDecisionBacklog",
+        "TargetTable": "ChangeRequests",
+        "FieldName": "IsLiveDecisionBacklog",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{AwaitsAuthorityDecision}}, {{TouchesLiveVersion}})",
+        "InventedForQuestion": "q-hr-authority-without-review",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ChangeRequests.BlocksAnOpenGap",
+        "TargetTable": "ChangeRequests",
+        "FieldName": "BlocksAnOpenGap",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsLiveDecisionBacklog}}, {{ChangeKind}} = \"Enhancement\")",
+        "InventedForQuestion": "q-hr-authority-without-review",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "ChangeRequests.SemanticTypeIri",
         "TargetTable": "ChangeRequests",
         "FieldName": "SemanticTypeIri",
@@ -15720,6 +17350,36 @@
         "Datatype": "string",
         "Formula": "=IF({{IsStaleAndAuthoritative}}, {{Step}}, \"\")",
         "InventedForQuestion": "q-close-auto-input-freshness",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "OperationalBindings.ResourceIsApproved",
+        "TargetTable": "OperationalBindings",
+        "FieldName": "ResourceIsApproved",
+        "FieldType": "lookup",
+        "Datatype": "boolean",
+        "Formula": "=INDEX(Resources!{{IsApprovedSource}}, MATCH({{Resource}}, Resources!{{ResourceId}}, 0))",
+        "InventedForQuestion": "q-policy-ai-source-approval",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "OperationalBindings.IsUsableForDrafting",
+        "TargetTable": "OperationalBindings",
+        "FieldName": "IsUsableForDrafting",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{ResourceIsApproved}}, {{IsFresh}})",
+        "InventedForQuestion": "q-policy-ai-source-approval",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "OperationalBindings.StepWhenUnusable",
+        "TargetTable": "OperationalBindings",
+        "FieldName": "StepWhenUnusable",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{IsUsableForDrafting}}, \"\", {{Step}})",
+        "InventedForQuestion": "q-policy-ai-source-approval",
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
@@ -18873,8 +20533,538 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "AgentDecisionRecords.UnderRoleAssignment",
+        "TargetTable": "AgentDecisionRecords",
+        "FieldName": "UnderRoleAssignment",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AgentDecisionRecords.RoleAssignmentWhenScored",
+        "TargetTable": "AgentDecisionRecords",
+        "FieldName": "RoleAssignmentWhenScored",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{UnderRoleAssignment}} <> \"\", {{UnderRoleAssignment}}, \"\")",
+        "InventedForQuestion": "q-variance-ai-quality-vs-human-baseline",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AgentDecisionRecords.RoleAssignmentWhenOverridden",
+        "TargetTable": "AgentDecisionRecords",
+        "FieldName": "RoleAssignmentWhenOverridden",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{WasOverridden}}, {{UnderRoleAssignment}}, \"\")",
+        "InventedForQuestion": "q-variance-ai-quality-vs-human-baseline",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AgentDecisionRecords.StepOfDecision",
+        "TargetTable": "AgentDecisionRecords",
+        "FieldName": "StepOfDecision",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(StepExecutions!{{Step}}, MATCH({{StepExecution}}, StepExecutions!{{StepExecutionId}}, 0))",
+        "InventedForQuestion": "q-variance-ai-boundary-compliance",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AgentDecisionRecords.BoundaryMatchKey",
+        "TargetTable": "AgentDecisionRecords",
+        "FieldName": "BoundaryMatchKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{StepOfDecision}} & \"|\" & {{DecidingAgentKind}} & \"|\" & {{DecisionKind}}",
+        "InventedForQuestion": "q-variance-ai-boundary-compliance",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AgentDecisionRecords.MatchingBoundaryCount",
+        "TargetTable": "AgentDecisionRecords",
+        "FieldName": "MatchingBoundaryCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(AuthorityBoundaries!{{BoundaryMatchKey}}, {{BoundaryMatchKey}})",
+        "InventedForQuestion": "q-variance-ai-boundary-compliance",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AgentDecisionRecords.ViolatedAuthorityBoundary",
+        "TargetTable": "AgentDecisionRecords",
+        "FieldName": "ViolatedAuthorityBoundary",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{MatchingBoundaryCount}} > 0",
+        "InventedForQuestion": "q-variance-ai-boundary-compliance",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AgentDecisionRecords.ReviewerAgentKind",
+        "TargetTable": "AgentDecisionRecords",
+        "FieldName": "ReviewerAgentKind",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(Agents!{{AgentKind}}, MATCH({{ReviewedByAgent}}, Agents!{{AgentId}}, 0))",
+        "InventedForQuestion": "q-variance-ai-human-confirmation-present",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AgentDecisionRecords.HasHumanConfirmation",
+        "TargetTable": "AgentDecisionRecords",
+        "FieldName": "HasHumanConfirmation",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{ReviewerAgentKind}} = \"Human\", {{HumanDisposition}} <> \"\", {{HumanDisposition}} <> \"NotReviewed\")",
+        "InventedForQuestion": "q-variance-ai-human-confirmation-present",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AgentDecisionRecords.NeedsHumanConfirmation",
+        "TargetTable": "AgentDecisionRecords",
+        "FieldName": "NeedsHumanConfirmation",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND(NOT({{DecidingAgentKind}} = \"Human\"), OR({{MaterialityBand}} = \"Material\", {{MaterialityBand}} = \"Escalated\"))",
+        "InventedForQuestion": "q-variance-ai-human-confirmation-present",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AgentDecisionRecords.IsUnconfirmedNonHumanDecision",
+        "TargetTable": "AgentDecisionRecords",
+        "FieldName": "IsUnconfirmedNonHumanDecision",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{NeedsHumanConfirmation}}, NOT({{HasHumanConfirmation}}))",
+        "InventedForQuestion": "q-variance-ai-human-confirmation-present",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AgentDecisionRecords.StepExecutionWhenUnconfirmed",
+        "TargetTable": "AgentDecisionRecords",
+        "FieldName": "StepExecutionWhenUnconfirmed",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{IsUnconfirmedNonHumanDecision}}, {{StepExecution}}, \"\")",
+        "InventedForQuestion": "q-variance-ai-human-confirmation-present",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AgentDecisionRecords.AgentWhenBoundaryViolated",
+        "TargetTable": "AgentDecisionRecords",
+        "FieldName": "AgentWhenBoundaryViolated",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{ViolatedAuthorityBoundary}}, {{DecidingAgent}}, \"\")",
+        "InventedForQuestion": "q-policy-ai-commitment-boundary",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AgentDecisionRecords.ReviewLatencyMinutes",
+        "TargetTable": "AgentDecisionRecords",
+        "FieldName": "ReviewLatencyMinutes",
+        "FieldType": "calculated",
+        "Datatype": "integer",
+        "Formula": "=IF({{ReviewedAt}} = \"\", 0, DATETIME_DIFF({{ReviewedAt}}, {{DecidedAt}}, \"minutes\"))",
+        "InventedForQuestion": "q-policy-ai-downstream-rewrite",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AgentDecisionRecords.IsDraftKind",
+        "TargetTable": "AgentDecisionRecords",
+        "FieldName": "IsDraftKind",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=OR({{DecisionKind}} = \"Draft\", {{DecisionKind}} = \"Commitment\")",
+        "InventedForQuestion": "q-policy-ai-downstream-rewrite",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AgentDecisionRecords.AgentWhenDraftOverridden",
+        "TargetTable": "AgentDecisionRecords",
+        "FieldName": "AgentWhenDraftOverridden",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF(AND({{IsDraftKind}}, {{WasOverridden}}), {{DecidingAgent}}, \"\")",
+        "InventedForQuestion": "q-policy-ai-downstream-rewrite",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AgentDecisionRecords.AgentWhenDraft",
+        "TargetTable": "AgentDecisionRecords",
+        "FieldName": "AgentWhenDraft",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{IsDraftKind}}, {{DecidingAgent}}, \"\")",
+        "InventedForQuestion": "q-policy-ai-downstream-rewrite",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "AgentDecisionRecords.SemanticTypeIri",
         "TargetTable": "AgentDecisionRecords",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "DeliveredCommunications.DeliveredCommunicationId",
+        "TargetTable": "DeliveredCommunications",
+        "FieldName": "DeliveredCommunicationId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "DeliveredCommunications.Name",
+        "TargetTable": "DeliveredCommunications",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{Channel}} & \" -> \" & {{RecipientKey}} & \" @ \" & {{SentAt}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "DeliveredCommunications.ProcedureExecution",
+        "TargetTable": "DeliveredCommunications",
+        "FieldName": "ProcedureExecution",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "DeliveredCommunications.SendingStepExecution",
+        "TargetTable": "DeliveredCommunications",
+        "FieldName": "SendingStepExecution",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "DeliveredCommunications.AuthorizingStepExecution",
+        "TargetTable": "DeliveredCommunications",
+        "FieldName": "AuthorizingStepExecution",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "DeliveredCommunications.MessageTemplate",
+        "TargetTable": "DeliveredCommunications",
+        "FieldName": "MessageTemplate",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "DeliveredCommunications.Channel",
+        "TargetTable": "DeliveredCommunications",
+        "FieldName": "Channel",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "DeliveredCommunications.RecipientKey",
+        "TargetTable": "DeliveredCommunications",
+        "FieldName": "RecipientKey",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "DeliveredCommunications.SentAt",
+        "TargetTable": "DeliveredCommunications",
+        "FieldName": "SentAt",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "DeliveredCommunications.RenderedContentHash",
+        "TargetTable": "DeliveredCommunications",
+        "FieldName": "RenderedContentHash",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "DeliveredCommunications.ApprovedContentHash",
+        "TargetTable": "DeliveredCommunications",
+        "FieldName": "ApprovedContentHash",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "DeliveredCommunications.DeliveryStatus",
+        "TargetTable": "DeliveredCommunications",
+        "FieldName": "DeliveryStatus",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "DeliveredCommunications.SemanticTypeIri",
+        "TargetTable": "DeliveredCommunications",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "DeliveredCommunications.HasAuthorization",
+        "TargetTable": "DeliveredCommunications",
+        "FieldName": "HasAuthorization",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{AuthorizingStepExecution}} <> \"\"",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "DeliveredCommunications.ContentMatchesApproval",
+        "TargetTable": "DeliveredCommunications",
+        "FieldName": "ContentMatchesApproval",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{RenderedContentHash}} = {{ApprovedContentHash}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "DeliveredCommunications.AuthorizedAt",
+        "TargetTable": "DeliveredCommunications",
+        "FieldName": "AuthorizedAt",
+        "FieldType": "lookup",
+        "Datatype": "datetime",
+        "Formula": "=INDEX(StepExecutions!{{EndedAt}}, MATCH({{AuthorizingStepExecution}}, StepExecutions!{{StepExecutionId}}, 0))",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "DeliveredCommunications.WasApprovedBeforeSending",
+        "TargetTable": "DeliveredCommunications",
+        "FieldName": "WasApprovedBeforeSending",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{AuthorizedAt}} <= {{SentAt}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "DeliveredCommunications.IsDefensible",
+        "TargetTable": "DeliveredCommunications",
+        "FieldName": "IsDefensible",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{HasAuthorization}}, {{ContentMatchesApproval}}, {{WasApprovedBeforeSending}})",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AuthorityBoundaries.AuthorityBoundaryId",
+        "TargetTable": "AuthorityBoundaries",
+        "FieldName": "AuthorityBoundaryId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AuthorityBoundaries.Name",
+        "TargetTable": "AuthorityBoundaries",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{ForbiddenAgentKind}} & \" may not \" & {{ForbiddenDecisionKind}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AuthorityBoundaries.Step",
+        "TargetTable": "AuthorityBoundaries",
+        "FieldName": "Step",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AuthorityBoundaries.ForbiddenAgentKind",
+        "TargetTable": "AuthorityBoundaries",
+        "FieldName": "ForbiddenAgentKind",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AuthorityBoundaries.ForbiddenDecisionKind",
+        "TargetTable": "AuthorityBoundaries",
+        "FieldName": "ForbiddenDecisionKind",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AuthorityBoundaries.RatifiedByKnowledgeFragment",
+        "TargetTable": "AuthorityBoundaries",
+        "FieldName": "RatifiedByKnowledgeFragment",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AuthorityBoundaries.EnforcingRequirement",
+        "TargetTable": "AuthorityBoundaries",
+        "FieldName": "EnforcingRequirement",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AuthorityBoundaries.AuthorityRole",
+        "TargetTable": "AuthorityBoundaries",
+        "FieldName": "AuthorityRole",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AuthorityBoundaries.ValidFrom",
+        "TargetTable": "AuthorityBoundaries",
+        "FieldName": "ValidFrom",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AuthorityBoundaries.ValidTo",
+        "TargetTable": "AuthorityBoundaries",
+        "FieldName": "ValidTo",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AuthorityBoundaries.Status",
+        "TargetTable": "AuthorityBoundaries",
+        "FieldName": "Status",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AuthorityBoundaries.IsCurrentlyBinding",
+        "TargetTable": "AuthorityBoundaries",
+        "FieldName": "IsCurrentlyBinding",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{Status}} = \"Approved\", {{ValidFrom}} <= NOW(), OR({{ValidTo}} = \"\", {{ValidTo}} > NOW()))",
+        "InventedForQuestion": "q-variance-ai-boundary-compliance",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AuthorityBoundaries.RatifyingFragmentIsValid",
+        "TargetTable": "AuthorityBoundaries",
+        "FieldName": "RatifyingFragmentIsValid",
+        "FieldType": "lookup",
+        "Datatype": "boolean",
+        "Formula": "=INDEX(KnowledgeFragments!{{IsCurrentlyValid}}, MATCH({{RatifiedByKnowledgeFragment}}, KnowledgeFragments!{{KnowledgeFragmentId}}, 0))",
+        "InventedForQuestion": "q-variance-ai-boundary-compliance",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AuthorityBoundaries.StepWhenBinding",
+        "TargetTable": "AuthorityBoundaries",
+        "FieldName": "StepWhenBinding",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IF({{IsCurrentlyBinding}}, {{Step}}, \"\")",
+        "InventedForQuestion": "q-variance-ai-boundary-compliance",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AuthorityBoundaries.BoundaryMatchKey",
+        "TargetTable": "AuthorityBoundaries",
+        "FieldName": "BoundaryMatchKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{Step}} & \"|\" & {{ForbiddenAgentKind}} & \"|\" & {{ForbiddenDecisionKind}}",
+        "InventedForQuestion": "q-variance-ai-boundary-compliance",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AuthorityBoundaries.ViolationCount",
+        "TargetTable": "AuthorityBoundaries",
+        "FieldName": "ViolationCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(AgentDecisionRecords!{{BoundaryMatchKey}}, {{BoundaryMatchKey}})",
+        "InventedForQuestion": "q-policy-ai-commitment-boundary",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AuthorityBoundaries.IsUntested",
+        "TargetTable": "AuthorityBoundaries",
+        "FieldName": "IsUntested",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsCurrentlyBinding}}, {{ViolationCount}} = 0)",
+        "InventedForQuestion": "q-policy-ai-commitment-boundary",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "AuthorityBoundaries.SemanticTypeIri",
+        "TargetTable": "AuthorityBoundaries",
         "FieldName": "SemanticTypeIri",
         "FieldType": "raw",
         "Datatype": "string",
@@ -21307,6 +23497,142 @@
         "formula": "=IF({{WasOverridden}}, {{DecidingAgent}}, \"\")"
       },
       {
+        "name": "UnderRoleAssignment",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Role assignment in force when the decision was made; anchors the decision to one side of a handover.",
+        "RelatedTo": "RoleAssignments"
+      },
+      {
+        "name": "RoleAssignmentWhenScored",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Echoes the governing role assignment when one is recorded, blank otherwise.",
+        "formula": "=IF({{UnderRoleAssignment}} <> \"\", {{UnderRoleAssignment}}, \"\")"
+      },
+      {
+        "name": "RoleAssignmentWhenOverridden",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Echoes the governing role assignment when the decision was overridden, blank otherwise.",
+        "formula": "=IF({{WasOverridden}}, {{UnderRoleAssignment}}, \"\")"
+      },
+      {
+        "name": "StepOfDecision",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The specified step at which this decision was made.",
+        "formula": "=INDEX(StepExecutions!{{Step}}, MATCH({{StepExecution}}, StepExecutions!{{StepExecutionId}}, 0))"
+      },
+      {
+        "name": "BoundaryMatchKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Composite key of step, deciding agent kind, and decision kind for this decision.",
+        "formula": "={{StepOfDecision}} & \"|\" & {{DecidingAgentKind}} & \"|\" & {{DecisionKind}}"
+      },
+      {
+        "name": "MatchingBoundaryCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of authority boundaries this decision matches.",
+        "formula": "=COUNTIFS(AuthorityBoundaries!{{BoundaryMatchKey}}, {{BoundaryMatchKey}})"
+      },
+      {
+        "name": "ViolatedAuthorityBoundary",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this decision matches an authority boundary that forbids it.",
+        "formula": "={{MatchingBoundaryCount}} > 0"
+      },
+      {
+        "name": "ReviewerAgentKind",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Agent kind of the reviewer, if any.",
+        "formula": "=INDEX(Agents!{{AgentKind}}, MATCH({{ReviewedByAgent}}, Agents!{{AgentId}}, 0))"
+      },
+      {
+        "name": "HasHumanConfirmation",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a human agent actually dispositioned this decision.",
+        "formula": "=AND({{ReviewerAgentKind}} = \"Human\", {{HumanDisposition}} <> \"\", {{HumanDisposition}} <> \"NotReviewed\")"
+      },
+      {
+        "name": "NeedsHumanConfirmation",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a non-human agent made a material or escalated decision.",
+        "formula": "=AND(NOT({{DecidingAgentKind}} = \"Human\"), OR({{MaterialityBand}} = \"Material\", {{MaterialityBand}} = \"Escalated\"))"
+      },
+      {
+        "name": "IsUnconfirmedNonHumanDecision",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a material non-human decision was never confirmed by a human.",
+        "formula": "=AND({{NeedsHumanConfirmation}}, NOT({{HasHumanConfirmation}}))"
+      },
+      {
+        "name": "StepExecutionWhenUnconfirmed",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Echoes the step-execution id when the decision is an unconfirmed non-human material decision, blank otherwise.",
+        "formula": "=IF({{IsUnconfirmedNonHumanDecision}}, {{StepExecution}}, \"\")"
+      },
+      {
+        "name": "AgentWhenBoundaryViolated",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Echoes the deciding agent id when the decision violated a boundary, blank otherwise.",
+        "formula": "=IF({{ViolatedAuthorityBoundary}}, {{DecidingAgent}}, \"\")"
+      },
+      {
+        "name": "ReviewLatencyMinutes",
+        "datatype": "integer",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Minutes between the decision and its human disposition; 0 when never reviewed.",
+        "formula": "=IF({{ReviewedAt}} = \"\", 0, DATETIME_DIFF({{ReviewedAt}}, {{DecidedAt}}, \"minutes\"))"
+      },
+      {
+        "name": "IsDraftKind",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this decision produced text \u2014 the drafter's own output class.",
+        "formula": "=OR({{DecisionKind}} = \"Draft\", {{DecisionKind}} = \"Commitment\")"
+      },
+      {
+        "name": "AgentWhenDraftOverridden",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Echoes the deciding agent id when a drafting decision was overridden, blank otherwise.",
+        "formula": "=IF(AND({{IsDraftKind}}, {{WasOverridden}}), {{DecidingAgent}}, \"\")"
+      },
+      {
+        "name": "AgentWhenDraft",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Echoes the deciding agent id when the decision produced text, blank otherwise.",
+        "formula": "=IF({{IsDraftKind}}, {{DecidingAgent}}, \"\")"
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -21353,6 +23679,346 @@
         "ReviewedByAgent": "devon-okafor",
         "ReviewedAt": "2026-06-30T17:20:00-05:00",
         "SemanticTypeIri": "urn:effortless:pko-extension#AgentDecisionRecord"
+      }
+    ]
+  },
+  "DeliveredCommunications": {
+    "Description": "Everything above is a proxy for the real question, which is instance-level: THIS message, to THIS recipient, rendered from THIS template, authorized by THIS approval. The model has MessageTemplates and CommunicationPolicies as specifications and no record of a single thing ever sent. Without an instance table, 'can I show that what was sent matched what I approved' is permanently unanswerable rather than merely unanswered \u2014 and it is the question a disputing employee actually asks. Extension term (urn:effortless:pko-extension#DeliveredCommunication); PKO has no native class for a delivered artifact instance.",
+    "schema": [
+      {
+        "name": "DeliveredCommunicationId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stored logical identifier for one DeliveredCommunications row."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Human-readable calculated display alias.",
+        "formula": "={{Channel}} & \" -> \" & {{RecipientKey}} & \" @ \" & {{SentAt}}"
+      },
+      {
+        "name": "ProcedureExecution",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "The run that produced this delivery.",
+        "RelatedTo": "ProcedureExecutions"
+      },
+      {
+        "name": "SendingStepExecution",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "The policy-07 step execution that sent it.",
+        "RelatedTo": "StepExecutions"
+      },
+      {
+        "name": "AuthorizingStepExecution",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "The human approval gate execution that authorized this content. Null means nobody approved it.",
+        "RelatedTo": "StepExecutions"
+      },
+      {
+        "name": "MessageTemplate",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "The approved template this delivery was rendered from.",
+        "RelatedTo": "MessageTemplates"
+      },
+      {
+        "name": "Channel",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Email or SMS."
+      },
+      {
+        "name": "RecipientKey",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Opaque recipient identifier; no personal data in the rulebook."
+      },
+      {
+        "name": "SentAt",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "When the message was dispatched."
+      },
+      {
+        "name": "RenderedContentHash",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Hash of the exact bytes delivered, for comparison against the approved rendering."
+      },
+      {
+        "name": "ApprovedContentHash",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Hash of the content as it stood at the approval gate."
+      },
+      {
+        "name": "DeliveryStatus",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Provider-reported delivery outcome."
+      },
+      {
+        "name": "SemanticTypeIri",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Extension class IRI."
+      },
+      {
+        "name": "HasAuthorization",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this delivery names the approval that authorized it.",
+        "formula": "={{AuthorizingStepExecution}} <> \"\""
+      },
+      {
+        "name": "ContentMatchesApproval",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the bytes delivered are the bytes approved.",
+        "formula": "={{RenderedContentHash}} = {{ApprovedContentHash}}"
+      },
+      {
+        "name": "AuthorizedAt",
+        "datatype": "datetime",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "When the authorizing approval completed.",
+        "formula": "=INDEX(StepExecutions!{{EndedAt}}, MATCH({{AuthorizingStepExecution}}, StepExecutions!{{StepExecutionId}}, 0))"
+      },
+      {
+        "name": "WasApprovedBeforeSending",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the approval preceded the send.",
+        "formula": "={{AuthorizedAt}} <= {{SentAt}}"
+      },
+      {
+        "name": "IsDefensible",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this delivery can be defended in a dispute: authorized, unaltered, and approved beforehand.",
+        "formula": "=AND({{HasAuthorization}}, {{ContentMatchesApproval}}, {{WasApprovedBeforeSending}})"
+      }
+    ],
+    "data": [
+      {
+        "DeliveredCommunicationId": "dc-hr4821-email-001",
+        "ProcedureExecution": "exec-policy-hr4821",
+        "SendingStepExecution": null,
+        "AuthorizingStepExecution": null,
+        "MessageTemplate": null,
+        "Channel": "Email",
+        "RecipientKey": "emp-anon-0001",
+        "SentAt": null,
+        "RenderedContentHash": null,
+        "ApprovedContentHash": null,
+        "DeliveryStatus": "NotYetSent",
+        "SemanticTypeIri": "urn:effortless:pko-extension#DeliveredCommunication"
+      }
+    ]
+  },
+  "AuthorityBoundaries": {
+    "Description": "AuthorityBoundaries (added by witness loop 1).",
+    "schema": [
+      {
+        "name": "AuthorityBoundaryId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stored logical identifier for one AuthorityBoundaries row."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Human-readable calculated display alias for the AuthorityBoundaries row.",
+        "formula": "={{ForbiddenAgentKind}} & \" may not \" & {{ForbiddenDecisionKind}}"
+      },
+      {
+        "name": "Step",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Step at which the boundary applies.",
+        "RelatedTo": "Steps"
+      },
+      {
+        "name": "ForbiddenAgentKind",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Agent kind that may not perform the forbidden decision kind: Human, AIAgent, or AutomatedPipeline."
+      },
+      {
+        "name": "ForbiddenDecisionKind",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Decision kind forbidden to that agent kind at this step."
+      },
+      {
+        "name": "RatifiedByKnowledgeFragment",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Knowledge fragment that states the boundary.",
+        "RelatedTo": "KnowledgeFragments"
+      },
+      {
+        "name": "EnforcingRequirement",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Requirement under which the boundary is enforced, if any.",
+        "RelatedTo": "Requirements"
+      },
+      {
+        "name": "AuthorityRole",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Role accountable for the boundary.",
+        "RelatedTo": "Roles"
+      },
+      {
+        "name": "ValidFrom",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Start of the boundary's valid-time interval."
+      },
+      {
+        "name": "ValidTo",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "End of the boundary's valid-time interval; null means open-ended."
+      },
+      {
+        "name": "Status",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Approved, Proposed, or Retired."
+      },
+      {
+        "name": "IsCurrentlyBinding",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this boundary is approved and inside its valid-time window right now.",
+        "formula": "=AND({{Status}} = \"Approved\", {{ValidFrom}} <= NOW(), OR({{ValidTo}} = \"\", {{ValidTo}} > NOW()))"
+      },
+      {
+        "name": "RatifyingFragmentIsValid",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether the knowledge fragment that ratified this boundary is still valid.",
+        "formula": "=INDEX(KnowledgeFragments!{{IsCurrentlyValid}}, MATCH({{RatifiedByKnowledgeFragment}}, KnowledgeFragments!{{KnowledgeFragmentId}}, 0))"
+      },
+      {
+        "name": "StepWhenBinding",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Echoes the step id when this boundary is currently binding, blank otherwise.",
+        "formula": "=IF({{IsCurrentlyBinding}}, {{Step}}, \"\")"
+      },
+      {
+        "name": "BoundaryMatchKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Composite key of step, forbidden agent kind, and forbidden decision kind.",
+        "formula": "={{Step}} & \"|\" & {{ForbiddenAgentKind}} & \"|\" & {{ForbiddenDecisionKind}}"
+      },
+      {
+        "name": "ViolationCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of recorded decisions that this boundary forbids.",
+        "formula": "=COUNTIFS(AgentDecisionRecords!{{BoundaryMatchKey}}, {{BoundaryMatchKey}})"
+      },
+      {
+        "name": "IsUntested",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a binding boundary has never been triggered by any recorded decision.",
+        "formula": "=AND({{IsCurrentlyBinding}}, {{ViolationCount}} = 0)"
+      },
+      {
+        "name": "SemanticTypeIri",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Extension class IRI for an authority boundary."
+      }
+    ],
+    "data": [
+      {
+        "AuthorityBoundaryId": "bnd-close-04-no-ai-escalation-waiver",
+        "Step": "close-04",
+        "ForbiddenAgentKind": "AIAgent",
+        "ForbiddenDecisionKind": "Suppression",
+        "RatifiedByKnowledgeFragment": "kf-close-judgment",
+        "EnforcingRequirement": "req-close-balance",
+        "AuthorityRole": "controller",
+        "ValidFrom": "2026-04-01T00:00:00-05:00",
+        "ValidTo": null,
+        "Status": "Approved",
+        "SemanticTypeIri": "urn:effortless:pko-extension#AuthorityBoundary"
+      },
+      {
+        "AuthorityBoundaryId": "bnd-close-06-no-nonhuman-approval",
+        "Step": "close-06",
+        "ForbiddenAgentKind": "AIAgent",
+        "ForbiddenDecisionKind": "Approval",
+        "RatifiedByKnowledgeFragment": null,
+        "EnforcingRequirement": "req-close-human-approval",
+        "AuthorityRole": "cfo",
+        "ValidFrom": "2026-04-15T09:00:00-05:00",
+        "ValidTo": null,
+        "Status": "Approved",
+        "SemanticTypeIri": "urn:effortless:pko-extension#AuthorityBoundary"
+      },
+      {
+        "AuthorityBoundaryId": "bnd-policy-03-no-ai-commitment",
+        "Step": "policy-03",
+        "ForbiddenAgentKind": "AIAgent",
+        "ForbiddenDecisionKind": "Commitment",
+        "RatifiedByKnowledgeFragment": "kf-policy-ai-boundary",
+        "EnforcingRequirement": "req-policy-human-approval",
+        "AuthorityRole": "employment-counsel",
+        "ValidFrom": "2026-05-12T14:30:00-05:00",
+        "ValidTo": null,
+        "Status": "Approved",
+        "SemanticTypeIri": "urn:effortless:pko-extension#AuthorityBoundary"
       }
     ]
   }

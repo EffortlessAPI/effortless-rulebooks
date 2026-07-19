@@ -24,6 +24,9 @@ ALTER TABLE roles ADD CONSTRAINT fk_roles_organization
 ALTER TABLE roles DROP CONSTRAINT IF EXISTS fk_roles_current_agent;
 ALTER TABLE roles ADD CONSTRAINT fk_roles_current_agent
   FOREIGN KEY (current_agent) REFERENCES agents (agent_id);
+ALTER TABLE roles DROP CONSTRAINT IF EXISTS fk_roles_current_assignment;
+ALTER TABLE roles ADD CONSTRAINT fk_roles_current_assignment
+  FOREIGN KEY (current_assignment) REFERENCES role_assignments (role_assignment_id);
 
 -- RoleAssignments
 ALTER TABLE role_assignments DROP CONSTRAINT IF EXISTS fk_role_assignments_role;
@@ -35,6 +38,15 @@ ALTER TABLE role_assignments ADD CONSTRAINT fk_role_assignments_agent
 ALTER TABLE role_assignments DROP CONSTRAINT IF EXISTS fk_role_assignments_evaluation_context;
 ALTER TABLE role_assignments ADD CONSTRAINT fk_role_assignments_evaluation_context
   FOREIGN KEY (evaluation_context) REFERENCES evaluation_contexts (evaluation_context_id);
+ALTER TABLE role_assignments DROP CONSTRAINT IF EXISTS fk_role_assignments_supersedes_assignment;
+ALTER TABLE role_assignments ADD CONSTRAINT fk_role_assignments_supersedes_assignment
+  FOREIGN KEY (supersedes_assignment) REFERENCES role_assignments (role_assignment_id);
+ALTER TABLE role_assignments DROP CONSTRAINT IF EXISTS fk_role_assignments_approving_authority_role;
+ALTER TABLE role_assignments ADD CONSTRAINT fk_role_assignments_approving_authority_role
+  FOREIGN KEY (approving_authority_role) REFERENCES roles (role_id);
+ALTER TABLE role_assignments DROP CONSTRAINT IF EXISTS fk_role_assignments_authorizing_change_request;
+ALTER TABLE role_assignments ADD CONSTRAINT fk_role_assignments_authorizing_change_request
+  FOREIGN KEY (authorizing_change_request) REFERENCES change_requests (change_request_id);
 
 -- CommunitiesOfPractice
 ALTER TABLE communities_of_practice DROP CONSTRAINT IF EXISTS fk_communities_of_practice_organization;
@@ -517,5 +529,36 @@ ALTER TABLE agent_decision_records ADD CONSTRAINT fk_agent_decision_records_deci
 ALTER TABLE agent_decision_records DROP CONSTRAINT IF EXISTS fk_agent_decision_records_reviewed_by_agent;
 ALTER TABLE agent_decision_records ADD CONSTRAINT fk_agent_decision_records_reviewed_by_agent
   FOREIGN KEY (reviewed_by_agent) REFERENCES agents (agent_id);
+ALTER TABLE agent_decision_records DROP CONSTRAINT IF EXISTS fk_agent_decision_records_under_role_assignment;
+ALTER TABLE agent_decision_records ADD CONSTRAINT fk_agent_decision_records_under_role_assignment
+  FOREIGN KEY (under_role_assignment) REFERENCES role_assignments (role_assignment_id);
 
--- 136 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
+-- DeliveredCommunications
+ALTER TABLE delivered_communications DROP CONSTRAINT IF EXISTS fk_delivered_communications_procedure_execution;
+ALTER TABLE delivered_communications ADD CONSTRAINT fk_delivered_communications_procedure_execution
+  FOREIGN KEY (procedure_execution) REFERENCES procedure_executions (procedure_execution_id);
+ALTER TABLE delivered_communications DROP CONSTRAINT IF EXISTS fk_delivered_communications_sending_step_execution;
+ALTER TABLE delivered_communications ADD CONSTRAINT fk_delivered_communications_sending_step_execution
+  FOREIGN KEY (sending_step_execution) REFERENCES step_executions (step_execution_id);
+ALTER TABLE delivered_communications DROP CONSTRAINT IF EXISTS fk_delivered_communications_authorizing_step_execution;
+ALTER TABLE delivered_communications ADD CONSTRAINT fk_delivered_communications_authorizing_step_execution
+  FOREIGN KEY (authorizing_step_execution) REFERENCES step_executions (step_execution_id);
+ALTER TABLE delivered_communications DROP CONSTRAINT IF EXISTS fk_delivered_communications_message_template;
+ALTER TABLE delivered_communications ADD CONSTRAINT fk_delivered_communications_message_template
+  FOREIGN KEY (message_template) REFERENCES message_templates (message_template_id);
+
+-- AuthorityBoundaries
+ALTER TABLE authority_boundaries DROP CONSTRAINT IF EXISTS fk_authority_boundaries_step;
+ALTER TABLE authority_boundaries ADD CONSTRAINT fk_authority_boundaries_step
+  FOREIGN KEY (step) REFERENCES steps (step_id);
+ALTER TABLE authority_boundaries DROP CONSTRAINT IF EXISTS fk_authority_boundaries_ratified_by_knowledge_fragment;
+ALTER TABLE authority_boundaries ADD CONSTRAINT fk_authority_boundaries_ratified_by_knowledge_fragment
+  FOREIGN KEY (ratified_by_knowledge_fragment) REFERENCES knowledge_fragments (knowledge_fragment_id);
+ALTER TABLE authority_boundaries DROP CONSTRAINT IF EXISTS fk_authority_boundaries_enforcing_requirement;
+ALTER TABLE authority_boundaries ADD CONSTRAINT fk_authority_boundaries_enforcing_requirement
+  FOREIGN KEY (enforcing_requirement) REFERENCES requirements (requirement_id);
+ALTER TABLE authority_boundaries DROP CONSTRAINT IF EXISTS fk_authority_boundaries_authority_role;
+ALTER TABLE authority_boundaries ADD CONSTRAINT fk_authority_boundaries_authority_role
+  FOREIGN KEY (authority_role) REFERENCES roles (role_id);
+
+-- 149 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).

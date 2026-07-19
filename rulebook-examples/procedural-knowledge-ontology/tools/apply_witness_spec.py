@@ -110,6 +110,7 @@ def main() -> int:
     existing_q = {r["RoleQuestionId"] for r in rb["RoleQuestions"]["data"]}
     problems: list[str] = []
     skipped_existing: list[str] = []
+    merged_columns: list[str] = []
     declared_here: set[tuple[str, str]] = set()
     new_questions: list[OrderedDict] = []
     new_fields: list[tuple[str, OrderedDict, str]] = []  # (table, field, question_id)
@@ -126,6 +127,17 @@ def main() -> int:
                 problems.append(f"{q['id']}: needs_table has no table/name/table_name key")
                 continue
             if name in rb:
+                # Two roles can both need the same new table, and the second
+                # spec's version may declare columns the first did not. Merge
+                # them in rather than silently dropping the difference.
+                have = set(field_names(rb, name))
+                sch = rb[name]["schema"]
+                for f in nt["schema"]:
+                    if isinstance(f, dict) and f["name"] not in have:
+                        idx = ([x["name"] for x in sch].index("SemanticTypeIri")
+                               if "SemanticTypeIri" in [x["name"] for x in sch] else len(sch))
+                        sch.insert(idx, f)
+                        merged_columns.append(f"{name}.{f['name']}")
                 continue
             schema = list(nt["schema"])
             # Some specs separate the derived columns from the raw schema.
@@ -228,6 +240,9 @@ def main() -> int:
 
     print(f"role {role}: {len(new_questions)} questions, {len(new_fields)} predicates, "
           f"{len(new_tables)} new table(s)")
+    if merged_columns:
+        print(f"  merged {len(merged_columns)} column(s) into a table an earlier role created: "
+              f"{', '.join(merged_columns[:6])}")
     if skipped_existing:
         print(f"  reusing {len(skipped_existing)} shared predicate(s) already declared "
               f"by an earlier role: {', '.join(skipped_existing[:6])}"

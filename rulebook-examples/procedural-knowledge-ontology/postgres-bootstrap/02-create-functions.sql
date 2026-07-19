@@ -164,6 +164,56 @@ RETURNS BOOLEAN AS $$
   SELECT (NOT ((SELECT NULLIF(agent_kind, '') FROM agents WHERE agent_id = p_agent_id) = 'Human'))::boolean;
 $$ LANGUAGE sql STABLE;
 
+-- calc_agents_boundary_violation_count
+-- Field: Agents.BoundaryViolationCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_agents_boundary_violation_count(p_agent_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM agent_decision_records WHERE calc_agent_decision_records_agent_when_boundary_violated(agent_decision_record_id) = (SELECT NULLIF(agent_id, '') FROM agents WHERE agent_id = p_agent_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_agents_is_operating_outside_boundary
+-- Field: Agents.IsOperatingOutsideBoundary
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_agents_is_operating_outside_boundary(p_agent_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_agents_boundary_violation_count(p_agent_id))::NUMERIC > 0)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_agents_draft_decision_count
+-- Field: Agents.DraftDecisionCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_agents_draft_decision_count(p_agent_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM agent_decision_records WHERE calc_agent_decision_records_agent_when_draft(agent_decision_record_id) = (SELECT NULLIF(agent_id, '') FROM agents WHERE agent_id = p_agent_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_agents_overridden_draft_count
+-- Field: Agents.OverriddenDraftCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_agents_overridden_draft_count(p_agent_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM agent_decision_records WHERE calc_agent_decision_records_agent_when_draft_overridden(agent_decision_record_id) = (SELECT NULLIF(agent_id, '') FROM agents WHERE agent_id = p_agent_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_agents_draft_rewrite_rate_percent
+-- Field: Agents.DraftRewriteRatePercent
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_agents_draft_rewrite_rate_percent(p_agent_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN (calc_agents_draft_decision_count(p_agent_id))::NUMERIC = 0 THEN (0)::text ELSE ((COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_agents_overridden_draft_count(p_agent_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_agents_overridden_draft_count(p_agent_id))::numeric ELSE NULL END, 0) * COALESCE(100, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_agents_overridden_draft_count(p_agent_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_agents_overridden_draft_count(p_agent_id))::numeric ELSE NULL END, 0) * COALESCE(100, 0)))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_agents_draft_decision_count(p_agent_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_agents_draft_decision_count(p_agent_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
 -- calc_roles_current_agent_kind
 -- Field: Roles.CurrentAgentKind
 -- Type: lookup | DataType: string | Returns: TEXT
@@ -173,6 +223,17 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_roles_current_agent_kind(p_role_id TEXT)
 RETURNS TEXT AS $$
   SELECT (SELECT agent_kind::text FROM agents WHERE agent_id = (SELECT current_agent FROM roles WHERE role_id = p_role_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_roles_current_assignment_valid_from
+-- Field: Roles.CurrentAssignmentValidFrom
+-- Type: lookup | DataType: datetime | Returns: TIMESTAMPTZ
+-- Lookup: ValidFrom from related RoleAssignments
+
+
+CREATE OR REPLACE FUNCTION calc_roles_current_assignment_valid_from(p_role_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT valid_from::timestamptz FROM role_assignments WHERE role_assignment_id = (SELECT current_assignment FROM roles WHERE role_id = p_role_id));
 $$ LANGUAGE sql STABLE;
 
 -- get_agents_display_name
@@ -220,6 +281,51 @@ RETURNS TEXT AS $$
   SELECT (SELECT semantic_type_iri FROM agents WHERE agent_id = p_agent_id);
 $$ LANGUAGE sql STABLE;
 
+-- get_role_assignments_valid_from
+-- Helper function: Get ValidFrom from RoleAssignments by RoleAssignmentId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_role_assignments_valid_from(p_role_assignment_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT valid_from FROM role_assignments WHERE role_assignment_id = p_role_assignment_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_role_assignments_valid_to
+-- Helper function: Get ValidTo from RoleAssignments by RoleAssignmentId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_role_assignments_valid_to(p_role_assignment_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT valid_to FROM role_assignments WHERE role_assignment_id = p_role_assignment_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_role_assignments_reason
+-- Helper function: Get Reason from RoleAssignments by RoleAssignmentId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_role_assignments_reason(p_role_assignment_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT reason FROM role_assignments WHERE role_assignment_id = p_role_assignment_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_role_assignments_status
+-- Helper function: Get Status from RoleAssignments by RoleAssignmentId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_role_assignments_status(p_role_assignment_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT status FROM role_assignments WHERE role_assignment_id = p_role_assignment_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_role_assignments_semantic_type_iri
+-- Helper function: Get SemanticTypeIri from RoleAssignments by RoleAssignmentId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_role_assignments_semantic_type_iri(p_role_assignment_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT semantic_type_iri FROM role_assignments WHERE role_assignment_id = p_role_assignment_id);
+$$ LANGUAGE sql STABLE;
+
 -- calc_roles_name
 -- Field: Roles.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -260,6 +366,36 @@ RETURNS BOOLEAN AS $$
   SELECT ((calc_roles_currently_covered_assignment_count(p_role_id))::NUMERIC = 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
+-- calc_roles_count_of_awaited_decisions
+-- Field: Roles.CountOfAwaitedDecisions
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_roles_count_of_awaited_decisions(p_role_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM change_requests WHERE authority_role = (SELECT NULLIF(role_id, '') FROM roles WHERE role_id = p_role_id)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_roles_is_non_human_held
+-- Field: Roles.IsNonHumanHeld
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_roles_is_non_human_held(p_role_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (NOT (calc_roles_current_agent_kind(p_role_id) = 'Human'))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_roles_is_ungoverned_non_human_role
+-- Field: Roles.IsUngovernedNonHumanRole
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_roles_is_ungoverned_non_human_role(p_role_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_roles_is_non_human_held(p_role_id) AND calc_roles_has_no_current_holder(p_role_id)))::boolean;
+$$ LANGUAGE sql STABLE;
+
 -- calc_role_assignments_as_of_instant
 -- Field: RoleAssignments.AsOfInstant
 -- Type: lookup | DataType: datetime | Returns: TIMESTAMPTZ
@@ -269,6 +405,39 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_role_assignments_as_of_instant(p_role_assignment_id TEXT)
 RETURNS TIMESTAMPTZ AS $$
   SELECT (SELECT as_of_instant::timestamptz FROM evaluation_contexts WHERE evaluation_context_id = (SELECT evaluation_context FROM role_assignments WHERE role_assignment_id = p_role_assignment_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_assignments_agent_kind
+-- Field: RoleAssignments.AgentKind
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: AgentKind from related Agents
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_agent_kind(p_role_assignment_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT agent_kind::text FROM agents WHERE agent_id = (SELECT agent FROM role_assignments WHERE role_assignment_id = p_role_assignment_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_assignments_predecessor_agent_kind
+-- Field: RoleAssignments.PredecessorAgentKind
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: AgentKind from related RoleAssignments
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_predecessor_agent_kind(p_role_assignment_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_role_assignments_agent_kind((SELECT supersedes_assignment FROM role_assignments WHERE role_assignment_id = p_role_assignment_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_assignments_predecessor_override_rate_percent
+-- Field: RoleAssignments.PredecessorOverrideRatePercent
+-- Type: lookup | DataType: number | Returns: NUMERIC
+-- Lookup: OverrideRatePercent from related RoleAssignments
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_predecessor_override_rate_percent(p_role_assignment_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT calc_role_assignments_override_rate_percent((SELECT supersedes_assignment FROM role_assignments WHERE role_assignment_id = p_role_assignment_id));
 $$ LANGUAGE sql STABLE;
 
 -- get_roles_label
@@ -287,6 +456,15 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION get_roles_responsibility(p_role_id TEXT)
 RETURNS TEXT AS $$
   SELECT (SELECT responsibility FROM roles WHERE role_id = p_role_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_roles_current_assignment
+-- Helper function: Get CurrentAssignment from Roles by RoleId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_roles_current_assignment(p_role_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT current_assignment FROM roles WHERE role_id = p_role_id);
 $$ LANGUAGE sql STABLE;
 
 -- get_roles_semantic_type_iri
@@ -341,6 +519,69 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION get_evaluation_contexts_semantic_type_iri(p_evaluation_context_id TEXT)
 RETURNS TEXT AS $$
   SELECT (SELECT semantic_type_iri FROM evaluation_contexts WHERE evaluation_context_id = p_evaluation_context_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_change_requests_title
+-- Helper function: Get Title from ChangeRequests by ChangeRequestId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_change_requests_title(p_change_request_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT title FROM change_requests WHERE change_request_id = p_change_request_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_change_requests_change_kind
+-- Helper function: Get ChangeKind from ChangeRequests by ChangeRequestId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_change_requests_change_kind(p_change_request_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT change_kind FROM change_requests WHERE change_request_id = p_change_request_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_change_requests_status
+-- Helper function: Get Status from ChangeRequests by ChangeRequestId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_change_requests_status(p_change_request_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT status FROM change_requests WHERE change_request_id = p_change_request_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_change_requests_requested_at
+-- Helper function: Get RequestedAt from ChangeRequests by ChangeRequestId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_change_requests_requested_at(p_change_request_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT requested_at FROM change_requests WHERE change_request_id = p_change_request_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_change_requests_decided_at
+-- Helper function: Get DecidedAt from ChangeRequests by ChangeRequestId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_change_requests_decided_at(p_change_request_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT decided_at FROM change_requests WHERE change_request_id = p_change_request_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_change_requests_impact_assessment
+-- Helper function: Get ImpactAssessment from ChangeRequests by ChangeRequestId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_change_requests_impact_assessment(p_change_request_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT impact_assessment FROM change_requests WHERE change_request_id = p_change_request_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_change_requests_semantic_type_iri
+-- Helper function: Get SemanticTypeIri from ChangeRequests by ChangeRequestId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_change_requests_semantic_type_iri(p_change_request_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT semantic_type_iri FROM change_requests WHERE change_request_id = p_change_request_id);
 $$ LANGUAGE sql STABLE;
 
 -- calc_role_assignments_name
@@ -421,6 +662,76 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_role_assignments_role_when_covering(p_role_assignment_id TEXT)
 RETURNS TEXT AS $$
   SELECT (CASE WHEN calc_role_assignments_covers_now(p_role_assignment_id) THEN ((SELECT NULLIF(role, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_assignments_is_non_human_assignment
+-- Field: RoleAssignments.IsNonHumanAssignment
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_is_non_human_assignment(p_role_assignment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (NOT (calc_role_assignments_agent_kind(p_role_assignment_id) = 'Human'))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_assignments_is_human_to_non_human_handover
+-- Field: RoleAssignments.IsHumanToNonHumanHandover
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_is_human_to_non_human_handover(p_role_assignment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_role_assignments_predecessor_agent_kind(p_role_assignment_id) = 'Human' AND calc_role_assignments_is_non_human_assignment(p_role_assignment_id)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_assignments_is_unauthorized_non_human_assignment
+-- Field: RoleAssignments.IsUnauthorizedNonHumanAssignment
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_is_unauthorized_non_human_assignment(p_role_assignment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_role_assignments_is_non_human_assignment(p_role_assignment_id) AND ((SELECT NULLIF(approving_authority_role, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) IS NULL OR (SELECT NULLIF(authorizing_change_request, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) IS NULL)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_assignments_decision_count
+-- Field: RoleAssignments.DecisionCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_decision_count(p_role_assignment_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM agent_decision_records WHERE calc_agent_decision_records_role_assignment_when_scored(agent_decision_record_id) = (SELECT NULLIF(role_assignment_id, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_assignments_overridden_decision_count
+-- Field: RoleAssignments.OverriddenDecisionCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_overridden_decision_count(p_role_assignment_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM agent_decision_records WHERE calc_agent_decision_records_role_assignment_when_overridden(agent_decision_record_id) = (SELECT NULLIF(role_assignment_id, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_assignments_override_rate_percent
+-- Field: RoleAssignments.OverrideRatePercent
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_override_rate_percent(p_role_assignment_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN (calc_role_assignments_decision_count(p_role_assignment_id))::NUMERIC = 0 THEN (0)::text ELSE ((COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_role_assignments_overridden_decision_count(p_role_assignment_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_role_assignments_overridden_decision_count(p_role_assignment_id))::numeric ELSE NULL END, 0) * COALESCE(100, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_role_assignments_overridden_decision_count(p_role_assignment_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_role_assignments_overridden_decision_count(p_role_assignment_id))::numeric ELSE NULL END, 0) * COALESCE(100, 0)))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_role_assignments_decision_count(p_role_assignment_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_role_assignments_decision_count(p_role_assignment_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_assignments_quality_regressed_vs_predecessor
+-- Field: RoleAssignments.QualityRegressedVsPredecessor
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_quality_regressed_vs_predecessor(p_role_assignment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((SELECT NULLIF(supersedes_assignment, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) IS NOT NULL AND calc_role_assignments_override_rate_percent(p_role_assignment_id) > calc_role_assignments_predecessor_override_rate_percent(p_role_assignment_id)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_communities_of_practice_name
@@ -881,6 +1192,26 @@ RETURNS BOOLEAN AS $$
   SELECT ((calc_procedure_versions_is_live(p_procedure_version_id) AND calc_procedure_versions_was_modified_since_last_review(p_procedure_version_id)))::boolean;
 $$ LANGUAGE sql STABLE;
 
+-- calc_procedure_versions_count_of_stale_fragments
+-- Field: ProcedureVersions.CountOfStaleFragments
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_versions_count_of_stale_fragments(p_procedure_version_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM knowledge_fragments WHERE calc_knowledge_fragments_exceeds_owning_cadence(knowledge_fragment_id) = TRUE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_versions_knowledge_is_staler_than_cadence
+-- Field: ProcedureVersions.KnowledgeIsStalerThanCadence
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_versions_knowledge_is_staler_than_cadence(p_procedure_version_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_procedure_versions_count_of_stale_fragments(p_procedure_version_id))::NUMERIC > 0)::boolean;
+$$ LANGUAGE sql STABLE;
+
 -- get_procedure_versions_version_number
 -- Helper function: Get VersionNumber from ProcedureVersions by ProcedureVersionId
 -- Used for join-free cross-table references in aggregations
@@ -1004,6 +1335,17 @@ RETURNS TEXT AS $$
   SELECT calc_roles_current_agent_kind((SELECT assigned_role FROM steps WHERE step_id = p_step_id));
 $$ LANGUAGE sql STABLE;
 
+-- calc_steps_assigned_role_is_ungoverned
+-- Field: Steps.AssignedRoleIsUngoverned
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: IsUngovernedNonHumanRole from related Roles
+
+
+CREATE OR REPLACE FUNCTION calc_steps_assigned_role_is_ungoverned(p_step_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_roles_is_ungoverned_non_human_role((SELECT assigned_role FROM steps WHERE step_id = p_step_id));
+$$ LANGUAGE sql STABLE;
+
 -- calc_steps_name
 -- Field: Steps.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -1102,6 +1444,66 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_steps_inputs_are_fresh(p_step_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT ((calc_steps_stale_authoritative_binding_count(p_step_id))::NUMERIC = 0)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_steps_is_software_assigned
+-- Field: Steps.IsSoftwareAssigned
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_steps_is_software_assigned(p_step_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_steps_assigned_agent_kind(p_step_id) = 'AIAgent' OR calc_steps_assigned_agent_kind(p_step_id) = 'AutomatedPipeline'))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_steps_is_human_approval_gate
+-- Field: Steps.IsHumanApprovalGate
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_steps_is_human_approval_gate(p_step_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((NOT (calc_steps_is_software_assigned(p_step_id)) AND ((SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id) = 'policy-05' OR (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id) = 'close-06')))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_steps_gate_held_by_human
+-- Field: Steps.GateHeldByHuman
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_steps_gate_held_by_human(p_step_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_steps_is_human_approval_gate(p_step_id) AND calc_steps_assigned_agent_kind(p_step_id) = 'Human'))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_steps_binding_boundary_count
+-- Field: Steps.BindingBoundaryCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_steps_binding_boundary_count(p_step_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM authority_boundaries WHERE calc_authority_boundaries_step_when_binding(authority_boundary_id) = (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_steps_unusable_binding_count
+-- Field: Steps.UnusableBindingCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_steps_unusable_binding_count(p_step_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM operational_bindings WHERE calc_operational_bindings_step_when_unusable(operational_binding_id) = (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_steps_all_sources_usable
+-- Field: Steps.AllSourcesUsable
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_steps_all_sources_usable(p_step_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_steps_unusable_binding_count(p_step_id))::NUMERIC = 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- get_steps_step_number
@@ -1679,6 +2081,16 @@ RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(title, '') FROM resources WHERE resource_id = p_resource_id))::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_resources_is_approved_source
+-- Field: Resources.IsApprovedSource
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_resources_is_approved_source(p_resource_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((SELECT NULLIF(approval_status, '') FROM resources WHERE resource_id = p_resource_id) = 'Approved')::boolean;
+$$ LANGUAGE sql STABLE;
+
 -- get_resources_title
 -- Helper function: Get Title from Resources by ResourceId
 -- Used for join-free cross-table references in aggregations
@@ -1731,6 +2143,15 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION get_resources_description(p_resource_id TEXT)
 RETURNS TEXT AS $$
   SELECT (SELECT description FROM resources WHERE resource_id = p_resource_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_resources_approval_status
+-- Helper function: Get ApprovalStatus from Resources by ResourceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_resources_approval_status(p_resource_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT approval_status FROM resources WHERE resource_id = p_resource_id);
 $$ LANGUAGE sql STABLE;
 
 -- get_resources_semantic_type_iri
@@ -1878,6 +2299,61 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_knowledge_fragments_is_from_single_witness(p_knowledge_fragment_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT calc_elicitation_sessions_is_single_witness_method((SELECT elicitation_session FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_fragments_owner_agent
+-- Field: KnowledgeFragments.OwnerAgent
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: CurrentAgent from related Roles
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_fragments_owner_agent(p_knowledge_fragment_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT current_agent::text FROM roles WHERE role_id = (SELECT owner_role FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_fragments_owning_version_cadence_days
+-- Field: KnowledgeFragments.OwningVersionCadenceDays
+-- Type: lookup | DataType: integer | Returns: NUMERIC
+-- Lookup: StewardReviewCadenceDays from related ProcedureVersions
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_fragments_owning_version_cadence_days(p_knowledge_fragment_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT calc_procedure_versions_steward_review_cadence_days((SELECT procedure_version FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_fragments_owner_role_agent_kind
+-- Field: KnowledgeFragments.OwnerRoleAgentKind
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: CurrentAgentKind from related Roles
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_fragments_owner_role_agent_kind(p_knowledge_fragment_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_roles_current_agent_kind((SELECT owner_role FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_fragments_review_cadence_days
+-- Field: KnowledgeFragments.ReviewCadenceDays
+-- Type: lookup | DataType: integer | Returns: NUMERIC
+-- Lookup: StewardReviewCadenceDays from related ProcedureVersions
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_fragments_review_cadence_days(p_knowledge_fragment_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT calc_procedure_versions_steward_review_cadence_days((SELECT procedure_version FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_fragments_owner_role_assignment_valid_from
+-- Field: KnowledgeFragments.OwnerRoleAssignmentValidFrom
+-- Type: lookup | DataType: datetime | Returns: TIMESTAMPTZ
+-- Lookup: CurrentAssignmentValidFrom from related Roles
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_fragments_owner_role_assignment_valid_from(p_knowledge_fragment_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT calc_roles_current_assignment_valid_from((SELECT owner_role FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id));
 $$ LANGUAGE sql STABLE;
 
 -- get_elicitation_sessions_method
@@ -2052,6 +2528,146 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_knowledge_fragments_evidence_has_expired(p_knowledge_fragment_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT ((calc_knowledge_fragments_has_recorded_elicitation(p_knowledge_fragment_id) AND calc_knowledge_fragments_evidence_age_days(p_knowledge_fragment_id) > calc_knowledge_fragments_evidence_expiry_days(p_knowledge_fragment_id)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_fragments_is_awaiting_approval
+-- Field: KnowledgeFragments.IsAwaitingApproval
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_fragments_is_awaiting_approval(p_knowledge_fragment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((SELECT NULLIF(status, '') FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id) = 'Reviewed')::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_fragments_owner_is_me
+-- Field: KnowledgeFragments.OwnerIsMe
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_fragments_owner_is_me(p_knowledge_fragment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((SELECT NULLIF(owner_role, '') FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id) = 'hr-policy-owner')::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_fragments_is_my_unfinished_approval
+-- Field: KnowledgeFragments.IsMyUnfinishedApproval
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_fragments_is_my_unfinished_approval(p_knowledge_fragment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_knowledge_fragments_owner_is_me(p_knowledge_fragment_id) AND calc_knowledge_fragments_is_awaiting_approval(p_knowledge_fragment_id)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_fragments_is_invoked_by_an_exception
+-- Field: KnowledgeFragments.IsInvokedByAnException
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_fragments_is_invoked_by_an_exception(p_knowledge_fragment_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM exceptions WHERE trigger_step = (SELECT NULLIF(step, '') FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_fragments_has_operational_reliance
+-- Field: KnowledgeFragments.HasOperationalReliance
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_fragments_has_operational_reliance(p_knowledge_fragment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_knowledge_fragments_is_invoked_by_an_exception(p_knowledge_fragment_id))::NUMERIC > 0)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_fragments_is_unapproved_and_operationally_live
+-- Field: KnowledgeFragments.IsUnapprovedAndOperationallyLive
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_fragments_is_unapproved_and_operationally_live(p_knowledge_fragment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_knowledge_fragments_is_my_unfinished_approval(p_knowledge_fragment_id) AND calc_knowledge_fragments_has_operational_reliance(p_knowledge_fragment_id)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_fragments_age_days
+-- Field: KnowledgeFragments.AgeDays
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_fragments_age_days(p_knowledge_fragment_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((CURRENT_TIMESTAMP::date - (SELECT valid_from::timestamptz FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id)::date))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_fragments_is_low_confidence
+-- Field: KnowledgeFragments.IsLowConfidence
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_fragments_is_low_confidence(p_knowledge_fragment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((SELECT NULLIF(confidence, '') FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id) = 'Medium' OR (SELECT NULLIF(confidence, '') FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id) = 'Low'))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_fragments_exceeds_owning_cadence
+-- Field: KnowledgeFragments.ExceedsOwningCadence
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_fragments_exceeds_owning_cadence(p_knowledge_fragment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (calc_knowledge_fragments_age_days(p_knowledge_fragment_id) > calc_knowledge_fragments_owning_version_cadence_days(p_knowledge_fragment_id))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_fragments_is_aging_low_confidence_claim
+-- Field: KnowledgeFragments.IsAgingLowConfidenceClaim
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_fragments_is_aging_low_confidence_claim(p_knowledge_fragment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_knowledge_fragments_exceeds_owning_cadence(p_knowledge_fragment_id) AND calc_knowledge_fragments_is_low_confidence(p_knowledge_fragment_id)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_fragments_is_human_owned
+-- Field: KnowledgeFragments.IsHumanOwned
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_fragments_is_human_owned(p_knowledge_fragment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (calc_knowledge_fragments_owner_role_agent_kind(p_knowledge_fragment_id) = 'Human')::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_fragments_is_ai_validated_by_ai
+-- Field: KnowledgeFragments.IsAiValidatedByAi
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_fragments_is_ai_validated_by_ai(p_knowledge_fragment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((NOT (calc_knowledge_fragments_source_agent_kind(p_knowledge_fragment_id) = 'Human') AND NOT (calc_knowledge_fragments_is_human_owned(p_knowledge_fragment_id))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_fragments_is_overdue_for_review
+-- Field: KnowledgeFragments.IsOverdueForReview
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_fragments_is_overdue_for_review(p_knowledge_fragment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_knowledge_fragments_is_currently_valid(p_knowledge_fragment_id) AND calc_knowledge_fragments_age_days(p_knowledge_fragment_id) > calc_knowledge_fragments_review_cadence_days(p_knowledge_fragment_id)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_fragments_predates_current_role_holder
+-- Field: KnowledgeFragments.PredatesCurrentRoleHolder
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_fragments_predates_current_role_holder(p_knowledge_fragment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_knowledge_fragments_owner_role_agent_kind(p_knowledge_fragment_id) IS NOT NULL AND (SELECT valid_from::timestamptz FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id) < calc_knowledge_fragments_owner_role_assignment_valid_from(p_knowledge_fragment_id)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_gaps_owner_agent
@@ -2478,6 +3094,76 @@ RETURNS BOOLEAN AS $$
   SELECT ((calc_procedure_executions_unclean_step_count(p_procedure_execution_id))::NUMERIC = 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
+-- calc_procedure_executions_count_of_approval_executions
+-- Field: ProcedureExecutions.CountOfApprovalExecutions
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_executions_count_of_approval_executions(p_procedure_execution_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM step_executions WHERE calc_step_executions_is_approval_execution(step_execution_id) = TRUE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_executions_has_human_approval
+-- Field: ProcedureExecutions.HasHumanApproval
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_executions_has_human_approval(p_procedure_execution_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_procedure_executions_count_of_approval_executions(p_procedure_execution_id))::NUMERIC > 0)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_executions_count_of_delivery_executions
+-- Field: ProcedureExecutions.CountOfDeliveryExecutions
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_executions_count_of_delivery_executions(p_procedure_execution_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM step_executions WHERE step = 'policy-07'))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_executions_has_delivered
+-- Field: ProcedureExecutions.HasDelivered
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_executions_has_delivered(p_procedure_execution_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_procedure_executions_count_of_delivery_executions(p_procedure_execution_id))::NUMERIC > 0)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_executions_delivered_without_approval
+-- Field: ProcedureExecutions.DeliveredWithoutApproval
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_executions_delivered_without_approval(p_procedure_execution_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_procedure_executions_has_delivered(p_procedure_execution_id) AND NOT (calc_procedure_executions_has_human_approval(p_procedure_execution_id))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_executions_invalid_approval_count
+-- Field: ProcedureExecutions.InvalidApprovalCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_executions_invalid_approval_count(p_procedure_execution_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM requirement_satisfactions WHERE calc_requirement_satisfactions_run_when_invalid_approval(requirement_satisfaction_id) = (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_executions_approval_chain_is_complete
+-- Field: ProcedureExecutions.ApprovalChainIsComplete
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_executions_approval_chain_is_complete(p_procedure_execution_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_procedure_executions_invalid_approval_count(p_procedure_execution_id))::NUMERIC = 0)::boolean;
+$$ LANGUAGE sql STABLE;
+
 -- calc_step_executions_expected_duration_minutes
 -- Field: StepExecutions.ExpectedDurationMinutes
 -- Type: lookup | DataType: integer | Returns: INTEGER
@@ -2630,6 +3316,61 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_step_executions_required_blocking_count(p_step_execution_id TEXT)
 RETURNS NUMERIC AS $$
   SELECT calc_steps_blocking_requirement_count((SELECT step FROM step_executions WHERE step_execution_id = p_step_execution_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_step_executions_executing_agent_kind
+-- Field: StepExecutions.ExecutingAgentKind
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: AgentKind from related Agents
+
+
+CREATE OR REPLACE FUNCTION calc_step_executions_executing_agent_kind(p_step_execution_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT agent_kind::text FROM agents WHERE agent_id = (SELECT executed_by_agent FROM step_executions WHERE step_execution_id = p_step_execution_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_step_executions_step_is_software_assigned
+-- Field: StepExecutions.StepIsSoftwareAssigned
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: IsSoftwareAssigned from related Steps
+
+
+CREATE OR REPLACE FUNCTION calc_step_executions_step_is_software_assigned(p_step_execution_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_steps_is_software_assigned((SELECT step FROM step_executions WHERE step_execution_id = p_step_execution_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_step_executions_is_approval_execution
+-- Field: StepExecutions.IsApprovalExecution
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: IsHumanApprovalGate from related Steps
+
+
+CREATE OR REPLACE FUNCTION calc_step_executions_is_approval_execution(p_step_execution_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_steps_is_human_approval_gate((SELECT step FROM step_executions WHERE step_execution_id = p_step_execution_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_step_executions_requires_human_confirmation
+-- Field: StepExecutions.RequiresHumanConfirmation
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: RequiresHumanConfirmation from related Steps
+
+
+CREATE OR REPLACE FUNCTION calc_step_executions_requires_human_confirmation(p_step_execution_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT requires_human_confirmation::boolean FROM steps WHERE step_id = (SELECT step FROM step_executions WHERE step_execution_id = p_step_execution_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_step_executions_inputs_were_usable
+-- Field: StepExecutions.InputsWereUsable
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: AllSourcesUsable from related Steps
+
+
+CREATE OR REPLACE FUNCTION calc_step_executions_inputs_were_usable(p_step_execution_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_steps_all_sources_usable((SELECT step FROM step_executions WHERE step_execution_id = p_step_execution_id));
 $$ LANGUAGE sql STABLE;
 
 -- get_procedure_executions_execution_status
@@ -3186,6 +3927,66 @@ RETURNS BOOLEAN AS $$
   SELECT (calc_step_executions_evaluated_requirement_count(p_step_execution_id) < calc_step_executions_required_blocking_count(p_step_execution_id))::boolean;
 $$ LANGUAGE sql STABLE;
 
+-- calc_step_executions_was_executed_by_software
+-- Field: StepExecutions.WasExecutedBySoftware
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_step_executions_was_executed_by_software(p_step_execution_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_step_executions_executing_agent_kind(p_step_execution_id) = 'AIAgent' OR calc_step_executions_executing_agent_kind(p_step_execution_id) = 'AutomatedPipeline'))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_step_executions_software_did_human_work
+-- Field: StepExecutions.SoftwareDidHumanWork
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_step_executions_software_did_human_work(p_step_execution_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_step_executions_was_executed_by_software(p_step_execution_id) AND NOT (calc_step_executions_step_is_software_assigned(p_step_execution_id))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_step_executions_is_verified
+-- Field: StepExecutions.IsVerified
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_step_executions_is_verified(p_step_execution_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((SELECT NULLIF(verification_result, '') FROM step_executions WHERE step_execution_id = p_step_execution_id) IS NOT NULL AND (SELECT NULLIF(verification_result, '') FROM step_executions WHERE step_execution_id = p_step_execution_id) <> 'PENDING' AND (SELECT NULLIF(verification_result, '') FROM step_executions WHERE step_execution_id = p_step_execution_id) <> 'FAIL'))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_step_executions_unconfirmed_non_human_decision_count
+-- Field: StepExecutions.UnconfirmedNonHumanDecisionCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_step_executions_unconfirmed_non_human_decision_count(p_step_execution_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM agent_decision_records WHERE calc_agent_decision_records_step_execution_when_unconfirmed(agent_decision_record_id) = (SELECT NULLIF(step_execution_id, '') FROM step_executions WHERE step_execution_id = p_step_execution_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_step_executions_human_confirmation_missing
+-- Field: StepExecutions.HumanConfirmationMissing
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_step_executions_human_confirmation_missing(p_step_execution_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_step_executions_requires_human_confirmation(p_step_execution_id) AND (calc_step_executions_unconfirmed_non_human_decision_count(p_step_execution_id))::NUMERIC > 0));
+$$ LANGUAGE sql STABLE;
+
+-- calc_step_executions_drafted_from_unusable_source
+-- Field: StepExecutions.DraftedFromUnusableSource
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_step_executions_drafted_from_unusable_source(p_step_execution_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((SELECT NULLIF(execution_status, '') FROM step_executions WHERE step_execution_id = p_step_execution_id) = 'Completed' AND NOT (calc_step_executions_inputs_were_usable(p_step_execution_id))))::boolean;
+$$ LANGUAGE sql STABLE;
+
 -- calc_requirement_satisfactions_requirement_is_blocking
 -- Field: RequirementSatisfactions.RequirementIsBlocking
 -- Type: lookup | DataType: boolean | Returns: BOOLEAN
@@ -3226,6 +4027,28 @@ $$ LANGUAGE sql STABLE;
 
 
 CREATE OR REPLACE FUNCTION calc_requirement_satisfactions_parent_procedure_execution(p_requirement_satisfaction_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT procedure_execution::text FROM step_executions WHERE step_execution_id = (SELECT step_execution FROM requirement_satisfactions WHERE requirement_satisfaction_id = p_requirement_satisfaction_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_requirement_satisfactions_requirement_is_approval_type
+-- Field: RequirementSatisfactions.RequirementIsApprovalType
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: RequirementType from related Requirements
+
+
+CREATE OR REPLACE FUNCTION calc_requirement_satisfactions_requirement_is_approval_type(p_requirement_satisfaction_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT requirement_type::text FROM requirements WHERE requirement_id = (SELECT requirement FROM requirement_satisfactions WHERE requirement_satisfaction_id = p_requirement_satisfaction_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_requirement_satisfactions_procedure_execution_of_satisfact
+-- Field: RequirementSatisfactions.ProcedureExecutionOfSatisfaction
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: ProcedureExecution from related StepExecutions
+
+
+CREATE OR REPLACE FUNCTION calc_requirement_satisfactions_procedure_execution_of_satisfact(p_requirement_satisfaction_id TEXT)
 RETURNS TEXT AS $$
   SELECT (SELECT procedure_execution::text FROM step_executions WHERE step_execution_id = (SELECT step_execution FROM requirement_satisfactions WHERE requirement_satisfaction_id = p_requirement_satisfaction_id));
 $$ LANGUAGE sql STABLE;
@@ -3382,6 +4205,36 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_requirement_satisfactions_step_execution_when_scored(p_requirement_satisfaction_id TEXT)
 RETURNS TEXT AS $$
   SELECT (CASE WHEN (SELECT NULLIF(satisfaction_level, '') FROM requirement_satisfactions WHERE requirement_satisfaction_id = p_requirement_satisfaction_id) IS NOT NULL THEN ((SELECT NULLIF(step_execution, '') FROM requirement_satisfactions WHERE requirement_satisfaction_id = p_requirement_satisfaction_id))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_requirement_satisfactions_is_human_evaluated
+-- Field: RequirementSatisfactions.IsHumanEvaluated
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_requirement_satisfactions_is_human_evaluated(p_requirement_satisfaction_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (calc_requirement_satisfactions_evaluator_agent_kind(p_requirement_satisfaction_id) = 'Human')::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_requirement_satisfactions_is_invalid_approval
+-- Field: RequirementSatisfactions.IsInvalidApproval
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_requirement_satisfactions_is_invalid_approval(p_requirement_satisfaction_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_requirement_satisfactions_requirement_is_approval_type(p_requirement_satisfaction_id) = 'Approval' AND (NOT (calc_requirement_satisfactions_is_fully_satisfied(p_requirement_satisfaction_id)) OR NOT (calc_requirement_satisfactions_is_human_evaluated(p_requirement_satisfaction_id)))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_requirement_satisfactions_run_when_invalid_approval
+-- Field: RequirementSatisfactions.RunWhenInvalidApproval
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_requirement_satisfactions_run_when_invalid_approval(p_requirement_satisfaction_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_requirement_satisfactions_is_invalid_approval(p_requirement_satisfaction_id) THEN (calc_requirement_satisfactions_procedure_execution_of_satisfact(p_requirement_satisfaction_id))::text ELSE ('')::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_errors_name
@@ -3576,6 +4429,28 @@ RETURNS TEXT AS $$
   SELECT (SELECT current_agent::text FROM roles WHERE role_id = (SELECT authority_role FROM change_requests WHERE change_request_id = p_change_request_id));
 $$ LANGUAGE sql STABLE;
 
+-- calc_change_requests_authority_role_label
+-- Field: ChangeRequests.AuthorityRoleLabel
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Label from related Roles
+
+
+CREATE OR REPLACE FUNCTION calc_change_requests_authority_role_label(p_change_request_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT label::text FROM roles WHERE role_id = (SELECT authority_role FROM change_requests WHERE change_request_id = p_change_request_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_change_requests_touches_live_version
+-- Field: ChangeRequests.TouchesLiveVersion
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: IsLive from related ProcedureVersions
+
+
+CREATE OR REPLACE FUNCTION calc_change_requests_touches_live_version(p_change_request_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_procedure_versions_is_live((SELECT procedure_version FROM change_requests WHERE change_request_id = p_change_request_id));
+$$ LANGUAGE sql STABLE;
+
 -- calc_change_requests_name
 -- Field: ChangeRequests.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -3656,6 +4531,36 @@ RETURNS BOOLEAN AS $$
   SELECT ((SELECT NULLIF(requested_by_agent, '') FROM change_requests WHERE change_request_id = p_change_request_id) = calc_change_requests_authority_agent(p_change_request_id))::boolean;
 $$ LANGUAGE sql STABLE;
 
+-- calc_change_requests_awaits_authority_decision
+-- Field: ChangeRequests.AwaitsAuthorityDecision
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_change_requests_awaits_authority_decision(p_change_request_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((SELECT NULLIF(status, '') FROM change_requests WHERE change_request_id = p_change_request_id) = 'UnderReview' AND NOT (calc_change_requests_is_decided(p_change_request_id))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_change_requests_is_live_decision_backlog
+-- Field: ChangeRequests.IsLiveDecisionBacklog
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_change_requests_is_live_decision_backlog(p_change_request_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_change_requests_awaits_authority_decision(p_change_request_id) AND calc_change_requests_touches_live_version(p_change_request_id)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_change_requests_blocks_an_open_gap
+-- Field: ChangeRequests.BlocksAnOpenGap
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_change_requests_blocks_an_open_gap(p_change_request_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_change_requests_is_live_decision_backlog(p_change_request_id) AND (SELECT NULLIF(change_kind, '') FROM change_requests WHERE change_request_id = p_change_request_id) = 'Enhancement'))::boolean;
+$$ LANGUAGE sql STABLE;
+
 -- calc_review_events_as_of_instant
 -- Field: ReviewEvents.AsOfInstant
 -- Type: lookup | DataType: datetime | Returns: TIMESTAMPTZ
@@ -3676,69 +4581,6 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_review_events_promised_cadence_days(p_review_event_id TEXT)
 RETURNS NUMERIC AS $$
   SELECT calc_procedure_versions_steward_review_cadence_days((SELECT procedure_version FROM review_events WHERE review_event_id = p_review_event_id));
-$$ LANGUAGE sql STABLE;
-
--- get_change_requests_title
--- Helper function: Get Title from ChangeRequests by ChangeRequestId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_change_requests_title(p_change_request_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT title FROM change_requests WHERE change_request_id = p_change_request_id);
-$$ LANGUAGE sql STABLE;
-
--- get_change_requests_change_kind
--- Helper function: Get ChangeKind from ChangeRequests by ChangeRequestId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_change_requests_change_kind(p_change_request_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT change_kind FROM change_requests WHERE change_request_id = p_change_request_id);
-$$ LANGUAGE sql STABLE;
-
--- get_change_requests_status
--- Helper function: Get Status from ChangeRequests by ChangeRequestId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_change_requests_status(p_change_request_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT status FROM change_requests WHERE change_request_id = p_change_request_id);
-$$ LANGUAGE sql STABLE;
-
--- get_change_requests_requested_at
--- Helper function: Get RequestedAt from ChangeRequests by ChangeRequestId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_change_requests_requested_at(p_change_request_id TEXT)
-RETURNS TIMESTAMPTZ AS $$
-  SELECT (SELECT requested_at FROM change_requests WHERE change_request_id = p_change_request_id);
-$$ LANGUAGE sql STABLE;
-
--- get_change_requests_decided_at
--- Helper function: Get DecidedAt from ChangeRequests by ChangeRequestId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_change_requests_decided_at(p_change_request_id TEXT)
-RETURNS TIMESTAMPTZ AS $$
-  SELECT (SELECT decided_at FROM change_requests WHERE change_request_id = p_change_request_id);
-$$ LANGUAGE sql STABLE;
-
--- get_change_requests_impact_assessment
--- Helper function: Get ImpactAssessment from ChangeRequests by ChangeRequestId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_change_requests_impact_assessment(p_change_request_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT impact_assessment FROM change_requests WHERE change_request_id = p_change_request_id);
-$$ LANGUAGE sql STABLE;
-
--- get_change_requests_semantic_type_iri
--- Helper function: Get SemanticTypeIri from ChangeRequests by ChangeRequestId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_change_requests_semantic_type_iri(p_change_request_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT semantic_type_iri FROM change_requests WHERE change_request_id = p_change_request_id);
 $$ LANGUAGE sql STABLE;
 
 -- calc_review_events_name
@@ -3832,6 +4674,17 @@ RETURNS TIMESTAMPTZ AS $$
   SELECT (SELECT as_of_instant::timestamptz FROM evaluation_contexts WHERE evaluation_context_id = (SELECT evaluation_context FROM operational_bindings WHERE operational_binding_id = p_operational_binding_id));
 $$ LANGUAGE sql STABLE;
 
+-- calc_operational_bindings_resource_is_approved
+-- Field: OperationalBindings.ResourceIsApproved
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: IsApprovedSource from related Resources
+
+
+CREATE OR REPLACE FUNCTION calc_operational_bindings_resource_is_approved(p_operational_binding_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_resources_is_approved_source((SELECT resource FROM operational_bindings WHERE operational_binding_id = p_operational_binding_id));
+$$ LANGUAGE sql STABLE;
+
 -- calc_operational_bindings_name
 -- Field: OperationalBindings.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -3900,6 +4753,26 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_operational_bindings_step_when_stale(p_operational_binding_id TEXT)
 RETURNS TEXT AS $$
   SELECT (CASE WHEN calc_operational_bindings_is_stale_and_authoritative(p_operational_binding_id) THEN ((SELECT NULLIF(step, '') FROM operational_bindings WHERE operational_binding_id = p_operational_binding_id))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_operational_bindings_is_usable_for_drafting
+-- Field: OperationalBindings.IsUsableForDrafting
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_operational_bindings_is_usable_for_drafting(p_operational_binding_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_operational_bindings_resource_is_approved(p_operational_binding_id) AND calc_operational_bindings_is_fresh(p_operational_binding_id)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_operational_bindings_step_when_unusable
+-- Field: OperationalBindings.StepWhenUnusable
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_operational_bindings_step_when_unusable(p_operational_binding_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_operational_bindings_is_usable_for_drafting(p_operational_binding_id) THEN ('')::text ELSE ((SELECT NULLIF(step, '') FROM operational_bindings WHERE operational_binding_id = p_operational_binding_id))::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_communication_policies_name
@@ -6195,6 +7068,28 @@ RETURNS TEXT AS $$
   SELECT (SELECT agent_kind::text FROM agents WHERE agent_id = (SELECT deciding_agent FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id));
 $$ LANGUAGE sql STABLE;
 
+-- calc_agent_decision_records_step_of_decision
+-- Field: AgentDecisionRecords.StepOfDecision
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Step from related StepExecutions
+
+
+CREATE OR REPLACE FUNCTION calc_agent_decision_records_step_of_decision(p_agent_decision_record_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT step::text FROM step_executions WHERE step_execution_id = (SELECT step_execution FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_agent_decision_records_reviewer_agent_kind
+-- Field: AgentDecisionRecords.ReviewerAgentKind
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: AgentKind from related Agents
+
+
+CREATE OR REPLACE FUNCTION calc_agent_decision_records_reviewer_agent_kind(p_agent_decision_record_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT agent_kind::text FROM agents WHERE agent_id = (SELECT reviewed_by_agent FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id));
+$$ LANGUAGE sql STABLE;
+
 -- calc_agent_decision_records_name
 -- Field: AgentDecisionRecords.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -6233,6 +7128,341 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_agent_decision_records_deciding_agent_when_overridden(p_agent_decision_record_id TEXT)
 RETURNS TEXT AS $$
   SELECT (CASE WHEN calc_agent_decision_records_was_overridden(p_agent_decision_record_id) THEN ((SELECT NULLIF(deciding_agent, '') FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_agent_decision_records_role_assignment_when_scored
+-- Field: AgentDecisionRecords.RoleAssignmentWhenScored
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_agent_decision_records_role_assignment_when_scored(p_agent_decision_record_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN (SELECT NULLIF(under_role_assignment, '') FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id) IS NOT NULL THEN ((SELECT NULLIF(under_role_assignment, '') FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_agent_decision_records_role_assignment_when_overridden
+-- Field: AgentDecisionRecords.RoleAssignmentWhenOverridden
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_agent_decision_records_role_assignment_when_overridden(p_agent_decision_record_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_agent_decision_records_was_overridden(p_agent_decision_record_id) THEN ((SELECT NULLIF(under_role_assignment, '') FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_agent_decision_records_boundary_match_key
+-- Field: AgentDecisionRecords.BoundaryMatchKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_agent_decision_records_boundary_match_key(p_agent_decision_record_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT(calc_agent_decision_records_step_of_decision(p_agent_decision_record_id), '|', calc_agent_decision_records_deciding_agent_kind(p_agent_decision_record_id), '|', (SELECT NULLIF(decision_kind, '') FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_agent_decision_records_matching_boundary_count
+-- Field: AgentDecisionRecords.MatchingBoundaryCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_agent_decision_records_matching_boundary_count(p_agent_decision_record_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM authority_boundaries WHERE calc_authority_boundaries_boundary_match_key(authority_boundary_id) = calc_agent_decision_records_boundary_match_key(p_agent_decision_record_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_agent_decision_records_violated_authority_boundary
+-- Field: AgentDecisionRecords.ViolatedAuthorityBoundary
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_agent_decision_records_violated_authority_boundary(p_agent_decision_record_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_agent_decision_records_matching_boundary_count(p_agent_decision_record_id))::NUMERIC > 0)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_agent_decision_records_has_human_confirmation
+-- Field: AgentDecisionRecords.HasHumanConfirmation
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_agent_decision_records_has_human_confirmation(p_agent_decision_record_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_agent_decision_records_reviewer_agent_kind(p_agent_decision_record_id) = 'Human' AND (SELECT NULLIF(human_disposition, '') FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id) IS NOT NULL AND (SELECT NULLIF(human_disposition, '') FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id) <> 'NotReviewed'))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_agent_decision_records_needs_human_confirmation
+-- Field: AgentDecisionRecords.NeedsHumanConfirmation
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_agent_decision_records_needs_human_confirmation(p_agent_decision_record_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((NOT (calc_agent_decision_records_deciding_agent_kind(p_agent_decision_record_id) = 'Human') AND ((SELECT NULLIF(materiality_band, '') FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id) = 'Material' OR (SELECT NULLIF(materiality_band, '') FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id) = 'Escalated')))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_agent_decision_records_is_unconfirmed_non_human_decision
+-- Field: AgentDecisionRecords.IsUnconfirmedNonHumanDecision
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_agent_decision_records_is_unconfirmed_non_human_decision(p_agent_decision_record_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_agent_decision_records_needs_human_confirmation(p_agent_decision_record_id) AND NOT (calc_agent_decision_records_has_human_confirmation(p_agent_decision_record_id))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_agent_decision_records_step_execution_when_unconfirmed
+-- Field: AgentDecisionRecords.StepExecutionWhenUnconfirmed
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_agent_decision_records_step_execution_when_unconfirmed(p_agent_decision_record_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_agent_decision_records_is_unconfirmed_non_human_decision(p_agent_decision_record_id) THEN ((SELECT NULLIF(step_execution, '') FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_agent_decision_records_agent_when_boundary_violated
+-- Field: AgentDecisionRecords.AgentWhenBoundaryViolated
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_agent_decision_records_agent_when_boundary_violated(p_agent_decision_record_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_agent_decision_records_violated_authority_boundary(p_agent_decision_record_id) THEN ((SELECT NULLIF(deciding_agent, '') FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_agent_decision_records_review_latency_minutes
+-- Field: AgentDecisionRecords.ReviewLatencyMinutes
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_agent_decision_records_review_latency_minutes(p_agent_decision_record_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (CASE WHEN (SELECT reviewed_at::timestamptz FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id) IS NULL THEN (0)::text ELSE ((EXTRACT(EPOCH FROM ((SELECT reviewed_at::timestamptz FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id)::timestamp - (SELECT decided_at::timestamptz FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id)::timestamp)) / 60))::text END)::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_agent_decision_records_is_draft_kind
+-- Field: AgentDecisionRecords.IsDraftKind
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_agent_decision_records_is_draft_kind(p_agent_decision_record_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((SELECT NULLIF(decision_kind, '') FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id) = 'Draft' OR (SELECT NULLIF(decision_kind, '') FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id) = 'Commitment'))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_agent_decision_records_agent_when_draft_overridden
+-- Field: AgentDecisionRecords.AgentWhenDraftOverridden
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_agent_decision_records_agent_when_draft_overridden(p_agent_decision_record_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN (calc_agent_decision_records_is_draft_kind(p_agent_decision_record_id) AND calc_agent_decision_records_was_overridden(p_agent_decision_record_id)) THEN ((SELECT NULLIF(deciding_agent, '') FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_agent_decision_records_agent_when_draft
+-- Field: AgentDecisionRecords.AgentWhenDraft
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_agent_decision_records_agent_when_draft(p_agent_decision_record_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_agent_decision_records_is_draft_kind(p_agent_decision_record_id) THEN ((SELECT NULLIF(deciding_agent, '') FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_delivered_communications_authorized_at
+-- Field: DeliveredCommunications.AuthorizedAt
+-- Type: lookup | DataType: datetime | Returns: TIMESTAMPTZ
+-- Lookup: EndedAt from related StepExecutions
+
+
+CREATE OR REPLACE FUNCTION calc_delivered_communications_authorized_at(p_delivered_communication_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT ended_at::timestamptz FROM step_executions WHERE step_execution_id = (SELECT authorizing_step_execution FROM delivered_communications WHERE delivered_communication_id = p_delivered_communication_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_delivered_communications_name
+-- Field: DeliveredCommunications.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_delivered_communications_name(p_delivered_communication_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT((SELECT NULLIF(channel, '') FROM delivered_communications WHERE delivered_communication_id = p_delivered_communication_id), ' -> ', (SELECT NULLIF(recipient_key, '') FROM delivered_communications WHERE delivered_communication_id = p_delivered_communication_id), ' @ ', (SELECT sent_at::timestamptz FROM delivered_communications WHERE delivered_communication_id = p_delivered_communication_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_delivered_communications_has_authorization
+-- Field: DeliveredCommunications.HasAuthorization
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_delivered_communications_has_authorization(p_delivered_communication_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((SELECT NULLIF(authorizing_step_execution, '') FROM delivered_communications WHERE delivered_communication_id = p_delivered_communication_id) IS NOT NULL)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_delivered_communications_content_matches_approval
+-- Field: DeliveredCommunications.ContentMatchesApproval
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_delivered_communications_content_matches_approval(p_delivered_communication_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((SELECT NULLIF(rendered_content_hash, '') FROM delivered_communications WHERE delivered_communication_id = p_delivered_communication_id) = (SELECT NULLIF(approved_content_hash, '') FROM delivered_communications WHERE delivered_communication_id = p_delivered_communication_id))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_delivered_communications_was_approved_before_sending
+-- Field: DeliveredCommunications.WasApprovedBeforeSending
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_delivered_communications_was_approved_before_sending(p_delivered_communication_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (calc_delivered_communications_authorized_at(p_delivered_communication_id) <= (SELECT sent_at::timestamptz FROM delivered_communications WHERE delivered_communication_id = p_delivered_communication_id))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_delivered_communications_is_defensible
+-- Field: DeliveredCommunications.IsDefensible
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_delivered_communications_is_defensible(p_delivered_communication_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_delivered_communications_has_authorization(p_delivered_communication_id) AND calc_delivered_communications_content_matches_approval(p_delivered_communication_id) AND calc_delivered_communications_was_approved_before_sending(p_delivered_communication_id)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_authority_boundaries_ratifying_fragment_is_valid
+-- Field: AuthorityBoundaries.RatifyingFragmentIsValid
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: IsCurrentlyValid from related KnowledgeFragments
+
+
+CREATE OR REPLACE FUNCTION calc_authority_boundaries_ratifying_fragment_is_valid(p_authority_boundary_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_knowledge_fragments_is_currently_valid((SELECT ratified_by_knowledge_fragment FROM authority_boundaries WHERE authority_boundary_id = p_authority_boundary_id));
+$$ LANGUAGE sql STABLE;
+
+-- get_knowledge_fragments_knowledge_form
+-- Helper function: Get KnowledgeForm from KnowledgeFragments by KnowledgeFragmentId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_knowledge_fragments_knowledge_form(p_knowledge_fragment_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT knowledge_form FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_knowledge_fragments_statement
+-- Helper function: Get Statement from KnowledgeFragments by KnowledgeFragmentId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_knowledge_fragments_statement(p_knowledge_fragment_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT statement FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_knowledge_fragments_confidence
+-- Helper function: Get Confidence from KnowledgeFragments by KnowledgeFragmentId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_knowledge_fragments_confidence(p_knowledge_fragment_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT confidence FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_knowledge_fragments_valid_from
+-- Helper function: Get ValidFrom from KnowledgeFragments by KnowledgeFragmentId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_knowledge_fragments_valid_from(p_knowledge_fragment_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT valid_from FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_knowledge_fragments_valid_to
+-- Helper function: Get ValidTo from KnowledgeFragments by KnowledgeFragmentId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_knowledge_fragments_valid_to(p_knowledge_fragment_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT valid_to FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_knowledge_fragments_status
+-- Helper function: Get Status from KnowledgeFragments by KnowledgeFragmentId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_knowledge_fragments_status(p_knowledge_fragment_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT status FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_knowledge_fragments_semantic_type_iri
+-- Helper function: Get SemanticTypeIri from KnowledgeFragments by KnowledgeFragmentId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_knowledge_fragments_semantic_type_iri(p_knowledge_fragment_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT semantic_type_iri FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id);
+$$ LANGUAGE sql STABLE;
+
+-- calc_authority_boundaries_name
+-- Field: AuthorityBoundaries.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_authority_boundaries_name(p_authority_boundary_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT((SELECT NULLIF(forbidden_agent_kind, '') FROM authority_boundaries WHERE authority_boundary_id = p_authority_boundary_id), ' may not ', (SELECT NULLIF(forbidden_decision_kind, '') FROM authority_boundaries WHERE authority_boundary_id = p_authority_boundary_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_authority_boundaries_is_currently_binding
+-- Field: AuthorityBoundaries.IsCurrentlyBinding
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_authority_boundaries_is_currently_binding(p_authority_boundary_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((SELECT NULLIF(status, '') FROM authority_boundaries WHERE authority_boundary_id = p_authority_boundary_id) = 'Approved' AND (SELECT valid_from::timestamptz FROM authority_boundaries WHERE authority_boundary_id = p_authority_boundary_id) <= CURRENT_TIMESTAMP AND ((SELECT valid_to::timestamptz FROM authority_boundaries WHERE authority_boundary_id = p_authority_boundary_id) IS NULL OR (SELECT valid_to::timestamptz FROM authority_boundaries WHERE authority_boundary_id = p_authority_boundary_id) > CURRENT_TIMESTAMP)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_authority_boundaries_step_when_binding
+-- Field: AuthorityBoundaries.StepWhenBinding
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_authority_boundaries_step_when_binding(p_authority_boundary_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_authority_boundaries_is_currently_binding(p_authority_boundary_id) THEN ((SELECT NULLIF(step, '') FROM authority_boundaries WHERE authority_boundary_id = p_authority_boundary_id))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_authority_boundaries_boundary_match_key
+-- Field: AuthorityBoundaries.BoundaryMatchKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_authority_boundaries_boundary_match_key(p_authority_boundary_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT((SELECT NULLIF(step, '') FROM authority_boundaries WHERE authority_boundary_id = p_authority_boundary_id), '|', (SELECT NULLIF(forbidden_agent_kind, '') FROM authority_boundaries WHERE authority_boundary_id = p_authority_boundary_id), '|', (SELECT NULLIF(forbidden_decision_kind, '') FROM authority_boundaries WHERE authority_boundary_id = p_authority_boundary_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_authority_boundaries_violation_count
+-- Field: AuthorityBoundaries.ViolationCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_authority_boundaries_violation_count(p_authority_boundary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM agent_decision_records WHERE calc_agent_decision_records_boundary_match_key(agent_decision_record_id) = calc_authority_boundaries_boundary_match_key(p_authority_boundary_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_authority_boundaries_is_untested
+-- Field: AuthorityBoundaries.IsUntested
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_authority_boundaries_is_untested(p_authority_boundary_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_authority_boundaries_is_currently_binding(p_authority_boundary_id) AND (calc_authority_boundaries_violation_count(p_authority_boundary_id))::NUMERIC = 0));
 $$ LANGUAGE sql STABLE;
 
 -- ============================================================================
