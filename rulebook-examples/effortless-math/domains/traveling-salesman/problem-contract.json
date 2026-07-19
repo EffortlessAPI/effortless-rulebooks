@@ -1007,12 +1007,12 @@
     {
       "LoopOrder": 675,
       "LoopId": "tsp-loop-675",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "The BOUNDARY_DOMINANCE_TRAP family is declared but tsp-holdout-dominance7-7 has no canonical graph rows.",
       "ClosureCriterion": "Materialize a deterministic 7-stop BOUNDARY_DOMINANCE_TRAP graph as HELD_OUT data without using its exact optimum to alter weights or the semantic basis.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Materialized tsp-holdout-dominance7-7 as frozen held-out graph data.",
+      "Result": "7 stops, 21 canonical edge rows, family BOUNDARY_DOMINANCE_TRAP, OracleStatus=PENDING; no weight was selected from an optimum result.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 676,
@@ -1486,11 +1486,11 @@
   "Acceptance": {
     "RulebookTables": 45,
     "Cities": 1,
-    "Neighborhoods": 22,
-    "Addresses": 76,
-    "TSPInstances": 14,
-    "InstanceStops": 84,
-    "TravelEdges": 229,
+    "Neighborhoods": 24,
+    "Addresses": 83,
+    "TSPInstances": 15,
+    "InstanceStops": 91,
+    "TravelEdges": 250,
     "CandidateTours": 17,
     "TSPLoops": 134,
     "FrontierObligations": 33,
@@ -1505,7 +1505,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 710,
-    "HighestCompletedLoop": 674,
+    "HighestCompletedLoop": 675,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 16,
     "SelectedNotForcedEdgeStates": 5,
@@ -1547,8 +1547,8 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 66,
     "ClusterContractionCertificates": 7,
-    "ConvergenceMeasurements": 78,
-    "ConceptRegistry": 130,
+    "ConvergenceMeasurements": 79,
+    "ConceptRegistry": 131,
     "DefectProfiles": 28,
     "BoundTerms": 8,
     "WitnessNormalForms": 28,
@@ -1582,7 +1582,7 @@
     "DevelopmentMaxExactClassCount": 20160
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:d2b5e2663641d1d841beabebfd4f559b385cf374ee1f40b1fe196ed4d0ee0cd5",
+    "rulebook": "sha256:2b60c58d21e2c38844d608561e5a5195a1d28df5daf46f59a86f6fde5d62c5f3",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
