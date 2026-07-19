@@ -1,7 +1,7 @@
 {
-  "$schema": "urn:example:way2:1.0.0",
+  "$schema": "urn:example:bpm-process-export:1.0.0",
   "standard": {
-    "name": "Way2 Process Rules",
+    "name": "BPM Process Export",
     "version": "1.0.0"
   },
   "organization": {
@@ -25,7 +25,7 @@
       "created_by_agent": "devon-okafor",
       "modified_by_agent": "devon-okafor",
       "issued_at": "2026-07-19T12:00:00-05:00",
-      "version_motivation": "Demonstrate a Way2-to-PKO adapter.",
+      "version_motivation": "Demonstrate a BPM-process-export-to-PKO adapter.",
       "roles": [
         {
           "id": "accounts-payable-specialist",

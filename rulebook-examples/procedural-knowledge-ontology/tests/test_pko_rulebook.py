@@ -17,7 +17,7 @@ from pko_rulebook_tool import (  # noqa: E402
     render_text_email_policies,
     validate_rulebook,
 )
-from way2_rulebook_to_pko import transform  # noqa: E402
+from bpm_process_export_to_pko import transform  # noqa: E402
 
 
 class PkoRulebookTests(unittest.TestCase):
@@ -62,8 +62,8 @@ class PkoRulebookTests(unittest.TestCase):
         self.assertIn("Role history", rendered)
         self.assertIn("Operational bindings", rendered)
 
-    def test_way2_adapter_unlocks_existing_projection(self) -> None:
-        source = json.loads((ROOT / "examples" / "way2-vendor-payment.json").read_text(encoding="utf-8"))
+    def test_bpm_adapter_unlocks_existing_projection(self) -> None:
+        source = json.loads((ROOT / "examples" / "bpm-vendor-payment.json").read_text(encoding="utf-8"))
         transformed = transform(source, self.rulebook)
         self.assertEqual([], validate_rulebook(transformed))
         rendered = render_financial_sops(transformed)

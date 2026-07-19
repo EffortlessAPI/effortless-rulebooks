@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Example adapter from a simple "Way2" process JSON into the canonical ERB-PKO rulebook.
+"""Example adapter from a simple "BPM process export" process JSON into the canonical ERB-PKO rulebook.
 
 The adapter demonstrates the n+1 economics: once a source representation maps
 to the canonical PKO rulebook, every existing PKO projection becomes available.
@@ -99,7 +99,7 @@ def ensure_role(rulebook: dict[str, Any], value: Mapping[str, Any], default_org:
             "Label": str(value.get("label") or role_id),
             "Organization": str(value.get("organization") or default_org),
             "CurrentAgent": agent_id,
-            "Responsibility": str(value.get("responsibility") or "Imported Way2 process responsibility."),
+            "Responsibility": str(value.get("responsibility") or "Imported BPM process responsibility."),
             "SemanticTypeIri": "http://purl.org/spar/pro/Role",
         },
     )
@@ -107,12 +107,12 @@ def ensure_role(rulebook: dict[str, Any], value: Mapping[str, Any], default_org:
         rulebook,
         "RoleAssignments",
         {
-            "RoleAssignmentId": f"way2-{role_id}-assignment",
+            "RoleAssignmentId": f"bpm-{role_id}-assignment",
             "Role": role_id,
             "Agent": agent_id,
             "ValidFrom": str(value.get("valid_from") or "2026-01-01T00:00:00Z"),
             "ValidTo": value.get("valid_to"),
-            "Reason": "Imported from Way2 current assignment.",
+            "Reason": "Imported from BPM export current assignment.",
             "Status": "Active",
             "SemanticTypeIri": "http://purl.org/spar/pro/RoleInTime",
         },
@@ -130,7 +130,7 @@ def import_process(rulebook: dict[str, Any], process: Mapping[str, Any], default
             {
                 "ProcedureTypeId": type_id,
                 "Label": str(process.get("type_label") or type_id.replace("-", " ").title()),
-                "Definition": "Procedure type imported from Way2.",
+                "Definition": "Procedure type imported from the BPM export.",
                 "SemanticTypeIri": "https://w3id.org/pko#ProcedureType",
             },
         )
@@ -167,8 +167,8 @@ def import_process(rulebook: dict[str, Any], process: Mapping[str, Any], default
             "ModifiedAt": str(process.get("modified_at") or "2026-07-19T12:00:00Z"),
             "CreatedByAgent": str(process.get("created_by_agent") or next(iter(ids(rulebook, "Agents")))),
             "ModifiedByAgent": str(process.get("modified_by_agent") or process.get("created_by_agent") or next(iter(ids(rulebook, "Agents")))),
-            "NewVersionMotivation": str(process.get("version_motivation") or "Imported from Way2."),
-            "ChangelogDescription": str(process.get("changelog") or "Initial Way2 import."),
+            "NewVersionMotivation": str(process.get("version_motivation") or "Imported from the BPM export."),
+            "ChangelogDescription": str(process.get("changelog") or "Initial BPM export import."),
             "IsCurrent": True,
             "SemanticTypeIri": "https://w3id.org/pko#Procedure",
         },
@@ -231,7 +231,7 @@ def import_process(rulebook: dict[str, Any], process: Mapping[str, Any], default
                     "Label": str(req.get("label") or req.get("statement") or req_id)[:120],
                     "RequirementType": str(req.get("type") or "Imported"),
                     "Statement": str(req.get("statement") or ""),
-                    "Rationale": str(req.get("rationale") or "Imported Way2 requirement."),
+                    "Rationale": str(req.get("rationale") or "Imported BPM requirement."),
                     "IsBlocking": bool(req.get("blocking", True)),
                     "SemanticTypeIri": "https://w3id.org/pko#Requirement",
                 },
@@ -347,24 +347,24 @@ def transform(source: Mapping[str, Any], base_rulebook: Mapping[str, Any]) -> di
         standard = {}
     organization = source.get("organization", {"id": "imported-org", "name": "Imported Organization"})
     if not isinstance(organization, Mapping):
-        raise RulebookError("Way2 organization must be an object.")
+        raise RulebookError("BPM export organization must be an object.")
     default_org = ensure_org(rulebook, organization)
 
     processes = source.get("processes", [])
     if not isinstance(processes, list) or not processes:
-        raise RulebookError("Way2 input must contain at least one process.")
+        raise RulebookError("BPM export input must contain at least one process.")
     for process in processes:
         if not isinstance(process, Mapping):
-            raise RulebookError("Each Way2 process must be an object.")
+            raise RulebookError("Each BPM process must be an object.")
         import_process(rulebook, process, default_org)
 
     meta = rulebook.setdefault("_meta", {})
     if isinstance(meta, dict):
         meta.setdefault("adapter_imports", []).append(
             {
-                "source_standard": str(standard.get("name") or "way2"),
+                "source_standard": str(standard.get("name") or "bpm"),
                 "source_version": str(standard.get("version") or "unknown"),
-                "adapter": "way2-rulebook-to-pko/1.0.0",
+                "adapter": "bpm-process-export-to-pko/1.0.0",
                 "pko_target": "https://w3id.org/pko/2.0.0",
             }
         )
@@ -375,8 +375,8 @@ def transform(source: Mapping[str, Any], base_rulebook: Mapping[str, Any]) -> di
 
 
 def main(argv: Sequence[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Convert an example Way2 process model into the canonical ERB-PKO rulebook.")
-    parser.add_argument("-i", "--input", required=True, help="Way2 JSON input.")
+    parser = argparse.ArgumentParser(description="Convert an example BPM process model into the canonical ERB-PKO rulebook.")
+    parser.add_argument("-i", "--input", required=True, help="BPM JSON input.")
     parser.add_argument("-o", "--output", required=True, help="PKO rulebook JSON output.")
     parser.add_argument(
         "--base",

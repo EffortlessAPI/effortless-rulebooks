@@ -68,10 +68,10 @@ run_generate() {
   $PYTHON tools/pko_rulebook_tool.py governance            -i "$RULEBOOK" -o generated/governance.md
   $PYTHON tools/pko_rulebook_tool.py validation-report     -i "$RULEBOOK" -o generated/validation-report.md
 
-  banner "Way2 adapter: foreign format -> canonical PKO -> existing projector"
-  $PYTHON tools/way2_rulebook_to_pko.py -i examples/way2-vendor-payment.json -o generated/way2-imported-pko-rulebook.json
-  $PYTHON tools/pko_rulebook_tool.py financial-sops    -i generated/way2-imported-pko-rulebook.json -o generated/way2-financial-sops.md
-  $PYTHON tools/pko_rulebook_tool.py validation-report -i generated/way2-imported-pko-rulebook.json -o generated/way2-validation-report.md
+  banner "BPM process-export adapter: foreign format -> canonical PKO -> existing projector"
+  $PYTHON tools/bpm_process_export_to_pko.py -i examples/bpm-vendor-payment.json -o generated/bpm-imported-pko-rulebook.json
+  $PYTHON tools/pko_rulebook_tool.py financial-sops    -i generated/bpm-imported-pko-rulebook.json -o generated/bpm-financial-sops.md
+  $PYTHON tools/pko_rulebook_tool.py validation-report -i generated/bpm-imported-pko-rulebook.json -o generated/bpm-validation-report.md
 }
 
 run_test() {

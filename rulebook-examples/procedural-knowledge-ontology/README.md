@@ -57,7 +57,7 @@ See [`PKO-ALIGNMENT.md`](PKO-ALIGNMENT.md).
 ./start.sh open       # full loop, then open the generated documentation
 ```
 
-`./start.sh` is the one command for this domain. It has no server — the deliverables are documents — so start.sh validates the rulebook, regenerates all projections, exercises the Way2 adapter end-to-end, and runs the conformance tests.
+`./start.sh` is the one command for this domain. It has no server — the deliverables are documents — so start.sh validates the rulebook, regenerates all projections, exercises the BPM process-export adapter end-to-end, and runs the conformance tests.
 
 Separately, the standard ERB build produces the plain-English RuleSpeak rendering via the published transpiler:
 
@@ -90,15 +90,15 @@ The generated Markdown files are disposable projections. Edit the rulebook, not 
 
 ## One adapter unlocks every projection
 
-[`tools/way2_rulebook_to_pko.py`](tools/way2_rulebook_to_pko.py) is a deliberately simple example of a source adapter.
+[`tools/bpm_process_export_to_pko.py`](tools/bpm_process_export_to_pko.py) is a deliberately simple example of a source adapter.
 
 ```bash
-./bin/way2-rulebook-to-pko   -i examples/way2-vendor-payment.json   -o generated/way2-imported-pko-rulebook.json
+./bin/bpm-process-export-to-pko   -i examples/bpm-vendor-payment.json   -o generated/bpm-imported-pko-rulebook.json
 
-./bin/pko-rulebook-to-financial-sops   -i generated/way2-imported-pko-rulebook.json   -o generated/way2-financial-sops.md
+./bin/pko-rulebook-to-financial-sops   -i generated/bpm-imported-pko-rulebook.json   -o generated/bpm-financial-sops.md
 ```
 
-The adapter maps a Way2 process into the same canonical PKO rulebook tables:
+The adapter maps a BPM process into the same canonical PKO rulebook tables:
 
 - process -> `Procedures` + `ProcedureVersions`
 - activity -> `Steps`
