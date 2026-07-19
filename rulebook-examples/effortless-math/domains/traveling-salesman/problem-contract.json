@@ -1,11 +1,11 @@
 {
   "ProblemId": "traveling-salesman-semantic-geometry",
-  "Version": "0.7.0-alpha",
+  "Version": "0.7.0",
   "Title": "Traveling Salesman — City / Neighborhood / Address Semantic Geometry",
   "Status": "RESEARCH_PROGRAM",
   "Statement": "Given finite city-scale weighted graphs, represent graph normalization, supplied tours, typed frontier obligations, local-to-global lower bounds, finite optimality certificates, and residual search as executable structural data.",
-  "Scope": "The represented scope includes a typed one-arc/one-rewrite semantic basis, finite three-region repair optimality, and an optimal face whose value is certified while two equal optimal witness classes remain. No general TSP solver, basis-minimality theorem, universal k-region repair theorem, or complexity-class claim is made.",
-  "TrustBoundary": "Input graph weights and membership remain trusted data. Semantic-arc collapse is accepted only through typed signatures and explicit recoverability witnesses. Warranted rewrites retain polarity, termination, and expansion provenance. Generated Postgres remains a peer projection. Coherence convergence is empirical for this domain.",
+  "Scope": "The represented scope includes a frozen one-arc/one-rewrite basis, exact depot-fixed reversal-quotient calibration on six development and twelve held-out finite symmetric instances through nine stops, structural lower-bound and closure audits, and one explicit calibration-only value branch. No general TSP algorithm, universal region-repair theorem, basis-minimality theorem, or complexity-class claim is made.",
+  "TrustBoundary": "Input graph weights, availability, and membership remain trusted data. Exact enumeration is an independent finite calibration substrate, not an automatic structural proof. Structural certificates retain their own warrants. Held-out graphs were fixed before oracle execution. Postgres and Python are peer projections.",
   "Claims": {
     "PEqualsNP": false,
     "UniversalPolynomialNormalization": false,
@@ -52,11 +52,18 @@
     "OptimalFaceValueProofBranchDecisionCount": 0,
     "CoherenceConvergenceObserved": true,
     "CoherenceConvergenceProvedUniversally": false,
-    "ExactHeldOutCalibrationCompleted": false,
+    "ExactHeldOutCalibrationCompleted": true,
     "CalibrationBasisFrozenAtLoop646": true,
     "ExactOracleIsStructuralProof": false,
     "GeneralTSPAlgorithmProved": false,
-    "HeldOutPrimitiveGrowthAllowedWithoutFalsification": false
+    "HeldOutPrimitiveGrowthAllowedWithoutFalsification": false,
+    "HeldOutInstanceCount": 12,
+    "HeldOutExactOracleCoveragePct": 100,
+    "HeldOutValueClosedCount": 5,
+    "HeldOutRouteClosedCount": 3,
+    "HeldOutValueBranchRequiredCount": 7,
+    "FrozenBasisPrimitiveGrowthCount": 0,
+    "PhysicalTableCountLoop710": 45
   },
   "CanonicalAsset": "effortless-rulebook/traveling-salesman-rulebook.json",
   "ExecutionSubstrates": [
@@ -1357,12 +1364,12 @@
     {
       "LoopOrder": 710,
       "LoopId": "tsp-loop-710",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
       "ClosureCriterion": "Seal the frozen-basis held-out campaign, record what generalized and what failed, and preserve all nonclaims.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Sealed the third coherence event through loop 710.",
+      "Result": "Twelve held-out instances are exactly calibrated; value closed=5, route closed=3, value branch required=7; active basis remains one arc/one rewrite and physical tables remain 45.",
+      "CompletionDisposition": "CLOSED"
     }
   ],
   "CurrentCertificates": [
@@ -1475,13 +1482,33 @@
       "CertificateId": "tsp-coherence-event-two",
       "Kind": "coherence-vector-certificate",
       "Conclusion": "The active basis contracts to one arc and one rewrite while physical tables remain 45 and explicit witness rows expand coherently."
+    },
+    {
+      "CertificateId": "tsp-exact-oracle-contract",
+      "Kind": "exact-oracle-calibration-certificate",
+      "Conclusion": "Depot-fixed reversal-quotient enumeration exactly calibrates the declared finite instances without promoting oracle output to structural proof."
+    },
+    {
+      "CertificateId": "tsp-heldout-calibration-event",
+      "Kind": "heldout-calibration-certificate",
+      "Conclusion": "Twelve held-out families have exact coverage; value closes on 5 and route closes on 3 under the frozen basis."
+    },
+    {
+      "CertificateId": "tsp-residual-value-branch",
+      "Kind": "oracle-calibrated-branch-certificate",
+      "Conclusion": "At least one held-out residual kernel requires a value-relevant branch after deterministic closure; the branch is recorded explicitly as calibration-only search."
+    },
+    {
+      "CertificateId": "tsp-coherence-event-three",
+      "Kind": "coherence-vector-certificate",
+      "Conclusion": "The active basis remains one Semantic Arc and one Warranted Rewrite across a twelve-family held-out exact campaign with zero physical-table growth."
     }
   ],
   "RemainingFrontier": [
-    "stress the one-arc/one-rewrite basis on heterogeneous region sizes and asymmetric crossing costs",
-    "generalize the three-region repair equation beyond equal internal release costs and a ring minimum",
-    "represent explicit external representative-selection policies without confusing policy choice with mathematical proof",
-    "branch only when a witnessed optimum-value defect or an explicit downstream policy warrants it"
+    "repeat the frozen-basis campaign on standard public TSP benchmark instances using a separately versioned importer",
+    "replace calibration-only exact branches with structural branch-and-bound certificates whose bounds are themselves witnessed",
+    "generalize region repair beyond the finite heterogeneous observations recorded here",
+    "measure runtime and memory scaling without confusing exact small-instance enumeration with a general algorithm"
   ],
   "Acceptance": {
     "RulebookTables": 45,
@@ -1493,7 +1520,7 @@
     "TravelEdges": 349,
     "CandidateTours": 24,
     "TSPLoops": 134,
-    "FrontierObligations": 33,
+    "FrontierObligations": 34,
     "ActiveImportedDependencies": 0,
     "ReferenceTourValid": true,
     "ReferenceTourCost": 14,
@@ -1505,7 +1532,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 710,
-    "HighestCompletedLoop": 709,
+    "HighestCompletedLoop": 710,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 16,
     "SelectedNotForcedEdgeStates": 5,
@@ -1547,8 +1574,8 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 66,
     "ClusterContractionCertificates": 7,
-    "ConvergenceMeasurements": 113,
-    "ConceptRegistry": 165,
+    "ConvergenceMeasurements": 114,
+    "ConceptRegistry": 166,
     "DefectProfiles": 33,
     "BoundTerms": 8,
     "WitnessNormalForms": 35,
@@ -1589,7 +1616,7 @@
     "HeldOutMaxExactClassCount": 2520
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:7f9e46eda8c216dbb10be271ba901a22244e62cb57bd7dcde8e0b63be37f676f",
+    "rulebook": "sha256:71649f568248a91818b22ef25b57e7b33260f57e03605d9d8243e8ee6151ed1d",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",

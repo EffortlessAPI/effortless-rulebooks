@@ -317,3 +317,19 @@ A-B-D-C-A   cost 6   nonoptimal control
 The optimum value four is certified, but the two optimal witnesses form a **Choice Orbit** of size two.  The **Branch Warrant** rejects mathematical branching for value proof; choosing one representative is conditional on an external tie-break policy.
 
 **Coherence status:** one active arc, one active rewrite, unchanged physical table count, substantially more explicit witness machinery, three-region finite optimality at 36, optimal-face value 4, choice-orbit size 2, and zero mathematical branch decisions for value proof.
+
+
+## Loops 647–710 — frozen-basis exact calibration
+
+The semantic basis was frozen at loop 646:
+
+```text
+SEMANTIC_ARC(subject, label, target)
+WARRANTED_REWRITE(input, rule, polarity, output, warrant)
+```
+
+Twelve deterministic held-out instances were fixed before exact analysis.  A depot-fixed, reversal-quotient oracle enumerated every feasible route class for instances through nine stops.  Oracle values are calibration evidence; they do not silently upgrade a structural proof status.
+
+The campaign records separate coordinates for exactness gap, closure yield, value rigidity, choice entropy, defect support, repair potential, boundary demand, port compatibility, quotient width, residual kernel, branch necessity, and class/value/choice compression.
+
+Local representational growth remains allowed when it replaces opacity.  The measured convergence target is a stable reusable basis, explicit warrants, exact recoverability, and a smaller typed residual kernel—not monotonically fewer rows.
