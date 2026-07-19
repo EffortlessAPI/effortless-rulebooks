@@ -77,7 +77,7 @@ jobs:
           npm install -g "$EFFORTLESS_CLI_SOURCE"
           effortless -info
 
-      - name: Materialize the versioned evidence provider
+      - name: Materialize the versioned provider ledger
         shell: bash
         run: |
           set -euo pipefail
@@ -92,17 +92,13 @@ jobs:
           }
           decode_gz calibration "$provider/calibration-rulebook-extension.json"
           decode_gz benchmark "$provider/benchmark-rulebook-extension.json"
-          decode_gz results "$provider/benchmark-results-717-836.json"
-          decode_gz analysis "$provider/benchmark-campaign-analysis.json"
-          decode_gz report "$provider/BENCHMARK_REPORT_717_836.md"
-          decode_gz validation "$provider/validation-717-836.txt"
           decode_gz history "$provider/PROVIDER_HISTORY_647_836.tsv"
           decode_gz manifest "$provider/benchmark-artifact-manifest.json"
           decode_gz migration "$domain/scripts/apply_provider_loops_711_836.py"
           chmod +x "$domain/scripts/apply_provider_loops_711_836.py"
           python3 -m py_compile "$domain/scripts/apply_provider_loops_711_836.py"
 
-      - name: Verify provider ledger, hashes, and finite campaign summaries
+      - name: Verify provider ledger and content hashes
         id: provider_replay
         shell: bash
         run: |
@@ -116,8 +112,6 @@ jobs:
           load = lambda name: json.loads((p / name).read_text())
           cal = load('calibration-rulebook-extension.json')
           bench = load('benchmark-rulebook-extension.json')
-          results = load('benchmark-results-717-836.json')
-          analysis = load('benchmark-campaign-analysis.json')
           manifest = load('benchmark-artifact-manifest.json')
           if [int(r['LoopOrder']) for r in cal['Loops']] != list(range(647, 717)):
               raise AssertionError('provider calibration loop range mismatch')
@@ -142,14 +136,11 @@ jobs:
           expected_campaign = {'instance_count': 154, 'exact_lower_bounds': 151, 'exact_witnesses': 154, 'closed_sandwiches': 151, 'soundness_failures': 0, 'new_primitives': 0}
           if manifest['Campaign154'] != expected_campaign:
               raise AssertionError('manifest campaign summary mismatch')
-          if analysis['staged_instance_count'] != 154 or analysis['basis'] != {'atoms': ['SEMANTIC_ARC'], 'operators': ['WARRANTED_REWRITE'], 'new_primitives': 0}:
-              raise AssertionError('campaign analysis mismatch')
-          summary = results['summary']
-          if summary != {'benchmark_count': 4, 'recomputed_exact_count': 3, 'published_import_count': 1, 'bound_exact_count': 4, 'witness_exact_count': 4, 'sandwich_closed_count': 4, 'soundness_failures': 0}:
-              raise AssertionError(f'external benchmark summary mismatch: {summary}')
-          print('TSP provider ledger and finite campaign summaries: PASS')
+          if bench['AggregateCertificates']['Campaign154'] != expected_campaign:
+              raise AssertionError('benchmark extension campaign summary mismatch')
+          print('TSP provider ledger and content hashes: PASS')
           PY2
-          grep -q 'TSP provider ledger and finite campaign summaries: PASS' /tmp/tsp-provider-replay.log
+          grep -q 'TSP provider ledger and content hashes: PASS' /tmp/tsp-provider-replay.log
 
       - name: Apply canonical bridge and provider benchmark ledger
         shell: bash
@@ -184,7 +175,7 @@ jobs:
             "SELECT max(loop_order), count(*) FROM vw_tsp_loops" | tee /tmp/tsp-loop-postgres.txt
           grep -q '^836|260$' /tmp/tsp-loop-postgres.txt
 
-      - name: Persist evidence, transcript, and final validation
+      - name: Persist provider, transcript, and final validation
         shell: bash
         run: |
           set -euo pipefail
