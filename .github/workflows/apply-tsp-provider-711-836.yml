@@ -59,6 +59,25 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
 
+      - name: Record durable provider integration checkpoint
+        shell: bash
+        run: |
+          set -euo pipefail
+          domain='rulebook-examples/effortless-math/domains/traveling-salesman'
+          mkdir -p "$domain/testing"
+          cat > "$domain/testing/provider-711-836-status.json" <<EOF
+          {
+            "status": "RUNNER_STARTED",
+            "github_run_id": "$GITHUB_RUN_ID",
+            "head_sha": "$GITHUB_SHA",
+            "driver": "content-addressed-provider-ledger-v2"
+          }
+          EOF
+          git add "$domain/testing/provider-711-836-status.json"
+          git commit -m 'Record TSP provider integration checkpoint'
+          git pull --rebase origin "$TARGET_BRANCH"
+          git push origin HEAD:"$TARGET_BRANCH"
+
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
