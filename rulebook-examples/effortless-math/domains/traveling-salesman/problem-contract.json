@@ -1327,12 +1327,12 @@
     {
       "LoopOrder": 707,
       "LoopId": "tsp-loop-707",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
       "ClosureCriterion": "Aggregate exact coverage, structural closure, residual kernels, branch warrants, and family support over all twelve held-out instances.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Aggregated the twelve-family held-out calibration event.",
+      "Result": "Exact coverage 12/12; value closed 5/12; route closed 3/12; value branch required 7/12; mean closure yield 23.96%.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 708,
@@ -1505,7 +1505,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 710,
-    "HighestCompletedLoop": 706,
+    "HighestCompletedLoop": 707,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 16,
     "SelectedNotForcedEdgeStates": 5,
@@ -1547,8 +1547,8 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 66,
     "ClusterContractionCertificates": 7,
-    "ConvergenceMeasurements": 110,
-    "ConceptRegistry": 162,
+    "ConvergenceMeasurements": 111,
+    "ConceptRegistry": 163,
     "DefectProfiles": 33,
     "BoundTerms": 8,
     "WitnessNormalForms": 35,
@@ -1579,10 +1579,17 @@
     "DevelopmentExactCoveragePct": 100.0,
     "DevelopmentValueClosedCount": 3,
     "DevelopmentRouteClosedCount": 2,
-    "DevelopmentMaxExactClassCount": 20160
+    "DevelopmentMaxExactClassCount": 20160,
+    "HeldOutInstanceCount": 12,
+    "HeldOutExactCoveragePct": 100.0,
+    "HeldOutValueClosedCount": 5,
+    "HeldOutRouteClosedCount": 3,
+    "HeldOutBranchRequiredCount": 7,
+    "HeldOutMeanClosureYieldPct": 23.96,
+    "HeldOutMaxExactClassCount": 2520
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:ed27fa94c9c2c221579fbb15a688d2029c5b551d3a4a351374cc51696d57dfab",
+    "rulebook": "sha256:8ce734bf0c6846dec19038fbd09f933a38c45bb14469fac4d30dd839aef137d2",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
