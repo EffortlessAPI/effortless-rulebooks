@@ -1307,12 +1307,12 @@
     {
       "LoopOrder": 705,
       "LoopId": "tsp-loop-705",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
       "ClosureCriterion": "Select a held-out instance whose deterministic residue contains more than one value and record a justified value branch.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Exposed a genuine value-relevant residual orbit.",
+      "Result": "tsp-holdout-residual8-8 retains 2520 route classes spanning 104 values, so a value branch is warranted.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 706,
@@ -1505,7 +1505,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 710,
-    "HighestCompletedLoop": 704,
+    "HighestCompletedLoop": 705,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 16,
     "SelectedNotForcedEdgeStates": 5,
@@ -1547,8 +1547,8 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 66,
     "ClusterContractionCertificates": 7,
-    "ConvergenceMeasurements": 108,
-    "ConceptRegistry": 160,
+    "ConvergenceMeasurements": 109,
+    "ConceptRegistry": 161,
     "DefectProfiles": 33,
     "BoundTerms": 8,
     "WitnessNormalForms": 35,
@@ -1582,7 +1582,7 @@
     "DevelopmentMaxExactClassCount": 20160
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:a4735e80a9fa33069358493b8bb65ed6ad3168358e8e569c8b1b1e18b1e7cb4d",
+    "rulebook": "sha256:aa3e0d5943868fe9e43dbf7469558e5e9aafe1057551964b6855b87f9f7c8537",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
