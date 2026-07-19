@@ -817,12 +817,12 @@
     {
       "LoopOrder": 656,
       "LoopId": "tsp-loop-656",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "All current fixtures influenced ontology development; no held-out evidence boundary exists.",
       "ClosureCriterion": "Mark existing valid fixtures DEVELOPMENT, the malformed graph NEGATIVE_CONTROL, and reserve twelve not-yet-materialized instance identities as HELD_OUT.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Established a development/held-out/negative-control evidence boundary.",
+      "Result": "Existing valid fixtures are DEVELOPMENT, the malformed graph is NEGATIVE_CONTROL, and twelve future graphs are reserved as HELD_OUT before exact analysis.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 657,
@@ -1505,7 +1505,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 710,
-    "HighestCompletedLoop": 655,
+    "HighestCompletedLoop": 656,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 16,
     "SelectedNotForcedEdgeStates": 5,
@@ -1547,8 +1547,8 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 66,
     "ClusterContractionCertificates": 7,
-    "ConvergenceMeasurements": 59,
-    "ConceptRegistry": 110,
+    "ConvergenceMeasurements": 60,
+    "ConceptRegistry": 111,
     "DefectProfiles": 21,
     "BoundTerms": 8,
     "WitnessNormalForms": 19,
@@ -1578,7 +1578,7 @@
     "OptimalFaceValueProofBranchDecisionCount": 0
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:77387a1bae78defef4ee70035e8adea53f009978ab2f272731d7fce5a4a028f4",
+    "rulebook": "sha256:2b17c4dfb6033a380d2657b03bcc67c29a1b59aa2418a1d1ed9be76c2a079077",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
