@@ -120,6 +120,7 @@ jobs:
           domain='rulebook-examples/effortless-math/domains/traveling-salesman'
           scripts="$domain/scripts"
           cat .github/calibration_payload_647_710.part*.b64 | tr -d '\n' | base64 -d | tar -xJ -C "$scripts"
+          python3 .github/patch_calibration_647_710.py "$scripts/apply_loops_647_710_calibration.py"
           python3 -m py_compile \
             "$scripts/exact_oracle_v1.py" \
             "$scripts/apply_loops_647_710_calibration.py" \
