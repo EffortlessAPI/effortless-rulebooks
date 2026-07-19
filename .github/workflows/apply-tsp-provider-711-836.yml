@@ -70,7 +70,7 @@ jobs:
             "status": "RUNNER_STARTED",
             "github_run_id": "$GITHUB_RUN_ID",
             "head_sha": "$GITHUB_SHA",
-            "driver": "content-addressed-provider-ledger-v2"
+            "driver": "content-addressed-provider-ledger-v3"
           }
           EOF
           git add "$domain/testing/provider-711-836-status.json"
@@ -105,15 +105,36 @@ jobs:
           payload='.github/tsp_payload/minimal'
           rm -rf "$provider"
           mkdir -p "$provider" "$domain/scripts"
-          decode_gz() {
-            local stem="$1" output="$2"
-            cat "$payload/${stem}.gz.b64.part-"* | base64 -d | gzip -d > "$output"
+          DOMAIN="$domain" PROVIDER="$provider" PAYLOAD="$payload" python3 - <<'PY' 2>&1 | tee /tmp/tsp-provider-materialize.log
+          import base64
+          import gzip
+          import os
+          from pathlib import Path
+
+          payload = Path(os.environ['PAYLOAD'])
+          provider = Path(os.environ['PROVIDER'])
+          domain = Path(os.environ['DOMAIN'])
+          expected = {
+              'calibration': (13, provider / 'calibration-rulebook-extension.json'),
+              'benchmark': (6, provider / 'benchmark-rulebook-extension.json'),
+              'history': (6, provider / 'PROVIDER_HISTORY_647_836.tsv'),
+              'manifest': (1, provider / 'benchmark-artifact-manifest.json'),
+              'migration': (8, domain / 'scripts' / 'apply_provider_loops_711_836.py'),
           }
-          decode_gz calibration "$provider/calibration-rulebook-extension.json"
-          decode_gz benchmark "$provider/benchmark-rulebook-extension.json"
-          decode_gz history "$provider/PROVIDER_HISTORY_647_836.tsv"
-          decode_gz manifest "$provider/benchmark-artifact-manifest.json"
-          decode_gz migration "$domain/scripts/apply_provider_loops_711_836.py"
+          for stem, (expected_count, output) in expected.items():
+              parts = sorted(payload.glob(f'{stem}.gz.b64.part-*'))
+              print(stem, 'parts=', len(parts), [p.name for p in parts])
+              if len(parts) != expected_count:
+                  raise AssertionError(f'{stem}: expected {expected_count} parts, found {len(parts)}')
+              encoded = ''.join(part.read_text().strip() for part in parts)
+              compressed = base64.b64decode(encoded, validate=True)
+              decoded = gzip.decompress(compressed)
+              output.parent.mkdir(parents=True, exist_ok=True)
+              output.write_bytes(decoded)
+              print(stem, 'compressed_bytes=', len(compressed), 'decoded_bytes=', len(decoded), 'output=', output)
+          print('TSP provider materialization: PASS')
+          PY
+          grep -q 'TSP provider materialization: PASS' /tmp/tsp-provider-materialize.log
           chmod +x "$domain/scripts/apply_provider_loops_711_836.py"
           python3 -m py_compile "$domain/scripts/apply_provider_loops_711_836.py"
 
@@ -199,6 +220,7 @@ jobs:
         run: |
           set -euo pipefail
           domain='rulebook-examples/effortless-math/domains/traveling-salesman'
+          cp /tmp/tsp-provider-materialize.log "$domain/testing/provider-711-836-materialize.log"
           cp /tmp/tsp-provider-replay.log "$domain/testing/provider-711-836-replay.log"
           cp /tmp/tsp-loop-postgres.txt "$domain/testing/provider-711-836-postgres.txt"
           python3 "$domain/scripts/validate_rulebook.py"
@@ -218,6 +240,7 @@ jobs:
           {
             echo "workflow_run_id=$GITHUB_RUN_ID"
             echo "head_sha=$GITHUB_SHA"
+            test -f /tmp/tsp-provider-materialize.log && cat /tmp/tsp-provider-materialize.log || true
             test -f /tmp/tsp-provider-replay.log && cat /tmp/tsp-provider-replay.log || true
             test -f /tmp/tsp-loop-postgres.txt && cat /tmp/tsp-loop-postgres.txt || true
           } > /tmp/provider-711-836-failure.log
