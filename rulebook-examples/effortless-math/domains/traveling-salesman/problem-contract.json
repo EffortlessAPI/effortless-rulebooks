@@ -53,9 +53,10 @@
     "CoherenceConvergenceObserved": true,
     "CoherenceConvergenceProvedUniversally": false,
     "ExactHeldOutCalibrationCompleted": false,
-    "CalibrationBasisFrozenAtLoop646": false,
+    "CalibrationBasisFrozenAtLoop646": true,
     "ExactOracleIsStructuralProof": false,
-    "GeneralTSPAlgorithmProved": false
+    "GeneralTSPAlgorithmProved": false,
+    "HeldOutPrimitiveGrowthAllowedWithoutFalsification": false
   },
   "CanonicalAsset": "effortless-rulebook/traveling-salesman-rulebook.json",
   "ExecutionSubstrates": [
@@ -736,12 +737,12 @@
     {
       "LoopOrder": 648,
       "LoopId": "tsp-loop-648",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "The one-arc/one-rewrite basis is empirical but later loops could silently add primitives while claiming held-out support.",
       "ClosureCriterion": "Freeze SEMANTIC_ARC and WARRANTED_REWRITE as the campaign basis; require any new primitive to be accompanied by a recorded falsification and basis-revision event.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Froze the one-arc/one-rewrite basis for held-out evaluation.",
+      "Result": "The primitive budget is zero unless a loop records a basis falsification; derived predicate invention continues normally.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 649,
@@ -1504,7 +1505,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 710,
-    "HighestCompletedLoop": 647,
+    "HighestCompletedLoop": 648,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 16,
     "SelectedNotForcedEdgeStates": 5,
@@ -1546,8 +1547,8 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 66,
     "ClusterContractionCertificates": 7,
-    "ConvergenceMeasurements": 51,
-    "ConceptRegistry": 102,
+    "ConvergenceMeasurements": 52,
+    "ConceptRegistry": 103,
     "DefectProfiles": 21,
     "BoundTerms": 8,
     "WitnessNormalForms": 13,
@@ -1577,7 +1578,7 @@
     "OptimalFaceValueProofBranchDecisionCount": 0
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:4472fcfd488f59a9deb52e01cb703df4cddcb724a7b53cf5728bb6fe527878e4",
+    "rulebook": "sha256:3980558d7d108666d2cf46c8a717f8265f9589a764d74c954f610f8ffac061d4",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
