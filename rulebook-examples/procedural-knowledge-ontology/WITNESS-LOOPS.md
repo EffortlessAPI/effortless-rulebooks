@@ -91,9 +91,30 @@ Always confirm the column discriminates in Postgres.
 | variance-review-agent | 40 | yes |
 | policy-drafting-agent | 31 | yes |
 
-**LOOP 1 COMPLETE.** 12 roles, 60 questions, 462 witnessed predicates,
-65 tables, 1096 fields, 559 derived, 753 functions.
-Non-vacuity: 10 discriminating booleans at baseline -> 135.
+**LOOP 1 COMPLETE.** 12 roles, 60 questions, 462 witnessed predicates.
+**LOOP 2 COMPLETE.** 12 roles, 45 questions, 836 witnessed predicates total.
+
+| | baseline | after loop 1 | after loop 2 |
+|---|---|---|---|
+| tables | 51 | 65 | 69 |
+| fields | 483 | 1096 | 1479 |
+| derived | 75 | 559 | 906 |
+| **witnessed** | **0** | **462** | **836** |
+| discriminating booleans | 10 | 135 | 238 |
+| pg functions | 182 | 753 | 1138 |
+
+Loop 2's rule — a question must only be askable BECAUSE of loop 1's
+predicates — produced questions that mostly CORRECT loop 1 rather than
+extend it. Three examples:
+
+- `InferenceDisagreesWithRecord`: loop 1 reported IsOverdueForReview = 6/7 by
+  inferring recency from ValidFrom. Three of those fragments had in fact been
+  reviewed recently. The old inference stays under its own name; the gap
+  between inferred and recorded is now data, not a silent fallback.
+- `ControlAssuranceState`: of 13 controls, only ONE is Demonstrated (shown
+  capable of failing). Six Inoperative, three Asserted, three Untested.
+- `IsVacuouslyClean`: of 5 executions loop 1 called clean, only one is
+  substantively clean. Two are clean because nothing checked them.
 
 ## Findings the model surfaced (all from data that was already there)
 
