@@ -1,5 +1,6 @@
 {
-  "status": "FAILED",
-  "github_run_id": "29700153594",
-  "log": "testing/provider-711-836-failure.log"
+  "status": "RUNNER_STARTED",
+  "github_run_id": "29700242951",
+  "head_sha": "d7df27ca7a5c19b2437abeb5e4bc84e6aa002fe6",
+  "driver": "content-addressed-provider-ledger-v4"
 }
