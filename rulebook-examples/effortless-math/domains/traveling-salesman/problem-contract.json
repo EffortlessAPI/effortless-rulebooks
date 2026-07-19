@@ -867,12 +867,12 @@
     {
       "LoopOrder": 661,
       "LoopId": "tsp-loop-661",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "The RING_DOMINANT family is declared but tsp-holdout-ring6-6 has no canonical graph rows.",
       "ClosureCriterion": "Materialize a deterministic 6-stop RING_DOMINANT graph as HELD_OUT data without using its exact optimum to alter weights or the semantic basis.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Materialized tsp-holdout-ring6-6 as frozen held-out graph data.",
+      "Result": "6 stops, 15 canonical edge rows, family RING_DOMINANT, OracleStatus=PENDING; no weight was selected from an optimum result.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 662,
@@ -1486,11 +1486,11 @@
   "Acceptance": {
     "RulebookTables": 45,
     "Cities": 1,
-    "Neighborhoods": 10,
-    "Addresses": 28,
-    "TSPInstances": 7,
-    "InstanceStops": 36,
-    "TravelEdges": 86,
+    "Neighborhoods": 11,
+    "Addresses": 34,
+    "TSPInstances": 8,
+    "InstanceStops": 42,
+    "TravelEdges": 101,
     "CandidateTours": 8,
     "TSPLoops": 134,
     "FrontierObligations": 33,
@@ -1505,7 +1505,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 710,
-    "HighestCompletedLoop": 660,
+    "HighestCompletedLoop": 661,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 16,
     "SelectedNotForcedEdgeStates": 5,
@@ -1547,8 +1547,8 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 66,
     "ClusterContractionCertificates": 7,
-    "ConvergenceMeasurements": 64,
-    "ConceptRegistry": 115,
+    "ConvergenceMeasurements": 65,
+    "ConceptRegistry": 116,
     "DefectProfiles": 21,
     "BoundTerms": 8,
     "WitnessNormalForms": 19,
@@ -1582,7 +1582,7 @@
     "DevelopmentMaxExactClassCount": 20160
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:78e562ccdc7f5a25cb4e6667c00a396390d3bc1549cc62c79b3497360b766aee",
+    "rulebook": "sha256:f580e3ac24243b46d14718244baf214edafa4b882c05dc069f2f1333ac6dcb36",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
