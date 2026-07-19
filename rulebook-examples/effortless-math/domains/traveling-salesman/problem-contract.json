@@ -967,12 +967,12 @@
     {
       "LoopOrder": 671,
       "LoopId": "tsp-loop-671",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "The CUT_BOTTLENECK family is declared but tsp-holdout-bottleneck7-7 has no canonical graph rows.",
       "ClosureCriterion": "Materialize a deterministic 7-stop CUT_BOTTLENECK graph as HELD_OUT data without using its exact optimum to alter weights or the semantic basis.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Materialized tsp-holdout-bottleneck7-7 as frozen held-out graph data.",
+      "Result": "7 stops, 21 canonical edge rows, family CUT_BOTTLENECK, OracleStatus=PENDING; no weight was selected from an optimum result.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 672,
@@ -1486,11 +1486,11 @@
   "Acceptance": {
     "RulebookTables": 45,
     "Cities": 1,
-    "Neighborhoods": 19,
-    "Addresses": 63,
-    "TSPInstances": 12,
-    "InstanceStops": 71,
-    "TravelEdges": 193,
+    "Neighborhoods": 21,
+    "Addresses": 70,
+    "TSPInstances": 13,
+    "InstanceStops": 78,
+    "TravelEdges": 214,
     "CandidateTours": 14,
     "TSPLoops": 134,
     "FrontierObligations": 33,
@@ -1505,7 +1505,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 710,
-    "HighestCompletedLoop": 670,
+    "HighestCompletedLoop": 671,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 16,
     "SelectedNotForcedEdgeStates": 5,
@@ -1547,8 +1547,8 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 66,
     "ClusterContractionCertificates": 7,
-    "ConvergenceMeasurements": 74,
-    "ConceptRegistry": 126,
+    "ConvergenceMeasurements": 75,
+    "ConceptRegistry": 127,
     "DefectProfiles": 26,
     "BoundTerms": 8,
     "WitnessNormalForms": 25,
@@ -1582,7 +1582,7 @@
     "DevelopmentMaxExactClassCount": 20160
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:a01de0dbcb796923be446a5debc54716dc8e80f855a90ac4c5c6119a07c0e031",
+    "rulebook": "sha256:5ca46ca797c1e70253cb069066a764e87e9528060e589507d23da90bacda0c66",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
