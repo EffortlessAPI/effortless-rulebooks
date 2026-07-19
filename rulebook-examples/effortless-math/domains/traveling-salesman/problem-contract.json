@@ -1267,12 +1267,12 @@
     {
       "LoopOrder": 701,
       "LoopId": "tsp-loop-701",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
       "ClosureCriterion": "Compare repair deltas across unequal region sizes without promoting the observation to a k-region theorem.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Compared repair behavior across heterogeneous region sizes.",
+      "Result": "Observed profiles=[('tsp-holdout-hetero8-8', 1, None, 31.0), ('tsp-holdout-cluster7-7', 2, None, 29.0), ('tsp-holdout-fourregion8-8', 1, None, 24.0)]; the result is calibration evidence only and GeneralKRegionRepairProved remains false.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 702,
@@ -1505,7 +1505,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 710,
-    "HighestCompletedLoop": 700,
+    "HighestCompletedLoop": 701,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 16,
     "SelectedNotForcedEdgeStates": 5,
@@ -1547,8 +1547,8 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 66,
     "ClusterContractionCertificates": 7,
-    "ConvergenceMeasurements": 104,
-    "ConceptRegistry": 156,
+    "ConvergenceMeasurements": 105,
+    "ConceptRegistry": 157,
     "DefectProfiles": 33,
     "BoundTerms": 8,
     "WitnessNormalForms": 35,
@@ -1582,7 +1582,7 @@
     "DevelopmentMaxExactClassCount": 20160
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:307f79789b6bd1dc712671c34c6c912334c8abbf01ad5bfad60378e1ec16b7dd",
+    "rulebook": "sha256:e8f109d5fe7a98234aad4a79ee41ded50b691c11662a8829480ed175d69d432e",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
