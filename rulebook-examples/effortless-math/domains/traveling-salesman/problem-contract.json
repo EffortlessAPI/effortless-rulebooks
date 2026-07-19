@@ -1217,12 +1217,12 @@
     {
       "LoopOrder": 696,
       "LoopId": "tsp-loop-696",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
       "ClosureCriterion": "Normalize unresolved value count, optimal choice count, connectivity defect, exactness gap, and branch warrant into one typed residual signature.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Derived Residual Kernel across the exact held-out corpus.",
+      "Result": "Residual kernels collapse 12 instances to 10 typed signatures.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 697,
@@ -1505,7 +1505,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 710,
-    "HighestCompletedLoop": 695,
+    "HighestCompletedLoop": 696,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 16,
     "SelectedNotForcedEdgeStates": 5,
@@ -1547,8 +1547,8 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 66,
     "ClusterContractionCertificates": 7,
-    "ConvergenceMeasurements": 99,
-    "ConceptRegistry": 151,
+    "ConvergenceMeasurements": 100,
+    "ConceptRegistry": 152,
     "DefectProfiles": 33,
     "BoundTerms": 8,
     "WitnessNormalForms": 35,
@@ -1582,7 +1582,7 @@
     "DevelopmentMaxExactClassCount": 20160
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:cc420a766f5b04ade5624f8f4a60a18eb4999cd61adaad2e71feffe7f3da57c3",
+    "rulebook": "sha256:0266f2a9f8e5d55c6da39f54c61142d9deb927584d7380021cdf8fc5f3d73bf6",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
