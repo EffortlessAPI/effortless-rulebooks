@@ -1701,6 +1701,46 @@
         "Description": "TRUE when a human must confirm the step; maps to pko:wasConfirmedBy at execution."
       },
       {
+        "name": "BlockingRequirementCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many blocking requirements the specification attaches to this step.",
+        "formula": "=COUNTIFS(StepRequirements!{{BlockingStepKey}}, {{StepId}})"
+      },
+      {
+        "name": "StaleBindingCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many operational bindings for this step are currently outside their freshness SLA.",
+        "formula": "=COUNTIFS(OperationalBindings!{{StaleBindingStepKey}}, {{StepId}})"
+      },
+      {
+        "name": "AuthoritativeStaleCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many authoritative bindings for this step are currently stale.",
+        "formula": "=COUNTIFS(OperationalBindings!{{AuthoritativeStaleStepKey}}, {{StepId}})"
+      },
+      {
+        "name": "AvailableExceptionCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many active exceptions the specification defines for this step.",
+        "formula": "=COUNTIFS(Exceptions!{{ActiveExceptionStepKey}}, {{StepId}})"
+      },
+      {
+        "name": "DeclaredVerificationCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many verifications the specification declares for this step.",
+        "formula": "=COUNTIFS(StepVerifications!{{Step}}, {{StepId}})"
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -2962,6 +3002,22 @@
         "nullable": true,
         "Description": "Requirement side of the relationship.",
         "RelatedTo": "Requirements"
+      },
+      {
+        "name": "RequirementIsBlocking",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether this spec-side step/requirement binding names a blocking control.",
+        "formula": "=INDEX(Requirements!{{IsBlocking}}, MATCH({{Requirement}}, Requirements!{{RequirementId}}, 0))"
+      },
+      {
+        "name": "BlockingStepKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Echoes the Step id only when the bound requirement is blocking; empty otherwise.",
+        "formula": "=IIF({{RequirementIsBlocking}}, {{Step}}, \"\")"
       }
     ],
     "data": [
@@ -3393,6 +3449,14 @@
         "type": "raw",
         "nullable": true,
         "Description": "Active, Draft, Retired, or Superseded."
+      },
+      {
+        "name": "ActiveExceptionStepKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Echoes the TriggerStep id only for exceptions currently in Active status.",
+        "formula": "=IIF({{Status}} = \"Active\", {{TriggerStep}}, \"\")"
       },
       {
         "name": "SemanticTypeIri",
@@ -4592,6 +4656,150 @@
         "formula": "={{ActualDurationMinutes}} > {{ExpectedDurationMinutes}}"
       },
       {
+        "name": "BlockingUnmetCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many blocking requirements attached to this step execution are recorded as not fully satisfied.",
+        "formula": "=COUNTIFS(RequirementSatisfactions!{{StepExecution}}, {{StepExecutionId}}, RequirementSatisfactions!{{IsBlockingAndUnmet}}, TRUE)"
+      },
+      {
+        "name": "BlockingUnmetCountSafe",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Count of blocking-but-unmet requirements on this step execution, computed via the single-criterion key so no criterion is dropped.",
+        "formula": "=COUNTIFS(RequirementSatisfactions!{{BlockingUnmetStepKey}}, {{StepExecutionId}})"
+      },
+      {
+        "name": "ProceededPastBlockingControl",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a step execution reached Completed even though a blocking requirement on it was never fully satisfied.",
+        "formula": "=AND({{ExecutionStatus}} = \"Completed\", {{BlockingUnmetCountSafe}} > 0)"
+      },
+      {
+        "name": "ExpectedBlockingCount",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "How many blocking requirements this execution's step was supposed to have evaluated.",
+        "formula": "=INDEX(Steps!{{BlockingRequirementCount}}, MATCH({{Step}}, Steps!{{StepId}}, 0))"
+      },
+      {
+        "name": "EvaluatedBlockingCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many blocking requirements actually received a satisfaction record on this step execution, at any level.",
+        "formula": "=COUNTIFS(RequirementSatisfactions!{{BlockingSatisfactionStepKey}}, {{StepExecutionId}})"
+      },
+      {
+        "name": "UnevaluatedBlockingCount",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Blocking requirements that were bound to this step but never assessed on this execution.",
+        "formula": "={{ExpectedBlockingCount}} - {{EvaluatedBlockingCount}}"
+      },
+      {
+        "name": "HasUnevaluatedBlockingControl",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when at least one blocking control bound to this step was never evaluated on this execution.",
+        "formula": "={{UnevaluatedBlockingCount}} > 0"
+      },
+      {
+        "name": "StaleAuthoritativeSourceCount",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Number of stale authoritative sources bound to the step this execution ran.",
+        "formula": "=INDEX(Steps!{{AuthoritativeStaleCount}}, MATCH({{Step}}, Steps!{{StepId}}, 0))"
+      },
+      {
+        "name": "RanOnStaleAuthoritativeSource",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this execution's step depends on at least one authoritative source that is outside its freshness SLA.",
+        "formula": "={{StaleAuthoritativeSourceCount}} > 0"
+      },
+      {
+        "name": "HasDeviationNote",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a human recorded some deviation narrative on this execution.",
+        "formula": "={{Deviation}} <> \"\""
+      },
+      {
+        "name": "IsLateAndUnexplained",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the execution exceeded its expected duration and no deviation was recorded.",
+        "formula": "=AND({{IsLate}}, NOT({{HasDeviationNote}}))"
+      },
+      {
+        "name": "AvailableExceptionCountForStep",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "How many active exceptions were available to this execution's step.",
+        "formula": "=INDEX(Steps!{{AvailableExceptionCount}}, MATCH({{Step}}, Steps!{{StepId}}, 0))"
+      },
+      {
+        "name": "HadUninvokedExceptionAvailable",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when an execution ran long with no explanation despite the specification defining an active exception for exactly that situation.",
+        "formula": "=AND({{IsLateAndUnexplained}}, {{AvailableExceptionCountForStep}} > 0)"
+      },
+      {
+        "name": "ExpectedVerificationCount",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "How many verifications this execution was supposed to perform.",
+        "formula": "=INDEX(Steps!{{DeclaredVerificationCount}}, MATCH({{Step}}, Steps!{{StepId}}, 0))"
+      },
+      {
+        "name": "PerformedVerificationCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many verification outcomes were actually recorded against this execution.",
+        "formula": "=COUNTIFS(VerificationOutcomes!{{StepExecution}}, {{StepExecutionId}})"
+      },
+      {
+        "name": "SkippedVerificationCount",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Declared verifications with no recorded outcome on this execution.",
+        "formula": "={{ExpectedVerificationCount}} - {{PerformedVerificationCount}}"
+      },
+      {
+        "name": "HasSkippedVerification",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a declared verification was never performed on this execution.",
+        "formula": "={{SkippedVerificationCount}} > 0"
+      },
+      {
+        "name": "ClaimsPassWithoutEvidence",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when an execution asserts PASS while at least one declared verification has no recorded outcome.",
+        "formula": "=AND({{VerificationResult}} = \"PASS\", {{HasSkippedVerification}})"
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -4811,6 +5019,46 @@
         "Description": "Evaluation timestamp."
       },
       {
+        "name": "RequirementIsBlocking",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether the requirement being evaluated on this satisfaction row is a blocking control.",
+        "formula": "=INDEX(Requirements!{{IsBlocking}}, MATCH({{Requirement}}, Requirements!{{RequirementId}}, 0))"
+      },
+      {
+        "name": "IsFullySatisfied",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE only when the requirement is recorded as fully Satisfied. PartiallySatisfied, Unsatisfied, Waived, and blank are all FALSE.",
+        "formula": "={{SatisfactionLevel}} = \"Satisfied\""
+      },
+      {
+        "name": "IsBlockingAndUnmet",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a blocking requirement is recorded at anything less than fully Satisfied. This is the control-failure witness at the requirement grain.",
+        "formula": "=AND({{RequirementIsBlocking}}, NOT({{IsFullySatisfied}}))"
+      },
+      {
+        "name": "BlockingUnmetStepKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Echoes the parent StepExecution id only when this row is a blocking-unmet violation; empty string otherwise.",
+        "formula": "=IIF({{IsBlockingAndUnmet}}, {{StepExecution}}, \"\")"
+      },
+      {
+        "name": "BlockingSatisfactionStepKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Echoes the parent StepExecution id when this satisfaction row concerns a blocking requirement.",
+        "formula": "=IIF({{RequirementIsBlocking}}, {{StepExecution}}, \"\")"
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -4878,6 +5126,26 @@
         "EvaluatedByAgent": "noah-williams",
         "EvaluatedAt": "2026-07-19T10:00:00-05:00",
         "SemanticTypeIri": "https://w3id.org/pko#RequirementSatisfaction"
+      },
+      {
+        "RequirementSatisfactionId": "sat-close-evidence",
+        "StepExecution": "se-close03",
+        "Requirement": "req-close-evidence",
+        "SatisfactionLevel": "Unsatisfied",
+        "Evidence": "Reconciliation workpapers were attached to a personal drive, not the 7-year retention archive.",
+        "EvaluatedByAgent": "devon-okafor",
+        "EvaluatedAt": "2026-07-19T10:00:00-05:00",
+        "SemanticTypeIri": "https://w3id.org/pko#Requirement"
+      },
+      {
+        "RequirementSatisfactionId": "sat-close08-evidence",
+        "StepExecution": "se-close08",
+        "Requirement": "req-close-evidence",
+        "SatisfactionLevel": "Satisfied",
+        "Evidence": "Close package archived to the retention system with a 7-year hold.",
+        "EvaluatedByAgent": "devon-okafor",
+        "EvaluatedAt": "2026-07-19T14:05:00-05:00",
+        "SemanticTypeIri": "https://w3id.org/pko#Requirement"
       }
     ]
   },
@@ -5820,6 +6088,22 @@
         "formula": "={{AgeMinutes}} <= {{FreshnessSlaMinutes}}"
       },
       {
+        "name": "StaleBindingStepKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Echoes the bound Step id only when the binding is outside its freshness SLA.",
+        "formula": "=IIF(NOT({{IsFresh}}), {{Step}}, \"\")"
+      },
+      {
+        "name": "AuthoritativeStaleStepKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Echoes the bound Step id only when an AUTHORITATIVE binding is stale.",
+        "formula": "=IIF(AND(NOT({{IsFresh}}), {{IsAuthoritative}}), {{Step}}, \"\")"
+      },
+      {
         "name": "SemanticTypeIri",
         "datatype": "string",
         "type": "raw",
@@ -5835,7 +6119,7 @@
         "Resource": "res-erp-api",
         "AccessMode": "Read",
         "RecordOrSchemaKey": "GeneralLedger.TrialBalance",
-        "LastObservedAt": "2026-07-19T11:45:00-05:00",
+        "LastObservedAt": "2026-07-19T12:43:00-05:00",
         "FreshnessSlaMinutes": 15,
         "IsAuthoritative": true,
         "SemanticTypeIri": "urn:effortless:pko-extension#OperationalBinding",
@@ -6577,7 +6861,17 @@
         "Description": "Extension class IRI."
       }
     ],
-    "data": []
+    "data": [
+      {
+        "WitnessLoopId": "loop-01",
+        "LoopNumber": 1,
+        "Title": "The founding questions",
+        "Premise": "The model specified obligations precisely and witnessed their breach almost nowhere. Requirements, verifications, exceptions, and communication policies were all stated with real precision, and in each case the execution-side counterpart that would catch a violation was missing. Loop 1 asks each of the twelve named roles what it actually needs to know, and invents the atomic predicates required to answer.",
+        "StartedAt": "2026-07-19T17:00:00-05:00",
+        "CompletedAt": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#WitnessLoop"
+      }
+    ]
   },
   "RoleQuestions": {
     "Description": "One row per question a named role wants answered. Every invented predicate in this rulebook traces back to one of these.",
@@ -6658,7 +6952,53 @@
         "Description": "Extension class IRI."
       }
     ],
-    "data": []
+    "data": [
+      {
+        "RoleQuestionId": "q-analyst-blocking-unmet-on-my-step",
+        "AskingRole": "finance-analyst",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "On the steps I personally executed, did any of them close out while a BLOCKING requirement was still not fully satisfied?",
+        "WhyItMatters": "I executed se-close03 (Reconcile material accounts), which carries TWO blocking requirements via sr-c03a (req-close-balance) and sr-c03b (req-close-evidence). Today the model records SatisfactionLevel as free text and nothing compares it against IsBlocking. If I close a step with a PartiallySatisfied blocking control \u2014 exactly the shape sat-policy-legal is in right now \u2014 the package moves on and nobody is told. I want that to be a computed red flag on my own row before it becomes an audit finding on my name.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-analyst-blocking-never-evaluated",
+        "AskingRole": "finance-analyst",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "Which blocking requirements were attached to a step I ran but never got a satisfaction record at all \u2014 not satisfied, not unsatisfied, just never assessed?",
+        "WhyItMatters": "This is the failure mode that scares me more than a recorded 'Unsatisfied'. sr-c03b binds req-close-evidence to close-03. I ran close-03 as se-close03. There is no RequirementSatisfactions row for that pairing. The model shows green because absence reads as silence, not as a gap. An unevaluated blocking control is indistinguishable from a passed one, and that is the exact thing SOX testing is designed to catch.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-analyst-evidence-binding-stale",
+        "AskingRole": "finance-analyst",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "When I attested my reconciliation, was the underlying ledger data actually fresh \u2014 or was I certifying against a source that had already gone stale under its own SLA?",
+        "WhyItMatters": "OperationalBindings.IsFresh already exists and works, but it is evaluated against NOW() and lives on a table nothing in the execution story reads. My step execution has no idea whether the resources it depended on were inside their freshness SLA. se-close02 already recorded a 17-minute feed against a 15-minute SLA and it took a human writing prose into a Deviation field to surface it. I want that connected structurally, because next time the prose might not get written.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-analyst-my-late-steps-unexplained",
+        "AskingRole": "finance-analyst",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "Which of my steps ran long without anybody recording why \u2014 and of those, which ones had an exception available that nobody invoked?",
+        "WhyItMatters": "StepExecutions.IsLate already works. But 'late' on its own is not a finding; late-and-unexplained is. se-close03 is mine and it ran nearly 19 hours. If that overran the expected duration and the Deviation field is empty, I have an undocumented overrun sitting on my name. And exc-ledger-outage exists precisely for the close-02 condition \u2014 if it was never invoked, the model should say that out loud instead of letting a blank Deviation stand in for 'nothing happened'.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      },
+      {
+        "RoleQuestionId": "q-analyst-verification-declared-never-performed",
+        "AskingRole": "finance-analyst",
+        "WitnessLoop": "loop-01",
+        "QuestionText": "For every step I ran that had a declared verification, did anybody actually perform it and record the observed signal \u2014 or did I just get a PASS with nothing behind it?",
+        "WhyItMatters": "StepVerifications is entirely spec-side. verify-reconciliation declares that close-03 must show unexplained-material-variance = 0. I ran close-03. My StepExecution says VerificationResult=PASS. But there is no row anywhere recording what the signal ACTUALLY read. The PASS is an unbacked assertion typed into a field. If an auditor asks me to produce the observed value, the model has nothing \u2014 and a skipped verification looks identical to a passed one.",
+        "AnswerableBefore": false,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RoleQuestion"
+      }
+    ]
   },
   "RulebookFields": {
     "Description": "A complete census of every field in this rulebook. Reconciled from the real schemas by tools/reconcile_field_catalog.py \u2014 never hand-maintained. Fields invented by a witness loop carry an InventedForQuestion FK.",
@@ -8117,6 +8457,56 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "Steps.BlockingRequirementCount",
+        "TargetTable": "Steps",
+        "FieldName": "BlockingRequirementCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(StepRequirements!{{BlockingStepKey}}, {{StepId}})",
+        "InventedForQuestion": "q-analyst-blocking-never-evaluated",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Steps.StaleBindingCount",
+        "TargetTable": "Steps",
+        "FieldName": "StaleBindingCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(OperationalBindings!{{StaleBindingStepKey}}, {{StepId}})",
+        "InventedForQuestion": "q-analyst-evidence-binding-stale",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Steps.AuthoritativeStaleCount",
+        "TargetTable": "Steps",
+        "FieldName": "AuthoritativeStaleCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(OperationalBindings!{{AuthoritativeStaleStepKey}}, {{StepId}})",
+        "InventedForQuestion": "q-analyst-evidence-binding-stale",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Steps.AvailableExceptionCount",
+        "TargetTable": "Steps",
+        "FieldName": "AvailableExceptionCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(Exceptions!{{ActiveExceptionStepKey}}, {{StepId}})",
+        "InventedForQuestion": "q-analyst-my-late-steps-unexplained",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Steps.DeclaredVerificationCount",
+        "TargetTable": "Steps",
+        "FieldName": "DeclaredVerificationCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(StepVerifications!{{Step}}, {{StepId}})",
+        "InventedForQuestion": "q-analyst-verification-declared-never-performed",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "Steps.SemanticTypeIri",
         "TargetTable": "Steps",
         "FieldName": "SemanticTypeIri",
@@ -8617,6 +9007,26 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "StepRequirements.RequirementIsBlocking",
+        "TargetTable": "StepRequirements",
+        "FieldName": "RequirementIsBlocking",
+        "FieldType": "lookup",
+        "Datatype": "boolean",
+        "Formula": "=INDEX(Requirements!{{IsBlocking}}, MATCH({{Requirement}}, Requirements!{{RequirementId}}, 0))",
+        "InventedForQuestion": "q-analyst-blocking-never-evaluated",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepRequirements.BlockingStepKey",
+        "TargetTable": "StepRequirements",
+        "FieldName": "BlockingStepKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IIF({{RequirementIsBlocking}}, {{Step}}, \"\")",
+        "InventedForQuestion": "q-analyst-blocking-never-evaluated",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "StepVerifications.StepVerificationId",
         "TargetTable": "StepVerifications",
         "FieldName": "StepVerificationId",
@@ -8874,6 +9284,16 @@
         "Datatype": "string",
         "Formula": null,
         "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "Exceptions.ActiveExceptionStepKey",
+        "TargetTable": "Exceptions",
+        "FieldName": "ActiveExceptionStepKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IIF({{Status}} = \"Active\", {{TriggerStep}}, \"\")",
+        "InventedForQuestion": "q-analyst-my-late-steps-unexplained",
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
@@ -9837,6 +10257,186 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "StepExecutions.BlockingUnmetCount",
+        "TargetTable": "StepExecutions",
+        "FieldName": "BlockingUnmetCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(RequirementSatisfactions!{{StepExecution}}, {{StepExecutionId}}, RequirementSatisfactions!{{IsBlockingAndUnmet}}, TRUE)",
+        "InventedForQuestion": "q-analyst-blocking-unmet-on-my-step",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.BlockingUnmetCountSafe",
+        "TargetTable": "StepExecutions",
+        "FieldName": "BlockingUnmetCountSafe",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(RequirementSatisfactions!{{BlockingUnmetStepKey}}, {{StepExecutionId}})",
+        "InventedForQuestion": "q-analyst-blocking-unmet-on-my-step",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.ProceededPastBlockingControl",
+        "TargetTable": "StepExecutions",
+        "FieldName": "ProceededPastBlockingControl",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{ExecutionStatus}} = \"Completed\", {{BlockingUnmetCountSafe}} > 0)",
+        "InventedForQuestion": "q-analyst-blocking-unmet-on-my-step",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.ExpectedBlockingCount",
+        "TargetTable": "StepExecutions",
+        "FieldName": "ExpectedBlockingCount",
+        "FieldType": "lookup",
+        "Datatype": "number",
+        "Formula": "=INDEX(Steps!{{BlockingRequirementCount}}, MATCH({{Step}}, Steps!{{StepId}}, 0))",
+        "InventedForQuestion": "q-analyst-blocking-never-evaluated",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.EvaluatedBlockingCount",
+        "TargetTable": "StepExecutions",
+        "FieldName": "EvaluatedBlockingCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(RequirementSatisfactions!{{BlockingSatisfactionStepKey}}, {{StepExecutionId}})",
+        "InventedForQuestion": "q-analyst-blocking-never-evaluated",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.UnevaluatedBlockingCount",
+        "TargetTable": "StepExecutions",
+        "FieldName": "UnevaluatedBlockingCount",
+        "FieldType": "calculated",
+        "Datatype": "number",
+        "Formula": "={{ExpectedBlockingCount}} - {{EvaluatedBlockingCount}}",
+        "InventedForQuestion": "q-analyst-blocking-never-evaluated",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.HasUnevaluatedBlockingControl",
+        "TargetTable": "StepExecutions",
+        "FieldName": "HasUnevaluatedBlockingControl",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{UnevaluatedBlockingCount}} > 0",
+        "InventedForQuestion": "q-analyst-blocking-never-evaluated",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.StaleAuthoritativeSourceCount",
+        "TargetTable": "StepExecutions",
+        "FieldName": "StaleAuthoritativeSourceCount",
+        "FieldType": "lookup",
+        "Datatype": "number",
+        "Formula": "=INDEX(Steps!{{AuthoritativeStaleCount}}, MATCH({{Step}}, Steps!{{StepId}}, 0))",
+        "InventedForQuestion": "q-analyst-evidence-binding-stale",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.RanOnStaleAuthoritativeSource",
+        "TargetTable": "StepExecutions",
+        "FieldName": "RanOnStaleAuthoritativeSource",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{StaleAuthoritativeSourceCount}} > 0",
+        "InventedForQuestion": "q-analyst-evidence-binding-stale",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.HasDeviationNote",
+        "TargetTable": "StepExecutions",
+        "FieldName": "HasDeviationNote",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{Deviation}} <> \"\"",
+        "InventedForQuestion": "q-analyst-my-late-steps-unexplained",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.IsLateAndUnexplained",
+        "TargetTable": "StepExecutions",
+        "FieldName": "IsLateAndUnexplained",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsLate}}, NOT({{HasDeviationNote}}))",
+        "InventedForQuestion": "q-analyst-my-late-steps-unexplained",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.AvailableExceptionCountForStep",
+        "TargetTable": "StepExecutions",
+        "FieldName": "AvailableExceptionCountForStep",
+        "FieldType": "lookup",
+        "Datatype": "number",
+        "Formula": "=INDEX(Steps!{{AvailableExceptionCount}}, MATCH({{Step}}, Steps!{{StepId}}, 0))",
+        "InventedForQuestion": "q-analyst-my-late-steps-unexplained",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.HadUninvokedExceptionAvailable",
+        "TargetTable": "StepExecutions",
+        "FieldName": "HadUninvokedExceptionAvailable",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{IsLateAndUnexplained}}, {{AvailableExceptionCountForStep}} > 0)",
+        "InventedForQuestion": "q-analyst-my-late-steps-unexplained",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.ExpectedVerificationCount",
+        "TargetTable": "StepExecutions",
+        "FieldName": "ExpectedVerificationCount",
+        "FieldType": "lookup",
+        "Datatype": "number",
+        "Formula": "=INDEX(Steps!{{DeclaredVerificationCount}}, MATCH({{Step}}, Steps!{{StepId}}, 0))",
+        "InventedForQuestion": "q-analyst-verification-declared-never-performed",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.PerformedVerificationCount",
+        "TargetTable": "StepExecutions",
+        "FieldName": "PerformedVerificationCount",
+        "FieldType": "aggregation",
+        "Datatype": "number",
+        "Formula": "=COUNTIFS(VerificationOutcomes!{{StepExecution}}, {{StepExecutionId}})",
+        "InventedForQuestion": "q-analyst-verification-declared-never-performed",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.SkippedVerificationCount",
+        "TargetTable": "StepExecutions",
+        "FieldName": "SkippedVerificationCount",
+        "FieldType": "calculated",
+        "Datatype": "number",
+        "Formula": "={{ExpectedVerificationCount}} - {{PerformedVerificationCount}}",
+        "InventedForQuestion": "q-analyst-verification-declared-never-performed",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.HasSkippedVerification",
+        "TargetTable": "StepExecutions",
+        "FieldName": "HasSkippedVerification",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{SkippedVerificationCount}} > 0",
+        "InventedForQuestion": "q-analyst-verification-declared-never-performed",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "StepExecutions.ClaimsPassWithoutEvidence",
+        "TargetTable": "StepExecutions",
+        "FieldName": "ClaimsPassWithoutEvidence",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{VerificationResult}} = \"PASS\", {{HasSkippedVerification}})",
+        "InventedForQuestion": "q-analyst-verification-declared-never-performed",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "StepExecutions.SemanticTypeIri",
         "TargetTable": "StepExecutions",
         "FieldName": "SemanticTypeIri",
@@ -9924,6 +10524,56 @@
         "Datatype": "datetime",
         "Formula": null,
         "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RequirementSatisfactions.RequirementIsBlocking",
+        "TargetTable": "RequirementSatisfactions",
+        "FieldName": "RequirementIsBlocking",
+        "FieldType": "lookup",
+        "Datatype": "boolean",
+        "Formula": "=INDEX(Requirements!{{IsBlocking}}, MATCH({{Requirement}}, Requirements!{{RequirementId}}, 0))",
+        "InventedForQuestion": "q-analyst-blocking-unmet-on-my-step",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RequirementSatisfactions.IsFullySatisfied",
+        "TargetTable": "RequirementSatisfactions",
+        "FieldName": "IsFullySatisfied",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{SatisfactionLevel}} = \"Satisfied\"",
+        "InventedForQuestion": "q-analyst-blocking-unmet-on-my-step",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RequirementSatisfactions.IsBlockingAndUnmet",
+        "TargetTable": "RequirementSatisfactions",
+        "FieldName": "IsBlockingAndUnmet",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{RequirementIsBlocking}}, NOT({{IsFullySatisfied}}))",
+        "InventedForQuestion": "q-analyst-blocking-unmet-on-my-step",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RequirementSatisfactions.BlockingUnmetStepKey",
+        "TargetTable": "RequirementSatisfactions",
+        "FieldName": "BlockingUnmetStepKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IIF({{IsBlockingAndUnmet}}, {{StepExecution}}, \"\")",
+        "InventedForQuestion": "q-analyst-blocking-unmet-on-my-step",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "RequirementSatisfactions.BlockingSatisfactionStepKey",
+        "TargetTable": "RequirementSatisfactions",
+        "FieldName": "BlockingSatisfactionStepKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IIF({{RequirementIsBlocking}}, {{StepExecution}}, \"\")",
+        "InventedForQuestion": "q-analyst-blocking-never-evaluated",
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
@@ -10877,6 +11527,26 @@
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       },
       {
+        "RulebookFieldId": "OperationalBindings.StaleBindingStepKey",
+        "TargetTable": "OperationalBindings",
+        "FieldName": "StaleBindingStepKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IIF(NOT({{IsFresh}}), {{Step}}, \"\")",
+        "InventedForQuestion": "q-analyst-evidence-binding-stale",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "OperationalBindings.AuthoritativeStaleStepKey",
+        "TargetTable": "OperationalBindings",
+        "FieldName": "AuthoritativeStaleStepKey",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "=IIF(AND(NOT({{IsFresh}}), {{IsAuthoritative}}), {{Step}}, \"\")",
+        "InventedForQuestion": "q-analyst-evidence-binding-stale",
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
         "RulebookFieldId": "OperationalBindings.SemanticTypeIri",
         "TargetTable": "OperationalBindings",
         "FieldName": "SemanticTypeIri",
@@ -11705,6 +12375,296 @@
         "Formula": null,
         "InventedForQuestion": null,
         "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ExceptionInvocations.ExceptionInvocationId",
+        "TargetTable": "ExceptionInvocations",
+        "FieldName": "ExceptionInvocationId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ExceptionInvocations.Name",
+        "TargetTable": "ExceptionInvocations",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{StepExecution}} & \" / \" & {{Exception}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ExceptionInvocations.StepExecution",
+        "TargetTable": "ExceptionInvocations",
+        "FieldName": "StepExecution",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ExceptionInvocations.Exception",
+        "TargetTable": "ExceptionInvocations",
+        "FieldName": "Exception",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ExceptionInvocations.InvokedByAgent",
+        "TargetTable": "ExceptionInvocations",
+        "FieldName": "InvokedByAgent",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ExceptionInvocations.ApprovedByAgent",
+        "TargetTable": "ExceptionInvocations",
+        "FieldName": "ApprovedByAgent",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ExceptionInvocations.InvokedAt",
+        "TargetTable": "ExceptionInvocations",
+        "FieldName": "InvokedAt",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ExceptionInvocations.HandlingApplied",
+        "TargetTable": "ExceptionInvocations",
+        "FieldName": "HandlingApplied",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ExceptionInvocations.ExpectedHandling",
+        "TargetTable": "ExceptionInvocations",
+        "FieldName": "ExpectedHandling",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(Exceptions!{{Handling}}, MATCH({{Exception}}, Exceptions!{{ExceptionId}}, 0))",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ExceptionInvocations.RequiredApprovalRole",
+        "TargetTable": "ExceptionInvocations",
+        "FieldName": "RequiredApprovalRole",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(Exceptions!{{ApprovalRole}}, MATCH({{Exception}}, Exceptions!{{ExceptionId}}, 0))",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ExceptionInvocations.RequiredApprovalRoleHolder",
+        "TargetTable": "ExceptionInvocations",
+        "FieldName": "RequiredApprovalRoleHolder",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(Roles!{{CurrentAgent}}, MATCH({{RequiredApprovalRole}}, Roles!{{RoleId}}, 0))",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ExceptionInvocations.ApprovalRoleMatches",
+        "TargetTable": "ExceptionInvocations",
+        "FieldName": "ApprovalRoleMatches",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{ApprovedByAgent}} = {{RequiredApprovalRoleHolder}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ExceptionInvocations.IsApproved",
+        "TargetTable": "ExceptionInvocations",
+        "FieldName": "IsApproved",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{ApprovedByAgent}} <> \"\"",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ExceptionInvocations.IsImproperlyApproved",
+        "TargetTable": "ExceptionInvocations",
+        "FieldName": "IsImproperlyApproved",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=OR(NOT({{IsApproved}}), NOT({{ApprovalRoleMatches}}))",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "ExceptionInvocations.SemanticTypeIri",
+        "TargetTable": "ExceptionInvocations",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "VerificationOutcomes.VerificationOutcomeId",
+        "TargetTable": "VerificationOutcomes",
+        "FieldName": "VerificationOutcomeId",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "VerificationOutcomes.Name",
+        "TargetTable": "VerificationOutcomes",
+        "FieldName": "Name",
+        "FieldType": "calculated",
+        "Datatype": "string",
+        "Formula": "={{StepExecution}} & \" / \" & {{StepVerification}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "VerificationOutcomes.StepExecution",
+        "TargetTable": "VerificationOutcomes",
+        "FieldName": "StepExecution",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "VerificationOutcomes.StepVerification",
+        "TargetTable": "VerificationOutcomes",
+        "FieldName": "StepVerification",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "VerificationOutcomes.ObservedSignalValue",
+        "TargetTable": "VerificationOutcomes",
+        "FieldName": "ObservedSignalValue",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "VerificationOutcomes.ObservedByAgent",
+        "TargetTable": "VerificationOutcomes",
+        "FieldName": "ObservedByAgent",
+        "FieldType": "relationship",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "VerificationOutcomes.ObservedAt",
+        "TargetTable": "VerificationOutcomes",
+        "FieldName": "ObservedAt",
+        "FieldType": "raw",
+        "Datatype": "datetime",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "VerificationOutcomes.EvidenceUri",
+        "TargetTable": "VerificationOutcomes",
+        "FieldName": "EvidenceUri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "VerificationOutcomes.ExpectedSignalValue",
+        "TargetTable": "VerificationOutcomes",
+        "FieldName": "ExpectedSignalValue",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(StepVerifications!{{ExpectedSignalValue}}, MATCH({{StepVerification}}, StepVerifications!{{StepVerificationId}}, 0))",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "VerificationOutcomes.SignalIdentifier",
+        "TargetTable": "VerificationOutcomes",
+        "FieldName": "SignalIdentifier",
+        "FieldType": "lookup",
+        "Datatype": "string",
+        "Formula": "=INDEX(StepVerifications!{{SignalIdentifier}}, MATCH({{StepVerification}}, StepVerifications!{{StepVerificationId}}, 0))",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "VerificationOutcomes.SignalMatchesExpected",
+        "TargetTable": "VerificationOutcomes",
+        "FieldName": "SignalMatchesExpected",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{ObservedSignalValue}} = {{ExpectedSignalValue}}",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "VerificationOutcomes.HasEvidence",
+        "TargetTable": "VerificationOutcomes",
+        "FieldName": "HasEvidence",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "={{EvidenceUri}} <> \"\"",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "VerificationOutcomes.IsUnbackedObservation",
+        "TargetTable": "VerificationOutcomes",
+        "FieldName": "IsUnbackedObservation",
+        "FieldType": "calculated",
+        "Datatype": "boolean",
+        "Formula": "=AND({{SignalMatchesExpected}}, NOT({{HasEvidence}}))",
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
+      },
+      {
+        "RulebookFieldId": "VerificationOutcomes.SemanticTypeIri",
+        "TargetTable": "VerificationOutcomes",
+        "FieldName": "SemanticTypeIri",
+        "FieldType": "raw",
+        "Datatype": "string",
+        "Formula": null,
+        "InventedForQuestion": null,
+        "SemanticTypeIri": "urn:effortless:pko-extension#RulebookField"
       }
     ]
   },
@@ -11999,6 +12959,295 @@
         "ValueType": "string",
         "StringValue": "Procedural knowledge is modeled as data, not prose. PKO is graph-shaped; an Effortless Rulebook is an acyclic structural graph, so repeated and many-to-many semantics are promoted to first-class junction and event entities (StepTransitions, StepRequirements, RoleAssignments). No semantics are lost \u2014 the relational shape is a faithful encoding, and each projection recovers its own native surface form from the same structure.",
         "JsonValue": null
+      }
+    ]
+  },
+  "ExceptionInvocations": {
+    "Description": "ExceptionInvocations (added by witness loop 1).",
+    "schema": [
+      {
+        "name": "ExceptionInvocationId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stored logical identifier for one ExceptionInvocations row."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Human-readable calculated display alias.",
+        "formula": "={{StepExecution}} & \" / \" & {{Exception}}"
+      },
+      {
+        "name": "StepExecution",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "The execution during which the exception was invoked.",
+        "RelatedTo": "StepExecutions"
+      },
+      {
+        "name": "Exception",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "The specified exception that was invoked.",
+        "RelatedTo": "Exceptions"
+      },
+      {
+        "name": "InvokedByAgent",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Agent who invoked the exception.",
+        "RelatedTo": "Agents"
+      },
+      {
+        "name": "ApprovedByAgent",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Agent who approved the invocation. Must satisfy the exception's ApprovalRole.",
+        "RelatedTo": "Agents"
+      },
+      {
+        "name": "InvokedAt",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "When the exception was invoked."
+      },
+      {
+        "name": "HandlingApplied",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "What was actually done, in the invoker's words."
+      },
+      {
+        "name": "ExpectedHandling",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The handling the specification prescribes.",
+        "formula": "=INDEX(Exceptions!{{Handling}}, MATCH({{Exception}}, Exceptions!{{ExceptionId}}, 0))"
+      },
+      {
+        "name": "RequiredApprovalRole",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The role the specification requires to approve this exception.",
+        "formula": "=INDEX(Exceptions!{{ApprovalRole}}, MATCH({{Exception}}, Exceptions!{{ExceptionId}}, 0))"
+      },
+      {
+        "name": "RequiredApprovalRoleHolder",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The agent who currently holds the role that must approve this exception.",
+        "formula": "=INDEX(Roles!{{CurrentAgent}}, MATCH({{RequiredApprovalRole}}, Roles!{{RoleId}}, 0))"
+      },
+      {
+        "name": "ApprovalRoleMatches",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the agent who approved is the holder of the role the exception requires.",
+        "formula": "={{ApprovedByAgent}} = {{RequiredApprovalRoleHolder}}"
+      },
+      {
+        "name": "IsApproved",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when an approver was recorded at all.",
+        "formula": "={{ApprovedByAgent}} <> \"\""
+      },
+      {
+        "name": "IsImproperlyApproved",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when an exception was invoked without an approver, or approved by an agent who does not hold the required role.",
+        "formula": "=OR(NOT({{IsApproved}}), NOT({{ApprovalRoleMatches}}))"
+      },
+      {
+        "name": "SemanticTypeIri",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Extension IRI \u2014 PKO does not define exception invocation.",
+        "default": "urn:effortless:pko-extension#ExceptionInvocation"
+      }
+    ],
+    "data": [
+      {
+        "ExceptionInvocationId": "exc-inv-close02",
+        "StepExecution": "se-close02",
+        "Exception": "exc-ledger-outage",
+        "InvokedByAgent": "close-pipeline",
+        "ApprovedByAgent": "devon-okafor",
+        "InvokedAt": "2026-07-19T09:24:00-05:00",
+        "HandlingApplied": "Used the digitally signed 09:07 trial-balance snapshot and opened blocking incident issue-close-feed. No spreadsheet substitution.",
+        "SemanticTypeIri": "urn:effortless:pko-extension#ExceptionInvocation"
+      }
+    ]
+  },
+  "VerificationOutcomes": {
+    "Description": "VerificationOutcomes (added by witness loop 1).",
+    "schema": [
+      {
+        "name": "VerificationOutcomeId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stored logical identifier for one VerificationOutcomes row."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Human-readable calculated display alias.",
+        "formula": "={{StepExecution}} & \" / \" & {{StepVerification}}"
+      },
+      {
+        "name": "StepExecution",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "The execution during which the verification was performed.",
+        "RelatedTo": "StepExecutions"
+      },
+      {
+        "name": "StepVerification",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "The declared verification being performed.",
+        "RelatedTo": "StepVerifications"
+      },
+      {
+        "name": "ObservedSignalValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "The value the signal actually read at verification time."
+      },
+      {
+        "name": "ObservedByAgent",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Agent who observed the signal.",
+        "RelatedTo": "Agents"
+      },
+      {
+        "name": "ObservedAt",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "When the signal was observed."
+      },
+      {
+        "name": "EvidenceUri",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Pointer to the retained artifact backing the observation."
+      },
+      {
+        "name": "ExpectedSignalValue",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The value the specification expects.",
+        "formula": "=INDEX(StepVerifications!{{ExpectedSignalValue}}, MATCH({{StepVerification}}, StepVerifications!{{StepVerificationId}}, 0))"
+      },
+      {
+        "name": "SignalIdentifier",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Which signal this outcome concerns.",
+        "formula": "=INDEX(StepVerifications!{{SignalIdentifier}}, MATCH({{StepVerification}}, StepVerifications!{{StepVerificationId}}, 0))"
+      },
+      {
+        "name": "SignalMatchesExpected",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the observed value equals the expected value.",
+        "formula": "={{ObservedSignalValue}} = {{ExpectedSignalValue}}"
+      },
+      {
+        "name": "HasEvidence",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a retained artifact backs this observation.",
+        "formula": "={{EvidenceUri}} <> \"\""
+      },
+      {
+        "name": "IsUnbackedObservation",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when a verification was recorded as matching but no evidence artifact was retained.",
+        "formula": "=AND({{SignalMatchesExpected}}, NOT({{HasEvidence}}))"
+      },
+      {
+        "name": "SemanticTypeIri",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Extension IRI \u2014 PKO 2.0.0 has no execution-side verification outcome class.",
+        "default": "urn:effortless:pko-extension#VerificationOutcome"
+      }
+    ],
+    "data": [
+      {
+        "VerificationOutcomeId": "vo-close01",
+        "StepExecution": "se-close01",
+        "StepVerification": "verify-close-cutoff",
+        "ObservedSignalValue": "LOCKED",
+        "EvidenceUri": "evidence://erp/close/2026-q2/ledger-lock.json",
+        "ObservedByAgent": "devon-okafor",
+        "ObservedAt": "2026-07-19T09:05:00-05:00",
+        "SemanticTypeIri": "urn:effortless:pko-extension#VerificationOutcome"
+      },
+      {
+        "VerificationOutcomeId": "vo-close02",
+        "StepExecution": "se-close02",
+        "StepVerification": "verify-feed-time",
+        "ObservedSignalValue": "17",
+        "EvidenceUri": "evidence://erp/close/2026-q2/feed-age.json",
+        "ObservedByAgent": "close-pipeline",
+        "ObservedAt": "2026-07-19T09:22:00-05:00",
+        "SemanticTypeIri": "urn:effortless:pko-extension#VerificationOutcome"
+      },
+      {
+        "VerificationOutcomeId": "vo-close03",
+        "StepExecution": "se-close03",
+        "StepVerification": "verify-reconciliation",
+        "ObservedSignalValue": "0",
+        "EvidenceUri": "",
+        "ObservedByAgent": "maria-chen",
+        "ObservedAt": "2026-07-19T11:40:00-05:00",
+        "SemanticTypeIri": "urn:effortless:pko-extension#VerificationOutcome"
+      },
+      {
+        "VerificationOutcomeId": "vo-close05",
+        "StepExecution": "se-close05",
+        "StepVerification": "verify-controller",
+        "ObservedSignalValue": "APPROVED",
+        "EvidenceUri": "evidence://erp/close/2026-q2/controller-approval.pdf",
+        "ObservedByAgent": "devon-okafor",
+        "ObservedAt": "2026-07-19T12:20:00-05:00",
+        "SemanticTypeIri": "urn:effortless:pko-extension#VerificationOutcome"
       }
     ]
   }

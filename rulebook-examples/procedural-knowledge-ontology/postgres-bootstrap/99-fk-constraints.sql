@@ -404,4 +404,29 @@ ALTER TABLE rulebook_fields DROP CONSTRAINT IF EXISTS fk_rulebook_fields_invente
 ALTER TABLE rulebook_fields ADD CONSTRAINT fk_rulebook_fields_invented_for_question
   FOREIGN KEY (invented_for_question) REFERENCES role_questions (role_question_id);
 
--- 104 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
+-- ExceptionInvocations
+ALTER TABLE exception_invocations DROP CONSTRAINT IF EXISTS fk_exception_invocations_step_execution;
+ALTER TABLE exception_invocations ADD CONSTRAINT fk_exception_invocations_step_execution
+  FOREIGN KEY (step_execution) REFERENCES step_executions (step_execution_id);
+ALTER TABLE exception_invocations DROP CONSTRAINT IF EXISTS fk_exception_invocations_exception;
+ALTER TABLE exception_invocations ADD CONSTRAINT fk_exception_invocations_exception
+  FOREIGN KEY (exception) REFERENCES exceptions (exception_id);
+ALTER TABLE exception_invocations DROP CONSTRAINT IF EXISTS fk_exception_invocations_invoked_by_agent;
+ALTER TABLE exception_invocations ADD CONSTRAINT fk_exception_invocations_invoked_by_agent
+  FOREIGN KEY (invoked_by_agent) REFERENCES agents (agent_id);
+ALTER TABLE exception_invocations DROP CONSTRAINT IF EXISTS fk_exception_invocations_approved_by_agent;
+ALTER TABLE exception_invocations ADD CONSTRAINT fk_exception_invocations_approved_by_agent
+  FOREIGN KEY (approved_by_agent) REFERENCES agents (agent_id);
+
+-- VerificationOutcomes
+ALTER TABLE verification_outcomes DROP CONSTRAINT IF EXISTS fk_verification_outcomes_step_execution;
+ALTER TABLE verification_outcomes ADD CONSTRAINT fk_verification_outcomes_step_execution
+  FOREIGN KEY (step_execution) REFERENCES step_executions (step_execution_id);
+ALTER TABLE verification_outcomes DROP CONSTRAINT IF EXISTS fk_verification_outcomes_step_verification;
+ALTER TABLE verification_outcomes ADD CONSTRAINT fk_verification_outcomes_step_verification
+  FOREIGN KEY (step_verification) REFERENCES step_verifications (step_verification_id);
+ALTER TABLE verification_outcomes DROP CONSTRAINT IF EXISTS fk_verification_outcomes_observed_by_agent;
+ALTER TABLE verification_outcomes ADD CONSTRAINT fk_verification_outcomes_observed_by_agent
+  FOREIGN KEY (observed_by_agent) REFERENCES agents (agent_id);
+
+-- 111 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).

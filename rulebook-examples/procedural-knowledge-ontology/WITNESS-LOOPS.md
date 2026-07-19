@@ -68,11 +68,43 @@ other regardless of git. So:
   execution story makes no claim.
 - Segregation of duties (`req-close-separation`) is prose; not evaluable.
 
+## The apply protocol (per role — this is the unattended loop)
+
+For each role spec in `.witness-specs/<role>.json`:
+
+1. Apply its predicates to the rulebook via `tools/apply_witness_spec.py`
+   (adds RoleQuestions rows + the fields themselves, in dependency order).
+2. Create any `needs_table` entities.
+3. Seed the violation rows named in `needs_seed` so the witness can fire.
+4. `tools/verify_witnesses.sh` — must show the new witnesses DISCRIMINATING.
+   Vacuous means not done; fix the formula or the seed.
+5. Remediate in-model back to clean: invoke the documented exception, open and
+   resolve a KnowledgeGap, approve the ChangeRequest. Keep the resolved rows —
+   the arc is the story.
+6. `python3 tools/reconcile_field_catalog.py` so the catalog matches reality.
+7. Commit, one per role, naming the questions the role can now answer.
+
+## Verification command
+
+```bash
+tools/verify_witnesses.sh          # build + reload + non-vacuity report
+tools/verify_witnesses.sh --no-build
+```
+
+Baseline before loop 1: **496 fields, 79 derived, 0 witnessed, 10 discriminating
+booleans / 11 vacuous.** The witnessed count is the number this exercise exists
+to move.
+
 ## Loop log
 
 ### Loop 1 — the founding questions
-Status: in progress
-The 12 roles each ask 5 questions. Predicates decomposed to atomic.
+Status: in progress. 12 roles x 5 questions, ~34 atomic predicates per role
+(~410 total, which clears the 250-300 target).
+
+Roles: finance-analyst, controller, cfo | process-steward, knowledge-authority,
+hr-policy-owner | employment-counsel, communications-manager,
+notification-publisher | close-automation, variance-review-agent,
+policy-drafting-agent.
 
 ### Loop 2+ — derivative questions
 Planned only after loop 1's answers are materialized and written back.
