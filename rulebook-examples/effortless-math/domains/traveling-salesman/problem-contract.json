@@ -847,12 +847,12 @@
     {
       "LoopOrder": 659,
       "LoopId": "tsp-loop-659",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Exact development results exist per instance but have no aggregate calibration profile.",
       "ClosureCriterion": "Aggregate exact coverage, bound soundness, value closure, route closure, optimal choice orbit, and maximum enumerated class count across the development corpus.",
-      "AfterState": null,
-      "Result": "Planned; no conclusion recorded.",
-      "CompletionDisposition": null
+      "AfterState": "Aggregated the exact development calibration profile.",
+      "Result": "Coverage=100.0%, deterministic value closure=3/6, route closure=2/6, maximum feasible classes=20160.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 660,
@@ -1505,7 +1505,7 @@
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
     "LastPlannedLoop": 710,
-    "HighestCompletedLoop": 658,
+    "HighestCompletedLoop": 659,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 16,
     "SelectedNotForcedEdgeStates": 5,
@@ -1547,8 +1547,8 @@
     "ConstraintDecisions": 7,
     "ClusterBoundaryStateMembers": 66,
     "ClusterContractionCertificates": 7,
-    "ConvergenceMeasurements": 62,
-    "ConceptRegistry": 113,
+    "ConvergenceMeasurements": 63,
+    "ConceptRegistry": 114,
     "DefectProfiles": 21,
     "BoundTerms": 8,
     "WitnessNormalForms": 19,
@@ -1575,10 +1575,14 @@
     "OptimalFaceOptimalWitnessCount": 2,
     "OptimalFaceChoiceOrbitSize": 2,
     "PhysicalTableCount": 45,
-    "OptimalFaceValueProofBranchDecisionCount": 0
+    "OptimalFaceValueProofBranchDecisionCount": 0,
+    "DevelopmentExactCoveragePct": 100.0,
+    "DevelopmentValueClosedCount": 3,
+    "DevelopmentRouteClosedCount": 2,
+    "DevelopmentMaxExactClassCount": 20160
   },
   "ArtifactHashes": {
-    "rulebook": "sha256:672691f774228bd63aba1dc14a176b044c2664591b1b7bf232066e8dcacc870f",
+    "rulebook": "sha256:2dacc42c8264a88dad530af2a2c614d5d42cf2b5e0b0d9427c8d45d6efda50d0",
     "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
     "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
     "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
