@@ -1886,12 +1886,12 @@
     {
       "LoopOrder": 762,
       "LoopId": "tsp-loop-762",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "ulysses22 lacks separated subtour-elimination closure.",
       "ClosureCriterion": "Separate violated global min-cuts until all represented subtour inequalities pass or a declared cap/failure occurs.",
-      "AfterState": null,
-      "Result": "Planned; no result consumed.",
-      "CompletionDisposition": null
+      "AfterState": "SEC status=INTEGRAL_TOUR; objective=7013.0; cuts=8; fractional edges=0.",
+      "Result": "SEC status=INTEGRAL_TOUR; objective=7013.0; cuts=8; fractional edges=0.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 763,
