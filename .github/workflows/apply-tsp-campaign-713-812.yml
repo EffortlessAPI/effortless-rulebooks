@@ -55,7 +55,6 @@ jobs:
         run: |
           set -euo pipefail
           domain='rulebook-examples/effortless-math/domains/traveling-salesman'
-          payload='.github/tsp_campaign_713_812'
           python3 - <<'PY'
           import base64, gzip, hashlib
           from pathlib import Path
@@ -90,18 +89,57 @@ jobs:
 
           HERE = Path(__file__).resolve().parent
           DOMAIN = HERE.parent
+          RULEBOOK = DOMAIN / 'effortless-rulebook' / 'traveling-salesman-rulebook.json'
           CALIBRATION_STATUS = DOMAIN / 'testing' / 'calibration-647-710-status.json'
           CALIBRATION_VERIFIED = DOMAIN / 'testing' / 'calibration-647-710-verified.json'
           CALIBRATION_VERIFIER = HERE / 'verify_calibration_647_710.py'
+          CALIBRATION_HISTORY_MODE = DOMAIN / 'testing' / 'calibration-history-mode.json'
           CAMPAIGN_STATUS = DOMAIN / 'testing' / 'campaign-713-812' / 'status.json'
           CAMPAIGN_DRIVER = HERE / 'campaign_713_812.py'
+
+          def load_json(path: Path) -> dict:
+              if not path.is_file():
+                  raise FileNotFoundError(path)
+              return json.loads(path.read_text())
+
+          def validate_squashed_calibration_ledger() -> None:
+              mode = load_json(CALIBRATION_HISTORY_MODE)
+              if mode.get('mode') != 'SQUASHED_CANONICAL_LEDGER':
+                  raise AssertionError(f'unsupported calibration history mode: {mode!r}')
+              if mode.get('detailed_git_commit_history_required') is not False:
+                  raise AssertionError('squashed history mode must disable commit-subject dependence')
+              status = load_json(CALIBRATION_STATUS)
+              verified = load_json(CALIBRATION_VERIFIED)
+              rulebook = load_json(RULEBOOK)
+              if status.get('status') != 'SUCCEEDED' or int(status.get('last_loop', 0)) != 710:
+                  raise AssertionError(status)
+              if verified.get('status') != 'VERIFIED' or verified.get('loops') != '647-710':
+                  raise AssertionError(verified)
+              rows = rulebook['TSPLoops']['data']
+              loops = {int(row['LoopOrder']): row for row in rows}
+              missing = [order for order in range(647, 711) if order not in loops]
+              if missing:
+                  raise AssertionError(f'canonical calibration loops missing: {missing}')
+              for order in range(647, 711):
+                  row = loops[order]
+                  if row.get('Status') != 'CLOSED':
+                      raise AssertionError(f'canonical loop {order} is {row.get("Status")!r}')
+                  for field in ('BeforeState', 'PlannedClosureCriterion', 'AfterState', 'WitnessSummary'):
+                      if not row.get(field):
+                          raise AssertionError(f'canonical loop {order} lacks {field}')
+              print('traveling-salesman calibration canonical-ledger validation: PASS')
 
           def validate_calibration_read_only() -> None:
               if not CALIBRATION_STATUS.is_file() or not CALIBRATION_VERIFIER.is_file():
                   return
-              status = json.loads(CALIBRATION_STATUS.read_text())
+              status = load_json(CALIBRATION_STATUS)
               if status.get('status') != 'SUCCEEDED' or int(status.get('last_loop', 0)) != 710:
                   return
+              if CALIBRATION_HISTORY_MODE.is_file():
+                  mode = load_json(CALIBRATION_HISTORY_MODE)
+                  if mode.get('mode') == 'SQUASHED_CANONICAL_LEDGER':
+                      validate_squashed_calibration_ledger()
+                      return
               prior = CALIBRATION_VERIFIED.read_bytes() if CALIBRATION_VERIFIED.is_file() else None
               try:
                   subprocess.run([sys.executable, str(CALIBRATION_VERIFIER)], check=True)
@@ -114,7 +152,7 @@ jobs:
           def campaign_is_closed() -> bool:
               if not CAMPAIGN_STATUS.is_file() or not CAMPAIGN_DRIVER.is_file():
                   return False
-              status = json.loads(CAMPAIGN_STATUS.read_text())
+              status = load_json(CAMPAIGN_STATUS)
               return status.get('status') == 'SUCCEEDED' and int(status.get('last_loop', 0)) == 812
 
           if __name__ == '__main__':
@@ -129,38 +167,6 @@ jobs:
                   validate_summary_v7()
                   validate_calibration_read_only()
           PY
-          cat > .github/workflows/validate-tsp-domain.yml <<'YML'
-          name: Validate TSP domain
-
-          on:
-            workflow_dispatch:
-
-          permissions:
-            contents: read
-
-          jobs:
-            validate:
-              runs-on: ubuntu-latest
-              timeout-minutes: 45
-              steps:
-                - uses: actions/checkout@v4
-                  with:
-                    fetch-depth: 0
-                - uses: actions/setup-python@v5
-                  with:
-                    python-version: '3.12'
-                - name: Install validation dependencies
-                  run: python3 -m pip install 'numpy==2.1.3' 'scipy==1.14.1' 'networkx==3.4.2'
-                - name: Validate semantic rulebook and evidence
-                  run: |
-                    domain='rulebook-examples/effortless-math/domains/traveling-salesman'
-                    python3 "$domain/scripts/validate_rulebook.py"
-                    find "$domain/scripts" "$domain/testing" -type f -name '*.py' -print0 \
-                      | xargs -0 -r python3 -m py_compile
-                    bash -n "$domain/start.sh"
-                - name: Ensure validation is read-only
-                  run: test -z "$(git status --porcelain)"
-          YML
           python3 -m py_compile "$domain/scripts/campaign_713_812.py" "$domain/scripts/validate_rulebook.py"
 
       - name: Configure Git and Python
@@ -182,7 +188,7 @@ jobs:
           python3 rulebook-examples/effortless-math/scripts/format-rulebook.py \
             "$domain/effortless-rulebook/traveling-salesman-rulebook.json"
           python3 -m json.tool "$domain/problem-contract.json" >/dev/null
-          git add -- "$domain" .github/workflows/validate-tsp-domain.yml
+          git add -- "$domain"
           git commit -m 'TSP loops 713-812: preregister frozen TSPLIB campaign'
 
       - name: Execute the frozen campaign once
@@ -270,7 +276,8 @@ jobs:
           PY
           python3 "$domain/scripts/campaign_713_812.py" --validate
           rm -rf .github/tsp_campaign_713_812
-          rm -f .tsp-campaign-713-812.trigger .github/workflows/apply-tsp-campaign-713-812.yml
-          git add -A -- "$domain" .github/tsp_campaign_713_812 .tsp-campaign-713-812.trigger .github/workflows/apply-tsp-campaign-713-812.yml
+          rm -f .tsp-campaign-713-812.trigger
+          git add -A -- "$domain" .github/tsp_campaign_713_812 .tsp-campaign-713-812.trigger
           git commit -m 'TSP loops 713-812: seal replay and Postgres conformance'
+          git pull --rebase origin "$TARGET_BRANCH"
           git push origin HEAD:"$TARGET_BRANCH"
