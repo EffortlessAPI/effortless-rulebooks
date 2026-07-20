@@ -1406,12 +1406,12 @@
     {
       "LoopOrder": 714,
       "LoopId": "tsp-loop-714",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "The external benchmark campaign has not yet represented this prerequisite.",
       "ClosureCriterion": "Freeze heuristic, path-state, one-tree, SEC, and simple comb methods before execution.",
-      "AfterState": null,
-      "Result": "Planned; no result consumed.",
-      "CompletionDisposition": null
+      "AfterState": "The constructive, path-state, scaled one-tree, degree-LP, SEC, and simple-comb methods were frozen.",
+      "Result": "The constructive, path-state, scaled one-tree, degree-LP, SEC, and simple-comb methods were frozen.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 715,
