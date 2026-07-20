@@ -878,6 +878,834 @@
       {
         "artifacts": [],
         "conclusion": "failure",
+        "created_at": "2026-07-20T20:49:48Z",
+        "event": "push",
+        "head_branch": "agent/tsp_consolidation",
+        "head_sha": "7ae88fbc1300fa0baa2144f9d61b3164bd4c0f98",
+        "html_url": "https://github.com/EffortlessAPI/effortless-rulebooks/actions/runs/29777730834",
+        "id": 29777730834,
+        "jobs": [
+          {
+            "completed_at": "2026-07-20T20:50:11Z",
+            "conclusion": "failure",
+            "html_url": "https://github.com/EffortlessAPI/effortless-rulebooks/actions/runs/29777730834/job/88471114989",
+            "id": 88471114989,
+            "name": "patch",
+            "started_at": "2026-07-20T20:49:51Z",
+            "status": "completed",
+            "steps": [
+              {
+                "completed_at": "2026-07-20T20:49:53Z",
+                "conclusion": "success",
+                "name": "Set up job",
+                "number": 1,
+                "started_at": "2026-07-20T20:49:52Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:50:05Z",
+                "conclusion": "success",
+                "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+                "number": 2,
+                "started_at": "2026-07-20T20:49:53Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:50:05Z",
+                "conclusion": "success",
+                "name": "Patch certified input scope and durable workflow identities",
+                "number": 3,
+                "started_at": "2026-07-20T20:50:05Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:50:05Z",
+                "conclusion": "success",
+                "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+                "number": 4,
+                "started_at": "2026-07-20T20:50:05Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:50:06Z",
+                "conclusion": "success",
+                "name": "Validate patched scope and identities",
+                "number": 5,
+                "started_at": "2026-07-20T20:50:05Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:50:08Z",
+                "conclusion": "failure",
+                "name": "Commit the final validator and pinning surface",
+                "number": 6,
+                "started_at": "2026-07-20T20:50:06Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:50:08Z",
+                "conclusion": "skipped",
+                "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+                "number": 11,
+                "started_at": "2026-07-20T20:50:08Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:50:08Z",
+                "conclusion": "success",
+                "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+                "number": 12,
+                "started_at": "2026-07-20T20:50:08Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:50:08Z",
+                "conclusion": "success",
+                "name": "Complete job",
+                "number": 13,
+                "started_at": "2026-07-20T20:50:08Z",
+                "status": "completed"
+              }
+            ]
+          }
+        ],
+        "name": "Finish TSP validator scope and workflow pinning",
+        "path": ".github/workflows/tsp-finish-validator-pinning.yml",
+        "run_attempt": 1,
+        "run_number": 1,
+        "status": "completed",
+        "updated_at": "2026-07-20T20:50:12Z",
+        "workflow_id": 316982254
+      },
+      {
+        "artifacts": [],
+        "conclusion": "failure",
+        "created_at": "2026-07-20T20:48:27Z",
+        "event": "push",
+        "head_branch": "agent/tsp_consolidation",
+        "head_sha": "9f0459a581b8e41d867b65a8e8b5c61d0827a772",
+        "html_url": "https://github.com/EffortlessAPI/effortless-rulebooks/actions/runs/29777645082",
+        "id": 29777645082,
+        "jobs": [
+          {
+            "completed_at": "2026-07-20T20:48:57Z",
+            "conclusion": "failure",
+            "html_url": "https://github.com/EffortlessAPI/effortless-rulebooks/actions/runs/29777645082/job/88470829736",
+            "id": 88470829736,
+            "name": "validate",
+            "started_at": "2026-07-20T20:48:30Z",
+            "status": "completed",
+            "steps": [
+              {
+                "completed_at": "2026-07-20T20:48:32Z",
+                "conclusion": "success",
+                "name": "Set up job",
+                "number": 1,
+                "started_at": "2026-07-20T20:48:31Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:48:44Z",
+                "conclusion": "success",
+                "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+                "number": 2,
+                "started_at": "2026-07-20T20:48:32Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:48:44Z",
+                "conclusion": "success",
+                "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+                "number": 3,
+                "started_at": "2026-07-20T20:48:44Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:48:55Z",
+                "conclusion": "success",
+                "name": "Install pinned validation dependencies",
+                "number": 4,
+                "started_at": "2026-07-20T20:48:44Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:48:55Z",
+                "conclusion": "failure",
+                "name": "Require mechanically reconciled projections",
+                "number": 5,
+                "started_at": "2026-07-20T20:48:55Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:48:55Z",
+                "conclusion": "skipped",
+                "name": "Run cumulative semantic and evidence validation",
+                "number": 6,
+                "started_at": "2026-07-20T20:48:55Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:48:55Z",
+                "conclusion": "skipped",
+                "name": "Prove validation is read-only",
+                "number": 7,
+                "started_at": "2026-07-20T20:48:55Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:48:55Z",
+                "conclusion": "skipped",
+                "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+                "number": 13,
+                "started_at": "2026-07-20T20:48:55Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:48:55Z",
+                "conclusion": "success",
+                "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+                "number": 14,
+                "started_at": "2026-07-20T20:48:55Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:48:55Z",
+                "conclusion": "success",
+                "name": "Complete job",
+                "number": 15,
+                "started_at": "2026-07-20T20:48:55Z",
+                "status": "completed"
+              }
+            ]
+          }
+        ],
+        "name": "Validate consolidated TSP domain",
+        "path": ".github/workflows/validate-tsp-domain.yml",
+        "run_attempt": 1,
+        "run_number": 372,
+        "status": "completed",
+        "updated_at": "2026-07-20T20:48:57Z",
+        "workflow_id": 315521011
+      },
+      {
+        "artifacts": [],
+        "conclusion": "success",
+        "created_at": "2026-07-20T20:46:45Z",
+        "event": "push",
+        "head_branch": "agent/tsp_consolidation",
+        "head_sha": "8e06f9635ff2aa972274f0211126c8e6a4a78c79",
+        "html_url": "https://github.com/EffortlessAPI/effortless-rulebooks/actions/runs/29777534610",
+        "id": 29777534610,
+        "jobs": [
+          {
+            "completed_at": "2026-07-20T20:47:06Z",
+            "conclusion": "success",
+            "html_url": "https://github.com/EffortlessAPI/effortless-rulebooks/actions/runs/29777534610/job/88470457341",
+            "id": 88470457341,
+            "name": "align",
+            "started_at": "2026-07-20T20:46:48Z",
+            "status": "completed",
+            "steps": [
+              {
+                "completed_at": "2026-07-20T20:46:50Z",
+                "conclusion": "success",
+                "name": "Set up job",
+                "number": 1,
+                "started_at": "2026-07-20T20:46:49Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:47:01Z",
+                "conclusion": "success",
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "started_at": "2026-07-20T20:46:50Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:47:01Z",
+                "conclusion": "success",
+                "name": "Prepend supersession notice without rewriting historical context",
+                "number": 3,
+                "started_at": "2026-07-20T20:47:01Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:47:01Z",
+                "conclusion": "success",
+                "name": "Validate non-README documentation alignment",
+                "number": 4,
+                "started_at": "2026-07-20T20:47:01Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:47:03Z",
+                "conclusion": "success",
+                "name": "Commit historical handoff alignment",
+                "number": 5,
+                "started_at": "2026-07-20T20:47:01Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:47:03Z",
+                "conclusion": "success",
+                "name": "Post Run actions/checkout@v4",
+                "number": 10,
+                "started_at": "2026-07-20T20:47:03Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:47:03Z",
+                "conclusion": "success",
+                "name": "Complete job",
+                "number": 11,
+                "started_at": "2026-07-20T20:47:03Z",
+                "status": "completed"
+              }
+            ]
+          }
+        ],
+        "name": "Align historical TSP handoff with consolidation",
+        "path": ".github/workflows/tsp-align-historical-handoff.yml",
+        "run_attempt": 1,
+        "run_number": 9,
+        "status": "completed",
+        "updated_at": "2026-07-20T20:47:06Z",
+        "workflow_id": 316975377
+      },
+      {
+        "artifacts": [],
+        "conclusion": "success",
+        "created_at": "2026-07-20T20:46:12Z",
+        "event": "push",
+        "head_branch": "agent/tsp_consolidation",
+        "head_sha": "2149282bfc49417cd46a667c02a87553550b2c4e",
+        "html_url": "https://github.com/EffortlessAPI/effortless-rulebooks/actions/runs/29777497757",
+        "id": 29777497757,
+        "jobs": [
+          {
+            "completed_at": "2026-07-20T20:46:44Z",
+            "conclusion": "success",
+            "html_url": "https://github.com/EffortlessAPI/effortless-rulebooks/actions/runs/29777497757/job/88470334684",
+            "id": 88470334684,
+            "name": "repair",
+            "started_at": "2026-07-20T20:46:14Z",
+            "status": "completed",
+            "steps": [
+              {
+                "completed_at": "2026-07-20T20:46:17Z",
+                "conclusion": "success",
+                "name": "Set up job",
+                "number": 1,
+                "started_at": "2026-07-20T20:46:15Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:46:28Z",
+                "conclusion": "success",
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "started_at": "2026-07-20T20:46:17Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:46:28Z",
+                "conclusion": "success",
+                "name": "Run actions/setup-python@v5",
+                "number": 3,
+                "started_at": "2026-07-20T20:46:28Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:46:38Z",
+                "conclusion": "success",
+                "name": "Install pinned validator dependencies",
+                "number": 4,
+                "started_at": "2026-07-20T20:46:28Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:46:38Z",
+                "conclusion": "success",
+                "name": "Make loop-647-710 validators cumulative-compatible",
+                "number": 5,
+                "started_at": "2026-07-20T20:46:38Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:46:40Z",
+                "conclusion": "success",
+                "name": "Replay repaired historical validators",
+                "number": 6,
+                "started_at": "2026-07-20T20:46:38Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:46:41Z",
+                "conclusion": "success",
+                "name": "Commit cumulative-compatible validators",
+                "number": 7,
+                "started_at": "2026-07-20T20:46:40Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:46:42Z",
+                "conclusion": "success",
+                "name": "Post Run actions/setup-python@v5",
+                "number": 13,
+                "started_at": "2026-07-20T20:46:41Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:46:42Z",
+                "conclusion": "success",
+                "name": "Post Run actions/checkout@v4",
+                "number": 14,
+                "started_at": "2026-07-20T20:46:42Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:46:42Z",
+                "conclusion": "success",
+                "name": "Complete job",
+                "number": 15,
+                "started_at": "2026-07-20T20:46:42Z",
+                "status": "completed"
+              }
+            ]
+          }
+        ],
+        "name": "Repair historical TSP validators for cumulative replay",
+        "path": ".github/workflows/tsp-repair-historical-validators.yml",
+        "run_attempt": 1,
+        "run_number": 3,
+        "status": "completed",
+        "updated_at": "2026-07-20T20:46:45Z",
+        "workflow_id": 316969978
+      },
+      {
+        "artifacts": [],
+        "conclusion": "failure",
+        "created_at": "2026-07-20T20:46:09Z",
+        "event": "push",
+        "head_branch": "agent/tsp_consolidation",
+        "head_sha": "2149282bfc49417cd46a667c02a87553550b2c4e",
+        "html_url": "https://github.com/EffortlessAPI/effortless-rulebooks/actions/runs/29777493968",
+        "id": 29777493968,
+        "jobs": [],
+        "name": ".github/workflows/tsp-align-historical-handoff.yml",
+        "path": ".github/workflows/tsp-align-historical-handoff.yml",
+        "run_attempt": 1,
+        "run_number": 8,
+        "status": "completed",
+        "updated_at": "2026-07-20T20:46:09Z",
+        "workflow_id": 316975377
+      },
+      {
+        "artifacts": [],
+        "conclusion": "failure",
+        "created_at": "2026-07-20T20:45:56Z",
+        "event": "push",
+        "head_branch": "agent/tsp_consolidation",
+        "head_sha": "9fa5e2e3e6df3dc7382cf0cf33d8419f0608225a",
+        "html_url": "https://github.com/EffortlessAPI/effortless-rulebooks/actions/runs/29777480104",
+        "id": 29777480104,
+        "jobs": [],
+        "name": ".github/workflows/tsp-align-historical-handoff.yml",
+        "path": ".github/workflows/tsp-align-historical-handoff.yml",
+        "run_attempt": 1,
+        "run_number": 7,
+        "status": "completed",
+        "updated_at": "2026-07-20T20:45:56Z",
+        "workflow_id": 316975377
+      },
+      {
+        "artifacts": [],
+        "conclusion": "failure",
+        "created_at": "2026-07-20T20:43:26Z",
+        "event": "push",
+        "head_branch": "agent/tsp_consolidation",
+        "head_sha": "2198b4729f99fda24ba8e3ea8dca0d57e3509627",
+        "html_url": "https://github.com/EffortlessAPI/effortless-rulebooks/actions/runs/29777303790",
+        "id": 29777303790,
+        "jobs": [
+          {
+            "completed_at": "2026-07-20T20:43:52Z",
+            "conclusion": "failure",
+            "html_url": "https://github.com/EffortlessAPI/effortless-rulebooks/actions/runs/29777303790/job/88469711956",
+            "id": 88469711956,
+            "name": "validate",
+            "started_at": "2026-07-20T20:43:29Z",
+            "status": "completed",
+            "steps": [
+              {
+                "completed_at": "2026-07-20T20:43:30Z",
+                "conclusion": "success",
+                "name": "Set up job",
+                "number": 1,
+                "started_at": "2026-07-20T20:43:30Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:43:41Z",
+                "conclusion": "success",
+                "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+                "number": 2,
+                "started_at": "2026-07-20T20:43:30Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:43:41Z",
+                "conclusion": "success",
+                "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+                "number": 3,
+                "started_at": "2026-07-20T20:43:41Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:43:50Z",
+                "conclusion": "success",
+                "name": "Install pinned validation dependencies",
+                "number": 4,
+                "started_at": "2026-07-20T20:43:41Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:43:51Z",
+                "conclusion": "failure",
+                "name": "Require mechanically reconciled projections",
+                "number": 5,
+                "started_at": "2026-07-20T20:43:50Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:43:51Z",
+                "conclusion": "skipped",
+                "name": "Run cumulative semantic and evidence validation",
+                "number": 6,
+                "started_at": "2026-07-20T20:43:51Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:43:51Z",
+                "conclusion": "skipped",
+                "name": "Prove validation is read-only",
+                "number": 7,
+                "started_at": "2026-07-20T20:43:51Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:43:51Z",
+                "conclusion": "skipped",
+                "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+                "number": 13,
+                "started_at": "2026-07-20T20:43:51Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:43:51Z",
+                "conclusion": "success",
+                "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+                "number": 14,
+                "started_at": "2026-07-20T20:43:51Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:43:51Z",
+                "conclusion": "success",
+                "name": "Complete job",
+                "number": 15,
+                "started_at": "2026-07-20T20:43:51Z",
+                "status": "completed"
+              }
+            ]
+          }
+        ],
+        "name": "Validate consolidated TSP domain",
+        "path": ".github/workflows/validate-tsp-domain.yml",
+        "run_attempt": 1,
+        "run_number": 371,
+        "status": "completed",
+        "updated_at": "2026-07-20T20:43:53Z",
+        "workflow_id": 315521011
+      },
+      {
+        "artifacts": [],
+        "conclusion": "failure",
+        "created_at": "2026-07-20T20:43:25Z",
+        "event": "push",
+        "head_branch": "agent/tsp_consolidation",
+        "head_sha": "2198b4729f99fda24ba8e3ea8dca0d57e3509627",
+        "html_url": "https://github.com/EffortlessAPI/effortless-rulebooks/actions/runs/29777302748",
+        "id": 29777302748,
+        "jobs": [],
+        "name": ".github/workflows/tsp-align-historical-handoff.yml",
+        "path": ".github/workflows/tsp-align-historical-handoff.yml",
+        "run_attempt": 1,
+        "run_number": 6,
+        "status": "completed",
+        "updated_at": "2026-07-20T20:43:25Z",
+        "workflow_id": 316975377
+      },
+      {
+        "artifacts": [],
+        "conclusion": "failure",
+        "created_at": "2026-07-20T20:40:13Z",
+        "event": "push",
+        "head_branch": "agent/tsp_consolidation",
+        "head_sha": "e215b62d78bd541875959305d9b4c70372659a13",
+        "html_url": "https://github.com/EffortlessAPI/effortless-rulebooks/actions/runs/29777083347",
+        "id": 29777083347,
+        "jobs": [
+          {
+            "completed_at": "2026-07-20T20:40:38Z",
+            "conclusion": "failure",
+            "html_url": "https://github.com/EffortlessAPI/effortless-rulebooks/actions/runs/29777083347/job/88468978927",
+            "id": 88468978927,
+            "name": "validate",
+            "started_at": "2026-07-20T20:40:15Z",
+            "status": "completed",
+            "steps": [
+              {
+                "completed_at": "2026-07-20T20:40:17Z",
+                "conclusion": "success",
+                "name": "Set up job",
+                "number": 1,
+                "started_at": "2026-07-20T20:40:16Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:40:26Z",
+                "conclusion": "success",
+                "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+                "number": 2,
+                "started_at": "2026-07-20T20:40:17Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:40:27Z",
+                "conclusion": "success",
+                "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+                "number": 3,
+                "started_at": "2026-07-20T20:40:26Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:40:36Z",
+                "conclusion": "success",
+                "name": "Install pinned validation dependencies",
+                "number": 4,
+                "started_at": "2026-07-20T20:40:27Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:40:37Z",
+                "conclusion": "failure",
+                "name": "Require mechanically reconciled projections",
+                "number": 5,
+                "started_at": "2026-07-20T20:40:36Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:40:37Z",
+                "conclusion": "skipped",
+                "name": "Run cumulative semantic and evidence validation",
+                "number": 6,
+                "started_at": "2026-07-20T20:40:37Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:40:37Z",
+                "conclusion": "skipped",
+                "name": "Prove validation is read-only",
+                "number": 7,
+                "started_at": "2026-07-20T20:40:37Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:40:37Z",
+                "conclusion": "skipped",
+                "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+                "number": 13,
+                "started_at": "2026-07-20T20:40:37Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:40:37Z",
+                "conclusion": "success",
+                "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+                "number": 14,
+                "started_at": "2026-07-20T20:40:37Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:40:37Z",
+                "conclusion": "success",
+                "name": "Complete job",
+                "number": 15,
+                "started_at": "2026-07-20T20:40:37Z",
+                "status": "completed"
+              }
+            ]
+          }
+        ],
+        "name": "Validate consolidated TSP domain",
+        "path": ".github/workflows/validate-tsp-domain.yml",
+        "run_attempt": 1,
+        "run_number": 370,
+        "status": "completed",
+        "updated_at": "2026-07-20T20:40:39Z",
+        "workflow_id": 315521011
+      },
+      {
+        "artifacts": [],
+        "conclusion": "failure",
+        "created_at": "2026-07-20T20:40:12Z",
+        "event": "push",
+        "head_branch": "agent/tsp_consolidation",
+        "head_sha": "e215b62d78bd541875959305d9b4c70372659a13",
+        "html_url": "https://github.com/EffortlessAPI/effortless-rulebooks/actions/runs/29777081617",
+        "id": 29777081617,
+        "jobs": [],
+        "name": ".github/workflows/tsp-align-historical-handoff.yml",
+        "path": ".github/workflows/tsp-align-historical-handoff.yml",
+        "run_attempt": 1,
+        "run_number": 5,
+        "status": "completed",
+        "updated_at": "2026-07-20T20:40:12Z",
+        "workflow_id": 316975377
+      },
+      {
+        "artifacts": [],
+        "conclusion": "failure",
+        "created_at": "2026-07-20T20:38:09Z",
+        "event": "push",
+        "head_branch": "agent/tsp_consolidation",
+        "head_sha": "7e9dab75b80546d83750ca9911547411c0b5b367",
+        "html_url": "https://github.com/EffortlessAPI/effortless-rulebooks/actions/runs/29776941107",
+        "id": 29776941107,
+        "jobs": [
+          {
+            "completed_at": "2026-07-20T20:38:38Z",
+            "conclusion": "failure",
+            "html_url": "https://github.com/EffortlessAPI/effortless-rulebooks/actions/runs/29776941107/job/88468496525",
+            "id": 88468496525,
+            "name": "validate",
+            "started_at": "2026-07-20T20:38:12Z",
+            "status": "completed",
+            "steps": [
+              {
+                "completed_at": "2026-07-20T20:38:14Z",
+                "conclusion": "success",
+                "name": "Set up job",
+                "number": 1,
+                "started_at": "2026-07-20T20:38:13Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:38:25Z",
+                "conclusion": "success",
+                "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+                "number": 2,
+                "started_at": "2026-07-20T20:38:14Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:38:25Z",
+                "conclusion": "success",
+                "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+                "number": 3,
+                "started_at": "2026-07-20T20:38:25Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:38:34Z",
+                "conclusion": "success",
+                "name": "Install pinned validation dependencies",
+                "number": 4,
+                "started_at": "2026-07-20T20:38:25Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:38:35Z",
+                "conclusion": "failure",
+                "name": "Require mechanically reconciled projections",
+                "number": 5,
+                "started_at": "2026-07-20T20:38:34Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:38:35Z",
+                "conclusion": "skipped",
+                "name": "Run cumulative semantic and evidence validation",
+                "number": 6,
+                "started_at": "2026-07-20T20:38:35Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:38:35Z",
+                "conclusion": "skipped",
+                "name": "Prove validation is read-only",
+                "number": 7,
+                "started_at": "2026-07-20T20:38:35Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:38:35Z",
+                "conclusion": "skipped",
+                "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+                "number": 13,
+                "started_at": "2026-07-20T20:38:35Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:38:35Z",
+                "conclusion": "success",
+                "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+                "number": 14,
+                "started_at": "2026-07-20T20:38:35Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:38:35Z",
+                "conclusion": "success",
+                "name": "Complete job",
+                "number": 15,
+                "started_at": "2026-07-20T20:38:35Z",
+                "status": "completed"
+              }
+            ]
+          }
+        ],
+        "name": "Validate consolidated TSP domain",
+        "path": ".github/workflows/validate-tsp-domain.yml",
+        "run_attempt": 1,
+        "run_number": 369,
+        "status": "completed",
+        "updated_at": "2026-07-20T20:38:38Z",
+        "workflow_id": 315521011
+      },
+      {
+        "artifacts": [],
+        "conclusion": "failure",
+        "created_at": "2026-07-20T20:38:08Z",
+        "event": "push",
+        "head_branch": "agent/tsp_consolidation",
+        "head_sha": "7e9dab75b80546d83750ca9911547411c0b5b367",
+        "html_url": "https://github.com/EffortlessAPI/effortless-rulebooks/actions/runs/29776939726",
+        "id": 29776939726,
+        "jobs": [],
+        "name": ".github/workflows/tsp-align-historical-handoff.yml",
+        "path": ".github/workflows/tsp-align-historical-handoff.yml",
+        "run_attempt": 1,
+        "run_number": 4,
+        "status": "completed",
+        "updated_at": "2026-07-20T20:38:08Z",
+        "workflow_id": 316975377
+      },
+      {
+        "artifacts": [],
+        "conclusion": "failure",
         "created_at": "2026-07-20T20:35:48Z",
         "event": "push",
         "head_branch": "agent/tsp_consolidation",

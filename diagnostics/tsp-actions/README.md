@@ -4,6 +4,18 @@
 
 | Run | Workflow | Event | Status | Conclusion | Head | Artifacts |
 |---:|---|---|---|---|---|---:|
+| 29777730834 | Finish TSP validator scope and workflow pinning | push | completed | failure | `7ae88fbc1300` | 0 |
+| 29777645082 | Validate consolidated TSP domain | push | completed | failure | `9f0459a581b8` | 0 |
+| 29777534610 | Align historical TSP handoff with consolidation | push | completed | success | `8e06f9635ff2` | 0 |
+| 29777497757 | Repair historical TSP validators for cumulative replay | push | completed | success | `2149282bfc49` | 0 |
+| 29777493968 | .github/workflows/tsp-align-historical-handoff.yml | push | completed | failure | `2149282bfc49` | 0 |
+| 29777480104 | .github/workflows/tsp-align-historical-handoff.yml | push | completed | failure | `9fa5e2e3e6df` | 0 |
+| 29777303790 | Validate consolidated TSP domain | push | completed | failure | `2198b4729f99` | 0 |
+| 29777302748 | .github/workflows/tsp-align-historical-handoff.yml | push | completed | failure | `2198b4729f99` | 0 |
+| 29777083347 | Validate consolidated TSP domain | push | completed | failure | `e215b62d78bd` | 0 |
+| 29777081617 | .github/workflows/tsp-align-historical-handoff.yml | push | completed | failure | `e215b62d78bd` | 0 |
+| 29776941107 | Validate consolidated TSP domain | push | completed | failure | `7e9dab75b805` | 0 |
+| 29776939726 | .github/workflows/tsp-align-historical-handoff.yml | push | completed | failure | `7e9dab75b805` | 0 |
 | 29776779282 | .github/workflows/tsp-align-historical-handoff.yml | push | completed | failure | `a923c0d85865` | 0 |
 | 29776738467 | .github/workflows/tsp-align-historical-handoff.yml | push | completed | failure | `b17d826623d5` | 0 |
 | 29776730694 | .github/workflows/tsp-align-historical-handoff.yml | push | completed | failure | `f6e3fa6170f5` | 0 |
