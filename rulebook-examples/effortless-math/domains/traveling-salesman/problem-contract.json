@@ -2126,12 +2126,12 @@
     {
       "LoopOrder": 786,
       "LoopId": "tsp-loop-786",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "bayg29 has a candidate witness but no capped exact path-state proof result under the frozen MST envelope.",
       "ClosureCriterion": "Execute the exact path-state search under declared caps and record unique quotient states, state updates, bounds, dominance, and completion status.",
-      "AfterState": null,
-      "Result": "Planned; no result consumed.",
-      "CompletionDisposition": null
+      "AfterState": "Path-state status=TIME_CAP; unique states=62005; final incumbent=1610.",
+      "Result": "Path-state status=TIME_CAP; unique states=62005; final incumbent=1610.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 787,
