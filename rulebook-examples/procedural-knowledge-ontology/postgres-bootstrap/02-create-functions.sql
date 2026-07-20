@@ -10958,12 +10958,12 @@ $$ LANGUAGE sql STABLE;
 
 -- calc_agent_decision_records_review_latency_minutes
 -- Field: AgentDecisionRecords.ReviewLatencyMinutes
--- Type: calculated | DataType: integer | Returns: INTEGER
+-- Type: calculated | DataType: number | Returns: NUMERIC
 
 
 CREATE OR REPLACE FUNCTION calc_agent_decision_records_review_latency_minutes(p_agent_decision_record_id TEXT)
-RETURNS INTEGER AS $$
-  SELECT (CASE WHEN (SELECT reviewed_at::timestamptz FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id) IS NULL THEN (0)::text ELSE ((EXTRACT(EPOCH FROM ((SELECT reviewed_at::timestamptz FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id)::timestamp - (SELECT decided_at::timestamptz FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id)::timestamp)) / 60))::text END)::integer;
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN (SELECT reviewed_at::timestamptz FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id) IS NULL THEN (0)::text ELSE ((EXTRACT(EPOCH FROM ((SELECT reviewed_at::timestamptz FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id)::timestamp - (SELECT decided_at::timestamptz FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id)::timestamp)) / 60))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_agent_decision_records_is_draft_kind

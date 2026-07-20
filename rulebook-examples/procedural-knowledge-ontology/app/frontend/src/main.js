@@ -15,6 +15,10 @@
 // rulebook formula, not here.
 // ============================================================================
 import "./styles.css";
+import {
+  ADMIN_TABS, loadAdmin, adminCount, wireAdmin,
+  viewBoard, viewWitnesses, viewLoops, viewTrace,
+} from "./admin.js";
 
 const $ = (id) => document.getElementById(id);
 const esc = (s) =>
@@ -105,6 +109,10 @@ const ROLES = {
     label: "Auditor",
     tabs: ["ledger", "evidence", "mappings"],
   },
+  admin: {
+    label: "Admin",
+    tabs: ["board", "witnesses", "loops", "trace"],
+  },
 };
 const TABS = {
   run: "My Steps",
@@ -117,6 +125,7 @@ const TABS = {
   health: "Knowledge Health",
   evidence: "Evidence Trail",
   mappings: "Ontology Mapping",
+  ...ADMIN_TABS,
 };
 
 let role = "operator";
@@ -138,6 +147,7 @@ function tabCount(t) {
     case "health": return (T.knowledge_gaps || []).filter((g) => g.status === "Open").length;
     case "mappings": return (T.semantic_mappings || []).length;
     case "evidence": return (T.requirement_satisfactions || []).length;
+    case "board": case "witnesses": case "loops": return adminCount(t);
     default: return null;
   }
 }
@@ -738,6 +748,7 @@ const VIEWS = {
   ledger: viewLedger, run: viewRun, flow: viewFlow, catalog: viewCatalog,
   knowledge: viewKnowledge, health: viewHealth, queue: viewQueue,
   changes: viewChanges, evidence: viewEvidence, mappings: viewMappings,
+  board: viewBoard, witnesses: viewWitnesses, loops: viewLoops, trace: viewTrace,
 };
 
 // ---------- render ----------
@@ -754,14 +765,30 @@ function render() {
     })
     .join("");
   $("view").innerHTML = VIEWS[tab]();
+  if (ADMIN_TABS[tab]) {
+    wireAdmin(tab, (next) => { if (next) tab = next; render(); });
+  }
   window.scrollTo({ top: 0, behavior: "instant" });
 }
 
 document.addEventListener("click", (e) => {
   const r = e.target.closest(".role-btn[data-role]");
-  if (r) { role = r.dataset.role; return render(); }
+  if (r) {
+    role = r.dataset.role;
+    if (role === "admin" && adminCount("board") == null) {
+      $("view").innerHTML = `<div class="card" style="padding:24px">Loading the witness layer…</div>`;
+      return loadAdmin().then(render).catch((err) => {
+        $("view").innerHTML = `<div class="card" style="padding:24px">
+          <h2 style="color:var(--fail);font-size:17px;margin-bottom:8px">Could not load the admin layer</h2>
+          <p class="prose">${esc(err.message)}</p></div>`;
+      });
+    }
+    return render();
+  }
   const t = e.target.closest(".nav-btn[data-tab]");
   if (t) { tab = t.dataset.tab; return render(); }
+  const a = e.target.closest('.role-btn[data-role="admin"]');
+  if (a) return;
   const x = e.target.closest("[data-exec]");
   if (x) { execSel = x.dataset.exec; return render(); }
   const s = e.target.closest("[data-step]");

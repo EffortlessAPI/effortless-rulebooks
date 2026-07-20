@@ -2050,7 +2050,7 @@ SELECT
   calc_agent_decision_records_is_unconfirmed_non_human_decision(t.agent_decision_record_id) AS is_unconfirmed_non_human_decision,-- TRUE when a material non-human decision was never confirmed by a human.
   calc_agent_decision_records_step_execution_when_unconfirmed(t.agent_decision_record_id) AS step_execution_when_unconfirmed,-- Echoes the step-execution id when the decision is an unconfirmed non-human material decision, blank otherwise.
   calc_agent_decision_records_agent_when_boundary_violated(t.agent_decision_record_id) AS agent_when_boundary_violated,-- Echoes the deciding agent id when the decision violated a boundary, blank otherwise.
-  calc_agent_decision_records_review_latency_minutes(t.agent_decision_record_id) AS review_latency_minutes,-- Minutes between the decision and its human disposition; 0 when never reviewed.
+  calc_agent_decision_records_review_latency_minutes(t.agent_decision_record_id) AS review_latency_minutes,-- Minutes between the decision and its human disposition; 0 when never reviewed. Declared number, not integer: DATETIME_DIFF returns a numeric and an integer cast makes the entire view fail on read.
   calc_agent_decision_records_is_draft_kind(t.agent_decision_record_id) AS is_draft_kind,-- TRUE when this decision produced text — the drafter's own output class.
   calc_agent_decision_records_agent_when_draft_overridden(t.agent_decision_record_id) AS agent_when_draft_overridden,-- Echoes the deciding agent id when a drafting decision was overridden, blank otherwise.
   calc_agent_decision_records_agent_when_draft(t.agent_decision_record_id) AS agent_when_draft,-- Echoes the deciding agent id when the decision produced text, blank otherwise.

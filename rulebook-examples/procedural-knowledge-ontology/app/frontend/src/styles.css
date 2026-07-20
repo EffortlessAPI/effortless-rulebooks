@@ -272,3 +272,116 @@ footer p{margin:0 0 8px}
   .ledger-head{position:static}
   .kv{grid-template-columns:1fr}
 }
+
+/* ==========================================================================
+   Admin — the witness layer looking at itself.
+   Reuses the existing pass/warn/fail tokens so a verdict here reads the same
+   as a verdict anywhere else in the console.
+   ========================================================================== */
+
+.abanner{display:flex;align-items:center;justify-content:space-between;gap:20px;
+  padding:20px 24px;border-radius:10px;margin:22px 0 18px;border:1px solid var(--rule);
+  background:var(--raise);box-shadow:var(--shadow)}
+.abanner.is-green{border-left:4px solid var(--pass);background:var(--pass-wash)}
+.abanner.is-red{border-left:4px solid var(--fail);background:var(--fail-wash)}
+.abanner-t{font:600 19px/1.2 var(--stamp);letter-spacing:-.01em}
+.abanner-s{font:400 13.5px/1.5 var(--stamp);color:var(--muted);margin-top:4px;max-width:64ch}
+
+.abtn{font:600 13px/1 var(--stamp);padding:10px 18px;border-radius:7px;cursor:pointer;
+  border:1px solid var(--rule);background:var(--raise);color:var(--ink);white-space:nowrap}
+.abtn:hover:not(:disabled){border-color:var(--spec);color:var(--spec)}
+.abtn:disabled{opacity:.55;cursor:progress}
+
+.atiles{display:flex;flex-wrap:wrap;gap:12px;margin:0 0 8px}
+.atiles.small{margin:12px 0 16px}
+.atile{flex:1 1 130px;min-width:112px;padding:14px 16px;border-radius:9px;
+  border:1px solid var(--rule);background:var(--raise)}
+.atile-n{font:600 25px/1 var(--data);letter-spacing:-.02em}
+.atile-l{font:500 11.5px/1 var(--stamp);color:var(--muted);text-transform:uppercase;
+  letter-spacing:.07em;margin-top:7px}
+.atile.pass .atile-n{color:var(--pass)} .atile.warn .atile-n{color:var(--warn)}
+.atile.fail .atile-n{color:var(--fail)} .atile.pend .atile-n{color:var(--pend)}
+
+.asub{font-size:13px;line-height:1.6;margin:10px 0 18px;max-width:78ch}
+.asect{padding:20px 22px;margin-bottom:18px}
+.ah{font:600 15px/1.2 var(--stamp);margin:0 0 14px;letter-spacing:-.01em}
+
+.atable{width:100%;border-collapse:collapse;font:400 13.5px/1.5 var(--stamp)}
+.atable th{text-align:left;font:600 11.5px/1 var(--stamp);color:var(--muted);
+  text-transform:uppercase;letter-spacing:.06em;padding:0 10px 9px;border-bottom:1px solid var(--rule)}
+.atable td{padding:9px 10px;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+.atable td.n,.atable th.n{text-align:right}
+.atable td.isfail{color:var(--fail);font-weight:600}
+.atable tr:last-child td{border-bottom:none}
+
+.bar{height:6px;border-radius:3px;background:var(--rule-soft);overflow:hidden}
+.bar>span{display:block;height:100%;background:var(--pass);border-radius:3px}
+.bar>span.warn{background:var(--warn)} .bar>span.fail{background:var(--fail)}
+.bar>span.pend{background:var(--pend)}
+
+.afilters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.ainput{font:400 13px/1 var(--stamp);padding:9px 11px;border-radius:7px;
+  border:1px solid var(--rule);background:var(--paper);color:var(--ink);min-width:150px}
+.ainput:focus{outline:2px solid var(--spec);outline-offset:-1px}
+
+.alist{max-height:640px;overflow-y:auto}
+.arow{display:flex;align-items:flex-start;gap:12px;padding:11px 4px;
+  border-bottom:1px solid var(--rule-soft)}
+.arow:last-child{border-bottom:none}
+.arow-b{flex:1;min-width:0}
+.arow-t{font-size:12.5px;font-weight:600;word-break:break-all}
+.arow-a{font:400 13px/1.5 var(--stamp);color:var(--muted);margin-top:3px}
+.arow-d{font-size:12px;color:var(--muted);margin-top:4px;word-break:break-word}
+.arow-q{font:400 12px/1 var(--stamp);color:var(--muted);margin-top:5px}
+
+.pill{display:inline-block;font:600 10.5px/1 var(--stamp);padding:5px 8px;border-radius:5px;
+  text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}
+.pill.pass{background:var(--pass-wash);color:var(--pass)}
+.pill.warn{background:var(--warn-wash);color:var(--warn)}
+.pill.fail{background:var(--fail-wash);color:var(--fail)}
+.pill.pend{background:var(--pend-wash);color:var(--pend)}
+
+.tagb,.taga{display:inline-block;font:600 10.5px/1 var(--stamp);padding:4px 7px;
+  border-radius:4px;letter-spacing:.04em;white-space:nowrap;margin-right:6px}
+.tagb{background:var(--spec-wash);color:var(--spec)}
+.taga{background:var(--pend-wash);color:var(--muted)}
+
+.alink{font:inherit;color:var(--spec);background:none;border:none;padding:0;
+  cursor:pointer;text-align:left;text-decoration:underline;text-underline-offset:2px}
+.alink:hover{color:var(--ink)}
+.alink.small{font-size:12px;margin-right:9px}
+
+.agroup{margin:18px 0 0}
+.agh{font:600 13px/1.3 var(--stamp);margin:0 0 8px;padding-bottom:6px;
+  border-bottom:1px solid var(--rule)}
+
+.aq{padding:12px 14px;border-radius:8px;background:var(--paper);
+  border:1px solid var(--rule-soft);margin-bottom:9px}
+.aq-t{font:500 14px/1.5 var(--doc)}
+.aq-w{font:400 12.5px/1.6 var(--stamp);color:var(--muted);margin-top:6px;max-width:82ch}
+.aq-m{margin-top:9px}
+.aq-a{font-size:11.5px;color:var(--muted);margin-top:8px;padding-top:8px;
+  border-top:1px dashed var(--rule);word-break:break-word}
+.aprem{font-size:14px;line-height:1.65;margin:0 0 14px;max-width:80ch}
+
+.achain{margin-top:18px}
+.anode{padding:14px 16px;border-radius:9px;border:1px solid var(--rule);
+  background:var(--paper);border-left:3px solid var(--spec)}
+.anode-k{font:600 10.5px/1 var(--stamp);color:var(--muted);text-transform:uppercase;
+  letter-spacing:.07em;margin-bottom:7px}
+.anode-t{font:500 14.5px/1.5 var(--doc)}
+.anode-w{font:400 12.5px/1.6 var(--stamp);color:var(--muted);margin-top:6px;max-width:80ch}
+.anode-b{margin-top:9px}
+.anode-r{font:500 12px/1 var(--stamp);color:var(--pass);margin-top:9px}
+.aformula{font-size:12px;margin-top:9px;padding:9px 11px;border-radius:6px;
+  background:var(--raise);border:1px solid var(--rule-soft);word-break:break-word}
+.aarrow{font:500 11px/1 var(--stamp);color:var(--muted);text-transform:uppercase;
+  letter-spacing:.07em;padding:9px 0 9px 18px;position:relative}
+.aarrow::before{content:"";position:absolute;left:7px;top:0;bottom:0;width:1px;background:var(--rule)}
+.asibs{margin-top:8px;display:flex;flex-wrap:wrap;gap:2px}
+.afail{color:var(--fail);font:400 13.5px/1.5 var(--stamp);margin-top:12px}
+
+@media (max-width:720px){
+  .abanner{flex-direction:column;align-items:flex-start}
+  .atable{display:block;overflow-x:auto}
+}

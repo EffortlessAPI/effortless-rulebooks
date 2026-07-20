@@ -196,8 +196,14 @@ def check(tc, rb, sub: Substrate) -> tuple[str, str]:
             if table in {"ERBVersions", "ERBCustomizations"}:
                 return "SKIP", "bookkeeping table, intentionally not a view"
             return "FAIL", f"no view found for {table}"
-        ok, out = sub.try_scalar(f"SELECT count(*) FROM {view}")
-        return ("PASS", f"{out} rows") if ok else ("FAIL", out)
+        # SELECT * — not count(*). A count never evaluates the calculated
+        # columns, so a view whose calc column fails its cast passed this check
+        # while /api/register got a 500 from the same view.
+        ok, out = sub.try_scalar(f"SELECT * FROM {view} LIMIT 200")
+        if not ok:
+            return "FAIL", out
+        ok2, n = sub.try_scalar(f"SELECT count(*) FROM {view}")
+        return ("PASS", f"{n} rows, all columns readable") if ok2 else ("FAIL", n)
 
     if kind == "fk-resolves":
         target = tc["Subject"].split("->")[-1].strip()
