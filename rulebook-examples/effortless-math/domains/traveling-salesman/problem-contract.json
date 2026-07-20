@@ -2076,12 +2076,12 @@
     {
       "LoopOrder": 781,
       "LoopId": "tsp-loop-781",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "fri26 has no simple 2-matching comb follow-up for any fractional SEC residue.",
       "ClosureCriterion": "Apply only witnessed simple 2-matching comb cuts from fractional-support components and preserve any remaining fractional residue.",
-      "AfterState": null,
-      "Result": "Planned; no result consumed.",
-      "CompletionDisposition": null
+      "AfterState": "Comb status=INTEGRAL_TOUR; objective=937.0; SEC cuts=6; comb cuts=0.",
+      "Result": "Comb status=INTEGRAL_TOUR; objective=937.0; SEC cuts=6; comb cuts=0.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 782,
