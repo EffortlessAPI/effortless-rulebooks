@@ -1,8 +1,8 @@
 {
   "status": "FAIL",
-  "github_run_id": "29756817500",
-  "source_commit": "6b552a3d0aa1648b79c149b6f20c8c6b053b948c",
-  "failing_stage": "prebuild-validation",
+  "github_run_id": "29757609835",
+  "source_commit": "79d51ca0cf6bfee211223102ac1c7e848c0583c2",
+  "failing_stage": "effortless-build",
   "cli_source": "https://github.com/EffortlessAPI/cli/archive/1551cb82d5a8992ad09e4c82d08e28493f92f7b4.tar.gz",
   "rulebook_is_generation_input": true,
   "generated_database_loaded_from_effortless_projection": false
