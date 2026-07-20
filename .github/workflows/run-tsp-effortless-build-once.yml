@@ -1,0 +1,157 @@
+name: Run canonical TSP Effortless build once
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .tsp-effortless-build-once.trigger
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      DOMAIN: rulebook-examples/effortless-math/domains/traveling-salesman
+      PGHOST: localhost
+      PGUSER: postgres
+      PGPASSWORD: postgres
+      TSP_DB: erb_traveling_salesman
+      EFFORTLESS_CLI_SOURCE: https://github.com/EffortlessAPI/cli/archive/1551cb82d5a8992ad09e4c82d08e28493f92f7b4.tar.gz
+      NPM_CONFIG_PREFIX: /tmp/effortless-npm-global
+      NPM_CONFIG_CACHE: /tmp/effortless-npm-cache
+      DOTNET_SKIP_FIRST_TIME_EXPERIENCE: "1"
+      DOTNET_CLI_TELEMETRY_OPTOUT: "1"
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.410'
+      - name: Configure environment
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq postgresql-client
+          python3 -m pip install --quiet psycopg2-binary
+          export PATH="$NPM_CONFIG_PREFIX/bin:$PATH"
+          mkdir -p "$NPM_CONFIG_PREFIX/bin" "$NPM_CONFIG_PREFIX/lib" "$NPM_CONFIG_CACHE"
+          echo "$NPM_CONFIG_PREFIX/bin" >> "$GITHUB_PATH"
+          npm install -g "$EFFORTLESS_CLI_SOURCE"
+          effortless -info > /tmp/tsp-build-cli.log 2>&1
+      - name: Execute canonical generation and database conformance
+        id: execute
+        shell: bash
+        run: |
+          set +e
+          stage=prebuild-validation
+          python3 "$DOMAIN/scripts/validate_rulebook.py" > /tmp/tsp-build-prevalidation.log 2>&1
+          code=$?
+          if [ "$code" -eq 0 ]; then
+            stage=effortless-build
+            (cd "$DOMAIN" && bash ./start.sh build) > /tmp/tsp-build-generation.log 2>&1
+            code=$?
+          fi
+          if [ "$code" -eq 0 ]; then
+            stage=postgres-load
+            (cd "$DOMAIN" && bash ./start.sh db) > /tmp/tsp-build-postgres.log 2>&1
+            code=$?
+          fi
+          if [ "$code" -eq 0 ]; then
+            stage=postgres-conformance
+            (cd "$DOMAIN" && bash ./start.sh test) > /tmp/tsp-build-conformance.log 2>&1
+            code=$?
+          fi
+          if [ "$code" -eq 0 ]; then
+            psql -h "$PGHOST" -U "$PGUSER" -d "$TSP_DB" -v ON_ERROR_STOP=1 -tA -c \
+              "SELECT max(loop_order), count(*) FROM vw_tsp_loops" > /tmp/tsp-build-loops.txt 2>&1
+            code=$?
+          fi
+          if [ "$code" -eq 0 ]; then
+            psql -h "$PGHOST" -U "$PGUSER" -d "$TSP_DB" -v ON_ERROR_STOP=1 -tA -c \
+              "SELECT count(*) FROM information_schema.views WHERE table_schema='public' AND table_name LIKE 'vw_%'" > /tmp/tsp-build-views.txt 2>&1
+            code=$?
+          fi
+          echo "stage=$stage" >> "$GITHUB_OUTPUT"
+          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
+          exit 0
+      - name: Seal outcome and generated projections
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$DOMAIN/testing"
+          for pair in \
+            tsp-build-cli.log:effortless-build-cli-info.log \
+            tsp-build-prevalidation.log:effortless-build-prevalidation.log \
+            tsp-build-generation.log:effortless-build-generation.log \
+            tsp-build-postgres.log:effortless-build-postgres-load.log \
+            tsp-build-conformance.log:effortless-build-conformance.log \
+            tsp-build-loops.txt:effortless-build-loop-surface.txt \
+            tsp-build-views.txt:effortless-build-view-count.txt; do
+            src=/tmp/${pair%%:*}
+            dst=$DOMAIN/testing/${pair##*:}
+            if [ -f "$src" ]; then cp "$src" "$dst"; else : > "$dst"; fi
+          done
+          python3 - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          domain = Path(os.environ['DOMAIN'])
+          code = int('${{ steps.execute.outputs.exit_code }}')
+          generated = domain / 'effortless-postgres'
+          files = sorted(p for p in generated.rglob('*') if p.is_file())
+          digest = hashlib.sha256()
+          for path in files:
+              digest.update(path.relative_to(domain).as_posix().encode() + b'\0' + path.read_bytes() + b'\0')
+          rulebook = domain / 'effortless-rulebook' / 'traveling-salesman-rulebook.json'
+          loops_path = Path('/tmp/tsp-build-loops.txt')
+          views_path = Path('/tmp/tsp-build-views.txt')
+          payload = {
+              'status': 'PASS' if code == 0 else 'FAIL',
+              'github_run_id': os.environ['GITHUB_RUN_ID'],
+              'source_commit': os.environ['GITHUB_SHA'],
+              'failing_stage': None if code == 0 else '${{ steps.execute.outputs.stage }}',
+              'exit_code': code,
+              'cli_source': os.environ['EFFORTLESS_CLI_SOURCE'],
+              'rulebook_sha256': hashlib.sha256(rulebook.read_bytes()).hexdigest(),
+              'generated_postgres_tree_sha256': digest.hexdigest() if files else None,
+              'generated_postgres_file_count': len(files),
+              'loop_surface': loops_path.read_text().strip() if loops_path.is_file() else None,
+              'view_count': int(views_path.read_text().strip()) if views_path.is_file() and views_path.read_text().strip().isdigit() else None,
+              'database': os.environ['TSP_DB'],
+              'rulebook_is_generation_input': True,
+              'generated_database_loaded_from_effortless_projection': code == 0,
+              'commands': ['./start.sh build', './start.sh db', './start.sh test'],
+          }
+          (domain / 'testing' / 'effortless-build-status.json').write_text(json.dumps(payload, indent=2) + '\n')
+          PY
+          rm -f .tsp-effortless-build-once.trigger .github/workflows/run-tsp-effortless-build-once.yml
+          git add -A -- "$DOMAIN" .tsp-effortless-build-once.trigger .github/workflows/run-tsp-effortless-build-once.yml
+          git commit -m 'Run canonical TSP Effortless build and generated Postgres conformance'
+          git pull --rebase origin main
+          git push origin HEAD:main
+          test '${{ steps.execute.outputs.exit_code }}' = '0'
