@@ -2156,12 +2156,12 @@
     {
       "LoopOrder": 789,
       "LoopId": "tsp-loop-789",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "bayg29 lacks separated subtour-elimination closure.",
       "ClosureCriterion": "Separate violated global min-cuts until all represented subtour inequalities pass or a declared cap/failure occurs.",
-      "AfterState": null,
-      "Result": "Planned; no result consumed.",
-      "CompletionDisposition": null
+      "AfterState": "SEC status=FRACTIONAL_SEC_CLOSED; objective=1608.0; cuts=6; fractional edges=8.",
+      "Result": "SEC status=FRACTIONAL_SEC_CLOSED; objective=1608.0; cuts=6; fractional edges=8.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 790,
