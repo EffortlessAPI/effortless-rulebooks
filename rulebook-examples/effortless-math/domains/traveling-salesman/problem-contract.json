@@ -1576,12 +1576,12 @@
     {
       "LoopOrder": 731,
       "LoopId": "tsp-loop-731",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "ulysses16 has source data but no frozen constructive witness comparison.",
       "ClosureCriterion": "Run the frozen constructive portfolio and record every route value without using the published optimum as an antecedent.",
-      "AfterState": null,
-      "Result": "Planned; no result consumed.",
-      "CompletionDisposition": null
+      "AfterState": "Best frozen constructive witness cost=6859 versus published optimum=6859.",
+      "Result": "Best frozen constructive witness cost=6859 versus published optimum=6859.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 732,
