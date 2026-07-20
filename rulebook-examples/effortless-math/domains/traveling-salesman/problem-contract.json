@@ -1416,12 +1416,12 @@
     {
       "LoopOrder": 715,
       "LoopId": "tsp-loop-715",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "The external benchmark campaign has not yet represented this prerequisite.",
       "ClosureCriterion": "Freeze state, cut, runtime, gap, witness, and branch-warrant metrics.",
-      "AfterState": null,
-      "Result": "Planned; no result consumed.",
-      "CompletionDisposition": null
+      "AfterState": "State, cut, runtime, lower-bound, witness, and branch metrics were frozen.",
+      "Result": "State, cut, runtime, lower-bound, witness, and branch metrics were frozen.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 716,
