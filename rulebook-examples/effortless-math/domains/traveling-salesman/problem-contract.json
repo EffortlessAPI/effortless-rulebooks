@@ -1616,12 +1616,12 @@
     {
       "LoopOrder": 735,
       "LoopId": "tsp-loop-735",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "ulysses16 lacks separated subtour-elimination closure.",
       "ClosureCriterion": "Separate violated global min-cuts until all represented subtour inequalities pass or a declared cap/failure occurs.",
-      "AfterState": null,
-      "Result": "Planned; no result consumed.",
-      "CompletionDisposition": null
+      "AfterState": "SEC status=INTEGRAL_TOUR; objective=6859.0; cuts=5; fractional edges=0.",
+      "Result": "SEC status=INTEGRAL_TOUR; objective=6859.0; cuts=5; fractional edges=0.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 736,
