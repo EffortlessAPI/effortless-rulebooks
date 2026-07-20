@@ -1426,12 +1426,12 @@
     {
       "LoopOrder": 716,
       "LoopId": "tsp-loop-716",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "The external benchmark campaign has not yet represented this prerequisite.",
       "ClosureCriterion": "Require URL, payload hash, TSPLIB dimension, format, and published optimum provenance.",
-      "AfterState": null,
-      "Result": "Planned; no result consumed.",
-      "CompletionDisposition": null
+      "AfterState": "Source URL, format, dimension, optimum ledger, and SHA-256 requirements were frozen.",
+      "Result": "Source URL, format, dimension, optimum ledger, and SHA-256 requirements were frozen.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 717,
