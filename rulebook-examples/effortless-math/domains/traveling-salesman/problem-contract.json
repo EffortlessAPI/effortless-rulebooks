@@ -1,6 +1,6 @@
 {
   "ProblemId": "traveling-salesman-semantic-geometry",
-  "Version": "0.8.0-alpha",
+  "Version": "0.8.0",
   "Title": "Traveling Salesman — City / Neighborhood / Address Semantic Geometry",
   "Status": "RESEARCH_PROGRAM",
   "Statement": "Given finite city-scale weighted graphs, represent graph normalization, supplied tours, typed frontier obligations, local-to-global lower bounds, finite optimality certificates, and residual search as executable structural data.",
@@ -64,8 +64,10 @@
     "HeldOutValueBranchRequiredCount": 7,
     "FrozenBasisPrimitiveGrowthCount": 0,
     "PhysicalTableCountLoop710": 45,
-    "TSPLIBCampaign713812Completed": false,
-    "NewActiveTermsInCampaign": 0
+    "TSPLIBCampaign713812Completed": true,
+    "NewActiveTermsInCampaign": 0,
+    "TSPLIBCampaignValueClosedCount": 9,
+    "TSPLIBCampaignPathProvedCount": 6
   },
   "CanonicalAsset": "effortless-rulebook/traveling-salesman-rulebook.json",
   "ExecutionSubstrates": [
@@ -2386,12 +2388,12 @@
     {
       "LoopOrder": 812,
       "LoopId": "tsp-loop-812",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "The benchmark results have not been reconciled with the frozen active glossary and nonclaims.",
       "ClosureCriterion": "Confirm zero active-term growth, state the strongest finite conclusions, and preserve the unresolved search/cut frontier.",
-      "AfterState": null,
-      "Result": "Planned; no result consumed.",
-      "CompletionDisposition": null
+      "AfterState": "The campaign added zero active terms; larger branch-and-cut instances and independently verified numerical LP certificates remain open.",
+      "Result": "The campaign added zero active terms; larger branch-and-cut instances and independently verified numerical LP certificates remain open.",
+      "CompletionDisposition": "CLOSED"
     }
   ],
   "CurrentCertificates": [
@@ -2524,13 +2526,18 @@
       "CertificateId": "tsp-coherence-event-three",
       "Kind": "coherence-vector-certificate",
       "Conclusion": "The active basis remains one Semantic Arc and one Warranted Rewrite across a twelve-family held-out exact campaign with zero physical-table growth."
+    },
+    {
+      "CertificateId": "tsp-tsplib-campaign-713-812",
+      "Kind": "external-benchmark-campaign-certificate",
+      "Conclusion": "Ten preregistered TSPLIB instances were evaluated under a frozen vocabulary; value closed on 9, path search proved 6, and active-term growth was zero."
     }
   ],
   "RemainingFrontier": [
-    "repeat the frozen-basis campaign on standard public TSP benchmark instances using a separately versioned importer",
-    "replace calibration-only exact branches with structural branch-and-bound certificates whose bounds are themselves witnessed",
-    "generalize region repair beyond the finite heterogeneous observations recorded here",
-    "measure runtime and memory scaling without confusing exact small-instance enumeration with a general algorithm"
+    "larger TSPLIB instances requiring genuine branching after cut closure",
+    "independent exact verification of numerical LP dual certificates",
+    "wall-clock and memory comparison with mature branch-and-cut solvers",
+    "stronger general comb and blossom separation beyond the witnessed simple family"
   ],
   "Acceptance": {
     "RulebookTables": 45,
