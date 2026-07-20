@@ -1446,12 +1446,12 @@
     {
       "LoopOrder": 718,
       "LoopId": "tsp-loop-718",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "The external benchmark campaign has not yet represented this prerequisite.",
       "ClosureCriterion": "Require exact dominance and completion-bound search accounting with explicit caps.",
-      "AfterState": null,
-      "Result": "Planned; no result consumed.",
-      "CompletionDisposition": null
+      "AfterState": "The path-state proof uses (last, unvisited), prefix dominance, an MST completion envelope, and explicit caps.",
+      "Result": "The path-state proof uses (last, unvisited), prefix dominance, an MST completion envelope, and explicit caps.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 719,
