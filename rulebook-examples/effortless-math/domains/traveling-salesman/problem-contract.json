@@ -2286,12 +2286,12 @@
     {
       "LoopOrder": 802,
       "LoopId": "tsp-loop-802",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "dantzig42 is named in the preregistered corpus but its source payload and format have not been ingested.",
       "ClosureCriterion": "Verify name, dimension, symmetric weights, source URL, and SHA-256 payload hash.",
-      "AfterState": null,
-      "Result": "Planned; no result consumed.",
-      "CompletionDisposition": null
+      "AfterState": "dantzig42 source ingested with SHA-256 44e695b2084b13fe3efe790c783a4db1745df8947a482b1c8edcda63cb15b29d and dimension 42.",
+      "Result": "dantzig42 source ingested with SHA-256 44e695b2084b13fe3efe790c783a4db1745df8947a482b1c8edcda63cb15b29d and dimension 42.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 803,
