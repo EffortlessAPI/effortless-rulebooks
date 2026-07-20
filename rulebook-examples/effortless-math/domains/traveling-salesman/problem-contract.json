@@ -2296,12 +2296,12 @@
     {
       "LoopOrder": 803,
       "LoopId": "tsp-loop-803",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "dantzig42 has source data but no frozen constructive witness comparison.",
       "ClosureCriterion": "Run the frozen constructive portfolio and record every route value without using the published optimum as an antecedent.",
-      "AfterState": null,
-      "Result": "Planned; no result consumed.",
-      "CompletionDisposition": null
+      "AfterState": "Best frozen constructive witness cost=699 versus published optimum=699.",
+      "Result": "Best frozen constructive witness cost=699 versus published optimum=699.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 804,
