@@ -2336,12 +2336,12 @@
     {
       "LoopOrder": 807,
       "LoopId": "tsp-loop-807",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "dantzig42 lacks separated subtour-elimination closure.",
       "ClosureCriterion": "Separate violated global min-cuts until all represented subtour inequalities pass or a declared cap/failure occurs.",
-      "AfterState": null,
-      "Result": "Planned; no result consumed.",
-      "CompletionDisposition": null
+      "AfterState": "SEC status=FRACTIONAL_SEC_CLOSED; objective=697.0; cuts=6; fractional edges=16.",
+      "Result": "SEC status=FRACTIONAL_SEC_CLOSED; objective=697.0; cuts=6; fractional edges=16.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 808,
