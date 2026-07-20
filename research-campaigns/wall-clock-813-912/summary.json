@@ -1,0 +1,41 @@
+{
+  "campaign": "TSP wall-clock loops 813-912",
+  "loop_count": 100,
+  "first_loop": 813,
+  "last_loop": 912,
+  "comb_residuals_closed": 2,
+  "comb_new_active_terms": 0,
+  "external_exact_instances": 13,
+  "largest_exact_instance": [
+    100,
+    "kroA100"
+  ],
+  "prior_first_six_total_median_seconds": 20.036443376999998,
+  "fast_state_first_six_total_median_seconds": 15.328576916,
+  "integer_sec_first_six_total_median_seconds": 0.096107694,
+  "integer_sec_speedup_vs_capped_prior_first_six": 208.4790774087244,
+  "integer_sec_external_total_median_seconds": 4.219134857,
+  "chosen_crossover_threshold": 9,
+  "development_fast_total_seconds": 0.431434829,
+  "development_integer_total_seconds": 0.104316494,
+  "holdout_fast_total_seconds": 0.434625938,
+  "holdout_integer_total_seconds": 0.085793198,
+  "holdout_portfolio_total_seconds": 0.088357485,
+  "portfolio_speedup_vs_fast_holdout": 4.918948722906723,
+  "portfolio_speedup_vs_integer_holdout": 0.9709782708278761,
+  "region_unseeded_total_seconds": 2.371726098,
+  "region_seeded_total_seconds": 1.75679175,
+  "region_seed_speedup": 1.3500325795587325,
+  "region_seed_wins": 6,
+  "region_seed_cases": 10,
+  "region_solve_count_reduction": 13,
+  "new_atoms": 0,
+  "new_operators": 0,
+  "new_active_terms": 0,
+  "claim_boundary": [
+    "warm in-process timing is not a cross-machine benchmark",
+    "integer SEC cutting plane is established branch-and-cut machinery, not a novel TSP algorithm",
+    "exact results through kroA100 do not imply state-of-the-art performance or polynomial scaling",
+    "semantic neighborhood cuts are valid SEC seeds; observed speedup is empirical, not universal"
+  ]
+}
