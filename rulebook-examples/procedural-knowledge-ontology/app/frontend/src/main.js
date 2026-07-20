@@ -19,6 +19,10 @@ import {
   ADMIN_TABS, loadAdmin, adminCount, wireAdmin,
   viewBoard, viewWitnesses, viewLoops, viewTrace,
 } from "./admin.js";
+import {
+  EXPLORE_TABS, loadExplore, exploreCount, wireExplore, wireCells,
+  viewInferences, viewTables, viewRecord,
+} from "./explore.js";
 
 const $ = (id) => document.getElementById(id);
 const esc = (s) =>
@@ -113,6 +117,14 @@ const ROLES = {
     label: "Admin",
     tabs: ["board", "witnesses", "loops", "trace"],
   },
+  // The curated screens above are deliberately selective — they tell the
+  // procedural story with ~80 of the model's 1521 fields. The explorer is
+  // where the other 1400 live: every table, every column, every inference
+  // beside the values it was computed from.
+  explorer: {
+    label: "Explorer",
+    tabs: ["inferences", "tables", "record"],
+  },
 };
 const TABS = {
   run: "My Steps",
@@ -126,6 +138,7 @@ const TABS = {
   evidence: "Evidence Trail",
   mappings: "Ontology Mapping",
   ...ADMIN_TABS,
+  ...EXPLORE_TABS,
 };
 
 let role = "operator";
@@ -148,6 +161,7 @@ function tabCount(t) {
     case "mappings": return (T.semantic_mappings || []).length;
     case "evidence": return (T.requirement_satisfactions || []).length;
     case "board": case "witnesses": case "loops": return adminCount(t);
+    case "inferences": case "tables": return exploreCount(t);
     default: return null;
   }
 }
@@ -163,6 +177,9 @@ function openDrawer(title, kicker, html) {
   $("dbg").classList.add("open");
   $("dx").onclick = closeDrawer;
   $("dx").focus();
+  // Values in the drawer are view columns like any other — make the derived
+  // ones traceable here too, so provenance is never more than a click away.
+  wireCells(d, goTo);
 }
 function closeDrawer() {
   $("drawer").classList.remove("open");
@@ -277,9 +294,12 @@ function stepDetail(stepId, seId) {
         <dt>Executed by</dt><dd>${esc(agentName(se.executed_by_agent))} <span class="kind">${esc(agentKind(se.executed_by_agent))}</span></dd>
         <dt>Started</dt><dd class="mono" style="font-size:12.5px">${dt(se.started_at)}</dd>
         <dt>Ended</dt><dd class="mono" style="font-size:12.5px">${dt(se.ended_at)}</dd>
-        <dt>Actual</dt><dd class="mono">${mins(se.actual_duration_minutes)}
-          <span class="muted">vs ${se.expected_duration_minutes ?? "—"}m expected</span>
-          ${se.is_late ? '<span class="chip warn" style="margin-left:6px">Over</span>' : '<span class="chip pass" style="margin-left:6px">Within</span>'}</dd>
+        <dt>Actual</dt><dd class="mono">
+          <button class="xcell" data-cell="StepExecutions|${esc(se.step_execution_id)}|actual_duration_minutes">${mins(se.actual_duration_minutes)}</button>
+          <span class="muted">vs</span>
+          <button class="xcell" data-cell="StepExecutions|${esc(se.step_execution_id)}|expected_duration_minutes">${se.expected_duration_minutes ?? "—"}m expected</button>
+          <button class="xcell" data-cell="StepExecutions|${esc(se.step_execution_id)}|is_late" style="margin-left:6px;border:0">
+            ${se.is_late ? '<span class="chip warn">Over</span>' : '<span class="chip pass">Within</span>'}</button></dd>
         ${se.deviation ? `<dt>Deviation</dt><dd>${esc(se.deviation)}</dd>` : ""}
       </dl></div>`;
     if (issues.length)
@@ -749,7 +769,34 @@ const VIEWS = {
   knowledge: viewKnowledge, health: viewHealth, queue: viewQueue,
   changes: viewChanges, evidence: viewEvidence, mappings: viewMappings,
   board: viewBoard, witnesses: viewWitnesses, loops: viewLoops, trace: viewTrace,
+  inferences: viewInferences, tables: viewTables, record: viewRecord,
 };
+
+// Navigate to a tab that may belong to a DIFFERENT role than the current one.
+//
+// The popover is available on every screen, so "open the whole record →" can be
+// clicked while the user is an Operator — and `record` is an Explorer tab. Just
+// setting `tab` would silently snap back to the role's first tab (see render()),
+// which looks like a dead link. So when the requested tab is not in the current
+// role, switch to the role that owns it and load that role's data first.
+function goTo(next) {
+  if (!next) return render();
+  if (!ROLES[role].tabs.includes(next)) {
+    const owner = Object.keys(ROLES).find((r) => ROLES[r].tabs.includes(next));
+    if (!owner) throw new Error(`No role owns tab '${next}'`);
+    role = owner;
+    tab = next;
+    // The destination role may not have fetched its data yet.
+    const needsExplore = owner === "explorer" && exploreCount("inferences") == null;
+    const needsAdmin = owner === "admin" && adminCount("board") == null;
+    if (needsExplore || needsAdmin) {
+      return (needsExplore ? loadExplore() : loadAdmin()).then(render);
+    }
+  } else {
+    tab = next;
+  }
+  render();
+}
 
 // ---------- render ----------
 function render() {
@@ -766,8 +813,15 @@ function render() {
     .join("");
   $("view").innerHTML = VIEWS[tab]();
   if (ADMIN_TABS[tab]) {
-    wireAdmin(tab, (next) => { if (next) tab = next; render(); });
+    wireAdmin(tab, goTo);
   }
+  if (EXPLORE_TABS[tab]) {
+    wireExplore(tab, goTo);
+  }
+  // The inference popover is available on every screen, not just the explorer:
+  // any curated view can mark a value with data-cell and get the full
+  // formula-and-inputs read on click.
+  wireCells(document, goTo);
   window.scrollTo({ top: 0, behavior: "instant" });
 }
 
@@ -780,6 +834,14 @@ document.addEventListener("click", (e) => {
       return loadAdmin().then(render).catch((err) => {
         $("view").innerHTML = `<div class="card" style="padding:24px">
           <h2 style="color:var(--fail);font-size:17px;margin-bottom:8px">Could not load the admin layer</h2>
+          <p class="prose">${esc(err.message)}</p></div>`;
+      });
+    }
+    if (role === "explorer" && exploreCount("inferences") == null) {
+      $("view").innerHTML = `<div class="card" style="padding:24px">Loading the field catalog…</div>`;
+      return loadExplore().then(render).catch((err) => {
+        $("view").innerHTML = `<div class="card" style="padding:24px">
+          <h2 style="color:var(--fail);font-size:17px;margin-bottom:8px">Could not load the field catalog</h2>
           <p class="prose">${esc(err.message)}</p></div>`;
       });
     }

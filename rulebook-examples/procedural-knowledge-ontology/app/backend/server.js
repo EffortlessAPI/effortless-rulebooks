@@ -340,6 +340,377 @@ app.get("/api/admin/provenance/:table/:field", h(async (req, res) => {
   res.json({ field: row, question, loop, role, siblings, reading });
 }));
 
+// ===========================================================================
+// EXPLORER — every field, everywhere
+//
+// The register screens are curated: they show the ~80 columns that tell the
+// procedural story. But the model carries 1521 fields, 925 of them derived.
+// A curated screen can never keep up with that, and hand-writing a page per
+// table would be a second source of truth that drifts the moment the rulebook
+// changes.
+//
+// So the explorer is DERIVED, exactly like everything else here. It reads the
+// field catalog (vw_rulebook_fields) and information_schema, and builds itself.
+// Add a field to the rulebook, rebuild, and it appears — with its formula, its
+// motivating question, and its inputs — without anyone editing this file.
+// ===========================================================================
+
+// snake_case is what the transpiler emits for PascalCase rulebook names.
+//
+// The acronym boundary matters: `WasStaleWhenIRanIt` becomes
+// `was_stale_when_i_ran_it`, so a run of capitals must also split before the
+// final capital that starts the next word. Getting this subtly wrong is how a
+// real column silently reads as "unmapped".
+//
+// This is still only a CANDIDATE. The authority on what a column is called is
+// information_schema, and resolveColumn() below checks against it rather than
+// trusting this transform. A name we cannot resolve is reported, never guessed.
+const snake = (s) =>
+  String(s)
+    .replace(/([A-Z]+)([A-Z][a-z])/g, "$1_$2")
+    .replace(/([a-z0-9])([A-Z])/g, "$1_$2")
+    .toLowerCase();
+
+// --- the field catalog, indexed once at boot -------------------------------
+// This is an INDEX over rows the substrate already computed, not a cache of
+// derived values. It holds no answers — only the map from a view column back
+// to its catalog entry, so the API can answer "what is this column?" without
+// a round trip per cell. It is rebuilt on boot; the rulebook is HEAD.
+let CATALOG = [];        // every RulebookFields row
+let CAT_BY_COL = new Map();   // "vw_steps|is_late" -> catalog row
+let CAT_BY_TABLE = new Map(); // "Steps" -> [catalog rows]
+let PK_OF = new Map();        // "vw_steps" -> "step_id"
+
+let UNRESOLVED = [];  // catalog fields whose view column we could not find
+
+async function loadCatalog() {
+  CATALOG = await readView("vw_rulebook_fields", { orderBy: "target_table, field_name" });
+
+  // The real column names, from the database. This is the authority; the
+  // snake() transform above only proposes candidates against it.
+  const { rows: allCols } = await pool.query(
+    `SELECT table_name, column_name, ordinal_position FROM information_schema.columns
+      WHERE table_schema='public' AND table_name LIKE 'vw\\_%'`);
+  const colsOfView = new Map();
+  for (const c of allCols) {
+    if (!colsOfView.has(c.table_name)) colsOfView.set(c.table_name, new Set());
+    colsOfView.get(c.table_name).add(c.column_name);
+    if (c.ordinal_position === 1) PK_OF.set(c.table_name, c.column_name);
+  }
+  PK_OF = new Map(allCols.filter((c) => c.ordinal_position === 1)
+    .map((c) => [c.table_name, c.column_name]));
+
+  CAT_BY_COL = new Map();
+  CAT_BY_TABLE = new Map();
+  UNRESOLVED = [];
+  for (const f of CATALOG) {
+    const view = `vw_${snake(f.target_table)}`;
+    const have = colsOfView.get(view);
+    const cand = snake(f.field_name);
+    // Exact match, else a case-insensitive underscore-stripped match, which
+    // absorbs any remaining disagreement about where word breaks fall.
+    let col = have?.has(cand) ? cand : null;
+    if (!col && have) {
+      const norm = (s) => s.toLowerCase().replace(/_/g, "");
+      const want = norm(f.field_name);
+      col = [...have].find((c) => norm(c) === want) ?? null;
+    }
+    if (col) CAT_BY_COL.set(`${view}|${col}`, f);
+    else if (have) UNRESOLVED.push(`${f.target_table}.${f.field_name}`);
+
+    if (!CAT_BY_TABLE.has(f.target_table)) CAT_BY_TABLE.set(f.target_table, []);
+    CAT_BY_TABLE.get(f.target_table).push(f);
+  }
+
+  console.log(`[api] catalog: ${CATALOG.length} fields ` +
+    `(${CATALOG.filter((f) => f.is_derived).length} derived)`);
+  if (UNRESOLVED.length) {
+    // Not fatal — the app still works — but never silent. A catalog field with
+    // no column means the rulebook and the substrate disagree.
+    console.warn(`[api] WARNING: ${UNRESOLVED.length} catalog field(s) have no ` +
+      `matching view column: ${UNRESOLVED.slice(0, 10).join(", ")}` +
+      `${UNRESOLVED.length > 10 ? ", …" : ""}`);
+  }
+}
+
+// --- formula dependency extraction -----------------------------------------
+// This parses a formula for the fields it REFERENCES. It does not evaluate it.
+// The distinction matters: the value of every field below still comes from the
+// view column the transpiler emitted. We are reading the formula only to know
+// which OTHER columns to show alongside it, so an inference can be displayed
+// next to the raw values it was computed from.
+//
+//   {{EndedAt}}                  -> same table, field EndedAt
+//   Steps!{{ExpectedDuration}}   -> table Steps, field ExpectedDuration
+function formulaDeps(formula, homeTable) {
+  if (!formula) return [];
+  const out = [];
+  const seen = new Set();
+  const re = /(?:([A-Za-z_][A-Za-z0-9_]*)\s*!\s*)?\{\{\s*([A-Za-z0-9_]+)\s*\}\}/g;
+  let m;
+  while ((m = re.exec(formula))) {
+    const table = m[1] || homeTable;
+    const field = m[2];
+    const k = `${table}.${field}`;
+    if (seen.has(k)) continue;
+    seen.add(k);
+    const view = `vw_${snake(table)}`;
+    // Resolve through the same authoritative index the catalog was built with,
+    // so a reference resolves iff its column really exists.
+    let cat = CAT_BY_COL.get(`${view}|${snake(field)}`) ?? null;
+    let column = snake(field);
+    if (!cat) {
+      const norm = (s) => s.toLowerCase().replace(/_/g, "");
+      const want = `${view}|${norm(field)}`;
+      for (const [k2, v] of CAT_BY_COL) {
+        const [vw, cl] = k2.split("|");
+        if (`${vw}|${norm(cl)}` === want) { cat = v; column = cl; break; }
+      }
+    }
+    out.push({
+      table, field, key: k,
+      column,
+      view,
+      isLocal: table === homeTable,
+      fieldType: cat?.field_type ?? null,
+      datatype: cat?.datatype ?? null,
+      isDerived: cat?.is_derived ?? null,
+      formula: cat?.formula || null,
+      exists: Boolean(cat),
+    });
+  }
+  return out;
+}
+
+// --- the catalog of tables, for the explorer index -------------------------
+app.get("/api/explore/tables", h(async (_req, res) => {
+  const { rows: counts } = await pool.query(
+    (VIEWS.map((v) => `SELECT '${v}' AS t, count(*)::int AS n FROM vw_${v}`)).join(" UNION ALL "));
+  const byView = new Map(counts.map((c) => [c.t, c.n]));
+
+  res.json([...CAT_BY_TABLE.entries()]
+    .map(([table, fields]) => {
+      const view = `vw_${snake(table)}`;
+      const k = (t) => fields.filter((f) => f.field_type === t).length;
+      return {
+        table, view,
+        hasView: VIEWS.includes(snake(table)),
+        rowCount: byView.get(snake(table)) ?? null,
+        total: fields.length,
+        raw: k("raw"),
+        calculated: k("calculated"),
+        lookup: k("lookup"),
+        aggregation: k("aggregation"),
+        relationship: k("relationship"),
+        derived: fields.filter((f) => f.is_derived).length,
+        witnesses: fields.filter((f) => f.is_witness).length,
+      };
+    })
+    .sort((a, b) => b.total - a.total));
+}));
+
+// --- one table: its full column catalog + its rows -------------------------
+app.get("/api/explore/table/:table", h(async (req, res) => {
+  const table = String(req.params.table);
+  const view = `vw_${snake(table)}`;
+  const fields = CAT_BY_TABLE.get(table);
+  if (!fields) {
+    return res.status(404).json({
+      error: `No table '${table}' in the field catalog.`,
+    });
+  }
+  if (!VIEWS.includes(snake(table))) {
+    return res.status(404).json({
+      error: `'${table}' is in the catalog but has no ${view}. ` +
+             `The rulebook declares it; the substrate has not been rebuilt.`,
+    });
+  }
+
+  // Column order as the view presents it, annotated from the catalog.
+  const { rows: cols } = await pool.query(
+    `SELECT column_name, data_type FROM information_schema.columns
+      WHERE table_schema='public' AND table_name=$1 ORDER BY ordinal_position`, [view]);
+
+  res.json({
+    table, view,
+    pk: PK_OF.get(view) ?? cols[0]?.column_name ?? null,
+    columns: cols.map((c) => {
+      const f = CAT_BY_COL.get(`${view}|${c.column_name}`) ?? null;
+      return {
+        column: c.column_name,
+        sqlType: c.data_type,
+        field: f?.field_name ?? c.column_name,
+        fieldType: f?.field_type ?? "unmapped",
+        datatype: f?.datatype ?? null,
+        formula: f?.formula || null,
+        isDerived: f?.is_derived ?? false,
+        isWitness: f?.is_witness ?? false,
+        question: f?.invented_for_question ?? null,
+        deps: f?.is_derived ? formulaDeps(f.formula, table) : [],
+      };
+    }),
+    rows: await readView(view),
+  });
+}));
+
+// --- one row: every field it has, with each inference's inputs -------------
+// This is the "show me everything" read. For a single row it returns every
+// column, and for every derived column the CURRENT VALUES of the fields its
+// formula references — local ones straight off the same row, foreign ones
+// fetched from their own view. All of them are columns; none are recomputed.
+app.get("/api/explore/row/:table/:id", h(async (req, res) => {
+  const table = String(req.params.table);
+  const view = `vw_${snake(table)}`;
+  const fields = CAT_BY_TABLE.get(table);
+  if (!fields || !VIEWS.includes(snake(table))) {
+    return res.status(404).json({ error: `No view for table '${table}'` });
+  }
+  const pk = PK_OF.get(view);
+  const [row] = await readView(view, { where: `${pk} = $1`, params: [req.params.id] });
+  if (!row) {
+    return res.status(404).json({ error: `No ${table} row with ${pk}='${req.params.id}'` });
+  }
+
+  // Foreign dependency values: one small read per referenced view, matched on
+  // that view's own primary key via the FK value already on this row.
+  const foreignCache = new Map();
+  const foreignValue = async (dep) => {
+    if (!VIEWS.includes(dep.view.replace(/^vw_/, ""))) return { unavailable: "no view" };
+    // Which column on THIS row points at that table? The transpiler names the
+    // FK column after the relationship field, so look for a local field whose
+    // value can key the foreign view's PK.
+    const fpk = PK_OF.get(dep.view);
+    if (!fpk) return { unavailable: "no pk" };
+    const fkCandidates = fields
+      .filter((f) => f.field_type === "relationship" || snake(f.field_name) === snake(dep.table))
+      .map((f) => snake(f.field_name))
+      .filter((c) => c in row && row[c] != null);
+    for (const c of fkCandidates) {
+      const ck = `${dep.view}|${row[c]}`;
+      if (!foreignCache.has(ck)) {
+        const [fr] = await readView(dep.view, { where: `${fpk} = $1`, params: [row[c]] });
+        foreignCache.set(ck, fr ?? null);
+      }
+      const fr = foreignCache.get(ck);
+      if (fr && dep.column in fr) {
+        return { via: c, viaValue: row[c], value: fr[dep.column] };
+      }
+    }
+    // An aggregation references the CHILD table across many rows; there is no
+    // single value to show. Say so rather than inventing one.
+    return { aggregate: true };
+  };
+
+  const out = [];
+  for (const c of Object.keys(row)) {
+    const f = CAT_BY_COL.get(`${view}|${c}`) ?? null;
+    const entry = {
+      column: c,
+      value: row[c],
+      field: f?.field_name ?? c,
+      fieldType: f?.field_type ?? "unmapped",
+      datatype: f?.datatype ?? null,
+      formula: f?.formula || null,
+      isDerived: f?.is_derived ?? false,
+      isWitness: f?.is_witness ?? false,
+      question: f?.invented_for_question ?? null,
+      inputs: [],
+    };
+    if (f?.is_derived && f.formula) {
+      for (const dep of formulaDeps(f.formula, table)) {
+        entry.inputs.push({
+          ...dep,
+          ...(dep.isLocal
+            ? { value: dep.column in row ? row[dep.column] : undefined,
+                unavailable: dep.column in row ? undefined : "not on view" }
+            : await foreignValue(dep)),
+        });
+      }
+    }
+    out.push(entry);
+  }
+
+  res.json({ table, view, pk, id: row[pk], row, fields: out });
+}));
+
+// --- one cell: the popover read --------------------------------------------
+// Same shape as a row entry, for a single column. Powers the inference
+// popover that any screen can attach to any value.
+app.get("/api/explore/cell/:table/:id/:column", h(async (req, res) => {
+  const { table, id, column } = req.params;
+  const view = `vw_${snake(table)}`;
+  if (!VIEWS.includes(snake(table))) {
+    return res.status(404).json({ error: `No view for table '${table}'` });
+  }
+  const pk = PK_OF.get(view);
+  const [row] = await readView(view, { where: `${pk} = $1`, params: [id] });
+  if (!row) return res.status(404).json({ error: `No ${table} row '${id}'` });
+  if (!(column in row)) {
+    return res.status(404).json({ error: `No column '${column}' on ${view}` });
+  }
+
+  const f = CAT_BY_COL.get(`${view}|${column}`) ?? null;
+  const deps = f?.is_derived ? formulaDeps(f.formula, table) : [];
+  res.json({
+    table, view, id, column,
+    value: row[column],
+    field: f?.field_name ?? column,
+    fieldType: f?.field_type ?? "unmapped",
+    datatype: f?.datatype ?? null,
+    formula: f?.formula || null,
+    isDerived: f?.is_derived ?? false,
+    isWitness: f?.is_witness ?? false,
+    question: f?.invented_for_question ?? null,
+    inputs: deps.map((d) => ({
+      ...d,
+      value: d.isLocal && d.column in row ? row[d.column] : undefined,
+      unavailable: d.isLocal ? (d.column in row ? undefined : "not on view") : "foreign",
+    })),
+  });
+}));
+
+// --- the inference index: every derived field in the model -----------------
+// The headline read. 925 derived fields, filterable, each with its formula,
+// the question that motivated it, and how many rows it currently computes on.
+app.get("/api/explore/inferences", h(async (req, res) => {
+  const { kind, table, witness, q } = req.query;
+  let rows = CATALOG.filter((f) => f.is_derived);
+  if (kind) rows = rows.filter((f) => f.field_type === kind);
+  if (table) rows = rows.filter((f) => f.target_table === table);
+  if (witness === "true") rows = rows.filter((f) => f.is_witness);
+  if (q) {
+    const s = String(q).toLowerCase();
+    rows = rows.filter((f) =>
+      `${f.target_table}.${f.field_name}`.toLowerCase().includes(s) ||
+      String(f.formula ?? "").toLowerCase().includes(s));
+  }
+  res.json({
+    total: CATALOG.filter((f) => f.is_derived).length,
+    matched: rows.length,
+    // Surfaced, not swallowed: a catalog field with no view column means the
+    // rulebook and the substrate disagree, and the UI says so.
+    unresolved: UNRESOLVED,
+    byKind: ["calculated", "lookup", "aggregation"].map((k) => ({
+      kind: k, n: CATALOG.filter((f) => f.is_derived && f.field_type === k).length,
+    })),
+    rawTotal: CATALOG.filter((f) => !f.is_derived).length,
+    fields: rows.slice(0, 600).map((f) => ({
+      id: f.rulebook_field_id,
+      table: f.target_table,
+      field: f.field_name,
+      column: snake(f.field_name),
+      view: `vw_${snake(f.target_table)}`,
+      fieldType: f.field_type,
+      datatype: f.datatype,
+      formula: f.formula,
+      isWitness: f.is_witness,
+      question: f.invented_for_question,
+      deps: formulaDeps(f.formula, f.target_table),
+    })),
+    truncated: rows.length > 600,
+  });
+}));
+
 // --- static frontend (prod mode) -------------------------------------------
 const dist = path.join(__dirname, "../frontend/dist");
 app.use(express.static(dist));
@@ -347,6 +718,7 @@ app.get(/^(?!\/api\/).*/, (_req, res) => res.sendFile(path.join(dist, "index.htm
 
 // Boot only after the views are confirmed present — see loadViews().
 loadViews()
+  .then(loadCatalog)
   .then(() => {
     app.listen(PORT, () => {
       console.log(`[api] PKO Procedure Register on http://localhost:${PORT}`);

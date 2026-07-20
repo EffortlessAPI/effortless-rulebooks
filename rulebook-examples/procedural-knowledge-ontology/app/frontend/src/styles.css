@@ -385,3 +385,152 @@ footer p{margin:0 0 8px}
   .abanner{flex-direction:column;align-items:flex-start}
   .atable{display:block;overflow-x:auto}
 }
+
+/* ==========================================================================
+   EXPLORER — every field, everywhere.
+
+   The field-kind colours are the load-bearing idea: once you learn that a
+   shaded cell is inferred, every grid in the app becomes readable at a glance.
+   Kind hues are derived from the existing spec/exec/pass palette rather than
+   introduced fresh, so the explorer reads as part of the same document.
+   ========================================================================== */
+:root{
+  --k-raw:#8a8177; --k-calc:#2f5d8a; --k-look:#6b4d9e; --k-agg:#a8641f; --k-rel:#3f7d4e;
+  --k-raw-w:#f2efe9; --k-calc-w:#eef3f8; --k-look-w:#f1ecf8; --k-agg-w:#fbf2e7; --k-rel-w:#eaf3ec;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --k-raw:#a49a8e; --k-calc:#7fb0dd; --k-look:#b394e8; --k-agg:#e0a35c; --k-rel:#74b586;
+    --k-raw-w:#1e1c19; --k-calc-w:#1a222c; --k-look-w:#201a2b; --k-agg-w:#241d14; --k-rel-w:#18231c;
+  }
+}
+:root[data-theme="dark"]{
+  --k-raw:#a49a8e; --k-calc:#7fb0dd; --k-look:#b394e8; --k-agg:#e0a35c; --k-rel:#74b586;
+  --k-raw-w:#1e1c19; --k-calc-w:#1a222c; --k-look-w:#201a2b; --k-agg-w:#241d14; --k-rel-w:#18231c;
+}
+:root[data-theme="light"]{
+  --k-raw:#8a8177; --k-calc:#2f5d8a; --k-look:#6b4d9e; --k-agg:#a8641f; --k-rel:#3f7d4e;
+  --k-raw-w:#f2efe9; --k-calc-w:#eef3f8; --k-look-w:#f1ecf8; --k-agg-w:#fbf2e7; --k-rel-w:#eaf3ec;
+}
+
+/* --- kind pills + swatches --- */
+.kpill{display:inline-block;font-family:var(--stamp);font-size:10.5px;font-weight:600;
+  letter-spacing:.04em;text-transform:uppercase;padding:2px 7px;border-radius:3px;white-space:nowrap}
+.k-raw{background:var(--k-raw-w);color:var(--k-raw)}
+.k-calc{background:var(--k-calc-w);color:var(--k-calc)}
+.k-look{background:var(--k-look-w);color:var(--k-look)}
+.k-agg{background:var(--k-agg-w);color:var(--k-agg)}
+.k-rel{background:var(--k-rel-w);color:var(--k-rel)}
+.k-un{background:var(--pend-wash);color:var(--pend)}
+.xkey{display:flex;flex-wrap:wrap;gap:14px;padding:14px 2px 2px;font-size:12px;color:var(--ink)}
+.xkey-i{display:inline-flex;align-items:center;gap:6px}
+.xkey-s{width:11px;height:11px;border-radius:2px;display:inline-block}
+.xkey-s.k-raw{background:var(--k-raw)}.xkey-s.k-calc{background:var(--k-calc)}
+.xkey-s.k-look{background:var(--k-look)}.xkey-s.k-agg{background:var(--k-agg)}
+.xkey-s.k-rel{background:var(--k-rel)}
+
+/* --- values --- */
+.vnull{color:var(--muted);opacity:.7}
+.vnum{font-variant-numeric:tabular-nums}
+.vstr{overflow-wrap:anywhere}
+.vagg{color:var(--k-agg);font-size:12.5px;font-style:italic}
+.vbool{font-family:var(--stamp);font-size:11px;font-weight:700;letter-spacing:.04em;
+  text-transform:uppercase;padding:2px 8px;border-radius:3px}
+.vbool.is-t{background:var(--pass-wash);color:var(--pass)}
+.vbool.is-f{background:var(--fail-wash);color:var(--fail)}
+
+/* --- formula, shown as evidence (never evaluated) --- */
+.xformula{display:block;font-family:var(--data);font-size:12px;line-height:1.65;
+  background:var(--paper);border:1px solid var(--rule-soft);border-left:2px solid var(--k-calc);
+  border-radius:4px;padding:8px 11px;margin:7px 0;overflow-wrap:anywhere;color:var(--ink)}
+.fref{background:var(--k-calc-w);color:var(--k-calc);border-radius:2px;padding:0 3px;font-weight:600}
+.fref-t{color:var(--k-look);font-weight:700}
+
+/* --- an inference's inputs: the raw values behind it --- */
+.xinputs{margin-top:8px;border-left:2px solid var(--rule);padding-left:12px}
+.xinputs-h{font-family:var(--stamp);font-size:10px;font-weight:600;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.xinput{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:4px 0;font-size:12.5px;
+  border-bottom:1px dotted var(--rule-soft)}
+.xinput:last-child{border-bottom:0}
+.xinput-k{font-size:12px;font-weight:600;color:var(--ink)}
+.xinput-v{margin-left:auto;text-align:right}
+.xinput-via{font-size:10.5px;color:var(--muted)}
+.xchain{font-family:var(--stamp);font-size:9.5px;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--k-calc);background:var(--k-calc-w);padding:1px 5px;border-radius:2px}
+
+/* --- inference list --- */
+.xlist{display:flex;flex-direction:column;gap:2px}
+.xrow{padding:13px 2px;border-bottom:1px solid var(--rule-soft)}
+.xrow:last-child{border-bottom:0}
+.xrow-h{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:2px}
+.xrow-t{font-size:13.5px}
+.xdeps{font-size:11.5px;color:var(--muted);margin-top:6px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.xdep{background:var(--paper);border:1px solid var(--rule-soft);border-radius:3px;padding:1px 6px;font-size:11px;color:var(--ink)}
+.xq-line{font-size:11.5px;color:var(--muted);margin-top:6px}
+.xcheck{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink);white-space:nowrap}
+
+/* --- table index --- */
+.xtables td{vertical-align:middle}
+.xbar{display:flex;height:7px;border-radius:3px;overflow:hidden;background:var(--rule-soft);min-width:120px}
+.xbar>span{display:block}
+.xbar .k-raw{background:var(--k-raw)}.xbar .k-calc{background:var(--k-calc)}
+.xbar .k-look{background:var(--k-look)}.xbar .k-agg{background:var(--k-agg)}
+.xbar .k-rel{background:var(--k-rel)}
+
+/* --- one table's column catalog --- */
+.xcols{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:11px}
+.xcol{border:1px solid var(--rule-soft);border-radius:5px;padding:11px 13px;background:var(--paper)}
+.xcol.is-d{background:var(--raise);border-left:3px solid var(--k-calc)}
+.xcol-h{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.xcol-n{font-size:12.5px;font-weight:600}
+
+/* --- the row grid: inferred columns are shaded --- */
+.xgrid-wrap{max-height:70vh;overflow:auto;border:1px solid var(--rule-soft);border-radius:5px}
+.xgrid{font-size:12px}
+.xgrid th{position:sticky;top:0;background:var(--raise);z-index:2;white-space:nowrap;
+  border-bottom:1px solid var(--rule);padding:7px 9px;text-align:left;vertical-align:bottom}
+.xgrid th.is-d{background:var(--k-calc-w)}
+.xgrid td{padding:5px 9px;white-space:nowrap;max-width:280px;overflow:hidden;text-overflow:ellipsis;
+  border-bottom:1px solid var(--rule-soft)}
+/* Inferred columns carry the tint at full strength — at 55% it washed out and
+   the raw/inferred boundary, which is the whole point of the grid, vanished. */
+.xgrid td.is-d{background:var(--k-calc-w)}
+/* A column that STARTS a run of inferred columns gets a rule, so the eye can
+   find the boundary without reading the header. */
+.xgrid th.is-d,.xgrid td.is-d{box-shadow:inset 1px 0 0 color-mix(in srgb,var(--k-calc) 22%,transparent)}
+.xgrid-k{display:block;height:2px;border-radius:1px;margin-top:3px}
+.xgrid-k.k-raw{background:var(--k-raw)}.xgrid-k.k-calc{background:var(--k-calc)}
+.xgrid-k.k-look{background:var(--k-look)}.xgrid-k.k-agg{background:var(--k-agg)}
+.xgrid-k.k-rel{background:var(--k-rel)}
+.xcell{background:none;border:0;padding:0;font:inherit;color:inherit;cursor:pointer;
+  text-align:left;border-bottom:1px dotted var(--k-calc)}
+.xcell:hover{background:var(--k-calc-w)}
+
+/* --- record inspector --- */
+.xfields{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:9px}
+.xfield{border:1px solid var(--rule-soft);border-radius:5px;padding:9px 11px;background:var(--paper)}
+.xfield-n{font-size:11.5px;font-weight:600;color:var(--muted);margin-bottom:4px;
+  display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.xfield-v{font-size:13.5px;overflow-wrap:anywhere}
+.xinf{border:1px solid var(--rule-soft);border-left:3px solid var(--k-calc);border-radius:5px;
+  padding:12px 14px;margin-bottom:10px;background:var(--paper)}
+.xinf.is-w{border-left-color:var(--k-agg)}
+.xinf-h{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.xinf-n{font-size:13.5px;font-weight:600}
+.xinf-v{margin-left:auto}
+
+/* --- the cell popover, available on every screen --- */
+.xpop{position:absolute;z-index:80;background:var(--raise);border:1px solid var(--rule);
+  border-radius:7px;box-shadow:var(--shadow);padding:13px 15px;font-family:var(--stamp)}
+.xpop-h{display:flex;align-items:center;gap:7px;flex-wrap:wrap;font-size:12.5px;
+  padding-bottom:8px;margin-bottom:8px;border-bottom:1px solid var(--rule-soft)}
+.xpop-x{margin-left:auto}
+.xpop-v{font-size:16px;margin-bottom:8px}
+.xpop-load{font-size:12.5px;color:var(--muted)}
+.xpop-f{margin-top:9px;padding-top:8px;border-top:1px solid var(--rule-soft)}
+
+@media (max-width:720px){
+  .xcols,.xfields{grid-template-columns:1fr}
+  .xinput-v{margin-left:0}
+}
