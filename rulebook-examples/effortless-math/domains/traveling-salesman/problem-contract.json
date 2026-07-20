@@ -1396,12 +1396,12 @@
     {
       "LoopOrder": 713,
       "LoopId": "tsp-loop-713",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "The external benchmark campaign has not yet represented this prerequisite.",
       "ClosureCriterion": "Register ten named TSPLIB instances before consuming results.",
-      "AfterState": null,
-      "Result": "Planned; no result consumed.",
-      "CompletionDisposition": null
+      "AfterState": "Ten named TSPLIB instances were fixed before execution.",
+      "Result": "Ten named TSPLIB instances were fixed before execution.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 714,
