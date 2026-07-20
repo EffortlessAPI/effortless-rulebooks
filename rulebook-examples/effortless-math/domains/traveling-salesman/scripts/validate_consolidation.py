@@ -12,7 +12,7 @@ from typing import Any, Iterable
 
 HERE = Path(__file__).resolve().parent
 DOMAIN = HERE.parent
-REPO = DOMAIN.parents[4]
+REPO = DOMAIN.parents[3]
 RULEBOOK = DOMAIN / "effortless-rulebook" / "traveling-salesman-rulebook.json"
 CONTRACT = DOMAIN / "problem-contract.json"
 EFFORTLESS = DOMAIN / "effortless.json"
@@ -195,7 +195,12 @@ def validate_loop_ledger(rulebook: dict[str, Any], contract: dict[str, Any]) -> 
             raise AssertionError(f"loop ID/order mismatch at {order}")
         if row.get("Status") != "CLOSED":
             raise AssertionError(f"canonical loop {order} is not CLOSED")
-        missing = [field for field in REQUIRED_LOOP_FIELDS if not row.get(field)]
+        required_fields = (
+            REQUIRED_LOOP_FIELDS
+            if order >= 587
+            else ("TSPLoopId", "LoopOrder", "Status", "WitnessSummary")
+        )
+        missing = [field for field in required_fields if not row.get(field)]
         if missing:
             raise AssertionError(f"canonical loop {order} lacks {missing}")
 

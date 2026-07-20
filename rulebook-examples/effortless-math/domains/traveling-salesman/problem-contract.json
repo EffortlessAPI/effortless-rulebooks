@@ -1,11 +1,11 @@
 {
   "ProblemId": "traveling-salesman-semantic-geometry",
-  "Version": "0.8.0",
+  "Version": "0.8.1-consolidated",
   "Title": "Traveling Salesman — City / Neighborhood / Address Semantic Geometry",
   "Status": "RESEARCH_PROGRAM",
   "Statement": "Given finite city-scale weighted graphs, represent graph normalization, supplied tours, typed frontier obligations, local-to-global lower bounds, finite optimality certificates, and residual search as executable structural data.",
-  "Scope": "The represented scope includes a frozen one-arc/one-rewrite basis, exact depot-fixed reversal-quotient calibration on six development and twelve held-out finite symmetric instances through nine stops, structural lower-bound and closure audits, and one explicit calibration-only value branch. No general TSP algorithm, universal region-repair theorem, basis-minimality theorem, or complexity-class claim is made.",
-  "TrustBoundary": "Input graph weights, availability, and membership remain trusted data. Exact enumeration is an independent finite calibration substrate, not an automatic structural proof. Structural certificates retain their own warrants. Held-out graphs were fixed before oracle execution. Postgres and Python are peer projections.",
+  "Scope": "The canonical semantic ledger contains 236 closed TSP loops, 577-812, including the frozen one-arc/one-rewrite development and held-out calibration work plus the checked-in ten-instance TSPLIB search-and-cut campaign. Later provider work historically labeled 813-1532 remains content-addressed evidence, not canonical rulebook truth, because its physical archives are absent from this repository and its per-change rulebook deltas have not been audited. No general TSP algorithm, universal region-repair theorem, basis-minimality theorem, solver-leaderboard claim, or complexity-class claim is made.",
+  "TrustBoundary": "Input graph weights, source payloads, declared memberships, published benchmark optima, numerical LP/MILP implementations, and remote transpiler services retain their stated trust status. Exact integer replay, generated Postgres, and Python are distinct evidence surfaces. Provider-local summaries do not become canonical without archive restoration, rulebook-delta audit, Effortless generation, generated database load, and independent replay.",
   "Claims": {
     "PEqualsNP": false,
     "UniversalPolynomialNormalization": false,
@@ -67,7 +67,16 @@
     "TSPLIBCampaign713812Completed": true,
     "NewActiveTermsInCampaign": 0,
     "TSPLIBCampaignValueClosedCount": 9,
-    "TSPLIBCampaignPathProvedCount": 6
+    "TSPLIBCampaignPathProvedCount": 6,
+    "LoopMeansCanonicalRulebookSemanticChange": true,
+    "CanonicalLoopBoundary": 812,
+    "CanonicalLoopRowCount": 236,
+    "CanonicalLoopLedgerUnified": true,
+    "CanonicalLoopLedgerContiguous": true,
+    "TSPLIBCampaignPostgresConformance": true,
+    "ProviderLocalLabels8131532Canonical": false,
+    "ProviderLocalArchives8131532PresentInRepository": false,
+    "GenericOrchestrationTablesBelongInTSPRulebook": false
   },
   "CanonicalAsset": "effortless-rulebook/traveling-salesman-rulebook.json",
   "ExecutionSubstrates": [
@@ -78,62 +87,82 @@
     {
       "LoopOrder": 577,
       "LoopId": "tsp-loop-577",
-      "Result": "City -> Neighborhood -> Address hierarchy closed for the fixture.",
-      "Status": "CLOSED"
+      "Result": "One city, three neighborhoods, and five addresses form an acyclic spatial hierarchy.",
+      "Status": "CLOSED",
+      "AfterState": null,
+      "CompletionDisposition": null
     },
     {
       "LoopOrder": 578,
       "LoopId": "tsp-loop-578",
-      "Result": "Five-stop complete symmetric weighted graph normalized as ten canonical edges.",
-      "Status": "CLOSED"
+      "Result": "Five required stops and ten canonical edges satisfy n(n-1)/2 for a complete symmetric graph.",
+      "Status": "CLOSED",
+      "AfterState": null,
+      "CompletionDisposition": null
     },
     {
       "LoopOrder": 579,
       "LoopId": "tsp-loop-579",
-      "Result": "Candidate tours represented as ordered stops plus edge-bound legs.",
-      "Status": "CLOSED"
+      "Result": "The route A-B-C-D-E-A is represented entirely by rows and relationships.",
+      "Status": "CLOSED",
+      "AfterState": null,
+      "CompletionDisposition": null
     },
     {
       "LoopOrder": 580,
       "LoopId": "tsp-loop-580",
-      "Result": "Valid reference route accepted; duplicate-stop route rejected; optimality remained open.",
-      "Status": "CLOSED"
+      "Result": "The reference route validates; A-B-C-B-E-A is rejected for duplicate visitation; both retain IsOptimalityProved=false.",
+      "Status": "CLOSED",
+      "AfterState": null,
+      "CompletionDisposition": null
     },
     {
       "LoopOrder": 581,
       "LoopId": "tsp-loop-581",
-      "Result": "Baseline recorded twelve symmetry-reduced route-discovery classes.",
-      "Status": "CLOSED"
+      "Result": "For five stops with depot and reversal symmetry fixed, twelve route classes remain and zero have yet been eliminated.",
+      "Status": "CLOSED",
+      "AfterState": null,
+      "CompletionDisposition": null
     },
     {
       "LoopOrder": 582,
       "LoopId": "tsp-loop-582",
-      "Result": "Frontier obligations typed separately from imported dependencies; imported count remains zero.",
-      "Status": "CLOSED"
+      "Result": "Eight current frontier rows classify internal inference, certificates, substrate commissioning, generalization, and residual search; active imported dependencies remain zero.",
+      "Status": "CLOSED",
+      "AfterState": null,
+      "CompletionDisposition": null
     },
     {
       "LoopOrder": 583,
       "LoopId": "tsp-loop-583",
-      "Result": "Global one-in/one-out transition coverage rejects a locally legal but globally incomplete cycle.",
-      "Status": "CLOSED"
+      "Result": "A candidate with five unique visits and five locally legal legs is rejected because A-B is duplicated and E-A is missing.",
+      "Status": "CLOSED",
+      "AfterState": null,
+      "CompletionDisposition": null
     },
     {
       "LoopOrder": 584,
       "LoopId": "tsp-loop-584",
-      "Result": "Canonical pair multiplicity rejects a count-preserving duplicate-edge graph.",
-      "Status": "CLOSED"
+      "Result": "A three-stop graph with the expected three rows is rejected because AB occurs twice and BC is absent.",
+      "Status": "CLOSED",
+      "AfterState": null,
+      "CompletionDisposition": null
     },
     {
       "LoopOrder": 585,
       "LoopId": "tsp-loop-585",
-      "Result": "Degree-two local bounds certify a global tour lower bound of 14.",
-      "Status": "CLOSED"
+      "Result": "Local bounds 5,5,6,6,6 sum to 28; dividing by two certifies every Gridville tour costs at least 14.",
+      "Status": "CLOSED",
+      "AfterState": null,
+      "CompletionDisposition": null
     },
     {
       "LoopOrder": 586,
       "LoopId": "tsp-loop-586",
-      "Result": "Reference candidate cost 14 equals the certified lower bound, proving finite-instance optimality.",
-      "Status": "CLOSED"
+      "Result": "The valid reference tour costs 14 and the certified lower bound is 14, so it is optimal for tsp-gridville-5 without route enumeration.",
+      "Status": "CLOSED",
+      "AfterState": null,
+      "CompletionDisposition": null
     },
     {
       "LoopOrder": 587,
@@ -2548,7 +2577,7 @@
     "InstanceStops": 121,
     "TravelEdges": 349,
     "CandidateTours": 24,
-    "TSPLoops": 134,
+    "TSPLoops": 236,
     "FrontierObligations": 34,
     "ActiveImportedDependencies": 0,
     "ReferenceTourValid": true,
@@ -2560,8 +2589,8 @@
     "BrokenGraphComplete": false,
     "RouteDiscoverySearchEliminationPct": 0,
     "SuppliedCandidateOptimalityVerificationEliminationPct": 100,
-    "LastPlannedLoop": 710,
-    "HighestCompletedLoop": 710,
+    "LastPlannedLoop": 812,
+    "HighestCompletedLoop": 812,
     "PostgresCommissioningStatus": "CLOSED",
     "InferenceApplications": 16,
     "SelectedNotForcedEdgeStates": 5,
@@ -2642,55 +2671,18 @@
     "HeldOutRouteClosedCount": 3,
     "HeldOutBranchRequiredCount": 7,
     "HeldOutMeanClosureYieldPct": 23.96,
-    "HeldOutMaxExactClassCount": 2520
-  },
-  "ArtifactHashes": {
-    "rulebook": "sha256:71649f568248a91818b22ef25b57e7b33260f57e03605d9d8243e8ee6151ed1d",
-    "build_input_rulebook": "sha256:9e4ee0e680d38ad9b3353fbc857c4d4d7875133197338bccceb0f2db69620c90",
-    "postgres_projection_tree": "sha256:52a43b65f1f868ee752043a1e6012d38f8aa9ffbcd8020aed1cb9507bfdca427",
-    "rulespeak_tree": "sha256:0bf9cbe820e706586e1600029deffd2615cdc4448520ac7d47ea9455eba7679d",
-    "commissioning_transcript": "sha256:ae8190f4c6084cbd1d2a3e9ae359a2b1966cf99dfcb2423d92cf98e6aaf8f7a5",
-    "effortless_cli_commit": "1551cb82d5a8992ad09e4c82d08e28493f92f7b4",
-    "effortless_cli_archive": "https://github.com/EffortlessAPI/cli/archive/1551cb82d5a8992ad09e4c82d08e28493f92f7b4.tar.gz",
-    "retry_9_finalization_failure_transcript": "sha256:6516deab2de42c971cc55ef2d752d3d5cb2154dd343cd7827803e1bd6ed8bd2b",
-    "loop_610_postgres_projection_tree": "sha256:820fc671a825379a4661ad333fd83b03f6f578f094f15a5e1193db293ae38194",
-    "loop_610_rulespeak_tree": "sha256:7312ad39093f44a34d8ef4bf8f15a92334d04b3d5c2681597db91c773d6f7f1c",
-    "loop_610_generated_view_count": 45,
-    "loop_646_postgres_projection_tree": "sha256:820fc671a825379a4661ad333fd83b03f6f578f094f15a5e1193db293ae38194",
-    "loop_646_rulespeak_tree": "sha256:7312ad39093f44a34d8ef4bf8f15a92334d04b3d5c2681597db91c773d6f7f1c",
-    "loop_646_live_three_region_lower_bound": "36.0000000000000000,true",
-    "loop_646_live_optimal_face": {
-      "tour-optimal-face-abcd-4": [
-        4.0,
-        "true"
-      ],
-      "tour-optimal-face-abdc-6": [
-        6.0,
-        "false"
-      ],
-      "tour-optimal-face-acbd-4": [
-        4.0,
-        "true"
-      ]
-    },
-    "loop_709_postgres_projection_tree": "sha256:21161cf595207344af096782102a7fc738dfef1adba1882298541f601ee9470d",
-    "loop_709_rulespeak_tree": "sha256:bc9b33ac5cfef2ecf99cea18a48fe9572c47f9b2e746c22a009a264248d749fb",
-    "loop_709_generated_view_count": 45,
-    "loop_709_live_heldout_exact_count": 12,
-    "loop_709_live_oracle_rows": [
-      "tsp-holdout-bottleneck7-7,20.0,1,360,REQUIRED_FOR_VALUE",
-      "tsp-holdout-cluster7-7,29.0,2,360,REQUIRED_FOR_VALUE",
-      "tsp-holdout-dominance7-7,29.0,1,360,REQUIRED_FOR_VALUE",
-      "tsp-holdout-fourregion8-8,24.0,2,2520,REJECTED_VALUE_ALREADY_CERTIFIED",
-      "tsp-holdout-hetero8-8,31.0,1,2520,REQUIRED_FOR_VALUE",
-      "tsp-holdout-metric6-6,152.0,1,1,REJECTED_VALUE_ALREADY_CERTIFIED",
-      "tsp-holdout-nested8-8,31.0,2,2520,REQUIRED_FOR_VALUE",
-      "tsp-holdout-nonmetric6-6,37.0,1,60,REQUIRED_FOR_VALUE",
-      "tsp-holdout-residual8-8,38.0,1,2520,REQUIRED_FOR_VALUE",
-      "tsp-holdout-ring6-6,6.0,1,1,REJECTED_VALUE_ALREADY_CERTIFIED",
-      "tsp-holdout-sparse8-8,8.0,1,1,REJECTED_VALUE_ALREADY_CERTIFIED",
-      "tsp-holdout-tie6-6,6.0,60,60,REJECTED_VALUE_ALREADY_CERTIFIED"
-    ]
+    "HeldOutMaxExactClassCount": 2520,
+    "CanonicalLoopFirst": 577,
+    "CanonicalLoopLast": 812,
+    "CanonicalLoopCount": 236,
+    "CanonicalLoopContinuity": true,
+    "TSPLIBCampaignInstanceCount": 10,
+    "TSPLIBCampaignValueClosedCount": 9,
+    "TSPLIBCampaignWitnessClosedCount": 10,
+    "TSPLIBCampaignPathProvedCount": 6,
+    "TSPLIBCampaignNewActiveTerms": 0,
+    "CampaignPostgresHighestLoop": 812,
+    "CampaignPostgresLoopRowCount": 236
   },
   "GeneratedTimestamp": null,
   "Vocabulary": {
@@ -2698,5 +2690,45 @@
     "FrontierObligation": "Any still-open semantic edge, typed as inference, certificate, substrate, generalization, or residual search.",
     "ResidualSearch": "Explicit ambiguity remaining after all currently represented deterministic obligations reach closure.",
     "KernelAssumption": "Trusted primitive input semantics recorded at the trust boundary, not silently promoted into a derivation."
+  },
+  "LoopSemantics": {
+    "definition": "A loop is exactly one change to the parsed semantic object of the canonical TSP rulebook. Code, generated projections, workflows, builds, benchmarks, reports, UI/UX, and documentation are not loops unless the same change modifies that semantic object.",
+    "canonical_ledger": "effortless-rulebook/traveling-salesman-rulebook.json#TSPLoops",
+    "future_commit_rule": "A semantic rulebook delta must change exactly one loop row and name that loop in the commit subject. A parsed-object-equivalent formatting rewrite is not a loop.",
+    "historical_preregistration_disposition": "The 713-812 runner bulk-added PLANNED rows before ordered closure. The final rows are retained, but this publication pattern is prohibited for future semantic campaigns.",
+    "reserved_provider_labels": [
+      813,
+      1532
+    ],
+    "next_unambiguous_new_loop_order": 1533
+  },
+  "EvidenceBoundary": {
+    "canonical_repository_truth": "Loops 577-812 and their checked-in evidence only.",
+    "verified_experimental_result": "The checked-in 713-812 campaign and the separately retained provider summaries, each at its stated trust boundary.",
+    "provider_local_evidence": "Labels 813-1532 remain content-addressed but noncanonical until source restoration, loop-eligibility audit, ordered rulebook ingestion, Effortless generation, Postgres load, and independent replay.",
+    "conversation_hypothesis": "Never promoted without a canonical artifact and a passing closure certificate."
+  },
+  "ToolchainLock": {
+    "path": "testing/consolidation/toolchain-lock.json",
+    "status": "PINNED_FOR_CONSOLIDATED_REPLAY"
+  },
+  "ArtifactLifecycle": {
+    "path": "testing/consolidation/artifact-lifecycle.json",
+    "current_build_certificate": "testing/consolidation/build-certificate.json",
+    "status": "EXPLICIT_CURRENT_HISTORICAL_SUPERSEDED_AND_PROVIDER_LOCAL_STATES"
+  },
+  "BenchmarkProvenance": {
+    "path": "testing/consolidation/benchmark-provenance.json",
+    "status": "PASS_FOR_CHECKED_IN_713_812; ARCHIVE_RESTORATION_REQUIRED_FOR_813_1532"
+  },
+  "Consolidation": {
+    "status": "CANONICAL_AVAILABLE_EVIDENCE_ALIGNED",
+    "canonical_loop_surface": "577-812|236",
+    "rulebook_meta_last_loop": 812,
+    "rulebook_meta_highest_completed_loop": 812,
+    "campaign_status_path": "testing/campaign-713-812/status.json",
+    "campaign_postgres_status_path": "testing/campaign-713-812/postgres-status.json",
+    "classification_path": "testing/consolidation/campaign-classification.json",
+    "build_certificate_path": "testing/consolidation/build-certificate.json"
   }
 }

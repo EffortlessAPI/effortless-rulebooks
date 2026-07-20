@@ -16,7 +16,7 @@ from typing import Any
 
 HERE = Path(__file__).resolve().parent
 DOMAIN = HERE.parent
-REPO = DOMAIN.parents[4]
+REPO = DOMAIN.parents[3]
 RULEBOOK_REL = (DOMAIN / "effortless-rulebook" / "traveling-salesman-rulebook.json").relative_to(REPO).as_posix()
 DEFAULT_OUTPUT = DOMAIN / "testing" / "consolidation" / "loop-history-audit.json"
 LOOP_SUBJECT = re.compile(r"^TSP loop (\d+): .+")

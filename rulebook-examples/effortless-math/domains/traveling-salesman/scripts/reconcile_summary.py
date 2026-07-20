@@ -14,7 +14,7 @@ from typing import Any
 
 HERE = Path(__file__).resolve().parent
 DOMAIN = HERE.parent
-REPO = DOMAIN.parents[4]
+REPO = DOMAIN.parents[3]
 RULEBOOK = DOMAIN / "effortless-rulebook" / "traveling-salesman-rulebook.json"
 CONTRACT = DOMAIN / "problem-contract.json"
 CAMPAIGN_STATUS = DOMAIN / "testing" / "campaign-713-812" / "status.json"
