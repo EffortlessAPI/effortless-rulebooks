@@ -1,0 +1,220 @@
+name: Verify TSP Effortless build
+
+on:
+  push:
+    branches:
+      - agent/tsp-effortless-build-recovery
+    paths:
+      - .tsp-effortless-build.trigger
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: tsp-effortless-build-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      TARGET_BRANCH: agent/tsp-effortless-build-recovery
+      DOMAIN: rulebook-examples/effortless-math/domains/traveling-salesman
+      PGHOST: localhost
+      PGUSER: postgres
+      PGPASSWORD: postgres
+      TSP_DB: erb_traveling_salesman
+      EFFORTLESS_CLI_SOURCE: https://github.com/EffortlessAPI/cli/archive/1551cb82d5a8992ad09e4c82d08e28493f92f7b4.tar.gz
+      NPM_CONFIG_PREFIX: /tmp/effortless-npm-global
+      NPM_CONFIG_CACHE: /tmp/effortless-npm-cache
+      DOTNET_SKIP_FIRST_TIME_EXPERIENCE: "1"
+      DOTNET_CLI_TELEMETRY_OPTOUT: "1"
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TARGET_BRANCH }}
+          fetch-depth: 0
+
+      - name: Configure Git
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo configure-git >/tmp/tsp-build-stage
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.410'
+
+      - name: Install runtime dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo install-runtime-dependencies >/tmp/tsp-build-stage
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq postgresql-client
+          python3 -m pip install --quiet psycopg2-binary
+
+      - name: Install pinned Effortless CLI
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo install-effortless-cli >/tmp/tsp-build-stage
+          export PATH="$NPM_CONFIG_PREFIX/bin:$PATH"
+          mkdir -p "$NPM_CONFIG_PREFIX/bin" "$NPM_CONFIG_PREFIX/lib" "$NPM_CONFIG_CACHE"
+          echo "$NPM_CONFIG_PREFIX/bin" >> "$GITHUB_PATH"
+          npm install -g "$EFFORTLESS_CLI_SOURCE"
+          effortless -info | tee /tmp/effortless-info.log
+
+      - name: Validate canonical TSP rulebook before generation
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo prebuild-validation >/tmp/tsp-build-stage
+          python3 "$DOMAIN/scripts/validate_rulebook.py" | tee /tmp/tsp-prebuild-validation.log
+          python3 -m json.tool "$DOMAIN/effortless-rulebook/traveling-salesman-rulebook.json" >/dev/null
+          python3 -m json.tool "$DOMAIN/effortless.json" >/dev/null
+
+      - name: Generate projections with Effortless
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo effortless-build >/tmp/tsp-build-stage
+          cd "$DOMAIN"
+          ./start.sh build | tee /tmp/tsp-effortless-build.log
+          test -s effortless-postgres/01-drop-and-create-tables.sql
+          test -s effortless-postgres/02-create-functions.sql
+          test -s effortless-postgres/03-create-views.sql
+          test -s effortless-postgres/05-insert-data.sql
+          test -s effortless-postgres/init-db.sh
+          test -s rulespeak/rulespeak.md
+
+      - name: Recreate generated Postgres database
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo postgres-load >/tmp/tsp-build-stage
+          cd "$DOMAIN"
+          ./start.sh db | tee /tmp/tsp-postgres-load.log
+
+      - name: Run Python/Postgres conformance
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo postgres-conformance >/tmp/tsp-build-stage
+          cd "$DOMAIN"
+          ./start.sh test | tee /tmp/tsp-postgres-conformance.log
+          psql -h "$PGHOST" -U "$PGUSER" -d "$TSP_DB" -v ON_ERROR_STOP=1 -tA -c \
+            "SELECT max(loop_order), count(*) FROM vw_tsp_loops" \
+            | tee /tmp/tsp-loop-surface.log
+          psql -h "$PGHOST" -U "$PGUSER" -d "$TSP_DB" -v ON_ERROR_STOP=1 -tA -c \
+            "SELECT count(*) FROM information_schema.views WHERE table_schema='public' AND table_name LIKE 'vw_%'" \
+            | tee /tmp/tsp-view-count.log
+
+      - name: Record verified build certificate
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo record-certificate >/tmp/tsp-build-stage
+          mkdir -p "$DOMAIN/testing"
+          cp /tmp/effortless-info.log "$DOMAIN/testing/effortless-build-cli-info.log"
+          cp /tmp/tsp-prebuild-validation.log "$DOMAIN/testing/effortless-build-prevalidation.log"
+          cp /tmp/tsp-effortless-build.log "$DOMAIN/testing/effortless-build-generation.log"
+          cp /tmp/tsp-postgres-load.log "$DOMAIN/testing/effortless-build-postgres-load.log"
+          cp /tmp/tsp-postgres-conformance.log "$DOMAIN/testing/effortless-build-conformance.log"
+          cp /tmp/tsp-loop-surface.log "$DOMAIN/testing/effortless-build-loop-surface.txt"
+          cp /tmp/tsp-view-count.log "$DOMAIN/testing/effortless-build-view-count.txt"
+          python3 - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+
+          domain = Path(os.environ['DOMAIN'])
+          rulebook = domain / 'effortless-rulebook' / 'traveling-salesman-rulebook.json'
+          generated = domain / 'effortless-postgres'
+
+          def sha256(path: Path) -> str:
+              return hashlib.sha256(path.read_bytes()).hexdigest()
+
+          generated_files = sorted(p for p in generated.rglob('*') if p.is_file())
+          tree_digest = hashlib.sha256()
+          for path in generated_files:
+              rel = path.relative_to(domain).as_posix().encode()
+              tree_digest.update(rel + b'\0' + path.read_bytes() + b'\0')
+
+          certificate = {
+              'status': 'PASS',
+              'github_run_id': os.environ['GITHUB_RUN_ID'],
+              'source_commit': os.environ['GITHUB_SHA'],
+              'cli_source': os.environ['EFFORTLESS_CLI_SOURCE'],
+              'rulebook_sha256': sha256(rulebook),
+              'generated_postgres_tree_sha256': tree_digest.hexdigest(),
+              'generated_postgres_file_count': len(generated_files),
+              'loop_surface': Path('/tmp/tsp-loop-surface.log').read_text().strip(),
+              'view_count': int(Path('/tmp/tsp-view-count.log').read_text().strip()),
+              'database': os.environ['TSP_DB'],
+              'generation_command': './start.sh build',
+              'database_command': './start.sh db',
+              'conformance_command': './start.sh test',
+              'rulebook_is_generation_input': True,
+              'generated_database_loaded_from_effortless_projection': True,
+          }
+          (domain / 'testing' / 'effortless-build-status.json').write_text(json.dumps(certificate, indent=2) + '\n')
+          PY
+
+      - name: Commit generated projections and certificate
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo publish-success >/tmp/tsp-build-stage
+          rm -f .tsp-effortless-build.trigger
+          git add -A -- "$DOMAIN" .tsp-effortless-build.trigger .github/workflows/verify-tsp-effortless-build.yml
+          git commit -m 'Verify TSP rulebook through Effortless build and generated Postgres' || true
+          git pull --rebase origin "$TARGET_BRANCH"
+          git push origin HEAD:"$TARGET_BRANCH"
+
+      - name: Persist failing build stage
+        if: failure()
+        shell: bash
+        run: |
+          set +e
+          stage=$(cat /tmp/tsp-build-stage 2>/dev/null || echo unknown)
+          git fetch origin "$TARGET_BRANCH"
+          git reset --hard "origin/$TARGET_BRANCH"
+          mkdir -p "$DOMAIN/testing"
+          cat > "$DOMAIN/testing/effortless-build-status.json" <<EOF
+          {
+            "status": "FAIL",
+            "github_run_id": "$GITHUB_RUN_ID",
+            "source_commit": "$GITHUB_SHA",
+            "failing_stage": "$stage",
+            "cli_source": "$EFFORTLESS_CLI_SOURCE",
+            "rulebook_is_generation_input": true,
+            "generated_database_loaded_from_effortless_projection": false
+          }
+          EOF
+          git add "$DOMAIN/testing/effortless-build-status.json"
+          git commit -m "Record TSP Effortless build failure at $stage" || true
+          git push origin HEAD:"$TARGET_BRANCH" || true
