@@ -2086,12 +2086,12 @@
     {
       "LoopOrder": 782,
       "LoopId": "tsp-loop-782",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "fri26 has method outputs but no consolidated value, witness, and branch-warrant classification.",
       "ClosureCriterion": "Close value only when a certified lower bound and feasible witness meet; branch only when value or feasibility remains open.",
-      "AfterState": null,
-      "Result": "Planned; no result consumed.",
-      "CompletionDisposition": null
+      "AfterState": "Value closed=True; witness closed=True; branch warrant=REJECTED_VALUE_CLOSED.",
+      "Result": "Value closed=True; witness closed=True; branch warrant=REJECTED_VALUE_CLOSED.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 783,
