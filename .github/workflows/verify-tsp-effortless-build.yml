@@ -65,11 +65,11 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: '22'
 
-      - uses: actions/setup-dotnet@v4
+      - uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9
         with:
           dotnet-version: '8.0.410'
 
@@ -275,7 +275,6 @@ jobs:
           from pathlib import Path
 
           domain = Path(os.environ['DOMAIN'])
-          repo = Path.cwd()
           rulebook = domain / 'effortless-rulebook' / 'traveling-salesman-rulebook.json'
 
           def sha256(path: Path) -> str:
