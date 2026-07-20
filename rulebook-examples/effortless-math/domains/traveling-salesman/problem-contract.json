@@ -2146,12 +2146,12 @@
     {
       "LoopOrder": 788,
       "LoopId": "tsp-loop-788",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "bayg29 lacks a degree-only LP relaxation profile.",
       "ClosureCriterion": "Solve the degree equations with edge bounds and record objective, integrality, component structure, and numerical solver trust.",
-      "AfterState": null,
-      "Result": "Planned; no result consumed.",
-      "CompletionDisposition": null
+      "AfterState": "Degree-LP objective=1546.0; fractional edges=8.",
+      "Result": "Degree-LP objective=1546.0; fractional edges=8.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 789,
