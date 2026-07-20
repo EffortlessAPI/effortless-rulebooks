@@ -1,9 +1,17 @@
 {
-  "status": "FAIL",
-  "github_run_id": "29757609835",
-  "source_commit": "79d51ca0cf6bfee211223102ac1c7e848c0583c2",
-  "failing_stage": "effortless-build",
+  "status": "PASS",
+  "github_run_id": "29758320846",
+  "source_commit": "a46e62ecbb3ee360026f572f3da849ba1f0f3b4e",
   "cli_source": "https://github.com/EffortlessAPI/cli/archive/1551cb82d5a8992ad09e4c82d08e28493f92f7b4.tar.gz",
+  "rulebook_sha256": "71649f568248a91818b22ef25b57e7b33260f57e03605d9d8243e8ee6151ed1d",
+  "generated_postgres_tree_sha256": "9aa880a4a1d8642db886cbff1b4708321ef921b8565e5c58516ffb3a9cf98636",
+  "generated_postgres_file_count": 17,
+  "loop_surface": "710|134",
+  "view_count": 45,
+  "database": "erb_traveling_salesman",
+  "generation_command": "./start.sh build",
+  "database_command": "./start.sh db",
+  "conformance_command": "./start.sh test",
   "rulebook_is_generation_input": true,
-  "generated_database_loaded_from_effortless_projection": false
+  "generated_database_loaded_from_effortless_projection": true
 }
