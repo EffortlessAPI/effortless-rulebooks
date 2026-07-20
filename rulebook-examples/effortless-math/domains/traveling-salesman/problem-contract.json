@@ -1706,12 +1706,12 @@
     {
       "LoopOrder": 744,
       "LoopId": "tsp-loop-744",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "gr17 lacks separated subtour-elimination closure.",
       "ClosureCriterion": "Separate violated global min-cuts until all represented subtour inequalities pass or a declared cap/failure occurs.",
-      "AfterState": null,
-      "Result": "Planned; no result consumed.",
-      "CompletionDisposition": null
+      "AfterState": "SEC status=INTEGRAL_TOUR; objective=2085.0; cuts=12; fractional edges=0.",
+      "Result": "SEC status=INTEGRAL_TOUR; objective=2085.0; cuts=12; fractional edges=0.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 745,
