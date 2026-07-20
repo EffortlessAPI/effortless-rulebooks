@@ -2316,12 +2316,12 @@
     {
       "LoopOrder": 805,
       "LoopId": "tsp-loop-805",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "dantzig42 lacks an exact scaled-integer one-tree dual certificate.",
       "ClosureCriterion": "Produce a scaled-integer 1-tree lower bound with explicit potentials, degree vector, and tour-shape status.",
-      "AfterState": null,
-      "Result": "Planned; no result consumed.",
-      "CompletionDisposition": null
+      "AfterState": "Exact scaled one-tree lower=696.996; ceil=697; tour-shaped=False.",
+      "Result": "Exact scaled one-tree lower=696.996; ceil=697; tour-shaped=False.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 806,
