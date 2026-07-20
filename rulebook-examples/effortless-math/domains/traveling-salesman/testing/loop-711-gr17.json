@@ -1,0 +1,53 @@
+{
+  "LoopOrder": 711,
+  "Status": "COMPLETED",
+  "Instance": "TSPLIB gr17",
+  "InstanceKind": "symmetric explicit-distance TSP",
+  "Dimension": 17,
+  "PublishedOptimum": 2085,
+  "SelectionRationale": "A recognized finite benchmark that is neither adversarial nor custom-built for the represented predicates; large enough to require meaningful state-space search but small enough for independent exact replay.",
+  "FrozenVocabulary": [
+    "Bound Sandwich",
+    "Witness Gap",
+    "Search-State Quotient",
+    "Completion Envelope",
+    "Branch Warrant"
+  ],
+  "BeforeState": "The canonical demo had exact finite fixtures and calibration evidence, but no independently replayable exact-search comparison on a named TSPLIB instance after the glossary freeze.",
+  "PlannedClosureCriterion": "Using the unmodified GR17 matrix, obtain a feasible tour of published value 2085 without consulting the optimum during construction; independently prove that no cheaper tour exists; compare exact state-space effort with Held-Karp dynamic programming; coin no new active term.",
+  "Method": {
+    "UpperWitness": "all-start nearest-neighbor followed by deterministic 2-opt",
+    "ProofSearch": "best-first Search-State Quotient over (last city, unvisited set)",
+    "CompletionEnvelope": "minimum edge from the current endpoint into the unvisited set + MST(unvisited) + minimum edge from the unvisited set to the depot",
+    "Dominance": "retain only the cheapest prefix for each (last city, unvisited set)",
+    "Pruning": "discard a state when prefix cost plus Completion Envelope is at least the incumbent tour cost"
+  },
+  "Results": {
+    "ConstructiveTour": [0, 3, 12, 6, 7, 5, 16, 13, 14, 2, 10, 9, 1, 4, 8, 11, 15],
+    "ConstructiveTourCost": 2085,
+    "HeldKarpStates": 524288,
+    "EnvelopeSearchStatesExpanded": 21353,
+    "EnvelopeSearchStatesPushed": 24861,
+    "EnvelopePrunes": 164845,
+    "StateReductionVersusHeldKarp": 0.9592876434326172,
+    "CheaperTourFound": false,
+    "ValueStatus": "CLOSED",
+    "WitnessStatus": "CLOSED",
+    "ChoiceStatus": "NOT_TESTED",
+    "BranchDecisions": 0
+  },
+  "AfterState": "The frozen vocabulary expresses a reproducible exact solution of GR17: a standard constructive portfolio supplies value 2085, and the MST completion envelope exhausts every potentially cheaper Search-State Quotient state. The proof expands 4.07% as many states as full Held-Karp dynamic programming on this instance.",
+  "CompletionDisposition": "CLOSED_FOR_DECLARED_INSTANCE",
+  "BasisDelta": {
+    "NewAtoms": 0,
+    "NewOperators": 0,
+    "NewActiveTerms": 0
+  },
+  "Nonclaims": [
+    "This does not compete with Concorde on wall-clock performance.",
+    "This does not establish a generally superior exact TSP algorithm.",
+    "The comparison is against Held-Karp state enumeration, not against industrial branch-and-cut.",
+    "One benchmark is evidence of executable coherence, not broad empirical superiority."
+  ],
+  "EvidenceArtifact": "scripts/benchmark_gr17_loop_711.py"
+}

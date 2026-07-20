@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "loop_range": [813, 912],
+  "loop_count": 100,
+  "external_replay_count": 13,
+  "external_replay": {
+    "burma14": {"objective": 3323, "solves": 2, "cuts": 3},
+    "ulysses16": {"objective": 6859, "solves": 4, "cuts": 6},
+    "gr17": {"objective": 2085, "solves": 4, "cuts": 11},
+    "gr21": {"objective": 2707, "solves": 1, "cuts": 0},
+    "gr24": {"objective": 1272, "solves": 2, "cuts": 3},
+    "fri26": {"objective": 937, "solves": 3, "cuts": 8},
+    "ulysses22": {"objective": 7013, "solves": 5, "cuts": 13},
+    "bayg29": {"objective": 1610, "solves": 3, "cuts": 6},
+    "bays29": {"objective": 2020, "solves": 4, "cuts": 8},
+    "att48": {"objective": 10628, "solves": 7, "cuts": 20},
+    "berlin52": {"objective": 7542, "solves": 2, "cuts": 7},
+    "st70": {"objective": 675, "solves": 5, "cuts": 24},
+    "kroA100": {"objective": 21282, "solves": 8, "cuts": 44}
+  },
+  "comb_replay_count": 2,
+  "crossover_replay_count": 32,
+  "region_replay_count": 2,
+  "new_atoms": 0,
+  "new_operators": 0,
+  "new_active_terms": 0,
+  "independent_local_git_head": "804e19636b3f3017708bc940a2f09312dee28105",
+  "full_delivery_sha256": "4da0c2451e8dc46c088f91a7ab5d19e42e3ae6ce273800f9a8864c65ee77069b"
+}
