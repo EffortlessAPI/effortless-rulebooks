@@ -2046,12 +2046,12 @@
     {
       "LoopOrder": 778,
       "LoopId": "tsp-loop-778",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "fri26 lacks an exact scaled-integer one-tree dual certificate.",
       "ClosureCriterion": "Produce a scaled-integer 1-tree lower bound with explicit potentials, degree vector, and tour-shape status.",
-      "AfterState": null,
-      "Result": "Planned; no result consumed.",
-      "CompletionDisposition": null
+      "AfterState": "Exact scaled one-tree lower=937.0; ceil=937; tour-shaped=False.",
+      "Result": "Exact scaled one-tree lower=937.0; ceil=937; tour-shaped=False.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 779,
