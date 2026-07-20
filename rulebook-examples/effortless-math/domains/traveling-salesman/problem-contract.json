@@ -1946,12 +1946,12 @@
     {
       "LoopOrder": 768,
       "LoopId": "tsp-loop-768",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "gr24 has a candidate witness but no capped exact path-state proof result under the frozen MST envelope.",
       "ClosureCriterion": "Execute the exact path-state search under declared caps and record unique quotient states, state updates, bounds, dominance, and completion status.",
-      "AfterState": null,
-      "Result": "Planned; no result consumed.",
-      "CompletionDisposition": null
+      "AfterState": "Path-state status=PROVED; unique states=22398; final incumbent=1272.",
+      "Result": "Path-state status=PROVED; unique states=22398; final incumbent=1272.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 769,
