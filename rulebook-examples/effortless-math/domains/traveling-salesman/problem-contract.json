@@ -1876,12 +1876,12 @@
     {
       "LoopOrder": 761,
       "LoopId": "tsp-loop-761",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "ulysses22 lacks a degree-only LP relaxation profile.",
       "ClosureCriterion": "Solve the degree equations with edge bounds and record objective, integrality, component structure, and numerical solver trust.",
-      "AfterState": null,
-      "Result": "Planned; no result consumed.",
-      "CompletionDisposition": null
+      "AfterState": "Degree-LP objective=6106.5; fractional edges=6.",
+      "Result": "Degree-LP objective=6106.5; fractional edges=6.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 762,
