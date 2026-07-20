@@ -1,11 +1,5 @@
 traveling-salesman temporal v3 validation: PASS
 traveling-salesman temporal v5 validation: PASS
-Traceback (most recent call last):
-  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/verify_calibration_647_710.py", line 337, in <module>
-    main()
-  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/verify_calibration_647_710.py", line 308, in main
-    raise AssertionError(f"missing calibration commit: {message}")
-AssertionError: missing calibration commit: TSP loops 647-710: register frozen-basis exact calibration
 traveling-salesman temporal v3 validation: PASS
 traveling-salesman temporal v5 validation: PASS
 traveling-salesman coherence convergence validation: PASS
@@ -14,11 +8,4 @@ traveling-salesman coherence summary alignment: PASS
 traveling-salesman frozen-basis calibration validation: PASS
 loops=134 tables=45 atoms=1 operators=1 heldout=12
 traveling-salesman frozen-basis calibration summary alignment: PASS
-Traceback (most recent call last):
-  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/validate_rulebook.py", line 44, in <module>
-    validate_calibration_read_only()
-  File "/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/validate_rulebook.py", line 29, in validate_calibration_read_only
-    subprocess.run([sys.executable, str(CALIBRATION_VERIFIER)], check=True)
-  File "/usr/lib/python3.12/subprocess.py", line 571, in run
-    raise CalledProcessError(retcode, process.args,
-subprocess.CalledProcessError: Command '['/usr/bin/python3', '/home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/scripts/verify_calibration_647_710.py']' returned non-zero exit status 1.
+traveling-salesman calibration canonical-ledger validation: PASS (squashed Git history)

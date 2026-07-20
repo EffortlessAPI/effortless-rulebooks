@@ -1,8 +1,8 @@
 {
-  "status": "FAIL",
-  "exit_code": 1,
-  "github_run_id": "29757265118",
-  "source_commit": "cf5ba8cf732bb4170766f9a9a594d74bc88ce481",
+  "status": "PASS",
+  "exit_code": 0,
+  "github_run_id": "29757540694",
+  "source_commit": "e4f781d850845c6044a24348df7f3d90bb2249ec",
   "command": "python3 scripts/validate_rulebook.py",
   "transcript": "testing/current-rulebook-validation.log"
 }
