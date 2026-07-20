@@ -1476,12 +1476,12 @@
     {
       "LoopOrder": 721,
       "LoopId": "tsp-loop-721",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "burma14 is named in the preregistered corpus but its source payload and format have not been ingested.",
       "ClosureCriterion": "Verify name, dimension, symmetric weights, source URL, and SHA-256 payload hash.",
-      "AfterState": null,
-      "Result": "Planned; no result consumed.",
-      "CompletionDisposition": null
+      "AfterState": "burma14 source ingested with SHA-256 c2f10b100ad1a00bba19094e33ab3c05fb50203352151e23252eba6f85d5c3e7 and dimension 14.",
+      "Result": "burma14 source ingested with SHA-256 c2f10b100ad1a00bba19094e33ab3c05fb50203352151e23252eba6f85d5c3e7 and dimension 14.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 722,
