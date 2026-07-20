@@ -1456,12 +1456,12 @@
     {
       "LoopOrder": 719,
       "LoopId": "tsp-loop-719",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "The external benchmark campaign has not yet represented this prerequisite.",
       "ClosureCriterion": "Require degree equations, separated subtour cuts, optional simple comb cuts, and no implicit branching.",
-      "AfterState": null,
-      "Result": "Planned; no result consumed.",
-      "CompletionDisposition": null
+      "AfterState": "The cut proof uses degree equations, global min-cut SEC separation, and only witnessed simple 2-matching combs.",
+      "Result": "The cut proof uses degree equations, global min-cut SEC separation, and only witnessed simple 2-matching combs.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 720,
