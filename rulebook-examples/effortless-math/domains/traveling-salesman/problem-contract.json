@@ -1826,12 +1826,12 @@
     {
       "LoopOrder": 756,
       "LoopId": "tsp-loop-756",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "gr21 lacks a common resource and residual profile across methods.",
       "ClosureCriterion": "Normalize runtime, state, cut, gap, witness, and residual fields without adding an active semantic term.",
-      "AfterState": null,
-      "Result": "Planned; no result consumed.",
-      "CompletionDisposition": null
+      "AfterState": "Normalized profile records path, one-tree, LP, cut, witness, value, and residual status with zero active-term growth.",
+      "Result": "Normalized profile records path, one-tree, LP, cut, witness, value, and residual status with zero active-term growth.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 757,
