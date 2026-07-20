@@ -2346,12 +2346,12 @@
     {
       "LoopOrder": 808,
       "LoopId": "tsp-loop-808",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "dantzig42 has no simple 2-matching comb follow-up for any fractional SEC residue.",
       "ClosureCriterion": "Apply only witnessed simple 2-matching comb cuts from fractional-support components and preserve any remaining fractional residue.",
-      "AfterState": null,
-      "Result": "Planned; no result consumed.",
-      "CompletionDisposition": null
+      "AfterState": "Comb status=FRACTIONAL_COMB_CLOSED; objective=697.6666666666667; SEC cuts=6; comb cuts=1.",
+      "Result": "Comb status=FRACTIONAL_COMB_CLOSED; objective=697.6666666666667; SEC cuts=6; comb cuts=1.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 809,
