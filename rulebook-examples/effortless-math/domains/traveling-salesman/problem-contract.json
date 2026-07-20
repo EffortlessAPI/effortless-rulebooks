@@ -1836,12 +1836,12 @@
     {
       "LoopOrder": 757,
       "LoopId": "tsp-loop-757",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "ulysses22 is named in the preregistered corpus but its source payload and format have not been ingested.",
       "ClosureCriterion": "Verify name, dimension, symmetric weights, source URL, and SHA-256 payload hash.",
-      "AfterState": null,
-      "Result": "Planned; no result consumed.",
-      "CompletionDisposition": null
+      "AfterState": "ulysses22 source ingested with SHA-256 5d78d3131b51d4130c28495ecc558da9208fbb9a8f4f7d38535421371ba79898 and dimension 22.",
+      "Result": "ulysses22 source ingested with SHA-256 5d78d3131b51d4130c28495ecc558da9208fbb9a8f4f7d38535421371ba79898 and dimension 22.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 758,
