@@ -1976,12 +1976,12 @@
     {
       "LoopOrder": 771,
       "LoopId": "tsp-loop-771",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "gr24 lacks separated subtour-elimination closure.",
       "ClosureCriterion": "Separate violated global min-cuts until all represented subtour inequalities pass or a declared cap/failure occurs.",
-      "AfterState": null,
-      "Result": "Planned; no result consumed.",
-      "CompletionDisposition": null
+      "AfterState": "SEC status=INTEGRAL_TOUR; objective=1272.0; cuts=3; fractional edges=0.",
+      "Result": "SEC status=INTEGRAL_TOUR; objective=1272.0; cuts=3; fractional edges=0.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 772,
