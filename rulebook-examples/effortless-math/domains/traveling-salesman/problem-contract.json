@@ -1956,12 +1956,12 @@
     {
       "LoopOrder": 769,
       "LoopId": "tsp-loop-769",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "gr24 lacks an exact scaled-integer one-tree dual certificate.",
       "ClosureCriterion": "Produce a scaled-integer 1-tree lower bound with explicit potentials, degree vector, and tour-shape status.",
-      "AfterState": null,
-      "Result": "Planned; no result consumed.",
-      "CompletionDisposition": null
+      "AfterState": "Exact scaled one-tree lower=1271.999; ceil=1272; tour-shaped=False.",
+      "Result": "Exact scaled one-tree lower=1271.999; ceil=1272; tour-shaped=False.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 770,
