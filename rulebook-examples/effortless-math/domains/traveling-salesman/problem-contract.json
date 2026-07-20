@@ -2106,12 +2106,12 @@
     {
       "LoopOrder": 784,
       "LoopId": "tsp-loop-784",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "bayg29 is named in the preregistered corpus but its source payload and format have not been ingested.",
       "ClosureCriterion": "Verify name, dimension, symmetric weights, source URL, and SHA-256 payload hash.",
-      "AfterState": null,
-      "Result": "Planned; no result consumed.",
-      "CompletionDisposition": null
+      "AfterState": "bayg29 source ingested with SHA-256 6b6a501a2a4933e9b6614f905b79e1d3f9e5093a56ef0d3deaf8fbf440a17a3b and dimension 29.",
+      "Result": "bayg29 source ingested with SHA-256 6b6a501a2a4933e9b6614f905b79e1d3f9e5093a56ef0d3deaf8fbf440a17a3b and dimension 29.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 785,
