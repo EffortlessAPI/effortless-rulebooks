@@ -3,7 +3,7 @@ name: Apply TSP loops 713-812 benchmark campaign
 on:
   push:
     branches:
-      - agent/tsp-loop-711-gr17
+      - agent/tsp_consolidation
     paths:
       - .tsp-campaign-713-812.trigger
   workflow_dispatch:
@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 180
     env:
-      TARGET_BRANCH: agent/tsp-loop-711-gr17
+      TARGET_BRANCH: agent/tsp_consolidation
       PGHOST: localhost
       PGUSER: postgres
       PGPASSWORD: postgres
