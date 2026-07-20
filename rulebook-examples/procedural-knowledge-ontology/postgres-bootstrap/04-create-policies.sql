@@ -73,6 +73,11 @@ ALTER TABLE delivered_communications ENABLE ROW LEVEL SECURITY;
 ALTER TABLE authority_boundaries ENABLE ROW LEVEL SECURITY;
 ALTER TABLE binding_observations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE attestations ENABLE ROW LEVEL SECURITY;
+ALTER TABLE app_role_profiles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE app_nav_groups ENABLE ROW LEVEL SECURITY;
+ALTER TABLE app_routes ENABLE ROW LEVEL SECURITY;
+ALTER TABLE app_route_questions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE app_route_references ENABLE ROW LEVEL SECURITY;
 
 -- TODO: Add specific RLS policies based on your security requirements
 -- Example:

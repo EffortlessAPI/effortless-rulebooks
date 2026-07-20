@@ -11528,6 +11528,207 @@ RETURNS BOOLEAN AS $$
   SELECT ((calc_attestations_fitness_verdict_has_drifted(p_attestation_id) OR calc_attestations_assurance_grade_has_drifted(p_attestation_id)))::boolean;
 $$ LANGUAGE sql STABLE;
 
+-- calc_app_role_profiles_name
+-- Field: AppRoleProfiles.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_app_role_profiles_name(p_app_role_profile_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT((SELECT NULLIF(display_label, '') FROM app_role_profiles WHERE app_role_profile_id = p_app_role_profile_id), ' (', (SELECT NULLIF(role_kind, '') FROM app_role_profiles WHERE app_role_profile_id = p_app_role_profile_id), ')'))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_app_role_profiles_route_count
+-- Field: AppRoleProfiles.RouteCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_app_role_profiles_route_count(p_app_role_profile_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM app_routes WHERE owning_role = (SELECT NULLIF(role, '') FROM app_role_profiles WHERE app_role_profile_id = p_app_role_profile_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_app_nav_groups_name
+-- Field: AppNavGroups.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_app_nav_groups_name(p_app_nav_group_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(group_label, '') FROM app_nav_groups WHERE app_nav_group_id = p_app_nav_group_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_app_nav_groups_route_count
+-- Field: AppNavGroups.RouteCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_app_nav_groups_route_count(p_app_nav_group_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM app_routes WHERE nav_group = (SELECT NULLIF(app_nav_group_id, '') FROM app_nav_groups WHERE app_nav_group_id = p_app_nav_group_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- get_app_nav_groups_group_label
+-- Helper function: Get GroupLabel from AppNavGroups by AppNavGroupId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_app_nav_groups_group_label(p_app_nav_group_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT group_label FROM app_nav_groups WHERE app_nav_group_id = p_app_nav_group_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_app_nav_groups_semantic_type_iri
+-- Helper function: Get SemanticTypeIri from AppNavGroups by AppNavGroupId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_app_nav_groups_semantic_type_iri(p_app_nav_group_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT semantic_type_iri FROM app_nav_groups WHERE app_nav_group_id = p_app_nav_group_id);
+$$ LANGUAGE sql STABLE;
+
+-- calc_app_routes_name
+-- Field: AppRoutes.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_app_routes_name(p_app_route_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT((SELECT NULLIF(route_name, '') FROM app_routes WHERE app_route_id = p_app_route_id), ' — ', (SELECT NULLIF(route_path, '') FROM app_routes WHERE app_route_id = p_app_route_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_app_routes_is_in_nav
+-- Field: AppRoutes.IsInNav
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_app_routes_is_in_nav(p_app_route_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((SELECT NULLIF(nav_group, '') FROM app_routes WHERE app_route_id = p_app_route_id) IS NOT NULL)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_app_routes_is_shared
+-- Field: AppRoutes.IsShared
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_app_routes_is_shared(p_app_route_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((SELECT NULLIF(owning_role, '') FROM app_routes WHERE app_route_id = p_app_route_id) IS NULL)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_app_routes_question_count
+-- Field: AppRoutes.QuestionCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_app_routes_question_count(p_app_route_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM app_route_questions WHERE route = (SELECT NULLIF(app_route_id, '') FROM app_routes WHERE app_route_id = p_app_route_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_app_routes_reference_count
+-- Field: AppRoutes.ReferenceCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_app_routes_reference_count(p_app_route_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM app_route_references WHERE from_route = (SELECT NULLIF(app_route_id, '') FROM app_routes WHERE app_route_id = p_app_route_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_app_routes_answers_no_question
+-- Field: AppRoutes.AnswersNoQuestion
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_app_routes_answers_no_question(p_app_route_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((calc_app_routes_question_count(p_app_route_id))::NUMERIC = 0 AND calc_app_routes_is_shared(p_app_route_id) = FALSE AND (SELECT NULLIF(route_kind, '') FROM app_routes WHERE app_route_id = p_app_route_id) <> 'index'));
+$$ LANGUAGE sql STABLE;
+
+-- get_app_routes_route_path
+-- Helper function: Get RoutePath from AppRoutes by AppRouteId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_app_routes_route_path(p_app_route_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT route_path FROM app_routes WHERE app_route_id = p_app_route_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_app_routes_route_name
+-- Helper function: Get RouteName from AppRoutes by AppRouteId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_app_routes_route_name(p_app_route_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT route_name FROM app_routes WHERE app_route_id = p_app_route_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_app_routes_nav_order
+-- Helper function: Get NavOrder from AppRoutes by AppRouteId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_app_routes_nav_order(p_app_route_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT nav_order FROM app_routes WHERE app_route_id = p_app_route_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_app_routes_route_kind
+-- Helper function: Get RouteKind from AppRoutes by AppRouteId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_app_routes_route_kind(p_app_route_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT route_kind FROM app_routes WHERE app_route_id = p_app_route_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_app_routes_purpose
+-- Helper function: Get Purpose from AppRoutes by AppRouteId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_app_routes_purpose(p_app_route_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT purpose FROM app_routes WHERE app_route_id = p_app_route_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_app_routes_layout_hints
+-- Helper function: Get LayoutHints from AppRoutes by AppRouteId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_app_routes_layout_hints(p_app_route_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT layout_hints FROM app_routes WHERE app_route_id = p_app_route_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_app_routes_semantic_type_iri
+-- Helper function: Get SemanticTypeIri from AppRoutes by AppRouteId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_app_routes_semantic_type_iri(p_app_route_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT semantic_type_iri FROM app_routes WHERE app_route_id = p_app_route_id);
+$$ LANGUAGE sql STABLE;
+
+-- calc_app_route_questions_name
+-- Field: AppRouteQuestions.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_app_route_questions_name(p_app_route_question_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT((SELECT NULLIF(route, '') FROM app_route_questions WHERE app_route_question_id = p_app_route_question_id), ' answers ', (SELECT NULLIF(question, '') FROM app_route_questions WHERE app_route_question_id = p_app_route_question_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_app_route_references_name
+-- Field: AppRouteReferences.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_app_route_references_name(p_app_route_reference_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT((SELECT NULLIF(from_route, '') FROM app_route_references WHERE app_route_reference_id = p_app_route_reference_id), ' -> ', (SELECT NULLIF(to_route, '') FROM app_route_references WHERE app_route_reference_id = p_app_route_reference_id)))::text;
+$$ LANGUAGE sql STABLE;
+
 -- ============================================================================
 -- MANY-SIDE RELATIONSHIP FUNCTIONS
 -- These functions aggregate child records for many-side relationships

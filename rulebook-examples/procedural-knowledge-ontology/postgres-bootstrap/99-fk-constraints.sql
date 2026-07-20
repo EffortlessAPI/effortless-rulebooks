@@ -624,4 +624,33 @@ ALTER TABLE attestations DROP CONSTRAINT IF EXISTS fk_attestations_signed_by_age
 ALTER TABLE attestations ADD CONSTRAINT fk_attestations_signed_by_agent
   FOREIGN KEY (signed_by_agent) REFERENCES agents (agent_id);
 
--- 168 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
+-- AppRoleProfiles
+ALTER TABLE app_role_profiles DROP CONSTRAINT IF EXISTS fk_app_role_profiles_role;
+ALTER TABLE app_role_profiles ADD CONSTRAINT fk_app_role_profiles_role
+  FOREIGN KEY (role) REFERENCES roles (role_id);
+
+-- AppRoutes
+ALTER TABLE app_routes DROP CONSTRAINT IF EXISTS fk_app_routes_owning_role;
+ALTER TABLE app_routes ADD CONSTRAINT fk_app_routes_owning_role
+  FOREIGN KEY (owning_role) REFERENCES roles (role_id);
+ALTER TABLE app_routes DROP CONSTRAINT IF EXISTS fk_app_routes_nav_group;
+ALTER TABLE app_routes ADD CONSTRAINT fk_app_routes_nav_group
+  FOREIGN KEY (nav_group) REFERENCES app_nav_groups (app_nav_group_id);
+
+-- AppRouteQuestions
+ALTER TABLE app_route_questions DROP CONSTRAINT IF EXISTS fk_app_route_questions_route;
+ALTER TABLE app_route_questions ADD CONSTRAINT fk_app_route_questions_route
+  FOREIGN KEY (route) REFERENCES app_routes (app_route_id);
+ALTER TABLE app_route_questions DROP CONSTRAINT IF EXISTS fk_app_route_questions_question;
+ALTER TABLE app_route_questions ADD CONSTRAINT fk_app_route_questions_question
+  FOREIGN KEY (question) REFERENCES role_questions (role_question_id);
+
+-- AppRouteReferences
+ALTER TABLE app_route_references DROP CONSTRAINT IF EXISTS fk_app_route_references_from_route;
+ALTER TABLE app_route_references ADD CONSTRAINT fk_app_route_references_from_route
+  FOREIGN KEY (from_route) REFERENCES app_routes (app_route_id);
+ALTER TABLE app_route_references DROP CONSTRAINT IF EXISTS fk_app_route_references_to_route;
+ALTER TABLE app_route_references ADD CONSTRAINT fk_app_route_references_to_route
+  FOREIGN KEY (to_route) REFERENCES app_routes (app_route_id);
+
+-- 175 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
