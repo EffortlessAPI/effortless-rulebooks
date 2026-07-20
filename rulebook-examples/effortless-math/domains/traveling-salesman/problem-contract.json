@@ -1486,12 +1486,12 @@
     {
       "LoopOrder": 722,
       "LoopId": "tsp-loop-722",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "burma14 has source data but no frozen constructive witness comparison.",
       "ClosureCriterion": "Run the frozen constructive portfolio and record every route value without using the published optimum as an antecedent.",
-      "AfterState": null,
-      "Result": "Planned; no result consumed.",
-      "CompletionDisposition": null
+      "AfterState": "Best frozen constructive witness cost=3323 versus published optimum=3323.",
+      "Result": "Best frozen constructive witness cost=3323 versus published optimum=3323.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 723,
