@@ -877,7 +877,259 @@
     "agent/tsp_consolidation": [
       {
         "artifacts": [],
-        "conclusion": null,
+        "conclusion": "failure",
+        "created_at": "2026-07-20T20:14:23Z",
+        "event": "push",
+        "head_branch": "agent/tsp_consolidation",
+        "head_sha": "6798beb97eb7cd2c444a1c0691a2f820830ad68e",
+        "html_url": "https://github.com/EffortlessAPI/effortless-rulebooks/actions/runs/29775288873",
+        "id": 29775288873,
+        "jobs": [
+          {
+            "completed_at": "2026-07-20T20:14:47Z",
+            "conclusion": "failure",
+            "html_url": "https://github.com/EffortlessAPI/effortless-rulebooks/actions/runs/29775288873/job/88463080746",
+            "id": 88463080746,
+            "name": "consolidate",
+            "started_at": "2026-07-20T20:14:26Z",
+            "status": "completed",
+            "steps": [
+              {
+                "completed_at": "2026-07-20T20:14:27Z",
+                "conclusion": "success",
+                "name": "Set up job",
+                "number": 1,
+                "started_at": "2026-07-20T20:14:27Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:14:39Z",
+                "conclusion": "success",
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "started_at": "2026-07-20T20:14:28Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:14:39Z",
+                "conclusion": "success",
+                "name": "Configure Git",
+                "number": 3,
+                "started_at": "2026-07-20T20:14:39Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:14:39Z",
+                "conclusion": "success",
+                "name": "Correct repository-root discovery",
+                "number": 4,
+                "started_at": "2026-07-20T20:14:39Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:14:44Z",
+                "conclusion": "success",
+                "name": "Audit ordered semantic history",
+                "number": 5,
+                "started_at": "2026-07-20T20:14:39Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:14:44Z",
+                "conclusion": "success",
+                "name": "Reconcile contract, provenance, and artifact lifecycle",
+                "number": 6,
+                "started_at": "2026-07-20T20:14:44Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:14:44Z",
+                "conclusion": "failure",
+                "name": "Validate consolidated state before build certificate",
+                "number": 7,
+                "started_at": "2026-07-20T20:14:44Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:14:44Z",
+                "conclusion": "skipped",
+                "name": "Commit reconciled non-README state",
+                "number": 8,
+                "started_at": "2026-07-20T20:14:44Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:14:45Z",
+                "conclusion": "success",
+                "name": "Post Run actions/checkout@v4",
+                "number": 16,
+                "started_at": "2026-07-20T20:14:44Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:14:45Z",
+                "conclusion": "success",
+                "name": "Complete job",
+                "number": 17,
+                "started_at": "2026-07-20T20:14:45Z",
+                "status": "completed"
+              }
+            ]
+          }
+        ],
+        "name": "Apply TSP consolidation state",
+        "path": ".github/workflows/apply-tsp-consolidation-state.yml",
+        "run_attempt": 1,
+        "run_number": 1,
+        "status": "completed",
+        "updated_at": "2026-07-20T20:14:48Z",
+        "workflow_id": 316964460
+      },
+      {
+        "artifacts": [],
+        "conclusion": "success",
+        "created_at": "2026-07-20T19:59:54Z",
+        "event": "push",
+        "head_branch": "agent/tsp_consolidation",
+        "head_sha": "356082832707f8eeb69bf6c788dafbe2051ca669",
+        "html_url": "https://github.com/EffortlessAPI/effortless-rulebooks/actions/runs/29774268005",
+        "id": 29774268005,
+        "jobs": [
+          {
+            "completed_at": "2026-07-20T20:00:12Z",
+            "conclusion": "success",
+            "html_url": "https://github.com/EffortlessAPI/effortless-rulebooks/actions/runs/29774268005/job/88459753681",
+            "id": 88459753681,
+            "name": "merge",
+            "started_at": "2026-07-20T19:59:57Z",
+            "status": "completed",
+            "steps": [
+              {
+                "completed_at": "2026-07-20T19:59:58Z",
+                "conclusion": "success",
+                "name": "Set up job",
+                "number": 1,
+                "started_at": "2026-07-20T19:59:58Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:00:09Z",
+                "conclusion": "success",
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "started_at": "2026-07-20T19:59:58Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:00:10Z",
+                "conclusion": "success",
+                "name": "Merge live main without rewriting campaign history",
+                "number": 3,
+                "started_at": "2026-07-20T20:00:09Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:00:10Z",
+                "conclusion": "success",
+                "name": "Post Run actions/checkout@v4",
+                "number": 6,
+                "started_at": "2026-07-20T20:00:10Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:00:10Z",
+                "conclusion": "success",
+                "name": "Complete job",
+                "number": 7,
+                "started_at": "2026-07-20T20:00:10Z",
+                "status": "completed"
+              }
+            ]
+          }
+        ],
+        "name": "Merge current main into TSP consolidation",
+        "path": ".github/workflows/merge-main-tsp-consolidation.yml",
+        "run_attempt": 1,
+        "run_number": 1,
+        "status": "completed",
+        "updated_at": "2026-07-20T20:00:13Z",
+        "workflow_id": 316957126
+      },
+      {
+        "artifacts": [],
+        "conclusion": "failure",
+        "created_at": "2026-07-20T19:59:53Z",
+        "event": "push",
+        "head_branch": "agent/tsp_consolidation",
+        "head_sha": "356082832707f8eeb69bf6c788dafbe2051ca669",
+        "html_url": "https://github.com/EffortlessAPI/effortless-rulebooks/actions/runs/29774266794",
+        "id": 29774266794,
+        "jobs": [],
+        "name": ".github/workflows/apply-tsp-loops-624-646-coherence-v2.yml",
+        "path": ".github/workflows/apply-tsp-loops-624-646-coherence-v2.yml",
+        "run_attempt": 1,
+        "run_number": 172,
+        "status": "completed",
+        "updated_at": "2026-07-20T19:59:53Z",
+        "workflow_id": 315902805
+      },
+      {
+        "artifacts": [],
+        "conclusion": "failure",
+        "created_at": "2026-07-20T19:59:52Z",
+        "event": "push",
+        "head_branch": "agent/tsp_consolidation",
+        "head_sha": "356082832707f8eeb69bf6c788dafbe2051ca669",
+        "html_url": "https://github.com/EffortlessAPI/effortless-rulebooks/actions/runs/29774266067",
+        "id": 29774266067,
+        "jobs": [],
+        "name": ".github/workflows/apply-tsp-loops-624-646-coherence.yml",
+        "path": ".github/workflows/apply-tsp-loops-624-646-coherence.yml",
+        "run_attempt": 1,
+        "run_number": 174,
+        "status": "completed",
+        "updated_at": "2026-07-20T19:59:52Z",
+        "workflow_id": 315898802
+      },
+      {
+        "artifacts": [],
+        "conclusion": "failure",
+        "created_at": "2026-07-20T19:59:46Z",
+        "event": "push",
+        "head_branch": "agent/tsp_consolidation",
+        "head_sha": "7666605cec1f3032d4ba87c99899c06ed27976f5",
+        "html_url": "https://github.com/EffortlessAPI/effortless-rulebooks/actions/runs/29774257815",
+        "id": 29774257815,
+        "jobs": [],
+        "name": ".github/workflows/apply-tsp-loops-624-646-coherence.yml",
+        "path": ".github/workflows/apply-tsp-loops-624-646-coherence.yml",
+        "run_attempt": 1,
+        "run_number": 173,
+        "status": "completed",
+        "updated_at": "2026-07-20T19:59:46Z",
+        "workflow_id": 315898802
+      },
+      {
+        "artifacts": [],
+        "conclusion": "failure",
+        "created_at": "2026-07-20T19:59:46Z",
+        "event": "push",
+        "head_branch": "agent/tsp_consolidation",
+        "head_sha": "7666605cec1f3032d4ba87c99899c06ed27976f5",
+        "html_url": "https://github.com/EffortlessAPI/effortless-rulebooks/actions/runs/29774258436",
+        "id": 29774258436,
+        "jobs": [],
+        "name": ".github/workflows/apply-tsp-loops-624-646-coherence-v2.yml",
+        "path": ".github/workflows/apply-tsp-loops-624-646-coherence-v2.yml",
+        "run_attempt": 1,
+        "run_number": 171,
+        "status": "completed",
+        "updated_at": "2026-07-20T19:59:46Z",
+        "workflow_id": 315902805
+      },
+      {
+        "artifacts": [],
+        "conclusion": "success",
         "created_at": "2026-07-20T19:52:16Z",
         "event": "push",
         "head_branch": "agent/tsp_consolidation",
@@ -886,13 +1138,13 @@
         "id": 29773740169,
         "jobs": [
           {
-            "completed_at": null,
-            "conclusion": null,
+            "completed_at": "2026-07-20T19:58:19Z",
+            "conclusion": "success",
             "html_url": "https://github.com/EffortlessAPI/effortless-rulebooks/actions/runs/29773740169/job/88458025695",
             "id": 88458025695,
             "name": "execute",
             "started_at": "2026-07-20T19:52:19Z",
-            "status": "in_progress",
+            "status": "completed",
             "steps": [
               {
                 "completed_at": "2026-07-20T19:52:21Z",
@@ -975,52 +1227,60 @@
                 "status": "completed"
               },
               {
-                "completed_at": null,
-                "conclusion": null,
+                "completed_at": "2026-07-20T19:56:31Z",
+                "conclusion": "success",
                 "name": "Install pinned Effortless CLI",
                 "number": 11,
                 "started_at": "2026-07-20T19:56:01Z",
-                "status": "in_progress"
+                "status": "completed"
               },
               {
-                "completed_at": null,
-                "conclusion": null,
+                "completed_at": "2026-07-20T19:58:12Z",
+                "conclusion": "success",
                 "name": "Rebuild and test generated Postgres",
                 "number": 12,
-                "started_at": null,
-                "status": "pending"
+                "started_at": "2026-07-20T19:56:31Z",
+                "status": "completed"
               },
               {
-                "completed_at": null,
-                "conclusion": null,
+                "completed_at": "2026-07-20T19:58:15Z",
+                "conclusion": "success",
                 "name": "Seal and publish the campaign",
                 "number": 13,
-                "started_at": null,
-                "status": "pending"
+                "started_at": "2026-07-20T19:58:12Z",
+                "status": "completed"
               },
               {
-                "completed_at": null,
-                "conclusion": null,
+                "completed_at": "2026-07-20T19:58:15Z",
+                "conclusion": "success",
                 "name": "Post Run actions/setup-node@v4",
                 "number": 24,
-                "started_at": null,
-                "status": "pending"
+                "started_at": "2026-07-20T19:58:15Z",
+                "status": "completed"
               },
               {
-                "completed_at": null,
-                "conclusion": null,
+                "completed_at": "2026-07-20T19:58:16Z",
+                "conclusion": "success",
                 "name": "Post Run actions/checkout@v4",
                 "number": 25,
-                "started_at": null,
-                "status": "pending"
+                "started_at": "2026-07-20T19:58:15Z",
+                "status": "completed"
               },
               {
-                "completed_at": null,
-                "conclusion": null,
+                "completed_at": "2026-07-20T19:58:16Z",
+                "conclusion": "success",
                 "name": "Stop containers",
                 "number": 26,
-                "started_at": null,
-                "status": "pending"
+                "started_at": "2026-07-20T19:58:16Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T19:58:16Z",
+                "conclusion": "success",
+                "name": "Complete job",
+                "number": 27,
+                "started_at": "2026-07-20T19:58:16Z",
+                "status": "completed"
               }
             ]
           }
@@ -1029,8 +1289,8 @@
         "path": ".github/workflows/apply-tsp-campaign-713-812.yml",
         "run_attempt": 1,
         "run_number": 4,
-        "status": "in_progress",
-        "updated_at": "2026-07-20T19:52:20Z",
+        "status": "completed",
+        "updated_at": "2026-07-20T19:58:20Z",
         "workflow_id": 316485442
       },
       {

@@ -4,7 +4,13 @@
 
 | Run | Workflow | Event | Status | Conclusion | Head | Artifacts |
 |---:|---|---|---|---|---|---:|
-| 29773740169 | Apply TSP loops 713-812 benchmark campaign | push | in_progress | None | `8e7cf14df37b` | 0 |
+| 29775288873 | Apply TSP consolidation state | push | completed | failure | `6798beb97eb7` | 0 |
+| 29774268005 | Merge current main into TSP consolidation | push | completed | success | `356082832707` | 0 |
+| 29774266794 | .github/workflows/apply-tsp-loops-624-646-coherence-v2.yml | push | completed | failure | `356082832707` | 0 |
+| 29774266067 | .github/workflows/apply-tsp-loops-624-646-coherence.yml | push | completed | failure | `356082832707` | 0 |
+| 29774257815 | .github/workflows/apply-tsp-loops-624-646-coherence.yml | push | completed | failure | `7666605cec1f` | 0 |
+| 29774258436 | .github/workflows/apply-tsp-loops-624-646-coherence-v2.yml | push | completed | failure | `7666605cec1f` | 0 |
+| 29773740169 | Apply TSP loops 713-812 benchmark campaign | push | completed | success | `8e7cf14df37b` | 0 |
 | 29773738507 | .github/workflows/apply-tsp-loops-624-646-coherence.yml | push | completed | failure | `8e7cf14df37b` | 0 |
 | 29773739147 | .github/workflows/apply-tsp-loops-624-646-coherence-v2.yml | push | completed | failure | `8e7cf14df37b` | 0 |
 | 29773732380 | .github/workflows/apply-tsp-loops-624-646-coherence-v2.yml | push | completed | failure | `2c9bf07bdb4d` | 0 |
