@@ -1,0 +1,237 @@
+name: Apply TSP provider bridge and benchmark loops 711-836
+
+on:
+  push:
+    branches:
+      - agent/tsp-semantic-foundation
+    paths:
+      - .tsp-provider-711-836.trigger
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: tsp-provider-711-836-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  integrate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    env:
+      TARGET_BRANCH: agent/tsp-semantic-foundation
+      PGHOST: localhost
+      PGUSER: postgres
+      PGPASSWORD: postgres
+      TSP_DB: erb_traveling_salesman
+      EFFORTLESS_CLI_SOURCE: https://github.com/EffortlessAPI/cli/archive/1551cb82d5a8992ad09e4c82d08e28493f92f7b4.tar.gz
+      NPM_CONFIG_PREFIX: /tmp/effortless-npm-global
+      NPM_CONFIG_CACHE: /tmp/effortless-npm-cache
+      DOTNET_SKIP_FIRST_TIME_EXPERIENCE: '1'
+      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TARGET_BRANCH }}
+          fetch-depth: 0
+
+      - name: Configure runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+      - name: Record durable provider integration checkpoint
+        shell: bash
+        run: |
+          set -euo pipefail
+          domain='rulebook-examples/effortless-math/domains/traveling-salesman'
+          mkdir -p "$domain/testing"
+          cat > "$domain/testing/provider-711-836-status.json" <<EOF
+          {
+            "status": "RUNNER_STARTED",
+            "github_run_id": "$GITHUB_RUN_ID",
+            "head_sha": "$GITHUB_SHA",
+            "driver": "content-addressed-provider-ledger-v2"
+          }
+          EOF
+          git add "$domain/testing/provider-711-836-status.json"
+          git commit -m 'Record TSP provider integration checkpoint'
+          git pull --rebase origin "$TARGET_BRANCH"
+          git push origin HEAD:"$TARGET_BRANCH"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.410'
+
+      - name: Install pinned Effortless CLI
+        shell: bash
+        run: |
+          set -euo pipefail
+          export PATH="$NPM_CONFIG_PREFIX/bin:$PATH"
+          mkdir -p "$NPM_CONFIG_PREFIX/bin" "$NPM_CONFIG_PREFIX/lib" "$NPM_CONFIG_CACHE"
+          echo "$NPM_CONFIG_PREFIX/bin" >> "$GITHUB_PATH"
+          npm install -g "$EFFORTLESS_CLI_SOURCE"
+          effortless -info
+
+      - name: Materialize the versioned provider ledger
+        shell: bash
+        run: |
+          set -euo pipefail
+          domain='rulebook-examples/effortless-math/domains/traveling-salesman'
+          provider="$domain/evidence-providers/benchmark-717-836"
+          payload='.github/tsp_payload/minimal'
+          rm -rf "$provider"
+          mkdir -p "$provider" "$domain/scripts"
+          decode_gz() {
+            local stem="$1" output="$2"
+            cat "$payload/${stem}.gz.b64.part-"* | base64 -d | gzip -d > "$output"
+          }
+          decode_gz calibration "$provider/calibration-rulebook-extension.json"
+          decode_gz benchmark "$provider/benchmark-rulebook-extension.json"
+          decode_gz history "$provider/PROVIDER_HISTORY_647_836.tsv"
+          decode_gz manifest "$provider/benchmark-artifact-manifest.json"
+          decode_gz migration "$domain/scripts/apply_provider_loops_711_836.py"
+          chmod +x "$domain/scripts/apply_provider_loops_711_836.py"
+          python3 -m py_compile "$domain/scripts/apply_provider_loops_711_836.py"
+
+      - name: Verify provider ledger and content hashes
+        id: provider_replay
+        shell: bash
+        run: |
+          set -euo pipefail
+          domain='rulebook-examples/effortless-math/domains/traveling-salesman'
+          provider="$domain/evidence-providers/benchmark-717-836"
+          PROVIDER="$provider" PYTHONDONTWRITEBYTECODE=1 python3 - <<'PY2' | tee /tmp/tsp-provider-replay.log
+          import hashlib, json, os
+          from pathlib import Path
+          p = Path(os.environ['PROVIDER'])
+          load = lambda name: json.loads((p / name).read_text())
+          cal = load('calibration-rulebook-extension.json')
+          bench = load('benchmark-rulebook-extension.json')
+          manifest = load('benchmark-artifact-manifest.json')
+          if [int(r['LoopOrder']) for r in cal['Loops']] != list(range(647, 717)):
+              raise AssertionError('provider calibration loop range mismatch')
+          if [int(r['LoopOrder']) for r in bench['Loops']] != list(range(717, 837)):
+              raise AssertionError('provider benchmark loop range mismatch')
+          if any(r['Status'] != 'CLOSED' for r in cal['Loops'] + bench['Loops']):
+              raise AssertionError('provider contains non-closed loop')
+          if any(r.get('BasisDelta') != {'new_atoms': 0, 'new_operators': 0} for r in bench['Loops']):
+              raise AssertionError('provider benchmark basis drift')
+          history = (p / 'PROVIDER_HISTORY_647_836.tsv').read_text().splitlines()
+          if len(history) != 196:
+              raise AssertionError(f'provider history length={len(history)}')
+          messages = [line.split('\t', 1)[1] for line in history]
+          required = ['TSP loops 717-836: register benchmark and witness campaign'] + [f"TSP loop {r['LoopOrder']}: {r['DisplayName']}" for r in bench['Loops']]
+          positions = [messages.index(message) for message in required]
+          if positions != sorted(positions) or len(set(positions)) != len(positions):
+              raise AssertionError('provider benchmark history order mismatch')
+          for name, expected in manifest['Files'].items():
+              actual = hashlib.sha256((p / name).read_bytes()).hexdigest()
+              if actual != expected:
+                  raise AssertionError(f'provider hash mismatch {name}: {actual} != {expected}')
+          expected_campaign = {'instance_count': 154, 'exact_lower_bounds': 151, 'exact_witnesses': 154, 'closed_sandwiches': 151, 'soundness_failures': 0, 'new_primitives': 0}
+          if manifest['Campaign154'] != expected_campaign:
+              raise AssertionError('manifest campaign summary mismatch')
+          if bench['AggregateCertificates']['Campaign154'] != expected_campaign:
+              raise AssertionError('benchmark extension campaign summary mismatch')
+          print('TSP provider ledger and content hashes: PASS')
+          PY2
+          grep -q 'TSP provider ledger and content hashes: PASS' /tmp/tsp-provider-replay.log
+
+      - name: Apply canonical bridge and provider benchmark ledger
+        shell: bash
+        run: |
+          set -euo pipefail
+          domain='rulebook-examples/effortless-math/domains/traveling-salesman'
+          python3 "$domain/scripts/apply_provider_loops_711_836.py"
+          python3 rulebook-examples/effortless-math/scripts/format-rulebook.py \
+            "$domain/effortless-rulebook/traveling-salesman-rulebook.json"
+          cat > "$domain/testing/provider-711-836-status.json" <<EOF
+          {
+            "status": "SUCCEEDED",
+            "github_run_id": "$GITHUB_RUN_ID",
+            "last_loop": 836,
+            "provider_replay": "PASS",
+            "provider_commit_ledger_sha256": "a2f8caadefabe708f1854e2dd52b75a8a3df4212f93c7af11c5b9998c662b2d3",
+            "canonical_bridge": "711-716",
+            "provider_benchmark": "717-836"
+          }
+          EOF
+          python3 "$domain/scripts/validate_rulebook.py"
+
+      - name: Rebuild and test the generated Postgres projection
+        shell: bash
+        run: |
+          set -euo pipefail
+          domain='rulebook-examples/effortless-math/domains/traveling-salesman'
+          bash "$domain/start.sh" build
+          bash "$domain/start.sh" db
+          bash "$domain/start.sh" test
+          psql -h "$PGHOST" -U "$PGUSER" -d "$TSP_DB" -v ON_ERROR_STOP=1 -tA -c \
+            "SELECT max(loop_order), count(*) FROM vw_tsp_loops" | tee /tmp/tsp-loop-postgres.txt
+          grep -q '^836|260$' /tmp/tsp-loop-postgres.txt
+
+      - name: Persist provider, transcript, and final validation
+        shell: bash
+        run: |
+          set -euo pipefail
+          domain='rulebook-examples/effortless-math/domains/traveling-salesman'
+          cp /tmp/tsp-provider-replay.log "$domain/testing/provider-711-836-replay.log"
+          cp /tmp/tsp-loop-postgres.txt "$domain/testing/provider-711-836-postgres.txt"
+          python3 "$domain/scripts/validate_rulebook.py"
+          rm -rf .github/tsp_payload/minimal
+          rm -f .github/tsp_payload/apply_provider_loops_711_836.py.b64.part-00
+          git add -A -- "$domain" .github/tsp_payload .github/workflows/apply-tsp-provider-711-836.yml
+          git commit -m 'Integrate TSP provider bridge and benchmark loops 711-836'
+          git pull --rebase origin "$TARGET_BRANCH"
+          git push origin HEAD:"$TARGET_BRANCH"
+
+      - name: Record exact failure after preserving the prior branch state
+        if: failure()
+        shell: bash
+        run: |
+          set -euo pipefail
+          domain='rulebook-examples/effortless-math/domains/traveling-salesman'
+          {
+            echo "workflow_run_id=$GITHUB_RUN_ID"
+            echo "head_sha=$GITHUB_SHA"
+            test -f /tmp/tsp-provider-replay.log && cat /tmp/tsp-provider-replay.log || true
+            test -f /tmp/tsp-loop-postgres.txt && cat /tmp/tsp-loop-postgres.txt || true
+          } > /tmp/provider-711-836-failure.log
+          git fetch origin "$TARGET_BRANCH"
+          git reset --hard "origin/$TARGET_BRANCH"
+          mkdir -p "$domain/testing"
+          cp /tmp/provider-711-836-failure.log "$domain/testing/provider-711-836-failure.log"
+          cat > "$domain/testing/provider-711-836-status.json" <<EOF
+          {
+            "status": "FAILED",
+            "github_run_id": "$GITHUB_RUN_ID",
+            "log": "testing/provider-711-836-failure.log"
+          }
+          EOF
+          git add "$domain/testing/provider-711-836-status.json" "$domain/testing/provider-711-836-failure.log"
+          git commit -m 'Record TSP provider integration failure' || true
+          git push origin HEAD:"$TARGET_BRANCH" || true

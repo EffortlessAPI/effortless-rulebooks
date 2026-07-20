@@ -1,0 +1,131 @@
+name: Finalize TSP convergence PR
+
+on:
+  push:
+    branches:
+      - agent/tsp-semantic-foundation
+    paths:
+      - rulebook-examples/effortless-math/domains/traveling-salesman/testing/convergence-597-610-verified.json
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/tsp-semantic-foundation
+
+      - name: Update draft PR with convergence result
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh pr edit 2 \
+            --title 'TSP loops 577-610: predicate convergence and component-repair optimality' \
+            --body-file - <<'EOF'
+          ## Intent
+
+          Establish Traveling Salesman as an executable semantic-geometry research domain and test whether its growing vocabulary begins to converge through witnessed predicate invention over a dependency DAG.
+
+          ## Loops 577–596
+
+          The first twenty loops established the city/neighborhood/address hierarchy, candidate and reconstructed route witnesses, degree-two lower bounds, finite Gridville optimality, forcing and forbidding, neighborhood boundary states, generated Postgres, and Python/Postgres conformance.
+
+          ## Loops 597–610 — convergence experiment
+
+          The convergence prediction was recorded **before** execution:
+
+          > Recurring concepts will begin to collapse onto a smaller reusable basis, while useful derived predicates continue to be coined.
+
+          This remains an empirical working prediction, not a theorem.
+
+          The baseline contained 32 recurring surface predicates. Loop 598 derived the basis:
+
+          ```text
+          MEMBERSHIP   INCIDENCE   CARDINALITY   ORDER
+          WEIGHT       COMMITMENT  CONNECTIVITY  PROVENANCE
+          ```
+
+          ```text
+          surface predicates      32
+          canonical primitives     8
+          semantic compression    75%
+          new primitives after 598 0
+          coined terms             14
+          physical tables      40→45
+          ```
+
+          The historical table surface remains replayable. Five generic tables were added to preserve mappings, measurements, defect profiles, bound terms, and witness normal forms; the active primitive basis did not grow.
+
+          ## Coined predicates
+
+          | Loop | Predicate | Reduction |
+          |---:|---|---|
+          | 597 | Convergence Prediction | Makes the prediction and baseline executable data. |
+          | 598 | Predicate Basis | Maps 32 surface names to eight primitives. |
+          | 599 | Commitment Lattice | Unifies selected, forced, forbidden, unknown, and superseded states. |
+          | 600 | Incidence Budget | Unifies degree checks, lower-bound incidence, and degree forcing. |
+          | 601 | Defect Vector | Unifies incidence, connectivity, boundary, and cost gaps. |
+          | 602 | Cut Parity | Derives a positive even component-crossing demand. |
+          | 603 | Component Repair Bound | Composes local degree and global repair costs. |
+          | 604 | Bound Sandwich | Collapses lower bound, upper witness, and equality rigidity. |
+          | 605 | Witness Normal Form | Makes supplied/reconstructed a provenance distinction. |
+          | 606 | Boundary Signature | Treats cluster paths as witness normal forms. |
+          | 607 | Semantic Quotient | Gives 6→3 and 36→9 an explicit equivalence relation. |
+          | 608 | Component Quotient | Unifies neighborhoods and graph components as boundary objects. |
+          | 609 | Closure Event | Unifies applications, states, supports, rounds, and decisions. |
+          | 610 | Convergence Event | Certifies basis stability and records the residual kernel. |
+
+          ## Twin-triangle reduction
+
+          The earlier local degree bound remained sound but non-tight:
+
+          ```text
+          local degree-two lower bound      6
+          selected components               2
+          proper subtours                   2
+          feasible cycle                   24
+          ```
+
+          Cut parity requires a connected Hamiltonian cycle to cross the component cut at least twice. Every crossing costs 10, and opening the two local cycles releases one cost-1 edge in each component:
+
+          ```text
+          base degree bound                     6
+          two mandatory crossings     2×10     +20
+          two necessary releases      2× 1      -2
+          component-repair lower bound          24
+          feasible Hamiltonian witness          24
+          -----------------------------------------
+          finite-instance optimum               24
+          ```
+
+          The original lower bound of 6 remains preserved as a counterexample. The stronger result is a composed certificate, not a retroactive upgrade.
+
+          ## Current finite results
+
+          - Gridville cycle reconstructed from inferred edges at cost 14, with zero branch decisions; lower bound 14 proves finite optimality.
+          - Twin-triangle cycle cost 24 equals the component-repair lower bound 24, proving finite optimality for that instance.
+          - Supplied cycles, reconstructed cycles, and contracted paths share one witness normal form.
+          - Neighborhood paths form explicit semantic quotient classes: 6→3 per neighborhood and 36→9 in paired composition.
+          - Inference applications, supports, rounds, and decisions project through closure events.
+          - Active imported dependency count remains zero.
+
+          ## Execution and validation
+
+          The canonical rulebook is projected to generated Postgres and RuleSpeak. Python/Postgres peer conformance, loop-order validation, summary alignment, formula/relationship checks, and read-only validation pass before the verified marker is emitted.
+
+          ## Guardrails
+
+          This does not claim a general TSP solver, universal polynomial normalization, `P = NP`, or a theorem that all mathematical vocabularies converge. The convergence result is early empirical support for the represented finite TSP domain.
+
+          ## Remaining frontier
+
+          - stress the eight-predicate basis on larger and asymmetric clusters;
+          - generalize component-repair bounds to multiple components and heterogeneous crossings;
+          - emit explicit branch certificates only after deterministic closure leaves a witnessed residual kernel.
+          EOF

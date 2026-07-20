@@ -144,3 +144,7 @@ Never conflate an imported provider dependency with an internal frontier obligat
 - Read generated values from `vw_*` views.
 - Do not add defensive locks around `effortless build`.
 - Do not add bespoke caches. Any materialization must be first-class rulebook data with a refresh contract.
+
+### traveling-salesman loops 587–596
+
+The TSP domain now records planned and completed loop states through 596. Gridville's route is reconstructed from local-bound edge geometry with zero branch decisions. A twin-triangles counterexample keeps lower-bound soundness distinct from tightness and supplies the first finite neighborhood contraction witness. Live Postgres remains a typed substrate obligation when the build environment cannot execute it.
