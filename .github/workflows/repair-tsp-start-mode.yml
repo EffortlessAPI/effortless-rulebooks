@@ -1,0 +1,32 @@
+name: Repair TSP start script executable mode
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .tsp-start-mode-repair.trigger
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Restore executable mode and remove one-shot scaffolding
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          chmod +x rulebook-examples/effortless-math/domains/traveling-salesman/start.sh
+          rm -f .tsp-start-mode-repair.trigger .github/workflows/repair-tsp-start-mode.yml
+          git add -A -- rulebook-examples/effortless-math/domains/traveling-salesman/start.sh .tsp-start-mode-repair.trigger .github/workflows/repair-tsp-start-mode.yml
+          git commit -m 'Restore executable mode for TSP control panel'
+          git pull --rebase origin main
+          git push origin HEAD:main
