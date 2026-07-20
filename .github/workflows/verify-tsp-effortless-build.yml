@@ -3,6 +3,7 @@ name: Verify TSP Effortless build
 on:
   push:
     branches:
+      - main
       - agent/tsp-effortless-build-recovery
     paths:
       - .tsp-effortless-build.trigger
@@ -20,7 +21,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     env:
-      TARGET_BRANCH: agent/tsp-effortless-build-recovery
+      TARGET_BRANCH: ${{ github.ref_name }}
       DOMAIN: rulebook-examples/effortless-math/domains/traveling-salesman
       PGHOST: localhost
       PGUSER: postgres
