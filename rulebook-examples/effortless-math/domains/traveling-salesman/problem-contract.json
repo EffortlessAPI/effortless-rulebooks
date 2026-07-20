@@ -1466,12 +1466,12 @@
     {
       "LoopOrder": 720,
       "LoopId": "tsp-loop-720",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "The external benchmark campaign has not yet represented this prerequisite.",
       "ClosureCriterion": "Record caps, fractional residues, heuristic misses, and open values without promotion.",
-      "AfterState": null,
-      "Result": "Planned; no result consumed.",
-      "CompletionDisposition": null
+      "AfterState": "Caps, fractional residues, heuristic gaps, and open values are retained as first-class outcomes.",
+      "Result": "Caps, fractional residues, heuristic gaps, and open values are retained as first-class outcomes.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 721,
