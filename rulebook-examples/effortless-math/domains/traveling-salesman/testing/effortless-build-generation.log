@@ -12,46 +12,27 @@ CommandLine:> effortless minimize-rulebook -i traveling-salesman-rulebook.json
   CALLED BY:  SSoTmeCLIHandler.TryGetUrlFromRemoteTools (SSoTmeCLIHandler.cs:3765)
   CLI VER:    current=2026-06-09.06.13, cached=(none)
   CWD:        /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook
-  TIME:       2026-07-20T16:10:35.2896615Z
+  TIME:       2026-07-20T16:15:23.3761337Z
   COMMAND:    minimize-rulebook -i traveling-salesman-rulebook.json
 ================================================================================
-Waiting for the remote transpiler 'httpsssotme-cli-cloud-bridge-v2026-04-24-1853-cmvbd4phczmeg7pktzg2z971j0cplnapp' to boot up       .  .. ...   .  .. ...   .  .. ...   .  .. ...   .  .. ...   .  .. ...   .  .. ...   .  .. ...   .  .. ...   .  .. ...                                                                                                                                  
-
-Waiting for the remote transpiler 'httpsssotme-cli-cloud-bridge-v2026-04-24-1853-cmvbd4phczmeg7pktzg2z971j0cplnapp' to boot up                                                                                                                                         
-
 cli:> effortless/effortless/minimize-rulebook v2026.07.08.1133 [latest]
-Waiting for the remote transpiler 'httpseffortless-minimize-rulebook-v2026-07-08-1133-cmvbd4phczmeg7pktzg2z971j0cplnapp' to boot up       .  .. ...   .  .. ...   .  .. ...   .  .. ...   .  .. ...   .  .. ...   .  .. ...   .  ..                                                                                                                                        
-
-Waiting for the remote transpiler 'httpseffortless-minimize-rulebook-v2026-07-08-1133-cmvbd4phczmeg7pktzg2z971j0cplnapp' to boot up    ...                                                                                                                                       
-
 [cli] Creating /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
-[cli] Creating /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.derived-data.json
 
 
  **** /effortless-postgres: rulebooktopostgres ****
 CommandLine:> effortless rulebook-to-postgres -i ../effortless-rulebook/traveling-salesman-rulebook.json -p memoize_repeated_calls=true
 cli:> effortless/effortless/rulebook-to-postgres v2026.07.19.1238 [latest]
-Waiting for the remote transpiler 'httpseffortless-rulebook-to-postgres-v2026-07-19-1238-cmvbd4phczmeg7pktzg2z971j0cplnapp' to boot up       .  .. ...   .  .. ...   .  .. ...   .  .. ...   .  .. ...   .  .. ...   .  .. ...   .  .. ...   .  .. ...   .  .. ...   .  .. ...   .  .. ...   .  .. ...                                                                                                                                             
-
 [cli] Transpiler processing asynchronously, polling for result...
-Waiting for the remote transpiler 'httpseffortless-rulebook-to-postgres-v2026-07-19-1238-cmvbd4phczmeg7pktzg2z971j0cplnapp' to boot up    .  .. ...   .  .. [rulebook-to-postgres v2026.07.19.1238] =================================
+[rulebook-to-postgres v2026.07.19.1238] =================================
 [rulebook-to-postgres v2026.07.19.1238]  Starting RunAsync
 [rulebook-to-postgres v2026.07.19.1238]  Generating scripts (schema=public, dropAll=False, snakeCase=True, mode=check-add, stage=dev, emitErbInternals=False, pkType=string, memoizeRepeatedCalls=True, materializeCalculatedFields=False)
 [rulebook-to-postgres v2026.07.19.1238]  Scripts generated successfully.
 [rulebook-to-postgres v2026.07.19.1238] Generated 395 calculation/lookup functions.
 [rulebook-to-postgres v2026.07.19.1238]  Completed successfully.
-...                                                                                                                                          
-
-[cli] Creating /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/02-create-functions.sql
-[cli] Creating /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/05-insert-data.sql
 [cli] Creating /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/.build-manifest.json
 
 
  **** /rulespeak: rulebooktorulespeak ****
 CommandLine:> effortless rulebook-to-rulespeak -i ../effortless-rulebook/traveling-salesman-rulebook.json
 cli:> effortless/effortless/rulebook-to-rulespeak v2026.07.08.1458 [latest]
-Waiting for the remote transpiler 'httpseffortless-rulebook-to-rulespeak-v2026-07-08-1458-cmvbd4phczmeg7pktzg2z971j0cplnapp' to boot up       .  .. ...   .  .. ...   .  .. ...   .  .. ...   .  .. ...   .  .. ...   .  .. ...   .  .. ...   .  .. ...   .  .. ...   .  .. ...   .  ..                                                                                                                                            
-
-Waiting for the remote transpiler 'httpseffortless-rulebook-to-rulespeak-v2026-07-08-1458-cmvbd4phczmeg7pktzg2z971j0cplnapp' to boot up    ...                                                                                                                                           
-
 formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
