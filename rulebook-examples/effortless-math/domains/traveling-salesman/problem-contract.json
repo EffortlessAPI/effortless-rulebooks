@@ -2196,12 +2196,12 @@
     {
       "LoopOrder": 793,
       "LoopId": "tsp-loop-793",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "bays29 is named in the preregistered corpus but its source payload and format have not been ingested.",
       "ClosureCriterion": "Verify name, dimension, symmetric weights, source URL, and SHA-256 payload hash.",
-      "AfterState": null,
-      "Result": "Planned; no result consumed.",
-      "CompletionDisposition": null
+      "AfterState": "bays29 source ingested with SHA-256 385c381b3bf28ed9f1065cb1672d02d1909b0eb66eab111d7c9887f9a796dc8f and dimension 29.",
+      "Result": "bays29 source ingested with SHA-256 385c381b3bf28ed9f1065cb1672d02d1909b0eb66eab111d7c9887f9a796dc8f and dimension 29.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 794,
