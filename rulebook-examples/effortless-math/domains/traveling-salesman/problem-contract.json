@@ -2356,12 +2356,12 @@
     {
       "LoopOrder": 809,
       "LoopId": "tsp-loop-809",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "dantzig42 has method outputs but no consolidated value, witness, and branch-warrant classification.",
       "ClosureCriterion": "Close value only when a certified lower bound and feasible witness meet; branch only when value or feasibility remains open.",
-      "AfterState": null,
-      "Result": "Planned; no result consumed.",
-      "CompletionDisposition": null
+      "AfterState": "Value closed=False; witness closed=True; branch warrant=REQUIRED_VALUE_OPEN.",
+      "Result": "Value closed=False; witness closed=True; branch warrant=REQUIRED_VALUE_OPEN.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 810,
