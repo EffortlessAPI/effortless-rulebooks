@@ -1786,12 +1786,12 @@
     {
       "LoopOrder": 752,
       "LoopId": "tsp-loop-752",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "gr21 lacks a degree-only LP relaxation profile.",
       "ClosureCriterion": "Solve the degree equations with edge bounds and record objective, integrality, component structure, and numerical solver trust.",
-      "AfterState": null,
-      "Result": "Planned; no result consumed.",
-      "CompletionDisposition": null
+      "AfterState": "Degree-LP objective=2707.0; fractional edges=0.",
+      "Result": "Degree-LP objective=2707.0; fractional edges=0.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 753,
