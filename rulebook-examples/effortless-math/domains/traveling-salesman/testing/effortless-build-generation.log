@@ -1,0 +1,38 @@
+[tsp] effortless build → Postgres + RuleSpeak
+
+
+ **** /effortless-rulebook: minimizerulebook ****
+CommandLine:> effortless minimize-rulebook -i traveling-salesman-rulebook.json
+[cli] Initializing CLI tool URL index...
+[cli] Refreshing CLI tool URL index...
+================================================================================
+  CLOUD-BRIDGE CALL TRIGGERED: Empty local transpiler URL cache
+================================================================================
+  WHY:        Local transpiler URL cache (ssotme-tools.json) is empty or corrupt — must repopulate from cli-cloud-bridge before any transpiler can be resolved.
+  CALLED BY:  SSoTmeCLIHandler.TryGetUrlFromRemoteTools (SSoTmeCLIHandler.cs:3765)
+  CLI VER:    current=2026-06-09.06.13, cached=(none)
+  CWD:        /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook
+  TIME:       2026-07-20T16:15:23.3761337Z
+  COMMAND:    minimize-rulebook -i traveling-salesman-rulebook.json
+================================================================================
+cli:> effortless/effortless/minimize-rulebook v2026.07.08.1133 [latest]
+[cli] Creating /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json
+
+
+ **** /effortless-postgres: rulebooktopostgres ****
+CommandLine:> effortless rulebook-to-postgres -i ../effortless-rulebook/traveling-salesman-rulebook.json -p memoize_repeated_calls=true
+cli:> effortless/effortless/rulebook-to-postgres v2026.07.19.1238 [latest]
+[cli] Transpiler processing asynchronously, polling for result...
+[rulebook-to-postgres v2026.07.19.1238] =================================
+[rulebook-to-postgres v2026.07.19.1238]  Starting RunAsync
+[rulebook-to-postgres v2026.07.19.1238]  Generating scripts (schema=public, dropAll=False, snakeCase=True, mode=check-add, stage=dev, emitErbInternals=False, pkType=string, memoizeRepeatedCalls=True, materializeCalculatedFields=False)
+[rulebook-to-postgres v2026.07.19.1238]  Scripts generated successfully.
+[rulebook-to-postgres v2026.07.19.1238] Generated 395 calculation/lookup functions.
+[rulebook-to-postgres v2026.07.19.1238]  Completed successfully.
+[cli] Creating /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-postgres/.build-manifest.json
+
+
+ **** /rulespeak: rulebooktorulespeak ****
+CommandLine:> effortless rulebook-to-rulespeak -i ../effortless-rulebook/traveling-salesman-rulebook.json
+cli:> effortless/effortless/rulebook-to-rulespeak v2026.07.08.1458 [latest]
+formatted: /home/runner/work/effortless-rulebooks/effortless-rulebooks/rulebook-examples/effortless-math/domains/traveling-salesman/effortless-rulebook/traveling-salesman-rulebook.json

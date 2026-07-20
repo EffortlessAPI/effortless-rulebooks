@@ -1,0 +1,11 @@
+traveling-salesman temporal v3 validation: PASS
+traveling-salesman temporal v5 validation: PASS
+traveling-salesman temporal v3 validation: PASS
+traveling-salesman temporal v5 validation: PASS
+traveling-salesman coherence convergence validation: PASS
+loops=134 tables=45 atoms=1 operators=1
+traveling-salesman coherence summary alignment: PASS
+traveling-salesman frozen-basis calibration validation: PASS
+loops=134 tables=45 atoms=1 operators=1 heldout=12
+traveling-salesman frozen-basis calibration summary alignment: PASS
+traveling-salesman calibration canonical-ledger validation: PASS (squashed Git history)

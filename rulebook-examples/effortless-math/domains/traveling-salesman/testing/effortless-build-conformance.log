@@ -1,0 +1,11 @@
+graph substrate agreement: 19/19
+tour substrate agreement: 24/24
+local-bound substrate agreement: 109/109
+instance-bound substrate agreement: 16/16
+optimality-certificate agreement: 12/12
+tour invariants passing: 8/8
+graph invariants passing: 2/2
+search substrate agreement: 2/2
+frontier obligations: 34 total, 0 imported, 32 closed
+
+traveling-salesman Postgres conformance: PASS

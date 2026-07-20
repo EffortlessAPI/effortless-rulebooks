@@ -1,0 +1,8 @@
+{
+  "mode": "SQUASHED_CANONICAL_LEDGER",
+  "reason": "The detailed TSP research commits were intentionally squash-merged; Git commit subjects are no longer a canonical validation dependency.",
+  "canonical_history_source": "effortless-rulebook/traveling-salesman-rulebook.json#TSPLoops",
+  "evidence_certificate": "testing/calibration-647-710-verified.json",
+  "detailed_git_commit_history_required": false,
+  "required_loop_range": "647-710"
+}

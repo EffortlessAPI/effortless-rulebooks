@@ -18228,6 +18228,18 @@
       "TrustDisposition": "INTERNALIZED_FOR_DECLARED_FINITE_SCOPE",
       "ClosureCriterion": "The frozen basis and development oracle audits all pass before any held-out optimum is observed.",
       "CertificateType": "preheldout-instrument-seal-certificate"
+    },
+    {
+      "TSPFrontierObligationId": "frontier-frozen-basis-heldout-calibration",
+      "DisplayName": "Frozen-basis held-out exact calibration",
+      "ObligationKind": "INFERENCE_OBLIGATION",
+      "Status": "CLOSED",
+      "InferenceRule": "tsp-rule-heldout-calibration",
+      "OpenedByLoop": "tsp-loop-647",
+      "ClosedByLoop": "tsp-loop-710",
+      "TrustDisposition": "INTERNALIZED_FOR_DECLARED_FINITE_SCOPE",
+      "ClosureCriterion": "Twelve predeclared held-out families have exact oracle rows, structural comparison metrics, residual kernels, branch warrants, and zero basis growth.",
+      "CertificateType": "heldout-calibration-certificate"
     }
   ],
   "TSPLoops": [
@@ -20057,15 +20069,15 @@
       "TSPLoopId": "tsp-loop-710",
       "LoopOrder": 710,
       "DisplayName": "Third coherence event",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "PrimaryInferenceRule": "tsp-rule-calibration-metric",
       "NewConcept": "Coherence Event III",
-      "WitnessSummary": "Planned frozen-basis calibration loop; no closure claim yet.",
+      "WitnessSummary": "Twelve held-out instances are exactly calibrated; value closed=5, route closed=3, value branch required=7; active basis remains one arc/one rewrite and physical tables remain 45.",
       "NextFrontier": "Use the sealed corpus to decide the next research frontier.",
       "PlannedClosureCriterion": "Seal the frozen-basis held-out campaign, record what generalized and what failed, and preserve all nonclaims.",
       "BeforeState": "Held-out exact rows exist, but this derived calibration concept has not yet been represented across the corpus.",
-      "AfterState": null,
-      "CompletionDisposition": null
+      "AfterState": "Sealed the third coherence event through loop 710.",
+      "CompletionDisposition": "CLOSED"
     }
   ],
   "TSPConvergenceMeasurements": [
@@ -22436,6 +22448,35 @@
       "NamedConceptCount": 165,
       "AllowsLocalExpansion": true,
       "CoherenceDirection": "MORE_EXPLICIT_REUSE_SMALLER_ACTIVE_BASIS_NO_REQUIRED_PHYSICAL_SHRINKAGE"
+    },
+    {
+      "TSPConvergenceMeasurementId": "convergence-loop-710",
+      "TSPLoop": "tsp-loop-710",
+      "MeasurementKind": "COHERENCE_EVENT_III",
+      "SurfaceConceptCountBefore": 32,
+      "PrimitiveCountAfter": 1,
+      "NewPrimitiveCount": 0,
+      "DerivedAliasCount": 164,
+      "PhysicalTableCount": 45,
+      "NovelTerm": "Coherence Event III",
+      "PredictionStatus": "EMPIRICAL_HELDOUT_SUPPORT",
+      "Notes": "Frozen basis 1 arc/1 rewrite; tables=45; held-out exact=12/12; value closed=5; route closed=3; value branch required=7; primitive growth=0.",
+      "ActiveAtomCount": 1,
+      "ActiveOperatorCount": 1,
+      "PhysicalTableDeltaFromLoop610": 0,
+      "OpenFrontierCount": 2,
+      "NamedConceptCount": 166,
+      "AllowsLocalExpansion": true,
+      "CoherenceDirection": "MORE_EXPLICIT_REUSE_SMALLER_ACTIVE_BASIS_NO_REQUIRED_PHYSICAL_SHRINKAGE",
+      "DevelopmentInstanceCount": 6,
+      "HeldOutInstanceCount": 12,
+      "ExactOracleCoveragePct": 100.0,
+      "ValueClosedCount": 5,
+      "RouteClosedCount": 3,
+      "BranchRequiredCount": 7,
+      "MeanClosureYieldPct": 23.96,
+      "MaxExactClassCount": 2520,
+      "BasisGrowthCount": 0
     }
   ],
   "TSPConceptRegistry": [
@@ -26010,6 +26051,24 @@
       "HistoricalConceptKind": "COINED_PREDICATE",
       "SemanticCategory": "DERIVED",
       "ReducedBasisExpression": "SEMANTIC_ARC(rulebook,CANONICAL_VALUE,x)\u002BSEMANTIC_ARC(postgres,PROJECTED_VALUE,x)\u002BSEMANTIC_ARC(oracle,RECOMPUTED_VALUE,x)\u002BWARRANTED_REWRITE(peer_results,compare,CONTRACTIVE,conformance,all_equal)",
+      "OperatorExpression": "WARRANTED_REWRITE",
+      "ReductionGeneration": 2,
+      "RecoverabilityExpression": "PROJECT_FROM_SEMANTIC_ARC_AND_WARRANTED_REWRITE",
+      "IsRecoverableFromCurrentBasis": true
+    },
+    {
+      "TSPConceptId": "coined-coherence-event-three",
+      "DisplayName": "Coherence Event III",
+      "ConceptKind": "COINED_PREDICATE",
+      "BasisExpression": "SEMANTIC_ARC(campaign,HELDOUT_EXACT_COVERAGE,100_PERCENT)\u002BSEMANTIC_ARC(campaign,ACTIVE_BASIS,ONE_ARC_ONE_REWRITE)\u002BWARRANTED_REWRITE(corpus_evidence,seal,MIXED,coherence_event,explicit_nonclaims)",
+      "Arity": 1,
+      "SourceTables": "TSPInstances,TSPConceptRegistry,TSPConvergenceMeasurements,TSPLoops",
+      "IntroducedByLoop": "tsp-loop-710",
+      "SupersededByConcept": null,
+      "Status": "ACTIVE_DERIVED",
+      "HistoricalConceptKind": "COINED_PREDICATE",
+      "SemanticCategory": "DERIVED",
+      "ReducedBasisExpression": "SEMANTIC_ARC(campaign,HELDOUT_EXACT_COVERAGE,100_PERCENT)\u002BSEMANTIC_ARC(campaign,ACTIVE_BASIS,ONE_ARC_ONE_REWRITE)\u002BWARRANTED_REWRITE(corpus_evidence,seal,MIXED,coherence_event,explicit_nonclaims)",
       "OperatorExpression": "WARRANTED_REWRITE",
       "ReductionGeneration": 2,
       "RecoverabilityExpression": "PROJECT_FROM_SEMANTIC_ARC_AND_WARRANTED_REWRITE",
