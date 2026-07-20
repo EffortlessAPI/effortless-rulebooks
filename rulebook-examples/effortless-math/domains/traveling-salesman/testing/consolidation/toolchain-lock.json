@@ -1,6 +1,12 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "status": "PINNED_FOR_CONSOLIDATED_REPLAY",
+  "github_actions": {
+    "checkout_v4_commit": "11d5960a326750d5838078e36cf38b85af677262",
+    "setup_python_v5_commit": "a26af69be951a213d495a4c3e4e4022e16d87065",
+    "setup_node_major": "4",
+    "setup_dotnet_major": "4"
+  },
   "effortless_cli": {
     "git_commit": "1551cb82d5a8992ad09e4c82d08e28493f92f7b4",
     "archive_url": "https://github.com/EffortlessAPI/cli/archive/1551cb82d5a8992ad09e4c82d08e28493f92f7b4.tar.gz",
@@ -30,7 +36,7 @@
     "github_runner": "ubuntu-24.04",
     "node": "22",
     "dotnet_sdk": "8.0.410",
-    "python": "3.12",
+    "python": "3.12.13",
     "postgres_image": "postgres:16@sha256:33f923b05f64ca54ac4401c01126a6b92afe839a0aa0a52bc5aeb5cc958e5f20",
     "database": "erb_traveling_salesman"
   },
@@ -52,12 +58,13 @@
   },
   "pinning_boundary": {
     "pinned": [
+      "GitHub checkout and Python setup action commits",
       "Effortless CLI source commit",
       "declared remote transpiler versions and URLs",
       "Postgres image digest",
       "Node major version",
       ".NET SDK patch version",
-      "Python minor version",
+      "Python patch version",
       "numerical and database-client package versions",
       "numerical thread counts"
     ],
