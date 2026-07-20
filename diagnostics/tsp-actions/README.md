@@ -4,6 +4,9 @@
 
 | Run | Workflow | Event | Status | Conclusion | Head | Artifacts |
 |---:|---|---|---|---|---|---:|
+| 29776017995 | Repair historical TSP validators for cumulative replay | push | completed | failure | `118549121f6a` | 0 |
+| 29775721715 | Audit TSP validator matrix | push | completed | success | `c95d7b5ce8a7` | 0 |
+| 29775646621 | Apply TSP consolidation state | push | completed | success | `f82cbf98ab26` | 0 |
 | 29775288873 | Apply TSP consolidation state | push | completed | failure | `6798beb97eb7` | 0 |
 | 29774268005 | Merge current main into TSP consolidation | push | completed | success | `356082832707` | 0 |
 | 29774266794 | .github/workflows/apply-tsp-loops-624-646-coherence-v2.yml | push | completed | failure | `356082832707` | 0 |

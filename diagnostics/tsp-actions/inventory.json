@@ -878,6 +878,328 @@
       {
         "artifacts": [],
         "conclusion": "failure",
+        "created_at": "2026-07-20T20:24:57Z",
+        "event": "push",
+        "head_branch": "agent/tsp_consolidation",
+        "head_sha": "118549121f6a0d5666c1c82fc2e425f3c57247cc",
+        "html_url": "https://github.com/EffortlessAPI/effortless-rulebooks/actions/runs/29776017995",
+        "id": 29776017995,
+        "jobs": [
+          {
+            "completed_at": "2026-07-20T20:25:26Z",
+            "conclusion": "failure",
+            "html_url": "https://github.com/EffortlessAPI/effortless-rulebooks/actions/runs/29776017995/job/88465437632",
+            "id": 88465437632,
+            "name": "repair",
+            "started_at": "2026-07-20T20:25:00Z",
+            "status": "completed",
+            "steps": [
+              {
+                "completed_at": "2026-07-20T20:25:02Z",
+                "conclusion": "success",
+                "name": "Set up job",
+                "number": 1,
+                "started_at": "2026-07-20T20:25:01Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:25:12Z",
+                "conclusion": "success",
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "started_at": "2026-07-20T20:25:02Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:25:13Z",
+                "conclusion": "success",
+                "name": "Run actions/setup-python@v5",
+                "number": 3,
+                "started_at": "2026-07-20T20:25:12Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:25:23Z",
+                "conclusion": "success",
+                "name": "Install pinned validator dependencies",
+                "number": 4,
+                "started_at": "2026-07-20T20:25:13Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:25:23Z",
+                "conclusion": "failure",
+                "name": "Make loop-647-710 validators cumulative-compatible",
+                "number": 5,
+                "started_at": "2026-07-20T20:25:23Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:25:23Z",
+                "conclusion": "skipped",
+                "name": "Replay repaired historical validators",
+                "number": 6,
+                "started_at": "2026-07-20T20:25:23Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:25:23Z",
+                "conclusion": "skipped",
+                "name": "Commit cumulative-compatible validators",
+                "number": 7,
+                "started_at": "2026-07-20T20:25:23Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:25:23Z",
+                "conclusion": "skipped",
+                "name": "Post Run actions/setup-python@v5",
+                "number": 13,
+                "started_at": "2026-07-20T20:25:23Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:25:24Z",
+                "conclusion": "success",
+                "name": "Post Run actions/checkout@v4",
+                "number": 14,
+                "started_at": "2026-07-20T20:25:23Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:25:24Z",
+                "conclusion": "success",
+                "name": "Complete job",
+                "number": 15,
+                "started_at": "2026-07-20T20:25:24Z",
+                "status": "completed"
+              }
+            ]
+          }
+        ],
+        "name": "Repair historical TSP validators for cumulative replay",
+        "path": ".github/workflows/tsp-repair-historical-validators.yml",
+        "run_attempt": 1,
+        "run_number": 1,
+        "status": "completed",
+        "updated_at": "2026-07-20T20:25:27Z",
+        "workflow_id": 316969978
+      },
+      {
+        "artifacts": [],
+        "conclusion": "success",
+        "created_at": "2026-07-20T20:20:38Z",
+        "event": "push",
+        "head_branch": "agent/tsp_consolidation",
+        "head_sha": "c95d7b5ce8a7b528555f4fe2b8a7384c1adebeac",
+        "html_url": "https://github.com/EffortlessAPI/effortless-rulebooks/actions/runs/29775721715",
+        "id": 29775721715,
+        "jobs": [
+          {
+            "completed_at": "2026-07-20T20:21:14Z",
+            "conclusion": "success",
+            "html_url": "https://github.com/EffortlessAPI/effortless-rulebooks/actions/runs/29775721715/job/88464483463",
+            "id": 88464483463,
+            "name": "audit",
+            "started_at": "2026-07-20T20:20:40Z",
+            "status": "completed",
+            "steps": [
+              {
+                "completed_at": "2026-07-20T20:20:41Z",
+                "conclusion": "success",
+                "name": "Set up job",
+                "number": 1,
+                "started_at": "2026-07-20T20:20:41Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:20:56Z",
+                "conclusion": "success",
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "started_at": "2026-07-20T20:20:41Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:20:56Z",
+                "conclusion": "success",
+                "name": "Run actions/setup-python@v5",
+                "number": 3,
+                "started_at": "2026-07-20T20:20:56Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:21:05Z",
+                "conclusion": "success",
+                "name": "Install pinned validator dependencies",
+                "number": 4,
+                "started_at": "2026-07-20T20:20:56Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:21:11Z",
+                "conclusion": "success",
+                "name": "Execute every historical and current validator independently",
+                "number": 5,
+                "started_at": "2026-07-20T20:21:05Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:21:13Z",
+                "conclusion": "success",
+                "name": "Commit validator matrix",
+                "number": 6,
+                "started_at": "2026-07-20T20:21:11Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:21:13Z",
+                "conclusion": "success",
+                "name": "Post Run actions/setup-python@v5",
+                "number": 11,
+                "started_at": "2026-07-20T20:21:13Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:21:13Z",
+                "conclusion": "success",
+                "name": "Post Run actions/checkout@v4",
+                "number": 12,
+                "started_at": "2026-07-20T20:21:13Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:21:13Z",
+                "conclusion": "success",
+                "name": "Complete job",
+                "number": 13,
+                "started_at": "2026-07-20T20:21:13Z",
+                "status": "completed"
+              }
+            ]
+          }
+        ],
+        "name": "Audit TSP validator matrix",
+        "path": ".github/workflows/tsp-validator-matrix.yml",
+        "run_attempt": 1,
+        "run_number": 1,
+        "status": "completed",
+        "updated_at": "2026-07-20T20:21:15Z",
+        "workflow_id": 316967691
+      },
+      {
+        "artifacts": [],
+        "conclusion": "success",
+        "created_at": "2026-07-20T20:19:33Z",
+        "event": "push",
+        "head_branch": "agent/tsp_consolidation",
+        "head_sha": "f82cbf98ab2679ff0cf993f03ddfe6a06e874589",
+        "html_url": "https://github.com/EffortlessAPI/effortless-rulebooks/actions/runs/29775646621",
+        "id": 29775646621,
+        "jobs": [
+          {
+            "completed_at": "2026-07-20T20:19:57Z",
+            "conclusion": "success",
+            "html_url": "https://github.com/EffortlessAPI/effortless-rulebooks/actions/runs/29775646621/job/88464243968",
+            "id": 88464243968,
+            "name": "consolidate",
+            "started_at": "2026-07-20T20:19:36Z",
+            "status": "completed",
+            "steps": [
+              {
+                "completed_at": "2026-07-20T20:19:37Z",
+                "conclusion": "success",
+                "name": "Set up job",
+                "number": 1,
+                "started_at": "2026-07-20T20:19:37Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:19:48Z",
+                "conclusion": "success",
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "started_at": "2026-07-20T20:19:37Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:19:48Z",
+                "conclusion": "success",
+                "name": "Configure Git",
+                "number": 3,
+                "started_at": "2026-07-20T20:19:48Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:19:48Z",
+                "conclusion": "success",
+                "name": "Correct consolidation script compatibility",
+                "number": 4,
+                "started_at": "2026-07-20T20:19:48Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:19:53Z",
+                "conclusion": "success",
+                "name": "Audit ordered semantic history",
+                "number": 5,
+                "started_at": "2026-07-20T20:19:48Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:19:53Z",
+                "conclusion": "success",
+                "name": "Reconcile contract, provenance, and artifact lifecycle",
+                "number": 6,
+                "started_at": "2026-07-20T20:19:53Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:19:53Z",
+                "conclusion": "success",
+                "name": "Validate consolidated state before build certificate",
+                "number": 7,
+                "started_at": "2026-07-20T20:19:53Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:19:55Z",
+                "conclusion": "success",
+                "name": "Commit reconciled non-README state",
+                "number": 8,
+                "started_at": "2026-07-20T20:19:53Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:19:55Z",
+                "conclusion": "success",
+                "name": "Post Run actions/checkout@v4",
+                "number": 16,
+                "started_at": "2026-07-20T20:19:55Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:19:55Z",
+                "conclusion": "success",
+                "name": "Complete job",
+                "number": 17,
+                "started_at": "2026-07-20T20:19:55Z",
+                "status": "completed"
+              }
+            ]
+          }
+        ],
+        "name": "Apply TSP consolidation state",
+        "path": ".github/workflows/apply-tsp-consolidation-state.yml",
+        "run_attempt": 1,
+        "run_number": 2,
+        "status": "completed",
+        "updated_at": "2026-07-20T20:19:57Z",
+        "workflow_id": 316964460
+      },
+      {
+        "artifacts": [],
+        "conclusion": "failure",
         "created_at": "2026-07-20T20:14:23Z",
         "event": "push",
         "head_branch": "agent/tsp_consolidation",
