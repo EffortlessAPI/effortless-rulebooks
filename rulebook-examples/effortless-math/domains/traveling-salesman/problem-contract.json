@@ -2256,12 +2256,12 @@
     {
       "LoopOrder": 799,
       "LoopId": "tsp-loop-799",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "bays29 has no simple 2-matching comb follow-up for any fractional SEC residue.",
       "ClosureCriterion": "Apply only witnessed simple 2-matching comb cuts from fractional-support components and preserve any remaining fractional residue.",
-      "AfterState": null,
-      "Result": "Planned; no result consumed.",
-      "CompletionDisposition": null
+      "AfterState": "Comb status=FRACTIONAL_COMB_CLOSED; objective=2019.3333333333333; SEC cuts=6; comb cuts=3.",
+      "Result": "Comb status=FRACTIONAL_COMB_CLOSED; objective=2019.3333333333333; SEC cuts=6; comb cuts=3.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 800,
