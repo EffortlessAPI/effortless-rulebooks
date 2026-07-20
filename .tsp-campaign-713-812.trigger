@@ -1,2 +1,2 @@
-run-id: tsp-campaign-713-812-consolidation-1
-intent: promote the frozen semantic loops 713-812 into the single canonical TSPLoops ledger, replay provider evidence, rebuild with Effortless, recreate Postgres, and seal conformance on agent/tsp_consolidation
+run-id: tsp-campaign-713-812-consolidation-2
+intent: promote semantic loops 713-812 into the single canonical TSPLoops ledger, replay all provider evidence, rebuild through Effortless, recreate Postgres, and publish without workflow-file mutation
