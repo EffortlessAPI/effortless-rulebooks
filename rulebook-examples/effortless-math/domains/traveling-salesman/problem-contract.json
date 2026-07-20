@@ -2016,12 +2016,12 @@
     {
       "LoopOrder": 775,
       "LoopId": "tsp-loop-775",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "fri26 is named in the preregistered corpus but its source payload and format have not been ingested.",
       "ClosureCriterion": "Verify name, dimension, symmetric weights, source URL, and SHA-256 payload hash.",
-      "AfterState": null,
-      "Result": "Planned; no result consumed.",
-      "CompletionDisposition": null
+      "AfterState": "fri26 source ingested with SHA-256 80d6b51cf41459ba33ca883324f50b2f0694a4b787f2ae153c9cd97c8d8948c0 and dimension 26.",
+      "Result": "fri26 source ingested with SHA-256 80d6b51cf41459ba33ca883324f50b2f0694a4b787f2ae153c9cd97c8d8948c0 and dimension 26.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 776,
