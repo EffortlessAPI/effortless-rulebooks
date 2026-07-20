@@ -1656,12 +1656,12 @@
     {
       "LoopOrder": 739,
       "LoopId": "tsp-loop-739",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "gr17 is named in the preregistered corpus but its source payload and format have not been ingested.",
       "ClosureCriterion": "Verify name, dimension, symmetric weights, source URL, and SHA-256 payload hash.",
-      "AfterState": null,
-      "Result": "Planned; no result consumed.",
-      "CompletionDisposition": null
+      "AfterState": "gr17 source ingested with SHA-256 b18d6060189534ec7c6ea3b50b6ba793d1a3bd22b38e99bf9f422338ffa203fa and dimension 17.",
+      "Result": "gr17 source ingested with SHA-256 b18d6060189534ec7c6ea3b50b6ba793d1a3bd22b38e99bf9f422338ffa203fa and dimension 17.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 740,
