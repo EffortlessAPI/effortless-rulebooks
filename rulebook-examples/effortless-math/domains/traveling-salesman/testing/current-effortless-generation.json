@@ -1,0 +1,9 @@
+{
+  "status": "FAIL",
+  "stage": "effortless-build",
+  "exit_code": 126,
+  "github_run_id": "29757899740",
+  "source_commit": "16846c4d5af05f59a505c2f3a80280ae7c8b7900",
+  "cli_source": "https://github.com/EffortlessAPI/cli/archive/1551cb82d5a8992ad09e4c82d08e28493f92f7b4.tar.gz",
+  "log": "testing/current-effortless-generation.log"
+}
