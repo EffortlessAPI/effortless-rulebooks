@@ -1926,12 +1926,12 @@
     {
       "LoopOrder": 766,
       "LoopId": "tsp-loop-766",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "gr24 is named in the preregistered corpus but its source payload and format have not been ingested.",
       "ClosureCriterion": "Verify name, dimension, symmetric weights, source URL, and SHA-256 payload hash.",
-      "AfterState": null,
-      "Result": "Planned; no result consumed.",
-      "CompletionDisposition": null
+      "AfterState": "gr24 source ingested with SHA-256 7fcf61204842785f06c58e7098a3e1eb2786831179e115645083ce500c065779 and dimension 24.",
+      "Result": "gr24 source ingested with SHA-256 7fcf61204842785f06c58e7098a3e1eb2786831179e115645083ce500c065779 and dimension 24.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 767,
