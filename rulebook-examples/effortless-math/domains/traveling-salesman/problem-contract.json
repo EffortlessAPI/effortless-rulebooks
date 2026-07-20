@@ -1436,12 +1436,12 @@
     {
       "LoopOrder": 717,
       "LoopId": "tsp-loop-717",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "The external benchmark campaign has not yet represented this prerequisite.",
       "ClosureCriterion": "Separate independently replayable integer bounds, numerical LP imports, witnesses, and published evaluation values.",
-      "AfterState": null,
-      "Result": "Planned; no result consumed.",
-      "CompletionDisposition": null
+      "AfterState": "Exact rational, numerical LP, constructive witness, and published evaluation statuses remain distinct.",
+      "Result": "Exact rational, numerical LP, constructive witness, and published evaluation statuses remain distinct.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 718,
