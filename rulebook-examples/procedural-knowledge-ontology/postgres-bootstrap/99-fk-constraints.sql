@@ -91,6 +91,9 @@ ALTER TABLE procedure_versions ADD CONSTRAINT fk_procedure_versions_created_by_a
 ALTER TABLE procedure_versions DROP CONSTRAINT IF EXISTS fk_procedure_versions_modified_by_agent;
 ALTER TABLE procedure_versions ADD CONSTRAINT fk_procedure_versions_modified_by_agent
   FOREIGN KEY (modified_by_agent) REFERENCES agents (agent_id);
+ALTER TABLE procedure_versions DROP CONSTRAINT IF EXISTS fk_procedure_versions_evaluation_context;
+ALTER TABLE procedure_versions ADD CONSTRAINT fk_procedure_versions_evaluation_context
+  FOREIGN KEY (evaluation_context) REFERENCES evaluation_contexts (evaluation_context_id);
 
 -- ProcedureVersionLinks
 ALTER TABLE procedure_version_links DROP CONSTRAINT IF EXISTS fk_procedure_version_links_previous_procedure_version;
@@ -215,6 +218,9 @@ ALTER TABLE elicitation_sessions ADD CONSTRAINT fk_elicitation_sessions_practiti
 ALTER TABLE elicitation_sessions DROP CONSTRAINT IF EXISTS fk_elicitation_sessions_facilitator_agent;
 ALTER TABLE elicitation_sessions ADD CONSTRAINT fk_elicitation_sessions_facilitator_agent
   FOREIGN KEY (facilitator_agent) REFERENCES agents (agent_id);
+ALTER TABLE elicitation_sessions DROP CONSTRAINT IF EXISTS fk_elicitation_sessions_evaluation_context;
+ALTER TABLE elicitation_sessions ADD CONSTRAINT fk_elicitation_sessions_evaluation_context
+  FOREIGN KEY (evaluation_context) REFERENCES evaluation_contexts (evaluation_context_id);
 
 -- KnowledgeFragments
 ALTER TABLE knowledge_fragments DROP CONSTRAINT IF EXISTS fk_knowledge_fragments_procedure_version;
@@ -246,6 +252,9 @@ ALTER TABLE knowledge_gaps ADD CONSTRAINT fk_knowledge_gaps_step
 ALTER TABLE knowledge_gaps DROP CONSTRAINT IF EXISTS fk_knowledge_gaps_owner_role;
 ALTER TABLE knowledge_gaps ADD CONSTRAINT fk_knowledge_gaps_owner_role
   FOREIGN KEY (owner_role) REFERENCES roles (role_id);
+ALTER TABLE knowledge_gaps DROP CONSTRAINT IF EXISTS fk_knowledge_gaps_evaluation_context;
+ALTER TABLE knowledge_gaps ADD CONSTRAINT fk_knowledge_gaps_evaluation_context
+  FOREIGN KEY (evaluation_context) REFERENCES evaluation_contexts (evaluation_context_id);
 
 -- FAQs
 ALTER TABLE faqs DROP CONSTRAINT IF EXISTS fk_faqs_procedure_version;
@@ -339,6 +348,9 @@ ALTER TABLE stewardship_assignments ADD CONSTRAINT fk_stewardship_assignments_st
 ALTER TABLE stewardship_assignments DROP CONSTRAINT IF EXISTS fk_stewardship_assignments_authority_role;
 ALTER TABLE stewardship_assignments ADD CONSTRAINT fk_stewardship_assignments_authority_role
   FOREIGN KEY (authority_role) REFERENCES roles (role_id);
+ALTER TABLE stewardship_assignments DROP CONSTRAINT IF EXISTS fk_stewardship_assignments_evaluation_context;
+ALTER TABLE stewardship_assignments ADD CONSTRAINT fk_stewardship_assignments_evaluation_context
+  FOREIGN KEY (evaluation_context) REFERENCES evaluation_contexts (evaluation_context_id);
 
 -- ChangeRequests
 ALTER TABLE change_requests DROP CONSTRAINT IF EXISTS fk_change_requests_procedure_version;
@@ -350,6 +362,9 @@ ALTER TABLE change_requests ADD CONSTRAINT fk_change_requests_requested_by_agent
 ALTER TABLE change_requests DROP CONSTRAINT IF EXISTS fk_change_requests_authority_role;
 ALTER TABLE change_requests ADD CONSTRAINT fk_change_requests_authority_role
   FOREIGN KEY (authority_role) REFERENCES roles (role_id);
+ALTER TABLE change_requests DROP CONSTRAINT IF EXISTS fk_change_requests_evaluation_context;
+ALTER TABLE change_requests ADD CONSTRAINT fk_change_requests_evaluation_context
+  FOREIGN KEY (evaluation_context) REFERENCES evaluation_contexts (evaluation_context_id);
 
 -- ReviewEvents
 ALTER TABLE review_events DROP CONSTRAINT IF EXISTS fk_review_events_procedure_version;
@@ -430,6 +445,14 @@ ALTER TABLE rulebook_fields DROP CONSTRAINT IF EXISTS fk_rulebook_fields_invente
 ALTER TABLE rulebook_fields ADD CONSTRAINT fk_rulebook_fields_invented_for_question
   FOREIGN KEY (invented_for_question) REFERENCES role_questions (role_question_id);
 
+-- TestCases
+ALTER TABLE test_cases DROP CONSTRAINT IF EXISTS fk_test_cases_defends_question;
+ALTER TABLE test_cases ADD CONSTRAINT fk_test_cases_defends_question
+  FOREIGN KEY (defends_question) REFERENCES role_questions (role_question_id);
+ALTER TABLE test_cases DROP CONSTRAINT IF EXISTS fk_test_cases_suite;
+ALTER TABLE test_cases ADD CONSTRAINT fk_test_cases_suite
+  FOREIGN KEY (suite) REFERENCES test_suites (test_suite_id);
+
 -- ExceptionInvocations
 ALTER TABLE exception_invocations DROP CONSTRAINT IF EXISTS fk_exception_invocations_step_execution;
 ALTER TABLE exception_invocations ADD CONSTRAINT fk_exception_invocations_step_execution
@@ -493,6 +516,9 @@ ALTER TABLE message_deliveries ADD CONSTRAINT fk_message_deliveries_sent_by_agen
 ALTER TABLE message_deliveries DROP CONSTRAINT IF EXISTS fk_message_deliveries_invoked_exception;
 ALTER TABLE message_deliveries ADD CONSTRAINT fk_message_deliveries_invoked_exception
   FOREIGN KEY (invoked_exception) REFERENCES exceptions (exception_id);
+ALTER TABLE message_deliveries DROP CONSTRAINT IF EXISTS fk_message_deliveries_evaluation_context;
+ALTER TABLE message_deliveries ADD CONSTRAINT fk_message_deliveries_evaluation_context
+  FOREIGN KEY (evaluation_context) REFERENCES evaluation_contexts (evaluation_context_id);
 
 -- TemplateApprovals
 ALTER TABLE template_approvals DROP CONSTRAINT IF EXISTS fk_template_approvals_message_template;
@@ -530,6 +556,9 @@ ALTER TABLE send_intents ADD CONSTRAINT fk_send_intents_refusal_notified_role
 ALTER TABLE send_intents DROP CONSTRAINT IF EXISTS fk_send_intents_retry_intent;
 ALTER TABLE send_intents ADD CONSTRAINT fk_send_intents_retry_intent
   FOREIGN KEY (retry_intent) REFERENCES send_intents (send_intent_id);
+ALTER TABLE send_intents DROP CONSTRAINT IF EXISTS fk_send_intents_evaluation_context;
+ALTER TABLE send_intents ADD CONSTRAINT fk_send_intents_evaluation_context
+  FOREIGN KEY (evaluation_context) REFERENCES evaluation_contexts (evaluation_context_id);
 ALTER TABLE send_intents DROP CONSTRAINT IF EXISTS fk_send_intents_evaluating_role_assignment;
 ALTER TABLE send_intents ADD CONSTRAINT fk_send_intents_evaluating_role_assignment
   FOREIGN KEY (evaluating_role_assignment) REFERENCES role_assignments (role_assignment_id);
@@ -595,4 +624,4 @@ ALTER TABLE attestations DROP CONSTRAINT IF EXISTS fk_attestations_signed_by_age
 ALTER TABLE attestations ADD CONSTRAINT fk_attestations_signed_by_agent
   FOREIGN KEY (signed_by_agent) REFERENCES agents (agent_id);
 
--- 159 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
+-- 168 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).

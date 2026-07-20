@@ -786,7 +786,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_role_assignments_is_currently_valid(p_role_assignment_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((SELECT NULLIF(status, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) = 'Active' AND ((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) IS NULL OR (SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) > CURRENT_TIMESTAMP)))::boolean;
+  SELECT (((SELECT NULLIF(status, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) = 'Active' AND ((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) IS NULL OR (SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) > calc_role_assignments_as_of_instant(p_role_assignment_id))))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_role_assignments_agent_role_key
@@ -806,7 +806,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_role_assignments_has_departed(p_role_assignment_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) IS NOT NULL AND (SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) <= CURRENT_TIMESTAMP))::boolean;
+  SELECT (((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) IS NOT NULL AND (SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) <= calc_role_assignments_as_of_instant(p_role_assignment_id)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_role_assignments_covers_now
@@ -816,7 +816,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_role_assignments_covers_now(p_role_assignment_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((SELECT NULLIF(status, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) = 'Active' AND (SELECT valid_from::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) <= CURRENT_TIMESTAMP AND ((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) IS NULL OR (SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) > CURRENT_TIMESTAMP)))::boolean;
+  SELECT (((SELECT NULLIF(status, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) = 'Active' AND (SELECT valid_from::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) <= calc_role_assignments_as_of_instant(p_role_assignment_id) AND ((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) IS NULL OR (SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) > calc_role_assignments_as_of_instant(p_role_assignment_id))))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_role_assignments_role_when_covering
@@ -1016,7 +1016,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_role_assignments_days_since_authorization_review(p_role_assignment_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT (CASE WHEN (SELECT authorization_reviewed_at::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) IS NOT NULL THEN ((CURRENT_TIMESTAMP::date - (SELECT authorization_reviewed_at::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)::date))::text ELSE ((CURRENT_TIMESTAMP::date - (SELECT valid_from::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)::date))::text END)::integer;
+  SELECT (CASE WHEN (SELECT authorization_reviewed_at::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) IS NOT NULL THEN ((calc_role_assignments_as_of_instant(p_role_assignment_id)::date - (SELECT authorization_reviewed_at::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)::date))::text ELSE ((calc_role_assignments_as_of_instant(p_role_assignment_id)::date - (SELECT valid_from::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)::date))::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_role_assignments_authorization_is_overdue_for_review
@@ -1260,6 +1260,17 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_procedures_name(p_procedure_id TEXT)
 RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(title, '') FROM procedures WHERE procedure_id = p_procedure_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_versions_as_of_instant
+-- Field: ProcedureVersions.AsOfInstant
+-- Type: lookup | DataType: datetime | Returns: TIMESTAMPTZ
+-- Lookup: AsOfInstant from related EvaluationContexts
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_versions_as_of_instant(p_procedure_version_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT as_of_instant::timestamptz FROM evaluation_contexts WHERE evaluation_context_id = (SELECT evaluation_context FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id));
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_modifier_is_authority
@@ -1584,7 +1595,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_days_since_modified(p_procedure_version_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((CURRENT_TIMESTAMP::date - (SELECT modified_at::timestamptz FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)::date))::integer;
+  SELECT ((calc_procedure_versions_as_of_instant(p_procedure_version_id)::date - (SELECT modified_at::timestamptz FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)::date))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_days_since_last_review
@@ -1594,7 +1605,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_days_since_last_review(p_procedure_version_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((CURRENT_TIMESTAMP::date - (SELECT MAX(reviewed_at) FROM review_events WHERE procedure_version = p_procedure_version_id)::date))::integer;
+  SELECT ((calc_procedure_versions_as_of_instant(p_procedure_version_id)::date - (SELECT MAX(reviewed_at) FROM review_events WHERE procedure_version = p_procedure_version_id)::date))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_was_modified_since_last_review
@@ -3484,6 +3495,17 @@ RETURNS TEXT AS $$
   SELECT (CASE WHEN (SELECT NULLIF(relation, '') FROM procedure_resources WHERE procedure_resource_id = p_procedure_resource_id) = 'wasExtractedFrom' THEN ('https://w3id.org/pko#wasExtractedFrom')::text ELSE ('http://purl.org/dc/terms/references')::text END)::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_elicitation_sessions_as_of_instant
+-- Field: ElicitationSessions.AsOfInstant
+-- Type: lookup | DataType: datetime | Returns: TIMESTAMPTZ
+-- Lookup: AsOfInstant from related EvaluationContexts
+
+
+CREATE OR REPLACE FUNCTION calc_elicitation_sessions_as_of_instant(p_elicitation_session_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT as_of_instant::timestamptz FROM evaluation_contexts WHERE evaluation_context_id = (SELECT evaluation_context FROM elicitation_sessions WHERE elicitation_session_id = p_elicitation_session_id));
+$$ LANGUAGE sql STABLE;
+
 -- calc_elicitation_sessions_practitioner_is_still_engaged
 -- Field: ElicitationSessions.PractitionerIsStillEngaged
 -- Type: lookup | DataType: boolean | Returns: BOOLEAN
@@ -3512,7 +3534,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_elicitation_sessions_days_since_elicited(p_elicitation_session_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((CURRENT_TIMESTAMP::date - (SELECT ended_at::timestamptz FROM elicitation_sessions WHERE elicitation_session_id = p_elicitation_session_id)::date))::integer;
+  SELECT ((calc_elicitation_sessions_as_of_instant(p_elicitation_session_id)::date - (SELECT ended_at::timestamptz FROM elicitation_sessions WHERE elicitation_session_id = p_elicitation_session_id)::date))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_elicitation_sessions_is_single_witness_method
@@ -3861,7 +3883,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_fragments_is_within_validity_window(p_knowledge_fragment_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((SELECT valid_from::timestamptz FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id) <= CURRENT_TIMESTAMP AND ((SELECT valid_to::timestamptz FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id) IS NULL OR (SELECT valid_to::timestamptz FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id) > CURRENT_TIMESTAMP)))::boolean;
+  SELECT (((SELECT valid_from::timestamptz FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id) <= calc_knowledge_fragments_as_of_instant(p_knowledge_fragment_id) AND ((SELECT valid_to::timestamptz FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id) IS NULL OR (SELECT valid_to::timestamptz FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id) > calc_knowledge_fragments_as_of_instant(p_knowledge_fragment_id))))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_fragments_is_relied_upon
@@ -3981,7 +4003,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_fragments_age_days(p_knowledge_fragment_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((CURRENT_TIMESTAMP::date - (SELECT valid_from::timestamptz FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id)::date))::integer;
+  SELECT ((calc_knowledge_fragments_as_of_instant(p_knowledge_fragment_id)::date - (SELECT valid_from::timestamptz FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id)::date))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_fragments_is_low_confidence
@@ -4161,7 +4183,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_fragments_days_since_actual_review(p_knowledge_fragment_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT (CASE WHEN calc_knowledge_fragments_has_review_record(p_knowledge_fragment_id) THEN ((CURRENT_TIMESTAMP::date - (SELECT last_reviewed_at::timestamptz FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id)::date))::text ELSE (0)::text END)::integer;
+  SELECT (CASE WHEN calc_knowledge_fragments_has_review_record(p_knowledge_fragment_id) THEN ((calc_knowledge_fragments_as_of_instant(p_knowledge_fragment_id)::date - (SELECT last_reviewed_at::timestamptz FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id)::date))::text ELSE (0)::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_fragments_is_unreviewed_since_authoring
@@ -4241,7 +4263,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_fragments_days_awaiting_my_approval(p_knowledge_fragment_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT (CASE WHEN calc_knowledge_fragments_is_my_unfinished_approval(p_knowledge_fragment_id) THEN ((CURRENT_TIMESTAMP::date - (SELECT valid_from::timestamptz FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id)::date))::text ELSE (0)::text END)::integer;
+  SELECT (CASE WHEN calc_knowledge_fragments_is_my_unfinished_approval(p_knowledge_fragment_id) THEN ((calc_knowledge_fragments_as_of_instant(p_knowledge_fragment_id)::date - (SELECT valid_from::timestamptz FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id)::date))::text ELSE (0)::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_fragments_is_high_blast_radius_unapproved
@@ -4292,6 +4314,17 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_knowledge_fragments_valid_fragment_version_key(p_knowledge_fragment_id TEXT)
 RETURNS TEXT AS $$
   SELECT (CASE WHEN calc_knowledge_fragments_is_currently_valid(p_knowledge_fragment_id) THEN ((SELECT NULLIF(procedure_version, '') FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_gaps_as_of_instant
+-- Field: KnowledgeGaps.AsOfInstant
+-- Type: lookup | DataType: datetime | Returns: TIMESTAMPTZ
+-- Lookup: AsOfInstant from related EvaluationContexts
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_gaps_as_of_instant(p_knowledge_gap_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT as_of_instant::timestamptz FROM evaluation_contexts WHERE evaluation_context_id = (SELECT evaluation_context FROM knowledge_gaps WHERE knowledge_gap_id = p_knowledge_gap_id));
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_gaps_owner_agent
@@ -4384,7 +4417,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_gaps_days_open(p_knowledge_gap_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT (CASE WHEN calc_knowledge_gaps_is_open(p_knowledge_gap_id) THEN ((CURRENT_TIMESTAMP::date - (SELECT identified_at::timestamptz FROM knowledge_gaps WHERE knowledge_gap_id = p_knowledge_gap_id)::date))::text ELSE (0)::text END)::integer;
+  SELECT (CASE WHEN calc_knowledge_gaps_is_open(p_knowledge_gap_id) THEN ((calc_knowledge_gaps_as_of_instant(p_knowledge_gap_id)::date - (SELECT identified_at::timestamptz FROM knowledge_gaps WHERE knowledge_gap_id = p_knowledge_gap_id)::date))::text ELSE (0)::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_gaps_tolerance_days
@@ -6813,6 +6846,17 @@ RETURNS TEXT AS $$
   SELECT (CONCAT((SELECT NULLIF(disposition, '') FROM user_feedback WHERE user_feedback_id = p_user_feedback_id), ': ', LEFT(((SELECT NULLIF(feedback_text, '') FROM user_feedback WHERE user_feedback_id = p_user_feedback_id))::text, (60)::integer)))::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_stewardship_assignments_as_of_instant
+-- Field: StewardshipAssignments.AsOfInstant
+-- Type: lookup | DataType: datetime | Returns: TIMESTAMPTZ
+-- Lookup: AsOfInstant from related EvaluationContexts
+
+
+CREATE OR REPLACE FUNCTION calc_stewardship_assignments_as_of_instant(p_stewardship_assignment_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT as_of_instant::timestamptz FROM evaluation_contexts WHERE evaluation_context_id = (SELECT evaluation_context FROM stewardship_assignments WHERE stewardship_assignment_id = p_stewardship_assignment_id));
+$$ LANGUAGE sql STABLE;
+
 -- calc_stewardship_assignments_name
 -- Field: StewardshipAssignments.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -6850,7 +6894,18 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_stewardship_assignments_is_current_assignment(p_stewardship_assignment_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((SELECT valid_from::timestamptz FROM stewardship_assignments WHERE stewardship_assignment_id = p_stewardship_assignment_id) <= CURRENT_TIMESTAMP AND ((SELECT valid_to::timestamptz FROM stewardship_assignments WHERE stewardship_assignment_id = p_stewardship_assignment_id) IS NULL OR (SELECT valid_to::timestamptz FROM stewardship_assignments WHERE stewardship_assignment_id = p_stewardship_assignment_id) > CURRENT_TIMESTAMP)))::boolean;
+  SELECT (((SELECT valid_from::timestamptz FROM stewardship_assignments WHERE stewardship_assignment_id = p_stewardship_assignment_id) <= calc_stewardship_assignments_as_of_instant(p_stewardship_assignment_id) AND ((SELECT valid_to::timestamptz FROM stewardship_assignments WHERE stewardship_assignment_id = p_stewardship_assignment_id) IS NULL OR (SELECT valid_to::timestamptz FROM stewardship_assignments WHERE stewardship_assignment_id = p_stewardship_assignment_id) > calc_stewardship_assignments_as_of_instant(p_stewardship_assignment_id))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_change_requests_as_of_instant
+-- Field: ChangeRequests.AsOfInstant
+-- Type: lookup | DataType: datetime | Returns: TIMESTAMPTZ
+-- Lookup: AsOfInstant from related EvaluationContexts
+
+
+CREATE OR REPLACE FUNCTION calc_change_requests_as_of_instant(p_change_request_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT as_of_instant::timestamptz FROM evaluation_contexts WHERE evaluation_context_id = (SELECT evaluation_context FROM change_requests WHERE change_request_id = p_change_request_id));
 $$ LANGUAGE sql STABLE;
 
 -- calc_change_requests_authority_agent
@@ -6933,7 +6988,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_change_requests_days_pending(p_change_request_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT (CASE WHEN calc_change_requests_is_decided(p_change_request_id) THEN (((SELECT decided_at::timestamptz FROM change_requests WHERE change_request_id = p_change_request_id)::date - (SELECT requested_at::timestamptz FROM change_requests WHERE change_request_id = p_change_request_id)::date))::text ELSE ((CURRENT_TIMESTAMP::date - (SELECT requested_at::timestamptz FROM change_requests WHERE change_request_id = p_change_request_id)::date))::text END)::integer;
+  SELECT (CASE WHEN calc_change_requests_is_decided(p_change_request_id) THEN (((SELECT decided_at::timestamptz FROM change_requests WHERE change_request_id = p_change_request_id)::date - (SELECT requested_at::timestamptz FROM change_requests WHERE change_request_id = p_change_request_id)::date))::text ELSE ((calc_change_requests_as_of_instant(p_change_request_id)::date - (SELECT requested_at::timestamptz FROM change_requests WHERE change_request_id = p_change_request_id)::date))::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_change_requests_is_still_pending
@@ -7123,7 +7178,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_change_requests_days_since_approval(p_change_request_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT (CASE WHEN calc_change_requests_is_decided(p_change_request_id) THEN ((CURRENT_TIMESTAMP::date - (SELECT decided_at::timestamptz FROM change_requests WHERE change_request_id = p_change_request_id)::date))::text ELSE (0)::text END)::integer;
+  SELECT (CASE WHEN calc_change_requests_is_decided(p_change_request_id) THEN ((calc_change_requests_as_of_instant(p_change_request_id)::date - (SELECT decided_at::timestamptz FROM change_requests WHERE change_request_id = p_change_request_id)::date))::text ELSE (0)::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_change_requests_is_stalled_implementation
@@ -7225,7 +7280,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_review_events_days_since_reviewed(p_review_event_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((CURRENT_TIMESTAMP::date - (SELECT reviewed_at::timestamptz FROM review_events WHERE review_event_id = p_review_event_id)::date))::integer;
+  SELECT ((calc_review_events_as_of_instant(p_review_event_id)::date - (SELECT reviewed_at::timestamptz FROM review_events WHERE review_event_id = p_review_event_id)::date))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_review_events_exceeds_promised_cadence
@@ -8054,6 +8109,144 @@ RETURNS BOOLEAN AS $$
   SELECT ((SELECT NULLIF(invented_for_question, '') FROM rulebook_fields WHERE rulebook_field_id = p_rulebook_field_id) IS NOT NULL)::boolean;
 $$ LANGUAGE sql STABLE;
 
+-- calc_test_suites_name
+-- Field: TestSuites.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_test_suites_name(p_test_suite_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(label, '') FROM test_suites WHERE test_suite_id = p_test_suite_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_test_suites_test_count
+-- Field: TestSuites.TestCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_test_suites_test_count(p_test_suite_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM test_cases WHERE suite = (SELECT NULLIF(test_suite_id, '') FROM test_suites WHERE test_suite_id = p_test_suite_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_test_suites_pass_count
+-- Field: TestSuites.PassCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_test_suites_pass_count(p_test_suite_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM test_cases WHERE calc_test_cases_passing_suite_key(test_case_id) = (SELECT NULLIF(test_suite_id, '') FROM test_suites WHERE test_suite_id = p_test_suite_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_test_suites_blocking_fail_count
+-- Field: TestSuites.BlockingFailCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_test_suites_blocking_fail_count(p_test_suite_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM test_cases WHERE calc_test_cases_needs_attention_suite_key(test_case_id) = (SELECT NULLIF(test_suite_id, '') FROM test_suites WHERE test_suite_id = p_test_suite_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_test_suites_is_green
+-- Field: TestSuites.IsGreen
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_test_suites_is_green(p_test_suite_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_test_suites_blocking_fail_count(p_test_suite_id))::NUMERIC = 0)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- get_test_suites_label
+-- Helper function: Get Label from TestSuites by TestSuiteId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_test_suites_label(p_test_suite_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT label FROM test_suites WHERE test_suite_id = p_test_suite_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_test_suites_semantic_type_iri
+-- Helper function: Get SemanticTypeIri from TestSuites by TestSuiteId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_test_suites_semantic_type_iri(p_test_suite_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT semantic_type_iri FROM test_suites WHERE test_suite_id = p_test_suite_id);
+$$ LANGUAGE sql STABLE;
+
+-- calc_test_cases_name
+-- Field: TestCases.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_test_cases_name(p_test_case_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT((SELECT NULLIF(test_kind, '') FROM test_cases WHERE test_case_id = p_test_case_id), ': ', (SELECT NULLIF(subject, '') FROM test_cases WHERE test_case_id = p_test_case_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_test_cases_is_blocking
+-- Field: TestCases.IsBlocking
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_test_cases_is_blocking(p_test_case_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((SELECT NULLIF(severity, '') FROM test_cases WHERE test_case_id = p_test_case_id) = 'blocking')::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_test_cases_is_passing
+-- Field: TestCases.IsPassing
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_test_cases_is_passing(p_test_case_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((SELECT NULLIF(last_outcome, '') FROM test_cases WHERE test_case_id = p_test_case_id) = 'PASS')::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_test_cases_is_failing
+-- Field: TestCases.IsFailing
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_test_cases_is_failing(p_test_case_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((SELECT NULLIF(last_outcome, '') FROM test_cases WHERE test_case_id = p_test_case_id) = 'FAIL')::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_test_cases_needs_attention
+-- Field: TestCases.NeedsAttention
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_test_cases_needs_attention(p_test_case_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_test_cases_is_failing(p_test_case_id) AND calc_test_cases_is_blocking(p_test_case_id)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_test_cases_passing_suite_key
+-- Field: TestCases.PassingSuiteKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_test_cases_passing_suite_key(p_test_case_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_test_cases_is_passing(p_test_case_id) THEN ((SELECT NULLIF(suite, '') FROM test_cases WHERE test_case_id = p_test_case_id))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_test_cases_needs_attention_suite_key
+-- Field: TestCases.NeedsAttentionSuiteKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_test_cases_needs_attention_suite_key(p_test_case_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_test_cases_needs_attention(p_test_case_id) THEN ((SELECT NULLIF(suite, '') FROM test_cases WHERE test_case_id = p_test_case_id))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
 -- calc_exception_invocations_expected_handling
 -- Field: ExceptionInvocations.ExpectedHandling
 -- Type: lookup | DataType: string | Returns: TEXT
@@ -8714,6 +8907,17 @@ RETURNS INTEGER AS $$
   SELECT (SELECT retention_days::integer FROM communication_policies WHERE communication_policy_id = calc_message_deliveries_policy_channel(p_message_delivery_id));
 $$ LANGUAGE sql STABLE;
 
+-- calc_message_deliveries_as_of_instant
+-- Field: MessageDeliveries.AsOfInstant
+-- Type: lookup | DataType: datetime | Returns: TIMESTAMPTZ
+-- Lookup: AsOfInstant from related EvaluationContexts
+
+
+CREATE OR REPLACE FUNCTION calc_message_deliveries_as_of_instant(p_message_delivery_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT as_of_instant::timestamptz FROM evaluation_contexts WHERE evaluation_context_id = (SELECT evaluation_context FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id));
+$$ LANGUAGE sql STABLE;
+
 -- calc_message_deliveries_sending_step_execution_step
 -- Field: MessageDeliveries.SendingStepExecutionStep
 -- Type: lookup | DataType: string | Returns: TEXT
@@ -9066,7 +9270,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_message_deliveries_age_days(p_message_delivery_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((CURRENT_TIMESTAMP::date - (SELECT sent_at::timestamptz FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id)::date))::integer;
+  SELECT ((calc_message_deliveries_as_of_instant(p_message_delivery_id)::date - (SELECT sent_at::timestamptz FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id)::date))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_message_deliveries_is_within_retention_window
@@ -9446,7 +9650,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_message_deliveries_outstanding_age_days(p_message_delivery_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT (CASE WHEN calc_message_deliveries_acknowledgement_is_outstanding(p_message_delivery_id) THEN ((CURRENT_TIMESTAMP::date - (SELECT sent_at::timestamptz FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id)::date))::text ELSE (0)::text END)::integer;
+  SELECT (CASE WHEN calc_message_deliveries_acknowledgement_is_outstanding(p_message_delivery_id) THEN ((calc_message_deliveries_as_of_instant(p_message_delivery_id)::date - (SELECT sent_at::timestamptz FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id)::date))::text ELSE (0)::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_message_deliveries_is_unchased_acknowledgement
@@ -9748,6 +9952,17 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_send_intents_alternate_attempt_was_cleared(p_send_intent_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT calc_send_intents_is_cleared_to_send((SELECT alternate_channel_intent FROM send_intents WHERE send_intent_id = p_send_intent_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_send_intents_as_of_instant
+-- Field: SendIntents.AsOfInstant
+-- Type: lookup | DataType: datetime | Returns: TIMESTAMPTZ
+-- Lookup: AsOfInstant from related EvaluationContexts
+
+
+CREATE OR REPLACE FUNCTION calc_send_intents_as_of_instant(p_send_intent_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT as_of_instant::timestamptz FROM evaluation_contexts WHERE evaluation_context_id = (SELECT evaluation_context FROM send_intents WHERE send_intent_id = p_send_intent_id));
 $$ LANGUAGE sql STABLE;
 
 -- calc_send_intents_retry_was_cleared
@@ -10455,7 +10670,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_send_intents_window_has_since_reopened(p_send_intent_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((calc_send_intents_hours_until_window_opens(p_send_intent_id))::NUMERIC > 0 AND (EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP::timestamp - (SELECT evaluated_at::timestamptz FROM send_intents WHERE send_intent_id = p_send_intent_id)::timestamp)) / 3600) > calc_send_intents_hours_until_window_opens(p_send_intent_id)));
+  SELECT (((calc_send_intents_hours_until_window_opens(p_send_intent_id))::NUMERIC > 0 AND (EXTRACT(EPOCH FROM (calc_send_intents_as_of_instant(p_send_intent_id)::timestamp - (SELECT evaluated_at::timestamptz FROM send_intents WHERE send_intent_id = p_send_intent_id)::timestamp)) / 3600) > calc_send_intents_hours_until_window_opens(p_send_intent_id)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_send_intents_has_retry_attempt
@@ -10485,7 +10700,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_send_intents_deferral_age_hours(p_send_intent_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP::timestamp - (SELECT evaluated_at::timestamptz FROM send_intents WHERE send_intent_id = p_send_intent_id)::timestamp)) / 3600))::integer;
+  SELECT ((EXTRACT(EPOCH FROM (calc_send_intents_as_of_instant(p_send_intent_id)::timestamp - (SELECT evaluated_at::timestamptz FROM send_intents WHERE send_intent_id = p_send_intent_id)::timestamp)) / 3600))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_send_intents_is_stale_deferral
