@@ -1,5 +1,7 @@
 name: Validate consolidated TSP domain
 
+# Temporarily manual-only while the long-form loop campaign is being integrated.
+# This prevents one validation run and notification per semantic-loop commit.
 on:
   pull_request:
     paths:
