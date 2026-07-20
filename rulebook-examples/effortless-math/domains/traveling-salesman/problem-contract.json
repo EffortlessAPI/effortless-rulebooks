@@ -2056,12 +2056,12 @@
     {
       "LoopOrder": 779,
       "LoopId": "tsp-loop-779",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "fri26 lacks a degree-only LP relaxation profile.",
       "ClosureCriterion": "Solve the degree equations with edge bounds and record objective, integrality, component structure, and numerical solver trust.",
-      "AfterState": null,
-      "Result": "Planned; no result consumed.",
-      "CompletionDisposition": null
+      "AfterState": "Degree-LP objective=880.0; fractional edges=6.",
+      "Result": "Degree-LP objective=880.0; fractional edges=6.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 780,
