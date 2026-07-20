@@ -26,7 +26,16 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p diagnostics/tsp-actions
-          for run in 29776017995 29775288873 29773061405 29721229268 29719492275; do
+          for run in \
+            29776779282 \
+            29776738467 \
+            29776730694 \
+            29776632357 \
+            29776017995 \
+            29775288873 \
+            29773061405 \
+            29721229268 \
+            29719492275; do
             gh run view "$run" --repo "$GITHUB_REPOSITORY" \
               --json databaseId,name,event,status,conclusion,headBranch,headSha,createdAt,updatedAt,jobs \
               > "diagnostics/tsp-actions/run-$run.json"
