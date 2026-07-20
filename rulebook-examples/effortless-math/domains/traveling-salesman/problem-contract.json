@@ -2376,12 +2376,12 @@
     {
       "LoopOrder": 811,
       "LoopId": "tsp-loop-811",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "Per-instance evidence exists but has not been aggregated across the preregistered ladder.",
       "ClosureCriterion": "Aggregate closure, integrality, state, cut, runtime, and failure counts without dropping weak cases.",
-      "AfterState": null,
-      "Result": "Planned; no result consumed.",
-      "CompletionDisposition": null
+      "AfterState": "Aggregated 10 instances: value closed=9, path proved=6, one-tree closed=7, SEC integral=7, final integral=8.",
+      "Result": "Aggregated 10 instances: value closed=9, path proved=6, one-tree closed=7, SEC integral=7, final integral=8.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 812,
