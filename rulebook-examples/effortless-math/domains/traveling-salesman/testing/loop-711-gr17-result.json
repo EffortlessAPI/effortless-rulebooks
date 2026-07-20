@@ -1,0 +1,18 @@
+{
+  "loop": 711,
+  "instance": "TSPLIB gr17",
+  "dimension": 17,
+  "published_optimum": 2085,
+  "constructive_witness_value": 2085,
+  "constructive_method": "all-start nearest-neighbor followed by deterministic 2-opt",
+  "proof_method": "best-first exact search over (last_city, unvisited_set) with MST completion envelope and prefix dominance",
+  "quotient_states_reached": 21353,
+  "held_karp_full_state_count": 524288,
+  "percentage_of_held_karp_states": 4.072761535644531,
+  "cheaper_tour_found": false,
+  "value_status": "CLOSED",
+  "witness_status": "CLOSED",
+  "new_active_terms": 0,
+  "branch_accounting_note": "The search branches over next-city choices; zero branch decisions is not claimed.",
+  "claim_boundary": "Exact finite-instance result; not a claim of superiority over branch-and-cut or Concorde."
+}
