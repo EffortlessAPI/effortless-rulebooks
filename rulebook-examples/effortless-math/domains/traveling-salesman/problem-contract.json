@@ -1746,12 +1746,12 @@
     {
       "LoopOrder": 748,
       "LoopId": "tsp-loop-748",
-      "Status": "PLANNED",
+      "Status": "CLOSED",
       "BeforeState": "gr21 is named in the preregistered corpus but its source payload and format have not been ingested.",
       "ClosureCriterion": "Verify name, dimension, symmetric weights, source URL, and SHA-256 payload hash.",
-      "AfterState": null,
-      "Result": "Planned; no result consumed.",
-      "CompletionDisposition": null
+      "AfterState": "gr21 source ingested with SHA-256 3ff0ab452689b2e9ffb7aa206a7dcee4e6053dbb915afa99e66005f84e8b54b4 and dimension 21.",
+      "Result": "gr21 source ingested with SHA-256 3ff0ab452689b2e9ffb7aa206a7dcee4e6053dbb915afa99e66005f84e8b54b4 and dimension 21.",
+      "CompletionDisposition": "CLOSED"
     },
     {
       "LoopOrder": 749,
