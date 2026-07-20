@@ -878,6 +878,170 @@
       {
         "artifacts": [],
         "conclusion": "failure",
+        "created_at": "2026-07-20T20:35:48Z",
+        "event": "push",
+        "head_branch": "agent/tsp_consolidation",
+        "head_sha": "a923c0d85865cc7b6abe6ad8b3c39e258760e6b7",
+        "html_url": "https://github.com/EffortlessAPI/effortless-rulebooks/actions/runs/29776779282",
+        "id": 29776779282,
+        "jobs": [],
+        "name": ".github/workflows/tsp-align-historical-handoff.yml",
+        "path": ".github/workflows/tsp-align-historical-handoff.yml",
+        "run_attempt": 1,
+        "run_number": 3,
+        "status": "completed",
+        "updated_at": "2026-07-20T20:35:48Z",
+        "workflow_id": 316975377
+      },
+      {
+        "artifacts": [],
+        "conclusion": "failure",
+        "created_at": "2026-07-20T20:35:13Z",
+        "event": "push",
+        "head_branch": "agent/tsp_consolidation",
+        "head_sha": "b17d826623d5ec6a4a1e14837554dd0dcddc0bf8",
+        "html_url": "https://github.com/EffortlessAPI/effortless-rulebooks/actions/runs/29776738467",
+        "id": 29776738467,
+        "jobs": [],
+        "name": ".github/workflows/tsp-align-historical-handoff.yml",
+        "path": ".github/workflows/tsp-align-historical-handoff.yml",
+        "run_attempt": 1,
+        "run_number": 2,
+        "status": "completed",
+        "updated_at": "2026-07-20T20:35:13Z",
+        "workflow_id": 316975377
+      },
+      {
+        "artifacts": [],
+        "conclusion": "failure",
+        "created_at": "2026-07-20T20:35:07Z",
+        "event": "push",
+        "head_branch": "agent/tsp_consolidation",
+        "head_sha": "f6e3fa6170f512ff141f9cd5c86cc6c75dc06a46",
+        "html_url": "https://github.com/EffortlessAPI/effortless-rulebooks/actions/runs/29776730694",
+        "id": 29776730694,
+        "jobs": [],
+        "name": ".github/workflows/tsp-align-historical-handoff.yml",
+        "path": ".github/workflows/tsp-align-historical-handoff.yml",
+        "run_attempt": 1,
+        "run_number": 1,
+        "status": "completed",
+        "updated_at": "2026-07-20T20:35:07Z",
+        "workflow_id": 316975377
+      },
+      {
+        "artifacts": [],
+        "conclusion": "failure",
+        "created_at": "2026-07-20T20:33:45Z",
+        "event": "push",
+        "head_branch": "agent/tsp_consolidation",
+        "head_sha": "1ff98672ad3dd6d85da04a35c53a6341e56bcb56",
+        "html_url": "https://github.com/EffortlessAPI/effortless-rulebooks/actions/runs/29776632357",
+        "id": 29776632357,
+        "jobs": [
+          {
+            "completed_at": "2026-07-20T20:34:13Z",
+            "conclusion": "failure",
+            "html_url": "https://github.com/EffortlessAPI/effortless-rulebooks/actions/runs/29776632357/job/88467466712",
+            "id": 88467466712,
+            "name": "repair",
+            "started_at": "2026-07-20T20:33:48Z",
+            "status": "completed",
+            "steps": [
+              {
+                "completed_at": "2026-07-20T20:33:49Z",
+                "conclusion": "success",
+                "name": "Set up job",
+                "number": 1,
+                "started_at": "2026-07-20T20:33:48Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:33:59Z",
+                "conclusion": "success",
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "started_at": "2026-07-20T20:33:49Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:33:59Z",
+                "conclusion": "success",
+                "name": "Run actions/setup-python@v5",
+                "number": 3,
+                "started_at": "2026-07-20T20:33:59Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:34:11Z",
+                "conclusion": "success",
+                "name": "Install pinned validator dependencies",
+                "number": 4,
+                "started_at": "2026-07-20T20:33:59Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:34:11Z",
+                "conclusion": "success",
+                "name": "Make loop-647-710 validators cumulative-compatible",
+                "number": 5,
+                "started_at": "2026-07-20T20:34:11Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:34:11Z",
+                "conclusion": "failure",
+                "name": "Replay repaired historical validators",
+                "number": 6,
+                "started_at": "2026-07-20T20:34:11Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:34:11Z",
+                "conclusion": "skipped",
+                "name": "Commit cumulative-compatible validators",
+                "number": 7,
+                "started_at": "2026-07-20T20:34:11Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:34:11Z",
+                "conclusion": "skipped",
+                "name": "Post Run actions/setup-python@v5",
+                "number": 13,
+                "started_at": "2026-07-20T20:34:11Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:34:11Z",
+                "conclusion": "success",
+                "name": "Post Run actions/checkout@v4",
+                "number": 14,
+                "started_at": "2026-07-20T20:34:11Z",
+                "status": "completed"
+              },
+              {
+                "completed_at": "2026-07-20T20:34:11Z",
+                "conclusion": "success",
+                "name": "Complete job",
+                "number": 15,
+                "started_at": "2026-07-20T20:34:11Z",
+                "status": "completed"
+              }
+            ]
+          }
+        ],
+        "name": "Repair historical TSP validators for cumulative replay",
+        "path": ".github/workflows/tsp-repair-historical-validators.yml",
+        "run_attempt": 1,
+        "run_number": 2,
+        "status": "completed",
+        "updated_at": "2026-07-20T20:34:13Z",
+        "workflow_id": 316969978
+      },
+      {
+        "artifacts": [],
+        "conclusion": "failure",
         "created_at": "2026-07-20T20:24:57Z",
         "event": "push",
         "head_branch": "agent/tsp_consolidation",
