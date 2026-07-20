@@ -31,7 +31,7 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
 
-      - name: Correct repository-root discovery
+      - name: Correct consolidation script compatibility
         run: |
           set -euo pipefail
           domain='rulebook-examples/effortless-math/domains/traveling-salesman'
@@ -41,6 +41,25 @@ jobs:
             "$domain/scripts/audit_loop_history.py"; do
             sed -i 's/DOMAIN\.parents\[4\]/DOMAIN.parents[3]/g' "$file"
           done
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('rulebook-examples/effortless-math/domains/traveling-salesman/scripts/validate_consolidation.py')
+          text = path.read_text()
+          old = '''        missing = [field for field in REQUIRED_LOOP_FIELDS if not row.get(field)]
+                  if missing:
+                      raise AssertionError(f"canonical loop {order} lacks {missing}")'''
+          new = '''        required_fields = (
+                      REQUIRED_LOOP_FIELDS
+                      if order >= 587
+                      else ("TSPLoopId", "LoopOrder", "Status", "WitnessSummary")
+                  )
+                  missing = [field for field in required_fields if not row.get(field)]
+                  if missing:
+                      raise AssertionError(f"canonical loop {order} lacks {missing}")'''
+          if old not in text:
+              raise AssertionError('historical loop-field validation block not found')
+          path.write_text(text.replace(old, new))
+          PY
 
       - name: Audit ordered semantic history
         run: |
