@@ -99,6 +99,24 @@ def parse_countifs_formula(formula: str) -> tuple:
     return (None, None, None)
 
 
+def parse_countifs_literal_formula(formula: str) -> tuple:
+    """Parse =COUNTIFS(Table!{{Field}}, TRUE()) / FALSE().
+
+    Distinct from parse_countifs_formula, whose second argument is another
+    table's field rather than a literal. Returns (table, field, bool).
+    """
+    pattern = r"=COUNTIFS\\((\\w+)!\\{\\{(\\w+)\\}\\},\\s*(TRUE|FALSE)\\(\\)\\)"
+    match = re.match(pattern, formula)
+    if match:
+        return (match.group(1), match.group(2), match.group(3) == 'TRUE')
+    return (None, None, None)
+
+
+def count_closure_rows(closure_rows: list, column: str, expected) -> int:
+    """Count materialized closure rows whose column equals expected."""
+    return sum(1 for row in closure_rows if row.get(column) == expected)
+
+
 def parse_sumifs_formula(formula: str) -> tuple:
     """Parse =SUMIFS(RelatedTable!{{SumField}}, RelatedTable!{{CriteriaField}}, CurrentTable!{{MatchField}})."""
     pattern = r"=SUMIFS\\((\\w+)!\\{\\{(\\w+)\\}\\},\\s*(\\w+)!\\{\\{(\\w+)\\}\\},\\s*\\w+!\\{\\{(\\w+)\\}\\}\\)"
@@ -191,7 +209,116 @@ def compute_lookups(records: list, entity_name: str, rulebook: dict, project_roo
     return records
 
 
-def compute_aggregations(records: list, entity_name: str, rulebook: dict, project_root: Path) -> list:
+# =============================================================================
+# TRANSITIVE CLOSURE ENGINE (PYTHON SIMULATOR — DO NOT CALL FROM OTHER SUBSTRATES)
+# =============================================================================
+
+
+def compute_closure_relation(rows: list, to_field: str,
+                             pk_field: str = None, from_field: str = None) -> list:
+    """Cycle-safe transitive closure, matching Postgres vw_<entity>_closure.
+
+    Two edge shapes: pass from_field for an edge/junction table, or pk_field
+    for a self-referential FK on the entity's own rows.
+
+    Returns dicts of from_id, to_id, hop_distance (shortest derivation) and
+    is_inferred (TRUE iff no directly-asserted hop-1 edge states the pair).
+    A NULL or empty-string endpoint is not an edge — the transpiler stores
+    absent relationships as '' rather than NULL, so both must be excluded.
+    """
+    source_field = from_field or pk_field
+    if source_field is None:
+        raise ValueError("compute_closure_relation requires from_field or pk_field")
+
+    edges = []
+    for row in rows:
+        src = row.get(source_field)
+        dst = row.get(to_field)
+        if src is None or src == '' or dst is None or dst == '':
+            continue
+        edges.append((src, dst))
+
+    if not edges:
+        return []
+
+    asserted = set(edges)
+    adjacency = {}
+    for src, dst in edges:
+        adjacency.setdefault(src, []).append(dst)
+
+    shortest = {}
+    for origin in {src for src, _ in edges}:
+        # BFS keeps the first arrival shortest; the path set makes it cycle-safe.
+        frontier = [(origin, (origin,))]
+        hop = 0
+        while frontier:
+            hop += 1
+            next_frontier = []
+            for node, path in frontier:
+                for neighbor in adjacency.get(node, []):
+                    pair = (origin, neighbor)
+                    if pair not in shortest:
+                        shortest[pair] = hop
+                    if neighbor not in path:
+                        next_frontier.append((neighbor, path + (neighbor,)))
+            frontier = next_frontier
+
+    return [
+        {
+            'from_id': from_id,
+            'to_id': to_id,
+            'hop_distance': hop_distance,
+            'is_inferred': (from_id, to_id) not in asserted,
+        }
+        for (from_id, to_id), hop_distance in sorted(shortest.items())
+    ]
+
+
+def compute_closures(rulebook: dict, project_root: Path) -> dict:
+    """Materialize every closure field in the rulebook as a pseudo-table.
+
+    Aggregations address these by view name, e.g.
+    =COUNTIFS(vw_step_precedence_closure!{{IsInferred}}, TRUE()) — so the
+    result is keyed by vw_<entity>_closure and joins the related-data lookup
+    path alongside real tables.
+    """
+    from orchestration.shared import (
+        discover_entities,
+        discover_primary_key,
+        get_closure_fields,
+        closure_view_name,
+    )
+
+    materialized = {}
+
+    for entity_name in discover_entities(rulebook):
+        schema = get_entity_schema(rulebook, entity_name)
+        for field in get_closure_fields(schema):
+            edge_table = field.get('EdgeTable')
+            to_column = field.get('ToColumn')
+            if not to_column:
+                continue
+
+            to_field = to_snake_case(to_column)
+
+            if edge_table and field.get('FromColumn'):
+                source_entity = edge_table
+                source_rows = load_related_data(project_root, edge_table)
+                kwargs = {'from_field': to_snake_case(field['FromColumn'])}
+            else:
+                source_entity = entity_name
+                source_rows = load_related_data(project_root, entity_name)
+                kwargs = {'pk_field': to_snake_case(
+                    discover_primary_key(rulebook, entity_name))}
+
+            materialized[closure_view_name(source_entity)] = compute_closure_relation(
+                source_rows, to_field=to_field, **kwargs)
+
+    return materialized
+
+
+def compute_aggregations(records: list, entity_name: str, rulebook: dict, project_root: Path,
+                         closures: dict = None) -> list:
     """COUNTIFS / SUMIFS aggregation interpreter. PYTHON SIMULATOR ONLY."""
     schema = get_entity_schema(rulebook, entity_name)
     agg_fields = get_aggregation_fields(schema)
@@ -200,13 +327,41 @@ def compute_aggregations(records: list, entity_name: str, rulebook: dict, projec
         return records
 
     related_data_cache = {}
+    closures = closures or {}
 
     for field in agg_fields:
         field_name = field.get("name")
         formula = field.get("formula", "")
         snake_field_name = to_snake_case(field_name)
 
+        # COUNTIFS with a literal criteria counts rows of the whole target
+        # table, so the count is the same for every record. The target is
+        # either a materialized closure or an ordinary table.
+        literal_table, literal_column, literal = parse_countifs_literal_formula(formula)
+        if literal_table:
+            if literal_table in closures:
+                target_rows = closures[literal_table]
+            else:
+                if literal_table not in related_data_cache:
+                    related_data_cache[literal_table] = load_related_data(
+                        project_root, literal_table)
+                target_rows = related_data_cache[literal_table]
+            count = count_closure_rows(
+                target_rows, to_snake_case(literal_column), literal)
+            for record in records:
+                record[snake_field_name] = count
+            continue
+
         related_table, lookup_field, match_field = parse_countifs_formula(formula)
+
+        if related_table in closures:
+            closure_rows = closures[related_table]
+            snake_lookup_field = to_snake_case(lookup_field)
+            snake_match_field = to_snake_case(match_field)
+            for record in records:
+                record[snake_field_name] = count_closure_rows(
+                    closure_rows, snake_lookup_field, record.get(snake_match_field))
+            continue
 
         if related_table:
             if related_table not in related_data_cache:
@@ -774,6 +929,10 @@ def generate_erb_calc(rulebook: Dict) -> str:
     lines.append('from pathlib import Path')
     lines.append('from typing import Optional, Any')
     lines.append('')
+    # Compiled date formulas call the shared helpers through this alias so the
+    # calendar-month semantics have a single implementation.
+    lines.append('from orchestration import formula_parser as _erb')
+    lines.append('')
     lines.append('from orchestration.shared import (')
     lines.append('    to_snake_case,')
     lines.append('    get_entity_schema,')
@@ -802,9 +961,18 @@ def generate_erb_calc(rulebook: Dict) -> str:
         entity_data = rulebook.get(entity_name, {})
         entity_description = entity_data.get('Description', '') if isinstance(entity_data, dict) else ''
 
-        # Get raw fields for DAG building (these are the "level 0" inputs)
+        # Level-0 inputs for the DAG. Beyond raw columns this includes every
+        # field the runtime resolves before scalar formulas run: relationships
+        # come straight off the record, and compute_lookups /
+        # compute_aggregations / compute_closures have already populated their
+        # fields by the time compute_all_calculated_fields is called. Seeding
+        # only raw fields deadlocks any calculated field built on a lookup.
         raw_fields = get_raw_fields(schema)
         raw_field_names = {f['name'] for f in raw_fields}
+        raw_field_names |= {
+            f['name'] for f in schema
+            if f.get('type') in ('lookup', 'aggregation', 'closure', 'relationship')
+        }
 
         # Identify string-type calculated fields for post-processing
         # (empty strings will be converted to None)

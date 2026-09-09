@@ -521,7 +521,16 @@ def compile_to_python(expr: ExprNode) -> str:
     if isinstance(expr, BinaryOp):
         left = compile_to_python(expr.left)
         right = compile_to_python(expr.right)
-        op_map = {'=': '==', '<>': '!=', '<': '<', '<=': '<=', '>': '>', '>=': '>='}
+        if expr.op in ('+', '-', '*', '/'):
+            # None coerces to 0, matching the interpreter (_eval_binop), so a
+            # blank numeric column contributes nothing instead of raising.
+            return f'(({left}) or 0) {expr.op} (({right}) or 0)'
+        if expr.op in ('<', '<=', '>', '>='):
+            # Ordering against None is False rather than a TypeError, matching
+            # the interpreter. Equality is left alone: None = None is True.
+            return (f'(False if ({left}) is None or ({right}) is None '
+                    f'else ({left}) {expr.op} ({right}))')
+        op_map = {'=': '==', '<>': '!='}
         return f'({left} {op_map[expr.op]} {right})'
 
     if isinstance(expr, FuncCall):
@@ -587,6 +596,30 @@ def compile_to_python(expr: ExprNode) -> str:
         if expr.name == 'BLANK':
             # BLANK() -> None (empty/null value)
             return 'None'
+
+        if expr.name == 'ISBLANK':
+            # ISBLANK(x) -> x is None or x == ""
+            # Matches the SQL the Postgres transpiler emits (IS NULL OR
+            # ::text = ''): absent relationships are stored as '' rather
+            # than NULL, so both spellings of "absent" must count as blank.
+            if len(expr.args) != 1:
+                raise ValueError("ISBLANK requires 1 argument")
+            arg = compile_to_python(expr.args[0])
+            return f'({arg} is None or {arg} == "")'
+
+        if expr.name in ('NOW', 'TODAY'):
+            return '_erb.erb_now()'
+
+        if expr.name in ('DATETIME_DIFF', 'DATEDIFF'):
+            # Delegates to the interpreter's helper so the calendar-month
+            # semantics that match the Postgres oracle have exactly one
+            # implementation to drift from.
+            if len(expr.args) < 2:
+                raise ValueError(f"{expr.name} requires at least 2 arguments")
+            end = compile_to_python(expr.args[0])
+            start = compile_to_python(expr.args[1])
+            unit = compile_to_python(expr.args[2]) if len(expr.args) > 2 else '"day"'
+            return f'_erb.erb_datetime_diff({end}, {start}, {unit})'
 
         raise ValueError(f"Unknown function: {expr.name}")
 
@@ -780,6 +813,13 @@ def compile_to_go(expr: ExprNode, struct_name: str = 'lc', field_types: dict = N
         raise ValueError(f"Unknown unary op: {expr.op}")
 
     if isinstance(expr, BinaryOp):
+        if expr.op in ('+', '-', '*', '/'):
+            # Arithmetic operands are numeric, so the nil-safe wrappers the
+            # comparison paths below apply (boolVal/stringVal) are wrong here.
+            left = _compile_to_go_int(expr.left, struct_name, field_types)
+            right = _compile_to_go_int(expr.right, struct_name, field_types)
+            return f'({left} {expr.op} {right})'
+
         # Handle comparisons involving field refs (pointer fields in Go)
         if isinstance(expr.left, FieldRef) and isinstance(expr.right, FieldRef):
             # Both sides are field refs - wrap both in boolVal for nil-safe comparison
@@ -926,6 +966,19 @@ def compile_to_go(expr: ExprNode, struct_name: str = 'lc', field_types: dict = N
             # BLANK() -> "" (empty string in Go context)
             return '""'
 
+        if expr.name == 'ISBLANK':
+            # ISBLANK(x) -> the value is absent or empty.
+            # Nullable scalars are pointers here, so a blank check must cover
+            # both the nil pointer and the empty string it points at — the
+            # same pair the Postgres transpiler emits as IS NULL OR = ''.
+            if len(expr.args) != 1:
+                raise ValueError("ISBLANK requires 1 argument")
+            if isinstance(expr.args[0], FieldRef):
+                ref = compile_to_go(expr.args[0], struct_name, field_types)
+                return f'({ref} == nil || stringVal({ref}) == "")'
+            arg = compile_to_go(expr.args[0], struct_name, field_types)
+            return f'({arg} == "")'
+
         raise ValueError(f"Unknown function: {expr.name}")
 
     if isinstance(expr, Concat):
@@ -959,6 +1012,73 @@ def compile_to_go(expr: ExprNode, struct_name: str = 'lc', field_types: dict = N
 # =============================================================================
 # Direct formula evaluation for generating answer keys from the rulebook.
 # This evaluator is the source of truth - all substrates must match its output.
+
+def erb_now():
+    """NOW()/TODAY() anchored so answer keys are reproducible.
+
+    FORMULA_NOW (ISO-8601) pins the clock; without it this is realtime.
+    """
+    import datetime, os
+    override = os.environ.get('FORMULA_NOW')
+    if override:
+        return datetime.datetime.fromisoformat(override)
+    return datetime.datetime.utcnow()
+
+
+def erb_datetime_diff(end, start, unit='day'):
+    """Whole elapsed `unit`s between two datetimes, positive when end > start.
+
+    Month and year counting follows Postgres AGE() semantics — whole elapsed
+    calendar months, not days//30 — so a substrate calling this agrees with
+    the Postgres oracle on month boundaries instead of drifting.
+
+    Shared by the interpreter and by compiled Python, so there is exactly one
+    implementation of the semantics.
+    """
+    import datetime
+    unit = str(unit or 'day').lower().rstrip('s')
+    if end is None or start is None:
+        return None
+
+    def _coerce(d):
+        if isinstance(d, (datetime.datetime, datetime.date)):
+            return d if isinstance(d, datetime.datetime) else \
+                datetime.datetime.combine(d, datetime.time())
+        if isinstance(d, str):
+            try:
+                return datetime.datetime.fromisoformat(d.replace('Z', '+00:00'))
+            except ValueError:
+                return datetime.datetime.strptime(d, '%Y-%m-%d')
+        raise TypeError(f"DATETIME_DIFF: cannot coerce {d!r} to datetime")
+
+    end_dt = _coerce(end)
+    start_dt = _coerce(start)
+    # Strip tzinfo to allow naive/aware mixing without raising.
+    if end_dt.tzinfo is not None:
+        end_dt = end_dt.replace(tzinfo=None)
+    if start_dt.tzinfo is not None:
+        start_dt = start_dt.replace(tzinfo=None)
+
+    delta = end_dt - start_dt
+    if unit == 'day':
+        return delta.days
+    if unit == 'hour':
+        return int(delta.total_seconds() // 3600)
+    if unit == 'minute':
+        return int(delta.total_seconds() // 60)
+    if unit == 'second':
+        return int(delta.total_seconds())
+    if unit == 'week':
+        return delta.days // 7
+    if unit in ('month', 'year'):
+        months = (end_dt.year - start_dt.year) * 12 + (end_dt.month - start_dt.month)
+        # AGE() does not count the final partial month.
+        if (end_dt.day, end_dt.hour, end_dt.minute, end_dt.second) \
+                < (start_dt.day, start_dt.hour, start_dt.minute, start_dt.second):
+            months -= 1
+        return months if unit == 'month' else months // 12
+    raise ValueError(f"DATETIME_DIFF: unsupported unit {unit!r}")
+
 
 def evaluate(formula: str, context: dict) -> any:
     """
@@ -1252,70 +1372,17 @@ def _eval_func(node: FuncCall, ctx: dict) -> any:
         return val is None or val == ''
 
     if name == 'NOW' or name == 'TODAY':
-        # Date/time anchored to a fixed point so answer-keys are reproducible.
-        # The orchestrator can override via FORMULA_NOW (ISO-8601). Any caller
-        # that needs realtime can pass FORMULA_NOW per-run.
-        import datetime, os
-        override = os.environ.get('FORMULA_NOW')
-        if override:
-            return datetime.datetime.fromisoformat(override)
-        return datetime.datetime.utcnow()
+        return erb_now()
 
     if name in ('DATETIME_DIFF', 'DATEDIFF'):
-        # DATETIME_DIFF(end, start, unit) → integer difference in unit
+        # DATETIME_DIFF(end, start, unit) -> integer difference in unit.
         # Excel/Airtable convention: positive when end > start.
         if len(args) < 2:
             raise ValueError(f"{name} requires at least 2 arguments")
         end = _eval_expr(args[0], ctx)
         start = _eval_expr(args[1], ctx)
         unit = (_eval_expr(args[2], ctx) if len(args) > 2 else 'day') or 'day'
-        unit = str(unit).lower().rstrip('s')
-        if end is None or start is None:
-            return None
-        import datetime
-        def _coerce(d):
-            if isinstance(d, (datetime.datetime, datetime.date)):
-                return d if isinstance(d, datetime.datetime) else datetime.datetime.combine(d, datetime.time())
-            if isinstance(d, str):
-                # Accept ISO date or datetime
-                try:
-                    return datetime.datetime.fromisoformat(d.replace('Z', '+00:00'))
-                except ValueError:
-                    return datetime.datetime.strptime(d, '%Y-%m-%d')
-            raise TypeError(f"{name}: cannot coerce {d!r} to datetime")
-        end_dt = _coerce(end)
-        start_dt = _coerce(start)
-        # Strip tzinfo to allow naive/aware mixing without raising.
-        if end_dt.tzinfo is not None:
-            end_dt = end_dt.replace(tzinfo=None)
-        if start_dt.tzinfo is not None:
-            start_dt = start_dt.replace(tzinfo=None)
-        delta = end_dt - start_dt
-        if unit == 'day':
-            return delta.days
-        if unit == 'hour':
-            return int(delta.total_seconds() // 3600)
-        if unit == 'minute':
-            return int(delta.total_seconds() // 60)
-        if unit == 'second':
-            return int(delta.total_seconds())
-        if unit == 'week':
-            return delta.days // 7
-        if unit in ('month', 'year'):
-            # Calendar-month/-year counting, matching the SQL the
-            # rulebook-to-postgres transpiler emits:
-            #   EXTRACT(YEAR FROM AGE(end,start))*12 + EXTRACT(MONTH FROM AGE(...))
-            # i.e. whole elapsed calendar months (Postgres AGE semantics), NOT
-            # days//30. Implemented here so the Python cross-check AGREES with the
-            # Postgres oracle instead of drifting from it on month boundaries.
-            months = (end_dt.year - start_dt.year) * 12 + (end_dt.month - start_dt.month)
-            # AGE() does not count the final partial month: if the day-of-month
-            # (and intra-day time) hasn't been reached yet, back off one month.
-            if (end_dt.day, end_dt.hour, end_dt.minute, end_dt.second) \
-                    < (start_dt.day, start_dt.hour, start_dt.minute, start_dt.second):
-                months -= 1
-            return months if unit == 'month' else months // 12
-        raise ValueError(f"{name}: unsupported unit {unit!r}")
+        return erb_datetime_diff(end, start, unit)
 
     raise ValueError(f"Unknown function: {name}")
 

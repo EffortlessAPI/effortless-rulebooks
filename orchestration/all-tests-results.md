@@ -3,7 +3,7 @@
 ## Configuration
 
 - **Rulebook:** `/Users/eejai42/development/effortless-rulebooks/rulebook-examples/talismans-special-solutions/effortless-rulebook/talismans-special-solutions-rulebook.json`
-- **Substrates Tested:** 2
+- **Substrates Tested:** 4
 - **Computed Columns Tested:** 75
 
 ## Summary by Substrate
@@ -11,18 +11,20 @@
 | Substrate | Passed | Failed | Total | Score | Duration | Status |
 |-----------|--------|--------|-------|-------|----------|--------|
 | effortless-postgres | 691 | 0 | 691 | 100.0% | 5s | PASS |
-| owl | 691 | 0 | 691 | 100.0% | 16s | PASS |
+| owl | 691 | 0 | 691 | 100.0% | 17s | PASS |
+| python | 563 | 128 | 691 | 81.5% | < 1s | FAIL |
+| golang | 72 | 619 | 691 | 10.4% | < 1s | FAIL |
 
 ## Overall Statistics
 
 | Metric | Value |
 |--------|-------|
-| Total Substrates | 2 |
-| Total Fields Tested | 1382 |
-| Total Passed | 1382 |
-| Total Failed | 0 |
-| Overall Score | 100.0% |
-| Total Duration | 21s |
+| Total Substrates | 4 |
+| Total Fields Tested | 2764 |
+| Total Passed | 2017 |
+| Total Failed | 747 |
+| Overall Score | 73.0% |
+| Total Duration | 23s |
 
 ---
 

@@ -6,13 +6,15 @@ import { Async, Panel, Pill, DataTable, Stat } from "../components.jsx";
 
 // Cross-substrate conformance harness results as first-class rows — the promoted
 // destination for LegacyRunnerCapabilities row cap-conformance-harness. The harness
-// itself (orchestration/test-orchestrator.py) still
-// does the work; this page only reads ConformanceRuns/ConformanceResults through
-// the generated views and can trigger scripts/run-conformance.py for a new run.
+// itself (orchestration/test-orchestrator.py) still does the work; this page reads
+// ConformanceRuns/ConformanceResults through the generated views, can trigger
+// scripts/run-conformance.py for a new run with a live-streamed log, and embeds
+// that run's generated orchestration-report.html in an iframe once it finishes.
 export function Conformance() {
   const [slug, setSlug] = useState("");
   const [version, setVersion] = useState(0);
   const [running, setRunning] = useState(null); // { error? }
+  const [log, setLog] = useState([]);
 
   const state = useTables(["RulebookDomains", "ConformanceRuns", "ConformanceResults"], async () => {
     const [domains, runs, results] = await Promise.all([
@@ -29,10 +31,11 @@ export function Conformance() {
 
   async function trigger(targetSlug) {
     setRunning({ slug: targetSlug });
+    setLog([]);
     try {
-      await runConformance(targetSlug);
+      await runConformance(targetSlug, (line) => setLog((prev) => [...prev, line]));
       setRunning(null);
-      setVersion((v) => v + 1); // re-read every derived score from the views
+      setVersion((v) => v + 1); // re-read every derived score from the views, and refresh the report iframe
     } catch (error) {
       setRunning({ slug: targetSlug, error: error.message });
     }
@@ -57,8 +60,8 @@ export function Conformance() {
                 The cross-substrate conformance harness runs each project's execution substrates against answer keys
                 generated straight from its rulebook, then records one ConformanceRuns row per invocation and one
                 ConformanceResults row per substrate. Scores, pass counts and status are rulebook formulas read from
-                the views — nothing here is recomputed client-side. The runner keeps the harness itself and its
-                markdown report as the legacy view.
+                the views — nothing here is recomputed client-side. The generated orchestration report is embedded
+                below once a run finishes; the harness itself still owns the actual grading.
               </p>
               <nav className="subnav">
                 <Link to="/consistency">Consistency</Link>
@@ -92,11 +95,29 @@ export function Conformance() {
               <p className="muted">
                 Runs <code>scripts/run-conformance.py {activeSlug}</code> against{" "}
                 <code>{activeDomain?.relative_path}</code>: invokes the existing harness, reads its{" "}
-                <code>testing/_substrate_results.json</code>, records the rows below, then runs{" "}
-                <code>effortless build</code> so the views pick them up. This can take a while — the harness runs
-                every registered substrate.
+                <code>testing/_substrate_results.json</code>, records the rows below, builds the aggregate{" "}
+                <code>orchestration-report.html</code>, then runs <code>effortless build</code> so the views pick
+                them up. This can take a while — the harness runs every registered substrate; progress streams live
+                below as it runs.
               </p>
             </Panel>
+
+            {running && running.slug === activeSlug && log.length > 0 && (
+              <Panel eyebrow="Live" title="Run progress">
+                <pre className="log-stream">{log.join("\n")}</pre>
+              </Panel>
+            )}
+
+            {latestRun && (
+              <Panel eyebrow="Latest run" title="Orchestration report">
+                <iframe
+                  key={version}
+                  className="report-frame"
+                  title={`${activeSlug} orchestration report`}
+                  src={`/__conformance-report/${encodeURIComponent(activeSlug)}/aggregate`}
+                />
+              </Panel>
+            )}
 
             {!latestRun && (
               <Panel eyebrow="Latest run" title="No conformance runs recorded yet">

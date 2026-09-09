@@ -457,6 +457,28 @@ def get_aggregation_fields(schema: list) -> list:
 def get_lookup_fields(schema: list) -> list:
     """Extract all lookup fields from a schema (INDEX/MATCH formulas)."""
     return [field for field in schema if field.get('type') == 'lookup' and field.get('formula')]
+
+
+def get_closure_fields(schema: list) -> list:
+    """Extract all closure fields from a schema (transitive-closure relations).
+
+    Schema-reading only. The closure ALGORITHM deliberately lives inside each
+    substrate's own fence, for the same reason the INDEX/MATCH and
+    COUNTIFS/SUMIFS interpreters were moved out of this module (see below):
+    a shared implementation lets a substrate report conformance without
+    natively executing anything.
+    """
+    return [field for field in schema if field.get('type') == 'closure']
+
+
+def closure_view_name(entity_name: str) -> str:
+    """Return the vw_<entity>_closure pseudo-table name for a closure field.
+
+    Aggregations address a materialized closure as a table, e.g.
+    =COUNTIFS(vw_step_precedence_closure!{{IsInferred}}, TRUE()) — so every
+    substrate must agree on this name. Naming only; no computation.
+    """
+    return f"vw_{to_snake_case(entity_name)}_closure"
 # =============================================================================
 # INDEX/MATCH and COUNTIFS/SUMIFS interpreters MOVED OUT
 # =============================================================================

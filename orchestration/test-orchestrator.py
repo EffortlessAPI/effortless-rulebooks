@@ -792,12 +792,19 @@ def run_substrate_test(substrate_name: str) -> tuple:
 
     start_time = time.time()
     try:
+        # Suppress each substrate's own report popup (grade-and-record.py checks
+        # this env var). Whoever ran the whole batch — orchestrate.sh or this
+        # module — opens ONE aggregate orchestration-report.html at the end
+        # instead of one browser window per substrate.
+        env = dict(os.environ)
+        env["ERB_NO_OPEN"] = "1"
         result = subprocess.run(
             ["bash", script_path],
             cwd=substrate_dir,
             capture_output=True,
             text=True,
-            timeout=600  # 10 minutes for LLM substrates like english
+            timeout=600,  # 10 minutes for LLM substrates like english
+            env=env,
         )
         elapsed = time.time() - start_time
 

@@ -1,8 +1,9 @@
 import { defineConfig } from "vite";
 import path from "node:path";
 import fs from "node:fs/promises";
+import { statSync } from "node:fs";
 import { fileURLToPath } from "node:url";
-import { execFile } from "node:child_process";
+import { execFile, spawn } from "node:child_process";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -171,50 +172,137 @@ function findingStatusPlugin() {
 
 // Trigger a conformance harness run (cap-conformance-harness, promoted to a
 // first-class explorer feature). Same shape as findingStatusPlugin: the write
-// path is a repo script, not a route bolted onto the generated API. Runs
-// scripts/run-conformance.py <slug>, which shells out to the EXISTING harness
-// (orchestration/test-orchestrator.py — not
+// path is a repo script, not a route bolted onto the generated API. Streams
+// scripts/run-conformance.py <slug> as Server-Sent Events so the UI can show
+// live progress instead of blocking on one big response; that script shells
+// out to the EXISTING harness (orchestration/test-orchestrator.py — not
 // reimplemented here), records ConformanceRuns/ConformanceResults rows in the
-// rulebook JSON, then runs `effortless build` so the views pick them up.
-// This can run for a while (every registered substrate), so no artificial
-// timeout is imposed beyond Node's default.
+// rulebook JSON, generates the aggregate orchestration-report.html, then runs
+// `effortless build` so the views pick up the new rows. This can run for a
+// while (every registered substrate), so no artificial timeout is imposed.
 const SLUG_RE = /^[A-Za-z0-9-]+$/;
 
-function runConformanceScript(slug) {
-  return new Promise((resolve, reject) => {
-    execFile(
-      "python3",
-      ["scripts/run-conformance.py", slug],
-      { cwd: REPO_ROOT, maxBuffer: 1024 * 1024 * 16 },
-      (error, stdout, stderr) => (error ? reject(new Error((stderr || stdout || error.message).trim())) : resolve(stdout.trim())),
-    );
-  });
+function findDomainDir(slug) {
+  for (const base of ["rulebook-examples", "toy-rulebooks"]) {
+    const dir = path.join(REPO_ROOT, base, slug);
+    if (dirExistsSync(dir)) return dir;
+  }
+  return null;
+}
+
+function dirExistsSync(dir) {
+  try {
+    return statSync(dir).isDirectory();
+  } catch {
+    return false;
+  }
+}
+
+function sseSend(res, event, data) {
+  res.write(`event: ${event}\ndata: ${JSON.stringify(data)}\n\n`);
 }
 
 function conformanceRunPlugin() {
   return {
     name: "erb-conformance-run",
     configureServer(server) {
-      server.middlewares.use("/__conformance", async (req, res) => {
-        res.setHeader("Content-Type", "application/json");
+      server.middlewares.use("/__conformance", (req, res) => {
         const match = /^\/([A-Za-z0-9-]+)\/run$/.exec(new URL(req.url, "http://localhost").pathname);
         if (req.method !== "POST" || !match) {
+          res.setHeader("Content-Type", "application/json");
           res.statusCode = 404;
           res.end(JSON.stringify({ ok: false, error: "POST /__conformance/<slug>/run" }));
           return;
         }
         const slug = match[1];
         if (!SLUG_RE.test(slug)) {
+          res.setHeader("Content-Type", "application/json");
           res.statusCode = 400;
           res.end(JSON.stringify({ ok: false, error: "slug must match [A-Za-z0-9-]+" }));
           return;
         }
+
+        res.writeHead(200, {
+          "Content-Type": "text/event-stream",
+          "Cache-Control": "no-cache",
+          Connection: "keep-alive",
+        });
+
+        const child = spawn("python3", ["scripts/run-conformance.py", slug], { cwd: REPO_ROOT });
+        let lastLine = "";
+
+        const forwardLines = (chunk) => {
+          for (const line of chunk.toString("utf-8").split("\n")) {
+            if (!line) continue;
+            lastLine = line;
+            sseSend(res, "log", { line });
+          }
+        };
+        child.stdout.on("data", forwardLines);
+        child.stderr.on("data", forwardLines);
+
+        child.on("error", (error) => {
+          sseSend(res, "done", { ok: false, error: error.message });
+          res.end();
+        });
+        child.on("close", (code) => {
+          if (code !== 0) {
+            sseSend(res, "done", { ok: false, error: `run-conformance.py exited ${code}: ${lastLine}` });
+            res.end();
+            return;
+          }
+          // The script's final stdout line is the JSON summary (run_id, substrates, report_path).
+          let summary = null;
+          try {
+            summary = JSON.parse(lastLine);
+          } catch {
+            // fall through with summary=null; the UI still knows it succeeded
+          }
+          sseSend(res, "done", { ok: true, slug, ...summary });
+          res.end();
+        });
+
+        req.on("close", () => child.kill());
+      });
+    },
+  };
+}
+
+// Serve a domain's generated orchestration-report.html / per-substrate
+// substrate-report.html files read-only, so the explorer can iframe them
+// without copying them. Mirrors generatedFilesPlugin's escape-check.
+function conformanceReportPlugin() {
+  return {
+    name: "erb-conformance-report",
+    configureServer(server) {
+      server.middlewares.use("/__conformance-report", async (req, res) => {
+        const url = new URL(req.url, "http://localhost");
+        const match = /^\/([A-Za-z0-9-]+)\/(aggregate|substrate\/[A-Za-z0-9_-]+)$/.exec(url.pathname);
+        if (!match) {
+          res.statusCode = 404;
+          res.setHeader("Content-Type", "text/plain");
+          res.end("GET /__conformance-report/<slug>/aggregate or /<slug>/substrate/<name>");
+          return;
+        }
+        const [, slug, which] = match;
+        const domainDir = findDomainDir(slug);
+        if (!domainDir) {
+          res.statusCode = 404;
+          res.setHeader("Content-Type", "text/plain");
+          res.end(`no project directory found for slug ${slug}`);
+          return;
+        }
+        const file = which === "aggregate"
+          ? path.join(domainDir, "orchestration-report.html")
+          : path.join(REPO_ROOT, "execution-substrates", which.slice("substrate/".length), "substrate-report.html");
         try {
-          const output = await runConformanceScript(slug);
-          res.end(JSON.stringify({ ok: true, slug, output }));
+          const data = await fs.readFile(file);
+          res.setHeader("Content-Type", "text/html; charset=utf-8");
+          res.end(data);
         } catch (error) {
-          res.statusCode = 502;
-          res.end(JSON.stringify({ ok: false, error: error.message }));
+          res.statusCode = error.code === "ENOENT" ? 404 : 500;
+          res.setHeader("Content-Type", "text/plain");
+          res.end(`${error.code === "ENOENT" ? "report not found" : "could not read report"}: ${file}\nRun a conformance run for ${slug} first.`);
         }
       });
     },
@@ -222,7 +310,7 @@ function conformanceRunPlugin() {
 }
 
 export default defineConfig({
-  plugins: [healthProbePlugin(), generatedFilesPlugin(), findingStatusPlugin(), conformanceRunPlugin()],
+  plugins: [healthProbePlugin(), generatedFilesPlugin(), findingStatusPlugin(), conformanceRunPlugin(), conformanceReportPlugin()],
   server: {
     proxy: {
       "/api": { target: EDITOR_API, changeOrigin: true },

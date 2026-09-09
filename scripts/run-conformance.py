@@ -3,15 +3,23 @@
 result as first-class rows in the root rulebook (ConformanceRuns / ConformanceResults).
 
 This does NOT reimplement the harness. It shells out to the existing
-orchestration/test-orchestrator.py (unmodified except for its DOMAIN_DIR
-resolution, which now checks rulebook-examples/ then toy-rulebooks/ like
-orchestrate.sh's find_domain_dir already does), reads the
+orchestration/test-orchestrator.py (its DOMAIN_DIR resolution checks
+rulebook-examples/ then toy-rulebooks/ like orchestrate.sh's find_domain_dir
+already does; its run_substrate_test() also sets ERB_NO_OPEN=1 on each
+substrate subprocess so a run never pops one browser window per substrate,
+matching what orchestrate.sh's own substrate loop already did), reads the
 harness's own testing/_substrate_results.json output, and appends rows to
 effortless-rulebook/effortless-rulebook.json the same way scripts/record-finding.py
 and scripts/scan-project-slots.py add witnessed rows: edit the JSON directly, then
 `effortless build` projects the new rows into Postgres. There is no direct-to-Postgres
 write path here — the rulebook JSON is the only place a new row can originate,
 per this repo's "Rulebook JSON is HEAD" doctrine.
+
+After recording, this also shells out to orchestration/generate-report.py (again
+unmodified except for now honoring ERB_NO_OPEN=1 to skip its browser popup) to
+build the aggregate <domain>/orchestration-report.html, then prints a curated,
+ctrl+click-able list of report file:// paths (the aggregate report first, then
+every substrate's own substrate-report.html) instead of opening any of them.
 
 Usage:
     python3 scripts/run-conformance.py <project-slug> [--skip-build]
@@ -93,6 +101,10 @@ def run_harness(slug: str, domain_dir: Path) -> Path:
     env = dict(os.environ)
     env["ERB_DOMAIN"] = slug
     env.setdefault("DATABASE_URL", f"postgresql://postgres@localhost:5432/{db_name}")
+    # Suppress every per-substrate report popup and the aggregate report's own
+    # popup below — this path (CLI-triggered or portal-triggered) prints a
+    # curated report-link list instead of opening up to ~17 browser windows.
+    env["ERB_NO_OPEN"] = "1"
     # test-orchestrator.py resolves its own TESTING_DIR/RULEBOOK_PATH from
     # ERB_DOMAIN, but the individual substrate take-test.sh scripts it shells
     # out to (execution-substrates/*/take-test.py)
@@ -123,6 +135,47 @@ def run_harness(slug: str, domain_dir: Path) -> Path:
             f"Refusing to record a conformance run with no results file."
         )
     return results_path
+
+
+def run_report_generator(slug: str, domain_dir: Path) -> Path:
+    """Build the aggregate orchestration-report.html the same way orchestrate.sh
+    does (generate-report.py), with ERB_NO_OPEN=1 already set on the parent
+    env so it prints its file:// path instead of popping a browser window."""
+    report_script = ORCHESTRATOR_DIR / "generate-report.py"
+    if not report_script.is_file():
+        raise SystemExit(f"report generator missing: {report_script}")
+
+    rulebook_path = domain_dir / "effortless-rulebook" / f"{slug}-rulebook.json"
+    output_path = domain_dir / "orchestration-report.html"
+    print(f"[run-conformance] generating aggregate report for {slug}", flush=True)
+    result = subprocess.run(
+        [
+            sys.executable, str(report_script),
+            "--rulebook", str(rulebook_path),
+            "--output", str(output_path),
+        ],
+        cwd=str(ORCHESTRATOR_DIR),
+        env=dict(os.environ, ERB_NO_OPEN="1"),
+    )
+    if result.returncode != 0:
+        raise SystemExit(f"generate-report.py exited {result.returncode} for {slug}")
+    return output_path
+
+
+def print_curated_report_list(domain_dir: Path, aggregate_report: Path) -> None:
+    """Print a ctrl+click-able list of report paths instead of opening a
+    browser window per substrate. The aggregate report is listed first; it
+    is the one file worth opening by default. Per-substrate reports are
+    listed for anyone who wants to drill into one substrate's detail."""
+    print(flush=True)
+    print("[run-conformance] Reports (ctrl+click to open):", flush=True)
+    print(f"  Aggregate : file://{aggregate_report.resolve()}", flush=True)
+    substrates_dir = REPO_ROOT / "execution-substrates"
+    for substrate_dir in sorted(substrates_dir.iterdir()):
+        report = substrate_dir / "substrate-report.html"
+        if report.is_file():
+            print(f"  {substrate_dir.name:<20}: file://{report.resolve()}", flush=True)
+    print(flush=True)
 
 
 def build_rows(domain_id: str, slug: str, results: dict, ran_on: str) -> tuple[dict, list[dict]]:
@@ -195,10 +248,17 @@ def main() -> None:
     record_rows(RULEBOOK_PATH, run_row, result_rows)
     print(f"[run-conformance] recorded {run_row['ConformanceRunId']} with {len(result_rows)} substrate results")
 
+    aggregate_report = run_report_generator(args.slug, domain_dir)
+    print_curated_report_list(domain_dir, aggregate_report)
+
     if not args.skip_build:
         run_effortless_build()
 
-    print(json.dumps({"run_id": run_row["ConformanceRunId"], "substrates": len(result_rows)}))
+    print(json.dumps({
+        "run_id": run_row["ConformanceRunId"],
+        "substrates": len(result_rows),
+        "report_path": str(aggregate_report),
+    }))
 
 
 if __name__ == "__main__":

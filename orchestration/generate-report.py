@@ -2763,7 +2763,13 @@ def main():
     print(f"  -> Report written to: {output_path}")
     print()
 
-    # Open in browser (reusing same tab/window when possible)
+    # Open in browser (reusing same tab/window when possible), unless the
+    # caller suppressed it (ERB_NO_OPEN=1) — e.g. scripts/run-conformance.py,
+    # which prints a curated report-link list instead of popping a window.
+    if os.environ.get('ERB_NO_OPEN'):
+        print(f"Report: file://{os.path.abspath(output_path)}")
+        return
+
     abs_path = os.path.abspath(output_path)
     file_url = f"file://{abs_path}"
     import platform

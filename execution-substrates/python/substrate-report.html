@@ -206,10 +206,10 @@ pre {
         <div class="header-stats">
             <div class="stat">
                 <span>Score:</span>
-                <span class="stat-value score-perfect">100.0%</span>
+                <span class="stat-value score-good">81.5%</span>
             </div>
             <div class="stat">
-                <span>6/6 passed</span>
+                <span>563/691 passed</span>
             </div>
         </div>
         <button id="theme-toggle" title="Toggle theme">
@@ -286,8 +286,46 @@ pre {
                 <h2>Execution Log</h2>
                 <pre>=== Python Substrate Test Run ===
 
-  -&gt; customers: 3 records
-Python substrate: Processed 1 entities, 3 total records
+/Users/eejai42/development/effortless-rulebooks/execution-substrates/python/python_only_erb_simulator.py:65: SyntaxWarning: &quot;is&quot; with &#x27;int&#x27; literal. Did you mean &quot;==&quot;?
+  return (False if (count_of_non_proposed_steps) is None or (1) is None else (count_of_non_proposed_steps) &gt; (1))
+/Users/eejai42/development/effortless-rulebooks/execution-substrates/python/python_only_erb_simulator.py:73: SyntaxWarning: &quot;is&quot; with &#x27;int&#x27; literal. Did you mean &quot;==&quot;?
+  return (False if (count_approval_consistency_violations) is None or (0) is None else (count_approval_consistency_violations) &gt; (0))
+/Users/eejai42/development/effortless-rulebooks/execution-substrates/python/python_only_erb_simulator.py:81: SyntaxWarning: &quot;is&quot; with &#x27;int&#x27; literal. Did you mean &quot;==&quot;?
+  return (False if (count_ai_steps) is None or (0) is None else (count_ai_steps) &gt; (0))
+/Users/eejai42/development/effortless-rulebooks/execution-substrates/python/python_only_erb_simulator.py:97: SyntaxWarning: &quot;is&quot; with &#x27;int&#x27; literal. Did you mean &quot;==&quot;?
+  return ((False if (count_engineering_owned_steps) is None or (0) is None else (count_engineering_owned_steps) &gt; (0)) and (False if (count_legal_owned_steps) is None or (0) is None else (count_legal_owned_steps) &gt; (0)))
+/Users/eejai42/development/effortless-rulebooks/execution-substrates/python/python_only_erb_simulator.py:113: SyntaxWarning: &quot;is&quot; with &#x27;int&#x27; literal. Did you mean &quot;==&quot;?
+  return ((False if (count_approval_gate_steps) is None or (0) is None else (count_approval_gate_steps) &gt; (0)) and (count_gates_without_human_approver == 0))
+/Users/eejai42/development/effortless-rulebooks/execution-substrates/python/python_only_erb_simulator.py:540: SyntaxWarning: &quot;is&quot; with &#x27;int&#x27; literal. Did you mean &quot;==&quot;?
+  return ((False if (fills_approval_gate) is None or (0) is None else (fills_approval_gate) &gt; (0)) and ((delegates_to is None or delegates_to == &quot;&quot;) is True))
+/Users/eejai42/development/effortless-rulebooks/execution-substrates/python/python_only_erb_simulator.py:632: SyntaxWarning: &quot;is&quot; with &#x27;str&#x27; literal. Did you mean &quot;==&quot;?
+  return ((False if (valid_from) is None or (&#x27;2026-03-01&#x27;) is None else (valid_from) &lt;= (&#x27;2026-03-01&#x27;)) and (((valid_to is None or valid_to == &quot;&quot;) is True) or (False if (valid_to) is None or (&#x27;2026-03-01&#x27;) is None else (valid_to) &gt; (&#x27;2026-03-01&#x27;))))
+  -&gt; vw_roles_closure: 3 pairs
+  -&gt; vw_step_precedence_closure: 10 pairs
+  -&gt; vw_workflow_artifacts_closure: 10 pairs
+  -&gt; agent_capability_concepts: 6 records
+  -&gt; ai_agents: 2 records
+  -&gt; approval_gates: 1 records
+  -&gt; artifact_type_concepts: 3 records
+  -&gt; automated_pipelines: 1 records
+  -&gt; change_log: 2 records
+  -&gt; competency_questions: 8 records
+  -&gt; conformance_tests: 72 records
+  -&gt; datasets: 1 records
+  -&gt; departments: 2 records
+  -&gt; governance_roles: 2 records
+  -&gt; human_agents: 5 records
+  -&gt; role_assignments: 6 records
+  -&gt; roles: 7 records
+  -&gt; scenario_cq_effects: 12 records
+  -&gt; scenarios: 12 records
+  -&gt; step_precedence: 4 records
+  -&gt; vocabulary_reconciliations: 2 records
+  -&gt; workflow_artifacts: 5 records
+  -&gt; workflow_status_concepts: 4 records
+  -&gt; workflow_steps: 5 records
+  -&gt; workflows: 1 records
+Python substrate: Processed 22 entities, 163 total records
 
 </pre>
             </div>
@@ -298,19 +336,19 @@ Python substrate: Processed 1 entities, 3 total records
                 <h2>Test Summary</h2>
                 <div class="results-summary">
                     <div class="result-item">
-                        <div class="result-value score-perfect">100.0%</div>
+                        <div class="result-value score-good">81.5%</div>
                         <div class="result-label">Score</div>
                     </div>
                     <div class="result-item">
-                        <div class="result-value score-perfect">6</div>
+                        <div class="result-value score-perfect">563</div>
                         <div class="result-label">Passed</div>
                     </div>
                     <div class="result-item">
-                        <div class="result-value">0</div>
+                        <div class="result-value">128</div>
                         <div class="result-label">Failed</div>
                     </div>
                     <div class="result-item">
-                        <div class="result-value">6</div>
+                        <div class="result-value">691</div>
                         <div class="result-label">Total</div>
                     </div>
                 </div>
@@ -320,7 +358,7 @@ Python substrate: Processed 1 entities, 3 total records
                 <div class="markdown-content">
                     <h3>language_candidates</h3>
                     <ul>
-                        <li>Fields: 6/6 (100.0%)</li>
+                        <li>Fields: 563/691 (81.5%)</li>
                         <li>Computed columns: has_grammar, question, predicted_answer, prediction_predicates, prediction_fail, is_description_of, is_open_closed_world_conflicted, relationship_to_concept</li>
                     </ul>
                 </div>
@@ -332,14 +370,14 @@ Python substrate: Processed 1 entities, 3 total records
                 <div class="code-header">
                     <h2>erb_calc.py</h2>
                     <div>
-                        <span class="code-info">352 lines</span>
+                        <span class="code-info">2069 lines</span>
                         <button class="copy-btn" onclick="copyCode('calc-code')">Copy</button>
                     </div>
                 </div>
                 <pre id="calc-code">&quot;&quot;&quot;
 ERB Calculation Library (GENERATED - DO NOT EDIT)
 =================================================
-Generated from: effortless-rulebook/acme-llc-rulebook.json
+Generated from: effortless-rulebook/talismans-special-solutions-rulebook.json
 
 PYTHON SUBSTRATE ONLY. Importing this module from any other substrate
 is cheating. That substrate must execute the rulebook in its own native
@@ -365,6 +403,8 @@ import re
 from pathlib import Path
 from typing import Optional, Any
 
+from orchestration import formula_parser as _erb
+
 from orchestration.shared import (
     to_snake_case,
     get_entity_schema,
@@ -374,43 +414,1559 @@ from orchestration.shared import (
 
 
 # =============================================================================
-# CUSTOMERS CALCULATIONS
-# Table: Customers
+# WORKFLOWS CALCULATIONS
+# Table: Workflows. The NTWF Workflow class — prov:Plan + schema:CreativeWork. Each workflow has Dublin Core metadata (title, description, identifier, created, modified), a lifecycle status from the SKOS scheme, and a collection of WorkflowSteps (ntwf:hasStep).
 # =============================================================================
 
 # Level 1
 
-def calc_customers_name(email_address):
+def calc_workflows_relative_path(workflow_id):
     &quot;&quot;&quot;
-    Identifier for the customer.
+    Stable, DAG-derived location for this Workflow row. Root segment &#x27;workflows&#x27; + the row&#x27;s primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model.
     
-    Formula: =SUBSTITUTE({{EmailAddress}}, &quot;@&quot;, &quot;-&quot;)
+    Formula: =&quot;workflows/&quot; &amp; {{WorkflowId}}
     &quot;&quot;&quot;
-    return ((email_address or &quot;&quot;).replace(&#x27;@&#x27;, &#x27;-&#x27;))
+    return (&#x27;workflows/&#x27; + str(workflow_id or &quot;&quot;))
 
-def calc_customers_full_name(first_name, last_name):
+def calc_workflows_name(display_name):
     &quot;&quot;&quot;
-    Full name is computed from the first and last name of the customer
+    Short machine-friendly name for the workflow. Used for programmatic reference and URL slug generation.
     
-    Formula: ={{FirstName}} &amp; &quot; &quot; &amp; {{LastName}}
+    Formula: =SUBSTITUTE(LOWER({{DisplayName}}), &quot; &quot;, &quot;-&quot;)
     &quot;&quot;&quot;
-    return (str(first_name or &quot;&quot;) + &#x27; &#x27; + str(last_name or &quot;&quot;))
+    return ((((display_name or &quot;&quot;).lower()) or &quot;&quot;).replace(&#x27; &#x27;, &#x27;-&#x27;))
 
+def calc_workflows_has_more_than1_step(count_of_non_proposed_steps):
+    &quot;&quot;&quot;Formula: ={{CountOfNonProposedSteps}} &gt; 1&quot;&quot;&quot;
+    return (False if (count_of_non_proposed_steps) is None or (1) is None else (count_of_non_proposed_steps) &gt; (1))
 
-def compute_customers_fields(record: dict) -&gt; dict:
+def calc_workflows_has_consistency_violation(count_approval_consistency_violations):
     &quot;&quot;&quot;
-    Compute all calculated fields for Customers.
+    TRUE iff at least one step breaks the human-approval consistency rule (CountApprovalConsistencyViolations &gt; 0). The boolean witness of model integrity: a clean ABox holds it FALSE. This is what makes a broken rule a first-class input to the compliance verdict — a workflow with any consistency violation cannot be COMPLIANT.
     
-    Table: Customers
+    Formula: ={{CountApprovalConsistencyViolations}} &gt; 0
+    &quot;&quot;&quot;
+    return (False if (count_approval_consistency_violations) is None or (0) is None else (count_approval_consistency_violations) &gt; (0))
+
+def calc_workflows_has_ai_agent_step(count_ai_steps):
+    &quot;&quot;&quot;
+    TRUE iff at least one step in this workflow is executed by an AIAgent. The structural half of the article&#x27;s business payoff query.
+    
+    Formula: ={{CountAISteps}} &gt; 0
+    &quot;&quot;&quot;
+    return (False if (count_ai_steps) is None or (0) is None else (count_ai_steps) &gt; (0))
+
+def calc_workflows_months_since_modified(modified):
+    &quot;&quot;&quot;
+    Whole months since this workflow was last modified (dct:modified), measured live against NOW(). Drives CQ5 staleness. NOW() is seeded deterministically during conformance so test answers stay stable.
+    
+    Formula: =DATETIME_DIFF(NOW(), {{Modified}}, &quot;months&quot;)
+    &quot;&quot;&quot;
+    return _erb.erb_datetime_diff(_erb.erb_now(), modified, &#x27;months&#x27;)
+
+def calc_workflows_involves_engineering_and_legal(count_engineering_owned_steps, count_legal_owned_steps):
+    &quot;&quot;&quot;
+    TRUE iff this workflow has at least one Engineering-owned step AND at least one Legal-owned step. Answers CQ7 (&#x27;which workflows involve both engineering and legal&#x27;) as a single boolean — the Production Deployment workflow qualifies (4 Engineering steps + 1 Legal step).
+    
+    Formula: =AND({{CountEngineeringOwnedSteps}} &gt; 0, {{CountLegalOwnedSteps}} &gt; 0)
+    &quot;&quot;&quot;
+    return ((False if (count_engineering_owned_steps) is None or (0) is None else (count_engineering_owned_steps) &gt; (0)) and (False if (count_legal_owned_steps) is None or (0) is None else (count_legal_owned_steps) &gt; (0)))
+
+def calc_workflows_count_of_precedence_closure_pairs(count_asserted_precedence_pairs, count_inferred_precedence_pairs):
+    &quot;&quot;&quot;
+    Total number of step-ordering pairs in the transitive closure of ntwf:precedesStep = asserted (4) + inferred (6) = 10. The article&#x27;s headline closure cardinality, witnessing that the 4 asserted edges over a 5-step chain close to all 10 (i&lt;j) pairs. Computed as CountAssertedPrecedencePairs + CountInferredPrecedencePairs so the total is provably the sum of the two halves, not a separate unconditional view count that could silently drift from them.
+    
+    Formula: ={{CountAssertedPrecedencePairs}} + {{CountInferredPrecedencePairs}}
+    &quot;&quot;&quot;
+    return ((count_asserted_precedence_pairs) or 0) + ((count_inferred_precedence_pairs) or 0)
+
+def calc_workflows_cq2_satisfied(count_approval_gate_steps, count_gates_without_human_approver):
+    &quot;&quot;&quot;
+    CQ2 satisfied: the workflow has an approval gate AND every gate resolves to a human approver. Derived from the gate-&gt;role-&gt;filler chain; no hardcoded approver name.
+    
+    Formula: =AND({{CountApprovalGateSteps}} &gt; 0, {{CountGatesWithoutHumanApprover}} = 0)
+    &quot;&quot;&quot;
+    return ((False if (count_approval_gate_steps) is None or (0) is None else (count_approval_gate_steps) &gt; (0)) and (count_gates_without_human_approver == 0))
+
+def calc_workflows_cq4_satisfied(count_derivation_links, count_workflow_artifacts):
+    &quot;&quot;&quot;
+    CQ4 satisfied: the wasDerivedFrom provenance chain is intact — every artifact but the single origin has a derivation parent. Structural; breaks the instant any derivation edge is cut.
+    
+    Formula: ={{CountDerivationLinks}} = {{CountWorkflowArtifacts}} - 1
+    &quot;&quot;&quot;
+    return (count_derivation_links == ((count_workflow_artifacts) or 0) - ((1) or 0))
+
+def calc_workflows_cq6_satisfied(count_roles_with_escalation_violation):
+    &quot;&quot;&quot;
+    CQ6 satisfied: no gate-owning role escalates to nobody — every approval gate has a complete escalation path. Uses the model&#x27;s native EscalationViolation invariant; &#x27;the top&#x27; is the delegation apex, derived, not a hardcoded CTO name.
+    
+    Formula: ={{CountRolesWithEscalationViolation}} = 0
+    &quot;&quot;&quot;
+    return (count_roles_with_escalation_violation == 0)
+
+def calc_workflows_cq8_satisfied(count_unconsumed_datasets):
+    &quot;&quot;&quot;
+    CQ8 satisfied: every dataset the workflow declares is actually consumed by a step. Flips when a dataset is detached.
+    
+    Formula: ={{CountUnconsumedDatasets}} = 0
+    &quot;&quot;&quot;
+    return (count_unconsumed_datasets == 0)
+
+# Level 2
+
+def calc_workflows_iri(relative_path):
+    &quot;&quot;&quot;
+    Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of &#x27;/&#x27; for &#x27;-&#x27;. The OWL transpiler mints each individual&#x27;s IRI from this value (erb:&lt;Iri&gt;), so identity is path-derived and globally unique — no cross-table primary-key collisions.
+    
+    Formula: =SUBSTITUTE({{RelativePath}}, &quot;/&quot;, &quot;-&quot;)
+    &quot;&quot;&quot;
+    return ((relative_path or &quot;&quot;).replace(&#x27;/&#x27;, &#x27;-&#x27;))
+
+def calc_workflows_is_stale(months_since_modified, staleness_threshold_months):
+    &quot;&quot;&quot;
+    TRUE iff the workflow&#x27;s compliance documentation is past its review policy — i.e. the review age in months exceeds the policy line: MonthsSinceModified &gt; StalenessThresholdMonths. With the default the docs go stale at 12 months. Staleness fires the instant the review comes due — there is no renewal window or deferral. This is the article&#x27;s CQ5 condition (&#x27;which workflows haven&#x27;t been reviewed in twelve months&#x27;) stated directly against the editable policy field.
+    
+    Formula: ={{MonthsSinceModified}} &gt; {{StalenessThresholdMonths}}
+    &quot;&quot;&quot;
+    return (False if (months_since_modified) is None or (staleness_threshold_months) is None else (months_since_modified) &gt; (staleness_threshold_months))
+
+def calc_workflows_cq1_satisfied(count_of_precedence_closure_pairs, count_of_non_proposed_steps):
+    &quot;&quot;&quot;
+    CQ1 satisfied: the step-ordering closure is a TOTAL order — its pair count equals n*(n-1)/2 for n steps, so every pair of steps is comparable and &#x27;the order&#x27; is well-defined. Purely structural; no asserted literal.
+    
+    Formula: ={{CountOfPrecedenceClosurePairs}} = {{CountOfNonProposedSteps}} * ({{CountOfNonProposedSteps}} - 1) / 2
+    &quot;&quot;&quot;
+    return (count_of_precedence_closure_pairs == ((((count_of_non_proposed_steps) or 0) * ((((count_of_non_proposed_steps) or 0) - ((1) or 0)) or 0)) or 0) / ((2) or 0))
+
+def calc_workflows_cq3_satisfied(has_consistency_violation):
+    &quot;&quot;&quot;
+    CQ3 satisfied: the AI-vs-human assignment is consistent — no step that requires a human decision is executed by a non-human (no ApprovalConsistencyViolation). Derived from the model&#x27;s own consistency invariant.
+    
+    Formula: =NOT({{HasConsistencyViolation}})
+    &quot;&quot;&quot;
+    return (has_consistency_violation is not True)
+
+def calc_workflows_cq7_satisfied(involves_engineering_and_legal):
+    &quot;&quot;&quot;
+    CQ7 satisfied: the workflow involves BOTH Engineering-owned and Legal-owned steps. Reads the existing InvolvesEngineeringAndLegal boolean.
+    
+    Formula: ={{InvolvesEngineeringAndLegal}}
+    &quot;&quot;&quot;
+    return involves_engineering_and_legal
+
+# Level 3
+
+def calc_workflows_is_stale_and_has_ai_agent(is_stale, has_ai_agent_step):
+    &quot;&quot;&quot;
+    The article&#x27;s headline business question, as one boolean: a workflow that is BOTH stale (not reviewed in 12 months) AND has an AI-executed step — the highest compliance risk. Joins the metadata layer (dct:modified) with the accountability layer (filledBy → AIAgent) the way the closing SPARQL demo does, but as a single derived column.
+    
+    Formula: =AND({{IsStale}}, {{HasAIAgentStep}})
+    &quot;&quot;&quot;
+    return ((is_stale is True) and (has_ai_agent_step is True))
+
+def calc_workflows_cq5_satisfied(is_stale):
+    &quot;&quot;&quot;
+    CQ5 satisfied: the workflow&#x27;s compliance docs are within the review policy (not stale). Reads the existing IsStale verdict; flips when the review age passes StalenessThresholdMonths.
+    
+    Formula: =NOT({{IsStale}})
+    &quot;&quot;&quot;
+    return (is_stale is not True)
+
+
+def compute_workflows_fields(record: dict) -&gt; dict:
+    &quot;&quot;&quot;
+    Compute all calculated fields for Workflows.
+    
+    Table: Workflows. The NTWF Workflow class — prov:Plan + schema:CreativeWork. Each workflow has Dublin Core metadata (title, description, identifier, created, modified), a lifecycle status from the SKOS scheme, and a collection of WorkflowSteps (ntwf:hasStep).
     &quot;&quot;&quot;
     result = dict(record)
 
     # Level 1 calculations
-    result[&#x27;name&#x27;] = calc_customers_name(result.get(&#x27;email_address&#x27;))
-    result[&#x27;full_name&#x27;] = calc_customers_full_name(result.get(&#x27;first_name&#x27;), result.get(&#x27;last_name&#x27;))
+    result[&#x27;relative_path&#x27;] = calc_workflows_relative_path(result.get(&#x27;workflow_id&#x27;))
+    result[&#x27;name&#x27;] = calc_workflows_name(result.get(&#x27;display_name&#x27;))
+    result[&#x27;has_more_than1_step&#x27;] = calc_workflows_has_more_than1_step(result.get(&#x27;count_of_non_proposed_steps&#x27;))
+    result[&#x27;has_consistency_violation&#x27;] = calc_workflows_has_consistency_violation(result.get(&#x27;count_approval_consistency_violations&#x27;))
+    result[&#x27;has_ai_agent_step&#x27;] = calc_workflows_has_ai_agent_step(result.get(&#x27;count_ai_steps&#x27;))
+    result[&#x27;months_since_modified&#x27;] = calc_workflows_months_since_modified(result.get(&#x27;modified&#x27;))
+    result[&#x27;involves_engineering_and_legal&#x27;] = calc_workflows_involves_engineering_and_legal(result.get(&#x27;count_engineering_owned_steps&#x27;), result.get(&#x27;count_legal_owned_steps&#x27;))
+    result[&#x27;count_of_precedence_closure_pairs&#x27;] = calc_workflows_count_of_precedence_closure_pairs(result.get(&#x27;count_asserted_precedence_pairs&#x27;), result.get(&#x27;count_inferred_precedence_pairs&#x27;))
+    result[&#x27;cq2_satisfied&#x27;] = calc_workflows_cq2_satisfied(result.get(&#x27;count_approval_gate_steps&#x27;), result.get(&#x27;count_gates_without_human_approver&#x27;))
+    result[&#x27;cq4_satisfied&#x27;] = calc_workflows_cq4_satisfied(result.get(&#x27;count_derivation_links&#x27;), result.get(&#x27;count_workflow_artifacts&#x27;))
+    result[&#x27;cq6_satisfied&#x27;] = calc_workflows_cq6_satisfied(result.get(&#x27;count_roles_with_escalation_violation&#x27;))
+    result[&#x27;cq8_satisfied&#x27;] = calc_workflows_cq8_satisfied(result.get(&#x27;count_unconsumed_datasets&#x27;))
+
+    # Level 2 calculations
+    result[&#x27;iri&#x27;] = calc_workflows_iri(result.get(&#x27;relative_path&#x27;))
+    result[&#x27;is_stale&#x27;] = calc_workflows_is_stale(result.get(&#x27;months_since_modified&#x27;), result.get(&#x27;staleness_threshold_months&#x27;))
+    result[&#x27;cq1_satisfied&#x27;] = calc_workflows_cq1_satisfied(result.get(&#x27;count_of_precedence_closure_pairs&#x27;), result.get(&#x27;count_of_non_proposed_steps&#x27;))
+    result[&#x27;cq3_satisfied&#x27;] = calc_workflows_cq3_satisfied(result.get(&#x27;has_consistency_violation&#x27;))
+    result[&#x27;cq7_satisfied&#x27;] = calc_workflows_cq7_satisfied(result.get(&#x27;involves_engineering_and_legal&#x27;))
+
+    # Level 3 calculations
+    result[&#x27;is_stale_and_has_ai_agent&#x27;] = calc_workflows_is_stale_and_has_ai_agent(result.get(&#x27;is_stale&#x27;), result.get(&#x27;has_ai_agent_step&#x27;))
+    result[&#x27;cq5_satisfied&#x27;] = calc_workflows_cq5_satisfied(result.get(&#x27;is_stale&#x27;))
 
     # Convert empty strings to None for string fields
-    for key in [&#x27;name&#x27;, &#x27;full_name&#x27;]:
+    for key in [&#x27;relative_path&#x27;, &#x27;iri&#x27;, &#x27;name&#x27;]:
+        if result.get(key) == &#x27;&#x27;:
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# WORKFLOWSTEPS CALCULATIONS
+# Table: WorkflowSteps. The NTWF WorkflowStep class — prov:Activity. Each step is first-class and individually addressable, belongs to one Workflow (ntwf:isStepOf), and is assigned to exactly one Role (ntwf:assignedRole). Step-to-step ordering is modeled in the StepPrecedence junction; the ApprovalGate subtype specializes a step via a 1:1 FK.
+# =============================================================================
+
+# Level 1
+
+def calc_workflow_steps_relative_path(parent_path, workflow_step_id):
+    &quot;&quot;&quot;
+    Stable, DAG-derived location: this row nests under its Workflows parent. Concatenates the parent&#x27;s path (ParentPath) with &#x27;/steps/&#x27; + this row&#x27;s primary key. The DAG performs the recursion — one hop per table via ParentPath — so the full ancestry is encoded without a recursive formula. Unique by construction.
+    
+    Formula: ={{ParentPath}} &amp; &quot;/steps/&quot; &amp; {{WorkflowStepId}}
+    &quot;&quot;&quot;
+    return (str(parent_path or &quot;&quot;) + &#x27;/steps/&#x27; + str(workflow_step_id or &quot;&quot;))
+
+def calc_workflow_steps_name(display_name):
+    &quot;&quot;&quot;Formula: =SUBSTITUTE(LOWER({{DisplayName}}), &quot; &quot;, &quot;-&quot;)&quot;&quot;&quot;
+    return ((((display_name or &quot;&quot;).lower()) or &quot;&quot;).replace(&#x27; &#x27;, &#x27;-&#x27;))
+
+def calc_workflow_steps_inferred_sequence_position(preceding_step_count):
+    &quot;&quot;&quot;
+    The step&#x27;s ordinal position INFERRED purely from the StepPrecedence edges: 1 + PrecedingStepCount (one plus the number of steps that transitively precede it in vw_step_precedence_closure). On the linear Production Deployment chain: 1,2,3,4,5 — no integer is typed; it is a projection of the asserted ordering edges. This is the DEFAULT position; SequencePositionOverride can pin a different value where the inference is ambiguous (e.g. a branch produces ties). Maps to ntwf:inferredSequencePosition (an effortless extension of the article&#x27;s ordering).
+    
+    Formula: ={{PrecedingStepCount}} + 1
+    &quot;&quot;&quot;
+    return ((preceding_step_count) or 0) + ((1) or 0)
+
+def calc_workflow_steps_executing_agent_type(executing_human_agent, executing_ai_agent, executing_automated_pipeline):
+    &quot;&quot;&quot;
+    Which of the three disjoint agent classes executes this step (HumanAgent / AIAgent / AutomatedPipeline), derived from whichever filledBy arm the assigned role has set. Answers the typing half of CQ3 (&#x27;which steps are executed by AI agents, and which require a human decision&#x27;).
+    
+    Formula: =IF(NOT(ISBLANK({{ExecutingHumanAgent}})), &quot;HumanAgent&quot;, IF(NOT(ISBLANK({{ExecutingAIAgent}})), &quot;AIAgent&quot;, IF(NOT(ISBLANK({{ExecutingAutomatedPipeline}})), &quot;AutomatedPipeline&quot;, &quot;&quot;)))
+    &quot;&quot;&quot;
+    return (&#x27;HumanAgent&#x27; if (not (executing_human_agent is None or executing_human_agent == &quot;&quot;)) else (&#x27;AIAgent&#x27; if (not (executing_ai_agent is None or executing_ai_agent == &quot;&quot;)) else (&#x27;AutomatedPipeline&#x27; if (not (executing_automated_pipeline is None or executing_automated_pipeline == &quot;&quot;)) else &#x27;&#x27;)))
+
+def calc_workflow_steps_is_executed_by_ai(executing_ai_agent):
+    &quot;&quot;&quot;
+    TRUE when this step&#x27;s assigned role is filled by an AIAgent. Feeds CQ3 and the business payoff query (stale workflows with AI-executed steps).
+    
+    Formula: =NOT(ISBLANK({{ExecutingAIAgent}}))
+    &quot;&quot;&quot;
+    return (not (executing_ai_agent is None or executing_ai_agent == &quot;&quot;))
+
+def calc_workflow_steps_is_executed_by_human(executing_human_agent):
+    &quot;&quot;&quot;
+    TRUE when this step&#x27;s assigned role is filled by a HumanAgent. Feeds CQ3&#x27;s human-vs-AI step split.
+    
+    Formula: =NOT(ISBLANK({{ExecutingHumanAgent}}))
+    &quot;&quot;&quot;
+    return (not (executing_human_agent is None or executing_human_agent == &quot;&quot;))
+
+def calc_workflow_steps_is_approval_gate(approval_gate):
+    &quot;&quot;&quot;
+    TRUE when this step is specialized by an ApprovalGate subtype row (its ApprovalGate back-reference is set). An approval gate carries escalationThresholdHours and, when it stalls, activates the gate role&#x27;s delegatesTo escalation chain. Rolls up into Roles.FillsApprovalGate, which marks the role that must have a complete escalation path (CQ6).
+    
+    Formula: =NOT(ISBLANK({{ApprovalGate}}))
+    &quot;&quot;&quot;
+    return (not (approval_gate is None or approval_gate == &quot;&quot;))
+
+def calc_workflow_steps_approval_consistency_violation(requires_human_approval, executing_human_agent):
+    &quot;&quot;&quot;
+    Detectable-error witness: TRUE iff this step requires human approval (RequiresHumanApproval) yet its assigned role is NOT filled by a HumanAgent. In the OWL ABox this is the rule that only a HumanAgent may fill a role on a requiresHumanApproval step; a clean ABox yields FALSE for every step. This is the relational equivalent of the Suite-4 disjointness/consistency check.
+    
+    Formula: =AND({{RequiresHumanApproval}}, ISBLANK({{ExecutingHumanAgent}}))
+    &quot;&quot;&quot;
+    return ((requires_human_approval is True) and ((executing_human_agent is None or executing_human_agent == &quot;&quot;) is True))
+
+def calc_workflow_steps_approval_is_human_filled(requires_human_approval, executing_human_agent):
+    &quot;&quot;&quot;
+    Positive form of the human-only-gate rule: TRUE iff this step&#x27;s human-approval obligation is satisfied — either the step does not require human approval (vacuously satisfied), or it does and its assigned role is filled by a HumanAgent. The clean Production Deployment ABox yields TRUE for every step. This is the affirmative complement of ApprovalConsistencyViolation: the two are always opposite when approval is required, and this one is additionally TRUE on steps that need no approval.
+    
+    Formula: =IF({{RequiresHumanApproval}}, NOT(ISBLANK({{ExecutingHumanAgent}})), TRUE)
+    &quot;&quot;&quot;
+    return ((not (executing_human_agent is None or executing_human_agent == &quot;&quot;)) if requires_human_approval else True)
+
+def calc_workflow_steps_is_legal_owned(owning_department):
+    &quot;&quot;&quot;
+    TRUE iff this step&#x27;s owning department is Legal. Rolls up to CQ7&#x27;s count of Legal-owned steps (exactly one in the Production Deployment workflow).
+    
+    Formula: ={{OwningDepartment}} = &quot;ntwf-legal-dept&quot; 
+    &quot;&quot;&quot;
+    return (owning_department == &#x27;ntwf-legal-dept&#x27;)
+
+def calc_workflow_steps_is_engineering_owned(owning_department):
+    &quot;&quot;&quot;
+    TRUE iff this step&#x27;s owning department is Engineering. Rolls up to CQ7&#x27;s Engineering-involvement check.
+    
+    Formula: ={{OwningDepartment}} = &quot;ntwf-engineering&quot; 
+    &quot;&quot;&quot;
+    return (owning_department == &#x27;ntwf-engineering&#x27;)
+
+# Level 2
+
+def calc_workflow_steps_iri(relative_path):
+    &quot;&quot;&quot;
+    Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of &#x27;/&#x27; for &#x27;-&#x27;. The OWL transpiler mints each individual&#x27;s IRI from this value (erb:&lt;Iri&gt;), so identity is path-derived and globally unique — no cross-table primary-key collisions.
+    
+    Formula: =SUBSTITUTE({{RelativePath}}, &quot;/&quot;, &quot;-&quot;)
+    &quot;&quot;&quot;
+    return ((relative_path or &quot;&quot;).replace(&#x27;/&#x27;, &#x27;-&#x27;))
+
+def calc_workflow_steps_sequence_position(sequence_position_override, inferred_sequence_position):
+    &quot;&quot;&quot;
+    The effective ordinal position used everywhere (views, UI, competency questions): the hand-asserted SequencePositionOverride when present, otherwise the edge-derived InferredSequencePosition. IF(SequencePositionOverride &lt;&gt; &quot;&quot;, SequencePositionOverride, InferredSequencePosition). This is the honest resolution of the two ways order can be stated: the inference is the default computed from the SSoT (the StepPrecedence edges), and an explicit override only overrides — never a silent guess. On the Production Deployment chain all overrides are null, so this equals InferredSequencePosition = 1,2,3,4,5. Maps to ntwf:sequencePosition for consumers.
+    
+    Formula: =IF({{SequencePositionOverride}} &lt;&gt; &quot;&quot;, {{SequencePositionOverride}}, {{InferredSequencePosition}})
+    &quot;&quot;&quot;
+    return (sequence_position_override if (sequence_position_override != &#x27;&#x27;) else inferred_sequence_position)
+
+
+def compute_workflow_steps_fields(record: dict) -&gt; dict:
+    &quot;&quot;&quot;
+    Compute all calculated fields for WorkflowSteps.
+    
+    Table: WorkflowSteps. The NTWF WorkflowStep class — prov:Activity. Each step is first-class and individually addressable, belongs to one Workflow (ntwf:isStepOf), and is assigned to exactly one Role (ntwf:assignedRole). Step-to-step ordering is modeled in the StepPrecedence junction; the ApprovalGate subtype specializes a step via a 1:1 FK.
+    &quot;&quot;&quot;
+    result = dict(record)
+
+    # Level 1 calculations
+    result[&#x27;relative_path&#x27;] = calc_workflow_steps_relative_path(result.get(&#x27;parent_path&#x27;), result.get(&#x27;workflow_step_id&#x27;))
+    result[&#x27;name&#x27;] = calc_workflow_steps_name(result.get(&#x27;display_name&#x27;))
+    result[&#x27;inferred_sequence_position&#x27;] = calc_workflow_steps_inferred_sequence_position(result.get(&#x27;preceding_step_count&#x27;))
+    result[&#x27;executing_agent_type&#x27;] = calc_workflow_steps_executing_agent_type(result.get(&#x27;executing_human_agent&#x27;), result.get(&#x27;executing_ai_agent&#x27;), result.get(&#x27;executing_automated_pipeline&#x27;))
+    result[&#x27;is_executed_by_ai&#x27;] = calc_workflow_steps_is_executed_by_ai(result.get(&#x27;executing_ai_agent&#x27;))
+    result[&#x27;is_executed_by_human&#x27;] = calc_workflow_steps_is_executed_by_human(result.get(&#x27;executing_human_agent&#x27;))
+    result[&#x27;is_approval_gate&#x27;] = calc_workflow_steps_is_approval_gate(result.get(&#x27;approval_gate&#x27;))
+    result[&#x27;approval_consistency_violation&#x27;] = calc_workflow_steps_approval_consistency_violation(result.get(&#x27;requires_human_approval&#x27;), result.get(&#x27;executing_human_agent&#x27;))
+    result[&#x27;approval_is_human_filled&#x27;] = calc_workflow_steps_approval_is_human_filled(result.get(&#x27;requires_human_approval&#x27;), result.get(&#x27;executing_human_agent&#x27;))
+    result[&#x27;is_legal_owned&#x27;] = calc_workflow_steps_is_legal_owned(result.get(&#x27;owning_department&#x27;))
+    result[&#x27;is_engineering_owned&#x27;] = calc_workflow_steps_is_engineering_owned(result.get(&#x27;owning_department&#x27;))
+
+    # Level 2 calculations
+    result[&#x27;iri&#x27;] = calc_workflow_steps_iri(result.get(&#x27;relative_path&#x27;))
+    result[&#x27;sequence_position&#x27;] = calc_workflow_steps_sequence_position(result.get(&#x27;sequence_position_override&#x27;), result.get(&#x27;inferred_sequence_position&#x27;))
+
+    # Convert empty strings to None for string fields
+    for key in [&#x27;relative_path&#x27;, &#x27;iri&#x27;, &#x27;name&#x27;, &#x27;executing_agent_type&#x27;]:
+        if result.get(key) == &#x27;&#x27;:
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# APPROVALGATES CALCULATIONS
+# Table: ApprovalGates. The NTWF ApprovalGate class — rdfs:subClassOf WorkflowStep. Modeled as a class-table-inheritance subtype: each gate row shares identity with exactly one WorkflowStep (via the WorkflowStep 1:1 FK) and carries only the gate-specific attribute, escalationThresholdHours. The step it specializes keeps the common attributes (requiresHumanApproval, assigned role, etc.). This preserves the article&#x27;s double-typing — a gate IS a step — without collapsing two DAG nodes into one.
+# =============================================================================
+
+# Level 1
+
+def calc_approval_gates_relative_path(parent_path, approval_gate_id):
+    &quot;&quot;&quot;
+    Stable, DAG-derived location: this row nests under its WorkflowSteps parent. Concatenates the parent&#x27;s path (ParentPath) with &#x27;/approval-gates/&#x27; + this row&#x27;s primary key. The DAG performs the recursion — one hop per table via ParentPath — so the full ancestry is encoded without a recursive formula. Unique by construction.
+    
+    Formula: ={{ParentPath}} &amp; &quot;/approval-gates/&quot; &amp; {{ApprovalGateId}}
+    &quot;&quot;&quot;
+    return (str(parent_path or &quot;&quot;) + &#x27;/approval-gates/&#x27; + str(approval_gate_id or &quot;&quot;))
+
+def calc_approval_gates_name(display_name):
+    &quot;&quot;&quot;Formula: =SUBSTITUTE(LOWER({{DisplayName}}), &quot; &quot;, &quot;-&quot;)&quot;&quot;&quot;
+    return ((((display_name or &quot;&quot;).lower()) or &quot;&quot;).replace(&#x27; &#x27;, &#x27;-&#x27;))
+
+def calc_approval_gates_has_human_approver(gate_approver_human):
+    &quot;&quot;&quot;
+    TRUE iff this approval gate resolves to a human approver (its gate role is filled by a HumanAgent). Rolls up into Workflows.CountGatesWithoutHumanApprover, which CQ2&#x27;s satisfaction reads.
+    
+    Formula: =NOT(ISBLANK({{GateApproverHuman}}))
+    &quot;&quot;&quot;
+    return (not (gate_approver_human is None or gate_approver_human == &quot;&quot;))
+
+# Level 2
+
+def calc_approval_gates_iri(relative_path):
+    &quot;&quot;&quot;
+    Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of &#x27;/&#x27; for &#x27;-&#x27;. The OWL transpiler mints each individual&#x27;s IRI from this value (erb:&lt;Iri&gt;), so identity is path-derived and globally unique — no cross-table primary-key collisions.
+    
+    Formula: =SUBSTITUTE({{RelativePath}}, &quot;/&quot;, &quot;-&quot;)
+    &quot;&quot;&quot;
+    return ((relative_path or &quot;&quot;).replace(&#x27;/&#x27;, &#x27;-&#x27;))
+
+
+def compute_approval_gates_fields(record: dict) -&gt; dict:
+    &quot;&quot;&quot;
+    Compute all calculated fields for ApprovalGates.
+    
+    Table: ApprovalGates. The NTWF ApprovalGate class — rdfs:subClassOf WorkflowStep. Modeled as a class-table-inheritance subtype: each gate row shares identity with exactly one WorkflowStep (via the WorkflowStep 1:1 FK) and carries only the gate-specific attribute, escalationThresholdHours. The step it specializes keeps the common attributes (requiresHumanApproval, assigned role, etc.). This preserves the article&#x27;s double-typing — a gate IS a step — without collapsing two DAG nodes into one.
+    &quot;&quot;&quot;
+    result = dict(record)
+
+    # Level 1 calculations
+    result[&#x27;relative_path&#x27;] = calc_approval_gates_relative_path(result.get(&#x27;parent_path&#x27;), result.get(&#x27;approval_gate_id&#x27;))
+    result[&#x27;name&#x27;] = calc_approval_gates_name(result.get(&#x27;display_name&#x27;))
+    result[&#x27;has_human_approver&#x27;] = calc_approval_gates_has_human_approver(result.get(&#x27;gate_approver_human&#x27;))
+
+    # Level 2 calculations
+    result[&#x27;iri&#x27;] = calc_approval_gates_iri(result.get(&#x27;relative_path&#x27;))
+
+    # Convert empty strings to None for string fields
+    for key in [&#x27;relative_path&#x27;, &#x27;iri&#x27;, &#x27;name&#x27;]:
+        if result.get(key) == &#x27;&#x27;:
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# STEPPRECEDENCE CALCULATIONS
+# Table: StepPrecedence. The NTWF ntwf:precedesStep ordering relationship, modeled as a first-class step-to-step junction. Each row is one directed edge: FromStep precedes ToStep. ntwf:precedesStep is an owl:TransitiveProperty — the four asserted edges (1-&gt;2, 2-&gt;3, 3-&gt;4, 4-&gt;5) imply the full closure of ten ordering pairs (including 1-&gt;5, which is never asserted). Each edge is a first-class node in the DAG, never a &#x27;helper&#x27; integer.
+# =============================================================================
+
+# Level 1
+
+def calc_step_precedence_relative_path(parent_path, step_precedence_id):
+    &quot;&quot;&quot;
+    Stable, DAG-derived location: this row nests under its WorkflowSteps parent. Concatenates the parent&#x27;s path (ParentPath) with &#x27;/precedence/&#x27; + this row&#x27;s primary key. The DAG performs the recursion — one hop per table via ParentPath — so the full ancestry is encoded without a recursive formula. Unique by construction.
+    
+    Formula: ={{ParentPath}} &amp; &quot;/precedence/&quot; &amp; {{StepPrecedenceId}}
+    &quot;&quot;&quot;
+    return (str(parent_path or &quot;&quot;) + &#x27;/precedence/&#x27; + str(step_precedence_id or &quot;&quot;))
+
+def calc_step_precedence_name(from_step, to_step):
+    &quot;&quot;&quot;
+    Human-readable edge label derived from its endpoints. Mirrors the FromStep -&gt; ToStep direction.
+    
+    Formula: ={{FromStep}} &amp; &quot; -&gt; &quot; &amp; {{ToStep}}
+    &quot;&quot;&quot;
+    return (str(from_step or &quot;&quot;) + &#x27; -&gt; &#x27; + str(to_step or &quot;&quot;))
+
+# Level 2
+
+def calc_step_precedence_iri(relative_path):
+    &quot;&quot;&quot;
+    Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of &#x27;/&#x27; for &#x27;-&#x27;. The OWL transpiler mints each individual&#x27;s IRI from this value (erb:&lt;Iri&gt;), so identity is path-derived and globally unique — no cross-table primary-key collisions.
+    
+    Formula: =SUBSTITUTE({{RelativePath}}, &quot;/&quot;, &quot;-&quot;)
+    &quot;&quot;&quot;
+    return ((relative_path or &quot;&quot;).replace(&#x27;/&#x27;, &#x27;-&#x27;))
+
+
+def compute_step_precedence_fields(record: dict) -&gt; dict:
+    &quot;&quot;&quot;
+    Compute all calculated fields for StepPrecedence.
+    
+    Table: StepPrecedence. The NTWF ntwf:precedesStep ordering relationship, modeled as a first-class step-to-step junction. Each row is one directed edge: FromStep precedes ToStep. ntwf:precedesStep is an owl:TransitiveProperty — the four asserted edges (1-&gt;2, 2-&gt;3, 3-&gt;4, 4-&gt;5) imply the full closure of ten ordering pairs (including 1-&gt;5, which is never asserted). Each edge is a first-class node in the DAG, never a &#x27;helper&#x27; integer.
+    &quot;&quot;&quot;
+    result = dict(record)
+
+    # Level 1 calculations
+    result[&#x27;relative_path&#x27;] = calc_step_precedence_relative_path(result.get(&#x27;parent_path&#x27;), result.get(&#x27;step_precedence_id&#x27;))
+    result[&#x27;name&#x27;] = calc_step_precedence_name(result.get(&#x27;from_step&#x27;), result.get(&#x27;to_step&#x27;))
+
+    # Level 2 calculations
+    result[&#x27;iri&#x27;] = calc_step_precedence_iri(result.get(&#x27;relative_path&#x27;))
+
+    # Convert empty strings to None for string fields
+    for key in [&#x27;relative_path&#x27;, &#x27;iri&#x27;, &#x27;name&#x27;]:
+        if result.get(key) == &#x27;&#x27;:
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# ROLES CALCULATIONS
+# Table: Roles. The NTWF Role class — a custom root with no adequate standard match, declared disjoint with WorkflowStep and WorkflowArtifact. Roles are the heart of Heuristic 2 (role-agent separation): WorkflowSteps point to Roles; Roles point to exactly one agent (human, AI, or pipeline) via the polymorphic filledBy relationship. When personnel or models change, one filledBy triple changes and the workflow structure is untouched.
+# =============================================================================
+
+# Level 1
+
+def calc_roles_relative_path(role_id):
+    &quot;&quot;&quot;
+    Stable, DAG-derived location for this Role row. Root segment &#x27;roles&#x27; + the row&#x27;s primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model.
+    
+    Formula: =&quot;roles/&quot; &amp; {{RoleId}}
+    &quot;&quot;&quot;
+    return (&#x27;roles/&#x27; + str(role_id or &quot;&quot;))
+
+def calc_roles_name(display_name):
+    &quot;&quot;&quot;Formula: =SUBSTITUTE(LOWER({{DisplayName}}), &quot; &quot;, &quot;-&quot;)&quot;&quot;&quot;
+    return ((((display_name or &quot;&quot;).lower()) or &quot;&quot;).replace(&#x27; &#x27;, &#x27;-&#x27;))
+
+def calc_roles_filled_by_arm_count(filled_by_human_agent, filled_by_ai_agent, filled_by_automated_pipeline):
+    &quot;&quot;&quot;
+    Number of polymorphic ntwf:filledBy arms set on this role (of FilledByHumanAgent / FilledByAIAgent / FilledByAutomatedPipeline). Should always be exactly 1 — mirroring filledBy being functional and the three agent types being mutually disjoint.
+    
+    Formula: =IF(NOT(ISBLANK({{FilledByHumanAgent}})), 1, 0) + IF(NOT(ISBLANK({{FilledByAIAgent}})), 1, 0) + IF(NOT(ISBLANK({{FilledByAutomatedPipeline}})), 1, 0)
+    &quot;&quot;&quot;
+    return (((((1 if (not (filled_by_human_agent is None or filled_by_human_agent == &quot;&quot;)) else 0)) or 0) + (((1 if (not (filled_by_ai_agent is None or filled_by_ai_agent == &quot;&quot;)) else 0)) or 0)) or 0) + (((1 if (not (filled_by_automated_pipeline is None or filled_by_automated_pipeline == &quot;&quot;)) else 0)) or 0)
+
+def calc_roles_filler_type(filled_by_human_agent, filled_by_ai_agent, filled_by_automated_pipeline):
+    &quot;&quot;&quot;
+    Which disjoint agent class fills this role (HumanAgent / AIAgent / AutomatedPipeline), from whichever filledBy arm is set. Lets the delegation-chain query confirm CQ6&#x27;s &#x27;zero AI agents in the escalation chain&#x27;.
+    
+    Formula: =IF(NOT(ISBLANK({{FilledByHumanAgent}})), &quot;HumanAgent&quot;, IF(NOT(ISBLANK({{FilledByAIAgent}})), &quot;AIAgent&quot;, IF(NOT(ISBLANK({{FilledByAutomatedPipeline}})), &quot;AutomatedPipeline&quot;, &quot;&quot;)))
+    &quot;&quot;&quot;
+    return (&#x27;HumanAgent&#x27; if (not (filled_by_human_agent is None or filled_by_human_agent == &quot;&quot;)) else (&#x27;AIAgent&#x27; if (not (filled_by_ai_agent is None or filled_by_ai_agent == &quot;&quot;)) else (&#x27;AutomatedPipeline&#x27; if (not (filled_by_automated_pipeline is None or filled_by_automated_pipeline == &quot;&quot;)) else &#x27;&#x27;)))
+
+def calc_roles_escalation_violation(fills_approval_gate, delegates_to):
+    &quot;&quot;&quot;
+    Detectable-error witness: TRUE iff this role owns an approval gate (FillsApprovalGate &gt; 0) yet has no escalation target (DelegatesTo is blank). A gate can stall and must be escalable up the delegatesTo chain; a gate role with no one to escalate to is a broken escalation. A clean ABox yields FALSE for every role. This is the role-side analogue of WorkflowSteps.ApprovalConsistencyViolation, and the witness CQ6&#x27;s escalation chain depends on.
+    
+    Formula: =AND({{FillsApprovalGate}} &gt; 0, ISBLANK({{DelegatesTo}}))
+    &quot;&quot;&quot;
+    return ((False if (fills_approval_gate) is None or (0) is None else (fills_approval_gate) &gt; (0)) and ((delegates_to is None or delegates_to == &quot;&quot;) is True))
+
+# Level 2
+
+def calc_roles_iri(relative_path):
+    &quot;&quot;&quot;
+    Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of &#x27;/&#x27; for &#x27;-&#x27;. The OWL transpiler mints each individual&#x27;s IRI from this value (erb:&lt;Iri&gt;), so identity is path-derived and globally unique — no cross-table primary-key collisions.
+    
+    Formula: =SUBSTITUTE({{RelativePath}}, &quot;/&quot;, &quot;-&quot;)
+    &quot;&quot;&quot;
+    return ((relative_path or &quot;&quot;).replace(&#x27;/&#x27;, &#x27;-&#x27;))
+
+def calc_roles_has_exactly_one_filler(filled_by_arm_count):
+    &quot;&quot;&quot;
+    Disjointness/functional witness: TRUE iff exactly one filledBy arm is set. The three agent classes are owl:disjointWith one another and ntwf:filledBy is functional, so a clean ABox has this TRUE for every role. Setting two arms (a role filled by both a human and an AI) is the Suite-4 disjointness violation — here it flips this to FALSE.
+    
+    Formula: ={{FilledByArmCount}} = 1
+    &quot;&quot;&quot;
+    return (filled_by_arm_count == 1)
+
+
+def compute_roles_fields(record: dict) -&gt; dict:
+    &quot;&quot;&quot;
+    Compute all calculated fields for Roles.
+    
+    Table: Roles. The NTWF Role class — a custom root with no adequate standard match, declared disjoint with WorkflowStep and WorkflowArtifact. Roles are the heart of Heuristic 2 (role-agent separation): WorkflowSteps point to Roles; Roles point to exactly one agent (human, AI, or pipeline) via the polymorphic filledBy relationship. When personnel or models change, one filledBy triple changes and the workflow structure is untouched.
+    &quot;&quot;&quot;
+    result = dict(record)
+
+    # Level 1 calculations
+    result[&#x27;relative_path&#x27;] = calc_roles_relative_path(result.get(&#x27;role_id&#x27;))
+    result[&#x27;name&#x27;] = calc_roles_name(result.get(&#x27;display_name&#x27;))
+    result[&#x27;filled_by_arm_count&#x27;] = calc_roles_filled_by_arm_count(result.get(&#x27;filled_by_human_agent&#x27;), result.get(&#x27;filled_by_ai_agent&#x27;), result.get(&#x27;filled_by_automated_pipeline&#x27;))
+    result[&#x27;filler_type&#x27;] = calc_roles_filler_type(result.get(&#x27;filled_by_human_agent&#x27;), result.get(&#x27;filled_by_ai_agent&#x27;), result.get(&#x27;filled_by_automated_pipeline&#x27;))
+    result[&#x27;escalation_violation&#x27;] = calc_roles_escalation_violation(result.get(&#x27;fills_approval_gate&#x27;), result.get(&#x27;delegates_to&#x27;))
+
+    # Level 2 calculations
+    result[&#x27;iri&#x27;] = calc_roles_iri(result.get(&#x27;relative_path&#x27;))
+    result[&#x27;has_exactly_one_filler&#x27;] = calc_roles_has_exactly_one_filler(result.get(&#x27;filled_by_arm_count&#x27;))
+
+    # Convert empty strings to None for string fields
+    for key in [&#x27;relative_path&#x27;, &#x27;iri&#x27;, &#x27;name&#x27;, &#x27;filler_type&#x27;]:
+        if result.get(key) == &#x27;&#x27;:
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# ROLEASSIGNMENTS CALCULATIONS
+# Table: RoleAssignments. The temporal history of ntwf:filledBy. NTWF&#x27;s change-management discipline requires that when a filledBy triple is updated the old triple is NOT deleted — it is timestamped and retained, or replaced with a versioned triple carrying a validity period. Each row is one filledBy binding with a ValidFrom / ValidTo validity period and the reason for the change, so that &#x27;which agent was executing this step on March 1, 2026?&#x27; is answerable from the graph. The current binding on Roles.FilledBy* is the row whose ValidTo is blank (IsCurrent = TRUE); closed rows preserve provenance and chain of custody. This is the relational equivalent of the ontology&#x27;s named-graph / versioned-triple retention practice.
+# =============================================================================
+
+# Level 1
+
+def calc_role_assignments_relative_path(parent_path, role_assignment_id):
+    &quot;&quot;&quot;
+    Stable, DAG-derived location: this assignment nests under its Role parent. Concatenates the parent&#x27;s path (ParentPath) with &#x27;/assignments/&#x27; + this row&#x27;s primary key. Unique by construction.
+    
+    Formula: ={{ParentPath}} &amp; &quot;/assignments/&quot; &amp; {{RoleAssignmentId}}
+    &quot;&quot;&quot;
+    return (str(parent_path or &quot;&quot;) + &#x27;/assignments/&#x27; + str(role_assignment_id or &quot;&quot;))
+
+def calc_role_assignments_name(role, valid_from, valid_to):
+    &quot;&quot;&quot;
+    Human-readable label for this assignment period: the role and the validity window.
+    
+    Formula: ={{Role}} &amp; &quot; [&quot; &amp; {{ValidFrom}} &amp; &quot; -&gt; &quot; &amp; IF(ISBLANK({{ValidTo}}), &quot;open&quot;, {{ValidTo}}) &amp; &quot;]&quot; 
+    &quot;&quot;&quot;
+    return (str(role or &quot;&quot;) + &#x27; [&#x27; + str(valid_from or &quot;&quot;) + &#x27; -&gt; &#x27; + str((&#x27;open&#x27; if (valid_to is None or valid_to == &quot;&quot;) else valid_to) if (&#x27;open&#x27; if (valid_to is None or valid_to == &quot;&quot;) else valid_to) is not None else &quot;&quot;) + &#x27;]&#x27;)
+
+def calc_role_assignments_filler_type(filled_by_human_agent, filled_by_ai_agent, filled_by_automated_pipeline):
+    &quot;&quot;&quot;
+    Which agent class filled the role during this period, derived from the three filler arms. Mirrors Roles.FillerType but for the historical binding.
+    
+    Formula: =IF(NOT(ISBLANK({{FilledByHumanAgent}})), &quot;HumanAgent&quot;, IF(NOT(ISBLANK({{FilledByAIAgent}})), &quot;AIAgent&quot;, IF(NOT(ISBLANK({{FilledByAutomatedPipeline}})), &quot;AutomatedPipeline&quot;, &quot;&quot;)))
+    &quot;&quot;&quot;
+    return (&#x27;HumanAgent&#x27; if (not (filled_by_human_agent is None or filled_by_human_agent == &quot;&quot;)) else (&#x27;AIAgent&#x27; if (not (filled_by_ai_agent is None or filled_by_ai_agent == &quot;&quot;)) else (&#x27;AutomatedPipeline&#x27; if (not (filled_by_automated_pipeline is None or filled_by_automated_pipeline == &quot;&quot;)) else &#x27;&#x27;)))
+
+def calc_role_assignments_is_current(valid_to):
+    &quot;&quot;&quot;
+    TRUE iff this is the live binding (ValidTo is blank). The set of IsCurrent rows reproduces exactly the current Roles.FilledBy* values; the rest are retained history. The old triple is never deleted — closed rows stay, only IsCurrent flips.
+    
+    Formula: =ISBLANK({{ValidTo}})
+    &quot;&quot;&quot;
+    return (valid_to is None or valid_to == &quot;&quot;)
+
+def calc_role_assignments_was_active_as_of_audit_date(valid_from, valid_to):
+    &quot;&quot;&quot;
+    NTWF&#x27;s signature temporal query: &#x27;which agent was executing this step on March 1, 2026?&#x27;. TRUE iff this binding&#x27;s validity period contains 2026-03-01 (ValidFrom &lt;= the date AND (ValidTo blank OR ValidTo &gt; the date)). ISO dates compare lexically. The single row that is TRUE for a given role names the agent active on the audit date — answerable only because history is retained.
+    
+    Formula: =AND({{ValidFrom}} &lt;= &quot;2026-03-01&quot;, OR(ISBLANK({{ValidTo}}), {{ValidTo}} &gt; &quot;2026-03-01&quot;))
+    &quot;&quot;&quot;
+    return ((False if (valid_from) is None or (&#x27;2026-03-01&#x27;) is None else (valid_from) &lt;= (&#x27;2026-03-01&#x27;)) and (((valid_to is None or valid_to == &quot;&quot;) is True) or (False if (valid_to) is None or (&#x27;2026-03-01&#x27;) is None else (valid_to) &gt; (&#x27;2026-03-01&#x27;))))
+
+# Level 2
+
+def calc_role_assignments_iri(relative_path):
+    &quot;&quot;&quot;
+    Opaque stable identifier (the dash-form of RelativePath). The OWL transpiler mints each individual&#x27;s IRI from this value (erb:&lt;Iri&gt;), so identity is path-derived and globally unique.
+    
+    Formula: =SUBSTITUTE({{RelativePath}}, &quot;/&quot;, &quot;-&quot;)
+    &quot;&quot;&quot;
+    return ((relative_path or &quot;&quot;).replace(&#x27;/&#x27;, &#x27;-&#x27;))
+
+def calc_role_assignments_is_agent_type_change(prior_filler_type, filler_type):
+    &quot;&quot;&quot;
+    TRUE iff this assignment changed the agent CLASS of the role (PriorFillerType set and different from FillerType). NTWF distinguishes a plain personnel/model swap (same class) from an agent-type transition, which carries compliance weight.
+    
+    Formula: =AND(NOT(ISBLANK({{PriorFillerType}})), {{PriorFillerType}} &lt;&gt; {{FillerType}})
+    &quot;&quot;&quot;
+    return ((not (prior_filler_type is None or prior_filler_type == &quot;&quot;)) and (prior_filler_type != filler_type))
+
+def calc_role_assignments_requires_compliance_audit(prior_filler_type, filler_type):
+    &quot;&quot;&quot;
+    Changing the agent type of a step from ntwf:AIAgent to ntwf:HumanAgent is a data operation with compliance implications. TRUE iff this assignment took a previously AI-executed binding and reassigned it to a human — the exact transition NTWF governance says the audit record must capture (when + why).
+    
+    Formula: =AND(NOT(ISBLANK({{PriorFillerType}})), {{PriorFillerType}} = &quot;AIAgent&quot;, {{FillerType}} = &quot;HumanAgent&quot;)
+    &quot;&quot;&quot;
+    return ((not (prior_filler_type is None or prior_filler_type == &quot;&quot;)) and (prior_filler_type == &#x27;AIAgent&#x27;) and (filler_type == &#x27;HumanAgent&#x27;))
+
+
+def compute_role_assignments_fields(record: dict) -&gt; dict:
+    &quot;&quot;&quot;
+    Compute all calculated fields for RoleAssignments.
+    
+    Table: RoleAssignments. The temporal history of ntwf:filledBy. NTWF&#x27;s change-management discipline requires that when a filledBy triple is updated the old triple is NOT deleted — it is timestamped and retained, or replaced with a versioned triple carrying a validity period. Each row is one filledBy binding with a ValidFrom / ValidTo validity period and the reason for the change, so that &#x27;which agent was executing this step on March 1, 2026?&#x27; is answerable from the graph. The current binding on Roles.FilledBy* is the row whose ValidTo is blank (IsCurrent = TRUE); closed rows preserve provenance and chain of custody. This is the relational equivalent of the ontology&#x27;s named-graph / versioned-triple retention practice.
+    &quot;&quot;&quot;
+    result = dict(record)
+
+    # Level 1 calculations
+    result[&#x27;relative_path&#x27;] = calc_role_assignments_relative_path(result.get(&#x27;parent_path&#x27;), result.get(&#x27;role_assignment_id&#x27;))
+    result[&#x27;name&#x27;] = calc_role_assignments_name(result.get(&#x27;role&#x27;), result.get(&#x27;valid_from&#x27;), result.get(&#x27;valid_to&#x27;))
+    result[&#x27;filler_type&#x27;] = calc_role_assignments_filler_type(result.get(&#x27;filled_by_human_agent&#x27;), result.get(&#x27;filled_by_ai_agent&#x27;), result.get(&#x27;filled_by_automated_pipeline&#x27;))
+    result[&#x27;is_current&#x27;] = calc_role_assignments_is_current(result.get(&#x27;valid_to&#x27;))
+    result[&#x27;was_active_as_of_audit_date&#x27;] = calc_role_assignments_was_active_as_of_audit_date(result.get(&#x27;valid_from&#x27;), result.get(&#x27;valid_to&#x27;))
+
+    # Level 2 calculations
+    result[&#x27;iri&#x27;] = calc_role_assignments_iri(result.get(&#x27;relative_path&#x27;))
+    result[&#x27;is_agent_type_change&#x27;] = calc_role_assignments_is_agent_type_change(result.get(&#x27;prior_filler_type&#x27;), result.get(&#x27;filler_type&#x27;))
+    result[&#x27;requires_compliance_audit&#x27;] = calc_role_assignments_requires_compliance_audit(result.get(&#x27;prior_filler_type&#x27;), result.get(&#x27;filler_type&#x27;))
+
+    # Convert empty strings to None for string fields
+    for key in [&#x27;relative_path&#x27;, &#x27;iri&#x27;, &#x27;name&#x27;, &#x27;filler_type&#x27;]:
+        if result.get(key) == &#x27;&#x27;:
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# DEPARTMENTS CALCULATIONS
+# Table: Departments. The NTWF Department class — schema:Organization. First-class entity that enables cross-department intersection queries (CQ7: which workflows involve both Engineering and Legal?). Roles are ownedBy a department.
+# =============================================================================
+
+# Level 1
+
+def calc_departments_relative_path(department_id):
+    &quot;&quot;&quot;
+    Stable, DAG-derived location for this Department row. Root segment &#x27;departments&#x27; + the row&#x27;s primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model.
+    
+    Formula: =&quot;departments/&quot; &amp; {{DepartmentId}}
+    &quot;&quot;&quot;
+    return (&#x27;departments/&#x27; + str(department_id or &quot;&quot;))
+
+def calc_departments_name(display_name):
+    &quot;&quot;&quot;
+    Human-readable display name of the department. Should match organizational terminology for stakeholder communication.
+    
+    Formula: =SUBSTITUTE(LOWER({{DisplayName}}), &quot; &quot;, &quot;-&quot;)
+    &quot;&quot;&quot;
+    return ((((display_name or &quot;&quot;).lower()) or &quot;&quot;).replace(&#x27; &#x27;, &#x27;-&#x27;))
+
+# Level 2
+
+def calc_departments_iri(relative_path):
+    &quot;&quot;&quot;
+    Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of &#x27;/&#x27; for &#x27;-&#x27;. The OWL transpiler mints each individual&#x27;s IRI from this value (erb:&lt;Iri&gt;), so identity is path-derived and globally unique — no cross-table primary-key collisions.
+    
+    Formula: =SUBSTITUTE({{RelativePath}}, &quot;/&quot;, &quot;-&quot;)
+    &quot;&quot;&quot;
+    return ((relative_path or &quot;&quot;).replace(&#x27;/&#x27;, &#x27;-&#x27;))
+
+
+def compute_departments_fields(record: dict) -&gt; dict:
+    &quot;&quot;&quot;
+    Compute all calculated fields for Departments.
+    
+    Table: Departments. The NTWF Department class — schema:Organization. First-class entity that enables cross-department intersection queries (CQ7: which workflows involve both Engineering and Legal?). Roles are ownedBy a department.
+    &quot;&quot;&quot;
+    result = dict(record)
+
+    # Level 1 calculations
+    result[&#x27;relative_path&#x27;] = calc_departments_relative_path(result.get(&#x27;department_id&#x27;))
+    result[&#x27;name&#x27;] = calc_departments_name(result.get(&#x27;display_name&#x27;))
+
+    # Level 2 calculations
+    result[&#x27;iri&#x27;] = calc_departments_iri(result.get(&#x27;relative_path&#x27;))
+
+    # Convert empty strings to None for string fields
+    for key in [&#x27;relative_path&#x27;, &#x27;iri&#x27;, &#x27;name&#x27;]:
+        if result.get(key) == &#x27;&#x27;:
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# HUMANAGENTS CALCULATIONS
+# Table: HumanAgents. The NTWF HumanAgent class — foaf:Person + prov:Agent. The only agent type permitted to fill roles whose step has requiresHumanApproval. Disjoint with AIAgent and AutomatedPipeline.
+# =============================================================================
+
+# Level 1
+
+def calc_human_agents_relative_path(human_agent_id):
+    &quot;&quot;&quot;
+    Stable, DAG-derived location for this HumanAgent row. Root segment &#x27;human-agents&#x27; + the row&#x27;s primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model.
+    
+    Formula: =&quot;human-agents/&quot; &amp; {{HumanAgentId}}
+    &quot;&quot;&quot;
+    return (&#x27;human-agents/&#x27; + str(human_agent_id or &quot;&quot;))
+
+# Level 2
+
+def calc_human_agents_iri(relative_path):
+    &quot;&quot;&quot;
+    Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of &#x27;/&#x27; for &#x27;-&#x27;. The OWL transpiler mints each individual&#x27;s IRI from this value (erb:&lt;Iri&gt;), so identity is path-derived and globally unique — no cross-table primary-key collisions.
+    
+    Formula: =SUBSTITUTE({{RelativePath}}, &quot;/&quot;, &quot;-&quot;)
+    &quot;&quot;&quot;
+    return ((relative_path or &quot;&quot;).replace(&#x27;/&#x27;, &#x27;-&#x27;))
+
+
+def compute_human_agents_fields(record: dict) -&gt; dict:
+    &quot;&quot;&quot;
+    Compute all calculated fields for HumanAgents.
+    
+    Table: HumanAgents. The NTWF HumanAgent class — foaf:Person + prov:Agent. The only agent type permitted to fill roles whose step has requiresHumanApproval. Disjoint with AIAgent and AutomatedPipeline.
+    &quot;&quot;&quot;
+    result = dict(record)
+
+    # Level 1 calculations
+    result[&#x27;relative_path&#x27;] = calc_human_agents_relative_path(result.get(&#x27;human_agent_id&#x27;))
+
+    # Level 2 calculations
+    result[&#x27;iri&#x27;] = calc_human_agents_iri(result.get(&#x27;relative_path&#x27;))
+
+    # Convert empty strings to None for string fields
+    for key in [&#x27;relative_path&#x27;, &#x27;iri&#x27;]:
+        if result.get(key) == &#x27;&#x27;:
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# AIAGENTS CALCULATIONS
+# Table: AIAgents. The NTWF AIAgent class — prov:SoftwareAgent + ntwf:modelVersion. Distinguished from AutomatedPipeline by probabilistic (vs. deterministic) output semantics. Disjoint with HumanAgent and AutomatedPipeline. May never fill a role whose step has requiresHumanApproval.
+# =============================================================================
+
+# Level 1
+
+def calc_ai_agents_relative_path(ai_agent_id):
+    &quot;&quot;&quot;
+    Stable, DAG-derived location for this AIAgent row. Root segment &#x27;ai-agents&#x27; + the row&#x27;s primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model.
+    
+    Formula: =&quot;ai-agents/&quot; &amp; {{AIAgentId}}
+    &quot;&quot;&quot;
+    return (&#x27;ai-agents/&#x27; + str(ai_agent_id or &quot;&quot;))
+
+# Level 2
+
+def calc_ai_agents_iri(relative_path):
+    &quot;&quot;&quot;
+    Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of &#x27;/&#x27; for &#x27;-&#x27;. The OWL transpiler mints each individual&#x27;s IRI from this value (erb:&lt;Iri&gt;), so identity is path-derived and globally unique — no cross-table primary-key collisions.
+    
+    Formula: =SUBSTITUTE({{RelativePath}}, &quot;/&quot;, &quot;-&quot;)
+    &quot;&quot;&quot;
+    return ((relative_path or &quot;&quot;).replace(&#x27;/&#x27;, &#x27;-&#x27;))
+
+
+def compute_ai_agents_fields(record: dict) -&gt; dict:
+    &quot;&quot;&quot;
+    Compute all calculated fields for AIAgents.
+    
+    Table: AIAgents. The NTWF AIAgent class — prov:SoftwareAgent + ntwf:modelVersion. Distinguished from AutomatedPipeline by probabilistic (vs. deterministic) output semantics. Disjoint with HumanAgent and AutomatedPipeline. May never fill a role whose step has requiresHumanApproval.
+    &quot;&quot;&quot;
+    result = dict(record)
+
+    # Level 1 calculations
+    result[&#x27;relative_path&#x27;] = calc_ai_agents_relative_path(result.get(&#x27;ai_agent_id&#x27;))
+
+    # Level 2 calculations
+    result[&#x27;iri&#x27;] = calc_ai_agents_iri(result.get(&#x27;relative_path&#x27;))
+
+    # Convert empty strings to None for string fields
+    for key in [&#x27;relative_path&#x27;, &#x27;iri&#x27;]:
+        if result.get(key) == &#x27;&#x27;:
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# AUTOMATEDPIPELINES CALCULATIONS
+# Table: AutomatedPipelines. The NTWF AutomatedPipeline class — prov:SoftwareAgent + schema:SoftwareApplication. Distinguished from AIAgent by deterministic (vs. probabilistic) output semantics. Disjoint with HumanAgent and AIAgent. Carries schema:name, not foaf:name.
+# =============================================================================
+
+# Level 1
+
+def calc_automated_pipelines_relative_path(automated_pipeline_id):
+    &quot;&quot;&quot;
+    Stable, DAG-derived location for this AutomatedPipeline row. Root segment &#x27;automated-pipelines&#x27; + the row&#x27;s primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model.
+    
+    Formula: =&quot;automated-pipelines/&quot; &amp; {{AutomatedPipelineId}}
+    &quot;&quot;&quot;
+    return (&#x27;automated-pipelines/&#x27; + str(automated_pipeline_id or &quot;&quot;))
+
+# Level 2
+
+def calc_automated_pipelines_iri(relative_path):
+    &quot;&quot;&quot;
+    Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of &#x27;/&#x27; for &#x27;-&#x27;. The OWL transpiler mints each individual&#x27;s IRI from this value (erb:&lt;Iri&gt;), so identity is path-derived and globally unique — no cross-table primary-key collisions.
+    
+    Formula: =SUBSTITUTE({{RelativePath}}, &quot;/&quot;, &quot;-&quot;)
+    &quot;&quot;&quot;
+    return ((relative_path or &quot;&quot;).replace(&#x27;/&#x27;, &#x27;-&#x27;))
+
+
+def compute_automated_pipelines_fields(record: dict) -&gt; dict:
+    &quot;&quot;&quot;
+    Compute all calculated fields for AutomatedPipelines.
+    
+    Table: AutomatedPipelines. The NTWF AutomatedPipeline class — prov:SoftwareAgent + schema:SoftwareApplication. Distinguished from AIAgent by deterministic (vs. probabilistic) output semantics. Disjoint with HumanAgent and AIAgent. Carries schema:name, not foaf:name.
+    &quot;&quot;&quot;
+    result = dict(record)
+
+    # Level 1 calculations
+    result[&#x27;relative_path&#x27;] = calc_automated_pipelines_relative_path(result.get(&#x27;automated_pipeline_id&#x27;))
+
+    # Level 2 calculations
+    result[&#x27;iri&#x27;] = calc_automated_pipelines_iri(result.get(&#x27;relative_path&#x27;))
+
+    # Convert empty strings to None for string fields
+    for key in [&#x27;relative_path&#x27;, &#x27;iri&#x27;]:
+        if result.get(key) == &#x27;&#x27;:
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# WORKFLOWSTATUSCONCEPTS CALCULATIONS
+# SKOS controlled vocabulary for workflow lifecycle states (ntwf:WorkflowStatusScheme). Part of the CBox. Concepts are shared across all workflows.
+# =============================================================================
+
+# Level 1
+
+def calc_workflow_status_concepts_relative_path(concept_id):
+    &quot;&quot;&quot;
+    Stable, DAG-derived location for this WorkflowStatusConcept row. Root segment &#x27;concepts/workflow-status&#x27; + the row&#x27;s primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model.
+    
+    Formula: =&quot;concepts/workflow-status/&quot; &amp; {{ConceptId}}
+    &quot;&quot;&quot;
+    return (&#x27;concepts/workflow-status/&#x27; + str(concept_id or &quot;&quot;))
+
+# Level 2
+
+def calc_workflow_status_concepts_iri(relative_path):
+    &quot;&quot;&quot;
+    Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of &#x27;/&#x27; for &#x27;-&#x27;. The OWL transpiler mints each individual&#x27;s IRI from this value (erb:&lt;Iri&gt;), so identity is path-derived and globally unique — no cross-table primary-key collisions.
+    
+    Formula: =SUBSTITUTE({{RelativePath}}, &quot;/&quot;, &quot;-&quot;)
+    &quot;&quot;&quot;
+    return ((relative_path or &quot;&quot;).replace(&#x27;/&#x27;, &#x27;-&#x27;))
+
+
+def compute_workflow_status_concepts_fields(record: dict) -&gt; dict:
+    &quot;&quot;&quot;
+    Compute all calculated fields for WorkflowStatusConcepts.
+    
+    SKOS controlled vocabulary for workflow lifecycle states (ntwf:WorkflowStatusScheme). Part of the CBox. Concepts are shared across all workflows.
+    &quot;&quot;&quot;
+    result = dict(record)
+
+    # Level 1 calculations
+    result[&#x27;relative_path&#x27;] = calc_workflow_status_concepts_relative_path(result.get(&#x27;concept_id&#x27;))
+
+    # Level 2 calculations
+    result[&#x27;iri&#x27;] = calc_workflow_status_concepts_iri(result.get(&#x27;relative_path&#x27;))
+
+    # Convert empty strings to None for string fields
+    for key in [&#x27;relative_path&#x27;, &#x27;iri&#x27;]:
+        if result.get(key) == &#x27;&#x27;:
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# AGENTCAPABILITYCONCEPTS CALCULATIONS
+# SKOS controlled vocabulary for agent capability types (ntwf:AgentCapabilityScheme). Roles declare which capability their filler must have (ntwf:hasCapability). Part of the CBox.
+# =============================================================================
+
+# Level 1
+
+def calc_agent_capability_concepts_relative_path(concept_id):
+    &quot;&quot;&quot;
+    Stable, DAG-derived location for this AgentCapabilityConcept row. Root segment &#x27;concepts/agent-capability&#x27; + the row&#x27;s primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model.
+    
+    Formula: =&quot;concepts/agent-capability/&quot; &amp; {{ConceptId}}
+    &quot;&quot;&quot;
+    return (&#x27;concepts/agent-capability/&#x27; + str(concept_id or &quot;&quot;))
+
+# Level 2
+
+def calc_agent_capability_concepts_iri(relative_path):
+    &quot;&quot;&quot;
+    Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of &#x27;/&#x27; for &#x27;-&#x27;. The OWL transpiler mints each individual&#x27;s IRI from this value (erb:&lt;Iri&gt;), so identity is path-derived and globally unique — no cross-table primary-key collisions.
+    
+    Formula: =SUBSTITUTE({{RelativePath}}, &quot;/&quot;, &quot;-&quot;)
+    &quot;&quot;&quot;
+    return ((relative_path or &quot;&quot;).replace(&#x27;/&#x27;, &#x27;-&#x27;))
+
+
+def compute_agent_capability_concepts_fields(record: dict) -&gt; dict:
+    &quot;&quot;&quot;
+    Compute all calculated fields for AgentCapabilityConcepts.
+    
+    SKOS controlled vocabulary for agent capability types (ntwf:AgentCapabilityScheme). Roles declare which capability their filler must have (ntwf:hasCapability). Part of the CBox.
+    &quot;&quot;&quot;
+    result = dict(record)
+
+    # Level 1 calculations
+    result[&#x27;relative_path&#x27;] = calc_agent_capability_concepts_relative_path(result.get(&#x27;concept_id&#x27;))
+
+    # Level 2 calculations
+    result[&#x27;iri&#x27;] = calc_agent_capability_concepts_iri(result.get(&#x27;relative_path&#x27;))
+
+    # Convert empty strings to None for string fields
+    for key in [&#x27;relative_path&#x27;, &#x27;iri&#x27;]:
+        if result.get(key) == &#x27;&#x27;:
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# ARTIFACTTYPECONCEPTS CALCULATIONS
+# SKOS controlled vocabulary for artifact type (ntwf artifact-type scheme). Part of the CBox; NTWF names a CBox concept scheme for artifact types alongside workflow status and agent capabilities. Each artifact is classified via dct:type into one of these concepts.
+# =============================================================================
+
+# Level 1
+
+def calc_artifact_type_concepts_relative_path(concept_id):
+    &quot;&quot;&quot;
+    Stable, DAG-derived location for this concept row. Root segment &#x27;concepts/artifact-type&#x27; + the row&#x27;s primary key.
+    
+    Formula: =&quot;concepts/artifact-type/&quot; &amp; {{ConceptId}}
+    &quot;&quot;&quot;
+    return (&#x27;concepts/artifact-type/&#x27; + str(concept_id or &quot;&quot;))
+
+# Level 2
+
+def calc_artifact_type_concepts_iri(relative_path):
+    &quot;&quot;&quot;
+    Opaque stable identifier (the dash-form of RelativePath). The OWL transpiler mints each individual&#x27;s IRI from this value.
+    
+    Formula: =SUBSTITUTE({{RelativePath}}, &quot;/&quot;, &quot;-&quot;)
+    &quot;&quot;&quot;
+    return ((relative_path or &quot;&quot;).replace(&#x27;/&#x27;, &#x27;-&#x27;))
+
+
+def compute_artifact_type_concepts_fields(record: dict) -&gt; dict:
+    &quot;&quot;&quot;
+    Compute all calculated fields for ArtifactTypeConcepts.
+    
+    SKOS controlled vocabulary for artifact type (ntwf artifact-type scheme). Part of the CBox; NTWF names a CBox concept scheme for artifact types alongside workflow status and agent capabilities. Each artifact is classified via dct:type into one of these concepts.
+    &quot;&quot;&quot;
+    result = dict(record)
+
+    # Level 1 calculations
+    result[&#x27;relative_path&#x27;] = calc_artifact_type_concepts_relative_path(result.get(&#x27;concept_id&#x27;))
+
+    # Level 2 calculations
+    result[&#x27;iri&#x27;] = calc_artifact_type_concepts_iri(result.get(&#x27;relative_path&#x27;))
+
+    # Convert empty strings to None for string fields
+    for key in [&#x27;relative_path&#x27;, &#x27;iri&#x27;]:
+        if result.get(key) == &#x27;&#x27;:
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# DATASETS CALCULATIONS
+# DCAT datasets consumed by workflow steps. The NTWF mapping of dcat:Dataset. Kept separate from WorkflowArtifacts to preserve DCAT metadata semantics (dcat:Dataset vs. prov:Entity). Answers CQ8: &#x27;What datasets does the review consume, and which AI processed them?&#x27;
+# =============================================================================
+
+# Level 1
+
+def calc_datasets_relative_path(dataset_id):
+    &quot;&quot;&quot;
+    Stable, DAG-derived location for this Dataset row. Root segment &#x27;datasets&#x27; + the row&#x27;s primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model.
+    
+    Formula: =&quot;datasets/&quot; &amp; {{DatasetId}}
+    &quot;&quot;&quot;
+    return (&#x27;datasets/&#x27; + str(dataset_id or &quot;&quot;))
+
+def calc_datasets_is_consumed(consumed_by_steps):
+    &quot;&quot;&quot;
+    TRUE iff some workflow step consumes this dataset (ConsumedBySteps is set). Rolls up into Workflows.CountUnconsumedDatasets, which CQ8&#x27;s satisfaction reads.
+    
+    Formula: =NOT(ISBLANK({{ConsumedBySteps}}))
+    &quot;&quot;&quot;
+    return (not (consumed_by_steps is None or consumed_by_steps == &quot;&quot;))
+
+# Level 2
+
+def calc_datasets_iri(relative_path):
+    &quot;&quot;&quot;
+    Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of &#x27;/&#x27; for &#x27;-&#x27;. The OWL transpiler mints each individual&#x27;s IRI from this value (erb:&lt;Iri&gt;), so identity is path-derived and globally unique — no cross-table primary-key collisions.
+    
+    Formula: =SUBSTITUTE({{RelativePath}}, &quot;/&quot;, &quot;-&quot;)
+    &quot;&quot;&quot;
+    return ((relative_path or &quot;&quot;).replace(&#x27;/&#x27;, &#x27;-&#x27;))
+
+
+def compute_datasets_fields(record: dict) -&gt; dict:
+    &quot;&quot;&quot;
+    Compute all calculated fields for Datasets.
+    
+    DCAT datasets consumed by workflow steps. The NTWF mapping of dcat:Dataset. Kept separate from WorkflowArtifacts to preserve DCAT metadata semantics (dcat:Dataset vs. prov:Entity). Answers CQ8: &#x27;What datasets does the review consume, and which AI processed them?&#x27;
+    &quot;&quot;&quot;
+    result = dict(record)
+
+    # Level 1 calculations
+    result[&#x27;relative_path&#x27;] = calc_datasets_relative_path(result.get(&#x27;dataset_id&#x27;))
+    result[&#x27;is_consumed&#x27;] = calc_datasets_is_consumed(result.get(&#x27;consumed_by_steps&#x27;))
+
+    # Level 2 calculations
+    result[&#x27;iri&#x27;] = calc_datasets_iri(result.get(&#x27;relative_path&#x27;))
+
+    # Convert empty strings to None for string fields
+    for key in [&#x27;relative_path&#x27;, &#x27;iri&#x27;]:
+        if result.get(key) == &#x27;&#x27;:
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# WORKFLOWARTIFACTS CALCULATIONS
+# Artifacts produced and consumed by workflow steps. The NTWF WorkflowArtifact class — prov:Entity + schema:CreativeWork. The DerivedFromArtifact self-FK encodes the prov:wasDerivedFrom provenance chain; ProducedByStep maps prov:wasGeneratedBy; the AttributedTo* arms map prov:wasAttributedTo to the responsible agent.
+# =============================================================================
+
+# Level 1
+
+def calc_workflow_artifacts_relative_path(parent_path, artifact_id):
+    &quot;&quot;&quot;
+    Stable, DAG-derived location: this row nests under its WorkflowSteps parent. Concatenates the parent&#x27;s path (ParentPath) with &#x27;/artifacts/&#x27; + this row&#x27;s primary key. The DAG performs the recursion — one hop per table via ParentPath — so the full ancestry is encoded without a recursive formula. Unique by construction.
+    
+    Formula: ={{ParentPath}} &amp; &quot;/artifacts/&quot; &amp; {{ArtifactId}}
+    &quot;&quot;&quot;
+    return (str(parent_path or &quot;&quot;) + &#x27;/artifacts/&#x27; + str(artifact_id or &quot;&quot;))
+
+def calc_workflow_artifacts_producing_agent_type(attributed_to_human_agent, attributed_to_ai_agent, attributed_to_automated_pipeline):
+    &quot;&quot;&quot;
+    Which disjoint agent class produced this artifact (HumanAgent / AIAgent / AutomatedPipeline), from whichever prov:wasAttributedTo arm is set. Lets CQ4 report which kind of agent each artifact in the lineage came from.
+    
+    Formula: =IF(NOT(ISBLANK({{AttributedToHumanAgent}})), &quot;HumanAgent&quot;, IF(NOT(ISBLANK({{AttributedToAIAgent}})), &quot;AIAgent&quot;, IF(NOT(ISBLANK({{AttributedToAutomatedPipeline}})), &quot;AutomatedPipeline&quot;, &quot;&quot;)))
+    &quot;&quot;&quot;
+    return (&#x27;HumanAgent&#x27; if (not (attributed_to_human_agent is None or attributed_to_human_agent == &quot;&quot;)) else (&#x27;AIAgent&#x27; if (not (attributed_to_ai_agent is None or attributed_to_ai_agent == &quot;&quot;)) else (&#x27;AutomatedPipeline&#x27; if (not (attributed_to_automated_pipeline is None or attributed_to_automated_pipeline == &quot;&quot;)) else &#x27;&#x27;)))
+
+def calc_workflow_artifacts_has_derivation_parent(derived_from_artifact):
+    &quot;&quot;&quot;
+    TRUE iff this artifact was derived from another (prov:wasDerivedFrom is set). Counting these across the chain gives CQ4&#x27;s &#x27;4 derivation links among 5 artifacts&#x27; — every artifact except the first has a parent.
+    
+    Formula: =NOT(ISBLANK({{DerivedFromArtifact}}))
+    &quot;&quot;&quot;
+    return (not (derived_from_artifact is None or derived_from_artifact == &quot;&quot;))
+
+def calc_workflow_artifacts_has_producing_workflow(produced_by_workflow):
+    &quot;&quot;&quot;
+    TRUE iff this artifact resolves to a producing workflow (ProducedByWorkflow is set). Lets the AIAgents blast-radius rollup (CountImpactedWorkflows) count only artifacts that reach a workflow, since COUNTIFS needs a boolean criterion column.
+    
+    Formula: =NOT(ISBLANK({{ProducedByWorkflow}}))
+    &quot;&quot;&quot;
+    return (not (produced_by_workflow is None or produced_by_workflow == &quot;&quot;))
+
+# Level 2
+
+def calc_workflow_artifacts_iri(relative_path):
+    &quot;&quot;&quot;
+    Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of &#x27;/&#x27; for &#x27;-&#x27;. The OWL transpiler mints each individual&#x27;s IRI from this value (erb:&lt;Iri&gt;), so identity is path-derived and globally unique — no cross-table primary-key collisions.
+    
+    Formula: =SUBSTITUTE({{RelativePath}}, &quot;/&quot;, &quot;-&quot;)
+    &quot;&quot;&quot;
+    return ((relative_path or &quot;&quot;).replace(&#x27;/&#x27;, &#x27;-&#x27;))
+
+
+def compute_workflow_artifacts_fields(record: dict) -&gt; dict:
+    &quot;&quot;&quot;
+    Compute all calculated fields for WorkflowArtifacts.
+    
+    Artifacts produced and consumed by workflow steps. The NTWF WorkflowArtifact class — prov:Entity + schema:CreativeWork. The DerivedFromArtifact self-FK encodes the prov:wasDerivedFrom provenance chain; ProducedByStep maps prov:wasGeneratedBy; the AttributedTo* arms map prov:wasAttributedTo to the responsible agent.
+    &quot;&quot;&quot;
+    result = dict(record)
+
+    # Level 1 calculations
+    result[&#x27;relative_path&#x27;] = calc_workflow_artifacts_relative_path(result.get(&#x27;parent_path&#x27;), result.get(&#x27;artifact_id&#x27;))
+    result[&#x27;producing_agent_type&#x27;] = calc_workflow_artifacts_producing_agent_type(result.get(&#x27;attributed_to_human_agent&#x27;), result.get(&#x27;attributed_to_ai_agent&#x27;), result.get(&#x27;attributed_to_automated_pipeline&#x27;))
+    result[&#x27;has_derivation_parent&#x27;] = calc_workflow_artifacts_has_derivation_parent(result.get(&#x27;derived_from_artifact&#x27;))
+    result[&#x27;has_producing_workflow&#x27;] = calc_workflow_artifacts_has_producing_workflow(result.get(&#x27;produced_by_workflow&#x27;))
+
+    # Level 2 calculations
+    result[&#x27;iri&#x27;] = calc_workflow_artifacts_iri(result.get(&#x27;relative_path&#x27;))
+
+    # Convert empty strings to None for string fields
+    for key in [&#x27;relative_path&#x27;, &#x27;iri&#x27;, &#x27;producing_agent_type&#x27;]:
+        if result.get(key) == &#x27;&#x27;:
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# GOVERNANCEROLES CALCULATIONS
+# Table: GovernanceRoles. NTWF governance names two distinct ontology-governance roles: a Steward (responsible for the ontology&#x27;s health — monitors drift, tracks external dependency updates, fields user questions, maintains docs, keeps the validation suite current; identifies that a change is needed but has no approval power) and an Authority (the power to approve changes to the CBox, ABox, and TBox; decides how and where a change is made; sits with the function that owns the domain). &#x27;A steward who can make TBox or ABox changes without authority review is a single point of failure.&#x27; For an organization under 500 people a single person may hold both roles. This table models the maintenance discipline itself, as data, so the change log can attribute approvals to a named authority.
+# =============================================================================
+
+# Level 1
+
+def calc_governance_roles_relative_path(governance_role_id):
+    &quot;&quot;&quot;
+    Stable, DAG-derived location for this GovernanceRole row. Root segment &#x27;governance-roles&#x27; + the row&#x27;s primary key.
+    
+    Formula: =&quot;governance-roles/&quot; &amp; {{GovernanceRoleId}}
+    &quot;&quot;&quot;
+    return (&#x27;governance-roles/&#x27; + str(governance_role_id or &quot;&quot;))
+
+def calc_governance_roles_name(display_name):
+    &quot;&quot;&quot;
+    Slug form of the display name.
+    
+    Formula: =SUBSTITUTE(LOWER({{DisplayName}}), &quot; &quot;, &quot;-&quot;)
+    &quot;&quot;&quot;
+    return ((((display_name or &quot;&quot;).lower()) or &quot;&quot;).replace(&#x27; &#x27;, &#x27;-&#x27;))
+
+def calc_governance_roles_can_approve_changes(kind):
+    &quot;&quot;&quot;
+    TRUE iff this governance role carries approval power (Kind = &#x27;Authority&#x27;). A Steward returns FALSE — a steward making TBox/ABox changes without authority review is a single point of failure.
+    
+    Formula: ={{Kind}} = &quot;Authority&quot; 
+    &quot;&quot;&quot;
+    return (kind == &#x27;Authority&#x27;)
+
+# Level 2
+
+def calc_governance_roles_iri(relative_path):
+    &quot;&quot;&quot;
+    Opaque stable identifier (the dash-form of RelativePath). The OWL transpiler mints each individual&#x27;s IRI from this value.
+    
+    Formula: =SUBSTITUTE({{RelativePath}}, &quot;/&quot;, &quot;-&quot;)
+    &quot;&quot;&quot;
+    return ((relative_path or &quot;&quot;).replace(&#x27;/&#x27;, &#x27;-&#x27;))
+
+
+def compute_governance_roles_fields(record: dict) -&gt; dict:
+    &quot;&quot;&quot;
+    Compute all calculated fields for GovernanceRoles.
+    
+    Table: GovernanceRoles. NTWF governance names two distinct ontology-governance roles: a Steward (responsible for the ontology&#x27;s health — monitors drift, tracks external dependency updates, fields user questions, maintains docs, keeps the validation suite current; identifies that a change is needed but has no approval power) and an Authority (the power to approve changes to the CBox, ABox, and TBox; decides how and where a change is made; sits with the function that owns the domain). &#x27;A steward who can make TBox or ABox changes without authority review is a single point of failure.&#x27; For an organization under 500 people a single person may hold both roles. This table models the maintenance discipline itself, as data, so the change log can attribute approvals to a named authority.
+    &quot;&quot;&quot;
+    result = dict(record)
+
+    # Level 1 calculations
+    result[&#x27;relative_path&#x27;] = calc_governance_roles_relative_path(result.get(&#x27;governance_role_id&#x27;))
+    result[&#x27;name&#x27;] = calc_governance_roles_name(result.get(&#x27;display_name&#x27;))
+    result[&#x27;can_approve_changes&#x27;] = calc_governance_roles_can_approve_changes(result.get(&#x27;kind&#x27;))
+
+    # Level 2 calculations
+    result[&#x27;iri&#x27;] = calc_governance_roles_iri(result.get(&#x27;relative_path&#x27;))
+
+    # Convert empty strings to None for string fields
+    for key in [&#x27;relative_path&#x27;, &#x27;iri&#x27;, &#x27;name&#x27;]:
+        if result.get(key) == &#x27;&#x27;:
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# CHANGELOG CALCULATIONS
+# Table: ChangeLog. NTWF&#x27;s minimum governance artifact: &#x27;a change log that records every TBox and ABox modification, with its rationale.&#x27; Each entry records the four facts NTWF governance enumerates — the competency question that motivated the change, the terms affected, the version number of the release, and the date — plus the rationale and the Authority who approved it. Semantic-versioning discipline (MAJOR.MINOR.PATCH) is captured per entry via ChangeKind.
+# =============================================================================
+
+# Level 1
+
+def calc_change_log_relative_path(change_log_id):
+    &quot;&quot;&quot;
+    Stable, DAG-derived location for this ChangeLog row. Root segment &#x27;change-log&#x27; + the row&#x27;s primary key.
+    
+    Formula: =&quot;change-log/&quot; &amp; {{ChangeLogId}}
+    &quot;&quot;&quot;
+    return (&#x27;change-log/&#x27; + str(change_log_id or &quot;&quot;))
+
+def calc_change_log_name(version, change_date):
+    &quot;&quot;&quot;
+    Human-readable label: the version and date of this change.
+    
+    Formula: ={{Version}} &amp; &quot; (&quot; &amp; {{ChangeDate}} &amp; &quot;)&quot; 
+    &quot;&quot;&quot;
+    return (str(version or &quot;&quot;) + &#x27; (&#x27; + str(change_date or &quot;&quot;) + &#x27;)&#x27;)
+
+def calc_change_log_is_breaking_change(change_kind):
+    &quot;&quot;&quot;
+    TRUE iff this is a major (breaking) change (ChangeKind = &#x27;major&#x27;) — requires explicit update, re-validation, and migration planning for any system on the prior version.
+    
+    Formula: ={{ChangeKind}} = &quot;major&quot; 
+    &quot;&quot;&quot;
+    return (change_kind == &#x27;major&#x27;)
+
+def calc_change_log_is_backward_compatible(change_kind):
+    &quot;&quot;&quot;
+    TRUE iff systems on the prior version keep working against this release (ChangeKind is &#x27;patch&#x27; or &#x27;minor&#x27;). Patch and minor increments preserve backward compatibility; only major breaks it.
+    
+    Formula: =OR({{ChangeKind}} = &quot;patch&quot;, {{ChangeKind}} = &quot;minor&quot;)
+    &quot;&quot;&quot;
+    return ((change_kind == &#x27;patch&#x27;) or (change_kind == &#x27;minor&#x27;))
+
+# Level 2
+
+def calc_change_log_iri(relative_path):
+    &quot;&quot;&quot;
+    Opaque stable identifier (the dash-form of RelativePath).
+    
+    Formula: =SUBSTITUTE({{RelativePath}}, &quot;/&quot;, &quot;-&quot;)
+    &quot;&quot;&quot;
+    return ((relative_path or &quot;&quot;).replace(&#x27;/&#x27;, &#x27;-&#x27;))
+
+
+def compute_change_log_fields(record: dict) -&gt; dict:
+    &quot;&quot;&quot;
+    Compute all calculated fields for ChangeLog.
+    
+    Table: ChangeLog. NTWF&#x27;s minimum governance artifact: &#x27;a change log that records every TBox and ABox modification, with its rationale.&#x27; Each entry records the four facts NTWF governance enumerates — the competency question that motivated the change, the terms affected, the version number of the release, and the date — plus the rationale and the Authority who approved it. Semantic-versioning discipline (MAJOR.MINOR.PATCH) is captured per entry via ChangeKind.
+    &quot;&quot;&quot;
+    result = dict(record)
+
+    # Level 1 calculations
+    result[&#x27;relative_path&#x27;] = calc_change_log_relative_path(result.get(&#x27;change_log_id&#x27;))
+    result[&#x27;name&#x27;] = calc_change_log_name(result.get(&#x27;version&#x27;), result.get(&#x27;change_date&#x27;))
+    result[&#x27;is_breaking_change&#x27;] = calc_change_log_is_breaking_change(result.get(&#x27;change_kind&#x27;))
+    result[&#x27;is_backward_compatible&#x27;] = calc_change_log_is_backward_compatible(result.get(&#x27;change_kind&#x27;))
+
+    # Level 2 calculations
+    result[&#x27;iri&#x27;] = calc_change_log_iri(result.get(&#x27;relative_path&#x27;))
+
+    # Convert empty strings to None for string fields
+    for key in [&#x27;relative_path&#x27;, &#x27;iri&#x27;, &#x27;name&#x27;]:
+        if result.get(key) == &#x27;&#x27;:
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# VOCABULARYRECONCILIATIONS CALCULATIONS
+# Table: VocabularyReconciliations. External dependency change: when a borrowed term from a living standard (PROV-O, FOAF, Dublin Core, DCAT, Schema.org) is deprecated and re-homed into the NTWF namespace, the edit triggers a version bump and an owl:sameAs reconciliation relation declaring the old and new terms equivalent. The worked example: deprecating foaf:name, prepending the ntwf prefix to get ntwf:name, and asserting foaf:name owl:sameAs ntwf:name. Each row is one reconciliation, with the standard it came from and the version in which the reconciliation shipped.
+# =============================================================================
+
+# Level 1
+
+def calc_vocabulary_reconciliations_relative_path(reconciliation_id):
+    &quot;&quot;&quot;
+    Stable, DAG-derived location for this reconciliation row. Root segment &#x27;reconciliations&#x27; + the row&#x27;s primary key.
+    
+    Formula: =&quot;reconciliations/&quot; &amp; {{ReconciliationId}}
+    &quot;&quot;&quot;
+    return (&#x27;reconciliations/&#x27; + str(reconciliation_id or &quot;&quot;))
+
+def calc_vocabulary_reconciliations_name(deprecated_term, replacement_term):
+    &quot;&quot;&quot;
+    Human-readable label: the sameAs relation between the deprecated term and its NTWF replacement.
+    
+    Formula: ={{DeprecatedTerm}} &amp; &quot; owl:sameAs &quot; &amp; {{ReplacementTerm}}
+    &quot;&quot;&quot;
+    return (str(deprecated_term or &quot;&quot;) + &#x27; owl:sameAs &#x27; + str(replacement_term or &quot;&quot;))
+
+# Level 2
+
+def calc_vocabulary_reconciliations_iri(relative_path):
+    &quot;&quot;&quot;
+    Opaque stable identifier (the dash-form of RelativePath).
+    
+    Formula: =SUBSTITUTE({{RelativePath}}, &quot;/&quot;, &quot;-&quot;)
+    &quot;&quot;&quot;
+    return ((relative_path or &quot;&quot;).replace(&#x27;/&#x27;, &#x27;-&#x27;))
+
+
+def compute_vocabulary_reconciliations_fields(record: dict) -&gt; dict:
+    &quot;&quot;&quot;
+    Compute all calculated fields for VocabularyReconciliations.
+    
+    Table: VocabularyReconciliations. External dependency change: when a borrowed term from a living standard (PROV-O, FOAF, Dublin Core, DCAT, Schema.org) is deprecated and re-homed into the NTWF namespace, the edit triggers a version bump and an owl:sameAs reconciliation relation declaring the old and new terms equivalent. The worked example: deprecating foaf:name, prepending the ntwf prefix to get ntwf:name, and asserting foaf:name owl:sameAs ntwf:name. Each row is one reconciliation, with the standard it came from and the version in which the reconciliation shipped.
+    &quot;&quot;&quot;
+    result = dict(record)
+
+    # Level 1 calculations
+    result[&#x27;relative_path&#x27;] = calc_vocabulary_reconciliations_relative_path(result.get(&#x27;reconciliation_id&#x27;))
+    result[&#x27;name&#x27;] = calc_vocabulary_reconciliations_name(result.get(&#x27;deprecated_term&#x27;), result.get(&#x27;replacement_term&#x27;))
+
+    # Level 2 calculations
+    result[&#x27;iri&#x27;] = calc_vocabulary_reconciliations_iri(result.get(&#x27;relative_path&#x27;))
+
+    # Convert empty strings to None for string fields
+    for key in [&#x27;relative_path&#x27;, &#x27;iri&#x27;, &#x27;name&#x27;]:
+        if result.get(key) == &#x27;&#x27;:
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# SCENARIOS CALCULATIONS
+# =============================================================================
+
+# Level 1
+
+def calc_scenarios_relative_path(scenario_id):
+    &quot;&quot;&quot;
+    DAG-derived location for this Scenario row: root segment &#x27;scenarios&#x27; + the primary key.
+    
+    Formula: =&quot;scenarios/&quot; &amp; {{ScenarioId}}
+    &quot;&quot;&quot;
+    return (&#x27;scenarios/&#x27; + str(scenario_id or &quot;&quot;))
+
+def calc_scenarios_name(label):
+    &quot;&quot;&quot;
+    Slug form of the human label.
+    
+    Formula: =SUBSTITUTE(LOWER({{Label}}), &quot; &quot;, &quot;-&quot;)
+    &quot;&quot;&quot;
+    return ((((label or &quot;&quot;).lower()) or &quot;&quot;).replace(&#x27; &#x27;, &#x27;-&#x27;))
+
+# Level 2
+
+def calc_scenarios_iri(relative_path):
+    &quot;&quot;&quot;
+    Opaque stable identifier (dash-form of RelativePath).
+    
+    Formula: =SUBSTITUTE({{RelativePath}}, &quot;/&quot;, &quot;-&quot;)
+    &quot;&quot;&quot;
+    return ((relative_path or &quot;&quot;).replace(&#x27;/&#x27;, &#x27;-&#x27;))
+
+
+def compute_scenarios_fields(record: dict) -&gt; dict:
+    &quot;&quot;&quot;Compute all calculated fields for Scenarios.&quot;&quot;&quot;
+    result = dict(record)
+
+    # Level 1 calculations
+    result[&#x27;relative_path&#x27;] = calc_scenarios_relative_path(result.get(&#x27;scenario_id&#x27;))
+    result[&#x27;name&#x27;] = calc_scenarios_name(result.get(&#x27;label&#x27;))
+
+    # Level 2 calculations
+    result[&#x27;iri&#x27;] = calc_scenarios_iri(result.get(&#x27;relative_path&#x27;))
+
+    # Convert empty strings to None for string fields
+    for key in [&#x27;relative_path&#x27;, &#x27;iri&#x27;, &#x27;name&#x27;]:
+        if result.get(key) == &#x27;&#x27;:
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# COMPETENCYQUESTIONS CALCULATIONS
+# The article&#x27;s literal acceptance suite — the eight leadership/competency questions the NTWF worked example must answer (Talisman, Intentional Arrangement, CQ1-CQ8). First-class data, not hardcoded UI strings: each row names the question, the substrate-computed field that ANSWERS it (TargetTable/TargetField, for cross-substrate traceability and the explainer-DAG drilldown), the answer kind, and the asserted ExpectedAnswer used to grade pass/fail. The live answer is always READ from the named computed column — never recomputed — so the CQ scoreboard is a projection of the model like every other lens. This is the CMCC-native home for the competency questions: the article treats them as acceptance criteria traceable to the rulebook, so they live in the rulebook.
+# =============================================================================
+
+# Level 1
+
+def calc_competency_questions_relative_path(competency_question_id):
+    &quot;&quot;&quot;
+    Stable, DAG-derived location for this CompetencyQuestion row. Root segment &#x27;competency-questions&#x27; + the row&#x27;s primary key. No leading slash so the Iri swap is a clean 1:1 substitution.
+    
+    Formula: =&quot;competency-questions/&quot; &amp; {{CompetencyQuestionId}}
+    &quot;&quot;&quot;
+    return (&#x27;competency-questions/&#x27; + str(competency_question_id or &quot;&quot;))
+
+def calc_competency_questions_name(display_name):
+    &quot;&quot;&quot;
+    Slug form of the DisplayName, for stable cross-reference. Mirrors the Name idiom used by the controlled-vocabulary tables.
+    
+    Formula: =SUBSTITUTE(LOWER({{DisplayName}}), &quot; &quot;, &quot;-&quot;)
+    &quot;&quot;&quot;
+    return ((((display_name or &quot;&quot;).lower()) or &quot;&quot;).replace(&#x27; &#x27;, &#x27;-&#x27;))
+
+# Level 2
+
+def calc_competency_questions_iri(relative_path):
+    &quot;&quot;&quot;
+    Opaque stable identifier (the dash-form of RelativePath). The OWL transpiler mints each individual&#x27;s IRI from this value (erb:&lt;Iri&gt;), so identity is path-derived and globally unique.
+    
+    Formula: =SUBSTITUTE({{RelativePath}}, &quot;/&quot;, &quot;-&quot;)
+    &quot;&quot;&quot;
+    return ((relative_path or &quot;&quot;).replace(&#x27;/&#x27;, &#x27;-&#x27;))
+
+
+def compute_competency_questions_fields(record: dict) -&gt; dict:
+    &quot;&quot;&quot;
+    Compute all calculated fields for CompetencyQuestions.
+    
+    The article&#x27;s literal acceptance suite — the eight leadership/competency questions the NTWF worked example must answer (Talisman, Intentional Arrangement, CQ1-CQ8). First-class data, not hardcoded UI strings: each row names the question, the substrate-computed field that ANSWERS it (TargetTable/TargetField, for cross-substrate traceability and the explainer-DAG drilldown), the answer kind, and the asserted ExpectedAnswer used to grade pass/fail. The live answer is always READ from the named computed column — never recomputed — so the CQ scoreboard is a projection of the model like every other lens. This is the CMCC-native home for the competency questions: the article treats them as acceptance criteria traceable to the rulebook, so they live in the rulebook.
+    &quot;&quot;&quot;
+    result = dict(record)
+
+    # Level 1 calculations
+    result[&#x27;relative_path&#x27;] = calc_competency_questions_relative_path(result.get(&#x27;competency_question_id&#x27;))
+    result[&#x27;name&#x27;] = calc_competency_questions_name(result.get(&#x27;display_name&#x27;))
+
+    # Level 2 calculations
+    result[&#x27;iri&#x27;] = calc_competency_questions_iri(result.get(&#x27;relative_path&#x27;))
+
+    # Convert empty strings to None for string fields
+    for key in [&#x27;relative_path&#x27;, &#x27;iri&#x27;, &#x27;name&#x27;]:
+        if result.get(key) == &#x27;&#x27;:
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# SCENARIOCQEFFECTS CALCULATIONS
+# Table: ScenarioCQEffects. Names the many-to-many between Scenarios and CompetencyQuestions as two 1:M foreign keys (Scenario, CompetencyQuestion) plus the detail of the relationship (EffectKind, Note). Each row asserts &#x27;applying this scenario moves this competency question&#x27;s live answer&#x27;. &#x27;trigger&#x27; rows are the intended demonstration; &#x27;ripple&#x27; rows record answers that move as an unavoidable consequence of the same raw edit (e.g. ai-release-manager moves cq-2 AND cq-3 because the gate approver is itself a step executor). The answers themselves are never stored here — they are read live from each substrate after the scenario applies.
+# =============================================================================
+
+# Level 1
+
+def calc_scenario_cq_effects_relative_path(scenario_cq_effect_id):
+    &quot;&quot;&quot;
+    DAG-derived location: &#x27;scenario-cq-effects/&#x27; + the row&#x27;s primary key.
+    
+    Formula: =&quot;scenario-cq-effects/&quot; &amp; {{ScenarioCQEffectId}}
+    &quot;&quot;&quot;
+    return (&#x27;scenario-cq-effects/&#x27; + str(scenario_cq_effect_id or &quot;&quot;))
+
+def calc_scenario_cq_effects_name(scenario_cq_effect_id):
+    &quot;&quot;&quot;
+    Slug label, mirrors the primary key.
+    
+    Formula: =SUBSTITUTE(LOWER({{ScenarioCQEffectId}}), &quot; &quot;, &quot;-&quot;)
+    &quot;&quot;&quot;
+    return ((((scenario_cq_effect_id or &quot;&quot;).lower()) or &quot;&quot;).replace(&#x27; &#x27;, &#x27;-&#x27;))
+
+# Level 2
+
+def calc_scenario_cq_effects_iri(relative_path):
+    &quot;&quot;&quot;
+    Opaque stable identifier (dash-form of RelativePath).
+    
+    Formula: =SUBSTITUTE({{RelativePath}}, &quot;/&quot;, &quot;-&quot;)
+    &quot;&quot;&quot;
+    return ((relative_path or &quot;&quot;).replace(&#x27;/&#x27;, &#x27;-&#x27;))
+
+
+def compute_scenario_cq_effects_fields(record: dict) -&gt; dict:
+    &quot;&quot;&quot;
+    Compute all calculated fields for ScenarioCQEffects.
+    
+    Table: ScenarioCQEffects. Names the many-to-many between Scenarios and CompetencyQuestions as two 1:M foreign keys (Scenario, CompetencyQuestion) plus the detail of the relationship (EffectKind, Note). Each row asserts &#x27;applying this scenario moves this competency question&#x27;s live answer&#x27;. &#x27;trigger&#x27; rows are the intended demonstration; &#x27;ripple&#x27; rows record answers that move as an unavoidable consequence of the same raw edit (e.g. ai-release-manager moves cq-2 AND cq-3 because the gate approver is itself a step executor). The answers themselves are never stored here — they are read live from each substrate after the scenario applies.
+    &quot;&quot;&quot;
+    result = dict(record)
+
+    # Level 1 calculations
+    result[&#x27;relative_path&#x27;] = calc_scenario_cq_effects_relative_path(result.get(&#x27;scenario_cq_effect_id&#x27;))
+    result[&#x27;name&#x27;] = calc_scenario_cq_effects_name(result.get(&#x27;scenario_cq_effect_id&#x27;))
+
+    # Level 2 calculations
+    result[&#x27;iri&#x27;] = calc_scenario_cq_effects_iri(result.get(&#x27;relative_path&#x27;))
+
+    # Convert empty strings to None for string fields
+    for key in [&#x27;relative_path&#x27;, &#x27;iri&#x27;, &#x27;name&#x27;]:
+        if result.get(key) == &#x27;&#x27;:
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# CONFORMANCETESTS CALCULATIONS
+# =============================================================================
+
+# Level 1
+
+def calc_conformance_tests_relative_path(conformance_test_id):
+    &quot;&quot;&quot;
+    DAG-derived location for this test row: root segment &#x27;conformance-tests&#x27; + the primary key.
+    
+    Formula: =&quot;conformance-tests/&quot; &amp; {{ConformanceTestId}}
+    &quot;&quot;&quot;
+    return (&#x27;conformance-tests/&#x27; + str(conformance_test_id or &quot;&quot;))
+
+def calc_conformance_tests_name(display_name):
+    &quot;&quot;&quot;
+    Machine name derived from the display name.
+    
+    Formula: =SUBSTITUTE(LOWER({{DisplayName}}), &quot; &quot;, &quot;-&quot;)
+    &quot;&quot;&quot;
+    return ((((display_name or &quot;&quot;).lower()) or &quot;&quot;).replace(&#x27; &#x27;, &#x27;-&#x27;))
+
+# Level 2
+
+def calc_conformance_tests_iri(relative_path):
+    &quot;&quot;&quot;
+    Slug IRI for this row, derived from RelativePath.
+    
+    Formula: =SUBSTITUTE({{RelativePath}}, &quot;/&quot;, &quot;-&quot;)
+    &quot;&quot;&quot;
+    return ((relative_path or &quot;&quot;).replace(&#x27;/&#x27;, &#x27;-&#x27;))
+
+
+def compute_conformance_tests_fields(record: dict) -&gt; dict:
+    &quot;&quot;&quot;Compute all calculated fields for ConformanceTests.&quot;&quot;&quot;
+    result = dict(record)
+
+    # Level 1 calculations
+    result[&#x27;relative_path&#x27;] = calc_conformance_tests_relative_path(result.get(&#x27;conformance_test_id&#x27;))
+    result[&#x27;name&#x27;] = calc_conformance_tests_name(result.get(&#x27;display_name&#x27;))
+
+    # Level 2 calculations
+    result[&#x27;iri&#x27;] = calc_conformance_tests_iri(result.get(&#x27;relative_path&#x27;))
+
+    # Convert empty strings to None for string fields
+    for key in [&#x27;relative_path&#x27;, &#x27;iri&#x27;, &#x27;name&#x27;]:
+        if result.get(key) == &#x27;&#x27;:
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# __META__ CALCULATIONS
+# Project-level metadata that travels with the rulebook: tagline, motif, narrative descriptions, substrate list, signature rows, etc. One row per metadata key. Use ValueType to interpret StringValue vs JsonValue.
+# =============================================================================
+
+# Level 1
+
+def calc___meta___name(meta_key):
+    &quot;&quot;&quot;
+    Identifier for this metadata entry. Mirrors MetaKey so the row is addressable by Name like every other table.
+    
+    Formula: ={{MetaKey}}
+    &quot;&quot;&quot;
+    return meta_key
+
+
+def compute___meta___fields(record: dict) -&gt; dict:
+    &quot;&quot;&quot;
+    Compute all calculated fields for __meta__.
+    
+    Project-level metadata that travels with the rulebook: tagline, motif, narrative descriptions, substrate list, signature rows, etc. One row per metadata key. Use ValueType to interpret StringValue vs JsonValue.
+    &quot;&quot;&quot;
+    result = dict(record)
+
+    # Level 1 calculations
+    result[&#x27;name&#x27;] = calc___meta___name(result.get(&#x27;meta_key&#x27;))
+
+    # Convert empty strings to None for string fields
+    for key in [&#x27;name&#x27;]:
         if result.get(key) == &#x27;&#x27;:
             result[key] = None
 
@@ -442,10 +1998,54 @@ def compute_all_calculated_fields(record: dict, entity_name: str = None) -&gt; d
     # Normalize to snake_case to support &quot;LineItem&quot;, &quot;line_item&quot;, &quot;line-item&quot;
     entity_lower = entity_name.lower().replace(&#x27;-&#x27;, &#x27;_&#x27;)
 
-    if entity_lower == &#x27;customers&#x27;:
-        return compute_customers_fields(record)
+    if entity_lower == &#x27;workflows&#x27;:
+        return compute_workflows_fields(record)
+    elif entity_lower == &#x27;workflow_steps&#x27;:
+        return compute_workflow_steps_fields(record)
+    elif entity_lower == &#x27;approval_gates&#x27;:
+        return compute_approval_gates_fields(record)
+    elif entity_lower == &#x27;step_precedence&#x27;:
+        return compute_step_precedence_fields(record)
+    elif entity_lower == &#x27;roles&#x27;:
+        return compute_roles_fields(record)
+    elif entity_lower == &#x27;role_assignments&#x27;:
+        return compute_role_assignments_fields(record)
+    elif entity_lower == &#x27;departments&#x27;:
+        return compute_departments_fields(record)
+    elif entity_lower == &#x27;human_agents&#x27;:
+        return compute_human_agents_fields(record)
+    elif entity_lower == &#x27;ai_agents&#x27;:
+        return compute_ai_agents_fields(record)
+    elif entity_lower == &#x27;automated_pipelines&#x27;:
+        return compute_automated_pipelines_fields(record)
+    elif entity_lower == &#x27;workflow_status_concepts&#x27;:
+        return compute_workflow_status_concepts_fields(record)
+    elif entity_lower == &#x27;agent_capability_concepts&#x27;:
+        return compute_agent_capability_concepts_fields(record)
+    elif entity_lower == &#x27;artifact_type_concepts&#x27;:
+        return compute_artifact_type_concepts_fields(record)
+    elif entity_lower == &#x27;datasets&#x27;:
+        return compute_datasets_fields(record)
+    elif entity_lower == &#x27;workflow_artifacts&#x27;:
+        return compute_workflow_artifacts_fields(record)
+    elif entity_lower == &#x27;governance_roles&#x27;:
+        return compute_governance_roles_fields(record)
+    elif entity_lower == &#x27;change_log&#x27;:
+        return compute_change_log_fields(record)
+    elif entity_lower == &#x27;vocabulary_reconciliations&#x27;:
+        return compute_vocabulary_reconciliations_fields(record)
+    elif entity_lower == &#x27;scenarios&#x27;:
+        return compute_scenarios_fields(record)
+    elif entity_lower == &#x27;competency_questions&#x27;:
+        return compute_competency_questions_fields(record)
+    elif entity_lower == &#x27;scenario_cq_effects&#x27;:
+        return compute_scenario_cq_effects_fields(record)
+    elif entity_lower == &#x27;conformance_tests&#x27;:
+        return compute_conformance_tests_fields(record)
+    elif entity_lower == &#x27;__meta__&#x27;:
+        return compute___meta___fields(record)
     else:
-        raise KeyError(f&quot;compute_all_calculated_fields called with unknown entity {entity_name!r}. &quot;f&quot;Known entities in this generated erb_calc.py: [&#x27;customers&#x27;]. &quot;f&quot;Check that the rulebook used to generate this file matches the data being computed.&quot;)
+        raise KeyError(f&quot;compute_all_calculated_fields called with unknown entity {entity_name!r}. &quot;f&quot;Known entities in this generated erb_calc.py: [&#x27;workflows&#x27;, &#x27;workflow_steps&#x27;, &#x27;approval_gates&#x27;, &#x27;step_precedence&#x27;, &#x27;roles&#x27;, &#x27;role_assignments&#x27;, &#x27;departments&#x27;, &#x27;human_agents&#x27;, &#x27;ai_agents&#x27;, &#x27;automated_pipelines&#x27;, &#x27;workflow_status_concepts&#x27;, &#x27;agent_capability_concepts&#x27;, &#x27;artifact_type_concepts&#x27;, &#x27;datasets&#x27;, &#x27;workflow_artifacts&#x27;, &#x27;governance_roles&#x27;, &#x27;change_log&#x27;, &#x27;vocabulary_reconciliations&#x27;, &#x27;scenarios&#x27;, &#x27;competency_questions&#x27;, &#x27;scenario_cq_effects&#x27;, &#x27;conformance_tests&#x27;, &#x27;__meta__&#x27;]. &quot;f&quot;Check that the rulebook used to generate this file matches the data being computed.&quot;)
 
 # =============================================================================
 # INDEX/MATCH LOOKUP INTERPRETER (PYTHON SIMULATOR — DO NOT CALL FROM OTHER SUBSTRATES)
@@ -473,6 +2073,24 @@ def parse_countifs_formula(formula: str) -&gt; tuple:
     if match:
         return (match.group(1), match.group(2), match.group(3))
     return (None, None, None)
+
+
+def parse_countifs_literal_formula(formula: str) -&gt; tuple:
+    &quot;&quot;&quot;Parse =COUNTIFS(Table!{{Field}}, TRUE()) / FALSE().
+
+    Distinct from parse_countifs_formula, whose second argument is another
+    table&#x27;s field rather than a literal. Returns (table, field, bool).
+    &quot;&quot;&quot;
+    pattern = r&quot;=COUNTIFS\((\w+)!\{\{(\w+)\}\},\s*(TRUE|FALSE)\(\)\)&quot;
+    match = re.match(pattern, formula)
+    if match:
+        return (match.group(1), match.group(2), match.group(3) == &#x27;TRUE&#x27;)
+    return (None, None, None)
+
+
+def count_closure_rows(closure_rows: list, column: str, expected) -&gt; int:
+    &quot;&quot;&quot;Count materialized closure rows whose column equals expected.&quot;&quot;&quot;
+    return sum(1 for row in closure_rows if row.get(column) == expected)
 
 
 def parse_sumifs_formula(formula: str) -&gt; tuple:
@@ -567,7 +2185,116 @@ def compute_lookups(records: list, entity_name: str, rulebook: dict, project_roo
     return records
 
 
-def compute_aggregations(records: list, entity_name: str, rulebook: dict, project_root: Path) -&gt; list:
+# =============================================================================
+# TRANSITIVE CLOSURE ENGINE (PYTHON SIMULATOR — DO NOT CALL FROM OTHER SUBSTRATES)
+# =============================================================================
+
+
+def compute_closure_relation(rows: list, to_field: str,
+                             pk_field: str = None, from_field: str = None) -&gt; list:
+    &quot;&quot;&quot;Cycle-safe transitive closure, matching Postgres vw_&lt;entity&gt;_closure.
+
+    Two edge shapes: pass from_field for an edge/junction table, or pk_field
+    for a self-referential FK on the entity&#x27;s own rows.
+
+    Returns dicts of from_id, to_id, hop_distance (shortest derivation) and
+    is_inferred (TRUE iff no directly-asserted hop-1 edge states the pair).
+    A NULL or empty-string endpoint is not an edge — the transpiler stores
+    absent relationships as &#x27;&#x27; rather than NULL, so both must be excluded.
+    &quot;&quot;&quot;
+    source_field = from_field or pk_field
+    if source_field is None:
+        raise ValueError(&quot;compute_closure_relation requires from_field or pk_field&quot;)
+
+    edges = []
+    for row in rows:
+        src = row.get(source_field)
+        dst = row.get(to_field)
+        if src is None or src == &#x27;&#x27; or dst is None or dst == &#x27;&#x27;:
+            continue
+        edges.append((src, dst))
+
+    if not edges:
+        return []
+
+    asserted = set(edges)
+    adjacency = {}
+    for src, dst in edges:
+        adjacency.setdefault(src, []).append(dst)
+
+    shortest = {}
+    for origin in {src for src, _ in edges}:
+        # BFS keeps the first arrival shortest; the path set makes it cycle-safe.
+        frontier = [(origin, (origin,))]
+        hop = 0
+        while frontier:
+            hop += 1
+            next_frontier = []
+            for node, path in frontier:
+                for neighbor in adjacency.get(node, []):
+                    pair = (origin, neighbor)
+                    if pair not in shortest:
+                        shortest[pair] = hop
+                    if neighbor not in path:
+                        next_frontier.append((neighbor, path + (neighbor,)))
+            frontier = next_frontier
+
+    return [
+        {
+            &#x27;from_id&#x27;: from_id,
+            &#x27;to_id&#x27;: to_id,
+            &#x27;hop_distance&#x27;: hop_distance,
+            &#x27;is_inferred&#x27;: (from_id, to_id) not in asserted,
+        }
+        for (from_id, to_id), hop_distance in sorted(shortest.items())
+    ]
+
+
+def compute_closures(rulebook: dict, project_root: Path) -&gt; dict:
+    &quot;&quot;&quot;Materialize every closure field in the rulebook as a pseudo-table.
+
+    Aggregations address these by view name, e.g.
+    =COUNTIFS(vw_step_precedence_closure!{{IsInferred}}, TRUE()) — so the
+    result is keyed by vw_&lt;entity&gt;_closure and joins the related-data lookup
+    path alongside real tables.
+    &quot;&quot;&quot;
+    from orchestration.shared import (
+        discover_entities,
+        discover_primary_key,
+        get_closure_fields,
+        closure_view_name,
+    )
+
+    materialized = {}
+
+    for entity_name in discover_entities(rulebook):
+        schema = get_entity_schema(rulebook, entity_name)
+        for field in get_closure_fields(schema):
+            edge_table = field.get(&#x27;EdgeTable&#x27;)
+            to_column = field.get(&#x27;ToColumn&#x27;)
+            if not to_column:
+                continue
+
+            to_field = to_snake_case(to_column)
+
+            if edge_table and field.get(&#x27;FromColumn&#x27;):
+                source_entity = edge_table
+                source_rows = load_related_data(project_root, edge_table)
+                kwargs = {&#x27;from_field&#x27;: to_snake_case(field[&#x27;FromColumn&#x27;])}
+            else:
+                source_entity = entity_name
+                source_rows = load_related_data(project_root, entity_name)
+                kwargs = {&#x27;pk_field&#x27;: to_snake_case(
+                    discover_primary_key(rulebook, entity_name))}
+
+            materialized[closure_view_name(source_entity)] = compute_closure_relation(
+                source_rows, to_field=to_field, **kwargs)
+
+    return materialized
+
+
+def compute_aggregations(records: list, entity_name: str, rulebook: dict, project_root: Path,
+                         closures: dict = None) -&gt; list:
     &quot;&quot;&quot;COUNTIFS / SUMIFS aggregation interpreter. PYTHON SIMULATOR ONLY.&quot;&quot;&quot;
     schema = get_entity_schema(rulebook, entity_name)
     agg_fields = get_aggregation_fields(schema)
@@ -576,13 +2303,41 @@ def compute_aggregations(records: list, entity_name: str, rulebook: dict, projec
         return records
 
     related_data_cache = {}
+    closures = closures or {}
 
     for field in agg_fields:
         field_name = field.get(&quot;name&quot;)
         formula = field.get(&quot;formula&quot;, &quot;&quot;)
         snake_field_name = to_snake_case(field_name)
 
+        # COUNTIFS with a literal criteria counts rows of the whole target
+        # table, so the count is the same for every record. The target is
+        # either a materialized closure or an ordinary table.
+        literal_table, literal_column, literal = parse_countifs_literal_formula(formula)
+        if literal_table:
+            if literal_table in closures:
+                target_rows = closures[literal_table]
+            else:
+                if literal_table not in related_data_cache:
+                    related_data_cache[literal_table] = load_related_data(
+                        project_root, literal_table)
+                target_rows = related_data_cache[literal_table]
+            count = count_closure_rows(
+                target_rows, to_snake_case(literal_column), literal)
+            for record in records:
+                record[snake_field_name] = count
+            continue
+
         related_table, lookup_field, match_field = parse_countifs_formula(formula)
+
+        if related_table in closures:
+            closure_rows = closures[related_table]
+            snake_lookup_field = to_snake_case(lookup_field)
+            snake_match_field = to_snake_case(match_field)
+            for record in records:
+                record[snake_field_name] = count_closure_rows(
+                    closure_rows, snake_lookup_field, record.get(snake_match_field))
+            continue
 
         if related_table:
             if related_table not in related_data_cache:

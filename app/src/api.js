@@ -53,18 +53,50 @@ export async function setFindingStatus(id, status) {
   return body;
 }
 
-// Trigger a new conformance harness run for a project. The explorer's dev server
-// shells out to scripts/run-conformance.py (which invokes the existing
-// orchestration/test-orchestrator.py, records
-// ConformanceRuns/ConformanceResults rows in the rulebook, then runs
-// `effortless build` so the views pick them up) — see conformanceRunPlugin in
-// vite.config.js. This can take a while; the caller should show a busy state.
-export async function runConformance(slug) {
+// Trigger a new conformance harness run for a project and stream its progress.
+// The explorer's dev server shells out to scripts/run-conformance.py (which
+// invokes the existing orchestration/test-orchestrator.py, records
+// ConformanceRuns/ConformanceResults rows in the rulebook, generates the
+// aggregate orchestration-report.html, then runs `effortless build` so the
+// views pick them up) and streams its stdout/stderr back as Server-Sent
+// Events — see conformanceRunPlugin in vite.config.js. `onLog` is called with
+// each line as it arrives; the returned promise resolves with the final
+// summary ({ run_id, substrates, report_path }) once the run finishes.
+export async function runConformance(slug, onLog) {
   const response = await fetch(`/__conformance/${encodeURIComponent(slug)}/run`, { method: "POST" });
-  const body = await response.json();
-  if (!response.ok || !body.ok) throw new ApiError(body.error || `running conformance for ${slug} failed with HTTP ${response.status}`, { status: response.status, table: "ConformanceRuns" });
+  if (!response.ok || !response.body) {
+    throw new ApiError(`running conformance for ${slug} failed with HTTP ${response.status}`, { status: response.status, table: "ConformanceRuns" });
+  }
+
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = "";
+  let result = null;
+
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    buffer += decoder.decode(value, { stream: true });
+    const events = buffer.split("\n\n");
+    buffer = events.pop(); // last chunk may be incomplete
+    for (const raw of events) {
+      const eventMatch = /^event: (\w+)\ndata: (.*)$/s.exec(raw);
+      if (!eventMatch) continue;
+      const [, event, dataRaw] = eventMatch;
+      const data = JSON.parse(dataRaw);
+      if (event === "log") {
+        onLog?.(data.line);
+      } else if (event === "done") {
+        result = data;
+      }
+    }
+  }
+
+  if (!result || !result.ok) {
+    throw new ApiError(result?.error || `running conformance for ${slug} did not report a result`, { table: "ConformanceRuns" });
+  }
   invalidate("ConformanceRuns", "ConformanceResults", "RulebookDomains");
-  return body;
+  return result;
 }
 
 export async function fetchRows(table) {
