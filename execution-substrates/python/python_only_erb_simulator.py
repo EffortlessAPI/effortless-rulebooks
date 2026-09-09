@@ -1707,6 +1707,110 @@ def parse_countifs_formula(formula: str) -> tuple:
     return (None, None, None)
 
 
+def parse_countifs(formula: str) -> tuple:
+    """Parse any COUNTIFS into (table, [(range_field, criteria), ...]).
+
+    COUNTIFS is variadic — (range, criteria) repeated — so it is parsed
+    structurally rather than with one regex per shape. Each criteria is
+    ('field', Name) to compare against the current record, or ('literal', v).
+    All ranges must name the same table, since COUNTIFS counts rows of one
+    table. Returns (None, None) when the formula is not a COUNTIFS.
+    """
+    match = re.match(r"\s*=\s*COUNTIFS\s*\((.*)\)\s*$", formula, re.S)
+    if not match:
+        return (None, None)
+
+    args = [a.strip() for a in _split_top_level_args(match.group(1))]
+    if len(args) < 2 or len(args) % 2 != 0:
+        raise ValueError(
+            f"COUNTIFS takes (range, criteria) pairs, got {len(args)} argument(s): {formula}")
+
+    table = None
+    criteria = []
+    for range_arg, criteria_arg in zip(args[0::2], args[1::2]):
+        range_match = re.match(r"^(\w+)!\{\{(\w+)\}\}$", range_arg)
+        if not range_match:
+            raise ValueError(f"COUNTIFS range must be Table!{{{{Field}}}}, got {range_arg!r}")
+        range_table, range_field = range_match.groups()
+        if table is None:
+            table = range_table
+        elif range_table != table:
+            raise ValueError(
+                f"COUNTIFS ranges must all name the same table; "
+                f"got {table!r} and {range_table!r}")
+        criteria.append((range_field, _parse_countifs_criteria(criteria_arg)))
+
+    return (table, criteria)
+
+
+def _split_top_level_args(text: str) -> list:
+    """Split on commas that are not inside parentheses or quotes."""
+    args = []
+    depth = 0
+    quote = None
+    current = ''
+    for char in text:
+        if quote:
+            current += char
+            if char == quote:
+                quote = None
+            continue
+        if char in '"\'':
+            quote = char
+            current += char
+        elif char == '(':
+            depth += 1
+            current += char
+        elif char == ')':
+            depth -= 1
+            current += char
+        elif char == ',' and depth == 0:
+            args.append(current)
+            current = ''
+        else:
+            current += char
+    if current.strip():
+        args.append(current)
+    return args
+
+
+def _parse_countifs_criteria(arg: str):
+    """Classify one COUNTIFS criteria argument."""
+    field_match = re.match(r"^(?:\w+!)?\{\{(\w+)\}\}$", arg)
+    if field_match:
+        return ('field', field_match.group(1))
+    # TRUE and FALSE appear with or without call parentheses.
+    bare = arg.upper().replace('()', '').strip()
+    if bare == 'TRUE':
+        return ('literal', True)
+    if bare == 'FALSE':
+        return ('literal', False)
+    if len(arg) >= 2 and arg[0] == arg[-1] and arg[0] in '"\'':
+        return ('literal', arg[1:-1])
+    try:
+        return ('literal', int(arg))
+    except ValueError:
+        pass
+    try:
+        return ('literal', float(arg))
+    except ValueError:
+        pass
+    raise ValueError(f"Unrecognized COUNTIFS criteria: {arg!r}")
+
+
+def count_matching_rows(rows: list, criteria: list, record: dict) -> int:
+    """Count rows satisfying every (range_field, criteria) pair."""
+    count = 0
+    for row in rows:
+        for range_field, (kind, value) in criteria:
+            expected = record.get(to_snake_case(value)) if kind == 'field' else value
+            if row.get(to_snake_case(range_field)) != expected:
+                break
+        else:
+            count += 1
+    return count
+
+
 def parse_countifs_literal_formula(formula: str) -> tuple:
     """Parse =COUNTIFS(Table!{{Field}}, TRUE()) / FALSE().
 
@@ -1942,33 +2046,20 @@ def compute_aggregations(records: list, entity_name: str, rulebook: dict, projec
         formula = field.get("formula", "")
         snake_field_name = to_snake_case(field_name)
 
-        # COUNTIFS with a literal criteria counts rows of the whole target
-        # table, so the count is the same for every record. The target is
-        # either a materialized closure or an ordinary table.
-        literal_table, literal_column, literal = parse_countifs_literal_formula(formula)
-        if literal_table:
-            if literal_table in closures:
-                target_rows = closures[literal_table]
+        # COUNTIFS handles any number of (range, criteria) pairs over one
+        # table, which may be an ordinary table or a materialized closure.
+        countifs_table, countifs_criteria = parse_countifs(formula)
+        if countifs_table:
+            if countifs_table in closures:
+                target_rows = closures[countifs_table]
             else:
-                if literal_table not in related_data_cache:
-                    related_data_cache[literal_table] = load_related_data(
-                        project_root, literal_table)
-                target_rows = related_data_cache[literal_table]
-            count = count_closure_rows(
-                target_rows, to_snake_case(literal_column), literal)
+                if countifs_table not in related_data_cache:
+                    related_data_cache[countifs_table] = load_related_data(
+                        project_root, countifs_table)
+                target_rows = related_data_cache[countifs_table]
             for record in records:
-                record[snake_field_name] = count
-            continue
-
-        related_table, lookup_field, match_field = parse_countifs_formula(formula)
-
-        if related_table in closures:
-            closure_rows = closures[related_table]
-            snake_lookup_field = to_snake_case(lookup_field)
-            snake_match_field = to_snake_case(match_field)
-            for record in records:
-                record[snake_field_name] = count_closure_rows(
-                    closure_rows, snake_lookup_field, record.get(snake_match_field))
+                record[snake_field_name] = count_matching_rows(
+                    target_rows, countifs_criteria, record)
             continue
 
         if related_table:

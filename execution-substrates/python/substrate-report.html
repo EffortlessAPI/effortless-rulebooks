@@ -206,10 +206,10 @@ pre {
         <div class="header-stats">
             <div class="stat">
                 <span>Score:</span>
-                <span class="stat-value score-good">96.5%</span>
+                <span class="stat-value score-good">99.3%</span>
             </div>
             <div class="stat">
-                <span>667/691 passed</span>
+                <span>686/691 passed</span>
             </div>
         </div>
         <button id="theme-toggle" title="Toggle theme">
@@ -322,15 +322,15 @@ Python substrate: Processed 22 entities, 163 total records
                 <h2>Test Summary</h2>
                 <div class="results-summary">
                     <div class="result-item">
-                        <div class="result-value score-good">96.5%</div>
+                        <div class="result-value score-good">99.3%</div>
                         <div class="result-label">Score</div>
                     </div>
                     <div class="result-item">
-                        <div class="result-value score-perfect">667</div>
+                        <div class="result-value score-perfect">686</div>
                         <div class="result-label">Passed</div>
                     </div>
                     <div class="result-item">
-                        <div class="result-value">24</div>
+                        <div class="result-value">5</div>
                         <div class="result-label">Failed</div>
                     </div>
                     <div class="result-item">
@@ -344,7 +344,7 @@ Python substrate: Processed 22 entities, 163 total records
                 <div class="markdown-content">
                     <h3>language_candidates</h3>
                     <ul>
-                        <li>Fields: 667/691 (96.5%)</li>
+                        <li>Fields: 686/691 (99.3%)</li>
                         <li>Computed columns: has_grammar, question, predicted_answer, prediction_predicates, prediction_fail, is_description_of, is_open_closed_world_conflicted, relationship_to_concept</li>
                     </ul>
                 </div>
@@ -356,7 +356,7 @@ Python substrate: Processed 22 entities, 163 total records
                 <div class="code-header">
                     <h2>erb_calc.py</h2>
                     <div>
-                        <span class="code-info">2077 lines</span>
+                        <span class="code-info">2168 lines</span>
                         <button class="copy-btn" onclick="copyCode('calc-code')">Copy</button>
                     </div>
                 </div>
@@ -2069,6 +2069,110 @@ def parse_countifs_formula(formula: str) -&gt; tuple:
     return (None, None, None)
 
 
+def parse_countifs(formula: str) -&gt; tuple:
+    &quot;&quot;&quot;Parse any COUNTIFS into (table, [(range_field, criteria), ...]).
+
+    COUNTIFS is variadic — (range, criteria) repeated — so it is parsed
+    structurally rather than with one regex per shape. Each criteria is
+    (&#x27;field&#x27;, Name) to compare against the current record, or (&#x27;literal&#x27;, v).
+    All ranges must name the same table, since COUNTIFS counts rows of one
+    table. Returns (None, None) when the formula is not a COUNTIFS.
+    &quot;&quot;&quot;
+    match = re.match(r&quot;\s*=\s*COUNTIFS\s*\((.*)\)\s*$&quot;, formula, re.S)
+    if not match:
+        return (None, None)
+
+    args = [a.strip() for a in _split_top_level_args(match.group(1))]
+    if len(args) &lt; 2 or len(args) % 2 != 0:
+        raise ValueError(
+            f&quot;COUNTIFS takes (range, criteria) pairs, got {len(args)} argument(s): {formula}&quot;)
+
+    table = None
+    criteria = []
+    for range_arg, criteria_arg in zip(args[0::2], args[1::2]):
+        range_match = re.match(r&quot;^(\w+)!\{\{(\w+)\}\}$&quot;, range_arg)
+        if not range_match:
+            raise ValueError(f&quot;COUNTIFS range must be Table!{{{{Field}}}}, got {range_arg!r}&quot;)
+        range_table, range_field = range_match.groups()
+        if table is None:
+            table = range_table
+        elif range_table != table:
+            raise ValueError(
+                f&quot;COUNTIFS ranges must all name the same table; &quot;
+                f&quot;got {table!r} and {range_table!r}&quot;)
+        criteria.append((range_field, _parse_countifs_criteria(criteria_arg)))
+
+    return (table, criteria)
+
+
+def _split_top_level_args(text: str) -&gt; list:
+    &quot;&quot;&quot;Split on commas that are not inside parentheses or quotes.&quot;&quot;&quot;
+    args = []
+    depth = 0
+    quote = None
+    current = &#x27;&#x27;
+    for char in text:
+        if quote:
+            current += char
+            if char == quote:
+                quote = None
+            continue
+        if char in &#x27;&quot;\&#x27;&#x27;:
+            quote = char
+            current += char
+        elif char == &#x27;(&#x27;:
+            depth += 1
+            current += char
+        elif char == &#x27;)&#x27;:
+            depth -= 1
+            current += char
+        elif char == &#x27;,&#x27; and depth == 0:
+            args.append(current)
+            current = &#x27;&#x27;
+        else:
+            current += char
+    if current.strip():
+        args.append(current)
+    return args
+
+
+def _parse_countifs_criteria(arg: str):
+    &quot;&quot;&quot;Classify one COUNTIFS criteria argument.&quot;&quot;&quot;
+    field_match = re.match(r&quot;^(?:\w+!)?\{\{(\w+)\}\}$&quot;, arg)
+    if field_match:
+        return (&#x27;field&#x27;, field_match.group(1))
+    # TRUE and FALSE appear with or without call parentheses.
+    bare = arg.upper().replace(&#x27;()&#x27;, &#x27;&#x27;).strip()
+    if bare == &#x27;TRUE&#x27;:
+        return (&#x27;literal&#x27;, True)
+    if bare == &#x27;FALSE&#x27;:
+        return (&#x27;literal&#x27;, False)
+    if len(arg) &gt;= 2 and arg[0] == arg[-1] and arg[0] in &#x27;&quot;\&#x27;&#x27;:
+        return (&#x27;literal&#x27;, arg[1:-1])
+    try:
+        return (&#x27;literal&#x27;, int(arg))
+    except ValueError:
+        pass
+    try:
+        return (&#x27;literal&#x27;, float(arg))
+    except ValueError:
+        pass
+    raise ValueError(f&quot;Unrecognized COUNTIFS criteria: {arg!r}&quot;)
+
+
+def count_matching_rows(rows: list, criteria: list, record: dict) -&gt; int:
+    &quot;&quot;&quot;Count rows satisfying every (range_field, criteria) pair.&quot;&quot;&quot;
+    count = 0
+    for row in rows:
+        for range_field, (kind, value) in criteria:
+            expected = record.get(to_snake_case(value)) if kind == &#x27;field&#x27; else value
+            if row.get(to_snake_case(range_field)) != expected:
+                break
+        else:
+            count += 1
+    return count
+
+
 def parse_countifs_literal_formula(formula: str) -&gt; tuple:
     &quot;&quot;&quot;Parse =COUNTIFS(Table!{{Field}}, TRUE()) / FALSE().
 
@@ -2304,33 +2408,20 @@ def compute_aggregations(records: list, entity_name: str, rulebook: dict, projec
         formula = field.get(&quot;formula&quot;, &quot;&quot;)
         snake_field_name = to_snake_case(field_name)
 
-        # COUNTIFS with a literal criteria counts rows of the whole target
-        # table, so the count is the same for every record. The target is
-        # either a materialized closure or an ordinary table.
-        literal_table, literal_column, literal = parse_countifs_literal_formula(formula)
-        if literal_table:
-            if literal_table in closures:
-                target_rows = closures[literal_table]
+        # COUNTIFS handles any number of (range, criteria) pairs over one
+        # table, which may be an ordinary table or a materialized closure.
+        countifs_table, countifs_criteria = parse_countifs(formula)
+        if countifs_table:
+            if countifs_table in closures:
+                target_rows = closures[countifs_table]
             else:
-                if literal_table not in related_data_cache:
-                    related_data_cache[literal_table] = load_related_data(
-                        project_root, literal_table)
-                target_rows = related_data_cache[literal_table]
-            count = count_closure_rows(
-                target_rows, to_snake_case(literal_column), literal)
+                if countifs_table not in related_data_cache:
+                    related_data_cache[countifs_table] = load_related_data(
+                        project_root, countifs_table)
+                target_rows = related_data_cache[countifs_table]
             for record in records:
-                record[snake_field_name] = count
-            continue
-
-        related_table, lookup_field, match_field = parse_countifs_formula(formula)
-
-        if related_table in closures:
-            closure_rows = closures[related_table]
-            snake_lookup_field = to_snake_case(lookup_field)
-            snake_match_field = to_snake_case(match_field)
-            for record in records:
-                record[snake_field_name] = count_closure_rows(
-                    closure_rows, snake_lookup_field, record.get(snake_match_field))
+                record[snake_field_name] = count_matching_rows(
+                    target_rows, countifs_criteria, record)
             continue
 
         if related_table:
