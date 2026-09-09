@@ -1,0 +1,22 @@
+{
+  "_comment": "Stable DR-number ledger for rulebook-to-rulespeak. Auto-maintained; feed this file back in on the next build to keep rule numbers stable. Numbers in 'Retired' are tombstones and are never reissued. Hand-edit an Assignments number only to deliberately re-pin a rule.",
+  "NextId": 16,
+  "Assignments": {
+    "\u5F62\u72B6.\u8FB9\u7684\u7C7B\u578B": 1,
+    "\u5F62\u72B6.\u8FB9\u6807\u7B7E": 2,
+    "\u5F62\u72B6.\u8FB9\u957F": 3,
+    "\u5F62\u72B6.\u8FB9\u7684\u6570\u91CF": 4,
+    "\u5F62\u72B6.\u8FB9\u89D2": 5,
+    "\u5F62\u72B6.\u89D2\u5EA6\u603B\u548C": 6,
+    "\u5F62\u72B6.\u6700\u5927\u8FB9\u957F": 7,
+    "\u5F62\u72B6.\u975E\u659C\u8FB9\u89D2\u5EA6\u603B\u548C": 8,
+    "\u5F62\u72B6.\u52FE\u80A1\u5B9A\u7406\u6210\u7ACB": 9,
+    "\u8FB9.\u540D\u79F0": 10,
+    "\u8FB9.\u5F62\u72B6\u7684\u6700\u5927\u8FB9\u957F": 11,
+    "\u8FB9.\u8FB9\u7684\u6570\u91CF": 12,
+    "\u8FB9.\u662F\u5426\u4E3A\u659C\u8FB9": 13,
+    "\u8FB9.\u5F62\u72B6\u7C7B\u578B": 14,
+    "\u8FB9.\u957F\u5EA6\u5E73\u65B9": 15
+  },
+  "Retired": []
+}

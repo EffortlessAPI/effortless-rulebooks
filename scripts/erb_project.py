@@ -13,10 +13,12 @@ Runnable standalone for one project:
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import re
 import subprocess
 import sys
+from collections import OrderedDict
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -66,12 +68,46 @@ def rulebook_path(slug: str, domain_dir: Path) -> Path:
     return found[0]
 
 
+PIN_KEYS = ("LastUrl", "LastVersionUsed")
+
+
+def unpin(effortless_json: Path, log) -> int:
+    """Drop every transpiler version pin from one manifest, returning how many
+    keys were removed.
+
+    The CLI writes LastUrl/LastVersionUsed after each build and RESOLVES TO THEM
+    on the next one instead of re-resolving the bare tool name, so they are a
+    de-facto pin that rots as soon as a new version ships. It offers no opt-out,
+    and it re-adds them on every build — so this cannot be a one-time cleanup.
+    Stripping them immediately before each build is what keeps the repo's
+    "nothing is pinned, in any project" rule true in practice: every build
+    resolves [latest], and the pin the CLI writes back is only ever a record of
+    what [latest] was at that moment, never a stale host the NEXT build follows.
+    """
+    manifest = json.loads(effortless_json.read_text(encoding="utf-8"), object_pairs_hook=OrderedDict)
+    transpilers = manifest.get("ProjectTranspilers")
+    if transpilers is None:
+        raise SystemExit(f"{effortless_json} has no ProjectTranspilers key — refusing to guess at its shape.")
+    removed = 0
+    for entry in transpilers:
+        for key in PIN_KEYS:
+            if key in entry:
+                del entry[key]
+                removed += 1
+    if removed:
+        effortless_json.write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+        log(f"[unpin] dropped {removed} version pin(s) so this build resolves [latest]")
+    return removed
+
+
 def build_project(slug: str, domain_dir: Path, log) -> None:
     """`effortless build` in the project directory: the whole pipeline declared
-    in that project's effortless.json. Raises CalledProcessError on failure."""
+    in that project's effortless.json. Unpins first (see unpin()). Raises
+    SystemExit on failure."""
     effortless_json = domain_dir / "effortless.json"
     if not effortless_json.is_file():
         raise SystemExit(f"{effortless_json} does not exist — {slug} has no build pipeline.")
+    unpin(effortless_json, log)
     log(f"[build] effortless build in {domain_dir.relative_to(REPO_ROOT) if domain_dir != REPO_ROOT else '.'}")
     run_streaming(["effortless", "build"], cwd=domain_dir, log=log)
 

@@ -1,4 +1,4 @@
-# 📘 Mechanical Kitchen Timer — RuleSpeak
+# 📘 Mechanical Kitchen Timer — RuleSpeak®
 
 _Five-part mechanical timer modeled with every README noun as a table — a hardware-ontology stress test._
 
@@ -9,131 +9,200 @@ _Five-part mechanical timer modeled with every README noun as a table — a hard
 
 ## 1 Business Vocabulary
 
-| Term | Meaning (business sense) |
-|------|--------------------------|
-| **User** | People who wind timers. |
-| Wind Count | Total wind actions performed by this user. |
-| Cook Count | Total cooks this user has prepared today. |
-| Completed Cook Count | Cooks this user has prepared that have finished (their timer has rung). |
-| Activity Level | Fuzzy take on how active this user is today: idle if no winds, casual for one or two, busy for three or more. |
-| Total Recipe Minutes Attempted | Sum of recommended-minutes across recipes this user has cooked today. Zig-zags User -> Cook -> Recipe.RecommendedMinutes. |
-| Avg Recipe Minutes Attempted | Mean recommended-minutes across this user's cooks today. Zig-zags User -> Cook -> Recipe.RecommendedMinutes. |
-| Cooking Style | Fuzzy verdict on this user's day, off the zig-zag aggregate AvgRecipeMinutesAttempted: 'snacking' under 10 min average, 'short-order' under 30, 'slow-cooking' beyond. |
-| **Timer** | Top-level timer assembly. Holds the raw mechanical parameters and the headline runtime DAG: stored torque, remaining minutes, wind state, and whether the bell has rung. |
-| Wind Fraction | Fraction of full wind currently stored. |
-| Stored Torque Nm | Torque currently stored in the mainspring (§2). |
-| Remaining Minutes | Minutes left until the cam trips §5. |
-| Wind State | Coarse state: Unwound, Partial, or Full. |
-| Is Armed | True while the mainspring still holds energy. |
-| Has Rung | True once §5 has fired. |
-| Tick Count | Total escapement ticks recorded for this timer. |
-| Ring Count | Total ding events recorded for this timer. |
-| Cook Count | Number of cooks currently or recently timed on this timer. |
-| Total Recipe Minutes Used | Sum of recommended minutes across recipes the cooks on this timer are following. Zig-zags through Cook to Recipe. |
-| Avg Recipe Minutes Used | Average recommended-minutes across the recipes any cook on this timer is following. Goes Timer -> Cook (rollup) -> Recipe (the underlying lookup). |
-| Wind Duration Minutes | How many minutes one full wind buys on this timer. Derived from MaxWindDegrees at 6 deg per minute. |
-| Expected Ticks Per Minute | Escapement ticks expected per minute on this timer. |
-| Expected Total Ticks | Ticks expected across a full wind, end to end. |
-| Ticks Elapsed Expected | Ticks that should have occurred so far on this timer based on how much the spring has unwound. |
-| Tick Efficiency Percent | Observed ticks divided by expected ticks so far, as a percentage. A timer that has just been wound returns 100 since no ticks were expected yet. |
-| Has Sparse Tick Record | True when the recorded tick count is well below what should have happened by now. |
-| Mechanical Phase | Fuzzy lifecycle phase. A timer is freshly-wound if barely any of its wind has been spent, mid-run if it is well into its travel, nearly-done if it is almost out of energy, and rung once it has fired. |
-| **Cas** | The outer housing of a timer. The bell is mounted on top of the case. |
-| **Bell** | The bell mounted on top of the case. Struck by the hammer striker when §5 fires. |
-| Times Rung | Number of ding events for this bell. |
-| Has Ever Rung | True if at least one ding has been recorded. |
-| **Winding Knob** | §1 — the dial on the front. Shaft is fixed to the mainspring arbor. Rim carries a printed scale 0..60 read against a fixed pointer on the case. |
-| Timer Wind Angle | Parent timer's current wind angle. |
-| Timer Max Wind | Parent timer's max wind angle. |
-| Scale Reading | Number the printed scale currently shows against the pointer. |
-| **Arbor** | The shaft driven by the mainspring. Connects §1 (knob shaft) to §2 (mainspring), and carries the §5 cam. |
-| **Mainspring** | §2 — flat coiled steel spring in a drum. Inner end anchors to the arbor; outer end anchors to the case. |
-| **Gear Train** | §3 — the three-gear stack between mainspring arbor and escapement. Carries the output shaft that drives the dial pointer. |
-| Timer Escapement Hz | Parent timer's escapement frequency. |
-| Output Shaft RPM | Speed of the output shaft (the one carrying the dial pointer). |
-| Gear Count | Number of gears in this train. Always 3 on this design. |
-| Total Teeth | Sum of tooth counts across the three gears. |
-| Average Tooth Count | Mean tooth count across the gears in this train. |
-| **Gear** | Individual gears in a gear train. Each has a tooth count and a position in the chain (1, 2, or 3). |
-| Is First in Chain | True for the gear nearest the arbor. |
-| Is Last in Chain | True for the gear nearest the escapement. |
-| Size Class | Fuzzy size based on tooth count: large 40+, medium 25-39, small under 25. |
-| On Timer | Timer the gear's gear-train belongs to (chained lookup through GearTrains). |
-| **Output Shaft** | The shaft at the end of the gear train. Carries the dial pointer. |
-| Current RPM | Inherits the gear train's output RPM. |
-| **Dial Pointer** | Pointer mounted on the output shaft. Reads against the printed scale on the knob rim. |
-| **Escapement** | §4 — escapement assembly: toothed wheel plus two-pronged pallet plus hairspring. Defines the time base. |
-| Tick Count | Ticks recorded at this escapement. |
-| Has Ticked | True if this escapement has recorded at least one tick. |
-| **Escapement Wheel** | The toothed wheel of the escapement. Each pallet rock releases exactly one tooth. |
-| **Pallet** | Pivoting piece sitting across the escapement-wheel teeth. Two prongs (the README's 'two-pronged pallet'). Rocking is set by pallet mass plus the hairspring. |
-| **Hairspring** | Tiny coiled spring attached to the pallet. Sets the pallet's rocking rate together with pallet mass. |
-| **Cam** | Profile on the arbor of §2. Its notch aligns with the hammer catch at the zero position; that alignment is what trips §5. |
-| **Bell Hammer** | §5 — spring-loaded arm with a steel striker, held back by the hammer catch. When the cam notch reaches the catch, the catch releases and the arm's own spring snaps the striker against the bell. |
-| Timer Has Rung | Whether the parent timer has rung. |
-| Release State | Held while the cam still restrains the catch; Released once the timer has rung. |
-| **Hammer Arm** | The spring-loaded arm of the bell hammer. Carries the striker at its tip. |
-| **Striker** | The small steel head at the tip of the hammer arm. Whatever actually contacts the bell. |
-| **Hammer Catche** | Catch that holds the hammer back until the cam notch aligns. Once released, the arm spring snaps the striker against the bell. |
-| Hammer Release State | Inherits parent hammer's release state. |
-| Is Engaged | True while the catch still restrains the hammer. |
-| **Wind Action** | Event: a user rotates the winding knob to a target angle at a point in time. The README's §1 input event. |
-| Applied to Timer | Timer the turned knob is fixed to. |
-| Resulted in Ring | True if the timer this wind action wound has since rung. |
-| **Tick Event** | Event: the escapement releases one tooth — one 'tick' from the README. |
-| Timer Label | Parent timer's label. |
-| On Timer That Has Rung | Whether the parent timer has rung. |
-| On Timer in Phase | Parent timer's current mechanical phase. |
-| **Ring Event** | Event: the bell hammer strikes the bell — the README's 'ding'. Recorded once per fired §5. |
-| **Cook** | A dish being timed on a timer. Each cook started at the moment a user wound the timer; its status mirrors the timer's lifecycle. |
-| Timer Has Rung | Whether the cook's timer has rung yet. |
-| Timer is Armed | Whether the cook's timer is still armed. |
-| Timer Remaining Min | Minutes the cook's timer has left. |
-| Status | Done if the timer has rung, Cooking if it is still armed, otherwise Pending. |
-| Recommended Minutes | Minutes the recipe calls for. |
-| Timer Wind Duration | Maximum minutes the chosen timer can run. |
-| Timer Can Cover Recipe | True if the chosen timer can run for at least as long as the recipe calls for. |
-| Suitability Verdict | Fuzzy verdict on the cook's choice of timer: insufficient if the timer is too short for the recipe, overkill if it can run more than three times as long as needed, otherwise appropriate. |
-| Prepared by Name | Display name of the user preparing this cook. |
-| Prepared by Activity Level | Activity-level verdict on the user preparing this cook (chained lookup through Users). |
-| Recipe Duration Category | Duration-category of the recipe being followed (chained lookup through Recipes). |
-| Recipe Temp Profile | Cooking-temp profile of the recipe (chained lookup through Recipes). |
-| Timer Mechanical Phase | Mechanical phase of the timer this cook is on (chained lookup through Timers). |
-| **Recipe** | Cooking recipes a cook can follow. Each names a dish and the minutes it should run. |
-| Times Used Today | Cooks following this recipe today. |
-| Duration Category | A loose verbal classification of how long this recipe takes: quick under 5 min, short under 15, medium under 45, long beyond that. |
-| Cooking Temp Profile | Loose verbal classification of cooking temperature: boiling, hot oven, warm oven, or low. |
-| Avg Timer Capacity | Average wind-duration of the timers cooks have used for this recipe. Zig-zags Recipe -> Cook -> Timer.WindDurationMinutes. |
-| Total Timer Capacity | Sum of timer wind-durations allocated to this recipe today. Zig-zags Recipe -> Cook -> Timer.WindDurationMinutes. |
-| Assignment Verdict | Fuzzy verdict on how well this recipe's actual timer assignments match what it needs. Drives off the zig-zag aggregate AvgTimerCapacity vs the recipe's own RecommendedMinutes. |
-| **Kitchen** | A kitchen, top of the rollup tree. Aggregates everything below it. |
-| Total Timers | Count of timers in the world. |
-| Total Cases | Count of cases. |
-| Total Bells | Count of bells. |
-| Total Users | Count of users. |
-| Total Cooks | Count of cooks today. |
-| Total Recipes | Count of recipes. |
-| Total Wind Actions | Wind actions today. |
-| Total Tick Events | Tick events recorded today. |
-| Total Ring Events | Ring events recorded today. |
-| Timers Freshly Wound | Timers currently freshly-wound. |
-| Timers Mid Run | Timers currently mid-run. |
-| Timers Nearly Done | Timers currently nearly-done. |
-| Timers Rung | Timers that have rung. |
-| Cooks Done | Cooks whose status is Done. |
-| Cooks Cooking | Cooks whose status is Cooking. |
-| Recipes Unused | Recipes nobody cooked today. |
-| Recipes Under Provisioned | Recipes whose chosen timer can't cover them. |
-| Recipes Well Matched | Recipes whose timer assignment was well-matched. |
-| Busy Users | Users with activity-level busy. |
-| Idle Users | Users with activity-level idle. |
-| Total Recipe Minutes | Sum of recommended-minutes across all recipes. |
-| Avg Recipe Minutes | Mean recommended-minutes across all recipes. |
-| Min Recipe Minutes | Shortest recipe in minutes. |
-| Max Recipe Minutes | Longest recipe in minutes. |
-| Has Any Timer Rung | True if any timer has rung today. |
-| Has Misprovisioned Recipe | True if any recipe is currently under-provisioned. |
-| Operational Status | Fuzzy overall status: 'quiet' if no cooks active, 'busy' if many, 'active' otherwise. |
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
+| **User** | People who wind timers. | — |
+| Display Name | A defined attribute. | _Human name._ |
+| Wind Count | The number of wind actions related to the user. | _Total wind actions performed by this user._ |
+| Cook Count | The number of cooks related to the user. | _Total cooks this user has prepared today._ |
+| Completed Cook Count | The number of the user's cooks that are timer has rung. | _Cooks this user has prepared that have finished (their timer has rung)._ |
+| Activity Level | Determined by priority: “idle” if the wind count is 0; “casual” if the wind count is at most 2; in all other cases, “busy”. | _Fuzzy take on how active this user is today: idle if no winds, casual for one or two, busy for three or more._ |
+| Total Recipe Minutes Attempted | The total recommended minutes across the cooks related to the user. | _Sum of recommended-minutes across recipes this user has cooked today. Zig-zags User -> Cook -> Recipe.RecommendedMinutes._ |
+| Avg Recipe Minutes Attempted | The average recommended minutes across the cooks related to the user. | _Mean recommended-minutes across this user's cooks today. Zig-zags User -> Cook -> Recipe.RecommendedMinutes._ |
+| Cooking Style | Determined by priority: “not cooking” if the cook count is 0; “snacking” if the avg recipe minutes attempted is less than 10; “short-order” if the avg recipe minutes attempted is less than 30; in all other cases, “slow-cooking”. | _Fuzzy verdict on this user's day, off the zig-zag aggregate AvgRecipeMinutesAttempted: 'snacking' under 10 min average, 'short-order' under 30, 'slow-cooking' beyond._ |
+| **Timer** | Top-level timer assembly. Holds the raw mechanical parameters and the headline runtime DAG: stored torque, remaining minutes, wind state, and whether the bell has rung. | — |
+| Label | A defined attribute. | _User-facing label._ |
+| Wind Angle Degrees | A defined attribute. | _Current angular position of the winding knob, 0..MaxWindDegrees._ |
+| Max Wind Degrees | A defined attribute. | _Full-wind knob travel; 360 deg = 60 min on a standard dial._ |
+| Max Spring Torque Nm | A defined attribute. | _Mainspring torque at full wind, newton-meters._ |
+| Escapement Base Hz | A defined attribute. | _Pallet oscillation frequency in §4._ |
+| Wind Fraction | Computed as the wind angle degrees divided by the max wind degrees. | _Fraction of full wind currently stored._ |
+| Stored Torque Nm | Computed as the wind fraction times the max spring torque nm. | _Torque currently stored in the mainspring (§2)._ |
+| Remaining Minutes | Computed as the wind angle degrees divided by 6. | _Minutes left until the cam trips §5._ |
+| Wind State | Determined by priority: “Unwound” if the wind angle degrees is at most 0; “Full” if the wind angle degrees is at least the max wind degrees; in all other cases, “Partial”. | _Coarse state: Unwound, Partial, or Full._ |
+| Is Armed | True when the remaining minutes is greater than 0. | _True while the mainspring still holds energy._ |
+| Has Rung | True when the armed flag is not set. | _True once §5 has fired._ |
+| Tick Count | The number of tick events related to the timer. | _Total escapement ticks recorded for this timer._ |
+| Ring Count | The number of ring events related to the timer. | _Total ding events recorded for this timer._ |
+| Cook Count | The number of cooks related to the timer. | _Number of cooks currently or recently timed on this timer._ |
+| Total Recipe Minutes Used | The total recommended minutes across the cooks related to the timer. | _Sum of recommended minutes across recipes the cooks on this timer are following. Zig-zags through Cook to Recipe._ |
+| Avg Recipe Minutes Used | The average recommended minutes across the cooks related to the timer. | _Average recommended-minutes across the recipes any cook on this timer is following. Goes Timer -> Cook (rollup) -> Recipe (the underlying lookup)._ |
+| Wind Duration Minutes | Computed as the max wind degrees divided by 6. | _How many minutes one full wind buys on this timer. Derived from MaxWindDegrees at 6 deg per minute._ |
+| Expected Ticks Per Minute | Computed as the escapement base hz times 60. | _Escapement ticks expected per minute on this timer._ |
+| Expected Total Ticks | Computed as the expected ticks per minute times the wind duration minutes. | _Ticks expected across a full wind, end to end._ |
+| Ticks Elapsed Expected | Computed as the expected ticks per minute times the wind duration minutes minus the remaining minutes. | _Ticks that should have occurred so far on this timer based on how much the spring has unwound._ |
+| Tick Efficiency Percent | Determined by priority: the tick count divided by the ticks elapsed expected times 100 if the ticks elapsed expected is greater than 0; in all other cases, 100. | _Observed ticks divided by expected ticks so far, as a percentage. A timer that has just been wound returns 100 since no ticks were expected yet._ |
+| Has Sparse Tick Record | True when the ticks elapsed expected is greater than 0 and the tick count is less than the ticks elapsed expected. | _True when the recorded tick count is well below what should have happened by now._ |
+| Mechanical Phase | Determined by priority: “rung” if the rung flag is set; “freshly-wound” if the wind fraction is greater than 0.8; “mid-run” if the wind fraction is greater than 0.25; in all other cases, “nearly-done”. | _Fuzzy lifecycle phase. A timer is freshly-wound if barely any of its wind has been spent, mid-run if it is well into its travel, nearly-done if it is almost out of energy, and rung once it has fired._ |
+| **Cas** | The outer housing of a timer. The bell is mounted on top of the case. | — |
+| Houses Timer | A defined attribute. | _Parent timer._ |
+| Material | A defined attribute. | _Case material._ |
+| **Bell** | The bell mounted on top of the case. Struck by the hammer striker when §5 fires. | — |
+| Mounted on Case | A defined attribute. | _Case the bell sits on._ |
+| Diameter Mm | A defined attribute. | _Bell diameter, mm._ |
+| Tone Hz | A defined attribute. | _Dominant tone, Hz._ |
+| Times Rung | The number of ring events related to the bell. | _Number of ding events for this bell._ |
+| Has Ever Rung | True when the times rung is greater than 0. | _True if at least one ding has been recorded._ |
+| **Winding Knob** | §1 — the dial on the front. Shaft is fixed to the mainspring arbor. Rim carries a printed scale 0..60 read against a fixed pointer on the case. | — |
+| Fixed to Timer | A defined attribute. | _Parent timer._ |
+| Scale Min | A defined attribute. | _Lower bound of the printed scale._ |
+| Scale Max | A defined attribute. | _Upper bound of the printed scale._ |
+| Wind Direction | A defined attribute. | _Clockwise or counter-clockwise._ |
+| Shaft Diameter Mm | A defined attribute. | _Diameter of the knob shaft._ |
+| Pointer Fixed | True when an empty string. | _True if the case pointer is fixed (it always is on this design)._ |
+| Timer Wind Angle | The wind angle degrees of the winding knob's fixed to timer. | _Parent timer's current wind angle._ |
+| Timer Max Wind | The max wind degrees of the winding knob's fixed to timer. | _Parent timer's max wind angle._ |
+| Scale Reading | Computed as the scale min plus the timer wind angle divided by the timer max wind times the scale max minus the scale min. | _Number the printed scale currently shows against the pointer._ |
+| **Arbor** | The shaft driven by the mainspring. Connects §1 (knob shaft) to §2 (mainspring), and carries the §5 cam. | — |
+| In Timer | A defined attribute. | _Parent timer._ |
+| Diameter Mm | A defined attribute. | _Arbor diameter._ |
+| **Mainspring** | §2 — flat coiled steel spring in a drum. Inner end anchors to the arbor; outer end anchors to the case. | — |
+| Wrapped on Arbor | A defined attribute. | _Arbor this mainspring drives._ |
+| Drum Diameter Mm | A defined attribute. | _Diameter of the spring drum._ |
+| Material | A defined attribute. | _Spring material._ |
+| Inner End Anchor | A defined attribute. | _Where the inner end anchors (always Arbor)._ |
+| Outer End Anchor | A defined attribute. | _Where the outer end anchors (always Case)._ |
+| **Gear Train** | §3 — the three-gear stack between mainspring arbor and escapement. Carries the output shaft that drives the dial pointer. | — |
+| In Timer | A defined attribute. | _Parent timer._ |
+| Reduction Ratio | A defined attribute. | _Total speed-up from arbor to escapement._ |
+| Timer Escapement Hz | The escapement base hz of the gear train's in timer. | _Parent timer's escapement frequency._ |
+| Output Shaft RPM | Computed as the timer escapement hz times 60 divided by the reduction ratio. | _Speed of the output shaft (the one carrying the dial pointer)._ |
+| Gear Count | The number of gears related to the gear train. | _Number of gears in this train. Always 3 on this design._ |
+| Total Teeth | The total tooth count across the gears related to the gear train. | _Sum of tooth counts across the three gears._ |
+| Average Tooth Count | The average tooth count across the gears related to the gear train. | _Mean tooth count across the gears in this train._ |
+| **Gear** | Individual gears in a gear train. Each has a tooth count and a position in the chain (1, 2, or 3). | — |
+| In Gear Train | A defined attribute. | _Parent gear train._ |
+| Position in Chain | A defined attribute. | _1, 2, or 3 — arbor side to escapement side._ |
+| Tooth Count | A defined attribute. | _Number of teeth on this gear._ |
+| Is First in Chain | True when the position in chain is 1. | _True for the gear nearest the arbor._ |
+| Is Last in Chain | True when the position in chain is 3. | _True for the gear nearest the escapement._ |
+| Size Class | Determined by priority: “large” if the tooth count is at least 40; “medium” if the tooth count is at least 25; in all other cases, “small”. | _Fuzzy size based on tooth count: large 40+, medium 25-39, small under 25._ |
+| On Timer | The in timer of the gear's in gear train. | _Timer the gear's gear-train belongs to (chained lookup through GearTrains)._ |
+| **Output Shaft** | The shaft at the end of the gear train. Carries the dial pointer. | — |
+| In Gear Train | A defined attribute. | _Parent gear train._ |
+| Current RPM | The output shaft RPM of the output shaft's in gear train. | _Inherits the gear train's output RPM._ |
+| **Dial Pointer** | Pointer mounted on the output shaft. Reads against the printed scale on the knob rim. | — |
+| On Output Shaft | A defined attribute. | _Shaft this pointer is mounted on._ |
+| Length Mm | A defined attribute. | _Pointer length._ |
+| **Escapement** | §4 — escapement assembly: toothed wheel plus two-pronged pallet plus hairspring. Defines the time base. | — |
+| In Timer | A defined attribute. | _Parent timer._ |
+| Tick Count | The number of tick events related to the escapement. | _Ticks recorded at this escapement._ |
+| Has Ticked | True when the tick count is greater than 0. | _True if this escapement has recorded at least one tick._ |
+| **Escapement Wheel** | The toothed wheel of the escapement. Each pallet rock releases exactly one tooth. | — |
+| In Escapement | A defined attribute. | _Parent escapement._ |
+| Tooth Count | A defined attribute. | _Number of teeth around the wheel._ |
+| **Pallet** | Pivoting piece sitting across the escapement-wheel teeth. Two prongs (the README's 'two-pronged pallet'). Rocking is set by pallet mass plus the hairspring. | — |
+| In Escapement | A defined attribute. | _Parent escapement._ |
+| Prong Count | A defined attribute. | _Number of prongs. Always 2 on this design._ |
+| Mass Grams | A defined attribute. | _Pallet mass. Co-determines rocking rate._ |
+| **Hairspring** | Tiny coiled spring attached to the pallet. Sets the pallet's rocking rate together with pallet mass. | — |
+| Attached to Pallet | A defined attribute. | _Parent pallet._ |
+| Stiffness Nm Per Rad | A defined attribute. | _Torsional stiffness._ |
+| **Cam** | Profile on the arbor of §2. Its notch aligns with the hammer catch at the zero position; that alignment is what trips §5. | — |
+| On Arbor | A defined attribute. | _Arbor this cam rides on._ |
+| Notch Angle Deg | A defined attribute. | _Arbor angle at which the notch aligns with the catch._ |
+| **Bell Hammer** | §5 — spring-loaded arm with a steel striker, held back by the hammer catch. When the cam notch reaches the catch, the catch releases and the arm's own spring snaps the striker against the bell. | — |
+| In Timer | A defined attribute. | _Parent timer._ |
+| Arm Torque Nm | A defined attribute. | _Spring torque stored in the hammer arm._ |
+| Timer Has Rung | True when the linked in timer has a rung. | _Whether the parent timer has rung._ |
+| Release State | Determined by priority: “Released” if the timer has rung flag is set; in all other cases, “Held”. | _Held while the cam still restrains the catch; Released once the timer has rung._ |
+| **Hammer Arm** | The spring-loaded arm of the bell hammer. Carries the striker at its tip. | — |
+| Of Bell Hammer | A defined attribute. | _Parent bell hammer._ |
+| Length Mm | A defined attribute. | _Arm length._ |
+| **Striker** | The small steel head at the tip of the hammer arm. Whatever actually contacts the bell. | — |
+| On Arm | A defined attribute. | _Hammer arm this striker is mounted on._ |
+| Material | A defined attribute. | _Striker material._ |
+| **Hammer Catche** | Catch that holds the hammer back until the cam notch aligns. Once released, the arm spring snaps the striker against the bell. | — |
+| Of Bell Hammer | A defined attribute. | _Parent bell hammer._ |
+| Engaged With Cam | A defined attribute. | _Cam this catch rides against._ |
+| Hammer Release State | Taken from the linked of bell hammer. | _Inherits parent hammer's release state._ |
+| Is Engaged | True when the hammer release state is “Held”. | _True while the catch still restrains the hammer._ |
+| **Wind Action** | Event: a user rotates the winding knob to a target angle at a point in time. The README's §1 input event. | — |
+| Performed by | A defined attribute. | _Acting user._ |
+| Turned Knob | A defined attribute. | _Knob that was turned._ |
+| Target Angle Deg | A defined attribute. | _Angle wound to, in degrees._ |
+| Occurred At | A defined attribute. | _When the wind happened._ |
+| Applied to Timer | The fixed to timer of the wind action's turned knob. | _Timer the turned knob is fixed to._ |
+| Resulted in Ring | True when the wind action's applied to timer has a rung. | _True if the timer this wind action wound has since rung._ |
+| **Tick Event** | Event: the escapement releases one tooth — one 'tick' from the README. | — |
+| Happened on Timer | A defined attribute. | _Parent timer._ |
+| At Escapement | A defined attribute. | _Escapement that ticked._ |
+| Occurred At | A defined attribute. | _Tick timestamp._ |
+| Timer Label | Taken from the linked happened on timer. | _Parent timer's label._ |
+| On Timer That Has Rung | True when the linked happened on timer has a rung. | _Whether the parent timer has rung._ |
+| On Timer in Phase | The mechanical phase of the tick event's happened on timer. | _Parent timer's current mechanical phase._ |
+| **Ring Event** | Event: the bell hammer strikes the bell — the README's 'ding'. Recorded once per fired §5. | — |
+| Happened on Timer | A defined attribute. | _Parent timer._ |
+| Struck | A defined attribute. | _Bell that was struck._ |
+| Occurred At | A defined attribute. | _Ring timestamp._ |
+| **Cook** | A dish being timed on a timer. Each cook started at the moment a user wound the timer; its status mirrors the timer's lifecycle. | — |
+| On Timer | A defined attribute. | _Timer being used._ |
+| Prepared by | A defined attribute. | _User preparing the dish._ |
+| Dish Name | A defined attribute. | _Name of the dish._ |
+| Started At | A defined attribute. | _When the dish was started — i.e. when the timer was wound._ |
+| Timer Has Rung | True when the linked on timer has a rung. | _Whether the cook's timer has rung yet._ |
+| Timer is Armed | True when the linked on timer is armed. | _Whether the cook's timer is still armed._ |
+| Timer Remaining Min | The remaining minutes of the cook's on timer. | _Minutes the cook's timer has left._ |
+| Status | Determined by priority: “Done” if the timer has rung flag is set; “Cooking” if the timer is armed flag is set; in all other cases, “Pending”. | _Done if the timer has rung, Cooking if it is still armed, otherwise Pending._ |
+| Follows Recipe | A defined attribute. | _Recipe being followed._ |
+| Recommended Minutes | Taken from the linked follows recipe. | _Minutes the recipe calls for._ |
+| Timer Wind Duration | The wind duration minutes of the cook's on timer. | _Maximum minutes the chosen timer can run._ |
+| Timer Can Cover Recipe | True when the timer wind duration is at least the recommended minutes. | _True if the chosen timer can run for at least as long as the recipe calls for._ |
+| Suitability Verdict | Determined by priority: “insufficient” if the timer wind duration is less than the recommended minutes; “overkill” if the timer wind duration is greater than the recommended minutes times 3; in all other cases, “appropriate”. | _Fuzzy verdict on the cook's choice of timer: insufficient if the timer is too short for the recipe, overkill if it can run more than three times as long as needed, otherwise appropriate._ |
+| Prepared by Name | The display name of the cook's prepared by. | _Display name of the user preparing this cook._ |
+| Prepared by Activity Level | Taken from the linked prepared by. | _Activity-level verdict on the user preparing this cook (chained lookup through Users)._ |
+| Recipe Duration Category | Taken from the linked follows recipe. | _Duration-category of the recipe being followed (chained lookup through Recipes)._ |
+| Recipe Temp Profile | The cooking temp profile of the cook's follows recipe. | _Cooking-temp profile of the recipe (chained lookup through Recipes)._ |
+| Timer Mechanical Phase | Taken from the linked on timer. | _Mechanical phase of the timer this cook is on (chained lookup through Timers)._ |
+| **Recipe** | Cooking recipes a cook can follow. Each names a dish and the minutes it should run. | — |
+| Dish Name | A defined attribute. | _Name of the dish._ |
+| Recommended Minutes | A defined attribute. | _Recommended cook time, in minutes._ |
+| Ideal Temperature C | A defined attribute. | _Recommended cooking temperature, in degrees Celsius._ |
+| Times Used Today | The number of cooks related to the recipe. | _Cooks following this recipe today._ |
+| Duration Category | Determined by priority: “quick” if the recommended minutes is less than 5; “short” if the recommended minutes is less than 15; “medium” if the recommended minutes is less than 45; in all other cases, “long”. | _A loose verbal classification of how long this recipe takes: quick under 5 min, short under 15, medium under 45, long beyond that._ |
+| Cooking Temp Profile | Determined by priority: “hot oven” if the ideal temperature c is at least 200; “warm oven” if the ideal temperature c is at least 150; “boiling” if the ideal temperature c is at least 90; in all other cases, “low”. | _Loose verbal classification of cooking temperature: boiling, hot oven, warm oven, or low._ |
+| Avg Timer Capacity | The average timer wind duration across the cooks related to the recipe. | _Average wind-duration of the timers cooks have used for this recipe. Zig-zags Recipe -> Cook -> Timer.WindDurationMinutes._ |
+| Total Timer Capacity | The total timer wind duration across the cooks related to the recipe. | _Sum of timer wind-durations allocated to this recipe today. Zig-zags Recipe -> Cook -> Timer.WindDurationMinutes._ |
+| Assignment Verdict | Determined by priority: “unused” if the times used today is 0; “under-provisioned” if the avg timer capacity is less than the recommended minutes; “over-provisioned” if the avg timer capacity is greater than the recommended minutes times 3; in all other cases, “well-matched”. | _Fuzzy verdict on how well this recipe's actual timer assignments match what it needs. Drives off the zig-zag aggregate AvgTimerCapacity vs the recipe's own RecommendedMinutes._ |
+| **Kitchen** | A kitchen, top of the rollup tree. Aggregates everything below it. | — |
+| Display Name | A defined attribute. | _Human name._ |
+| Total Timers | The number of timers related to the kitchen. | _Count of timers in the world._ |
+| Total Cases | The number of cases related to the kitchen. | _Count of cases._ |
+| Total Bells | The number of bells related to the kitchen. | _Count of bells._ |
+| Total Users | The number of users related to the kitchen. | _Count of users._ |
+| Total Cooks | The number of cooks related to the kitchen. | _Count of cooks today._ |
+| Total Recipes | The number of recipes related to the kitchen. | _Count of recipes._ |
+| Total Wind Actions | The number of wind actions related to the kitchen. | _Wind actions today._ |
+| Total Tick Events | The number of tick events related to the kitchen. | _Tick events recorded today._ |
+| Total Ring Events | The number of ring events related to the kitchen. | _Ring events recorded today._ |
+| Timers Freshly Wound | The number of timers related to the kitchen. | _Timers currently freshly-wound._ |
+| Timers Mid Run | The number of timers related to the kitchen. | _Timers currently mid-run._ |
+| Timers Nearly Done | The number of timers related to the kitchen. | _Timers currently nearly-done._ |
+| Timers Rung | The number of timers related to the kitchen. | _Timers that have rung._ |
+| Cooks Done | The number of cooks related to the kitchen. | _Cooks whose status is Done._ |
+| Cooks Cooking | The number of cooks related to the kitchen. | _Cooks whose status is Cooking._ |
+| Recipes Unused | The number of recipes related to the kitchen. | _Recipes nobody cooked today._ |
+| Recipes Under Provisioned | The number of recipes related to the kitchen. | _Recipes whose chosen timer can't cover them._ |
+| Recipes Well Matched | The number of recipes related to the kitchen. | _Recipes whose timer assignment was well-matched._ |
+| Busy Users | The number of users related to the kitchen. | _Users with activity-level busy._ |
+| Idle Users | The number of users related to the kitchen. | _Users with activity-level idle._ |
+| Total Recipe Minutes | The total recommended minutes across the recipes related to the kitchen. | _Sum of recommended-minutes across all recipes._ |
+| Avg Recipe Minutes | The average recommended minutes across the recipes related to the kitchen. | _Mean recommended-minutes across all recipes._ |
+| Min Recipe Minutes | The smallest recommended minutes across the recipes related to the kitchen. | _Shortest recipe in minutes._ |
+| Max Recipe Minutes | The largest recommended minutes across the recipes related to the kitchen. | _Longest recipe in minutes._ |
+| Has Any Timer Rung | True when the timers rung is greater than 0. | _True if any timer has rung today._ |
+| Has Misprovisioned Recipe | True when the recipes under provisioned is greater than 0. | _True if any recipe is currently under-provisioned._ |
+| Operational Status | Determined by priority: “quiet” if the cooks cooking is 0; “busy” if the cooks cooking is at least 3; in all other cases, “active”. | _Fuzzy overall status: 'quiet' if no cooks active, 'busy' if many, 'active' otherwise._ |
 
 ## 2 Fact Types
 
@@ -166,122 +235,185 @@ _Five-part mechanical timer modeled with every README noun as a table — a hard
 - a **cook** references exactly one **user**
 - a **cook** references exactly one **recipe**
 
-## 3 Definitional Rules
+## 3 Operative Rules
+
+_Operative rules state what the business **obliges**, **prohibits**, or
+advises (**should**). Structural rules come from required fields and foreign keys;
+semantic rules come from the Constraints table, each keyed on a boolean the rulebook
+already computes (cross-referenced as DR-N in the Definitional Rules below)._
+
+### Structural Constraints (from the schema)
+
+- A user **must** have a display name.
+- A timer **must** have a label, a wind angle degrees, a max wind degrees, a max spring torque nm, and an escapement base hz.
+- A cas **must** reference exactly one timer as its houses timer.
+- A cas **must** have a material.
+- A bell **must** reference exactly one cas as its mounted on case.
+- A bell **must** have a diameter mm and a tone hz.
+- A winding knob **must** reference exactly one timer as its fixed to timer.
+- A winding knob **must** have a scale min, a scale max, a wind direction, and a shaft diameter mm, and record whether it is pointer fixed.
+- An arbor **must** reference exactly one timer as its in timer.
+- An arbor **must** have a diameter mm.
+- A mainspring **must** reference exactly one arbor as its wrapped on arbor.
+- A mainspring **must** have a drum diameter mm, a material, an inner end anchor, and an outer end anchor.
+- A gear train **must** reference exactly one timer as its in timer.
+- A gear train **must** have a reduction ratio.
+- A gear **must** reference exactly one gear train as its in gear train.
+- A gear **must** have a position in chain and a tooth count.
+- An output shaft **must** reference exactly one gear train as its in gear train.
+- A dial pointer **must** reference exactly one output shaft as its on output shaft.
+- A dial pointer **must** have a length mm.
+- An escapement **must** reference exactly one timer as its in timer.
+- An escapement wheel **must** reference exactly one escapement as its in escapement.
+- An escapement wheel **must** have a tooth count.
+- A pallet **must** reference exactly one escapement as its in escapement.
+- A pallet **must** have a prong count and a mass grams.
+- A hairspring **must** reference exactly one pallet as its attached to pallet.
+- A hairspring **must** have a stiffness nm per rad.
+- A cam **must** reference exactly one arbor as its on arbor.
+- A cam **must** have a notch angle deg.
+- A bell hammer **must** reference exactly one timer as its in timer.
+- A bell hammer **must** have an arm torque nm.
+- A hammer arm **must** reference exactly one bell hammer as its of bell hammer.
+- A hammer arm **must** have a length mm.
+- A striker **must** reference exactly one hammer arm as its on arm.
+- A striker **must** have a material.
+- A hammer catche **must** reference exactly one bell hammer as its of bell hammer.
+- A hammer catche **must** reference exactly one cam as its engaged with cam.
+- A wind action **must** reference exactly one user as its performed by.
+- A wind action **must** reference exactly one winding knob as its turned knob.
+- A wind action **must** have a target angle deg and an occurred at.
+- A tick event **must** reference exactly one timer as its happened on timer.
+- A tick event **must** reference exactly one escapement as its at escapement.
+- A tick event **must** have an occurred at.
+- A ring event **must** reference exactly one timer as its happened on timer.
+- A ring event **must** reference exactly one bell as its struck.
+- A ring event **must** have an occurred at.
+- A cook **must** reference exactly one timer as its on timer.
+- A cook **must** reference exactly one user as its prepared by.
+- A cook **must** reference exactly one recipe as its follows recipe.
+- A cook **must** have a dish name and a started at.
+- A recipe **must** have a dish name, a recommended minutes, and an ideal temperature c.
+- A kitchen **must** have a display name.
+
+## 4 Definitional Rules
 
 _All statements express truth in the business domain; they are neither
 procedures nor imperatives. "iff" is avoided in favor of "only if" so a
-one-directional necessity is not mistaken for an equivalence._
+one-directional necessity is not mistaken for an equivalence. A
+**⚠︎ mechanical** chip marks a rule whose deterministic wording is faithful
+but clunky — a flag for an optional downstream reword pass, not a defect._
 
 | ID | Declarative rule |
 |----|------------------|
 | **DR-1 Wind Count** | A user's wind count is the number of wind actions related to the user. |
 | **DR-2 Cook Count** | A user's cook count is the number of cooks related to the user. |
 | **DR-3 Completed Cook Count** | A user's completed cook count is the number of the user's cooks that are timer has rung. |
-| **DR-4 Activity Level** | The user's activity level is determined by the following priority:<br>1. the literal “idle”, if the wind count is 0;<br>2. the literal “casual”, if the wind count is at most 2;<br>3. otherwise the literal “busy”. |
+| **DR-4 Activity Level** | The user's activity level is determined by the following priority:<br>1. “idle”, if the wind count is 0;<br>2. “casual”, if the wind count is at most 2;<br>3. in all other cases, “busy”. |
 | **DR-5 Total Recipe Minutes Attempted** | A user's total recipe minutes attempted is the total recommended minutes across the cooks related to the user. |
 | **DR-6 Avg Recipe Minutes Attempted** | A user's avg recipe minutes attempted is the average recommended minutes across the cooks related to the user. |
-| **DR-7 Cooking Style** | The user's cooking style is determined by the following priority:<br>1. the literal “not cooking”, if the cook count is 0;<br>2. the literal “snacking”, if the avg recipe minutes attempted is less than 10;<br>3. the literal “short-order”, if the avg recipe minutes attempted is less than 30;<br>4. otherwise the literal “slow-cooking”. |
-| **DR-8 Wind Fraction** | A timer's wind fraction is computed as `WindAngleDegrees / MaxWindDegrees`. |
-| **DR-9 Stored Torque Nm** | A timer's stored torque nm is computed as `WindFraction * MaxSpringTorqueNm`. |
-| **DR-10 Remaining Minutes** | A timer's remaining minutes is computed as `WindAngleDegrees / 6`. |
-| **DR-11 Wind State** | The timer's wind state is determined by the following priority:<br>1. the literal “Unwound”, if the wind angle degrees is at most 0;<br>2. the literal “Full”, if the wind angle degrees is at least the max wind degrees;<br>3. otherwise the literal “Partial”. |
+| **DR-7 Cooking Style** | The user's cooking style is determined by the following priority:<br>1. “not cooking”, if the cook count is 0;<br>2. “snacking”, if the avg recipe minutes attempted is less than 10;<br>3. “short-order”, if the avg recipe minutes attempted is less than 30;<br>4. in all other cases, “slow-cooking”. |
+| **DR-8 Wind Fraction** | A timer's wind fraction is computed as the wind angle degrees divided by the max wind degrees. |
+| **DR-9 Stored Torque Nm** | A timer's stored torque nm is computed as the wind fraction times the max spring torque nm. |
+| **DR-10 Remaining Minutes** | A timer's remaining minutes is computed as the wind angle degrees divided by 6. |
+| **DR-11 Wind State** | The timer's wind state is determined by the following priority:<br>1. “Unwound”, if the wind angle degrees is at most 0;<br>2. “Full”, if the wind angle degrees is at least the max wind degrees;<br>3. in all other cases, “Partial”. |
 | **DR-12 Is Armed** | A timer is considered armed if the remaining minutes is greater than 0. |
-| **DR-13 Has Rung** | A timer is considered to have a rung if it is not the case that the is armed flag is set. |
+| **DR-13 Has Rung** | A timer is considered to have a rung if the armed flag is not set. |
 | **DR-14 Tick Count** | A timer's tick count is the number of tick events related to the timer. |
 | **DR-15 Ring Count** | A timer's ring count is the number of ring events related to the timer. |
 | **DR-16 Cook Count** | A timer's cook count is the number of cooks related to the timer. |
 | **DR-17 Total Recipe Minutes Used** | A timer's total recipe minutes used is the total recommended minutes across the cooks related to the timer. |
 | **DR-18 Avg Recipe Minutes Used** | A timer's avg recipe minutes used is the average recommended minutes across the cooks related to the timer. |
-| **DR-19 Wind Duration Minutes** | A timer's wind duration minutes is computed as `MaxWindDegrees / 6`. |
-| **DR-20 Expected Ticks Per Minute** | A timer's expected ticks per minute is computed as `EscapementBaseHz * 60`. |
-| **DR-21 Expected Total Ticks** | A timer's expected total ticks is computed as `ExpectedTicksPerMinute * WindDurationMinutes`. |
-| **DR-22 Ticks Elapsed Expected** | A timer's ticks elapsed expected is computed as `ExpectedTicksPerMinute * (WindDurationMinutes - RemainingMinutes)`. |
-| **DR-23 Tick Efficiency Percent** | The timer's tick efficiency percent is determined by the following priority:<br>1. `(TickCount / TicksElapsedExpected) * 100`, if the ticks elapsed expected is greater than 0;<br>2. otherwise 100. |
-| **DR-24 Has Sparse Tick Record** | A timer is considered to have a sparse tick record if `If(TicksElapsedExpected` is greater than `0, TickCount < TicksElapsedExpected, False())`. |
-| **DR-25 Mechanical Phase** | The timer's mechanical phase is determined by the following priority:<br>1. the literal “rung”, if the has rung flag is set;<br>2. the literal “freshly-wound”, if the wind fraction is greater than 0.8;<br>3. the literal “mid-run”, if the wind fraction is greater than 0.25;<br>4. otherwise the literal “nearly-done”. |
+| **DR-19 Wind Duration Minutes** | A timer's wind duration minutes is computed as the max wind degrees divided by 6. |
+| **DR-20 Expected Ticks Per Minute** | A timer's expected ticks per minute is computed as the escapement base hz times 60. |
+| **DR-21 Expected Total Ticks** | A timer's expected total ticks is computed as the expected ticks per minute times the wind duration minutes. |
+| **DR-22 Ticks Elapsed Expected** | A timer's ticks elapsed expected is computed as the expected ticks per minute times the wind duration minutes minus the remaining minutes. |
+| **DR-23 Tick Efficiency Percent** | The timer's tick efficiency percent is determined by the following priority:<br>1. the tick count divided by the ticks elapsed expected times 100, if the ticks elapsed expected is greater than 0;<br>2. in all other cases, 100. |
+| **DR-24 Has Sparse Tick Record** | A timer is considered to have a sparse tick record if the ticks elapsed expected is greater than 0 and the tick count is less than the ticks elapsed expected. |
+| **DR-25 Mechanical Phase** | The timer's mechanical phase is determined by the following priority:<br>1. “rung”, if the rung flag is set;<br>2. “freshly-wound”, if the wind fraction is greater than 0.8;<br>3. “mid-run”, if the wind fraction is greater than 0.25;<br>4. in all other cases, “nearly-done”. |
 | **DR-26 Times Rung** | A bell's times rung is the number of ring events related to the bell. |
 | **DR-27 Has Ever Rung** | A bell is considered to have an ever rung if the times rung is greater than 0. |
 | **DR-28 Timer Wind Angle** | A winding knob's timer wind angle is the wind angle degrees of the winding knob's fixed to timer. |
 | **DR-29 Timer Max Wind** | A winding knob's timer max wind is the max wind degrees of the winding knob's fixed to timer. |
-| **DR-30 Scale Reading** | A winding knob's scale reading is computed as `ScaleMin + (TimerWindAngle / TimerMaxWind) * (ScaleMax - ScaleMin)`. |
+| **DR-30 Scale Reading** | A winding knob's scale reading is computed as the scale min plus the timer wind angle divided by the timer max wind times the scale max minus the scale min. |
 | **DR-31 Timer Escapement Hz** | A gear train's timer escapement hz is the escapement base hz of the gear train's in timer. |
-| **DR-32 Output Shaft RPM** | A gear train's output shaft RPM is computed as `(TimerEscapementHz * 60) / ReductionRatio`. |
+| **DR-32 Output Shaft RPM** | A gear train's output shaft RPM is computed as the timer escapement hz times 60 divided by the reduction ratio. |
 | **DR-33 Gear Count** | A gear train's gear count is the number of gears related to the gear train. |
 | **DR-34 Total Teeth** | A gear train's total teeth is the total tooth count across the gears related to the gear train. |
 | **DR-35 Average Tooth Count** | A gear train's average tooth count is the average tooth count across the gears related to the gear train. |
 | **DR-36 Is First in Chain** | A gear is considered a first in chain if the position in chain is 1. |
 | **DR-37 Is Last in Chain** | A gear is considered a last in chain if the position in chain is 3. |
-| **DR-38 Size Class** | The gear's size class is determined by the following priority:<br>1. the literal “large”, if the tooth count is at least 40;<br>2. the literal “medium”, if the tooth count is at least 25;<br>3. otherwise the literal “small”. |
+| **DR-38 Size Class** | The gear's size class is determined by the following priority:<br>1. “large”, if the tooth count is at least 40;<br>2. “medium”, if the tooth count is at least 25;<br>3. in all other cases, “small”. |
 | **DR-39 On Timer** | A gear's on timer is the in timer of the gear's in gear train. |
 | **DR-40 Current RPM** | An output shaft's current RPM is the output shaft RPM of the output shaft's in gear train. |
 | **DR-41 Tick Count** | An escapement's tick count is the number of tick events related to the escapement. |
 | **DR-42 Has Ticked** | An escapement is considered to have ticked if the tick count is greater than 0. |
-| **DR-43 Timer Has Rung** | A bell hammer's timer has rung is true when the bell hammer's in timer has a rung. |
-| **DR-44 Release State** | The bell hammer's release state is determined by the following priority:<br>1. the literal “Released”, if the timer has rung flag is set;<br>2. otherwise the literal “Held”. |
-| **DR-45 Hammer Release State** | A hammer catche's hammer release state is the release state of the hammer catche's of bell hammer. |
-| **DR-46 Is Engaged** | A hammer catche is considered engaged if `If(HammerReleaseState` is `"Held", True(), False())`. |
+| **DR-43 Timer Has Rung** | A bell hammer's timer has rung when the linked in timer has a rung. |
+| **DR-44 Release State** | The bell hammer's release state is determined by the following priority:<br>1. “Released”, if the timer has rung flag is set;<br>2. in all other cases, “Held”. |
+| **DR-45 Hammer Release State** | A hammer catche's hammer release state — taken from the linked of bell hammer. |
+| **DR-46 Is Engaged** | A hammer catche is considered engaged if the hammer release state is “Held”. |
 | **DR-47 Applied to Timer** | A wind action's applied to timer is the fixed to timer of the wind action's turned knob. |
 | **DR-48 Resulted in Ring** | A wind action's resulted in ring is true when the wind action's applied to timer has a rung. |
-| **DR-49 Timer Label** | A tick event's timer label is the label of the tick event's happened on timer. |
-| **DR-50 On Timer That Has Rung** | A tick event's on timer that has rung is true when the tick event's happened on timer has a rung. |
+| **DR-49 Timer Label** | A tick event's timer label — taken from the linked happened on timer. |
+| **DR-50 On Timer That Has Rung** | A tick event's on timer that has rung when the linked happened on timer has a rung. |
 | **DR-51 On Timer in Phase** | A tick event's on timer in phase is the mechanical phase of the tick event's happened on timer. |
-| **DR-52 Timer Has Rung** | A cook's timer has rung is true when the cook's on timer has a rung. |
-| **DR-53 Timer is Armed** | A cook's timer is armed is true when the cook's on timer is armed. |
+| **DR-52 Timer Has Rung** | A cook's timer has rung when the linked on timer has a rung. |
+| **DR-53 Timer is Armed** | A cook's timer is armed when the linked on timer is armed. |
 | **DR-54 Timer Remaining Min** | A cook's timer remaining min is the remaining minutes of the cook's on timer. |
-| **DR-55 Status** | The cook's status is determined by the following priority:<br>1. the literal “Done”, if the timer has rung flag is set;<br>2. the literal “Cooking”, if the timer is armed flag is set;<br>3. otherwise the literal “Pending”. |
-| **DR-56 Recommended Minutes** | A cook's recommended minutes is the recommended minutes of the cook's follows recipe. |
+| **DR-55 Status** | The cook's status is determined by the following priority:<br>1. “Done”, if the timer has rung flag is set;<br>2. “Cooking”, if the timer is armed flag is set;<br>3. in all other cases, “Pending”. |
+| **DR-56 Recommended Minutes** | A cook's recommended minutes — taken from the linked follows recipe. |
 | **DR-57 Timer Wind Duration** | A cook's timer wind duration is the wind duration minutes of the cook's on timer. |
 | **DR-58 Timer Can Cover Recipe** | A cook is flagged timer can cover recipe if the timer wind duration is at least the recommended minutes. |
-| **DR-59 Suitability Verdict** | The cook's suitability verdict is determined by the following priority:<br>1. the literal “insufficient”, if the timer wind duration is less than the recommended minutes;<br>2. the literal “overkill”, if the timer wind duration is greater than `(RecommendedMinutes * 3)`;<br>3. otherwise the literal “appropriate”. |
+| **DR-59 Suitability Verdict** | The cook's suitability verdict is determined by the following priority:<br>1. “insufficient”, if the timer wind duration is less than the recommended minutes;<br>2. “overkill”, if the timer wind duration is greater than the recommended minutes times 3;<br>3. in all other cases, “appropriate”. |
 | **DR-60 Prepared by Name** | A cook's prepared by name is the display name of the cook's prepared by. |
-| **DR-61 Prepared by Activity Level** | A cook's prepared by activity level is the activity level of the cook's prepared by. |
-| **DR-62 Recipe Duration Category** | A cook's recipe duration category is the duration category of the cook's follows recipe. |
+| **DR-61 Prepared by Activity Level** | A cook's prepared by activity level — taken from the linked prepared by. |
+| **DR-62 Recipe Duration Category** | A cook's recipe duration category — taken from the linked follows recipe. |
 | **DR-63 Recipe Temp Profile** | A cook's recipe temp profile is the cooking temp profile of the cook's follows recipe. |
-| **DR-64 Timer Mechanical Phase** | A cook's timer mechanical phase is the mechanical phase of the cook's on timer. |
+| **DR-64 Timer Mechanical Phase** | A cook's timer mechanical phase — taken from the linked on timer. |
 | **DR-65 Times Used Today** | A recipe's times used today is the number of cooks related to the recipe. |
-| **DR-66 Duration Category** | The recipe's duration category is determined by the following priority:<br>1. the literal “quick”, if the recommended minutes is less than 5;<br>2. the literal “short”, if the recommended minutes is less than 15;<br>3. the literal “medium”, if the recommended minutes is less than 45;<br>4. otherwise the literal “long”. |
-| **DR-67 Cooking Temp Profile** | The recipe's cooking temp profile is determined by the following priority:<br>1. the literal “hot oven”, if the ideal temperature c is at least 200;<br>2. the literal “warm oven”, if the ideal temperature c is at least 150;<br>3. the literal “boiling”, if the ideal temperature c is at least 90;<br>4. otherwise the literal “low”. |
+| **DR-66 Duration Category** | The recipe's duration category is determined by the following priority:<br>1. “quick”, if the recommended minutes is less than 5;<br>2. “short”, if the recommended minutes is less than 15;<br>3. “medium”, if the recommended minutes is less than 45;<br>4. in all other cases, “long”. |
+| **DR-67 Cooking Temp Profile** | The recipe's cooking temp profile is determined by the following priority:<br>1. “hot oven”, if the ideal temperature c is at least 200;<br>2. “warm oven”, if the ideal temperature c is at least 150;<br>3. “boiling”, if the ideal temperature c is at least 90;<br>4. in all other cases, “low”. |
 | **DR-68 Avg Timer Capacity** | A recipe's avg timer capacity is the average timer wind duration across the cooks related to the recipe. |
 | **DR-69 Total Timer Capacity** | A recipe's total timer capacity is the total timer wind duration across the cooks related to the recipe. |
-| **DR-70 Assignment Verdict** | The recipe's assignment verdict is determined by the following priority:<br>1. the literal “unused”, if the times used today is 0;<br>2. the literal “under-provisioned”, if the avg timer capacity is less than the recommended minutes;<br>3. the literal “over-provisioned”, if the avg timer capacity is greater than `(RecommendedMinutes * 3)`;<br>4. otherwise the literal “well-matched”. |
-| **DR-71 Total Timers** | A kitchen's total timers is rolled up from its related records (`Count(Timers.TimerId)`). |
-| **DR-72 Total Cases** | A kitchen's total cases is rolled up from its related records (`Count(Cases.CaseId)`). |
-| **DR-73 Total Bells** | A kitchen's total bells is rolled up from its related records (`Count(Bells.BellId)`). |
-| **DR-74 Total Users** | A kitchen's total users is rolled up from its related records (`Count(Users.UserId)`). |
-| **DR-75 Total Cooks** | A kitchen's total cooks is rolled up from its related records (`Count(Cooks.CookId)`). |
-| **DR-76 Total Recipes** | A kitchen's total recipes is rolled up from its related records (`Count(Recipes.RecipeId)`). |
-| **DR-77 Total Wind Actions** | A kitchen's total wind actions is rolled up from its related records (`Count(WindActions.WindActionId)`). |
-| **DR-78 Total Tick Events** | A kitchen's total tick events is rolled up from its related records (`Count(TickEvents.TickEventId)`). |
-| **DR-79 Total Ring Events** | A kitchen's total ring events is rolled up from its related records (`Count(RingEvents.RingEventId)`). |
-| **DR-80 Timers Freshly Wound** | A kitchen's timers freshly wound is rolled up from its related records (`Count(Timers.MechanicalPhase, "freshly-wound")`). |
-| **DR-81 Timers Mid Run** | A kitchen's timers mid run is rolled up from its related records (`Count(Timers.MechanicalPhase, "mid-run")`). |
-| **DR-82 Timers Nearly Done** | A kitchen's timers nearly done is rolled up from its related records (`Count(Timers.MechanicalPhase, "nearly-done")`). |
-| **DR-83 Timers Rung** | A kitchen's timers rung is rolled up from its related records (`Count(Timers.MechanicalPhase, "rung")`). |
-| **DR-84 Cooks Done** | A kitchen's cooks done is rolled up from its related records (`Count(Cooks.Status, "Done")`). |
-| **DR-85 Cooks Cooking** | A kitchen's cooks cooking is rolled up from its related records (`Count(Cooks.Status, "Cooking")`). |
-| **DR-86 Recipes Unused** | A kitchen's recipes unused is rolled up from its related records (`Count(Recipes.AssignmentVerdict, "unused")`). |
-| **DR-87 Recipes Under Provisioned** | A kitchen's recipes under provisioned is rolled up from its related records (`Count(Recipes.AssignmentVerdict, "under-provisioned")`). |
-| **DR-88 Recipes Well Matched** | A kitchen's recipes well matched is rolled up from its related records (`Count(Recipes.AssignmentVerdict, "well-matched")`). |
-| **DR-89 Busy Users** | A kitchen's busy users is rolled up from its related records (`Count(Users.ActivityLevel, "busy")`). |
-| **DR-90 Idle Users** | A kitchen's idle users is rolled up from its related records (`Count(Users.ActivityLevel, "idle")`). |
-| **DR-91 Total Recipe Minutes** | A kitchen's total recipe minutes is rolled up from its related records (`Sum(Recipes.RecommendedMinutes)`). |
-| **DR-92 Avg Recipe Minutes** | A kitchen's avg recipe minutes is rolled up from its related records (`Average(Recipes.RecommendedMinutes)`). |
-| **DR-93 Min Recipe Minutes** | A kitchen's min recipe minutes is rolled up from its related records (`Min(Recipes.RecommendedMinutes)`). |
-| **DR-94 Max Recipe Minutes** | A kitchen's max recipe minutes is rolled up from its related records (`Max(Recipes.RecommendedMinutes)`). |
+| **DR-70 Assignment Verdict** | The recipe's assignment verdict is determined by the following priority:<br>1. “unused”, if the times used today is 0;<br>2. “under-provisioned”, if the avg timer capacity is less than the recommended minutes;<br>3. “over-provisioned”, if the avg timer capacity is greater than the recommended minutes times 3;<br>4. in all other cases, “well-matched”. |
+| **DR-71 Total Timers** | A kitchen's total timers is the number of timers related to the kitchen. |
+| **DR-72 Total Cases** | A kitchen's total cases is the number of cases related to the kitchen. |
+| **DR-73 Total Bells** | A kitchen's total bells is the number of bells related to the kitchen. |
+| **DR-74 Total Users** | A kitchen's total users is the number of users related to the kitchen. |
+| **DR-75 Total Cooks** | A kitchen's total cooks is the number of cooks related to the kitchen. |
+| **DR-76 Total Recipes** | A kitchen's total recipes is the number of recipes related to the kitchen. |
+| **DR-77 Total Wind Actions** | A kitchen's total wind actions is the number of wind actions related to the kitchen. |
+| **DR-78 Total Tick Events** | A kitchen's total tick events is the number of tick events related to the kitchen. |
+| **DR-79 Total Ring Events** | A kitchen's total ring events is the number of ring events related to the kitchen. |
+| **DR-80 Timers Freshly Wound** | A kitchen's timers freshly wound is the number of timers related to the kitchen. |
+| **DR-81 Timers Mid Run** | A kitchen's timers mid run is the number of timers related to the kitchen. |
+| **DR-82 Timers Nearly Done** | A kitchen's timers nearly done is the number of timers related to the kitchen. |
+| **DR-83 Timers Rung** | A kitchen's timers rung is the number of timers related to the kitchen. |
+| **DR-84 Cooks Done** | A kitchen's cooks done is the number of cooks related to the kitchen. |
+| **DR-85 Cooks Cooking** | A kitchen's cooks cooking is the number of cooks related to the kitchen. |
+| **DR-86 Recipes Unused** | A kitchen's recipes unused is the number of recipes related to the kitchen. |
+| **DR-87 Recipes Under Provisioned** | A kitchen's recipes under provisioned is the number of recipes related to the kitchen. |
+| **DR-88 Recipes Well Matched** | A kitchen's recipes well matched is the number of recipes related to the kitchen. |
+| **DR-89 Busy Users** | A kitchen's busy users is the number of users related to the kitchen. |
+| **DR-90 Idle Users** | A kitchen's idle users is the number of users related to the kitchen. |
+| **DR-91 Total Recipe Minutes** | A kitchen's total recipe minutes is the total recommended minutes across the recipes related to the kitchen. |
+| **DR-92 Avg Recipe Minutes** | A kitchen's avg recipe minutes is the average recommended minutes across the recipes related to the kitchen. |
+| **DR-93 Min Recipe Minutes** | A kitchen's min recipe minutes is the smallest recommended minutes across the recipes related to the kitchen. |
+| **DR-94 Max Recipe Minutes** | A kitchen's max recipe minutes is the largest recommended minutes across the recipes related to the kitchen. |
 | **DR-95 Has Any Timer Rung** | A kitchen is considered to have any timer rung if the timers rung is greater than 0. |
 | **DR-96 Has Misprovisioned Recipe** | A kitchen is considered to have a misprovisioned recipe if the recipes under provisioned is greater than 0. |
-| **DR-97 Operational Status** | The kitchen's operational status is determined by the following priority:<br>1. the literal “quiet”, if the cooks cooking is 0;<br>2. the literal “busy”, if the cooks cooking is at least 3;<br>3. otherwise the literal “active”. |
+| **DR-97 Operational Status** | The kitchen's operational status is determined by the following priority:<br>1. “quiet”, if the cooks cooking is 0;<br>2. “busy”, if the cooks cooking is at least 3;<br>3. in all other cases, “active”. |
 
-## 4 Traceability to Schema
+## 5 Traceability to Schema
 
-_The expression column is the rule's definition in RuleSpeak notation —
+_The expression column is the rule's definition in RuleSpeak® notation —
 the same logic the rulebook stores, written for a business reader._
 
 | Schema element | Kind | Expression |
 |----------------|------|------------|
 | **Users.WindCount** | rollup | `Count(WindActions via PerformedBy)` |
 | **Users.CookCount** | rollup | `Count(Cooks via PreparedBy)` |
-| **Users.CompletedCookCount** | rollup | `Count(Cooks.PreparedBy, Users.UserId, Cooks.TimerHasRung, True())` |
+| **Users.CompletedCookCount** | rollup | `Count(Cooks via PreparedBy)` |
 | **Users.ActivityLevel** | formula | `If(WindCount = 0, "idle", If(WindCount <= 2, "casual", "busy"))` |
 | **Users.TotalRecipeMinutesAttempted** | rollup | `Sum(Cooks.RecommendedMinutes via PreparedBy)` |
 | **Users.AvgRecipeMinutesAttempted** | rollup | `Average(Cooks.RecommendedMinutes via PreparedBy)` |
@@ -300,17 +432,17 @@ the same logic the rulebook stores, written for a business reader._
 | **Timers.WindDurationMinutes** | formula | `MaxWindDegrees / 6` |
 | **Timers.ExpectedTicksPerMinute** | formula | `EscapementBaseHz * 60` |
 | **Timers.ExpectedTotalTicks** | formula | `ExpectedTicksPerMinute * WindDurationMinutes` |
-| **Timers.TicksElapsedExpected** | formula | `ExpectedTicksPerMinute * (WindDurationMinutes - RemainingMinutes)` |
-| **Timers.TickEfficiencyPercent** | formula | `If(TicksElapsedExpected > 0, (TickCount / TicksElapsedExpected) * 100, 100)` |
+| **Timers.TicksElapsedExpected** | formula | `ExpectedTicksPerMinute * WindDurationMinutes - RemainingMinutes` |
+| **Timers.TickEfficiencyPercent** | formula | `If(TicksElapsedExpected > 0, TickCount / TicksElapsedExpected * 100, 100)` |
 | **Timers.HasSparseTickRecord** | formula | `If(TicksElapsedExpected > 0, TickCount < TicksElapsedExpected, False())` |
 | **Timers.MechanicalPhase** | formula | `If(HasRung, "rung", If(WindFraction > 0.8, "freshly-wound", If(WindFraction > 0.25, "mid-run", "nearly-done")))` |
 | **Bells.TimesRung** | rollup | `Count(RingEvents via Struck)` |
 | **Bells.HasEverRung** | formula | `TimesRung > 0` |
 | **WindingKnobs.TimerWindAngle** | lookup | `Lookup(Timers.WindAngleDegrees via FixedToTimer)` |
 | **WindingKnobs.TimerMaxWind** | lookup | `Lookup(Timers.MaxWindDegrees via FixedToTimer)` |
-| **WindingKnobs.ScaleReading** | formula | `ScaleMin + (TimerWindAngle / TimerMaxWind) * (ScaleMax - ScaleMin)` |
+| **WindingKnobs.ScaleReading** | formula | `ScaleMin + TimerWindAngle / TimerMaxWind * ScaleMax - ScaleMin` |
 | **GearTrains.TimerEscapementHz** | lookup | `Lookup(Timers.EscapementBaseHz via InTimer)` |
-| **GearTrains.OutputShaftRPM** | formula | `(TimerEscapementHz * 60) / ReductionRatio` |
+| **GearTrains.OutputShaftRPM** | formula | `TimerEscapementHz * 60 / ReductionRatio` |
 | **GearTrains.GearCount** | rollup | `Count(Gears via InGearTrain)` |
 | **GearTrains.TotalTeeth** | rollup | `Sum(Gears.ToothCount via InGearTrain)` |
 | **GearTrains.AverageToothCount** | rollup | `Average(Gears.ToothCount via InGearTrain)` |
@@ -337,7 +469,7 @@ the same logic the rulebook stores, written for a business reader._
 | **Cooks.RecommendedMinutes** | lookup | `Lookup(Recipes.RecommendedMinutes via FollowsRecipe)` |
 | **Cooks.TimerWindDuration** | lookup | `Lookup(Timers.WindDurationMinutes via OnTimer)` |
 | **Cooks.TimerCanCoverRecipe** | formula | `TimerWindDuration >= RecommendedMinutes` |
-| **Cooks.SuitabilityVerdict** | formula | `If(TimerWindDuration < RecommendedMinutes, "insufficient", If(TimerWindDuration > (RecommendedMinutes * 3), "overkill", "appropriate"))` |
+| **Cooks.SuitabilityVerdict** | formula | `If(TimerWindDuration < RecommendedMinutes, "insufficient", If(TimerWindDuration > RecommendedMinutes * 3, "overkill", "appropriate"))` |
 | **Cooks.PreparedByName** | lookup | `Lookup(Users.DisplayName via PreparedBy)` |
 | **Cooks.PreparedByActivityLevel** | lookup | `Lookup(Users.ActivityLevel via PreparedBy)` |
 | **Cooks.RecipeDurationCategory** | lookup | `Lookup(Recipes.DurationCategory via FollowsRecipe)` |
@@ -348,27 +480,27 @@ the same logic the rulebook stores, written for a business reader._
 | **Recipes.CookingTempProfile** | formula | `If(IdealTemperatureC >= 200, "hot oven", If(IdealTemperatureC >= 150, "warm oven", If(IdealTemperatureC >= 90, "boiling", "low")))` |
 | **Recipes.AvgTimerCapacity** | rollup | `Average(Cooks.TimerWindDuration via FollowsRecipe)` |
 | **Recipes.TotalTimerCapacity** | rollup | `Sum(Cooks.TimerWindDuration via FollowsRecipe)` |
-| **Recipes.AssignmentVerdict** | formula | `If(TimesUsedToday = 0, "unused", If(AvgTimerCapacity < RecommendedMinutes, "under-provisioned", If(AvgTimerCapacity > (RecommendedMinutes * 3), "over-provisioned", "well-matched")))` |
-| **Kitchens.TotalTimers** | rollup | `Count(Timers.TimerId)` |
-| **Kitchens.TotalCases** | rollup | `Count(Cases.CaseId)` |
-| **Kitchens.TotalBells** | rollup | `Count(Bells.BellId)` |
-| **Kitchens.TotalUsers** | rollup | `Count(Users.UserId)` |
-| **Kitchens.TotalCooks** | rollup | `Count(Cooks.CookId)` |
-| **Kitchens.TotalRecipes** | rollup | `Count(Recipes.RecipeId)` |
-| **Kitchens.TotalWindActions** | rollup | `Count(WindActions.WindActionId)` |
-| **Kitchens.TotalTickEvents** | rollup | `Count(TickEvents.TickEventId)` |
-| **Kitchens.TotalRingEvents** | rollup | `Count(RingEvents.RingEventId)` |
-| **Kitchens.TimersFreshlyWound** | rollup | `Count(Timers.MechanicalPhase, "freshly-wound")` |
-| **Kitchens.TimersMidRun** | rollup | `Count(Timers.MechanicalPhase, "mid-run")` |
-| **Kitchens.TimersNearlyDone** | rollup | `Count(Timers.MechanicalPhase, "nearly-done")` |
-| **Kitchens.TimersRung** | rollup | `Count(Timers.MechanicalPhase, "rung")` |
-| **Kitchens.CooksDone** | rollup | `Count(Cooks.Status, "Done")` |
-| **Kitchens.CooksCooking** | rollup | `Count(Cooks.Status, "Cooking")` |
-| **Kitchens.RecipesUnused** | rollup | `Count(Recipes.AssignmentVerdict, "unused")` |
-| **Kitchens.RecipesUnderProvisioned** | rollup | `Count(Recipes.AssignmentVerdict, "under-provisioned")` |
-| **Kitchens.RecipesWellMatched** | rollup | `Count(Recipes.AssignmentVerdict, "well-matched")` |
-| **Kitchens.BusyUsers** | rollup | `Count(Users.ActivityLevel, "busy")` |
-| **Kitchens.IdleUsers** | rollup | `Count(Users.ActivityLevel, "idle")` |
+| **Recipes.AssignmentVerdict** | formula | `If(TimesUsedToday = 0, "unused", If(AvgTimerCapacity < RecommendedMinutes, "under-provisioned", If(AvgTimerCapacity > RecommendedMinutes * 3, "over-provisioned", "well-matched")))` |
+| **Kitchens.TotalTimers** | rollup | `Count(Timers)` |
+| **Kitchens.TotalCases** | rollup | `Count(Cases)` |
+| **Kitchens.TotalBells** | rollup | `Count(Bells)` |
+| **Kitchens.TotalUsers** | rollup | `Count(Users)` |
+| **Kitchens.TotalCooks** | rollup | `Count(Cooks)` |
+| **Kitchens.TotalRecipes** | rollup | `Count(Recipes)` |
+| **Kitchens.TotalWindActions** | rollup | `Count(WindActions)` |
+| **Kitchens.TotalTickEvents** | rollup | `Count(TickEvents)` |
+| **Kitchens.TotalRingEvents** | rollup | `Count(RingEvents)` |
+| **Kitchens.TimersFreshlyWound** | rollup | `Count(Timers via MechanicalPhase)` |
+| **Kitchens.TimersMidRun** | rollup | `Count(Timers via MechanicalPhase)` |
+| **Kitchens.TimersNearlyDone** | rollup | `Count(Timers via MechanicalPhase)` |
+| **Kitchens.TimersRung** | rollup | `Count(Timers via MechanicalPhase)` |
+| **Kitchens.CooksDone** | rollup | `Count(Cooks via Status)` |
+| **Kitchens.CooksCooking** | rollup | `Count(Cooks via Status)` |
+| **Kitchens.RecipesUnused** | rollup | `Count(Recipes via AssignmentVerdict)` |
+| **Kitchens.RecipesUnderProvisioned** | rollup | `Count(Recipes via AssignmentVerdict)` |
+| **Kitchens.RecipesWellMatched** | rollup | `Count(Recipes via AssignmentVerdict)` |
+| **Kitchens.BusyUsers** | rollup | `Count(Users via ActivityLevel)` |
+| **Kitchens.IdleUsers** | rollup | `Count(Users via ActivityLevel)` |
 | **Kitchens.TotalRecipeMinutes** | rollup | `Sum(Recipes.RecommendedMinutes)` |
 | **Kitchens.AvgRecipeMinutes** | rollup | `Average(Recipes.RecommendedMinutes)` |
 | **Kitchens.MinRecipeMinutes** | rollup | `Min(Recipes.RecommendedMinutes)` |
@@ -376,3 +508,11 @@ the same logic the rulebook stores, written for a business reader._
 | **Kitchens.HasAnyTimerRung** | formula | `TimersRung > 0` |
 | **Kitchens.HasMisprovisionedRecipe** | formula | `RecipesUnderProvisioned > 0` |
 | **Kitchens.OperationalStatus** | formula | `If(CooksCooking = 0, "quiet", If(CooksCooking >= 3, "busy", "active"))` |
+
+---
+
+_This document is rendered in **RuleSpeak®**, the declarative business-rule
+notation created by **Ronald G. Ross**, and follows the conventions of
+**SBVR** (Semantics of Business Vocabulary and Business Rules). With thanks to
+Ronald G. Ross for RuleSpeak® and his foundational work on business rules —
+[www.RonRoss.info](https://www.RonRoss.info)._

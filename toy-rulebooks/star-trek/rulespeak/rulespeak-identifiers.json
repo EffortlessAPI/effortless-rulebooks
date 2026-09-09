@@ -1,0 +1,33 @@
+{
+  "_comment": "Stable DR-number ledger for rulebook-to-rulespeak. Auto-maintained; feed this file back in on the next build to keep rule numbers stable. Numbers in 'Retired' are tombstones and are never reissued. Hand-edit an Assignments number only to deliberately re-pin a rule.",
+  "NextId": 27,
+  "Assignments": {
+    "Series.Name": 1,
+    "Series.TotalSeasons": 2,
+    "Series.TotalEpisodes": 3,
+    "Series.IsLongRunning": 4,
+    "Series.Rating": 5,
+    "Series.IsGood": 6,
+    "Seasons.Name": 7,
+    "Seasons.ShowTitle": 8,
+    "Seasons.ShowDescription": 9,
+    "Seasons.ShowNetwork": 10,
+    "Seasons.EpisodeCount": 11,
+    "Episodes.Name": 12,
+    "Episodes.SeasonNumber": 13,
+    "Episodes.SeasonTitle": 14,
+    "Episodes.SeasonDescription": 15,
+    "Movies.Name": 16,
+    "Movies.CrewCount": 17,
+    "CrewAssignments.Name": 18,
+    "CrewAssignments.PersonName": 19,
+    "CrewAssignments.MovieTitle": 20,
+    "CrewAssignments.CrewTypeName": 21,
+    "Ratings.Name": 22,
+    "Ratings.DisplayName": 23,
+    "Ratings.SeriesName": 24,
+    "Ratings.EpisodeName": 25,
+    "Ratings.EpisodeSeasonTitle": 26
+  },
+  "Retired": []
+}

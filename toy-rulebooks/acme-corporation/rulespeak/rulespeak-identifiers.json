@@ -1,0 +1,21 @@
+{
+  "_comment": "Stable DR-number ledger for rulebook-to-rulespeak. Auto-maintained; feed this file back in on the next build to keep rule numbers stable. Numbers in 'Retired' are tombstones and are never reissued. Hand-edit an Assignments number only to deliberately re-pin a rule.",
+  "NextId": 15,
+  "Assignments": {
+    "Client.FullName": 1,
+    "Projects.ProjectTypeName": 2,
+    "Projects.ProjectTypeDescription": 3,
+    "Projects.ProjectTypeRequiresManagerApproval": 4,
+    "Projects.IsApproved": 5,
+    "Projects.ApprovedByRoleIsManager": 6,
+    "Projects.ApprovedByName": 7,
+    "Projects.ApprovedByEmailAddress": 8,
+    "Projects.ApprovedByPhoneNumber": 9,
+    "Employees.RoleName": 10,
+    "Employees.RoleDescription": 11,
+    "Employees.RoleIsManager": 12,
+    "Roles.CountOfEmployees": 13,
+    "TypesOfProject.CountOfProjects": 14
+  },
+  "Retired": []
+}

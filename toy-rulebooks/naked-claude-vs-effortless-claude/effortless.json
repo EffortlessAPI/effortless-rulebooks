@@ -39,8 +39,6 @@
       "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/effortless-rulebook.json",
       "IsDisabled": true,
       "PinnedVersion": "v2026.04.02.1900",
-      "LastVersionUsed": "v2026.04.02.1900",
-      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-04-02-1900-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "Enabled": false
     },
     {
@@ -59,8 +57,6 @@
       "CommandLine": "odxml-to-ef-dataclasses -i ../ODXML/DataSchema.odxml",
       "IsDisabled": true,
       "PinnedVersion": "v2025.11.02.2347",
-      "LastVersionUsed": "v2025.11.02.2347",
-      "LastUrl": "https://odxml-odxml-to-ef-dataclasses-v2025-11-02-2347-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "Enabled": false
     }
   ]

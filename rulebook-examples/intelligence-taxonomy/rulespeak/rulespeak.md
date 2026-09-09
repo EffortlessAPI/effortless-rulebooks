@@ -1,4 +1,4 @@
-# 📘 Taxonomy of Intelligence — RuleSpeak
+# 📘 Taxonomy of Intelligence — RuleSpeak®
 
 _Classifies intelligences (humans, animals, AI) by per-capability assessments through a multi-hop DAG._
 
@@ -12,11 +12,22 @@ _Classifies intelligences (humans, animals, AI) by per-capability assessments th
 | Term | Description | Narrative Comment |
 |------|-------------|-------------------|
 | **Capability** | Cognitive capabilities being assessed. Tiered foundational/composite/emergent and weighted by importance. | — |
+| Name | The same as its capabilities ID. | _Display name (derived from PK)._ |
+| Description | A defined attribute. | _Short prose describing the capability._ |
+| Tier | A defined attribute. | _Capability tier: foundational, composite, or emergent._ |
+| Weight | A defined attribute. | _Importance multiplier used when computing WeightedScore on each Assessment._ |
 | **Intelligence** | Agents being classified by the taxonomy. Each Intelligence's TaxonomyClass is derived from the rollup of its Assessments. | — |
+| Name | The same as its intelligences ID. | _Display name (derived from PK)._ |
+| Description | A defined attribute. | _Short prose describing what this intelligence is._ |
+| Substrate | A defined attribute. | _Substrate kind: biological, digital, or collective._ |
 | Assessment Count | The number of assessments related to the intelligence. | _How many capabilities this intelligence has been assessed on._ |
 | Total Weighted Score | The total weighted score across the assessments related to the intelligence. | _Sum of WeightedScore across all this intelligence's assessments. Second hop in the DAG._ |
 | Taxonomy Class | Determined by priority: “Generalist” if the total weighted score is at least 350; “Broad” if the total weighted score is at least 220; in all other cases, “Narrow”. | _Taxonomic bucket derived from TotalWeightedScore. Third hop in the DAG._ |
 | **Assessment** | Per-capability scores for each intelligence. The junction table whose calculated WeightedScore feeds the rollup on Intelligences. | — |
+| Name | The same as its assessments ID. | _Display name (derived from PK)._ |
+| Intelligence | A defined attribute. | _FK to Intelligences. Holds the value of Intelligences.IntelligencesId._ |
+| Capability | A defined attribute. | _FK to Capabilities. Holds the value of Capabilities.CapabilitiesId._ |
+| Raw Score | A defined attribute. | _User-editable assessment score from 0 to 100. Edit this in the UI to watch the cascade._ |
 | Intelligence Name | Taken from the linked intelligence. | _Display name pulled from the related Intelligences row._ |
 | Capability Name | Taken from the linked capability. | _Display name pulled from the related Capabilities row._ |
 | Capability Tier | Taken from the linked capability. | _Tier (foundational/composite/emergent) pulled from the related Capabilities row._ |
@@ -53,25 +64,31 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 
 | ID | Declarative rule |
 |----|------------------|
-| **DR-1 Assessment Count** | An intelligence's assessment count is the number of assessments related to the intelligence. |
-| **DR-2 Total Weighted Score** | An intelligence's total weighted score is the total weighted score across the assessments related to the intelligence. |
-| **DR-3 Taxonomy Class** | The intelligence's taxonomy class is determined by the following priority:<br>1. “Generalist”, if the total weighted score is at least 350;<br>2. “Broad”, if the total weighted score is at least 220;<br>3. in all other cases, “Narrow”. |
-| **DR-4 Intelligence Name** | An assessment's intelligence name — taken from the linked intelligence. |
-| **DR-5 Capability Name** | An assessment's capability name — taken from the linked capability. |
-| **DR-6 Capability Tier** | An assessment's capability tier — taken from the linked capability. |
-| **DR-7 Capability Weight** | An assessment's capability weight — taken from the linked capability. |
-| **DR-8 Weighted Score** | An assessment's weighted score is computed as the raw score times the capability weight. |
+| **DR-1 Name** | A capability's name is the same as its capabilities ID. |
+| **DR-2 Name** | An intelligence's name is the same as its intelligences ID. |
+| **DR-3 Assessment Count** | An intelligence's assessment count is the number of assessments related to the intelligence. |
+| **DR-4 Total Weighted Score** | An intelligence's total weighted score is the total weighted score across the assessments related to the intelligence. |
+| **DR-5 Taxonomy Class** | The intelligence's taxonomy class is determined by the following priority:<br>1. “Generalist”, if the total weighted score is at least 350;<br>2. “Broad”, if the total weighted score is at least 220;<br>3. in all other cases, “Narrow”. |
+| **DR-6 Name** | An assessment's name is the same as its assessments ID. |
+| **DR-7 Intelligence Name** | An assessment's intelligence name — taken from the linked intelligence. |
+| **DR-8 Capability Name** | An assessment's capability name — taken from the linked capability. |
+| **DR-9 Capability Tier** | An assessment's capability tier — taken from the linked capability. |
+| **DR-10 Capability Weight** | An assessment's capability weight — taken from the linked capability. |
+| **DR-11 Weighted Score** | An assessment's weighted score is computed as the raw score times the capability weight. |
 
 ## 5 Traceability to Schema
 
-_The expression column is the rule's definition in RuleSpeak notation —
+_The expression column is the rule's definition in RuleSpeak® notation —
 the same logic the rulebook stores, written for a business reader._
 
 | Schema element | Kind | Expression |
 |----------------|------|------------|
+| **Capabilities.Name** | formula | `CapabilitiesId` |
+| **Intelligences.Name** | formula | `IntelligencesId` |
 | **Intelligences.AssessmentCount** | rollup | `Count(Assessments via Intelligence)` |
 | **Intelligences.TotalWeightedScore** | rollup | `Sum(Assessments.WeightedScore via Intelligence)` |
 | **Intelligences.TaxonomyClass** | formula | `If(TotalWeightedScore >= 350, "Generalist", If(TotalWeightedScore >= 220, "Broad", "Narrow"))` |
+| **Assessments.Name** | formula | `AssessmentsId` |
 | **Assessments.IntelligenceName** | lookup | `Lookup(Intelligences.Name via Intelligence)` |
 | **Assessments.CapabilityName** | lookup | `Lookup(Capabilities.Name via Capability)` |
 | **Assessments.CapabilityTier** | lookup | `Lookup(Capabilities.Tier via Capability)` |
@@ -83,5 +100,5 @@ the same logic the rulebook stores, written for a business reader._
 _This document is rendered in **RuleSpeak®**, the declarative business-rule
 notation created by **Ronald G. Ross**, and follows the conventions of
 **SBVR** (Semantics of Business Vocabulary and Business Rules). With thanks to
-Ronald G. Ross for RuleSpeak and his foundational work on business rules —
+Ronald G. Ross for RuleSpeak® and his foundational work on business rules —
 [www.RonRoss.info](https://www.RonRoss.info)._

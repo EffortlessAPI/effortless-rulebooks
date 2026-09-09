@@ -1,0 +1,23 @@
+{
+  "_comment": "Stable DR-number ledger for rulebook-to-rulespeak. Auto-maintained; feed this file back in on the next build to keep rule numbers stable. Numbers in 'Retired' are tombstones and are never reissued. Hand-edit an Assignments number only to deliberately re-pin a rule.",
+  "NextId": 17,
+  "Assignments": {
+    "Events.ShiftCount": 1,
+    "Events.TotalSlotsNeeded": 2,
+    "Events.TotalSlotsFilled": 3,
+    "Events.CoveragePercent": 4,
+    "Events.StaffingGrade": 5,
+    "Volunteers.Name": 6,
+    "Volunteers.AssignmentCount": 7,
+    "Volunteers.AssignedHours": 8,
+    "Volunteers.LoadStatus": 9,
+    "Shifts.EventName": 10,
+    "Shifts.FilledCount": 11,
+    "Shifts.CoverageStatus": 12,
+    "Assignments.Name": 13,
+    "Assignments.VolunteerName": 14,
+    "Assignments.ShiftName": 15,
+    "Assignments.ShiftDurationHours": 16
+  },
+  "Retired": []
+}

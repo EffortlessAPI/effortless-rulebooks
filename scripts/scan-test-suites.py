@@ -127,7 +127,12 @@ def main() -> None:
             by_id[row["TestSuiteId"]] = row
             created += 1
         # A pytest suite has no project prerequisites; witness that plainly
-        # rather than leaving the columns null.
+        # rather than leaving the columns null. What it DOES have is test files,
+        # and their absence is the thing worth surfacing: on 2026-09-09 another
+        # session reverted orchestration/formula_parser.py and deleted all six of
+        # this suite's test files, and nothing but the corpus run noticed.
+        suite_dir = REPO_ROOT / "orchestration" / "tests"
+        row["TestFileCount"] = len(list(suite_dir.glob("test_*.py"))) if suite_dir.is_dir() else 0
         row["AnswerKeyCount"] = 0
         row["HasEffortlessJson"] = True
         row["HasPostgresBootstrap"] = True
@@ -151,6 +156,7 @@ def main() -> None:
             by_id[suite_id] = row
             created += 1
         row.update(obs)
+        row["TestFileCount"] = 0  # conformance suites carry no pytest files
         row["LastScannedOn"] = scanned_on
         refreshed += 1
 
@@ -161,7 +167,8 @@ def main() -> None:
     # vw_TestSuites column (RunnableFlag / GradableFlag / RegistrationState). This
     # scan runs BEFORE the build that refreshes those views, so it prints its own
     # count of the rows it just wrote rather than querying a stale view.
-    runnable = [r for r in registered if r["SuiteKind"] == "pytest" or r.get("HasEffortlessJson")]
+    runnable = [r for r in registered
+                if (r.get("TestFileCount", 0) > 0 if r["SuiteKind"] == "pytest" else r.get("HasEffortlessJson"))]
     gradable = [r for r in runnable if r["SuiteKind"] == "pytest" or r.get("AnswerKeyCount", 0) > 0]
     print(f"TestSuites: {len(suites)} rows ({created} created, {refreshed} witnessed) @ {scanned_on}")
     print(f"  registered:      {len(registered)}")
@@ -170,7 +177,8 @@ def main() -> None:
     print(f"  never exercised: {len(runnable) - len(gradable)} (their first run generates answer keys)")
     for r in sorted(registered, key=lambda r: r["TestSuiteId"]):
         if r not in runnable:
-            print(f"    {r['TestSuiteId']:<48} not runnable: no effortless.json")
+            why = "no test files" if r["SuiteKind"] == "pytest" else "no effortless.json"
+            print(f"    {r['TestSuiteId']:<48} not runnable: {why}")
 
 
 if __name__ == "__main__":

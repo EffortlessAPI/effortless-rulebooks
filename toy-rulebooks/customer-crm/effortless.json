@@ -39,16 +39,15 @@
       "RelativePath": "/xlsx",
       "CommandLine": "rulebook-to-xlsx -i ./exported-rulebook.json -o rulebook.xlsx",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.09.02.1122",
-      "LastUrl": "https://effortless-rulebook-to-xlsx-v2026-05-20-0330-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+      "LastVersionUsed": "v2026.09.02.1122"
     },
     {
       "IsSSoTTranspiler": false,
       "Name": "httplocalhost4242postgrescalculatedtorulebook",
       "RelativePath": "/postgres-bootstrap",
       "CommandLine": "http://localhost:4242/postgres-calculated-to-rulebook -i ../effortless-rulebook/customer-crm-rulebook.json",
-      "IsDisabled": false,
-      "Description": "Reverse spoke: refresh rulebook derived-field display copies from Postgres views after the destructive rebuild (raws verified, never written)."
+      "IsDisabled": true,
+      "Description": "Reverse spoke: refresh rulebook derived-field display copies from Postgres views. DISABLED in the build pipeline 2026-09-09: despite claiming 'raws verified, never written' it rewrites raw datetime values with the building machine's timezone offset (1018 of them in one star-trek build), which makes every build mutate the rulebook hub and mutate it differently per machine. Its load-bearing use is postgres-bootstrap/regenerate-answer-keys.sh, which calls the injector directly with ERB_WRITE_COMPUTED=true against a temp database and is unaffected. Re-enable only when the transpiler honours its own raws-never-written contract."
     },
     {
       "IsSSoTTranspiler": false,
@@ -56,8 +55,7 @@
       "RelativePath": "/rulespeak",
       "CommandLine": "rulebook-to-rulespeak -i ../effortless-rulebook/customer-crm-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.08.30.1537",
-      "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-06-06-0219-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+      "LastVersionUsed": "v2026.08.30.1537"
     },
     {
       "IsSSoTTranspiler": false,

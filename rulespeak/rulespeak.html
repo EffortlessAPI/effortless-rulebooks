@@ -7113,7 +7113,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <div class="prov-grid">
         <a class="input tone-calc" href="#en-f-testsuites-runnableflag">
           <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Runnable Flag</span><span class="input-table">Test Suite</span></span>
-          <span class="input-en">If is registered and suite kind is &quot;pytest&quot; or has effortless JSON then 1, otherwise 0.</span>
+          <span class="input-en">If is registered and suite kind is &quot;pytest&quot; and test file count is greater than 0 or suite kind is not &quot;pytest&quot; and has effortless JSON then 1, otherwise 0.</span>
         </a>
         <a class="input tone-rel" href="#en-f-testsuites-domain">
           <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Domain</span><span class="input-table">Test Suite</span></span>
@@ -7126,10 +7126,11 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
-      <summary>Ground truth at the leaves <span class="count">5</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <summary>Ground truth at the leaves <span class="count">6</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-raw" href="#en-f-testsuites-isregistered">● Is Registered <span class="ref-pill-tbl">Test Suite</span></a>
         <a class="ref-pill tone-raw" href="#en-f-testsuites-suitekind">● Suite Kind <span class="ref-pill-tbl">Test Suite</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-testsuites-testfilecount">● Test File Count <span class="ref-pill-tbl">Test Suite</span></a>
         <a class="ref-pill tone-raw" href="#en-f-testsuites-haseffortlessjson">● Has Effortless JSON <span class="ref-pill-tbl">Test Suite</span></a>
         <a class="ref-pill tone-rel" href="#en-f-testsuites-domain">⇢ Domain <span class="ref-pill-tbl">Test Suite</span></a>
         <span class="ref-pill tone-raw">● Domain ID <span class="ref-pill-tbl">Rulebook Domain</span></span>
@@ -9923,19 +9924,19 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
         <span class="view-label">In RuleSpeak®</span>
-        <div class="view-body"><p class="rt-headline">A test suite is considered runnable if all of the following:</p><ol class="rt-priority"><ul class="rt-group"><li>the <a class="ref" href="#en-f-testsuites-isregistered">registered</a> flag is set</li><li><span class="rt-group-label">any of these hold:</span><ul class="rt-group"><li>the <a class="ref" href="#en-f-testsuites-suitekind">suite kind</a> is “pytest”</li><li>the <a class="ref" href="#en-f-testsuites-haseffortlessjson">effortless JSON</a> flag is set</li></ul></li></ul></ol></div>
+        <div class="view-body"><p class="rt-headline">A test suite is considered runnable if all of the following:</p><ol class="rt-priority"><ul class="rt-group"><li>the <a class="ref" href="#en-f-testsuites-isregistered">registered</a> flag is set</li><li><span class="rt-group-label">any of these hold:</span><ul class="rt-group"><li><span class="rt-group-label">all of these hold:</span><ul class="rt-group"><li>the <a class="ref" href="#en-f-testsuites-suitekind">suite kind</a> is “pytest”</li><li>the <a class="ref" href="#en-f-testsuites-testfilecount">test file count</a> is greater than 0</li></ul></li><li><span class="rt-group-label">all of these hold:</span><ul class="rt-group"><li>the <a class="ref" href="#en-f-testsuites-suitekind">suite kind</a> is not “pytest”</li><li>the <a class="ref" href="#en-f-testsuites-haseffortlessjson">effortless JSON</a> flag is set</li></ul></li></ul></li></ul></ol></div>
       </div>
       <div class="view elem elem-english">
         <span class="view-label">In plain words</span>
-        <p class="view-body"><a class="ref" href="#en-f-testsuites-isregistered">Is registered</a> and <a class="ref" href="#en-f-testsuites-suitekind">suite kind</a> is &quot;pytest&quot; or <a class="ref" href="#en-f-testsuites-haseffortlessjson">has effortless JSON</a>.</p>
+        <p class="view-body"><a class="ref" href="#en-f-testsuites-isregistered">Is registered</a> and <a class="ref" href="#en-f-testsuites-suitekind">suite kind</a> is &quot;pytest&quot; and <a class="ref" href="#en-f-testsuites-testfilecount">test file count</a> is greater than 0 or <a class="ref" href="#en-f-testsuites-suitekind">suite kind</a> is not &quot;pytest&quot; and <a class="ref" href="#en-f-testsuites-haseffortlessjson">has effortless JSON</a>.</p>
       </div>
       <div class="view elem elem-formula">
         <span class="view-label">As a formula</span>
-        <div class="view-body fx"><span class="fx-eq">= </span>AND(<a class="fx-chip" href="#en-f-testsuites-isregistered">Is Registered</a>, OR(<a class="fx-chip" href="#en-f-testsuites-suitekind">Suite Kind</a> = &quot;pytest&quot;, <a class="fx-chip" href="#en-f-testsuites-haseffortlessjson">Has Effortless JSON</a>))</div>
+        <div class="view-body fx"><span class="fx-eq">= </span>AND(<a class="fx-chip" href="#en-f-testsuites-isregistered">Is Registered</a>, OR(AND(<a class="fx-chip" href="#en-f-testsuites-suitekind">Suite Kind</a> = &quot;pytest&quot;, <a class="fx-chip" href="#en-f-testsuites-testfilecount">Test File Count</a> &gt; 0), AND(<a class="fx-chip" href="#en-f-testsuites-suitekind">Suite Kind</a> &lt;&gt; &quot;pytest&quot;, <a class="fx-chip" href="#en-f-testsuites-haseffortlessjson">Has Effortless JSON</a>)))</div>
       </div>
     </div>
     <details class="prov prov-inputs elem elem-inputs" open>
-      <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <summary>Inputs <span class="count">4</span> <span class="prov-hint">fields this rule reads</span></summary>
       <div class="prov-grid">
         <a class="input tone-raw" href="#en-f-testsuites-isregistered">
           <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Is Registered</span><span class="input-table">Test Suite</span></span>
@@ -9945,6 +9946,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
           <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Suite Kind</span><span class="input-table">Test Suite</span></span>
           <span class="input-en muted">DECLARED. conformance (cross-substrate harness over a project) | pytest (a python test module at the repo root).</span>
         </a>
+        <a class="input tone-raw" href="#en-f-testsuites-testfilecount">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Test File Count</span><span class="input-table">Test Suite</span></span>
+          <span class="input-en muted">WITNESSED: test_*.py files in a pytest suite's directory. Zero means the suite is registered but has nothing to run — which is how a platform test suite silently disappearing becomes visible in the registry instead of only as a red run.</span>
+        </a>
         <a class="input tone-raw" href="#en-f-testsuites-haseffortlessjson">
           <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Has Effortless JSON</span><span class="input-table">Test Suite</span></span>
           <span class="input-en muted">WITNESSED: the project has an effortless.json and can therefore be built.</span>
@@ -9952,10 +9957,11 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
-      <summary>Ground truth at the leaves <span class="count">3</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <summary>Ground truth at the leaves <span class="count">4</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-raw" href="#en-f-testsuites-isregistered">● Is Registered <span class="ref-pill-tbl">Test Suite</span></a>
         <a class="ref-pill tone-raw" href="#en-f-testsuites-suitekind">● Suite Kind <span class="ref-pill-tbl">Test Suite</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-testsuites-testfilecount">● Test File Count <span class="ref-pill-tbl">Test Suite</span></a>
         <a class="ref-pill tone-raw" href="#en-f-testsuites-haseffortlessjson">● Has Effortless JSON <span class="ref-pill-tbl">Test Suite</span></a>
       </div>
     </details>
@@ -9973,19 +9979,19 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
         <span class="view-label">In RuleSpeak®</span>
-        <div class="view-body"><p class="rt-headline">The test suite's <a class="ref" href="#en-f-testsuites-runnableflag">runnable flag</a> is determined by the following priority:</p><ol class="rt-priority"><li><span class="rt-value">1</span> <span class="rt-when">if <span class="rt-group-label">all of these hold:</span><ul class="rt-group"><li>the <a class="ref" href="#en-f-testsuites-isregistered">registered</a> flag is set</li><li><span class="rt-group-label">any of these hold:</span><ul class="rt-group"><li>the <a class="ref" href="#en-f-testsuites-suitekind">suite kind</a> is “pytest”</li><li>the <a class="ref" href="#en-f-testsuites-haseffortlessjson">effortless JSON</a> flag is set</li></ul></li></ul></span></li><li><span class="rt-value">0</span> <span class="rt-when">in all other cases</span></li></ol></div>
+        <div class="view-body"><p class="rt-headline">The test suite's <a class="ref" href="#en-f-testsuites-runnableflag">runnable flag</a> is determined by the following priority:</p><ol class="rt-priority"><li><span class="rt-value">1</span> <span class="rt-when">if <span class="rt-group-label">all of these hold:</span><ul class="rt-group"><li>the <a class="ref" href="#en-f-testsuites-isregistered">registered</a> flag is set</li><li><span class="rt-group-label">any of these hold:</span><ul class="rt-group"><li><span class="rt-group-label">all of these hold:</span><ul class="rt-group"><li>the <a class="ref" href="#en-f-testsuites-suitekind">suite kind</a> is “pytest”</li><li>the <a class="ref" href="#en-f-testsuites-testfilecount">test file count</a> is greater than 0</li></ul></li><li><span class="rt-group-label">all of these hold:</span><ul class="rt-group"><li>the <a class="ref" href="#en-f-testsuites-suitekind">suite kind</a> is not “pytest”</li><li>the <a class="ref" href="#en-f-testsuites-haseffortlessjson">effortless JSON</a> flag is set</li></ul></li></ul></li></ul></span></li><li><span class="rt-value">0</span> <span class="rt-when">in all other cases</span></li></ol></div>
       </div>
       <div class="view elem elem-english">
         <span class="view-label">In plain words</span>
-        <p class="view-body">If <a class="ref" href="#en-f-testsuites-isregistered">is registered</a> and <a class="ref" href="#en-f-testsuites-suitekind">suite kind</a> is &quot;pytest&quot; or <a class="ref" href="#en-f-testsuites-haseffortlessjson">has effortless JSON</a> then 1, otherwise 0.</p>
+        <p class="view-body">If <a class="ref" href="#en-f-testsuites-isregistered">is registered</a> and <a class="ref" href="#en-f-testsuites-suitekind">suite kind</a> is &quot;pytest&quot; and <a class="ref" href="#en-f-testsuites-testfilecount">test file count</a> is greater than 0 or <a class="ref" href="#en-f-testsuites-suitekind">suite kind</a> is not &quot;pytest&quot; and <a class="ref" href="#en-f-testsuites-haseffortlessjson">has effortless JSON</a> then 1, otherwise 0.</p>
       </div>
       <div class="view elem elem-formula">
         <span class="view-label">As a formula</span>
-        <div class="view-body fx"><span class="fx-eq">= </span>IF(AND(<a class="fx-chip" href="#en-f-testsuites-isregistered">Is Registered</a>, OR(<a class="fx-chip" href="#en-f-testsuites-suitekind">Suite Kind</a> = &quot;pytest&quot;, <a class="fx-chip" href="#en-f-testsuites-haseffortlessjson">Has Effortless JSON</a>)), 1, 0)</div>
+        <div class="view-body fx"><span class="fx-eq">= </span>IF(AND(<a class="fx-chip" href="#en-f-testsuites-isregistered">Is Registered</a>, OR(AND(<a class="fx-chip" href="#en-f-testsuites-suitekind">Suite Kind</a> = &quot;pytest&quot;, <a class="fx-chip" href="#en-f-testsuites-testfilecount">Test File Count</a> &gt; 0), AND(<a class="fx-chip" href="#en-f-testsuites-suitekind">Suite Kind</a> &lt;&gt; &quot;pytest&quot;, <a class="fx-chip" href="#en-f-testsuites-haseffortlessjson">Has Effortless JSON</a>))), 1, 0)</div>
       </div>
     </div>
     <details class="prov prov-inputs elem elem-inputs" open>
-      <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <summary>Inputs <span class="count">4</span> <span class="prov-hint">fields this rule reads</span></summary>
       <div class="prov-grid">
         <a class="input tone-raw" href="#en-f-testsuites-isregistered">
           <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Is Registered</span><span class="input-table">Test Suite</span></span>
@@ -9994,6 +10000,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="input tone-raw" href="#en-f-testsuites-suitekind">
           <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Suite Kind</span><span class="input-table">Test Suite</span></span>
           <span class="input-en muted">DECLARED. conformance (cross-substrate harness over a project) | pytest (a python test module at the repo root).</span>
+        </a>
+        <a class="input tone-raw" href="#en-f-testsuites-testfilecount">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Test File Count</span><span class="input-table">Test Suite</span></span>
+          <span class="input-en muted">WITNESSED: test_*.py files in a pytest suite's directory. Zero means the suite is registered but has nothing to run — which is how a platform test suite silently disappearing becomes visible in the registry instead of only as a red run.</span>
         </a>
         <a class="input tone-raw" href="#en-f-testsuites-haseffortlessjson">
           <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Has Effortless JSON</span><span class="input-table">Test Suite</span></span>
@@ -10008,10 +10018,11 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
-      <summary>Ground truth at the leaves <span class="count">3</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <summary>Ground truth at the leaves <span class="count">4</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-raw" href="#en-f-testsuites-isregistered">● Is Registered <span class="ref-pill-tbl">Test Suite</span></a>
         <a class="ref-pill tone-raw" href="#en-f-testsuites-suitekind">● Suite Kind <span class="ref-pill-tbl">Test Suite</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-testsuites-testfilecount">● Test File Count <span class="ref-pill-tbl">Test Suite</span></a>
         <a class="ref-pill tone-raw" href="#en-f-testsuites-haseffortlessjson">● Has Effortless JSON <span class="ref-pill-tbl">Test Suite</span></a>
       </div>
     </details>
@@ -10145,19 +10156,19 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
         <span class="view-label">In RuleSpeak®</span>
-        <div class="view-body"><p class="rt-headline">The test suite's <a class="ref" href="#en-f-testsuites-registrationstate">registration state</a> is determined by the following priority:</p><ol class="rt-priority"><li><span class="rt-value">“unregistered”</span> <span class="rt-when">if the <a class="ref" href="#en-f-testsuites-isregistered">registered</a> flag is not set</span></li><li><span class="rt-value">“ready”</span> <span class="rt-when">if the <a class="ref" href="#en-f-testsuites-suitekind">suite kind</a> is “pytest”</span></li><li><span class="rt-value">“no-effortless-json”</span> <span class="rt-when">if the <a class="ref" href="#en-f-testsuites-haseffortlessjson">effortless JSON</a> flag is not set</span></li><li><span class="rt-value">“never-exercised”</span> <span class="rt-when">if the <a class="ref" href="#en-f-testsuites-answerkeycount">answer key count</a> is 0</span></li><li><span class="rt-value">“ready”</span> <span class="rt-when">in all other cases</span></li></ol></div>
+        <div class="view-body"><p class="rt-headline">The test suite's <a class="ref" href="#en-f-testsuites-registrationstate">registration state</a> is determined by the following priority:</p><ol class="rt-priority"><li><span class="rt-value">“unregistered”</span> <span class="rt-when">if the <a class="ref" href="#en-f-testsuites-isregistered">registered</a> flag is not set</span></li><li><span class="rt-value">“no-test-files” if the <a class="ref" href="#en-f-testsuites-testfilecount">test file count</a> is 0, in all other cases “ready”</span> <span class="rt-when">if the <a class="ref" href="#en-f-testsuites-suitekind">suite kind</a> is “pytest”</span></li><li><span class="rt-value">“no-effortless-json”</span> <span class="rt-when">if the <a class="ref" href="#en-f-testsuites-haseffortlessjson">effortless JSON</a> flag is not set</span></li><li><span class="rt-value">“never-exercised”</span> <span class="rt-when">if the <a class="ref" href="#en-f-testsuites-answerkeycount">answer key count</a> is 0</span></li><li><span class="rt-value">“ready”</span> <span class="rt-when">in all other cases</span></li></ol></div>
       </div>
       <div class="view elem elem-english">
         <span class="view-label">In plain words</span>
-        <p class="view-body">If not <a class="ref" href="#en-f-testsuites-isregistered">is registered</a> then &quot;unregistered&quot;, otherwise if <a class="ref" href="#en-f-testsuites-suitekind">suite kind</a> is &quot;pytest&quot; then &quot;ready&quot;, otherwise if not <a class="ref" href="#en-f-testsuites-haseffortlessjson">has effortless JSON</a> then &quot;no-effortless-json&quot;, otherwise if <a class="ref" href="#en-f-testsuites-answerkeycount">answer key count</a> equals 0 then &quot;never-exercised&quot;, otherwise &quot;ready&quot;.</p>
+        <p class="view-body">If not <a class="ref" href="#en-f-testsuites-isregistered">is registered</a> then &quot;unregistered&quot;, otherwise if <a class="ref" href="#en-f-testsuites-suitekind">suite kind</a> is &quot;pytest&quot; then if <a class="ref" href="#en-f-testsuites-testfilecount">test file count</a> equals 0 then &quot;no-test-files&quot;, otherwise &quot;ready&quot;, otherwise if not <a class="ref" href="#en-f-testsuites-haseffortlessjson">has effortless JSON</a> then &quot;no-effortless-json&quot;, otherwise if <a class="ref" href="#en-f-testsuites-answerkeycount">answer key count</a> equals 0 then &quot;never-exercised&quot;, otherwise &quot;ready&quot;.</p>
       </div>
       <div class="view elem elem-formula">
         <span class="view-label">As a formula</span>
-        <div class="view-body fx"><span class="fx-eq">= </span>IF(NOT(<a class="fx-chip" href="#en-f-testsuites-isregistered">Is Registered</a>), &quot;unregistered&quot;, IF(<a class="fx-chip" href="#en-f-testsuites-suitekind">Suite Kind</a> = &quot;pytest&quot;, &quot;ready&quot;, IF(NOT(<a class="fx-chip" href="#en-f-testsuites-haseffortlessjson">Has Effortless JSON</a>), &quot;no-effortless-json&quot;, IF(<a class="fx-chip" href="#en-f-testsuites-answerkeycount">Answer Key Count</a> = 0, &quot;never-exercised&quot;, &quot;ready&quot;))))</div>
+        <div class="view-body fx"><span class="fx-eq">= </span>IF(NOT(<a class="fx-chip" href="#en-f-testsuites-isregistered">Is Registered</a>), &quot;unregistered&quot;, IF(<a class="fx-chip" href="#en-f-testsuites-suitekind">Suite Kind</a> = &quot;pytest&quot;, IF(<a class="fx-chip" href="#en-f-testsuites-testfilecount">Test File Count</a> = 0, &quot;no-test-files&quot;, &quot;ready&quot;), IF(NOT(<a class="fx-chip" href="#en-f-testsuites-haseffortlessjson">Has Effortless JSON</a>), &quot;no-effortless-json&quot;, IF(<a class="fx-chip" href="#en-f-testsuites-answerkeycount">Answer Key Count</a> = 0, &quot;never-exercised&quot;, &quot;ready&quot;))))</div>
       </div>
     </div>
     <details class="prov prov-inputs elem elem-inputs" open>
-      <summary>Inputs <span class="count">4</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <summary>Inputs <span class="count">5</span> <span class="prov-hint">fields this rule reads</span></summary>
       <div class="prov-grid">
         <a class="input tone-raw" href="#en-f-testsuites-isregistered">
           <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Is Registered</span><span class="input-table">Test Suite</span></span>
@@ -10166,6 +10177,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="input tone-raw" href="#en-f-testsuites-suitekind">
           <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Suite Kind</span><span class="input-table">Test Suite</span></span>
           <span class="input-en muted">DECLARED. conformance (cross-substrate harness over a project) | pytest (a python test module at the repo root).</span>
+        </a>
+        <a class="input tone-raw" href="#en-f-testsuites-testfilecount">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Test File Count</span><span class="input-table">Test Suite</span></span>
+          <span class="input-en muted">WITNESSED: test_*.py files in a pytest suite's directory. Zero means the suite is registered but has nothing to run — which is how a platform test suite silently disappearing becomes visible in the registry instead of only as a red run.</span>
         </a>
         <a class="input tone-raw" href="#en-f-testsuites-haseffortlessjson">
           <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Has Effortless JSON</span><span class="input-table">Test Suite</span></span>
@@ -10178,15 +10193,16 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
-      <summary>Ground truth at the leaves <span class="count">4</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <summary>Ground truth at the leaves <span class="count">5</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-raw" href="#en-f-testsuites-isregistered">● Is Registered <span class="ref-pill-tbl">Test Suite</span></a>
         <a class="ref-pill tone-raw" href="#en-f-testsuites-suitekind">● Suite Kind <span class="ref-pill-tbl">Test Suite</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-testsuites-testfilecount">● Test File Count <span class="ref-pill-tbl">Test Suite</span></a>
         <a class="ref-pill tone-raw" href="#en-f-testsuites-haseffortlessjson">● Has Effortless JSON <span class="ref-pill-tbl">Test Suite</span></a>
         <a class="ref-pill tone-raw" href="#en-f-testsuites-answerkeycount">● Answer Key Count <span class="ref-pill-tbl">Test Suite</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Order 1. Why this suite will or will not run: unregistered | no-effortless-json | never-exercised (runnable, but the first run generates its keys) | ready.</p>
+    <p class="field-note elem elem-desc">Order 1. Why this suite will or will not run: unregistered | no-effortless-json | never-exercised (runnable, but the first run generates its keys) | no-test-files | ready.</p>
     </article>
   <article class="field tone-rel" id="en-f-testsuites-corpusdomainruns" data-entity="Test Suite" data-field="Corpus Domain Runs">
     <div class="field-head">
@@ -10289,6 +10305,27 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
     </details>
     <p class="field-note elem elem-desc">Order 1. Evidence on disk that this suite has been run at least once: generated answer keys or a generated postgres bootstrap. FALSE means the next run is this suite's first, not that it is broken.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-testsuites-testfilecount" data-entity="Test Suite" data-field="Test File Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Test File Count</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">number</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <details class="prov prov-consumers elem elem-consumers" open>
+      <summary>Consumers <span class="count">3 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#en-f-testsuites-isrunnable">ƒ Is Runnable <span class="ref-pill-tbl">Test Suite</span></a>
+        <a class="ref-pill tone-calc" href="#en-f-testsuites-runnableflag">ƒ Runnable Flag <span class="ref-pill-tbl">Test Suite</span></a>
+        <a class="ref-pill tone-calc" href="#en-f-testsuites-registrationstate">ƒ Registration State <span class="ref-pill-tbl">Test Suite</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-rulebookdomains-runnablesuitecount">Runnable Suite Count <span class="ref-pill-tbl">Rulebook Domain</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">WITNESSED: test_*.py files in a pytest suite's directory. Zero means the suite is registered but has nothing to run — which is how a platform test suite silently disappearing becomes visible in the registry instead of only as a red run.</p>
     </article>
 </section>
 <section class="entity" id="en-t-corpusruns" data-entity="Corpus Run">

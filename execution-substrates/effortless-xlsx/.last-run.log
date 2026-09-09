@@ -3,7 +3,7 @@
 Effortless-XLSX Substrate Test Runner
 ==================================================
 
-Workbook: /Users/eejai42/development/effortless-rulebooks/toy-rulebooks/acme-llc/effortless-xlsx/acme-llc.xlsx
+Workbook: toy-rulebooks/acme-llc/effortless-xlsx/acme-llc.xlsx
   (LibreOffice not installed — relying on cached formula values)
 Sheets: ['Customers', '_original_json']
 

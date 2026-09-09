@@ -5,6 +5,6 @@ effortless-postgres: Connecting to database and querying views...
 PostgreSQL Substrate: Starting test...
 PostgreSQL Substrate: Connected to database
 PostgreSQL Substrate: Found 1 views
-  -> customers: 4 records
-PostgreSQL Substrate: Processed 1 views, 4 total records
+  -> customers: 3 records
+PostgreSQL Substrate: Processed 1 views, 3 total records
 

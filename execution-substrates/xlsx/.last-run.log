@@ -2,13 +2,13 @@
 
 
   Processing customers...
-Found 5 fields in test answers
+Found 6 fields in test answers
 Primary key field: customer_id
 Reading from worksheet: Customers
-Found 5 columns, matched 5 to JSON fields
-Loaded 4 rows from xlsx
-Filled 4 null fields across 4 records
-Updated /Users/eejai42/development/effortless-rulebooks/toy-rulebooks/customer-fullname/testing/xlsx/test-answers/customers.json
+Found 6 columns, matched 6 to JSON fields
+Loaded 3 rows from xlsx
+Filled 6 null fields across 3 records
+Updated /Users/eejai42/development/effortless-rulebooks/toy-rulebooks/acme-llc/testing/xlsx/test-answers/customers.json
 
 xlsx: Processed 1 entities from rulebook.xlsx
 

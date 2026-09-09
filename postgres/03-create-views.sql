@@ -457,10 +457,11 @@ SELECT
   calc_test_suites_runnable_flag(t.test_suite_id) AS runnable_flag,             -- Order 1. 1 when IsRunnable, for SUMIFS rollups.
   calc_test_suites_is_gradable(t.test_suite_id) AS is_gradable,                 -- Order 1. Runnable AND already carries answer keys, so this run can produce a conformance SCORE rather than generating its first key set.
   calc_test_suites_gradable_flag(t.test_suite_id) AS gradable_flag,             -- Order 1. 1 when IsGradable, for SUMIFS rollups.
-  calc_test_suites_registration_state(t.test_suite_id) AS registration_state,   -- Order 1. Why this suite will or will not run: unregistered | no-effortless-json | never-exercised (runnable, but the first run generates its keys) | ready.
+  calc_test_suites_registration_state(t.test_suite_id) AS registration_state,   -- Order 1. Why this suite will or will not run: unregistered | no-effortless-json | never-exercised (runnable, but the first run generates its keys) | no-test-files | ready.
   calc_test_suites_corpus_domain_runs(t.test_suite_id) AS corpus_domain_runs,   -- Reverse relationship: every corpus-run row that executed this suite.
   calc_test_suites_corpus_domain_run_count(t.test_suite_id) AS corpus_domain_run_count,-- Order 1. How many corpus runs have executed this suite.
-  calc_test_suites_has_been_exercised(t.test_suite_id) AS has_been_exercised    -- Order 1. Evidence on disk that this suite has been run at least once: generated answer keys or a generated postgres bootstrap. FALSE means the next run is this suite's first, not that it is broken.
+  calc_test_suites_has_been_exercised(t.test_suite_id) AS has_been_exercised,   -- Order 1. Evidence on disk that this suite has been run at least once: generated answer keys or a generated postgres bootstrap. FALSE means the next run is this suite's first, not that it is broken.
+  t.test_file_count                                                             -- WITNESSED: test_*.py files in a pytest suite's directory. Zero means the suite is registered but has nothing to run — which is how a platform test suite silently disappearing becomes visible in the registry instead of only as a red run.
 FROM test_suites t;
 
 -- ----------------------------------------------------------------------------

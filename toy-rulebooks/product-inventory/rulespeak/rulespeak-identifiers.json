@@ -1,0 +1,17 @@
+{
+  "_comment": "Stable DR-number ledger for rulebook-to-rulespeak. Auto-maintained; feed this file back in on the next build to keep rule numbers stable. Numbers in 'Retired' are tombstones and are never reissued. Hand-edit an Assignments number only to deliberately re-pin a rule.",
+  "NextId": 11,
+  "Assignments": {
+    "TransactionTypes.Name": 1,
+    "Products.Name": 2,
+    "Products.CurrentQuantity": 3,
+    "Products.IsLowStock": 4,
+    "Products.ReorderStatus": 5,
+    "Transactions.Name": 6,
+    "Transactions.ProductName": 7,
+    "Transactions.ProductUnitPrice": 8,
+    "Transactions.TransactionTypeName": 9,
+    "Transactions.Amount": 10
+  },
+  "Retired": []
+}

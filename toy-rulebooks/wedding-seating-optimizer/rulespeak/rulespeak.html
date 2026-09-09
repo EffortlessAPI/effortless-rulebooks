@@ -1,0 +1,2520 @@
+<!doctype html>
+<html lang="en" data-lang="en" class="show-rulespeak show-desc show-inputs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wedding Seating Optimizer — RuleSpeak®</title>
+<style>
+
+:root{
+  --raw:#003a70; --calc:#5a3aa0; --agg:#0a7b78; --rel:#666; --lookup:#9a6708;
+  --raw-bg:#eaf0f8; --calc-bg:#f1ebfb; --agg-bg:#e5f4f3; --rel-bg:#f0f0f0; --lookup-bg:#fbf2dd;
+  --ink:#1a1a22; --muted:#6b6b78; --line:#e3e3ea; --bg:#fafafc; --card:#fff;
+  --bar-h:48px;                 /* sticky topbar height — anchors clear it */
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font:15px/1.55 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  color:var(--ink);background:var(--bg);}
+a{color:var(--calc);text-decoration:none}
+a:hover{text-decoration:underline}
+code{font:0.85em ui-monospace,SFMono-Regular,Menlo,monospace;background:#f3f3f7;padding:1px 5px;border-radius:4px}
+
+/* ── One language visible at a time; <html data-lang> picks it (rules per
+      language are appended at render time). ─────────────────────────────── */
+.lang-doc{display:none}
+
+/* ── Element visibility: each doc element shows only when <html> carries its flag. */
+.elem{display:none}
+html.show-rulespeak .elem-rulespeak{display:block}
+html.show-english   .elem-english{display:block}
+html.show-formula   .elem-formula{display:block}
+html.show-desc      .elem-desc{display:block}
+html.show-inputs    .elem-inputs{display:block}
+html.show-consumers .elem-consumers{display:block}
+
+/* ── Sticky top bar — brand · breadcrumb · language · gear ───────────────── */
+.topbar{position:sticky;top:0;z-index:40;height:var(--bar-h);
+  background:rgba(255,255,255,.92);border-bottom:1px solid var(--line);
+  backdrop-filter:saturate(1.1) blur(8px)}
+.topbar-inner{max-width:960px;margin:0 auto;padding:0 24px;height:var(--bar-h);
+  display:flex;align-items:center;gap:12px}
+.topbar-brand{font-weight:800;font-size:15px;color:var(--ink);white-space:nowrap;flex:none}
+.topbar-brand:hover{text-decoration:none}
+.topbar-tag{font-size:11px;font-weight:700;color:var(--calc);background:var(--calc-bg);
+  padding:1px 7px;border-radius:999px;margin-left:4px;vertical-align:middle}
+.crumb{flex:1;min-width:0;display:flex;align-items:center;gap:7px;
+  font-size:13px;color:var(--muted);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.crumb-entity{font-weight:700;color:var(--ink)}
+.crumb-sep{color:var(--line)}
+.crumb-field{color:var(--calc);font-weight:600;overflow:hidden;text-overflow:ellipsis}
+.lang-select{flex:none;height:32px;border:1px solid var(--line);border-radius:9px;background:#fff;
+  color:var(--ink);font:600 13px/1 inherit;padding:0 8px;cursor:pointer;max-width:150px}
+.lang-select:hover{border-color:var(--calc)}
+.gear{flex:none;width:34px;height:34px;border-radius:9px;border:1px solid var(--line);
+  background:#fff;cursor:pointer;font-size:17px;line-height:1;color:var(--muted);
+  display:inline-flex;align-items:center;justify-content:center;transition:all .12s}
+.gear:hover{color:var(--ink);border-color:var(--calc);box-shadow:0 1px 4px rgba(90,58,160,.15)}
+.gear[aria-expanded='true']{background:var(--calc);color:#fff;border-color:var(--calc)}
+
+/* ── Gear popup ──────────────────────────────────────────────────────────── */
+.gear-pop{position:absolute;top:calc(var(--bar-h) + 6px);right:24px;z-index:50;width:290px;
+  background:#fff;border:1px solid var(--line);border-radius:12px;
+  box-shadow:0 10px 32px rgba(20,20,40,.18);padding:12px}
+.gear-pop[hidden]{display:none}
+.gear-pop-title{margin:2px 4px 8px;font-size:11px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.06em;color:var(--muted)}
+.gear-opt{display:grid;grid-template-columns:auto 1fr;column-gap:9px;align-items:baseline;
+  padding:7px 6px;border-radius:8px;cursor:pointer}
+.gear-opt:hover{background:var(--calc-bg)}
+.gear-opt input{grid-row:1 / span 2;align-self:center;width:16px;height:16px;accent-color:var(--calc);cursor:pointer}
+.gear-opt-label{font-weight:600;font-size:14px;color:var(--ink)}
+.gear-opt-hint{grid-column:2;font-size:12px;color:var(--muted);line-height:1.35}
+.gear-reset{margin:8px 4px 2px;border:0;background:transparent;color:var(--calc);
+  font:600 12px/1 inherit;cursor:pointer;padding:4px}
+.gear-reset:hover{text-decoration:underline}
+.gear-inline{border:1px solid var(--line);background:#fff;border-radius:7px;padding:1px 7px;
+  font:600 12px/1 inherit;color:var(--calc);cursor:pointer}
+.gear-inline:hover{border-color:var(--calc)}
+
+.doc-header{background:linear-gradient(180deg,#fff,#f5f4fb);border-bottom:1px solid var(--line)}
+.doc-header-inner{max-width:960px;margin:0 auto;padding:18px 24px}
+.doc-title{margin:0;font-size:24px;font-weight:800}
+.doc-title-sub{font-size:13px;font-weight:600;color:var(--calc);background:var(--calc-bg);
+  padding:2px 8px;border-radius:999px;vertical-align:middle;margin-left:6px}
+.doc-lede{margin:6px 0 0;font-style:italic;color:var(--muted)}
+.doc-note{margin:8px 0 12px;color:var(--muted);font-size:13px;max-width:70ch}
+.narr-hint{margin:8px 0 0;font-size:12px;color:var(--muted);max-width:78ch}
+
+.toc{max-width:960px;margin:22px auto 0;padding:0 24px;scroll-margin-top:calc(var(--bar-h) + 12px)}
+.toc-title{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:0 0 8px}
+.toc-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:6px}
+.toc-list a{font-weight:600}
+.toc-meta{font-size:12px;color:var(--muted);margin-left:6px}
+
+.entity{max-width:960px;margin:34px auto 0;padding:0 24px;scroll-margin-top:calc(var(--bar-h) + 14px)}
+.entity-head{border-bottom:2px solid var(--line);padding-bottom:8px;margin-bottom:14px}
+.entity-title{margin:0;font-size:21px;font-weight:800}
+.entity-synopsis{margin:4px 0 0;color:var(--muted);max-width:74ch}
+
+.field{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--rel);
+  border-radius:10px;padding:14px 16px;margin:0 0 12px;scroll-margin-top:calc(var(--bar-h) + 14px)}
+.field.tone-raw{border-left-color:var(--raw)} .field.tone-calc{border-left-color:var(--calc)}
+.field.tone-agg{border-left-color:var(--agg)} .field.tone-lookup{border-left-color:var(--lookup)}
+.field.tone-rel{border-left-color:var(--rel)}
+.field-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.field-glyph{width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;
+  border-radius:6px;font-weight:700;color:#fff;font-size:13px}
+.tone-raw .field-glyph{background:var(--raw)} .tone-calc .field-glyph{background:var(--calc)}
+.tone-agg .field-glyph{background:var(--agg)} .tone-lookup .field-glyph{background:var(--lookup)}
+.tone-rel .field-glyph{background:var(--rel)}
+.field-name{font-weight:700;font-size:16px}
+.pill{font-size:11px;font-weight:600;padding:2px 8px;border-radius:999px;background:#f0f0f5;color:var(--muted)}
+.pill-type{background:var(--calc-bg);color:var(--calc)}
+.tone-raw .pill-type{background:var(--raw-bg);color:var(--raw)}
+.tone-agg .pill-type{background:var(--agg-bg);color:var(--agg)}
+.tone-lookup .pill-type{background:var(--lookup-bg);color:var(--lookup)}
+.tone-rel .pill-type{background:var(--rel-bg);color:var(--rel)}
+.pill-dr{background:#eee;color:#555;font-variant-numeric:tabular-nums}
+
+.narr-views{margin-top:10px;display:flex;flex-direction:column;gap:10px}
+.narr-views:empty{margin-top:0}
+.view-label{display:inline-block;font-size:11px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.05em;color:var(--muted);margin-bottom:4px}
+.view-body{margin:0}
+.mech{color:#9a6708;background:var(--lookup-bg);padding:1px 6px;border-radius:6px;
+  font-weight:600;text-transform:none;letter-spacing:0}
+.fx{font:0.92em ui-monospace,SFMono-Regular,Menlo,monospace;background:#f7f7fb;border:1px solid var(--line);
+  border-radius:8px;padding:8px 10px;overflow-x:auto;white-space:pre-wrap;word-break:break-word}
+.fx-eq{color:var(--muted)}
+.fx-chip{background:var(--calc-bg);color:var(--calc);padding:1px 6px;border-radius:5px;font-weight:600}
+.ref{border-bottom:1px dashed var(--calc);font-weight:600}
+
+.rt-headline{margin:0 0 4px}
+.rt-priority{margin:4px 0;padding-left:22px}
+.rt-priority>li{margin:2px 0}
+.rt-value{font-weight:700;color:var(--calc)}
+.rt-otherwise{color:var(--muted);font-style:italic}
+.rt-group-label{font-weight:600}
+.rt-group{margin:2px 0 6px;padding-left:20px}
+
+.gt{margin-top:8px}
+.gt-body{margin:0;color:var(--muted)}
+.gt-reverse{margin-top:6px}
+
+.prov{margin-top:10px;border-top:1px dashed var(--line);padding-top:8px}
+.prov>summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--ink);list-style:none}
+.prov>summary::-webkit-details-marker{display:none}
+.prov>summary::before{content:'▸';display:inline-block;margin-right:6px;color:var(--muted);transition:transform .1s}
+.prov[open]>summary::before{transform:rotate(90deg)}
+.count{font-size:11px;font-weight:700;background:#eee;color:#555;padding:1px 7px;border-radius:999px;margin-left:4px}
+.count-muted{background:#f5f5f5;color:#999}
+.prov-hint{font-size:12px;font-weight:400;color:var(--muted);margin-left:6px}
+.prov-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;margin-top:8px}
+.prov-pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.input{display:block;border:1px solid var(--line);border-left:3px solid var(--rel);border-radius:8px;
+  padding:8px 10px;background:#fcfcfe}
+.input.tone-raw{border-left-color:var(--raw)} .input.tone-calc{border-left-color:var(--calc)}
+.input.tone-agg{border-left-color:var(--agg)} .input.tone-lookup{border-left-color:var(--lookup)}
+.input.tone-rel{border-left-color:var(--rel)}
+.input:hover{background:#f4f3fb;text-decoration:none}
+.input-static{cursor:default}
+span.input-static:hover{background:#fcfcfe}
+.input-head{display:flex;align-items:center;gap:6px}
+.input-glyph{font-size:12px;color:var(--muted)}
+.input-name{font-weight:700;color:var(--ink)}
+.input-table{font-size:11px;color:var(--muted);margin-left:auto}
+.input-en{display:block;margin-top:3px;font-size:13px;color:var(--muted)}
+.ref-pill{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;
+  border:1px solid var(--line);border-radius:999px;padding:3px 10px;background:#fff;color:var(--ink)}
+.ref-pill.tone-raw{border-color:var(--raw);color:var(--raw)} .ref-pill.tone-calc{border-color:var(--calc);color:var(--calc)}
+.ref-pill.tone-agg{border-color:var(--agg);color:var(--agg)} .ref-pill.tone-lookup{border-color:var(--lookup);color:var(--lookup)}
+.ref-pill.faded{opacity:.6}
+.ref-pill-tbl{font-weight:400;color:var(--muted)}
+
+.field-note{margin:8px 0 0;font-size:13px;font-style:italic;color:var(--muted);
+  border-left:2px solid var(--line);padding-left:10px}
+
+.doc-footer{max-width:960px;margin:40px auto;padding:18px 24px;border-top:1px solid var(--line);
+  color:var(--muted);font-size:13px}
+.doc-footer-legend{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:12px;font-weight:600;padding:2px 9px;border-radius:999px}
+.chip-raw{background:var(--raw-bg);color:var(--raw)} .chip-calc{background:var(--calc-bg);color:var(--calc)}
+.chip-agg{background:var(--agg-bg);color:var(--agg)} .chip-lookup{background:var(--lookup-bg);color:var(--lookup)}
+.chip-rel{background:var(--rel-bg);color:var(--rel)}
+:target{animation:flash 1.2s ease}
+@keyframes flash{0%{background:var(--calc-bg)}100%{background:var(--card)}}
+
+html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
+</style>
+<script>
+
+(function(){
+  var LANGS=['en'];
+  var DEFAULT_LANG='en';
+  var ELEMS=['rulespeak','english','formula','desc','inputs','consumers'];
+  var root=document.documentElement;
+
+  var lang=null;
+  try{ lang=new URLSearchParams(location.search).get('lang'); }catch(e){}
+  if(!lang){ try{ lang=localStorage.getItem('rulespeak.lang'); }catch(e){} }
+  if(LANGS.indexOf(lang)<0) lang=DEFAULT_LANG;
+  root.setAttribute('data-lang',lang);
+  root.setAttribute('lang',lang);
+
+  ELEMS.forEach(function(k){
+    var v=null; try{v=localStorage.getItem('rulespeak.show.'+k);}catch(e){}
+    if(v==='1') root.classList.add('show-'+k);
+    else if(v==='0') root.classList.remove('show-'+k);
+  });
+})();
+
+</script>
+</head>
+<body>
+<div class="lang-doc" data-lang="en" lang="en">
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="topbar-brand" href="#en-top">📘 Wedding Seating Optimizer <span class="topbar-tag">RuleSpeak®</span></a>
+    <nav class="crumb" aria-label="You are reading">
+      <span class="crumb-entity"></span>
+      <span class="crumb-sep" hidden>›</span>
+      <span class="crumb-field"></span>
+    </nav>
+    <button type="button" class="gear" aria-haspopup="dialog" aria-expanded="false" title="Documentation options" aria-label="Documentation options">⚙︎</button>
+  </div>
+  <div class="gear-pop" role="dialog" aria-label="Documentation options" hidden>
+    <p class="gear-pop-title">Show in this document</p>
+    <label class="gear-opt" title="The declarative business rule (only if / must / priority)">
+      <input type="checkbox" data-elem="rulespeak" checked>
+      <span class="gear-opt-label">RuleSpeak®</span>
+      <span class="gear-opt-hint">The declarative business rule (only if / must / priority)</span>
+    </label>
+    <label class="gear-opt" title="The formula read aloud as a plain sentence">
+      <input type="checkbox" data-elem="english">
+      <span class="gear-opt-label">Plain reading</span>
+      <span class="gear-opt-hint">The formula read aloud as a plain sentence</span>
+    </label>
+    <label class="gear-opt" title="The raw =expression, with clickable field chips">
+      <input type="checkbox" data-elem="formula">
+      <span class="gear-opt-label">Formulas</span>
+      <span class="gear-opt-hint">The raw =expression, with clickable field chips</span>
+    </label>
+    <label class="gear-opt" title="The author's narrative comment on a field, when present">
+      <input type="checkbox" data-elem="desc" checked>
+      <span class="gear-opt-label">Description</span>
+      <span class="gear-opt-hint">The author's narrative comment on a field, when present</span>
+    </label>
+    <label class="gear-opt" title="The fields each rule reads (its DAG inputs / upstream)">
+      <input type="checkbox" data-elem="inputs" checked>
+      <span class="gear-opt-label">Links to inputs</span>
+      <span class="gear-opt-hint">The fields each rule reads (its DAG inputs / upstream)</span>
+    </label>
+    <label class="gear-opt" title="The rules that read this one (its DAG consumers / downstream)">
+      <input type="checkbox" data-elem="consumers">
+      <span class="gear-opt-label">Links to consumers</span>
+      <span class="gear-opt-hint">The rules that read this one (its DAG consumers / downstream)</span>
+    </label>
+    <button type="button" class="gear-reset">Reset to defaults</button>
+  </div>
+</div>
+<header class="doc-header" id="en-top">
+  <div class="doc-header-inner">
+    <h1 class="doc-title">📘 Wedding Seating Optimizer <span class="doc-title-sub">RuleSpeak®</span></h1>
+    <p class="doc-lede">Seating plan as a DAG — per-table happiness, capacity flags, per-guest satisfaction recompute on every move.</p>
+    <p class="doc-note">Declarative business rules rendered from the rulebook — the single source of truth. Every statement below is the plain-language reading of a formula; nothing here is hand-authored prose.</p>
+    <p class="narr-hint">Use the <button type="button" class="gear-inline gear-open-inline">⚙︎ options</button> in the top-right corner to turn each part of the documentation on or off — RuleSpeak®, the literal reading, the raw formula, the author's description, and the links to a rule's inputs and consumers. Your choices are remembered.</p>
+  </div>
+</header>
+<nav class="toc">
+  <h2 class="toc-title">Entities</h2>
+  <ul class="toc-list">
+    <li><a href="#en-t-users">User</a> <span class="toc-meta">0 rules · 0 links</span></li>
+    <li><a href="#en-t-tables">Table</a> <span class="toc-meta">10 rules · 0 links</span></li>
+    <li><a href="#en-t-guests">Guest</a> <span class="toc-meta">11 rules · 1 links</span></li>
+    <li><a href="#en-t-relationships">Relationship</a> <span class="toc-meta">11 rules · 2 links</span></li>
+  </ul>
+</nav>
+<section class="entity" id="en-t-users" data-entity="User">
+  <header class="entity-head">
+    <h2 class="entity-title">User</h2>
+    <p class="entity-synopsis">Login identities for the demo (stub auth).</p>
+  </header>
+  <article class="field tone-raw" id="en-f-users-name" data-entity="User" data-field="Name">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Name</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    </article>
+  <article class="field tone-raw" id="en-f-users-email" data-entity="User" data-field="Email">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Email</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    </article>
+  <article class="field tone-raw" id="en-f-users-role" data-entity="User" data-field="Role">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Role</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">coordinator | bride | groom</p>
+    </article>
+  <article class="field tone-raw" id="en-f-users-displayname" data-entity="User" data-field="Display Name">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Display Name</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    </article>
+</section>
+<section class="entity" id="en-t-tables" data-entity="Table">
+  <header class="entity-head">
+    <h2 class="entity-title">Table</h2>
+    <p class="entity-synopsis">Physical reception tables. Guests are assigned to one Table each.</p>
+  </header>
+  <article class="field tone-raw" id="en-f-tables-name" data-entity="Table" data-field="Name">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Name</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    </article>
+  <article class="field tone-raw" id="en-f-tables-label" data-entity="Table" data-field="Label">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Label</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <details class="prov prov-consumers elem elem-consumers" open>
+      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-lookup" href="#en-f-guests-tablelabel">↗ Table Label <span class="ref-pill-tbl">Guest</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Friendly label e.g. 'Head Table', 'Cousins'.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-tables-seats" data-entity="Table" data-field="Seats">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Seats</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <details class="prov prov-consumers elem elem-consumers" open>
+      <summary>Consumers <span class="count">3 direct</span> <span class="count count-muted">+2 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#en-f-tables-openseats">ƒ Open Seats <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-calc" href="#en-f-tables-overcapacity">ƒ Over Capacity <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-lookup" href="#en-f-guests-tableseats">↗ Table Seats <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-happiness">Happiness <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-grade">Grade <span class="ref-pill-tbl">Table</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Physical capacity.</p>
+    </article>
+  <article class="field tone-agg" id="en-f-tables-headcount" data-entity="Table" data-field="Head Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Aggregation">Σ</span>
+      <span class="field-name">Head Count</span>
+      <span class="pill pill-type">Aggregation</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">integer</span>
+      <span class="pill pill-dr">DR-1</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <p class="view-body">A table's <a class="ref" href="#en-f-tables-headcount">head count</a> is the number of <a class="ref" href="#en-t-guests">guests</a> related to the table.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">Count of <a class="ref" href="#en-t-guests">guests</a> whose <a class="ref" href="#en-f-guests-assignedtable">assigned table</a> is table ID.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>COUNTIFS(<a class="fx-chip" href="#en-f-guests-assignedtable">Assigned Table</a>, <span class="fx-chip">Table ID</span>)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-rel" href="#en-f-guests-assignedtable">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Assigned Table</span><span class="input-table">Guest</span></span>
+          <span class="input-en muted">FK to Tables.TableId. Editable — moves the guest.</span>
+        </a>
+        <span class="input input-static tone-raw">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Table ID</span><span class="input-table">Table</span></span>
+          <span class="input-en muted">Ground truth · string</span>
+        </span>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">3 direct</span> <span class="count count-muted">+2 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#en-f-tables-openseats">ƒ Open Seats <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-calc" href="#en-f-tables-overcapacity">ƒ Over Capacity <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-lookup" href="#en-f-guests-tableheadcount">↗ Table Head Count <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-happiness">Happiness <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-grade">Grade <span class="ref-pill-tbl">Table</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">2</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#en-f-guests-assignedtable">⇢ Assigned Table <span class="ref-pill-tbl">Guest</span></a>
+        <span class="ref-pill tone-raw">● Table ID <span class="ref-pill-tbl">Table</span></span>
+      </div>
+    </details>
+    </article>
+  <article class="field tone-calc" id="en-f-tables-openseats" data-entity="Table" data-field="Open Seats">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Open Seats</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">2 hops from ground truth</span>
+      <span class="pill pill-muted">integer</span>
+      <span class="pill pill-dr">DR-2</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <p class="view-body">A table's <a class="ref" href="#en-f-tables-openseats">open seats</a> is computed as the <a class="ref" href="#en-f-tables-seats">seats</a> minus the <a class="ref" href="#en-f-tables-headcount">head count</a>.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body"><a class="ref" href="#en-f-tables-seats">Seats</a> minus <a class="ref" href="#en-f-tables-headcount">head count</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span><a class="fx-chip" href="#en-f-tables-seats">Seats</a> - <a class="fx-chip" href="#en-f-tables-headcount">Head Count</a></div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#en-f-tables-seats">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Seats</span><span class="input-table">Table</span></span>
+          <span class="input-en muted">Physical capacity.</span>
+        </a>
+        <a class="input tone-agg" href="#en-f-tables-headcount">
+          <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Head Count</span><span class="input-table">Table</span></span>
+          <span class="input-en">Count of guests whose assigned table is table ID.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">3</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#en-f-tables-seats">● Seats <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel" href="#en-f-guests-assignedtable">⇢ Assigned Table <span class="ref-pill-tbl">Guest</span></a>
+        <span class="ref-pill tone-raw">● Table ID <span class="ref-pill-tbl">Table</span></span>
+      </div>
+    </details>
+    </article>
+  <article class="field tone-calc" id="en-f-tables-overcapacity" data-entity="Table" data-field="Over Capacity">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Over Capacity</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">2 hops from ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+      <span class="pill pill-dr">DR-3</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <p class="view-body">A table is flagged over capacity if the <a class="ref" href="#en-f-tables-headcount">head count</a> is greater than the <a class="ref" href="#en-f-tables-seats">seats</a>.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body"><a class="ref" href="#en-f-tables-headcount">Head count</a> is greater than <a class="ref" href="#en-f-tables-seats">seats</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span><a class="fx-chip" href="#en-f-tables-headcount">Head Count</a> &gt; <a class="fx-chip" href="#en-f-tables-seats">Seats</a></div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-agg" href="#en-f-tables-headcount">
+          <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Head Count</span><span class="input-table">Table</span></span>
+          <span class="input-en">Count of guests whose assigned table is table ID.</span>
+        </a>
+        <a class="input tone-raw" href="#en-f-tables-seats">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Seats</span><span class="input-table">Table</span></span>
+          <span class="input-en muted">Physical capacity.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">2 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#en-f-tables-happiness">ƒ Happiness <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-calc" href="#en-f-tables-grade">ƒ Grade <span class="ref-pill-tbl">Table</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">3</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#en-f-guests-assignedtable">⇢ Assigned Table <span class="ref-pill-tbl">Guest</span></a>
+        <span class="ref-pill tone-raw">● Table ID <span class="ref-pill-tbl">Table</span></span>
+        <a class="ref-pill tone-raw" href="#en-f-tables-seats">● Seats <span class="ref-pill-tbl">Table</span></a>
+      </div>
+    </details>
+    </article>
+  <article class="field tone-agg" id="en-f-tables-rawhappiness" data-entity="Table" data-field="Raw Happiness">
+    <div class="field-head">
+      <span class="field-glyph" title="Aggregation">Σ</span>
+      <span class="field-name">Raw Happiness</span>
+      <span class="pill pill-type">Aggregation</span>
+      <span class="pill pill-depth">4 hops from ground truth</span>
+      <span class="pill pill-muted">number</span>
+      <span class="pill pill-dr">DR-4</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <p class="view-body">A table's <a class="ref" href="#en-f-tables-rawhappiness">raw happiness</a> is the total <a class="ref" href="#en-f-relationships-effectivescore">effective score</a> across the <a class="ref" href="#en-t-relationships">relationships</a> related to the table.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">Sum of <a class="ref" href="#en-f-relationships-effectivescore">effective score</a> across all <a class="ref" href="#en-t-relationships">relationships</a> whose <a class="ref" href="#en-f-relationships-seatedtable">seated table</a> is table ID.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>SUMIFS(<a class="fx-chip" href="#en-f-relationships-effectivescore">Effective Score</a>, <a class="fx-chip" href="#en-f-relationships-seatedtable">Seated Table</a>, <span class="fx-chip">Table ID</span>)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-calc" href="#en-f-relationships-effectivescore">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Effective Score</span><span class="input-table">Relationship</span></span>
+          <span class="input-en">If same table then if kind is &quot;must-not&quot; then negative 50, otherwise weight, otherwise 0.</span>
+        </a>
+        <a class="input tone-calc" href="#en-f-relationships-seatedtable">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Seated Table</span><span class="input-table">Relationship</span></span>
+          <span class="input-en">If same table then guest a table, otherwise &quot;&quot;.</span>
+        </a>
+        <span class="input input-static tone-raw">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Table ID</span><span class="input-table">Table</span></span>
+          <span class="input-en muted">Ground truth · string</span>
+        </span>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#en-f-tables-happiness">ƒ Happiness <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-grade">Grade <span class="ref-pill-tbl">Table</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">7</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#en-f-guests-assignedtable">⇢ Assigned Table <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel" href="#en-f-relationships-guesta">⇢ Guest a <span class="ref-pill-tbl">Relationship</span></a>
+        <span class="ref-pill tone-raw">● Guest ID <span class="ref-pill-tbl">Guest</span></span>
+        <a class="ref-pill tone-rel" href="#en-f-relationships-guestb">⇢ Guest B <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-relationships-kind">● Kind <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-relationships-weight">● Weight <span class="ref-pill-tbl">Relationship</span></a>
+        <span class="ref-pill tone-raw">● Table ID <span class="ref-pill-tbl">Table</span></span>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Sum of EffectiveScore for relationships whose seated table matches this one.</p>
+    </article>
+  <article class="field tone-agg" id="en-f-tables-violationcount" data-entity="Table" data-field="Violation Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Aggregation">Σ</span>
+      <span class="field-name">Violation Count</span>
+      <span class="pill pill-type">Aggregation</span>
+      <span class="pill pill-depth">5 hops from ground truth</span>
+      <span class="pill pill-muted">integer</span>
+      <span class="pill pill-dr">DR-5</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <p class="view-body">A table's <a class="ref" href="#en-f-tables-violationcount">violation count</a> is the total <a class="ref" href="#en-f-relationships-violationflag">violation flag</a> across the <a class="ref" href="#en-t-relationships">relationships</a> related to the table.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">Sum of <a class="ref" href="#en-f-relationships-violationflag">violation flag</a> across all <a class="ref" href="#en-t-relationships">relationships</a> whose <a class="ref" href="#en-f-relationships-seatedtable">seated table</a> is table ID.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>SUMIFS(<a class="fx-chip" href="#en-f-relationships-violationflag">Violation Flag</a>, <a class="fx-chip" href="#en-f-relationships-seatedtable">Seated Table</a>, <span class="fx-chip">Table ID</span>)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-calc" href="#en-f-relationships-violationflag">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Violation Flag</span><span class="input-table">Relationship</span></span>
+          <span class="input-en">If is must not violation then 1, otherwise 0.</span>
+        </a>
+        <a class="input tone-calc" href="#en-f-relationships-seatedtable">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Seated Table</span><span class="input-table">Relationship</span></span>
+          <span class="input-en">If same table then guest a table, otherwise &quot;&quot;.</span>
+        </a>
+        <span class="input input-static tone-raw">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Table ID</span><span class="input-table">Table</span></span>
+          <span class="input-en muted">Ground truth · string</span>
+        </span>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#en-f-tables-grade">ƒ Grade <span class="ref-pill-tbl">Table</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">6</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#en-f-relationships-kind">● Kind <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel" href="#en-f-guests-assignedtable">⇢ Assigned Table <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel" href="#en-f-relationships-guesta">⇢ Guest a <span class="ref-pill-tbl">Relationship</span></a>
+        <span class="ref-pill tone-raw">● Guest ID <span class="ref-pill-tbl">Guest</span></span>
+        <a class="ref-pill tone-rel" href="#en-f-relationships-guestb">⇢ Guest B <span class="ref-pill-tbl">Relationship</span></a>
+        <span class="ref-pill tone-raw">● Table ID <span class="ref-pill-tbl">Table</span></span>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Number of must-not pairs seated at this table.</p>
+    </article>
+  <article class="field tone-calc" id="en-f-tables-happiness" data-entity="Table" data-field="Happiness">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Happiness</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">5 hops from ground truth</span>
+      <span class="pill pill-muted">number</span>
+      <span class="pill pill-dr">DR-6</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <p class="view-body">A table's <a class="ref" href="#en-f-tables-happiness">happiness</a> is computed as the <a class="ref" href="#en-f-tables-rawhappiness">raw happiness</a> minus 25 if the <a class="ref" href="#en-f-tables-overcapacity">over capacity</a> flag is set, in all other cases 0 plus the <a class="ref" href="#en-f-tables-sideskew">side skew</a>.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body"><a class="ref" href="#en-f-tables-rawhappiness">Raw happiness</a> minus (if <a class="ref" href="#en-f-tables-overcapacity">over capacity</a> then 25, otherwise 0 plus <a class="ref" href="#en-f-tables-sideskew">side skew</a>).</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span><a class="fx-chip" href="#en-f-tables-rawhappiness">Raw Happiness</a> - (IF(<a class="fx-chip" href="#en-f-tables-overcapacity">Over Capacity</a>, 25, 0) + <a class="fx-chip" href="#en-f-tables-sideskew">Side Skew</a>)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-agg" href="#en-f-tables-rawhappiness">
+          <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Raw Happiness</span><span class="input-table">Table</span></span>
+          <span class="input-en">Sum of effective score across all relationships whose seated table is table ID.</span>
+        </a>
+        <a class="input tone-calc" href="#en-f-tables-overcapacity">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Over Capacity</span><span class="input-table">Table</span></span>
+          <span class="input-en">Head count is greater than seats.</span>
+        </a>
+        <a class="input tone-calc" href="#en-f-tables-sideskew">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Side Skew</span><span class="input-table">Table</span></span>
+          <span class="input-en">If bride side count is greater than groom side count then (bride side count minus groom side count), otherwise (groom side count minus bride side count).</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#en-f-tables-grade">ƒ Grade <span class="ref-pill-tbl">Table</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">9</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#en-f-guests-assignedtable">⇢ Assigned Table <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel" href="#en-f-relationships-guesta">⇢ Guest a <span class="ref-pill-tbl">Relationship</span></a>
+        <span class="ref-pill tone-raw">● Guest ID <span class="ref-pill-tbl">Guest</span></span>
+        <a class="ref-pill tone-rel" href="#en-f-relationships-guestb">⇢ Guest B <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-relationships-kind">● Kind <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-relationships-weight">● Weight <span class="ref-pill-tbl">Relationship</span></a>
+        <span class="ref-pill tone-raw">● Table ID <span class="ref-pill-tbl">Table</span></span>
+        <a class="ref-pill tone-raw" href="#en-f-tables-seats">● Seats <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-guests-side">● Side <span class="ref-pill-tbl">Guest</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Net happiness: raw affinity minus capacity penalty minus side-skew penalty.</p>
+    </article>
+  <article class="field tone-calc" id="en-f-tables-grade" data-entity="Table" data-field="Grade">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Grade</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">6 hops from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-7</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <div class="view-body"><p class="rt-headline">The table's <a class="ref" href="#en-f-tables-grade">grade</a> is determined by the following priority:</p><ol class="rt-priority"><li><span class="rt-value">“Conflict”</span> <span class="rt-when">if the <a class="ref" href="#en-f-tables-violationcount">violation count</a> is greater than 0</span></li><li><span class="rt-value">“Over Capacity”</span> <span class="rt-when">if the <a class="ref" href="#en-f-tables-overcapacity">over capacity</a> flag is set</span></li><li><span class="rt-value">“Great”</span> <span class="rt-when">if the <a class="ref" href="#en-f-tables-happiness">happiness</a> is at least 15</span></li><li><span class="rt-value">“OK”</span> <span class="rt-when">if the <a class="ref" href="#en-f-tables-happiness">happiness</a> is at least 5</span></li><li><span class="rt-value">“Cold”</span> <span class="rt-when">in all other cases</span></li></ol></div>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">If <a class="ref" href="#en-f-tables-violationcount">violation count</a> is greater than 0 then &quot;Conflict&quot;, otherwise if <a class="ref" href="#en-f-tables-overcapacity">over capacity</a> then &quot;Over Capacity&quot;, otherwise if <a class="ref" href="#en-f-tables-happiness">happiness</a> is at least 15 then &quot;Great&quot;, otherwise if <a class="ref" href="#en-f-tables-happiness">happiness</a> is at least 5 then &quot;OK&quot;, otherwise &quot;Cold&quot;.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>IF(<a class="fx-chip" href="#en-f-tables-violationcount">Violation Count</a>&gt;0, &quot;Conflict&quot;, IF(<a class="fx-chip" href="#en-f-tables-overcapacity">Over Capacity</a>, &quot;Over Capacity&quot;, IF(<a class="fx-chip" href="#en-f-tables-happiness">Happiness</a>&gt;=15, &quot;Great&quot;, IF(<a class="fx-chip" href="#en-f-tables-happiness">Happiness</a>&gt;=5, &quot;OK&quot;, &quot;Cold&quot;))))</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-agg" href="#en-f-tables-violationcount">
+          <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Violation Count</span><span class="input-table">Table</span></span>
+          <span class="input-en">Sum of violation flag across all relationships whose seated table is table ID.</span>
+        </a>
+        <a class="input tone-calc" href="#en-f-tables-overcapacity">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Over Capacity</span><span class="input-table">Table</span></span>
+          <span class="input-en">Head count is greater than seats.</span>
+        </a>
+        <a class="input tone-calc" href="#en-f-tables-happiness">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Happiness</span><span class="input-table">Table</span></span>
+          <span class="input-en">Raw happiness minus (if over capacity then 25, otherwise 0 plus side skew).</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">9</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#en-f-relationships-kind">● Kind <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel" href="#en-f-guests-assignedtable">⇢ Assigned Table <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel" href="#en-f-relationships-guesta">⇢ Guest a <span class="ref-pill-tbl">Relationship</span></a>
+        <span class="ref-pill tone-raw">● Guest ID <span class="ref-pill-tbl">Guest</span></span>
+        <a class="ref-pill tone-rel" href="#en-f-relationships-guestb">⇢ Guest B <span class="ref-pill-tbl">Relationship</span></a>
+        <span class="ref-pill tone-raw">● Table ID <span class="ref-pill-tbl">Table</span></span>
+        <a class="ref-pill tone-raw" href="#en-f-tables-seats">● Seats <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-relationships-weight">● Weight <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-guests-side">● Side <span class="ref-pill-tbl">Guest</span></a>
+      </div>
+    </details>
+    </article>
+  <article class="field tone-agg" id="en-f-tables-bridesidecount" data-entity="Table" data-field="Bride Side Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Aggregation">Σ</span>
+      <span class="field-name">Bride Side Count</span>
+      <span class="pill pill-type">Aggregation</span>
+      <span class="pill pill-depth">2 hops from ground truth</span>
+      <span class="pill pill-muted">integer</span>
+      <span class="pill pill-dr">DR-8</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <p class="view-body">A table's <a class="ref" href="#en-f-tables-bridesidecount">bride side count</a> is the total <a class="ref" href="#en-f-guests-brideflag">bride flag</a> across the <a class="ref" href="#en-t-guests">guests</a> related to the table.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">Sum of <a class="ref" href="#en-f-guests-brideflag">bride flag</a> across all <a class="ref" href="#en-t-guests">guests</a> whose <a class="ref" href="#en-f-guests-assignedtable">assigned table</a> is table ID.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>SUMIFS(<a class="fx-chip" href="#en-f-guests-brideflag">Bride Flag</a>, <a class="fx-chip" href="#en-f-guests-assignedtable">Assigned Table</a>, <span class="fx-chip">Table ID</span>)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-calc" href="#en-f-guests-brideflag">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Bride Flag</span><span class="input-table">Guest</span></span>
+          <span class="input-en">If side is &quot;bride&quot; then 1, otherwise 0.</span>
+        </a>
+        <a class="input tone-rel" href="#en-f-guests-assignedtable">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Assigned Table</span><span class="input-table">Guest</span></span>
+          <span class="input-en muted">FK to Tables.TableId. Editable — moves the guest.</span>
+        </a>
+        <span class="input input-static tone-raw">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Table ID</span><span class="input-table">Table</span></span>
+          <span class="input-en muted">Ground truth · string</span>
+        </span>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+2 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#en-f-tables-sideskew">ƒ Side Skew <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-happiness">Happiness <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-grade">Grade <span class="ref-pill-tbl">Table</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">3</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#en-f-guests-side">● Side <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel" href="#en-f-guests-assignedtable">⇢ Assigned Table <span class="ref-pill-tbl">Guest</span></a>
+        <span class="ref-pill tone-raw">● Table ID <span class="ref-pill-tbl">Table</span></span>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Number of bride-side guests at this table.</p>
+    </article>
+  <article class="field tone-agg" id="en-f-tables-groomsidecount" data-entity="Table" data-field="Groom Side Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Aggregation">Σ</span>
+      <span class="field-name">Groom Side Count</span>
+      <span class="pill pill-type">Aggregation</span>
+      <span class="pill pill-depth">2 hops from ground truth</span>
+      <span class="pill pill-muted">integer</span>
+      <span class="pill pill-dr">DR-9</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <p class="view-body">A table's <a class="ref" href="#en-f-tables-groomsidecount">groom side count</a> is the total <a class="ref" href="#en-f-guests-groomflag">groom flag</a> across the <a class="ref" href="#en-t-guests">guests</a> related to the table.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">Sum of <a class="ref" href="#en-f-guests-groomflag">groom flag</a> across all <a class="ref" href="#en-t-guests">guests</a> whose <a class="ref" href="#en-f-guests-assignedtable">assigned table</a> is table ID.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>SUMIFS(<a class="fx-chip" href="#en-f-guests-groomflag">Groom Flag</a>, <a class="fx-chip" href="#en-f-guests-assignedtable">Assigned Table</a>, <span class="fx-chip">Table ID</span>)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-calc" href="#en-f-guests-groomflag">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Groom Flag</span><span class="input-table">Guest</span></span>
+          <span class="input-en">If side is &quot;groom&quot; then 1, otherwise 0.</span>
+        </a>
+        <a class="input tone-rel" href="#en-f-guests-assignedtable">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Assigned Table</span><span class="input-table">Guest</span></span>
+          <span class="input-en muted">FK to Tables.TableId. Editable — moves the guest.</span>
+        </a>
+        <span class="input input-static tone-raw">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Table ID</span><span class="input-table">Table</span></span>
+          <span class="input-en muted">Ground truth · string</span>
+        </span>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+2 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#en-f-tables-sideskew">ƒ Side Skew <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-happiness">Happiness <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-grade">Grade <span class="ref-pill-tbl">Table</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">3</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#en-f-guests-side">● Side <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel" href="#en-f-guests-assignedtable">⇢ Assigned Table <span class="ref-pill-tbl">Guest</span></a>
+        <span class="ref-pill tone-raw">● Table ID <span class="ref-pill-tbl">Table</span></span>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Number of groom-side guests at this table.</p>
+    </article>
+  <article class="field tone-calc" id="en-f-tables-sideskew" data-entity="Table" data-field="Side Skew">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Side Skew</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">3 hops from ground truth</span>
+      <span class="pill pill-muted">integer</span>
+      <span class="pill pill-dr">DR-10</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <div class="view-body"><p class="rt-headline">The table's <a class="ref" href="#en-f-tables-sideskew">side skew</a> is determined by the following priority:</p><ol class="rt-priority"><li><span class="rt-value">the <a class="ref" href="#en-f-tables-bridesidecount">bride side count</a> minus the <a class="ref" href="#en-f-tables-groomsidecount">groom side count</a></span> <span class="rt-when">if the <a class="ref" href="#en-f-tables-bridesidecount">bride side count</a> is greater than the <a class="ref" href="#en-f-tables-groomsidecount">groom side count</a></span></li><li><span class="rt-value">the <a class="ref" href="#en-f-tables-groomsidecount">groom side count</a> minus the <a class="ref" href="#en-f-tables-bridesidecount">bride side count</a></span> <span class="rt-when">in all other cases</span></li></ol></div>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">If <a class="ref" href="#en-f-tables-bridesidecount">bride side count</a> is greater than <a class="ref" href="#en-f-tables-groomsidecount">groom side count</a> then (<a class="ref" href="#en-f-tables-bridesidecount">bride side count</a> minus <a class="ref" href="#en-f-tables-groomsidecount">groom side count</a>), otherwise (<a class="ref" href="#en-f-tables-groomsidecount">groom side count</a> minus <a class="ref" href="#en-f-tables-bridesidecount">bride side count</a>).</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>IF(<a class="fx-chip" href="#en-f-tables-bridesidecount">Bride Side Count</a>&gt;<a class="fx-chip" href="#en-f-tables-groomsidecount">Groom Side Count</a>, <a class="fx-chip" href="#en-f-tables-bridesidecount">Bride Side Count</a>-<a class="fx-chip" href="#en-f-tables-groomsidecount">Groom Side Count</a>, <a class="fx-chip" href="#en-f-tables-groomsidecount">Groom Side Count</a>-<a class="fx-chip" href="#en-f-tables-bridesidecount">Bride Side Count</a>)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-agg" href="#en-f-tables-bridesidecount">
+          <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Bride Side Count</span><span class="input-table">Table</span></span>
+          <span class="input-en">Sum of bride flag across all guests whose assigned table is table ID.</span>
+        </a>
+        <a class="input tone-agg" href="#en-f-tables-groomsidecount">
+          <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Groom Side Count</span><span class="input-table">Table</span></span>
+          <span class="input-en">Sum of groom flag across all guests whose assigned table is table ID.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#en-f-tables-happiness">ƒ Happiness <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-grade">Grade <span class="ref-pill-tbl">Table</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">3</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#en-f-guests-side">● Side <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel" href="#en-f-guests-assignedtable">⇢ Assigned Table <span class="ref-pill-tbl">Guest</span></a>
+        <span class="ref-pill tone-raw">● Table ID <span class="ref-pill-tbl">Table</span></span>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Absolute difference between bride and groom side counts.</p>
+    </article>
+</section>
+<section class="entity" id="en-t-guests" data-entity="Guest">
+  <header class="entity-head">
+    <h2 class="entity-title">Guest</h2>
+    <p class="entity-synopsis">Wedding guests. Each is assigned to one Table.</p>
+  </header>
+  <article class="field tone-raw" id="en-f-guests-name" data-entity="Guest" data-field="Name">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Name</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    </article>
+  <article class="field tone-raw" id="en-f-guests-fullname" data-entity="Guest" data-field="Full Name">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Full Name</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <details class="prov prov-consumers elem elem-consumers" open>
+      <summary>Consumers <span class="count">2 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-lookup" href="#en-f-relationships-guestaname">↗ Guest a Name <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-lookup" href="#en-f-relationships-guestbname">↗ Guest B Name <span class="ref-pill-tbl">Relationship</span></a>
+      </div>
+    </details>
+    </article>
+  <article class="field tone-raw" id="en-f-guests-side" data-entity="Guest" data-field="Side">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Side</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <details class="prov prov-consumers elem elem-consumers" open>
+      <summary>Consumers <span class="count">2 direct</span> <span class="count count-muted">+5 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#en-f-guests-brideflag">ƒ Bride Flag <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-calc" href="#en-f-guests-groomflag">ƒ Groom Flag <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-bridesidecount">Bride Side Count <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-groomsidecount">Groom Side Count <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-sideskew">Side Skew <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-happiness">Happiness <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-grade">Grade <span class="ref-pill-tbl">Table</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">bride | groom | both</p>
+    </article>
+  <article class="field tone-raw" id="en-f-guests-dietary" data-entity="Guest" data-field="Dietary">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Dietary</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">none | veg | vegan | gf | kosher</p>
+    </article>
+  <article class="field tone-raw" id="en-f-guests-language" data-entity="Guest" data-field="Language">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Language</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">en | es | fr</p>
+    </article>
+  <article class="field tone-raw" id="en-f-guests-ageband" data-entity="Guest" data-field="Age Band">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Age Band</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">child | adult | senior</p>
+    </article>
+  <article class="field tone-rel" id="en-f-guests-assignedtable" data-entity="Guest" data-field="Assigned Table">
+    <div class="field-head">
+      <span class="field-glyph" title="Relationship">⇢</span>
+      <span class="field-name">Assigned Table</span>
+      <span class="pill pill-type">Relationship</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">A pointer to <a href="#en-t-tables">Table</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
+    </div>
+    <details class="prov prov-consumers elem elem-consumers" open>
+      <summary>Consumers <span class="count">8 direct</span> <span class="count count-muted">+18 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-agg" href="#en-f-tables-headcount">Σ Head Count <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-agg" href="#en-f-tables-bridesidecount">Σ Bride Side Count <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-agg" href="#en-f-tables-groomsidecount">Σ Groom Side Count <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-lookup" href="#en-f-guests-tablelabel">↗ Table Label <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-lookup" href="#en-f-guests-tableseats">↗ Table Seats <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-lookup" href="#en-f-guests-tableheadcount">↗ Table Head Count <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-lookup" href="#en-f-relationships-guestatable">↗ Guest a Table <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-lookup" href="#en-f-relationships-guestbtable">↗ Guest B Table <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-openseats">Open Seats <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-overcapacity">Over Capacity <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-sideskew">Side Skew <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-relationships-sametable">Same Table <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-relationships-seatedtable">Seated Table <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-relationships-violationtable">Violation Table <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-happiness">Happiness <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-grade">Grade <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-relationships-effectivescore">Effective Score <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-relationships-ismustnotviolation">Is Must Not Violation <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-relationships-issatisfied">Is Satisfied <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-rawhappiness">Raw Happiness <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-violationcount">Violation Count <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-guests-satisfactiona">Satisfaction a <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-guests-satisfactionb">Satisfaction B <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-relationships-violationflag">Violation Flag <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-guests-satisfaction">Satisfaction <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-guests-mood">Mood <span class="ref-pill-tbl">Guest</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">FK to Tables.TableId. Editable — moves the guest.</p>
+    </article>
+  <article class="field tone-lookup" id="en-f-guests-tablelabel" data-entity="Guest" data-field="Table Label">
+    <div class="field-head">
+      <span class="field-glyph" title="Lookup">↗</span>
+      <span class="field-name">Table Label</span>
+      <span class="pill pill-type">Lookup</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-11</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <p class="view-body">A guest's <a class="ref" href="#en-f-guests-tablelabel">table label</a> — taken from the linked <a class="ref" href="#en-f-guests-assignedtable">assigned table</a>.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">The <a class="ref" href="#en-f-tables-label">label</a> of the linked <a class="ref" href="#en-f-guests-assignedtable">assigned table</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>INDEX(<a class="fx-chip" href="#en-f-tables-label">Label</a>, MATCH(<a class="fx-chip" href="#en-f-guests-assignedtable">Assigned Table</a>, <span class="fx-chip">Table ID</span>, 0))</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#en-f-tables-label">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Label</span><span class="input-table">Table</span></span>
+          <span class="input-en muted">Friendly label e.g. 'Head Table', 'Cousins'.</span>
+        </a>
+        <a class="input tone-rel" href="#en-f-guests-assignedtable">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Assigned Table</span><span class="input-table">Guest</span></span>
+          <span class="input-en muted">FK to Tables.TableId. Editable — moves the guest.</span>
+        </a>
+        <span class="input input-static tone-raw">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Table ID</span><span class="input-table">Table</span></span>
+          <span class="input-en muted">Ground truth · string</span>
+        </span>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">3</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#en-f-tables-label">● Label <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel" href="#en-f-guests-assignedtable">⇢ Assigned Table <span class="ref-pill-tbl">Guest</span></a>
+        <span class="ref-pill tone-raw">● Table ID <span class="ref-pill-tbl">Table</span></span>
+      </div>
+    </details>
+    </article>
+  <article class="field tone-lookup" id="en-f-guests-tableseats" data-entity="Guest" data-field="Table Seats">
+    <div class="field-head">
+      <span class="field-glyph" title="Lookup">↗</span>
+      <span class="field-name">Table Seats</span>
+      <span class="pill pill-type">Lookup</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">integer</span>
+      <span class="pill pill-dr">DR-12</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <p class="view-body">A guest's <a class="ref" href="#en-f-guests-tableseats">table seats</a> — taken from the linked <a class="ref" href="#en-f-guests-assignedtable">assigned table</a>.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">The <a class="ref" href="#en-f-tables-seats">seats</a> of the linked <a class="ref" href="#en-f-guests-assignedtable">assigned table</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>INDEX(<a class="fx-chip" href="#en-f-tables-seats">Seats</a>, MATCH(<a class="fx-chip" href="#en-f-guests-assignedtable">Assigned Table</a>, <span class="fx-chip">Table ID</span>, 0))</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#en-f-tables-seats">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Seats</span><span class="input-table">Table</span></span>
+          <span class="input-en muted">Physical capacity.</span>
+        </a>
+        <a class="input tone-rel" href="#en-f-guests-assignedtable">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Assigned Table</span><span class="input-table">Guest</span></span>
+          <span class="input-en muted">FK to Tables.TableId. Editable — moves the guest.</span>
+        </a>
+        <span class="input input-static tone-raw">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Table ID</span><span class="input-table">Table</span></span>
+          <span class="input-en muted">Ground truth · string</span>
+        </span>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">3</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#en-f-tables-seats">● Seats <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel" href="#en-f-guests-assignedtable">⇢ Assigned Table <span class="ref-pill-tbl">Guest</span></a>
+        <span class="ref-pill tone-raw">● Table ID <span class="ref-pill-tbl">Table</span></span>
+      </div>
+    </details>
+    </article>
+  <article class="field tone-lookup" id="en-f-guests-tableheadcount" data-entity="Guest" data-field="Table Head Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Lookup">↗</span>
+      <span class="field-name">Table Head Count</span>
+      <span class="pill pill-type">Lookup</span>
+      <span class="pill pill-depth">2 hops from ground truth</span>
+      <span class="pill pill-muted">integer</span>
+      <span class="pill pill-dr">DR-13</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <p class="view-body">A guest's <a class="ref" href="#en-f-guests-tableheadcount">table head count</a> — taken from the linked <a class="ref" href="#en-f-guests-assignedtable">assigned table</a>.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">The <a class="ref" href="#en-f-tables-headcount">head count</a> of the linked <a class="ref" href="#en-f-guests-assignedtable">assigned table</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>INDEX(<a class="fx-chip" href="#en-f-tables-headcount">Head Count</a>, MATCH(<a class="fx-chip" href="#en-f-guests-assignedtable">Assigned Table</a>, <span class="fx-chip">Table ID</span>, 0))</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-agg" href="#en-f-tables-headcount">
+          <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Head Count</span><span class="input-table">Table</span></span>
+          <span class="input-en">Count of guests whose assigned table is table ID.</span>
+        </a>
+        <a class="input tone-rel" href="#en-f-guests-assignedtable">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Assigned Table</span><span class="input-table">Guest</span></span>
+          <span class="input-en muted">FK to Tables.TableId. Editable — moves the guest.</span>
+        </a>
+        <span class="input input-static tone-raw">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Table ID</span><span class="input-table">Table</span></span>
+          <span class="input-en muted">Ground truth · string</span>
+        </span>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">2</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#en-f-guests-assignedtable">⇢ Assigned Table <span class="ref-pill-tbl">Guest</span></a>
+        <span class="ref-pill tone-raw">● Table ID <span class="ref-pill-tbl">Table</span></span>
+      </div>
+    </details>
+    </article>
+  <article class="field tone-agg" id="en-f-guests-relationshipsasa" data-entity="Guest" data-field="Relationships As a">
+    <div class="field-head">
+      <span class="field-glyph" title="Aggregation">Σ</span>
+      <span class="field-name">Relationships As a</span>
+      <span class="pill pill-type">Aggregation</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">integer</span>
+      <span class="pill pill-dr">DR-14</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <p class="view-body">A guest's <a class="ref" href="#en-f-guests-relationshipsasa">relationships as a</a> is the number of <a class="ref" href="#en-t-relationships">relationships</a> related to the guest.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">Count of <a class="ref" href="#en-t-relationships">relationships</a> whose <a class="ref" href="#en-f-relationships-guesta">guest a</a> is guest ID.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>COUNTIFS(<a class="fx-chip" href="#en-f-relationships-guesta">Guest a</a>, <span class="fx-chip">Guest ID</span>)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-rel" href="#en-f-relationships-guesta">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Guest a</span><span class="input-table">Relationship</span></span>
+        </a>
+        <span class="input input-static tone-raw">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Guest ID</span><span class="input-table">Guest</span></span>
+          <span class="input-en muted">Ground truth · string</span>
+        </span>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">2</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#en-f-relationships-guesta">⇢ Guest a <span class="ref-pill-tbl">Relationship</span></a>
+        <span class="ref-pill tone-raw">● Guest ID <span class="ref-pill-tbl">Guest</span></span>
+      </div>
+    </details>
+    </article>
+  <article class="field tone-agg" id="en-f-guests-relationshipsasb" data-entity="Guest" data-field="Relationships As B">
+    <div class="field-head">
+      <span class="field-glyph" title="Aggregation">Σ</span>
+      <span class="field-name">Relationships As B</span>
+      <span class="pill pill-type">Aggregation</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">integer</span>
+      <span class="pill pill-dr">DR-15</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <p class="view-body">A guest's <a class="ref" href="#en-f-guests-relationshipsasb">relationships as b</a> is the number of <a class="ref" href="#en-t-relationships">relationships</a> related to the guest.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">Count of <a class="ref" href="#en-t-relationships">relationships</a> whose <a class="ref" href="#en-f-relationships-guestb">guest b</a> is guest ID.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>COUNTIFS(<a class="fx-chip" href="#en-f-relationships-guestb">Guest B</a>, <span class="fx-chip">Guest ID</span>)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-rel" href="#en-f-relationships-guestb">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Guest B</span><span class="input-table">Relationship</span></span>
+        </a>
+        <span class="input input-static tone-raw">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Guest ID</span><span class="input-table">Guest</span></span>
+          <span class="input-en muted">Ground truth · string</span>
+        </span>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">2</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#en-f-relationships-guestb">⇢ Guest B <span class="ref-pill-tbl">Relationship</span></a>
+        <span class="ref-pill tone-raw">● Guest ID <span class="ref-pill-tbl">Guest</span></span>
+      </div>
+    </details>
+    </article>
+  <article class="field tone-agg" id="en-f-guests-satisfactiona" data-entity="Guest" data-field="Satisfaction a">
+    <div class="field-head">
+      <span class="field-glyph" title="Aggregation">Σ</span>
+      <span class="field-name">Satisfaction a</span>
+      <span class="pill pill-type">Aggregation</span>
+      <span class="pill pill-depth">4 hops from ground truth</span>
+      <span class="pill pill-muted">number</span>
+      <span class="pill pill-dr">DR-16</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <p class="view-body">A guest's <a class="ref" href="#en-f-guests-satisfactiona">satisfaction a</a> is the total <a class="ref" href="#en-f-relationships-effectivescore">effective score</a> across the <a class="ref" href="#en-t-relationships">relationships</a> related to the guest.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">Sum of <a class="ref" href="#en-f-relationships-effectivescore">effective score</a> across all <a class="ref" href="#en-t-relationships">relationships</a> whose <a class="ref" href="#en-f-relationships-guesta">guest a</a> is guest ID.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>SUMIFS(<a class="fx-chip" href="#en-f-relationships-effectivescore">Effective Score</a>, <a class="fx-chip" href="#en-f-relationships-guesta">Guest a</a>, <span class="fx-chip">Guest ID</span>)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-calc" href="#en-f-relationships-effectivescore">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Effective Score</span><span class="input-table">Relationship</span></span>
+          <span class="input-en">If same table then if kind is &quot;must-not&quot; then negative 50, otherwise weight, otherwise 0.</span>
+        </a>
+        <a class="input tone-rel" href="#en-f-relationships-guesta">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Guest a</span><span class="input-table">Relationship</span></span>
+        </a>
+        <span class="input input-static tone-raw">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Guest ID</span><span class="input-table">Guest</span></span>
+          <span class="input-en muted">Ground truth · string</span>
+        </span>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#en-f-guests-satisfaction">ƒ Satisfaction <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-guests-mood">Mood <span class="ref-pill-tbl">Guest</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">6</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#en-f-guests-assignedtable">⇢ Assigned Table <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel" href="#en-f-relationships-guesta">⇢ Guest a <span class="ref-pill-tbl">Relationship</span></a>
+        <span class="ref-pill tone-raw">● Guest ID <span class="ref-pill-tbl">Guest</span></span>
+        <a class="ref-pill tone-rel" href="#en-f-relationships-guestb">⇢ Guest B <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-relationships-kind">● Kind <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-relationships-weight">● Weight <span class="ref-pill-tbl">Relationship</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Sum of EffectiveScore on relationships where this guest is GuestA and the pair is co-seated.</p>
+    </article>
+  <article class="field tone-agg" id="en-f-guests-satisfactionb" data-entity="Guest" data-field="Satisfaction B">
+    <div class="field-head">
+      <span class="field-glyph" title="Aggregation">Σ</span>
+      <span class="field-name">Satisfaction B</span>
+      <span class="pill pill-type">Aggregation</span>
+      <span class="pill pill-depth">4 hops from ground truth</span>
+      <span class="pill pill-muted">number</span>
+      <span class="pill pill-dr">DR-17</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <p class="view-body">A guest's <a class="ref" href="#en-f-guests-satisfactionb">satisfaction b</a> is the total <a class="ref" href="#en-f-relationships-effectivescore">effective score</a> across the <a class="ref" href="#en-t-relationships">relationships</a> related to the guest.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">Sum of <a class="ref" href="#en-f-relationships-effectivescore">effective score</a> across all <a class="ref" href="#en-t-relationships">relationships</a> whose <a class="ref" href="#en-f-relationships-guestb">guest b</a> is guest ID.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>SUMIFS(<a class="fx-chip" href="#en-f-relationships-effectivescore">Effective Score</a>, <a class="fx-chip" href="#en-f-relationships-guestb">Guest B</a>, <span class="fx-chip">Guest ID</span>)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-calc" href="#en-f-relationships-effectivescore">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Effective Score</span><span class="input-table">Relationship</span></span>
+          <span class="input-en">If same table then if kind is &quot;must-not&quot; then negative 50, otherwise weight, otherwise 0.</span>
+        </a>
+        <a class="input tone-rel" href="#en-f-relationships-guestb">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Guest B</span><span class="input-table">Relationship</span></span>
+        </a>
+        <span class="input input-static tone-raw">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Guest ID</span><span class="input-table">Guest</span></span>
+          <span class="input-en muted">Ground truth · string</span>
+        </span>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#en-f-guests-satisfaction">ƒ Satisfaction <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-guests-mood">Mood <span class="ref-pill-tbl">Guest</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">6</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#en-f-guests-assignedtable">⇢ Assigned Table <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel" href="#en-f-relationships-guesta">⇢ Guest a <span class="ref-pill-tbl">Relationship</span></a>
+        <span class="ref-pill tone-raw">● Guest ID <span class="ref-pill-tbl">Guest</span></span>
+        <a class="ref-pill tone-rel" href="#en-f-relationships-guestb">⇢ Guest B <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-relationships-kind">● Kind <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-relationships-weight">● Weight <span class="ref-pill-tbl">Relationship</span></a>
+      </div>
+    </details>
+    </article>
+  <article class="field tone-calc" id="en-f-guests-satisfaction" data-entity="Guest" data-field="Satisfaction">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Satisfaction</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">5 hops from ground truth</span>
+      <span class="pill pill-muted">number</span>
+      <span class="pill pill-dr">DR-18</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <p class="view-body">A guest's <a class="ref" href="#en-f-guests-satisfaction">satisfaction</a> is computed as the <a class="ref" href="#en-f-guests-satisfactiona">satisfaction a</a> plus the <a class="ref" href="#en-f-guests-satisfactionb">satisfaction b</a>.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body"><a class="ref" href="#en-f-guests-satisfactiona">Satisfaction a</a> plus <a class="ref" href="#en-f-guests-satisfactionb">satisfaction b</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span><a class="fx-chip" href="#en-f-guests-satisfactiona">Satisfaction a</a> + <a class="fx-chip" href="#en-f-guests-satisfactionb">Satisfaction B</a></div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-agg" href="#en-f-guests-satisfactiona">
+          <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Satisfaction a</span><span class="input-table">Guest</span></span>
+          <span class="input-en">Sum of effective score across all relationships whose guest a is guest ID.</span>
+        </a>
+        <a class="input tone-agg" href="#en-f-guests-satisfactionb">
+          <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Satisfaction B</span><span class="input-table">Guest</span></span>
+          <span class="input-en">Sum of effective score across all relationships whose guest b is guest ID.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#en-f-guests-mood">ƒ Mood <span class="ref-pill-tbl">Guest</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">6</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#en-f-guests-assignedtable">⇢ Assigned Table <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel" href="#en-f-relationships-guesta">⇢ Guest a <span class="ref-pill-tbl">Relationship</span></a>
+        <span class="ref-pill tone-raw">● Guest ID <span class="ref-pill-tbl">Guest</span></span>
+        <a class="ref-pill tone-rel" href="#en-f-relationships-guestb">⇢ Guest B <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-relationships-kind">● Kind <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-relationships-weight">● Weight <span class="ref-pill-tbl">Relationship</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Per-guest happiness rollup.</p>
+    </article>
+  <article class="field tone-calc" id="en-f-guests-mood" data-entity="Guest" data-field="Mood">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Mood</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">6 hops from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-19</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <div class="view-body"><p class="rt-headline">The guest's <a class="ref" href="#en-f-guests-mood">mood</a> is determined by the following priority:</p><ol class="rt-priority"><li><span class="rt-value">“Happy”</span> <span class="rt-when">if the <a class="ref" href="#en-f-guests-satisfaction">satisfaction</a> is at least 10</span></li><li><span class="rt-value">“Neutral”</span> <span class="rt-when">if the <a class="ref" href="#en-f-guests-satisfaction">satisfaction</a> is at least 0</span></li><li><span class="rt-value">“Unhappy”</span> <span class="rt-when">in all other cases</span></li></ol></div>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">If <a class="ref" href="#en-f-guests-satisfaction">satisfaction</a> is at least 10 then &quot;Happy&quot;, otherwise if <a class="ref" href="#en-f-guests-satisfaction">satisfaction</a> is at least 0 then &quot;Neutral&quot;, otherwise &quot;Unhappy&quot;.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>IF(<a class="fx-chip" href="#en-f-guests-satisfaction">Satisfaction</a>&gt;=10, &quot;Happy&quot;, IF(<a class="fx-chip" href="#en-f-guests-satisfaction">Satisfaction</a>&gt;=0, &quot;Neutral&quot;, &quot;Unhappy&quot;))</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-calc" href="#en-f-guests-satisfaction">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Satisfaction</span><span class="input-table">Guest</span></span>
+          <span class="input-en">Satisfaction a plus satisfaction b.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">6</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#en-f-guests-assignedtable">⇢ Assigned Table <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel" href="#en-f-relationships-guesta">⇢ Guest a <span class="ref-pill-tbl">Relationship</span></a>
+        <span class="ref-pill tone-raw">● Guest ID <span class="ref-pill-tbl">Guest</span></span>
+        <a class="ref-pill tone-rel" href="#en-f-relationships-guestb">⇢ Guest B <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-relationships-kind">● Kind <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-relationships-weight">● Weight <span class="ref-pill-tbl">Relationship</span></a>
+      </div>
+    </details>
+    </article>
+  <article class="field tone-calc" id="en-f-guests-brideflag" data-entity="Guest" data-field="Bride Flag">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Bride Flag</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">number</span>
+      <span class="pill pill-dr">DR-20</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <div class="view-body"><p class="rt-headline">The guest's <a class="ref" href="#en-f-guests-brideflag">bride flag</a> is determined by the following priority:</p><ol class="rt-priority"><li><span class="rt-value">1</span> <span class="rt-when">if the <a class="ref" href="#en-f-guests-side">side</a> is “bride”</span></li><li><span class="rt-value">0</span> <span class="rt-when">in all other cases</span></li></ol></div>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">If <a class="ref" href="#en-f-guests-side">side</a> is &quot;bride&quot; then 1, otherwise 0.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>IF(<a class="fx-chip" href="#en-f-guests-side">Side</a>=&quot;bride&quot;, 1, 0)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#en-f-guests-side">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Side</span><span class="input-table">Guest</span></span>
+          <span class="input-en muted">bride | groom | both</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+3 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-agg" href="#en-f-tables-bridesidecount">Σ Bride Side Count <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-sideskew">Side Skew <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-happiness">Happiness <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-grade">Grade <span class="ref-pill-tbl">Table</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#en-f-guests-side">● Side <span class="ref-pill-tbl">Guest</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">1 if bride-side guest; else 0. Feeds Tables.BrideSideCount.</p>
+    </article>
+  <article class="field tone-calc" id="en-f-guests-groomflag" data-entity="Guest" data-field="Groom Flag">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Groom Flag</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">number</span>
+      <span class="pill pill-dr">DR-21</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <div class="view-body"><p class="rt-headline">The guest's <a class="ref" href="#en-f-guests-groomflag">groom flag</a> is determined by the following priority:</p><ol class="rt-priority"><li><span class="rt-value">1</span> <span class="rt-when">if the <a class="ref" href="#en-f-guests-side">side</a> is “groom”</span></li><li><span class="rt-value">0</span> <span class="rt-when">in all other cases</span></li></ol></div>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">If <a class="ref" href="#en-f-guests-side">side</a> is &quot;groom&quot; then 1, otherwise 0.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>IF(<a class="fx-chip" href="#en-f-guests-side">Side</a>=&quot;groom&quot;, 1, 0)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#en-f-guests-side">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Side</span><span class="input-table">Guest</span></span>
+          <span class="input-en muted">bride | groom | both</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+3 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-agg" href="#en-f-tables-groomsidecount">Σ Groom Side Count <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-sideskew">Side Skew <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-happiness">Happiness <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-grade">Grade <span class="ref-pill-tbl">Table</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#en-f-guests-side">● Side <span class="ref-pill-tbl">Guest</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">1 if groom-side guest; else 0. Feeds Tables.GroomSideCount.</p>
+    </article>
+</section>
+<section class="entity" id="en-t-relationships" data-entity="Relationship">
+  <header class="entity-head">
+    <h2 class="entity-title">Relationship</h2>
+    <p class="entity-synopsis">Directed-but-symmetric guest-pair affinities. Kind is loves | prefers | avoid | must-not, with a Weight (positive = affinity, negative = friction).</p>
+  </header>
+  <article class="field tone-raw" id="en-f-relationships-name" data-entity="Relationship" data-field="Name">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Name</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    </article>
+  <article class="field tone-rel" id="en-f-relationships-guesta" data-entity="Relationship" data-field="Guest a">
+    <div class="field-head">
+      <span class="field-glyph" title="Relationship">⇢</span>
+      <span class="field-name">Guest a</span>
+      <span class="pill pill-type">Relationship</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">A pointer to <a href="#en-t-guests">Guest</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
+    </div>
+    <details class="prov prov-consumers elem elem-consumers" open>
+      <summary>Consumers <span class="count">4 direct</span> <span class="count count-muted">+14 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-agg" href="#en-f-guests-relationshipsasa">Σ Relationships As a <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-agg" href="#en-f-guests-satisfactiona">Σ Satisfaction a <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-lookup" href="#en-f-relationships-guestaname">↗ Guest a Name <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-lookup" href="#en-f-relationships-guestatable">↗ Guest a Table <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-guests-satisfaction">Satisfaction <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-relationships-sametable">Same Table <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-relationships-seatedtable">Seated Table <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-relationships-violationtable">Violation Table <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-guests-mood">Mood <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-relationships-effectivescore">Effective Score <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-relationships-ismustnotviolation">Is Must Not Violation <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-relationships-issatisfied">Is Satisfied <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-rawhappiness">Raw Happiness <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-violationcount">Violation Count <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-guests-satisfactionb">Satisfaction B <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-relationships-violationflag">Violation Flag <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-happiness">Happiness <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-grade">Grade <span class="ref-pill-tbl">Table</span></a>
+      </div>
+    </details>
+    </article>
+  <article class="field tone-rel" id="en-f-relationships-guestb" data-entity="Relationship" data-field="Guest B">
+    <div class="field-head">
+      <span class="field-glyph" title="Relationship">⇢</span>
+      <span class="field-name">Guest B</span>
+      <span class="pill pill-type">Relationship</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">A pointer to <a href="#en-t-guests">Guest</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
+    </div>
+    <details class="prov prov-consumers elem elem-consumers" open>
+      <summary>Consumers <span class="count">4 direct</span> <span class="count count-muted">+14 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-agg" href="#en-f-guests-relationshipsasb">Σ Relationships As B <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-agg" href="#en-f-guests-satisfactionb">Σ Satisfaction B <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-lookup" href="#en-f-relationships-guestbname">↗ Guest B Name <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-lookup" href="#en-f-relationships-guestbtable">↗ Guest B Table <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-guests-satisfaction">Satisfaction <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-relationships-sametable">Same Table <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-guests-mood">Mood <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-relationships-seatedtable">Seated Table <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-relationships-effectivescore">Effective Score <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-relationships-ismustnotviolation">Is Must Not Violation <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-relationships-issatisfied">Is Satisfied <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-rawhappiness">Raw Happiness <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-violationcount">Violation Count <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-guests-satisfactiona">Satisfaction a <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-relationships-violationtable">Violation Table <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-relationships-violationflag">Violation Flag <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-happiness">Happiness <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-grade">Grade <span class="ref-pill-tbl">Table</span></a>
+      </div>
+    </details>
+    </article>
+  <article class="field tone-raw" id="en-f-relationships-kind" data-entity="Relationship" data-field="Kind">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Kind</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <details class="prov prov-consumers elem elem-consumers" open>
+      <summary>Consumers <span class="count">2 direct</span> <span class="count count-muted">+10 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#en-f-relationships-effectivescore">ƒ Effective Score <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-calc" href="#en-f-relationships-ismustnotviolation">ƒ Is Must Not Violation <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-rawhappiness">Raw Happiness <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-guests-satisfactiona">Satisfaction a <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-guests-satisfactionb">Satisfaction B <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-relationships-violationtable">Violation Table <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-relationships-violationflag">Violation Flag <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-happiness">Happiness <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-guests-satisfaction">Satisfaction <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-violationcount">Violation Count <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-grade">Grade <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-guests-mood">Mood <span class="ref-pill-tbl">Guest</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">loves | prefers | avoid | must-not</p>
+    </article>
+  <article class="field tone-raw" id="en-f-relationships-weight" data-entity="Relationship" data-field="Weight">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Weight</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">number</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <details class="prov prov-consumers elem elem-consumers" open>
+      <summary>Consumers <span class="count">2 direct</span> <span class="count count-muted">+7 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#en-f-relationships-effectivescore">ƒ Effective Score <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-calc" href="#en-f-relationships-issatisfied">ƒ Is Satisfied <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-rawhappiness">Raw Happiness <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-guests-satisfactiona">Satisfaction a <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-guests-satisfactionb">Satisfaction B <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-happiness">Happiness <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-guests-satisfaction">Satisfaction <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-grade">Grade <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-guests-mood">Mood <span class="ref-pill-tbl">Guest</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Signed magnitude (positive = wants near, negative = wants apart).</p>
+    </article>
+  <article class="field tone-lookup" id="en-f-relationships-guestaname" data-entity="Relationship" data-field="Guest a Name">
+    <div class="field-head">
+      <span class="field-glyph" title="Lookup">↗</span>
+      <span class="field-name">Guest a Name</span>
+      <span class="pill pill-type">Lookup</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-22</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <p class="view-body">A relationship's <a class="ref" href="#en-f-relationships-guestaname">guest a name</a> is the <a class="ref" href="#en-f-guests-fullname">full name</a> of the relationship's <a class="ref" href="#en-f-relationships-guesta">guest a</a>.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">The <a class="ref" href="#en-f-guests-fullname">full name</a> of the linked <a class="ref" href="#en-f-relationships-guesta">guest a</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>INDEX(<a class="fx-chip" href="#en-f-guests-fullname">Full Name</a>, MATCH(<a class="fx-chip" href="#en-f-relationships-guesta">Guest a</a>, <span class="fx-chip">Guest ID</span>, 0))</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#en-f-guests-fullname">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Full Name</span><span class="input-table">Guest</span></span>
+          <span class="input-en muted">Ground truth · string</span>
+        </a>
+        <a class="input tone-rel" href="#en-f-relationships-guesta">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Guest a</span><span class="input-table">Relationship</span></span>
+        </a>
+        <span class="input input-static tone-raw">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Guest ID</span><span class="input-table">Guest</span></span>
+          <span class="input-en muted">Ground truth · string</span>
+        </span>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">3</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#en-f-guests-fullname">● Full Name <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel" href="#en-f-relationships-guesta">⇢ Guest a <span class="ref-pill-tbl">Relationship</span></a>
+        <span class="ref-pill tone-raw">● Guest ID <span class="ref-pill-tbl">Guest</span></span>
+      </div>
+    </details>
+    </article>
+  <article class="field tone-lookup" id="en-f-relationships-guestbname" data-entity="Relationship" data-field="Guest B Name">
+    <div class="field-head">
+      <span class="field-glyph" title="Lookup">↗</span>
+      <span class="field-name">Guest B Name</span>
+      <span class="pill pill-type">Lookup</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-23</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <p class="view-body">A relationship's <a class="ref" href="#en-f-relationships-guestbname">guest b name</a> is the <a class="ref" href="#en-f-guests-fullname">full name</a> of the relationship's <a class="ref" href="#en-f-relationships-guestb">guest b</a>.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">The <a class="ref" href="#en-f-guests-fullname">full name</a> of the linked <a class="ref" href="#en-f-relationships-guestb">guest b</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>INDEX(<a class="fx-chip" href="#en-f-guests-fullname">Full Name</a>, MATCH(<a class="fx-chip" href="#en-f-relationships-guestb">Guest B</a>, <span class="fx-chip">Guest ID</span>, 0))</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#en-f-guests-fullname">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Full Name</span><span class="input-table">Guest</span></span>
+          <span class="input-en muted">Ground truth · string</span>
+        </a>
+        <a class="input tone-rel" href="#en-f-relationships-guestb">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Guest B</span><span class="input-table">Relationship</span></span>
+        </a>
+        <span class="input input-static tone-raw">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Guest ID</span><span class="input-table">Guest</span></span>
+          <span class="input-en muted">Ground truth · string</span>
+        </span>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">3</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#en-f-guests-fullname">● Full Name <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel" href="#en-f-relationships-guestb">⇢ Guest B <span class="ref-pill-tbl">Relationship</span></a>
+        <span class="ref-pill tone-raw">● Guest ID <span class="ref-pill-tbl">Guest</span></span>
+      </div>
+    </details>
+    </article>
+  <article class="field tone-lookup" id="en-f-relationships-guestatable" data-entity="Relationship" data-field="Guest a Table">
+    <div class="field-head">
+      <span class="field-glyph" title="Lookup">↗</span>
+      <span class="field-name">Guest a Table</span>
+      <span class="pill pill-type">Lookup</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-24</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <p class="view-body">A relationship's <a class="ref" href="#en-f-relationships-guestatable">guest a table</a> is the <a class="ref" href="#en-f-guests-assignedtable">assigned table</a> of the relationship's <a class="ref" href="#en-f-relationships-guesta">guest a</a>.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">The <a class="ref" href="#en-f-guests-assignedtable">assigned table</a> of the linked <a class="ref" href="#en-f-relationships-guesta">guest a</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>INDEX(<a class="fx-chip" href="#en-f-guests-assignedtable">Assigned Table</a>, MATCH(<a class="fx-chip" href="#en-f-relationships-guesta">Guest a</a>, <span class="fx-chip">Guest ID</span>, 0))</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-rel" href="#en-f-guests-assignedtable">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Assigned Table</span><span class="input-table">Guest</span></span>
+          <span class="input-en muted">FK to Tables.TableId. Editable — moves the guest.</span>
+        </a>
+        <a class="input tone-rel" href="#en-f-relationships-guesta">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Guest a</span><span class="input-table">Relationship</span></span>
+        </a>
+        <span class="input input-static tone-raw">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Guest ID</span><span class="input-table">Guest</span></span>
+          <span class="input-en muted">Ground truth · string</span>
+        </span>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">3 direct</span> <span class="count count-muted">+12 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#en-f-relationships-sametable">ƒ Same Table <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-calc" href="#en-f-relationships-seatedtable">ƒ Seated Table <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-calc" href="#en-f-relationships-violationtable">ƒ Violation Table <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-relationships-effectivescore">Effective Score <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-relationships-ismustnotviolation">Is Must Not Violation <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-relationships-issatisfied">Is Satisfied <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-rawhappiness">Raw Happiness <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-violationcount">Violation Count <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-guests-satisfactiona">Satisfaction a <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-guests-satisfactionb">Satisfaction B <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-relationships-violationflag">Violation Flag <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-happiness">Happiness <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-grade">Grade <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-guests-satisfaction">Satisfaction <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-guests-mood">Mood <span class="ref-pill-tbl">Guest</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">3</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#en-f-guests-assignedtable">⇢ Assigned Table <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel" href="#en-f-relationships-guesta">⇢ Guest a <span class="ref-pill-tbl">Relationship</span></a>
+        <span class="ref-pill tone-raw">● Guest ID <span class="ref-pill-tbl">Guest</span></span>
+      </div>
+    </details>
+    </article>
+  <article class="field tone-lookup" id="en-f-relationships-guestbtable" data-entity="Relationship" data-field="Guest B Table">
+    <div class="field-head">
+      <span class="field-glyph" title="Lookup">↗</span>
+      <span class="field-name">Guest B Table</span>
+      <span class="pill pill-type">Lookup</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-25</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <p class="view-body">A relationship's <a class="ref" href="#en-f-relationships-guestbtable">guest b table</a> is the <a class="ref" href="#en-f-guests-assignedtable">assigned table</a> of the relationship's <a class="ref" href="#en-f-relationships-guestb">guest b</a>.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">The <a class="ref" href="#en-f-guests-assignedtable">assigned table</a> of the linked <a class="ref" href="#en-f-relationships-guestb">guest b</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>INDEX(<a class="fx-chip" href="#en-f-guests-assignedtable">Assigned Table</a>, MATCH(<a class="fx-chip" href="#en-f-relationships-guestb">Guest B</a>, <span class="fx-chip">Guest ID</span>, 0))</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-rel" href="#en-f-guests-assignedtable">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Assigned Table</span><span class="input-table">Guest</span></span>
+          <span class="input-en muted">FK to Tables.TableId. Editable — moves the guest.</span>
+        </a>
+        <a class="input tone-rel" href="#en-f-relationships-guestb">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Guest B</span><span class="input-table">Relationship</span></span>
+        </a>
+        <span class="input input-static tone-raw">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Guest ID</span><span class="input-table">Guest</span></span>
+          <span class="input-en muted">Ground truth · string</span>
+        </span>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+14 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#en-f-relationships-sametable">ƒ Same Table <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-relationships-seatedtable">Seated Table <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-relationships-effectivescore">Effective Score <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-relationships-ismustnotviolation">Is Must Not Violation <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-relationships-issatisfied">Is Satisfied <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-rawhappiness">Raw Happiness <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-violationcount">Violation Count <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-guests-satisfactiona">Satisfaction a <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-guests-satisfactionb">Satisfaction B <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-relationships-violationtable">Violation Table <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-relationships-violationflag">Violation Flag <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-happiness">Happiness <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-grade">Grade <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-guests-satisfaction">Satisfaction <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-guests-mood">Mood <span class="ref-pill-tbl">Guest</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">3</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#en-f-guests-assignedtable">⇢ Assigned Table <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel" href="#en-f-relationships-guestb">⇢ Guest B <span class="ref-pill-tbl">Relationship</span></a>
+        <span class="ref-pill tone-raw">● Guest ID <span class="ref-pill-tbl">Guest</span></span>
+      </div>
+    </details>
+    </article>
+  <article class="field tone-calc" id="en-f-relationships-sametable" data-entity="Relationship" data-field="Same Table">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Same Table</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">2 hops from ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+      <span class="pill pill-dr">DR-26</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <div class="view-body"><p class="rt-headline">A relationship is flagged same table if all of the following:</p><ol class="rt-priority"><ul class="rt-group"><li>the <a class="ref" href="#en-f-relationships-guestatable">guest a table</a> has a value</li><li>the <a class="ref" href="#en-f-relationships-guestatable">guest a table</a> is the <a class="ref" href="#en-f-relationships-guestbtable">guest b table</a></li></ul></ol></div>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body"><a class="ref" href="#en-f-relationships-guestatable">Guest a table</a> is not &quot;&quot; and <a class="ref" href="#en-f-relationships-guestatable">guest a table</a> equals <a class="ref" href="#en-f-relationships-guestbtable">guest b table</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>AND(<a class="fx-chip" href="#en-f-relationships-guestatable">Guest a Table</a>&lt;&gt;&quot;&quot;, <a class="fx-chip" href="#en-f-relationships-guestatable">Guest a Table</a>=<a class="fx-chip" href="#en-f-relationships-guestbtable">Guest B Table</a>)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-lookup" href="#en-f-relationships-guestatable">
+          <span class="input-head"><span class="input-glyph">↗</span><span class="input-name">Guest a Table</span><span class="input-table">Relationship</span></span>
+          <span class="input-en">The assigned table of the linked guest a.</span>
+        </a>
+        <a class="input tone-lookup" href="#en-f-relationships-guestbtable">
+          <span class="input-head"><span class="input-glyph">↗</span><span class="input-name">Guest B Table</span><span class="input-table">Relationship</span></span>
+          <span class="input-en">The assigned table of the linked guest b.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">4 direct</span> <span class="count count-muted">+10 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#en-f-relationships-seatedtable">ƒ Seated Table <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-calc" href="#en-f-relationships-effectivescore">ƒ Effective Score <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-calc" href="#en-f-relationships-ismustnotviolation">ƒ Is Must Not Violation <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-calc" href="#en-f-relationships-issatisfied">ƒ Is Satisfied <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-rawhappiness">Raw Happiness <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-violationcount">Violation Count <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-guests-satisfactiona">Satisfaction a <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-guests-satisfactionb">Satisfaction B <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-relationships-violationtable">Violation Table <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-relationships-violationflag">Violation Flag <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-happiness">Happiness <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-grade">Grade <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-guests-satisfaction">Satisfaction <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-guests-mood">Mood <span class="ref-pill-tbl">Guest</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">4</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#en-f-guests-assignedtable">⇢ Assigned Table <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel" href="#en-f-relationships-guesta">⇢ Guest a <span class="ref-pill-tbl">Relationship</span></a>
+        <span class="ref-pill tone-raw">● Guest ID <span class="ref-pill-tbl">Guest</span></span>
+        <a class="ref-pill tone-rel" href="#en-f-relationships-guestb">⇢ Guest B <span class="ref-pill-tbl">Relationship</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">True iff both ends sit at the same non-empty table.</p>
+    </article>
+  <article class="field tone-calc" id="en-f-relationships-seatedtable" data-entity="Relationship" data-field="Seated Table">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Seated Table</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">3 hops from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-27</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <div class="view-body"><p class="rt-headline">The relationship's <a class="ref" href="#en-f-relationships-seatedtable">seated table</a> is determined by the following priority:</p><ol class="rt-priority"><li><span class="rt-value">the <a class="ref" href="#en-f-relationships-guestatable">guest a table</a></span> <span class="rt-when">if the <a class="ref" href="#en-f-relationships-sametable">same table</a> flag is set</span></li><li><span class="rt-value">an empty string</span> <span class="rt-when">in all other cases</span></li></ol></div>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">If <a class="ref" href="#en-f-relationships-sametable">same table</a> then <a class="ref" href="#en-f-relationships-guestatable">guest a table</a>, otherwise &quot;&quot;.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>IF(<a class="fx-chip" href="#en-f-relationships-sametable">Same Table</a>, <a class="fx-chip" href="#en-f-relationships-guestatable">Guest a Table</a>, &quot;&quot;)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-calc" href="#en-f-relationships-sametable">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Same Table</span><span class="input-table">Relationship</span></span>
+          <span class="input-en">Guest a table is not &quot;&quot; and guest a table equals guest b table.</span>
+        </a>
+        <a class="input tone-lookup" href="#en-f-relationships-guestatable">
+          <span class="input-head"><span class="input-glyph">↗</span><span class="input-name">Guest a Table</span><span class="input-table">Relationship</span></span>
+          <span class="input-en">The assigned table of the linked guest a.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">2 direct</span> <span class="count count-muted">+2 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-agg" href="#en-f-tables-rawhappiness">Σ Raw Happiness <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-agg" href="#en-f-tables-violationcount">Σ Violation Count <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-happiness">Happiness <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-grade">Grade <span class="ref-pill-tbl">Table</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">4</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#en-f-guests-assignedtable">⇢ Assigned Table <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel" href="#en-f-relationships-guesta">⇢ Guest a <span class="ref-pill-tbl">Relationship</span></a>
+        <span class="ref-pill tone-raw">● Guest ID <span class="ref-pill-tbl">Guest</span></span>
+        <a class="ref-pill tone-rel" href="#en-f-relationships-guestb">⇢ Guest B <span class="ref-pill-tbl">Relationship</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">If both guests share a table, that table's id; else blank. Drives the per-table aggregations.</p>
+    </article>
+  <article class="field tone-calc" id="en-f-relationships-effectivescore" data-entity="Relationship" data-field="Effective Score">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Effective Score</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">3 hops from ground truth</span>
+      <span class="pill pill-muted">number</span>
+      <span class="pill pill-dr">DR-28</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <div class="view-body"><p class="rt-headline">The relationship's <a class="ref" href="#en-f-relationships-effectivescore">effective score</a> is determined by the following priority:</p><ol class="rt-priority"><li><span class="rt-value">the negative of 50 if the <a class="ref" href="#en-f-relationships-kind">kind</a> is “must-not”, in all other cases the <a class="ref" href="#en-f-relationships-weight">weight</a></span> <span class="rt-when">if the <a class="ref" href="#en-f-relationships-sametable">same table</a> flag is set</span></li><li><span class="rt-value">0</span> <span class="rt-when">in all other cases</span></li></ol></div>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">If <a class="ref" href="#en-f-relationships-sametable">same table</a> then if <a class="ref" href="#en-f-relationships-kind">kind</a> is &quot;must-not&quot; then negative 50, otherwise <a class="ref" href="#en-f-relationships-weight">weight</a>, otherwise 0.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>IF(<a class="fx-chip" href="#en-f-relationships-sametable">Same Table</a>, IF(<a class="fx-chip" href="#en-f-relationships-kind">Kind</a>=&quot;must-not&quot;, -50, <a class="fx-chip" href="#en-f-relationships-weight">Weight</a>), 0)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-calc" href="#en-f-relationships-sametable">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Same Table</span><span class="input-table">Relationship</span></span>
+          <span class="input-en">Guest a table is not &quot;&quot; and guest a table equals guest b table.</span>
+        </a>
+        <a class="input tone-raw" href="#en-f-relationships-kind">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Kind</span><span class="input-table">Relationship</span></span>
+          <span class="input-en muted">loves | prefers | avoid | must-not</span>
+        </a>
+        <a class="input tone-raw" href="#en-f-relationships-weight">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Weight</span><span class="input-table">Relationship</span></span>
+          <span class="input-en muted">Signed magnitude (positive = wants near, negative = wants apart).</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">3 direct</span> <span class="count count-muted">+4 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-agg" href="#en-f-tables-rawhappiness">Σ Raw Happiness <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-agg" href="#en-f-guests-satisfactiona">Σ Satisfaction a <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-agg" href="#en-f-guests-satisfactionb">Σ Satisfaction B <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-happiness">Happiness <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-guests-satisfaction">Satisfaction <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-grade">Grade <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-guests-mood">Mood <span class="ref-pill-tbl">Guest</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">6</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#en-f-guests-assignedtable">⇢ Assigned Table <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel" href="#en-f-relationships-guesta">⇢ Guest a <span class="ref-pill-tbl">Relationship</span></a>
+        <span class="ref-pill tone-raw">● Guest ID <span class="ref-pill-tbl">Guest</span></span>
+        <a class="ref-pill tone-rel" href="#en-f-relationships-guestb">⇢ Guest B <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-relationships-kind">● Kind <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-relationships-weight">● Weight <span class="ref-pill-tbl">Relationship</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Weight when co-seated; else 0. Must-not pairs co-seated produce a large penalty regardless of Weight sign.</p>
+    </article>
+  <article class="field tone-calc" id="en-f-relationships-ismustnotviolation" data-entity="Relationship" data-field="Is Must Not Violation">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Is Must Not Violation</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">3 hops from ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+      <span class="pill pill-dr">DR-29</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <div class="view-body"><p class="rt-headline">A relationship is considered a must not violation if all of the following:</p><ol class="rt-priority"><ul class="rt-group"><li>the <a class="ref" href="#en-f-relationships-kind">kind</a> is “must-not”</li><li>the <a class="ref" href="#en-f-relationships-sametable">same table</a> flag is set</li></ul></ol></div>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body"><a class="ref" href="#en-f-relationships-kind">Kind</a> is &quot;must-not&quot; and <a class="ref" href="#en-f-relationships-sametable">same table</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>AND(<a class="fx-chip" href="#en-f-relationships-kind">Kind</a>=&quot;must-not&quot;, <a class="fx-chip" href="#en-f-relationships-sametable">Same Table</a>)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#en-f-relationships-kind">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Kind</span><span class="input-table">Relationship</span></span>
+          <span class="input-en muted">loves | prefers | avoid | must-not</span>
+        </a>
+        <a class="input tone-calc" href="#en-f-relationships-sametable">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Same Table</span><span class="input-table">Relationship</span></span>
+          <span class="input-en">Guest a table is not &quot;&quot; and guest a table equals guest b table.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">2 direct</span> <span class="count count-muted">+2 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#en-f-relationships-violationtable">ƒ Violation Table <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-calc" href="#en-f-relationships-violationflag">ƒ Violation Flag <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-violationcount">Violation Count <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-grade">Grade <span class="ref-pill-tbl">Table</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">5</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#en-f-relationships-kind">● Kind <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel" href="#en-f-guests-assignedtable">⇢ Assigned Table <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel" href="#en-f-relationships-guesta">⇢ Guest a <span class="ref-pill-tbl">Relationship</span></a>
+        <span class="ref-pill tone-raw">● Guest ID <span class="ref-pill-tbl">Guest</span></span>
+        <a class="ref-pill tone-rel" href="#en-f-relationships-guestb">⇢ Guest B <span class="ref-pill-tbl">Relationship</span></a>
+      </div>
+    </details>
+    </article>
+  <article class="field tone-calc" id="en-f-relationships-issatisfied" data-entity="Relationship" data-field="Is Satisfied">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Is Satisfied</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">3 hops from ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+      <span class="pill pill-dr">DR-30</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <div class="view-body"><p class="rt-headline">A relationship is considered satisfied if all of the following:</p><ol class="rt-priority"><ul class="rt-group"><li><span class="rt-group-label">all of these hold:</span><ul class="rt-group"><li>the <a class="ref" href="#en-f-relationships-weight">weight</a> is greater than 0</li><li>the <a class="ref" href="#en-f-relationships-sametable">same table</a> flag is set</li></ul></li><li><span class="rt-group-label">all of these hold:</span><ul class="rt-group"><li>the <a class="ref" href="#en-f-relationships-weight">weight</a> is less than 0</li><li>the <a class="ref" href="#en-f-relationships-sametable">same table</a> flag is not set</li></ul></li></ul></ol></div>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body"><a class="ref" href="#en-f-relationships-weight">Weight</a> is greater than 0 and <a class="ref" href="#en-f-relationships-sametable">same table</a> or <a class="ref" href="#en-f-relationships-weight">weight</a> is less than 0 and not <a class="ref" href="#en-f-relationships-sametable">same table</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>OR(AND(<a class="fx-chip" href="#en-f-relationships-weight">Weight</a>&gt;0, <a class="fx-chip" href="#en-f-relationships-sametable">Same Table</a>), AND(<a class="fx-chip" href="#en-f-relationships-weight">Weight</a>&lt;0, NOT(<a class="fx-chip" href="#en-f-relationships-sametable">Same Table</a>)))</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#en-f-relationships-weight">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Weight</span><span class="input-table">Relationship</span></span>
+          <span class="input-en muted">Signed magnitude (positive = wants near, negative = wants apart).</span>
+        </a>
+        <a class="input tone-calc" href="#en-f-relationships-sametable">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Same Table</span><span class="input-table">Relationship</span></span>
+          <span class="input-en">Guest a table is not &quot;&quot; and guest a table equals guest b table.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">5</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#en-f-relationships-weight">● Weight <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel" href="#en-f-guests-assignedtable">⇢ Assigned Table <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel" href="#en-f-relationships-guesta">⇢ Guest a <span class="ref-pill-tbl">Relationship</span></a>
+        <span class="ref-pill tone-raw">● Guest ID <span class="ref-pill-tbl">Guest</span></span>
+        <a class="ref-pill tone-rel" href="#en-f-relationships-guestb">⇢ Guest B <span class="ref-pill-tbl">Relationship</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Positive-affinity pair sitting together, or negative-affinity pair sitting apart.</p>
+    </article>
+  <article class="field tone-calc" id="en-f-relationships-violationtable" data-entity="Relationship" data-field="Violation Table">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Violation Table</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">4 hops from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-31</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <div class="view-body"><p class="rt-headline">The relationship's <a class="ref" href="#en-f-relationships-violationtable">violation table</a> is determined by the following priority:</p><ol class="rt-priority"><li><span class="rt-value">the <a class="ref" href="#en-f-relationships-guestatable">guest a table</a></span> <span class="rt-when">if the <a class="ref" href="#en-f-relationships-ismustnotviolation">must not violation</a> flag is set</span></li><li><span class="rt-value">an empty string</span> <span class="rt-when">in all other cases</span></li></ol></div>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">If <a class="ref" href="#en-f-relationships-ismustnotviolation">is must not violation</a> then <a class="ref" href="#en-f-relationships-guestatable">guest a table</a>, otherwise &quot;&quot;.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>IF(<a class="fx-chip" href="#en-f-relationships-ismustnotviolation">Is Must Not Violation</a>, <a class="fx-chip" href="#en-f-relationships-guestatable">Guest a Table</a>, &quot;&quot;)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-calc" href="#en-f-relationships-ismustnotviolation">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Is Must Not Violation</span><span class="input-table">Relationship</span></span>
+          <span class="input-en">Kind is &quot;must-not&quot; and same table.</span>
+        </a>
+        <a class="input tone-lookup" href="#en-f-relationships-guestatable">
+          <span class="input-head"><span class="input-glyph">↗</span><span class="input-name">Guest a Table</span><span class="input-table">Relationship</span></span>
+          <span class="input-en">The assigned table of the linked guest a.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">5</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#en-f-relationships-kind">● Kind <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel" href="#en-f-guests-assignedtable">⇢ Assigned Table <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel" href="#en-f-relationships-guesta">⇢ Guest a <span class="ref-pill-tbl">Relationship</span></a>
+        <span class="ref-pill tone-raw">● Guest ID <span class="ref-pill-tbl">Guest</span></span>
+        <a class="ref-pill tone-rel" href="#en-f-relationships-guestb">⇢ Guest B <span class="ref-pill-tbl">Relationship</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">TableId if this is a must-not violation; else blank.</p>
+    </article>
+  <article class="field tone-calc" id="en-f-relationships-violationflag" data-entity="Relationship" data-field="Violation Flag">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Violation Flag</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">4 hops from ground truth</span>
+      <span class="pill pill-muted">number</span>
+      <span class="pill pill-dr">DR-32</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <div class="view-body"><p class="rt-headline">The relationship's <a class="ref" href="#en-f-relationships-violationflag">violation flag</a> is determined by the following priority:</p><ol class="rt-priority"><li><span class="rt-value">1</span> <span class="rt-when">if the <a class="ref" href="#en-f-relationships-ismustnotviolation">must not violation</a> flag is set</span></li><li><span class="rt-value">0</span> <span class="rt-when">in all other cases</span></li></ol></div>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">If <a class="ref" href="#en-f-relationships-ismustnotviolation">is must not violation</a> then 1, otherwise 0.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>IF(<a class="fx-chip" href="#en-f-relationships-ismustnotviolation">Is Must Not Violation</a>, 1, 0)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-calc" href="#en-f-relationships-ismustnotviolation">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Is Must Not Violation</span><span class="input-table">Relationship</span></span>
+          <span class="input-en">Kind is &quot;must-not&quot; and same table.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-agg" href="#en-f-tables-violationcount">Σ Violation Count <span class="ref-pill-tbl">Table</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-tables-grade">Grade <span class="ref-pill-tbl">Table</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">5</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#en-f-relationships-kind">● Kind <span class="ref-pill-tbl">Relationship</span></a>
+        <a class="ref-pill tone-rel" href="#en-f-guests-assignedtable">⇢ Assigned Table <span class="ref-pill-tbl">Guest</span></a>
+        <a class="ref-pill tone-rel" href="#en-f-relationships-guesta">⇢ Guest a <span class="ref-pill-tbl">Relationship</span></a>
+        <span class="ref-pill tone-raw">● Guest ID <span class="ref-pill-tbl">Guest</span></span>
+        <a class="ref-pill tone-rel" href="#en-f-relationships-guestb">⇢ Guest B <span class="ref-pill-tbl">Relationship</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">1 if must-not pair co-seated; else 0. Feeds the per-table ViolationCount aggregation.</p>
+    </article>
+</section>
+<footer class="doc-footer">
+  <p>Rendered from the rulebook by the shared <b>RuleSpeak®</b> engine (<code>rulebook-rulespeak-core</code>). The same engine narrates the React Explainer DAG, so every narration mode reads identically across both.</p>
+  <p class="doc-footer-legend"><span class="chip chip-raw">● Ground truth</span> <span class="chip chip-calc">ƒ Calculated</span> <span class="chip chip-agg">Σ Aggregation</span> <span class="chip chip-lookup">↗ Lookup</span> <span class="chip chip-rel">⇢ Relationship</span></p>
+</footer>
+</div>
+<script>
+
+(function(){
+  var LANGS=['en'];
+  var ELEMS=['rulespeak','english','formula','desc','inputs','consumers'];
+  var DEFAULTS={'rulespeak':true,'english':false,'formula':false,'desc':true,'inputs':true,'consumers':false};
+  var root=document.documentElement;
+
+  // ── Language switching. All .lang-select controls stay in sync; the choice
+  //    persists in localStorage and the URL (?lang=…) so links carry it.
+  var selects=Array.prototype.slice.call(document.querySelectorAll('.lang-select'));
+  function currentLang(){ return root.getAttribute('data-lang')||'en'; }
+  function setLang(code,fromHash){
+    if(LANGS.indexOf(code)<0) return;
+    root.setAttribute('data-lang',code);
+    root.setAttribute('lang',code);
+    try{localStorage.setItem('rulespeak.lang',code);}catch(e){}
+    try{
+      var u=new URL(location.href);
+      u.searchParams.set('lang',code);
+      history.replaceState(null,'',u.toString());
+    }catch(e){}
+    selects.forEach(function(s){ s.value=code; });
+    if(!fromHash) rebindSpy();
+  }
+  selects.forEach(function(s){
+    s.addEventListener('change',function(){
+      var was=currentLang();
+      var code=s.value;
+      // Carry the reader to the SAME field in the new language when the hash
+      // points somewhere: swap the language prefix on the anchor.
+      var h=location.hash||'';
+      setLang(code);
+      var m=h.match(/^#([a-z]{2})-(.+)$/);
+      if(m && m[1]===was){
+        var target=document.getElementById(code+'-'+m[2]);
+        if(target){ location.hash='#'+code+'-'+m[2]; }
+      }
+    });
+  });
+
+  // ── Legacy-hash shim: pre-language anchors (#f-…, #t-…, #top) map onto the
+  //    active language's scoped ids so old deep links keep working.
+  (function(){
+    var h=location.hash||'';
+    var m=h.match(/^#((?:f|t)-.+|top)$/);
+    if(m){
+      var scoped=document.getElementById(currentLang()+'-'+m[1]);
+      if(scoped) location.replace('#'+currentLang()+'-'+m[1]);
+    }
+  })();
+
+  // ── Per-element visibility, persisted. Checkboxes exist once per language doc;
+  //    drive them all from the shared <html> classes.
+  var boxes=Array.prototype.slice.call(document.querySelectorAll('.gear-opt input[data-elem]'));
+  function isOn(k){ return root.classList.contains('show-'+k); }
+  function setElem(k,on){
+    root.classList.toggle('show-'+k,on);
+    try{localStorage.setItem('rulespeak.show.'+k,on?'1':'0');}catch(e){}
+    boxes.forEach(function(b){ if(b.getAttribute('data-elem')===k) b.checked=on; });
+  }
+  boxes.forEach(function(b){
+    var k=b.getAttribute('data-elem');
+    b.checked=isOn(k);
+    b.addEventListener('change',function(){ setElem(k,b.checked); });
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('.gear-reset'),function(reset){
+    reset.addEventListener('click',function(){ ELEMS.forEach(function(k){ setElem(k,!!DEFAULTS[k]); }); });
+  });
+
+  // ── Gear popups: each language doc has its own button + popup pair.
+  Array.prototype.forEach.call(document.querySelectorAll('.lang-doc'),function(doc){
+    var gear=doc.querySelector('.gear');
+    var pop=doc.querySelector('.gear-pop');
+    if(!gear||!pop) return;
+    function openPop(o){ pop.hidden=!o; gear.setAttribute('aria-expanded',o?'true':'false'); }
+    gear.addEventListener('click',function(e){ e.stopPropagation(); openPop(pop.hidden); });
+    Array.prototype.forEach.call(doc.querySelectorAll('.gear-open-inline'),function(inline){
+      inline.addEventListener('click',function(e){ e.stopPropagation(); openPop(true); });
+    });
+    document.addEventListener('click',function(e){
+      if(!pop.hidden && !pop.contains(e.target) && e.target!==gear) openPop(false);
+    });
+    document.addEventListener('keydown',function(e){ if(e.key==='Escape') openPop(false); });
+  });
+
+  // ── Scroll-spy breadcrumb, scoped to the ACTIVE language document.
+  var fields=[],entities=[],cE=null,cF=null,cSep=null;
+  function rebindSpy(){
+    var doc=document.querySelector('.lang-doc[data-lang="'+currentLang()+'"]');
+    if(!doc) return;
+    cE=doc.querySelector('.crumb-entity');
+    cF=doc.querySelector('.crumb-field');
+    cSep=doc.querySelector('.crumb-sep');
+    fields=Array.prototype.slice.call(doc.querySelectorAll('.field[data-field]'));
+    entities=Array.prototype.slice.call(doc.querySelectorAll('.entity[data-entity]'));
+    update();
+  }
+  function setCrumb(entity,field){
+    if(!cE) return;
+    cE.textContent=entity||'';
+    if(field){ cF.textContent=field; cSep.hidden=false; }
+    else { cF.textContent=''; cSep.hidden=true; }
+  }
+  var barH=parseInt(getComputedStyle(root).getPropertyValue('--bar-h'),10)||48;
+  function update(){
+    var line=barH+18, curF=null, curE=null;
+    for(var i=0;i<fields.length;i++){ if(fields[i].getBoundingClientRect().top<=line) curF=fields[i]; else break; }
+    for(var j=0;j<entities.length;j++){ if(entities[j].getBoundingClientRect().top<=line) curE=entities[j]; else break; }
+    if(curF){
+      var fEnt=curF.getAttribute('data-entity');
+      var eName=curE?curE.getAttribute('data-entity'):fEnt;
+      if(eName!==fEnt) setCrumb(eName,null);
+      else setCrumb(fEnt,curF.getAttribute('data-field'));
+    } else if(curE){ setCrumb(curE.getAttribute('data-entity'),null); }
+    else { setCrumb('',null); }
+  }
+  var ticking=false;
+  function onScroll(){ if(!ticking){ ticking=true; requestAnimationFrame(function(){ update(); ticking=false; }); } }
+  window.addEventListener('scroll',onScroll,{passive:true});
+  window.addEventListener('resize',onScroll,{passive:true});
+  rebindSpy();
+})();
+
+</script>
+</body>
+</html>

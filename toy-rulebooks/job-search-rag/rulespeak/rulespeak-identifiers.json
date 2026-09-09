@@ -1,0 +1,27 @@
+{
+  "_comment": "Stable DR-number ledger for rulebook-to-rulespeak. Auto-maintained; feed this file back in on the next build to keep rule numbers stable. Numbers in 'Retired' are tombstones and are never reissued. Hand-edit an Assignments number only to deliberately re-pin a rule.",
+  "NextId": 21,
+  "Assignments": {
+    "JobBoards.JobListings": 1,
+    "SearchUrls.JobBoardName": 2,
+    "Resumes.ResumeSections": 3,
+    "Resumes.SearchRuns": 4,
+    "ResumeSections.ResumeName": 5,
+    "SearchRuns.ResumeName": 6,
+    "SearchRuns.ScoreResults": 7,
+    "JobListings.JobBoardName": 8,
+    "JobListings.ScoreResults": 9,
+    "JobListings.Decisions": 10,
+    "ScoreResults.Name": 11,
+    "ScoreResults.FinalScore": 12,
+    "ScoreResults.JobListingName": 13,
+    "ScoreResults.SearchRunName": 14,
+    "ScoreResults.Company": 15,
+    "Decisions.Name": 16,
+    "Decisions.IsScoringSignal": 17,
+    "Decisions.JobListingName": 18,
+    "Decisions.Company": 19,
+    "Decisions.Board": 20
+  },
+  "Retired": []
+}

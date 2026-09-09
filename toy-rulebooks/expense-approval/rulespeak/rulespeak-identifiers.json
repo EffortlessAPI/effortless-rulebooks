@@ -1,0 +1,14 @@
+{
+  "_comment": "Stable DR-number ledger for rulebook-to-rulespeak. Auto-maintained; feed this file back in on the next build to keep rule numbers stable. Numbers in 'Retired' are tombstones and are never reissued. Hand-edit an Assignments number only to deliberately re-pin a rule.",
+  "NextId": 8,
+  "Assignments": {
+    "Employees.Name": 1,
+    "ExpenseReports.EmployeeName": 2,
+    "ExpenseReports.EmployeeBudgetLimit": 3,
+    "ExpenseReports.TotalAmount": 4,
+    "ExpenseReports.IsOverBudget": 5,
+    "ExpenseReports.IsApproved": 6,
+    "ExpenseReports.RequiresEscalation": 7
+  },
+  "Retired": []
+}

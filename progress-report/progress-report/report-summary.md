@@ -10,7 +10,7 @@ Generated 9 September 2026.
 | Programme total | $66,000 |
 | Units of work | 333 |
 | Rulebook tables | 61 |
-| Rulebook fields | 1,109 (57% computed) |
+| Rulebook fields | 1,110 (57% computed) |
 | Open roadblocks | 0 |
 
 ## 4 section(s) still generic

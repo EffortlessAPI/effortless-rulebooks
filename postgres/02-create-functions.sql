@@ -1888,6 +1888,15 @@ RETURNS TIMESTAMPTZ AS $$
   SELECT (SELECT last_scanned_on FROM test_suites WHERE test_suite_id = p_test_suite_id);
 $$ LANGUAGE sql STABLE;
 
+-- get_test_suites_test_file_count
+-- Helper function: Get TestFileCount from TestSuites by TestSuiteId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_test_suites_test_file_count(p_test_suite_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT test_file_count FROM test_suites WHERE test_suite_id = p_test_suite_id);
+$$ LANGUAGE sql STABLE;
+
 -- get_corpus_domain_runs_build_status
 -- Helper function: Get BuildStatus from CorpusDomainRuns by CorpusDomainRunId
 -- Used for join-free cross-table references in aggregations
@@ -2888,7 +2897,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_test_suites_is_runnable(p_test_suite_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT is_registered FROM test_suites WHERE test_suite_id = p_test_suite_id), FALSE) AND ((SELECT NULLIF(suite_kind, '') FROM test_suites WHERE test_suite_id = p_test_suite_id) = 'pytest' OR COALESCE((SELECT has_effortless_json FROM test_suites WHERE test_suite_id = p_test_suite_id), FALSE))))::boolean;
+  SELECT ((COALESCE((SELECT is_registered FROM test_suites WHERE test_suite_id = p_test_suite_id), FALSE) AND (((SELECT NULLIF(suite_kind, '') FROM test_suites WHERE test_suite_id = p_test_suite_id) = 'pytest' AND ((SELECT test_file_count FROM test_suites WHERE test_suite_id = p_test_suite_id))::NUMERIC > 0) OR ((SELECT NULLIF(suite_kind, '') FROM test_suites WHERE test_suite_id = p_test_suite_id) <> 'pytest' AND COALESCE((SELECT has_effortless_json FROM test_suites WHERE test_suite_id = p_test_suite_id), FALSE)))));
 $$ LANGUAGE sql STABLE;
 
 -- calc_test_suites_runnable_flag
@@ -2898,7 +2907,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_test_suites_runnable_flag(p_test_suite_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (COALESCE((SELECT is_registered FROM test_suites WHERE test_suite_id = p_test_suite_id), FALSE) AND ((SELECT NULLIF(suite_kind, '') FROM test_suites WHERE test_suite_id = p_test_suite_id) = 'pytest' OR COALESCE((SELECT has_effortless_json FROM test_suites WHERE test_suite_id = p_test_suite_id), FALSE))) THEN (1)::text ELSE (0)::text END)::numeric;
+  SELECT (CASE WHEN (COALESCE((SELECT is_registered FROM test_suites WHERE test_suite_id = p_test_suite_id), FALSE) AND (((SELECT NULLIF(suite_kind, '') FROM test_suites WHERE test_suite_id = p_test_suite_id) = 'pytest' AND ((SELECT test_file_count FROM test_suites WHERE test_suite_id = p_test_suite_id))::NUMERIC > 0) OR ((SELECT NULLIF(suite_kind, '') FROM test_suites WHERE test_suite_id = p_test_suite_id) <> 'pytest' AND COALESCE((SELECT has_effortless_json FROM test_suites WHERE test_suite_id = p_test_suite_id), FALSE)))) THEN (1)::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_test_suites_is_gradable
@@ -2928,7 +2937,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_test_suites_registration_state(p_test_suite_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN NOT (COALESCE((SELECT is_registered FROM test_suites WHERE test_suite_id = p_test_suite_id), FALSE)) THEN ('unregistered')::text ELSE (CASE WHEN (SELECT NULLIF(suite_kind, '') FROM test_suites WHERE test_suite_id = p_test_suite_id) = 'pytest' THEN ('ready')::text ELSE (CASE WHEN NOT (COALESCE((SELECT has_effortless_json FROM test_suites WHERE test_suite_id = p_test_suite_id), FALSE)) THEN ('no-effortless-json')::text ELSE (CASE WHEN ((SELECT answer_key_count FROM test_suites WHERE test_suite_id = p_test_suite_id))::NUMERIC = 0 THEN ('never-exercised')::text ELSE ('ready')::text END)::text END)::text END)::text END)::text;
+  SELECT (CASE WHEN NOT (COALESCE((SELECT is_registered FROM test_suites WHERE test_suite_id = p_test_suite_id), FALSE)) THEN ('unregistered')::text ELSE (CASE WHEN (SELECT NULLIF(suite_kind, '') FROM test_suites WHERE test_suite_id = p_test_suite_id) = 'pytest' THEN (CASE WHEN ((SELECT test_file_count FROM test_suites WHERE test_suite_id = p_test_suite_id))::NUMERIC = 0 THEN ('no-test-files')::text ELSE ('ready')::text END)::text ELSE (CASE WHEN NOT (COALESCE((SELECT has_effortless_json FROM test_suites WHERE test_suite_id = p_test_suite_id), FALSE)) THEN ('no-effortless-json')::text ELSE (CASE WHEN ((SELECT answer_key_count FROM test_suites WHERE test_suite_id = p_test_suite_id))::NUMERIC = 0 THEN ('never-exercised')::text ELSE ('ready')::text END)::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_test_suites_corpus_domain_run_count

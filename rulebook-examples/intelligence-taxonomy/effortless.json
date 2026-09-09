@@ -38,8 +38,8 @@
       "Name": "httplocalhost4242postgrescalculatedtorulebook",
       "RelativePath": "/postgres-bootstrap",
       "CommandLine": "http://localhost:4242/postgres-calculated-to-rulebook -i ../effortless-rulebook/intelligence-taxonomy-rulebook.json",
-      "IsDisabled": false,
-      "Description": "Reverse spoke: refresh rulebook derived-field display copies from Postgres views after the destructive rebuild (raws verified, never written)."
+      "IsDisabled": true,
+      "Description": "Reverse spoke: refresh rulebook derived-field display copies from Postgres views. DISABLED in the build pipeline 2026-09-09: despite claiming 'raws verified, never written' it rewrites raw datetime values with the building machine's timezone offset (1018 of them in one star-trek build), which makes every build mutate the rulebook hub and mutate it differently per machine. Its load-bearing use is postgres-bootstrap/regenerate-answer-keys.sh, which calls the injector directly with ERB_WRITE_COMPUTED=true against a temp database and is unaffected. Re-enable only when the transpiler honours its own raws-never-written contract."
     },
     {
       "IsSSoTTranspiler": false,
@@ -48,7 +48,7 @@
       "CommandLine": "rulebook-to-rulespeak -i ../effortless-rulebook/intelligence-taxonomy-rulebook.json",
       "IsDisabled": false,
       "LastVersionUsed": "v2026.08.30.1537",
-      "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-06-10-1308-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+      "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-08-30-1537-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
       "IsSSoTTranspiler": false,
@@ -56,7 +56,8 @@
       "RelativePath": "/effortless-rulebook",
       "CommandLine": "effortless-rulebook-editor -i intelligence-taxonomy-rulebook.json -p rulebookPath=intelligence-taxonomy-rulebook.json -p dockerfilePath=docker/Dockerfile",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.09.07.0138"
+      "LastVersionUsed": "v2026.09.07.0138",
+      "LastUrl": "https://effortless-effortless-rulebook-e-v2026-09-07-0138-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     }
   ],
   "ShowHidden": false,

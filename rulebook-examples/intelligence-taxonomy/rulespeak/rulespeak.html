@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en" class="show-rulespeak show-desc show-inputs">
+<html lang="en" data-lang="en" class="show-rulespeak show-desc show-inputs">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Taxonomy of Intelligence — RuleSpeak</title>
+<title>Taxonomy of Intelligence — RuleSpeak®</title>
 <style>
 
 :root{
@@ -20,8 +20,11 @@ a{color:var(--calc);text-decoration:none}
 a:hover{text-decoration:underline}
 code{font:0.85em ui-monospace,SFMono-Regular,Menlo,monospace;background:#f3f3f7;padding:1px 5px;border-radius:4px}
 
-/* ── Element visibility: each doc element shows only when <html> carries its flag.
-      All independent — any combination can be on at once. ──────────────────── */
+/* ── One language visible at a time; <html data-lang> picks it (rules per
+      language are appended at render time). ─────────────────────────────── */
+.lang-doc{display:none}
+
+/* ── Element visibility: each doc element shows only when <html> carries its flag. */
 .elem{display:none}
 html.show-rulespeak .elem-rulespeak{display:block}
 html.show-english   .elem-english{display:block}
@@ -30,7 +33,7 @@ html.show-desc      .elem-desc{display:block}
 html.show-inputs    .elem-inputs{display:block}
 html.show-consumers .elem-consumers{display:block}
 
-/* ── Sticky top bar (stays pinned) — brand · breadcrumb · gear ───────────── */
+/* ── Sticky top bar — brand · breadcrumb · language · gear ───────────────── */
 .topbar{position:sticky;top:0;z-index:40;height:var(--bar-h);
   background:rgba(255,255,255,.92);border-bottom:1px solid var(--line);
   backdrop-filter:saturate(1.1) blur(8px)}
@@ -45,13 +48,16 @@ html.show-consumers .elem-consumers{display:block}
 .crumb-entity{font-weight:700;color:var(--ink)}
 .crumb-sep{color:var(--line)}
 .crumb-field{color:var(--calc);font-weight:600;overflow:hidden;text-overflow:ellipsis}
+.lang-select{flex:none;height:32px;border:1px solid var(--line);border-radius:9px;background:#fff;
+  color:var(--ink);font:600 13px/1 inherit;padding:0 8px;cursor:pointer;max-width:150px}
+.lang-select:hover{border-color:var(--calc)}
 .gear{flex:none;width:34px;height:34px;border-radius:9px;border:1px solid var(--line);
   background:#fff;cursor:pointer;font-size:17px;line-height:1;color:var(--muted);
   display:inline-flex;align-items:center;justify-content:center;transition:all .12s}
 .gear:hover{color:var(--ink);border-color:var(--calc);box-shadow:0 1px 4px rgba(90,58,160,.15)}
 .gear[aria-expanded='true']{background:var(--calc);color:#fff;border-color:var(--calc)}
 
-/* ── Gear popup — checkboxes, one per documentation element ──────────────── */
+/* ── Gear popup ──────────────────────────────────────────────────────────── */
 .gear-pop{position:absolute;top:calc(var(--bar-h) + 6px);right:24px;z-index:50;width:290px;
   background:#fff;border:1px solid var(--line);border-radius:12px;
   box-shadow:0 10px 32px rgba(20,20,40,.18);padding:12px}
@@ -134,6 +140,7 @@ html.show-consumers .elem-consumers{display:block}
 
 .gt{margin-top:8px}
 .gt-body{margin:0;color:var(--muted)}
+.gt-reverse{margin-top:6px}
 
 .prov{margin-top:10px;border-top:1px dashed var(--line);padding-top:8px}
 .prov>summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--ink);list-style:none}
@@ -151,6 +158,8 @@ html.show-consumers .elem-consumers{display:block}
 .input.tone-agg{border-left-color:var(--agg)} .input.tone-lookup{border-left-color:var(--lookup)}
 .input.tone-rel{border-left-color:var(--rel)}
 .input:hover{background:#f4f3fb;text-decoration:none}
+.input-static{cursor:default}
+span.input-static:hover{background:#fcfcfe}
 .input-head{display:flex;align-items:center;gap:6px}
 .input-glyph{font-size:12px;color:var(--muted)}
 .input-name{font-weight:700;color:var(--ink)}
@@ -176,12 +185,23 @@ html.show-consumers .elem-consumers{display:block}
 :target{animation:flash 1.2s ease}
 @keyframes flash{0%{background:var(--calc-bg)}100%{background:var(--card)}}
 
+html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
 </style>
 <script>
 
 (function(){
+  var LANGS=['en'];
+  var DEFAULT_LANG='en';
   var ELEMS=['rulespeak','english','formula','desc','inputs','consumers'];
   var root=document.documentElement;
+
+  var lang=null;
+  try{ lang=new URLSearchParams(location.search).get('lang'); }catch(e){}
+  if(!lang){ try{ lang=localStorage.getItem('rulespeak.lang'); }catch(e){} }
+  if(LANGS.indexOf(lang)<0) lang=DEFAULT_LANG;
+  root.setAttribute('data-lang',lang);
+  root.setAttribute('lang',lang);
+
   ELEMS.forEach(function(k){
     var v=null; try{v=localStorage.getItem('rulespeak.show.'+k);}catch(e){}
     if(v==='1') root.classList.add('show-'+k);
@@ -192,27 +212,28 @@ html.show-consumers .elem-consumers{display:block}
 </script>
 </head>
 <body>
+<div class="lang-doc" data-lang="en" lang="en">
 <div class="topbar">
   <div class="topbar-inner">
-    <a class="topbar-brand" href="#top">📘 Taxonomy of Intelligence <span class="topbar-tag">RuleSpeak</span></a>
+    <a class="topbar-brand" href="#en-top">📘 Taxonomy of Intelligence <span class="topbar-tag">RuleSpeak®</span></a>
     <nav class="crumb" aria-label="You are reading">
       <span class="crumb-entity"></span>
       <span class="crumb-sep" hidden>›</span>
       <span class="crumb-field"></span>
     </nav>
-    <button type="button" class="gear" id="gear-btn" aria-haspopup="dialog" aria-expanded="false" title="Documentation options" aria-label="Documentation options">⚙︎</button>
+    <button type="button" class="gear" aria-haspopup="dialog" aria-expanded="false" title="Documentation options" aria-label="Documentation options">⚙︎</button>
   </div>
-  <div class="gear-pop" id="gear-pop" role="dialog" aria-label="Documentation options" hidden>
+  <div class="gear-pop" role="dialog" aria-label="Documentation options" hidden>
     <p class="gear-pop-title">Show in this document</p>
     <label class="gear-opt" title="The declarative business rule (only if / must / priority)">
       <input type="checkbox" data-elem="rulespeak" checked>
-      <span class="gear-opt-label">RuleSpeak</span>
+      <span class="gear-opt-label">RuleSpeak®</span>
       <span class="gear-opt-hint">The declarative business rule (only if / must / priority)</span>
     </label>
-    <label class="gear-opt" title="The formula read aloud as a plain-English sentence">
+    <label class="gear-opt" title="The formula read aloud as a plain sentence">
       <input type="checkbox" data-elem="english">
-      <span class="gear-opt-label">English</span>
-      <span class="gear-opt-hint">The formula read aloud as a plain-English sentence</span>
+      <span class="gear-opt-label">Plain reading</span>
+      <span class="gear-opt-hint">The formula read aloud as a plain sentence</span>
     </label>
     <label class="gear-opt" title="The raw =expression, with clickable field chips">
       <input type="checkbox" data-elem="formula">
@@ -234,31 +255,77 @@ html.show-consumers .elem-consumers{display:block}
       <span class="gear-opt-label">Links to consumers</span>
       <span class="gear-opt-hint">The rules that read this one (its DAG consumers / downstream)</span>
     </label>
-    <button type="button" class="gear-reset" id="gear-reset">Reset to defaults</button>
+    <button type="button" class="gear-reset">Reset to defaults</button>
   </div>
 </div>
-<header class="doc-header" id="top">
+<header class="doc-header" id="en-top">
   <div class="doc-header-inner">
-    <h1 class="doc-title">📘 Taxonomy of Intelligence <span class="doc-title-sub">RuleSpeak</span></h1>
+    <h1 class="doc-title">📘 Taxonomy of Intelligence <span class="doc-title-sub">RuleSpeak®</span></h1>
     <p class="doc-lede">Classifies intelligences (humans, animals, AI) by per-capability assessments through a multi-hop DAG.</p>
     <p class="doc-note">Declarative business rules rendered from the rulebook — the single source of truth. Every statement below is the plain-language reading of a formula; nothing here is hand-authored prose.</p>
-    <p class="narr-hint">Use the <button type="button" class="gear-inline" id="gear-open-2">⚙︎ options</button> in the top-right corner to turn each part of the documentation on or off — RuleSpeak, English, the raw formula, the author's description, and the links to a rule's inputs and consumers. Your choices are remembered.</p>
+    <p class="narr-hint">Use the <button type="button" class="gear-inline gear-open-inline">⚙︎ options</button> in the top-right corner to turn each part of the documentation on or off — RuleSpeak®, the literal reading, the raw formula, the author's description, and the links to a rule's inputs and consumers. Your choices are remembered.</p>
   </div>
 </header>
 <nav class="toc">
   <h2 class="toc-title">Entities</h2>
   <ul class="toc-list">
-    <li><a href="#t-capabilities">Capability</a> <span class="toc-meta">0 rules · 0 links</span></li>
-    <li><a href="#t-intelligences">Intelligence</a> <span class="toc-meta">3 rules · 0 links</span></li>
-    <li><a href="#t-assessments">Assessment</a> <span class="toc-meta">5 rules · 2 links</span></li>
+    <li><a href="#en-t-capabilities">Capability</a> <span class="toc-meta">1 rules · 0 links</span></li>
+    <li><a href="#en-t-intelligences">Intelligence</a> <span class="toc-meta">4 rules · 0 links</span></li>
+    <li><a href="#en-t-assessments">Assessment</a> <span class="toc-meta">6 rules · 2 links</span></li>
   </ul>
 </nav>
-<section class="entity" id="t-capabilities" data-entity="Capability">
+<section class="entity" id="en-t-capabilities" data-entity="Capability">
   <header class="entity-head">
     <h2 class="entity-title">Capability</h2>
     <p class="entity-synopsis">Cognitive capabilities being assessed. Tiered foundational/composite/emergent and weighted by importance.</p>
   </header>
-  <article class="field tone-raw" id="f-capabilities-description" data-entity="Capability" data-field="Description">
+  <article class="field tone-calc" id="en-f-capabilities-name" data-entity="Capability" data-field="Name">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Name</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-1</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <p class="view-body">A capability's <a class="ref" href="#en-f-capabilities-name">name</a> is the same as its capabilities ID.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">Capabilities ID.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span><span class="fx-chip">Capabilities ID</span></div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <span class="input input-static tone-raw">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Capabilities ID</span><span class="input-table">Capability</span></span>
+          <span class="input-en muted">Slug for the capability (e.g. 'reasoning'). First raw field is the PK.</span>
+        </span>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-lookup" href="#en-f-assessments-capabilityname">↗ Capability Name <span class="ref-pill-tbl">Assessment</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <span class="ref-pill tone-raw">● Capabilities ID <span class="ref-pill-tbl">Capability</span></span>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Display name (derived from PK).</p>
+    </article>
+  <article class="field tone-raw" id="en-f-capabilities-description" data-entity="Capability" data-field="Description">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Description</span>
@@ -270,7 +337,7 @@ html.show-consumers .elem-consumers{display:block}
     </div>
     <p class="field-note elem elem-desc">Short prose describing the capability.</p>
     </article>
-  <article class="field tone-raw" id="f-capabilities-tier" data-entity="Capability" data-field="Tier">
+  <article class="field tone-raw" id="en-f-capabilities-tier" data-entity="Capability" data-field="Tier">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Tier</span>
@@ -280,9 +347,15 @@ html.show-consumers .elem-consumers{display:block}
     <div class="gt">
       <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
+    <details class="prov prov-consumers elem elem-consumers" open>
+      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-lookup" href="#en-f-assessments-capabilitytier">↗ Capability Tier <span class="ref-pill-tbl">Assessment</span></a>
+      </div>
+    </details>
     <p class="field-note elem elem-desc">Capability tier: foundational, composite, or emergent.</p>
     </article>
-  <article class="field tone-raw" id="f-capabilities-weight" data-entity="Capability" data-field="Weight">
+  <article class="field tone-raw" id="en-f-capabilities-weight" data-entity="Capability" data-field="Weight">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Weight</span>
@@ -292,15 +365,70 @@ html.show-consumers .elem-consumers{display:block}
     <div class="gt">
       <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
+    <details class="prov prov-consumers elem elem-consumers" open>
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+3 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-lookup" href="#en-f-assessments-capabilityweight">↗ Capability Weight <span class="ref-pill-tbl">Assessment</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-assessments-weightedscore">Weighted Score <span class="ref-pill-tbl">Assessment</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-intelligences-totalweightedscore">Total Weighted Score <span class="ref-pill-tbl">Intelligence</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-intelligences-taxonomyclass">Taxonomy Class <span class="ref-pill-tbl">Intelligence</span></a>
+      </div>
+    </details>
     <p class="field-note elem elem-desc">Importance multiplier used when computing WeightedScore on each Assessment.</p>
     </article>
 </section>
-<section class="entity" id="t-intelligences" data-entity="Intelligence">
+<section class="entity" id="en-t-intelligences" data-entity="Intelligence">
   <header class="entity-head">
     <h2 class="entity-title">Intelligence</h2>
     <p class="entity-synopsis">Agents being classified by the taxonomy. Each Intelligence's TaxonomyClass is derived from the rollup of its Assessments.</p>
   </header>
-  <article class="field tone-raw" id="f-intelligences-description" data-entity="Intelligence" data-field="Description">
+  <article class="field tone-calc" id="en-f-intelligences-name" data-entity="Intelligence" data-field="Name">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Name</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-2</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <p class="view-body">An intelligence's <a class="ref" href="#en-f-intelligences-name">name</a> is the same as its intelligences ID.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">Intelligences ID.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span><span class="fx-chip">Intelligences ID</span></div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <span class="input input-static tone-raw">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Intelligences ID</span><span class="input-table">Intelligence</span></span>
+          <span class="input-en muted">Slug for the intelligence (e.g. 'human'). First raw field is the PK.</span>
+        </span>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-lookup" href="#en-f-assessments-intelligencename">↗ Intelligence Name <span class="ref-pill-tbl">Assessment</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <span class="ref-pill tone-raw">● Intelligences ID <span class="ref-pill-tbl">Intelligence</span></span>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Display name (derived from PK).</p>
+    </article>
+  <article class="field tone-raw" id="en-f-intelligences-description" data-entity="Intelligence" data-field="Description">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Description</span>
@@ -312,7 +440,7 @@ html.show-consumers .elem-consumers{display:block}
     </div>
     <p class="field-note elem elem-desc">Short prose describing what this intelligence is.</p>
     </article>
-  <article class="field tone-raw" id="f-intelligences-substrate" data-entity="Intelligence" data-field="Substrate">
+  <article class="field tone-raw" id="en-f-intelligences-substrate" data-entity="Intelligence" data-field="Substrate">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Substrate</span>
@@ -324,162 +452,202 @@ html.show-consumers .elem-consumers{display:block}
     </div>
     <p class="field-note elem elem-desc">Substrate kind: biological, digital, or collective.</p>
     </article>
-  <article class="field tone-agg" id="f-intelligences-assessmentcount" data-entity="Intelligence" data-field="Assessment Count">
+  <article class="field tone-agg" id="en-f-intelligences-assessmentcount" data-entity="Intelligence" data-field="Assessment Count">
     <div class="field-head">
       <span class="field-glyph" title="Aggregation">Σ</span>
       <span class="field-name">Assessment Count</span>
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-1</span>
+      <span class="pill pill-dr">DR-3</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak</span>
-        <p class="view-body">An <a class="ref" href="#f-assessments-intelligence">intelligence</a>'s assessment count is the number of assessments related to the intelligence.</p>
+        <span class="view-label">In RuleSpeak®</span>
+        <p class="view-body">An intelligence's <a class="ref" href="#en-f-intelligences-assessmentcount">assessment count</a> is the number of <a class="ref" href="#en-t-assessments">assessments</a> related to the intelligence.</p>
       </div>
       <div class="view elem elem-english">
-        <span class="view-label">In English</span>
-        <p class="view-body">Count of Assessments whose <a class="ref" href="#f-assessments-intelligence">intelligence</a> is <a class="ref" href="#f-intelligences-intelligencesid">intelligences id</a>.</p>
+        <span class="view-label">In plain words</span>
+        <p class="view-body">Count of <a class="ref" href="#en-t-assessments">assessments</a> whose <a class="ref" href="#en-f-assessments-intelligence">intelligence</a> is intelligences ID.</p>
       </div>
       <div class="view elem elem-formula">
         <span class="view-label">As a formula</span>
-        <div class="view-body fx"><span class="fx-eq">= </span>COUNTIFS(<a class="fx-chip" href="#f-assessments-intelligence">Intelligence</a>, <a class="fx-chip" href="#f-intelligences-intelligencesid">Intelligences ID</a>)</div>
+        <div class="view-body fx"><span class="fx-eq">= </span>COUNTIFS(<a class="fx-chip" href="#en-f-assessments-intelligence">Intelligence</a>, <span class="fx-chip">Intelligences ID</span>)</div>
       </div>
     </div>
     <details class="prov prov-inputs elem elem-inputs" open>
       <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
       <div class="prov-grid">
-        <a class="input tone-rel" href="#f-assessments-intelligence">
-          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Intelligence</span><span class="input-table">Assessments</span></span>
+        <a class="input tone-rel" href="#en-f-assessments-intelligence">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Intelligence</span><span class="input-table">Assessment</span></span>
           <span class="input-en muted">FK to Intelligences. Holds the value of Intelligences.IntelligencesId.</span>
         </a>
-        <a class="input tone-raw" href="#f-intelligences-intelligencesid">
-          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Intelligences ID</span><span class="input-table">Intelligences</span></span>
+        <span class="input input-static tone-raw">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Intelligences ID</span><span class="input-table">Intelligence</span></span>
           <span class="input-en muted">Slug for the intelligence (e.g. 'human'). First raw field is the PK.</span>
-        </a>
+        </span>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
       <summary>Ground truth at the leaves <span class="count">2</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
-        <a class="ref-pill tone-rel" href="#f-assessments-intelligence">⇢ Intelligence <span class="ref-pill-tbl">Assessments</span></a>
-        <a class="ref-pill tone-raw" href="#f-intelligences-intelligencesid">● Intelligences ID <span class="ref-pill-tbl">Intelligences</span></a>
+        <a class="ref-pill tone-rel" href="#en-f-assessments-intelligence">⇢ Intelligence <span class="ref-pill-tbl">Assessment</span></a>
+        <span class="ref-pill tone-raw">● Intelligences ID <span class="ref-pill-tbl">Intelligence</span></span>
       </div>
     </details>
     <p class="field-note elem elem-desc">How many capabilities this intelligence has been assessed on.</p>
     </article>
-  <article class="field tone-agg" id="f-intelligences-totalweightedscore" data-entity="Intelligence" data-field="Total Weighted Score">
+  <article class="field tone-agg" id="en-f-intelligences-totalweightedscore" data-entity="Intelligence" data-field="Total Weighted Score">
     <div class="field-head">
       <span class="field-glyph" title="Aggregation">Σ</span>
       <span class="field-name">Total Weighted Score</span>
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-2</span>
+      <span class="pill pill-dr">DR-4</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak</span>
-        <p class="view-body">An <a class="ref" href="#f-assessments-intelligence">intelligence</a>'s total <a class="ref" href="#f-assessments-weightedscore">weighted score</a> is the total weighted score across the assessments related to the intelligence.</p>
+        <span class="view-label">In RuleSpeak®</span>
+        <p class="view-body">An intelligence's <a class="ref" href="#en-f-intelligences-totalweightedscore">total weighted score</a> is the total <a class="ref" href="#en-f-assessments-weightedscore">weighted score</a> across the <a class="ref" href="#en-t-assessments">assessments</a> related to the intelligence.</p>
       </div>
       <div class="view elem elem-english">
-        <span class="view-label">In English</span>
-        <p class="view-body">Sum of <a class="ref" href="#f-assessments-weightedscore">weighted score</a> across all Assessments whose <a class="ref" href="#f-assessments-intelligence">intelligence</a> is <a class="ref" href="#f-intelligences-intelligencesid">intelligences id</a>.</p>
+        <span class="view-label">In plain words</span>
+        <p class="view-body">Sum of <a class="ref" href="#en-f-assessments-weightedscore">weighted score</a> across all <a class="ref" href="#en-t-assessments">assessments</a> whose <a class="ref" href="#en-f-assessments-intelligence">intelligence</a> is intelligences ID.</p>
       </div>
       <div class="view elem elem-formula">
         <span class="view-label">As a formula</span>
-        <div class="view-body fx"><span class="fx-eq">= </span>SUMIFS(<a class="fx-chip" href="#f-assessments-weightedscore">Weighted Score</a>, <a class="fx-chip" href="#f-assessments-intelligence">Intelligence</a>, <a class="fx-chip" href="#f-intelligences-intelligencesid">Intelligences ID</a>)</div>
+        <div class="view-body fx"><span class="fx-eq">= </span>SUMIFS(<a class="fx-chip" href="#en-f-assessments-weightedscore">Weighted Score</a>, <a class="fx-chip" href="#en-f-assessments-intelligence">Intelligence</a>, <span class="fx-chip">Intelligences ID</span>)</div>
       </div>
     </div>
     <details class="prov prov-inputs elem elem-inputs" open>
       <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
       <div class="prov-grid">
-        <a class="input tone-calc" href="#f-assessments-weightedscore">
-          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Weighted Score</span><span class="input-table">Assessments</span></span>
+        <a class="input tone-calc" href="#en-f-assessments-weightedscore">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Weighted Score</span><span class="input-table">Assessment</span></span>
           <span class="input-en">Raw score times capability weight.</span>
         </a>
-        <a class="input tone-rel" href="#f-assessments-intelligence">
-          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Intelligence</span><span class="input-table">Assessments</span></span>
+        <a class="input tone-rel" href="#en-f-assessments-intelligence">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Intelligence</span><span class="input-table">Assessment</span></span>
           <span class="input-en muted">FK to Intelligences. Holds the value of Intelligences.IntelligencesId.</span>
         </a>
-        <a class="input tone-raw" href="#f-intelligences-intelligencesid">
-          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Intelligences ID</span><span class="input-table">Intelligences</span></span>
+        <span class="input input-static tone-raw">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Intelligences ID</span><span class="input-table">Intelligence</span></span>
           <span class="input-en muted">Slug for the intelligence (e.g. 'human'). First raw field is the PK.</span>
-        </a>
+        </span>
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
       <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
-        <a class="ref-pill tone-calc" href="#f-intelligences-taxonomyclass">ƒ Taxonomy Class <span class="ref-pill-tbl">Intelligences</span></a>
+        <a class="ref-pill tone-calc" href="#en-f-intelligences-taxonomyclass">ƒ Taxonomy Class <span class="ref-pill-tbl">Intelligence</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
       <summary>Ground truth at the leaves <span class="count">6</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
-        <a class="ref-pill tone-raw" href="#f-assessments-rawscore">● Raw Score <span class="ref-pill-tbl">Assessments</span></a>
-        <a class="ref-pill tone-raw" href="#f-capabilities-weight">● Weight <span class="ref-pill-tbl">Capabilities</span></a>
-        <a class="ref-pill tone-rel" href="#f-assessments-capability">⇢ Capability <span class="ref-pill-tbl">Assessments</span></a>
-        <a class="ref-pill tone-raw" href="#f-capabilities-capabilitiesid">● Capabilities ID <span class="ref-pill-tbl">Capabilities</span></a>
-        <a class="ref-pill tone-rel" href="#f-assessments-intelligence">⇢ Intelligence <span class="ref-pill-tbl">Assessments</span></a>
-        <a class="ref-pill tone-raw" href="#f-intelligences-intelligencesid">● Intelligences ID <span class="ref-pill-tbl">Intelligences</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-assessments-rawscore">● Raw Score <span class="ref-pill-tbl">Assessment</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-capabilities-weight">● Weight <span class="ref-pill-tbl">Capability</span></a>
+        <a class="ref-pill tone-rel" href="#en-f-assessments-capability">⇢ Capability <span class="ref-pill-tbl">Assessment</span></a>
+        <span class="ref-pill tone-raw">● Capabilities ID <span class="ref-pill-tbl">Capability</span></span>
+        <a class="ref-pill tone-rel" href="#en-f-assessments-intelligence">⇢ Intelligence <span class="ref-pill-tbl">Assessment</span></a>
+        <span class="ref-pill tone-raw">● Intelligences ID <span class="ref-pill-tbl">Intelligence</span></span>
       </div>
     </details>
     <p class="field-note elem elem-desc">Sum of WeightedScore across all this intelligence's assessments. Second hop in the DAG.</p>
     </article>
-  <article class="field tone-calc" id="f-intelligences-taxonomyclass" data-entity="Intelligence" data-field="Taxonomy Class">
+  <article class="field tone-calc" id="en-f-intelligences-taxonomyclass" data-entity="Intelligence" data-field="Taxonomy Class">
     <div class="field-head">
       <span class="field-glyph" title="Calculated">ƒ</span>
       <span class="field-name">Taxonomy Class</span>
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-3</span>
+      <span class="pill pill-dr">DR-5</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak</span>
-        <div class="view-body"><p class="rt-headline">The intelligence's taxonomy class is determined by the following priority:</p><ol class="rt-priority"><li><span class="rt-value">“Generalist”</span> <span class="rt-when">if the total weighted score is at least 350</span></li><li><span class="rt-value">“Broad”</span> <span class="rt-when">if the total weighted score is at least 220</span></li><li><span class="rt-value">“Narrow”</span> <span class="rt-when">in all other cases</span></li></ol></div>
+        <span class="view-label">In RuleSpeak®</span>
+        <div class="view-body"><p class="rt-headline">The intelligence's <a class="ref" href="#en-f-intelligences-taxonomyclass">taxonomy class</a> is determined by the following priority:</p><ol class="rt-priority"><li><span class="rt-value">“Generalist”</span> <span class="rt-when">if the <a class="ref" href="#en-f-intelligences-totalweightedscore">total weighted score</a> is at least 350</span></li><li><span class="rt-value">“Broad”</span> <span class="rt-when">if the <a class="ref" href="#en-f-intelligences-totalweightedscore">total weighted score</a> is at least 220</span></li><li><span class="rt-value">“Narrow”</span> <span class="rt-when">in all other cases</span></li></ol></div>
       </div>
       <div class="view elem elem-english">
-        <span class="view-label">In English</span>
-        <p class="view-body">If <a class="ref" href="#f-intelligences-totalweightedscore">total weighted score</a> is at least 350 then &quot;Generalist&quot;, otherwise if total weighted score is at least 220 then &quot;Broad&quot;, otherwise &quot;Narrow&quot;.</p>
+        <span class="view-label">In plain words</span>
+        <p class="view-body">If <a class="ref" href="#en-f-intelligences-totalweightedscore">total weighted score</a> is at least 350 then &quot;Generalist&quot;, otherwise if <a class="ref" href="#en-f-intelligences-totalweightedscore">total weighted score</a> is at least 220 then &quot;Broad&quot;, otherwise &quot;Narrow&quot;.</p>
       </div>
       <div class="view elem elem-formula">
         <span class="view-label">As a formula</span>
-        <div class="view-body fx"><span class="fx-eq">= </span>IF(<a class="fx-chip" href="#f-intelligences-totalweightedscore">Total Weighted Score</a>&gt;=350, &quot;Generalist&quot;, IF(<a class="fx-chip" href="#f-intelligences-totalweightedscore">Total Weighted Score</a>&gt;=220, &quot;Broad&quot;, &quot;Narrow&quot;))</div>
+        <div class="view-body fx"><span class="fx-eq">= </span>IF(<a class="fx-chip" href="#en-f-intelligences-totalweightedscore">Total Weighted Score</a>&gt;=350, &quot;Generalist&quot;, IF(<a class="fx-chip" href="#en-f-intelligences-totalweightedscore">Total Weighted Score</a>&gt;=220, &quot;Broad&quot;, &quot;Narrow&quot;))</div>
       </div>
     </div>
     <details class="prov prov-inputs elem elem-inputs" open>
       <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
       <div class="prov-grid">
-        <a class="input tone-agg" href="#f-intelligences-totalweightedscore">
-          <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Total Weighted Score</span><span class="input-table">Intelligences</span></span>
-          <span class="input-en">Sum of weighted score across all Assessments whose intelligence is intelligences id.</span>
+        <a class="input tone-agg" href="#en-f-intelligences-totalweightedscore">
+          <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Total Weighted Score</span><span class="input-table">Intelligence</span></span>
+          <span class="input-en">Sum of weighted score across all assessments whose intelligence is intelligences ID.</span>
         </a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
       <summary>Ground truth at the leaves <span class="count">6</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
-        <a class="ref-pill tone-raw" href="#f-assessments-rawscore">● Raw Score <span class="ref-pill-tbl">Assessments</span></a>
-        <a class="ref-pill tone-raw" href="#f-capabilities-weight">● Weight <span class="ref-pill-tbl">Capabilities</span></a>
-        <a class="ref-pill tone-rel" href="#f-assessments-capability">⇢ Capability <span class="ref-pill-tbl">Assessments</span></a>
-        <a class="ref-pill tone-raw" href="#f-capabilities-capabilitiesid">● Capabilities ID <span class="ref-pill-tbl">Capabilities</span></a>
-        <a class="ref-pill tone-rel" href="#f-assessments-intelligence">⇢ Intelligence <span class="ref-pill-tbl">Assessments</span></a>
-        <a class="ref-pill tone-raw" href="#f-intelligences-intelligencesid">● Intelligences ID <span class="ref-pill-tbl">Intelligences</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-assessments-rawscore">● Raw Score <span class="ref-pill-tbl">Assessment</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-capabilities-weight">● Weight <span class="ref-pill-tbl">Capability</span></a>
+        <a class="ref-pill tone-rel" href="#en-f-assessments-capability">⇢ Capability <span class="ref-pill-tbl">Assessment</span></a>
+        <span class="ref-pill tone-raw">● Capabilities ID <span class="ref-pill-tbl">Capability</span></span>
+        <a class="ref-pill tone-rel" href="#en-f-assessments-intelligence">⇢ Intelligence <span class="ref-pill-tbl">Assessment</span></a>
+        <span class="ref-pill tone-raw">● Intelligences ID <span class="ref-pill-tbl">Intelligence</span></span>
       </div>
     </details>
     <p class="field-note elem elem-desc">Taxonomic bucket derived from TotalWeightedScore. Third hop in the DAG.</p>
     </article>
 </section>
-<section class="entity" id="t-assessments" data-entity="Assessment">
+<section class="entity" id="en-t-assessments" data-entity="Assessment">
   <header class="entity-head">
     <h2 class="entity-title">Assessment</h2>
     <p class="entity-synopsis">Per-capability scores for each intelligence. The junction table whose calculated WeightedScore feeds the rollup on Intelligences.</p>
   </header>
-  <article class="field tone-rel" id="f-assessments-intelligence" data-entity="Assessment" data-field="Intelligence">
+  <article class="field tone-calc" id="en-f-assessments-name" data-entity="Assessment" data-field="Name">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Name</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-6</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak®</span>
+        <p class="view-body">An assessment's <a class="ref" href="#en-f-assessments-name">name</a> is the same as its assessments ID.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">Assessments ID.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span><span class="fx-chip">Assessments ID</span></div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <span class="input input-static tone-raw">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Assessments ID</span><span class="input-table">Assessment</span></span>
+          <span class="input-en muted">Slug encoding the intelligence-capability pair (e.g. 'human-reasoning'). First raw field is the PK.</span>
+        </span>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <span class="ref-pill tone-raw">● Assessments ID <span class="ref-pill-tbl">Assessment</span></span>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Display name (derived from PK).</p>
+    </article>
+  <article class="field tone-rel" id="en-f-assessments-intelligence" data-entity="Assessment" data-field="Intelligence">
     <div class="field-head">
       <span class="field-glyph" title="Relationship">⇢</span>
       <span class="field-name">Intelligence</span>
@@ -487,11 +655,20 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-muted">string</span>
     </div>
     <div class="gt">
-      <p class="gt-body">A pointer to <a href="#t-intelligences">Intelligence</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
+      <p class="gt-body">A pointer to <a href="#en-t-intelligences">Intelligence</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
     </div>
+    <details class="prov prov-consumers elem elem-consumers" open>
+      <summary>Consumers <span class="count">3 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-agg" href="#en-f-intelligences-assessmentcount">Σ Assessment Count <span class="ref-pill-tbl">Intelligence</span></a>
+        <a class="ref-pill tone-agg" href="#en-f-intelligences-totalweightedscore">Σ Total Weighted Score <span class="ref-pill-tbl">Intelligence</span></a>
+        <a class="ref-pill tone-lookup" href="#en-f-assessments-intelligencename">↗ Intelligence Name <span class="ref-pill-tbl">Assessment</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-intelligences-taxonomyclass">Taxonomy Class <span class="ref-pill-tbl">Intelligence</span></a>
+      </div>
+    </details>
     <p class="field-note elem elem-desc">FK to Intelligences. Holds the value of Intelligences.IntelligencesId.</p>
     </article>
-  <article class="field tone-rel" id="f-assessments-capability" data-entity="Assessment" data-field="Capability">
+  <article class="field tone-rel" id="en-f-assessments-capability" data-entity="Assessment" data-field="Capability">
     <div class="field-head">
       <span class="field-glyph" title="Relationship">⇢</span>
       <span class="field-name">Capability</span>
@@ -499,11 +676,22 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-muted">string</span>
     </div>
     <div class="gt">
-      <p class="gt-body">A pointer to <a href="#t-capabilities">Capability</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
+      <p class="gt-body">A pointer to <a href="#en-t-capabilities">Capability</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
     </div>
+    <details class="prov prov-consumers elem elem-consumers" open>
+      <summary>Consumers <span class="count">3 direct</span> <span class="count count-muted">+3 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-lookup" href="#en-f-assessments-capabilityname">↗ Capability Name <span class="ref-pill-tbl">Assessment</span></a>
+        <a class="ref-pill tone-lookup" href="#en-f-assessments-capabilitytier">↗ Capability Tier <span class="ref-pill-tbl">Assessment</span></a>
+        <a class="ref-pill tone-lookup" href="#en-f-assessments-capabilityweight">↗ Capability Weight <span class="ref-pill-tbl">Assessment</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-assessments-weightedscore">Weighted Score <span class="ref-pill-tbl">Assessment</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-intelligences-totalweightedscore">Total Weighted Score <span class="ref-pill-tbl">Intelligence</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-intelligences-taxonomyclass">Taxonomy Class <span class="ref-pill-tbl">Intelligence</span></a>
+      </div>
+    </details>
     <p class="field-note elem elem-desc">FK to Capabilities. Holds the value of Capabilities.CapabilitiesId.</p>
     </article>
-  <article class="field tone-raw" id="f-assessments-rawscore" data-entity="Assessment" data-field="Raw Score">
+  <article class="field tone-raw" id="en-f-assessments-rawscore" data-entity="Assessment" data-field="Raw Score">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Raw Score</span>
@@ -513,246 +701,254 @@ html.show-consumers .elem-consumers{display:block}
     <div class="gt">
       <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
+    <details class="prov prov-consumers elem elem-consumers" open>
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+2 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#en-f-assessments-weightedscore">ƒ Weighted Score <span class="ref-pill-tbl">Assessment</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-intelligences-totalweightedscore">Total Weighted Score <span class="ref-pill-tbl">Intelligence</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-intelligences-taxonomyclass">Taxonomy Class <span class="ref-pill-tbl">Intelligence</span></a>
+      </div>
+    </details>
     <p class="field-note elem elem-desc">User-editable assessment score from 0 to 100. Edit this in the UI to watch the cascade.</p>
     </article>
-  <article class="field tone-lookup" id="f-assessments-intelligencename" data-entity="Assessment" data-field="Intelligence Name">
+  <article class="field tone-lookup" id="en-f-assessments-intelligencename" data-entity="Assessment" data-field="Intelligence Name">
     <div class="field-head">
       <span class="field-glyph" title="Lookup">↗</span>
       <span class="field-name">Intelligence Name</span>
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-4</span>
+      <span class="pill pill-dr">DR-7</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak</span>
-        <p class="view-body">An assessment's <a class="ref" href="#f-assessments-intelligence">intelligence</a> <a class="ref" href="#f-intelligences-name">name</a> — taken from the linked intelligence.</p>
+        <span class="view-label">In RuleSpeak®</span>
+        <p class="view-body">An assessment's <a class="ref" href="#en-f-assessments-intelligencename">intelligence name</a> — taken from the linked <a class="ref" href="#en-f-assessments-intelligence">intelligence</a>.</p>
       </div>
       <div class="view elem elem-english">
-        <span class="view-label">In English</span>
-        <p class="view-body">The <a class="ref" href="#f-intelligences-name">name</a> of the linked <a class="ref" href="#f-assessments-intelligence">intelligence</a>.</p>
+        <span class="view-label">In plain words</span>
+        <p class="view-body">The <a class="ref" href="#en-f-intelligences-name">name</a> of the linked <a class="ref" href="#en-f-assessments-intelligence">intelligence</a>.</p>
       </div>
       <div class="view elem elem-formula">
         <span class="view-label">As a formula</span>
-        <div class="view-body fx"><span class="fx-eq">= </span>INDEX(<a class="fx-chip" href="#f-intelligences-name">Name</a>, MATCH(<a class="fx-chip" href="#f-assessments-intelligence">Intelligence</a>, <a class="fx-chip" href="#f-intelligences-intelligencesid">Intelligences ID</a>, 0))</div>
+        <div class="view-body fx"><span class="fx-eq">= </span>INDEX(<a class="fx-chip" href="#en-f-intelligences-name">Name</a>, MATCH(<a class="fx-chip" href="#en-f-assessments-intelligence">Intelligence</a>, <span class="fx-chip">Intelligences ID</span>, 0))</div>
       </div>
     </div>
     <details class="prov prov-inputs elem elem-inputs" open>
       <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
       <div class="prov-grid">
-        <a class="input tone-calc" href="#f-intelligences-name">
-          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Name</span><span class="input-table">Intelligences</span></span>
-          <span class="input-en">Intelligences id.</span>
+        <a class="input tone-calc" href="#en-f-intelligences-name">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Name</span><span class="input-table">Intelligence</span></span>
+          <span class="input-en">Intelligences ID.</span>
         </a>
-        <a class="input tone-rel" href="#f-assessments-intelligence">
-          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Intelligence</span><span class="input-table">Assessments</span></span>
+        <a class="input tone-rel" href="#en-f-assessments-intelligence">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Intelligence</span><span class="input-table">Assessment</span></span>
           <span class="input-en muted">FK to Intelligences. Holds the value of Intelligences.IntelligencesId.</span>
         </a>
-        <a class="input tone-raw" href="#f-intelligences-intelligencesid">
-          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Intelligences ID</span><span class="input-table">Intelligences</span></span>
+        <span class="input input-static tone-raw">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Intelligences ID</span><span class="input-table">Intelligence</span></span>
           <span class="input-en muted">Slug for the intelligence (e.g. 'human'). First raw field is the PK.</span>
-        </a>
+        </span>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
       <summary>Ground truth at the leaves <span class="count">2</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
-        <a class="ref-pill tone-raw" href="#f-intelligences-intelligencesid">● Intelligences ID <span class="ref-pill-tbl">Intelligences</span></a>
-        <a class="ref-pill tone-rel" href="#f-assessments-intelligence">⇢ Intelligence <span class="ref-pill-tbl">Assessments</span></a>
+        <span class="ref-pill tone-raw">● Intelligences ID <span class="ref-pill-tbl">Intelligence</span></span>
+        <a class="ref-pill tone-rel" href="#en-f-assessments-intelligence">⇢ Intelligence <span class="ref-pill-tbl">Assessment</span></a>
       </div>
     </details>
     <p class="field-note elem elem-desc">Display name pulled from the related Intelligences row.</p>
     </article>
-  <article class="field tone-lookup" id="f-assessments-capabilityname" data-entity="Assessment" data-field="Capability Name">
+  <article class="field tone-lookup" id="en-f-assessments-capabilityname" data-entity="Assessment" data-field="Capability Name">
     <div class="field-head">
       <span class="field-glyph" title="Lookup">↗</span>
       <span class="field-name">Capability Name</span>
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-5</span>
+      <span class="pill pill-dr">DR-8</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak</span>
-        <p class="view-body">An assessment's <a class="ref" href="#f-assessments-capability">capability</a> <a class="ref" href="#f-capabilities-name">name</a> — taken from the linked capability.</p>
+        <span class="view-label">In RuleSpeak®</span>
+        <p class="view-body">An assessment's <a class="ref" href="#en-f-assessments-capabilityname">capability name</a> — taken from the linked <a class="ref" href="#en-f-assessments-capability">capability</a>.</p>
       </div>
       <div class="view elem elem-english">
-        <span class="view-label">In English</span>
-        <p class="view-body">The <a class="ref" href="#f-capabilities-name">name</a> of the linked <a class="ref" href="#f-assessments-capability">capability</a>.</p>
+        <span class="view-label">In plain words</span>
+        <p class="view-body">The <a class="ref" href="#en-f-capabilities-name">name</a> of the linked <a class="ref" href="#en-f-assessments-capability">capability</a>.</p>
       </div>
       <div class="view elem elem-formula">
         <span class="view-label">As a formula</span>
-        <div class="view-body fx"><span class="fx-eq">= </span>INDEX(<a class="fx-chip" href="#f-capabilities-name">Name</a>, MATCH(<a class="fx-chip" href="#f-assessments-capability">Capability</a>, <a class="fx-chip" href="#f-capabilities-capabilitiesid">Capabilities ID</a>, 0))</div>
+        <div class="view-body fx"><span class="fx-eq">= </span>INDEX(<a class="fx-chip" href="#en-f-capabilities-name">Name</a>, MATCH(<a class="fx-chip" href="#en-f-assessments-capability">Capability</a>, <span class="fx-chip">Capabilities ID</span>, 0))</div>
       </div>
     </div>
     <details class="prov prov-inputs elem elem-inputs" open>
       <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
       <div class="prov-grid">
-        <a class="input tone-calc" href="#f-capabilities-name">
-          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Name</span><span class="input-table">Capabilities</span></span>
-          <span class="input-en">Capabilities id.</span>
+        <a class="input tone-calc" href="#en-f-capabilities-name">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Name</span><span class="input-table">Capability</span></span>
+          <span class="input-en">Capabilities ID.</span>
         </a>
-        <a class="input tone-rel" href="#f-assessments-capability">
-          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Capability</span><span class="input-table">Assessments</span></span>
+        <a class="input tone-rel" href="#en-f-assessments-capability">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Capability</span><span class="input-table">Assessment</span></span>
           <span class="input-en muted">FK to Capabilities. Holds the value of Capabilities.CapabilitiesId.</span>
         </a>
-        <a class="input tone-raw" href="#f-capabilities-capabilitiesid">
-          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Capabilities ID</span><span class="input-table">Capabilities</span></span>
+        <span class="input input-static tone-raw">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Capabilities ID</span><span class="input-table">Capability</span></span>
           <span class="input-en muted">Slug for the capability (e.g. 'reasoning'). First raw field is the PK.</span>
-        </a>
+        </span>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
       <summary>Ground truth at the leaves <span class="count">2</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
-        <a class="ref-pill tone-raw" href="#f-capabilities-capabilitiesid">● Capabilities ID <span class="ref-pill-tbl">Capabilities</span></a>
-        <a class="ref-pill tone-rel" href="#f-assessments-capability">⇢ Capability <span class="ref-pill-tbl">Assessments</span></a>
+        <span class="ref-pill tone-raw">● Capabilities ID <span class="ref-pill-tbl">Capability</span></span>
+        <a class="ref-pill tone-rel" href="#en-f-assessments-capability">⇢ Capability <span class="ref-pill-tbl">Assessment</span></a>
       </div>
     </details>
     <p class="field-note elem elem-desc">Display name pulled from the related Capabilities row.</p>
     </article>
-  <article class="field tone-lookup" id="f-assessments-capabilitytier" data-entity="Assessment" data-field="Capability Tier">
+  <article class="field tone-lookup" id="en-f-assessments-capabilitytier" data-entity="Assessment" data-field="Capability Tier">
     <div class="field-head">
       <span class="field-glyph" title="Lookup">↗</span>
       <span class="field-name">Capability Tier</span>
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-6</span>
+      <span class="pill pill-dr">DR-9</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak</span>
-        <p class="view-body">An assessment's <a class="ref" href="#f-assessments-capability">capability</a> <a class="ref" href="#f-capabilities-tier">tier</a> — taken from the linked capability.</p>
+        <span class="view-label">In RuleSpeak®</span>
+        <p class="view-body">An assessment's <a class="ref" href="#en-f-assessments-capabilitytier">capability tier</a> — taken from the linked <a class="ref" href="#en-f-assessments-capability">capability</a>.</p>
       </div>
       <div class="view elem elem-english">
-        <span class="view-label">In English</span>
-        <p class="view-body">The <a class="ref" href="#f-capabilities-tier">tier</a> of the linked <a class="ref" href="#f-assessments-capability">capability</a>.</p>
+        <span class="view-label">In plain words</span>
+        <p class="view-body">The <a class="ref" href="#en-f-capabilities-tier">tier</a> of the linked <a class="ref" href="#en-f-assessments-capability">capability</a>.</p>
       </div>
       <div class="view elem elem-formula">
         <span class="view-label">As a formula</span>
-        <div class="view-body fx"><span class="fx-eq">= </span>INDEX(<a class="fx-chip" href="#f-capabilities-tier">Tier</a>, MATCH(<a class="fx-chip" href="#f-assessments-capability">Capability</a>, <a class="fx-chip" href="#f-capabilities-capabilitiesid">Capabilities ID</a>, 0))</div>
+        <div class="view-body fx"><span class="fx-eq">= </span>INDEX(<a class="fx-chip" href="#en-f-capabilities-tier">Tier</a>, MATCH(<a class="fx-chip" href="#en-f-assessments-capability">Capability</a>, <span class="fx-chip">Capabilities ID</span>, 0))</div>
       </div>
     </div>
     <details class="prov prov-inputs elem elem-inputs" open>
       <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
       <div class="prov-grid">
-        <a class="input tone-raw" href="#f-capabilities-tier">
-          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Tier</span><span class="input-table">Capabilities</span></span>
+        <a class="input tone-raw" href="#en-f-capabilities-tier">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Tier</span><span class="input-table">Capability</span></span>
           <span class="input-en muted">Capability tier: foundational, composite, or emergent.</span>
         </a>
-        <a class="input tone-rel" href="#f-assessments-capability">
-          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Capability</span><span class="input-table">Assessments</span></span>
+        <a class="input tone-rel" href="#en-f-assessments-capability">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Capability</span><span class="input-table">Assessment</span></span>
           <span class="input-en muted">FK to Capabilities. Holds the value of Capabilities.CapabilitiesId.</span>
         </a>
-        <a class="input tone-raw" href="#f-capabilities-capabilitiesid">
-          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Capabilities ID</span><span class="input-table">Capabilities</span></span>
+        <span class="input input-static tone-raw">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Capabilities ID</span><span class="input-table">Capability</span></span>
           <span class="input-en muted">Slug for the capability (e.g. 'reasoning'). First raw field is the PK.</span>
-        </a>
+        </span>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
       <summary>Ground truth at the leaves <span class="count">3</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
-        <a class="ref-pill tone-raw" href="#f-capabilities-tier">● Tier <span class="ref-pill-tbl">Capabilities</span></a>
-        <a class="ref-pill tone-rel" href="#f-assessments-capability">⇢ Capability <span class="ref-pill-tbl">Assessments</span></a>
-        <a class="ref-pill tone-raw" href="#f-capabilities-capabilitiesid">● Capabilities ID <span class="ref-pill-tbl">Capabilities</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-capabilities-tier">● Tier <span class="ref-pill-tbl">Capability</span></a>
+        <a class="ref-pill tone-rel" href="#en-f-assessments-capability">⇢ Capability <span class="ref-pill-tbl">Assessment</span></a>
+        <span class="ref-pill tone-raw">● Capabilities ID <span class="ref-pill-tbl">Capability</span></span>
       </div>
     </details>
     <p class="field-note elem elem-desc">Tier (foundational/composite/emergent) pulled from the related Capabilities row.</p>
     </article>
-  <article class="field tone-lookup" id="f-assessments-capabilityweight" data-entity="Assessment" data-field="Capability Weight">
+  <article class="field tone-lookup" id="en-f-assessments-capabilityweight" data-entity="Assessment" data-field="Capability Weight">
     <div class="field-head">
       <span class="field-glyph" title="Lookup">↗</span>
       <span class="field-name">Capability Weight</span>
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-7</span>
+      <span class="pill pill-dr">DR-10</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak</span>
-        <p class="view-body">An assessment's <a class="ref" href="#f-assessments-capability">capability</a> <a class="ref" href="#f-capabilities-weight">weight</a> — taken from the linked capability.</p>
+        <span class="view-label">In RuleSpeak®</span>
+        <p class="view-body">An assessment's <a class="ref" href="#en-f-assessments-capabilityweight">capability weight</a> — taken from the linked <a class="ref" href="#en-f-assessments-capability">capability</a>.</p>
       </div>
       <div class="view elem elem-english">
-        <span class="view-label">In English</span>
-        <p class="view-body">The <a class="ref" href="#f-capabilities-weight">weight</a> of the linked <a class="ref" href="#f-assessments-capability">capability</a>.</p>
+        <span class="view-label">In plain words</span>
+        <p class="view-body">The <a class="ref" href="#en-f-capabilities-weight">weight</a> of the linked <a class="ref" href="#en-f-assessments-capability">capability</a>.</p>
       </div>
       <div class="view elem elem-formula">
         <span class="view-label">As a formula</span>
-        <div class="view-body fx"><span class="fx-eq">= </span>INDEX(<a class="fx-chip" href="#f-capabilities-weight">Weight</a>, MATCH(<a class="fx-chip" href="#f-assessments-capability">Capability</a>, <a class="fx-chip" href="#f-capabilities-capabilitiesid">Capabilities ID</a>, 0))</div>
+        <div class="view-body fx"><span class="fx-eq">= </span>INDEX(<a class="fx-chip" href="#en-f-capabilities-weight">Weight</a>, MATCH(<a class="fx-chip" href="#en-f-assessments-capability">Capability</a>, <span class="fx-chip">Capabilities ID</span>, 0))</div>
       </div>
     </div>
     <details class="prov prov-inputs elem elem-inputs" open>
       <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
       <div class="prov-grid">
-        <a class="input tone-raw" href="#f-capabilities-weight">
-          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Weight</span><span class="input-table">Capabilities</span></span>
+        <a class="input tone-raw" href="#en-f-capabilities-weight">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Weight</span><span class="input-table">Capability</span></span>
           <span class="input-en muted">Importance multiplier used when computing WeightedScore on each Assessment.</span>
         </a>
-        <a class="input tone-rel" href="#f-assessments-capability">
-          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Capability</span><span class="input-table">Assessments</span></span>
+        <a class="input tone-rel" href="#en-f-assessments-capability">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Capability</span><span class="input-table">Assessment</span></span>
           <span class="input-en muted">FK to Capabilities. Holds the value of Capabilities.CapabilitiesId.</span>
         </a>
-        <a class="input tone-raw" href="#f-capabilities-capabilitiesid">
-          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Capabilities ID</span><span class="input-table">Capabilities</span></span>
+        <span class="input input-static tone-raw">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Capabilities ID</span><span class="input-table">Capability</span></span>
           <span class="input-en muted">Slug for the capability (e.g. 'reasoning'). First raw field is the PK.</span>
-        </a>
+        </span>
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
       <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+2 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
-        <a class="ref-pill tone-calc" href="#f-assessments-weightedscore">ƒ Weighted Score <span class="ref-pill-tbl">Assessments</span></a>
-        <a class="ref-pill tone-rel faded" href="#f-intelligences-totalweightedscore">Total Weighted Score <span class="ref-pill-tbl">Intelligences</span></a>
-        <a class="ref-pill tone-rel faded" href="#f-intelligences-taxonomyclass">Taxonomy Class <span class="ref-pill-tbl">Intelligences</span></a>
+        <a class="ref-pill tone-calc" href="#en-f-assessments-weightedscore">ƒ Weighted Score <span class="ref-pill-tbl">Assessment</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-intelligences-totalweightedscore">Total Weighted Score <span class="ref-pill-tbl">Intelligence</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-intelligences-taxonomyclass">Taxonomy Class <span class="ref-pill-tbl">Intelligence</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
       <summary>Ground truth at the leaves <span class="count">3</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
-        <a class="ref-pill tone-raw" href="#f-capabilities-weight">● Weight <span class="ref-pill-tbl">Capabilities</span></a>
-        <a class="ref-pill tone-rel" href="#f-assessments-capability">⇢ Capability <span class="ref-pill-tbl">Assessments</span></a>
-        <a class="ref-pill tone-raw" href="#f-capabilities-capabilitiesid">● Capabilities ID <span class="ref-pill-tbl">Capabilities</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-capabilities-weight">● Weight <span class="ref-pill-tbl">Capability</span></a>
+        <a class="ref-pill tone-rel" href="#en-f-assessments-capability">⇢ Capability <span class="ref-pill-tbl">Assessment</span></a>
+        <span class="ref-pill tone-raw">● Capabilities ID <span class="ref-pill-tbl">Capability</span></span>
       </div>
     </details>
     <p class="field-note elem elem-desc">Importance multiplier pulled from the related Capabilities row.</p>
     </article>
-  <article class="field tone-calc" id="f-assessments-weightedscore" data-entity="Assessment" data-field="Weighted Score">
+  <article class="field tone-calc" id="en-f-assessments-weightedscore" data-entity="Assessment" data-field="Weighted Score">
     <div class="field-head">
       <span class="field-glyph" title="Calculated">ƒ</span>
       <span class="field-name">Weighted Score</span>
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-8</span>
+      <span class="pill pill-dr">DR-11</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak</span>
-        <p class="view-body">An assessment's weighted score is computed as the <a class="ref" href="#f-assessments-rawscore">raw score</a> times the <a class="ref" href="#f-assessments-capabilityweight">capability weight</a>.</p>
+        <span class="view-label">In RuleSpeak®</span>
+        <p class="view-body">An assessment's <a class="ref" href="#en-f-assessments-weightedscore">weighted score</a> is computed as the <a class="ref" href="#en-f-assessments-rawscore">raw score</a> times the <a class="ref" href="#en-f-assessments-capabilityweight">capability weight</a>.</p>
       </div>
       <div class="view elem elem-english">
-        <span class="view-label">In English</span>
-        <p class="view-body"><a class="ref" href="#f-assessments-rawscore">Raw score</a> times <a class="ref" href="#f-assessments-capabilityweight">capability weight</a>.</p>
+        <span class="view-label">In plain words</span>
+        <p class="view-body"><a class="ref" href="#en-f-assessments-rawscore">Raw score</a> times <a class="ref" href="#en-f-assessments-capabilityweight">capability weight</a>.</p>
       </div>
       <div class="view elem elem-formula">
         <span class="view-label">As a formula</span>
-        <div class="view-body fx"><span class="fx-eq">= </span><a class="fx-chip" href="#f-assessments-rawscore">Raw Score</a>*<a class="fx-chip" href="#f-assessments-capabilityweight">Capability Weight</a></div>
+        <div class="view-body fx"><span class="fx-eq">= </span><a class="fx-chip" href="#en-f-assessments-rawscore">Raw Score</a>*<a class="fx-chip" href="#en-f-assessments-capabilityweight">Capability Weight</a></div>
       </div>
     </div>
     <details class="prov prov-inputs elem elem-inputs" open>
       <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
       <div class="prov-grid">
-        <a class="input tone-raw" href="#f-assessments-rawscore">
-          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Raw Score</span><span class="input-table">Assessments</span></span>
+        <a class="input tone-raw" href="#en-f-assessments-rawscore">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Raw Score</span><span class="input-table">Assessment</span></span>
           <span class="input-en muted">User-editable assessment score from 0 to 100. Edit this in the UI to watch the cascade.</span>
         </a>
-        <a class="input tone-lookup" href="#f-assessments-capabilityweight">
-          <span class="input-head"><span class="input-glyph">↗</span><span class="input-name">Capability Weight</span><span class="input-table">Assessments</span></span>
+        <a class="input tone-lookup" href="#en-f-assessments-capabilityweight">
+          <span class="input-head"><span class="input-glyph">↗</span><span class="input-name">Capability Weight</span><span class="input-table">Assessment</span></span>
           <span class="input-en">The weight of the linked capability.</span>
         </a>
       </div>
@@ -760,85 +956,137 @@ html.show-consumers .elem-consumers{display:block}
     <details class="prov prov-consumers elem elem-consumers">
       <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
-        <a class="ref-pill tone-agg" href="#f-intelligences-totalweightedscore">Σ Total Weighted Score <span class="ref-pill-tbl">Intelligences</span></a>
-        <a class="ref-pill tone-rel faded" href="#f-intelligences-taxonomyclass">Taxonomy Class <span class="ref-pill-tbl">Intelligences</span></a>
+        <a class="ref-pill tone-agg" href="#en-f-intelligences-totalweightedscore">Σ Total Weighted Score <span class="ref-pill-tbl">Intelligence</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-intelligences-taxonomyclass">Taxonomy Class <span class="ref-pill-tbl">Intelligence</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
       <summary>Ground truth at the leaves <span class="count">4</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
-        <a class="ref-pill tone-raw" href="#f-assessments-rawscore">● Raw Score <span class="ref-pill-tbl">Assessments</span></a>
-        <a class="ref-pill tone-raw" href="#f-capabilities-weight">● Weight <span class="ref-pill-tbl">Capabilities</span></a>
-        <a class="ref-pill tone-rel" href="#f-assessments-capability">⇢ Capability <span class="ref-pill-tbl">Assessments</span></a>
-        <a class="ref-pill tone-raw" href="#f-capabilities-capabilitiesid">● Capabilities ID <span class="ref-pill-tbl">Capabilities</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-assessments-rawscore">● Raw Score <span class="ref-pill-tbl">Assessment</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-capabilities-weight">● Weight <span class="ref-pill-tbl">Capability</span></a>
+        <a class="ref-pill tone-rel" href="#en-f-assessments-capability">⇢ Capability <span class="ref-pill-tbl">Assessment</span></a>
+        <span class="ref-pill tone-raw">● Capabilities ID <span class="ref-pill-tbl">Capability</span></span>
       </div>
     </details>
     <p class="field-note elem elem-desc">RawScore scaled by the capability's Weight. First hop in the DAG.</p>
     </article>
 </section>
 <footer class="doc-footer">
-  <p>Rendered from the rulebook by the shared <b>RuleSpeak</b> engine (<code>rulebook-rulespeak-core</code>). The same engine narrates the React Explainer DAG, so English, Formula and RuleSpeak read identically across both.</p>
+  <p>Rendered from the rulebook by the shared <b>RuleSpeak®</b> engine (<code>rulebook-rulespeak-core</code>). The same engine narrates the React Explainer DAG, so every narration mode reads identically across both.</p>
   <p class="doc-footer-legend"><span class="chip chip-raw">● Ground truth</span> <span class="chip chip-calc">ƒ Calculated</span> <span class="chip chip-agg">Σ Aggregation</span> <span class="chip chip-lookup">↗ Lookup</span> <span class="chip chip-rel">⇢ Relationship</span></p>
 </footer>
+</div>
 <script>
 
 (function(){
+  var LANGS=['en'];
   var ELEMS=['rulespeak','english','formula','desc','inputs','consumers'];
   var DEFAULTS={'rulespeak':true,'english':false,'formula':false,'desc':true,'inputs':true,'consumers':false};
   var root=document.documentElement;
 
-  // ── Per-element visibility, persisted. The checkboxes drive <html> classes.
+  // ── Language switching. All .lang-select controls stay in sync; the choice
+  //    persists in localStorage and the URL (?lang=…) so links carry it.
+  var selects=Array.prototype.slice.call(document.querySelectorAll('.lang-select'));
+  function currentLang(){ return root.getAttribute('data-lang')||'en'; }
+  function setLang(code,fromHash){
+    if(LANGS.indexOf(code)<0) return;
+    root.setAttribute('data-lang',code);
+    root.setAttribute('lang',code);
+    try{localStorage.setItem('rulespeak.lang',code);}catch(e){}
+    try{
+      var u=new URL(location.href);
+      u.searchParams.set('lang',code);
+      history.replaceState(null,'',u.toString());
+    }catch(e){}
+    selects.forEach(function(s){ s.value=code; });
+    if(!fromHash) rebindSpy();
+  }
+  selects.forEach(function(s){
+    s.addEventListener('change',function(){
+      var was=currentLang();
+      var code=s.value;
+      // Carry the reader to the SAME field in the new language when the hash
+      // points somewhere: swap the language prefix on the anchor.
+      var h=location.hash||'';
+      setLang(code);
+      var m=h.match(/^#([a-z]{2})-(.+)$/);
+      if(m && m[1]===was){
+        var target=document.getElementById(code+'-'+m[2]);
+        if(target){ location.hash='#'+code+'-'+m[2]; }
+      }
+    });
+  });
+
+  // ── Legacy-hash shim: pre-language anchors (#f-…, #t-…, #top) map onto the
+  //    active language's scoped ids so old deep links keep working.
+  (function(){
+    var h=location.hash||'';
+    var m=h.match(/^#((?:f|t)-.+|top)$/);
+    if(m){
+      var scoped=document.getElementById(currentLang()+'-'+m[1]);
+      if(scoped) location.replace('#'+currentLang()+'-'+m[1]);
+    }
+  })();
+
+  // ── Per-element visibility, persisted. Checkboxes exist once per language doc;
+  //    drive them all from the shared <html> classes.
   var boxes=Array.prototype.slice.call(document.querySelectorAll('.gear-opt input[data-elem]'));
   function isOn(k){ return root.classList.contains('show-'+k); }
   function setElem(k,on){
     root.classList.toggle('show-'+k,on);
     try{localStorage.setItem('rulespeak.show.'+k,on?'1':'0');}catch(e){}
-    var b=boxes.filter(function(x){return x.getAttribute('data-elem')===k;})[0];
-    if(b) b.checked=on;
+    boxes.forEach(function(b){ if(b.getAttribute('data-elem')===k) b.checked=on; });
   }
-  // Sync each checkbox to the class the pre-paint script already applied.
   boxes.forEach(function(b){
     var k=b.getAttribute('data-elem');
     b.checked=isOn(k);
     b.addEventListener('change',function(){ setElem(k,b.checked); });
   });
-  var reset=document.getElementById('gear-reset');
-  if(reset) reset.addEventListener('click',function(){ ELEMS.forEach(function(k){ setElem(k,!!DEFAULTS[k]); }); });
-
-  // ── Gear popup open/close.
-  var gear=document.getElementById('gear-btn');
-  var pop=document.getElementById('gear-pop');
-  function openPop(o){
-    pop.hidden=!o;
-    gear.setAttribute('aria-expanded',o?'true':'false');
-  }
-  gear.addEventListener('click',function(e){ e.stopPropagation(); openPop(pop.hidden); });
-  var inline=document.getElementById('gear-open-2');
-  if(inline) inline.addEventListener('click',function(e){ e.stopPropagation(); openPop(true); });
-  document.addEventListener('click',function(e){
-    if(!pop.hidden && !pop.contains(e.target) && e.target!==gear) openPop(false);
+  Array.prototype.forEach.call(document.querySelectorAll('.gear-reset'),function(reset){
+    reset.addEventListener('click',function(){ ELEMS.forEach(function(k){ setElem(k,!!DEFAULTS[k]); }); });
   });
-  document.addEventListener('keydown',function(e){ if(e.key==='Escape') openPop(false); });
 
-  // ── Scroll-spy breadcrumb: track the field/entity currently under the topbar.
-  var cE=document.querySelector('.crumb-entity');
-  var cF=document.querySelector('.crumb-field');
-  var cSep=document.querySelector('.crumb-sep');
-  var fields=Array.prototype.slice.call(document.querySelectorAll('.field[data-field]'));
-  var entities=Array.prototype.slice.call(document.querySelectorAll('.entity[data-entity]'));
+  // ── Gear popups: each language doc has its own button + popup pair.
+  Array.prototype.forEach.call(document.querySelectorAll('.lang-doc'),function(doc){
+    var gear=doc.querySelector('.gear');
+    var pop=doc.querySelector('.gear-pop');
+    if(!gear||!pop) return;
+    function openPop(o){ pop.hidden=!o; gear.setAttribute('aria-expanded',o?'true':'false'); }
+    gear.addEventListener('click',function(e){ e.stopPropagation(); openPop(pop.hidden); });
+    Array.prototype.forEach.call(doc.querySelectorAll('.gear-open-inline'),function(inline){
+      inline.addEventListener('click',function(e){ e.stopPropagation(); openPop(true); });
+    });
+    document.addEventListener('click',function(e){
+      if(!pop.hidden && !pop.contains(e.target) && e.target!==gear) openPop(false);
+    });
+    document.addEventListener('keydown',function(e){ if(e.key==='Escape') openPop(false); });
+  });
+
+  // ── Scroll-spy breadcrumb, scoped to the ACTIVE language document.
+  var fields=[],entities=[],cE=null,cF=null,cSep=null;
+  function rebindSpy(){
+    var doc=document.querySelector('.lang-doc[data-lang="'+currentLang()+'"]');
+    if(!doc) return;
+    cE=doc.querySelector('.crumb-entity');
+    cF=doc.querySelector('.crumb-field');
+    cSep=doc.querySelector('.crumb-sep');
+    fields=Array.prototype.slice.call(doc.querySelectorAll('.field[data-field]'));
+    entities=Array.prototype.slice.call(doc.querySelectorAll('.entity[data-entity]'));
+    update();
+  }
   function setCrumb(entity,field){
+    if(!cE) return;
     cE.textContent=entity||'';
     if(field){ cF.textContent=field; cSep.hidden=false; }
     else { cF.textContent=''; cSep.hidden=true; }
   }
-  // The active marker is the last field/entity whose top is above the topbar line.
   var barH=parseInt(getComputedStyle(root).getPropertyValue('--bar-h'),10)||48;
   function update(){
     var line=barH+18, curF=null, curE=null;
     for(var i=0;i<fields.length;i++){ if(fields[i].getBoundingClientRect().top<=line) curF=fields[i]; else break; }
     for(var j=0;j<entities.length;j++){ if(entities[j].getBoundingClientRect().top<=line) curE=entities[j]; else break; }
     if(curF){
-      // Only pair the field with its own entity (the field is inside the current entity).
       var fEnt=curF.getAttribute('data-entity');
       var eName=curE?curE.getAttribute('data-entity'):fEnt;
       if(eName!==fEnt) setCrumb(eName,null);
@@ -850,7 +1098,7 @@ html.show-consumers .elem-consumers{display:block}
   function onScroll(){ if(!ticking){ ticking=true; requestAnimationFrame(function(){ update(); ticking=false; }); } }
   window.addEventListener('scroll',onScroll,{passive:true});
   window.addEventListener('resize',onScroll,{passive:true});
-  update();
+  rebindSpy();
 })();
 
 </script>

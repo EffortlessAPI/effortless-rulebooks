@@ -4,7 +4,7 @@
 Binary Execution Substrate - Multi-Entity Test Execution
 ======================================================================
 
-Loaded library: /Users/eejai42/development/effortless-rulebooks/rulebook-examples/legacy-runner/execution-substrates/binary/erb_calc.dylib
+Loaded library: /Users/eejai42/development/effortless-rulebooks/execution-substrates/binary/erb_calc.dylib
 Loading rulebook...
 Discovered 1 entities: Customers
   Schema for customers: 6 fields, 96 bytes
