@@ -43,6 +43,14 @@ func nilIfEmpty(s string) *string {
 	return &s
 }
 
+// intVal safely dereferences a *int, returning 0 if nil
+func intVal(i *int) int {
+	if i == nil {
+		return 0
+	}
+	return *i
+}
+
 // intToString safely converts a *int to string, returning "" if nil
 func intToString(i *int) string {
 	if i == nil {
@@ -200,7 +208,7 @@ func (tc *Workflow) CalcMonthsSinceModified() int {
 // TRUE iff the workflow's compliance documentation is past its review policy — i.e. the review age in months exceeds the policy line: MonthsSinceModified > StalenessThresholdMonths. With the default the docs go stale at 12 months. Staleness fires the instant the review comes due — there is no renewal window or deferral. This is the article's CQ5 condition ('which workflows haven't been reviewed in twelve months') stated directly against the editable policy field.
 // Formula: ={{MonthsSinceModified}} > {{StalenessThresholdMonths}}
 func (tc *Workflow) CalcIsStale() bool {
-	return (boolVal(tc.MonthsSinceModified) > boolVal(tc.StalenessThresholdMonths))
+	return (intVal(tc.MonthsSinceModified) > intVal(tc.StalenessThresholdMonths))
 }
 
 // CalcIsStaleAndHasAIAgent computes the IsStaleAndHasAIAgent calculated field
@@ -300,7 +308,7 @@ func (tc *Workflow) ComputeAll() *Workflow {
 
 	// Level 2 calculations
 	iri := strings.ReplaceAll(relativePath, "/", "-")
-	isStale := (monthsSinceModified > boolVal(tc.StalenessThresholdMonths))
+	isStale := (intVal(monthsSinceModified) > intVal(tc.StalenessThresholdMonths))
 	cq1Satisfied := (countOfPrecedenceClosurePairs == ((tc.CountOfNonProposedSteps * (tc.CountOfNonProposedSteps - 1)) / 2))
 	cq3Satisfied := !hasConsistencyViolation
 	cq7Satisfied := involvesEngineeringAndLegal
@@ -887,7 +895,7 @@ func (tc *RoleAssignment) CalcWasActiveAsOfAuditDate() bool {
 // TRUE iff this assignment changed the agent CLASS of the role (PriorFillerType set and different from FillerType). NTWF distinguishes a plain personnel/model swap (same class) from an agent-type transition, which carries compliance weight.
 // Formula: =AND(NOT(ISBLANK({{PriorFillerType}})), {{PriorFillerType}} <> {{FillerType}})
 func (tc *RoleAssignment) CalcIsAgentTypeChange() bool {
-	return (!((tc.PriorFillerType == nil || stringVal(tc.PriorFillerType) == "")) && (boolVal(tc.PriorFillerType) != boolVal(tc.FillerType)))
+	return (!((tc.PriorFillerType == nil || stringVal(tc.PriorFillerType) == "")) && (stringVal(tc.PriorFillerType) != stringVal(tc.FillerType)))
 }
 
 // CalcRequiresComplianceAudit computes the RequiresComplianceAudit calculated field
@@ -910,7 +918,7 @@ func (tc *RoleAssignment) ComputeAll() *RoleAssignment {
 
 	// Level 2 calculations
 	iri := strings.ReplaceAll(relativePath, "/", "-")
-	isAgentTypeChange := (!((tc.PriorFillerType == nil || stringVal(tc.PriorFillerType) == "")) && (boolVal(tc.PriorFillerType) != fillerType))
+	isAgentTypeChange := (!((tc.PriorFillerType == nil || stringVal(tc.PriorFillerType) == "")) && (stringVal(tc.PriorFillerType) != fillerType))
 	requiresComplianceAudit := (!((tc.PriorFillerType == nil || stringVal(tc.PriorFillerType) == "")) && (stringVal(tc.PriorFillerType) == "AIAgent") && (fillerType == "HumanAgent"))
 
 	return &RoleAssignment{

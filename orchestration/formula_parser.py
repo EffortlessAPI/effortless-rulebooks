@@ -770,6 +770,26 @@ def compile_to_javascript(expr: ExprNode, obj_name: str = 'candidate') -> str:
 # GO CODE GENERATOR
 # =============================================================================
 
+def _go_accessor_for(*nodes) -> str:
+    """Pick the nil-safe Go accessor for a comparison between field refs.
+
+    field_types is the trailing argument. Integer fields need intVal, strings
+    stringVal, and booleans boolVal; a mixed or unknown pair falls back to
+    stringVal, which is defined for any pointer field.
+    """
+    *refs, field_types = nodes
+    field_types = field_types or {}
+    datatypes = {
+        (field_types.get(node.name) or 'string').lower()
+        for node in refs if isinstance(node, FieldRef)
+    }
+    if datatypes == {'integer'}:
+        return 'intVal'
+    if datatypes == {'boolean'}:
+        return 'boolVal'
+    return 'stringVal'
+
+
 def _compile_to_go_int(expr: ExprNode, struct_name: str, field_types: dict) -> str:
     """Compile an expression node to a Go expression that returns an int.
 
@@ -843,11 +863,14 @@ def compile_to_go(expr: ExprNode, struct_name: str = 'lc', field_types: dict = N
 
         # Handle comparisons involving field refs (pointer fields in Go)
         if isinstance(expr.left, FieldRef) and isinstance(expr.right, FieldRef):
-            # Both sides are field refs - wrap both in boolVal for nil-safe comparison
+            # The nil-safe accessor depends on the fields' declared datatype,
+            # not on the shape of the expression: boolVal() on an *int does
+            # not compile, and `>` is not defined on bool.
             left = compile_to_go(expr.left, struct_name, field_types)
             right = compile_to_go(expr.right, struct_name, field_types)
             op_map = {'=': '==', '<>': '!=', '<': '<', '<=': '<=', '>': '>', '>=': '>='}
-            return f'(boolVal({left}) {op_map[expr.op]} boolVal({right}))'
+            accessor = _go_accessor_for(expr.left, expr.right, field_types)
+            return f'({accessor}({left}) {op_map[expr.op]} {accessor}({right}))'
 
         if isinstance(expr.left, FieldRef) and isinstance(expr.right, LiteralInt):
             # Field ref compared to integer - need nil check and dereference
