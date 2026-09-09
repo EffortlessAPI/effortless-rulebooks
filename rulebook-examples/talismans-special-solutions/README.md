@@ -4,6 +4,14 @@
 
 This project models the workflow ontology from Jessica Talisman’s *Intentional Arrangement* ontology series, using the fictional **Talisman's Special Solutions** workflow domain: human specialists, AI agents, automated pipelines, approval gates, provenance, datasets, escalation paths, and compliance review.
 
+## Watch the video
+
+[![Watch: Talismans — Special Solutions, a rulebook-first workflow ontology rendered as OWL, Postgres and Python](assets/talismans-special-solutions-repository-tour-player.png)](https://www.youtube.com/watch?v=SZ3ii3DGNNA)
+
+▶ [**Play: Talismans — Special Solutions**](https://www.youtube.com/watch?v=SZ3ii3DGNNA)
+
+Two and a half minutes for people who already build ontologies. The NTWF workflow ontology, five ordered steps with three disjoint agent types, an approval gate, a delegation chain and provenance, is authored once in this project's rulebook, and OWL, SHACL, Postgres, Python and the conformance tests are generated from it as siblings. The video shows step precedence asserted as four adjacent edges and closed transitively to ten, one competency question answered identically by the OWL reasoner, Postgres and Python, derived risk signals re-computing when a review date moves, and every projection scored cell by cell against the Postgres oracle. It closes with the falsifiable claim this repo makes: name one competency question the OWL stack can answer that this rulebook cannot express one layer up.
+
 ![Release Console — Flow lens: the five-step Production Deployment Workflow beside the live competency-question scoreboard](docs/current-ui/console-flow.png)
 
 *The Release Console (Flow lens). The five ordered steps run left to right; each card shows its role, the agent filling it, and human/AI/pipeline type. The panel on the right is the live **competency-question scoreboard** — the leadership questions the model must answer, each read straight from the substrate's computed columns (never recomputed in the UI) and re-answered the instant you edit a fact on the left.*
