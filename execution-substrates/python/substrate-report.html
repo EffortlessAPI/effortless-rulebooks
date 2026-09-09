@@ -206,10 +206,10 @@ pre {
         <div class="header-stats">
             <div class="stat">
                 <span>Score:</span>
-                <span class="stat-value score-good">99.3%</span>
+                <span class="stat-value score-perfect">100.0%</span>
             </div>
             <div class="stat">
-                <span>686/691 passed</span>
+                <span>691/691 passed</span>
             </div>
         </div>
         <button id="theme-toggle" title="Toggle theme">
@@ -322,15 +322,15 @@ Python substrate: Processed 22 entities, 163 total records
                 <h2>Test Summary</h2>
                 <div class="results-summary">
                     <div class="result-item">
-                        <div class="result-value score-good">99.3%</div>
+                        <div class="result-value score-perfect">100.0%</div>
                         <div class="result-label">Score</div>
                     </div>
                     <div class="result-item">
-                        <div class="result-value score-perfect">686</div>
+                        <div class="result-value score-perfect">691</div>
                         <div class="result-label">Passed</div>
                     </div>
                     <div class="result-item">
-                        <div class="result-value">5</div>
+                        <div class="result-value">0</div>
                         <div class="result-label">Failed</div>
                     </div>
                     <div class="result-item">
@@ -344,7 +344,7 @@ Python substrate: Processed 22 entities, 163 total records
                 <div class="markdown-content">
                     <h3>language_candidates</h3>
                     <ul>
-                        <li>Fields: 686/691 (99.3%)</li>
+                        <li>Fields: 691/691 (100.0%)</li>
                         <li>Computed columns: has_grammar, question, predicted_answer, prediction_predicates, prediction_fail, is_description_of, is_open_closed_world_conflicted, relationship_to_concept</li>
                     </ul>
                 </div>
@@ -706,7 +706,7 @@ def calc_workflow_steps_sequence_position(sequence_position_override, inferred_s
     
     Formula: =IF({{SequencePositionOverride}} &lt;&gt; &quot;&quot;, {{SequencePositionOverride}}, {{InferredSequencePosition}})
     &quot;&quot;&quot;
-    return (sequence_position_override if (sequence_position_override != &#x27;&#x27;) else inferred_sequence_position)
+    return (sequence_position_override if (not (sequence_position_override is None or sequence_position_override == &quot;&quot;)) else inferred_sequence_position)
 
 
 def compute_workflow_steps_fields(record: dict) -&gt; dict:

@@ -540,6 +540,17 @@ def compile_to_python(expr: ExprNode) -> str:
                 return f'(({left}) {expr.op} ({right}))'
             return (f'(False if {" or ".join(guards)} '
                     f'else ({left}) {expr.op} ({right}))')
+        if expr.op in ('=', '<>') and _is_empty_string_literal(expr.right):
+            # Comparing against "" is the dialect's blank check, and it is
+            # null-safe: a NULL column is blank exactly as an empty string is.
+            # Plain Python disagrees (None != "" is True), which made a NULL
+            # read as present and broke the override/resolve idiom.
+            test = f'({left} is None or {left} == "")'
+            return test if expr.op == '=' else f'(not {test})'
+        if expr.op in ('=', '<>') and _is_empty_string_literal(expr.left):
+            test = f'({right} is None or {right} == "")'
+            return test if expr.op == '=' else f'(not {test})'
+
         op_map = {'=': '==', '<>': '!='}
         return f'({left} {op_map[expr.op]} {right})'
 
@@ -1023,6 +1034,16 @@ def compile_to_go(expr: ExprNode, struct_name: str = 'lc', field_types: dict = N
 # Direct formula evaluation for generating answer keys from the rulebook.
 # This evaluator is the source of truth - all substrates must match its output.
 
+def _is_empty_string_literal(node) -> bool:
+    """True when the node is the literal "" — the dialect's blank marker."""
+    return isinstance(node, LiteralString) and node.value == ''
+
+
+def erb_blank(value) -> bool:
+    """Blank means absent: NULL or the empty string, matching Postgres."""
+    return value is None or value == ''
+
+
 def erb_now():
     """NOW()/TODAY() anchored so answer keys are reproducible.
 
@@ -1157,6 +1178,14 @@ def _eval_expr(node: ExprNode, ctx: dict) -> any:
         left = _eval_expr(node.left, ctx)
         right = _eval_expr(node.right, ctx)
 
+        # Comparing against "" is the dialect's null-safe blank check.
+        if node.op in ('=', '<>'):
+            if _is_empty_string_literal(node.right):
+                blank = erb_blank(left)
+                return blank if node.op == '=' else not blank
+            if _is_empty_string_literal(node.left):
+                blank = erb_blank(right)
+                return blank if node.op == '=' else not blank
         if node.op == '=':
             return left == right
         if node.op == '<>':

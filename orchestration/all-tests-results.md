@@ -10,9 +10,9 @@
 
 | Substrate | Passed | Failed | Total | Score | Duration | Status |
 |-----------|--------|--------|-------|-------|----------|--------|
+| python | 691 | 0 | 691 | 100.0% | < 1s | PASS |
 | effortless-postgres | 691 | 0 | 691 | 100.0% | 5s | PASS |
 | owl | 691 | 0 | 691 | 100.0% | 18s | PASS |
-| python | 667 | 24 | 691 | 96.5% | < 1s | FAIL |
 | golang | 72 | 619 | 691 | 10.4% | < 1s | FAIL |
 
 ## Overall Statistics
@@ -21,9 +21,9 @@
 |--------|-------|
 | Total Substrates | 4 |
 | Total Fields Tested | 2764 |
-| Total Passed | 2121 |
-| Total Failed | 643 |
-| Overall Score | 76.7% |
+| Total Passed | 2145 |
+| Total Failed | 619 |
+| Overall Score | 77.6% |
 | Total Duration | 24s |
 
 ---

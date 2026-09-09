@@ -344,7 +344,7 @@ def calc_workflow_steps_sequence_position(sequence_position_override, inferred_s
     
     Formula: =IF({{SequencePositionOverride}} <> "", {{SequencePositionOverride}}, {{InferredSequencePosition}})
     """
-    return (sequence_position_override if (sequence_position_override != '') else inferred_sequence_position)
+    return (sequence_position_override if (not (sequence_position_override is None or sequence_position_override == "")) else inferred_sequence_position)
 
 
 def compute_workflow_steps_fields(record: dict) -> dict:
