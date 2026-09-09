@@ -2,38 +2,27 @@
 
 ## Configuration
 
-- **Rulebook:** `/Users/eejai42/development/effortless-rulebooks/toy-rulebooks/acme-llc/effortless-rulebook/acme-llc-rulebook.json`
-- **Substrates Tested:** 13
-- **Computed Columns Tested:** 2
+- **Rulebook:** `/Users/eejai42/development/effortless-rulebooks/rulebook-examples/talismans-special-solutions/effortless-rulebook/talismans-special-solutions-rulebook.json`
+- **Substrates Tested:** 2
+- **Computed Columns Tested:** 75
 
 ## Summary by Substrate
 
 | Substrate | Passed | Failed | Total | Score | Duration | Status |
 |-----------|--------|--------|-------|-------|----------|--------|
-| python | 6 | 0 | 6 | 100.0% | < 1s | PASS |
-| binary | 6 | 0 | 6 | 100.0% | < 1s | PASS |
-| cobol | 6 | 0 | 6 | 100.0% | < 1s | PASS |
-| csv | 6 | 0 | 6 | 100.0% | < 1s | PASS |
-| explain-dag | 6 | 0 | 6 | 100.0% | < 1s | PASS |
-| golang | 6 | 0 | 6 | 100.0% | < 1s | PASS |
-| owl | 6 | 0 | 6 | 100.0% | < 1s | PASS |
-| uml | 6 | 0 | 6 | 100.0% | < 1s | PASS |
-| xlsx | 6 | 0 | 6 | 100.0% | < 1s | PASS |
-| effortless-xlsx | 6 | 0 | 6 | 100.0% | 1s | PASS |
-| effortless-entity-framework | 6 | 0 | 6 | 100.0% | 5s | PASS |
-| effortless-postgres | 6 | 0 | 6 | 100.0% | 5s | PASS |
-| english | 6 | 0 | 6 | 100.0% | 10s | PASS |
+| effortless-postgres | 691 | 0 | 691 | 100.0% | 5s | PASS |
+| owl | 691 | 0 | 691 | 100.0% | 17s | PASS |
 
 ## Overall Statistics
 
 | Metric | Value |
 |--------|-------|
-| Total Substrates | 13 |
-| Total Fields Tested | 78 |
-| Total Passed | 78 |
+| Total Substrates | 2 |
+| Total Fields Tested | 1382 |
+| Total Passed | 1382 |
 | Total Failed | 0 |
 | Overall Score | 100.0% |
-| Total Duration | 25s |
+| Total Duration | 23s |
 
 ---
 

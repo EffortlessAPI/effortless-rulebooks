@@ -165,7 +165,11 @@ LEFT JOIN vw_stratum_variables  sv  ON sv.study          = s.study_id;
 -- quota gap: LOOKUP against StratumVariableIdentityMaps, a table added in
 -- the same loop). Genuinely not expressible natively; kept.
 -- ----------------------------------------------------------------------------
-CREATE OR REPLACE VIEW vw_stratum_variables WITH (security_invoker = ON) AS
+-- DROP first, like every other view this file replaces: the override below emits
+-- fewer columns than 03-create-views.sql's native view, and Postgres refuses to
+-- drop columns via CREATE OR REPLACE ("cannot drop columns from view").
+DROP VIEW IF EXISTS vw_stratum_variables CASCADE;
+CREATE VIEW vw_stratum_variables WITH (security_invoker = ON) AS
 SELECT
   t.stratum_variable_id,
   calc_stratum_variables_name(t.stratum_variable_id) AS name,

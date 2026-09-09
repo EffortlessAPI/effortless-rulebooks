@@ -21,7 +21,7 @@
     {
       "IsSSoTTranspiler": false,
       "Name": "init-db",
-      "RelativePath": "/",
+      "RelativePath": "/postgres",
       "CommandLine": "-exec ./reset-rulebook-db.sh",
       "IsDisabled": false
     },
@@ -31,7 +31,8 @@
       "RelativePath": "/rulespeak",
       "CommandLine": "rulebook-to-rulespeak -i ../effortless-rulebook/effortless-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.08.30.1537"
+      "LastVersionUsed": "v2026.08.30.1537",
+      "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-08-30-1537-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
       "IsSSoTTranspiler": false,
@@ -39,7 +40,8 @@
       "RelativePath": "/effortless-rulebook",
       "CommandLine": "effortless-rulebook-editor -i effortless-rulebook.json -p rulebookPath=effortless-rulebook.json -p dockerfilePath=docker/Dockerfile",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.09.07.0138"
+      "LastVersionUsed": "v2026.09.07.0138",
+      "LastUrl": "https://effortless-effortless-rulebook-e-v2026-09-07-0138-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     }
   ],
   "ShowHidden": false,

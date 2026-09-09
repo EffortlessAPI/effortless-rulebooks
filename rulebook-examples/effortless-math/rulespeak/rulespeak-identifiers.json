@@ -1,9 +1,22 @@
 {
   "_comment": "Stable DR-number ledger for rulebook-to-rulespeak. Auto-maintained; feed this file back in on the next build to keep rule numbers stable. Numbers in 'Retired' are tombstones and are never reissued. Hand-edit an Assignments number only to deliberately re-pin a rule.",
-  "NextId": 3,
+  "NextId": 16,
   "Assignments": {
-    "FoundationKernels.Name": 1,
-    "LegacyParentAudits.Name": 2
+    "Domains.Name": 1,
+    "ProofStatuses.Name": 2,
+    "Theorems.Name": 3,
+    "TheoremDependencies.Name": 4,
+    "FoundationKernels.Name": 5,
+    "ProofFacts.Name": 6,
+    "Loops.Name": 7,
+    "InvariantChecks.Name": 8,
+    "Sources.Name": 9,
+    "TrustBoundaries.Name": 10,
+    "ArtifactRegistry.Name": 11,
+    "MigrationMappings.Name": 12,
+    "ProjectRoadmap.Name": 13,
+    "Conclusions.Name": 14,
+    "LegacyParentAudits.Name": 15
   },
   "Retired": []
 }

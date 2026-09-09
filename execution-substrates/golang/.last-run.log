@@ -2,13 +2,15 @@
 
 golang: Starting test...
 golang: Compiling and running...
-Golang substrate: Processing 1 tables with calculated fields...
-  Expected tables: Customers
-
-Processing Customers...
-  ✓ customers: 3 records processed
-
-════════════════════════════════════════════════════════════════
-Golang substrate: ALL 1 tables processed successfully (3 total records)
-════════════════════════════════════════════════════════════════
-
+# command-line-arguments
+./erb_sdk.go:155:34: cannot use tc.WorkflowId (variable of type string) as *string value in argument to stringVal
+./erb_sdk.go:196:9: cannot use func() interface{} {…}() (value of type interface{}) as int value in return statement: need type assertion
+./erb_sdk.go:203:10: invalid operation: boolVal(tc.MonthsSinceModified) > boolVal(tc.StalenessThresholdMonths) (operator > not defined on bool)
+./erb_sdk.go:203:18: cannot use tc.MonthsSinceModified (variable of type *int) as *bool value in argument to boolVal
+./erb_sdk.go:203:52: cannot use tc.StalenessThresholdMonths (variable of type *int) as *bool value in argument to boolVal
+./erb_sdk.go:224:9: cannot use func() interface{} {…}() (value of type interface{}) as int value in return statement: need type assertion
+./erb_sdk.go:231:9: cannot use func() interface{} {…}() (value of type interface{}) as bool value in return statement: need type assertion
+./erb_sdk.go:252:9: cannot use func() interface{} {…}() (value of type interface{}) as bool value in return statement: need type assertion
+./erb_sdk.go:273:9: cannot use tc.InvolvesEngineeringAndLegal (variable of type *bool) as bool value in return statement
+./erb_sdk.go:288:43: cannot use tc.WorkflowId (variable of type string) as *string value in argument to stringVal
+./erb_sdk.go:288:43: too many errors

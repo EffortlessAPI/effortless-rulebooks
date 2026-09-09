@@ -1,4 +1,4 @@
-# 📘 Effortless Banking — RuleSpeak
+# 📘 Effortless Banking — RuleSpeak®
 
 _Community-bank commercial RM platform — loans, deposits, covenants, BSA/AML._
 
@@ -13,6 +13,9 @@ _Community-bank commercial RM platform — loans, deposits, covenants, BSA/AML._
 |------|-------------|-------------------|
 | **User** | Bank employees: relationship managers, underwriters, branch bankers, and admins. Used for portfolio assignment, audit trails, and segregation-of-duties enforcement. | — |
 | Name | Computed as the lower-cased full name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | _Kebab-cased compound primary key derived from FullName._ |
+| Full Name | A defined attribute. | _Display label of the bank employee._ |
+| Role | A defined attribute. | _Role discriminator: RM, Underwriter, BranchBanker, or Admin._ |
+| Email | A defined attribute. | _Bank email used for SSO and notifications._ |
 | Is RM | True when the role is “RM”. | _True when Role = 'RM' (relationship manager)._ |
 | Is Underwriter | True when the role is “Underwriter”. | _True when Role = 'Underwriter'._ |
 | Is Branch Banker | True when the role is “BranchBanker”. | _True when Role = 'BranchBanker'._ |
@@ -22,6 +25,15 @@ _Community-bank commercial RM platform — loans, deposits, covenants, BSA/AML._
 | Count of Underwritten Loans | The number of loans related to the user. | _Number of Loans this user underwrote._ |
 | **Business** | Small-business customers (and prospects) of the bank. Central entity: BeneficialOwners, Contacts, Accounts, Loans, Documents, and Interactions all hang off a Business. BusinessProfile information (legal name, structure, NAICS code) lives directly on this table. | — |
 | Name | Computed as the lower-cased legal name with every a space replaced by a hyphen with every a period replaced by an empty string. ⚠︎ mechanical <!-- rulespeak:reword --> | _Kebab-cased compound PK derived from LegalName (punctuation stripped)._ |
+| Legal Name | A defined attribute. | _Registered legal name of the business._ |
+| Business Structure | A defined attribute. | _Entity structure: LLC, C-Corp, S-Corp, Partnership, Sole Proprietor, etc._ |
+| NAICS Code | A defined attribute. | _North American Industry Classification System code for the business._ |
+| NAICS Description | A defined attribute. | _Human-readable label for the NAICS code._ |
+| Annual Revenue USD | A defined attribute. | _Most-recent annual revenue, USD._ |
+| Status | A defined attribute. | _Lifecycle status: Prospect, Customer, or Closed._ |
+| Onboarded At | A defined attribute. | _Date onboarding completed (KYB cleared, first account opened)._ |
+| Relationship Manager | A defined attribute. | _FK to Users: the RM who owns this business relationship (the SinglePointOfContact)._ |
+| Referral Source | A defined attribute. | _Optional FK to another Business that referred this prospect/customer in._ |
 | Relationship Manager Label | The full name of the business's relationship manager. | _Display label of the assigned RM, pulled from Users._ |
 | Is Customer | True when the status is “Customer”. | _True when Status = 'Customer'._ |
 | Is Prospect | True when the status is “Prospect”. | _True when Status = 'Prospect'._ |
@@ -41,21 +53,59 @@ _Community-bank commercial RM platform — loans, deposits, covenants, BSA/AML._
 | Portfolio Priority | Determined by priority: “High” if the classified loan flag is set; “Medium” if at least one of the following holds: the meets CDD rule flag is not set; the prospect flag is set; or the count of loans is 0; in all other cases, “Low”. | _Higher-order: portfolio-management priority bucket for this business. 'High' when classified loan present, 'Medium' when CDD or onboarding incomplete or no loans yet, otherwise 'Low'._ |
 | **Beneficial Owner** | Individuals owning 25%+ of a Business plus designated control persons, per FinCEN's CDD rule. PII (SSN, DOB, address) is stored encrypted at rest via field-level encryption. | — |
 | Name | Computed as the business, followed by a hyphen, followed by the lower-cased full name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | _Kebab-cased compound PK: {Business}-{FullName slug}._ |
+| Business | A defined attribute. | _FK to the parent Business._ |
+| Full Name | A defined attribute. | _Owner's full legal name._ |
+| Date of Birth Encrypted | A defined attribute. | _Encrypted date of birth (PII, FieldLevelEncryption)._ |
+| SSN Encrypted | A defined attribute. | _Encrypted Social Security Number (PII, FieldLevelEncryption)._ |
+| Address Encrypted | A defined attribute. | _Encrypted home address (PII, FieldLevelEncryption)._ |
+| Ownership Percentage | A defined attribute. | _Percent of the Business owned by this individual (0-100)._ |
+| Is Control Person | True when an empty string. | _True when this individual is the designated control person per CDD (one is required when no owner crosses 25%)._ |
 | Business Label | The legal name of the beneficial owner's business. | _Display label of the parent Business._ |
 | Meets25 Percent Threshold | True when the ownership percentage is at least 25. | _True when OwnershipPercentage >= 25._ |
 | Meets CDD Threshold | True when at least one of the following holds: the meets25 percent threshold flag is set or the control person flag is set. | _True when this row counts toward CDD compliance: meets 25% OR is the control person._ |
 | **Contact** | Non-owner individuals associated with a Business: officers, AP clerks, authorized signers, additional points of contact. Distinct from BeneficialOwners (which carries PII/CDD weight). | — |
 | Name | Computed as the business, followed by a hyphen, followed by the lower-cased full name with every a space replaced by a hyphen, followed by a hyphen, followed by the lower-cased title with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | _Kebab-cased compound PK: {Business}-{FullName slug}-{Title slug}._ |
+| Business | A defined attribute. | _FK to the parent Business._ |
+| Full Name | A defined attribute. | _Contact's full name._ |
+| Title | A defined attribute. | _Job title at the business (CEO, CFO, AP Clerk, etc.)._ |
+| Email | A defined attribute. | _Contact email._ |
+| Phone | A defined attribute. | _Contact phone._ |
+| Contact Type | A defined attribute. | _Discriminator: Officer, APClerk, AuthorizedSigner, Other._ |
+| Is Authorized Signer | True when an empty string. | _True when this contact can sign on the business's accounts._ |
 | Business Label | The legal name of the contact's business. | _Display label of the parent Business._ |
 | Is Officer | True when the contact type is “Officer”. | _True when ContactType = 'Officer'._ |
 | Is AP Clerk | True when the contact type is “APClerk”. | _True when ContactType = 'APClerk'._ |
 | **Account** | Deposit accounts the Business holds at the bank (checking, savings, money market). Balances feed GlobalCashFlow during credit analysis. TreasuryServices enrollment flags (ACH, Wire, Card) are stored per-account. | — |
 | Name | Computed as the business, followed by a hyphen, followed by the lower-cased account type, followed by a hyphen, followed by the account number last4. | _Kebab-cased compound PK: {Business}-{AccountType}-{Last4}._ |
+| Business | A defined attribute. | _FK to the parent Business._ |
+| Account Type | A defined attribute. | _Checking, Savings, MoneyMarket, etc._ |
+| Account Number Last4 | A defined attribute. | _Last 4 digits of the account number for display._ |
+| Current Balance USD | A defined attribute. | _Current balance in USD; sourced from CoreBanking._ |
+| Has ACH | True when an empty string. | _ACH treasury service enrolled on this account._ |
+| Has Wire | True when an empty string. | _Wire transfer treasury service enrolled on this account._ |
+| Has Card | True when an empty string. | _Business card product issued against this account._ |
+| Opened At | A defined attribute. | _Date the account was opened._ |
 | Business Label | The legal name of the account's business. | _Display label of the parent Business._ |
 | Treasury Service Count | Computed as the count of the following that hold: the ACH flag is set; the wire flag is set; and the card flag is set. | _Number of treasury services enrolled on this account._ |
 | Has Any Treasury Service | True when the treasury service count is greater than 0. | _True when at least one treasury service is enrolled._ |
 | **Loan** | Credit facilities extended to a Business, tracked from inquiry through funding, servicing, and payoff. RiskRating is denormalized here for fast reads; every change is captured in RiskRatingHistory. | — |
 | Name | Computed as the lower-cased loan number with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | _Kebab-cased PK derived from LoanNumber (e.g. 'L-0051' -> 'l-0051')._ |
+| Loan Number | A defined attribute. | _Bank-assigned loan number (e.g. 'L-0051')._ |
+| Business | A defined attribute. | _FK to the borrower Business._ |
+| Originating RM | A defined attribute. | _FK to Users: the RM who originated this loan._ |
+| Underwriter | A defined attribute. | _FK to Users: the underwriter who underwrote this loan._ |
+| Loan Purpose | A defined attribute. | _Equipment, CRE, LOC, WorkingCapital, etc._ |
+| Principal USD | A defined attribute. | _Loan principal at origination, USD._ |
+| Rate Pct | A defined attribute. | _Interest rate, percent (e.g. 7.25)._ |
+| Term Months | A defined attribute. | _Loan term in months._ |
+| Underwriting Stage | A defined attribute. | _Current pipeline stage: Inquiry, PreQualification, Application, KYBAndBureauPull, Packaging, CreditAnalysis, CommitteeApproval, ClosingPrep, Signing, Funded._ |
+| Risk Rating | A defined attribute. | _Current risk grade (1=Pass strongest ... 7=Substandard ... 9=Loss). Denormalized; every change is captured in RiskRatingHistory._ |
+| Risk Rating Label | A defined attribute. | _Human-readable label for the current risk grade._ |
+| DSCR | A defined attribute. | _Most recent debt service coverage ratio._ |
+| LTV | A defined attribute. | _Most recent loan-to-value ratio (0-1); null for unsecured loans._ |
+| Global Cash Flow USD | A defined attribute. | _Most recent global cash flow figure across business, owners, and affiliates._ |
+| Originated At | A defined attribute. | _Date the application was created._ |
+| Funded At | A defined attribute. | _Date the loan funded; null until funding completes._ |
 | Business Label | The legal name of the loan's business. | _Display label of the borrower Business._ |
 | Business NAICS Code | Taken from the linked business. | _NAICS code of the borrower Business (concentration analytics)._ |
 | Originating RM Label | The full name of the loan's originating RM. | _Display label of the originating RM._ |
@@ -74,12 +124,25 @@ _Community-bank commercial RM platform — loans, deposits, covenants, BSA/AML._
 | Health Score | Computed as the count of the following that hold: the DSCR in band flag is set; the LTV in band flag is set; the classified asset flag is not set; and the breached covenant flag is not set. | _Higher-order composite health score (0-4): +1 for DscrInBand, +1 for LtvInBand, +1 for NOT IsClassifiedAsset, +1 for NOT HasBreachedCovenant._ |
 | **Covenant** | Conditions attached to a Loan that must be tested on a recurring schedule (e.g. minimum DSCR each quarter). CovenantMonitoring runs the tickler calendar ahead of NextTestDate; breaches surface as SystemEvent Interactions. | — |
 | Name | Computed as the loan, followed by a hyphen, followed by the lower-cased covenant type with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | _Kebab-cased compound PK: {Loan}-{CovenantType slug}._ |
+| Loan | A defined attribute. | _FK to the parent Loan._ |
+| Covenant Type | A defined attribute. | _MinDSCR, MaxLeverage, ReportingFinancials, etc._ |
+| Threshold Value | A defined attribute. | _Numeric threshold for the test (e.g. 1.20 for MinDSCR); null for non-numeric covenants._ |
+| Test Frequency | A defined attribute. | _Quarterly, Annual, Monthly, etc._ |
+| Next Test Date | A defined attribute. | _Date of the next scheduled covenant test._ |
+| Status | A defined attribute. | _Active, Breached, Waived, Cured, Closed._ |
+| Current Waiver Through | A defined attribute. | _Date through which an active CovenantWaiver is in effect; null when no active waiver._ |
 | Loan Label | The loan number of the covenant's loan. | _Display label of the parent Loan._ |
 | Loan Business | Taken from the linked loan. | _Business of the parent Loan (chained lookup)._ |
 | Is Breached | True when the status is “Breached”. | _True when Status = 'Breached'._ |
-| Has Active Waiver | True when the current waiver through is set. | _True when CurrentWaiverThrough is set (waiver is on file)._ |
+| Has Active Waiver | True when the current waiver through has a value. | _True when CurrentWaiverThrough is set (waiver is on file)._ |
 | **Risk Rating History** | Time-series of risk-grade changes on a Loan. Regulators audit rating drift, so every migration is captured here. AnnualReview also writes a row even when the grade is reaffirmed unchanged. | — |
 | Name | Computed as the loan, followed by a hyphen, followed by the TEXT of the effective date and “yyyy-mm-dd”, followed by “-grade-”, followed by the TEXT of the new grade and “0”. | _Kebab-cased compound PK: {Loan}-{EffectiveDate}-grade-{NewGrade}._ |
+| Loan | A defined attribute. | _FK to the Loan whose grade changed._ |
+| Changed by User | A defined attribute. | _FK to Users: who recorded the migration._ |
+| Effective Date | A defined attribute. | _Date the new grade takes effect._ |
+| Prior Grade | A defined attribute. | _Grade before this change; null on initial rating._ |
+| New Grade | A defined attribute. | _Grade after this change._ |
+| Reason | A defined attribute. | _Free-text justification for the migration._ |
 | Loan Label | The loan number of the risk rating history's loan. | _Display label of the parent Loan._ |
 | Changed by User Label | The full name of the risk rating history's changed by user. | _Display label of the user who recorded the change._ |
 | Grade Delta | Computed as the new grade minus the prior grade (a missing value counts as the new grade). | _NewGrade - PriorGrade (positive = downgrade in this scale); equals 0 on initial rating._ |
@@ -88,6 +151,14 @@ _Community-bank commercial RM platform — loans, deposits, covenants, BSA/AML._
 | Crossed Classified Threshold | True when all of the following hold: the prior grade (a missing value counts as 0) is less than 7 and the new grade is at least 7. | _Higher-order: true when this migration is the moment a loan crossed from non-classified to classified (PriorGrade < 7 and NewGrade >= 7)._ |
 | **Document** | Files in the DocumentVault. A document attaches to either a Business (tax returns, formation docs) or a Loan (note, security agreement, appraisal). Both FKs are nullable so a document can hang off the appropriate parent. | — |
 | Name | Computed as the lower-cased filename with every a space replaced by a hyphen with every a period replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | _Kebab-cased PK derived from the filename._ |
+| Business | A defined attribute. | _Optional FK to a Business (nullable for loan-only docs)._ |
+| Loan | A defined attribute. | _Optional FK to a Loan (nullable for business-only docs)._ |
+| Uploaded by User | A defined attribute. | _Optional FK to the User who uploaded (null when uploaded via the BusinessClientPortal)._ |
+| Filename | A defined attribute. | _Original filename in the vault._ |
+| Document Type | A defined attribute. | _TaxReturn, FormationDoc, FinancialStatement, Note, SecurityAgreement, Appraisal, etc._ |
+| Ocr Indexed | True when an empty string. | _True once OCR has indexed the document into SearchAndIndexing._ |
+| Uploaded Via | A defined attribute. | _Source surface: RMDashboard, BranchBankerPortal, BusinessClientPortal, AdminConsole, API._ |
+| Uploaded At | A defined attribute. | _Upload timestamp._ |
 | Business Label | The legal name of the document's business. | _Display label of the attached Business (if any)._ |
 | Loan Label | The loan number of the document's loan. | _Display label of the attached Loan (if any)._ |
 | Uploaded by User Label | The full name of the document's uploaded by user. | _Display label of the uploader (if known)._ |
@@ -95,6 +166,14 @@ _Community-bank commercial RM platform — loans, deposits, covenants, BSA/AML._
 | From Customer Portal | True when the uploaded via is “BusinessClientPortal”. | _True when uploaded by the customer themselves via the BusinessClientPortal._ |
 | **Interaction** | Unified activity-log feed for a Business. An Interaction is intentionally generic: InteractionType discriminates Note, Call, Visit, Task, Meeting, or SystemEvent. Covenant breaches, document requests, and other machine actions are written as SystemEvent interactions so they appear in the same stream as human-logged activity. | — |
 | Name | Computed as the business, followed by a hyphen, followed by the TEXT of the interaction date and “yyyy-mm-dd”, followed by a hyphen, followed by the lower-cased interaction type, followed by a hyphen, followed by the lower-cased subject with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | _Kebab-cased compound PK: {Business}-{InteractionDate}-{InteractionType slug}-{Subject slug}._ |
+| Business | A defined attribute. | _FK to the parent Business._ |
+| User | A defined attribute. | _FK to Users: who logged the interaction (null for system-generated or customer-portal-originated rows)._ |
+| Interaction Type | A defined attribute. | _Note, Call, Visit, Task, Meeting, or SystemEvent._ |
+| Subject | A defined attribute. | _Short subject line (used in compound PK)._ |
+| Body | A defined attribute. | _Long-form body of the interaction._ |
+| Interaction Date | A defined attribute. | _Date the interaction occurred or was logged._ |
+| Due Date | A defined attribute. | _For Task-type interactions: due date._ |
+| Source | A defined attribute. | _Origin surface: RMDashboard, BusinessClientPortal, BranchBankerPortal, SystemEvent._ |
 | Business Label | The legal name of the interaction's business. | _Display label of the parent Business._ |
 | User Label | The full name of the interaction's user. | _Display label of the logging user (if any)._ |
 | Is System Event | True when the interaction type is “SystemEvent”. | _True for system-generated rows._ |
@@ -251,7 +330,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-57 Loan Label** | A covenant's loan label is the loan number of the covenant's loan. |
 | **DR-58 Loan Business** | A covenant's loan business — taken from the linked loan. |
 | **DR-59 Is Breached** | A covenant is considered breached if the status is “Breached”. |
-| **DR-60 Has Active Waiver** | A covenant is considered to have an active waiver if the current waiver through is set. |
+| **DR-60 Has Active Waiver** | A covenant is considered to have an active waiver if the current waiver through has a value. |
 | **DR-61 Name** | A risk rating history's name is computed as the loan, followed by a hyphen, followed by the TEXT of the effective date and “yyyy-mm-dd”, followed by “-grade-”, followed by the TEXT of the new grade and “0”. |
 | **DR-62 Loan Label** | A risk rating history's loan label is the loan number of the risk rating history's loan. |
 | **DR-63 Changed by User Label** | A risk rating history's changed by user label is the full name of the risk rating history's changed by user. |
@@ -275,7 +354,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 
 ## 5 Traceability to Schema
 
-_The expression column is the rule's definition in RuleSpeak notation —
+_The expression column is the rule's definition in RuleSpeak® notation —
 the same logic the rulebook stores, written for a business reader._
 
 | Schema element | Kind | Expression |
@@ -339,7 +418,7 @@ the same logic the rulebook stores, written for a business reader._
 | **Covenants.LoanLabel** | lookup | `Lookup(Loans.LoanNumber via Loan)` |
 | **Covenants.LoanBusiness** | lookup | `Lookup(Loans.Business via Loan)` |
 | **Covenants.IsBreached** | formula | `Status = "Breached"` |
-| **Covenants.HasActiveWaiver** | formula | `Not(Coalesce(CurrentWaiverThrough, "") = "")` |
+| **Covenants.HasActiveWaiver** | formula | `Not(Isblank(CurrentWaiverThrough))` |
 | **RiskRatingHistory.Name** | formula | `Loan & "-" & Text(EffectiveDate, "yyyy-mm-dd") & "-grade-" & Text(NewGrade, "0")` |
 | **RiskRatingHistory.LoanLabel** | lookup | `Lookup(Loans.LoanNumber via Loan)` |
 | **RiskRatingHistory.ChangedByUserLabel** | lookup | `Lookup(Users.FullName via ChangedByUser)` |
@@ -366,5 +445,5 @@ the same logic the rulebook stores, written for a business reader._
 _This document is rendered in **RuleSpeak®**, the declarative business-rule
 notation created by **Ronald G. Ross**, and follows the conventions of
 **SBVR** (Semantics of Business Vocabulary and Business Rules). With thanks to
-Ronald G. Ross for RuleSpeak and his foundational work on business rules —
+Ronald G. Ross for RuleSpeak® and his foundational work on business rules —
 [www.RonRoss.info](https://www.RonRoss.info)._

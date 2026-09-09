@@ -58,6 +58,14 @@ export const rulebook = {
   },
   "Speakers": {
     "Description": "Table: Speakers",
+    "important": true,
+    "summary_rich": "The **cast** — anyone who can be pinned to an event. Each speaker has an availability window and a running `AssignmentCount` rolled up from the `Assignments` table; once that count clears three, `IsOverbooked` flips and the corkboard surfaces the workload alert. The window is also what powers `Assignments.IsAvailable` — a speaker assigned outside their hours fails the check the moment the row is written.",
+    "important_fields": [
+      "Name",
+      "AssignmentCount",
+      "IsOverbooked",
+      "AvailabilityStart"
+    ],
     "schema": [
       {
         "name": "SpeakerId",
@@ -102,7 +110,9 @@ export const rulebook = {
         "type": "calculated",
         "nullable": false,
         "Description": "Is speaker assigned to more than 3 events (workload alert)?",
-        "formula": "={{AssignmentCount}} > 3"
+        "formula": "={{AssignmentCount}} > 3",
+        "important": true,
+        "explanation_rich": "**The workload alarm.** `IsOverbooked` watches the rollup `AssignmentCount` and trips the moment a speaker passes three engagements. Worked example: `overbooked@speakers.local` is assigned to `tech-talk-1`, `workshop-1`, `panel-1`, and `meetup-1` — `AssignmentCount = 4`, so this evaluates to `TRUE` and the corkboard surfaces the alert. Drop one of those assignments and the same field flips back to `FALSE` on the next read, in every substrate, without any application code firing."
       }
     ],
     "data": [
@@ -135,6 +145,14 @@ export const rulebook = {
   },
   "Events": {
     "Description": "Table: Events",
+    "important": true,
+    "summary_rich": "The **board** — every pin is an event. Each row pulls capacity from its `Venue`, counts confirmed `RSVPs` against it, counts assigned `Speakers`, checks the same venue for time clashes, and rolls all of it into a single `EventStatus` of `ready` or `issues`. Move a pin (change `Venue`, change `EventDate`, add or remove an `Assignment`) and the status recomputes everywhere the rulebook runs.",
+    "important_fields": [
+      "Name",
+      "VenueName",
+      "EventStatus",
+      "BookedCapacity"
+    ],
     "schema": [
       {
         "name": "EventId",
@@ -234,7 +252,9 @@ export const rulebook = {
         "type": "calculated",
         "nullable": false,
         "Description": "Remaining capacity after bookings",
-        "formula": "={{VenueCapacity}} - {{BookedCapacity}}"
+        "formula": "={{VenueCapacity}} - {{BookedCapacity}}",
+        "important": true,
+        "explanation_rich": "**The capacity cascade in one cell.** `VenueCapacity` is looked up from the `Venues` row referenced by `Venue`; `BookedCapacity` is a COUNTIFS rollup over the `RSVPs` table filtered to `Status = \"confirmed\"`. Worked example: `tech-talk-1` is pinned to `main-hall` (capacity 150) and has two confirmed RSVPs (`rsvp-1`, `rsvp-2`), so this resolves to `150 - 2 = 148`. Add a confirmed RSVP and it drops to 147 on the next read in every substrate. Drive it to zero and `AtCapacity` flips, dragging `EventStatus` down to `issues`."
       },
       {
         "name": "AtCapacity",
@@ -266,7 +286,9 @@ export const rulebook = {
         "type": "calculated",
         "nullable": false,
         "Description": "Event readiness status",
-        "formula": "=IF(AND({{HasSpeakers}}, NOT({{AtCapacity}}), NOT({{HasVenueConflict}})), \"ready\", \"issues\")"
+        "formula": "=IF(AND({{HasSpeakers}}, NOT({{AtCapacity}}), NOT({{HasVenueConflict}})), \"ready\", \"issues\")",
+        "important": true,
+        "explanation_rich": "**The single field every event is judged by.** An event is `ready` only if it has at least one assigned speaker, has not hit capacity, and shares its venue with no other event in the rulebook. Worked example: `tech-talk-1` has three speakers (`HasSpeakers = TRUE`), 148 seats left (`AtCapacity = FALSE`) — but `main-hall` is also booked for `meetup-1`, so `VenueConflictCount = 2` and `HasVenueConflict = TRUE`. The AND fails and `EventStatus` resolves to `\"issues\"`. Move `meetup-1` to a different venue and the same row recomputes to `\"ready\"` on the next read, in every substrate."
       },
       {
         "name": "RegistrationCloseDaysBeforeEvent",
@@ -627,18 +649,119 @@ export const rulebook = {
       }
     ]
   },
-  "_meta": {
-    "_CMCC_Summary": "Community Event Planner rulebook with venues, events, speakers, and attendees.",
-    "_conversion_metadata": {
-      "tool_version": "effortless-demo-app-1.0.0",
-      "table_count": 6,
-      "field_type_mapping": "raw, calculated, lookup, relationship, aggregation",
-      "export_mode": "manual_design",
-      "type_inference": {
-        "priority": "declared_datatype",
-        "error_value_handling": "NULL"
+  "__meta__": {
+    "Description": "Project-level metadata that travels with the rulebook: tagline, motif, narrative descriptions, substrate list, signature rows, etc. One row per metadata key. Use ValueType to interpret StringValue vs JsonValue.",
+    "important": false,
+    "schema": [
+      {
+        "name": "MetaKey",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The metadata key (e.g. 'tagline', 'motif_palette', 'substrates'). Unique within the table."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "formula": "={{MetaKey}}",
+        "Description": "Identifier for this metadata entry. Mirrors MetaKey so the row is addressable by Name like every other table."
+      },
+      {
+        "name": "ValueType",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "How to interpret the value columns: 'string' (use StringValue), 'object' (parse JsonValue as JSON object), 'array' (parse JsonValue as JSON array)."
+      },
+      {
+        "name": "StringValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Plain string value. Populated when ValueType == 'string'; null otherwise."
+      },
+      {
+        "name": "JsonValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "JSON-encoded value. Populated when ValueType == 'object' or 'array'; null when ValueType == 'string'."
       }
-    }
+    ],
+    "data": [
+      {
+        "MetaKey": "tagline",
+        "Name": "tagline",
+        "ValueType": "string",
+        "StringValue": "Community events pinned to a corkboard — venues, speakers, RSVPs, and the capacity math that ties them together.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif",
+        "Name": "motif",
+        "ValueType": "string",
+        "StringValue": "corkboard",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif_palette",
+        "Name": "motif_palette",
+        "ValueType": "object",
+        "StringValue": null,
+        "JsonValue": "{\"primary\": \"#6e4b2a\", \"accent\": \"#d4a574\", \"ink\": \"#2a1e10\"}"
+      },
+      {
+        "MetaKey": "description_rich",
+        "Name": "description_rich",
+        "ValueType": "string",
+        "StringValue": "A small civic events board — three venues, four events, five speakers, and a handful of RSVPs. The wiring is where it gets interesting: each event's `EventStatus` depends on whether speakers are assigned, whether confirmed RSVPs have eaten the venue's capacity, and whether another event is already booked at the same venue. Speakers that take on more than three events trip an `IsOverbooked` flag. The same DAG fires identically in Postgres, Python, Excel, and OWL — no application code needed to enforce the rules.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "use_cases",
+        "Name": "use_cases",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[\"**Watch an event flip from `issues` to `ready`.** Open *workshop-1*, assign a speaker via `Assignments`, and `HasSpeakers` → `EventStatus` recomputes in every substrate.\", \"**Overbook a venue.** Add `RSVPs` rows with `Status = \\\"confirmed\\\"` until `BookedCapacity` exceeds `VenueCapacity`; `AtCapacity` flips and `EventStatus` lands on `issues`.\", \"**Trip the overbooked-speaker alert.** Assign *overbooked@speakers.local* to a fourth event; `AssignmentCount` clears 3 and `IsOverbooked` becomes `TRUE`.\", \"**Find venue conflicts.** Schedule two events at `main-hall` and `VenueConflictCount` rises past 1, lighting `HasVenueConflict` on both rows.\", \"**Close registration on a date.** Set `RegistrationCloseDaysBeforeEvent`; `RegistrationDeadline` is derived, and `IsRegistrationOpen` evaluates against `NOW()` everywhere the rulebook runs.\"]"
+      },
+      {
+        "MetaKey": "signature_rows",
+        "Name": "signature_rows",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"entity\": \"Events\", \"ids\": [\"tech-talk-1\", \"workshop-1\", \"panel-1\"]}, {\"entity\": \"Speakers\", \"ids\": [\"alice@speakers.local\", \"bob@speakers.local\", \"overbooked@speakers.local\"]}]"
+      },
+      {
+        "MetaKey": "journal_seed",
+        "Name": "journal_seed",
+        "ValueType": "string",
+        "StringValue": "Four events on the board, one speaker stretched across all of them, and `main-hall` double-booked — the corkboard already has pins to move.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "substrates",
+        "Name": "substrates",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"key\": \"postgres\", \"important\": true, \"chip_label\": \"Postgres\"}, {\"key\": \"python\", \"important\": true, \"chip_label\": \"Python\"}, {\"key\": \"excel\", \"important\": false, \"chip_label\": \"Excel\"}, {\"key\": \"owl\", \"important\": false, \"chip_label\": \"OWL\"}, {\"key\": \"csv\", \"important\": false, \"chip_label\": \"CSV\"}]"
+      },
+      {
+        "MetaKey": "CMCC_Summary",
+        "Name": "CMCC_Summary",
+        "ValueType": "string",
+        "StringValue": "Community Event Planner rulebook with venues, events, speakers, and attendees.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "conversion_metadata",
+        "Name": "conversion_metadata",
+        "ValueType": "object",
+        "StringValue": null,
+        "JsonValue": "{\"tool_version\": \"effortless-demo-app-1.0.0\", \"table_count\": 6, \"field_type_mapping\": \"raw, calculated, lookup, relationship, aggregation\", \"export_mode\": \"manual_design\", \"type_inference\": {\"priority\": \"declared_datatype\", \"error_value_handling\": \"NULL\"}}"
+      }
+    ]
   }
 } as const;
 export type Rulebook = typeof rulebook;

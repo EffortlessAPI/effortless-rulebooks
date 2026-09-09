@@ -38,7 +38,6 @@
       "RelativePath": "/postgres-bootstrap",
       "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/effortless-rulebook.json",
       "IsDisabled": true,
-      "PinnedVersion": "v2026.04.02.1900",
       "Enabled": false
     },
     {
@@ -47,7 +46,6 @@
       "RelativePath": "/postgres-bootstrap",
       "CommandLine": "-exec ./reset-rulebook-db.sh",
       "IsDisabled": true,
-      "PinnedVersion": "v2026.04.02.1900",
       "Enabled": false
     },
     {
@@ -56,7 +54,6 @@
       "RelativePath": "/dotnet",
       "CommandLine": "odxml-to-ef-dataclasses -i ../ODXML/DataSchema.odxml",
       "IsDisabled": true,
-      "PinnedVersion": "v2025.11.02.2347",
       "Enabled": false
     }
   ]

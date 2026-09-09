@@ -1,6 +1,13 @@
 #!/usr/bin/env python3
 """Strip every transpiler version pin from every effortless.json in the repo.
 
+Three keys pin a transpiler, and they are not the same kind of thing.
+
+`PinnedVersion` is a deliberate, hand-written pin — 8 of them across the corpus,
+one of which (rulebook-to-react-explainer-dag v2026.05.20.0229 in
+community-event-planner) pointed at a decommissioned workload and survived the
+first unpinning pass because that pass only knew about the other two.
+
 `LastUrl` and `LastVersionUsed` are written by the CLI after a build as a record
 of what it resolved. They are not inert bookkeeping: the CLI resolves to the
 recorded `LastUrl` on the next build rather than re-resolving the bare tool name,
@@ -28,7 +35,7 @@ from collections import OrderedDict
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-PIN_KEYS = ("LastUrl", "LastVersionUsed")
+PIN_KEYS = ("LastUrl", "LastVersionUsed", "PinnedVersion")
 
 
 def project_manifests() -> list[Path]:

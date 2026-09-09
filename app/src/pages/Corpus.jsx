@@ -226,7 +226,16 @@ function LiveRun({ live, runs, onStop }) {
         <Stat label="targets" value={live.target_count} />
         <Stat label="finished" value={`${done.length}/${domains.length}`} />
         <Stat label="green so far" value={green.length} hint={`${done.length - green.length} red`} />
-        <Stat label="state" value={live.live ? (live.current ?? "running") : "finished"} />
+        <Stat
+          label="state"
+          value={live.live ? (live.current ?? live.phase ?? "running") : (live.phase ?? "finished")}
+          hint={
+            live.phase === "recording" ? "appending rows to the rulebook"
+              : live.phase === "building-root" ? "rebuilding the root so the views recompute"
+              : live.phase === "root-build-failed" ? "rows recorded, but the root build failed"
+              : undefined
+          }
+        />
       </div>
       <Progress percent={percent} />
       {live.note && <p className="muted">{live.note}</p>}

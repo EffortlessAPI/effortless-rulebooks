@@ -1,0 +1,20 @@
+# Formula errors (4)
+
+Every formula below could not be parsed/translated by rulebook-to-postgres. The build still succeeded (strict_formulas=false, the default) — each field listed here has no calc_* function and reads as NULL from its view. See effortless-schema's "Hard limit: 1 hop only" for the most common cause (a 2-hop or condition-based lookup) and how to flatten it. Set strict_formulas=true to make errors like these fail the build instead.
+
+## 1. RiskRatingHistory.Name  [translate-exception]
+Formula: ={{Loan}} & "-" & TEXT({{EffectiveDate}}, "yyyy-mm-dd") & "-grade-" & TEXT({{NewGrade}}, "0")
+Detail:  Function 'TEXT' is not supported yet
+
+## 2. Interactions.Name  [translate-exception]
+Formula: ={{Business}} & "-" & TEXT({{InteractionDate}}, "yyyy-mm-dd") & "-" & LOWER({{InteractionType}}) & "-" & SUBSTITUTE(LOWER({{Subject}}), " ", "-")
+Detail:  Function 'TEXT' is not supported yet
+
+## 3. RiskRatingHistory.Name  [translate-exception]
+Formula: ={{Loan}} & "-" & TEXT({{EffectiveDate}}, "yyyy-mm-dd") & "-grade-" & TEXT({{NewGrade}}, "0")
+Detail:  Function 'TEXT' is not supported yet
+
+## 4. Interactions.Name  [translate-exception]
+Formula: ={{Business}} & "-" & TEXT({{InteractionDate}}, "yyyy-mm-dd") & "-" & LOWER({{InteractionType}}) & "-" & SUBSTITUTE(LOWER({{Subject}}), " ", "-")
+Detail:  Function 'TEXT' is not supported yet
+

@@ -32,7 +32,7 @@
     {
       "IsSSoTTranspiler": false,
       "Name": "init-db",
-      "RelativePath": "/",
+      "RelativePath": "/effortless-postgres",
       "CommandLine": "-exec ./reset-rulebook-db.sh",
       "IsDisabled": false
     },
@@ -43,6 +43,7 @@
       "CommandLine": "rulebook-to-rulespeak -i ../effortless-rulebook/effortless-math-rulebook.json",
       "IsDisabled": false,
       "LastVersionUsed": "v2026.08.30.1537",
+      "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-08-30-1537-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "Description": "Generate the human-readable theorem-network narrative."
     },
     {
@@ -52,6 +53,7 @@
       "CommandLine": "rulebook-to-owl -i ../effortless-rulebook/effortless-math-rulebook.json",
       "IsDisabled": false,
       "LastVersionUsed": "v2026.07.08.0207",
+      "LastUrl": "https://effortless-rulebook-to-owl-v2026-07-08-0207-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "Description": "Generate OWL/SHACL theorem-network projections."
     },
     {
@@ -61,6 +63,7 @@
       "CommandLine": "rulebook-to-explainer-dag -i ../../effortless-rulebook/effortless-math-rulebook.json -o rulebook-explainer-dag",
       "IsDisabled": false,
       "LastVersionUsed": "v2026.08.31.0049",
+      "LastUrl": "https://effortless-rulebook-to-explainer-v2026-08-31-0049-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "Description": "Generate an ExplainDAG projection."
     },
     {
@@ -78,7 +81,8 @@
       "RelativePath": "/effortless-rulebook",
       "CommandLine": "effortless-rulebook-editor -i effortless-math-rulebook.json -p rulebookPath=effortless-math-rulebook.json -p dockerfilePath=docker/Dockerfile",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.09.07.0138"
+      "LastVersionUsed": "v2026.09.07.0138",
+      "LastUrl": "https://effortless-effortless-rulebook-e-v2026-09-07-0138-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     }
   ],
   "ShowHidden": false,

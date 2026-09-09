@@ -57,7 +57,6 @@
       "RelativePath": "/plan",
       "CommandLine": "json-hbars-transform -i ../effortless-rulebook/effortless-rulebook.json -i ./loop-plan.hbs",
       "IsDisabled": false,
-      "PinnedVersion": "v2026.04.14.0155",
       "LastVersionUsed": "v2026.04.14.0155",
       "LastUrl": "https://common-json-hbars-transform-v2026-04-14-0155-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
@@ -74,7 +73,6 @@
       "RelativePath": "/plan-features",
       "CommandLine": "json-hbars-transform -i ../effortless-rulebook/effortless-rulebook.json -i ./platform-features.hbs",
       "IsDisabled": false,
-      "PinnedVersion": "v2026.04.14.0155",
       "LastVersionUsed": "v2026.04.14.0155",
       "LastUrl": "https://common-json-hbars-transform-v2026-04-14-0155-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
@@ -100,9 +98,8 @@
       "RelativePath": "/xlsx",
       "CommandLine": "rulebook-to-xlsx -i ../effortless-rulebook/effortless-rulebook.json",
       "IsDisabled": false,
-      "PinnedVersion": "v2026.05.25.2316",
-      "LastVersionUsed": "v2026.05.25.2316",
-      "LastUrl": "https://effortless-rulebook-to-xlsx-v2026-05-25-2316-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+      "LastVersionUsed": "v2026.09.02.1122",
+      "LastUrl": "https://effortless-rulebook-to-xlsx-v2026-09-02-1122-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
       "IsSSoTTranspiler": false,

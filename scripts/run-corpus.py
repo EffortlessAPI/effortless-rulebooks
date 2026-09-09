@@ -104,6 +104,7 @@ class Status:
             ("pid", os.getpid()),
             ("started_on", dt.datetime.now().isoformat(timespec="seconds")),
             ("finished_on", None),
+            ("phase", "running"),
             ("current", None),
             ("target_count", len(targets)),
             ("domains", OrderedDict(
@@ -250,11 +251,13 @@ def run_one(target: dict, mode: str, status: Status, run_dir: Path) -> None:
 
         phase("db", RUNNING)
         try:
-            reset_db(slug, domain_dir, log)
+            url = reset_db(slug, domain_dir, log)
         except SystemExit as e:
             fail("db", str(e))
             return
-        phase("db", PASS)
+        # A project with no enabled rulebook-to-postgres step has no database to
+        # reset. That is a skip, not a pass and not a failure.
+        phase("db", PASS if url else SKIPPED)
 
         if mode == "build-only":
             row["conformance"] = SKIPPED
@@ -383,22 +386,39 @@ def main() -> None:
         run_one(target, args.mode, status, run_dir)
 
     status.doc["current"] = None
-    status.doc["finished_on"] = dt.datetime.now().isoformat(timespec="seconds")
     status.flush()
 
     green = sum(1 for r in status.doc["domains"].values()
                 if FAIL not in (r["build"], r["db"], r["conformance"]))
     print(f"[corpus] {green}/{len(targets)} green", flush=True)
 
+    def finish(phase: str) -> None:
+        status.doc["phase"] = phase
+        status.doc["finished_on"] = dt.datetime.now().isoformat(timespec="seconds")
+        status.flush()
+
     if args.skip_record:
         print("[corpus] --skip-record: rulebook untouched", flush=True)
+        finish("done")
         return
 
+    # finished_on is deliberately NOT set yet. Recording appends the rows and the
+    # root build drops and recreates erb_effortless_rulebooks to project them, so
+    # between here and the end of that build every corpus view is absent. A reader
+    # that treated "all projects done" as "run finished" would query those views
+    # mid-reset and get "relation does not exist".
+    status.doc["phase"] = "recording"
+    status.flush()
     record(status, targets)
+
+    status.doc["phase"] = "building-root"
+    status.flush()
     print("[corpus] running the single root effortless build so every derived score recomputes", flush=True)
     result = subprocess.run(["effortless", "build"], cwd=str(REPO_ROOT))
     if result.returncode != 0:
+        finish("root-build-failed")
         raise SystemExit(f"root effortless build exited {result.returncode}")
+    finish("done")
     print(json.dumps({"run_id": run_id, "targets": len(targets), "green": green,
                       "status_path": str(status.path.relative_to(REPO_ROOT))}), flush=True)
 
