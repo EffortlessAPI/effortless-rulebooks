@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import argparse
 import os
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -95,23 +96,56 @@ def reset_db(slug: str, domain_dir: Path, log) -> str:
     return url
 
 
+# Lines worth quoting back as "what went wrong", most specific first. The last
+# line of a failing `effortless build` is usually a stray brace from a pretty-
+# printed proxy error, so taking it verbatim produces "exited 255: }" — true and
+# useless. These patterns pull the line a human would have pointed at.
+ERROR_PATTERNS = [
+    re.compile(r"^\[cli\]\s+FAILED:\s*(?P<detail>.+)$"),
+    re.compile(r"^\[cli\]\s+BUILD FAILED\s*[-—]\s*(?P<detail>.+)$"),
+    re.compile(r"^(?P<detail>\*\*\* TRANSPILER ERROR \*\*\*.*)$"),
+    re.compile(r"^(?P<detail>ERROR:\s+.+)$"),
+    re.compile(r"^(?P<detail>FATAL:?\s+.+)$"),
+    re.compile(r"^(?P<detail>\w*(?:Error|Exception):\s+.+)$"),
+    re.compile(r"^(?P<detail>psql:.*(?:ERROR|FATAL).*)$"),
+]
+
+
+def first_error(lines: list[str], fallback: str) -> str:
+    """The most useful error line in a failed command's output.
+
+    Scans in pattern priority order rather than line order: a run that prints a
+    generic `ERROR:` early and the specific `[cli] FAILED: <transpiler>` late
+    should be summarised by the specific one. Falls back to the caller's last
+    line only when nothing matched — that is a formatting choice, not a
+    substitute for a failure, and the full log is always on disk either way.
+    """
+    for pattern in ERROR_PATTERNS:
+        for line in lines:
+            match = pattern.match(line.strip())
+            if match:
+                return match.group("detail").strip()[:400]
+    return fallback[:400]
+
+
 def run_streaming(cmd: list[str], cwd: Path, log, env: dict | None = None) -> None:
     """Run a command, forwarding every output line to `log` as it arrives.
-    Raises SystemExit with the last line on a nonzero exit — no partial success
-    is ever reported as success."""
+    Raises SystemExit with the most useful error line on a nonzero exit — no
+    partial success is ever reported as success."""
     proc = subprocess.Popen(
         cmd, cwd=str(cwd), env=env,
         stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
         text=True, bufsize=1)
-    last = ""
+    lines, last = [], ""
     for line in proc.stdout:
         line = line.rstrip("\n")
         if line:
             last = line
+            lines.append(line)
         log(line)
     code = proc.wait()
     if code != 0:
-        raise SystemExit(f"{cmd[0]} exited {code}: {last}")
+        raise SystemExit(f"{cmd[0]} exited {code}: {first_error(lines, last)}")
 
 
 def main() -> None:

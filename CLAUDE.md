@@ -103,6 +103,74 @@ The generated editor container watches the rulebook, but Docker Desktop does not
 
 Never invent a publish procedure; see the global CLAUDE.md. `rulebook-to-progress-report` is published (`v2026.09.05.0210 [latest]`) and resolves by bare name; while developing it, run it locally (`Versioned-Stable-SSoTme-Tools/tools/effortless/rulebook-to-progress-report/start.sh`, port 30052) and `effortless -setUrl rulebook-to-progress-report=http://localhost:30052` (stored in `~/.effortless/tool_urls.json`; undo with `effortless -removeUrl`). Control Plane now rejects a `PORT` env entry in `cpln/workload.yaml` when the container port is set; the runtime injects `PORT`, so delete the entry from any tool's template before publishing it. A fresh workload can fail its first health check while the image is pulled; `cpln workload force-redeployment <name> --gvc ssotme-tools` brings it up.
 
+# The test corpus is registered data, and it runs as one fan-out
+
+A suite runs because a `TestSuites` row in the root rulebook **declares** it
+registered — never because a directory happened to contain answer keys. The
+registry holds one row per registered suite: the repo-root formula-parser pytest
+suite (`orchestration/tests/`, the one that must be green before any conformance
+score means anything) plus one cross-substrate conformance suite per governed
+project.
+
+`IsRegistered`, `ExpectedSubstrateCount`, `Runner` and `SuiteKind` are
+**declarations** — human edits to the rulebook. `AnswerKeyCount`,
+`HasEffortlessJson`, `HasPostgresBootstrap` and `LastScannedOn` are **witnessed**
+by `python3 scripts/scan-test-suites.py effortless-rulebook/effortless-rulebook.json`,
+which seeds declarations once on row creation and never touches them again. That
+split is the point: `RegistrationState` can say *why* a registered suite is not
+ready (`never-exercised`, `no-effortless-json`) instead of the runner skipping it
+silently. Re-run the scan after adding or moving a project.
+
+**Run the corpus with `scripts/run-corpus.py`**, never by hand-looping
+`orchestrate.sh`:
+
+```bash
+python3 scripts/run-corpus.py --mode build-only            # build + db reset only
+python3 scripts/run-corpus.py --mode full --kind example   # + grade every substrate
+python3 scripts/run-corpus.py --mode full --only acme-llc,star-trek
+```
+
+Per project it walks three phases — `build` (`effortless build` in the project
+dir), `db` (`createdb` + `postgres-bootstrap/reset-rulebook-db.sh`) and
+`conformance` (delegated to `scripts/run-conformance.py`, which is not
+reimplemented). `scripts/erb_project.py` is the single implementation of the
+first two phases, shared with `run-conformance.py --project-build --reset-db`, so
+the explorer's per-project button and the corpus runner cannot drift apart.
+
+**Builds are sequential and must stay that way.** Every `effortless build` goes
+through the ssotme-proxy on `:4242`; concurrent builds corrupt each other. The
+explorer refuses to launch a second fan-out while one is live for the same reason.
+
+**The result is rulebook rows, not a log file.** One `CorpusRuns` row per
+fan-out, one `CorpusDomainRuns` row per (fan-out x project) carrying the per-phase
+outcome, so a red project is red for a *named* phase. Conformance rows are written
+by `run-conformance.py` as each project finishes (they survive a later project
+blowing up); the corpus rows and one root `effortless build` land at the end.
+Green-ness is a formula everywhere — `IsGreen` / `IsFullyGreen` per attempt,
+`GreenPercent` / `OverallStatus` per fan-out, `CorpusTestState` per project. Never
+recompute any of it; `SELECT` it.
+
+`ConformanceStatus` is `pass` only when **every** graded substrate scored 100.
+The harness exiting 0 means it ran, not that it agreed — `ConformanceOutcome`
+carries the distinction (`all-substrates-passed` | `substrate-mismatch` |
+`harness-error` | `tests-passed` / `tests-failed` | `skipped`).
+
+`orchestration/corpus-runs/<run-id>/status.json` is the live artifact, rewritten
+atomically after every phase transition; the explorer's `/corpus` page launches
+the runner **detached** and polls that file, so a fan-out survives a page reload,
+two people can watch it, and closing the tab does not kill it. The run directory
+and its logs are gitignored — the rulebook rows are the durable record.
+
+# No unbounded call to an external daemon inside a build
+
+`cr-22`. A hung probe inside a build is worse than a failed one: the work already
+succeeded, the CLI eventually kills the process, and a green result is reported as
+a failed build. `scripts/init-root-db.sh` called `docker info` unguarded to decide
+whether to nudge the editor container; with Docker Desktop unresponsive that call
+blocks forever, so **every** root `effortless build` hung there and exited 255 with
+the database fully reset. macOS has no `timeout(1)` — write the bound explicitly
+(see `run_bounded` in that script) and print what was skipped.
+
 # The orchestrator, the transpiler bus, and the conformance harness are root infrastructure
 
 `orchestration/` (the CLI menu, `orchestrate.sh`), `ssotme-proxy/` (the transpiler bus on `:4242`), `execution-substrates/` (every injector + take-test harness), and `testing/` (the conformance framework) live at the repo root. They are not a legacy artifact kept alongside the "real" root — they ARE the root's platform infrastructure, restored there by the 2026-09-07 reversal after a brief 2026-08-30 staging at `rulebook-examples/legacy-runner/` (now deleted; see "Active continuation" above). `LegacyRunnerCapabilities` in the root rulebook records what was staged for replacement/separation and what was restored, with an honest rationale on each row — update that table, never prose, when a decision changes. The admin portal these capabilities once supported is gone for good (deleted, not restored); the React explorer (`./start.sh --portal`) is its permanent replacement. Do not make the explorer depend on a second admin portal or a two-rulebook overlay — there is exactly one rulebook governing this repo.

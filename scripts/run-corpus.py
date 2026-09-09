@@ -43,7 +43,7 @@ from collections import OrderedDict
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from erb_project import build_project, find_domain_dir, reset_db  # noqa: E402
+from erb_project import build_project, find_domain_dir, first_error, reset_db  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 RULEBOOK_PATH = REPO_ROOT / "effortless-rulebook" / "effortless-rulebook.json"
@@ -148,15 +148,18 @@ def run_pytest_suite(suite: dict, log) -> None:
     log(f"[pytest] {' '.join(cmd)}")
     proc = subprocess.Popen(cmd, cwd=str(REPO_ROOT), stdout=subprocess.PIPE,
                             stderr=subprocess.STDOUT, text=True, bufsize=1)
-    last = ""
+    lines, last = [], ""
     for line in proc.stdout:
         line = line.rstrip("\n")
         if line:
             last = line
+            lines.append(line)
         log(line)
     code = proc.wait()
     if code != 0:
-        raise SystemExit(f"pytest exited {code}: {last}")
+        # pytest's own summary line is the useful one, ahead of the generic patterns.
+        summary = next((l for l in reversed(lines) if " failed" in l and "passed" in l), None)
+        raise SystemExit(f"pytest exited {code}: {summary or first_error(lines, last)}")
 
 
 def run_conformance_for(slug: str, log) -> dict:
@@ -168,11 +171,12 @@ def run_conformance_for(slug: str, log) -> dict:
     log(f"[conformance] {' '.join(cmd)}")
     proc = subprocess.Popen(cmd, cwd=str(REPO_ROOT), stdout=subprocess.PIPE,
                             stderr=subprocess.STDOUT, text=True, bufsize=1)
-    last_json, last = None, ""
+    lines, last_json, last = [], None, ""
     for line in proc.stdout:
         line = line.rstrip("\n")
         if line:
             last = line
+            lines.append(line)
             if line.startswith("{"):
                 try:
                     last_json = json.loads(line)
@@ -181,7 +185,7 @@ def run_conformance_for(slug: str, log) -> dict:
         log(line)
     code = proc.wait()
     if code != 0:
-        raise SystemExit(f"run-conformance.py exited {code}: {last}")
+        raise SystemExit(f"run-conformance.py exited {code}: {first_error(lines, last)}")
     if last_json is None:
         raise SystemExit("run-conformance.py exited 0 but printed no summary JSON — refusing to record a guess.")
     return last_json
