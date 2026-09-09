@@ -309,8 +309,169 @@ function conformanceReportPlugin() {
   };
 }
 
+// ---------------------------------------------------------------------------
+// Corpus runs — launch and monitor scripts/run-corpus.py across the whole corpus.
+//
+// Deliberately NOT server-sent events. A corpus fan-out takes many minutes, and
+// tying it to one HTTP response would mean closing the tab kills the run and a
+// second viewer cannot watch it. Instead the runner is spawned DETACHED and owns
+// its own live artifact — orchestration/corpus-runs/<run-id>/status.json, written
+// atomically after every phase transition. The endpoints below just launch it and
+// read that file, so reload, reattach and multiple viewers all work for free, and
+// the run keeps going either way.
+// ---------------------------------------------------------------------------
+const CORPUS_RUNS_DIR = path.join(REPO_ROOT, "orchestration", "corpus-runs");
+const RUN_ID_RE = /^corpus-\d{8}-\d{6}$/;
+
+function json(res, status, body) {
+  res.statusCode = status;
+  res.setHeader("Content-Type", "application/json");
+  res.end(JSON.stringify(body));
+}
+
+async function readBody(req) {
+  const chunks = [];
+  for await (const chunk of req) chunks.push(chunk);
+  if (!chunks.length) return {};
+  return JSON.parse(Buffer.concat(chunks).toString("utf-8"));
+}
+
+async function listRunIds() {
+  let entries;
+  try {
+    entries = await fs.readdir(CORPUS_RUNS_DIR, { withFileTypes: true });
+  } catch (error) {
+    if (error.code === "ENOENT") return []; // no fan-out has ever been launched
+    throw error;
+  }
+  return entries.filter((e) => e.isDirectory() && RUN_ID_RE.test(e.name)).map((e) => e.name).sort().reverse();
+}
+
+async function readStatus(runId) {
+  const file = path.join(CORPUS_RUNS_DIR, runId, "status.json");
+  return JSON.parse(await fs.readFile(file, "utf-8"));
+}
+
+// A detached runner outlives this dev server, so "is it still going?" cannot be
+// answered from a child handle. status.json records the runner's pid; signal 0
+// asks the OS whether that process is still alive without touching it.
+function pidAlive(pid) {
+  if (!pid) return false;
+  try {
+    process.kill(pid, 0);
+    return true;
+  } catch (error) {
+    return error.code === "EPERM"; // alive, just not ours to signal
+  }
+}
+
+function corpusPlugin() {
+  return {
+    name: "erb-corpus",
+    configureServer(server) {
+      server.middlewares.use("/__corpus", async (req, res) => {
+        const url = new URL(req.url, "http://localhost");
+        try {
+          // POST /__corpus/run  { mode, kinds?, only?, note? }
+          if (req.method === "POST" && url.pathname === "/run") {
+            const body = await readBody(req);
+            const mode = body.mode === "build-only" ? "build-only" : "full";
+            const args = ["scripts/run-corpus.py", "--mode", mode];
+            for (const kind of body.kinds || []) {
+              if (!["root", "toy", "example"].includes(kind)) return json(res, 400, { ok: false, error: `bad kind ${kind}` });
+              args.push("--kind", kind);
+            }
+            if (body.only?.length) {
+              const bad = body.only.filter((s) => !SLUG_RE.test(s));
+              if (bad.length) return json(res, 400, { ok: false, error: `bad slug(s): ${bad.join(", ")}` });
+              args.push("--only", body.only.join(","));
+            }
+            if (body.note) args.push("--note", String(body.note).slice(0, 500));
+
+            // Refuse to start a second fan-out while one is live: every
+            // `effortless build` goes through the ssotme-proxy on :4242 and
+            // concurrent builds corrupt each other.
+            for (const runId of await listRunIds()) {
+              const status = await readStatus(runId).catch(() => null);
+              if (status && !status.finished_on && pidAlive(status.pid)) {
+                return json(res, 409, { ok: false, error: `corpus run ${runId} is still going (pid ${status.pid})`, run_id: runId });
+              }
+            }
+
+            const before = new Set(await listRunIds());
+            const logFile = await fs.open(path.join(REPO_ROOT, "orchestration", "corpus-runs.log"), "a");
+            const child = spawn("python3", args, {
+              cwd: REPO_ROOT,
+              detached: true,
+              stdio: ["ignore", logFile.fd, logFile.fd],
+            });
+            child.unref();
+
+            // The runner creates its run directory within the first moments;
+            // poll briefly for the new id rather than guessing the timestamp.
+            for (let i = 0; i < 60; i += 1) {
+              const fresh = (await listRunIds()).filter((id) => !before.has(id));
+              if (fresh.length) {
+                await logFile.close();
+                return json(res, 200, { ok: true, run_id: fresh[0] });
+              }
+              await new Promise((r) => setTimeout(r, 250));
+            }
+            await logFile.close();
+            return json(res, 500, { ok: false, error: "run-corpus.py did not create a run directory within 15s — check orchestration/corpus-runs.log" });
+          }
+
+          // GET /__corpus/runs — every fan-out on disk, newest first.
+          if (req.method === "GET" && url.pathname === "/runs") {
+            const runs = [];
+            for (const runId of await listRunIds()) {
+              const status = await readStatus(runId).catch(() => null);
+              if (!status) continue;
+              runs.push({
+                run_id: status.run_id, mode: status.mode, note: status.note,
+                started_on: status.started_on, finished_on: status.finished_on,
+                target_count: status.target_count,
+                live: !status.finished_on && pidAlive(status.pid),
+              });
+            }
+            return json(res, 200, { ok: true, runs });
+          }
+
+          // GET /__corpus/latest | /__corpus/<run-id> — the full live status doc.
+          const match = /^\/(latest|corpus-\d{8}-\d{6})$/.exec(url.pathname);
+          if (req.method === "GET" && match) {
+            let runId = match[1];
+            if (runId === "latest") {
+              const ids = await listRunIds();
+              if (!ids.length) return json(res, 200, { ok: true, status: null });
+              runId = ids[0];
+            }
+            const status = await readStatus(runId);
+            return json(res, 200, { ok: true, status: { ...status, live: !status.finished_on && pidAlive(status.pid) } });
+          }
+
+          // POST /__corpus/<run-id>/stop — SIGTERM the detached runner.
+          const stopMatch = /^\/(corpus-\d{8}-\d{6})\/stop$/.exec(url.pathname);
+          if (req.method === "POST" && stopMatch) {
+            const status = await readStatus(stopMatch[1]);
+            if (status.finished_on || !pidAlive(status.pid)) {
+              return json(res, 409, { ok: false, error: "that run is not going" });
+            }
+            process.kill(status.pid, "SIGTERM");
+            return json(res, 200, { ok: true, run_id: status.run_id, signalled: status.pid });
+          }
+
+          return json(res, 404, { ok: false, error: "POST /__corpus/run | GET /__corpus/runs | GET /__corpus/latest | GET /__corpus/<run-id> | POST /__corpus/<run-id>/stop" });
+        } catch (error) {
+          return json(res, error.code === "ENOENT" ? 404 : 500, { ok: false, error: error.message });
+        }
+      });
+    },
+  };
+}
+
 export default defineConfig({
-  plugins: [healthProbePlugin(), generatedFilesPlugin(), findingStatusPlugin(), conformanceRunPlugin(), conformanceReportPlugin()],
+  plugins: [healthProbePlugin(), generatedFilesPlugin(), findingStatusPlugin(), conformanceRunPlugin(), conformanceReportPlugin(), corpusPlugin()],
   server: {
     proxy: {
       "/api": { target: EDITOR_API, changeOrigin: true },

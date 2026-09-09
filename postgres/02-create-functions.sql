@@ -1807,6 +1807,168 @@ RETURNS BOOLEAN AS $$
   SELECT (SELECT requires_local_url FROM project_launch_profiles WHERE project_launch_profile_id = p_project_launch_profile_id);
 $$ LANGUAGE sql STABLE;
 
+-- get_test_suites_suite_kind
+-- Helper function: Get SuiteKind from TestSuites by TestSuiteId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_test_suites_suite_kind(p_test_suite_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT suite_kind FROM test_suites WHERE test_suite_id = p_test_suite_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_test_suites_runner
+-- Helper function: Get Runner from TestSuites by TestSuiteId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_test_suites_runner(p_test_suite_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT runner FROM test_suites WHERE test_suite_id = p_test_suite_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_test_suites_is_registered
+-- Helper function: Get IsRegistered from TestSuites by TestSuiteId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_test_suites_is_registered(p_test_suite_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT is_registered FROM test_suites WHERE test_suite_id = p_test_suite_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_test_suites_expected_substrate_count
+-- Helper function: Get ExpectedSubstrateCount from TestSuites by TestSuiteId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_test_suites_expected_substrate_count(p_test_suite_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT expected_substrate_count FROM test_suites WHERE test_suite_id = p_test_suite_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_test_suites_notes
+-- Helper function: Get Notes from TestSuites by TestSuiteId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_test_suites_notes(p_test_suite_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT notes FROM test_suites WHERE test_suite_id = p_test_suite_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_test_suites_answer_key_count
+-- Helper function: Get AnswerKeyCount from TestSuites by TestSuiteId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_test_suites_answer_key_count(p_test_suite_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT answer_key_count FROM test_suites WHERE test_suite_id = p_test_suite_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_test_suites_has_effortless_json
+-- Helper function: Get HasEffortlessJson from TestSuites by TestSuiteId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_test_suites_has_effortless_json(p_test_suite_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT has_effortless_json FROM test_suites WHERE test_suite_id = p_test_suite_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_test_suites_has_postgres_bootstrap
+-- Helper function: Get HasPostgresBootstrap from TestSuites by TestSuiteId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_test_suites_has_postgres_bootstrap(p_test_suite_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT has_postgres_bootstrap FROM test_suites WHERE test_suite_id = p_test_suite_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_test_suites_last_scanned_on
+-- Helper function: Get LastScannedOn from TestSuites by TestSuiteId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_test_suites_last_scanned_on(p_test_suite_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT last_scanned_on FROM test_suites WHERE test_suite_id = p_test_suite_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_corpus_domain_runs_build_status
+-- Helper function: Get BuildStatus from CorpusDomainRuns by CorpusDomainRunId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_corpus_domain_runs_build_status(p_corpus_domain_run_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT build_status FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_corpus_domain_runs_db_status
+-- Helper function: Get DbStatus from CorpusDomainRuns by CorpusDomainRunId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_corpus_domain_runs_db_status(p_corpus_domain_run_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT db_status FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_corpus_domain_runs_conformance_status
+-- Helper function: Get ConformanceStatus from CorpusDomainRuns by CorpusDomainRunId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_corpus_domain_runs_conformance_status(p_corpus_domain_run_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT conformance_status FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_corpus_domain_runs_substrates_tested
+-- Helper function: Get SubstratesTested from CorpusDomainRuns by CorpusDomainRunId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_corpus_domain_runs_substrates_tested(p_corpus_domain_run_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT substrates_tested FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_corpus_domain_runs_substrates_passed
+-- Helper function: Get SubstratesPassed from CorpusDomainRuns by CorpusDomainRunId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_corpus_domain_runs_substrates_passed(p_corpus_domain_run_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT substrates_passed FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_corpus_domain_runs_duration_seconds
+-- Helper function: Get DurationSeconds from CorpusDomainRuns by CorpusDomainRunId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_corpus_domain_runs_duration_seconds(p_corpus_domain_run_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT duration_seconds FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_corpus_domain_runs_first_error
+-- Helper function: Get FirstError from CorpusDomainRuns by CorpusDomainRunId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_corpus_domain_runs_first_error(p_corpus_domain_run_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT first_error FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_corpus_domain_runs_log_path
+-- Helper function: Get LogPath from CorpusDomainRuns by CorpusDomainRunId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_corpus_domain_runs_log_path(p_corpus_domain_run_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT log_path FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_corpus_domain_runs_conformance_outcome
+-- Helper function: Get ConformanceOutcome from CorpusDomainRuns by CorpusDomainRunId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_corpus_domain_runs_conformance_outcome(p_corpus_domain_run_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT conformance_outcome FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id);
+$$ LANGUAGE sql STABLE;
+
 -- calc_rulebook_domains_name
 -- Field: RulebookDomains.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -2185,6 +2347,96 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_rulebook_domains_readiness_state(p_domain_id TEXT)
 RETURNS TEXT AS $$
   WITH __erb_dedup_v1 AS (SELECT calc_rulebook_domains_is_fully_implemented(p_domain_id) AS val) SELECT (CASE WHEN COALESCE((SELECT is_intentional_exception FROM rulebook_domains WHERE domain_id = p_domain_id), FALSE) THEN ('intentional-exception')::text ELSE (CASE WHEN (SELECT NULLIF(kind, '') FROM rulebook_domains WHERE domain_id = p_domain_id) = 'root' THEN (CASE WHEN (SELECT val FROM __erb_dedup_v1) THEN ('root-ready')::text ELSE ('root-incomplete')::text END)::text ELSE (CASE WHEN calc_rulebook_domains_is_toy(p_domain_id) THEN ('toy')::text ELSE (CASE WHEN (SELECT val FROM __erb_dedup_v1) THEN ('example-ready')::text ELSE ('example-incomplete')::text END)::text END)::text END)::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_rulebook_domains_test_suite_count
+-- Field: RulebookDomains.TestSuiteCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_rulebook_domains_test_suite_count(p_domain_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM test_suites WHERE domain = (SELECT NULLIF(domain_id, '') FROM rulebook_domains WHERE domain_id = p_domain_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_rulebook_domains_runnable_suite_count
+-- Field: RulebookDomains.RunnableSuiteCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_rulebook_domains_runnable_suite_count(p_domain_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COALESCE(SUM((calc_test_suites_runnable_flag(test_suite_id))::numeric), 0) FROM test_suites WHERE domain = p_domain_id))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_rulebook_domains_gradable_suite_count
+-- Field: RulebookDomains.GradableSuiteCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_rulebook_domains_gradable_suite_count(p_domain_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COALESCE(SUM((calc_test_suites_gradable_flag(test_suite_id))::numeric), 0) FROM test_suites WHERE domain = p_domain_id))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_rulebook_domains_corpus_attempt_count
+-- Field: RulebookDomains.CorpusAttemptCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_rulebook_domains_corpus_attempt_count(p_domain_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM corpus_domain_runs WHERE domain = (SELECT NULLIF(domain_id, '') FROM rulebook_domains WHERE domain_id = p_domain_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_rulebook_domains_latest_attempt_count
+-- Field: RulebookDomains.LatestAttemptCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_rulebook_domains_latest_attempt_count(p_domain_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COALESCE(SUM((calc_corpus_domain_runs_latest_attempt_flag(corpus_domain_run_id))::numeric), 0) FROM corpus_domain_runs WHERE domain = p_domain_id))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_rulebook_domains_latest_green_count
+-- Field: RulebookDomains.LatestGreenCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_rulebook_domains_latest_green_count(p_domain_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COALESCE(SUM((calc_corpus_domain_runs_latest_green_flag(corpus_domain_run_id))::numeric), 0) FROM corpus_domain_runs WHERE domain = p_domain_id))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_rulebook_domains_latest_fully_green_count
+-- Field: RulebookDomains.LatestFullyGreenCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_rulebook_domains_latest_fully_green_count(p_domain_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COALESCE(SUM((calc_corpus_domain_runs_latest_fully_green_flag(corpus_domain_run_id))::numeric), 0) FROM corpus_domain_runs WHERE domain = p_domain_id))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_rulebook_domains_is_green_in_latest_corpus_run
+-- Field: RulebookDomains.IsGreenInLatestCorpusRun
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_rulebook_domains_is_green_in_latest_corpus_run(p_domain_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_rulebook_domains_latest_green_count(p_domain_id))::NUMERIC > 0)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_rulebook_domains_corpus_test_state
+-- Field: RulebookDomains.CorpusTestState
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_rulebook_domains_corpus_test_state(p_domain_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN (calc_rulebook_domains_latest_attempt_count(p_domain_id))::NUMERIC = 0 THEN ('not-run')::text ELSE (CASE WHEN (calc_rulebook_domains_latest_fully_green_count(p_domain_id))::NUMERIC > 0 THEN ('fully-green')::text ELSE (CASE WHEN (calc_rulebook_domains_latest_green_count(p_domain_id))::NUMERIC > 0 THEN ('green')::text ELSE ('red')::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- get_project_local_services_service_role
@@ -2585,6 +2837,485 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_conformance_results_is_passing_flag(p_conformance_result_id TEXT)
 RETURNS NUMERIC AS $$
   SELECT (CASE WHEN ((SELECT NULLIF(status, '') FROM conformance_results WHERE conformance_result_id = p_conformance_result_id) = 'success' AND ((SELECT score FROM conformance_results WHERE conformance_result_id = p_conformance_result_id))::NUMERIC >= 100) THEN (1)::text ELSE (0)::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_test_suites_domain_name
+-- Field: TestSuites.DomainName
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: DomainName from related RulebookDomains
+
+
+CREATE OR REPLACE FUNCTION calc_test_suites_domain_name(p_test_suite_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT domain_name::text FROM rulebook_domains WHERE domain_id = (SELECT domain FROM test_suites WHERE test_suite_id = p_test_suite_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_test_suites_domain_kind
+-- Field: TestSuites.DomainKind
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Kind from related RulebookDomains
+
+
+CREATE OR REPLACE FUNCTION calc_test_suites_domain_kind(p_test_suite_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT kind::text FROM rulebook_domains WHERE domain_id = (SELECT domain FROM test_suites WHERE test_suite_id = p_test_suite_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_test_suites_name
+-- Field: TestSuites.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_test_suites_name(p_test_suite_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(test_suite_id, '') FROM test_suites WHERE test_suite_id = p_test_suite_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_test_suites_has_answer_keys
+-- Field: TestSuites.HasAnswerKeys
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_test_suites_has_answer_keys(p_test_suite_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((SELECT answer_key_count FROM test_suites WHERE test_suite_id = p_test_suite_id))::NUMERIC > 0)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_test_suites_is_runnable
+-- Field: TestSuites.IsRunnable
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_test_suites_is_runnable(p_test_suite_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((COALESCE((SELECT is_registered FROM test_suites WHERE test_suite_id = p_test_suite_id), FALSE) AND ((SELECT NULLIF(suite_kind, '') FROM test_suites WHERE test_suite_id = p_test_suite_id) = 'pytest' OR COALESCE((SELECT has_effortless_json FROM test_suites WHERE test_suite_id = p_test_suite_id), FALSE))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_test_suites_runnable_flag
+-- Field: TestSuites.RunnableFlag
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_test_suites_runnable_flag(p_test_suite_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN (COALESCE((SELECT is_registered FROM test_suites WHERE test_suite_id = p_test_suite_id), FALSE) AND ((SELECT NULLIF(suite_kind, '') FROM test_suites WHERE test_suite_id = p_test_suite_id) = 'pytest' OR COALESCE((SELECT has_effortless_json FROM test_suites WHERE test_suite_id = p_test_suite_id), FALSE))) THEN (1)::text ELSE (0)::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_test_suites_is_gradable
+-- Field: TestSuites.IsGradable
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_test_suites_is_gradable(p_test_suite_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((COALESCE((SELECT is_registered FROM test_suites WHERE test_suite_id = p_test_suite_id), FALSE) AND ((SELECT NULLIF(suite_kind, '') FROM test_suites WHERE test_suite_id = p_test_suite_id) = 'pytest' OR (COALESCE((SELECT has_effortless_json FROM test_suites WHERE test_suite_id = p_test_suite_id), FALSE) AND ((SELECT answer_key_count FROM test_suites WHERE test_suite_id = p_test_suite_id))::NUMERIC > 0))));
+$$ LANGUAGE sql STABLE;
+
+-- calc_test_suites_gradable_flag
+-- Field: TestSuites.GradableFlag
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_test_suites_gradable_flag(p_test_suite_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN (COALESCE((SELECT is_registered FROM test_suites WHERE test_suite_id = p_test_suite_id), FALSE) AND ((SELECT NULLIF(suite_kind, '') FROM test_suites WHERE test_suite_id = p_test_suite_id) = 'pytest' OR (COALESCE((SELECT has_effortless_json FROM test_suites WHERE test_suite_id = p_test_suite_id), FALSE) AND ((SELECT answer_key_count FROM test_suites WHERE test_suite_id = p_test_suite_id))::NUMERIC > 0))) THEN (1)::text ELSE (0)::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_test_suites_registration_state
+-- Field: TestSuites.RegistrationState
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_test_suites_registration_state(p_test_suite_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN NOT (COALESCE((SELECT is_registered FROM test_suites WHERE test_suite_id = p_test_suite_id), FALSE)) THEN ('unregistered')::text ELSE (CASE WHEN (SELECT NULLIF(suite_kind, '') FROM test_suites WHERE test_suite_id = p_test_suite_id) = 'pytest' THEN ('ready')::text ELSE (CASE WHEN NOT (COALESCE((SELECT has_effortless_json FROM test_suites WHERE test_suite_id = p_test_suite_id), FALSE)) THEN ('no-effortless-json')::text ELSE (CASE WHEN ((SELECT answer_key_count FROM test_suites WHERE test_suite_id = p_test_suite_id))::NUMERIC = 0 THEN ('never-exercised')::text ELSE ('ready')::text END)::text END)::text END)::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_test_suites_corpus_domain_run_count
+-- Field: TestSuites.CorpusDomainRunCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_test_suites_corpus_domain_run_count(p_test_suite_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM corpus_domain_runs WHERE suite = (SELECT NULLIF(test_suite_id, '') FROM test_suites WHERE test_suite_id = p_test_suite_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_test_suites_has_been_exercised
+-- Field: TestSuites.HasBeenExercised
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_test_suites_has_been_exercised(p_test_suite_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((((SELECT answer_key_count FROM test_suites WHERE test_suite_id = p_test_suite_id))::NUMERIC > 0 OR COALESCE((SELECT has_postgres_bootstrap FROM test_suites WHERE test_suite_id = p_test_suite_id), FALSE)));
+$$ LANGUAGE sql STABLE;
+
+-- calc_corpus_runs_name
+-- Field: CorpusRuns.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_corpus_runs_name(p_corpus_run_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(corpus_run_id, '') FROM corpus_runs WHERE corpus_run_id = p_corpus_run_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_corpus_runs_domain_run_count
+-- Field: CorpusRuns.DomainRunCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_corpus_runs_domain_run_count(p_corpus_run_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM corpus_domain_runs WHERE corpus_run = (SELECT NULLIF(corpus_run_id, '') FROM corpus_runs WHERE corpus_run_id = p_corpus_run_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_corpus_runs_green_domain_count
+-- Field: CorpusRuns.GreenDomainCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_corpus_runs_green_domain_count(p_corpus_run_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COALESCE(SUM((calc_corpus_domain_runs_green_flag(corpus_domain_run_id))::numeric), 0) FROM corpus_domain_runs WHERE corpus_run = p_corpus_run_id))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_corpus_runs_fully_green_domain_count
+-- Field: CorpusRuns.FullyGreenDomainCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_corpus_runs_fully_green_domain_count(p_corpus_run_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COALESCE(SUM((calc_corpus_domain_runs_fully_green_flag(corpus_domain_run_id))::numeric), 0) FROM corpus_domain_runs WHERE corpus_run = p_corpus_run_id))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_corpus_runs_build_failure_count
+-- Field: CorpusRuns.BuildFailureCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_corpus_runs_build_failure_count(p_corpus_run_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COALESCE(SUM((calc_corpus_domain_runs_build_failed_flag(corpus_domain_run_id))::numeric), 0) FROM corpus_domain_runs WHERE corpus_run = p_corpus_run_id))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_corpus_runs_db_failure_count
+-- Field: CorpusRuns.DbFailureCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_corpus_runs_db_failure_count(p_corpus_run_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COALESCE(SUM((calc_corpus_domain_runs_db_failed_flag(corpus_domain_run_id))::numeric), 0) FROM corpus_domain_runs WHERE corpus_run = p_corpus_run_id))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_corpus_runs_conformance_failure_count
+-- Field: CorpusRuns.ConformanceFailureCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_corpus_runs_conformance_failure_count(p_corpus_run_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COALESCE(SUM((calc_corpus_domain_runs_conformance_failed_flag(corpus_domain_run_id))::numeric), 0) FROM corpus_domain_runs WHERE corpus_run = p_corpus_run_id))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_corpus_runs_total_duration_seconds
+-- Field: CorpusRuns.TotalDurationSeconds
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_corpus_runs_total_duration_seconds(p_corpus_run_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COALESCE(SUM((duration_seconds)::numeric), 0) FROM corpus_domain_runs WHERE corpus_run = p_corpus_run_id))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_corpus_runs_red_domain_count
+-- Field: CorpusRuns.RedDomainCount
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_corpus_runs_red_domain_count(p_corpus_run_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_corpus_runs_domain_run_count(p_corpus_run_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_corpus_runs_green_domain_count(p_corpus_run_id)) AS v) __safe_numeric), 0)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_corpus_runs_green_percent
+-- Field: CorpusRuns.GreenPercent
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_corpus_runs_green_percent(p_corpus_run_id TEXT)
+RETURNS NUMERIC AS $$
+  WITH __erb_dedup_v1 AS (SELECT calc_corpus_runs_domain_run_count(p_corpus_run_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_corpus_runs_green_domain_count(p_corpus_run_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::NUMERIC, (1)::INTEGER))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_corpus_runs_fully_green_percent
+-- Field: CorpusRuns.FullyGreenPercent
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_corpus_runs_fully_green_percent(p_corpus_run_id TEXT)
+RETURNS NUMERIC AS $$
+  WITH __erb_dedup_v1 AS (SELECT calc_corpus_runs_domain_run_count(p_corpus_run_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_corpus_runs_fully_green_domain_count(p_corpus_run_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::NUMERIC, (1)::INTEGER))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_corpus_runs_is_complete
+-- Field: CorpusRuns.IsComplete
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_corpus_runs_is_complete(p_corpus_run_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((SELECT NULLIF(finished_on, '') FROM corpus_runs WHERE corpus_run_id = p_corpus_run_id) IS NOT NULL)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_corpus_runs_is_corpus_green
+-- Field: CorpusRuns.IsCorpusGreen
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_corpus_runs_is_corpus_green(p_corpus_run_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((calc_corpus_runs_domain_run_count(p_corpus_run_id))::NUMERIC > 0 AND (calc_corpus_runs_red_domain_count(p_corpus_run_id))::NUMERIC = 0));
+$$ LANGUAGE sql STABLE;
+
+-- calc_corpus_runs_overall_status
+-- Field: CorpusRuns.OverallStatus
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_corpus_runs_overall_status(p_corpus_run_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN (SELECT NULLIF(finished_on, '') FROM corpus_runs WHERE corpus_run_id = p_corpus_run_id) IS NULL THEN ('running')::text ELSE (CASE WHEN (calc_corpus_runs_domain_run_count(p_corpus_run_id))::NUMERIC = 0 THEN ('no-targets')::text ELSE (CASE WHEN (calc_corpus_runs_red_domain_count(p_corpus_run_id))::NUMERIC = 0 THEN ('green')::text ELSE ('red')::text END)::text END)::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_corpus_domain_runs_domain_name
+-- Field: CorpusDomainRuns.DomainName
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: DomainName from related RulebookDomains
+
+
+CREATE OR REPLACE FUNCTION calc_corpus_domain_runs_domain_name(p_corpus_domain_run_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT domain_name::text FROM rulebook_domains WHERE domain_id = (SELECT domain FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_corpus_domain_runs_domain_kind
+-- Field: CorpusDomainRuns.DomainKind
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Kind from related RulebookDomains
+
+
+CREATE OR REPLACE FUNCTION calc_corpus_domain_runs_domain_kind(p_corpus_domain_run_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT kind::text FROM rulebook_domains WHERE domain_id = (SELECT domain FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_corpus_domain_runs_corpus_run_mode
+-- Field: CorpusDomainRuns.CorpusRunMode
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Mode from related CorpusRuns
+
+
+CREATE OR REPLACE FUNCTION calc_corpus_domain_runs_corpus_run_mode(p_corpus_domain_run_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT mode::text FROM corpus_runs WHERE corpus_run_id = (SELECT corpus_run FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_corpus_domain_runs_corpus_run_is_latest
+-- Field: CorpusDomainRuns.CorpusRunIsLatest
+-- Type: lookup | DataType: string | Returns: BOOLEAN
+-- Lookup: IsLatest from related CorpusRuns
+
+
+CREATE OR REPLACE FUNCTION calc_corpus_domain_runs_corpus_run_is_latest(p_corpus_domain_run_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT is_latest::boolean FROM corpus_runs WHERE corpus_run_id = (SELECT corpus_run FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id));
+$$ LANGUAGE sql STABLE;
+
+-- get_corpus_runs_mode
+-- Helper function: Get Mode from CorpusRuns by CorpusRunId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_corpus_runs_mode(p_corpus_run_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT mode FROM corpus_runs WHERE corpus_run_id = p_corpus_run_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_corpus_runs_started_on
+-- Helper function: Get StartedOn from CorpusRuns by CorpusRunId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_corpus_runs_started_on(p_corpus_run_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT started_on FROM corpus_runs WHERE corpus_run_id = p_corpus_run_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_corpus_runs_finished_on
+-- Helper function: Get FinishedOn from CorpusRuns by CorpusRunId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_corpus_runs_finished_on(p_corpus_run_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT finished_on FROM corpus_runs WHERE corpus_run_id = p_corpus_run_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_corpus_runs_is_latest
+-- Helper function: Get IsLatest from CorpusRuns by CorpusRunId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_corpus_runs_is_latest(p_corpus_run_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT is_latest FROM corpus_runs WHERE corpus_run_id = p_corpus_run_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_corpus_runs_target_count
+-- Helper function: Get TargetCount from CorpusRuns by CorpusRunId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_corpus_runs_target_count(p_corpus_run_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT target_count FROM corpus_runs WHERE corpus_run_id = p_corpus_run_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_corpus_runs_status_path
+-- Helper function: Get StatusPath from CorpusRuns by CorpusRunId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_corpus_runs_status_path(p_corpus_run_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT status_path FROM corpus_runs WHERE corpus_run_id = p_corpus_run_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_corpus_runs_notes
+-- Helper function: Get Notes from CorpusRuns by CorpusRunId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_corpus_runs_notes(p_corpus_run_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT notes FROM corpus_runs WHERE corpus_run_id = p_corpus_run_id);
+$$ LANGUAGE sql STABLE;
+
+-- calc_corpus_domain_runs_name
+-- Field: CorpusDomainRuns.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_corpus_domain_runs_name(p_corpus_domain_run_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(corpus_domain_run_id, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_corpus_domain_runs_is_green
+-- Field: CorpusDomainRuns.IsGreen
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_corpus_domain_runs_is_green(p_corpus_domain_run_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((SELECT NULLIF(build_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) <> 'fail' AND (SELECT NULLIF(db_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) <> 'fail' AND (SELECT NULLIF(conformance_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) <> 'fail'))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_corpus_domain_runs_green_flag
+-- Field: CorpusDomainRuns.GreenFlag
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_corpus_domain_runs_green_flag(p_corpus_domain_run_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN ((SELECT NULLIF(build_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) <> 'fail' AND (SELECT NULLIF(db_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) <> 'fail' AND (SELECT NULLIF(conformance_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) <> 'fail') THEN (1)::text ELSE (0)::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_corpus_domain_runs_is_fully_green
+-- Field: CorpusDomainRuns.IsFullyGreen
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_corpus_domain_runs_is_fully_green(p_corpus_domain_run_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((SELECT NULLIF(build_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) = 'pass' AND (SELECT NULLIF(conformance_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) = 'pass'))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_corpus_domain_runs_fully_green_flag
+-- Field: CorpusDomainRuns.FullyGreenFlag
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_corpus_domain_runs_fully_green_flag(p_corpus_domain_run_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN ((SELECT NULLIF(build_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) = 'pass' AND (SELECT NULLIF(conformance_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) = 'pass') THEN (1)::text ELSE (0)::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_corpus_domain_runs_build_failed_flag
+-- Field: CorpusDomainRuns.BuildFailedFlag
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_corpus_domain_runs_build_failed_flag(p_corpus_domain_run_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN (SELECT NULLIF(build_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) = 'fail' THEN (1)::text ELSE (0)::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_corpus_domain_runs_db_failed_flag
+-- Field: CorpusDomainRuns.DbFailedFlag
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_corpus_domain_runs_db_failed_flag(p_corpus_domain_run_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN (SELECT NULLIF(db_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) = 'fail' THEN (1)::text ELSE (0)::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_corpus_domain_runs_conformance_failed_flag
+-- Field: CorpusDomainRuns.ConformanceFailedFlag
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_corpus_domain_runs_conformance_failed_flag(p_corpus_domain_run_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN (SELECT NULLIF(conformance_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) = 'fail' THEN (1)::text ELSE (0)::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_corpus_domain_runs_failing_phase
+-- Field: CorpusDomainRuns.FailingPhase
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_corpus_domain_runs_failing_phase(p_corpus_domain_run_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN (SELECT NULLIF(build_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) = 'fail' THEN ('build')::text ELSE (CASE WHEN (SELECT NULLIF(db_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) = 'fail' THEN ('db')::text ELSE (CASE WHEN (SELECT NULLIF(conformance_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) = 'fail' THEN ('conformance')::text ELSE ('')::text END)::text END)::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_corpus_domain_runs_latest_green_flag
+-- Field: CorpusDomainRuns.LatestGreenFlag
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_corpus_domain_runs_latest_green_flag(p_corpus_domain_run_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN ((calc_corpus_domain_runs_corpus_run_is_latest(p_corpus_domain_run_id) = 'true') AND (SELECT NULLIF(build_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) <> 'fail' AND (SELECT NULLIF(db_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) <> 'fail' AND (SELECT NULLIF(conformance_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) <> 'fail') THEN (1)::text ELSE (0)::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_corpus_domain_runs_latest_fully_green_flag
+-- Field: CorpusDomainRuns.LatestFullyGreenFlag
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_corpus_domain_runs_latest_fully_green_flag(p_corpus_domain_run_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN ((calc_corpus_domain_runs_corpus_run_is_latest(p_corpus_domain_run_id) = 'true') AND (SELECT NULLIF(build_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) = 'pass' AND (SELECT NULLIF(conformance_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) = 'pass') THEN (1)::text ELSE (0)::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_corpus_domain_runs_latest_attempt_flag
+-- Field: CorpusDomainRuns.LatestAttemptFlag
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_corpus_domain_runs_latest_attempt_flag(p_corpus_domain_run_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN (calc_corpus_domain_runs_corpus_run_is_latest(p_corpus_domain_run_id) = 'true') THEN (1)::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_flavors_domain_area
@@ -8013,6 +8744,32 @@ RETURNS TEXT AS $$
   );
 $$ LANGUAGE sql STABLE;
 
+-- calc_rulebook_domains_test_suites
+-- Field: RulebookDomains.TestSuites
+-- Type: Inverse relationship (reverse FK lookup from TestSuites.Domain)
+
+CREATE OR REPLACE FUNCTION calc_rulebook_domains_test_suites(p_domain_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (
+    SELECT STRING_AGG(test_suite_id::TEXT, ', ' ORDER BY test_suite_id)
+    FROM test_suites
+    WHERE domain = p_domain_id
+  );
+$$ LANGUAGE sql STABLE;
+
+-- calc_rulebook_domains_corpus_domain_runs
+-- Field: RulebookDomains.CorpusDomainRuns
+-- Type: Inverse relationship (reverse FK lookup from CorpusDomainRuns.Domain)
+
+CREATE OR REPLACE FUNCTION calc_rulebook_domains_corpus_domain_runs(p_domain_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (
+    SELECT STRING_AGG(corpus_domain_run_id::TEXT, ', ' ORDER BY corpus_domain_run_id)
+    FROM corpus_domain_runs
+    WHERE domain = p_domain_id
+  );
+$$ LANGUAGE sql STABLE;
+
 -- calc_project_launch_profiles_local_services
 -- Field: ProjectLaunchProfiles.LocalServices
 -- Type: Inverse relationship (reverse FK lookup from ProjectLocalServices.LaunchProfile)
@@ -8036,6 +8793,45 @@ RETURNS TEXT AS $$
     SELECT STRING_AGG(conformance_result_id::TEXT, ', ' ORDER BY conformance_result_id)
     FROM conformance_results
     WHERE run = p_conformance_run_id
+  );
+$$ LANGUAGE sql STABLE;
+
+-- calc_conformance_runs_corpus_domain_runs
+-- Field: ConformanceRuns.CorpusDomainRuns
+-- Type: Inverse relationship (reverse FK lookup from CorpusDomainRuns.ConformanceRun)
+
+CREATE OR REPLACE FUNCTION calc_conformance_runs_corpus_domain_runs(p_conformance_run_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (
+    SELECT STRING_AGG(corpus_domain_run_id::TEXT, ', ' ORDER BY corpus_domain_run_id)
+    FROM corpus_domain_runs
+    WHERE conformance_run = p_conformance_run_id
+  );
+$$ LANGUAGE sql STABLE;
+
+-- calc_test_suites_corpus_domain_runs
+-- Field: TestSuites.CorpusDomainRuns
+-- Type: Inverse relationship (reverse FK lookup from CorpusDomainRuns.Suite)
+
+CREATE OR REPLACE FUNCTION calc_test_suites_corpus_domain_runs(p_test_suite_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (
+    SELECT STRING_AGG(corpus_domain_run_id::TEXT, ', ' ORDER BY corpus_domain_run_id)
+    FROM corpus_domain_runs
+    WHERE suite = p_test_suite_id
+  );
+$$ LANGUAGE sql STABLE;
+
+-- calc_corpus_runs_domain_runs
+-- Field: CorpusRuns.DomainRuns
+-- Type: Inverse relationship (reverse FK lookup from CorpusDomainRuns.CorpusRun)
+
+CREATE OR REPLACE FUNCTION calc_corpus_runs_domain_runs(p_corpus_run_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (
+    SELECT STRING_AGG(corpus_domain_run_id::TEXT, ', ' ORDER BY corpus_domain_run_id)
+    FROM corpus_domain_runs
+    WHERE corpus_run = p_corpus_run_id
   );
 $$ LANGUAGE sql STABLE;
 

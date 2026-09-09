@@ -1,6 +1,6 @@
 # Delivery report — build summary
 
-Generated 7 September 2026.
+Generated 9 September 2026.
 
 | | |
 |---|---|
@@ -9,8 +9,8 @@ Generated 7 September 2026.
 | Build phases | 5 |
 | Programme total | $66,000 |
 | Units of work | 333 |
-| Rulebook tables | 58 |
-| Rulebook fields | 1,021 (57% computed) |
+| Rulebook tables | 61 |
+| Rulebook fields | 1,109 (57% computed) |
 | Open roadblocks | 0 |
 
 ## 4 section(s) still generic

@@ -8,6 +8,7 @@ import { Concepts, ConceptDetail, Skills, SkillDetail } from "./pages/Learn.jsx"
 import { Projects, ProjectDetail } from "./pages/Projects.jsx";
 import { Consistency, ProgressPage } from "./pages/Health.jsx";
 import { Conformance } from "./pages/Conformance.jsx";
+import { Corpus } from "./pages/Corpus.jsx";
 import { Tools } from "./pages/Tools.jsx";
 
 // Route paths mirror MobileRoutes.Path in the root rulebook; MobileRoutes.Screen
@@ -33,6 +34,7 @@ const router = createBrowserRouter([
       { path: "consistency", element: <Consistency /> },
       { path: "progress", element: <ProgressPage /> },
       { path: "conformance", element: <Conformance /> },
+      { path: "corpus", element: <Corpus /> },
       { path: "tools", element: <Tools /> },
       { path: "*", element: <NotFound /> },
     ],

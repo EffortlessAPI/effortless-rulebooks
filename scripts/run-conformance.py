@@ -48,6 +48,9 @@ import subprocess
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from erb_project import build_project, reset_db  # noqa: E402
+
 REPO_ROOT = Path(__file__).resolve().parent.parent
 RULEBOOK_PATH = REPO_ROOT / "effortless-rulebook" / "effortless-rulebook.json"
 ORCHESTRATOR_DIR = REPO_ROOT / "orchestration"
@@ -194,19 +197,36 @@ def build_rows(domain_id: str, slug: str, results: dict, ran_on: str) -> tuple[d
         # harness's own durable record of the last attempt that actually
         # graded the substrate's output — that is what a conformance SCORE
         # means, so record scoring fields from it, not from last_run.
-        last_run = substrate.get("last_run", {})
-        last_success = substrate.get("last_successful_run", {})
-        test_results = last_success.get("test_results", {})
+        last_run = substrate.get("last_run") or {}
+        # The harness only writes last_successful_run when a substrate scored a
+        # full 100 (test-orchestrator.update_run_metadata), so it is null for
+        # every substrate that has never been perfect. When it IS present it is
+        # the record to score from: last_run can be a transient infra error (a
+        # cold cloud transpiler timing out) on a substrate whose translation is
+        # correct. When it is absent the substrate has genuinely never passed,
+        # and last_run carries the real status and score — the per-field counts
+        # simply do not exist in that record, so they are recorded as null
+        # rather than invented.
+        last_success = substrate.get("last_successful_run") or {}
+        test_results = last_success.get("test_results") or {}
+        if last_success:
+            status = last_success.get("status", "")
+            score = test_results.get("score", last_success.get("score"))
+            duration = last_success.get("duration_seconds")
+        else:
+            status = last_run.get("status", "")
+            score = last_run.get("score")
+            duration = last_run.get("duration_seconds")
         result_rows.append({
             "ConformanceResultId": f"{run_id}:{substrate_name}",
             "Run": run_id,
             "SubstrateName": substrate_name,
-            "Status": last_success.get("status", last_run.get("status", "")),
-            "Score": test_results.get("score", last_success.get("score")),
+            "Status": status,
+            "Score": score,
             "FieldsTested": test_results.get("total_fields_tested"),
             "FieldsPassed": test_results.get("fields_passed"),
             "FieldsFailed": test_results.get("fields_failed"),
-            "DurationSeconds": last_success.get("duration_seconds", last_run.get("duration_seconds")),
+            "DurationSeconds": duration,
         })
     return run_row, result_rows
 
@@ -231,12 +251,29 @@ def run_effortless_build() -> None:
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("slug", help="project slug, e.g. acme-llc")
-    ap.add_argument("--skip-build", action="store_true", help="record rows but do not run effortless build")
+    ap.add_argument("--skip-build", action="store_true",
+                    help="record rows but do not run the ROOT effortless build (the caller will)")
+    ap.add_argument("--project-build", action="store_true",
+                    help="run `effortless build` in the project directory before grading")
+    ap.add_argument("--reset-db", action="store_true",
+                    help="createdb + postgres-bootstrap/reset-rulebook-db.sh before grading")
     args = ap.parse_args()
 
     domain_dir = find_domain_dir(args.slug)
     rulebook = json.loads(RULEBOOK_PATH.read_text(encoding="utf-8"))
     domain_id = resolve_domain_id(rulebook, args.slug)
+
+    def log(line):
+        print(line, flush=True)
+
+    # Build and database-reset are opt-in so the existing single-project path
+    # keeps its old behaviour (grade whatever is already in the DB), while the
+    # corpus runner can ask for the full build -> reset -> grade sequence
+    # without a second implementation of either phase.
+    if args.project_build:
+        build_project(args.slug, domain_dir, log)
+    if args.reset_db:
+        reset_db(args.slug, domain_dir, log)
 
     results_path = run_harness(args.slug, domain_dir)
     results = json.loads(results_path.read_text(encoding="utf-8"))
@@ -254,9 +291,15 @@ def main() -> None:
     if not args.skip_build:
         run_effortless_build()
 
+    # The final stdout line is the machine-readable summary every caller parses
+    # (the explorer's SSE plugin and scripts/run-corpus.py). substrates_passed
+    # counts substrates that scored a full 100 — the same bar ConformanceResults.
+    # IsPassing applies, so the corpus row and the view agree.
+    passed = sum(1 for r in result_rows if r["Status"] == "success" and (r["Score"] or 0) >= 100)
     print(json.dumps({
         "run_id": run_row["ConformanceRunId"],
         "substrates": len(result_rows),
+        "substrates_passed": passed,
         "report_path": str(aggregate_report),
     }))
 

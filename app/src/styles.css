@@ -159,3 +159,6 @@ button.chip:disabled { opacity: 0.5; cursor: default; }
 .feature summary { cursor: pointer; }
 .criteria { list-style: none; padding: 0; margin: 0; font-size: 0.85rem; }
 .criteria li { margin: 0.2rem 0; }
+.button.danger { background: var(--bad-fg); color: var(--paper); }
+.button:disabled { opacity: 0.5; cursor: default; filter: none; }
+.filters input[type="text"] { font: inherit; padding: 0.2rem 0.4rem; border-radius: 6px; border: 1px solid var(--line); min-width: 12rem; }

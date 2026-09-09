@@ -55,6 +55,25 @@ ALTER TABLE conformance_results DROP CONSTRAINT IF EXISTS fk_conformance_results
 ALTER TABLE conformance_results ADD CONSTRAINT fk_conformance_results_run
   FOREIGN KEY (run) REFERENCES conformance_runs (conformance_run_id);
 
+-- TestSuites
+ALTER TABLE test_suites DROP CONSTRAINT IF EXISTS fk_test_suites_domain;
+ALTER TABLE test_suites ADD CONSTRAINT fk_test_suites_domain
+  FOREIGN KEY (domain) REFERENCES rulebook_domains (domain_id);
+
+-- CorpusDomainRuns
+ALTER TABLE corpus_domain_runs DROP CONSTRAINT IF EXISTS fk_corpus_domain_runs_corpus_run;
+ALTER TABLE corpus_domain_runs ADD CONSTRAINT fk_corpus_domain_runs_corpus_run
+  FOREIGN KEY (corpus_run) REFERENCES corpus_runs (corpus_run_id);
+ALTER TABLE corpus_domain_runs DROP CONSTRAINT IF EXISTS fk_corpus_domain_runs_domain;
+ALTER TABLE corpus_domain_runs ADD CONSTRAINT fk_corpus_domain_runs_domain
+  FOREIGN KEY (domain) REFERENCES rulebook_domains (domain_id);
+ALTER TABLE corpus_domain_runs DROP CONSTRAINT IF EXISTS fk_corpus_domain_runs_suite;
+ALTER TABLE corpus_domain_runs ADD CONSTRAINT fk_corpus_domain_runs_suite
+  FOREIGN KEY (suite) REFERENCES test_suites (test_suite_id);
+ALTER TABLE corpus_domain_runs DROP CONSTRAINT IF EXISTS fk_corpus_domain_runs_conformance_run;
+ALTER TABLE corpus_domain_runs ADD CONSTRAINT fk_corpus_domain_runs_conformance_run
+  FOREIGN KEY (conformance_run) REFERENCES conformance_runs (conformance_run_id);
+
 -- RulebookFlavors
 ALTER TABLE rulebook_flavors DROP CONSTRAINT IF EXISTS fk_rulebook_flavors_domain;
 ALTER TABLE rulebook_flavors ADD CONSTRAINT fk_rulebook_flavors_domain
@@ -206,4 +225,4 @@ ALTER TABLE substrate_tradeoffs DROP CONSTRAINT IF EXISTS fk_substrate_tradeoffs
 ALTER TABLE substrate_tradeoffs ADD CONSTRAINT fk_substrate_tradeoffs_dimension_id
   FOREIGN KEY (dimension_id) REFERENCES substrate_tradeoff_dimensions (dimension_id);
 
--- 44 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
+-- 49 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).

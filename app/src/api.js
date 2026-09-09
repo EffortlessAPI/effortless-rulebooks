@@ -150,3 +150,51 @@ export function idList(value) {
     .map((s) => s.trim())
     .filter(Boolean);
 }
+
+// ---------------------------------------------------------------------------
+// Corpus runs. The runner is detached and owns its own live status.json, so the
+// UI polls rather than holding a stream: a fan-out survives a page reload, two
+// people can watch the same run, and closing the tab does not kill it.
+// ---------------------------------------------------------------------------
+async function corpus(path, init) {
+  const response = await fetch(`/__corpus${path}`, init);
+  const body = await response.json();
+  if (!response.ok || !body.ok) {
+    throw new ApiError(body.error || `/__corpus${path} failed with HTTP ${response.status}`, {
+      status: response.status,
+      table: "CorpusRuns",
+    });
+  }
+  return body;
+}
+
+// Launch a fan-out. `mode` is "full" or "build-only"; `kinds` filters by declared
+// Kind; `only` restricts to named slugs. Resolves with the new run's id.
+export async function startCorpusRun({ mode = "full", kinds = [], only = [], note = "" } = {}) {
+  const body = await corpus("/run", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ mode, kinds, only, note }),
+  });
+  return body.run_id;
+}
+
+// The live status document for one run, or the newest one ("latest").
+// Returns null when no fan-out has ever been launched.
+export async function fetchCorpusStatus(runId = "latest") {
+  return (await corpus(`/${runId}`)).status;
+}
+
+export async function fetchCorpusRuns() {
+  return (await corpus("/runs")).runs;
+}
+
+export async function stopCorpusRun(runId) {
+  return corpus(`/${runId}/stop`, { method: "POST" });
+}
+
+// A finished fan-out has appended its rows to the rulebook and rebuilt the root,
+// so every corpus view is stale until these are dropped.
+export function invalidateCorpusTables() {
+  invalidate("CorpusRuns", "CorpusDomainRuns", "TestSuites", "RulebookDomains", "ConformanceRuns", "ConformanceResults");
+}

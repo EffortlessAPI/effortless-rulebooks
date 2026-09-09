@@ -80,3 +80,9 @@ rulebook-examples/simpsons-paradox/temp.txt
 # CLI build error reports are per-run scratch (cr-08)
 **/errors.json
 **/postgres/errors.txt
+
+# Corpus fan-out run artifacts. The RESULT of a run is recorded in the rulebook
+# (CorpusRuns / CorpusDomainRuns); these are the live status file and the raw
+# per-project logs it points at, which are machine-local and regenerated.
+orchestration/corpus-runs/
+orchestration/corpus-runs.log
