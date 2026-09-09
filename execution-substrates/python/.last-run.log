@@ -1,19 +1,5 @@
 === Python Substrate Test Run ===
 
-/Users/eejai42/development/effortless-rulebooks/execution-substrates/python/python_only_erb_simulator.py:65: SyntaxWarning: "is" with 'int' literal. Did you mean "=="?
-  return (False if (count_of_non_proposed_steps) is None or (1) is None else (count_of_non_proposed_steps) > (1))
-/Users/eejai42/development/effortless-rulebooks/execution-substrates/python/python_only_erb_simulator.py:73: SyntaxWarning: "is" with 'int' literal. Did you mean "=="?
-  return (False if (count_approval_consistency_violations) is None or (0) is None else (count_approval_consistency_violations) > (0))
-/Users/eejai42/development/effortless-rulebooks/execution-substrates/python/python_only_erb_simulator.py:81: SyntaxWarning: "is" with 'int' literal. Did you mean "=="?
-  return (False if (count_ai_steps) is None or (0) is None else (count_ai_steps) > (0))
-/Users/eejai42/development/effortless-rulebooks/execution-substrates/python/python_only_erb_simulator.py:97: SyntaxWarning: "is" with 'int' literal. Did you mean "=="?
-  return ((False if (count_engineering_owned_steps) is None or (0) is None else (count_engineering_owned_steps) > (0)) and (False if (count_legal_owned_steps) is None or (0) is None else (count_legal_owned_steps) > (0)))
-/Users/eejai42/development/effortless-rulebooks/execution-substrates/python/python_only_erb_simulator.py:113: SyntaxWarning: "is" with 'int' literal. Did you mean "=="?
-  return ((False if (count_approval_gate_steps) is None or (0) is None else (count_approval_gate_steps) > (0)) and (count_gates_without_human_approver == 0))
-/Users/eejai42/development/effortless-rulebooks/execution-substrates/python/python_only_erb_simulator.py:540: SyntaxWarning: "is" with 'int' literal. Did you mean "=="?
-  return ((False if (fills_approval_gate) is None or (0) is None else (fills_approval_gate) > (0)) and ((delegates_to is None or delegates_to == "") is True))
-/Users/eejai42/development/effortless-rulebooks/execution-substrates/python/python_only_erb_simulator.py:632: SyntaxWarning: "is" with 'str' literal. Did you mean "=="?
-  return ((False if (valid_from) is None or ('2026-03-01') is None else (valid_from) <= ('2026-03-01')) and (((valid_to is None or valid_to == "") is True) or (False if (valid_to) is None or ('2026-03-01') is None else (valid_to) > ('2026-03-01'))))
   -> vw_roles_closure: 3 pairs
   -> vw_step_precedence_closure: 10 pairs
   -> vw_workflow_artifacts_closure: 10 pairs

@@ -83,7 +83,15 @@ def parse_index_match_formula(formula: str) -> tuple:
     Formula format: =INDEX(Table!{{FieldToReturn}}, MATCH(CurrentTable!{{KeyField}}, Table!{{PrimaryKeyField}}, 0))
     Returns: (lookup_table, return_field, key_field, pk_field) or all None.
     """
-    pattern = r"=INDEX\\((\\w+)!\\{\\{(\\w+)\\}\\},\\s*MATCH\\(\\w+!\\{\\{(\\w+)\\}\\},\\s*(\\w+)!\\{\\{(\\w+)\\}\\},\\s*0\\)\\)"
+    # The MATCH key is a field on the record being computed, so the rulebook
+    # writes it bare ({{WorkflowStep}}); an explicit table prefix
+    # (ApprovalGates!{{WorkflowStep}}) means the same thing. Both spellings
+    # must parse — requiring the prefix silently nulled every bare lookup.
+    pattern = (
+        r"=\\s*INDEX\\(\\s*(\\w+)!\\{\\{(\\w+)\\}\\}\\s*,"
+        r"\\s*MATCH\\(\\s*(?:\\w+!)?\\{\\{(\\w+)\\}\\}\\s*,"
+        r"\\s*(\\w+)!\\{\\{(\\w+)\\}\\}\\s*,\\s*0\\s*\\)\\s*\\)"
+    )
     match = re.match(pattern, formula)
     if match:
         return (match.group(1), match.group(2), match.group(3), match.group(5))

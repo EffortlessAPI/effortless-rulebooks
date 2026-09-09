@@ -62,7 +62,7 @@ def calc_workflows_name(display_name):
 
 def calc_workflows_has_more_than1_step(count_of_non_proposed_steps):
     """Formula: ={{CountOfNonProposedSteps}} > 1"""
-    return (False if (count_of_non_proposed_steps) is None or (1) is None else (count_of_non_proposed_steps) > (1))
+    return (False if (count_of_non_proposed_steps) is None else (count_of_non_proposed_steps) > (1))
 
 def calc_workflows_has_consistency_violation(count_approval_consistency_violations):
     """
@@ -70,7 +70,7 @@ def calc_workflows_has_consistency_violation(count_approval_consistency_violatio
     
     Formula: ={{CountApprovalConsistencyViolations}} > 0
     """
-    return (False if (count_approval_consistency_violations) is None or (0) is None else (count_approval_consistency_violations) > (0))
+    return (False if (count_approval_consistency_violations) is None else (count_approval_consistency_violations) > (0))
 
 def calc_workflows_has_ai_agent_step(count_ai_steps):
     """
@@ -78,7 +78,7 @@ def calc_workflows_has_ai_agent_step(count_ai_steps):
     
     Formula: ={{CountAISteps}} > 0
     """
-    return (False if (count_ai_steps) is None or (0) is None else (count_ai_steps) > (0))
+    return (False if (count_ai_steps) is None else (count_ai_steps) > (0))
 
 def calc_workflows_months_since_modified(modified):
     """
@@ -94,7 +94,7 @@ def calc_workflows_involves_engineering_and_legal(count_engineering_owned_steps,
     
     Formula: =AND({{CountEngineeringOwnedSteps}} > 0, {{CountLegalOwnedSteps}} > 0)
     """
-    return ((False if (count_engineering_owned_steps) is None or (0) is None else (count_engineering_owned_steps) > (0)) and (False if (count_legal_owned_steps) is None or (0) is None else (count_legal_owned_steps) > (0)))
+    return ((False if (count_engineering_owned_steps) is None else (count_engineering_owned_steps) > (0)) and (False if (count_legal_owned_steps) is None else (count_legal_owned_steps) > (0)))
 
 def calc_workflows_count_of_precedence_closure_pairs(count_asserted_precedence_pairs, count_inferred_precedence_pairs):
     """
@@ -110,7 +110,7 @@ def calc_workflows_cq2_satisfied(count_approval_gate_steps, count_gates_without_
     
     Formula: =AND({{CountApprovalGateSteps}} > 0, {{CountGatesWithoutHumanApprover}} = 0)
     """
-    return ((False if (count_approval_gate_steps) is None or (0) is None else (count_approval_gate_steps) > (0)) and (count_gates_without_human_approver == 0))
+    return ((False if (count_approval_gate_steps) is None else (count_approval_gate_steps) > (0)) and (count_gates_without_human_approver == 0))
 
 def calc_workflows_cq4_satisfied(count_derivation_links, count_workflow_artifacts):
     """
@@ -537,7 +537,7 @@ def calc_roles_escalation_violation(fills_approval_gate, delegates_to):
     
     Formula: =AND({{FillsApprovalGate}} > 0, ISBLANK({{DelegatesTo}}))
     """
-    return ((False if (fills_approval_gate) is None or (0) is None else (fills_approval_gate) > (0)) and ((delegates_to is None or delegates_to == "") is True))
+    return ((False if (fills_approval_gate) is None else (fills_approval_gate) > (0)) and ((delegates_to is None or delegates_to == "") is True))
 
 # Level 2
 
@@ -629,7 +629,7 @@ def calc_role_assignments_was_active_as_of_audit_date(valid_from, valid_to):
     
     Formula: =AND({{ValidFrom}} <= "2026-03-01", OR(ISBLANK({{ValidTo}}), {{ValidTo}} > "2026-03-01"))
     """
-    return ((False if (valid_from) is None or ('2026-03-01') is None else (valid_from) <= ('2026-03-01')) and (((valid_to is None or valid_to == "") is True) or (False if (valid_to) is None or ('2026-03-01') is None else (valid_to) > ('2026-03-01'))))
+    return ((False if (valid_from) is None else (valid_from) <= ('2026-03-01')) and (((valid_to is None or valid_to == "") is True) or (False if (valid_to) is None else (valid_to) > ('2026-03-01'))))
 
 # Level 2
 
@@ -1683,7 +1683,15 @@ def parse_index_match_formula(formula: str) -> tuple:
     Formula format: =INDEX(Table!{{FieldToReturn}}, MATCH(CurrentTable!{{KeyField}}, Table!{{PrimaryKeyField}}, 0))
     Returns: (lookup_table, return_field, key_field, pk_field) or all None.
     """
-    pattern = r"=INDEX\((\w+)!\{\{(\w+)\}\},\s*MATCH\(\w+!\{\{(\w+)\}\},\s*(\w+)!\{\{(\w+)\}\},\s*0\)\)"
+    # The MATCH key is a field on the record being computed, so the rulebook
+    # writes it bare ({{WorkflowStep}}); an explicit table prefix
+    # (ApprovalGates!{{WorkflowStep}}) means the same thing. Both spellings
+    # must parse — requiring the prefix silently nulled every bare lookup.
+    pattern = (
+        r"=\s*INDEX\(\s*(\w+)!\{\{(\w+)\}\}\s*,"
+        r"\s*MATCH\(\s*(?:\w+!)?\{\{(\w+)\}\}\s*,"
+        r"\s*(\w+)!\{\{(\w+)\}\}\s*,\s*0\s*\)\s*\)"
+    )
     match = re.match(pattern, formula)
     if match:
         return (match.group(1), match.group(2), match.group(3), match.group(5))

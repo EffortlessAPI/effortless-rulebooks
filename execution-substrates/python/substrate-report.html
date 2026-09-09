@@ -206,10 +206,10 @@ pre {
         <div class="header-stats">
             <div class="stat">
                 <span>Score:</span>
-                <span class="stat-value score-good">81.5%</span>
+                <span class="stat-value score-good">96.5%</span>
             </div>
             <div class="stat">
-                <span>563/691 passed</span>
+                <span>667/691 passed</span>
             </div>
         </div>
         <button id="theme-toggle" title="Toggle theme">
@@ -286,20 +286,6 @@ pre {
                 <h2>Execution Log</h2>
                 <pre>=== Python Substrate Test Run ===
 
-/Users/eejai42/development/effortless-rulebooks/execution-substrates/python/python_only_erb_simulator.py:65: SyntaxWarning: &quot;is&quot; with &#x27;int&#x27; literal. Did you mean &quot;==&quot;?
-  return (False if (count_of_non_proposed_steps) is None or (1) is None else (count_of_non_proposed_steps) &gt; (1))
-/Users/eejai42/development/effortless-rulebooks/execution-substrates/python/python_only_erb_simulator.py:73: SyntaxWarning: &quot;is&quot; with &#x27;int&#x27; literal. Did you mean &quot;==&quot;?
-  return (False if (count_approval_consistency_violations) is None or (0) is None else (count_approval_consistency_violations) &gt; (0))
-/Users/eejai42/development/effortless-rulebooks/execution-substrates/python/python_only_erb_simulator.py:81: SyntaxWarning: &quot;is&quot; with &#x27;int&#x27; literal. Did you mean &quot;==&quot;?
-  return (False if (count_ai_steps) is None or (0) is None else (count_ai_steps) &gt; (0))
-/Users/eejai42/development/effortless-rulebooks/execution-substrates/python/python_only_erb_simulator.py:97: SyntaxWarning: &quot;is&quot; with &#x27;int&#x27; literal. Did you mean &quot;==&quot;?
-  return ((False if (count_engineering_owned_steps) is None or (0) is None else (count_engineering_owned_steps) &gt; (0)) and (False if (count_legal_owned_steps) is None or (0) is None else (count_legal_owned_steps) &gt; (0)))
-/Users/eejai42/development/effortless-rulebooks/execution-substrates/python/python_only_erb_simulator.py:113: SyntaxWarning: &quot;is&quot; with &#x27;int&#x27; literal. Did you mean &quot;==&quot;?
-  return ((False if (count_approval_gate_steps) is None or (0) is None else (count_approval_gate_steps) &gt; (0)) and (count_gates_without_human_approver == 0))
-/Users/eejai42/development/effortless-rulebooks/execution-substrates/python/python_only_erb_simulator.py:540: SyntaxWarning: &quot;is&quot; with &#x27;int&#x27; literal. Did you mean &quot;==&quot;?
-  return ((False if (fills_approval_gate) is None or (0) is None else (fills_approval_gate) &gt; (0)) and ((delegates_to is None or delegates_to == &quot;&quot;) is True))
-/Users/eejai42/development/effortless-rulebooks/execution-substrates/python/python_only_erb_simulator.py:632: SyntaxWarning: &quot;is&quot; with &#x27;str&#x27; literal. Did you mean &quot;==&quot;?
-  return ((False if (valid_from) is None or (&#x27;2026-03-01&#x27;) is None else (valid_from) &lt;= (&#x27;2026-03-01&#x27;)) and (((valid_to is None or valid_to == &quot;&quot;) is True) or (False if (valid_to) is None or (&#x27;2026-03-01&#x27;) is None else (valid_to) &gt; (&#x27;2026-03-01&#x27;))))
   -&gt; vw_roles_closure: 3 pairs
   -&gt; vw_step_precedence_closure: 10 pairs
   -&gt; vw_workflow_artifacts_closure: 10 pairs
@@ -336,15 +322,15 @@ Python substrate: Processed 22 entities, 163 total records
                 <h2>Test Summary</h2>
                 <div class="results-summary">
                     <div class="result-item">
-                        <div class="result-value score-good">81.5%</div>
+                        <div class="result-value score-good">96.5%</div>
                         <div class="result-label">Score</div>
                     </div>
                     <div class="result-item">
-                        <div class="result-value score-perfect">563</div>
+                        <div class="result-value score-perfect">667</div>
                         <div class="result-label">Passed</div>
                     </div>
                     <div class="result-item">
-                        <div class="result-value">128</div>
+                        <div class="result-value">24</div>
                         <div class="result-label">Failed</div>
                     </div>
                     <div class="result-item">
@@ -358,7 +344,7 @@ Python substrate: Processed 22 entities, 163 total records
                 <div class="markdown-content">
                     <h3>language_candidates</h3>
                     <ul>
-                        <li>Fields: 563/691 (81.5%)</li>
+                        <li>Fields: 667/691 (96.5%)</li>
                         <li>Computed columns: has_grammar, question, predicted_answer, prediction_predicates, prediction_fail, is_description_of, is_open_closed_world_conflicted, relationship_to_concept</li>
                     </ul>
                 </div>
@@ -370,7 +356,7 @@ Python substrate: Processed 22 entities, 163 total records
                 <div class="code-header">
                     <h2>erb_calc.py</h2>
                     <div>
-                        <span class="code-info">2069 lines</span>
+                        <span class="code-info">2077 lines</span>
                         <button class="copy-btn" onclick="copyCode('calc-code')">Copy</button>
                     </div>
                 </div>
@@ -438,7 +424,7 @@ def calc_workflows_name(display_name):
 
 def calc_workflows_has_more_than1_step(count_of_non_proposed_steps):
     &quot;&quot;&quot;Formula: ={{CountOfNonProposedSteps}} &gt; 1&quot;&quot;&quot;
-    return (False if (count_of_non_proposed_steps) is None or (1) is None else (count_of_non_proposed_steps) &gt; (1))
+    return (False if (count_of_non_proposed_steps) is None else (count_of_non_proposed_steps) &gt; (1))
 
 def calc_workflows_has_consistency_violation(count_approval_consistency_violations):
     &quot;&quot;&quot;
@@ -446,7 +432,7 @@ def calc_workflows_has_consistency_violation(count_approval_consistency_violatio
     
     Formula: ={{CountApprovalConsistencyViolations}} &gt; 0
     &quot;&quot;&quot;
-    return (False if (count_approval_consistency_violations) is None or (0) is None else (count_approval_consistency_violations) &gt; (0))
+    return (False if (count_approval_consistency_violations) is None else (count_approval_consistency_violations) &gt; (0))
 
 def calc_workflows_has_ai_agent_step(count_ai_steps):
     &quot;&quot;&quot;
@@ -454,7 +440,7 @@ def calc_workflows_has_ai_agent_step(count_ai_steps):
     
     Formula: ={{CountAISteps}} &gt; 0
     &quot;&quot;&quot;
-    return (False if (count_ai_steps) is None or (0) is None else (count_ai_steps) &gt; (0))
+    return (False if (count_ai_steps) is None else (count_ai_steps) &gt; (0))
 
 def calc_workflows_months_since_modified(modified):
     &quot;&quot;&quot;
@@ -470,7 +456,7 @@ def calc_workflows_involves_engineering_and_legal(count_engineering_owned_steps,
     
     Formula: =AND({{CountEngineeringOwnedSteps}} &gt; 0, {{CountLegalOwnedSteps}} &gt; 0)
     &quot;&quot;&quot;
-    return ((False if (count_engineering_owned_steps) is None or (0) is None else (count_engineering_owned_steps) &gt; (0)) and (False if (count_legal_owned_steps) is None or (0) is None else (count_legal_owned_steps) &gt; (0)))
+    return ((False if (count_engineering_owned_steps) is None else (count_engineering_owned_steps) &gt; (0)) and (False if (count_legal_owned_steps) is None else (count_legal_owned_steps) &gt; (0)))
 
 def calc_workflows_count_of_precedence_closure_pairs(count_asserted_precedence_pairs, count_inferred_precedence_pairs):
     &quot;&quot;&quot;
@@ -486,7 +472,7 @@ def calc_workflows_cq2_satisfied(count_approval_gate_steps, count_gates_without_
     
     Formula: =AND({{CountApprovalGateSteps}} &gt; 0, {{CountGatesWithoutHumanApprover}} = 0)
     &quot;&quot;&quot;
-    return ((False if (count_approval_gate_steps) is None or (0) is None else (count_approval_gate_steps) &gt; (0)) and (count_gates_without_human_approver == 0))
+    return ((False if (count_approval_gate_steps) is None else (count_approval_gate_steps) &gt; (0)) and (count_gates_without_human_approver == 0))
 
 def calc_workflows_cq4_satisfied(count_derivation_links, count_workflow_artifacts):
     &quot;&quot;&quot;
@@ -913,7 +899,7 @@ def calc_roles_escalation_violation(fills_approval_gate, delegates_to):
     
     Formula: =AND({{FillsApprovalGate}} &gt; 0, ISBLANK({{DelegatesTo}}))
     &quot;&quot;&quot;
-    return ((False if (fills_approval_gate) is None or (0) is None else (fills_approval_gate) &gt; (0)) and ((delegates_to is None or delegates_to == &quot;&quot;) is True))
+    return ((False if (fills_approval_gate) is None else (fills_approval_gate) &gt; (0)) and ((delegates_to is None or delegates_to == &quot;&quot;) is True))
 
 # Level 2
 
@@ -1005,7 +991,7 @@ def calc_role_assignments_was_active_as_of_audit_date(valid_from, valid_to):
     
     Formula: =AND({{ValidFrom}} &lt;= &quot;2026-03-01&quot;, OR(ISBLANK({{ValidTo}}), {{ValidTo}} &gt; &quot;2026-03-01&quot;))
     &quot;&quot;&quot;
-    return ((False if (valid_from) is None or (&#x27;2026-03-01&#x27;) is None else (valid_from) &lt;= (&#x27;2026-03-01&#x27;)) and (((valid_to is None or valid_to == &quot;&quot;) is True) or (False if (valid_to) is None or (&#x27;2026-03-01&#x27;) is None else (valid_to) &gt; (&#x27;2026-03-01&#x27;))))
+    return ((False if (valid_from) is None else (valid_from) &lt;= (&#x27;2026-03-01&#x27;)) and (((valid_to is None or valid_to == &quot;&quot;) is True) or (False if (valid_to) is None else (valid_to) &gt; (&#x27;2026-03-01&#x27;))))
 
 # Level 2
 
@@ -2059,7 +2045,15 @@ def parse_index_match_formula(formula: str) -&gt; tuple:
     Formula format: =INDEX(Table!{{FieldToReturn}}, MATCH(CurrentTable!{{KeyField}}, Table!{{PrimaryKeyField}}, 0))
     Returns: (lookup_table, return_field, key_field, pk_field) or all None.
     &quot;&quot;&quot;
-    pattern = r&quot;=INDEX\((\w+)!\{\{(\w+)\}\},\s*MATCH\(\w+!\{\{(\w+)\}\},\s*(\w+)!\{\{(\w+)\}\},\s*0\)\)&quot;
+    # The MATCH key is a field on the record being computed, so the rulebook
+    # writes it bare ({{WorkflowStep}}); an explicit table prefix
+    # (ApprovalGates!{{WorkflowStep}}) means the same thing. Both spellings
+    # must parse — requiring the prefix silently nulled every bare lookup.
+    pattern = (
+        r&quot;=\s*INDEX\(\s*(\w+)!\{\{(\w+)\}\}\s*,&quot;
+        r&quot;\s*MATCH\(\s*(?:\w+!)?\{\{(\w+)\}\}\s*,&quot;
+        r&quot;\s*(\w+)!\{\{(\w+)\}\}\s*,\s*0\s*\)\s*\)&quot;
+    )
     match = re.match(pattern, formula)
     if match:
         return (match.group(1), match.group(2), match.group(3), match.group(5))

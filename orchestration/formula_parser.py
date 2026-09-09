@@ -528,7 +528,17 @@ def compile_to_python(expr: ExprNode) -> str:
         if expr.op in ('<', '<=', '>', '>='):
             # Ordering against None is False rather than a TypeError, matching
             # the interpreter. Equality is left alone: None = None is True.
-            return (f'(False if ({left}) is None or ({right}) is None '
+            # A literal operand can never be None, so guarding it would emit
+            # `1 is None` — always false, and a SyntaxWarning from CPython.
+            literal_types = (LiteralInt, LiteralFloat, LiteralString, LiteralBool)
+            guards = [
+                f'({side}) is None'
+                for side, node in ((left, expr.left), (right, expr.right))
+                if not isinstance(node, literal_types)
+            ]
+            if not guards:
+                return f'(({left}) {expr.op} ({right}))'
+            return (f'(False if {" or ".join(guards)} '
                     f'else ({left}) {expr.op} ({right}))')
         op_map = {'=': '==', '<>': '!='}
         return f'({left} {op_map[expr.op]} {right})'
