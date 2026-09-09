@@ -26,7 +26,7 @@
       "LastVersionUsed": "v2026.09.07.0336",
       "LastUrl": "https://effortless-rulebook-to-postgres-v2026-09-07-0336-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "_LocalDevUrl": "http://localhost:30038",
-      "_ClosureNote": "The Postgres transpiler emits the transitive-closure views. postgres-bootstrap/03-create-views.sql (committed) contains both vw_step_precedence_closure and vw_roles_closure as WITH RECURSIVE views with is_inferred/hop_distance columns, and the committed SQL is what the demo runs against \u2014 closure is present out of the box. (_LocalDevUrl is an optional pointer for running the transpiler locally during tool development; it is not needed to build or run this demo.)",
+      "_ClosureNote": "The Postgres transpiler emits the transitive-closure views. postgres-bootstrap/03-create-views.sql (committed) contains both vw_step_precedence_closure and vw_roles_closure as WITH RECURSIVE views with is_inferred/hop_distance columns, and the committed SQL is what the demo runs against — closure is present out of the box. (_LocalDevUrl is an optional pointer for running the transpiler locally during tool development; it is not needed to build or run this demo.)",
       "Description": "Generate Postgres schema + seed data from the rulebook"
     },
     {
@@ -75,24 +75,24 @@
       "RelativePath": "/app/frontend/src",
       "CommandLine": "https://effortless-rulebook-to-react-exp-v2026-06-11-1530-cmvbd4phczmeg.7pktzg2z971j0.cpln.app -i ../../../effortless-rulebook/talismans-special-solutions-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.06.11.1530",
-      "LastUrl": "https://effortless-rulebook-to-react-exp-v2026-06-11-1530-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
-      "_HeadPointerNote": "Pinned to the explicit v2026.06.11.1530 cpln URL (NOT the bare tool name) because [latest] still resolves to the older v2026.06.10.1301 \u2014 the publish on 2026-06-11 built+activated v1530 but the HeadVersion pointer did not flip to it. v1530 is the version carrying the hovercard portal/edge-clamp fix (DagHoverCard renders via createPortal to document.body, fixed-positioned + four-edge viewport-clamped). Re-point CommandLine back to the bare 'rulebook-to-react-explainer-dag' once [latest] correctly advances to v1530 or newer.",
-      "Description": "Generate the self-contained React Explainer DAG module (app/frontend/src/explainer-dag/) \u2014 embedded rulebook + dagResolver + DagCell/DagToggle/FieldChip/FieldDag \u2014 the canonical, fully-generated provenance visualizer. Replaces the former hand-written explain-dag/ module."
+      "_HeadPointerNote": "Pinned to the explicit v2026.06.11.1530 cpln URL (NOT the bare tool name) because [latest] still resolves to the older v2026.06.10.1301 — the publish on 2026-06-11 built+activated v1530 but the HeadVersion pointer did not flip to it. v1530 is the version carrying the hovercard portal/edge-clamp fix (DagHoverCard renders via createPortal to document.body, fixed-positioned + four-edge viewport-clamped). Re-point CommandLine back to the bare 'rulebook-to-react-explainer-dag' once [latest] correctly advances to v1530 or newer.",
+      "Description": "Generate the self-contained React Explainer DAG module (app/frontend/src/explainer-dag/) — embedded rulebook + dagResolver + DagCell/DagToggle/FieldChip/FieldDag — the canonical, fully-generated provenance visualizer. Replaces the former hand-written explain-dag/ module."
     },
     {
       "IsSSoTTranspiler": false,
       "Name": "httplocalhost4242rulebooktopython",
       "RelativePath": "/python",
       "CommandLine": "http://localhost:4242/rulebook-to-python -i ../effortless-rulebook/talismans-special-solutions-rulebook.json",
-      "IsDisabled": false
+      "IsDisabled": true,
+      "Description": "Open-source Python transpiler [DISABLED: scores ~13% here by design. The open-source bus tools serve the toys; this domain is compiled by the commercial rulebook-to-python. Re-enable only to demonstrate the open-source ceiling.]"
     },
     {
       "IsSSoTTranspiler": false,
       "Name": "httplocalhost4242rulebooktogolang",
       "RelativePath": "/golang",
       "CommandLine": "http://localhost:4242/rulebook-to-golang -i ../effortless-rulebook/talismans-special-solutions-rulebook.json",
-      "IsDisabled": false
+      "IsDisabled": true,
+      "Description": "Open-source Go transpiler [DISABLED: scores ~10% here by design. The open-source bus tools serve the toys; this domain is compiled by the commercial rulebook-to-go. Re-enable only to demonstrate the open-source ceiling.]"
     },
     {
       "IsSSoTTranspiler": false,
@@ -101,7 +101,7 @@
       "CommandLine": "effortless-rulebook-editor -i talismans-special-solutions-rulebook.json -p rulebookPath=talismans-special-solutions-rulebook.json -p dockerfilePath=docker/Dockerfile",
       "IsDisabled": false,
       "LastVersionUsed": "v2026.09.07.0138",
-      "LastUrl": "https://effortless-effortless-rulebook-e-v2026-09-02-0241-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+      "LastUrl": "https://effortless-effortless-rulebook-e-v2026-09-07-0138-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     }
   ],
   "ShowHidden": false,
