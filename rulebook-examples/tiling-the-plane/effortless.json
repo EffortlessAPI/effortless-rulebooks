@@ -15,8 +15,8 @@
       "RelativePath": "/postgres-bootstrap",
       "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/tiling-the-plane-rulebook.json -p mode=drop-all -p stage=dev -p drop_all=true",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.08.09.0157",
-      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-05-31-1547-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "LastVersionUsed": "v2026.09.07.0336",
+      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-09-07-0336-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "Description": "Generate Postgres schema + functions + views + seed data from the rulebook."
     },
     {
@@ -34,7 +34,7 @@
       "CommandLine": "rulebook-to-react-explainer-dag -i ../../effortless-rulebook/tiling-the-plane-rulebook.json",
       "IsDisabled": false,
       "LastVersionUsed": "v2026.08.11.2341",
-      "LastUrl": "https://effortless-rulebook-to-react-exp-v2026-05-20-0229-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "LastUrl": "https://effortless-rulebook-to-react-exp-v2026-08-11-2341-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "Description": "Generate the embedded React Explainer DAG module (clickable derivation graph for every calculated/lookup/aggregation field)."
     },
     {
@@ -52,7 +52,7 @@
       "CommandLine": "rulebook-to-rulespeak -i ../effortless-rulebook/tiling-the-plane-rulebook.json",
       "IsDisabled": false,
       "LastVersionUsed": "v2026.08.30.1537",
-      "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-06-06-0219-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+      "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-08-30-1537-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
       "IsSSoTTranspiler": false,
@@ -60,7 +60,8 @@
       "RelativePath": "/effortless-rulebook",
       "CommandLine": "effortless-rulebook-editor -i tiling-the-plane-rulebook.json -p rulebookPath=tiling-the-plane-rulebook.json -p dockerfilePath=docker/Dockerfile",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.09.02.0241"
+      "LastVersionUsed": "v2026.09.07.0138",
+      "LastUrl": "https://effortless-effortless-rulebook-e-v2026-09-07-0138-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     }
   ],
   "ShowHidden": false,

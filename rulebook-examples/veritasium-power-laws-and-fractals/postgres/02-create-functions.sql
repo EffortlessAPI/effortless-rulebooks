@@ -29,17 +29,6 @@ RETURNS NUMERIC AS $$
   SELECT (SELECT r2::numeric FROM inference_runs WHERE inference_run_id = (SELECT system_id FROM systems WHERE system_id = p_system_id));
 $$ LANGUAGE sql STABLE;
 
--- calc_systems_empirical_slope_deviation
--- Field: systems.EmpiricalSlopeDeviation
--- Type: calculated | DataType: number | Returns: NUMERIC
--- Lookup: SlopeDelta from related inference_runs
-
-
-CREATE OR REPLACE FUNCTION calc_systems_empirical_slope_deviation(p_system_id TEXT)
-RETURNS NUMERIC AS $$
-  SELECT (SELECT slope_delta::numeric FROM inference_runs WHERE inference_run_id = (SELECT system_id FROM systems WHERE system_id = p_system_id));
-$$ LANGUAGE sql STABLE;
-
 -- calc_systems_measurement_noise_level
 -- Field: systems.MeasurementNoiseLevel
 -- Type: lookup | DataType: number | Returns: NUMERIC
@@ -49,17 +38,6 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_systems_measurement_noise_level(p_system_id TEXT)
 RETURNS NUMERIC AS $$
   SELECT (SELECT noise_sigma::numeric FROM measurement_models WHERE measurement_model_id = (SELECT system_id FROM systems WHERE system_id = p_system_id));
-$$ LANGUAGE sql STABLE;
-
--- calc_systems_relative_slope_error
--- Field: systems.RelativeSlopeError
--- Type: calculated | DataType: number | Returns: NUMERIC
--- Lookup: SlopeDelta from related inference_runs
-
-
-CREATE OR REPLACE FUNCTION calc_systems_relative_slope_error(p_system_id TEXT)
-RETURNS NUMERIC AS $$
-  SELECT (SELECT slope_delta::numeric FROM inference_runs WHERE inference_run_id = (SELECT system_id FROM systems WHERE system_id = p_system_id));
 $$ LANGUAGE sql STABLE;
 
 -- calc_systems_scale_range_span
@@ -282,6 +260,16 @@ RETURNS TEXT AS $$
   SELECT (SELECT status FROM system_stats WHERE system_stats_id = p_system_stats_id);
 $$ LANGUAGE sql STABLE;
 
+-- calc_systems_empirical_slope_deviation
+-- Field: systems.EmpiricalSlopeDeviation
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_systems_empirical_slope_deviation(p_system_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (ABS(((SELECT slope_delta FROM inference_runs WHERE "system" = ((SELECT NULLIF(system_id, '') FROM systems WHERE system_id = p_system_id))::text))))::numeric;
+$$ LANGUAGE sql STABLE;
+
 -- calc_systems_data_quality_score
 -- Field: systems.DataQualityScore
 -- Type: calculated | DataType: number | Returns: NUMERIC
@@ -290,6 +278,16 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_systems_data_quality_score(p_system_id TEXT)
 RETURNS NUMERIC AS $$
   SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_systems_empirical_fit_quality(p_system_id)) AS v) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(1, 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_systems_empirical_slope_deviation(p_system_id)) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_systems_relative_slope_error
+-- Field: systems.RelativeSlopeError
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_systems_relative_slope_error(p_system_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (((SELECT slope_delta FROM inference_runs WHERE "system" = ((SELECT NULLIF(system_id, '') FROM systems WHERE system_id = p_system_id))::text))) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT theoretical_log_log_slope FROM systems WHERE system_id = p_system_id)) AS v) __safe_numeric), 0), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_systems_is_high_quality_fit

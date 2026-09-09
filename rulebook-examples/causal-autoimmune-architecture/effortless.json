@@ -23,8 +23,8 @@
       "RelativePath": "/postgres",
       "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/effortless-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.09.06.1148",
-      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-09-06-1148-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "LastVersionUsed": "v2026.09.07.0336",
+      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-09-07-0336-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "_note": "TEMPORARY: pin shows v2026.06.14.1635 because the CLI version index hasn't yet propagated the upsert-fix release v2026.06.20.1746. A `-setUrl rulebook-to-postgres=<v1746 workload url>` override redirects the actual call to the published fix (ON CONFLICT DO UPDATE so the DB mirrors the rulebook). Re-pin to v2026.06.20.1746 and drop this note + the override once the index catches up."
     },
     {
@@ -110,8 +110,8 @@
       "RelativePath": "/effortless-rulebook",
       "CommandLine": "effortless-rulebook-editor -i effortless-rulebook.json -p rulebookPath=effortless-rulebook.json -p dockerfilePath=docker/Dockerfile",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.09.02.0241",
-      "LastUrl": "https://effortless-effortless-rulebook-e-v2026-09-02-0241-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+      "LastVersionUsed": "v2026.09.07.0138",
+      "LastUrl": "https://effortless-effortless-rulebook-e-v2026-09-07-0138-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     }
   ],
   "ShowHidden": false,

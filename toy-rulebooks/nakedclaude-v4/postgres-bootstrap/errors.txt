@@ -1,0 +1,12 @@
+# Formula errors (2)
+
+Every formula below could not be parsed/translated by rulebook-to-postgres. The build still succeeded (strict_formulas=false, the default) — each field listed here has no calc_* function and reads as NULL from its view. See effortless-schema's "Hard limit: 1 hop only" for the most common cause (a 2-hop or condition-based lookup) and how to flatten it. Set strict_formulas=true to make errors like these fail the build instead.
+
+## 1. Clients.HasRecentInvoices  [translate-exception]
+Formula: =IF({{LastInvoice}} > DATEADD(TODAY(), -220, 'days'), TRUE(), FALSE())
+Detail:  DATEADD() unit 'days' is not a valid interval unit (expected: second, minute, hour, day, week, month, year)
+
+## 2. Clients.HasRecentInvoices  [translate-exception]
+Formula: =IF({{LastInvoice}} > DATEADD(TODAY(), -220, 'days'), TRUE(), FALSE())
+Detail:  DATEADD() unit 'days' is not a valid interval unit (expected: second, minute, hour, day, week, month, year)
+

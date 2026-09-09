@@ -43,6 +43,14 @@ func nilIfEmpty(s string) *string {
 	return &s
 }
 
+// intVal safely dereferences a *int, returning 0 if nil
+func intVal(i *int) int {
+	if i == nil {
+		return 0
+	}
+	return *i
+}
+
 // intToString safely converts a *int to string, returning "" if nil
 func intToString(i *int) string {
 	if i == nil {

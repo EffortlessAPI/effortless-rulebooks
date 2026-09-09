@@ -15,8 +15,8 @@
       "RelativePath": "/postgres-bootstrap",
       "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/star-trek-rulebook.json -p mode=drop-all -p stage=dev -p drop_all=true",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.08.09.0157",
-      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-08-09-0157-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "LastVersionUsed": "v2026.09.07.0336",
+      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-09-07-0336-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "Description": "Generate Postgres schema + seed data from the rulebook"
     },
     {
@@ -55,7 +55,8 @@
       "Name": "effortlessrulebookeditor",
       "RelativePath": "/effortless-rulebook",
       "CommandLine": "effortless-rulebook-editor -i star-trek-rulebook.json -p rulebookPath=star-trek-rulebook.json -p dockerfilePath=docker/Dockerfile",
-      "IsDisabled": false
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.09.07.0138"
     }
   ],
   "ShowHidden": false,

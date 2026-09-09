@@ -85,7 +85,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_customers_large_order_count(p_customers_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM(((COALESCE(CASE WHEN ((COALESCE(CASE WHEN (total)::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (total)::numeric ELSE NULL END, 0) * COALESCE(0, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (total)::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (total)::numeric ELSE NULL END, 0) * COALESCE(0, 0)))::numeric ELSE NULL END, 0) + COALESCE(1, 0)))::numeric), 0) FROM orders WHERE customer = calc_customers_name(p_customers_id) AND total > 500))::numeric;
+  SELECT ((SELECT COALESCE(SUM(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (total) AS v) __safe_numeric), 0) * COALESCE(0, 0))) AS v) __safe_numeric), 0) + COALESCE(1, 0)))::numeric), 0) FROM orders WHERE customer = calc_customers_name(p_customers_id) AND total > 500))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_customers_is_vip
@@ -196,7 +196,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_orders_balance(p_orders_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE(CASE WHEN ((SELECT total FROM orders WHERE orders_id = p_orders_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT total FROM orders WHERE orders_id = p_orders_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN (calc_orders_amount_paid(p_orders_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_orders_amount_paid(p_orders_id))::numeric ELSE NULL END, 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT total FROM orders WHERE orders_id = p_orders_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_orders_amount_paid(p_orders_id)) AS v) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_orders_is_paid
@@ -431,7 +431,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_jet_models_fcs_variant_count(p_jet_models_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM(((COALESCE(CASE WHEN ((COALESCE(CASE WHEN (unit_price)::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (unit_price)::numeric ELSE NULL END, 0) * COALESCE(0, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (unit_price)::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (unit_price)::numeric ELSE NULL END, 0) * COALESCE(0, 0)))::numeric ELSE NULL END, 0) + COALESCE(1, 0)))::numeric), 0) FROM flight_control_systems WHERE jet_model_id = calc_jet_models_name(p_jet_models_id)))::numeric;
+  SELECT ((SELECT COALESCE(SUM(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (unit_price) AS v) __safe_numeric), 0) * COALESCE(0, 0))) AS v) __safe_numeric), 0) + COALESCE(1, 0)))::numeric), 0) FROM flight_control_systems WHERE jet_model_id = calc_jet_models_name(p_jet_models_id)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_jet_models_total_units_ordered
@@ -682,7 +682,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_order_lines_line_total(p_order_lines_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE(CASE WHEN ((SELECT quantity FROM order_lines WHERE order_lines_id = p_order_lines_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT quantity FROM order_lines WHERE order_lines_id = p_order_lines_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_order_lines_fcs_unit_price(p_order_lines_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_order_lines_fcs_unit_price(p_order_lines_id))::numeric ELSE NULL END, 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT quantity FROM order_lines WHERE order_lines_id = p_order_lines_id)) AS v) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_order_lines_fcs_unit_price(p_order_lines_id)) AS v) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- ============================================================================

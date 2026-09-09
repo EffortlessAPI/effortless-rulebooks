@@ -17,12 +17,6 @@ import (
 )
 
 func main() {
-	scriptDir, err := os.Getwd()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "FATAL: Failed to get working directory: %v\n", err)
-		os.Exit(1)
-	}
-
 	// ERB_TESTING_DIR is required — defaulting to the repo testing dir
 	// silently uses the wrong domain.
 	erbTesting := os.Getenv("ERB_TESTING_DIR")

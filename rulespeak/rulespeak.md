@@ -338,14 +338,14 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Corpus Run is Latest | True when the linked corpus run is a latest. | _Order 1. Flattened one hop so per-project 'green right now' can be a SUMIFS on this row._ |
 | Is Green | True when all of the following hold: the build status is not “fail”; the db status is not “fail”; and the conformance status is not “fail”. | _Order 1. No phase failed. A skipped phase does not fail an attempt._ |
 | Green Flag | Determined by priority: 1 if all of the following hold: the build status is not “fail”; the db status is not “fail”; and the conformance status is not “fail”; in all other cases, 0. | _Order 1. 1 when IsGreen, for SUMIFS rollups._ |
-| Is Fully Green | True when all of the following hold: the build status is “pass” and the conformance status is “pass”. | _Order 1. Built AND actually conformance-graded green — not merely 'nothing failed because nothing ran'._ |
-| Fully Green Flag | Determined by priority: 1 if all of the following hold: the build status is “pass” and the conformance status is “pass”; in all other cases, 0. | _Order 1. 1 when IsFullyGreen, for SUMIFS rollups._ |
+| Is Fully Green | True when all of the following hold: the build status is not “fail”; the db status is not “fail”; and the conformance status is “pass”. | _Order 1. Nothing failed AND conformance actually ran green — not merely 'nothing failed because nothing ran'. A pytest suite has no build phase, so this asks that the build did not FAIL rather than that it passed; a build-only attempt is never fully green because nothing was graded._ |
+| Fully Green Flag | Determined by priority: 1 if all of the following hold: the build status is not “fail”; the db status is not “fail”; and the conformance status is “pass”; in all other cases, 0. | _Order 1. 1 when IsFullyGreen, for SUMIFS rollups._ |
 | Build Failed Flag | Determined by priority: 1 if the build status is “fail”; in all other cases, 0. | _Order 1. 1 when the build phase failed._ |
 | Db Failed Flag | Determined by priority: 1 if the db status is “fail”; in all other cases, 0. | _Order 1. 1 when the database-reset phase failed._ |
 | Conformance Failed Flag | Determined by priority: 1 if the conformance status is “fail”; in all other cases, 0. | _Order 1. 1 when the conformance phase failed._ |
 | Failing Phase | Determined by priority: “build” if the build status is “fail”; “db” if the db status is “fail”; “conformance” if the conformance status is “fail”; in all other cases, an empty string. | _Order 1. The first phase that failed, or blank when the attempt was green._ |
 | Latest Green Flag | Determined by priority: 1 if all of the following hold: the corpus run is latest flag is set; the build status is not “fail”; the db status is not “fail”; and the conformance status is not “fail”; in all other cases, 0. | _Order 2. 1 when this attempt is green AND belongs to the latest fan-out. Flattens the two-hop 'is this project green right now' into one column._ |
-| Latest Fully Green Flag | Determined by priority: 1 if all of the following hold: the corpus run is latest flag is set; the build status is “pass”; and the conformance status is “pass”; in all other cases, 0. | _Order 2. 1 when this attempt built and graded green AND belongs to the latest fan-out._ |
+| Latest Fully Green Flag | Determined by priority: 1 if all of the following hold: the corpus run is latest flag is set; the build status is not “fail”; the db status is not “fail”; and the conformance status is “pass”; in all other cases, 0. | _Order 2. 1 when this attempt graded green with nothing failing AND belongs to the latest fan-out._ |
 | Latest Attempt Flag | Determined by priority: 1 if the corpus run is latest flag is set; in all other cases, 0. | _Order 2. 1 when this attempt belongs to the latest fan-out, green or not._ |
 | Conformance Outcome | A defined attribute. | _Why the conformance phase landed where it did: all-substrates-passed \| substrate-mismatch (the harness ran fine, substrates disagreed with the answer keys) \| harness-error (the harness itself failed) \| tests-passed / tests-failed (pytest suites) \| skipped. ConformanceStatus stays pass/fail/skipped so the flag formulas remain simple; this column carries the distinction._ |
 | **Rulebook Flavor** | Classification of each demo rulebook under rulebook-examples/. Lets the UI group projects by what they're TEACHING — a tutorial ladder is a different beast from a computation-heavy ontology. Density numbers come from a static analysis of each rulebook (calculated/aggregation/lookup counts). | — |
@@ -1473,14 +1473,14 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-174 Corpus Run is Latest** | A corpus domain run's corpus run is latest when the linked corpus run is a latest. |
 | **DR-175 Is Green** | A corpus domain run is considered a green if all of the following hold: the build status is not “fail”; the db status is not “fail”; and the conformance status is not “fail”. |
 | **DR-176 Green Flag** | The corpus domain run's green flag is determined by the following priority:<br>1. 1, if all of the following hold: the build status is not “fail”; the db status is not “fail”; and the conformance status is not “fail”;<br>2. in all other cases, 0. |
-| **DR-177 Is Fully Green** | A corpus domain run is considered a fully green if all of the following hold: the build status is “pass” and the conformance status is “pass”. |
-| **DR-178 Fully Green Flag** | The corpus domain run's fully green flag is determined by the following priority:<br>1. 1, if all of the following hold: the build status is “pass” and the conformance status is “pass”;<br>2. in all other cases, 0. |
+| **DR-177 Is Fully Green** | A corpus domain run is considered a fully green if all of the following hold: the build status is not “fail”; the db status is not “fail”; and the conformance status is “pass”. |
+| **DR-178 Fully Green Flag** | The corpus domain run's fully green flag is determined by the following priority:<br>1. 1, if all of the following hold: the build status is not “fail”; the db status is not “fail”; and the conformance status is “pass”;<br>2. in all other cases, 0. |
 | **DR-179 Build Failed Flag** | The corpus domain run's build failed flag is determined by the following priority:<br>1. 1, if the build status is “fail”;<br>2. in all other cases, 0. |
 | **DR-180 Db Failed Flag** | The corpus domain run's db failed flag is determined by the following priority:<br>1. 1, if the db status is “fail”;<br>2. in all other cases, 0. |
 | **DR-181 Conformance Failed Flag** | The corpus domain run's conformance failed flag is determined by the following priority:<br>1. 1, if the conformance status is “fail”;<br>2. in all other cases, 0. |
 | **DR-182 Failing Phase** | The corpus domain run's failing phase is determined by the following priority:<br>1. “build”, if the build status is “fail”;<br>2. “db”, if the db status is “fail”;<br>3. “conformance”, if the conformance status is “fail”;<br>4. in all other cases, an empty string. |
 | **DR-183 Latest Green Flag** | The corpus domain run's latest green flag is determined by the following priority:<br>1. 1, if all of the following hold: the corpus run is latest flag is set; the build status is not “fail”; the db status is not “fail”; and the conformance status is not “fail”;<br>2. in all other cases, 0. |
-| **DR-184 Latest Fully Green Flag** | The corpus domain run's latest fully green flag is determined by the following priority:<br>1. 1, if all of the following hold: the corpus run is latest flag is set; the build status is “pass”; and the conformance status is “pass”;<br>2. in all other cases, 0. |
+| **DR-184 Latest Fully Green Flag** | The corpus domain run's latest fully green flag is determined by the following priority:<br>1. 1, if all of the following hold: the corpus run is latest flag is set; the build status is not “fail”; the db status is not “fail”; and the conformance status is “pass”;<br>2. in all other cases, 0. |
 | **DR-185 Latest Attempt Flag** | The corpus domain run's latest attempt flag is determined by the following priority:<br>1. 1, if the corpus run is latest flag is set;<br>2. in all other cases, 0. |
 | **DR-186 Name** | A rulebook flavor's name is the same as its display name. |
 | **DR-187 Derived Field Count** | A rulebook flavor's derived field count is computed as the calculated count plus the aggregation count plus the lookup count. |
@@ -2114,14 +2114,14 @@ the same logic the rulebook stores, written for a business reader._
 | **CorpusDomainRuns.CorpusRunIsLatest** | lookup | `Lookup(CorpusRuns.IsLatest via CorpusRun)` |
 | **CorpusDomainRuns.IsGreen** | formula | `And(BuildStatus <> "fail", DbStatus <> "fail", ConformanceStatus <> "fail")` |
 | **CorpusDomainRuns.GreenFlag** | formula | `If(And(BuildStatus <> "fail", DbStatus <> "fail", ConformanceStatus <> "fail"), 1, 0)` |
-| **CorpusDomainRuns.IsFullyGreen** | formula | `And(BuildStatus = "pass", ConformanceStatus = "pass")` |
-| **CorpusDomainRuns.FullyGreenFlag** | formula | `If(And(BuildStatus = "pass", ConformanceStatus = "pass"), 1, 0)` |
+| **CorpusDomainRuns.IsFullyGreen** | formula | `And(BuildStatus <> "fail", DbStatus <> "fail", ConformanceStatus = "pass")` |
+| **CorpusDomainRuns.FullyGreenFlag** | formula | `If(And(BuildStatus <> "fail", DbStatus <> "fail", ConformanceStatus = "pass"), 1, 0)` |
 | **CorpusDomainRuns.BuildFailedFlag** | formula | `If(BuildStatus = "fail", 1, 0)` |
 | **CorpusDomainRuns.DbFailedFlag** | formula | `If(DbStatus = "fail", 1, 0)` |
 | **CorpusDomainRuns.ConformanceFailedFlag** | formula | `If(ConformanceStatus = "fail", 1, 0)` |
 | **CorpusDomainRuns.FailingPhase** | formula | `If(BuildStatus = "fail", "build", If(DbStatus = "fail", "db", If(ConformanceStatus = "fail", "conformance", "")))` |
 | **CorpusDomainRuns.LatestGreenFlag** | formula | `If(And(CorpusRunIsLatest, BuildStatus <> "fail", DbStatus <> "fail", ConformanceStatus <> "fail"), 1, 0)` |
-| **CorpusDomainRuns.LatestFullyGreenFlag** | formula | `If(And(CorpusRunIsLatest, BuildStatus = "pass", ConformanceStatus = "pass"), 1, 0)` |
+| **CorpusDomainRuns.LatestFullyGreenFlag** | formula | `If(And(CorpusRunIsLatest, BuildStatus <> "fail", DbStatus <> "fail", ConformanceStatus = "pass"), 1, 0)` |
 | **CorpusDomainRuns.LatestAttemptFlag** | formula | `If(CorpusRunIsLatest, 1, 0)` |
 | **RulebookFlavors.Name** | formula | `DisplayName` |
 | **RulebookFlavors.DerivedFieldCount** | formula | `CalculatedCount + AggregationCount + LookupCount` |

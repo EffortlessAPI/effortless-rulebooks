@@ -2,7 +2,7 @@
   "schema_version": "erb.explain_spec.v1",
   "rulebook": {
     "name": "traffic-ticket-contest",
-    "rulebook_hash": "sha256:c2e2cfc85065c7f9f581a769d52c442d"
+    "rulebook_hash": "sha256:d1b51c270988573175d19aa8a8f37326"
   },
   "semantics": {
     "profile": "excel",

@@ -48,6 +48,14 @@ export const rulebook = {
   },
   "Products": {
     "Description": "Table: Products",
+    "important": true,
+    "summary_rich": "The **SKU catalog**. Each product carries a `UnitPrice` and a `ReorderLevel`; its `CurrentQuantity` is *never stored* — it's a running sum of every `Transactions` row that names this SKU. Cross the reorder line and `IsLowStock` flips, `ReorderStatus` switches its message, and the picker chip lights red on the next read.",
+    "important_fields": [
+      "ProductId",
+      "CurrentQuantity",
+      "ReorderLevel",
+      "ReorderStatus"
+    ],
     "schema": [
       {
         "name": "ProductId",
@@ -84,7 +92,9 @@ export const rulebook = {
         "type": "aggregation",
         "nullable": false,
         "Description": "Running total of all transaction quantities for this product.",
-        "formula": "=SUMIFS(Transactions!{{Quantity}}, Transactions!{{Product}}, {{ProductId}})"
+        "formula": "=SUMIFS(Transactions!{{Quantity}}, Transactions!{{Product}}, {{ProductId}})",
+        "important": true,
+        "explanation_rich": "**On-hand is never stored — it is *summed*.** `CurrentQuantity` is `SUMIFS` over every `Transactions` row whose `Product` matches this SKU. Purchases add (positive `Quantity`), sales subtract (negative), adjustments do either. There is no `quantity_on_hand` column on `Products` — that field would lie the moment a transaction was inserted. Worked example: `WIDGET-A` has TXN-001 (+100), TXN-002 (–25), TXN-003 (–30) → `CurrentQuantity = 45`. Delete TXN-003 and the same field re-evaluates to `75` on the next read, without an UPDATE statement touching `Products`."
       },
       {
         "name": "IsLowStock",
@@ -92,7 +102,9 @@ export const rulebook = {
         "type": "calculated",
         "nullable": false,
         "Description": "True if current quantity falls below the reorder level.",
-        "formula": "={{CurrentQuantity}} < {{ReorderLevel}}"
+        "formula": "={{CurrentQuantity}} < {{ReorderLevel}}",
+        "important": true,
+        "explanation_rich": "**The reorder gate.** A one-line comparison between a *derived* aggregate and a *raw* threshold. Because `CurrentQuantity` is itself recomputed from the ledger, `IsLowStock` follows it automatically — no trigger, no scheduled job, no \"refresh inventory\" button. Worked example: `WIDGET-A` sits at `CurrentQuantity = 45` against `ReorderLevel = 50`, so `IsLowStock = TRUE`. Raise the reorder level to `40` (a policy change, not a stock change) and the *same* field flips to `FALSE` the same instant the rulebook recomputes."
       },
       {
         "name": "ReorderStatus",
@@ -100,7 +112,9 @@ export const rulebook = {
         "type": "calculated",
         "nullable": false,
         "Description": "Urgent reorder message if stock is low, otherwise in stock status.",
-        "formula": "=IF({{IsLowStock}}, \"This needs to be reordered IMMEDIATELY!!\", \"In Stock\")"
+        "formula": "=IF({{IsLowStock}}, \"This needs to be reordered IMMEDIATELY!!\", \"In Stock\")",
+        "important": true,
+        "explanation_rich": "**A second-order calculated field — IF over a boolean that is itself derived.** `ReorderStatus` doesn't read the ledger or the threshold directly; it reads `IsLowStock`, which reads `CurrentQuantity`, which reads `Transactions`. Three hops, one DAG. Worked example: insert TXN-011 with `Product = WIDGET-A`, `TransactionType = PURCHASE`, `Quantity = +20` — `CurrentQuantity` becomes `65`, `IsLowStock` flips to `FALSE`, and *the same instant* this field flips from “This needs to be reordered IMMEDIATELY!!” to “In Stock.” No application code wrote the new string; the formula did."
       }
     ],
     "data": [
@@ -128,6 +142,15 @@ export const rulebook = {
   },
   "Transactions": {
     "Description": "Table: Transactions",
+    "important": true,
+    "summary_rich": "The **ledger**. Every stock movement — `PURCHASE` (positive `Quantity`), `SALE` (negative), or `ADJUSTMENT` (signed write-off) — lands here as one immutable row. The product's `CurrentQuantity` is the SUMIFS over this table; there is no stored on-hand number. Insert TXN-011 with `Quantity = -10` against `WIDGET-A` and *every* substrate's reorder chip flips on the next read.",
+    "important_fields": [
+      "TransactionId",
+      "ProductName",
+      "TransactionTypeName",
+      "Quantity",
+      "Amount"
+    ],
     "schema": [
       {
         "name": "TransactionId",
@@ -196,8 +219,10 @@ export const rulebook = {
         "datatype": "number",
         "type": "calculated",
         "nullable": false,
-        "Description": "Transaction value = Quantity \u00d7 UnitPrice.",
-        "formula": "={{Quantity}} * {{ProductUnitPrice}}"
+        "Description": "Transaction value = Quantity × UnitPrice.",
+        "formula": "={{Quantity}} * {{ProductUnitPrice}}",
+        "important": true,
+        "explanation_rich": "**Signed dollar impact of one ledger row.** `ProductUnitPrice` is itself a `lookup` (INDEX/MATCH back into `Products.UnitPrice`), so `Amount` lives one hop downstream of the catalog. Sign falls out naturally: purchases are positive (cash out / stock in), sales are negative (cash in / stock out). Worked example: TXN-003 is `Quantity = -30` against `WIDGET-A` (`UnitPrice = 12.99`) → `Amount = -389.70`. Change `WIDGET-A`'s unit price to `13.49` and *every historical sale* of that SKU re-prices on the next read — useful for what-if, dangerous if you wanted a frozen ledger, and that tension is the *point* of looking it up vs. snapshotting it."
       },
       {
         "name": "TransactionDate",
@@ -297,15 +322,119 @@ export const rulebook = {
       }
     ]
   },
-  "_meta": {
-    "_CMCC_Summary": "Product inventory demo with transaction-based quantity tracking.",
-    "_conversion_metadata": {
-      "tool_version": "effortless-demo-app",
-      "created_date": "2026-05-23",
-      "methodology": "rulebook-first Postgres POC",
-      "entities": 3,
-      "inference_hops": 2
-    }
+  "__meta__": {
+    "Description": "Project-level metadata that travels with the rulebook: tagline, motif, narrative descriptions, substrate list, signature rows, etc. One row per metadata key. Use ValueType to interpret StringValue vs JsonValue.",
+    "important": false,
+    "schema": [
+      {
+        "name": "MetaKey",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The metadata key (e.g. 'tagline', 'motif_palette', 'substrates'). Unique within the table."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "formula": "={{MetaKey}}",
+        "Description": "Identifier for this metadata entry. Mirrors MetaKey so the row is addressable by Name like every other table."
+      },
+      {
+        "name": "ValueType",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "How to interpret the value columns: 'string' (use StringValue), 'object' (parse JsonValue as JSON object), 'array' (parse JsonValue as JSON array)."
+      },
+      {
+        "name": "StringValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Plain string value. Populated when ValueType == 'string'; null otherwise."
+      },
+      {
+        "name": "JsonValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "JSON-encoded value. Populated when ValueType == 'object' or 'array'; null when ValueType == 'string'."
+      }
+    ],
+    "data": [
+      {
+        "MetaKey": "tagline",
+        "Name": "tagline",
+        "ValueType": "string",
+        "StringValue": "Four SKUs, a transaction ledger, and a reorder gate that fires itself.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif",
+        "Name": "motif",
+        "ValueType": "string",
+        "StringValue": "skyline",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif_palette",
+        "Name": "motif_palette",
+        "ValueType": "object",
+        "StringValue": null,
+        "JsonValue": "{\"primary\": \"#1f3a5f\", \"accent\": \"#f0b21f\", \"ink\": \"#0d1a2e\"}"
+      },
+      {
+        "MetaKey": "description_rich",
+        "Name": "description_rich",
+        "ValueType": "string",
+        "StringValue": "Product Inventory is the **derived-on-hand** demo. There is no `quantity_on_hand` column. Every PURCHASE / SALE / ADJUSTMENT lands as one row in `Transactions`, and `Products.CurrentQuantity` is the SUMIFS over that ledger. Stack two more calculated fields on top — `IsLowStock` (a boolean compare against `ReorderLevel`) and `ReorderStatus` (an IF over that boolean) — and the whole reorder workflow becomes a three-hop DAG that fires identically in Postgres, Python, Excel, and OWL. Insert one transaction, every read downstream re-evaluates. No triggers, no cron, no \"refresh inventory\" button.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "use_cases",
+        "Name": "use_cases",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[\"**Sell one WIDGET-A and watch it cross the reorder line.** Today `WIDGET-A` sits at `CurrentQuantity = 45` against `ReorderLevel = 50` — already low. Insert TXN-011 with `Quantity = -5` and `CurrentQuantity` drops to `40`, `IsLowStock` stays `TRUE`, `ReorderStatus` keeps shouting. Insert a PURCHASE for `+20` instead and the same three fields flip on the next read.\", \"**Raise TOOL-D's reorder level without touching stock.** `TOOL-D` has `CurrentQuantity = 5` against `ReorderLevel = 10` (low). Edit `ReorderLevel` down to `4` — no transaction written — and `IsLowStock` flips `FALSE` and `ReorderStatus` flips to “In Stock” the *same instant* the rulebook recomputes. Policy changes are first-class.\", \"**Re-price GADGET-B retroactively.** Change `GADGET-B.UnitPrice` from `24.50` to `27.00`. Every historical `Transactions.Amount` for that SKU re-evaluates through the `ProductUnitPrice` lookup — useful for what-if costing, dangerous if you wanted a frozen ledger. The rulebook makes the choice visible: snapshot if you must, derive if you can.\", \"**Add a fifth SKU with zero stock and watch it self-classify.** Insert `WIDGET-E` with `ReorderLevel = 25` and no transactions. `CurrentQuantity` resolves to `0` (empty SUMIFS), `IsLowStock` to `TRUE`, `ReorderStatus` to the urgent message — without a single line of seed code marking it as needing reorder.\", \"**Ask the same reorder question in two substrates.** “How many SKUs are below their reorder level?” in the Postgres view, then the same question in Python — same number (today: 4 of 4), no glue code, no drift.\"]"
+      },
+      {
+        "MetaKey": "signature_rows",
+        "Name": "signature_rows",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"entity\": \"Products\", \"ids\": [\"WIDGET-A\", \"GADGET-B\", \"PART-C\", \"TOOL-D\"]}, {\"entity\": \"Transactions\", \"ids\": [\"TXN-001\", \"TXN-002\", \"TXN-003\"]}]"
+      },
+      {
+        "MetaKey": "journal_seed",
+        "Name": "journal_seed",
+        "ValueType": "string",
+        "StringValue": "Every SKU is currently below its reorder level — WIDGET-A at 45/50, GADGET-B at 15/30, PART-C at 70/100, TOOL-D at 5/10. The ledger says so without anyone running a report.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "substrates",
+        "Name": "substrates",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"key\": \"postgres\", \"important\": true, \"chip_label\": \"Postgres\"}, {\"key\": \"python\", \"important\": true, \"chip_label\": \"Python\"}, {\"key\": \"excel\", \"important\": false, \"chip_label\": \"Excel\"}, {\"key\": \"owl\", \"important\": false, \"chip_label\": \"OWL\"}]"
+      },
+      {
+        "MetaKey": "CMCC_Summary",
+        "Name": "CMCC_Summary",
+        "ValueType": "string",
+        "StringValue": "Product inventory demo with transaction-based quantity tracking.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "conversion_metadata",
+        "Name": "conversion_metadata",
+        "ValueType": "object",
+        "StringValue": null,
+        "JsonValue": "{\"tool_version\": \"effortless-demo-app\", \"created_date\": \"2026-05-23\", \"methodology\": \"rulebook-first Postgres POC\", \"entities\": 3, \"inference_hops\": 2}"
+      }
+    ]
   }
 } as const;
 export type Rulebook = typeof rulebook;

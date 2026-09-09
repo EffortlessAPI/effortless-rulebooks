@@ -204,10 +204,12 @@ CORPUS_DOMAIN_RUNS_SCHEMA = [
          '=AND({{BuildStatus}} <> "fail", {{DbStatus}} <> "fail", {{ConformanceStatus}} <> "fail")', datatype="boolean"),
     calc("GreenFlag", "Order 4. 1 when IsGreen, for SUMIFS rollups.",
          '=IF(AND({{BuildStatus}} <> "fail", {{DbStatus}} <> "fail", {{ConformanceStatus}} <> "fail"), 1, 0)', datatype="number"),
-    calc("IsFullyGreen", "Order 3. Built AND actually conformance-graded green — not merely 'nothing failed because nothing ran'.",
-         '=AND({{BuildStatus}} = "pass", {{ConformanceStatus}} = "pass")', datatype="boolean"),
+    calc("IsFullyGreen", "Order 3. Nothing failed AND conformance actually ran green — not merely 'nothing failed "
+         "because nothing ran'. A pytest suite has no build phase, so this asks that the build did not FAIL rather "
+         "than that it passed; a build-only attempt is never fully green because nothing was graded.",
+         '=AND({{BuildStatus}} <> "fail", {{DbStatus}} <> "fail", {{ConformanceStatus}} = "pass")', datatype="boolean"),
     calc("FullyGreenFlag", "Order 4. 1 when IsFullyGreen, for SUMIFS rollups.",
-         '=IF(AND({{BuildStatus}} = "pass", {{ConformanceStatus}} = "pass"), 1, 0)', datatype="number"),
+         '=IF(AND({{BuildStatus}} <> "fail", {{DbStatus}} <> "fail", {{ConformanceStatus}} = "pass"), 1, 0)', datatype="number"),
     calc("BuildFailedFlag", "Order 4. 1 when the build phase failed.", '=IF({{BuildStatus}} = "fail", 1, 0)', datatype="number"),
     calc("DbFailedFlag", "Order 4. 1 when the database-reset phase failed.", '=IF({{DbStatus}} = "fail", 1, 0)', datatype="number"),
     calc("ConformanceFailedFlag", "Order 4. 1 when the conformance phase failed.", '=IF({{ConformanceStatus}} = "fail", 1, 0)', datatype="number"),
@@ -217,8 +219,8 @@ CORPUS_DOMAIN_RUNS_SCHEMA = [
          'IF({{ConformanceStatus}} = "fail", "conformance", "")))'),
     calc("LatestGreenFlag", "Order 6. 1 when this attempt is green AND belongs to the latest fan-out. Flattens the two-hop 'is this project green right now' into one column.",
          '=IF(AND({{CorpusRunIsLatest}}, {{BuildStatus}} <> "fail", {{DbStatus}} <> "fail", {{ConformanceStatus}} <> "fail"), 1, 0)', datatype="number"),
-    calc("LatestFullyGreenFlag", "Order 6. 1 when this attempt built and graded green AND belongs to the latest fan-out.",
-         '=IF(AND({{CorpusRunIsLatest}}, {{BuildStatus}} = "pass", {{ConformanceStatus}} = "pass"), 1, 0)', datatype="number"),
+    calc("LatestFullyGreenFlag", "Order 6. 1 when this attempt graded green with nothing failing AND belongs to the latest fan-out.",
+         '=IF(AND({{CorpusRunIsLatest}}, {{BuildStatus}} <> "fail", {{DbStatus}} <> "fail", {{ConformanceStatus}} = "pass"), 1, 0)', datatype="number"),
     calc("LatestAttemptFlag", "Order 6. 1 when this attempt belongs to the latest fan-out, green or not.",
          "=IF({{CorpusRunIsLatest}}, 1, 0)", datatype="number"),
 ]

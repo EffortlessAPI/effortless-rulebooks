@@ -313,8 +313,8 @@ CREATE TABLE IF NOT EXISTS corpus_runs (
   corpus_run_id                       TEXT                 PRIMARY KEY          -- PK: corpus-<yyyymmdd>-<hhmmss>, matching the run directory under orchestration/corpus-runs/.
 );
 ALTER TABLE corpus_runs ADD COLUMN IF NOT EXISTS mode TEXT;                                         -- build-only (build + db reset, conformance skipped) | full (build + db reset + conformance).
-ALTER TABLE corpus_runs ADD COLUMN IF NOT EXISTS started_on TEXT;                                   -- ISO timestamp the fan-out began.
-ALTER TABLE corpus_runs ADD COLUMN IF NOT EXISTS finished_on TEXT;                                  -- ISO timestamp the fan-out finished. Blank while the run is still in flight.
+ALTER TABLE corpus_runs ADD COLUMN IF NOT EXISTS started_on TIMESTAMPTZ;                            -- ISO timestamp the fan-out began.
+ALTER TABLE corpus_runs ADD COLUMN IF NOT EXISTS finished_on TIMESTAMPTZ;                           -- ISO timestamp the fan-out finished. Blank while the run is still in flight.
 ALTER TABLE corpus_runs ADD COLUMN IF NOT EXISTS is_latest BOOLEAN;                                 -- TRUE on exactly one row: the most recently STARTED corpus run. The runner clears it from every other row.
 ALTER TABLE corpus_runs ADD COLUMN IF NOT EXISTS target_count NUMERIC;                              -- How many suites the runner selected for this fan-out.
 ALTER TABLE corpus_runs ADD COLUMN IF NOT EXISTS status_path TEXT;                                  -- Repo-relative path to this run's status.json, the live artifact the explorer tails.

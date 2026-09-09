@@ -1,8 +1,4 @@
 {
-  "ShowHidden": false,
-  "ShowAllFiles": false,
-  "CurrentPath": null,
-  "SSoTmeProjectFiles": null,
   "SSoTmeProjectId": "64097516-4ed0-4251-a101-d1cd6e776f21",
   "Name": "mechanical-kitchen-timer",
   "ProjectSettings": [
@@ -18,9 +14,8 @@
       "RelativePath": "/postgres-bootstrap",
       "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/mechanical-kitchen-timer-rulebook.json -p mode=drop-all -p stage=dev -p drop_all=true",
       "IsDisabled": false,
-      "PinnedVersion": "v2026.05.09.1738",
-      "LastVersionUsed": "v2026.05.09.1738",
-      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-05-09-1738-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+      "LastVersionUsed": "v2026.09.07.0336",
+      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-09-07-0336-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
       "IsSSoTTranspiler": false,
@@ -43,7 +38,7 @@
       "RelativePath": "/rulespeak",
       "CommandLine": "rulebook-to-rulespeak -i ../effortless-rulebook/mechanical-kitchen-timer-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.06.06.0219",
+      "LastVersionUsed": "v2026.08.30.1537",
       "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-06-06-0219-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
@@ -51,7 +46,12 @@
       "Name": "effortlessrulebookeditor",
       "RelativePath": "/effortless-rulebook",
       "CommandLine": "effortless-rulebook-editor -i mechanical-kitchen-timer-rulebook.json -p rulebookPath=mechanical-kitchen-timer-rulebook.json -p dockerfilePath=docker/Dockerfile",
-      "IsDisabled": false
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.09.07.0138"
     }
-  ]
+  ],
+  "ShowHidden": false,
+  "ShowAllFiles": false,
+  "CurrentPath": null,
+  "SSoTmeProjectFiles": null
 }

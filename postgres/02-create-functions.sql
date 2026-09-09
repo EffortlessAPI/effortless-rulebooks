@@ -3068,7 +3068,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_corpus_runs_is_complete(p_corpus_run_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(finished_on, '') FROM corpus_runs WHERE corpus_run_id = p_corpus_run_id) IS NOT NULL)::boolean;
+  SELECT ((SELECT finished_on::timestamptz FROM corpus_runs WHERE corpus_run_id = p_corpus_run_id) IS NOT NULL)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_corpus_runs_is_corpus_green
@@ -3088,7 +3088,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_corpus_runs_overall_status(p_corpus_run_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(finished_on, '') FROM corpus_runs WHERE corpus_run_id = p_corpus_run_id) IS NULL THEN ('running')::text ELSE (CASE WHEN (calc_corpus_runs_domain_run_count(p_corpus_run_id))::NUMERIC = 0 THEN ('no-targets')::text ELSE (CASE WHEN (calc_corpus_runs_red_domain_count(p_corpus_run_id))::NUMERIC = 0 THEN ('green')::text ELSE ('red')::text END)::text END)::text END)::text;
+  SELECT (CASE WHEN (SELECT finished_on::timestamptz FROM corpus_runs WHERE corpus_run_id = p_corpus_run_id) IS NULL THEN ('running')::text ELSE (CASE WHEN (calc_corpus_runs_domain_run_count(p_corpus_run_id))::NUMERIC = 0 THEN ('no-targets')::text ELSE (CASE WHEN (calc_corpus_runs_red_domain_count(p_corpus_run_id))::NUMERIC = 0 THEN ('green')::text ELSE ('red')::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_corpus_domain_runs_domain_name
@@ -3149,7 +3149,7 @@ $$ LANGUAGE sql STABLE;
 -- Used for join-free cross-table references in aggregations
 
 CREATE OR REPLACE FUNCTION get_corpus_runs_started_on(p_corpus_run_id TEXT)
-RETURNS TEXT AS $$
+RETURNS TIMESTAMPTZ AS $$
   SELECT (SELECT started_on FROM corpus_runs WHERE corpus_run_id = p_corpus_run_id);
 $$ LANGUAGE sql STABLE;
 
@@ -3158,7 +3158,7 @@ $$ LANGUAGE sql STABLE;
 -- Used for join-free cross-table references in aggregations
 
 CREATE OR REPLACE FUNCTION get_corpus_runs_finished_on(p_corpus_run_id TEXT)
-RETURNS TEXT AS $$
+RETURNS TIMESTAMPTZ AS $$
   SELECT (SELECT finished_on FROM corpus_runs WHERE corpus_run_id = p_corpus_run_id);
 $$ LANGUAGE sql STABLE;
 
@@ -3235,7 +3235,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_corpus_domain_runs_is_fully_green(p_corpus_domain_run_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((SELECT NULLIF(build_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) = 'pass' AND (SELECT NULLIF(conformance_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) = 'pass'))::boolean;
+  SELECT (((SELECT NULLIF(build_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) <> 'fail' AND (SELECT NULLIF(db_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) <> 'fail' AND (SELECT NULLIF(conformance_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) = 'pass'))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_corpus_domain_runs_fully_green_flag
@@ -3245,7 +3245,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_corpus_domain_runs_fully_green_flag(p_corpus_domain_run_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN ((SELECT NULLIF(build_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) = 'pass' AND (SELECT NULLIF(conformance_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) = 'pass') THEN (1)::text ELSE (0)::text END)::numeric;
+  SELECT (CASE WHEN ((SELECT NULLIF(build_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) <> 'fail' AND (SELECT NULLIF(db_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) <> 'fail' AND (SELECT NULLIF(conformance_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) = 'pass') THEN (1)::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_corpus_domain_runs_build_failed_flag
@@ -3305,7 +3305,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_corpus_domain_runs_latest_fully_green_flag(p_corpus_domain_run_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN ((calc_corpus_domain_runs_corpus_run_is_latest(p_corpus_domain_run_id) = 'true') AND (SELECT NULLIF(build_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) = 'pass' AND (SELECT NULLIF(conformance_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) = 'pass') THEN (1)::text ELSE (0)::text END)::numeric;
+  SELECT (CASE WHEN ((calc_corpus_domain_runs_corpus_run_is_latest(p_corpus_domain_run_id) = 'true') AND (SELECT NULLIF(build_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) <> 'fail' AND (SELECT NULLIF(db_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) <> 'fail' AND (SELECT NULLIF(conformance_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) = 'pass') THEN (1)::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_corpus_domain_runs_latest_attempt_flag

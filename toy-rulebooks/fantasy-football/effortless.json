@@ -1,8 +1,4 @@
 {
-  "ShowHidden": false,
-  "ShowAllFiles": false,
-  "CurrentPath": null,
-  "SSoTmeProjectFiles": null,
   "SSoTmeProjectId": "493c2699-0bcf-4a4c-9d93-095759cb14c4",
   "Name": "fantasy-football",
   "ProjectSettings": [
@@ -18,9 +14,8 @@
       "RelativePath": "/postgres-bootstrap",
       "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/fantasy-football-rulebook.json -p mode=drop-all -p stage=dev -p drop_all=true",
       "IsDisabled": false,
-      "PinnedVersion": "v2026.05.09.1738",
-      "LastVersionUsed": "v2026.05.09.1738",
-      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-05-09-1738-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+      "LastVersionUsed": "v2026.09.07.0336",
+      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-09-07-0336-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
       "IsSSoTTranspiler": false,
@@ -35,8 +30,8 @@
       "RelativePath": "/web/src",
       "CommandLine": "rulebook-to-react-explainer-dag -i ../../effortless-rulebook/fantasy-football-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.05.20.0229",
-      "LastUrl": "https://effortless-rulebook-to-react-exp-v2026-05-20-0229-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+      "LastVersionUsed": "v2026.08.11.2341",
+      "LastUrl": "https://effortless-rulebook-to-react-exp-v2026-08-11-2341-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
       "IsSSoTTranspiler": false,
@@ -52,7 +47,7 @@
       "RelativePath": "/rulespeak",
       "CommandLine": "rulebook-to-rulespeak -i ../effortless-rulebook/fantasy-football-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.06.06.0219",
+      "LastVersionUsed": "v2026.08.30.1537",
       "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-06-06-0219-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
@@ -60,7 +55,12 @@
       "Name": "effortlessrulebookeditor",
       "RelativePath": "/effortless-rulebook",
       "CommandLine": "effortless-rulebook-editor -i fantasy-football-rulebook.json -p rulebookPath=fantasy-football-rulebook.json -p dockerfilePath=docker/Dockerfile",
-      "IsDisabled": false
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.09.07.0138"
     }
-  ]
+  ],
+  "ShowHidden": false,
+  "ShowAllFiles": false,
+  "CurrentPath": null,
+  "SSoTmeProjectFiles": null
 }

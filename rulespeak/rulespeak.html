@@ -7383,7 +7383,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <div class="prov-grid">
         <a class="input tone-calc" href="#en-f-corpusdomainruns-latestfullygreenflag">
           <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Latest Fully Green Flag</span><span class="input-table">Corpus Domain Run</span></span>
-          <span class="input-en">If corpus run is latest, build status is &quot;pass&quot;, and conformance status is &quot;pass&quot; then 1, otherwise 0.</span>
+          <span class="input-en">If corpus run is latest, build status is not &quot;fail&quot;, db status is not &quot;fail&quot;, and conformance status is &quot;pass&quot; then 1, otherwise 0.</span>
         </a>
         <a class="input tone-rel" href="#en-f-corpusdomainruns-domain">
           <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Domain</span><span class="input-table">Corpus Domain Run</span></span>
@@ -7402,12 +7402,13 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
-      <summary>Ground truth at the leaves <span class="count">7</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <summary>Ground truth at the leaves <span class="count">8</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-raw" href="#en-f-corpusruns-islatest">● Is Latest <span class="ref-pill-tbl">Corpus Run</span></a>
         <a class="ref-pill tone-rel" href="#en-f-corpusdomainruns-corpusrun">⇢ Corpus Run <span class="ref-pill-tbl">Corpus Domain Run</span></a>
         <span class="ref-pill tone-raw">● Corpus Run ID <span class="ref-pill-tbl">Corpus Run</span></span>
         <a class="ref-pill tone-raw" href="#en-f-corpusdomainruns-buildstatus">● Build Status <span class="ref-pill-tbl">Corpus Domain Run</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-corpusdomainruns-dbstatus">● Db Status <span class="ref-pill-tbl">Corpus Domain Run</span></a>
         <a class="ref-pill tone-raw" href="#en-f-corpusdomainruns-conformancestatus">● Conformance Status <span class="ref-pill-tbl">Corpus Domain Run</span></a>
         <a class="ref-pill tone-rel" href="#en-f-corpusdomainruns-domain">⇢ Domain <span class="ref-pill-tbl">Corpus Domain Run</span></a>
         <span class="ref-pill tone-raw">● Domain ID <span class="ref-pill-tbl">Rulebook Domain</span></span>
@@ -7511,8 +7512,8 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-rel" href="#en-f-corpusdomainruns-domain">⇢ Domain <span class="ref-pill-tbl">Corpus Domain Run</span></a>
         <span class="ref-pill tone-raw">● Domain ID <span class="ref-pill-tbl">Rulebook Domain</span></span>
         <a class="ref-pill tone-raw" href="#en-f-corpusdomainruns-buildstatus">● Build Status <span class="ref-pill-tbl">Corpus Domain Run</span></a>
-        <a class="ref-pill tone-raw" href="#en-f-corpusdomainruns-conformancestatus">● Conformance Status <span class="ref-pill-tbl">Corpus Domain Run</span></a>
         <a class="ref-pill tone-raw" href="#en-f-corpusdomainruns-dbstatus">● Db Status <span class="ref-pill-tbl">Corpus Domain Run</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-corpusdomainruns-conformancestatus">● Conformance Status <span class="ref-pill-tbl">Corpus Domain Run</span></a>
       </div>
     </details>
     <p class="field-note elem elem-desc">Order 4. not-run | green | fully-green | red — this project's standing in the latest fan-out.</p>
@@ -10602,7 +10603,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <div class="prov-grid">
         <a class="input tone-calc" href="#en-f-corpusdomainruns-fullygreenflag">
           <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Fully Green Flag</span><span class="input-table">Corpus Domain Run</span></span>
-          <span class="input-en">If build status is &quot;pass&quot; and conformance status is &quot;pass&quot; then 1, otherwise 0.</span>
+          <span class="input-en">If build status is not &quot;fail&quot;, db status is not &quot;fail&quot;, and conformance status is &quot;pass&quot; then 1, otherwise 0.</span>
         </a>
         <a class="input tone-rel" href="#en-f-corpusdomainruns-corpusrun">
           <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Corpus Run</span><span class="input-table">Corpus Domain Run</span></span>
@@ -10621,9 +10622,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
-      <summary>Ground truth at the leaves <span class="count">4</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <summary>Ground truth at the leaves <span class="count">5</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-raw" href="#en-f-corpusdomainruns-buildstatus">● Build Status <span class="ref-pill-tbl">Corpus Domain Run</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-corpusdomainruns-dbstatus">● Db Status <span class="ref-pill-tbl">Corpus Domain Run</span></a>
         <a class="ref-pill tone-raw" href="#en-f-corpusdomainruns-conformancestatus">● Conformance Status <span class="ref-pill-tbl">Corpus Domain Run</span></a>
         <a class="ref-pill tone-rel" href="#en-f-corpusdomainruns-corpusrun">⇢ Corpus Run <span class="ref-pill-tbl">Corpus Domain Run</span></a>
         <span class="ref-pill tone-raw">● Corpus Run ID <span class="ref-pill-tbl">Corpus Run</span></span>
@@ -10971,11 +10973,12 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
-      <summary>Ground truth at the leaves <span class="count">4</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <summary>Ground truth at the leaves <span class="count">5</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-rel" href="#en-f-corpusdomainruns-corpusrun">⇢ Corpus Run <span class="ref-pill-tbl">Corpus Domain Run</span></a>
         <span class="ref-pill tone-raw">● Corpus Run ID <span class="ref-pill-tbl">Corpus Run</span></span>
         <a class="ref-pill tone-raw" href="#en-f-corpusdomainruns-buildstatus">● Build Status <span class="ref-pill-tbl">Corpus Domain Run</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-corpusdomainruns-dbstatus">● Db Status <span class="ref-pill-tbl">Corpus Domain Run</span></a>
         <a class="ref-pill tone-raw" href="#en-f-corpusdomainruns-conformancestatus">● Conformance Status <span class="ref-pill-tbl">Corpus Domain Run</span></a>
       </div>
     </details>
@@ -11300,18 +11303,24 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <details class="prov prov-consumers elem elem-consumers" open>
-      <summary>Consumers <span class="count">5 direct</span> <span class="count count-muted">+9 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">8 direct</span> <span class="count count-muted">+12 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#en-f-corpusdomainruns-isgreen">ƒ Is Green <span class="ref-pill-tbl">Corpus Domain Run</span></a>
         <a class="ref-pill tone-calc" href="#en-f-corpusdomainruns-greenflag">ƒ Green Flag <span class="ref-pill-tbl">Corpus Domain Run</span></a>
+        <a class="ref-pill tone-calc" href="#en-f-corpusdomainruns-isfullygreen">ƒ Is Fully Green <span class="ref-pill-tbl">Corpus Domain Run</span></a>
+        <a class="ref-pill tone-calc" href="#en-f-corpusdomainruns-fullygreenflag">ƒ Fully Green Flag <span class="ref-pill-tbl">Corpus Domain Run</span></a>
         <a class="ref-pill tone-calc" href="#en-f-corpusdomainruns-dbfailedflag">ƒ Db Failed Flag <span class="ref-pill-tbl">Corpus Domain Run</span></a>
         <a class="ref-pill tone-calc" href="#en-f-corpusdomainruns-failingphase">ƒ Failing Phase <span class="ref-pill-tbl">Corpus Domain Run</span></a>
         <a class="ref-pill tone-calc" href="#en-f-corpusdomainruns-latestgreenflag">ƒ Latest Green Flag <span class="ref-pill-tbl">Corpus Domain Run</span></a>
+        <a class="ref-pill tone-calc" href="#en-f-corpusdomainruns-latestfullygreenflag">ƒ Latest Fully Green Flag <span class="ref-pill-tbl">Corpus Domain Run</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-corpusruns-greendomaincount">Green Domain Count <span class="ref-pill-tbl">Corpus Run</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-corpusruns-fullygreendomaincount">Fully Green Domain Count <span class="ref-pill-tbl">Corpus Run</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-corpusruns-dbfailurecount">Db Failure Count <span class="ref-pill-tbl">Corpus Run</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-rulebookdomains-latestgreencount">Latest Green Count <span class="ref-pill-tbl">Rulebook Domain</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-rulebookdomains-latestfullygreencount">Latest Fully Green Count <span class="ref-pill-tbl">Rulebook Domain</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-corpusruns-reddomaincount">Red Domain Count <span class="ref-pill-tbl">Corpus Run</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-corpusruns-greenpercent">Green Percent <span class="ref-pill-tbl">Corpus Run</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-corpusruns-fullygreenpercent">Fully Green Percent <span class="ref-pill-tbl">Corpus Run</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-rulebookdomains-isgreeninlatestcorpusrun">Is Green in Latest Corpus Run <span class="ref-pill-tbl">Rulebook Domain</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-rulebookdomains-corpusteststate">Corpus Test State <span class="ref-pill-tbl">Rulebook Domain</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-corpusruns-iscorpusgreen">Is Corpus Green <span class="ref-pill-tbl">Corpus Run</span></a>
@@ -11771,23 +11780,27 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
         <span class="view-label">In RuleSpeak®</span>
-        <div class="view-body"><p class="rt-headline">A corpus domain run is considered a fully green if all of the following:</p><ol class="rt-priority"><ul class="rt-group"><li>the <a class="ref" href="#en-f-corpusdomainruns-buildstatus">build status</a> is “pass”</li><li>the <a class="ref" href="#en-f-corpusdomainruns-conformancestatus">conformance status</a> is “pass”</li></ul></ol></div>
+        <div class="view-body"><p class="rt-headline">A corpus domain run is considered a fully green if all of the following:</p><ol class="rt-priority"><ul class="rt-group"><li>the <a class="ref" href="#en-f-corpusdomainruns-buildstatus">build status</a> is not “fail”</li><li>the <a class="ref" href="#en-f-corpusdomainruns-dbstatus">db status</a> is not “fail”</li><li>the <a class="ref" href="#en-f-corpusdomainruns-conformancestatus">conformance status</a> is “pass”</li></ul></ol></div>
       </div>
       <div class="view elem elem-english">
         <span class="view-label">In plain words</span>
-        <p class="view-body"><a class="ref" href="#en-f-corpusdomainruns-buildstatus">Build status</a> is &quot;pass&quot; and <a class="ref" href="#en-f-corpusdomainruns-conformancestatus">conformance status</a> is &quot;pass&quot;.</p>
+        <p class="view-body"><a class="ref" href="#en-f-corpusdomainruns-buildstatus">Build status</a> is not &quot;fail&quot;, <a class="ref" href="#en-f-corpusdomainruns-dbstatus">db status</a> is not &quot;fail&quot;, and <a class="ref" href="#en-f-corpusdomainruns-conformancestatus">conformance status</a> is &quot;pass&quot;.</p>
       </div>
       <div class="view elem elem-formula">
         <span class="view-label">As a formula</span>
-        <div class="view-body fx"><span class="fx-eq">= </span>AND(<a class="fx-chip" href="#en-f-corpusdomainruns-buildstatus">Build Status</a> = &quot;pass&quot;, <a class="fx-chip" href="#en-f-corpusdomainruns-conformancestatus">Conformance Status</a> = &quot;pass&quot;)</div>
+        <div class="view-body fx"><span class="fx-eq">= </span>AND(<a class="fx-chip" href="#en-f-corpusdomainruns-buildstatus">Build Status</a> &lt;&gt; &quot;fail&quot;, <a class="fx-chip" href="#en-f-corpusdomainruns-dbstatus">Db Status</a> &lt;&gt; &quot;fail&quot;, <a class="fx-chip" href="#en-f-corpusdomainruns-conformancestatus">Conformance Status</a> = &quot;pass&quot;)</div>
       </div>
     </div>
     <details class="prov prov-inputs elem elem-inputs" open>
-      <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
       <div class="prov-grid">
         <a class="input tone-raw" href="#en-f-corpusdomainruns-buildstatus">
           <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Build Status</span><span class="input-table">Corpus Domain Run</span></span>
           <span class="input-en muted">pass | fail | skipped — outcome of `effortless build` in the project directory.</span>
+        </a>
+        <a class="input tone-raw" href="#en-f-corpusdomainruns-dbstatus">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Db Status</span><span class="input-table">Corpus Domain Run</span></span>
+          <span class="input-en muted">pass | fail | skipped — outcome of createdb + postgres-bootstrap/reset-rulebook-db.sh.</span>
         </a>
         <a class="input tone-raw" href="#en-f-corpusdomainruns-conformancestatus">
           <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Conformance Status</span><span class="input-table">Corpus Domain Run</span></span>
@@ -11796,13 +11809,14 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
-      <summary>Ground truth at the leaves <span class="count">2</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <summary>Ground truth at the leaves <span class="count">3</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-raw" href="#en-f-corpusdomainruns-buildstatus">● Build Status <span class="ref-pill-tbl">Corpus Domain Run</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-corpusdomainruns-dbstatus">● Db Status <span class="ref-pill-tbl">Corpus Domain Run</span></a>
         <a class="ref-pill tone-raw" href="#en-f-corpusdomainruns-conformancestatus">● Conformance Status <span class="ref-pill-tbl">Corpus Domain Run</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Order 1. Built AND actually conformance-graded green — not merely 'nothing failed because nothing ran'.</p>
+    <p class="field-note elem elem-desc">Order 1. Nothing failed AND conformance actually ran green — not merely 'nothing failed because nothing ran'. A pytest suite has no build phase, so this asks that the build did not FAIL rather than that it passed; a build-only attempt is never fully green because nothing was graded.</p>
     </article>
   <article class="field tone-calc" id="en-f-corpusdomainruns-fullygreenflag" data-entity="Corpus Domain Run" data-field="Fully Green Flag">
     <div class="field-head">
@@ -11816,23 +11830,27 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
         <span class="view-label">In RuleSpeak®</span>
-        <div class="view-body"><p class="rt-headline">The corpus domain run's <a class="ref" href="#en-f-corpusdomainruns-fullygreenflag">fully green flag</a> is determined by the following priority:</p><ol class="rt-priority"><li><span class="rt-value">1</span> <span class="rt-when">if <span class="rt-group-label">all of these hold:</span><ul class="rt-group"><li>the <a class="ref" href="#en-f-corpusdomainruns-buildstatus">build status</a> is “pass”</li><li>the <a class="ref" href="#en-f-corpusdomainruns-conformancestatus">conformance status</a> is “pass”</li></ul></span></li><li><span class="rt-value">0</span> <span class="rt-when">in all other cases</span></li></ol></div>
+        <div class="view-body"><p class="rt-headline">The corpus domain run's <a class="ref" href="#en-f-corpusdomainruns-fullygreenflag">fully green flag</a> is determined by the following priority:</p><ol class="rt-priority"><li><span class="rt-value">1</span> <span class="rt-when">if <span class="rt-group-label">all of these hold:</span><ul class="rt-group"><li>the <a class="ref" href="#en-f-corpusdomainruns-buildstatus">build status</a> is not “fail”</li><li>the <a class="ref" href="#en-f-corpusdomainruns-dbstatus">db status</a> is not “fail”</li><li>the <a class="ref" href="#en-f-corpusdomainruns-conformancestatus">conformance status</a> is “pass”</li></ul></span></li><li><span class="rt-value">0</span> <span class="rt-when">in all other cases</span></li></ol></div>
       </div>
       <div class="view elem elem-english">
         <span class="view-label">In plain words</span>
-        <p class="view-body">If <a class="ref" href="#en-f-corpusdomainruns-buildstatus">build status</a> is &quot;pass&quot; and <a class="ref" href="#en-f-corpusdomainruns-conformancestatus">conformance status</a> is &quot;pass&quot; then 1, otherwise 0.</p>
+        <p class="view-body">If <a class="ref" href="#en-f-corpusdomainruns-buildstatus">build status</a> is not &quot;fail&quot;, <a class="ref" href="#en-f-corpusdomainruns-dbstatus">db status</a> is not &quot;fail&quot;, and <a class="ref" href="#en-f-corpusdomainruns-conformancestatus">conformance status</a> is &quot;pass&quot; then 1, otherwise 0.</p>
       </div>
       <div class="view elem elem-formula">
         <span class="view-label">As a formula</span>
-        <div class="view-body fx"><span class="fx-eq">= </span>IF(AND(<a class="fx-chip" href="#en-f-corpusdomainruns-buildstatus">Build Status</a> = &quot;pass&quot;, <a class="fx-chip" href="#en-f-corpusdomainruns-conformancestatus">Conformance Status</a> = &quot;pass&quot;), 1, 0)</div>
+        <div class="view-body fx"><span class="fx-eq">= </span>IF(AND(<a class="fx-chip" href="#en-f-corpusdomainruns-buildstatus">Build Status</a> &lt;&gt; &quot;fail&quot;, <a class="fx-chip" href="#en-f-corpusdomainruns-dbstatus">Db Status</a> &lt;&gt; &quot;fail&quot;, <a class="fx-chip" href="#en-f-corpusdomainruns-conformancestatus">Conformance Status</a> = &quot;pass&quot;), 1, 0)</div>
       </div>
     </div>
     <details class="prov prov-inputs elem elem-inputs" open>
-      <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
       <div class="prov-grid">
         <a class="input tone-raw" href="#en-f-corpusdomainruns-buildstatus">
           <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Build Status</span><span class="input-table">Corpus Domain Run</span></span>
           <span class="input-en muted">pass | fail | skipped — outcome of `effortless build` in the project directory.</span>
+        </a>
+        <a class="input tone-raw" href="#en-f-corpusdomainruns-dbstatus">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Db Status</span><span class="input-table">Corpus Domain Run</span></span>
+          <span class="input-en muted">pass | fail | skipped — outcome of createdb + postgres-bootstrap/reset-rulebook-db.sh.</span>
         </a>
         <a class="input tone-raw" href="#en-f-corpusdomainruns-conformancestatus">
           <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Conformance Status</span><span class="input-table">Corpus Domain Run</span></span>
@@ -11848,9 +11866,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
-      <summary>Ground truth at the leaves <span class="count">2</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <summary>Ground truth at the leaves <span class="count">3</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-raw" href="#en-f-corpusdomainruns-buildstatus">● Build Status <span class="ref-pill-tbl">Corpus Domain Run</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-corpusdomainruns-dbstatus">● Db Status <span class="ref-pill-tbl">Corpus Domain Run</span></a>
         <a class="ref-pill tone-raw" href="#en-f-corpusdomainruns-conformancestatus">● Conformance Status <span class="ref-pill-tbl">Corpus Domain Run</span></a>
       </div>
     </details>
@@ -12121,19 +12140,19 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
         <span class="view-label">In RuleSpeak®</span>
-        <div class="view-body"><p class="rt-headline">The corpus domain run's <a class="ref" href="#en-f-corpusdomainruns-latestfullygreenflag">latest fully green flag</a> is determined by the following priority:</p><ol class="rt-priority"><li><span class="rt-value">1</span> <span class="rt-when">if <span class="rt-group-label">all of these hold:</span><ul class="rt-group"><li>the <a class="ref" href="#en-f-corpusdomainruns-corpusrunislatest">corpus run is latest</a> flag is set</li><li>the <a class="ref" href="#en-f-corpusdomainruns-buildstatus">build status</a> is “pass”</li><li>the <a class="ref" href="#en-f-corpusdomainruns-conformancestatus">conformance status</a> is “pass”</li></ul></span></li><li><span class="rt-value">0</span> <span class="rt-when">in all other cases</span></li></ol></div>
+        <div class="view-body"><p class="rt-headline">The corpus domain run's <a class="ref" href="#en-f-corpusdomainruns-latestfullygreenflag">latest fully green flag</a> is determined by the following priority:</p><ol class="rt-priority"><li><span class="rt-value">1</span> <span class="rt-when">if <span class="rt-group-label">all of these hold:</span><ul class="rt-group"><li>the <a class="ref" href="#en-f-corpusdomainruns-corpusrunislatest">corpus run is latest</a> flag is set</li><li>the <a class="ref" href="#en-f-corpusdomainruns-buildstatus">build status</a> is not “fail”</li><li>the <a class="ref" href="#en-f-corpusdomainruns-dbstatus">db status</a> is not “fail”</li><li>the <a class="ref" href="#en-f-corpusdomainruns-conformancestatus">conformance status</a> is “pass”</li></ul></span></li><li><span class="rt-value">0</span> <span class="rt-when">in all other cases</span></li></ol></div>
       </div>
       <div class="view elem elem-english">
         <span class="view-label">In plain words</span>
-        <p class="view-body">If <a class="ref" href="#en-f-corpusdomainruns-corpusrunislatest">corpus run is latest</a>, <a class="ref" href="#en-f-corpusdomainruns-buildstatus">build status</a> is &quot;pass&quot;, and <a class="ref" href="#en-f-corpusdomainruns-conformancestatus">conformance status</a> is &quot;pass&quot; then 1, otherwise 0.</p>
+        <p class="view-body">If <a class="ref" href="#en-f-corpusdomainruns-corpusrunislatest">corpus run is latest</a>, <a class="ref" href="#en-f-corpusdomainruns-buildstatus">build status</a> is not &quot;fail&quot;, <a class="ref" href="#en-f-corpusdomainruns-dbstatus">db status</a> is not &quot;fail&quot;, and <a class="ref" href="#en-f-corpusdomainruns-conformancestatus">conformance status</a> is &quot;pass&quot; then 1, otherwise 0.</p>
       </div>
       <div class="view elem elem-formula">
         <span class="view-label">As a formula</span>
-        <div class="view-body fx"><span class="fx-eq">= </span>IF(AND(<a class="fx-chip" href="#en-f-corpusdomainruns-corpusrunislatest">Corpus Run is Latest</a>, <a class="fx-chip" href="#en-f-corpusdomainruns-buildstatus">Build Status</a> = &quot;pass&quot;, <a class="fx-chip" href="#en-f-corpusdomainruns-conformancestatus">Conformance Status</a> = &quot;pass&quot;), 1, 0)</div>
+        <div class="view-body fx"><span class="fx-eq">= </span>IF(AND(<a class="fx-chip" href="#en-f-corpusdomainruns-corpusrunislatest">Corpus Run is Latest</a>, <a class="fx-chip" href="#en-f-corpusdomainruns-buildstatus">Build Status</a> &lt;&gt; &quot;fail&quot;, <a class="fx-chip" href="#en-f-corpusdomainruns-dbstatus">Db Status</a> &lt;&gt; &quot;fail&quot;, <a class="fx-chip" href="#en-f-corpusdomainruns-conformancestatus">Conformance Status</a> = &quot;pass&quot;), 1, 0)</div>
       </div>
     </div>
     <details class="prov prov-inputs elem elem-inputs" open>
-      <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <summary>Inputs <span class="count">4</span> <span class="prov-hint">fields this rule reads</span></summary>
       <div class="prov-grid">
         <a class="input tone-lookup" href="#en-f-corpusdomainruns-corpusrunislatest">
           <span class="input-head"><span class="input-glyph">↗</span><span class="input-name">Corpus Run is Latest</span><span class="input-table">Corpus Domain Run</span></span>
@@ -12142,6 +12161,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="input tone-raw" href="#en-f-corpusdomainruns-buildstatus">
           <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Build Status</span><span class="input-table">Corpus Domain Run</span></span>
           <span class="input-en muted">pass | fail | skipped — outcome of `effortless build` in the project directory.</span>
+        </a>
+        <a class="input tone-raw" href="#en-f-corpusdomainruns-dbstatus">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Db Status</span><span class="input-table">Corpus Domain Run</span></span>
+          <span class="input-en muted">pass | fail | skipped — outcome of createdb + postgres-bootstrap/reset-rulebook-db.sh.</span>
         </a>
         <a class="input tone-raw" href="#en-f-corpusdomainruns-conformancestatus">
           <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Conformance Status</span><span class="input-table">Corpus Domain Run</span></span>
@@ -12157,16 +12180,17 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
-      <summary>Ground truth at the leaves <span class="count">5</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <summary>Ground truth at the leaves <span class="count">6</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-raw" href="#en-f-corpusruns-islatest">● Is Latest <span class="ref-pill-tbl">Corpus Run</span></a>
         <a class="ref-pill tone-rel" href="#en-f-corpusdomainruns-corpusrun">⇢ Corpus Run <span class="ref-pill-tbl">Corpus Domain Run</span></a>
         <span class="ref-pill tone-raw">● Corpus Run ID <span class="ref-pill-tbl">Corpus Run</span></span>
         <a class="ref-pill tone-raw" href="#en-f-corpusdomainruns-buildstatus">● Build Status <span class="ref-pill-tbl">Corpus Domain Run</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-corpusdomainruns-dbstatus">● Db Status <span class="ref-pill-tbl">Corpus Domain Run</span></a>
         <a class="ref-pill tone-raw" href="#en-f-corpusdomainruns-conformancestatus">● Conformance Status <span class="ref-pill-tbl">Corpus Domain Run</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Order 2. 1 when this attempt built and graded green AND belongs to the latest fan-out.</p>
+    <p class="field-note elem elem-desc">Order 2. 1 when this attempt graded green with nothing failing AND belongs to the latest fan-out.</p>
     </article>
   <article class="field tone-calc" id="en-f-corpusdomainruns-latestattemptflag" data-entity="Corpus Domain Run" data-field="Latest Attempt Flag">
     <div class="field-head">

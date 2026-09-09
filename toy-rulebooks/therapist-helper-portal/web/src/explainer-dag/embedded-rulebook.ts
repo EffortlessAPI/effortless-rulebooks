@@ -3,8 +3,8 @@
 
 export const rulebook = {
   "$schema": "https://example.com/cmcc-schema/v1",
-  "model_name": "therapist_helper_portal",
-  "Description": "Sessions and treatment progress: GoalUpdate \u2192 Goal.ProgressPct \u2192 Client.IsAtRisk three-hop DAG.",
+  "Name": "Therapist Helper Portal",
+  "Description": "Sessions and treatment progress: GoalUpdate → Goal.ProgressPct → Client.IsAtRisk three-hop DAG.",
   "Users": {
     "Description": "Application users. Therapists, supervisors, and clients log in via dev-login by user id (email).",
     "schema": [
@@ -66,6 +66,14 @@ export const rulebook = {
   },
   "Clients": {
     "Description": "People in treatment. Each has an assigned therapist, a set of goals, and a stream of sessions.",
+    "important": true,
+    "summary_rich": "The **people in care**. Each client has an assigned therapist, a handful of treatment goals, and a stream of sessions. The interesting wiring lives here: a client's at-risk status is not a column anyone types — it falls out of the rollups across that client's goals and sessions. Bump a single `ScoreAchieved` on one `GoalUpdate` and the same client's `AvgGoalProgress`, `IsAtRisk`, and `StatusLabel` all re-derive without a single line of application code.",
+    "important_fields": [
+      "ClientName",
+      "TherapistName",
+      "AvgGoalProgress",
+      "StatusLabel"
+    ],
     "schema": [
       {
         "name": "ClientsId",
@@ -142,14 +150,18 @@ export const rulebook = {
         "datatype": "boolean",
         "type": "calculated",
         "formula": "=OR({{AvgMoodRating}} < 5, {{AvgGoalProgress}} < 50)",
-        "Description": "3rd-order: low mood OR low avg goal progress."
+        "Description": "3rd-order: low mood OR low avg goal progress.",
+        "important": true,
+        "explanation_rich": "**The clinical-attention signal — derived, never typed.** A client is flagged at-risk when *either* their session-averaged `MoodRating` drops below 5 *or* their average goal `ProgressPct` falls below 50. No one writes \"at risk\" into a column; it falls out of the data. Worked example: Blair Morgan's three sessions averaged a mood of 4.0 — below the threshold — so this resolves to `TRUE` and Blair surfaces on the supervisor's at-risk roster the same instant the session is saved. Bump the next session's `MoodRating` up to 6 and the same field flips back to `FALSE` without anyone editing a status column."
       },
       {
         "name": "StatusLabel",
         "datatype": "string",
         "type": "calculated",
         "formula": "=IF({{IsAtRisk}}, \"At risk\", \"On track\")",
-        "Description": "4th-order: human-readable client status derived from IsAtRisk."
+        "Description": "4th-order: human-readable client status derived from IsAtRisk.",
+        "important": true,
+        "explanation_rich": "**The label the supervisor actually reads.** `StatusLabel` is the fourth hop in the chain — it just translates the boolean `IsAtRisk` into the words \"At risk\" or \"On track\" so a human can scan the client roster at a glance. Worked example: Alex Rivera's sessions averaged a mood of 7.3 and goal progress around 76%, so `IsAtRisk` is `FALSE` and this resolves to **\"On track\"**. Blair Morgan's lower mood average flips both fields the other way — **\"At risk\"** — and the same string appears identically in the Postgres view, the Python `Client` dataclass, the Excel cell, and the OWL ontology."
       }
     ],
     "data": [
@@ -181,6 +193,14 @@ export const rulebook = {
   },
   "Goals": {
     "Description": "Treatment goals owned by a client. TargetScore is editable.",
+    "important": true,
+    "summary_rich": "The **treatment plan**, one row per goal. Each goal carries a `TargetScore` set by the therapist and accumulates `GoalUpdate` rows from sessions. `ProgressPct` is the middle hop of the three-hop DAG — it averages every recorded score against the target, and that number is what the client-level `IsAtRisk` rule reads.",
+    "important_fields": [
+      "Title",
+      "ClientName",
+      "TargetScore",
+      "ProgressPct"
+    ],
     "schema": [
       {
         "name": "GoalsId",
@@ -249,7 +269,9 @@ export const rulebook = {
         "datatype": "number",
         "type": "calculated",
         "formula": "=IFERROR({{AvgScoreAchieved}} / {{TargetScore}} * 100, 0)",
-        "Description": "2nd-order."
+        "Description": "2nd-order.",
+        "important": true,
+        "explanation_rich": "**The middle hop of the three-hop DAG.** `ProgressPct` is the bridge from raw session entries to a client-level risk signal. It averages every `ScoreAchieved` recorded against this goal, divides by the editable `TargetScore`, and reports a percentage. Worked example: *Reduce anxiety in social settings* (TargetScore = 8) has three `GoalUpdate` rows scoring 5, 6, and 7. Average = 6; 6 / 8 * 100 = **75%**, so `IsOnTrack` is true. Edit any one of those three scores and this field — plus the client's `AvgGoalProgress`, `IsAtRisk`, and `StatusLabel` — all recompute in the same read."
       },
       {
         "name": "RemainingGap",
@@ -319,6 +341,14 @@ export const rulebook = {
   },
   "Sessions": {
     "Description": "Therapy sessions. MoodRating is editable and feeds the client-level rollup.",
+    "important": true,
+    "summary_rich": "The **session stream** — one row per appointment. Each session captures a mood rating and a set of `GoalUpdate` entries. Mood ratings feed the client-level `AvgMoodRating`; goal updates feed `Goal.ProgressPct`. Edit a single `MoodRating` here and the whole chain — session → client → at-risk roster — re-derives.",
+    "important_fields": [
+      "SessionLabel",
+      "ClientName",
+      "MoodRating",
+      "StatusLabel"
+    ],
     "schema": [
       {
         "name": "SessionsId",
@@ -394,7 +424,9 @@ export const rulebook = {
         "datatype": "boolean",
         "type": "calculated",
         "formula": "=AND({{UpdateCount}} >= 2, {{AvgScoreAchieved}} >= 5)",
-        "Description": "2nd-order: session captured >=2 goal updates AND avg score >=5."
+        "Description": "2nd-order: session captured >=2 goal updates AND avg score >=5.",
+        "important": true,
+        "explanation_rich": "**Did this session actually move the treatment plan?** A session is flagged productive only when *both* signals line up: the therapist recorded at least two `GoalUpdate` entries (so progress was actually captured) *and* the average score across those updates was 5 or higher. Worked example: session `ses-002` for Alex Rivera captured two updates (anxiety = 6, sleep = 6), averaging 6.0 — both checks pass, so `IsProductive` resolves to `TRUE` and `StatusLabel` reads \"Productive\". A session with only one update, or with an average below 5, drops to \"Light\" without anyone editing a status field."
       },
       {
         "name": "StatusLabel",
@@ -645,6 +677,105 @@ export const rulebook = {
       }
     ]
   },
-  "Name": "Therapist Helper Portal"
+  "__meta__": {
+    "Description": "Project-level metadata that travels with the rulebook: tagline, motif, narrative descriptions, substrate list, signature rows, etc. One row per metadata key. Use ValueType to interpret StringValue vs JsonValue.",
+    "important": false,
+    "schema": [
+      {
+        "name": "MetaKey",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The metadata key (e.g. 'tagline', 'motif_palette', 'substrates'). Unique within the table."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "formula": "={{MetaKey}}",
+        "Description": "Identifier for this metadata entry. Mirrors MetaKey so the row is addressable by Name like every other table."
+      },
+      {
+        "name": "ValueType",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "How to interpret the value columns: 'string' (use StringValue), 'object' (parse JsonValue as JSON object), 'array' (parse JsonValue as JSON array)."
+      },
+      {
+        "name": "StringValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Plain string value. Populated when ValueType == 'string'; null otherwise."
+      },
+      {
+        "name": "JsonValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "JSON-encoded value. Populated when ValueType == 'object' or 'array'; null when ValueType == 'string'."
+      }
+    ],
+    "data": [
+      {
+        "MetaKey": "tagline",
+        "Name": "tagline",
+        "ValueType": "string",
+        "StringValue": "A warm clinical workspace where session notes feed an at-risk roster — no status column required.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif",
+        "Name": "motif",
+        "ValueType": "string",
+        "StringValue": "corkboard",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif_palette",
+        "Name": "motif_palette",
+        "ValueType": "object",
+        "StringValue": null,
+        "JsonValue": "{\"primary\": \"#6e4b2a\", \"accent\": \"#d4a574\", \"ink\": \"#2a1e10\"}"
+      },
+      {
+        "MetaKey": "description_rich",
+        "Name": "description_rich",
+        "ValueType": "string",
+        "StringValue": "Therapist Helper Portal is a small clinical-care workspace — a handful of therapists, the clients in their care, the treatment goals on each client's plan, and the session-by-session entries that move those goals forward. The interesting thing isn't the schedule, it's the **three-hop DAG**: a therapist saves a `ScoreAchieved` on one `GoalUpdate`, that re-derives `Goal.ProgressPct`, which re-derives `Client.AvgGoalProgress`, which re-derives `Client.IsAtRisk` and the supervisor-facing `StatusLabel`. No one ever types \"at risk\" into a column — it falls out of the data the moment the session is saved, identically in Postgres, Python, Excel, and OWL.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "use_cases",
+        "Name": "use_cases",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[\"**Save a productive session.** Open `ses-006` for Blair Morgan, raise `MoodRating` from 3 to 7, and watch `AvgMoodRating`, `IsAtRisk`, and `StatusLabel` recompute on the same client row.\", \"**Bump a goal score.** Edit `upd-008` (Blair's mood goal) and watch `Goal.ProgressPct` slide, `Goal.IsOnTrack` flip, and the client-level `AvgGoalProgress` follow — all without touching the client record.\", \"**Reassign a client to another therapist.** Change `Clients.Therapist` for Casey Lin and the `TherapistName` lookup, plus every session and goal that joins through it, re-resolves on the next read.\", \"**Ask the at-risk question in two substrates.** Run *\\\"which clients are at risk this week?\\\"* against the Postgres view, then against the Python module — same client list, no glue code.\", \"**Tighten a treatment plan.** Raise `Goal.TargetScore` for *Reduce anxiety in social settings* from 8 to 9 and watch `ProgressPct` drop without touching a single `GoalUpdate`.\"]"
+      },
+      {
+        "MetaKey": "signature_rows",
+        "Name": "signature_rows",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"entity\": \"Clients\", \"ids\": [\"alex-r\", \"blair-m\", \"casey-l\", \"drew-p\"]}, {\"entity\": \"Goals\", \"ids\": [\"alex-anxiety\", \"blair-mood\", \"drew-focus\"]}, {\"entity\": \"Sessions\", \"ids\": [\"ses-002\", \"ses-006\", \"ses-010\"]}]"
+      },
+      {
+        "MetaKey": "journal_seed",
+        "Name": "journal_seed",
+        "ValueType": "string",
+        "StringValue": "Four clients in care this month. Alex and Drew are on track; Casey is mid-plan; Blair's mood ratings drifted low enough to surface on the at-risk roster — a single strong session would flip the label back.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "substrates",
+        "Name": "substrates",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"key\": \"postgres\", \"important\": true, \"chip_label\": \"Postgres\"}, {\"key\": \"python\", \"important\": true, \"chip_label\": \"Python\"}, {\"key\": \"excel\", \"important\": false, \"chip_label\": \"Excel\"}, {\"key\": \"owl\", \"important\": false, \"chip_label\": \"OWL\"}]"
+      }
+    ]
+  }
 } as const;
 export type Rulebook = typeof rulebook;

@@ -25,8 +25,8 @@
       "RelativePath": "/postgres-bootstrap",
       "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/procedural-knowledge-ontology-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.09.06.1148",
-      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-09-06-1148-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+      "LastVersionUsed": "v2026.09.07.0336",
+      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-09-07-0336-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
       "IsSSoTTranspiler": false,
@@ -41,7 +41,7 @@
       "RelativePath": "/effortless-rulebook",
       "CommandLine": "effortless-rulebook-editor -i procedural-knowledge-ontology-rulebook.json -p rulebookPath=procedural-knowledge-ontology-rulebook.json -p dockerfilePath=docker/Dockerfile",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.09.02.0241",
+      "LastVersionUsed": "v2026.09.07.0138",
       "LastUrl": "https://effortless-effortless-rulebook-e-v2026-09-02-0241-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     }
   ],

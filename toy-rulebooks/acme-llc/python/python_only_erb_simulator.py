@@ -27,6 +27,8 @@ import re
 from pathlib import Path
 from typing import Optional, Any
 
+from orchestration import formula_parser as _erb
+
 from orchestration.shared import (
     to_snake_case,
     get_entity_schema,
@@ -121,7 +123,15 @@ def parse_index_match_formula(formula: str) -> tuple:
     Formula format: =INDEX(Table!{{FieldToReturn}}, MATCH(CurrentTable!{{KeyField}}, Table!{{PrimaryKeyField}}, 0))
     Returns: (lookup_table, return_field, key_field, pk_field) or all None.
     """
-    pattern = r"=INDEX\((\w+)!\{\{(\w+)\}\},\s*MATCH\(\w+!\{\{(\w+)\}\},\s*(\w+)!\{\{(\w+)\}\},\s*0\)\)"
+    # The MATCH key is a field on the record being computed, so the rulebook
+    # writes it bare ({{WorkflowStep}}); an explicit table prefix
+    # (ApprovalGates!{{WorkflowStep}}) means the same thing. Both spellings
+    # must parse — requiring the prefix silently nulled every bare lookup.
+    pattern = (
+        r"=\s*INDEX\(\s*(\w+)!\{\{(\w+)\}\}\s*,"
+        r"\s*MATCH\(\s*(?:\w+!)?\{\{(\w+)\}\}\s*,"
+        r"\s*(\w+)!\{\{(\w+)\}\}\s*,\s*0\s*\)\s*\)"
+    )
     match = re.match(pattern, formula)
     if match:
         return (match.group(1), match.group(2), match.group(3), match.group(5))
@@ -135,6 +145,128 @@ def parse_countifs_formula(formula: str) -> tuple:
     if match:
         return (match.group(1), match.group(2), match.group(3))
     return (None, None, None)
+
+
+def parse_countifs(formula: str) -> tuple:
+    """Parse any COUNTIFS into (table, [(range_field, criteria), ...]).
+
+    COUNTIFS is variadic — (range, criteria) repeated — so it is parsed
+    structurally rather than with one regex per shape. Each criteria is
+    ('field', Name) to compare against the current record, or ('literal', v).
+    All ranges must name the same table, since COUNTIFS counts rows of one
+    table. Returns (None, None) when the formula is not a COUNTIFS.
+    """
+    match = re.match(r"\s*=\s*COUNTIFS\s*\((.*)\)\s*$", formula, re.S)
+    if not match:
+        return (None, None)
+
+    args = [a.strip() for a in _split_top_level_args(match.group(1))]
+    if len(args) < 2 or len(args) % 2 != 0:
+        raise ValueError(
+            f"COUNTIFS takes (range, criteria) pairs, got {len(args)} argument(s): {formula}")
+
+    table = None
+    criteria = []
+    for range_arg, criteria_arg in zip(args[0::2], args[1::2]):
+        range_match = re.match(r"^(\w+)!\{\{(\w+)\}\}$", range_arg)
+        if not range_match:
+            raise ValueError(f"COUNTIFS range must be Table!{{{{Field}}}}, got {range_arg!r}")
+        range_table, range_field = range_match.groups()
+        if table is None:
+            table = range_table
+        elif range_table != table:
+            raise ValueError(
+                f"COUNTIFS ranges must all name the same table; "
+                f"got {table!r} and {range_table!r}")
+        criteria.append((range_field, _parse_countifs_criteria(criteria_arg)))
+
+    return (table, criteria)
+
+
+def _split_top_level_args(text: str) -> list:
+    """Split on commas that are not inside parentheses or quotes."""
+    args = []
+    depth = 0
+    quote = None
+    current = ''
+    for char in text:
+        if quote:
+            current += char
+            if char == quote:
+                quote = None
+            continue
+        if char in '"\'':
+            quote = char
+            current += char
+        elif char == '(':
+            depth += 1
+            current += char
+        elif char == ')':
+            depth -= 1
+            current += char
+        elif char == ',' and depth == 0:
+            args.append(current)
+            current = ''
+        else:
+            current += char
+    if current.strip():
+        args.append(current)
+    return args
+
+
+def _parse_countifs_criteria(arg: str):
+    """Classify one COUNTIFS criteria argument."""
+    field_match = re.match(r"^(?:\w+!)?\{\{(\w+)\}\}$", arg)
+    if field_match:
+        return ('field', field_match.group(1))
+    # TRUE and FALSE appear with or without call parentheses.
+    bare = arg.upper().replace('()', '').strip()
+    if bare == 'TRUE':
+        return ('literal', True)
+    if bare == 'FALSE':
+        return ('literal', False)
+    if len(arg) >= 2 and arg[0] == arg[-1] and arg[0] in '"\'':
+        return ('literal', arg[1:-1])
+    try:
+        return ('literal', int(arg))
+    except ValueError:
+        pass
+    try:
+        return ('literal', float(arg))
+    except ValueError:
+        pass
+    raise ValueError(f"Unrecognized COUNTIFS criteria: {arg!r}")
+
+
+def count_matching_rows(rows: list, criteria: list, record: dict) -> int:
+    """Count rows satisfying every (range_field, criteria) pair."""
+    count = 0
+    for row in rows:
+        for range_field, (kind, value) in criteria:
+            expected = record.get(to_snake_case(value)) if kind == 'field' else value
+            if row.get(to_snake_case(range_field)) != expected:
+                break
+        else:
+            count += 1
+    return count
+
+
+def parse_countifs_literal_formula(formula: str) -> tuple:
+    """Parse =COUNTIFS(Table!{{Field}}, TRUE()) / FALSE().
+
+    Distinct from parse_countifs_formula, whose second argument is another
+    table's field rather than a literal. Returns (table, field, bool).
+    """
+    pattern = r"=COUNTIFS\((\w+)!\{\{(\w+)\}\},\s*(TRUE|FALSE)\(\)\)"
+    match = re.match(pattern, formula)
+    if match:
+        return (match.group(1), match.group(2), match.group(3) == 'TRUE')
+    return (None, None, None)
+
+
+def count_closure_rows(closure_rows: list, column: str, expected) -> int:
+    """Count materialized closure rows whose column equals expected."""
+    return sum(1 for row in closure_rows if row.get(column) == expected)
 
 
 def parse_sumifs_formula(formula: str) -> tuple:
@@ -229,7 +361,116 @@ def compute_lookups(records: list, entity_name: str, rulebook: dict, project_roo
     return records
 
 
-def compute_aggregations(records: list, entity_name: str, rulebook: dict, project_root: Path) -> list:
+# =============================================================================
+# TRANSITIVE CLOSURE ENGINE (PYTHON SIMULATOR — DO NOT CALL FROM OTHER SUBSTRATES)
+# =============================================================================
+
+
+def compute_closure_relation(rows: list, to_field: str,
+                             pk_field: str = None, from_field: str = None) -> list:
+    """Cycle-safe transitive closure, matching Postgres vw_<entity>_closure.
+
+    Two edge shapes: pass from_field for an edge/junction table, or pk_field
+    for a self-referential FK on the entity's own rows.
+
+    Returns dicts of from_id, to_id, hop_distance (shortest derivation) and
+    is_inferred (TRUE iff no directly-asserted hop-1 edge states the pair).
+    A NULL or empty-string endpoint is not an edge — the transpiler stores
+    absent relationships as '' rather than NULL, so both must be excluded.
+    """
+    source_field = from_field or pk_field
+    if source_field is None:
+        raise ValueError("compute_closure_relation requires from_field or pk_field")
+
+    edges = []
+    for row in rows:
+        src = row.get(source_field)
+        dst = row.get(to_field)
+        if src is None or src == '' or dst is None or dst == '':
+            continue
+        edges.append((src, dst))
+
+    if not edges:
+        return []
+
+    asserted = set(edges)
+    adjacency = {}
+    for src, dst in edges:
+        adjacency.setdefault(src, []).append(dst)
+
+    shortest = {}
+    for origin in {src for src, _ in edges}:
+        # BFS keeps the first arrival shortest; the path set makes it cycle-safe.
+        frontier = [(origin, (origin,))]
+        hop = 0
+        while frontier:
+            hop += 1
+            next_frontier = []
+            for node, path in frontier:
+                for neighbor in adjacency.get(node, []):
+                    pair = (origin, neighbor)
+                    if pair not in shortest:
+                        shortest[pair] = hop
+                    if neighbor not in path:
+                        next_frontier.append((neighbor, path + (neighbor,)))
+            frontier = next_frontier
+
+    return [
+        {
+            'from_id': from_id,
+            'to_id': to_id,
+            'hop_distance': hop_distance,
+            'is_inferred': (from_id, to_id) not in asserted,
+        }
+        for (from_id, to_id), hop_distance in sorted(shortest.items())
+    ]
+
+
+def compute_closures(rulebook: dict, project_root: Path) -> dict:
+    """Materialize every closure field in the rulebook as a pseudo-table.
+
+    Aggregations address these by view name, e.g.
+    =COUNTIFS(vw_step_precedence_closure!{{IsInferred}}, TRUE()) — so the
+    result is keyed by vw_<entity>_closure and joins the related-data lookup
+    path alongside real tables.
+    """
+    from orchestration.shared import (
+        discover_entities,
+        discover_primary_key,
+        get_closure_fields,
+        closure_view_name,
+    )
+
+    materialized = {}
+
+    for entity_name in discover_entities(rulebook):
+        schema = get_entity_schema(rulebook, entity_name)
+        for field in get_closure_fields(schema):
+            edge_table = field.get('EdgeTable')
+            to_column = field.get('ToColumn')
+            if not to_column:
+                continue
+
+            to_field = to_snake_case(to_column)
+
+            if edge_table and field.get('FromColumn'):
+                source_entity = edge_table
+                source_rows = load_related_data(project_root, edge_table)
+                kwargs = {'from_field': to_snake_case(field['FromColumn'])}
+            else:
+                source_entity = entity_name
+                source_rows = load_related_data(project_root, entity_name)
+                kwargs = {'pk_field': to_snake_case(
+                    discover_primary_key(rulebook, entity_name))}
+
+            materialized[closure_view_name(source_entity)] = compute_closure_relation(
+                source_rows, to_field=to_field, **kwargs)
+
+    return materialized
+
+
+def compute_aggregations(records: list, entity_name: str, rulebook: dict, project_root: Path,
+                         closures: dict = None) -> list:
     """COUNTIFS / SUMIFS aggregation interpreter. PYTHON SIMULATOR ONLY."""
     schema = get_entity_schema(rulebook, entity_name)
     agg_fields = get_aggregation_fields(schema)
@@ -238,13 +479,28 @@ def compute_aggregations(records: list, entity_name: str, rulebook: dict, projec
         return records
 
     related_data_cache = {}
+    closures = closures or {}
 
     for field in agg_fields:
         field_name = field.get("name")
         formula = field.get("formula", "")
         snake_field_name = to_snake_case(field_name)
 
-        related_table, lookup_field, match_field = parse_countifs_formula(formula)
+        # COUNTIFS handles any number of (range, criteria) pairs over one
+        # table, which may be an ordinary table or a materialized closure.
+        countifs_table, countifs_criteria = parse_countifs(formula)
+        if countifs_table:
+            if countifs_table in closures:
+                target_rows = closures[countifs_table]
+            else:
+                if countifs_table not in related_data_cache:
+                    related_data_cache[countifs_table] = load_related_data(
+                        project_root, countifs_table)
+                target_rows = related_data_cache[countifs_table]
+            for record in records:
+                record[snake_field_name] = count_matching_rows(
+                    target_rows, countifs_criteria, record)
+            continue
 
         if related_table:
             if related_table not in related_data_cache:

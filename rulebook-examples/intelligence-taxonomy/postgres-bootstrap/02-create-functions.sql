@@ -65,7 +65,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_intelligences_taxonomy_class(p_intelligences_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN (calc_intelligences_total_weighted_score(p_intelligences_id))::NUMERIC >= 350 THEN ('Generalist')::text ELSE (CASE WHEN (calc_intelligences_total_weighted_score(p_intelligences_id))::NUMERIC >= 220 THEN ('Broad')::text ELSE ('Narrow')::text END)::text END)::text;
+  WITH __erb_dedup_v1 AS (SELECT calc_intelligences_total_weighted_score(p_intelligences_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC >= 350 THEN ('Generalist')::text ELSE (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC >= 220 THEN ('Broad')::text ELSE ('Narrow')::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_assessments_intelligence_name
@@ -174,7 +174,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_assessments_weighted_score(p_assessments_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE(CASE WHEN ((SELECT raw_score FROM assessments WHERE assessments_id = p_assessments_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT raw_score FROM assessments WHERE assessments_id = p_assessments_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_assessments_capability_weight(p_assessments_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_assessments_capability_weight(p_assessments_id))::numeric ELSE NULL END, 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT raw_score FROM assessments WHERE assessments_id = p_assessments_id)) AS v) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_assessments_capability_weight(p_assessments_id)) AS v) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- ============================================================================

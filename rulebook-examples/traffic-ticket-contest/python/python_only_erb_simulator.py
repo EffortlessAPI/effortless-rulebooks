@@ -27,6 +27,8 @@ import re
 from pathlib import Path
 from typing import Optional, Any
 
+from orchestration import formula_parser as _erb
+
 from orchestration.shared import (
     to_snake_case,
     get_entity_schema,
@@ -186,24 +188,6 @@ def compute_roles_fields(record: dict) -> dict:
 
 # Level 1
 
-def calc_audit_log_entries_is_override_action(action_type):
-    """
-    Calculated flag — TRUE when this audit log entry represents a manager override action (vs a routine action).
-    
-    Formula: =IF(LOWER({{ActionType}} & "") = "override", TRUE(), FALSE())
-    """
-    return (True if ((((str(action_type or "") + '') or "").lower()) == 'override') else False)
-
-
-def calc_audit_log_entries_entry_age_hours():
-    """ERROR: Could not parse formula: =DATETIME_DIFF(NOW(), {{Timestamp}}, 'hours')
-    Error: Unknown function: DATETIME_DIFF
-    """
-    raise NotImplementedError("Formula parsing failed")
-
-
-# Level 2
-
 
 def calc_audit_log_entries_name():
     """ERROR: Could not parse formula: =LOWER(SUBSTITUTE("audit-" & {{Citation}} & "-" & DATETIME_FORMAT({{Timestamp}}, "YYYY-MM-DDTHH-mm-ss") & "-" & {{ActionType}}, " ", "-"))
@@ -212,17 +196,31 @@ def calc_audit_log_entries_name():
     raise NotImplementedError("Formula parsing failed")
 
 
+def calc_audit_log_entries_is_override_action(action_type):
+    """
+    Calculated flag — TRUE when this audit log entry represents a manager override action (vs a routine action).
+    
+    Formula: =IF(LOWER({{ActionType}} & "") = "override", TRUE(), FALSE())
+    """
+    return (True if ((((str(action_type or "") + '') or "").lower()) == 'override') else False)
+
+def calc_audit_log_entries_entry_age_hours(timestamp):
+    """
+    Calculated — hours elapsed since EntryTimestamp. Used to age audit log entries.
+    
+    Formula: =DATETIME_DIFF(NOW(), {{Timestamp}}, 'hours')
+    """
+    return _erb.erb_datetime_diff(_erb.erb_now(), timestamp, 'hours')
+
 
 def compute_audit_log_entries_fields(record: dict) -> dict:
     """Compute all calculated fields for AuditLogEntries."""
     result = dict(record)
 
     # Level 1 calculations
+    result['name'] = calc_audit_log_entries_name(result.get('citation'), result.get('timestamp'), result.get('action_type'))
     result['is_override_action'] = calc_audit_log_entries_is_override_action(result.get('action_type'))
     result['entry_age_hours'] = calc_audit_log_entries_entry_age_hours(result.get('timestamp'))
-
-    # Level 2 calculations
-    result['name'] = calc_audit_log_entries_name(result.get('citation'), result.get('timestamp'), result.get('action_type'))
 
     # Convert empty strings to None for string fields
     for key in ['name']:
@@ -437,6 +435,10 @@ def calc_jurisdictions_name(state):
     """Formula: =LOWER({{State}}) & "-us" """
     return (str(((state or "").lower()) if ((state or "").lower()) is not None else "") + '-us')
 
+def calc_jurisdictions_is_root_jurisdiction(parent_jurisdiction):
+    """Formula: =IF({{ParentJurisdiction}}=BLANK(), TRUE(), FALSE())"""
+    return (True if (parent_jurisdiction == None) else False)
+
 def calc_jurisdictions_relative_path(jurisdiction_id):
     """
     Concrete relative URL for this jurisdiction's explorer/detail page. Self-contained (no route-table lookup) so it is always populated. Anywhere a jurisdiction is referenced, link to this path.
@@ -445,12 +447,6 @@ def calc_jurisdictions_relative_path(jurisdiction_id):
     """
     return ('/library/jurisdictions/' + str(jurisdiction_id or ""))
 
-# Level 2
-
-def calc_jurisdictions_is_root_jurisdiction(parent_jurisdiction):
-    """Formula: =IF({{ParentJurisdiction}}=BLANK(), TRUE(), FALSE())"""
-    return (True if (parent_jurisdiction == None) else False)
-
 
 def compute_jurisdictions_fields(record: dict) -> dict:
     """Compute all calculated fields for Jurisdictions."""
@@ -458,10 +454,8 @@ def compute_jurisdictions_fields(record: dict) -> dict:
 
     # Level 1 calculations
     result['name'] = calc_jurisdictions_name(result.get('state'))
-    result['relative_path'] = calc_jurisdictions_relative_path(result.get('jurisdiction_id'))
-
-    # Level 2 calculations
     result['is_root_jurisdiction'] = calc_jurisdictions_is_root_jurisdiction(result.get('parent_jurisdiction'))
+    result['relative_path'] = calc_jurisdictions_relative_path(result.get('jurisdiction_id'))
 
     # Convert empty strings to None for string fields
     for key in ['name', 'relative_path']:
@@ -522,8 +516,6 @@ def calc_jurisdiction_rules_relative_path(jurisdiction_rule_id):
     """
     return ('/library/jurisdiction-rules/' + str(jurisdiction_rule_id or ""))
 
-# Level 2
-
 def calc_jurisdiction_rules_is_federal(jurisdiction_type):
     """Formula: =IF({{JurisdictionType}} = "Country", TRUE(), FALSE())"""
     return (True if (jurisdiction_type == 'Country') else False)
@@ -536,8 +528,6 @@ def compute_jurisdiction_rules_fields(record: dict) -> dict:
     # Level 1 calculations
     result['name'] = calc_jurisdiction_rules_name(result.get('rule_number'))
     result['relative_path'] = calc_jurisdiction_rules_relative_path(result.get('jurisdiction_rule_id'))
-
-    # Level 2 calculations
     result['is_federal'] = calc_jurisdiction_rules_is_federal(result.get('jurisdiction_type'))
 
     # Convert empty strings to None for string fields
@@ -724,8 +714,6 @@ def calc_state_transition_rules_name(state_transition_rule_id):
     """
     return state_transition_rule_id
 
-# Level 2
-
 def calc_state_transition_rules_is_forward_edge(to_state_key):
     """
     TRUE when ToState is not the machine's initial state.
@@ -741,8 +729,6 @@ def compute_state_transition_rules_fields(record: dict) -> dict:
 
     # Level 1 calculations
     result['name'] = calc_state_transition_rules_name(result.get('state_transition_rule_id'))
-
-    # Level 2 calculations
     result['is_forward_edge'] = calc_state_transition_rules_is_forward_edge(result.get('to_state_key'))
 
     # Convert empty strings to None for string fields
@@ -804,13 +790,13 @@ def calc_work_queue_items_name(work_queue_item_id):
     """
     return work_queue_item_id
 
-
-def calc_work_queue_items_due_in_days():
-    """ERROR: Could not parse formula: =DATETIME_DIFF({{DueDate}}, TODAY(), 'days')
-    Error: Unknown function: DATETIME_DIFF
+def calc_work_queue_items_due_in_days(due_date):
     """
-    raise NotImplementedError("Formula parsing failed")
-
+    Calculated — days until DueDate (negative when overdue).
+    
+    Formula: =DATETIME_DIFF({{DueDate}}, TODAY(), 'days')
+    """
+    return _erb.erb_datetime_diff(due_date, _erb.erb_now(), 'days')
 
 # Level 2
 
@@ -820,7 +806,7 @@ def calc_work_queue_items_is_overdue(due_in_days):
     
     Formula: =IF({{DueInDays}}=BLANK(),FALSE(),{{DueInDays}}<0)
     """
-    return (False if (due_in_days == None) else (due_in_days < 0))
+    return (False if (due_in_days == None) else (False if (due_in_days) is None else (due_in_days) < (0)))
 
 def calc_work_queue_items_urgency_bucket(due_in_days):
     """
@@ -828,7 +814,7 @@ def calc_work_queue_items_urgency_bucket(due_in_days):
     
     Formula: =IF({{DueInDays}}=BLANK(),"follow-up",IF({{DueInDays}}<=0,"urgent",IF({{DueInDays}}<=3,"due-3-days","upcoming")))
     """
-    return ('follow-up' if (due_in_days == None) else ('urgent' if (due_in_days <= 0) else ('due-3-days' if (due_in_days <= 3) else 'upcoming')))
+    return ('follow-up' if (due_in_days == None) else ('urgent' if (False if (due_in_days) is None else (due_in_days) <= (0)) else ('due-3-days' if (False if (due_in_days) is None else (due_in_days) <= (3)) else 'upcoming')))
 
 # Level 3
 
@@ -935,47 +921,49 @@ def calc_assistant_turns_name(assistant_turn_id):
     """
     return assistant_turn_id
 
-
-def calc_assistant_turns_total_tokens():
-    """ERROR: Could not parse formula: ={{InputTokens}}+{{OutputTokens}}
-    Error: '+'
+def calc_assistant_turns_total_tokens(input_tokens, output_tokens):
     """
-    raise NotImplementedError("Formula parsing failed")
-
-
-
-def calc_assistant_turns_billable_input_tokens():
-    """ERROR: Could not parse formula: ={{InputTokens}}-{{CachedInputTokens}}
-    Error: '-'
+    Input + output tokens.
+    
+    Formula: ={{InputTokens}}+{{OutputTokens}}
     """
-    raise NotImplementedError("Formula parsing failed")
+    return ((input_tokens) or 0) + ((output_tokens) or 0)
 
+def calc_assistant_turns_billable_input_tokens(input_tokens, cached_input_tokens):
+    """
+    Non-cached input tokens = InputTokens - CachedInputTokens.
+    
+    Formula: ={{InputTokens}}-{{CachedInputTokens}}
+    """
+    return ((input_tokens) or 0) - ((cached_input_tokens) or 0)
+
+def calc_assistant_turns_output_cost(output_tokens, output_price_per_m_tok):
+    """
+    USD cost of output: OutputTokens × OutputPrice / 1,000,000.
+    
+    Formula: =({{OutputTokens}}*{{OutputPricePerMTok}})/1000000
+    """
+    return ((((output_tokens) or 0) * ((output_price_per_m_tok) or 0)) or 0) / ((1000000) or 0)
 
 # Level 2
 
-
-def calc_assistant_turns_input_cost():
-    """ERROR: Could not parse formula: =(({{BillableInputTokens}}*{{InputPricePerMTok}})+({{CachedInputTokens}}*{{CachedInputPricePerMTok}}))/1000000
-    Error: '*'
+def calc_assistant_turns_input_cost(billable_input_tokens, input_price_per_m_tok, cached_input_tokens, cached_input_price_per_m_tok):
     """
-    raise NotImplementedError("Formula parsing failed")
-
-
-
-def calc_assistant_turns_output_cost():
-    """ERROR: Could not parse formula: =({{OutputTokens}}*{{OutputPricePerMTok}})/1000000
-    Error: '*'
+    USD cost of input: (BillableInputTokens × InputPrice + CachedInputTokens × CachedInputPrice) / 1,000,000.
+    
+    Formula: =(({{BillableInputTokens}}*{{InputPricePerMTok}})+({{CachedInputTokens}}*{{CachedInputPricePerMTok}}))/1000000
     """
-    raise NotImplementedError("Formula parsing failed")
+    return ((((((billable_input_tokens) or 0) * ((input_price_per_m_tok) or 0)) or 0) + ((((cached_input_tokens) or 0) * ((cached_input_price_per_m_tok) or 0)) or 0)) or 0) / ((1000000) or 0)
 
+# Level 3
 
-
-def calc_assistant_turns_total_cost():
-    """ERROR: Could not parse formula: ={{InputCost}}+{{OutputCost}}
-    Error: '+'
+def calc_assistant_turns_total_cost(input_cost, output_cost):
     """
-    raise NotImplementedError("Formula parsing failed")
-
+    Total USD cost for this turn = InputCost + OutputCost. Rolls up to Client and Claim.
+    
+    Formula: ={{InputCost}}+{{OutputCost}}
+    """
+    return ((input_cost) or 0) + ((output_cost) or 0)
 
 
 def compute_assistant_turns_fields(record: dict) -> dict:
@@ -986,10 +974,12 @@ def compute_assistant_turns_fields(record: dict) -> dict:
     result['name'] = calc_assistant_turns_name(result.get('assistant_turn_id'))
     result['total_tokens'] = calc_assistant_turns_total_tokens(result.get('input_tokens'), result.get('output_tokens'))
     result['billable_input_tokens'] = calc_assistant_turns_billable_input_tokens(result.get('input_tokens'), result.get('cached_input_tokens'))
+    result['output_cost'] = calc_assistant_turns_output_cost(result.get('output_tokens'), result.get('output_price_per_m_tok'))
 
     # Level 2 calculations
     result['input_cost'] = calc_assistant_turns_input_cost(result.get('billable_input_tokens'), result.get('input_price_per_m_tok'), result.get('cached_input_tokens'), result.get('cached_input_price_per_m_tok'))
-    result['output_cost'] = calc_assistant_turns_output_cost(result.get('output_tokens'), result.get('output_price_per_m_tok'))
+
+    # Level 3 calculations
     result['total_cost'] = calc_assistant_turns_total_cost(result.get('input_cost'), result.get('output_cost'))
 
     # Convert empty strings to None for string fields
@@ -1042,8 +1032,6 @@ def calc_erb_packages_name(erb_package_id):
     """
     return erb_package_id
 
-# Level 2
-
 
 def calc_erb_packages_feature_count():
     """ERROR: Could not parse formula: =COUNT({{ERBFeatures}})
@@ -1051,6 +1039,8 @@ def calc_erb_packages_feature_count():
     """
     raise NotImplementedError("Formula parsing failed")
 
+
+# Level 2
 
 
 def calc_erb_packages_shipped_feature_count():
@@ -1067,9 +1057,9 @@ def compute_erb_packages_fields(record: dict) -> dict:
 
     # Level 1 calculations
     result['name'] = calc_erb_packages_name(result.get('erb_package_id'))
+    result['feature_count'] = calc_erb_packages_feature_count(result.get('erb_features'))
 
     # Level 2 calculations
-    result['feature_count'] = calc_erb_packages_feature_count(result.get('erb_features'))
     result['shipped_feature_count'] = calc_erb_packages_shipped_feature_count(result.get('erb_features._status'))
 
     # Convert empty strings to None for string fields
@@ -1151,8 +1141,6 @@ def calc_erb_features_name(erb_feature_id):
     """
     return erb_feature_id
 
-# Level 2
-
 def calc_erb_features_relative_path(route_path, erb_feature_id):
     """
     Concrete relative URL for this row — the route template with its :param(s) substituted by this row's own id(s).
@@ -1168,8 +1156,6 @@ def compute_erb_features_fields(record: dict) -> dict:
 
     # Level 1 calculations
     result['name'] = calc_erb_features_name(result.get('erb_feature_id'))
-
-    # Level 2 calculations
     result['relative_path'] = calc_erb_features_relative_path(result.get('route_path'), result.get('erb_feature_id'))
 
     # Convert empty strings to None for string fields
@@ -1577,13 +1563,13 @@ def calc_subject_state_instances_name(subject_state_instance_id):
     """
     return subject_state_instance_id
 
-
-def calc_subject_state_instances_is_current():
-    """ERROR: Could not parse formula: =ISBLANK({{ExitedAt}})
-    Error: Unknown function: ISBLANK
+def calc_subject_state_instances_is_current(exited_at):
     """
-    raise NotImplementedError("Formula parsing failed")
-
+    TRUE when ExitedAt IS NULL — this is the subject's active state.
+    
+    Formula: =ISBLANK({{ExitedAt}})
+    """
+    return (exited_at is None or exited_at == "")
 
 def calc_subject_state_instances_has_complete_lineage(sequence_index):
     """
@@ -1591,7 +1577,7 @@ def calc_subject_state_instances_has_complete_lineage(sequence_index):
     
     Formula: ={{SequenceIndex}}>=1
     """
-    return (sequence_index >= 1)
+    return (False if (sequence_index) is None else (sequence_index) >= (1))
 
 
 def compute_subject_state_instances_fields(record: dict) -> dict:
@@ -1624,15 +1610,13 @@ def calc_violation_types_name(code):
     """
     return ((((code or "").lower()) or "").replace(' ', '-'))
 
-# Level 2
-
 def calc_violation_types_is_school_eligible_by_cap(points, traffic_school_point_cap):
     """
     Whether this violation's points fall at or below the jurisdiction's traffic-school point cap (jurisdiction rule applied to the violation).
     
     Formula: =IF({{Points}} <= {{TrafficSchoolPointCap}}, TRUE, FALSE)
     """
-    return (True if (points <= traffic_school_point_cap) else False)
+    return (True if (False if (points) is None or (traffic_school_point_cap) is None else (points) <= (traffic_school_point_cap)) else False)
 
 
 def compute_violation_types_fields(record: dict) -> dict:
@@ -1641,8 +1625,6 @@ def compute_violation_types_fields(record: dict) -> dict:
 
     # Level 1 calculations
     result['name'] = calc_violation_types_name(result.get('code'))
-
-    # Level 2 calculations
     result['is_school_eligible_by_cap'] = calc_violation_types_is_school_eligible_by_cap(result.get('points'), result.get('traffic_school_point_cap'))
 
     # Convert empty strings to None for string fields
@@ -1674,15 +1656,13 @@ def calc_drivers_full_name(last_name, first_name):
     """
     return (str(last_name or "") + ', ' + str(first_name or ""))
 
-# Level 2
-
 def calc_drivers_license_status(active_points, suspension_threshold, warning_threshold):
     """
     License-points state machine for the driver: Suspended at/above the suspension threshold, Warning at/above the warning threshold, otherwise Valid.
     
     Formula: =IF({{ActivePoints}} >= {{SuspensionThreshold}}, "Suspended", IF({{ActivePoints}} >= {{WarningThreshold}}, "Warning", "Valid"))
     """
-    return ('Suspended' if (active_points >= suspension_threshold) else ('Warning' if (active_points >= warning_threshold) else 'Valid'))
+    return ('Suspended' if (False if (active_points) is None or (suspension_threshold) is None else (active_points) >= (suspension_threshold)) else ('Warning' if (False if (active_points) is None or (warning_threshold) is None else (active_points) >= (warning_threshold)) else 'Valid'))
 
 
 def compute_drivers_fields(record: dict) -> dict:
@@ -1692,8 +1672,6 @@ def compute_drivers_fields(record: dict) -> dict:
     # Level 1 calculations
     result['name'] = calc_drivers_name(result.get('license_number'))
     result['full_name'] = calc_drivers_full_name(result.get('last_name'), result.get('first_name'))
-
-    # Level 2 calculations
     result['license_status'] = calc_drivers_license_status(result.get('active_points'), result.get('suspension_threshold'), result.get('warning_threshold'))
 
     # Convert empty strings to None for string fields
@@ -1717,39 +1695,21 @@ def calc_citations_name(citation_number):
     """
     return ((((citation_number or "").lower()) or "").replace(' ', '-'))
 
-# Level 2
-
-
-def calc_citations_response_due_date():
-    """ERROR: Could not parse formula: ={{IssuedOn}} + {{DaysToRespond}}
-    Error: '+'
+def calc_citations_response_due_date(issued_on, days_to_respond):
     """
-    raise NotImplementedError("Formula parsing failed")
-
-
-
-def calc_citations_days_until_response_due():
-    """ERROR: Could not parse formula: =DAYS({{ResponseDueDate}}, {{AsOfDate}})
-    Error: Unknown function: DAYS
+    Deadline to respond: IssuedOn + the jurisdiction's response window.
+    
+    Formula: ={{IssuedOn}} + {{DaysToRespond}}
     """
-    raise NotImplementedError("Formula parsing failed")
+    return ((issued_on) or 0) + ((days_to_respond) or 0)
 
-
-
-def calc_citations_is_response_overdue():
-    """ERROR: Could not parse formula: =IF(AND(ISBLANK({{RespondedOn}}), {{AsOfDate}} > {{ResponseDueDate}}), TRUE, FALSE)
-    Error: Unknown function: ISBLANK
+def calc_citations_contest_status(contest_requested, count_of_hearings, latest_hearing_outcome):
     """
-    raise NotImplementedError("Formula parsing failed")
-
-
-
-def calc_citations_contest_status():
-    """ERROR: Could not parse formula: =IF(NOT({{ContestRequested}}), "NotContested", IF({{CountOfHearings}} = 0, "HearingRequested", IF(OR({{LatestHearingOutcome}} = "Pending", ISBLANK({{LatestHearingOutcome}})), "Scheduled", "Heard")))
-    Error: Unknown function: ISBLANK
+    Contest/Hearing state machine: NotContested when the driver did not elect to contest; otherwise HearingRequested -> Scheduled -> Heard, reflected from the latest hearing's outcome.
+    
+    Formula: =IF(NOT({{ContestRequested}}), "NotContested", IF({{CountOfHearings}} = 0, "HearingRequested", IF(OR({{LatestHearingOutcome}} = "Pending", ISBLANK({{LatestHearingOutcome}})), "Scheduled", "Heard")))
     """
-    raise NotImplementedError("Formula parsing failed")
-
+    return ('NotContested' if (contest_requested is not True) else ('HearingRequested' if (count_of_hearings == 0) else ('Scheduled' if ((latest_hearing_outcome == 'Pending') or ((latest_hearing_outcome is None or latest_hearing_outcome == "") is True)) else 'Heard')))
 
 def calc_citations_is_dismissed(latest_hearing_outcome):
     """
@@ -1759,21 +1719,23 @@ def calc_citations_is_dismissed(latest_hearing_outcome):
     """
     return (True if (latest_hearing_outcome == 'Dismissed') else False)
 
-def calc_citations_is_guilty(latest_hearing_outcome, is_response_overdue, contest_requested):
-    """
-    True when the driver is liable: either found guilty/upheld at hearing, or defaulted by missing the response deadline without contesting.
-    
-    Formula: =IF(OR({{LatestHearingOutcome}} = "Guilty", {{LatestHearingOutcome}} = "Upheld", AND({{IsResponseOverdue}}, NOT({{ContestRequested}}))), TRUE, FALSE)
-    """
-    return (True if ((latest_hearing_outcome == 'Guilty') or (latest_hearing_outcome == 'Upheld') or ((is_response_overdue is True) and (contest_requested is not True))) else False)
+# Level 2
 
 
-def calc_citations_amount_due_usd():
-    """ERROR: Could not parse formula: =IF({{IsDismissed}}, 0, IF({{IsPaymentLate}}, {{BaseFineUsd}} * (1 + {{LatePenaltyPct}}), {{BaseFineUsd}}))
-    Error: '+'
+def calc_citations_days_until_response_due():
+    """ERROR: Could not parse formula: =DAYS({{ResponseDueDate}}, {{AsOfDate}})
+    Error: Unknown function: DAYS
     """
     raise NotImplementedError("Formula parsing failed")
 
+
+def calc_citations_is_response_overdue(responded_on, as_of_date, response_due_date):
+    """
+    True when no response was filed and the response deadline has passed as of AsOfDate.
+    
+    Formula: =IF(AND(ISBLANK({{RespondedOn}}), {{AsOfDate}} > {{ResponseDueDate}}), TRUE, FALSE)
+    """
+    return (True if (((responded_on is None or responded_on == "") is True) and (False if (as_of_date) is None or (response_due_date) is None else (as_of_date) > (response_due_date))) else False)
 
 
 def calc_citations_payment_due_date():
@@ -1783,29 +1745,33 @@ def calc_citations_payment_due_date():
     raise NotImplementedError("Formula parsing failed")
 
 
+# Level 3
 
-def calc_citations_is_payment_late():
-    """ERROR: Could not parse formula: =IF(AND({{IsGuilty}}, ISBLANK({{PaidOn}}), {{AsOfDate}} > {{PaymentDueDate}}), TRUE, FALSE)
-    Error: Unknown function: ISBLANK
+def calc_citations_is_guilty(latest_hearing_outcome, is_response_overdue, contest_requested):
     """
-    raise NotImplementedError("Formula parsing failed")
-
-
-
-def calc_citations_is_in_collections():
-    """ERROR: Could not parse formula: =IF(AND({{IsPaymentLate}}, {{AsOfDate}} > DATEVALUE({{PaymentDueDate}}) + {{DaysLateToCollections}}), TRUE, FALSE)
-    Error: Unknown function: DATEVALUE
+    True when the driver is liable: either found guilty/upheld at hearing, or defaulted by missing the response deadline without contesting.
+    
+    Formula: =IF(OR({{LatestHearingOutcome}} = "Guilty", {{LatestHearingOutcome}} = "Upheld", AND({{IsResponseOverdue}}, NOT({{ContestRequested}}))), TRUE, FALSE)
     """
-    raise NotImplementedError("Formula parsing failed")
+    return (True if ((latest_hearing_outcome == 'Guilty') or (latest_hearing_outcome == 'Upheld') or ((is_response_overdue is True) and (contest_requested is not True))) else False)
 
-
-
-def calc_citations_payment_status():
-    """ERROR: Could not parse formula: =IF({{IsDismissed}}, "NotOwed", IF(NOT(ISBLANK({{PaidOn}})), "Paid", IF({{IsInCollections}}, "Collections", IF({{IsPaymentLate}}, "Late", IF({{IsGuilty}}, "Due", "Pending")))))
-    Error: Unknown function: ISBLANK
+def calc_citations_citation_status(paid_on, is_dismissed, latest_hearing_outcome, is_response_overdue, contest_requested, count_of_hearings, responded_on):
     """
-    raise NotImplementedError("Formula parsing failed")
+    Citation lifecycle state machine: Issued -> Responded -> InContest -> Adjudicated -> Closed. The top-level status synthesizing the other tracks.
+    
+    Formula: =IF(OR(NOT(ISBLANK({{PaidOn}})), {{IsDismissed}}), "Closed", IF(OR({{LatestHearingOutcome}} = "Guilty", {{LatestHearingOutcome}} = "Upheld", AND({{IsResponseOverdue}}, NOT({{ContestRequested}}))), "Adjudicated", IF(AND({{ContestRequested}}, {{CountOfHearings}} > 0), "InContest", IF(NOT(ISBLANK({{RespondedOn}})), "Responded", "Issued"))))
+    """
+    return ('Closed' if ((not (paid_on is None or paid_on == "")) or (is_dismissed is True)) else ('Adjudicated' if ((latest_hearing_outcome == 'Guilty') or (latest_hearing_outcome == 'Upheld') or ((is_response_overdue is True) and (contest_requested is not True))) else ('InContest' if ((contest_requested is True) and (False if (count_of_hearings) is None else (count_of_hearings) > (0))) else ('Responded' if (not (responded_on is None or responded_on == "")) else 'Issued'))))
 
+# Level 4
+
+def calc_citations_is_payment_late(is_guilty, paid_on, as_of_date, payment_due_date):
+    """
+    True when the driver is liable, has not paid in full, and the payment due date has passed as of AsOfDate.
+    
+    Formula: =IF(AND({{IsGuilty}}, ISBLANK({{PaidOn}}), {{AsOfDate}} > {{PaymentDueDate}}), TRUE, FALSE)
+    """
+    return (True if ((is_guilty is True) and ((paid_on is None or paid_on == "") is True) and (False if (as_of_date) is None or (payment_due_date) is None else (as_of_date) > (payment_due_date))) else False)
 
 def calc_citations_effective_points(is_guilty, is_dismissed, violation_points):
     """
@@ -1815,13 +1781,33 @@ def calc_citations_effective_points(is_guilty, is_dismissed, violation_points):
     """
     return (violation_points if ((is_guilty is True) and (is_dismissed is not True)) else 0)
 
+# Level 5
 
-def calc_citations_citation_status():
-    """ERROR: Could not parse formula: =IF(OR(NOT(ISBLANK({{PaidOn}})), {{IsDismissed}}), "Closed", IF(OR({{LatestHearingOutcome}} = "Guilty", {{LatestHearingOutcome}} = "Upheld", AND({{IsResponseOverdue}}, NOT({{ContestRequested}}))), "Adjudicated", IF(AND({{ContestRequested}}, {{CountOfHearings}} > 0), "InContest", IF(NOT(ISBLANK({{RespondedOn}})), "Responded", "Issued"))))
-    Error: Unknown function: ISBLANK
+def calc_citations_amount_due_usd(is_dismissed, is_payment_late, base_fine_usd, late_penalty_pct):
+    """
+    Amount currently owed: 0 if dismissed; otherwise the base fine plus the jurisdiction's late penalty if the payment is late.
+    
+    Formula: =IF({{IsDismissed}}, 0, IF({{IsPaymentLate}}, {{BaseFineUsd}} * (1 + {{LatePenaltyPct}}), {{BaseFineUsd}}))
+    """
+    return (0 if is_dismissed else (((base_fine_usd) or 0) * ((((1) or 0) + ((late_penalty_pct) or 0)) or 0) if is_payment_late else base_fine_usd))
+
+
+def calc_citations_is_in_collections():
+    """ERROR: Could not parse formula: =IF(AND({{IsPaymentLate}}, {{AsOfDate}} > DATEVALUE({{PaymentDueDate}}) + {{DaysLateToCollections}}), TRUE, FALSE)
+    Error: Unknown function: DATEVALUE
     """
     raise NotImplementedError("Formula parsing failed")
 
+
+# Level 6
+
+def calc_citations_payment_status(is_dismissed, paid_on, is_in_collections, is_payment_late, is_guilty):
+    """
+    Payment/Penalty state machine: NotOwed (dismissed) -> Paid -> Collections -> Late -> Due. Evaluated in priority order.
+    
+    Formula: =IF({{IsDismissed}}, "NotOwed", IF(NOT(ISBLANK({{PaidOn}})), "Paid", IF({{IsInCollections}}, "Collections", IF({{IsPaymentLate}}, "Late", IF({{IsGuilty}}, "Due", "Pending")))))
+    """
+    return ('NotOwed' if is_dismissed else ('Paid' if (not (paid_on is None or paid_on == "")) else ('Collections' if is_in_collections else ('Late' if is_payment_late else ('Due' if is_guilty else 'Pending')))))
 
 
 def compute_citations_fields(record: dict) -> dict:
@@ -1830,21 +1816,29 @@ def compute_citations_fields(record: dict) -> dict:
 
     # Level 1 calculations
     result['name'] = calc_citations_name(result.get('citation_number'))
-
-    # Level 2 calculations
     result['response_due_date'] = calc_citations_response_due_date(result.get('issued_on'), result.get('days_to_respond'))
-    result['days_until_response_due'] = calc_citations_days_until_response_due(result.get('response_due_date'), result.get('as_of_date'))
-    result['is_response_overdue'] = calc_citations_is_response_overdue(result.get('responded_on'), result.get('as_of_date'), result.get('response_due_date'))
     result['contest_status'] = calc_citations_contest_status(result.get('contest_requested'), result.get('count_of_hearings'), result.get('latest_hearing_outcome'))
     result['is_dismissed'] = calc_citations_is_dismissed(result.get('latest_hearing_outcome'))
-    result['is_guilty'] = calc_citations_is_guilty(result.get('latest_hearing_outcome'), result.get('is_response_overdue'), result.get('contest_requested'))
-    result['amount_due_usd'] = calc_citations_amount_due_usd(result.get('is_dismissed'), result.get('is_payment_late'), result.get('base_fine_usd'), result.get('late_penalty_pct'))
+
+    # Level 2 calculations
+    result['days_until_response_due'] = calc_citations_days_until_response_due(result.get('response_due_date'), result.get('as_of_date'))
+    result['is_response_overdue'] = calc_citations_is_response_overdue(result.get('responded_on'), result.get('as_of_date'), result.get('response_due_date'))
     result['payment_due_date'] = calc_citations_payment_due_date(result.get('response_due_date'), result.get('days_to_pay_after_ruling'))
-    result['is_payment_late'] = calc_citations_is_payment_late(result.get('is_guilty'), result.get('paid_on'), result.get('as_of_date'), result.get('payment_due_date'))
-    result['is_in_collections'] = calc_citations_is_in_collections(result.get('is_payment_late'), result.get('as_of_date'), result.get('payment_due_date'), result.get('days_late_to_collections'))
-    result['payment_status'] = calc_citations_payment_status(result.get('is_dismissed'), result.get('paid_on'), result.get('is_in_collections'), result.get('is_payment_late'), result.get('is_guilty'))
-    result['effective_points'] = calc_citations_effective_points(result.get('is_guilty'), result.get('is_dismissed'), result.get('violation_points'))
+
+    # Level 3 calculations
+    result['is_guilty'] = calc_citations_is_guilty(result.get('latest_hearing_outcome'), result.get('is_response_overdue'), result.get('contest_requested'))
     result['citation_status'] = calc_citations_citation_status(result.get('paid_on'), result.get('is_dismissed'), result.get('latest_hearing_outcome'), result.get('is_response_overdue'), result.get('contest_requested'), result.get('count_of_hearings'), result.get('responded_on'))
+
+    # Level 4 calculations
+    result['is_payment_late'] = calc_citations_is_payment_late(result.get('is_guilty'), result.get('paid_on'), result.get('as_of_date'), result.get('payment_due_date'))
+    result['effective_points'] = calc_citations_effective_points(result.get('is_guilty'), result.get('is_dismissed'), result.get('violation_points'))
+
+    # Level 5 calculations
+    result['amount_due_usd'] = calc_citations_amount_due_usd(result.get('is_dismissed'), result.get('is_payment_late'), result.get('base_fine_usd'), result.get('late_penalty_pct'))
+    result['is_in_collections'] = calc_citations_is_in_collections(result.get('is_payment_late'), result.get('as_of_date'), result.get('payment_due_date'), result.get('days_late_to_collections'))
+
+    # Level 6 calculations
+    result['payment_status'] = calc_citations_payment_status(result.get('is_dismissed'), result.get('paid_on'), result.get('is_in_collections'), result.get('is_payment_late'), result.get('is_guilty'))
 
     # Convert empty strings to None for string fields
     for key in ['name', 'contest_status', 'payment_status', 'citation_status']:
@@ -2580,7 +2574,15 @@ def parse_index_match_formula(formula: str) -> tuple:
     Formula format: =INDEX(Table!{{FieldToReturn}}, MATCH(CurrentTable!{{KeyField}}, Table!{{PrimaryKeyField}}, 0))
     Returns: (lookup_table, return_field, key_field, pk_field) or all None.
     """
-    pattern = r"=INDEX\((\w+)!\{\{(\w+)\}\},\s*MATCH\(\w+!\{\{(\w+)\}\},\s*(\w+)!\{\{(\w+)\}\},\s*0\)\)"
+    # The MATCH key is a field on the record being computed, so the rulebook
+    # writes it bare ({{WorkflowStep}}); an explicit table prefix
+    # (ApprovalGates!{{WorkflowStep}}) means the same thing. Both spellings
+    # must parse — requiring the prefix silently nulled every bare lookup.
+    pattern = (
+        r"=\s*INDEX\(\s*(\w+)!\{\{(\w+)\}\}\s*,"
+        r"\s*MATCH\(\s*(?:\w+!)?\{\{(\w+)\}\}\s*,"
+        r"\s*(\w+)!\{\{(\w+)\}\}\s*,\s*0\s*\)\s*\)"
+    )
     match = re.match(pattern, formula)
     if match:
         return (match.group(1), match.group(2), match.group(3), match.group(5))
@@ -2594,6 +2596,128 @@ def parse_countifs_formula(formula: str) -> tuple:
     if match:
         return (match.group(1), match.group(2), match.group(3))
     return (None, None, None)
+
+
+def parse_countifs(formula: str) -> tuple:
+    """Parse any COUNTIFS into (table, [(range_field, criteria), ...]).
+
+    COUNTIFS is variadic — (range, criteria) repeated — so it is parsed
+    structurally rather than with one regex per shape. Each criteria is
+    ('field', Name) to compare against the current record, or ('literal', v).
+    All ranges must name the same table, since COUNTIFS counts rows of one
+    table. Returns (None, None) when the formula is not a COUNTIFS.
+    """
+    match = re.match(r"\s*=\s*COUNTIFS\s*\((.*)\)\s*$", formula, re.S)
+    if not match:
+        return (None, None)
+
+    args = [a.strip() for a in _split_top_level_args(match.group(1))]
+    if len(args) < 2 or len(args) % 2 != 0:
+        raise ValueError(
+            f"COUNTIFS takes (range, criteria) pairs, got {len(args)} argument(s): {formula}")
+
+    table = None
+    criteria = []
+    for range_arg, criteria_arg in zip(args[0::2], args[1::2]):
+        range_match = re.match(r"^(\w+)!\{\{(\w+)\}\}$", range_arg)
+        if not range_match:
+            raise ValueError(f"COUNTIFS range must be Table!{{{{Field}}}}, got {range_arg!r}")
+        range_table, range_field = range_match.groups()
+        if table is None:
+            table = range_table
+        elif range_table != table:
+            raise ValueError(
+                f"COUNTIFS ranges must all name the same table; "
+                f"got {table!r} and {range_table!r}")
+        criteria.append((range_field, _parse_countifs_criteria(criteria_arg)))
+
+    return (table, criteria)
+
+
+def _split_top_level_args(text: str) -> list:
+    """Split on commas that are not inside parentheses or quotes."""
+    args = []
+    depth = 0
+    quote = None
+    current = ''
+    for char in text:
+        if quote:
+            current += char
+            if char == quote:
+                quote = None
+            continue
+        if char in '"\'':
+            quote = char
+            current += char
+        elif char == '(':
+            depth += 1
+            current += char
+        elif char == ')':
+            depth -= 1
+            current += char
+        elif char == ',' and depth == 0:
+            args.append(current)
+            current = ''
+        else:
+            current += char
+    if current.strip():
+        args.append(current)
+    return args
+
+
+def _parse_countifs_criteria(arg: str):
+    """Classify one COUNTIFS criteria argument."""
+    field_match = re.match(r"^(?:\w+!)?\{\{(\w+)\}\}$", arg)
+    if field_match:
+        return ('field', field_match.group(1))
+    # TRUE and FALSE appear with or without call parentheses.
+    bare = arg.upper().replace('()', '').strip()
+    if bare == 'TRUE':
+        return ('literal', True)
+    if bare == 'FALSE':
+        return ('literal', False)
+    if len(arg) >= 2 and arg[0] == arg[-1] and arg[0] in '"\'':
+        return ('literal', arg[1:-1])
+    try:
+        return ('literal', int(arg))
+    except ValueError:
+        pass
+    try:
+        return ('literal', float(arg))
+    except ValueError:
+        pass
+    raise ValueError(f"Unrecognized COUNTIFS criteria: {arg!r}")
+
+
+def count_matching_rows(rows: list, criteria: list, record: dict) -> int:
+    """Count rows satisfying every (range_field, criteria) pair."""
+    count = 0
+    for row in rows:
+        for range_field, (kind, value) in criteria:
+            expected = record.get(to_snake_case(value)) if kind == 'field' else value
+            if row.get(to_snake_case(range_field)) != expected:
+                break
+        else:
+            count += 1
+    return count
+
+
+def parse_countifs_literal_formula(formula: str) -> tuple:
+    """Parse =COUNTIFS(Table!{{Field}}, TRUE()) / FALSE().
+
+    Distinct from parse_countifs_formula, whose second argument is another
+    table's field rather than a literal. Returns (table, field, bool).
+    """
+    pattern = r"=COUNTIFS\((\w+)!\{\{(\w+)\}\},\s*(TRUE|FALSE)\(\)\)"
+    match = re.match(pattern, formula)
+    if match:
+        return (match.group(1), match.group(2), match.group(3) == 'TRUE')
+    return (None, None, None)
+
+
+def count_closure_rows(closure_rows: list, column: str, expected) -> int:
+    """Count materialized closure rows whose column equals expected."""
+    return sum(1 for row in closure_rows if row.get(column) == expected)
 
 
 def parse_sumifs_formula(formula: str) -> tuple:
@@ -2688,7 +2812,116 @@ def compute_lookups(records: list, entity_name: str, rulebook: dict, project_roo
     return records
 
 
-def compute_aggregations(records: list, entity_name: str, rulebook: dict, project_root: Path) -> list:
+# =============================================================================
+# TRANSITIVE CLOSURE ENGINE (PYTHON SIMULATOR — DO NOT CALL FROM OTHER SUBSTRATES)
+# =============================================================================
+
+
+def compute_closure_relation(rows: list, to_field: str,
+                             pk_field: str = None, from_field: str = None) -> list:
+    """Cycle-safe transitive closure, matching Postgres vw_<entity>_closure.
+
+    Two edge shapes: pass from_field for an edge/junction table, or pk_field
+    for a self-referential FK on the entity's own rows.
+
+    Returns dicts of from_id, to_id, hop_distance (shortest derivation) and
+    is_inferred (TRUE iff no directly-asserted hop-1 edge states the pair).
+    A NULL or empty-string endpoint is not an edge — the transpiler stores
+    absent relationships as '' rather than NULL, so both must be excluded.
+    """
+    source_field = from_field or pk_field
+    if source_field is None:
+        raise ValueError("compute_closure_relation requires from_field or pk_field")
+
+    edges = []
+    for row in rows:
+        src = row.get(source_field)
+        dst = row.get(to_field)
+        if src is None or src == '' or dst is None or dst == '':
+            continue
+        edges.append((src, dst))
+
+    if not edges:
+        return []
+
+    asserted = set(edges)
+    adjacency = {}
+    for src, dst in edges:
+        adjacency.setdefault(src, []).append(dst)
+
+    shortest = {}
+    for origin in {src for src, _ in edges}:
+        # BFS keeps the first arrival shortest; the path set makes it cycle-safe.
+        frontier = [(origin, (origin,))]
+        hop = 0
+        while frontier:
+            hop += 1
+            next_frontier = []
+            for node, path in frontier:
+                for neighbor in adjacency.get(node, []):
+                    pair = (origin, neighbor)
+                    if pair not in shortest:
+                        shortest[pair] = hop
+                    if neighbor not in path:
+                        next_frontier.append((neighbor, path + (neighbor,)))
+            frontier = next_frontier
+
+    return [
+        {
+            'from_id': from_id,
+            'to_id': to_id,
+            'hop_distance': hop_distance,
+            'is_inferred': (from_id, to_id) not in asserted,
+        }
+        for (from_id, to_id), hop_distance in sorted(shortest.items())
+    ]
+
+
+def compute_closures(rulebook: dict, project_root: Path) -> dict:
+    """Materialize every closure field in the rulebook as a pseudo-table.
+
+    Aggregations address these by view name, e.g.
+    =COUNTIFS(vw_step_precedence_closure!{{IsInferred}}, TRUE()) — so the
+    result is keyed by vw_<entity>_closure and joins the related-data lookup
+    path alongside real tables.
+    """
+    from orchestration.shared import (
+        discover_entities,
+        discover_primary_key,
+        get_closure_fields,
+        closure_view_name,
+    )
+
+    materialized = {}
+
+    for entity_name in discover_entities(rulebook):
+        schema = get_entity_schema(rulebook, entity_name)
+        for field in get_closure_fields(schema):
+            edge_table = field.get('EdgeTable')
+            to_column = field.get('ToColumn')
+            if not to_column:
+                continue
+
+            to_field = to_snake_case(to_column)
+
+            if edge_table and field.get('FromColumn'):
+                source_entity = edge_table
+                source_rows = load_related_data(project_root, edge_table)
+                kwargs = {'from_field': to_snake_case(field['FromColumn'])}
+            else:
+                source_entity = entity_name
+                source_rows = load_related_data(project_root, entity_name)
+                kwargs = {'pk_field': to_snake_case(
+                    discover_primary_key(rulebook, entity_name))}
+
+            materialized[closure_view_name(source_entity)] = compute_closure_relation(
+                source_rows, to_field=to_field, **kwargs)
+
+    return materialized
+
+
+def compute_aggregations(records: list, entity_name: str, rulebook: dict, project_root: Path,
+                         closures: dict = None) -> list:
     """COUNTIFS / SUMIFS aggregation interpreter. PYTHON SIMULATOR ONLY."""
     schema = get_entity_schema(rulebook, entity_name)
     agg_fields = get_aggregation_fields(schema)
@@ -2697,13 +2930,28 @@ def compute_aggregations(records: list, entity_name: str, rulebook: dict, projec
         return records
 
     related_data_cache = {}
+    closures = closures or {}
 
     for field in agg_fields:
         field_name = field.get("name")
         formula = field.get("formula", "")
         snake_field_name = to_snake_case(field_name)
 
-        related_table, lookup_field, match_field = parse_countifs_formula(formula)
+        # COUNTIFS handles any number of (range, criteria) pairs over one
+        # table, which may be an ordinary table or a materialized closure.
+        countifs_table, countifs_criteria = parse_countifs(formula)
+        if countifs_table:
+            if countifs_table in closures:
+                target_rows = closures[countifs_table]
+            else:
+                if countifs_table not in related_data_cache:
+                    related_data_cache[countifs_table] = load_related_data(
+                        project_root, countifs_table)
+                target_rows = related_data_cache[countifs_table]
+            for record in records:
+                record[snake_field_name] = count_matching_rows(
+                    target_rows, countifs_criteria, record)
+            continue
 
         if related_table:
             if related_table not in related_data_cache:

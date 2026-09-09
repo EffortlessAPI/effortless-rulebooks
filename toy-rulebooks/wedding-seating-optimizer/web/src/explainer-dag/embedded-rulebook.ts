@@ -3,8 +3,8 @@
 
 export const rulebook = {
   "$schema": "https://example.com/cmcc-schema/v1",
-  "model_name": "wedding-seating-optimizer",
-  "Description": "Seating plan as a DAG \u2014 per-table happiness, capacity flags, per-guest satisfaction recompute on every move.",
+  "Name": "Wedding Seating Optimizer",
+  "Description": "Seating plan as a DAG — per-table happiness, capacity flags, per-guest satisfaction recompute on every move.",
   "Users": {
     "Description": "Login identities for the demo (stub auth).",
     "schema": [
@@ -66,6 +66,15 @@ export const rulebook = {
   },
   "Tables": {
     "Description": "Physical reception tables. Guests are assigned to one Table each.",
+    "important": true,
+    "summary_rich": "The **fixed surfaces** of the reception. Each table has a hard seat count and absorbs whatever guests get assigned to it. `HeadCount`, `OverCapacity`, `Happiness`, and `Grade` are all derived — never edited — so the moment a guest moves, the destination table's grade snaps from *Great* to *Conflict* (or vice versa) without a single line of application code.",
+    "important_fields": [
+      "Label",
+      "Seats",
+      "HeadCount",
+      "Grade",
+      "ViolationCount"
+    ],
     "schema": [
       {
         "name": "TableId",
@@ -112,7 +121,9 @@ export const rulebook = {
         "datatype": "boolean",
         "type": "calculated",
         "nullable": true,
-        "formula": "={{HeadCount}} > {{Seats}}"
+        "formula": "={{HeadCount}} > {{Seats}}",
+        "important": true,
+        "explanation_rich": "**The capacity constraint, as a derived field.** A table is `OverCapacity` the instant `HeadCount` exceeds `Seats` — no save button, no validation pass, no application code. Worked example: *Plus Ones* has `Seats=4` and currently holds 5 guests (`g-ex`, `g-plus-1`, `g-plus-2`, `g-kid-1`, `g-kid-2`), so `HeadCount=5 > 4` and this flips to `TRUE`. Drag any of those five to another table and the flag clears on the same recompute pass."
       },
       {
         "name": "RawHappiness",
@@ -143,7 +154,9 @@ export const rulebook = {
         "datatype": "string",
         "type": "calculated",
         "nullable": true,
-        "formula": "=IF({{ViolationCount}}>0, \"Conflict\", IF({{OverCapacity}}, \"Over Capacity\", IF({{Happiness}}>=15, \"Great\", IF({{Happiness}}>=5, \"OK\", \"Cold\"))))"
+        "formula": "=IF({{ViolationCount}}>0, \"Conflict\", IF({{OverCapacity}}, \"Over Capacity\", IF({{Happiness}}>=15, \"Great\", IF({{Happiness}}>=5, \"OK\", \"Cold\"))))",
+        "important": true,
+        "explanation_rich": "**The whole optimization, collapsed to one label.** Grade is a strict priority cascade: any `must-not` violation at this table beats everything (→ *Conflict*); otherwise a capacity overflow beats happiness (→ *Over Capacity*); otherwise `Happiness` is bucketed *Great / OK / Cold*. Worked example: *Plus Ones* currently seats Drew Hart (the ex) alongside the bride's aunt — `ViolationCount` for that pair shows up here as **Conflict**, and no amount of positive affinity at the table can override it. Move Drew to any other table and *Plus Ones* immediately drops to whichever lower-priority bucket the remaining numbers earn."
       },
       {
         "name": "BrideSideCount",
@@ -205,6 +218,15 @@ export const rulebook = {
   },
   "Guests": {
     "Description": "Wedding guests. Each is assigned to one Table.",
+    "important": true,
+    "summary_rich": "The **only editable thing in the demo.** Guests carry side (bride/groom), dietary needs, language, age band — but the field that drives everything is `AssignedTable`. Move a guest and four ripples fire at once: the source and destination tables recount, every relationship the guest belongs to re-checks `SameTable`, and the guest's own `Satisfaction` and `Mood` recompute. No save button. No glue code. Just the DAG.",
+    "important_fields": [
+      "FullName",
+      "Side",
+      "AssignedTable",
+      "TableLabel",
+      "Mood"
+    ],
     "schema": [
       {
         "name": "GuestId",
@@ -258,7 +280,7 @@ export const rulebook = {
         "type": "relationship",
         "nullable": true,
         "RelatedTo": "Tables",
-        "Description": "FK to Tables.TableId. Editable \u2014 moves the guest."
+        "Description": "FK to Tables.TableId. Editable — moves the guest."
       },
       {
         "name": "TableLabel",
@@ -323,7 +345,9 @@ export const rulebook = {
         "datatype": "string",
         "type": "calculated",
         "nullable": true,
-        "formula": "=IF({{Satisfaction}}>=10, \"Happy\", IF({{Satisfaction}}>=0, \"Neutral\", \"Unhappy\"))"
+        "formula": "=IF({{Satisfaction}}>=10, \"Happy\", IF({{Satisfaction}}>=0, \"Neutral\", \"Unhappy\"))",
+        "important": true,
+        "explanation_rich": "**Each guest's own verdict on where you put them.** `Mood` is bucketed off `Satisfaction`, which sums the `EffectiveScore` of every relationship the guest belongs to *only when the pair is co-seated*. Worked example: **Alex Stone** sits at the Head Table with Sam (the spouse, +30 *loves*), her mom (+10 *prefers*), and her dad (+10 *prefers*) — Satisfaction = 50, so Mood = **Happy**. **Drew Hart (the ex)** is at *Plus Ones*, away from both Alex and Sam — the `avoid` and `must-not` relationships score 0 *because they're not co-seated*, so Drew's Mood is **Neutral**, not Unhappy. Drag Drew to the Head Table and the same field flips to deeply negative on the next recompute."
       },
       {
         "name": "BrideFlag",
@@ -577,6 +601,16 @@ export const rulebook = {
   },
   "Relationships": {
     "Description": "Directed-but-symmetric guest-pair affinities. Kind is loves | prefers | avoid | must-not, with a Weight (positive = affinity, negative = friction).",
+    "important": true,
+    "summary_rich": "The **constraints**, expressed pair-by-pair. Four kinds — `loves` and `prefers` want guests together; `avoid` wants them apart; `must-not` is a hard wall. Weight is the magnitude, but the constraint structure does most of the work: `must-not` co-seated produces a fixed −50 penalty *regardless of Weight* and immediately grades the table **Conflict**. This is what makes the demo a constraint-satisfaction problem and not just a scoring rubric.",
+    "important_fields": [
+      "GuestAName",
+      "GuestBName",
+      "Kind",
+      "Weight",
+      "SameTable",
+      "IsMustNotViolation"
+    ],
     "schema": [
       {
         "name": "RelId",
@@ -668,14 +702,18 @@ export const rulebook = {
         "type": "calculated",
         "nullable": true,
         "Description": "Weight when co-seated; else 0. Must-not pairs co-seated produce a large penalty regardless of Weight sign.",
-        "formula": "=IF({{SameTable}}, IF({{Kind}}=\"must-not\", -50, {{Weight}}), 0)"
+        "formula": "=IF({{SameTable}}, IF({{Kind}}=\"must-not\", -50, {{Weight}}), 0)",
+        "important": true,
+        "explanation_rich": "**The rule that says co-seating is a precondition.** A relationship contributes nothing to either guest's happiness or the table's score unless both ends are at the same table — that's why moving a guest is the only operation that matters. Worked example: `r-ex-bride` (Drew ↔ Alex, *must-not*, Weight=−100) currently scores **0** because Drew is at *Plus Ones* and Alex is at the Head Table. The instant you drag Drew to the Head Table, `SameTable` flips to TRUE and the formula returns **−50** (the must-not override), not −100 — the override exists so the Weight field stays a tunable preference while `must-not` remains a hard, constant-penalty rule."
       },
       {
         "name": "IsMustNotViolation",
         "datatype": "boolean",
         "type": "calculated",
         "nullable": true,
-        "formula": "=AND({{Kind}}=\"must-not\", {{SameTable}})"
+        "formula": "=AND({{Kind}}=\"must-not\", {{SameTable}})",
+        "important": true,
+        "explanation_rich": "**The hard wall.** A `must-not` relationship is a categorical \"these two cannot sit together\" — it's not a heavy negative number you can outweigh with friends, it's a binary breach. This field is the breach detector: TRUE iff Kind is `must-not` AND the pair is co-seated. Worked example: only one such pair exists in the rulebook — `r-ex-bride` (Drew Hart ↔ Alex Stone) — and it currently reads **FALSE** because they're at different tables. Move Drew to the Head Table and `IsMustNotViolation` flips TRUE, which feeds `ViolationFlag → Tables.ViolationCount → Tables.Grade`, painting the Head Table **Conflict** until you separate them again."
       },
       {
         "name": "IsSatisfied",
@@ -865,6 +903,105 @@ export const rulebook = {
       }
     ]
   },
-  "Name": "Wedding Seating Optimizer"
+  "__meta__": {
+    "Description": "Project-level metadata that travels with the rulebook: tagline, motif, narrative descriptions, substrate list, signature rows, etc. One row per metadata key. Use ValueType to interpret StringValue vs JsonValue.",
+    "important": false,
+    "schema": [
+      {
+        "name": "MetaKey",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The metadata key (e.g. 'tagline', 'motif_palette', 'substrates'). Unique within the table."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "formula": "={{MetaKey}}",
+        "Description": "Identifier for this metadata entry. Mirrors MetaKey so the row is addressable by Name like every other table."
+      },
+      {
+        "name": "ValueType",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "How to interpret the value columns: 'string' (use StringValue), 'object' (parse JsonValue as JSON object), 'array' (parse JsonValue as JSON array)."
+      },
+      {
+        "name": "StringValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Plain string value. Populated when ValueType == 'string'; null otherwise."
+      },
+      {
+        "name": "JsonValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "JSON-encoded value. Populated when ValueType == 'object' or 'array'; null when ValueType == 'string'."
+      }
+    ],
+    "data": [
+      {
+        "MetaKey": "tagline",
+        "Name": "tagline",
+        "ValueType": "string",
+        "StringValue": "Guests, tables, and the constraints between them — a seating chart that grades itself.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif",
+        "Name": "motif",
+        "ValueType": "string",
+        "StringValue": "atlas",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif_palette",
+        "Name": "motif_palette",
+        "ValueType": "object",
+        "StringValue": null,
+        "JsonValue": "{\"primary\": \"#2d4a3e\", \"accent\": \"#c19a5b\", \"ink\": \"#0f1a16\"}"
+      },
+      {
+        "MetaKey": "description_rich",
+        "Name": "description_rich",
+        "ValueType": "string",
+        "StringValue": "A wedding seating chart is a classic constraint-satisfaction problem hiding in plain sight. Twenty-three guests. Five tables with fixed capacities. A web of *loves / prefers / avoid / must-not* relationships between pairs. The interesting thing isn't the data — it's that **every quality metric is derived**: a table's `HeadCount`, `OverCapacity` flag, `Happiness` score, and one-word `Grade` are all DAG outputs of the guests' `AssignedTable` field. The only thing a coordinator edits is *which guest sits where*. Every other answer falls out — identically — in Postgres, Python, Excel, and OWL.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "use_cases",
+        "Name": "use_cases",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[\"**Surface the must-not breach.** Drag Drew Hart (the ex) onto the Head Table; watch `IsMustNotViolation` flip, the table's `Grade` snap to **Conflict**, and Alex's `Mood` collapse — all on the same recompute pass.\", \"**Catch the capacity overflow.** *Plus Ones* has 4 seats and 5 guests; `OverCapacity` is already TRUE. Reassign Lily Stone (`g-kid-2`) to *Bride Family* and the flag clears the instant the FK lands.\", \"**Balance the side skew.** *College Friends* is 2 bride / 2 groom — `SideSkew = 0`. Move Jordan Pham to *Groom Family* and the same table's skew jumps to 2, docking its `Happiness` without any rebalancing code.\", \"**Re-tune a soft preference into a hard rule.** Edit `r-aunt-ex` from `avoid` (Weight −15) to `must-not`; now any future move that co-seats the bride's aunt with Drew turns into a **Conflict** instead of a quiet penalty.\", \"**Ask the same question in two dialects.** *\\\"Which tables are currently in conflict?\\\"* — answer it as a Postgres view (`WHERE Grade = 'Conflict'`) and as a Python comprehension; identical row set, no glue.\"]"
+      },
+      {
+        "MetaKey": "signature_rows",
+        "Name": "signature_rows",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"entity\": \"Tables\", \"ids\": [\"t-head\", \"t-friends\", \"t-misc\"]}, {\"entity\": \"Guests\", \"ids\": [\"g-alex\", \"g-sam\", \"g-ex\"]}, {\"entity\": \"Relationships\", \"ids\": [\"r-couple\", \"r-ex-bride\", \"r-aunt-ex\"]}]"
+      },
+      {
+        "MetaKey": "journal_seed",
+        "Name": "journal_seed",
+        "ValueType": "string",
+        "StringValue": "Five tables, twenty-three guests, one ex on the floor. Plus Ones is over capacity and Drew is *just barely* not seated with the bride. One drag-and-drop away from a Conflict, one away from peace.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "substrates",
+        "Name": "substrates",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"key\": \"postgres\", \"important\": true, \"chip_label\": \"Postgres\"}, {\"key\": \"python\", \"important\": true, \"chip_label\": \"Python\"}, {\"key\": \"excel\", \"important\": false, \"chip_label\": \"Excel\"}, {\"key\": \"owl\", \"important\": false, \"chip_label\": \"OWL\"}]"
+      }
+    ]
+  }
 } as const;
 export type Rulebook = typeof rulebook;

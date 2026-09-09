@@ -2,29 +2,27 @@
 
 ## Configuration
 
-- **Rulebook:** `/Users/eejai42/development/effortless-rulebooks/rulebook-examples/talismans-special-solutions/effortless-rulebook/talismans-special-solutions-rulebook.json`
-- **Substrates Tested:** 4
-- **Computed Columns Tested:** 75
+- **Rulebook:** `/Users/eejai42/development/effortless-rulebooks/toy-rulebooks/customer-fullname/effortless-rulebook/customer-fullname-rulebook.json`
+- **Substrates Tested:** 2
+- **Computed Columns Tested:** 2
 
 ## Summary by Substrate
 
 | Substrate | Passed | Failed | Total | Score | Duration | Status |
 |-----------|--------|--------|-------|-------|----------|--------|
-| python | 691 | 0 | 691 | 100.0% | < 1s | PASS |
-| effortless-postgres | 691 | 0 | 691 | 100.0% | 5s | PASS |
-| owl | 691 | 0 | 691 | 100.0% | 18s | PASS |
-| golang | 72 | 619 | 691 | 10.4% | < 1s | FAIL |
+| effortless-postgres | 8 | 0 | 8 | 100.0% | < 1s | PASS |
+| xlsx | 4 | 4 | 8 | 50.0% | < 1s | FAIL |
 
 ## Overall Statistics
 
 | Metric | Value |
 |--------|-------|
-| Total Substrates | 4 |
-| Total Fields Tested | 2764 |
-| Total Passed | 2145 |
-| Total Failed | 619 |
-| Overall Score | 77.6% |
-| Total Duration | 24s |
+| Total Substrates | 2 |
+| Total Fields Tested | 16 |
+| Total Passed | 12 |
+| Total Failed | 4 |
+| Overall Score | 75.0% |
+| Total Duration | < 1s |
 
 ---
 

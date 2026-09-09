@@ -112,17 +112,17 @@ pre { background: var(--code-bg); border: 1px solid var(--border-color); border-
 golang: Starting test...
 golang: Compiling and running...
 # command-line-arguments
-./erb_sdk.go:155:34: cannot use tc.WorkflowId (variable of type string) as *string value in argument to stringVal
-./erb_sdk.go:196:9: cannot use func() interface{} {…}() (value of type interface{}) as int value in return statement: need type assertion
-./erb_sdk.go:203:10: invalid operation: boolVal(tc.MonthsSinceModified) &gt; boolVal(tc.StalenessThresholdMonths) (operator &gt; not defined on bool)
-./erb_sdk.go:203:18: cannot use tc.MonthsSinceModified (variable of type *int) as *bool value in argument to boolVal
-./erb_sdk.go:203:52: cannot use tc.StalenessThresholdMonths (variable of type *int) as *bool value in argument to boolVal
-./erb_sdk.go:224:10: invalid operation: operator + not defined on tc.CountAssertedPrecedencePairs (variable of type *int)
-./erb_sdk.go:231:78: invalid operation: tc.CountOfNonProposedSteps - 1 (mismatched types *int and untyped int)
-./erb_sdk.go:252:38: invalid operation: tc.CountWorkflowArtifacts - 1 (mismatched types *int and untyped int)
-./erb_sdk.go:273:9: cannot use tc.InvolvesEngineeringAndLegal (variable of type *bool) as bool value in return statement
-./erb_sdk.go:288:43: cannot use tc.WorkflowId (variable of type string) as *string value in argument to stringVal
-./erb_sdk.go:288:43: too many errors
+./erb_sdk.go:163:34: cannot use tc.WorkflowId (variable of type string) as *string value in argument to stringVal
+./erb_sdk.go:204:9: cannot use func() interface{} {…}() (value of type interface{}) as int value in return statement: need type assertion
+./erb_sdk.go:232:10: invalid operation: operator + not defined on tc.CountAssertedPrecedencePairs (variable of type *int)
+./erb_sdk.go:239:78: invalid operation: tc.CountOfNonProposedSteps - 1 (mismatched types *int and untyped int)
+./erb_sdk.go:260:38: invalid operation: tc.CountWorkflowArtifacts - 1 (mismatched types *int and untyped int)
+./erb_sdk.go:281:9: cannot use tc.InvolvesEngineeringAndLegal (variable of type *bool) as bool value in return statement
+./erb_sdk.go:296:43: cannot use tc.WorkflowId (variable of type string) as *string value in argument to stringVal
+./erb_sdk.go:303:36: invalid operation: operator + not defined on tc.CountAssertedPrecedencePairs (variable of type *int)
+./erb_sdk.go:305:47: invalid operation: tc.CountWorkflowArtifacts - 1 (mismatched types *int and untyped int)
+./erb_sdk.go:311:21: cannot use monthsSinceModified (variable of type interface{}) as *int value in argument to intVal: need type assertion
+./erb_sdk.go:311:21: too many errors
 </pre>
             </div>
         </div>
@@ -141,7 +141,7 @@ golang: Compiling and running...
             <div class="card">
                 <div class="code-header">
                     <h2>erb_sdk.go</h2>
-                    <div><span class="code-info">2744 lines</span><button class="copy-btn" onclick="copyCode('sdk-code')">Copy</button></div>
+                    <div><span class="code-info">2752 lines</span><button class="copy-btn" onclick="copyCode('sdk-code')">Copy</button></div>
                 </div>
                 <pre id="sdk-code">// ERB SDK - Go Implementation (GENERATED - DO NOT EDIT)
 // ======================================================
@@ -186,6 +186,14 @@ func nilIfEmpty(s string) *string {
 		return nil
 	}
 	return &amp;s
+}
+
+// intVal safely dereferences a *int, returning 0 if nil
+func intVal(i *int) int {
+	if i == nil {
+		return 0
+	}
+	return *i
 }
 
 // intToString safely converts a *int to string, returning &quot;&quot; if nil
@@ -345,7 +353,7 @@ func (tc *Workflow) CalcMonthsSinceModified() int {
 // TRUE iff the workflow&#x27;s compliance documentation is past its review policy — i.e. the review age in months exceeds the policy line: MonthsSinceModified &gt; StalenessThresholdMonths. With the default the docs go stale at 12 months. Staleness fires the instant the review comes due — there is no renewal window or deferral. This is the article&#x27;s CQ5 condition (&#x27;which workflows haven&#x27;t been reviewed in twelve months&#x27;) stated directly against the editable policy field.
 // Formula: ={{MonthsSinceModified}} &gt; {{StalenessThresholdMonths}}
 func (tc *Workflow) CalcIsStale() bool {
-	return (boolVal(tc.MonthsSinceModified) &gt; boolVal(tc.StalenessThresholdMonths))
+	return (intVal(tc.MonthsSinceModified) &gt; intVal(tc.StalenessThresholdMonths))
 }
 
 // CalcIsStaleAndHasAIAgent computes the IsStaleAndHasAIAgent calculated field
@@ -445,7 +453,7 @@ func (tc *Workflow) ComputeAll() *Workflow {
 
 	// Level 2 calculations
 	iri := strings.ReplaceAll(relativePath, &quot;/&quot;, &quot;-&quot;)
-	isStale := (monthsSinceModified &gt; boolVal(tc.StalenessThresholdMonths))
+	isStale := (intVal(monthsSinceModified) &gt; intVal(tc.StalenessThresholdMonths))
 	cq1Satisfied := (countOfPrecedenceClosurePairs == ((tc.CountOfNonProposedSteps * (tc.CountOfNonProposedSteps - 1)) / 2))
 	cq3Satisfied := !hasConsistencyViolation
 	cq7Satisfied := involvesEngineeringAndLegal
@@ -1032,7 +1040,7 @@ func (tc *RoleAssignment) CalcWasActiveAsOfAuditDate() bool {
 // TRUE iff this assignment changed the agent CLASS of the role (PriorFillerType set and different from FillerType). NTWF distinguishes a plain personnel/model swap (same class) from an agent-type transition, which carries compliance weight.
 // Formula: =AND(NOT(ISBLANK({{PriorFillerType}})), {{PriorFillerType}} &lt;&gt; {{FillerType}})
 func (tc *RoleAssignment) CalcIsAgentTypeChange() bool {
-	return (!((tc.PriorFillerType == nil || stringVal(tc.PriorFillerType) == &quot;&quot;)) &amp;&amp; (boolVal(tc.PriorFillerType) != boolVal(tc.FillerType)))
+	return (!((tc.PriorFillerType == nil || stringVal(tc.PriorFillerType) == &quot;&quot;)) &amp;&amp; (stringVal(tc.PriorFillerType) != stringVal(tc.FillerType)))
 }
 
 // CalcRequiresComplianceAudit computes the RequiresComplianceAudit calculated field
@@ -1055,7 +1063,7 @@ func (tc *RoleAssignment) ComputeAll() *RoleAssignment {
 
 	// Level 2 calculations
 	iri := strings.ReplaceAll(relativePath, &quot;/&quot;, &quot;-&quot;)
-	isAgentTypeChange := (!((tc.PriorFillerType == nil || stringVal(tc.PriorFillerType) == &quot;&quot;)) &amp;&amp; (boolVal(tc.PriorFillerType) != fillerType))
+	isAgentTypeChange := (!((tc.PriorFillerType == nil || stringVal(tc.PriorFillerType) == &quot;&quot;)) &amp;&amp; (stringVal(tc.PriorFillerType) != fillerType))
 	requiresComplianceAudit := (!((tc.PriorFillerType == nil || stringVal(tc.PriorFillerType) == &quot;&quot;)) &amp;&amp; (stringVal(tc.PriorFillerType) == &quot;AIAgent&quot;) &amp;&amp; (fillerType == &quot;HumanAgent&quot;))
 
 	return &amp;RoleAssignment{

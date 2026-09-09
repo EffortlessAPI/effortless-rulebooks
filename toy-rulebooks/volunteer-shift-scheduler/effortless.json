@@ -1,8 +1,4 @@
 {
-  "ShowHidden": false,
-  "ShowAllFiles": false,
-  "CurrentPath": null,
-  "SSoTmeProjectFiles": null,
   "SSoTmeProjectId": "b3e9f471-2c8a-4d6e-91b5-8a3f2c7d4e09",
   "Name": "volunteer-shift-scheduler",
   "Description": "ERB version of the volunteer-shift-scheduler-demo. Coordinate volunteers across event shifts; cascade from raw inputs to per-shift coverage, per-volunteer load, and event-level staffing grade.",
@@ -19,8 +15,8 @@
       "RelativePath": "/postgres-bootstrap",
       "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/volunteer-shift-scheduler-rulebook.json -p mode=drop-all -p stage=dev -p drop_all=true",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.05.09.1738",
-      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-05-09-1738-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+      "LastVersionUsed": "v2026.09.07.0336",
+      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-09-07-0336-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
       "IsSSoTTranspiler": false,
@@ -43,7 +39,7 @@
       "RelativePath": "/rulespeak",
       "CommandLine": "rulebook-to-rulespeak -i ../effortless-rulebook/volunteer-shift-scheduler-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.06.06.0219",
+      "LastVersionUsed": "v2026.08.30.1537",
       "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-06-06-0219-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
@@ -51,7 +47,12 @@
       "Name": "effortlessrulebookeditor",
       "RelativePath": "/effortless-rulebook",
       "CommandLine": "effortless-rulebook-editor -i volunteer-shift-scheduler-rulebook.json -p rulebookPath=volunteer-shift-scheduler-rulebook.json -p dockerfilePath=docker/Dockerfile",
-      "IsDisabled": false
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.09.07.0138"
     }
-  ]
+  ],
+  "ShowHidden": false,
+  "ShowAllFiles": false,
+  "CurrentPath": null,
+  "SSoTmeProjectFiles": null
 }

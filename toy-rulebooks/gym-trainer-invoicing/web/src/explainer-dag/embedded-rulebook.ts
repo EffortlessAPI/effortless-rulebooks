@@ -3,7 +3,7 @@
 
 export const rulebook = {
   "$schema": "https://example.com/cmcc-schema/v1",
-  "model_name": "gym-trainer-invoicing",
+  "Name": "Gym Trainer Invoicing",
   "Description": "Sessions roll up into invoices; invoices roll up into client outstanding balances.",
   "Users": {
     "Description": "Login identities for the demo (stub auth).",
@@ -153,6 +153,14 @@ export const rulebook = {
   },
   "Clients": {
     "Description": "Trainer's clients.",
+    "important": true,
+    "summary_rich": "The **roster**. Each client is paired to exactly one trainer, which fixes the per-session rate. Aggregations roll up sessions into invoice totals and invoices into an outstanding balance — so `Status` (Paid Up / Has Balance / Overdue) is never stored, it's *derived* on every read.",
+    "important_fields": [
+      "FullName",
+      "TrainerName",
+      "OutstandingBalance",
+      "Status"
+    ],
     "schema": [
       {
         "name": "ClientId",
@@ -225,7 +233,9 @@ export const rulebook = {
         "datatype": "number",
         "type": "aggregation",
         "nullable": true,
-        "formula": "=SUMIFS(Invoices!{{Balance}}, Invoices!{{Client}}, Clients!{{ClientId}})"
+        "formula": "=SUMIFS(Invoices!{{Balance}}, Invoices!{{Client}}, Clients!{{ClientId}})",
+        "important": true,
+        "explanation_rich": "**What this client still owes.** Sums `Balance` across every invoice tied to this client — and `Balance` is itself a calculated chain (`Subtotal` from session rollups, plus tax and late fee, minus discount and payments). Worked example: **Sam Patel** has two open invoices — `INV-001` (three sessions on the default $80/hr = $280, +8% tax = $302.40) and `INV-002` (one $80 session + one $100 override × 2hr = $280, +8% tax, −$20 discount = $282.40). Nothing paid yet, so `OutstandingBalance` = **$584.80**. Pay $300 on `INV-002` and the same field drops to $284.80 on the next read, in every substrate."
       },
       {
         "name": "OverdueCount",
@@ -275,6 +285,16 @@ export const rulebook = {
   },
   "Invoices": {
     "Description": "An invoice bundles one or more sessions billed to a client.",
+    "important": true,
+    "summary_rich": "The **paperwork**. An invoice is a wrapper — its `Subtotal` is the sum of every session linked to it, its tax is computed from the rate, and `Status` (Open / Paid / Overdue) falls out of the date math against `DueDate` plus a 45-day grace window. Edit a single session's duration and the invoice's total moves with it.",
+    "important_fields": [
+      "Name",
+      "ClientName",
+      "Total",
+      "Balance",
+      "Status",
+      "DueDate"
+    ],
     "schema": [
       {
         "name": "InvoiceId",
@@ -405,7 +425,9 @@ export const rulebook = {
         "datatype": "number",
         "type": "calculated",
         "nullable": true,
-        "formula": "={{Subtotal}} + {{TaxAmount}} + {{LateFee}} - {{DiscountAmount}}"
+        "formula": "={{Subtotal}} + {{TaxAmount}} + {{LateFee}} - {{DiscountAmount}}",
+        "important": true,
+        "explanation_rich": "**What the client owes on this invoice.** A four-input calculation pinned to the rulebook — `Subtotal` (rolled up from session line items via SUMIFS), `TaxAmount` (Subtotal × TaxRate), `LateFee` ($15 once past the grace window, else $0), minus `DiscountAmount`. Worked example: `INV-002` for Sam — two sessions billed against Alex's $80/hr trainer rate, with one $100 override for 2 hours = `Subtotal` $260, tax at 8% = $20.80, no late fee yet, $20 discount → `Total` = **$260.80**. Bump session `s-005` from 2.0 to 2.5 hours and the total moves to $304.80 *without any application code touching the math*."
       },
       {
         "name": "Balance",
@@ -427,7 +449,9 @@ export const rulebook = {
         "type": "calculated",
         "nullable": true,
         "Description": "True only after the GraceDays window has elapsed.",
-        "formula": "=AND(NOT({{IsPaid}}), {{DaysPastDue}} > 0)"
+        "formula": "=AND(NOT({{IsPaid}}), {{DaysPastDue}} > 0)",
+        "important": true,
+        "explanation_rich": "**The grace window is a rule, not a convention.** An invoice is *overdue* only when (a) `IsPaid` is still false AND (b) it's been past `DueDate` for more than `GraceDays` (45 days). The day math walks `DueDate` → `DaysSinceDueDate` → `DaysPastDue` (clamped at 0 inside the window) → `IsOverdue`. Worked example: `INV-001` for Sam was due **2026-04-15**; as of today (2026-05-27) that's 42 days past due — still *inside* the 45-day grace window, so `IsOverdue` = **FALSE** and `Status` = `Open`. Wait 4 more days and the same field flips to TRUE without a cron job."
       },
       {
         "name": "Status",
@@ -563,7 +587,9 @@ export const rulebook = {
         "datatype": "number",
         "type": "calculated",
         "nullable": true,
-        "formula": "=IF({{RateOverride}}>0, {{RateOverride}}, {{ClientHourlyRate}})"
+        "formula": "=IF({{RateOverride}}>0, {{RateOverride}}, {{ClientHourlyRate}})",
+        "important": true,
+        "explanation_rich": "**What this one session actually costs per hour.** Each client inherits their trainer's `HourlyRate` via lookup chain (Session → Client → Trainer.HourlyRate), but any session can override it — special assessments, intro pricing, package deals. The IF picks: nonzero override wins, else the trainer's posted rate. Worked example: session `s-005` (Sam, 2.0 hours) has `RateOverride = 100`, so `EffectiveRate` = **$100/hr** and `LineTotal` = $200 — even though Sam's trainer Alex normally bills $80. Drop the override to 0 and the same session re-prices to $160 instantly, and `INV-002.Subtotal` shifts to match."
       },
       {
         "name": "LineTotal",
@@ -727,6 +753,105 @@ export const rulebook = {
       }
     ]
   },
-  "Name": "Gym Trainer Invoicing"
+  "__meta__": {
+    "Description": "Project-level metadata that travels with the rulebook: tagline, motif, narrative descriptions, substrate list, signature rows, etc. One row per metadata key. Use ValueType to interpret StringValue vs JsonValue.",
+    "important": false,
+    "schema": [
+      {
+        "name": "MetaKey",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The metadata key (e.g. 'tagline', 'motif_palette', 'substrates'). Unique within the table."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "formula": "={{MetaKey}}",
+        "Description": "Identifier for this metadata entry. Mirrors MetaKey so the row is addressable by Name like every other table."
+      },
+      {
+        "name": "ValueType",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "How to interpret the value columns: 'string' (use StringValue), 'object' (parse JsonValue as JSON object), 'array' (parse JsonValue as JSON array)."
+      },
+      {
+        "name": "StringValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Plain string value. Populated when ValueType == 'string'; null otherwise."
+      },
+      {
+        "name": "JsonValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "JSON-encoded value. Populated when ValueType == 'object' or 'array'; null when ValueType == 'string'."
+      }
+    ],
+    "data": [
+      {
+        "MetaKey": "tagline",
+        "Name": "tagline",
+        "ValueType": "string",
+        "StringValue": "An independent trainer's books — sessions, invoices, balances due.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif",
+        "Name": "motif",
+        "ValueType": "string",
+        "StringValue": "legal-pad",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif_palette",
+        "Name": "motif_palette",
+        "ValueType": "object",
+        "StringValue": null,
+        "JsonValue": "{\"primary\": \"#a8941f\", \"accent\": \"#4a6741\", \"ink\": \"#1f1c0a\"}"
+      },
+      {
+        "MetaKey": "description_rich",
+        "Name": "description_rich",
+        "ValueType": "string",
+        "StringValue": "A one-trainer-shop's books, written down. Two trainers, four clients, thirteen logged sessions, five invoices. The wiring is what's interesting: every session knows its own *effective* hourly rate (trainer default, or per-session override), rolls into an invoice as a line item, and the invoice's `Subtotal`, `TaxAmount`, `LateFee`, `Total`, `Balance`, and `Status` are all derived — not stored. Roll those up to the client and you get `OutstandingBalance` and a `Status` chip (Paid Up / Has Balance / Overdue). Edit one number anywhere, and the chain re-prices in every substrate without a line of application code.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "use_cases",
+        "Name": "use_cases",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[\"**Log a session and watch the invoice grow.** Add a row to `Sessions` for Sam at 1.5 hours, set `Invoice = inv-002`, and `INV-002.Subtotal`, `TaxAmount`, `Total`, and Sam's `OutstandingBalance` all update on the next read.\", \"**Override the rate for one session.** Set `RateOverride = 100` on a session that would otherwise bill at Alex's $80; `EffectiveRate`, `LineTotal`, the parent invoice's `Total`, and the client's `OutstandingBalance` all reflect the override — only for that one session.\", \"**Record a partial payment.** Bump `INV-003.PaidAmount` from $500 to $700; `Balance`, `IsPaid`, and `Status` flip on read, and Robin's `OverdueCount` and roster `Status` follow.\", \"**Watch the grace window expire.** `INV-001` is 42 days past due as of today — still inside the 45-day grace window, so `Status = Open`. Wait four more days (or scrub the date forward) and the same row flips to `Overdue` with a $15 `LateFee` baked in.\", \"**Promote a trainer's hourly rate.** Edit Alex's `HourlyRate` from $80 to $90; every unbilled session under Alex's clients re-prices through the lookup chain, and only sessions with explicit `RateOverride` ignore the change.\"]"
+      },
+      {
+        "MetaKey": "signature_rows",
+        "Name": "signature_rows",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"entity\": \"Invoices\", \"ids\": [\"inv-001\", \"inv-002\", \"inv-003\"]}, {\"entity\": \"Clients\", \"ids\": [\"c-sam\", \"c-robin\", \"c-morgan\"]}]"
+      },
+      {
+        "MetaKey": "journal_seed",
+        "Name": "journal_seed",
+        "ValueType": "string",
+        "StringValue": "Five invoices on the pad, four still unpaid. Sam's two are inside the grace window; Morgan's is one week from a late fee. Robin's $500 partial payment is recorded — balance still climbing.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "substrates",
+        "Name": "substrates",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"key\": \"postgres\", \"important\": true, \"chip_label\": \"Postgres\"}, {\"key\": \"python\", \"important\": true, \"chip_label\": \"Python\"}, {\"key\": \"excel\", \"important\": false, \"chip_label\": \"Excel\"}, {\"key\": \"owl\", \"important\": false, \"chip_label\": \"OWL\"}]"
+      }
+    ]
+  }
 } as const;
 export type Rulebook = typeof rulebook;

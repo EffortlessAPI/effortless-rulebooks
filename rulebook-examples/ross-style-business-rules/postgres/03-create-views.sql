@@ -43,7 +43,8 @@ SELECT
   t.policy,                                                                     -- The claimant's current policy (foreign key to Policies).
   calc_claimants_count_of_incidents(t.claimant_id) AS count_of_incidents,       -- The number of incidents whose claimant is this claimant.
   calc_claimants_is_high_risk(t.claimant_id) AS is_high_risk,                   -- A claimant must be considered high-risk if the claimant's incident count exceeds 2. (Ross: 'must be considered ... if'; '>2' means 3 or more.)
-  calc_claimants_policy_is_active(t.claimant_id) AS policy_is_active            -- Whether the claimant's current policy is active (ground truth carried over from the policy).
+  t.policy_is_active,                                                           -- Whether the claimant's current policy is active (ground truth carried over from the policy).
+  calc_claimants_policy_is_active_policy_id(t.claimant_id) AS policy_is_active_policy_id-- Whether the claimant's current policy is active (ground truth carried over from the policy).
 FROM claimants t;
 
 -- ----------------------------------------------------------------------------
@@ -57,7 +58,8 @@ SELECT
   t.incident_id,                                                                -- Stable identifier for the incident.
   t.incident_description,                                                       -- Short description of the incident.
   t.claimant,                                                                   -- The claimant involved in this incident (foreign key to Claimants via ClaimantId).
-  calc_incidents_incident_claimant_name(t.incident_id) AS incident_claimant_name-- Name of the incident's claimant (for readability).
+  t.incident_claimant_name,                                                     -- Name of the incident's claimant (for readability).
+  calc_incidents_incident_claimant_name_claimant_id(t.incident_id) AS incident_claimant_name_claimant_id-- Name of the incident's claimant (for readability).
 FROM incidents t;
 
 -- ----------------------------------------------------------------------------
@@ -74,13 +76,19 @@ SELECT
   t.is_flagged_for_review,                                                      -- Ground truth: whether the claim has been flagged for manual review (e.g., possible fraud). A claim can be valid yet still be held here — which is exactly why 'approvable' is 'only if valid', not 'iff valid'.
   calc_claims_references_incident(t.claim_id) AS references_incident,           -- A claim references an incident when its incident is present.
   calc_claims_has_additional_claimant(t.claim_id) AS has_additional_claimant,   -- A claim has an additional claimant when one is present.
-  calc_claims_incident_claimant(t.claim_id) AS incident_claimant,               -- The claimant of the referenced incident.
+  t.incident_claimant,                                                          -- The claimant of the referenced incident.
+  calc_claims_incident_claimant_incident_id(t.claim_id) AS incident_claimant_incident_id,-- The claimant of the referenced incident.
   calc_claims_claimant_of_record(t.claim_id) AS claimant_of_record,             -- The claimant of record for a claim is determined by priority: (1) the additional claimant, if one exists; (2) otherwise the incident's claimant. Per R. Ross: expressed as a priority ordering, not an 'otherwise/else' procedure — the ordering is the rule.
-  calc_claims_incident_claimant_policy_active(t.claim_id) AS incident_claimant_policy_active,-- Whether the incident claimant's current policy is active.
-  calc_claims_additional_claimant_policy_active(t.claim_id) AS additional_claimant_policy_active,-- Whether the additional claimant's current policy is active (false when there is no additional claimant).
-  calc_claims_additional_claimant_favorite_color(t.claim_id) AS additional_claimant_favorite_color,-- The additional claimant's favorite color (blank when there is no additional claimant).
-  calc_claims_claimant_of_record_incident_count(t.claim_id) AS claimant_of_record_incident_count,-- The incident count of the claimant of record.
-  calc_claims_claimant_of_record_is_high_risk(t.claim_id) AS claimant_of_record_is_high_risk,-- Whether the claimant of record is high-risk (DR-2). Carries the named rule — IsValid references this field rather than re-deriving the threshold inline, keeping the '> 2 incidents' definition in exactly one place.
+  t.incident_claimant_policy_active,                                            -- Whether the incident claimant's current policy is active.
+  calc_claims_incident_claimant_policy_active_claimant_id(t.claim_id) AS incident_claimant_policy_active_claimant_id,-- Whether the incident claimant's current policy is active.
+  t.additional_claimant_policy_active,                                          -- Whether the additional claimant's current policy is active (false when there is no additional claimant).
+  calc_claims_additional_claimant_policy_active_claimant_id(t.claim_id) AS additional_claimant_policy_active_claimant_id,-- Whether the additional claimant's current policy is active (false when there is no additional claimant).
+  t.additional_claimant_favorite_color,                                         -- The additional claimant's favorite color (blank when there is no additional claimant).
+  calc_claims_additional_claimant_favorite_color_claimant_id(t.claim_id) AS additional_claimant_favorite_color_claimant_id,-- The additional claimant's favorite color (blank when there is no additional claimant).
+  t.claimant_of_record_incident_count,                                          -- The incident count of the claimant of record.
+  calc_claims_claimant_of_record_incident_count_claimant_id(t.claim_id) AS claimant_of_record_incident_count_claimant_id,-- The incident count of the claimant of record.
+  t.claimant_of_record_is_high_risk,                                            -- Whether the claimant of record is high-risk (DR-2). Carries the named rule — IsValid references this field rather than re-deriving the threshold inline, keeping the '> 2 incidents' definition in exactly one place.
+  calc_claims_claimant_of_record_is_high_risk_claimant_id(t.claim_id) AS claimant_of_record_is_high_risk_claimant_id,-- Whether the claimant of record is high-risk (DR-2). Carries the named rule — IsValid references this field rather than re-deriving the threshold inline, keeping the '> 2 incidents' definition in exactly one place.
   calc_claims_is_valid(t.claim_id) AS is_valid,                                 -- All of the following must be true for a claim to be considered valid: it references an incident; at least one of the incident claimant's or the additional claimant's current policy is active; if an additional claimant exists, that claimant's favorite color is red; and the claimant of record is not high-risk (DR-2). Note: DR-4's fourth condition intentionally references the named high-risk rule rather than restating the incident-count threshold.
   calc_claims_validity_deciding_factor(t.claim_id) AS validity_deciding_factor, -- Names the single deciding reason for a claim's validity verdict — the first unmet condition, or that all conditions are met.
   calc_claims_is_approvable(t.claim_id) AS is_approvable,                       -- A claim may be considered approvable only if it is valid and not flagged for review. Per R. Ross: 'only if', not 'if and only if' — validity is necessary but not sufficient. Stating it as 'iff' would wrongly make 'valid' and 'approvable' the same concept.

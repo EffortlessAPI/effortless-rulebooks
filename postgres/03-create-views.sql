@@ -522,14 +522,14 @@ SELECT
   calc_corpus_domain_runs_corpus_run_is_latest(t.corpus_domain_run_id) AS corpus_run_is_latest,-- Order 1. Flattened one hop so per-project 'green right now' can be a SUMIFS on this row.
   calc_corpus_domain_runs_is_green(t.corpus_domain_run_id) AS is_green,         -- Order 1. No phase failed. A skipped phase does not fail an attempt.
   calc_corpus_domain_runs_green_flag(t.corpus_domain_run_id) AS green_flag,     -- Order 1. 1 when IsGreen, for SUMIFS rollups.
-  calc_corpus_domain_runs_is_fully_green(t.corpus_domain_run_id) AS is_fully_green,-- Order 1. Built AND actually conformance-graded green — not merely 'nothing failed because nothing ran'.
+  calc_corpus_domain_runs_is_fully_green(t.corpus_domain_run_id) AS is_fully_green,-- Order 1. Nothing failed AND conformance actually ran green — not merely 'nothing failed because nothing ran'. A pytest suite has no build phase, so this asks that the build did not FAIL rather than that it passed; a build-only attempt is never fully green because nothing was graded.
   calc_corpus_domain_runs_fully_green_flag(t.corpus_domain_run_id) AS fully_green_flag,-- Order 1. 1 when IsFullyGreen, for SUMIFS rollups.
   calc_corpus_domain_runs_build_failed_flag(t.corpus_domain_run_id) AS build_failed_flag,-- Order 1. 1 when the build phase failed.
   calc_corpus_domain_runs_db_failed_flag(t.corpus_domain_run_id) AS db_failed_flag,-- Order 1. 1 when the database-reset phase failed.
   calc_corpus_domain_runs_conformance_failed_flag(t.corpus_domain_run_id) AS conformance_failed_flag,-- Order 1. 1 when the conformance phase failed.
   calc_corpus_domain_runs_failing_phase(t.corpus_domain_run_id) AS failing_phase,-- Order 1. The first phase that failed, or blank when the attempt was green.
   calc_corpus_domain_runs_latest_green_flag(t.corpus_domain_run_id) AS latest_green_flag,-- Order 2. 1 when this attempt is green AND belongs to the latest fan-out. Flattens the two-hop 'is this project green right now' into one column.
-  calc_corpus_domain_runs_latest_fully_green_flag(t.corpus_domain_run_id) AS latest_fully_green_flag,-- Order 2. 1 when this attempt built and graded green AND belongs to the latest fan-out.
+  calc_corpus_domain_runs_latest_fully_green_flag(t.corpus_domain_run_id) AS latest_fully_green_flag,-- Order 2. 1 when this attempt graded green with nothing failing AND belongs to the latest fan-out.
   calc_corpus_domain_runs_latest_attempt_flag(t.corpus_domain_run_id) AS latest_attempt_flag,-- Order 2. 1 when this attempt belongs to the latest fan-out, green or not.
   t.conformance_outcome                                                         -- Why the conformance phase landed where it did: all-substrates-passed | substrate-mismatch (the harness ran fine, substrates disagreed with the answer keys) | harness-error (the harness itself failed) | tests-passed / tests-failed (pytest suites) | skipped. ConformanceStatus stays pass/fail/skipped so the flag formulas remain simple; this column carries the distinction.
 FROM corpus_domain_runs t;

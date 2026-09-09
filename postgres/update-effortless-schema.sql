@@ -337,8 +337,8 @@ CREATE TABLE IF NOT EXISTS corpus_runs (
   corpus_run_id                       TEXT                 PRIMARY KEY          -- PK: corpus-<yyyymmdd>-<hhmmss>, matching the run directory under orchestration/corpus-runs/.
 );
 ALTER TABLE corpus_runs ADD COLUMN IF NOT EXISTS mode TEXT;                                         -- build-only (build + db reset, conformance skipped) | full (build + db reset + conformance).
-ALTER TABLE corpus_runs ADD COLUMN IF NOT EXISTS started_on TEXT;                                   -- ISO timestamp the fan-out began.
-ALTER TABLE corpus_runs ADD COLUMN IF NOT EXISTS finished_on TEXT;                                  -- ISO timestamp the fan-out finished. Blank while the run is still in flight.
+ALTER TABLE corpus_runs ADD COLUMN IF NOT EXISTS started_on TIMESTAMPTZ;                            -- ISO timestamp the fan-out began.
+ALTER TABLE corpus_runs ADD COLUMN IF NOT EXISTS finished_on TIMESTAMPTZ;                           -- ISO timestamp the fan-out finished. Blank while the run is still in flight.
 ALTER TABLE corpus_runs ADD COLUMN IF NOT EXISTS is_latest BOOLEAN;                                 -- TRUE on exactly one row: the most recently STARTED corpus run. The runner clears it from every other row.
 ALTER TABLE corpus_runs ADD COLUMN IF NOT EXISTS target_count NUMERIC;                              -- How many suites the runner selected for this fan-out.
 ALTER TABLE corpus_runs ADD COLUMN IF NOT EXISTS status_path TEXT;                                  -- Repo-relative path to this run's status.json, the live artifact the explorer tails.
@@ -4494,7 +4494,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_corpus_runs_is_complete(p_corpus_run_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(finished_on, '') FROM corpus_runs WHERE corpus_run_id = p_corpus_run_id) IS NOT NULL)::boolean;
+  SELECT ((SELECT finished_on::timestamptz FROM corpus_runs WHERE corpus_run_id = p_corpus_run_id) IS NOT NULL)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_corpus_runs_is_corpus_green
@@ -4514,7 +4514,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_corpus_runs_overall_status(p_corpus_run_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(finished_on, '') FROM corpus_runs WHERE corpus_run_id = p_corpus_run_id) IS NULL THEN ('running')::text ELSE (CASE WHEN (calc_corpus_runs_domain_run_count(p_corpus_run_id))::NUMERIC = 0 THEN ('no-targets')::text ELSE (CASE WHEN (calc_corpus_runs_red_domain_count(p_corpus_run_id))::NUMERIC = 0 THEN ('green')::text ELSE ('red')::text END)::text END)::text END)::text;
+  SELECT (CASE WHEN (SELECT finished_on::timestamptz FROM corpus_runs WHERE corpus_run_id = p_corpus_run_id) IS NULL THEN ('running')::text ELSE (CASE WHEN (calc_corpus_runs_domain_run_count(p_corpus_run_id))::NUMERIC = 0 THEN ('no-targets')::text ELSE (CASE WHEN (calc_corpus_runs_red_domain_count(p_corpus_run_id))::NUMERIC = 0 THEN ('green')::text ELSE ('red')::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_corpus_domain_runs_domain_name
@@ -4575,7 +4575,7 @@ $$ LANGUAGE sql STABLE;
 -- Used for join-free cross-table references in aggregations
 
 CREATE OR REPLACE FUNCTION get_corpus_runs_started_on(p_corpus_run_id TEXT)
-RETURNS TEXT AS $$
+RETURNS TIMESTAMPTZ AS $$
   SELECT (SELECT started_on FROM corpus_runs WHERE corpus_run_id = p_corpus_run_id);
 $$ LANGUAGE sql STABLE;
 
@@ -4584,7 +4584,7 @@ $$ LANGUAGE sql STABLE;
 -- Used for join-free cross-table references in aggregations
 
 CREATE OR REPLACE FUNCTION get_corpus_runs_finished_on(p_corpus_run_id TEXT)
-RETURNS TEXT AS $$
+RETURNS TIMESTAMPTZ AS $$
   SELECT (SELECT finished_on FROM corpus_runs WHERE corpus_run_id = p_corpus_run_id);
 $$ LANGUAGE sql STABLE;
 
@@ -4661,7 +4661,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_corpus_domain_runs_is_fully_green(p_corpus_domain_run_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((SELECT NULLIF(build_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) = 'pass' AND (SELECT NULLIF(conformance_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) = 'pass'))::boolean;
+  SELECT (((SELECT NULLIF(build_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) <> 'fail' AND (SELECT NULLIF(db_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) <> 'fail' AND (SELECT NULLIF(conformance_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) = 'pass'))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_corpus_domain_runs_fully_green_flag
@@ -4671,7 +4671,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_corpus_domain_runs_fully_green_flag(p_corpus_domain_run_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN ((SELECT NULLIF(build_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) = 'pass' AND (SELECT NULLIF(conformance_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) = 'pass') THEN (1)::text ELSE (0)::text END)::numeric;
+  SELECT (CASE WHEN ((SELECT NULLIF(build_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) <> 'fail' AND (SELECT NULLIF(db_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) <> 'fail' AND (SELECT NULLIF(conformance_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) = 'pass') THEN (1)::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_corpus_domain_runs_build_failed_flag
@@ -4731,7 +4731,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_corpus_domain_runs_latest_fully_green_flag(p_corpus_domain_run_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN ((calc_corpus_domain_runs_corpus_run_is_latest(p_corpus_domain_run_id) = 'true') AND (SELECT NULLIF(build_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) = 'pass' AND (SELECT NULLIF(conformance_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) = 'pass') THEN (1)::text ELSE (0)::text END)::numeric;
+  SELECT (CASE WHEN ((calc_corpus_domain_runs_corpus_run_is_latest(p_corpus_domain_run_id) = 'true') AND (SELECT NULLIF(build_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) <> 'fail' AND (SELECT NULLIF(db_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) <> 'fail' AND (SELECT NULLIF(conformance_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) = 'pass') THEN (1)::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_corpus_domain_runs_latest_attempt_flag
@@ -11103,14 +11103,14 @@ SELECT
   calc_corpus_domain_runs_corpus_run_is_latest(t.corpus_domain_run_id) AS corpus_run_is_latest,-- Order 1. Flattened one hop so per-project 'green right now' can be a SUMIFS on this row.
   calc_corpus_domain_runs_is_green(t.corpus_domain_run_id) AS is_green,         -- Order 1. No phase failed. A skipped phase does not fail an attempt.
   calc_corpus_domain_runs_green_flag(t.corpus_domain_run_id) AS green_flag,     -- Order 1. 1 when IsGreen, for SUMIFS rollups.
-  calc_corpus_domain_runs_is_fully_green(t.corpus_domain_run_id) AS is_fully_green,-- Order 1. Built AND actually conformance-graded green — not merely 'nothing failed because nothing ran'.
+  calc_corpus_domain_runs_is_fully_green(t.corpus_domain_run_id) AS is_fully_green,-- Order 1. Nothing failed AND conformance actually ran green — not merely 'nothing failed because nothing ran'. A pytest suite has no build phase, so this asks that the build did not FAIL rather than that it passed; a build-only attempt is never fully green because nothing was graded.
   calc_corpus_domain_runs_fully_green_flag(t.corpus_domain_run_id) AS fully_green_flag,-- Order 1. 1 when IsFullyGreen, for SUMIFS rollups.
   calc_corpus_domain_runs_build_failed_flag(t.corpus_domain_run_id) AS build_failed_flag,-- Order 1. 1 when the build phase failed.
   calc_corpus_domain_runs_db_failed_flag(t.corpus_domain_run_id) AS db_failed_flag,-- Order 1. 1 when the database-reset phase failed.
   calc_corpus_domain_runs_conformance_failed_flag(t.corpus_domain_run_id) AS conformance_failed_flag,-- Order 1. 1 when the conformance phase failed.
   calc_corpus_domain_runs_failing_phase(t.corpus_domain_run_id) AS failing_phase,-- Order 1. The first phase that failed, or blank when the attempt was green.
   calc_corpus_domain_runs_latest_green_flag(t.corpus_domain_run_id) AS latest_green_flag,-- Order 2. 1 when this attempt is green AND belongs to the latest fan-out. Flattens the two-hop 'is this project green right now' into one column.
-  calc_corpus_domain_runs_latest_fully_green_flag(t.corpus_domain_run_id) AS latest_fully_green_flag,-- Order 2. 1 when this attempt built and graded green AND belongs to the latest fan-out.
+  calc_corpus_domain_runs_latest_fully_green_flag(t.corpus_domain_run_id) AS latest_fully_green_flag,-- Order 2. 1 when this attempt graded green with nothing failing AND belongs to the latest fan-out.
   calc_corpus_domain_runs_latest_attempt_flag(t.corpus_domain_run_id) AS latest_attempt_flag,-- Order 2. 1 when this attempt belongs to the latest fan-out, green or not.
   t.conformance_outcome                                                         -- Why the conformance phase landed where it did: all-substrates-passed | substrate-mismatch (the harness ran fine, substrates disagreed with the answer keys) | harness-error (the harness itself failed) | tests-passed / tests-failed (pytest suites) | skipped. ConformanceStatus stays pass/fail/skipped so the flag formulas remain simple; this column carries the distinction.
 FROM corpus_domain_runs t;

@@ -3,14 +3,14 @@
 golang: Starting test...
 golang: Compiling and running...
 # command-line-arguments
-./erb_sdk.go:155:34: cannot use tc.WorkflowId (variable of type string) as *string value in argument to stringVal
-./erb_sdk.go:196:9: cannot use func() interface{} {…}() (value of type interface{}) as int value in return statement: need type assertion
-./erb_sdk.go:203:10: invalid operation: boolVal(tc.MonthsSinceModified) > boolVal(tc.StalenessThresholdMonths) (operator > not defined on bool)
-./erb_sdk.go:203:18: cannot use tc.MonthsSinceModified (variable of type *int) as *bool value in argument to boolVal
-./erb_sdk.go:203:52: cannot use tc.StalenessThresholdMonths (variable of type *int) as *bool value in argument to boolVal
-./erb_sdk.go:224:10: invalid operation: operator + not defined on tc.CountAssertedPrecedencePairs (variable of type *int)
-./erb_sdk.go:231:78: invalid operation: tc.CountOfNonProposedSteps - 1 (mismatched types *int and untyped int)
-./erb_sdk.go:252:38: invalid operation: tc.CountWorkflowArtifacts - 1 (mismatched types *int and untyped int)
-./erb_sdk.go:273:9: cannot use tc.InvolvesEngineeringAndLegal (variable of type *bool) as bool value in return statement
-./erb_sdk.go:288:43: cannot use tc.WorkflowId (variable of type string) as *string value in argument to stringVal
-./erb_sdk.go:288:43: too many errors
+./erb_sdk.go:163:34: cannot use tc.WorkflowId (variable of type string) as *string value in argument to stringVal
+./erb_sdk.go:204:9: cannot use func() interface{} {…}() (value of type interface{}) as int value in return statement: need type assertion
+./erb_sdk.go:232:10: invalid operation: operator + not defined on tc.CountAssertedPrecedencePairs (variable of type *int)
+./erb_sdk.go:239:78: invalid operation: tc.CountOfNonProposedSteps - 1 (mismatched types *int and untyped int)
+./erb_sdk.go:260:38: invalid operation: tc.CountWorkflowArtifacts - 1 (mismatched types *int and untyped int)
+./erb_sdk.go:281:9: cannot use tc.InvolvesEngineeringAndLegal (variable of type *bool) as bool value in return statement
+./erb_sdk.go:296:43: cannot use tc.WorkflowId (variable of type string) as *string value in argument to stringVal
+./erb_sdk.go:303:36: invalid operation: operator + not defined on tc.CountAssertedPrecedencePairs (variable of type *int)
+./erb_sdk.go:305:47: invalid operation: tc.CountWorkflowArtifacts - 1 (mismatched types *int and untyped int)
+./erb_sdk.go:311:21: cannot use monthsSinceModified (variable of type interface{}) as *int value in argument to intVal: need type assertion
+./erb_sdk.go:311:21: too many errors
