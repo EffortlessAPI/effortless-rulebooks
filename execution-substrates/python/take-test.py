@@ -25,15 +25,13 @@ sys.path.insert(0, str(Path(script_dir).parent.parent))
 from python_only_erb_simulator import (
     compute_all_calculated_fields,
     compute_aggregations,
-    compute_closures,
     compute_lookups,
 )
 from orchestration.shared import load_rulebook
 
 
 def process_entity(input_path: str, output_path: str, entity_name: str,
-                   rulebook: dict = None, project_root: Path = None,
-                   closures: dict = None) -> int:
+                   rulebook: dict = None, project_root: Path = None) -> int:
     """Process a single entity file, computing all calculated fields."""
     with open(input_path, 'r') as f:
         records = json.load(f)
@@ -41,10 +39,8 @@ def process_entity(input_path: str, output_path: str, entity_name: str,
     if rulebook is not None and project_root is not None:
         # Compute lookup fields first (INDEX/MATCH)
         records = compute_lookups(records, entity_name, rulebook, project_root)
-        # Then aggregation fields (COUNTIFS, SUMIFS), including those that
-        # count rows of a materialized closure.
-        records = compute_aggregations(records, entity_name, rulebook, project_root,
-                                       closures)
+        # Then compute aggregation fields (COUNTIFS, SUMIFS)
+        records = compute_aggregations(records, entity_name, rulebook, project_root)
 
     # Compute any remaining calculated fields for each record
     computed_records = []
@@ -93,13 +89,6 @@ def run_multi_entity():
         print(f"Warning: Could not load rulebook for aggregations: {e}")
         rulebook = None
 
-    # Materialize every closure relation once; aggregations across entities
-    # address them by view name.
-    closures = compute_closures(rulebook, project_root) if rulebook else {}
-    if closures:
-        for view_name, rows in sorted(closures.items()):
-            print(f"  -> {view_name}: {len(rows)} pairs")
-
     # Ensure output directory exists
     test_answers_dir.mkdir(parents=True, exist_ok=True)
 
@@ -117,8 +106,7 @@ def run_multi_entity():
         entity = filename.replace('.json', '')
         output_path = test_answers_dir / filename
 
-        count = process_entity(input_path, str(output_path), entity, rulebook,
-                               project_root, closures)
+        count = process_entity(input_path, str(output_path), entity, rulebook, project_root)
         total_records += count
         entity_count += 1
 
