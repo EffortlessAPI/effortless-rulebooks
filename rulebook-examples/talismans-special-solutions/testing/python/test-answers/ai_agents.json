@@ -10,7 +10,7 @@
     "relative_path": "ai-agents/ntwf-health-ai",
     "iri": "ai-agents-ntwf-health-ai",
     "count_attributed_artifacts": 1,
-    "count_impacted_workflows": null
+    "count_impacted_workflows": 1
   },
   {
     "ai_agent_id": "ntwf-risk-ai",
@@ -23,6 +23,6 @@
     "relative_path": "ai-agents/ntwf-risk-ai",
     "iri": "ai-agents-ntwf-risk-ai",
     "count_attributed_artifacts": 1,
-    "count_impacted_workflows": null
+    "count_impacted_workflows": 1
   }
 ]

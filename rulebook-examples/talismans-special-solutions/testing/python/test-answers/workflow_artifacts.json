@@ -11,13 +11,13 @@
     "attributed_to_automated_pipeline": "ntwf-ci-pipeline",
     "artifact_type": "type-log",
     "required_by_steps": "",
-    "parent_path": null,
-    "relative_path": "/artifacts/artifact-deployment-log",
-    "iri": "-artifacts-artifact-deployment-log",
+    "parent_path": "workflows/production-deployment/steps/prod-deploy-step-4",
+    "relative_path": "workflows/production-deployment/steps/prod-deploy-step-4/artifacts/artifact-deployment-log",
+    "iri": "workflows-production-deployment-steps-prod-deploy-step-4-artifacts-artifact-deployment-log",
     "producing_agent_type": "AutomatedPipeline",
     "has_derivation_parent": true,
-    "produced_by_workflow": null,
-    "has_producing_workflow": false
+    "produced_by_workflow": "production-deployment",
+    "has_producing_workflow": true
   },
   {
     "artifact_id": "artifact-legal-clearance",
@@ -31,13 +31,13 @@
     "attributed_to_automated_pipeline": "",
     "artifact_type": "type-decision-record",
     "required_by_steps": "prod-deploy-step-3",
-    "parent_path": null,
-    "relative_path": "/artifacts/artifact-legal-clearance",
-    "iri": "-artifacts-artifact-legal-clearance",
+    "parent_path": "workflows/production-deployment/steps/prod-deploy-step-2",
+    "relative_path": "workflows/production-deployment/steps/prod-deploy-step-2/artifacts/artifact-legal-clearance",
+    "iri": "workflows-production-deployment-steps-prod-deploy-step-2-artifacts-artifact-legal-clearance",
     "producing_agent_type": "HumanAgent",
     "has_derivation_parent": true,
-    "produced_by_workflow": null,
-    "has_producing_workflow": false
+    "produced_by_workflow": "production-deployment",
+    "has_producing_workflow": true
   },
   {
     "artifact_id": "artifact-post-deploy-report",
@@ -51,13 +51,13 @@
     "attributed_to_automated_pipeline": "",
     "artifact_type": "type-report",
     "required_by_steps": "",
-    "parent_path": null,
-    "relative_path": "/artifacts/artifact-post-deploy-report",
-    "iri": "-artifacts-artifact-post-deploy-report",
+    "parent_path": "workflows/production-deployment/steps/prod-deploy-step-5",
+    "relative_path": "workflows/production-deployment/steps/prod-deploy-step-5/artifacts/artifact-post-deploy-report",
+    "iri": "workflows-production-deployment-steps-prod-deploy-step-5-artifacts-artifact-post-deploy-report",
     "producing_agent_type": "AIAgent",
     "has_derivation_parent": true,
-    "produced_by_workflow": null,
-    "has_producing_workflow": false
+    "produced_by_workflow": "production-deployment",
+    "has_producing_workflow": true
   },
   {
     "artifact_id": "artifact-release-authorization",
@@ -71,13 +71,13 @@
     "attributed_to_automated_pipeline": "",
     "artifact_type": "type-decision-record",
     "required_by_steps": "prod-deploy-step-4",
-    "parent_path": null,
-    "relative_path": "/artifacts/artifact-release-authorization",
-    "iri": "-artifacts-artifact-release-authorization",
+    "parent_path": "workflows/production-deployment/steps/prod-deploy-step-3",
+    "relative_path": "workflows/production-deployment/steps/prod-deploy-step-3/artifacts/artifact-release-authorization",
+    "iri": "workflows-production-deployment-steps-prod-deploy-step-3-artifacts-artifact-release-authorization",
     "producing_agent_type": "HumanAgent",
     "has_derivation_parent": true,
-    "produced_by_workflow": null,
-    "has_producing_workflow": false
+    "produced_by_workflow": "production-deployment",
+    "has_producing_workflow": true
   },
   {
     "artifact_id": "artifact-risk-report",
@@ -91,12 +91,12 @@
     "attributed_to_automated_pipeline": "",
     "artifact_type": "type-report",
     "required_by_steps": "prod-deploy-step-2",
-    "parent_path": null,
-    "relative_path": "/artifacts/artifact-risk-report",
-    "iri": "-artifacts-artifact-risk-report",
+    "parent_path": "workflows/production-deployment/steps/prod-deploy-step-1",
+    "relative_path": "workflows/production-deployment/steps/prod-deploy-step-1/artifacts/artifact-risk-report",
+    "iri": "workflows-production-deployment-steps-prod-deploy-step-1-artifacts-artifact-risk-report",
     "producing_agent_type": "AIAgent",
     "has_derivation_parent": false,
-    "produced_by_workflow": null,
-    "has_producing_workflow": false
+    "produced_by_workflow": "production-deployment",
+    "has_producing_workflow": true
   }
 ]
