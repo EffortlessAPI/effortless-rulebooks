@@ -6,9 +6,9 @@ This project models the workflow ontology from Jessica Talisman’s *Intentional
 
 ## Watch the video
 
-[![Watch: Talismans — Special Solutions, a rulebook-first workflow ontology rendered as OWL, Postgres and Python](assets/talismans-special-solutions-repository-tour-player.png)](https://www.youtube.com/watch?v=SZ3ii3DGNNA)
+[![Watch: Talismans — Special Solutions, a rulebook-first workflow ontology rendered as OWL, Postgres and Python](assets/talismans-special-solutions-repository-tour-player.png)](https://tinyurl.com/ycrabws9)
 
-▶ [**Play: Talismans — Special Solutions**](https://www.youtube.com/watch?v=SZ3ii3DGNNA)
+▶ [**Play: Talismans — Special Solutions**](https://tinyurl.com/ycrabws9)
 
 Two and a half minutes for people who already build ontologies. The NTWF workflow ontology, five ordered steps with three disjoint agent types, an approval gate, a delegation chain and provenance, is authored once in this project's rulebook, and OWL, SHACL, Postgres, Python and the conformance tests are generated from it as siblings. The video shows step precedence asserted as four adjacent edges and closed transitively to ten, one competency question answered identically by the OWL reasoner, Postgres and Python, derived risk signals re-computing when a review date moves, and every projection scored cell by cell against the Postgres oracle. It closes with the falsifiable claim this repo makes: name one competency question the OWL stack can answer that this rulebook cannot express one layer up.
 
