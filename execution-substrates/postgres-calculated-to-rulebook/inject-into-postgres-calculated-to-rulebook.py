@@ -11,14 +11,22 @@ TWO MODES, selected by the ERB_WRITE_COMPUTED env var:
     fields are left alone. This is the safe reverse-spoke: it pulls hand-edited
     raw values back from the DB without bloating the rulebook with derived data.
 
-  • ERB_WRITE_COMPUTED=true — full view-row adoption.
-    EVERY field present in the exchange JSON is written back, including
-    calculated/lookup/aggregation values. This is the mechanism behind
-    `regenerate-answer-keys.sh`: load rulebook raws → Postgres → vw_* compute
-    the correct values → write the whole view row back into the rulebook → the
-    answer-key generator then reads those fresh computed values. For this to
-    refresh computed fields, the exchange JSON must come from the VIEWS
-    (pull-from-postgres.sh exports vw_*, not base tables).
+  • ERB_WRITE_COMPUTED=true — COMPUTED-ONLY adoption.
+    calculated/lookup/aggregation values are written back; raws and
+    relationships are left exactly as the rulebook has them. This is the
+    mechanism behind `regenerate-answer-keys.sh`: load rulebook raws → Postgres
+    → vw_* compute the correct values → adopt those computed columns → the
+    answer-key generator then reads them. For this to refresh computed fields,
+    the exchange JSON must come from the VIEWS (pull-from-postgres.sh exports
+    vw_*, not base tables).
+
+    This mode used to write the WHOLE view row, raws included. That was wrong
+    and lossy: the temp database it reads from was itself loaded FROM those same
+    rulebook raws moments earlier, so writing them back carries no information —
+    only Postgres's round-trip representation. In practice it rewrote datetimes
+    with the running machine's timezone offset (one star-trek build rewrote 1018
+    raw values, '2026-01-12T19:46:59Z' -> '2026-01-12T13:46:59-06:00'), which
+    made the rulebook hub a function of where the build ran. See cr-24.
 
 Input:  .pg-raw-data.json  — written by pull-from-postgres.sh (vw_* rows)
         rulebook JSON       — the SSoT being updated
@@ -26,7 +34,7 @@ Input:  .pg-raw-data.json  — written by pull-from-postgres.sh (vw_* rows)
 Usage (direct):
   python3 inject-into-postgres-calculated-to-rulebook.py <rulebook_path> [<json_path>]
 
-Usage (via server.js / ssotme-proxy — set ERB_RULEBOOK_PATH, cwd = postgres-bootstrap/):
+Usage (via server.js / the local-tool shim — set ERB_RULEBOOK_PATH, cwd = postgres-bootstrap/):
   python3 inject-into-postgres-calculated-to-rulebook.py
 """
 
@@ -40,11 +48,13 @@ from typing import Any, Dict, List, Tuple
 COMPUTED_TYPES = {"calculated", "lookup", "aggregation"}
 RAW_TYPES = {"raw", "relationship"}
 
-# When true, write ALL field types back (computed values included), not just
-# raws. The whole-view-row adoption that regenerate-answer-keys.sh relies on.
+# When true, adopt the computed columns from the views. The two modes are
+# DISJOINT on purpose: a run either syncs raws back from a database someone has
+# been editing, or it adopts freshly computed values from a database that was
+# just loaded from the rulebook. No run needs to do both, and doing both is what
+# corrupted raw datetimes (cr-24).
 WRITE_COMPUTED = os.environ.get("ERB_WRITE_COMPUTED", "").lower() in ("1", "true", "yes")
-# The field types this run will merge. Default = raws only; opt-in = everything.
-WRITABLE_TYPES = (RAW_TYPES | COMPUTED_TYPES) if WRITE_COMPUTED else RAW_TYPES
+WRITABLE_TYPES = COMPUTED_TYPES if WRITE_COMPUTED else RAW_TYPES
 
 
 def die(msg: str) -> None:
@@ -161,9 +171,16 @@ def main() -> None:
 
     log(f"rulebook={rulebook_path}")
     log(f"raw-data={json_path}")
-    log(f"mode={'write-computed (full view row)' if WRITE_COMPUTED else 'raws-only (default)'}")
+    log(f"mode={'computed-only (adopt vw_* derived columns)' if WRITE_COMPUTED else 'raws-only (default)'}")
 
-    rulebook = json.loads(rulebook_path.read_text())
+    rulebook_text = rulebook_path.read_text()
+    rulebook = json.loads(rulebook_text)
+    # Rewrite with the file's own indent: a different indent reflows every line of
+    # a contended rulebook and clobbers concurrent edits on the next merge.
+    indent_match = re.match(r'[{\[]\n( +)\S', rulebook_text)
+    if not indent_match:
+        die(f"cannot detect the indent of {rulebook_path}; refusing to reflow it")
+    rulebook_indent = len(indent_match.group(1))
     raw_data = load_raw_data(json_path)
 
     pending_updates: List[Tuple[Dict, str, Any, Any, str, Any]] = []
@@ -220,7 +237,11 @@ def main() -> None:
                     continue
                 new_val = pg_row[col]
                 old_val = row.get(f["name"])
-                if norm(old_val) != norm(new_val):
+                # A computed NULL is an answer, so it is written even onto a row
+                # that never carried the key; skipping it left the key absent and
+                # answer-key generation substituted the Python engine's value.
+                adopt_null = WRITE_COMPUTED and f["name"] not in row
+                if adopt_null or norm(old_val) != norm(new_val):
                     pending_updates.append((row, f["name"], new_val, old_val, table_name, pk_val))
 
         tables_touched += 1
@@ -233,7 +254,7 @@ def main() -> None:
         row[field_name] = new_val
 
     tmp = rulebook_path.with_suffix(".json.tmp")
-    tmp.write_text(json.dumps(rulebook, indent=2, ensure_ascii=False) + "\n")
+    tmp.write_text(json.dumps(rulebook, indent=rulebook_indent, ensure_ascii=False) + "\n")
     os.replace(tmp, rulebook_path)
 
     log(f"updated {len(pending_updates)} field value(s) across {tables_touched} table(s)")

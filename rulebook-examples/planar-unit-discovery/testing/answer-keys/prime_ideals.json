@@ -1,0 +1,82 @@
+[
+  {
+    "prime_ideal_id": "q-sqrt-neg3-p2",
+    "number_field": "q-sqrt-neg3",
+    "generator_description": "(2)",
+    "norm": 4,
+    "norm_threshold": 10,
+    "splits_completely": false,
+    "name": "q-sqrt-neg3/(2)",
+    "is_small_norm": true
+  },
+  {
+    "prime_ideal_id": "q-sqrt-neg3-p3",
+    "number_field": "q-sqrt-neg3",
+    "generator_description": "(sqrt(-3))",
+    "norm": 3,
+    "norm_threshold": 10,
+    "splits_completely": false,
+    "name": "q-sqrt-neg3/(sqrt(-3))",
+    "is_small_norm": true
+  },
+  {
+    "prime_ideal_id": "q-sqrt-neg3-p5-pending",
+    "number_field": "q-sqrt-neg3",
+    "generator_description": "(5) \u2014 splitting behavior named but not yet computed",
+    "norm": 25,
+    "norm_threshold": 10,
+    "splits_completely": false,
+    "name": "q-sqrt-neg3/(5) \u2014 splitting behavior named but not yet computed",
+    "is_small_norm": false
+  },
+  {
+    "prime_ideal_id": "q-sqrt-neg3-p7",
+    "number_field": "q-sqrt-neg3",
+    "generator_description": "(7)",
+    "norm": 49,
+    "norm_threshold": 10,
+    "splits_completely": true,
+    "name": "q-sqrt-neg3/(7)",
+    "is_small_norm": false
+  },
+  {
+    "prime_ideal_id": "q-zeta-7-p2-a",
+    "number_field": "q-zeta-7",
+    "generator_description": "one of two primes above 2; ord_7(2)=3 so f=3, e=1, two distinct primes of norm 8",
+    "norm": 8,
+    "norm_threshold": 30,
+    "splits_completely": false,
+    "name": "q-zeta-7/one of two primes above 2; ord_7(2)=3 so f=3, e=1, two distinct primes of norm 8",
+    "is_small_norm": true
+  },
+  {
+    "prime_ideal_id": "q-zeta-7-p2-b",
+    "number_field": "q-zeta-7",
+    "generator_description": "the second prime above 2",
+    "norm": 8,
+    "norm_threshold": 30,
+    "splits_completely": false,
+    "name": "q-zeta-7/the second prime above 2",
+    "is_small_norm": true
+  },
+  {
+    "prime_ideal_id": "q-zeta-7-p29-witness",
+    "number_field": "q-zeta-7",
+    "generator_description": "one of six primes above 29; 29 \u2261 1 (mod 7) so 29 splits completely (e=1, f=1, g=6)",
+    "norm": 29,
+    "norm_threshold": 30,
+    "splits_completely": true,
+    "name": "q-zeta-7/one of six primes above 29; 29 \u2261 1 (mod 7) so 29 splits completely (e=1, f=1, g=6)",
+    "is_small_norm": true
+  },
+  {
+    "prime_ideal_id": "q-zeta-7-p7-ramified",
+    "number_field": "q-zeta-7",
+    "generator_description": "(1 - \u03b6_7) \u2014 the unique prime above 7, fully ramified (e=6, f=1)",
+    "norm": 7,
+    "norm_threshold": 30,
+    "splits_completely": false,
+    "name": "q-zeta-7/(1 - \u03b6_7) \u2014 the unique prime above 7, fully ramified (e=6, f=1)",
+    "is_small_norm": true
+  }
+]

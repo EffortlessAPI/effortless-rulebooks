@@ -1,0 +1,189 @@
+{
+  "users": {
+    "primary_key": "user_id",
+    "computed_columns": [
+      "wind_count",
+      "cook_count",
+      "completed_cook_count",
+      "activity_level",
+      "total_recipe_minutes_attempted",
+      "avg_recipe_minutes_attempted",
+      "cooking_style"
+    ],
+    "record_count": 8
+  },
+  "timers": {
+    "primary_key": "timer_id",
+    "computed_columns": [
+      "wind_fraction",
+      "stored_torque_nm",
+      "remaining_minutes",
+      "wind_state",
+      "is_armed",
+      "has_rung",
+      "tick_count",
+      "ring_count",
+      "cook_count",
+      "total_recipe_minutes_used",
+      "avg_recipe_minutes_used",
+      "wind_duration_minutes",
+      "expected_ticks_per_minute",
+      "expected_total_ticks",
+      "ticks_elapsed_expected",
+      "tick_efficiency_percent",
+      "has_sparse_tick_record",
+      "mechanical_phase"
+    ],
+    "record_count": 4
+  },
+  "bells": {
+    "primary_key": "bell_id",
+    "computed_columns": [
+      "times_rung",
+      "has_ever_rung"
+    ],
+    "record_count": 4
+  },
+  "winding_knobs": {
+    "primary_key": "winding_knob_id",
+    "computed_columns": [
+      "timer_wind_angle",
+      "timer_max_wind",
+      "scale_reading"
+    ],
+    "record_count": 4
+  },
+  "gear_trains": {
+    "primary_key": "gear_train_id",
+    "computed_columns": [
+      "timer_escapement_hz",
+      "output_shaft_rpm",
+      "gear_count",
+      "total_teeth",
+      "average_tooth_count"
+    ],
+    "record_count": 4
+  },
+  "gears": {
+    "primary_key": "gear_id",
+    "computed_columns": [
+      "is_first_in_chain",
+      "is_last_in_chain",
+      "size_class",
+      "on_timer"
+    ],
+    "record_count": 12
+  },
+  "output_shafts": {
+    "primary_key": "output_shaft_id",
+    "computed_columns": [
+      "current_rpm"
+    ],
+    "record_count": 4
+  },
+  "escapements": {
+    "primary_key": "escapement_id",
+    "computed_columns": [
+      "tick_count",
+      "has_ticked"
+    ],
+    "record_count": 4
+  },
+  "bell_hammers": {
+    "primary_key": "bell_hammer_id",
+    "computed_columns": [
+      "timer_has_rung",
+      "release_state"
+    ],
+    "record_count": 4
+  },
+  "hammer_catches": {
+    "primary_key": "hammer_catch_id",
+    "computed_columns": [
+      "hammer_release_state",
+      "is_engaged"
+    ],
+    "record_count": 4
+  },
+  "wind_actions": {
+    "primary_key": "wind_action_id",
+    "computed_columns": [
+      "applied_to_timer",
+      "resulted_in_ring"
+    ],
+    "record_count": 5
+  },
+  "tick_events": {
+    "primary_key": "tick_event_id",
+    "computed_columns": [
+      "timer_label",
+      "on_timer_that_has_rung",
+      "on_timer_in_phase"
+    ],
+    "record_count": 23
+  },
+  "cooks": {
+    "primary_key": "cook_id",
+    "computed_columns": [
+      "timer_has_rung",
+      "timer_is_armed",
+      "timer_remaining_min",
+      "status",
+      "recommended_minutes",
+      "timer_wind_duration",
+      "timer_can_cover_recipe",
+      "suitability_verdict",
+      "prepared_by_name",
+      "prepared_by_activity_level",
+      "recipe_duration_category",
+      "recipe_temp_profile",
+      "timer_mechanical_phase"
+    ],
+    "record_count": 18
+  },
+  "recipes": {
+    "primary_key": "recipe_id",
+    "computed_columns": [
+      "times_used_today",
+      "duration_category",
+      "cooking_temp_profile",
+      "avg_timer_capacity",
+      "total_timer_capacity",
+      "assignment_verdict"
+    ],
+    "record_count": 19
+  },
+  "kitchens": {
+    "primary_key": "kitchen_id",
+    "computed_columns": [
+      "total_timers",
+      "total_cases",
+      "total_bells",
+      "total_users",
+      "total_cooks",
+      "total_recipes",
+      "total_wind_actions",
+      "total_tick_events",
+      "total_ring_events",
+      "timers_freshly_wound",
+      "timers_mid_run",
+      "timers_nearly_done",
+      "timers_rung",
+      "cooks_done",
+      "cooks_cooking",
+      "recipes_unused",
+      "recipes_under_provisioned",
+      "recipes_well_matched",
+      "busy_users",
+      "idle_users",
+      "total_recipe_minutes",
+      "avg_recipe_minutes",
+      "min_recipe_minutes",
+      "max_recipe_minutes",
+      "has_any_timer_rung",
+      "has_misprovisioned_recipe",
+      "operational_status"
+    ],
+    "record_count": 1
+  }
+}

@@ -1,0 +1,145 @@
+[
+  {
+    "label": "Argument From Consciousness",
+    "argument_type": "supporting",
+    "advanced_by": "frank-turek",
+    "fields_worldview": "theism",
+    "conclusion": "Consciousness cannot reduce to chemicals.",
+    "description": "Why is some carbon-based matter conscious? Materialism (Dennett) calls it an illusion.",
+    "name": "argument-from-consciousness",
+    "is_fully_developed": false,
+    "is_contested": false
+  },
+  {
+    "label": "Argument From Design Of Life",
+    "argument_type": "sub",
+    "advanced_by": "frank-turek",
+    "fields_worldview": "theism",
+    "conclusion": "DNA's specified complexity implies a mind.",
+    "description": "Information only comes from minds; random mutation and macro-evolution cannot supply first life; panspermia concedes natural origin fails.",
+    "name": "argument-from-design-of-life",
+    "is_fully_developed": false,
+    "is_contested": false
+  },
+  {
+    "label": "Argument From Fine-Tuning",
+    "argument_type": "sub",
+    "advanced_by": "frank-turek",
+    "fields_worldview": "theism",
+    "conclusion": "Life-permitting constants imply a tuner.",
+    "description": "Constants on a razor's edge (the gravitational force to 1 part in 10^40, expansion rate, axial tilt, Jupiter).",
+    "name": "argument-from-fine-tuning",
+    "is_fully_developed": false,
+    "is_contested": false
+  },
+  {
+    "label": "Argument From Free Will",
+    "argument_type": "supporting",
+    "advanced_by": "frank-turek",
+    "fields_worldview": "theism",
+    "conclusion": "Real freedom is impossible under materialism.",
+    "description": "Molecules in motion (per Provine) afford no genuine human freedom.",
+    "name": "argument-from-free-will",
+    "is_fully_developed": false,
+    "is_contested": false
+  },
+  {
+    "label": "Argument From Mathematics",
+    "argument_type": "supporting",
+    "advanced_by": "frank-turek",
+    "fields_worldview": "theism",
+    "conclusion": "Mathematical order comes from mind, not matter.",
+    "description": "Rationality and mathematics do not arise from randomness.",
+    "name": "argument-from-mathematics",
+    "is_fully_developed": false,
+    "is_contested": false
+  },
+  {
+    "label": "Argument From Poor Design",
+    "argument_type": "counter",
+    "advanced_by": "christopher-hitchens",
+    "fields_worldview": "atheism",
+    "conclusion": "Waste and ruin suggest capricious or absent design.",
+    "description": "Extinction, collision courses, heat death \u2014 not the marks of a careful tuner.",
+    "name": "argument-from-poor-design",
+    "is_fully_developed": false,
+    "is_contested": false
+  },
+  {
+    "label": "Argument From Reason",
+    "argument_type": "supporting",
+    "advanced_by": "frank-turek",
+    "fields_worldview": "theism",
+    "conclusion": "Trustworthy reason cannot be mere chemistry.",
+    "description": "If thoughts are only chemical reactions, we cannot trust them (Darwin's doubt).",
+    "name": "argument-from-reason",
+    "is_fully_developed": false,
+    "is_contested": false
+  },
+  {
+    "label": "Cosmological Argument",
+    "argument_type": "primary",
+    "advanced_by": "frank-turek",
+    "fields_worldview": "theism",
+    "conclusion": "The universe had a beginning, so it had a beginner.",
+    "description": "From the Big Bang: a beginning implies a beginner; SURGE supplies the evidence.",
+    "name": "cosmological-argument",
+    "is_fully_developed": false,
+    "is_contested": false
+  },
+  {
+    "label": "Deism-Theism Gap",
+    "argument_type": "counter",
+    "advanced_by": "christopher-hitchens",
+    "fields_worldview": "atheism",
+    "conclusion": "A designer is not yet a prayer-answering God.",
+    "description": "Even granting design, the theist still owes virgin birth, resurrection, vicarious redemption.",
+    "name": "deism-theism-gap",
+    "is_fully_developed": false,
+    "is_contested": false
+  },
+  {
+    "label": "Moral Argument",
+    "argument_type": "primary",
+    "advanced_by": "frank-turek",
+    "fields_worldview": "theism",
+    "conclusion": "Objective moral values require a moral lawgiver.",
+    "description": "A prescription needs a prescriber; the standard is God's nature.",
+    "name": "moral-argument",
+    "is_fully_developed": false,
+    "is_contested": false
+  },
+  {
+    "label": "Morality Without God",
+    "argument_type": "counter",
+    "advanced_by": "christopher-hitchens",
+    "fields_worldview": "humanism",
+    "conclusion": "Ethics needs no divine permission.",
+    "description": "No moral act is unique to believers; some wicked acts are unique to them; conscience is innate.",
+    "name": "morality-without-god",
+    "is_fully_developed": false,
+    "is_contested": false
+  },
+  {
+    "label": "Religion Poisons Everything",
+    "argument_type": "counter",
+    "advanced_by": "christopher-hitchens",
+    "fields_worldview": "anti-theism",
+    "conclusion": "Religion is a corrupting totalitarian tyranny.",
+    "description": "Its eschatology yearns for the world's end; it demands a master-slave submission.",
+    "name": "religion-poisons-everything",
+    "is_fully_developed": false,
+    "is_contested": false
+  },
+  {
+    "label": "Teleological Argument",
+    "argument_type": "primary",
+    "advanced_by": "frank-turek",
+    "fields_worldview": "theism",
+    "conclusion": "Order and apparent purpose imply a designer.",
+    "description": "The design argument; contains fine-tuning and design-of-life as sub-arguments.",
+    "name": "teleological-argument",
+    "is_fully_developed": false,
+    "is_contested": false
+  }
+]

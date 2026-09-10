@@ -1,0 +1,29 @@
+[
+  {
+    "connective_id": "conjunction",
+    "name": "conjunction",
+    "symbol": "\u2227",
+    "arity": 2,
+    "kleene_rule": "min of ranks",
+    "count_of_truth_table_rows": 9,
+    "truth_table_rows": null
+  },
+  {
+    "connective_id": "disjunction",
+    "name": "disjunction",
+    "symbol": "\u2228",
+    "arity": 2,
+    "kleene_rule": "max of ranks",
+    "count_of_truth_table_rows": 9,
+    "truth_table_rows": null
+  },
+  {
+    "connective_id": "negation",
+    "name": "negation",
+    "symbol": "\u00ac",
+    "arity": 1,
+    "kleene_rule": "negate rank",
+    "count_of_truth_table_rows": 3,
+    "truth_table_rows": null
+  }
+]

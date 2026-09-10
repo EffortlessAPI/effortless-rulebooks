@@ -1,0 +1,50 @@
+[
+  {
+    "client_approval_id": "alice-johnson-apvd",
+    "name": "alice-johnson-APVD",
+    "client": "alice-johnson",
+    "approved_by": "ej-ssot-me-admin",
+    "approved_by_contact_name": "EJ Alexandra",
+    "approved_by_email_address": "ej@ssot.me",
+    "approved_by_phone_number": "(555) 555-1111",
+    "approved_by_role": "Admin",
+    "is_approved": true,
+    "notes": "",
+    "client_name": "Alice Johnson",
+    "client_email": "alice.johnson@northwind.example",
+    "client_phone": "+1-206-555-0142",
+    "client_category": "active"
+  },
+  {
+    "client_approval_id": "brian-lee-apvd",
+    "name": "brian-lee-APVD",
+    "client": "brian-lee",
+    "approved_by": "ej-ssot-me-admin",
+    "approved_by_contact_name": "EJ Alexandra",
+    "approved_by_email_address": "ej@ssot.me",
+    "approved_by_phone_number": "(555) 555-1111",
+    "approved_by_role": "Admin",
+    "is_approved": true,
+    "notes": "",
+    "client_name": "Brian Lee",
+    "client_email": "brian.lee@contoso.example",
+    "client_phone": "+1-512-555-0177",
+    "client_category": "prospect"
+  },
+  {
+    "client_approval_id": "brian-lee-pend",
+    "name": "brian-lee-PEND",
+    "client": "brian-lee",
+    "approved_by": "",
+    "approved_by_contact_name": null,
+    "approved_by_email_address": null,
+    "approved_by_phone_number": null,
+    "approved_by_role": null,
+    "is_approved": false,
+    "notes": "",
+    "client_name": "Brian Lee",
+    "client_email": "brian.lee@contoso.example",
+    "client_phone": "+1-512-555-0177",
+    "client_category": "prospect"
+  }
+]

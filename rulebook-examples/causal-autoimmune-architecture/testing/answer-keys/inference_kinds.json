@@ -1,0 +1,79 @@
+[
+  {
+    "inference_kind_id": "ik-aggregation-rollup",
+    "title": "Aggregation rollups",
+    "description": "Collapse many child rows into one parent value - counts, maxima, sums, fractions. This is how per-row facts become corpus-level patterns: a population signature is a rollup over each person's raw series, with no label assigned.",
+    "example_field": "Individuals.MaxProgressionStateOrder; the emergent IsInPreNephriticSignatureCluster rollup",
+    "evidence_count": "33 aggregation fields; COUNTIFS/MAXIFS/SUMIFS used 33x",
+    "maturity": "Live",
+    "sort_order": 2,
+    "name": "Aggregation rollups",
+    "relative_path": "/admin/inference-kinds/ik-aggregation-rollup"
+  },
+  {
+    "inference_kind_id": "ik-cross-substrate-conformance",
+    "title": "Cross-substrate conformance",
+    "description": "The same declared model is projected to a second substrate (OWL) and an independent reasoner closes it on its own; agreement with the Postgres recursive view is the conformance receipt. rulebook-to-owl emits the transition relation as an owl:TransitiveProperty, owlrl deduces every reachable pair, and owl/reason.py diffs that set against vw_state_transition_rules_closure - they match exactly (32 reachability pairs, incl. the inferred long-range intake -> actionable at hop 5). A recursive SQL view and an OWL-RL deductive closure compute the same reachability from one model: the reasoning is substrate-independent, not SQL-specific.",
+    "example_field": "owl/reason.py: owlrl closure of `progression` (TransitiveProperty) == vw_state_transition_rules_closure",
+    "evidence_count": "OWL-RL closure == Postgres closure: 14 asserted edges, 18 inferred pairs, 32 total - identical sets, verified by owl/reason.py",
+    "maturity": "Live",
+    "sort_order": 7,
+    "name": "Cross-substrate conformance",
+    "relative_path": "/admin/inference-kinds/ik-cross-substrate-conformance"
+  },
+  {
+    "inference_kind_id": "ik-higher-order",
+    "title": "Higher-order inference (gates over gates)",
+    "description": "Calculated fields that take other calculated fields as inputs, stacked into a multi-level DAG. The keystone is the apex: a boolean computed over four gates, each themselves computed over lower derivations - inference about inferences, never a hand-entered answer.",
+    "example_field": "IndividualPredictions.IsClinicallyActionable (AND of the four derived gates)",
+    "evidence_count": "200 calculated fields; the keystone is an AND of four derived gates",
+    "maturity": "Live",
+    "sort_order": 3,
+    "name": "Higher-order inference (gates over gates)",
+    "relative_path": "/admin/inference-kinds/ik-higher-order"
+  },
+  {
+    "inference_kind_id": "ik-lookup-fk",
+    "title": "Lookup / FK resolution",
+    "description": "Pull a related row's value across a foreign key so a derived field can reason over it in place (no application-side JOIN). The relationship is declared once; the value resolves wherever it is needed.",
+    "example_field": "Individuals.FederatedDatasetNodeLabel (resolves the dataset's label by FK)",
+    "evidence_count": "35 lookup fields + 42 relationships; INDEX/MATCH used 49x",
+    "maturity": "Live",
+    "sort_order": 1,
+    "name": "Lookup / FK resolution",
+    "relative_path": "/admin/inference-kinds/ik-lookup-fk"
+  },
+  {
+    "inference_kind_id": "ik-predicate-narrative",
+    "title": "Predicate-gated narrative",
+    "description": "Each raw fact is turned into a phrase by a per-row formula that selects wording from its own value and a shared __meta__ phrasebook (e.g. a temperature becomes 'normal' | 'light fever' | 'severe fever'). The diagnosis writeup is assembled from these inspectable cells - no free-text generated at render time.",
+    "example_field": "Individuals.ActivityTier / TemperatureNarrative (banded from the row's own value)",
+    "evidence_count": "IF used 166x; per-row narrative fragment fields band raw values into language",
+    "maturity": "Live",
+    "sort_order": 6,
+    "name": "Predicate-gated narrative",
+    "relative_path": "/admin/inference-kinds/ik-predicate-narrative"
+  },
+  {
+    "inference_kind_id": "ik-state-machine",
+    "title": "State-machine derivation",
+    "description": "A subject's current state is derived from raw longitudinal inputs against a declared transition graph, not entered. Dwell time per state and the progression key fall out of the same derivation.",
+    "example_field": "Individuals.NephritisProgressionStateKey (from rising anti-dsDNA + falling complement)",
+    "evidence_count": "2 state machines, 13 states, 14 transition rules; current state is computed",
+    "maturity": "Live",
+    "sort_order": 4,
+    "name": "State-machine derivation",
+    "relative_path": "/admin/inference-kinds/ik-state-machine"
+  },
+  {
+    "inference_kind_id": "ik-transitive-closure",
+    "title": "Transitive closure (reachability inference)",
+    "description": "Sparsely-asserted FromState->ToState edges imply the full reachability ordering, including never-asserted long-range pairs. The disease trajectory is inferred from the transition topology (e.g. intake -> actionable at hop 5, is_inferred=true) rather than hand-typed as an integer ladder - the autoimmune analogue of a step-1 -> step-5 ordering.",
+    "example_field": "StateTransitionRules.ProgressionClosure (presymptomatic -> biopsy-indicated, inferred)",
+    "evidence_count": "1 closure field -> vw_state_transition_rules_closure: 14 asserted edges, 18 inferred pairs (to hop 5)",
+    "maturity": "Live",
+    "sort_order": 5,
+    "name": "Transitive closure (reachability inference)",
+    "relative_path": "/admin/inference-kinds/ik-transitive-closure"
+  }
+]

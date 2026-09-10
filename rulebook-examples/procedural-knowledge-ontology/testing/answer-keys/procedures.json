@@ -1,0 +1,28 @@
+[
+  {
+    "procedure_id": "quarter-end-close",
+    "title": "Quarter-End Financial Close",
+    "procedure_type": "financial-sop",
+    "owner_organization": "acme-finance",
+    "adopted_by_organization": "acme-corp",
+    "purpose": "Close the general ledger accurately, produce evidence, and obtain independent approval.",
+    "target": "Corporate general ledger and reporting package",
+    "is_template": false,
+    "current_version_key": "close-v1.1.0",
+    "semantic_type_iri": "https://w3id.org/pko#Procedure",
+    "name": "Quarter-End Financial Close"
+  },
+  {
+    "procedure_id": "workforce-policy-notification",
+    "title": "Workforce Policy Change and Employee Notification",
+    "procedure_type": "communication-policy",
+    "owner_organization": "acme-people",
+    "adopted_by_organization": "acme-corp",
+    "purpose": "Turn an approved workforce policy change into governed, channel-appropriate employee communications and acknowledgements.",
+    "target": "All affected employees and workforce-policy records",
+    "is_template": false,
+    "current_version_key": "policy-v1.0.0",
+    "semantic_type_iri": "https://w3id.org/pko#Procedure",
+    "name": "Workforce Policy Change and Employee Notification"
+  }
+]

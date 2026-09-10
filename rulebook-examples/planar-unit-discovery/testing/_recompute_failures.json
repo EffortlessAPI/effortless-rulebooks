@@ -1,0 +1,1098 @@
+[
+  {
+    "entity": "PointSets",
+    "field": "DensityExponentEstimate",
+    "formula": "=LOG({{UnitDistancePairCount}})/LOG({{PointCount}})",
+    "record_id": "unit-triangle",
+    "error": "ValueError: Unknown function: LOG",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointSets",
+    "field": "DensityExponentEstimate",
+    "formula": "=LOG({{UnitDistancePairCount}})/LOG({{PointCount}})",
+    "record_id": "unit-square",
+    "error": "ValueError: Unknown function: LOG",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointSets",
+    "field": "DensityExponentEstimate",
+    "formula": "=LOG({{UnitDistancePairCount}})/LOG({{PointCount}})",
+    "record_id": "heptagon-with-center",
+    "error": "ValueError: Unknown function: LOG",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DeltaXSquared",
+    "formula": "=POWER({{DeltaX}},2)",
+    "record_id": "tri-ab",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DeltaYSquared",
+    "formula": "=POWER({{DeltaY}},2)",
+    "record_id": "tri-ab",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "Distance",
+    "formula": "=SQRT({{DistanceSquared}})",
+    "record_id": "tri-ab",
+    "error": "ValueError: Unknown function: SQRT",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DistanceFromUnit",
+    "formula": "=ABS({{DistanceSquared}}-1)",
+    "record_id": "tri-ab",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DeltaXSquared",
+    "formula": "=POWER({{DeltaX}},2)",
+    "record_id": "tri-ac",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DeltaYSquared",
+    "formula": "=POWER({{DeltaY}},2)",
+    "record_id": "tri-ac",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "Distance",
+    "formula": "=SQRT({{DistanceSquared}})",
+    "record_id": "tri-ac",
+    "error": "ValueError: Unknown function: SQRT",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DistanceFromUnit",
+    "formula": "=ABS({{DistanceSquared}}-1)",
+    "record_id": "tri-ac",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DeltaXSquared",
+    "formula": "=POWER({{DeltaX}},2)",
+    "record_id": "tri-bc",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DeltaYSquared",
+    "formula": "=POWER({{DeltaY}},2)",
+    "record_id": "tri-bc",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "Distance",
+    "formula": "=SQRT({{DistanceSquared}})",
+    "record_id": "tri-bc",
+    "error": "ValueError: Unknown function: SQRT",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DistanceFromUnit",
+    "formula": "=ABS({{DistanceSquared}}-1)",
+    "record_id": "tri-bc",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DeltaXSquared",
+    "formula": "=POWER({{DeltaX}},2)",
+    "record_id": "sq-ab",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DeltaYSquared",
+    "formula": "=POWER({{DeltaY}},2)",
+    "record_id": "sq-ab",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "Distance",
+    "formula": "=SQRT({{DistanceSquared}})",
+    "record_id": "sq-ab",
+    "error": "ValueError: Unknown function: SQRT",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DistanceFromUnit",
+    "formula": "=ABS({{DistanceSquared}}-1)",
+    "record_id": "sq-ab",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DeltaXSquared",
+    "formula": "=POWER({{DeltaX}},2)",
+    "record_id": "sq-bc",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DeltaYSquared",
+    "formula": "=POWER({{DeltaY}},2)",
+    "record_id": "sq-bc",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "Distance",
+    "formula": "=SQRT({{DistanceSquared}})",
+    "record_id": "sq-bc",
+    "error": "ValueError: Unknown function: SQRT",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DistanceFromUnit",
+    "formula": "=ABS({{DistanceSquared}}-1)",
+    "record_id": "sq-bc",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DeltaXSquared",
+    "formula": "=POWER({{DeltaX}},2)",
+    "record_id": "sq-cd",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DeltaYSquared",
+    "formula": "=POWER({{DeltaY}},2)",
+    "record_id": "sq-cd",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "Distance",
+    "formula": "=SQRT({{DistanceSquared}})",
+    "record_id": "sq-cd",
+    "error": "ValueError: Unknown function: SQRT",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DistanceFromUnit",
+    "formula": "=ABS({{DistanceSquared}}-1)",
+    "record_id": "sq-cd",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DeltaXSquared",
+    "formula": "=POWER({{DeltaX}},2)",
+    "record_id": "sq-da",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DeltaYSquared",
+    "formula": "=POWER({{DeltaY}},2)",
+    "record_id": "sq-da",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "Distance",
+    "formula": "=SQRT({{DistanceSquared}})",
+    "record_id": "sq-da",
+    "error": "ValueError: Unknown function: SQRT",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DistanceFromUnit",
+    "formula": "=ABS({{DistanceSquared}}-1)",
+    "record_id": "sq-da",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DeltaXSquared",
+    "formula": "=POWER({{DeltaX}},2)",
+    "record_id": "sq-ac",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DeltaYSquared",
+    "formula": "=POWER({{DeltaY}},2)",
+    "record_id": "sq-ac",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "Distance",
+    "formula": "=SQRT({{DistanceSquared}})",
+    "record_id": "sq-ac",
+    "error": "ValueError: Unknown function: SQRT",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DistanceFromUnit",
+    "formula": "=ABS({{DistanceSquared}}-1)",
+    "record_id": "sq-ac",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DeltaXSquared",
+    "formula": "=POWER({{DeltaX}},2)",
+    "record_id": "sq-bd",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DeltaYSquared",
+    "formula": "=POWER({{DeltaY}},2)",
+    "record_id": "sq-bd",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "Distance",
+    "formula": "=SQRT({{DistanceSquared}})",
+    "record_id": "sq-bd",
+    "error": "ValueError: Unknown function: SQRT",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DistanceFromUnit",
+    "formula": "=ABS({{DistanceSquared}}-1)",
+    "record_id": "sq-bd",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DeltaXSquared",
+    "formula": "=POWER({{DeltaX}},2)",
+    "record_id": "hept-spoke-1",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DeltaYSquared",
+    "formula": "=POWER({{DeltaY}},2)",
+    "record_id": "hept-spoke-1",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "Distance",
+    "formula": "=SQRT({{DistanceSquared}})",
+    "record_id": "hept-spoke-1",
+    "error": "ValueError: Unknown function: SQRT",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DistanceFromUnit",
+    "formula": "=ABS({{DistanceSquared}}-1)",
+    "record_id": "hept-spoke-1",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DeltaXSquared",
+    "formula": "=POWER({{DeltaX}},2)",
+    "record_id": "hept-spoke-2",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DeltaYSquared",
+    "formula": "=POWER({{DeltaY}},2)",
+    "record_id": "hept-spoke-2",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "Distance",
+    "formula": "=SQRT({{DistanceSquared}})",
+    "record_id": "hept-spoke-2",
+    "error": "ValueError: Unknown function: SQRT",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DistanceFromUnit",
+    "formula": "=ABS({{DistanceSquared}}-1)",
+    "record_id": "hept-spoke-2",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DeltaXSquared",
+    "formula": "=POWER({{DeltaX}},2)",
+    "record_id": "hept-spoke-3",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DeltaYSquared",
+    "formula": "=POWER({{DeltaY}},2)",
+    "record_id": "hept-spoke-3",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "Distance",
+    "formula": "=SQRT({{DistanceSquared}})",
+    "record_id": "hept-spoke-3",
+    "error": "ValueError: Unknown function: SQRT",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DistanceFromUnit",
+    "formula": "=ABS({{DistanceSquared}}-1)",
+    "record_id": "hept-spoke-3",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DeltaXSquared",
+    "formula": "=POWER({{DeltaX}},2)",
+    "record_id": "hept-spoke-4",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DeltaYSquared",
+    "formula": "=POWER({{DeltaY}},2)",
+    "record_id": "hept-spoke-4",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "Distance",
+    "formula": "=SQRT({{DistanceSquared}})",
+    "record_id": "hept-spoke-4",
+    "error": "ValueError: Unknown function: SQRT",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DistanceFromUnit",
+    "formula": "=ABS({{DistanceSquared}}-1)",
+    "record_id": "hept-spoke-4",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DeltaXSquared",
+    "formula": "=POWER({{DeltaX}},2)",
+    "record_id": "hept-spoke-5",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DeltaYSquared",
+    "formula": "=POWER({{DeltaY}},2)",
+    "record_id": "hept-spoke-5",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "Distance",
+    "formula": "=SQRT({{DistanceSquared}})",
+    "record_id": "hept-spoke-5",
+    "error": "ValueError: Unknown function: SQRT",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DistanceFromUnit",
+    "formula": "=ABS({{DistanceSquared}}-1)",
+    "record_id": "hept-spoke-5",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DeltaXSquared",
+    "formula": "=POWER({{DeltaX}},2)",
+    "record_id": "hept-spoke-6",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DeltaYSquared",
+    "formula": "=POWER({{DeltaY}},2)",
+    "record_id": "hept-spoke-6",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "Distance",
+    "formula": "=SQRT({{DistanceSquared}})",
+    "record_id": "hept-spoke-6",
+    "error": "ValueError: Unknown function: SQRT",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DistanceFromUnit",
+    "formula": "=ABS({{DistanceSquared}}-1)",
+    "record_id": "hept-spoke-6",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DeltaXSquared",
+    "formula": "=POWER({{DeltaX}},2)",
+    "record_id": "hept-spoke-7",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DeltaYSquared",
+    "formula": "=POWER({{DeltaY}},2)",
+    "record_id": "hept-spoke-7",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "Distance",
+    "formula": "=SQRT({{DistanceSquared}})",
+    "record_id": "hept-spoke-7",
+    "error": "ValueError: Unknown function: SQRT",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DistanceFromUnit",
+    "formula": "=ABS({{DistanceSquared}}-1)",
+    "record_id": "hept-spoke-7",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DeltaXSquared",
+    "formula": "=POWER({{DeltaX}},2)",
+    "record_id": "hept-chord-12",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DeltaYSquared",
+    "formula": "=POWER({{DeltaY}},2)",
+    "record_id": "hept-chord-12",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "Distance",
+    "formula": "=SQRT({{DistanceSquared}})",
+    "record_id": "hept-chord-12",
+    "error": "ValueError: Unknown function: SQRT",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DistanceFromUnit",
+    "formula": "=ABS({{DistanceSquared}}-1)",
+    "record_id": "hept-chord-12",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DeltaXSquared",
+    "formula": "=POWER({{DeltaX}},2)",
+    "record_id": "hept-chord-13",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DeltaYSquared",
+    "formula": "=POWER({{DeltaY}},2)",
+    "record_id": "hept-chord-13",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "Distance",
+    "formula": "=SQRT({{DistanceSquared}})",
+    "record_id": "hept-chord-13",
+    "error": "ValueError: Unknown function: SQRT",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "PointPairs",
+    "field": "DistanceFromUnit",
+    "formula": "=ABS({{DistanceSquared}}-1)",
+    "record_id": "hept-chord-13",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "UnitDistanceGraphs",
+    "field": "DensityExponentEstimate",
+    "formula": "=LOG({{EdgeCount}})/LOG({{VertexCount}})",
+    "record_id": "g-tri",
+    "error": "ValueError: Unknown function: LOG",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "UnitDistanceGraphs",
+    "field": "DensityExponentEstimate",
+    "formula": "=LOG({{EdgeCount}})/LOG({{VertexCount}})",
+    "record_id": "g-sq",
+    "error": "ValueError: Unknown function: LOG",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "UnitDistanceGraphs",
+    "field": "DensityExponentEstimate",
+    "formula": "=LOG({{EdgeCount}})/LOG({{VertexCount}})",
+    "record_id": "g-heptagon-center",
+    "error": "ValueError: Unknown function: LOG",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "MinkowskiLattices",
+    "field": "DeterminantSquared",
+    "formula": "=POWER({{Determinant}},2)",
+    "record_id": "lat-q-sqrt-neg3",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "MinkowskiLattices",
+    "field": "AbsoluteFieldDiscriminant",
+    "formula": "=ABS({{FieldDiscriminant}})",
+    "record_id": "lat-q-sqrt-neg3",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "MinkowskiLattices",
+    "field": "DeterminantSquaredEqualsDiscriminant",
+    "formula": "=ABS({{DeterminantSquared}}-{{AbsoluteFieldDiscriminant}})<0.0001",
+    "record_id": "lat-q-sqrt-neg3",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "MinkowskiLattices",
+    "field": "DeterminantSquared",
+    "formula": "=POWER({{Determinant}},2)",
+    "record_id": "lat-q-zeta-7",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "MinkowskiLattices",
+    "field": "AbsoluteFieldDiscriminant",
+    "formula": "=ABS({{FieldDiscriminant}})",
+    "record_id": "lat-q-zeta-7",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "MinkowskiLattices",
+    "field": "DeterminantSquaredEqualsDiscriminant",
+    "formula": "=ABS({{DeterminantSquared}}-{{AbsoluteFieldDiscriminant}})<0.0001",
+    "record_id": "lat-q-zeta-7",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Theorems",
+    "field": "AnchorMatchesBoundExponent",
+    "formula": "=ABS({{ClaimedExponent}}-{{AnchoredBoundExponent}})<0.0001",
+    "record_id": "thm-superlinear-unit-distance",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Theorems",
+    "field": "AnchorMatchesBoundExponent",
+    "formula": "=ABS({{ClaimedExponent}}-{{AnchoredBoundExponent}})<0.0001",
+    "record_id": "thm-erdos-unit-distance-baseline",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Theorems",
+    "field": "AnchorMatchesBoundExponent",
+    "formula": "=ABS({{ClaimedExponent}}-{{AnchoredBoundExponent}})<0.0001",
+    "record_id": "thm-szemeredi-trotter",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Theorems",
+    "field": "AnchorMatchesBoundExponent",
+    "formula": "=ABS({{ClaimedExponent}}-{{AnchoredBoundExponent}})<0.0001",
+    "record_id": "thm-spencer-szemeredi-trotter",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Theorems",
+    "field": "AnchorMatchesBoundExponent",
+    "formula": "=ABS({{ClaimedExponent}}-{{AnchoredBoundExponent}})<0.0001",
+    "record_id": "thm-future-conjectural-improvement",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Theorems",
+    "field": "AnchorMatchesBoundExponent",
+    "formula": "=ABS({{ClaimedExponent}}-{{AnchoredBoundExponent}})<0.0001",
+    "record_id": "thm-hypothetical-retracted",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "ProjectedShortVectors",
+    "field": "ProjectedXSquared",
+    "formula": "=POWER({{ProjectedX}},2)",
+    "record_id": "psv-v1-first-two",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "ProjectedShortVectors",
+    "field": "ProjectedYSquared",
+    "formula": "=POWER({{ProjectedY}},2)",
+    "record_id": "psv-v1-first-two",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "ProjectedShortVectors",
+    "field": "DistanceSquaredFromUnit",
+    "formula": "=ABS({{ProjectedNormSquared}}-1)",
+    "record_id": "psv-v1-first-two",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "ProjectedShortVectors",
+    "field": "NormPreservedUnderProjection",
+    "formula": "=ABS({{SourceNormSquared}}-{{ProjectedNormSquared}})<{{UnitTolerance}}",
+    "record_id": "psv-v1-first-two",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "ProjectedShortVectors",
+    "field": "ProjectedXSquared",
+    "formula": "=POWER({{ProjectedX}},2)",
+    "record_id": "psv-v2-first-two",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "ProjectedShortVectors",
+    "field": "ProjectedYSquared",
+    "formula": "=POWER({{ProjectedY}},2)",
+    "record_id": "psv-v2-first-two",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "ProjectedShortVectors",
+    "field": "DistanceSquaredFromUnit",
+    "formula": "=ABS({{ProjectedNormSquared}}-1)",
+    "record_id": "psv-v2-first-two",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "ProjectedShortVectors",
+    "field": "NormPreservedUnderProjection",
+    "formula": "=ABS({{SourceNormSquared}}-{{ProjectedNormSquared}})<{{UnitTolerance}}",
+    "record_id": "psv-v2-first-two",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "ProjectedShortVectors",
+    "field": "ProjectedXSquared",
+    "formula": "=POWER({{ProjectedX}},2)",
+    "record_id": "psv-v3-first-two",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "ProjectedShortVectors",
+    "field": "ProjectedYSquared",
+    "formula": "=POWER({{ProjectedY}},2)",
+    "record_id": "psv-v3-first-two",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "ProjectedShortVectors",
+    "field": "DistanceSquaredFromUnit",
+    "formula": "=ABS({{ProjectedNormSquared}}-1)",
+    "record_id": "psv-v3-first-two",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "ProjectedShortVectors",
+    "field": "NormPreservedUnderProjection",
+    "formula": "=ABS({{SourceNormSquared}}-{{ProjectedNormSquared}})<{{UnitTolerance}}",
+    "record_id": "psv-v3-first-two",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "ProjectedShortVectors",
+    "field": "ProjectedXSquared",
+    "formula": "=POWER({{ProjectedX}},2)",
+    "record_id": "psv-v4-first-two",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "ProjectedShortVectors",
+    "field": "ProjectedYSquared",
+    "formula": "=POWER({{ProjectedY}},2)",
+    "record_id": "psv-v4-first-two",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "ProjectedShortVectors",
+    "field": "DistanceSquaredFromUnit",
+    "formula": "=ABS({{ProjectedNormSquared}}-1)",
+    "record_id": "psv-v4-first-two",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "ProjectedShortVectors",
+    "field": "NormPreservedUnderProjection",
+    "formula": "=ABS({{SourceNormSquared}}-{{ProjectedNormSquared}})<{{UnitTolerance}}",
+    "record_id": "psv-v4-first-two",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "ProjectedShortVectors",
+    "field": "ProjectedXSquared",
+    "formula": "=POWER({{ProjectedX}},2)",
+    "record_id": "psv-v1-rotated",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "ProjectedShortVectors",
+    "field": "ProjectedYSquared",
+    "formula": "=POWER({{ProjectedY}},2)",
+    "record_id": "psv-v1-rotated",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "ProjectedShortVectors",
+    "field": "DistanceSquaredFromUnit",
+    "formula": "=ABS({{ProjectedNormSquared}}-1)",
+    "record_id": "psv-v1-rotated",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "ProjectedShortVectors",
+    "field": "NormPreservedUnderProjection",
+    "formula": "=ABS({{SourceNormSquared}}-{{ProjectedNormSquared}})<{{UnitTolerance}}",
+    "record_id": "psv-v1-rotated",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "ProjectedShortVectors",
+    "field": "ProjectedXSquared",
+    "formula": "=POWER({{ProjectedX}},2)",
+    "record_id": "psv-zeta7-zeta0-sigma1",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "ProjectedShortVectors",
+    "field": "ProjectedYSquared",
+    "formula": "=POWER({{ProjectedY}},2)",
+    "record_id": "psv-zeta7-zeta0-sigma1",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "ProjectedShortVectors",
+    "field": "DistanceSquaredFromUnit",
+    "formula": "=ABS({{ProjectedNormSquared}}-1)",
+    "record_id": "psv-zeta7-zeta0-sigma1",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "ProjectedShortVectors",
+    "field": "NormPreservedUnderProjection",
+    "formula": "=ABS({{SourceNormSquared}}-{{ProjectedNormSquared}})<{{UnitTolerance}}",
+    "record_id": "psv-zeta7-zeta0-sigma1",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "ProjectedShortVectors",
+    "field": "ProjectedXSquared",
+    "formula": "=POWER({{ProjectedX}},2)",
+    "record_id": "psv-zeta7-zeta1-sigma1",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "ProjectedShortVectors",
+    "field": "ProjectedYSquared",
+    "formula": "=POWER({{ProjectedY}},2)",
+    "record_id": "psv-zeta7-zeta1-sigma1",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "ProjectedShortVectors",
+    "field": "DistanceSquaredFromUnit",
+    "formula": "=ABS({{ProjectedNormSquared}}-1)",
+    "record_id": "psv-zeta7-zeta1-sigma1",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "ProjectedShortVectors",
+    "field": "NormPreservedUnderProjection",
+    "formula": "=ABS({{SourceNormSquared}}-{{ProjectedNormSquared}})<{{UnitTolerance}}",
+    "record_id": "psv-zeta7-zeta1-sigma1",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "ProjectedShortVectors",
+    "field": "ProjectedXSquared",
+    "formula": "=POWER({{ProjectedX}},2)",
+    "record_id": "psv-zeta7-zeta2-sigma1",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "ProjectedShortVectors",
+    "field": "ProjectedYSquared",
+    "formula": "=POWER({{ProjectedY}},2)",
+    "record_id": "psv-zeta7-zeta2-sigma1",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "ProjectedShortVectors",
+    "field": "DistanceSquaredFromUnit",
+    "formula": "=ABS({{ProjectedNormSquared}}-1)",
+    "record_id": "psv-zeta7-zeta2-sigma1",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "ProjectedShortVectors",
+    "field": "NormPreservedUnderProjection",
+    "formula": "=ABS({{SourceNormSquared}}-{{ProjectedNormSquared}})<{{UnitTolerance}}",
+    "record_id": "psv-zeta7-zeta2-sigma1",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "ProjectedShortVectors",
+    "field": "ProjectedXSquared",
+    "formula": "=POWER({{ProjectedX}},2)",
+    "record_id": "psv-zeta7-zeta3-sigma1",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "ProjectedShortVectors",
+    "field": "ProjectedYSquared",
+    "formula": "=POWER({{ProjectedY}},2)",
+    "record_id": "psv-zeta7-zeta3-sigma1",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "ProjectedShortVectors",
+    "field": "DistanceSquaredFromUnit",
+    "formula": "=ABS({{ProjectedNormSquared}}-1)",
+    "record_id": "psv-zeta7-zeta3-sigma1",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "ProjectedShortVectors",
+    "field": "NormPreservedUnderProjection",
+    "formula": "=ABS({{SourceNormSquared}}-{{ProjectedNormSquared}})<{{UnitTolerance}}",
+    "record_id": "psv-zeta7-zeta3-sigma1",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "ProjectedShortVectors",
+    "field": "ProjectedXSquared",
+    "formula": "=POWER({{ProjectedX}},2)",
+    "record_id": "psv-zeta7-diff-sigma1",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "ProjectedShortVectors",
+    "field": "ProjectedYSquared",
+    "formula": "=POWER({{ProjectedY}},2)",
+    "record_id": "psv-zeta7-diff-sigma1",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "ProjectedShortVectors",
+    "field": "DistanceSquaredFromUnit",
+    "formula": "=ABS({{ProjectedNormSquared}}-1)",
+    "record_id": "psv-zeta7-diff-sigma1",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "ProjectedShortVectors",
+    "field": "NormPreservedUnderProjection",
+    "formula": "=ABS({{SourceNormSquared}}-{{ProjectedNormSquared}})<{{UnitTolerance}}",
+    "record_id": "psv-zeta7-diff-sigma1",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "ProjectedShortVectors",
+    "field": "ProjectedXSquared",
+    "formula": "=POWER({{ProjectedX}},2)",
+    "record_id": "psv-zeta7-large-sigma1",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "ProjectedShortVectors",
+    "field": "ProjectedYSquared",
+    "formula": "=POWER({{ProjectedY}},2)",
+    "record_id": "psv-zeta7-large-sigma1",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "ProjectedShortVectors",
+    "field": "DistanceSquaredFromUnit",
+    "formula": "=ABS({{ProjectedNormSquared}}-1)",
+    "record_id": "psv-zeta7-large-sigma1",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "ProjectedShortVectors",
+    "field": "NormPreservedUnderProjection",
+    "formula": "=ABS({{SourceNormSquared}}-{{ProjectedNormSquared}})<{{UnitTolerance}}",
+    "record_id": "psv-zeta7-large-sigma1",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "GolodShafarevichCriteria",
+    "field": "CriterionThreshold",
+    "formula": "=POWER({{MinimalGeneratorCount_d}},2)/4",
+    "record_id": "gs-q-sqrt-neg3",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "GolodShafarevichCriteria",
+    "field": "CriterionThreshold",
+    "formula": "=POWER({{MinimalGeneratorCount_d}},2)/4",
+    "record_id": "gs-q-zeta-7",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "GolodShafarevichCriteria",
+    "field": "CriterionThreshold",
+    "formula": "=POWER({{MinimalGeneratorCount_d}},2)/4",
+    "record_id": "gs-unknown-test",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  }
+]

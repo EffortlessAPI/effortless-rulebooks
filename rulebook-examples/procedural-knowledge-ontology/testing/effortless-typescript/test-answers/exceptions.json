@@ -1,0 +1,54 @@
+[
+  {
+    "exception_id": "exc-cfo-unavailable",
+    "name": "CFO unavailable during close",
+    "procedure_version": "close-v1.1.0",
+    "trigger_step": "close-06",
+    "condition": "CFO unavailable during close",
+    "handling": "Delegate approval to the formally designated Acting CFO; never to the preparer.",
+    "approval_role": "cfo",
+    "fallback_role": "controller",
+    "status": "Active",
+    "active_exception_step_key": "close-06",
+    "semantic_type_iri": "urn:effortless:pko-extension#Exception"
+  },
+  {
+    "exception_id": "exc-ledger-outage",
+    "name": "ERP source unavailable",
+    "procedure_version": "close-v1.1.0",
+    "trigger_step": "close-02",
+    "condition": "ERP source unavailable",
+    "handling": "Use a digitally signed, timestamped snapshot and open a blocking incident; do not silently substitute a spreadsheet.",
+    "approval_role": "controller",
+    "fallback_role": "close-automation",
+    "status": "Active",
+    "active_exception_step_key": "close-02",
+    "semantic_type_iri": "urn:effortless:pko-extension#Exception"
+  },
+  {
+    "exception_id": "exc-no-sms-consent",
+    "name": "Recipient lacks SMS consent",
+    "procedure_version": "policy-v1.0.0",
+    "trigger_step": "policy-07",
+    "condition": "Recipient lacks SMS consent",
+    "handling": "Suppress SMS and send approved email only.",
+    "approval_role": "hr-policy-owner",
+    "fallback_role": "notification-publisher",
+    "status": "Active",
+    "active_exception_step_key": "policy-07",
+    "semantic_type_iri": "urn:effortless:pko-extension#Exception"
+  },
+  {
+    "exception_id": "exc-unreachable",
+    "name": "Recipient unreachable",
+    "procedure_version": "policy-v1.0.0",
+    "trigger_step": "policy-08",
+    "condition": "Recipient unreachable",
+    "handling": "Create an HR case and route to the employee's manager without marking acknowledgement complete.",
+    "approval_role": "hr-policy-owner",
+    "fallback_role": "process-steward",
+    "status": "Active",
+    "active_exception_step_key": "policy-08",
+    "semantic_type_iri": "urn:effortless:pko-extension#Exception"
+  }
+]

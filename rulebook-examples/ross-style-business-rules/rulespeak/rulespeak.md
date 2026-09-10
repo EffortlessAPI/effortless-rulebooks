@@ -23,12 +23,12 @@ _A small, complete claims model demonstrating declarative business rules renderi
 | Policy | A defined attribute. | _The claimant's current policy (foreign key to Policies)._ |
 | Count of Incidents | The number of incidents related to the claimant. | _The number of incidents whose claimant is this claimant._ |
 | Is High Risk | True when the count of incidents is greater than 2. | _A claimant must be considered high-risk if the claimant's incident count exceeds 2. (Ross: 'must be considered ... if'; '>2' means 3 or more.)_ |
-| Policy is Active | True when the linked policy is active. | _Whether the claimant's current policy is active (ground truth carried over from the policy)._ |
+| Policy is Active | True when the linked policy is active. | _Whether the claimant's current policy is active (ground truth carried over from the policy). (Was wrapped in IFERROR(..., FALSE); rulebook-to-postgres mistranslates that wrapper — it emitted the field as a nonexistent base-table column and broke 03-create-views.sql. INDEX/MATCH already yields NULL when the FK does not match.)_ |
 | **Incident** | An event or loss that can give rise to a claim. Each incident involves exactly one claimant of record at the incident level. | — |
 | Name | The same as its incident ID. | _Logical primary key — mirrors IncidentId so every row is addressable by Name._ |
 | Incident Description | A defined attribute. | _Short description of the incident._ |
 | Claimant | A defined attribute. | _The claimant involved in this incident (foreign key to Claimants via ClaimantId)._ |
-| Incident Claimant Name | Taken from the linked claimant. | _Name of the incident's claimant (for readability)._ |
+| Incident Claimant Name | Taken from the linked claimant. | _Name of the incident's claimant (for readability). (Was wrapped in IFERROR(..., ""); rulebook-to-postgres mistranslates that wrapper — it emitted the field as a nonexistent base-table column and broke 03-create-views.sql. INDEX/MATCH already yields NULL when the FK does not match.)_ |
 | **Claim** | A request to have an incident evaluated under a policy. Validity and approvability are computed, never entered. | — |
 | Name | The same as its claim ID. | _Logical primary key — mirrors ClaimId so every row is addressable by Name._ |
 | Incident | A defined attribute. | _The incident this claim references (exactly one; foreign key to Incidents via IncidentId)._ |
@@ -36,13 +36,13 @@ _A small, complete claims model demonstrating declarative business rules renderi
 | Is Flagged for Review | True when an empty string. | _Ground truth: whether the claim has been flagged for manual review (e.g., possible fraud). A claim can be valid yet still be held here — which is exactly why 'approvable' is 'only if valid', not 'iff valid'._ |
 | References Incident | True when the incident has a value. | _A claim references an incident when its incident is present._ |
 | Has Additional Claimant | True when the additional claimant has a value. | _A claim has an additional claimant when one is present._ |
-| Incident Claimant | Taken from the linked incident. | _The claimant of the referenced incident._ |
+| Incident Claimant | Taken from the linked incident. | _The claimant of the referenced incident. (Was wrapped in IFERROR(..., ""); rulebook-to-postgres mistranslates that wrapper — it emitted the field as a nonexistent base-table column and broke 03-create-views.sql. INDEX/MATCH already yields NULL when the FK does not match.)_ |
 | Claimant of Record | Determined by priority: the additional claimant if the additional claimant flag is set; in all other cases, the incident claimant. | _The claimant of record for a claim is determined by priority: (1) the additional claimant, if one exists; (2) otherwise the incident's claimant. Per R. Ross: expressed as a priority ordering, not an 'otherwise/else' procedure — the ordering is the rule._ |
-| Incident Claimant Policy Active | True when the linked incident claimant is active. | _Whether the incident claimant's current policy is active._ |
-| Additional Claimant Policy Active | True when the linked additional claimant is active. | _Whether the additional claimant's current policy is active (false when there is no additional claimant)._ |
-| Additional Claimant Favorite Color | Taken from the linked additional claimant. | _The additional claimant's favorite color (blank when there is no additional claimant)._ |
-| Claimant of Record Incident Count | The count of incidents of the claim's claimant of record. | _The incident count of the claimant of record._ |
-| Claimant of Record is High Risk | True when the linked claimant of record is high risk. | _Whether the claimant of record is high-risk (DR-2). Carries the named rule — IsValid references this field rather than re-deriving the threshold inline, keeping the '> 2 incidents' definition in exactly one place._ |
+| Incident Claimant Policy Active | True when the linked incident claimant is active. | _Whether the incident claimant's current policy is active. (Was wrapped in IFERROR(..., FALSE); rulebook-to-postgres mistranslates that wrapper — it emitted the field as a nonexistent base-table column and broke 03-create-views.sql. INDEX/MATCH already yields NULL when the FK does not match.)_ |
+| Additional Claimant Policy Active | True when the linked additional claimant is active. | _Whether the additional claimant's current policy is active (false when there is no additional claimant). (Was wrapped in IFERROR(..., FALSE); rulebook-to-postgres mistranslates that wrapper — it emitted the field as a nonexistent base-table column and broke 03-create-views.sql. INDEX/MATCH already yields NULL when the FK does not match.)_ |
+| Additional Claimant Favorite Color | Taken from the linked additional claimant. | _The additional claimant's favorite color (blank when there is no additional claimant). (Was wrapped in IFERROR(..., ""); rulebook-to-postgres mistranslates that wrapper — it emitted the field as a nonexistent base-table column and broke 03-create-views.sql. INDEX/MATCH already yields NULL when the FK does not match.)_ |
+| Claimant of Record Incident Count | The count of incidents of the claim's claimant of record. | _The incident count of the claimant of record. (Was wrapped in IFERROR(..., 0); rulebook-to-postgres mistranslates that wrapper — it emitted the field as a nonexistent base-table column and broke 03-create-views.sql. INDEX/MATCH already yields NULL when the FK does not match.)_ |
+| Claimant of Record is High Risk | True when the linked claimant of record is high risk. | _Whether the claimant of record is high-risk (DR-2). Carries the named rule — IsValid references this field rather than re-deriving the threshold inline, keeping the '> 2 incidents' definition in exactly one place. (Was wrapped in IFERROR(..., FALSE); rulebook-to-postgres mistranslates that wrapper — it emitted the field as a nonexistent base-table column and broke 03-create-views.sql. INDEX/MATCH already yields NULL when the FK does not match.)_ |
 | Is Valid | True when all of the following hold: the references incident flag is set; at least one of the following holds: the incident claimant policy active flag is set or the additional claimant policy active flag is set; at least one of the following holds: the additional claimant flag is not set or the additional claimant favorite color is “red”; and the claimant of record is high risk flag is not set. | _All of the following must be true for a claim to be considered valid: it references an incident; at least one of the incident claimant's or the additional claimant's current policy is active; if an additional claimant exists, that claimant's favorite color is red; and the claimant of record is not high-risk (DR-2). Note: DR-4's fourth condition intentionally references the named high-risk rule rather than restating the incident-count threshold._ |
 | Validity Deciding Factor | Determined by priority: “Valid — all conditions met” if the valid flag is set; “No incident referenced” if the references incident flag is not set; “No active policy on incident claimant or additional claimant” if it is not the case that at least one of the following holds: the incident claimant policy active flag is set or the additional claimant policy active flag is set; “Additional claimant's favorite color is not red” if all of the following hold: the additional claimant flag is set and the additional claimant favorite color is not “red”; “Claimant of record is high-risk (DR-2)” if the claimant of record is high risk flag is set; in all other cases, “Undetermined”. | _Names the single deciding reason for a claim's validity verdict — the first unmet condition, or that all conditions are met._ |
 | Is Approvable | True when all of the following hold: the valid flag is set and the flagged for review flag is not set. | _A claim may be considered approvable only if it is valid and not flagged for review. Per R. Ross: 'only if', not 'if and only if' — validity is necessary but not sufficient. Stating it as 'iff' would wrongly make 'valid' and 'approvable' the same concept._ |
@@ -107,19 +107,19 @@ the same logic the rulebook stores, written for a business reader._
 | **Claimants.Name** | formula | `ClaimantName` |
 | **Claimants.CountOfIncidents** | rollup | `Count(Incidents via Claimant)` |
 | **Claimants.IsHighRisk** | formula | `CountOfIncidents > 2` |
-| **Claimants.PolicyIsActive** | lookup | `Iferror(Lookup(Policies.IsActive via Policy), FALSE)` |
+| **Claimants.PolicyIsActive** | lookup | `Lookup(Policies.IsActive via Policy)` |
 | **Incidents.Name** | formula | `IncidentId` |
-| **Incidents.IncidentClaimantName** | lookup | `Iferror(Lookup(Claimants.ClaimantName via Claimant), "")` |
+| **Incidents.IncidentClaimantName** | lookup | `Lookup(Claimants.ClaimantName via Claimant)` |
 | **Claims.Name** | formula | `ClaimId` |
 | **Claims.ReferencesIncident** | formula | `Incident <> ""` |
 | **Claims.HasAdditionalClaimant** | formula | `AdditionalClaimant <> ""` |
-| **Claims.IncidentClaimant** | lookup | `Iferror(Lookup(Incidents.Claimant via Incident), "")` |
+| **Claims.IncidentClaimant** | lookup | `Lookup(Incidents.Claimant via Incident)` |
 | **Claims.ClaimantOfRecord** | formula | `If(HasAdditionalClaimant, AdditionalClaimant, IncidentClaimant)` |
-| **Claims.IncidentClaimantPolicyActive** | lookup | `Iferror(Lookup(Claimants.PolicyIsActive via IncidentClaimant), FALSE)` |
-| **Claims.AdditionalClaimantPolicyActive** | lookup | `Iferror(Lookup(Claimants.PolicyIsActive via AdditionalClaimant), FALSE)` |
-| **Claims.AdditionalClaimantFavoriteColor** | lookup | `Iferror(Lookup(Claimants.FavoriteColor via AdditionalClaimant), "")` |
-| **Claims.ClaimantOfRecordIncidentCount** | lookup | `Iferror(Lookup(Claimants.CountOfIncidents via ClaimantOfRecord), 0)` |
-| **Claims.ClaimantOfRecordIsHighRisk** | lookup | `Iferror(Lookup(Claimants.IsHighRisk via ClaimantOfRecord), FALSE)` |
+| **Claims.IncidentClaimantPolicyActive** | lookup | `Lookup(Claimants.PolicyIsActive via IncidentClaimant)` |
+| **Claims.AdditionalClaimantPolicyActive** | lookup | `Lookup(Claimants.PolicyIsActive via AdditionalClaimant)` |
+| **Claims.AdditionalClaimantFavoriteColor** | lookup | `Lookup(Claimants.FavoriteColor via AdditionalClaimant)` |
+| **Claims.ClaimantOfRecordIncidentCount** | lookup | `Lookup(Claimants.CountOfIncidents via ClaimantOfRecord)` |
+| **Claims.ClaimantOfRecordIsHighRisk** | lookup | `Lookup(Claimants.IsHighRisk via ClaimantOfRecord)` |
 | **Claims.IsValid** | formula | `And(ReferencesIncident, Or(IncidentClaimantPolicyActive, AdditionalClaimantPolicyActive), Or(Not(HasAdditionalClaimant), Lower(AdditionalClaimantFavoriteColor) = "red"), Not(ClaimantOfRecordIsHighRisk))` |
 | **Claims.ValidityDecidingFactor** | formula | `If(IsValid, "Valid — all conditions met", If(Not(ReferencesIncident), "No incident referenced", If(Not(Or(IncidentClaimantPolicyActive, AdditionalClaimantPolicyActive)), "No active policy on incident claimant or additional claimant", If(And(HasAdditionalClaimant, Lower(AdditionalClaimantFavoriteColor) <> "red"), "Additional claimant's favorite color is not red", If(ClaimantOfRecordIsHighRisk, "Claimant of record is high-risk (DR-2)", "Undetermined")))))` |
 | **Claims.IsApprovable** | formula | `And(IsValid, Not(IsFlaggedForReview))` |

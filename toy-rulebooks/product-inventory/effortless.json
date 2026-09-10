@@ -43,9 +43,9 @@
     },
     {
       "IsSSoTTranspiler": false,
-      "Name": "httplocalhost4242postgrescalculatedtorulebook",
+      "Name": "oss-postgres-calculated-to-rulebook",
       "RelativePath": "/postgres-bootstrap",
-      "CommandLine": "http://localhost:4242/postgres-calculated-to-rulebook -i ../effortless-rulebook/product-inventory-rulebook.json",
+      "CommandLine": "http://127.0.0.1:4242/oss-postgres-calculated-to-rulebook -i ../effortless-rulebook/product-inventory-rulebook.json",
       "IsDisabled": true,
       "Description": "Reverse spoke: refresh rulebook derived-field display copies from Postgres views. DISABLED in the build pipeline 2026-09-09: despite claiming 'raws verified, never written' it rewrites raw datetime values with the building machine's timezone offset (1018 of them in one star-trek build), which makes every build mutate the rulebook hub and mutate it differently per machine. Its load-bearing use is postgres-bootstrap/regenerate-answer-keys.sh, which calls the injector directly with ERB_WRITE_COMPUTED=true against a temp database and is unaffected. Re-enable only when the transpiler honours its own raws-never-written contract."
     },

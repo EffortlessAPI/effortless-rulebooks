@@ -1,0 +1,42 @@
+[
+  {
+    "erb_feature_status_id": "deferred",
+    "title": "Deferred",
+    "description": "Postponed; not in the current build.",
+    "order_index": 5,
+    "is_active": false,
+    "is_terminal": true
+  },
+  {
+    "erb_feature_status_id": "designed",
+    "title": "Designed",
+    "description": "Modeled in the rulebook; not yet part of the official build everyone sees.",
+    "order_index": 1,
+    "is_active": false,
+    "is_terminal": false
+  },
+  {
+    "erb_feature_status_id": "in-progress",
+    "title": "In Progress",
+    "description": "Actively being built.",
+    "order_index": 3,
+    "is_active": true,
+    "is_terminal": false
+  },
+  {
+    "erb_feature_status_id": "planned",
+    "title": "Planned",
+    "description": "Accepted into the official roadmap; not yet started.",
+    "order_index": 2,
+    "is_active": true,
+    "is_terminal": false
+  },
+  {
+    "erb_feature_status_id": "shipped",
+    "title": "Shipped",
+    "description": "Delivered and live.",
+    "order_index": 4,
+    "is_active": true,
+    "is_terminal": true
+  }
+]

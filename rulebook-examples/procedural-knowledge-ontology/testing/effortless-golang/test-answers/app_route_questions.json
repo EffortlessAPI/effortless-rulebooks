@@ -1,0 +1,1059 @@
+[
+  {
+    "app_route_question_id": "rq-analyst-blocking-unmet--q-analyst-blocking-unmet-on-my-step",
+    "name": "analyst-blocking-unmet answers q-analyst-blocking-unmet-on-my-step",
+    "route": "analyst-blocking-unmet",
+    "question": "q-analyst-blocking-unmet-on-my-step",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-analyst-clean-but-uncovered--q2-fa-clean-but-uncovered",
+    "name": "analyst-clean-but-uncovered answers q2-fa-clean-but-uncovered",
+    "route": "analyst-clean-but-uncovered",
+    "question": "q2-fa-clean-but-uncovered",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-analyst-evidence-quality--q2-fa-my-own-evidence-quality",
+    "name": "analyst-evidence-quality answers q2-fa-my-own-evidence-quality",
+    "route": "analyst-evidence-quality",
+    "question": "q2-fa-my-own-evidence-quality",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-analyst-home--q-analyst-blocking-unmet-on-my-step",
+    "name": "analyst-home answers q-analyst-blocking-unmet-on-my-step",
+    "route": "analyst-home",
+    "question": "q-analyst-blocking-unmet-on-my-step",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-analyst-home--q2-fa-clean-but-uncovered",
+    "name": "analyst-home answers q2-fa-clean-but-uncovered",
+    "route": "analyst-home",
+    "question": "q2-fa-clean-but-uncovered",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-analyst-late-steps--q-analyst-my-late-steps-unexplained",
+    "name": "analyst-late-steps answers q-analyst-my-late-steps-unexplained",
+    "route": "analyst-late-steps",
+    "question": "q-analyst-my-late-steps-unexplained",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-analyst-mute-clearance--q2-fa-cleared-by-mute-control",
+    "name": "analyst-mute-clearance answers q2-fa-cleared-by-mute-control",
+    "route": "analyst-mute-clearance",
+    "question": "q2-fa-cleared-by-mute-control",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-analyst-never-evaluated--q-analyst-blocking-never-evaluated",
+    "name": "analyst-never-evaluated answers q-analyst-blocking-never-evaluated",
+    "route": "analyst-never-evaluated",
+    "question": "q-analyst-blocking-never-evaluated",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-analyst-source-freshness--q-analyst-evidence-binding-stale",
+    "name": "analyst-source-freshness answers q-analyst-evidence-binding-stale",
+    "route": "analyst-source-freshness",
+    "question": "q-analyst-evidence-binding-stale",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-analyst-stale-then-vs-now--q2-fa-stale-then-vs-stale-now",
+    "name": "analyst-stale-then-vs-now answers q2-fa-stale-then-vs-stale-now",
+    "route": "analyst-stale-then-vs-now",
+    "question": "q2-fa-stale-then-vs-stale-now",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-analyst-verification-performed--q-analyst-verification-declared-never-performed",
+    "name": "analyst-verification-performed answers q-analyst-verification-declared-never-performed",
+    "route": "analyst-verification-performed",
+    "question": "q-analyst-verification-declared-never-performed",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-analyst-witness-coverage--q2-fa-witness-coverage-of-my-steps",
+    "name": "analyst-witness-coverage answers q2-fa-witness-coverage-of-my-steps",
+    "route": "analyst-witness-coverage",
+    "question": "q2-fa-witness-coverage-of-my-steps",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-authority-elicitation-monoculture--q2-authority-elicitation-method-monoculture",
+    "name": "authority-elicitation-monoculture answers q2-authority-elicitation-method-monoculture",
+    "route": "authority-elicitation-monoculture",
+    "question": "q2-authority-elicitation-method-monoculture",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-authority-expired-ratifier--q2-authority-boundary-rests-on-expired-claim",
+    "name": "authority-expired-ratifier answers q2-authority-boundary-rests-on-expired-claim",
+    "route": "authority-expired-ratifier",
+    "question": "q2-authority-boundary-rests-on-expired-claim",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-authority-fragment-decay--q2-authority-compound-fragility",
+    "name": "authority-fragment-decay answers q2-authority-compound-fragility",
+    "route": "authority-fragment-decay",
+    "question": "q2-authority-compound-fragility",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-authority-home--q-authority-non-approved-dependency",
+    "name": "authority-home answers q-authority-non-approved-dependency",
+    "route": "authority-home",
+    "question": "q-authority-non-approved-dependency",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-authority-home--q-authority-stale-elicitation",
+    "name": "authority-home answers q-authority-stale-elicitation",
+    "route": "authority-home",
+    "question": "q-authority-stale-elicitation",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-authority-known-unknowns--q-authority-known-unknowns",
+    "name": "authority-known-unknowns answers q-authority-known-unknowns",
+    "route": "authority-known-unknowns",
+    "question": "q-authority-known-unknowns",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-authority-machine-consumers--q2-authority-unapproved-knowledge-reaching-machines",
+    "name": "authority-machine-consumers answers q2-authority-unapproved-knowledge-reaching-machines",
+    "route": "authority-machine-consumers",
+    "question": "q2-authority-unapproved-knowledge-reaching-machines",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-authority-orphaned-provenance--q-authority-orphaned-provenance",
+    "name": "authority-orphaned-provenance answers q-authority-orphaned-provenance",
+    "route": "authority-orphaned-provenance",
+    "question": "q-authority-orphaned-provenance",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-authority-review-date-inferred--q2-authority-review-date-is-inferred-not-recorded",
+    "name": "authority-review-date-inferred answers q2-authority-review-date-is-inferred-not-recorded",
+    "route": "authority-review-date-inferred",
+    "question": "q2-authority-review-date-is-inferred-not-recorded",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-authority-stale-elicitation--q-authority-stale-elicitation",
+    "name": "authority-stale-elicitation answers q-authority-stale-elicitation",
+    "route": "authority-stale-elicitation",
+    "question": "q-authority-stale-elicitation",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-authority-unapproved-live--q-authority-non-approved-dependency",
+    "name": "authority-unapproved-live answers q-authority-non-approved-dependency",
+    "route": "authority-unapproved-live",
+    "question": "q-authority-non-approved-dependency",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-authority-unapproved-live--q2-authority-unapproved-knowledge-reaching-machines",
+    "name": "authority-unapproved-live answers q2-authority-unapproved-knowledge-reaching-machines",
+    "route": "authority-unapproved-live",
+    "question": "q2-authority-unapproved-knowledge-reaching-machines",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-authority-unwitnessed-change--q-authority-unwitnessed-change",
+    "name": "authority-unwitnessed-change answers q-authority-unwitnessed-change",
+    "route": "authority-unwitnessed-change",
+    "question": "q-authority-unwitnessed-change",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-cfo-assurance-grade--q2-cfo-controls-nobody-is-watching",
+    "name": "cfo-assurance-grade answers q2-cfo-controls-nobody-is-watching",
+    "route": "cfo-assurance-grade",
+    "question": "q2-cfo-controls-nobody-is-watching",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-cfo-assurance-grade--q2-cfo-quality-of-a-green-attestation",
+    "name": "cfo-assurance-grade answers q2-cfo-quality-of-a-green-attestation",
+    "route": "cfo-assurance-grade",
+    "question": "q2-cfo-quality-of-a-green-attestation",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-cfo-attestation-detail--q-cfo-can-i-sign",
+    "name": "cfo-attestation-detail answers q-cfo-can-i-sign",
+    "route": "cfo-attestation-detail",
+    "question": "q-cfo-can-i-sign",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-cfo-authority-map--q-cfo-who-actually-held-authority",
+    "name": "cfo-authority-map answers q-cfo-who-actually-held-authority",
+    "route": "cfo-authority-map",
+    "question": "q-cfo-who-actually-held-authority",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-cfo-blockers--q-cfo-approving-on-unfit-version",
+    "name": "cfo-blockers answers q-cfo-approving-on-unfit-version",
+    "route": "cfo-blockers",
+    "question": "q-cfo-approving-on-unfit-version",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-cfo-blockers--q-cfo-can-i-sign",
+    "name": "cfo-blockers answers q-cfo-can-i-sign",
+    "route": "cfo-blockers",
+    "question": "q-cfo-can-i-sign",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-cfo-changed-since-signing--q2-cfo-what-changed-since-i-signed",
+    "name": "cfo-changed-since-signing answers q2-cfo-what-changed-since-i-signed",
+    "route": "cfo-changed-since-signing",
+    "question": "q2-cfo-what-changed-since-i-signed",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-cfo-home--q-cfo-approving-on-unfit-version",
+    "name": "cfo-home answers q-cfo-approving-on-unfit-version",
+    "route": "cfo-home",
+    "question": "q-cfo-approving-on-unfit-version",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-cfo-home--q-cfo-can-i-sign",
+    "name": "cfo-home answers q-cfo-can-i-sign",
+    "route": "cfo-home",
+    "question": "q-cfo-can-i-sign",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-cfo-my-approvals--q-cfo-approval-was-actually-verified",
+    "name": "cfo-my-approvals answers q-cfo-approval-was-actually-verified",
+    "route": "cfo-my-approvals",
+    "question": "q-cfo-approval-was-actually-verified",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-cfo-my-approvals--q2-cfo-who-witnessed-the-witnesses",
+    "name": "cfo-my-approvals answers q2-cfo-who-witnessed-the-witnesses",
+    "route": "cfo-my-approvals",
+    "question": "q2-cfo-who-witnessed-the-witnesses",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-cfo-restatement--q2-cfo-would-it-survive-restatement",
+    "name": "cfo-restatement answers q2-cfo-would-it-survive-restatement",
+    "route": "cfo-restatement",
+    "question": "q2-cfo-would-it-survive-restatement",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-cfo-signature-dependencies--q2-cfo-what-changed-since-i-signed",
+    "name": "cfo-signature-dependencies answers q2-cfo-what-changed-since-i-signed",
+    "route": "cfo-signature-dependencies",
+    "question": "q2-cfo-what-changed-since-i-signed",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-cfo-typed-conclusions--q-cfo-am-i-being-told-everything",
+    "name": "cfo-typed-conclusions answers q-cfo-am-i-being-told-everything",
+    "route": "cfo-typed-conclusions",
+    "question": "q-cfo-am-i-being-told-everything",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-cfo-unwitnessed-controls--q-cfo-am-i-being-told-everything",
+    "name": "cfo-unwitnessed-controls answers q-cfo-am-i-being-told-everything",
+    "route": "cfo-unwitnessed-controls",
+    "question": "q-cfo-am-i-being-told-everything",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-cfo-unwitnessed-controls--q2-cfo-controls-nobody-is-watching",
+    "name": "cfo-unwitnessed-controls answers q2-cfo-controls-nobody-is-watching",
+    "route": "cfo-unwitnessed-controls",
+    "question": "q2-cfo-controls-nobody-is-watching",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-cfo-witness-chain--q-cfo-approval-was-actually-verified",
+    "name": "cfo-witness-chain answers q-cfo-approval-was-actually-verified",
+    "route": "cfo-witness-chain",
+    "question": "q-cfo-approval-was-actually-verified",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-cfo-witness-chain--q2-cfo-who-witnessed-the-witnesses",
+    "name": "cfo-witness-chain answers q2-cfo-who-witnessed-the-witnesses",
+    "route": "cfo-witness-chain",
+    "question": "q2-cfo-who-witnessed-the-witnesses",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-close-auto-authority--q-close-auto-authority-current",
+    "name": "close-auto-authority answers q-close-auto-authority-current",
+    "route": "close-auto-authority",
+    "question": "q-close-auto-authority-current",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-close-auto-controls--q-close-auto-blocking-requirements-evaluated",
+    "name": "close-auto-controls answers q-close-auto-blocking-requirements-evaluated",
+    "route": "close-auto-controls",
+    "question": "q-close-auto-blocking-requirements-evaluated",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-close-auto-drift--q-close-auto-human-override-drift",
+    "name": "close-auto-drift answers q-close-auto-human-override-drift",
+    "route": "close-auto-drift",
+    "question": "q-close-auto-human-override-drift",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-close-auto-home--q-close-auto-authority-current",
+    "name": "close-auto-home answers q-close-auto-authority-current",
+    "route": "close-auto-home",
+    "question": "q-close-auto-authority-current",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-close-auto-home--q-close-auto-blocking-requirements-evaluated",
+    "name": "close-auto-home answers q-close-auto-blocking-requirements-evaluated",
+    "route": "close-auto-home",
+    "question": "q-close-auto-blocking-requirements-evaluated",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-close-auto-home--q-close-auto-input-freshness",
+    "name": "close-auto-home answers q-close-auto-input-freshness",
+    "route": "close-auto-home",
+    "question": "q-close-auto-input-freshness",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-close-auto-home--q-close-auto-last-run-clean",
+    "name": "close-auto-home answers q-close-auto-last-run-clean",
+    "route": "close-auto-home",
+    "question": "q-close-auto-last-run-clean",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-close-auto-inputs--q-close-auto-input-freshness",
+    "name": "close-auto-inputs answers q-close-auto-input-freshness",
+    "route": "close-auto-inputs",
+    "question": "q-close-auto-input-freshness",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-close-auto-last-run--q-close-auto-last-run-clean",
+    "name": "close-auto-last-run answers q-close-auto-last-run-clean",
+    "route": "close-auto-last-run",
+    "question": "q-close-auto-last-run-clean",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-comms-approval-authority--q-comms-approval-authority",
+    "name": "comms-approval-authority answers q-comms-approval-authority",
+    "route": "comms-approval-authority",
+    "question": "q-comms-approval-authority",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-comms-authorization-override--q2-comms-my-approval-was-consumed-correctly",
+    "name": "comms-authorization-override answers q2-comms-my-approval-was-consumed-correctly",
+    "route": "comms-authorization-override",
+    "question": "q2-comms-my-approval-was-consumed-correctly",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-comms-engagement--q2-comms-message-nobody-answered",
+    "name": "comms-engagement answers q2-comms-message-nobody-answered",
+    "route": "comms-engagement",
+    "question": "q2-comms-message-nobody-answered",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-comms-failed-deliveries--q-comms-deliverability",
+    "name": "comms-failed-deliveries answers q-comms-deliverability",
+    "route": "comms-failed-deliveries",
+    "question": "q-comms-deliverability",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-comms-frozen-approval--q2-comms-freeze-what-i-approved",
+    "name": "comms-frozen-approval answers q2-comms-freeze-what-i-approved",
+    "route": "comms-frozen-approval",
+    "question": "q2-comms-freeze-what-i-approved",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-comms-home--q-comms-deliverability",
+    "name": "comms-home answers q-comms-deliverability",
+    "route": "comms-home",
+    "question": "q-comms-deliverability",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-comms-home--q2-comms-approval-to-delivery-yield",
+    "name": "comms-home answers q2-comms-approval-to-delivery-yield",
+    "route": "comms-home",
+    "question": "q2-comms-approval-to-delivery-yield",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-comms-optout--q-comms-optout-present",
+    "name": "comms-optout answers q-comms-optout-present",
+    "route": "comms-optout",
+    "question": "q-comms-optout-present",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-comms-sms-limits--q-comms-oversized-sms",
+    "name": "comms-sms-limits answers q-comms-oversized-sms",
+    "route": "comms-sms-limits",
+    "question": "q-comms-oversized-sms",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-comms-suppression--q2-comms-suppression-is-a-communication",
+    "name": "comms-suppression answers q2-comms-suppression-is-a-communication",
+    "route": "comms-suppression",
+    "question": "q2-comms-suppression-is-a-communication",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-comms-template-drift--q-comms-template-drift",
+    "name": "comms-template-drift answers q-comms-template-drift",
+    "route": "comms-template-drift",
+    "question": "q-comms-template-drift",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-comms-yield--q-comms-deliverability",
+    "name": "comms-yield answers q-comms-deliverability",
+    "route": "comms-yield",
+    "question": "q-comms-deliverability",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-comms-yield--q2-comms-approval-to-delivery-yield",
+    "name": "comms-yield answers q2-comms-approval-to-delivery-yield",
+    "route": "comms-yield",
+    "question": "q2-comms-approval-to-delivery-yield",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-controller-ai-boundary--q-controller-ai-agent-approved-meaning",
+    "name": "controller-ai-boundary answers q-controller-ai-agent-approved-meaning",
+    "route": "controller-ai-boundary",
+    "question": "q-controller-ai-agent-approved-meaning",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-controller-asserted-controls--q2-ctl-asserted-controls-by-who",
+    "name": "controller-asserted-controls answers q2-ctl-asserted-controls-by-who",
+    "route": "controller-asserted-controls",
+    "question": "q2-ctl-asserted-controls-by-who",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-controller-authority-validity--q-controller-approval-authority-valid",
+    "name": "controller-authority-validity answers q-controller-approval-authority-valid",
+    "route": "controller-authority-validity",
+    "question": "q-controller-approval-authority-valid",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-controller-conformance--q-controller-execution-diverged-from-spec",
+    "name": "controller-conformance answers q-controller-execution-diverged-from-spec",
+    "route": "controller-conformance",
+    "question": "q-controller-execution-diverged-from-spec",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-controller-control-detail--q-controller-blocking-control-inoperative",
+    "name": "controller-control-detail answers q-controller-blocking-control-inoperative",
+    "route": "controller-control-detail",
+    "question": "q-controller-blocking-control-inoperative",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-controller-home--q-controller-blocking-control-inoperative",
+    "name": "controller-home answers q-controller-blocking-control-inoperative",
+    "route": "controller-home",
+    "question": "q-controller-blocking-control-inoperative",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-controller-home--q2-ctl-witness-never-fired",
+    "name": "controller-home answers q2-ctl-witness-never-fired",
+    "route": "controller-home",
+    "question": "q2-ctl-witness-never-fired",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-controller-mute-controls--q-controller-blocking-control-inoperative",
+    "name": "controller-mute-controls answers q-controller-blocking-control-inoperative",
+    "route": "controller-mute-controls",
+    "question": "q-controller-blocking-control-inoperative",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-controller-mute-controls--q2-ctl-witness-never-fired",
+    "name": "controller-mute-controls answers q2-ctl-witness-never-fired",
+    "route": "controller-mute-controls",
+    "question": "q2-ctl-witness-never-fired",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-controller-separation--q-controller-separation-of-duties",
+    "name": "controller-separation answers q-controller-separation-of-duties",
+    "route": "controller-separation",
+    "question": "q-controller-separation-of-duties",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-controller-separation--q2-ctl-separation-held-or-untested",
+    "name": "controller-separation answers q2-ctl-separation-held-or-untested",
+    "route": "controller-separation",
+    "question": "q2-ctl-separation-held-or-untested",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-controller-ungoverned-divergence--q2-ctl-divergence-that-nobody-governed",
+    "name": "controller-ungoverned-divergence answers q2-ctl-divergence-that-nobody-governed",
+    "route": "controller-ungoverned-divergence",
+    "question": "q2-ctl-divergence-that-nobody-governed",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-controller-witness-scope--q2-ctl-witness-scope-vs-binding",
+    "name": "controller-witness-scope answers q2-ctl-witness-scope-vs-binding",
+    "route": "controller-witness-scope",
+    "question": "q2-ctl-witness-scope-vs-binding",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-counsel-consent--q-counsel-sms-without-consent",
+    "name": "counsel-consent answers q-counsel-sms-without-consent",
+    "route": "counsel-consent",
+    "question": "q-counsel-sms-without-consent",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-counsel-home--q-counsel-legal-review-gated-send",
+    "name": "counsel-home answers q-counsel-legal-review-gated-send",
+    "route": "counsel-home",
+    "question": "q-counsel-legal-review-gated-send",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-counsel-home--q-counsel-quiet-hours-breach",
+    "name": "counsel-home answers q-counsel-quiet-hours-breach",
+    "route": "counsel-home",
+    "question": "q-counsel-quiet-hours-breach",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-counsel-home--q-counsel-retention-evidence",
+    "name": "counsel-home answers q-counsel-retention-evidence",
+    "route": "counsel-home",
+    "question": "q-counsel-retention-evidence",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-counsel-home--q-counsel-sms-without-consent",
+    "name": "counsel-home answers q-counsel-sms-without-consent",
+    "route": "counsel-home",
+    "question": "q-counsel-sms-without-consent",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-counsel-legal-review--q-counsel-legal-review-gated-send",
+    "name": "counsel-legal-review answers q-counsel-legal-review-gated-send",
+    "route": "counsel-legal-review",
+    "question": "q-counsel-legal-review-gated-send",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-counsel-quiet-hours--q-counsel-quiet-hours-breach",
+    "name": "counsel-quiet-hours answers q-counsel-quiet-hours-breach",
+    "route": "counsel-quiet-hours",
+    "question": "q-counsel-quiet-hours-breach",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-counsel-retention--q-counsel-retention-evidence",
+    "name": "counsel-retention answers q-counsel-retention-evidence",
+    "route": "counsel-retention",
+    "question": "q-counsel-retention-evidence",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-counsel-unreachable--q-counsel-unreachable-not-acknowledged",
+    "name": "counsel-unreachable answers q-counsel-unreachable-not-acknowledged",
+    "route": "counsel-unreachable",
+    "question": "q-counsel-unreachable-not-acknowledged",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-hr-ai-boundary--q-hr-ai-authored-commitments",
+    "name": "hr-ai-boundary answers q-hr-ai-authored-commitments",
+    "route": "hr-ai-boundary",
+    "question": "q-hr-ai-authored-commitments",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-hr-ai-boundary--q2-hr-ai-boundary-holds-only-where-tested",
+    "name": "hr-ai-boundary answers q2-hr-ai-boundary-holds-only-where-tested",
+    "route": "hr-ai-boundary",
+    "question": "q2-hr-ai-boundary-holds-only-where-tested",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-hr-backlog--q-hr-authority-without-review",
+    "name": "hr-backlog answers q-hr-authority-without-review",
+    "route": "hr-backlog",
+    "question": "q-hr-authority-without-review",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-hr-backlog-downstream--q2-hr-my-backlog-is-someone-elses-block",
+    "name": "hr-backlog-downstream answers q2-hr-my-backlog-is-someone-elses-block",
+    "route": "hr-backlog-downstream",
+    "question": "q2-hr-my-backlog-is-someone-elses-block",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-hr-departed-holders--q2-hr-departed-holder-left-claims-behind",
+    "name": "hr-departed-holders answers q2-hr-departed-holder-left-claims-behind",
+    "route": "hr-departed-holders",
+    "question": "q2-hr-departed-holder-left-claims-behind",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-hr-home--q-hr-authority-without-review",
+    "name": "hr-home answers q-hr-authority-without-review",
+    "route": "hr-home",
+    "question": "q-hr-authority-without-review",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-hr-home--q-hr-unapproved-knowledge-in-my-name",
+    "name": "hr-home answers q-hr-unapproved-knowledge-in-my-name",
+    "route": "hr-home",
+    "question": "q-hr-unapproved-knowledge-in-my-name",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-hr-knowledge-half-life--q-hr-policy-knowledge-half-life",
+    "name": "hr-knowledge-half-life answers q-hr-policy-knowledge-half-life",
+    "route": "hr-knowledge-half-life",
+    "question": "q-hr-policy-knowledge-half-life",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-hr-load-bearing-claim--q2-hr-my-unapproved-claim-is-load-bearing",
+    "name": "hr-load-bearing-claim answers q2-hr-my-unapproved-claim-is-load-bearing",
+    "route": "hr-load-bearing-claim",
+    "question": "q2-hr-my-unapproved-claim-is-load-bearing",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-hr-my-decisions--q2-hr-my-approvals-never-read-as-done",
+    "name": "hr-my-decisions answers q2-hr-my-approvals-never-read-as-done",
+    "route": "hr-my-decisions",
+    "question": "q2-hr-my-approvals-never-read-as-done",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-hr-unapproved-claims--q-hr-unapproved-knowledge-in-my-name",
+    "name": "hr-unapproved-claims answers q-hr-unapproved-knowledge-in-my-name",
+    "route": "hr-unapproved-claims",
+    "question": "q-hr-unapproved-knowledge-in-my-name",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-hr-what-was-sent--q-hr-what-was-actually-sent",
+    "name": "hr-what-was-sent answers q-hr-what-was-actually-sent",
+    "route": "hr-what-was-sent",
+    "question": "q-hr-what-was-actually-sent",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-policy-agent-approval-chain--q-policy-ai-approval-chain-complete",
+    "name": "policy-agent-approval-chain answers q-policy-ai-approval-chain-complete",
+    "route": "policy-agent-approval-chain",
+    "question": "q-policy-ai-approval-chain-complete",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-policy-agent-assignment--q-policy-ai-no-role-assignment",
+    "name": "policy-agent-assignment answers q-policy-ai-no-role-assignment",
+    "route": "policy-agent-assignment",
+    "question": "q-policy-ai-no-role-assignment",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-policy-agent-commitment-boundary--q-policy-ai-commitment-boundary",
+    "name": "policy-agent-commitment-boundary answers q-policy-ai-commitment-boundary",
+    "route": "policy-agent-commitment-boundary",
+    "question": "q-policy-ai-commitment-boundary",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-policy-agent-home--q-policy-ai-no-role-assignment",
+    "name": "policy-agent-home answers q-policy-ai-no-role-assignment",
+    "route": "policy-agent-home",
+    "question": "q-policy-ai-no-role-assignment",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-policy-agent-home--q-policy-ai-source-approval",
+    "name": "policy-agent-home answers q-policy-ai-source-approval",
+    "route": "policy-agent-home",
+    "question": "q-policy-ai-source-approval",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-policy-agent-rewrite--q-policy-ai-downstream-rewrite",
+    "name": "policy-agent-rewrite answers q-policy-ai-downstream-rewrite",
+    "route": "policy-agent-rewrite",
+    "question": "q-policy-ai-downstream-rewrite",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-policy-agent-sources--q-policy-ai-source-approval",
+    "name": "policy-agent-sources answers q-policy-ai-source-approval",
+    "route": "policy-agent-sources",
+    "question": "q-policy-ai-source-approval",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-publisher-authorization-gate--q-publisher-am-i-authorized-to-act",
+    "name": "publisher-authorization-gate answers q-publisher-am-i-authorized-to-act",
+    "route": "publisher-authorization-gate",
+    "question": "q-publisher-am-i-authorized-to-act",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-publisher-content-gate--q-publisher-is-this-content-permitted",
+    "name": "publisher-content-gate answers q-publisher-is-this-content-permitted",
+    "route": "publisher-content-gate",
+    "question": "q-publisher-is-this-content-permitted",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-publisher-deferred--q2-publisher-deferred-not-cancelled",
+    "name": "publisher-deferred answers q2-publisher-deferred-not-cancelled",
+    "route": "publisher-deferred",
+    "question": "q2-publisher-deferred-not-cancelled",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-publisher-home--q-publisher-am-i-authorized-to-act",
+    "name": "publisher-home answers q-publisher-am-i-authorized-to-act",
+    "route": "publisher-home",
+    "question": "q-publisher-am-i-authorized-to-act",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-publisher-home--q-publisher-is-this-content-permitted",
+    "name": "publisher-home answers q-publisher-is-this-content-permitted",
+    "route": "publisher-home",
+    "question": "q-publisher-is-this-content-permitted",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-publisher-home--q-publisher-may-i-transmit",
+    "name": "publisher-home answers q-publisher-may-i-transmit",
+    "route": "publisher-home",
+    "question": "q-publisher-may-i-transmit",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-publisher-home--q-publisher-may-i-transmit-now",
+    "name": "publisher-home answers q-publisher-may-i-transmit-now",
+    "route": "publisher-home",
+    "question": "q-publisher-may-i-transmit-now",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-publisher-my-authorization--q2-publisher-my-own-authorization",
+    "name": "publisher-my-authorization answers q2-publisher-my-own-authorization",
+    "route": "publisher-my-authorization",
+    "question": "q2-publisher-my-own-authorization",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-publisher-obligations--q2-publisher-obligation-after-send",
+    "name": "publisher-obligations answers q2-publisher-obligation-after-send",
+    "route": "publisher-obligations",
+    "question": "q2-publisher-obligation-after-send",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-publisher-permission-gate--q-publisher-may-i-transmit",
+    "name": "publisher-permission-gate answers q-publisher-may-i-transmit",
+    "route": "publisher-permission-gate",
+    "question": "q-publisher-may-i-transmit",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-publisher-refusal-artifacts--q2-publisher-every-refusal-leaves-a-record",
+    "name": "publisher-refusal-artifacts answers q2-publisher-every-refusal-leaves-a-record",
+    "route": "publisher-refusal-artifacts",
+    "question": "q2-publisher-every-refusal-leaves-a-record",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-publisher-refusals--q-publisher-refusal-was-honored",
+    "name": "publisher-refusals answers q-publisher-refusal-was-honored",
+    "route": "publisher-refusals",
+    "question": "q-publisher-refusal-was-honored",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-publisher-sole-witness--q2-publisher-am-i-the-only-witness",
+    "name": "publisher-sole-witness answers q2-publisher-am-i-the-only-witness",
+    "route": "publisher-sole-witness",
+    "question": "q2-publisher-am-i-the-only-witness",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-publisher-timing-gate--q-publisher-may-i-transmit-now",
+    "name": "publisher-timing-gate answers q-publisher-may-i-transmit-now",
+    "route": "publisher-timing-gate",
+    "question": "q-publisher-may-i-transmit-now",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-shared-evaluation-context--q2-cfo-would-it-survive-restatement",
+    "name": "shared-evaluation-context answers q2-cfo-would-it-survive-restatement",
+    "route": "shared-evaluation-context",
+    "question": "q2-cfo-would-it-survive-restatement",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-shared-evaluation-context--q2-fa-stale-then-vs-stale-now",
+    "name": "shared-evaluation-context answers q2-fa-stale-then-vs-stale-now",
+    "route": "shared-evaluation-context",
+    "question": "q2-fa-stale-then-vs-stale-now",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-steward-approved-never-lands--q2-steward-approved-cr-never-lands",
+    "name": "steward-approved-never-lands answers q2-steward-approved-cr-never-lands",
+    "route": "steward-approved-never-lands",
+    "question": "q2-steward-approved-cr-never-lands",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-steward-archived-still-referenced--q2-steward-unstewarded-version-still-referenced",
+    "name": "steward-archived-still-referenced answers q2-steward-unstewarded-version-still-referenced",
+    "route": "steward-archived-still-referenced",
+    "question": "q2-steward-unstewarded-version-still-referenced",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-steward-cadence--q-steward-cadence-breach",
+    "name": "steward-cadence answers q-steward-cadence-breach",
+    "route": "steward-cadence",
+    "question": "q-steward-cadence-breach",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-steward-cadence-remediation--q2-steward-cadence-breach-is-unremediated",
+    "name": "steward-cadence-remediation answers q2-steward-cadence-breach-is-unremediated",
+    "route": "steward-cadence-remediation",
+    "question": "q2-steward-cadence-breach-is-unremediated",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-steward-fallback-criticality--q2-steward-recovery-path-is-load-bearing",
+    "name": "steward-fallback-criticality answers q2-steward-recovery-path-is-load-bearing",
+    "route": "steward-fallback-criticality",
+    "question": "q2-steward-recovery-path-is-load-bearing",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-steward-fallbacks--q-steward-untested-fallbacks",
+    "name": "steward-fallbacks answers q-steward-untested-fallbacks",
+    "route": "steward-fallbacks",
+    "question": "q-steward-untested-fallbacks",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-steward-hardcoded-predicates--q2-steward-control-kind-instead-of-hardcoded-ids",
+    "name": "steward-hardcoded-predicates answers q2-steward-control-kind-instead-of-hardcoded-ids",
+    "route": "steward-hardcoded-predicates",
+    "question": "q2-steward-control-kind-instead-of-hardcoded-ids",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-steward-home--q-steward-cadence-breach",
+    "name": "steward-home answers q-steward-cadence-breach",
+    "route": "steward-home",
+    "question": "q-steward-cadence-breach",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-steward-home--q-steward-orphan-versions",
+    "name": "steward-home answers q-steward-orphan-versions",
+    "route": "steward-home",
+    "question": "q-steward-orphan-versions",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-steward-home--q-steward-published-with-blocking-gap",
+    "name": "steward-home answers q-steward-published-with-blocking-gap",
+    "route": "steward-home",
+    "question": "q-steward-published-with-blocking-gap",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-steward-home--q-steward-untested-fallbacks",
+    "name": "steward-home answers q-steward-untested-fallbacks",
+    "route": "steward-home",
+    "question": "q-steward-untested-fallbacks",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-steward-open-gaps--q-steward-published-with-blocking-gap",
+    "name": "steward-open-gaps answers q-steward-published-with-blocking-gap",
+    "route": "steward-open-gaps",
+    "question": "q-steward-published-with-blocking-gap",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-steward-orphans--q-steward-orphan-versions",
+    "name": "steward-orphans answers q-steward-orphan-versions",
+    "route": "steward-orphans",
+    "question": "q-steward-orphan-versions",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-steward-stalled-changes--q-steward-stalled-change-requests",
+    "name": "steward-stalled-changes answers q-steward-stalled-change-requests",
+    "route": "steward-stalled-changes",
+    "question": "q-steward-stalled-change-requests",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-variance-authority--q-variance-ai-authority-provenance",
+    "name": "variance-authority answers q-variance-ai-authority-provenance",
+    "route": "variance-authority",
+    "question": "q-variance-ai-authority-provenance",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-variance-authority--q2-variance-handover-was-a-decision-somebody-made",
+    "name": "variance-authority answers q2-variance-handover-was-a-decision-somebody-made",
+    "route": "variance-authority",
+    "question": "q2-variance-handover-was-a-decision-somebody-made",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-variance-boundary--q-variance-ai-boundary-compliance",
+    "name": "variance-boundary answers q-variance-ai-boundary-compliance",
+    "route": "variance-boundary",
+    "question": "q-variance-ai-boundary-compliance",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-variance-boundary-ratification--q2-variance-boundary-rests-on-expired-knowledge",
+    "name": "variance-boundary-ratification answers q2-variance-boundary-rests-on-expired-knowledge",
+    "route": "variance-boundary-ratification",
+    "question": "q2-variance-boundary-rests-on-expired-knowledge",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-variance-handover--q2-variance-handover-was-a-decision-somebody-made",
+    "name": "variance-handover answers q2-variance-handover-was-a-decision-somebody-made",
+    "route": "variance-handover",
+    "question": "q2-variance-handover-was-a-decision-somebody-made",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-variance-home--q-variance-ai-authority-provenance",
+    "name": "variance-home answers q-variance-ai-authority-provenance",
+    "route": "variance-home",
+    "question": "q-variance-ai-authority-provenance",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-variance-home--q-variance-ai-boundary-compliance",
+    "name": "variance-home answers q-variance-ai-boundary-compliance",
+    "route": "variance-home",
+    "question": "q-variance-ai-boundary-compliance",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-variance-home--q-variance-ai-knowledge-currency",
+    "name": "variance-home answers q-variance-ai-knowledge-currency",
+    "route": "variance-home",
+    "question": "q-variance-ai-knowledge-currency",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-variance-human-confirmation--q-variance-ai-human-confirmation-present",
+    "name": "variance-human-confirmation answers q-variance-ai-human-confirmation-present",
+    "route": "variance-human-confirmation",
+    "question": "q-variance-ai-human-confirmation-present",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-variance-knowledge-currency--q-variance-ai-knowledge-currency",
+    "name": "variance-knowledge-currency answers q-variance-ai-knowledge-currency",
+    "route": "variance-knowledge-currency",
+    "question": "q-variance-ai-knowledge-currency",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-variance-override-signal--q2-variance-override-signal-vs-noise",
+    "name": "variance-override-signal answers q2-variance-override-signal-vs-noise",
+    "route": "variance-override-signal",
+    "question": "q2-variance-override-signal-vs-noise",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-variance-quality-baseline--q-variance-ai-quality-vs-human-baseline",
+    "name": "variance-quality-baseline answers q-variance-ai-quality-vs-human-baseline",
+    "route": "variance-quality-baseline",
+    "question": "q-variance-ai-quality-vs-human-baseline",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-variance-quality-baseline--q2-variance-comparison-is-statistically-empty",
+    "name": "variance-quality-baseline answers q2-variance-comparison-is-statistically-empty",
+    "route": "variance-quality-baseline",
+    "question": "q2-variance-comparison-is-statistically-empty",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-variance-sample-size--q2-variance-comparison-is-statistically-empty",
+    "name": "variance-sample-size answers q2-variance-comparison-is-statistically-empty",
+    "route": "variance-sample-size",
+    "question": "q2-variance-comparison-is-statistically-empty",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "app_route_question_id": "rq-variance-stop-condition--q2-variance-what-would-make-me-stop",
+    "name": "variance-stop-condition answers q2-variance-what-would-make-me-stop",
+    "route": "variance-stop-condition",
+    "question": "q2-variance-what-would-make-me-stop",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppRouteQuestion"
+  }
+]

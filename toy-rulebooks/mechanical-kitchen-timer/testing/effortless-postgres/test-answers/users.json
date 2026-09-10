@@ -1,0 +1,90 @@
+[
+  {
+    "user_id": "Carmen",
+    "display_name": "Sous Chef",
+    "wind_count": 0,
+    "cook_count": 3,
+    "completed_cook_count": 1,
+    "activity_level": "idle",
+    "total_recipe_minutes_attempted": "77",
+    "avg_recipe_minutes_attempted": "25.6666666666666667",
+    "cooking_style": "short-order"
+  },
+  {
+    "user_id": "Diego",
+    "display_name": "Line Cook",
+    "wind_count": 0,
+    "cook_count": 2,
+    "completed_cook_count": 0,
+    "activity_level": "idle",
+    "total_recipe_minutes_attempted": "30",
+    "avg_recipe_minutes_attempted": "15.0000000000000000",
+    "cooking_style": "short-order"
+  },
+  {
+    "user_id": "Eli",
+    "display_name": "Apprentice",
+    "wind_count": 0,
+    "cook_count": 0,
+    "completed_cook_count": 0,
+    "activity_level": "idle",
+    "total_recipe_minutes_attempted": "0",
+    "avg_recipe_minutes_attempted": "0",
+    "cooking_style": "not cooking"
+  },
+  {
+    "user_id": "Iris",
+    "display_name": "Pastry Chef",
+    "wind_count": 0,
+    "cook_count": 2,
+    "completed_cook_count": 0,
+    "activity_level": "idle",
+    "total_recipe_minutes_attempted": "68",
+    "avg_recipe_minutes_attempted": "34.0000000000000000",
+    "cooking_style": "slow-cooking"
+  },
+  {
+    "user_id": "Lena",
+    "display_name": "Baker",
+    "wind_count": 1,
+    "cook_count": 4,
+    "completed_cook_count": 0,
+    "activity_level": "casual",
+    "total_recipe_minutes_attempted": "399",
+    "avg_recipe_minutes_attempted": "99.7500000000000000",
+    "cooking_style": "slow-cooking"
+  },
+  {
+    "user_id": "Marcus",
+    "display_name": "Chef",
+    "wind_count": 4,
+    "cook_count": 7,
+    "completed_cook_count": 2,
+    "activity_level": "busy",
+    "total_recipe_minutes_attempted": "160",
+    "avg_recipe_minutes_attempted": "22.8571428571428571",
+    "cooking_style": "short-order"
+  },
+  {
+    "user_id": "Tomas",
+    "display_name": "Dishwasher",
+    "wind_count": 0,
+    "cook_count": 0,
+    "completed_cook_count": 0,
+    "activity_level": "idle",
+    "total_recipe_minutes_attempted": "0",
+    "avg_recipe_minutes_attempted": "0",
+    "cooking_style": "not cooking"
+  },
+  {
+    "user_id": "Wendell",
+    "display_name": "Food Critic",
+    "wind_count": 0,
+    "cook_count": 0,
+    "completed_cook_count": 0,
+    "activity_level": "idle",
+    "total_recipe_minutes_attempted": "0",
+    "avg_recipe_minutes_attempted": "0",
+    "cooking_style": "not cooking"
+  }
+]

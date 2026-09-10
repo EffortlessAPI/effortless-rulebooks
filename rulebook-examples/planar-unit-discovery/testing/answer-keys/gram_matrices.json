@@ -1,0 +1,61 @@
+[
+  {
+    "gram_matrix_id": "gram-lat-q-sqrt-neg3",
+    "minkowski_lattice": "lat-q-sqrt-neg3",
+    "matrix_json": "[[1,0],[0,3]]",
+    "is_symmetric": true,
+    "is_positive_definite": true,
+    "is_diagonal": true,
+    "rank_deficient": false,
+    "name": "lat-q-sqrt-neg3-gram",
+    "encodes_valid_lattice_metric": true
+  },
+  {
+    "gram_matrix_id": "gram-lat-q-zeta-7",
+    "minkowski_lattice": "lat-q-zeta-7",
+    "matrix_json": "[[2,-1,0,0,0,-1],[-1,2,-1,0,0,0],[0,-1,2,-1,0,0],[0,0,-1,2,-1,0],[0,0,0,-1,2,-1],[-1,0,0,0,-1,2]]",
+    "is_symmetric": true,
+    "is_positive_definite": true,
+    "is_diagonal": false,
+    "rank_deficient": false,
+    "description": "Stylized circulant-pattern Gram for Z[\u03b6_7]; det = 16807 = |disc(K)|. Real entries on the power basis of Z[\u03b6_7] are integer but messier \u2014 this entry is a clean stand-in.",
+    "name": "lat-q-zeta-7-gram",
+    "encodes_valid_lattice_metric": true
+  },
+  {
+    "gram_matrix_id": "gram-test-nondiagonal-pd",
+    "minkowski_lattice": "lat-q-sqrt-neg3",
+    "matrix_json": "[[2,1],[1,3]]",
+    "is_symmetric": true,
+    "is_positive_definite": true,
+    "is_diagonal": false,
+    "rank_deficient": false,
+    "description": "Coverage row: non-diagonal but still positive-definite.",
+    "name": "lat-q-sqrt-neg3-gram",
+    "encodes_valid_lattice_metric": true
+  },
+  {
+    "gram_matrix_id": "gram-test-singular",
+    "minkowski_lattice": "lat-q-sqrt-neg3",
+    "matrix_json": "[[1,1],[1,1]]",
+    "is_symmetric": true,
+    "is_positive_definite": false,
+    "is_diagonal": false,
+    "rank_deficient": true,
+    "description": "Coverage row: singular Gram-like matrix.",
+    "name": "lat-q-sqrt-neg3-gram",
+    "encodes_valid_lattice_metric": false
+  },
+  {
+    "gram_matrix_id": "gram-test-unverified",
+    "minkowski_lattice": "lat-q-sqrt-neg3",
+    "matrix_json": "[[2,1],[1,2]]",
+    "is_symmetric": true,
+    "is_positive_definite": false,
+    "is_diagonal": false,
+    "rank_deficient": false,
+    "description": "Coverage row: unverified.",
+    "name": "lat-q-sqrt-neg3-gram",
+    "encodes_valid_lattice_metric": false
+  }
+]

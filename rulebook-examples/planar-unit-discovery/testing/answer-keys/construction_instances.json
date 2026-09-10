@@ -1,0 +1,52 @@
+[
+  {
+    "construction_instance_id": "non-algebraic-sq",
+    "construction_family": "non-algebraic-baseline",
+    "param_n": 4,
+    "point_set": "unit-square",
+    "name": "non-algebraic-baseline-n4",
+    "param_n_matches_point_count": false,
+    "is_explicit_superlinear": false,
+    "is_algebraic_superlinear_witness": false
+  },
+  {
+    "construction_instance_id": "non-algebraic-tri",
+    "construction_family": "non-algebraic-baseline",
+    "param_n": 3,
+    "point_set": "unit-triangle",
+    "name": "non-algebraic-baseline-n3",
+    "param_n_matches_point_count": false,
+    "is_explicit_superlinear": false,
+    "is_algebraic_superlinear_witness": false
+  },
+  {
+    "construction_instance_id": "sqrt-lat-n3",
+    "construction_family": "sqrt-lattice-projection",
+    "param_n": 3,
+    "point_set": "unit-triangle",
+    "name": "sqrt-lattice-projection-n3",
+    "param_n_matches_point_count": false,
+    "is_explicit_superlinear": false,
+    "is_algebraic_superlinear_witness": false
+  },
+  {
+    "construction_instance_id": "sqrt-lat-n4",
+    "construction_family": "sqrt-lattice-projection",
+    "param_n": 4,
+    "point_set": "unit-square",
+    "name": "sqrt-lattice-projection-n4",
+    "param_n_matches_point_count": false,
+    "is_explicit_superlinear": false,
+    "is_algebraic_superlinear_witness": false
+  },
+  {
+    "construction_instance_id": "zeta7-n8-heptagon",
+    "construction_family": "zeta7-sigma1-projection",
+    "param_n": 8,
+    "point_set": "heptagon-with-center",
+    "name": "zeta7-sigma1-projection-n8",
+    "param_n_matches_point_count": false,
+    "is_explicit_superlinear": false,
+    "is_algebraic_superlinear_witness": false
+  }
+]

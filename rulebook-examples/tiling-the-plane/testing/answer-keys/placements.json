@@ -1,0 +1,222 @@
+[
+  {
+    "placement_id": "hex-01",
+    "region": "demo-hex-strip",
+    "prototile": "hexagon",
+    "x": 0,
+    "y": 0,
+    "rotation_deg": 0,
+    "is_overlapping": false,
+    "name": "demo-hex-strip#hex-01",
+    "is_inside_region": false
+  },
+  {
+    "placement_id": "hex-02",
+    "region": "demo-hex-strip",
+    "prototile": "hexagon",
+    "x": 1,
+    "y": 0,
+    "rotation_deg": 0,
+    "is_overlapping": false,
+    "name": "demo-hex-strip#hex-02",
+    "is_inside_region": false
+  },
+  {
+    "placement_id": "hex-03",
+    "region": "demo-hex-strip",
+    "prototile": "hexagon",
+    "x": 2,
+    "y": 0,
+    "rotation_deg": 0,
+    "is_overlapping": false,
+    "name": "demo-hex-strip#hex-03",
+    "is_inside_region": false
+  },
+  {
+    "placement_id": "hex-04",
+    "region": "demo-hex-strip",
+    "prototile": "hexagon",
+    "x": 3,
+    "y": 0,
+    "rotation_deg": 0,
+    "is_overlapping": false,
+    "name": "demo-hex-strip#hex-04",
+    "is_inside_region": false
+  },
+  {
+    "placement_id": "sq-01",
+    "region": "demo-square-4x4",
+    "prototile": "square",
+    "x": 0,
+    "y": 0,
+    "rotation_deg": 0,
+    "is_overlapping": false,
+    "name": "demo-square-4x4#sq-01",
+    "is_inside_region": false
+  },
+  {
+    "placement_id": "sq-02",
+    "region": "demo-square-4x4",
+    "prototile": "square",
+    "x": 1,
+    "y": 0,
+    "rotation_deg": 0,
+    "is_overlapping": false,
+    "name": "demo-square-4x4#sq-02",
+    "is_inside_region": false
+  },
+  {
+    "placement_id": "sq-03",
+    "region": "demo-square-4x4",
+    "prototile": "square",
+    "x": 2,
+    "y": 0,
+    "rotation_deg": 0,
+    "is_overlapping": false,
+    "name": "demo-square-4x4#sq-03",
+    "is_inside_region": false
+  },
+  {
+    "placement_id": "sq-04",
+    "region": "demo-square-4x4",
+    "prototile": "square",
+    "x": 3,
+    "y": 0,
+    "rotation_deg": 0,
+    "is_overlapping": false,
+    "name": "demo-square-4x4#sq-04",
+    "is_inside_region": false
+  },
+  {
+    "placement_id": "sq-05",
+    "region": "demo-square-4x4",
+    "prototile": "square",
+    "x": 0,
+    "y": 1,
+    "rotation_deg": 0,
+    "is_overlapping": false,
+    "name": "demo-square-4x4#sq-05",
+    "is_inside_region": false
+  },
+  {
+    "placement_id": "sq-06",
+    "region": "demo-square-4x4",
+    "prototile": "square",
+    "x": 1,
+    "y": 1,
+    "rotation_deg": 0,
+    "is_overlapping": false,
+    "name": "demo-square-4x4#sq-06",
+    "is_inside_region": false
+  },
+  {
+    "placement_id": "sq-07",
+    "region": "demo-square-4x4",
+    "prototile": "square",
+    "x": 2,
+    "y": 1,
+    "rotation_deg": 0,
+    "is_overlapping": false,
+    "name": "demo-square-4x4#sq-07",
+    "is_inside_region": false
+  },
+  {
+    "placement_id": "sq-08",
+    "region": "demo-square-4x4",
+    "prototile": "square",
+    "x": 3,
+    "y": 1,
+    "rotation_deg": 0,
+    "is_overlapping": false,
+    "name": "demo-square-4x4#sq-08",
+    "is_inside_region": false
+  },
+  {
+    "placement_id": "sq-09",
+    "region": "demo-square-4x4",
+    "prototile": "square",
+    "x": 0,
+    "y": 2,
+    "rotation_deg": 0,
+    "is_overlapping": false,
+    "name": "demo-square-4x4#sq-09",
+    "is_inside_region": false
+  },
+  {
+    "placement_id": "sq-10",
+    "region": "demo-square-4x4",
+    "prototile": "square",
+    "x": 1,
+    "y": 2,
+    "rotation_deg": 0,
+    "is_overlapping": false,
+    "name": "demo-square-4x4#sq-10",
+    "is_inside_region": false
+  },
+  {
+    "placement_id": "sq-11",
+    "region": "demo-square-4x4",
+    "prototile": "square",
+    "x": 2,
+    "y": 2,
+    "rotation_deg": 0,
+    "is_overlapping": false,
+    "name": "demo-square-4x4#sq-11",
+    "is_inside_region": false
+  },
+  {
+    "placement_id": "sq-12",
+    "region": "demo-square-4x4",
+    "prototile": "square",
+    "x": 3,
+    "y": 2,
+    "rotation_deg": 0,
+    "is_overlapping": false,
+    "name": "demo-square-4x4#sq-12",
+    "is_inside_region": false
+  },
+  {
+    "placement_id": "sq-13",
+    "region": "demo-square-4x4",
+    "prototile": "square",
+    "x": 0,
+    "y": 3,
+    "rotation_deg": 0,
+    "is_overlapping": false,
+    "name": "demo-square-4x4#sq-13",
+    "is_inside_region": false
+  },
+  {
+    "placement_id": "sq-14",
+    "region": "demo-square-4x4",
+    "prototile": "square",
+    "x": 1,
+    "y": 3,
+    "rotation_deg": 0,
+    "is_overlapping": false,
+    "name": "demo-square-4x4#sq-14",
+    "is_inside_region": false
+  },
+  {
+    "placement_id": "sq-15",
+    "region": "demo-square-4x4",
+    "prototile": "square",
+    "x": 2,
+    "y": 3,
+    "rotation_deg": 0,
+    "is_overlapping": false,
+    "name": "demo-square-4x4#sq-15",
+    "is_inside_region": false
+  },
+  {
+    "placement_id": "sq-16",
+    "region": "demo-square-4x4",
+    "prototile": "square",
+    "x": 3,
+    "y": 3,
+    "rotation_deg": 0,
+    "is_overlapping": false,
+    "name": "demo-square-4x4#sq-16",
+    "is_inside_region": false
+  }
+]

@@ -10,7 +10,8 @@
     "receptions": 105,
     "received_yards": 1250,
     "received_touchdowns": 11,
-    "name": "aj-brown"
+    "name": "aj-brown",
+    "total_touchdowns": 11
   },
   {
     "player_id": "bryce-young",
@@ -23,7 +24,8 @@
     "receptions": 0,
     "received_yards": 0,
     "received_touchdowns": 0,
-    "name": "bryce-young"
+    "name": "bryce-young",
+    "total_touchdowns": 15
   },
   {
     "player_id": "ceedee-lamb",
@@ -36,7 +38,8 @@
     "receptions": 65,
     "received_yards": 750,
     "received_touchdowns": 5,
-    "name": "ceedee-lamb"
+    "name": "ceedee-lamb",
+    "total_touchdowns": 5
   },
   {
     "player_id": "christian-mccaffrey",
@@ -49,7 +52,8 @@
     "receptions": 90,
     "received_yards": 650,
     "received_touchdowns": 3,
-    "name": "christian-mccaffrey"
+    "name": "christian-mccaffrey",
+    "total_touchdowns": 18
   },
   {
     "player_id": "davante-adams",
@@ -62,7 +66,8 @@
     "receptions": 125,
     "received_yards": 1300,
     "received_touchdowns": 10,
-    "name": "davante-adams"
+    "name": "davante-adams",
+    "total_touchdowns": 10
   },
   {
     "player_id": "de-aaron-henry",
@@ -75,7 +80,8 @@
     "receptions": 25,
     "received_yards": 130,
     "received_touchdowns": 0,
-    "name": "de-aaron-henry"
+    "name": "de-aaron-henry",
+    "total_touchdowns": 4
   },
   {
     "player_id": "derrick-henry",
@@ -88,7 +94,8 @@
     "receptions": 30,
     "received_yards": 200,
     "received_touchdowns": 0,
-    "name": "derrick-henry"
+    "name": "derrick-henry",
+    "total_touchdowns": 14
   },
   {
     "player_id": "ja-marr-chase",
@@ -101,7 +108,8 @@
     "receptions": 110,
     "received_yards": 1300,
     "received_touchdowns": 8,
-    "name": "ja-marr-chase"
+    "name": "ja-marr-chase",
+    "total_touchdowns": 8
   },
   {
     "player_id": "jalen-hurts",
@@ -114,7 +122,8 @@
     "receptions": 0,
     "received_yards": 0,
     "received_touchdowns": 0,
-    "name": "jalen-hurts"
+    "name": "jalen-hurts",
+    "total_touchdowns": 47
   },
   {
     "player_id": "josh-allen",
@@ -127,7 +136,8 @@
     "receptions": 0,
     "received_yards": 0,
     "received_touchdowns": 0,
-    "name": "josh-allen"
+    "name": "josh-allen",
+    "total_touchdowns": 38
   },
   {
     "player_id": "lamar-jackson",
@@ -140,7 +150,8 @@
     "receptions": 0,
     "received_yards": 0,
     "received_touchdowns": 0,
-    "name": "lamar-jackson"
+    "name": "lamar-jackson",
+    "total_touchdowns": 33
   },
   {
     "player_id": "miles-sanders",
@@ -153,7 +164,8 @@
     "receptions": 40,
     "received_yards": 280,
     "received_touchdowns": 1,
-    "name": "miles-sanders"
+    "name": "miles-sanders",
+    "total_touchdowns": 8
   },
   {
     "player_id": "patrick-mahomes",
@@ -166,7 +178,8 @@
     "receptions": 0,
     "received_yards": 0,
     "received_touchdowns": 0,
-    "name": "patrick-mahomes"
+    "name": "patrick-mahomes",
+    "total_touchdowns": 51
   },
   {
     "player_id": "russell-wilson",
@@ -179,7 +192,8 @@
     "receptions": 0,
     "received_yards": 0,
     "received_touchdowns": 0,
-    "name": "russell-wilson"
+    "name": "russell-wilson",
+    "total_touchdowns": 25
   },
   {
     "player_id": "saquon-barkley",
@@ -192,7 +206,8 @@
     "receptions": 60,
     "received_yards": 420,
     "received_touchdowns": 2,
-    "name": "saquon-barkley"
+    "name": "saquon-barkley",
+    "total_touchdowns": 16
   },
   {
     "player_id": "stefon-diggs",
@@ -205,7 +220,8 @@
     "receptions": 120,
     "received_yards": 1100,
     "received_touchdowns": 8,
-    "name": "stefon-diggs"
+    "name": "stefon-diggs",
+    "total_touchdowns": 8
   },
   {
     "player_id": "travis-kelce",
@@ -218,7 +234,8 @@
     "receptions": 110,
     "received_yards": 1200,
     "received_touchdowns": 12,
-    "name": "travis-kelce"
+    "name": "travis-kelce",
+    "total_touchdowns": 12
   },
   {
     "player_id": "tyreek-hill",
@@ -231,6 +248,7 @@
     "receptions": 115,
     "received_yards": 1750,
     "received_touchdowns": 9,
-    "name": "tyreek-hill"
+    "name": "tyreek-hill",
+    "total_touchdowns": 9
   }
 ]

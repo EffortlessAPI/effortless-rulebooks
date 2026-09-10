@@ -5,7 +5,14 @@
     "order_id": "ORD-1003",
     "fcs_id": "FCS-F16-FBW3",
     "quantity": 6,
-    "name": "OL-3001"
+    "name": "OL-3001",
+    "fcs_unit_price": 4.2,
+    "fcs_architecture": "fly-by-wire",
+    "fcs_jet_model": "F-16C",
+    "fcs_meets_fifth_gen_spec": false,
+    "order_number": "ORD-1003",
+    "order_customer": "grace.hopper@nautical.mil",
+    "line_total": 25.2
   },
   {
     "order_lines_id": "OL-3002",
@@ -13,7 +20,14 @@
     "order_id": "ORD-1003",
     "fcs_id": "FCS-F16-HYB2",
     "quantity": 2,
-    "name": "OL-3002"
+    "name": "OL-3002",
+    "fcs_unit_price": 2.1,
+    "fcs_architecture": "analog-hybrid",
+    "fcs_jet_model": "F-16C",
+    "fcs_meets_fifth_gen_spec": false,
+    "order_number": "ORD-1003",
+    "order_customer": "grace.hopper@nautical.mil",
+    "line_total": 4.2
   },
   {
     "order_lines_id": "OL-3003",
@@ -21,7 +35,14 @@
     "order_id": "ORD-1006",
     "fcs_id": "FCS-F35-FBW4",
     "quantity": 4,
-    "name": "OL-3003"
+    "name": "OL-3003",
+    "fcs_unit_price": 12.0,
+    "fcs_architecture": "fly-by-wire",
+    "fcs_jet_model": "F-35A",
+    "fcs_meets_fifth_gen_spec": true,
+    "order_number": "ORD-1006",
+    "order_customer": "katherine.johnson@nasa.gov",
+    "line_total": 48.0
   },
   {
     "order_lines_id": "OL-3004",
@@ -29,7 +50,14 @@
     "order_id": "ORD-1007",
     "fcs_id": "FCS-F22-FBL4",
     "quantity": 2,
-    "name": "OL-3004"
+    "name": "OL-3004",
+    "fcs_unit_price": 18.5,
+    "fcs_architecture": "fly-by-light",
+    "fcs_jet_model": "F-22A",
+    "fcs_meets_fifth_gen_spec": true,
+    "order_number": "ORD-1007",
+    "order_customer": "katherine.johnson@nasa.gov",
+    "line_total": 37.0
   },
   {
     "order_lines_id": "OL-3005",
@@ -37,7 +65,14 @@
     "order_id": "ORD-1007",
     "fcs_id": "FCS-F35-FBW4",
     "quantity": 3,
-    "name": "OL-3005"
+    "name": "OL-3005",
+    "fcs_unit_price": 12.0,
+    "fcs_architecture": "fly-by-wire",
+    "fcs_jet_model": "F-35A",
+    "fcs_meets_fifth_gen_spec": true,
+    "order_number": "ORD-1007",
+    "order_customer": "katherine.johnson@nasa.gov",
+    "line_total": 36.0
   },
   {
     "order_lines_id": "OL-3006",
@@ -45,7 +80,14 @@
     "order_id": "ORD-1008",
     "fcs_id": "FCS-F18-FBW3",
     "quantity": 8,
-    "name": "OL-3006"
+    "name": "OL-3006",
+    "fcs_unit_price": 5.8,
+    "fcs_architecture": "fly-by-wire",
+    "fcs_jet_model": "F-18E",
+    "fcs_meets_fifth_gen_spec": false,
+    "order_number": "ORD-1008",
+    "order_customer": "linus.torvalds@kernel.org",
+    "line_total": 46.4
   },
   {
     "order_lines_id": "OL-3007",
@@ -53,7 +95,14 @@
     "order_id": "ORD-1008",
     "fcs_id": "FCS-EF2K-FBW4",
     "quantity": 5,
-    "name": "OL-3007"
+    "name": "OL-3007",
+    "fcs_unit_price": 9.3,
+    "fcs_architecture": "fly-by-wire",
+    "fcs_jet_model": "EF-2000",
+    "fcs_meets_fifth_gen_spec": false,
+    "order_number": "ORD-1008",
+    "order_customer": "linus.torvalds@kernel.org",
+    "line_total": 46.5
   },
   {
     "order_lines_id": "OL-3008",
@@ -61,6 +110,13 @@
     "order_id": "ORD-1004",
     "fcs_id": "FCS-F16-FBW3",
     "quantity": 1,
-    "name": "OL-3008"
+    "name": "OL-3008",
+    "fcs_unit_price": 4.2,
+    "fcs_architecture": "fly-by-wire",
+    "fcs_jet_model": "F-16C",
+    "fcs_meets_fifth_gen_spec": false,
+    "order_number": "ORD-1004",
+    "order_customer": "grace.hopper@nautical.mil",
+    "line_total": 4.2
   }
 ]

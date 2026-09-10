@@ -60,6 +60,7 @@ rt_rows = []
 for t in sorted(TABLES):
     phys, view = snake(t), "vw_" + snake(t)
     rt_rows.append({
+        "RulebookTableId": t,
         "TableName": t,
         "PhysicalTable": phys if phys in real_tables else None,
         "PhysicalView":  view if view in real_views else None,

@@ -1,0 +1,65 @@
+[
+  {
+    "app_user_id": "admin-ej-ssot-me",
+    "name": "admin-ej-ssot-me",
+    "email_address": "ej@ssot.me",
+    "role": "admin",
+    "is_effortless_employee": true,
+    "name_redacted": "a***",
+    "email_address_redacted": "e***@ssot.me"
+  },
+  {
+    "app_user_id": "admin-example",
+    "name": "admin-example",
+    "email_address": "admin@example.com",
+    "role": "admin",
+    "is_effortless_employee": false,
+    "name_redacted": "a***",
+    "email_address_redacted": "a***@example.com"
+  },
+  {
+    "app_user_id": "eejai42-gmail",
+    "name": "eejai42-gmail",
+    "email_address": "eejai42@gmail.com",
+    "role": "admin",
+    "is_effortless_employee": true,
+    "name_redacted": "e***",
+    "email_address_redacted": "e***@gmail.com"
+  },
+  {
+    "app_user_id": "external-llm-example",
+    "name": "external-llm-example",
+    "email_address": "external-llm@example.com",
+    "role": "external-llm",
+    "is_effortless_employee": false,
+    "name_redacted": "e***",
+    "email_address_redacted": "e***@example.com"
+  },
+  {
+    "app_user_id": "manager-example",
+    "name": "manager-example",
+    "email_address": "manager@example.com",
+    "role": "manager",
+    "is_effortless_employee": false,
+    "name_redacted": "m***",
+    "email_address_redacted": "m***@example.com"
+  },
+  {
+    "app_user_id": "manager-niko-ssot-me",
+    "name": "manager-niko-ssot-me",
+    "email_address": "niko@ssot.me",
+    "role": "admin",
+    "is_effortless_employee": true,
+    "name_redacted": "m***",
+    "email_address_redacted": "n***@ssot.me"
+  },
+  {
+    "app_user_id": "representative-example",
+    "name": "representative-example",
+    "email_address": "representative@example.com",
+    "role": "representative",
+    "is_effortless_employee": false,
+    "name_redacted": "r***",
+    "email_address_redacted": "r***@example.com"
+  }
+]

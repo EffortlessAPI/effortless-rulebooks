@@ -1,0 +1,66 @@
+[
+  {
+    "function_id": "classify-variance",
+    "name": "Classify variance",
+    "label": "Classify variance",
+    "definition": "Rank and classify variances using the approved AI model.",
+    "implementation_key": "classify-variance-impl",
+    "semantic_type_iri": "https://w3id.org/pko#Function"
+  },
+  {
+    "function_id": "collect-acknowledgement",
+    "name": "Collect acknowledgement",
+    "label": "Collect acknowledgement",
+    "definition": "Record receipt, acknowledgement, or exception state.",
+    "implementation_key": "collect-acknowledgement-impl",
+    "semantic_type_iri": "https://w3id.org/pko#Function"
+  },
+  {
+    "function_id": "draft-policy",
+    "name": "Draft policy",
+    "label": "Draft policy",
+    "definition": "Generate a draft from approved sources and requirements.",
+    "implementation_key": "draft-policy-impl",
+    "semantic_type_iri": "https://w3id.org/pko#Function"
+  },
+  {
+    "function_id": "extract-trial-balance",
+    "name": "Extract trial balance",
+    "label": "Extract trial balance",
+    "definition": "Deterministically extract balances and source timestamps.",
+    "implementation_key": "extract-trial-balance-impl",
+    "semantic_type_iri": "https://w3id.org/pko#Function"
+  },
+  {
+    "function_id": "post-close-entries",
+    "name": "Post close entries",
+    "label": "Post close entries",
+    "definition": "Post only approved journal entries.",
+    "implementation_key": "post-close-entries-impl",
+    "semantic_type_iri": "https://w3id.org/pko#Function"
+  },
+  {
+    "function_id": "render-email",
+    "name": "Render email",
+    "label": "Render email",
+    "definition": "Produce an email projection without changing policy meaning.",
+    "implementation_key": "render-email-impl",
+    "semantic_type_iri": "https://w3id.org/pko#Function"
+  },
+  {
+    "function_id": "render-sms",
+    "name": "Render SMS",
+    "label": "Render SMS",
+    "definition": "Produce a length-constrained SMS projection without changing policy meaning.",
+    "implementation_key": "render-sms-impl",
+    "semantic_type_iri": "https://w3id.org/pko#Function"
+  },
+  {
+    "function_id": "send-notification",
+    "name": "Send notification",
+    "label": "Send notification",
+    "definition": "Apply channel policy and deliver an approved message.",
+    "implementation_key": "send-notification-impl",
+    "semantic_type_iri": "https://w3id.org/pko#Function"
+  }
+]

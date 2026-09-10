@@ -1,0 +1,40 @@
+[
+  {
+    "payment_id": "p-0001",
+    "payment_number": "PMT-2026-0005",
+    "citation": "c-0005",
+    "paid_on": "2026-05-18",
+    "amount_usd": 300.0,
+    "method": "online",
+    "is_mock_data": true,
+    "name": "pmt-2026-0005"
+  },
+  {
+    "payment_id": "p-0002",
+    "citation": "c-0009",
+    "is_mock_data": true,
+    "payment_number": "PMT-2026-0009",
+    "amount_usd": 138.0,
+    "paid_on": "2026-03-26",
+    "method": "online",
+    "created_at": "2026-06-07T20:00:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-07T20:00:00Z",
+    "modified_by": "admin-example",
+    "name": "pmt-2026-0009"
+  },
+  {
+    "payment_id": "p-0003",
+    "citation": "c-0001",
+    "is_mock_data": true,
+    "payment_number": "PMT-2026-0001",
+    "amount_usd": 95.0,
+    "paid_on": "2026-04-01",
+    "method": "online",
+    "created_at": "2026-06-07T20:00:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-07T20:00:00Z",
+    "modified_by": "admin-example",
+    "name": "pmt-2026-0001"
+  }
+]

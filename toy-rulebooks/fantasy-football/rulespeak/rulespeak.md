@@ -93,14 +93,14 @@ already computes (cross-referenced as DR-N in the Definitional Rules below)._
 ### Structural Constraints (from the schema)
 
 - A dev user **must** have an email and a role.
-- A player **must** have a position, a passing yards, a passing touchdowns, an interceptions, a rushing yards, a rushing touchdowns, a receptions, a received yards, and a received touchdowns.
+- A player **must** have a position; a passing yards; a passing touchdowns; an interceptions; a rushing yards; a rushing touchdowns; a receptions; a received yards; and a received touchdowns.
 - A roster **must** have an owner.
 - A roster assignment **must** reference exactly one roster.
 - A roster assignment **must** reference exactly one player.
 - A matchup **must** reference exactly one roster as its team1.
 - A matchup **must** reference exactly one roster as its team2.
 - A matchup **must** have a week.
-- A standing **must** have a wins, a losses, a ties, a win pct, a points for, and a points against, and record whether it is playoff bound.
+- A standing **must** have a wins; a losses; a ties; a win pct; a points for; and a points against, and record whether it is playoff bound.
 
 ## 4 Definitional Rules
 

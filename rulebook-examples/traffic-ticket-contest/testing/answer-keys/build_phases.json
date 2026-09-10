@@ -1,0 +1,57 @@
+[
+  {
+    "build_phase_id": "phase-1",
+    "phase_number": 1,
+    "title": "Foundation",
+    "description": "Core platform, permissions, navigation, and the self-describing catalog.",
+    "created_at": "2026-06-07T20:15:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-07T20:15:00Z",
+    "modified_by": "admin-example",
+    "name": "phase-1"
+  },
+  {
+    "build_phase_id": "phase-2",
+    "phase_number": 2,
+    "title": "Domain Spine",
+    "description": "Citations, drivers, hearings, payments, and the state machines.",
+    "created_at": "2026-06-07T20:15:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-07T20:15:00Z",
+    "modified_by": "admin-example",
+    "name": "phase-2"
+  },
+  {
+    "build_phase_id": "phase-3",
+    "phase_number": 3,
+    "title": "Rules & Jurisdictions",
+    "description": "Business rules, fee schedules, deadline rules, and contest grounds.",
+    "created_at": "2026-06-07T20:15:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-07T20:15:00Z",
+    "modified_by": "admin-example",
+    "name": "phase-3"
+  },
+  {
+    "build_phase_id": "phase-4",
+    "phase_number": 4,
+    "title": "Analytics & Assistant",
+    "description": "Work queue, cost telemetry, and the portal assistant.",
+    "created_at": "2026-06-07T20:15:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-07T20:15:00Z",
+    "modified_by": "admin-example",
+    "name": "phase-4"
+  },
+  {
+    "build_phase_id": "phase-5",
+    "phase_number": 5,
+    "title": "Conformance & Polish",
+    "description": "Test surface, screen hints, and the deadline/points dashboards.",
+    "created_at": "2026-06-07T20:15:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-07T20:15:00Z",
+    "modified_by": "admin-example",
+    "name": "phase-5"
+  }
+]

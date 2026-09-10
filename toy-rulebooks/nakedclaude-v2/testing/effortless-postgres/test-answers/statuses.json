@@ -1,0 +1,65 @@
+[
+  {
+    "statuse_id": "cancelled",
+    "name": "cancelled",
+    "display_name": "Cancelled",
+    "description": "This status means the customer or request has been cancelled and will not proceed further.",
+    "is_blocking": true,
+    "customers": "",
+    "owner_email": "ej@ssot.me"
+  },
+  {
+    "statuse_id": "delayed",
+    "name": "delayed",
+    "display_name": "Delayed",
+    "description": "This status is used when the customer or request has been delayed and is not progressing as scheduled.",
+    "is_blocking": false,
+    "customers": "carla-smith",
+    "owner_email": "ej@ssot.me"
+  },
+  {
+    "statuse_id": "in-review",
+    "name": "in-review",
+    "display_name": "In-Review",
+    "description": "This status is for customers or requests that are currently under review.",
+    "is_blocking": false,
+    "customers": "",
+    "owner_email": "ej@ssot.me"
+  },
+  {
+    "statuse_id": "new",
+    "name": "new",
+    "display_name": "New",
+    "description": "This status indicates a newly created customer or request that has not yet been processed.",
+    "is_blocking": false,
+    "customers": "brian-lee",
+    "owner_email": "ej@ssot.me"
+  },
+  {
+    "statuse_id": "on-hold",
+    "name": "on-hold",
+    "display_name": "On-Hold",
+    "description": "This status indicates the customer or request is on hold and temporarily paused.",
+    "is_blocking": true,
+    "customers": "bob",
+    "owner_email": "ej@ssot.me"
+  },
+  {
+    "statuse_id": "pending",
+    "name": "pending",
+    "display_name": "Pending",
+    "description": "This status shows the customer or request is pending further action or review.",
+    "is_blocking": true,
+    "customers": "alice-johnson",
+    "owner_email": "ej@ssot.me"
+  },
+  {
+    "statuse_id": "processing",
+    "name": "processing",
+    "display_name": "Processing",
+    "description": "This status means the customer or request is currently being processed.",
+    "is_blocking": false,
+    "customers": "caroline",
+    "owner_email": "ej@ssot.me"
+  }
+]

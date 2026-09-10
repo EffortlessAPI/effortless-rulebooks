@@ -165,16 +165,47 @@ run_portal() {
     exit "$exit_code"
   }
 
+  # Report progress while waiting. The editor's first boot upgrades tools, warms a
+  # possibly-cold cloud workload and runs a full internal build of the rulebook —
+  # comfortably four to ten minutes, every second of which used to print nothing
+  # while the only real progress went to $EDITOR_LOG, which nobody is watching.
+  # Silence and a hang are indistinguishable, so this reports what it is waiting on.
+  HEARTBEAT_SECONDS=15
+
+  # Pull "state" out of the container's /__boot/status without needing a JSON parser.
+  boot_state() {
+    local status_url="$1"
+    [[ -n "$status_url" ]] || return 0
+    curl --silent --max-time 2 "$status_url" 2>/dev/null |
+      sed -n 's/.*"state"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p'
+  }
+
   wait_for_http() {
     local url="$1"
     local description="$2"
     local attempts="${3:-180}"
+    local log_file="${4:-}"
+    local status_url="${5:-}"
     local attempt=""
+    local state=""
+    local detail=""
 
     for ((attempt = 1; attempt <= attempts; attempt += 1)); do
       if curl --fail --silent --show-error --max-time 2 "$url" >/dev/null 2>&1; then
         printf '%s is ready: %s\n' "$description" "$url"
         return 0
+      fi
+
+      if (( attempt % HEARTBEAT_SECONDS == 0 )); then
+        detail=""
+        state="$(boot_state "$status_url")"
+        [[ -n "$state" ]] && detail=" [${state}]"
+        # The last non-empty log line names the step actually running.
+        if [[ -z "$detail" && -n "$log_file" && -r "$log_file" ]]; then
+          detail=" $(tr -d '\r' <"$log_file" | grep -v '^[[:space:]]*$' | tail -n 1 | cut -c1-96)"
+        fi
+        printf '  ...still waiting for %s (%ds of %ds)%s\n' \
+          "$description" "$attempt" "$attempts" "$detail"
       fi
       sleep 1
     done
@@ -258,6 +289,21 @@ run_portal() {
     printf 'Database and %s generated views are healthy.\n' "$view_count"
   }
 
+  # The URLs are known before anything starts — they are declared ports, not
+  # ports Docker picked. Printing them UP FRONT means the several-minute first
+  # boot has something to look at and copy, instead of only paying out at the
+  # end. print_services repeats them once they actually answer.
+  print_pending_services() {
+    printf '\nProject: %s\n' "$PROJECT_NAME"
+    printf 'Experience: %s\n' "$EXPERIENCE_DESCRIPTION"
+    printf 'Services will be available at (still starting — not up yet):\n'
+    printf '  Root explorer:       %s\n' "$PRIMARY_URL"
+    printf '  Editor UI:           %s\n' "$EDITOR_UI_URL"
+    printf '  Editor API:          %s/api/docs\n' "$EDITOR_API_URL"
+    printf '  Boot progress:       %s/__boot/status\n' "$EDITOR_UI_URL"
+    printf '\n'
+  }
+
   print_services() {
     printf '\nProject: %s\n' "$PROJECT_NAME"
     printf 'Experience: %s\n' "$EXPERIENCE_DESCRIPTION"
@@ -306,6 +352,8 @@ run_portal() {
       stop_listeners_on_port "$port"
     done
 
+    print_pending_services
+
     printf 'Starting generated editor from %s...\n' "$EDITOR_SCRIPT"
     # The generated launcher lets Docker pick host ports unless they are pinned.
     # The root declares fixed ports (modeled in ProjectLocalServices), so pin them.
@@ -317,7 +365,10 @@ run_portal() {
 
     # First boot runs npm install plus a full internal build of the root rulebook,
     # which takes several minutes; allow ten.
-    wait_for_http "${EDITOR_API_URL}/api/docs" "Generated editor API" 600
+    printf 'First boot upgrades tools, warms the published editor workload and runs a full\n'
+    printf 'internal build of the rulebook. Expect several minutes. Following %s\n' "$EDITOR_LOG"
+    wait_for_http "${EDITOR_API_URL}/api/docs" "Generated editor API" 600 \
+      "$EDITOR_LOG" "${EDITOR_UI_URL}/__boot/status"
     check_editor_database_and_views
     wait_for_http "$EDITOR_UI_URL" "Generated editor UI"
 

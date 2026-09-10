@@ -1,0 +1,46 @@
+[
+  {
+    "jwt_claim_mapping_id": "claim-email",
+    "name": "email -\u003e app.jwt_email()",
+    "claim_name": "email",
+    "sql_accessor": "app.jwt_email()",
+    "is_reserved_claim": true,
+    "maps_to_principal": true,
+    "description2": "Verified email address. Magic-links asserts only that the bearer controls this mailbox; everything else about the caller is resolved from it inside this database.",
+    "usage_count": 0,
+    "semantic_type_iri": "urn:effortless:pko-extension#JwtClaimMapping"
+  },
+  {
+    "jwt_claim_mapping_id": "claim-org",
+    "name": "organization -\u003e app.jwt_organization()",
+    "claim_name": "organization",
+    "sql_accessor": "app.jwt_organization()",
+    "is_reserved_claim": false,
+    "maps_to_principal": false,
+    "description2": "Organization the caller belongs to, derived from their principal's domain role. The default tenancy boundary for row predicates.",
+    "usage_count": 0,
+    "semantic_type_iri": "urn:effortless:pko-extension#JwtClaimMapping"
+  },
+  {
+    "jwt_claim_mapping_id": "claim-principal",
+    "name": "principal -\u003e app.jwt_principal()",
+    "claim_name": "principal",
+    "sql_accessor": "app.jwt_principal()",
+    "is_reserved_claim": false,
+    "maps_to_principal": true,
+    "description2": "AccessPrincipals row the caller acts as, resolved from the verified email via vw_agents. Not trusted from the token itself.",
+    "usage_count": 0,
+    "semantic_type_iri": "urn:effortless:pko-extension#JwtClaimMapping"
+  },
+  {
+    "jwt_claim_mapping_id": "claim-tenant",
+    "name": "tenant_id -\u003e app.jwt_tenant_id()",
+    "claim_name": "tenant_id",
+    "sql_accessor": "app.jwt_tenant_id()",
+    "is_reserved_claim": true,
+    "maps_to_principal": false,
+    "description2": "Magic-links tenant the token was minted for. Pinned so a token from another tenant cannot authenticate here.",
+    "usage_count": 0,
+    "semantic_type_iri": "urn:effortless:pko-extension#JwtClaimMapping"
+  }
+]

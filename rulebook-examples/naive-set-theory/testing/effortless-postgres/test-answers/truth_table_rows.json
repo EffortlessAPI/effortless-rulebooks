@@ -1,0 +1,191 @@
+[
+  {
+    "truth_table_row_id": "conjunction|false|false|false",
+    "connective": "conjunction",
+    "left_input": "false",
+    "right_input": "false",
+    "output": "false",
+    "output_symbol": "F",
+    "name": "conjunction: false , false -> false"
+  },
+  {
+    "truth_table_row_id": "conjunction|false|null|false",
+    "connective": "conjunction",
+    "left_input": "false",
+    "right_input": "null",
+    "output": "false",
+    "output_symbol": "F",
+    "name": "conjunction: false , null -> false"
+  },
+  {
+    "truth_table_row_id": "conjunction|false|true|false",
+    "connective": "conjunction",
+    "left_input": "false",
+    "right_input": "true",
+    "output": "false",
+    "output_symbol": "F",
+    "name": "conjunction: false , true -> false"
+  },
+  {
+    "truth_table_row_id": "conjunction|null|false|false",
+    "connective": "conjunction",
+    "left_input": "null",
+    "right_input": "false",
+    "output": "false",
+    "output_symbol": "F",
+    "name": "conjunction: null , false -> false"
+  },
+  {
+    "truth_table_row_id": "conjunction|null|null|null",
+    "connective": "conjunction",
+    "left_input": "null",
+    "right_input": "null",
+    "output": "null",
+    "output_symbol": "N",
+    "name": "conjunction: null , null -> null"
+  },
+  {
+    "truth_table_row_id": "conjunction|null|true|null",
+    "connective": "conjunction",
+    "left_input": "null",
+    "right_input": "true",
+    "output": "null",
+    "output_symbol": "N",
+    "name": "conjunction: null , true -> null"
+  },
+  {
+    "truth_table_row_id": "conjunction|true|false|false",
+    "connective": "conjunction",
+    "left_input": "true",
+    "right_input": "false",
+    "output": "false",
+    "output_symbol": "F",
+    "name": "conjunction: true , false -> false"
+  },
+  {
+    "truth_table_row_id": "conjunction|true|null|null",
+    "connective": "conjunction",
+    "left_input": "true",
+    "right_input": "null",
+    "output": "null",
+    "output_symbol": "N",
+    "name": "conjunction: true , null -> null"
+  },
+  {
+    "truth_table_row_id": "conjunction|true|true|true",
+    "connective": "conjunction",
+    "left_input": "true",
+    "right_input": "true",
+    "output": "true",
+    "output_symbol": "T",
+    "name": "conjunction: true , true -> true"
+  },
+  {
+    "truth_table_row_id": "disjunction|false|false|false",
+    "connective": "disjunction",
+    "left_input": "false",
+    "right_input": "false",
+    "output": "false",
+    "output_symbol": "F",
+    "name": "disjunction: false , false -> false"
+  },
+  {
+    "truth_table_row_id": "disjunction|false|null|null",
+    "connective": "disjunction",
+    "left_input": "false",
+    "right_input": "null",
+    "output": "null",
+    "output_symbol": "N",
+    "name": "disjunction: false , null -> null"
+  },
+  {
+    "truth_table_row_id": "disjunction|false|true|true",
+    "connective": "disjunction",
+    "left_input": "false",
+    "right_input": "true",
+    "output": "true",
+    "output_symbol": "T",
+    "name": "disjunction: false , true -> true"
+  },
+  {
+    "truth_table_row_id": "disjunction|null|false|null",
+    "connective": "disjunction",
+    "left_input": "null",
+    "right_input": "false",
+    "output": "null",
+    "output_symbol": "N",
+    "name": "disjunction: null , false -> null"
+  },
+  {
+    "truth_table_row_id": "disjunction|null|null|null",
+    "connective": "disjunction",
+    "left_input": "null",
+    "right_input": "null",
+    "output": "null",
+    "output_symbol": "N",
+    "name": "disjunction: null , null -> null"
+  },
+  {
+    "truth_table_row_id": "disjunction|null|true|true",
+    "connective": "disjunction",
+    "left_input": "null",
+    "right_input": "true",
+    "output": "true",
+    "output_symbol": "T",
+    "name": "disjunction: null , true -> true"
+  },
+  {
+    "truth_table_row_id": "disjunction|true|false|true",
+    "connective": "disjunction",
+    "left_input": "true",
+    "right_input": "false",
+    "output": "true",
+    "output_symbol": "T",
+    "name": "disjunction: true , false -> true"
+  },
+  {
+    "truth_table_row_id": "disjunction|true|null|true",
+    "connective": "disjunction",
+    "left_input": "true",
+    "right_input": "null",
+    "output": "true",
+    "output_symbol": "T",
+    "name": "disjunction: true , null -> true"
+  },
+  {
+    "truth_table_row_id": "disjunction|true|true|true",
+    "connective": "disjunction",
+    "left_input": "true",
+    "right_input": "true",
+    "output": "true",
+    "output_symbol": "T",
+    "name": "disjunction: true , true -> true"
+  },
+  {
+    "truth_table_row_id": "negation|false|_|true",
+    "connective": "negation",
+    "left_input": "false",
+    "right_input": null,
+    "output": "true",
+    "output_symbol": "T",
+    "name": "negation: false -> true"
+  },
+  {
+    "truth_table_row_id": "negation|null|_|null",
+    "connective": "negation",
+    "left_input": "null",
+    "right_input": null,
+    "output": "null",
+    "output_symbol": "N",
+    "name": "negation: null -> null"
+  },
+  {
+    "truth_table_row_id": "negation|true|_|false",
+    "connective": "negation",
+    "left_input": "true",
+    "right_input": null,
+    "output": "false",
+    "output_symbol": "F",
+    "name": "negation: true -> false"
+  }
+]

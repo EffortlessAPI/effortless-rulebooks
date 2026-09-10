@@ -1,0 +1,92 @@
+[
+  {
+    "point_set_member_id": "hept-mem-0",
+    "point_set": "heptagon-with-center",
+    "point": "hept-0-center",
+    "name": "heptagon-with-center/hept-0-center"
+  },
+  {
+    "point_set_member_id": "hept-mem-1",
+    "point_set": "heptagon-with-center",
+    "point": "hept-1",
+    "name": "heptagon-with-center/hept-1"
+  },
+  {
+    "point_set_member_id": "hept-mem-2",
+    "point_set": "heptagon-with-center",
+    "point": "hept-2",
+    "name": "heptagon-with-center/hept-2"
+  },
+  {
+    "point_set_member_id": "hept-mem-3",
+    "point_set": "heptagon-with-center",
+    "point": "hept-3",
+    "name": "heptagon-with-center/hept-3"
+  },
+  {
+    "point_set_member_id": "hept-mem-4",
+    "point_set": "heptagon-with-center",
+    "point": "hept-4",
+    "name": "heptagon-with-center/hept-4"
+  },
+  {
+    "point_set_member_id": "hept-mem-5",
+    "point_set": "heptagon-with-center",
+    "point": "hept-5",
+    "name": "heptagon-with-center/hept-5"
+  },
+  {
+    "point_set_member_id": "hept-mem-6",
+    "point_set": "heptagon-with-center",
+    "point": "hept-6",
+    "name": "heptagon-with-center/hept-6"
+  },
+  {
+    "point_set_member_id": "hept-mem-7",
+    "point_set": "heptagon-with-center",
+    "point": "hept-7",
+    "name": "heptagon-with-center/hept-7"
+  },
+  {
+    "point_set_member_id": "sq-mem-a",
+    "point_set": "unit-square",
+    "point": "sq-a",
+    "name": "unit-square/sq-a"
+  },
+  {
+    "point_set_member_id": "sq-mem-b",
+    "point_set": "unit-square",
+    "point": "sq-b",
+    "name": "unit-square/sq-b"
+  },
+  {
+    "point_set_member_id": "sq-mem-c",
+    "point_set": "unit-square",
+    "point": "sq-c",
+    "name": "unit-square/sq-c"
+  },
+  {
+    "point_set_member_id": "sq-mem-d",
+    "point_set": "unit-square",
+    "point": "sq-d",
+    "name": "unit-square/sq-d"
+  },
+  {
+    "point_set_member_id": "tri-mem-a",
+    "point_set": "unit-triangle",
+    "point": "tri-a",
+    "name": "unit-triangle/tri-a"
+  },
+  {
+    "point_set_member_id": "tri-mem-b",
+    "point_set": "unit-triangle",
+    "point": "tri-b",
+    "name": "unit-triangle/tri-b"
+  },
+  {
+    "point_set_member_id": "tri-mem-c",
+    "point_set": "unit-triangle",
+    "point": "tri-c",
+    "name": "unit-triangle/tri-c"
+  }
+]

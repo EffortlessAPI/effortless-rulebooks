@@ -68,7 +68,31 @@ def _find_domain_dir(domain):
 ACTIVE_DOMAIN = _get_active_domain()
 DOMAIN_DIR = _find_domain_dir(ACTIVE_DOMAIN)
 RULEBOOK_DIR = os.path.join(DOMAIN_DIR, "effortless-rulebook")
-RULEBOOK_PATH = os.path.join(RULEBOOK_DIR, f"{ACTIVE_DOMAIN}-rulebook.json")
+def _resolve_rulebook_path():
+    """The hub may be named EITHER <domain>-rulebook.json OR effortless-rulebook.json —
+    both are valid under the project-shape contract, and the folder disambiguates.
+    ERB_RULEBOOK_PATH wins when the caller already resolved it. Absence and ambiguity
+    are both hard errors; nothing is substituted."""
+    explicit = os.environ.get("ERB_RULEBOOK_PATH", "").strip()
+    if explicit:
+        if not os.path.isfile(explicit):
+            raise FileNotFoundError(f"ERB_RULEBOOK_PATH points at {explicit}, which does not exist.")
+        return explicit
+    named = os.path.join(RULEBOOK_DIR, f"{ACTIVE_DOMAIN}-rulebook.json")
+    canonical = os.path.join(RULEBOOK_DIR, "effortless-rulebook.json")
+    found = [p for p in (named, canonical) if os.path.isfile(p)]
+    if not found:
+        raise FileNotFoundError(
+            f"No rulebook in {RULEBOOK_DIR}: expected {os.path.basename(named)} or "
+            f"{os.path.basename(canonical)}. Fix the file/name rather than substituting another rulebook.")
+    if len(found) == 2:
+        raise RuntimeError(
+            f"{RULEBOOK_DIR} contains BOTH {os.path.basename(named)} and "
+            f"{os.path.basename(canonical)} — ambiguous hub, fix the project.")
+    return found[0]
+
+
+RULEBOOK_PATH = _resolve_rulebook_path()
 
 # All conformance artifacts live inside the domain folder so each rulebook
 # example is fully self-contained. The central testing/ folder at repo root
@@ -429,7 +453,8 @@ def _recompute_calculated_fields(
             continue
         snake = to_snake_case(field['name'])
         stored = out.get(snake)
-        has_stored = stored is not None
+        # A present key is the substrate's answer, including a computed NULL.
+        has_stored = snake in out
 
         try:
             value = evaluate_field(formula, out)
@@ -798,6 +823,29 @@ def run_substrate_test(substrate_name: str) -> tuple:
         # instead of one browser window per substrate.
         env = dict(os.environ)
         env["ERB_NO_OPEN"] = "1"
+        # Every substrate is told which domain it is grading. orchestrate.sh
+        # already exported these, so a substrate that requires them worked from
+        # the CLI menu and failed from scripts/run-conformance.py, which drives
+        # this module directly. The failure was invisible: the substrate exited
+        # non-zero, grade-and-record wrote a 10.4% test-results.md, and
+        # _substrate_results.json kept the previous good score — so the JSON
+        # said "passed" while the report read the .md and said 10%.
+        #
+        # These are derived from ACTIVE_DOMAIN, the same SSoT orchestrate.sh
+        # uses, so they are the deterministically-correct values rather than a
+        # guess at a missing setting.
+        env["ERB_DOMAIN"] = ACTIVE_DOMAIN
+        env["ERB_DOMAIN_DIR"] = DOMAIN_DIR
+        env["ERB_TESTING_DIR"] = TESTING_DIR
+        # ERB_RULEBOOK_PATH names the hub outright, which matters for any
+        # substrate whose generated bundle vendors a copy of shared.py: that
+        # copy's find_domain_root() walks up from its own __file__ expecting to
+        # sit at <repo>/orchestration/, and in a bundle it sits at
+        # <domain>/<substrate>/orchestration/ instead. get_rulebook_path()
+        # short-circuits on this variable before it ever guesses, and
+        # _resolve_rulebook_path above has already rejected an absent or
+        # ambiguous hub, so this is the resolved answer rather than a hint.
+        env["ERB_RULEBOOK_PATH"] = RULEBOOK_PATH
         result = subprocess.run(
             ["bash", script_path],
             cwd=substrate_dir,

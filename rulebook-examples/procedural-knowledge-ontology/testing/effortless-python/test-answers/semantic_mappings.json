@@ -1,0 +1,372 @@
+[
+  {
+    "semantic_mapping_id": "map-actions",
+    "source_path": "Actions",
+    "mapping_kind": "class",
+    "target_iri": "https://w3id.org/pko#Action",
+    "mapping_relation": "exact",
+    "ontology_profile": "pko-core-2.0.0",
+    "notes": "Human action.",
+    "name": "Actions -> https://w3id.org/pko#Action"
+  },
+  {
+    "semantic_mapping_id": "map-agents",
+    "source_path": "Agents",
+    "mapping_kind": "class",
+    "target_iri": "http://www.w3.org/ns/prov#Agent",
+    "mapping_relation": "exact",
+    "ontology_profile": "prov-o",
+    "notes": "Agents.",
+    "name": "Agents -> http://www.w3.org/ns/prov#Agent"
+  },
+  {
+    "semantic_mapping_id": "map-appnavgroups",
+    "source_path": "AppNavGroups",
+    "mapping_kind": "class",
+    "target_iri": "urn:effortless:pko-extension#AppNavGroup",
+    "mapping_relation": "extension",
+    "ontology_profile": "erb-pko-extension-1.0.0",
+    "notes": "Left-navigation section headers for the role-navigated application.",
+    "name": "AppNavGroups -> urn:effortless:pko-extension#AppNavGroup"
+  },
+  {
+    "semantic_mapping_id": "map-approleprofiles",
+    "source_path": "AppRoleProfiles",
+    "mapping_kind": "class",
+    "target_iri": "urn:effortless:pko-extension#AppRoleProfile",
+    "mapping_relation": "extension",
+    "ontology_profile": "erb-pko-extension-1.0.0",
+    "notes": "How a role is presented in the application: accent colour, icon, login-card copy. Not a PKO concern \u2014 PKO models procedural knowledge, not the applications that display it.",
+    "name": "AppRoleProfiles -> urn:effortless:pko-extension#AppRoleProfile"
+  },
+  {
+    "semantic_mapping_id": "map-approutequestions",
+    "source_path": "AppRouteQuestions",
+    "mapping_kind": "class",
+    "target_iri": "urn:effortless:pko-extension#AppRouteQuestion",
+    "mapping_relation": "extension",
+    "ontology_profile": "erb-pko-extension-1.0.0",
+    "notes": "Junction relating a route to the RoleQuestions it helps answer. Many-to-many by design.",
+    "name": "AppRouteQuestions -> urn:effortless:pko-extension#AppRouteQuestion"
+  },
+  {
+    "semantic_mapping_id": "map-approutereferences",
+    "source_path": "AppRouteReferences",
+    "mapping_kind": "class",
+    "target_iri": "urn:effortless:pko-extension#AppRouteReference",
+    "mapping_relation": "extension",
+    "ontology_profile": "erb-pko-extension-1.0.0",
+    "notes": "Junction relating a route to other routes it links to: the navigation graph.",
+    "name": "AppRouteReferences -> urn:effortless:pko-extension#AppRouteReference"
+  },
+  {
+    "semantic_mapping_id": "map-approutes",
+    "source_path": "AppRoutes",
+    "mapping_kind": "class",
+    "target_iri": "urn:effortless:pko-extension#AppRoute",
+    "mapping_relation": "extension",
+    "ontology_profile": "erb-pko-extension-1.0.0",
+    "notes": "One screen in the role-navigated application, addressed as /{role}/{dashboard}/{entity...}.",
+    "name": "AppRoutes -> urn:effortless:pko-extension#AppRoute"
+  },
+  {
+    "semantic_mapping_id": "map-communication-policy",
+    "source_path": "CommunicationPolicies",
+    "mapping_kind": "class",
+    "target_iri": "http://www.w3.org/ns/odrl/2/Policy",
+    "mapping_relation": "aligned",
+    "ontology_profile": "odrl",
+    "notes": "Channel policy.",
+    "name": "CommunicationPolicies -> http://www.w3.org/ns/odrl/2/Policy"
+  },
+  {
+    "semantic_mapping_id": "map-elicitation",
+    "source_path": "ElicitationSessions",
+    "mapping_kind": "class",
+    "target_iri": "urn:effortless:pko-extension#ElicitationSession",
+    "mapping_relation": "extension",
+    "ontology_profile": "erb-pko-extension-1.0.0",
+    "notes": "Knowledge elicitation activity.",
+    "name": "ElicitationSessions -> urn:effortless:pko-extension#ElicitationSession"
+  },
+  {
+    "semantic_mapping_id": "map-errors",
+    "source_path": "Errors",
+    "mapping_kind": "class",
+    "target_iri": "https://w3id.org/pko#Error",
+    "mapping_relation": "exact",
+    "ontology_profile": "pko-core-2.0.0",
+    "notes": "Error.",
+    "name": "Errors -> https://w3id.org/pko#Error"
+  },
+  {
+    "semantic_mapping_id": "map-explanations",
+    "source_path": "Explanations",
+    "mapping_kind": "class",
+    "target_iri": "https://w3id.org/pko#Explanation",
+    "mapping_relation": "exact",
+    "ontology_profile": "pko-core-2.0.0",
+    "notes": "Explanation.",
+    "name": "Explanations -> https://w3id.org/pko#Explanation"
+  },
+  {
+    "semantic_mapping_id": "map-faqs",
+    "source_path": "FAQs",
+    "mapping_kind": "class",
+    "target_iri": "https://w3id.org/pko#FrequentlyAskedQuestion",
+    "mapping_relation": "exact",
+    "ontology_profile": "pko-core-2.0.0",
+    "notes": "FAQ.",
+    "name": "FAQs -> https://w3id.org/pko#FrequentlyAskedQuestion"
+  },
+  {
+    "semantic_mapping_id": "map-feedback",
+    "source_path": "UserFeedback",
+    "mapping_kind": "class",
+    "target_iri": "https://w3id.org/pko#UserFeedbackOccurrence",
+    "mapping_relation": "exact",
+    "ontology_profile": "pko-core-2.0.0",
+    "notes": "Feedback occurrence.",
+    "name": "UserFeedback -> https://w3id.org/pko#UserFeedbackOccurrence"
+  },
+  {
+    "semantic_mapping_id": "map-from-step",
+    "source_path": "StepTransitions.FromStep",
+    "mapping_kind": "objectProperty",
+    "target_iri": "https://w3id.org/pko#fromStep",
+    "mapping_relation": "exact",
+    "ontology_profile": "pko-core-2.0.0",
+    "notes": "Transition source.",
+    "name": "StepTransitions.FromStep -> https://w3id.org/pko#fromStep"
+  },
+  {
+    "semantic_mapping_id": "map-functions",
+    "source_path": "Functions",
+    "mapping_kind": "class",
+    "target_iri": "https://w3id.org/pko#Function",
+    "mapping_relation": "exact",
+    "ontology_profile": "pko-core-2.0.0",
+    "notes": "Software function.",
+    "name": "Functions -> https://w3id.org/pko#Function"
+  },
+  {
+    "semantic_mapping_id": "map-governance",
+    "source_path": "StewardshipAssignments",
+    "mapping_kind": "class",
+    "target_iri": "urn:effortless:pko-extension#StewardshipAssignment",
+    "mapping_relation": "extension",
+    "ontology_profile": "erb-pko-extension-1.0.0",
+    "notes": "Stewardship and authority.",
+    "name": "StewardshipAssignments -> urn:effortless:pko-extension#StewardshipAssignment"
+  },
+  {
+    "semantic_mapping_id": "map-issues",
+    "source_path": "IssueOccurrences",
+    "mapping_kind": "class",
+    "target_iri": "https://w3id.org/pko#IssueOccurrence",
+    "mapping_relation": "exact",
+    "ontology_profile": "pko-core-2.0.0",
+    "notes": "Issue occurrence.",
+    "name": "IssueOccurrences -> https://w3id.org/pko#IssueOccurrence"
+  },
+  {
+    "semantic_mapping_id": "map-knowledge-fragments",
+    "source_path": "KnowledgeFragments",
+    "mapping_kind": "class",
+    "target_iri": "urn:effortless:pko-extension#KnowledgeFragment",
+    "mapping_relation": "extension",
+    "ontology_profile": "erb-pko-extension-1.0.0",
+    "notes": "Tacit/implicit/explicit knowledge capture.",
+    "name": "KnowledgeFragments -> urn:effortless:pko-extension#KnowledgeFragment"
+  },
+  {
+    "semantic_mapping_id": "map-multisteps",
+    "source_path": "Steps.StepKind=MultiStep",
+    "mapping_kind": "class",
+    "target_iri": "http://purl.org/net/p-plan#MultiStep",
+    "mapping_relation": "exact",
+    "ontology_profile": "p-plan",
+    "notes": "Composite steps.",
+    "name": "Steps.StepKind=MultiStep -> http://purl.org/net/p-plan#MultiStep"
+  },
+  {
+    "semantic_mapping_id": "map-operational-binding",
+    "source_path": "OperationalBindings",
+    "mapping_kind": "class",
+    "target_iri": "urn:effortless:pko-extension#OperationalBinding",
+    "mapping_relation": "extension",
+    "ontology_profile": "erb-pko-extension-1.0.0",
+    "notes": "Live data binding.",
+    "name": "OperationalBindings -> urn:effortless:pko-extension#OperationalBinding"
+  },
+  {
+    "semantic_mapping_id": "map-procedure-executions",
+    "source_path": "ProcedureExecutions",
+    "mapping_kind": "class",
+    "target_iri": "https://w3id.org/pko#ProcedureExecution",
+    "mapping_relation": "exact",
+    "ontology_profile": "pko-core-2.0.0",
+    "notes": "Procedure execution.",
+    "name": "ProcedureExecutions -> https://w3id.org/pko#ProcedureExecution"
+  },
+  {
+    "semantic_mapping_id": "map-procedure-version-number",
+    "source_path": "ProcedureVersions.VersionNumber",
+    "mapping_kind": "datatypeProperty",
+    "target_iri": "https://w3id.org/pko#versionNumber",
+    "mapping_relation": "exact",
+    "ontology_profile": "pko-core-2.0.0",
+    "notes": "PKO version number.",
+    "name": "ProcedureVersions.VersionNumber -> https://w3id.org/pko#versionNumber"
+  },
+  {
+    "semantic_mapping_id": "map-procedure-versions",
+    "source_path": "ProcedureVersions",
+    "mapping_kind": "class",
+    "target_iri": "https://w3id.org/pko#Procedure",
+    "mapping_relation": "exact",
+    "ontology_profile": "pko-core-2.0.0",
+    "notes": "Versioned procedure resources.",
+    "name": "ProcedureVersions -> https://w3id.org/pko#Procedure"
+  },
+  {
+    "semantic_mapping_id": "map-procedures",
+    "source_path": "Procedures",
+    "mapping_kind": "class",
+    "target_iri": "https://w3id.org/pko#Procedure",
+    "mapping_relation": "exact",
+    "ontology_profile": "pko-core-2.0.0",
+    "notes": "Abstract procedure.",
+    "name": "Procedures -> https://w3id.org/pko#Procedure"
+  },
+  {
+    "semantic_mapping_id": "map-questions",
+    "source_path": "UserQuestions",
+    "mapping_kind": "class",
+    "target_iri": "https://w3id.org/pko#UserQuestionOccurrence",
+    "mapping_relation": "exact",
+    "ontology_profile": "pko-core-2.0.0",
+    "notes": "Question occurrence.",
+    "name": "UserQuestions -> https://w3id.org/pko#UserQuestionOccurrence"
+  },
+  {
+    "semantic_mapping_id": "map-requirements",
+    "source_path": "Requirements",
+    "mapping_kind": "class",
+    "target_iri": "https://w3id.org/pko#Requirement",
+    "mapping_relation": "exact",
+    "ontology_profile": "pko-core-2.0.0",
+    "notes": "Requirement.",
+    "name": "Requirements -> https://w3id.org/pko#Requirement"
+  },
+  {
+    "semantic_mapping_id": "map-resources",
+    "source_path": "Resources",
+    "mapping_kind": "class",
+    "target_iri": "http://www.w3.org/ns/dcat#Resource",
+    "mapping_relation": "exact",
+    "ontology_profile": "dcat-3",
+    "notes": "Referenced resources.",
+    "name": "Resources -> http://www.w3.org/ns/dcat#Resource"
+  },
+  {
+    "semantic_mapping_id": "map-role-time",
+    "source_path": "RoleAssignments",
+    "mapping_kind": "class",
+    "target_iri": "http://purl.org/spar/pro/RoleInTime",
+    "mapping_relation": "exact",
+    "ontology_profile": "pro",
+    "notes": "Time-bounded role assignments.",
+    "name": "RoleAssignments -> http://purl.org/spar/pro/RoleInTime"
+  },
+  {
+    "semantic_mapping_id": "map-roles",
+    "source_path": "Roles",
+    "mapping_kind": "class",
+    "target_iri": "http://purl.org/spar/pro/Role",
+    "mapping_relation": "exact",
+    "ontology_profile": "pro",
+    "notes": "Roles.",
+    "name": "Roles -> http://purl.org/spar/pro/Role"
+  },
+  {
+    "semantic_mapping_id": "map-satisfactions",
+    "source_path": "RequirementSatisfactions",
+    "mapping_kind": "class",
+    "target_iri": "https://w3id.org/pko#RequirementSatisfaction",
+    "mapping_relation": "exact",
+    "ontology_profile": "pko-core-2.0.0",
+    "notes": "Requirement satisfaction.",
+    "name": "RequirementSatisfactions -> https://w3id.org/pko#RequirementSatisfaction"
+  },
+  {
+    "semantic_mapping_id": "map-status-change",
+    "source_path": "ProcedureStatusChanges",
+    "mapping_kind": "class",
+    "target_iri": "https://w3id.org/pko#ChangeOfStatus",
+    "mapping_relation": "exact",
+    "ontology_profile": "pko-core-2.0.0",
+    "notes": "Status transition activity.",
+    "name": "ProcedureStatusChanges -> https://w3id.org/pko#ChangeOfStatus"
+  },
+  {
+    "semantic_mapping_id": "map-step-executions",
+    "source_path": "StepExecutions",
+    "mapping_kind": "class",
+    "target_iri": "https://w3id.org/pko#StepExecution",
+    "mapping_relation": "exact",
+    "ontology_profile": "pko-core-2.0.0",
+    "notes": "Step execution.",
+    "name": "StepExecutions -> https://w3id.org/pko#StepExecution"
+  },
+  {
+    "semantic_mapping_id": "map-steps",
+    "source_path": "Steps",
+    "mapping_kind": "class",
+    "target_iri": "http://purl.org/net/p-plan#Step",
+    "mapping_relation": "exact",
+    "ontology_profile": "p-plan",
+    "notes": "Atomic steps.",
+    "name": "Steps -> http://purl.org/net/p-plan#Step"
+  },
+  {
+    "semantic_mapping_id": "map-to-step",
+    "source_path": "StepTransitions.ToStep",
+    "mapping_kind": "objectProperty",
+    "target_iri": "https://w3id.org/pko#toStep",
+    "mapping_relation": "exact",
+    "ontology_profile": "pko-core-2.0.0",
+    "notes": "Transition destination.",
+    "name": "StepTransitions.ToStep -> https://w3id.org/pko#toStep"
+  },
+  {
+    "semantic_mapping_id": "map-tools",
+    "source_path": "Tools",
+    "mapping_kind": "class",
+    "target_iri": "http://w3id.org/nfdi4ing/metadata4ing#Tool",
+    "mapping_relation": "exact",
+    "ontology_profile": "m4ing",
+    "notes": "Tool.",
+    "name": "Tools -> http://w3id.org/nfdi4ing/metadata4ing#Tool"
+  },
+  {
+    "semantic_mapping_id": "map-transitions",
+    "source_path": "StepTransitions",
+    "mapping_kind": "class",
+    "target_iri": "https://w3id.org/pko#Transition",
+    "mapping_relation": "exact",
+    "ontology_profile": "pko-core-2.0.0",
+    "notes": "Transition instance.",
+    "name": "StepTransitions -> https://w3id.org/pko#Transition"
+  },
+  {
+    "semantic_mapping_id": "map-verifications",
+    "source_path": "StepVerifications",
+    "mapping_kind": "class",
+    "target_iri": "https://w3id.org/pko#StepVerification",
+    "mapping_relation": "exact",
+    "ontology_profile": "pko-core-2.0.0",
+    "notes": "Step verification.",
+    "name": "StepVerifications -> https://w3id.org/pko#StepVerification"
+  }
+]

@@ -1,0 +1,38 @@
+[
+  {
+    "intelligences_id": "calculator",
+    "name": "calculator",
+    "description": "A pocket arithmetic device.",
+    "substrate": "digital",
+    "assessment_count": 4,
+    "total_weighted_score": "183.5",
+    "taxonomy_class": "Narrow"
+  },
+  {
+    "intelligences_id": "gpt-5",
+    "name": "gpt-5",
+    "description": "A large language model trained on broad text.",
+    "substrate": "digital",
+    "assessment_count": 4,
+    "total_weighted_score": "326.5",
+    "taxonomy_class": "Broad"
+  },
+  {
+    "intelligences_id": "human",
+    "name": "human",
+    "description": "A neurotypical human adult.",
+    "substrate": "biological",
+    "assessment_count": 4,
+    "total_weighted_score": "395.5",
+    "taxonomy_class": "Generalist"
+  },
+  {
+    "intelligences_id": "octopus",
+    "name": "octopus",
+    "description": "A cephalopod problem-solver with distributed cognition.",
+    "substrate": "biological",
+    "assessment_count": 4,
+    "total_weighted_score": "339.5",
+    "taxonomy_class": "Broad"
+  }
+]

@@ -1,0 +1,2961 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Taxonomy of Intelligence</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
+    <style>
+
+:root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8f9fa;
+    --bg-tertiary: #e9ecef;
+    --text-primary: #212529;
+    --text-secondary: #6c757d;
+    --border-color: #dee2e6;
+    --accent-color: #0d6efd;
+    --success-color: #198754;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+    --answer-key-color: #6f42c1;
+    --shadow: 0 2px 8px rgba(0,0,0,0.1);
+    --radius: 6px;
+}
+
+[data-theme="dark"] {
+    --bg-primary: #1a1a2e;
+    --bg-secondary: #16213e;
+    --bg-tertiary: #0f3460;
+    --text-primary: #eaeaea;
+    --text-secondary: #b0b0b0;
+    --border-color: #3a3a5c;
+    --accent-color: #4dabf7;
+    --success-color: #51cf66;
+    --warning-color: #fcc419;
+    --danger-color: #ff6b6b;
+    --answer-key-color: #b197fc;
+    --shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    line-height: 1.4;
+    min-height: 100vh;
+}
+
+header {
+    background: var(--bg-primary);
+    border-bottom: 1px solid var(--border-color);
+    padding: 0.75rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow);
+}
+
+.header-content h1 { font-size: 1.25rem; font-weight: 600; }
+.header-meta { display: flex; gap: 1rem; font-size: 0.8rem; color: var(--text-secondary); }
+.project-name { font-weight: 500; }
+.header-actions { display: flex; align-items: center; gap: 0.75rem; }
+.airtable-link {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    padding: 0.35rem 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    transition: all 0.15s ease;
+}
+.airtable-link:hover {
+    color: var(--accent-color);
+    border-color: var(--accent-color);
+    background: var(--bg-secondary);
+}
+
+#theme-toggle {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    width: 32px; height: 32px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    transition: all 0.2s;
+}
+#theme-toggle:hover { background: var(--accent-color); color: white; }
+#theme-toggle .moon { display: none; }
+[data-theme="dark"] #theme-toggle .sun { display: none; }
+[data-theme="dark"] #theme-toggle .moon { display: inline; }
+
+.tabs {
+    display: flex;
+    gap: 0;
+    background: var(--bg-primary);
+    padding: 0 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    overflow-x: auto;
+}
+
+.tab {
+    background: none;
+    border: none;
+    padding: 0.6rem 1.25rem;
+    cursor: pointer;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+.tab:hover { color: var(--text-primary); background: var(--bg-secondary); }
+.tab.active { color: var(--accent-color); border-bottom-color: var(--accent-color); font-weight: 500; }
+
+main {
+    padding: 1rem 1.5rem;
+    width: 100%;
+}
+
+.tab-content { display: none; }
+.tab-content.active { display: block; animation: fadeIn 0.2s ease; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.stats-grid {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.stat-card {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 0.75rem 1.25rem;
+    text-align: center;
+    box-shadow: var(--shadow);
+    min-width: 140px;
+}
+
+.stat-value { font-size: 1.5rem; font-weight: 700; }
+.stat-label { font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; }
+
+.score-perfect { color: var(--success-color); }
+.score-good { color: var(--success-color); }
+.score-warning { color: var(--warning-color); }
+.score-danger { color: var(--danger-color); }
+
+h2 { font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--text-primary); }
+
+/* Matrix and table containers - horizontal scroll */
+.matrix-container, .table-scroll {
+    overflow-x: auto;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+.health-matrix {
+    border-collapse: collapse;
+    font-size: 0.8rem;
+    white-space: nowrap;
+}
+
+.health-matrix th,
+.health-matrix td {
+    padding: 0.4rem 0.75rem;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.health-matrix th {
+    background: var(--bg-tertiary);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+    color: var(--text-secondary);
+}
+
+.health-matrix .substrate-name { text-align: left; font-weight: 500; }
+.health-matrix .entity-col { min-width: 80px; }
+
+.cell-pass { background: rgba(25, 135, 84, 0.15); color: var(--success-color); font-weight: 600; }
+.cell-fail { background: rgba(220, 53, 69, 0.15); color: var(--danger-color); font-weight: 600; cursor: pointer; }
+.cell-fail:hover { background: rgba(220, 53, 69, 0.25); }
+.cell-na { color: var(--text-secondary); }
+.cell-answer-key { background: rgba(111, 66, 193, 0.15); color: var(--answer-key-color); font-weight: 600; }
+.answer-key-row { background: rgba(111, 66, 193, 0.05); }
+.answer-key-row .substrate-name { color: var(--answer-key-color); }
+.restored-row { background: rgba(255, 193, 7, 0.08); }
+.warning-badge { color: var(--warning-color); font-size: 0.85rem; cursor: help; margin-left: 0.25rem; }
+.score-cell { font-weight: 600; }
+.time-cell { color: var(--text-secondary); font-family: monospace; font-size: 0.75rem; }
+
+/* Per-substrate color swatches — stable mapping so viewers build muscle
+   memory across runs (e.g. green always = cobol). Color comes from inline
+   style emitted by get_substrate_color() in generate-report.py. */
+.substrate-swatch {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    margin-right: 0.45rem;
+    vertical-align: middle;
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.08);
+}
+
+/* Visual group divider that splits open-source substrates (above) from
+   Effortless-licensed substrates (below) in the health matrix. */
+tr.effortless-divider td {
+    background: linear-gradient(90deg, rgba(81,43,212,0.10), rgba(81,43,212,0.02) 70%);
+    border-top: 2px solid #512BD4;
+    border-bottom: 1px solid var(--border-color);
+    padding: 0.45rem 0.75rem;
+    font-size: 0.72rem;
+}
+.effortless-divider-badge {
+    display: inline-block;
+    background: #512BD4;
+    color: #fff;
+    padding: 0.15rem 0.55rem;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+    font-size: 0.68rem;
+}
+.effortless-divider-sub {
+    color: var(--text-secondary);
+    margin-left: 0.5rem;
+    font-style: italic;
+}
+
+/* Divider label injected between open-source and Effortless-licensed
+   substrate tabs inside .sub-tabs (Conformance Test Results + per-entity). */
+.sub-tab-group-divider {
+    display: inline-flex;
+    align-items: center;
+    margin: 0 0.5rem 0 0.75rem;
+    padding: 0.15rem 0.55rem;
+    background: #512BD4;
+    color: #fff;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-radius: 3px;
+    line-height: 1.3;
+    align-self: center;
+    flex-shrink: 0;
+}
+
+/* Two-group layout for the overview substrate-link list. */
+.substrate-link-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+.substrate-link-group.effortless-group {
+    position: relative;
+    padding: 0.75rem 0.85rem 0.85rem;
+    border: 1px solid rgba(81,43,212,0.35);
+    border-radius: var(--radius);
+    background: linear-gradient(180deg, rgba(81,43,212,0.06), rgba(81,43,212,0.01));
+    margin-top: 0.5rem;
+}
+.substrate-link-group-label {
+    flex-basis: 100%;
+    margin-bottom: 0.35rem;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #512BD4;
+    font-weight: 700;
+}
+
+/* Runtime bar in health matrix */
+.runtime-bar-cell {
+    min-width: 100px;
+    padding: 0.4rem 0.5rem;
+}
+
+/* Sub-tabs - horizontal scrolling */
+.sub-tabs {
+    display: flex;
+    gap: 0.35rem;
+    margin-bottom: 1rem;
+    padding: 0.35rem;
+    background: var(--bg-tertiary);
+    border-radius: var(--radius);
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.sub-tab {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    padding: 0.35rem 0.75rem;
+    cursor: pointer;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    border-radius: var(--radius);
+    transition: all 0.15s;
+    flex-shrink: 0;
+}
+.sub-tab:hover { color: var(--text-primary); border-color: var(--accent-color); }
+.sub-tab.active { color: var(--accent-color); border-color: var(--accent-color); font-weight: 500; }
+
+.substrate-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.substrate-link {
+    padding: 0.35rem 0.75rem;
+    border-radius: var(--radius);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.8rem;
+    border: 1px solid var(--border-color);
+    background: var(--bg-primary);
+    transition: all 0.15s;
+}
+.substrate-link:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
+
+.entity-link, .substrate-row-link { cursor: pointer; transition: all 0.15s; }
+.entity-link:hover, .substrate-row-link:hover { color: var(--accent-color) !important; }
+
+#entity-details, #substrate-details {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 1rem;
+    box-shadow: var(--shadow);
+}
+
+/* Compact schema table */
+.schema-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+    font-size: 0.8rem;
+}
+.schema-table th, .schema-table td {
+    padding: 0.35rem 0.5rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+.schema-table th { background: var(--bg-tertiary); font-weight: 600; }
+.type-raw { color: var(--text-secondary); }
+.type-calculated { color: var(--accent-color); font-weight: 500; }
+.formula-cell {
+    font-family: monospace;
+    font-size: 0.75rem;
+    color: var(--answer-key-color);
+    min-width: 200px;
+    max-width: 400px;
+    vertical-align: top;
+}
+.formula-pre {
+    margin: 0;
+    padding: 0.25rem 0.4rem;
+    background: var(--bg-tertiary);
+    border-radius: 3px;
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-family: monospace;
+    font-size: 0.75rem;
+}
+.desc-cell {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    min-width: 150px;
+    max-width: 350px;
+    vertical-align: top;
+}
+.desc-text {
+    display: block;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.entity-header { margin-bottom: 0.75rem; }
+.entity-header h3 { font-size: 1rem; margin-bottom: 0.25rem; }
+
+/* Compact data table with ellipsis */
+.data-table {
+    border-collapse: collapse;
+    font-size: 0.8rem;
+}
+.data-table th, .data-table td {
+    padding: 0.3rem 0.5rem;
+    text-align: left;
+    border: 1px solid var(--border-color);
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.data-table th { background: var(--bg-tertiary); font-weight: 600; font-size: 0.75rem; }
+.data-table .computed { background: rgba(13, 110, 253, 0.1); }
+
+/* Blank tests section */
+.blank-tests-section { margin-bottom: 1.5rem; }
+.blank-tests-section h4 { margin-bottom: 0.5rem; }
+.blank-tests-section h4 .subtitle { font-weight: normal; font-size: 0.85rem; color: var(--text-secondary); }
+.blank-tests-intro { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem; line-height: 1.5; }
+.blank-tests-intro code { background: var(--bg-tertiary); padding: 0.1rem 0.3rem; border-radius: 3px; }
+.blank-test-entity { margin-bottom: 1rem; }
+.blank-test-header {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    padding: 0.5rem 0.75rem;
+    background: var(--bg-secondary);
+    border-radius: var(--radius);
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+}
+.blank-test-header.stale { background: rgba(255, 193, 7, 0.15); border-left: 3px solid var(--warning-color); }
+.blank-test-header .entity-name { font-weight: 600; }
+.blank-test-header .record-count { color: var(--text-secondary); }
+.blank-test-header .last-modified { color: var(--text-secondary); font-size: 0.8rem; }
+.blank-test-header .stale-warning { color: var(--warning-color); font-weight: 500; margin-left: auto; }
+/* Stale entity styling */
+.stale-entity { background: rgba(255, 193, 7, 0.1) !important; border-left: 3px solid var(--warning-color); }
+.stale-entity-section { margin-top: 0.5rem; }
+.stale-entity-warning {
+    background: rgba(255, 193, 7, 0.15);
+    border: 1px solid var(--warning-color);
+    border-left: 3px solid var(--warning-color);
+    border-radius: var(--radius);
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+}
+.stale-entity-warning strong { color: var(--warning-color); display: block; margin-bottom: 0.5rem; }
+.stale-entity-warning p { margin: 0.5rem 0; font-size: 0.85rem; line-height: 1.5; }
+.stale-entity-warning code { background: var(--bg-tertiary); padding: 0.1rem 0.3rem; border-radius: 3px; }
+.stale-explanation { color: var(--text-secondary); font-style: italic; }
+.stale-data-table { opacity: 0.85; }
+.stale-data-table .null-value { color: var(--text-secondary); font-style: italic; }
+
+/* Warnings and failures */
+.warning-banner {
+    background: rgba(255, 193, 7, 0.15);
+    border: 1px solid var(--warning-color);
+    border-left: 3px solid var(--warning-color);
+    border-radius: var(--radius);
+    padding: 0.5rem 0.75rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.8rem;
+}
+.warning-banner strong { color: var(--warning-color); margin-right: 0.5rem; }
+.warning-banner code { background: var(--bg-tertiary); padding: 0.1rem 0.25rem; border-radius: 3px; font-size: 0.75rem; }
+
+.failure-card {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-left: 3px solid var(--danger-color);
+    border-radius: var(--radius);
+    padding: 0.5rem 0.75rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.8rem;
+}
+
+code.expected { background: rgba(25, 135, 84, 0.15); color: var(--success-color); padding: 0.1rem 0.25rem; border-radius: 3px; }
+code.actual { background: rgba(220, 53, 69, 0.15); color: var(--danger-color); padding: 0.1rem 0.25rem; border-radius: 3px; }
+
+.no-failures, .no-results { text-align: center; padding: 1.5rem; color: var(--text-secondary); }
+
+/* Substrate info bar */
+.substrate-info { margin-bottom: 1rem; }
+.substrate-info h3 { font-size: 1.1rem; margin-bottom: 0.25rem; }
+.substrate-stats { display: flex; gap: 1.5rem; font-size: 0.85rem; }
+.substrate-stat { display: flex; gap: 0.35rem; align-items: center; }
+.substrate-stat-label { color: var(--text-secondary); }
+.substrate-stat-value { font-weight: 600; }
+
+/* Collapsible schema/formula section */
+details { margin-bottom: 0.75rem; }
+summary {
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 0.85rem;
+    padding: 0.4rem 0.6rem;
+    background: var(--bg-tertiary);
+    border-radius: var(--radius);
+    user-select: none;
+    display: inline-block;
+}
+summary:hover { background: var(--bg-secondary); }
+details[open] summary { margin-bottom: 0.5rem; }
+
+footer {
+    text-align: center;
+    padding: 1rem;
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    border-top: 1px solid var(--border-color);
+    margin-top: 1.5rem;
+}
+
+/* Entity tabs within substrate view */
+.entity-tabs-container { margin-bottom: 1rem; }
+.entity-tab-content { display: none; }
+.entity-tab-content.active { display: block; }
+
+/* Graded test table - COMPACT */
+.entity-test-section {
+    background: var(--bg-secondary);
+    border-radius: var(--radius);
+    border: 1px solid var(--border-color);
+    padding: 0.75rem;
+}
+
+.entity-test-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+.entity-name { font-size: 1rem; font-weight: 600; }
+.entity-score {
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    background: var(--bg-tertiary);
+}
+
+.entity-description {
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+}
+
+/* Computed columns - hidden in collapsible */
+.computed-cols-info {
+    font-size: 0.8rem;
+    padding: 0.5rem;
+    background: var(--bg-primary);
+    border-radius: var(--radius);
+}
+.computed-cols-info ul { margin: 0.5rem 0 0 0; padding: 0; list-style: none; }
+.computed-cols-info li {
+    margin-bottom: 0.35rem;
+    padding: 0.35rem 0.5rem;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    border-left: 2px solid var(--accent-color);
+}
+.computed-cols-info .field-name {
+    font-weight: 600;
+    font-family: monospace;
+    font-size: 0.8rem;
+    color: var(--accent-color);
+}
+.computed-cols-info .formula-row { display: block; margin-top: 0.25rem; }
+.computed-cols-info .formula-label { color: var(--text-secondary); font-size: 0.7rem; text-transform: uppercase; margin-right: 0.35rem; }
+.computed-cols-info .formula {
+    font-family: monospace;
+    font-size: 0.75rem;
+    color: var(--answer-key-color);
+    background: var(--bg-tertiary);
+    padding: 0.35rem 0.5rem;
+    border-radius: 3px;
+    white-space: pre-wrap;
+    word-break: break-word;
+    display: block;
+    margin-top: 0.25rem;
+    line-height: 1.5;
+}
+.computed-cols-info .desc-row { display: block; color: var(--text-secondary); font-size: 0.75rem; font-style: italic; margin-top: 0.25rem; white-space: pre-wrap; word-break: break-word; line-height: 1.5; }
+
+/* Graded test table - VERY COMPACT with ellipsis */
+.graded-test-table {
+    border-collapse: collapse;
+    background: var(--bg-primary);
+    font-size: 0.8rem;
+}
+
+.graded-test-table th,
+.graded-test-table td {
+    padding: 0.3rem 0.5rem;
+    text-align: left;
+    border: 1px solid var(--border-color);
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.graded-test-table th {
+    background: var(--bg-tertiary);
+    font-weight: 600;
+    font-size: 0.75rem;
+    position: sticky;
+    top: 0;
+}
+
+.graded-test-table .computed-col-header {
+    background: rgba(13, 110, 253, 0.15);
+    color: var(--accent-color);
+}
+
+.graded-test-table .record-pk {
+    font-family: monospace;
+    font-weight: 500;
+    background: var(--bg-secondary);
+    max-width: 180px;
+}
+
+.graded-test-table .cell-passed {
+    background: rgba(25, 135, 84, 0.08);
+}
+.graded-test-table .cell-passed .check-mark {
+    color: var(--success-color);
+    font-weight: bold;
+    margin-right: 0.25rem;
+}
+.graded-test-table .cell-passed code {
+    font-family: monospace;
+    font-size: 0.75rem;
+    color: var(--text-primary);
+}
+
+.graded-test-table .cell-failed {
+    background: rgba(220, 53, 69, 0.1);
+}
+.graded-test-table .cell-failed .expected-actual {
+    display: block;
+    font-size: 0.7rem;
+    margin-bottom: 0.1rem;
+}
+.graded-test-table .cell-failed .expected-actual:last-child { margin-bottom: 0; }
+.graded-test-table .expected-label, .graded-test-table .actual-label {
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-right: 0.25rem;
+}
+
+/* Raw fact cells - no special styling, just display the value */
+.graded-test-table .cell-raw {
+    font-family: monospace;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+/* Computed column highlighting - adds subtle accent border */
+.graded-test-table td.computed {
+    border-left: 2px solid var(--accent-color);
+}
+
+/* Tooltip for full text on hover */
+[title] { cursor: help; }
+
+/* Substrate view tabs */
+.substrate-view { display: none; }
+.substrate-view.active { display: block; }
+
+/* Dynamic substrate content from embedded report */
+.substrate-dynamic-view {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 1rem;
+}
+.substrate-dynamic-view pre {
+    background: var(--code-bg);
+    padding: 0.75rem;
+    border-radius: var(--radius);
+    overflow-x: auto;
+    font-size: 0.8rem;
+}
+.substrate-dynamic-view code {
+    font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+    font-size: 0.8rem;
+}
+.substrate-dynamic-view table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+}
+.substrate-dynamic-view th, .substrate-dynamic-view td {
+    padding: 0.5rem;
+    border: 1px solid var(--border-color);
+    text-align: left;
+}
+.substrate-dynamic-view th {
+    background: var(--bg-secondary);
+    font-weight: 600;
+}
+#substrate-dynamic-tabs {
+    display: contents;
+}
+
+/* Postgres report section */
+.postgres-report {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+}
+.postgres-report h4 {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+    color: var(--answer-key-color);
+}
+.postgres-intro {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 1.25rem;
+    color: var(--text-primary);
+}
+.postgres-details h5 {
+    font-size: 0.9rem;
+    margin: 1rem 0 0.5rem 0;
+    color: var(--text-primary);
+}
+.postgres-details ul, .postgres-details ol {
+    margin: 0.5rem 0 1rem 1.5rem;
+    font-size: 0.85rem;
+    line-height: 1.6;
+}
+.postgres-details li { margin-bottom: 0.4rem; }
+.postgres-details p { font-size: 0.85rem; line-height: 1.6; margin-bottom: 0.75rem; }
+.postgres-conclusion {
+    background: rgba(111, 66, 193, 0.1);
+    border-left: 3px solid var(--answer-key-color);
+    padding: 0.75rem 1rem;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    margin-top: 1rem;
+}
+
+/* Schema entity sections */
+.schema-entity-section {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    margin-bottom: 1rem;
+    overflow: hidden;
+}
+.schema-entity-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background: var(--bg-tertiary);
+    border-bottom: 1px solid var(--border-color);
+}
+.schema-entity-name {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+    color: var(--accent-color);
+}
+.schema-meta {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.75rem;
+}
+.schema-meta-item {
+    color: var(--text-secondary);
+    background: var(--bg-primary);
+    padding: 0.2rem 0.5rem;
+    border-radius: 3px;
+    border: 1px solid var(--border-color);
+}
+.schema-entity-desc {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-style: italic;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--bg-secondary);
+}
+
+@media print {
+    header, .tabs, footer { display: none; }
+    .tab-content { display: block !important; }
+    body { background: white; color: black; }
+}
+
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>Taxonomy of Intelligence</h1>
+            <div class="header-meta">
+                <span class="project-name">Orchestration Report</span>
+            </div>
+        </div>
+        <div class="header-actions">
+            
+            <button id="theme-toggle" title="Toggle dark/light mode">
+                <span class="sun">&#9728;</span>
+                <span class="moon">&#9790;</span>
+            </button>
+        </div>
+    </header>
+
+    <nav class="tabs" id="main-tabs">
+        <button class="tab active" data-tab="overview">Overview</button>
+        <button class="tab" data-tab="substrates">Conformance Test Results</button>
+        <button class="tab" data-tab="entities">Entities</button>
+    </nav>
+
+    <main>
+        <section id="overview" class="tab-content active">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="passing-count">
+                        0 / 1
+                    </div>
+                    <div class="stat-label">Tests Passing</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value score-danger">
+                        22.4%
+                    </div>
+                    <div class="stat-label">Overall Score</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">
+                        0.0s
+                    </div>
+                    <div class="stat-label">Total Runtime</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">
+                        3
+                    </div>
+                    <div class="stat-label">Entities</div>
+                </div>
+            </div>
+
+            <h2>Conformance Test Results</h2>
+            <div class="substrate-links">
+                <div class="substrate-link-group effortless-group">
+                        <div class="substrate-link-group-label">Effortless Licensed Tools</div>
+                        <a href="#" class="substrate-link score-danger" data-substrate="effortless-postgres"><span class="substrate-swatch" style="background:#336791"></span>effortless-postgres: 22%</a>
+                    </div>
+            </div>
+
+            <h2>Conformance Test Matrix</h2>
+            <div class="matrix-container">
+                <table class="health-matrix" id="health-matrix">
+                    <thead>
+                        <tr>
+                            <th>Substrate</th>
+                            <th class="entity-col entity-link" data-entity="assessments">assessments</th>
+                            <th class="entity-col entity-link" data-entity="capabilities">capabilities</th>
+                            <th class="entity-col entity-link" data-entity="intelligences">intelligences</th>
+                            <th>Score</th>
+                            <th>Time</th>
+                            <th style="min-width: 120px;">Runtime</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="effortless-divider"><td colspan="6"><span class="effortless-divider-badge">EFFORTLESS LICENSED TOOLS</span> <span class="effortless-divider-sub">production transpiler pipelines &mdash; expected 100% conformance</span></td></tr>
+                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="effortless-postgres"><span class="substrate-swatch" style="background:#336791"></span>effortless-postgres</td><td class="cell-fail" data-substrate="effortless-postgres" data-entity="assessments" title="17/96">79</td><td class="cell-pass" data-substrate="effortless-postgres" data-entity="capabilities" title="4/4">&#10003;</td><td class="cell-fail" data-substrate="effortless-postgres" data-entity="intelligences" title="5/16">11</td><td class="score-cell score-danger">22.4%</td><td class="time-cell">0.0s</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="substrates" class="tab-content">
+            <nav class="sub-tabs" id="substrate-tabs">
+                <span class="sub-tab-group-divider" title="Licensed Effortless tools">EFFORTLESS LICENSED TOOLS</span>
+                <button class="sub-tab active" data-substrate="effortless-postgres"><span class="substrate-swatch" style="background:#336791"></span>effortless-postgres</button>
+            </nav>
+            <div id="substrate-details"></div>
+        </section>
+
+        <section id="entities" class="tab-content">
+            <nav class="sub-tabs" id="entity-tabs">
+                <button class="sub-tab active" data-entity="assessments">assessments</button>
+                <button class="sub-tab " data-entity="capabilities">capabilities</button>
+                <button class="sub-tab " data-entity="intelligences">intelligences</button>
+            </nav>
+            <div id="entity-details"></div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>Generated by ERB Test Orchestrator</p>
+    </footer>
+
+    <script>
+const REPORT_DATA = {
+  "meta": {
+    "project_name": "Taxonomy of Intelligence",
+    "directory_name": "intelligence-taxonomy",
+    "rulebook_path": "/Users/eejai42/development/effortless-rulebooks/rulebook-examples/intelligence-taxonomy/effortless-rulebook/intelligence-taxonomy-rulebook.json",
+    "rulebook_name": "Taxonomy of Intelligence",
+    "rulebook_description": "Classifies intelligences (humans, animals, AI) by per-capability assessments through a multi-hop DAG.",
+    "base_id": null
+  },
+  "summary": {
+    "total_substrates": 1,
+    "passing_substrates": 0,
+    "total_entities": 3,
+    "total_computed_columns": 11,
+    "total_records": 24,
+    "overall_score": 22.413793103448278,
+    "total_runtime_seconds": 0.0,
+    "total_fields_tested": 116,
+    "total_passed": 26,
+    "total_failed": 90
+  },
+  "entities": {
+    "capabilities": {
+      "primary_key": "capabilities_id",
+      "computed_columns": [
+        "name"
+      ],
+      "computed_columns_info": [
+        {
+          "name": "name",
+          "formula": "=CapabilitiesId",
+          "description": "Display name (derived from PK)."
+        }
+      ],
+      "record_count": 4,
+      "schema": [
+        {
+          "name": "CapabilitiesId",
+          "datatype": "string",
+          "type": "raw",
+          "nullable": false,
+          "Description": "Slug for the capability (e.g. 'reasoning'). First raw field is the PK."
+        },
+        {
+          "name": "Name",
+          "datatype": "string",
+          "type": "calculated",
+          "nullable": false,
+          "formula": "={{CapabilitiesId}}",
+          "Description": "Display name (derived from PK)."
+        },
+        {
+          "name": "Description",
+          "datatype": "string",
+          "type": "raw",
+          "nullable": true,
+          "Description": "Short prose describing the capability."
+        },
+        {
+          "name": "Tier",
+          "datatype": "string",
+          "type": "raw",
+          "nullable": false,
+          "Description": "Capability tier: foundational, composite, or emergent."
+        },
+        {
+          "name": "Weight",
+          "datatype": "number",
+          "type": "raw",
+          "nullable": false,
+          "Description": "Importance multiplier used when computing WeightedScore on each Assessment."
+        }
+      ],
+      "description": "Cognitive capabilities being assessed. Tiered foundational/composite/emergent and weighted by importance.",
+      "answer_key": [
+        {
+          "capabilities_id": "creativity",
+          "description": "Novel synthesis, divergent thinking, and open-ended generation.",
+          "tier": "emergent",
+          "weight": 1.5,
+          "name": "creativity"
+        },
+        {
+          "capabilities_id": "memory",
+          "description": "Storing, retaining, and recalling information across time.",
+          "tier": "foundational",
+          "weight": 1.0,
+          "name": "memory"
+        },
+        {
+          "capabilities_id": "perception",
+          "description": "Sensing the environment and interpreting raw input into structure.",
+          "tier": "foundational",
+          "weight": 1.0,
+          "name": "perception"
+        },
+        {
+          "capabilities_id": "reasoning",
+          "description": "Inference, deduction, and structured problem-solving.",
+          "tier": "composite",
+          "weight": 1.3,
+          "name": "reasoning"
+        }
+      ]
+    },
+    "intelligences": {
+      "primary_key": "intelligences_id",
+      "computed_columns": [
+        "name",
+        "assessment_count",
+        "total_weighted_score",
+        "taxonomy_class"
+      ],
+      "computed_columns_info": [
+        {
+          "name": "name",
+          "formula": "=IntelligencesId",
+          "description": "Display name (derived from PK)."
+        },
+        {
+          "name": "assessment_count",
+          "formula": "=COUNTIFS(Assessments!Intelligence, IntelligencesId)",
+          "description": "How many capabilities this intelligence has been assessed on."
+        },
+        {
+          "name": "total_weighted_score",
+          "formula": "=SUMIFS(Assessments!WeightedScore, Assessments!Intelligence, IntelligencesId)",
+          "description": "Sum of WeightedScore across all this intelligence's assessments. Second hop in the DAG."
+        },
+        {
+          "name": "taxonomy_class",
+          "formula": "=IF(TotalWeightedScore>=350, \"Generalist\", IF(TotalWeightedScore>=220, \"Broad\", \"Narrow\"))",
+          "description": "Taxonomic bucket derived from TotalWeightedScore. Third hop in the DAG."
+        }
+      ],
+      "record_count": 4,
+      "schema": [
+        {
+          "name": "IntelligencesId",
+          "datatype": "string",
+          "type": "raw",
+          "nullable": false,
+          "Description": "Slug for the intelligence (e.g. 'human'). First raw field is the PK."
+        },
+        {
+          "name": "Name",
+          "datatype": "string",
+          "type": "calculated",
+          "nullable": false,
+          "formula": "={{IntelligencesId}}",
+          "Description": "Display name (derived from PK)."
+        },
+        {
+          "name": "Description",
+          "datatype": "string",
+          "type": "raw",
+          "nullable": true,
+          "Description": "Short prose describing what this intelligence is."
+        },
+        {
+          "name": "Substrate",
+          "datatype": "string",
+          "type": "raw",
+          "nullable": false,
+          "Description": "Substrate kind: biological, digital, or collective."
+        },
+        {
+          "name": "AssessmentCount",
+          "datatype": "integer",
+          "type": "aggregation",
+          "nullable": false,
+          "formula": "=COUNTIFS(Assessments!{{Intelligence}}, {{IntelligencesId}})",
+          "Description": "How many capabilities this intelligence has been assessed on."
+        },
+        {
+          "name": "TotalWeightedScore",
+          "datatype": "number",
+          "type": "aggregation",
+          "nullable": false,
+          "formula": "=SUMIFS(Assessments!{{WeightedScore}}, Assessments!{{Intelligence}}, {{IntelligencesId}})",
+          "Description": "Sum of WeightedScore across all this intelligence's assessments. Second hop in the DAG.",
+          "important": true,
+          "explanation_rich": "**The rollup that makes classification possible.** Each Assessment contributes a `WeightedScore` (its raw 0\u2013100 multiplied by the capability's `Weight`). This field sums all of an intelligence's assessment scores into a single number that the taxonomy can bucket. Worked example: *calculator* scores 50, 10, 95, 0 on memory, perception, reasoning, creativity \u2014 weighted by 1.0, 1.0, 1.3, 1.5 that totals **183.5**, well under the *Broad* threshold of 220. Sharpen creativity from 0 to 30 and the same field instantly recomputes to 228.5 \u2014 the calculator just changed taxa."
+        },
+        {
+          "name": "TaxonomyClass",
+          "datatype": "string",
+          "type": "calculated",
+          "nullable": false,
+          "formula": "=IF({{TotalWeightedScore}}>=350, \"Generalist\", IF({{TotalWeightedScore}}>=220, \"Broad\", \"Narrow\"))",
+          "Description": "Taxonomic bucket derived from TotalWeightedScore. Third hop in the DAG.",
+          "important": true,
+          "explanation_rich": "**The classification verdict \u2014 inferred, never assigned.** No row in `Intelligences` is born with a taxonomic label; the rulebook *deduces* it from the rollup. Two thresholds (350, 220) cut the space into *Generalist*, *Broad*, and *Narrow*. Worked example: *human* totals roughly 426 and lands in **Generalist**; *gpt-5* totals about 351.5 and just barely clears the same line; *octopus* lands in **Broad**; *calculator* is **Narrow**. Slide a threshold by 10 points and the boundary of the taxonomy moves \u2014 in every substrate at once."
+        }
+      ],
+      "description": "Agents being classified by the taxonomy. Each Intelligence's TaxonomyClass is derived from the rollup of its Assessments.",
+      "answer_key": [
+        {
+          "intelligences_id": "calculator",
+          "description": "A pocket arithmetic device.",
+          "substrate": "digital",
+          "name": "calculator",
+          "taxonomy_class": "Narrow"
+        },
+        {
+          "intelligences_id": "gpt-5",
+          "description": "A large language model trained on broad text.",
+          "substrate": "digital",
+          "name": "gpt-5",
+          "taxonomy_class": "Narrow"
+        },
+        {
+          "intelligences_id": "human",
+          "description": "A neurotypical human adult.",
+          "substrate": "biological",
+          "name": "human",
+          "taxonomy_class": "Narrow"
+        },
+        {
+          "intelligences_id": "octopus",
+          "description": "A cephalopod problem-solver with distributed cognition.",
+          "substrate": "biological",
+          "name": "octopus",
+          "taxonomy_class": "Narrow"
+        }
+      ]
+    },
+    "assessments": {
+      "primary_key": "assessments_id",
+      "computed_columns": [
+        "name",
+        "intelligence_name",
+        "capability_name",
+        "capability_tier",
+        "capability_weight",
+        "weighted_score"
+      ],
+      "computed_columns_info": [
+        {
+          "name": "name",
+          "formula": "=AssessmentsId",
+          "description": "Display name (derived from PK)."
+        },
+        {
+          "name": "intelligence_name",
+          "formula": "=INDEX(Intelligences!Name, MATCH(Intelligence, Intelligences!IntelligencesId, 0))",
+          "description": "Display name pulled from the related Intelligences row."
+        },
+        {
+          "name": "capability_name",
+          "formula": "=INDEX(Capabilities!Name, MATCH(Capability, Capabilities!CapabilitiesId, 0))",
+          "description": "Display name pulled from the related Capabilities row."
+        },
+        {
+          "name": "capability_tier",
+          "formula": "=INDEX(Capabilities!Tier, MATCH(Capability, Capabilities!CapabilitiesId, 0))",
+          "description": "Tier (foundational/composite/emergent) pulled from the related Capabilities row."
+        },
+        {
+          "name": "capability_weight",
+          "formula": "=INDEX(Capabilities!Weight, MATCH(Capability, Capabilities!CapabilitiesId, 0))",
+          "description": "Importance multiplier pulled from the related Capabilities row."
+        },
+        {
+          "name": "weighted_score",
+          "formula": "=RawScore*CapabilityWeight",
+          "description": "RawScore scaled by the capability's Weight. First hop in the DAG."
+        }
+      ],
+      "record_count": 16,
+      "schema": [
+        {
+          "name": "AssessmentsId",
+          "datatype": "string",
+          "type": "raw",
+          "nullable": false,
+          "Description": "Slug encoding the intelligence-capability pair (e.g. 'human-reasoning'). First raw field is the PK."
+        },
+        {
+          "name": "Name",
+          "datatype": "string",
+          "type": "calculated",
+          "nullable": false,
+          "formula": "={{AssessmentsId}}",
+          "Description": "Display name (derived from PK)."
+        },
+        {
+          "name": "Intelligence",
+          "datatype": "string",
+          "type": "relationship",
+          "RelatedTo": "Intelligences",
+          "nullable": false,
+          "Description": "FK to Intelligences. Holds the value of Intelligences.IntelligencesId."
+        },
+        {
+          "name": "Capability",
+          "datatype": "string",
+          "type": "relationship",
+          "RelatedTo": "Capabilities",
+          "nullable": false,
+          "Description": "FK to Capabilities. Holds the value of Capabilities.CapabilitiesId."
+        },
+        {
+          "name": "RawScore",
+          "datatype": "integer",
+          "type": "raw",
+          "nullable": false,
+          "Description": "User-editable assessment score from 0 to 100. Edit this in the UI to watch the cascade."
+        },
+        {
+          "name": "IntelligenceName",
+          "datatype": "string",
+          "type": "lookup",
+          "nullable": true,
+          "formula": "=INDEX(Intelligences!{{Name}}, MATCH({{Intelligence}}, Intelligences!{{IntelligencesId}}, 0))",
+          "Description": "Display name pulled from the related Intelligences row."
+        },
+        {
+          "name": "CapabilityName",
+          "datatype": "string",
+          "type": "lookup",
+          "nullable": true,
+          "formula": "=INDEX(Capabilities!{{Name}}, MATCH({{Capability}}, Capabilities!{{CapabilitiesId}}, 0))",
+          "Description": "Display name pulled from the related Capabilities row."
+        },
+        {
+          "name": "CapabilityTier",
+          "datatype": "string",
+          "type": "lookup",
+          "nullable": true,
+          "formula": "=INDEX(Capabilities!{{Tier}}, MATCH({{Capability}}, Capabilities!{{CapabilitiesId}}, 0))",
+          "Description": "Tier (foundational/composite/emergent) pulled from the related Capabilities row."
+        },
+        {
+          "name": "CapabilityWeight",
+          "datatype": "number",
+          "type": "lookup",
+          "nullable": true,
+          "formula": "=INDEX(Capabilities!{{Weight}}, MATCH({{Capability}}, Capabilities!{{CapabilitiesId}}, 0))",
+          "Description": "Importance multiplier pulled from the related Capabilities row."
+        },
+        {
+          "name": "WeightedScore",
+          "datatype": "number",
+          "type": "calculated",
+          "nullable": false,
+          "formula": "={{RawScore}}*{{CapabilityWeight}}",
+          "Description": "RawScore scaled by the capability's Weight. First hop in the DAG.",
+          "important": true,
+          "explanation_rich": "**The first hop \u2014 where the taxonomy decides what counts.** A `RawScore` of 95 on *memory* (weight 1.0) is worth 95; the same 95 on *creativity* (weight 1.5) is worth 142.5. The capability's `Weight` is the rulebook's editorial stance on what intelligence *is*. Worked example: *gpt-5* scores 95 on memory and 65 on creativity \u2014 weighted, those become 95 and 97.5, so creativity (just barely) outweighs memory in the rollup. Edit `creativity.Weight` from 1.5 down to 1.0 and watch every emergent-capability assessment cool off across all four intelligences simultaneously."
+        }
+      ],
+      "description": "Per-capability scores for each intelligence. The junction table whose calculated WeightedScore feeds the rollup on Intelligences.",
+      "answer_key": [
+        {
+          "assessments_id": "calculator-creativity",
+          "intelligence": "calculator",
+          "capability": "creativity",
+          "raw_score": 0,
+          "name": "calculator-creativity",
+          "weighted_score": 0
+        },
+        {
+          "assessments_id": "calculator-memory",
+          "intelligence": "calculator",
+          "capability": "memory",
+          "raw_score": 50,
+          "name": "calculator-memory",
+          "weighted_score": 0
+        },
+        {
+          "assessments_id": "calculator-perception",
+          "intelligence": "calculator",
+          "capability": "perception",
+          "raw_score": 10,
+          "name": "calculator-perception",
+          "weighted_score": 0
+        },
+        {
+          "assessments_id": "calculator-reasoning",
+          "intelligence": "calculator",
+          "capability": "reasoning",
+          "raw_score": 95,
+          "name": "calculator-reasoning",
+          "weighted_score": 0
+        },
+        {
+          "assessments_id": "gpt-5-creativity",
+          "intelligence": "gpt-5",
+          "capability": "creativity",
+          "raw_score": 65,
+          "name": "gpt-5-creativity",
+          "weighted_score": 0
+        },
+        {
+          "assessments_id": "gpt-5-memory",
+          "intelligence": "gpt-5",
+          "capability": "memory",
+          "raw_score": 95,
+          "name": "gpt-5-memory",
+          "weighted_score": 0
+        },
+        {
+          "assessments_id": "gpt-5-perception",
+          "intelligence": "gpt-5",
+          "capability": "perception",
+          "raw_score": 30,
+          "name": "gpt-5-perception",
+          "weighted_score": 0
+        },
+        {
+          "assessments_id": "gpt-5-reasoning",
+          "intelligence": "gpt-5",
+          "capability": "reasoning",
+          "raw_score": 80,
+          "name": "gpt-5-reasoning",
+          "weighted_score": 0
+        },
+        {
+          "assessments_id": "human-creativity",
+          "intelligence": "human",
+          "capability": "creativity",
+          "raw_score": 80,
+          "name": "human-creativity",
+          "weighted_score": 0
+        },
+        {
+          "assessments_id": "human-memory",
+          "intelligence": "human",
+          "capability": "memory",
+          "raw_score": 80,
+          "name": "human-memory",
+          "weighted_score": 0
+        },
+        {
+          "assessments_id": "human-perception",
+          "intelligence": "human",
+          "capability": "perception",
+          "raw_score": 85,
+          "name": "human-perception",
+          "weighted_score": 0
+        },
+        {
+          "assessments_id": "human-reasoning",
+          "intelligence": "human",
+          "capability": "reasoning",
+          "raw_score": 85,
+          "name": "human-reasoning",
+          "weighted_score": 0
+        },
+        {
+          "assessments_id": "octopus-creativity",
+          "intelligence": "octopus",
+          "capability": "creativity",
+          "raw_score": 70,
+          "name": "octopus-creativity",
+          "weighted_score": 0
+        },
+        {
+          "assessments_id": "octopus-memory",
+          "intelligence": "octopus",
+          "capability": "memory",
+          "raw_score": 60,
+          "name": "octopus-memory",
+          "weighted_score": 0
+        },
+        {
+          "assessments_id": "octopus-perception",
+          "intelligence": "octopus",
+          "capability": "perception",
+          "raw_score": 90,
+          "name": "octopus-perception",
+          "weighted_score": 0
+        },
+        {
+          "assessments_id": "octopus-reasoning",
+          "intelligence": "octopus",
+          "capability": "reasoning",
+          "raw_score": 65,
+          "name": "octopus-reasoning",
+          "weighted_score": 0
+        }
+      ]
+    }
+  },
+  "substrates": {
+    "effortless-postgres": {
+      "substrate": "effortless-postgres",
+      "total_fields_tested": 116,
+      "fields_passed": 26,
+      "fields_failed": 90,
+      "elapsed_seconds": 0.0,
+      "entities": {
+        "capabilities": {
+          "fields_tested": 4,
+          "fields_passed": 4,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "intelligences": {
+          "fields_tested": 16,
+          "fields_passed": 5,
+          "fields_failed": 11,
+          "failures": [
+            {
+              "pk": "calculator",
+              "field": "assessment_count",
+              "expected": "None",
+              "actual": "4"
+            },
+            {
+              "pk": "calculator",
+              "field": "total_weighted_score",
+              "expected": "None",
+              "actual": "183.5"
+            },
+            {
+              "pk": "gpt-5",
+              "field": "assessment_count",
+              "expected": "None",
+              "actual": "4"
+            },
+            {
+              "pk": "gpt-5",
+              "field": "total_weighted_score",
+              "expected": "None",
+              "actual": "326.5"
+            },
+            {
+              "pk": "gpt-5",
+              "field": "taxonomy_class",
+              "expected": "Narrow",
+              "actual": "Broad"
+            },
+            {
+              "pk": "human",
+              "field": "assessment_count",
+              "expected": "None",
+              "actual": "4"
+            },
+            {
+              "pk": "human",
+              "field": "total_weighted_score",
+              "expected": "None",
+              "actual": "395.5"
+            },
+            {
+              "pk": "human",
+              "field": "taxonomy_class",
+              "expected": "Narrow",
+              "actual": "Generalist"
+            },
+            {
+              "pk": "octopus",
+              "field": "assessment_count",
+              "expected": "None",
+              "actual": "4"
+            },
+            {
+              "pk": "octopus",
+              "field": "total_weighted_score",
+              "expected": "None",
+              "actual": "339.5"
+            },
+            {
+              "pk": "octopus",
+              "field": "taxonomy_class",
+              "expected": "Narrow",
+              "actual": "Broad"
+            }
+          ]
+        },
+        "assessments": {
+          "fields_tested": 96,
+          "fields_passed": 17,
+          "fields_failed": 79,
+          "failures": [
+            {
+              "pk": "calculator-creativity",
+              "field": "intelligence_name",
+              "expected": "None",
+              "actual": "calculator"
+            },
+            {
+              "pk": "calculator-creativity",
+              "field": "capability_name",
+              "expected": "None",
+              "actual": "creativity"
+            },
+            {
+              "pk": "calculator-creativity",
+              "field": "capability_tier",
+              "expected": "None",
+              "actual": "emergent"
+            },
+            {
+              "pk": "calculator-creativity",
+              "field": "capability_weight",
+              "expected": "None",
+              "actual": "1.5"
+            },
+            {
+              "pk": "calculator-memory",
+              "field": "intelligence_name",
+              "expected": "None",
+              "actual": "calculator"
+            },
+            {
+              "pk": "calculator-memory",
+              "field": "capability_name",
+              "expected": "None",
+              "actual": "memory"
+            },
+            {
+              "pk": "calculator-memory",
+              "field": "capability_tier",
+              "expected": "None",
+              "actual": "foundational"
+            },
+            {
+              "pk": "calculator-memory",
+              "field": "capability_weight",
+              "expected": "None",
+              "actual": "1.0"
+            },
+            {
+              "pk": "calculator-memory",
+              "field": "weighted_score",
+              "expected": "0",
+              "actual": "50.0"
+            },
+            {
+              "pk": "calculator-perception",
+              "field": "intelligence_name",
+              "expected": "None",
+              "actual": "calculator"
+            },
+            {
+              "pk": "calculator-perception",
+              "field": "capability_name",
+              "expected": "None",
+              "actual": "perception"
+            },
+            {
+              "pk": "calculator-perception",
+              "field": "capability_tier",
+              "expected": "None",
+              "actual": "foundational"
+            },
+            {
+              "pk": "calculator-perception",
+              "field": "capability_weight",
+              "expected": "None",
+              "actual": "1.0"
+            },
+            {
+              "pk": "calculator-perception",
+              "field": "weighted_score",
+              "expected": "0",
+              "actual": "10.0"
+            },
+            {
+              "pk": "calculator-reasoning",
+              "field": "intelligence_name",
+              "expected": "None",
+              "actual": "calculator"
+            },
+            {
+              "pk": "calculator-reasoning",
+              "field": "capability_name",
+              "expected": "None",
+              "actual": "reasoning"
+            },
+            {
+              "pk": "calculator-reasoning",
+              "field": "capability_tier",
+              "expected": "None",
+              "actual": "composite"
+            },
+            {
+              "pk": "calculator-reasoning",
+              "field": "capability_weight",
+              "expected": "None",
+              "actual": "1.3"
+            },
+            {
+              "pk": "calculator-reasoning",
+              "field": "weighted_score",
+              "expected": "0",
+              "actual": "123.5"
+            },
+            {
+              "pk": "gpt-5-creativity",
+              "field": "intelligence_name",
+              "expected": "None",
+              "actual": "gpt-5"
+            }
+          ]
+        }
+      },
+      "error": null,
+      "run_metadata": {
+        "last_run": {
+          "status": "success",
+          "duration_seconds": 0.0,
+          "exit_code": 0,
+          "score": 22.413793103448278
+        },
+        "last_successful_run": null
+      },
+      "test_answers": {
+        "capabilities": [
+          {
+            "capabilities_id": "creativity",
+            "description": "Novel synthesis, divergent thinking, and open-ended generation.",
+            "tier": "emergent",
+            "weight": 1.5,
+            "name": "creativity"
+          },
+          {
+            "capabilities_id": "memory",
+            "description": "Storing, retaining, and recalling information across time.",
+            "tier": "foundational",
+            "weight": 1.0,
+            "name": "memory"
+          },
+          {
+            "capabilities_id": "perception",
+            "description": "Sensing the environment and interpreting raw input into structure.",
+            "tier": "foundational",
+            "weight": 1.0,
+            "name": "perception"
+          },
+          {
+            "capabilities_id": "reasoning",
+            "description": "Inference, deduction, and structured problem-solving.",
+            "tier": "composite",
+            "weight": 1.3,
+            "name": "reasoning"
+          }
+        ],
+        "intelligences": [
+          {
+            "intelligences_id": "calculator",
+            "description": "A pocket arithmetic device.",
+            "substrate": "digital",
+            "name": "calculator",
+            "taxonomy_class": "Narrow"
+          },
+          {
+            "intelligences_id": "gpt-5",
+            "description": "A large language model trained on broad text.",
+            "substrate": "digital",
+            "name": "gpt-5",
+            "taxonomy_class": "Narrow"
+          },
+          {
+            "intelligences_id": "human",
+            "description": "A neurotypical human adult.",
+            "substrate": "biological",
+            "name": "human",
+            "taxonomy_class": "Narrow"
+          },
+          {
+            "intelligences_id": "octopus",
+            "description": "A cephalopod problem-solver with distributed cognition.",
+            "substrate": "biological",
+            "name": "octopus",
+            "taxonomy_class": "Narrow"
+          }
+        ],
+        "assessments": [
+          {
+            "assessments_id": "calculator-creativity",
+            "intelligence": "calculator",
+            "capability": "creativity",
+            "raw_score": 0,
+            "name": "calculator-creativity",
+            "weighted_score": 0
+          },
+          {
+            "assessments_id": "calculator-memory",
+            "intelligence": "calculator",
+            "capability": "memory",
+            "raw_score": 50,
+            "name": "calculator-memory",
+            "weighted_score": 0
+          },
+          {
+            "assessments_id": "calculator-perception",
+            "intelligence": "calculator",
+            "capability": "perception",
+            "raw_score": 10,
+            "name": "calculator-perception",
+            "weighted_score": 0
+          },
+          {
+            "assessments_id": "calculator-reasoning",
+            "intelligence": "calculator",
+            "capability": "reasoning",
+            "raw_score": 95,
+            "name": "calculator-reasoning",
+            "weighted_score": 0
+          },
+          {
+            "assessments_id": "gpt-5-creativity",
+            "intelligence": "gpt-5",
+            "capability": "creativity",
+            "raw_score": 65,
+            "name": "gpt-5-creativity",
+            "weighted_score": 0
+          },
+          {
+            "assessments_id": "gpt-5-memory",
+            "intelligence": "gpt-5",
+            "capability": "memory",
+            "raw_score": 95,
+            "name": "gpt-5-memory",
+            "weighted_score": 0
+          },
+          {
+            "assessments_id": "gpt-5-perception",
+            "intelligence": "gpt-5",
+            "capability": "perception",
+            "raw_score": 30,
+            "name": "gpt-5-perception",
+            "weighted_score": 0
+          },
+          {
+            "assessments_id": "gpt-5-reasoning",
+            "intelligence": "gpt-5",
+            "capability": "reasoning",
+            "raw_score": 80,
+            "name": "gpt-5-reasoning",
+            "weighted_score": 0
+          },
+          {
+            "assessments_id": "human-creativity",
+            "intelligence": "human",
+            "capability": "creativity",
+            "raw_score": 80,
+            "name": "human-creativity",
+            "weighted_score": 0
+          },
+          {
+            "assessments_id": "human-memory",
+            "intelligence": "human",
+            "capability": "memory",
+            "raw_score": 80,
+            "name": "human-memory",
+            "weighted_score": 0
+          },
+          {
+            "assessments_id": "human-perception",
+            "intelligence": "human",
+            "capability": "perception",
+            "raw_score": 85,
+            "name": "human-perception",
+            "weighted_score": 0
+          },
+          {
+            "assessments_id": "human-reasoning",
+            "intelligence": "human",
+            "capability": "reasoning",
+            "raw_score": 85,
+            "name": "human-reasoning",
+            "weighted_score": 0
+          },
+          {
+            "assessments_id": "octopus-creativity",
+            "intelligence": "octopus",
+            "capability": "creativity",
+            "raw_score": 70,
+            "name": "octopus-creativity",
+            "weighted_score": 0
+          },
+          {
+            "assessments_id": "octopus-memory",
+            "intelligence": "octopus",
+            "capability": "memory",
+            "raw_score": 60,
+            "name": "octopus-memory",
+            "weighted_score": 0
+          },
+          {
+            "assessments_id": "octopus-perception",
+            "intelligence": "octopus",
+            "capability": "perception",
+            "raw_score": 90,
+            "name": "octopus-perception",
+            "weighted_score": 0
+          },
+          {
+            "assessments_id": "octopus-reasoning",
+            "intelligence": "octopus",
+            "capability": "reasoning",
+            "raw_score": 65,
+            "name": "octopus-reasoning",
+            "weighted_score": 0
+          }
+        ]
+      },
+      "report_content": {
+        "tabs": [
+          {
+            "id": "description",
+            "label": "Description"
+          },
+          {
+            "id": "log",
+            "label": "Run Log"
+          },
+          {
+            "id": "results",
+            "label": "Test Results"
+          },
+          {
+            "id": "sql-bootstrap",
+            "label": "00 \u00b7 Bootstrap"
+          },
+          {
+            "id": "sql-tables",
+            "label": "01 \u00b7 Tables"
+          },
+          {
+            "id": "sql-tables-b",
+            "label": "01b \u00b7 Customize"
+          },
+          {
+            "id": "sql-fns",
+            "label": "02 \u00b7 Functions"
+          },
+          {
+            "id": "sql-fns-b",
+            "label": "02b \u00b7 Customize"
+          },
+          {
+            "id": "sql-views",
+            "label": "03 \u00b7 Views"
+          },
+          {
+            "id": "sql-views-b",
+            "label": "03b \u00b7 Customize"
+          },
+          {
+            "id": "sql-policies",
+            "label": "04 \u00b7 Policies"
+          },
+          {
+            "id": "sql-policies-b",
+            "label": "04b \u00b7 Customize"
+          },
+          {
+            "id": "sql-data",
+            "label": "05 \u00b7 Data"
+          },
+          {
+            "id": "sql-data-b",
+            "label": "05b \u00b7 Customize"
+          }
+        ],
+        "contents": {
+          "description": "<div class=\"card\">\n                <h2>What This Substrate Does</h2>\n                <p>PostgreSQL is the reference substrate. The <code>rulebook-to-postgres</code>\n                transpiler emits a complete schema &mdash; tables, type-safe\n                <code>calc_*</code> and <code>get_*</code> functions, aggregating views, RLS\n                policies and seed data &mdash; so the database itself enforces every\n                rule in the rulebook. Unlike the other substrates, PostgreSQL has <strong>no\n                expressive gaps</strong>: full joins, aggregations, recursive queries, all\n                formula types.</p>\n            </div>\n            <div class=\"card\">\n                <h2>Architecture</h2>\n                <div class=\"arch-diagram\">\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502               effortless-rulebook.json                       \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n                              \u2502  rulebook-to-postgres\n                              \u25bc\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502  postgres/                                                   \u2502\n\u2502    00-bootstrap.sql          \u2190 extensions, schemas, roles    \u2502\n\u2502    01-drop-and-create-tables.sql                             \u2502\n\u2502    01b-customize-schema.sql  \u2190 hand edits survive rebuilds   \u2502\n\u2502    02-create-functions.sql   \u2190 calc_*() per computed field   \u2502\n\u2502    02b-customize-functions.sql                               \u2502\n\u2502    03-create-views.sql       \u2190 vw_* with full joins + aggs   \u2502\n\u2502    03b-customize-views.sql                                   \u2502\n\u2502    04-create-policies.sql    \u2190 row-level security            \u2502\n\u2502    04b-customize-policies.sql                                \u2502\n\u2502    05-insert-data.sql        \u2190 seed records                  \u2502\n\u2502    05b-customize-data.sql                                    \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518</div>\n            </div>\n            <div class=\"card\">\n                <h2>Key Features</h2>\n                <ul>\n                    <li><strong>Reference implementation</strong> \u2014 the other substrates are graded against the same behaviour PostgreSQL produces.</li>\n                    <li><strong><code>calc_*</code> functions</strong> \u2014 every calculated field becomes a SQL function with the right types.</li>\n                    <li><strong><code>vw_*</code> views</strong> \u2014 application code reads views, never base tables, so derived values stay consistent.</li>\n                    <li><strong><code>*b-customize-*</code> files</strong> \u2014 hand edits live in sibling files that survive regeneration.</li>\n                    <li><strong>Row-level security</strong> \u2014 tenant isolation and role gating generated from rulebook metadata.</li>\n                </ul>\n            </div>\n            <div class=\"card\">\n                <h2>Generated Files</h2>\n                <ul>\n                    <li><code>00-bootstrap.sql</code> \u2014 extensions, schema, utility functions</li>\n                    <li><code>01-drop-and-create-tables.sql</code> \u2014 base tables with FKs</li>\n                    <li><code>02-create-functions.sql</code> \u2014 <code>calc_*</code> functions for every computed field</li>\n                    <li><code>03-create-views.sql</code> \u2014 <code>vw_*</code> views joining raw+computed</li>\n                    <li><code>04-create-policies.sql</code> \u2014 RLS and role-based policies</li>\n                    <li><code>05-insert-data.sql</code> \u2014 seed records from the rulebook</li>\n                    <li><code>*b-customize-*.sql</code> \u2014 hand-edit companion files that survive regeneration</li>\n                </ul>\n            </div>",
+          "log": "<div class=\"card\">\n                <h2>Execution Log</h2>\n                <pre>=== PostgreSQL Substrate Test Run ===\n\neffortless-postgres: Starting test...\neffortless-postgres: Connecting to database and querying views...\nPostgreSQL Substrate: Starting test...\nPostgreSQL Substrate: Connected to database\nPostgreSQL Substrate: Found 3 views\n  -&gt; assessments: 16 records\n  -&gt; capabilities: 4 records\n  -&gt; intelligences: 4 records\nPostgreSQL Substrate: Processed 3 views, 24 total records\n\n</pre>\n            </div>",
+          "results": "<div class=\"card\">\n                <h2>Test Summary</h2>\n                <div class=\"results-summary\">\n                    <div class=\"result-item\"><div class=\"result-value score-danger\">22.4%</div><div class=\"result-label\">Score</div></div>\n                    <div class=\"result-item\"><div class=\"result-value score-perfect\">26</div><div class=\"result-label\">Passed</div></div>\n                    <div class=\"result-item\"><div class=\"result-value\">90</div><div class=\"result-label\">Failed</div></div>\n                    <div class=\"result-item\"><div class=\"result-value\">116</div><div class=\"result-label\">Total</div></div>\n                </div>\n            </div>",
+          "sql-bootstrap": "<div class=\"card\">\n                <div class=\"code-header\">\n                    <h2>00 \u00b7 Bootstrap</h2>\n                    <div>\n                        <span class=\"code-info\">46 lines \u00b7 2 KB</span>\n                    </div>\n                </div>\n                <pre class=\"line-numbers\"><code class=\"language-sql\">-- ============================================================================\n-- 00-BOOTSTRAP - Run first by init-db.sh (overwrite Never)\n-- ============================================================================\n-- Use this file for one-time setup or to add your own bootstrap SQL.\n-- The full clean-slate drop is NOT hand-coded here. It is owned by the\n-- rulebook-to-postgres tool: effortless.json invokes it with\n-- `-p mode=drop-all -p stage=dev -p drop_all=true`, which emits the dynamic\n-- DROP (views -&gt; functions -&gt; tables, CASCADE) into 01-drop-and-create-tables.sql,\n-- a file the tool regenerates on EVERY build. Keeping the drop there (rather than\n-- in this overwrite-Never file) means the rebuild stays automatic and in sync\n-- with the tool \u2014 nothing to maintain by hand.\n--\n-- The commented block below is the tool&#x27;s reference clean-slate script, left\n-- here only as documentation. Uncomment it ONLY if you ever run init-db.sh\n-- without the drop-all mode and need a manual wipe.\n-- ============================================================================\n\n-- DO $$\n-- DECLARE r RECORD; v_count INTEGER := 0;\n-- BEGIN\n--     RAISE NOTICE &#x27;Dropping views...&#x27;;\n--     FOR r IN (SELECT table_name FROM information_schema.views WHERE table_schema = &#x27;public&#x27;) LOOP\n--         EXECUTE &#x27;DROP VIEW IF EXISTS &#x27; || quote_ident(r.table_name) || &#x27; CASCADE&#x27;;\n--         v_count := v_count + 1;\n--     END LOOP;\n--     RAISE NOTICE &#x27;Dropped % views&#x27;, v_count; v_count := 0;\n--\n--     RAISE NOTICE &#x27;Dropping functions...&#x27;;\n--     FOR r IN (SELECT DISTINCT p.proname as function_name, pg_get_function_identity_arguments(p.oid) as function_args\n--               FROM pg_proc p JOIN pg_namespace n ON p.pronamespace = n.oid\n--               WHERE n.nspname = &#x27;public&#x27; AND p.prokind = &#x27;f&#x27;) LOOP\n--         EXECUTE &#x27;DROP FUNCTION IF EXISTS &#x27; || quote_ident(r.function_name) || &#x27;(&#x27; || r.function_args || &#x27;) CASCADE&#x27;;\n--         v_count := v_count + 1;\n--     END LOOP;\n--     RAISE NOTICE &#x27;Dropped % functions&#x27;, v_count; v_count := 0;\n--\n--     RAISE NOTICE &#x27;Dropping tables...&#x27;;\n--     FOR r IN (SELECT table_name FROM information_schema.tables WHERE table_schema = &#x27;public&#x27; AND table_type = &#x27;BASE TABLE&#x27;) LOOP\n--         EXECUTE &#x27;DROP TABLE IF EXISTS &#x27; || quote_ident(r.table_name) || &#x27; CASCADE&#x27;;\n--         v_count := v_count + 1;\n--     END LOOP;\n--     RAISE NOTICE &#x27;Dropped % tables&#x27;, v_count;\n-- END $$;\n\n\n</code></pre>\n            </div>",
+          "sql-tables": "<div class=\"card\">\n                <div class=\"code-header\">\n                    <h2>01 \u00b7 Tables</h2>\n                    <div>\n                        <span class=\"code-info\">110 lines \u00b7 7 KB</span>\n                    </div>\n                </div>\n                <pre class=\"line-numbers\"><code class=\"language-sql\">-- ============================================================================\n-- DROP AND CREATE TABLES (drop-all mode) - Clean slate + Normalized schema\n-- ============================================================================\n-- GENERATED FILE \u2014 DO NOT EDIT. Rewritten by every `effortless build`.\n--\n-- SOURCE OF TRUTH: effortless-rulebook/effortless-rulebook.json\n-- Every table below is defined there. To add a table, a column, or a\n-- calculated field, edit the rulebook and rebuild \u2014 never this file, and\n-- never a *b-customize-*.sql file. A table defined outside the rulebook\n-- gets no view, no calculated fields, no RuleSpeak and no Explainer DAG.\n-- ============================================================================\n-- Generated by rulebook-to-postgres tool\n-- Mode: drop-all    Stage: dev\n-- Total Tables: 3\n-- Total Raw Fields: 9\n-- ============================================================================\n\nSET timezone = &#x27;UTC&#x27;;\n\n-- ============================================================================\n-- DROP ALL OBJECTS - Clean slate for database\n-- ============================================================================\n-- GENERATED FILE \u2014 DO NOT EDIT. Rewritten by every `effortless build`.\n-- Generated by rulebook-to-postgres tool\n-- ============================================================================\n\nDO $$ \nDECLARE r RECORD; v_count INTEGER := 0;\nBEGIN\n    RAISE NOTICE &#x27;Dropping views...&#x27;;\n    FOR r IN (SELECT table_name FROM information_schema.views WHERE table_schema = &#x27;public&#x27;) LOOP\n        EXECUTE &#x27;DROP VIEW IF EXISTS &#x27; || quote_ident(r.table_name) || &#x27; CASCADE&#x27;;\n        v_count := v_count + 1;\n    END LOOP;\n    RAISE NOTICE &#x27;Dropped % views&#x27;, v_count; v_count := 0;\n    \n    RAISE NOTICE &#x27;Dropping functions...&#x27;;\n    FOR r IN (SELECT DISTINCT p.proname as function_name, pg_get_function_identity_arguments(p.oid) as function_args\n              FROM pg_proc p JOIN pg_namespace n ON p.pronamespace = n.oid\n              WHERE n.nspname = &#x27;public&#x27; AND p.prokind = &#x27;f&#x27;) LOOP\n        EXECUTE &#x27;DROP FUNCTION IF EXISTS &#x27; || quote_ident(r.function_name) || &#x27;(&#x27; || r.function_args || &#x27;) CASCADE&#x27;;\n        v_count := v_count + 1;\n    END LOOP;\n    RAISE NOTICE &#x27;Dropped % functions&#x27;, v_count; v_count := 0;\n    \n    RAISE NOTICE &#x27;Dropping tables...&#x27;;\n    FOR r IN (SELECT table_name FROM information_schema.tables WHERE table_schema = &#x27;public&#x27; AND table_type = &#x27;BASE TABLE&#x27;) LOOP\n        EXECUTE &#x27;DROP TABLE IF EXISTS &#x27; || quote_ident(r.table_name) || &#x27; CASCADE&#x27;;\n        v_count := v_count + 1;\n    END LOOP;\n    RAISE NOTICE &#x27;Dropped % tables&#x27;, v_count;\nEND $$;\n\n-- ============================================================================\n-- CREATE TABLES - Normalized data only (no calculated fields)\n-- ============================================================================\n\n-- ----------------------------------------------------------------------------\n-- Capabilities: Cognitive capabilities being assessed. Tiered foundational/composite/emergent and weighted by importance.\n-- ----------------------------------------------------------------------------\nCREATE TABLE capabilities (\n  capabilities_id                     TEXT                 PRIMARY KEY,         -- Slug for the capability (e.g. &#x27;reasoning&#x27;). First raw field is the PK.\n  description                         TEXT                ,                     -- Short prose describing the capability.\n  tier                                TEXT                ,                     -- Capability tier: foundational, composite, or emergent.\n  weight                              NUMERIC                                   -- Importance multiplier used when computing WeightedScore on each Assessment.\n);\nCOMMENT ON TABLE capabilities IS &#x27;Cognitive capabilities being assessed. Tiered foundational/composite/emergent and weighted by importance.&#x27;;\nCOMMENT ON COLUMN capabilities.capabilities_id IS &#x27;Slug for the capability (e.g. &#x27;&#x27;reasoning&#x27;&#x27;). First raw field is the PK.&#x27;;\nCOMMENT ON COLUMN capabilities.description IS &#x27;Short prose describing the capability.&#x27;;\nCOMMENT ON COLUMN capabilities.tier IS &#x27;Capability tier: foundational, composite, or emergent.&#x27;;\nCOMMENT ON COLUMN capabilities.weight IS &#x27;Importance multiplier used when computing WeightedScore on each Assessment.&#x27;;\n\n-- ----------------------------------------------------------------------------\n-- Intelligences: Agents being classified by the taxonomy. Each Intelligence&#x27;s TaxonomyClass is derived from the rollup of its Assessments.\n-- ----------------------------------------------------------------------------\nCREATE TABLE intelligences (\n  intelligences_id                    TEXT                 PRIMARY KEY,         -- Slug for the intelligence (e.g. &#x27;human&#x27;). First raw field is the PK.\n  description                         TEXT                ,                     -- Short prose describing what this intelligence is.\n  substrate                           TEXT                                      -- Substrate kind: biological, digital, or collective.\n);\nCOMMENT ON TABLE intelligences IS &#x27;Agents being classified by the taxonomy. Each Intelligence&#x27;&#x27;s TaxonomyClass is derived from the rollup of its Assessments.&#x27;;\nCOMMENT ON COLUMN intelligences.intelligences_id IS &#x27;Slug for the intelligence (e.g. &#x27;&#x27;human&#x27;&#x27;). First raw field is the PK.&#x27;;\nCOMMENT ON COLUMN intelligences.description IS &#x27;Short prose describing what this intelligence is.&#x27;;\nCOMMENT ON COLUMN intelligences.substrate IS &#x27;Substrate kind: biological, digital, or collective.&#x27;;\n\n-- ----------------------------------------------------------------------------\n-- Assessments: Per-capability scores for each intelligence. The junction table whose calculated WeightedScore feeds the rollup on Intelligences.\n-- ----------------------------------------------------------------------------\nCREATE TABLE assessments (\n  assessments_id                      TEXT                 PRIMARY KEY,         -- Slug encoding the intelligence-capability pair (e.g. &#x27;human-reasoning&#x27;). First raw field is the PK.\n  intelligence                        TEXT                ,                     -- FK to Intelligences. Holds the value of Intelligences.IntelligencesId.\n  capability                          TEXT                ,                     -- FK to Capabilities. Holds the value of Capabilities.CapabilitiesId.\n  raw_score                           INTEGER                                   -- User-editable assessment score from 0 to 100. Edit this in the UI to watch the cascade.\n);\nCOMMENT ON TABLE assessments IS &#x27;Per-capability scores for each intelligence. The junction table whose calculated WeightedScore feeds the rollup on Intelligences.&#x27;;\nCOMMENT ON COLUMN assessments.assessments_id IS &#x27;Slug encoding the intelligence-capability pair (e.g. &#x27;&#x27;human-reasoning&#x27;&#x27;). First raw field is the PK.&#x27;;\nCOMMENT ON COLUMN assessments.intelligence IS &#x27;FK to Intelligences. Holds the value of Intelligences.IntelligencesId.&#x27;;\nCOMMENT ON COLUMN assessments.capability IS &#x27;FK to Capabilities. Holds the value of Capabilities.CapabilitiesId.&#x27;;\nCOMMENT ON COLUMN assessments.raw_score IS &#x27;User-editable assessment score from 0 to 100. Edit this in the UI to watch the cascade.&#x27;;\n\n-- ============================================================================\n-- FK INDEXES - Performance only, always applied\n-- ============================================================================\n\n-- Assessments\nCREATE INDEX IF NOT EXISTS idx_assessments_intelligence ON assessments (intelligence);\nCREATE INDEX IF NOT EXISTS idx_assessments_capability ON assessments (capability);\n\n-- 2 FK index(es) declared.\n</code></pre>\n            </div>",
+          "sql-tables-b": "<div class=\"card\">\n                <div class=\"code-header\">\n                    <h2>01b \u00b7 Customize</h2>\n                    <div>\n                        <span class=\"code-info\">16 lines \u00b7 1 KB</span>\n                    </div>\n                </div>\n                <pre class=\"line-numbers\"><code class=\"language-sql\">-- ============================================================================\n-- CUSTOMIZE SCHEMA - User-defined schema customizations\n-- ============================================================================\n-- This file is for YOUR custom changes that should persist across\n-- regeneration of the base ERB files.\n--\n-- IMPORTANT:\n--   - This file runs AFTER the main schema script\n--   - Define your customizations in the ERBCustomizations table in Airtable\n--   - Those changes will appear here after the next build\n--\n-- ============================================================================\n\n-- Your custom schema changes will appear here:\n\n</code></pre>\n            </div>",
+          "sql-fns": "<div class=\"card\">\n                <div class=\"code-header\">\n                    <h2>02 \u00b7 Functions</h2>\n                    <div>\n                        <span class=\"code-info\">190 lines \u00b7 8 KB</span>\n                    </div>\n                </div>\n                <pre class=\"line-numbers\"><code class=\"language-sql\">-- ============================================================================\n-- CREATE FUNCTIONS - Calculation functions for lookup/calculated fields\n-- ============================================================================\n-- Generated by rulebook-to-postgres tool\n-- Mode: drop-all    Stage: dev\n-- ============================================================================\n\n\n-- Disable body validation so LANGUAGE sql functions can forward-reference\n-- each other within this file. (pg_dump does the same thing for the same\n-- reason.) Without this, SQL functions parse-check at CREATE time and fail\n-- on the first forward call site; plpgsql didn&#x27;t, which is how this file\n-- ever worked. Dependency order is still enforced at EXECUTION time.\nSET check_function_bodies = off;\n\n-- ============================================================================\n-- LOOKUP FUNCTIONS\n-- These functions perform lookups via foreign key relationships\n-- ============================================================================\n\n-- calc_capabilities_name\n-- Field: Capabilities.Name\n-- Type: calculated | DataType: string | Returns: TEXT\n\n\nCREATE OR REPLACE FUNCTION calc_capabilities_name(p_capabilities_id TEXT)\nRETURNS TEXT AS $$\n  SELECT ((SELECT NULLIF(capabilities_id, &#x27;&#x27;) FROM capabilities WHERE capabilities_id = p_capabilities_id))::text;\n$$ LANGUAGE sql STABLE;\n\n-- calc_intelligences_name\n-- Field: Intelligences.Name\n-- Type: calculated | DataType: string | Returns: TEXT\n\n\nCREATE OR REPLACE FUNCTION calc_intelligences_name(p_intelligences_id TEXT)\nRETURNS TEXT AS $$\n  SELECT ((SELECT NULLIF(intelligences_id, &#x27;&#x27;) FROM intelligences WHERE intelligences_id = p_intelligences_id))::text;\n$$ LANGUAGE sql STABLE;\n\n-- calc_intelligences_assessment_count\n-- Field: Intelligences.AssessmentCount\n-- Type: aggregation | DataType: integer | Returns: INTEGER\n\n\nCREATE OR REPLACE FUNCTION calc_intelligences_assessment_count(p_intelligences_id TEXT)\nRETURNS INTEGER AS $$\n  SELECT ((SELECT COUNT(*) FROM assessments WHERE intelligence = (SELECT NULLIF(intelligences_id, &#x27;&#x27;) FROM intelligences WHERE intelligences_id = p_intelligences_id)))::integer;\n$$ LANGUAGE sql STABLE;\n\n-- calc_intelligences_total_weighted_score\n-- Field: Intelligences.TotalWeightedScore\n-- Type: aggregation | DataType: number | Returns: NUMERIC\n\n\nCREATE OR REPLACE FUNCTION calc_intelligences_total_weighted_score(p_intelligences_id TEXT)\nRETURNS NUMERIC AS $$\n  SELECT ((SELECT COALESCE(SUM((calc_assessments_weighted_score(assessments_id))::numeric), 0) FROM assessments WHERE intelligence = p_intelligences_id))::numeric;\n$$ LANGUAGE sql STABLE;\n\n-- calc_intelligences_taxonomy_class\n-- Field: Intelligences.TaxonomyClass\n-- Type: calculated | DataType: string | Returns: TEXT\n\n\nCREATE OR REPLACE FUNCTION calc_intelligences_taxonomy_class(p_intelligences_id TEXT)\nRETURNS TEXT AS $$\n  WITH __erb_dedup_v1 AS (SELECT calc_intelligences_total_weighted_score(p_intelligences_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC &gt;= 350 THEN (&#x27;Generalist&#x27;)::text ELSE (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC &gt;= 220 THEN (&#x27;Broad&#x27;)::text ELSE (&#x27;Narrow&#x27;)::text END)::text END)::text;\n$$ LANGUAGE sql STABLE;\n\n-- calc_assessments_intelligence_name\n-- Field: Assessments.IntelligenceName\n-- Type: lookup | DataType: string | Returns: TEXT\n-- Lookup: Name from related Intelligences\n\n\nCREATE OR REPLACE FUNCTION calc_assessments_intelligence_name(p_assessments_id TEXT)\nRETURNS TEXT AS $$\n  SELECT calc_intelligences_name((SELECT intelligence FROM assessments WHERE assessments_id = p_assessments_id));\n$$ LANGUAGE sql STABLE;\n\n-- calc_assessments_capability_name\n-- Field: Assessments.CapabilityName\n-- Type: lookup | DataType: string | Returns: TEXT\n-- Lookup: Name from related Capabilities\n\n\nCREATE OR REPLACE FUNCTION calc_assessments_capability_name(p_assessments_id TEXT)\nRETURNS TEXT AS $$\n  SELECT calc_capabilities_name((SELECT capability FROM assessments WHERE assessments_id = p_assessments_id));\n$$ LANGUAGE sql STABLE;\n\n-- calc_assessments_capability_tier\n-- Field: Assessments.CapabilityTier\n-- Type: lookup | DataType: string | Returns: TEXT\n-- Lookup: Tier from related Capabilities\n\n\nCREATE OR REPLACE FUNCTION calc_assessments_capability_tier(p_assessments_id TEXT)\nRETURNS TEXT AS $$\n  SELECT (SELECT tier::text FROM capabilities WHERE capabilities_id = (SELECT capability FROM assessments WHERE assessments_id = p_assessments_id));\n$$ LANGUAGE sql STABLE;\n\n-- calc_assessments_capability_weight\n-- Field: Assessments.CapabilityWeight\n-- Type: lookup | DataType: number | Returns: NUMERIC\n-- Lookup: Weight from related Capabilities\n\n\nCREATE OR REPLACE FUNCTION calc_assessments_capability_weight(p_assessments_id TEXT)\nRETURNS NUMERIC AS $$\n  SELECT (SELECT weight::numeric FROM capabilities WHERE capabilities_id = (SELECT capability FROM assessments WHERE assessments_id = p_assessments_id));\n$$ LANGUAGE sql STABLE;\n\n-- get_intelligences_description\n-- Helper function: Get Description from Intelligences by IntelligencesId\n-- Used for join-free cross-table references in aggregations\n\nCREATE OR REPLACE FUNCTION get_intelligences_description(p_intelligences_id TEXT)\nRETURNS TEXT AS $$\n  SELECT (SELECT description FROM intelligences WHERE intelligences_id = p_intelligences_id);\n$$ LANGUAGE sql STABLE;\n\n-- get_intelligences_substrate\n-- Helper function: Get Substrate from Intelligences by IntelligencesId\n-- Used for join-free cross-table references in aggregations\n\nCREATE OR REPLACE FUNCTION get_intelligences_substrate(p_intelligences_id TEXT)\nRETURNS TEXT AS $$\n  SELECT (SELECT substrate FROM intelligences WHERE intelligences_id = p_intelligences_id);\n$$ LANGUAGE sql STABLE;\n\n-- get_capabilities_description\n-- Helper function: Get Description from Capabilities by CapabilitiesId\n-- Used for join-free cross-table references in aggregations\n\nCREATE OR REPLACE FUNCTION get_capabilities_description(p_capabilities_id TEXT)\nRETURNS TEXT AS $$\n  SELECT (SELECT description FROM capabilities WHERE capabilities_id = p_capabilities_id);\n$$ LANGUAGE sql STABLE;\n\n-- get_capabilities_tier\n-- Helper function: Get Tier from Capabilities by CapabilitiesId\n-- Used for join-free cross-table references in aggregations\n\nCREATE OR REPLACE FUNCTION get_capabilities_tier(p_capabilities_id TEXT)\nRETURNS TEXT AS $$\n  SELECT (SELECT tier FROM capabilities WHERE capabilities_id = p_capabilities_id);\n$$ LANGUAGE sql STABLE;\n\n-- get_capabilities_weight\n-- Helper function: Get Weight from Capabilities by CapabilitiesId\n-- Used for join-free cross-table references in aggregations\n\nCREATE OR REPLACE FUNCTION get_capabilities_weight(p_capabilities_id TEXT)\nRETURNS NUMERIC AS $$\n  SELECT (SELECT weight FROM capabilities WHERE capabilities_id = p_capabilities_id);\n$$ LANGUAGE sql STABLE;\n\n-- calc_assessments_name\n-- Field: Assessments.Name\n-- Type: calculated | DataType: string | Returns: TEXT\n\n\nCREATE OR REPLACE FUNCTION calc_assessments_name(p_assessments_id TEXT)\nRETURNS TEXT AS $$\n  SELECT ((SELECT NULLIF(assessments_id, &#x27;&#x27;) FROM assessments WHERE assessments_id = p_assessments_id))::text;\n$$ LANGUAGE sql STABLE;\n\n-- calc_assessments_weighted_score\n-- Field: Assessments.WeightedScore\n-- Type: calculated | DataType: number | Returns: NUMERIC\n\n\nCREATE OR REPLACE FUNCTION calc_assessments_weighted_score(p_assessments_id TEXT)\nRETURNS NUMERIC AS $$\n  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ &#x27;^-?[0-9]*\\.?[0-9]+$&#x27; THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT raw_score FROM assessments WHERE assessments_id = p_assessments_id)) AS v) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ &#x27;^-?[0-9]*\\.?[0-9]+$&#x27; THEN v::numeric ELSE NULL END FROM (SELECT (calc_assessments_capability_weight(p_assessments_id)) AS v) __safe_numeric), 0)))::numeric;\n$$ LANGUAGE sql STABLE;\n\n-- ============================================================================\n-- MANY-SIDE RELATIONSHIP FUNCTIONS\n-- These functions aggregate child records for many-side relationships\n-- ============================================================================\n\n-- ============================================================================\n-- INVERSE RELATIONSHIP FUNCTIONS\n-- These functions perform reverse FK lookups for inverse-side relationships\n-- ============================================================================\n\n</code></pre>\n            </div>",
+          "sql-fns-b": "<div class=\"card\">\n                <div class=\"code-header\">\n                    <h2>02b \u00b7 Customize</h2>\n                    <div>\n                        <span class=\"code-info\">16 lines \u00b7 1 KB</span>\n                    </div>\n                </div>\n                <pre class=\"line-numbers\"><code class=\"language-sql\">-- ============================================================================\n-- CUSTOMIZE FUNCTIONS - User-defined functions customizations\n-- ============================================================================\n-- This file is for YOUR custom changes that should persist across\n-- regeneration of the base ERB files.\n--\n-- IMPORTANT:\n--   - This file runs AFTER the main functions script\n--   - Define your customizations in the ERBCustomizations table in Airtable\n--   - Those changes will appear here after the next build\n--\n-- ============================================================================\n\n-- Your custom functions changes will appear here:\n\n</code></pre>\n            </div>",
+          "sql-views": "<div class=\"card\">\n                <div class=\"code-header\">\n                    <h2>03 \u00b7 Views</h2>\n                    <div>\n                        <span class=\"code-info\">66 lines \u00b7 5 KB</span>\n                    </div>\n                </div>\n                <pre class=\"line-numbers\"><code class=\"language-sql\">-- ============================================================================\n-- CREATE VIEWS - Combine raw data with calculated fields\n-- ============================================================================\n-- Generated by rulebook-to-postgres tool\n-- Mode: drop-all    Stage: dev\n-- Total Views: 3\n-- ============================================================================\n\n-- ----------------------------------------------------------------------------\n-- Drop pass: every rulebook-owned view, reverse iteration order, CASCADE.\n-- The rulebook is HEAD \u2014 the surviving view set must mirror it exactly.\n-- ----------------------------------------------------------------------------\nDROP VIEW IF EXISTS vw_assessments CASCADE;\nDROP VIEW IF EXISTS vw_intelligences CASCADE;\nDROP VIEW IF EXISTS vw_capabilities CASCADE;\n\n-- ----------------------------------------------------------------------------\n-- vw_capabilities: Cognitive capabilities being assessed. Tiered foundational/composite/emergent and weighted by importance.\n-- Combines base table columns with calculated/lookup/aggregation fields.\n-- ----------------------------------------------------------------------------\nDROP VIEW IF EXISTS vw_capabilities CASCADE;\nCREATE VIEW vw_capabilities WITH (security_invoker = ON) AS\nSELECT\n  t.capabilities_id,                                                            -- Slug for the capability (e.g. &#x27;reasoning&#x27;). First raw field is the PK.\n  calc_capabilities_name(t.capabilities_id) AS name,                            -- Display name (derived from PK).\n  t.description,                                                                -- Short prose describing the capability.\n  t.tier,                                                                       -- Capability tier: foundational, composite, or emergent.\n  t.weight                                                                      -- Importance multiplier used when computing WeightedScore on each Assessment.\nFROM capabilities t;\n\n-- ----------------------------------------------------------------------------\n-- vw_intelligences: Agents being classified by the taxonomy. Each Intelligence&#x27;s TaxonomyClass is derived from the rollup of its Assessments.\n-- Combines base table columns with calculated/lookup/aggregation fields.\n-- ----------------------------------------------------------------------------\nDROP VIEW IF EXISTS vw_intelligences CASCADE;\nCREATE VIEW vw_intelligences WITH (security_invoker = ON) AS\nSELECT\n  t.intelligences_id,                                                           -- Slug for the intelligence (e.g. &#x27;human&#x27;). First raw field is the PK.\n  calc_intelligences_name(t.intelligences_id) AS name,                          -- Display name (derived from PK).\n  t.description,                                                                -- Short prose describing what this intelligence is.\n  t.substrate,                                                                  -- Substrate kind: biological, digital, or collective.\n  calc_intelligences_assessment_count(t.intelligences_id) AS assessment_count,  -- How many capabilities this intelligence has been assessed on.\n  calc_intelligences_total_weighted_score(t.intelligences_id) AS total_weighted_score,-- Sum of WeightedScore across all this intelligence&#x27;s assessments. Second hop in the DAG.\n  calc_intelligences_taxonomy_class(t.intelligences_id) AS taxonomy_class       -- Taxonomic bucket derived from TotalWeightedScore. Third hop in the DAG.\nFROM intelligences t;\n\n-- ----------------------------------------------------------------------------\n-- vw_assessments: Per-capability scores for each intelligence. The junction table whose calculated WeightedScore feeds the rollup on Intelligences.\n-- Combines base table columns with calculated/lookup/aggregation fields.\n-- ----------------------------------------------------------------------------\nDROP VIEW IF EXISTS vw_assessments CASCADE;\nCREATE VIEW vw_assessments WITH (security_invoker = ON) AS\nSELECT\n  t.assessments_id,                                                             -- Slug encoding the intelligence-capability pair (e.g. &#x27;human-reasoning&#x27;). First raw field is the PK.\n  calc_assessments_name(t.assessments_id) AS name,                              -- Display name (derived from PK).\n  t.intelligence,                                                               -- FK to Intelligences. Holds the value of Intelligences.IntelligencesId.\n  t.capability,                                                                 -- FK to Capabilities. Holds the value of Capabilities.CapabilitiesId.\n  t.raw_score,                                                                  -- User-editable assessment score from 0 to 100. Edit this in the UI to watch the cascade.\n  calc_assessments_intelligence_name(t.assessments_id) AS intelligence_name,    -- Display name pulled from the related Intelligences row.\n  calc_assessments_capability_name(t.assessments_id) AS capability_name,        -- Display name pulled from the related Capabilities row.\n  calc_assessments_capability_tier(t.assessments_id) AS capability_tier,        -- Tier (foundational/composite/emergent) pulled from the related Capabilities row.\n  calc_assessments_capability_weight(t.assessments_id) AS capability_weight,    -- Importance multiplier pulled from the related Capabilities row.\n  calc_assessments_weighted_score(t.assessments_id) AS weighted_score           -- RawScore scaled by the capability&#x27;s Weight. First hop in the DAG.\nFROM assessments t;\n\n</code></pre>\n            </div>",
+          "sql-views-b": "<div class=\"card\">\n                <div class=\"code-header\">\n                    <h2>03b \u00b7 Customize</h2>\n                    <div>\n                        <span class=\"code-info\">16 lines \u00b7 1 KB</span>\n                    </div>\n                </div>\n                <pre class=\"line-numbers\"><code class=\"language-sql\">-- ============================================================================\n-- CUSTOMIZE VIEWS - User-defined views customizations\n-- ============================================================================\n-- This file is for YOUR custom changes that should persist across\n-- regeneration of the base ERB files.\n--\n-- IMPORTANT:\n--   - This file runs AFTER the main views script\n--   - Define your customizations in the ERBCustomizations table in Airtable\n--   - Those changes will appear here after the next build\n--\n-- ============================================================================\n\n-- Your custom views changes will appear here:\n\n</code></pre>\n            </div>",
+          "sql-policies": "<div class=\"card\">\n                <div class=\"code-header\">\n                    <h2>04 \u00b7 Policies</h2>\n                    <div>\n                        <span class=\"code-info\">19 lines \u00b7 1 KB</span>\n                    </div>\n                </div>\n                <pre class=\"line-numbers\"><code class=\"language-sql\">-- ============================================================================\n-- CREATE POLICIES - Row Level Security policies\n-- ============================================================================\n-- Generated by rulebook-to-postgres tool\n-- Mode: drop-all    Stage: dev\n-- ============================================================================\n\n-- Enable RLS on all tables\n\nALTER TABLE capabilities ENABLE ROW LEVEL SECURITY;\nALTER TABLE intelligences ENABLE ROW LEVEL SECURITY;\nALTER TABLE assessments ENABLE ROW LEVEL SECURITY;\n\n-- TODO: Add specific RLS policies based on your security requirements\n-- Example:\n-- CREATE POLICY &quot;Users can view their own data&quot; ON app_user\n--   FOR SELECT USING (auth.uid() = user_id);\n\n</code></pre>\n            </div>",
+          "sql-policies-b": "<div class=\"card\">\n                <div class=\"code-header\">\n                    <h2>04b \u00b7 Customize</h2>\n                    <div>\n                        <span class=\"code-info\">16 lines \u00b7 1 KB</span>\n                    </div>\n                </div>\n                <pre class=\"line-numbers\"><code class=\"language-sql\">-- ============================================================================\n-- CUSTOMIZE POLICIES - User-defined policies customizations\n-- ============================================================================\n-- This file is for YOUR custom changes that should persist across\n-- regeneration of the base ERB files.\n--\n-- IMPORTANT:\n--   - This file runs AFTER the main policies script\n--   - Define your customizations in the ERBCustomizations table in Airtable\n--   - Those changes will appear here after the next build\n--\n-- ============================================================================\n\n-- Your custom policies changes will appear here:\n\n</code></pre>\n            </div>",
+          "sql-data": "<div class=\"card\">\n                <div class=\"code-header\">\n                    <h2>05 \u00b7 Data</h2>\n                    <div>\n                        <span class=\"code-info\">90 lines \u00b7 7 KB</span>\n                    </div>\n                </div>\n                <pre class=\"line-numbers\"><code class=\"language-sql\">-- ============================================================================\n-- INSERT DATA - Load data from rulebook\n-- ============================================================================\n-- Generated by rulebook-to-postgres tool\n-- Mode: drop-all    Stage: dev\n-- PK strategy: string (FK values are rewritten to match each PK)\n-- ============================================================================\n\n-- ----------------------------------------------------------------------------\n-- Capabilities: Cognitive capabilities being assessed. Tiered foundational/composite/emergent and weighted by importance.\n-- ----------------------------------------------------------------------------\nINSERT INTO capabilities (capabilities_id, description, tier, weight)\nVALUES (&#x27;memory&#x27;, &#x27;Storing, retaining, and recalling information across time.&#x27;, &#x27;foundational&#x27;, 1.0) ON CONFLICT (capabilities_id) DO UPDATE SET description = EXCLUDED.description, tier = EXCLUDED.tier, weight = EXCLUDED.weight;\n\nINSERT INTO capabilities (capabilities_id, description, tier, weight)\nVALUES (&#x27;perception&#x27;, &#x27;Sensing the environment and interpreting raw input into structure.&#x27;, &#x27;foundational&#x27;, 1.0) ON CONFLICT (capabilities_id) DO UPDATE SET description = EXCLUDED.description, tier = EXCLUDED.tier, weight = EXCLUDED.weight;\n\nINSERT INTO capabilities (capabilities_id, description, tier, weight)\nVALUES (&#x27;reasoning&#x27;, &#x27;Inference, deduction, and structured problem-solving.&#x27;, &#x27;composite&#x27;, 1.3) ON CONFLICT (capabilities_id) DO UPDATE SET description = EXCLUDED.description, tier = EXCLUDED.tier, weight = EXCLUDED.weight;\n\nINSERT INTO capabilities (capabilities_id, description, tier, weight)\nVALUES (&#x27;creativity&#x27;, &#x27;Novel synthesis, divergent thinking, and open-ended generation.&#x27;, &#x27;emergent&#x27;, 1.5) ON CONFLICT (capabilities_id) DO UPDATE SET description = EXCLUDED.description, tier = EXCLUDED.tier, weight = EXCLUDED.weight;\n\n-- ----------------------------------------------------------------------------\n-- Intelligences: Agents being classified by the taxonomy. Each Intelligence&#x27;s TaxonomyClass is derived from the rollup of its Assessments.\n-- ----------------------------------------------------------------------------\nINSERT INTO intelligences (intelligences_id, description, substrate)\nVALUES (&#x27;human&#x27;, &#x27;A neurotypical human adult.&#x27;, &#x27;biological&#x27;) ON CONFLICT (intelligences_id) DO UPDATE SET description = EXCLUDED.description, substrate = EXCLUDED.substrate;\n\nINSERT INTO intelligences (intelligences_id, description, substrate)\nVALUES (&#x27;octopus&#x27;, &#x27;A cephalopod problem-solver with distributed cognition.&#x27;, &#x27;biological&#x27;) ON CONFLICT (intelligences_id) DO UPDATE SET description = EXCLUDED.description, substrate = EXCLUDED.substrate;\n\nINSERT INTO intelligences (intelligences_id, description, substrate)\nVALUES (&#x27;gpt-5&#x27;, &#x27;A large language model trained on broad text.&#x27;, &#x27;digital&#x27;) ON CONFLICT (intelligences_id) DO UPDATE SET description = EXCLUDED.description, substrate = EXCLUDED.substrate;\n\nINSERT INTO intelligences (intelligences_id, description, substrate)\nVALUES (&#x27;calculator&#x27;, &#x27;A pocket arithmetic device.&#x27;, &#x27;digital&#x27;) ON CONFLICT (intelligences_id) DO UPDATE SET description = EXCLUDED.description, substrate = EXCLUDED.substrate;\n\n-- ----------------------------------------------------------------------------\n-- Assessments: Per-capability scores for each intelligence. The junction table whose calculated WeightedScore feeds the rollup on Intelligences.\n-- ----------------------------------------------------------------------------\nINSERT INTO assessments (assessments_id, intelligence, capability, raw_score)\nVALUES (&#x27;human-memory&#x27;, &#x27;human&#x27;, &#x27;memory&#x27;, 80) ON CONFLICT (assessments_id) DO UPDATE SET intelligence = EXCLUDED.intelligence, capability = EXCLUDED.capability, raw_score = EXCLUDED.raw_score;\n\nINSERT INTO assessments (assessments_id, intelligence, capability, raw_score)\nVALUES (&#x27;human-perception&#x27;, &#x27;human&#x27;, &#x27;perception&#x27;, 85) ON CONFLICT (assessments_id) DO UPDATE SET intelligence = EXCLUDED.intelligence, capability = EXCLUDED.capability, raw_score = EXCLUDED.raw_score;\n\nINSERT INTO assessments (assessments_id, intelligence, capability, raw_score)\nVALUES (&#x27;human-reasoning&#x27;, &#x27;human&#x27;, &#x27;reasoning&#x27;, 85) ON CONFLICT (assessments_id) DO UPDATE SET intelligence = EXCLUDED.intelligence, capability = EXCLUDED.capability, raw_score = EXCLUDED.raw_score;\n\nINSERT INTO assessments (assessments_id, intelligence, capability, raw_score)\nVALUES (&#x27;human-creativity&#x27;, &#x27;human&#x27;, &#x27;creativity&#x27;, 80) ON CONFLICT (assessments_id) DO UPDATE SET intelligence = EXCLUDED.intelligence, capability = EXCLUDED.capability, raw_score = EXCLUDED.raw_score;\n\nINSERT INTO assessments (assessments_id, intelligence, capability, raw_score)\nVALUES (&#x27;octopus-memory&#x27;, &#x27;octopus&#x27;, &#x27;memory&#x27;, 60) ON CONFLICT (assessments_id) DO UPDATE SET intelligence = EXCLUDED.intelligence, capability = EXCLUDED.capability, raw_score = EXCLUDED.raw_score;\n\nINSERT INTO assessments (assessments_id, intelligence, capability, raw_score)\nVALUES (&#x27;octopus-perception&#x27;, &#x27;octopus&#x27;, &#x27;perception&#x27;, 90) ON CONFLICT (assessments_id) DO UPDATE SET intelligence = EXCLUDED.intelligence, capability = EXCLUDED.capability, raw_score = EXCLUDED.raw_score;\n\nINSERT INTO assessments (assessments_id, intelligence, capability, raw_score)\nVALUES (&#x27;octopus-reasoning&#x27;, &#x27;octopus&#x27;, &#x27;reasoning&#x27;, 65) ON CONFLICT (assessments_id) DO UPDATE SET intelligence = EXCLUDED.intelligence, capability = EXCLUDED.capability, raw_score = EXCLUDED.raw_score;\n\nINSERT INTO assessments (assessments_id, intelligence, capability, raw_score)\nVALUES (&#x27;octopus-creativity&#x27;, &#x27;octopus&#x27;, &#x27;creativity&#x27;, 70) ON CONFLICT (assessments_id) DO UPDATE SET intelligence = EXCLUDED.intelligence, capability = EXCLUDED.capability, raw_score = EXCLUDED.raw_score;\n\nINSERT INTO assessments (assessments_id, intelligence, capability, raw_score)\nVALUES (&#x27;gpt-5-memory&#x27;, &#x27;gpt-5&#x27;, &#x27;memory&#x27;, 95) ON CONFLICT (assessments_id) DO UPDATE SET intelligence = EXCLUDED.intelligence, capability = EXCLUDED.capability, raw_score = EXCLUDED.raw_score;\n\nINSERT INTO assessments (assessments_id, intelligence, capability, raw_score)\nVALUES (&#x27;gpt-5-perception&#x27;, &#x27;gpt-5&#x27;, &#x27;perception&#x27;, 30) ON CONFLICT (assessments_id) DO UPDATE SET intelligence = EXCLUDED.intelligence, capability = EXCLUDED.capability, raw_score = EXCLUDED.raw_score;\n\nINSERT INTO assessments (assessments_id, intelligence, capability, raw_score)\nVALUES (&#x27;gpt-5-reasoning&#x27;, &#x27;gpt-5&#x27;, &#x27;reasoning&#x27;, 80) ON CONFLICT (assessments_id) DO UPDATE SET intelligence = EXCLUDED.intelligence, capability = EXCLUDED.capability, raw_score = EXCLUDED.raw_score;\n\nINSERT INTO assessments (assessments_id, intelligence, capability, raw_score)\nVALUES (&#x27;gpt-5-creativity&#x27;, &#x27;gpt-5&#x27;, &#x27;creativity&#x27;, 65) ON CONFLICT (assessments_id) DO UPDATE SET intelligence = EXCLUDED.intelligence, capability = EXCLUDED.capability, raw_score = EXCLUDED.raw_score;\n\nINSERT INTO assessments (assessments_id, intelligence, capability, raw_score)\nVALUES (&#x27;calculator-memory&#x27;, &#x27;calculator&#x27;, &#x27;memory&#x27;, 50) ON CONFLICT (assessments_id) DO UPDATE SET intelligence = EXCLUDED.intelligence, capability = EXCLUDED.capability, raw_score = EXCLUDED.raw_score;\n\nINSERT INTO assessments (assessments_id, intelligence, capability, raw_score)\nVALUES (&#x27;calculator-perception&#x27;, &#x27;calculator&#x27;, &#x27;perception&#x27;, 10) ON CONFLICT (assessments_id) DO UPDATE SET intelligence = EXCLUDED.intelligence, capability = EXCLUDED.capability, raw_score = EXCLUDED.raw_score;\n\nINSERT INTO assessments (assessments_id, intelligence, capability, raw_score)\nVALUES (&#x27;calculator-reasoning&#x27;, &#x27;calculator&#x27;, &#x27;reasoning&#x27;, 95) ON CONFLICT (assessments_id) DO UPDATE SET intelligence = EXCLUDED.intelligence, capability = EXCLUDED.capability, raw_score = EXCLUDED.raw_score;\n\nINSERT INTO assessments (assessments_id, intelligence, capability, raw_score)\nVALUES (&#x27;calculator-creativity&#x27;, &#x27;calculator&#x27;, &#x27;creativity&#x27;, 0) ON CONFLICT (assessments_id) DO UPDATE SET intelligence = EXCLUDED.intelligence, capability = EXCLUDED.capability, raw_score = EXCLUDED.raw_score;\n\n</code></pre>\n            </div>",
+          "sql-data-b": "<div class=\"card\">\n                <div class=\"code-header\">\n                    <h2>05b \u00b7 Customize</h2>\n                    <div>\n                        <span class=\"code-info\">16 lines \u00b7 1 KB</span>\n                    </div>\n                </div>\n                <pre class=\"line-numbers\"><code class=\"language-sql\">-- ============================================================================\n-- CUSTOMIZE DATA - User-defined data customizations\n-- ============================================================================\n-- This file is for YOUR custom changes that should persist across\n-- regeneration of the base ERB files.\n--\n-- IMPORTANT:\n--   - This file runs AFTER the main data script\n--   - Define your customizations in the ERBCustomizations table in Airtable\n--   - Those changes will appear here after the next build\n--\n-- ============================================================================\n\n-- Your custom data changes will appear here:\n\n</code></pre>\n            </div>"
+        }
+      }
+    }
+  },
+  "answer_keys": {
+    "capabilities": [
+      {
+        "capabilities_id": "creativity",
+        "description": "Novel synthesis, divergent thinking, and open-ended generation.",
+        "tier": "emergent",
+        "weight": 1.5,
+        "name": "creativity"
+      },
+      {
+        "capabilities_id": "memory",
+        "description": "Storing, retaining, and recalling information across time.",
+        "tier": "foundational",
+        "weight": 1.0,
+        "name": "memory"
+      },
+      {
+        "capabilities_id": "perception",
+        "description": "Sensing the environment and interpreting raw input into structure.",
+        "tier": "foundational",
+        "weight": 1.0,
+        "name": "perception"
+      },
+      {
+        "capabilities_id": "reasoning",
+        "description": "Inference, deduction, and structured problem-solving.",
+        "tier": "composite",
+        "weight": 1.3,
+        "name": "reasoning"
+      }
+    ],
+    "intelligences": [
+      {
+        "intelligences_id": "calculator",
+        "description": "A pocket arithmetic device.",
+        "substrate": "digital",
+        "name": "calculator",
+        "taxonomy_class": "Narrow"
+      },
+      {
+        "intelligences_id": "gpt-5",
+        "description": "A large language model trained on broad text.",
+        "substrate": "digital",
+        "name": "gpt-5",
+        "taxonomy_class": "Narrow"
+      },
+      {
+        "intelligences_id": "human",
+        "description": "A neurotypical human adult.",
+        "substrate": "biological",
+        "name": "human",
+        "taxonomy_class": "Narrow"
+      },
+      {
+        "intelligences_id": "octopus",
+        "description": "A cephalopod problem-solver with distributed cognition.",
+        "substrate": "biological",
+        "name": "octopus",
+        "taxonomy_class": "Narrow"
+      }
+    ],
+    "assessments": [
+      {
+        "assessments_id": "calculator-creativity",
+        "intelligence": "calculator",
+        "capability": "creativity",
+        "raw_score": 0,
+        "name": "calculator-creativity",
+        "weighted_score": 0
+      },
+      {
+        "assessments_id": "calculator-memory",
+        "intelligence": "calculator",
+        "capability": "memory",
+        "raw_score": 50,
+        "name": "calculator-memory",
+        "weighted_score": 0
+      },
+      {
+        "assessments_id": "calculator-perception",
+        "intelligence": "calculator",
+        "capability": "perception",
+        "raw_score": 10,
+        "name": "calculator-perception",
+        "weighted_score": 0
+      },
+      {
+        "assessments_id": "calculator-reasoning",
+        "intelligence": "calculator",
+        "capability": "reasoning",
+        "raw_score": 95,
+        "name": "calculator-reasoning",
+        "weighted_score": 0
+      },
+      {
+        "assessments_id": "gpt-5-creativity",
+        "intelligence": "gpt-5",
+        "capability": "creativity",
+        "raw_score": 65,
+        "name": "gpt-5-creativity",
+        "weighted_score": 0
+      },
+      {
+        "assessments_id": "gpt-5-memory",
+        "intelligence": "gpt-5",
+        "capability": "memory",
+        "raw_score": 95,
+        "name": "gpt-5-memory",
+        "weighted_score": 0
+      },
+      {
+        "assessments_id": "gpt-5-perception",
+        "intelligence": "gpt-5",
+        "capability": "perception",
+        "raw_score": 30,
+        "name": "gpt-5-perception",
+        "weighted_score": 0
+      },
+      {
+        "assessments_id": "gpt-5-reasoning",
+        "intelligence": "gpt-5",
+        "capability": "reasoning",
+        "raw_score": 80,
+        "name": "gpt-5-reasoning",
+        "weighted_score": 0
+      },
+      {
+        "assessments_id": "human-creativity",
+        "intelligence": "human",
+        "capability": "creativity",
+        "raw_score": 80,
+        "name": "human-creativity",
+        "weighted_score": 0
+      },
+      {
+        "assessments_id": "human-memory",
+        "intelligence": "human",
+        "capability": "memory",
+        "raw_score": 80,
+        "name": "human-memory",
+        "weighted_score": 0
+      },
+      {
+        "assessments_id": "human-perception",
+        "intelligence": "human",
+        "capability": "perception",
+        "raw_score": 85,
+        "name": "human-perception",
+        "weighted_score": 0
+      },
+      {
+        "assessments_id": "human-reasoning",
+        "intelligence": "human",
+        "capability": "reasoning",
+        "raw_score": 85,
+        "name": "human-reasoning",
+        "weighted_score": 0
+      },
+      {
+        "assessments_id": "octopus-creativity",
+        "intelligence": "octopus",
+        "capability": "creativity",
+        "raw_score": 70,
+        "name": "octopus-creativity",
+        "weighted_score": 0
+      },
+      {
+        "assessments_id": "octopus-memory",
+        "intelligence": "octopus",
+        "capability": "memory",
+        "raw_score": 60,
+        "name": "octopus-memory",
+        "weighted_score": 0
+      },
+      {
+        "assessments_id": "octopus-perception",
+        "intelligence": "octopus",
+        "capability": "perception",
+        "raw_score": 90,
+        "name": "octopus-perception",
+        "weighted_score": 0
+      },
+      {
+        "assessments_id": "octopus-reasoning",
+        "intelligence": "octopus",
+        "capability": "reasoning",
+        "raw_score": 65,
+        "name": "octopus-reasoning",
+        "weighted_score": 0
+      }
+    ]
+  },
+  "_effortless_substrates": [
+    "effortless-entity-framework",
+    "effortless-golang",
+    "effortless-postgres",
+    "effortless-python",
+    "effortless-xlsx"
+  ],
+  "_substrate_colors": {
+    "python": "#3776AB",
+    "golang": "#00ADD8",
+    "cobol": "#5CB85C",
+    "binary": "#E37400",
+    "xlsx": "#1F7244",
+    "csv": "#8BC34A",
+    "yaml": "#CB171E",
+    "uml": "#F26522",
+    "owl": "#7B1FA2",
+    "english": "#795548",
+    "explain-dag": "#37474F",
+    "effortless-postgres": "#336791",
+    "effortless-xlsx": "#107C41",
+    "effortless-entity-framework": "#512BD4",
+    "effortless-python": "#FFD343",
+    "effortless-golang": "#007D9C"
+  }
+};
+
+
+// Effortless-licensed substrate set + color palette, injected from
+// generate-report.py so JS-rendered surfaces match the Python-rendered ones.
+const EFFORTLESS_SUBSTRATES = new Set(REPORT_DATA._effortless_substrates || []);
+const SUBSTRATE_COLORS = REPORT_DATA._substrate_colors || {};
+
+function isEffortless(name) { return EFFORTLESS_SUBSTRATES.has(name); }
+function substrateColor(name) { return SUBSTRATE_COLORS[name] || '#6c757d'; }
+function sortSubstrates(names) {
+    // Open-source first, effortless last; alpha within each group.
+    return [...names].sort((a, b) => {
+        const aE = isEffortless(a) ? 1 : 0;
+        const bE = isEffortless(b) ? 1 : 0;
+        if (aE !== bE) return aE - bE;
+        return a.localeCompare(b);
+    });
+}
+
+// Substrate report URL - hardcoded for htmlpreview.github.io
+function getSubstrateReportUrl(substrateName) {
+    const localPath = `../execution-substrates/${substrateName}/substrate-report.html`;
+    const onlinePath = `https://htmlpreview.github.io?https://github.com/eejai42/is-everything-really-a-language/blob/main/execution-substrates/${substrateName}/substrate-report.html`;
+
+    // Use local path for file:// protocol, online path otherwise
+    return window.location.protocol === 'file:' ? localPath : onlinePath;
+}
+
+// Runtime bars in health matrix table
+function renderRuntimeBars() {
+    const table = document.getElementById('health-matrix');
+    if (!table || !REPORT_DATA.substrates) return;
+
+    // Calculate max time for scaling
+    const times = Object.entries(REPORT_DATA.substrates)
+        .map(([name, data]) => data.elapsed_seconds || 0);
+    const maxTime = Math.max(...times, 1);
+
+    // Add bar cells to each row
+    const rows = table.querySelectorAll('tbody tr');
+    rows.forEach(row => {
+        const substrateCell = row.querySelector('.substrate-name');
+        if (!substrateCell) return;
+
+        const substrateName = substrateCell.dataset.substrate;
+        const data = REPORT_DATA.substrates[substrateName];
+        const time = data ? (data.elapsed_seconds || 0) : 0;
+        const pct = (time / maxTime) * 100;
+        const barColor = time > 60 ? 'var(--warning-color)' : (time < 1 ? 'var(--success-color)' : 'var(--accent-color)');
+
+        const barCell = document.createElement('td');
+        barCell.className = 'runtime-bar-cell';
+        barCell.innerHTML = `
+            <div style="height: 14px; background: var(--bg-tertiary); border-radius: 3px; overflow: hidden;">
+                <div style="width: ${Math.max(pct, 0.5)}%; height: 100%; background: ${barColor}; border-radius: 3px;"></div>
+            </div>
+        `;
+        row.appendChild(barCell);
+    });
+}
+
+renderRuntimeBars();
+
+// Theme toggle
+const themeToggle = document.getElementById('theme-toggle');
+const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && prefersDark)) {
+    document.documentElement.setAttribute('data-theme', 'dark');
+}
+
+themeToggle.addEventListener('click', () => {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    localStorage.setItem('theme', isDark ? 'light' : 'dark');
+});
+
+// URL-BASED ROUTING
+// Hash format: tab/substrate/viewTab/entity
+function parseUrlHash() {
+    const hash = window.location.hash.slice(1);
+    if (!hash) return { tab: 'overview', item: null, viewTab: null, entity: null };
+    const parts = hash.split('/');
+    return {
+        tab: parts[0] || 'overview',
+        item: parts[1] ? decodeURIComponent(parts[1]) : null,
+        viewTab: parts[2] ? decodeURIComponent(parts[2]) : null,
+        entity: parts[3] ? decodeURIComponent(parts[3]) : null
+    };
+}
+
+function updateUrlHash(tab, item = null, viewTab = null, entity = null) {
+    let hash = tab;
+    if (item) hash += '/' + encodeURIComponent(item);
+    if (viewTab) hash += '/' + encodeURIComponent(viewTab);
+    if (entity) hash += '/' + encodeURIComponent(entity);
+    history.replaceState(null, '', `#${hash}`);
+}
+
+// Track current substrate state for URL updates
+let currentSubstrateName = null;
+let currentViewTab = 'data';
+let currentEntityInView = null;
+
+window.addEventListener('hashchange', () => {
+    const state = parseUrlHash();
+    navigateToState(state, false);
+});
+
+function navigateToState(state, updateUrl = true) {
+    const { tab, item, viewTab, entity } = state;
+    mainTabs.forEach(t => t.classList.remove('active'));
+    tabContents.forEach(c => c.classList.remove('active'));
+
+    const targetTab = document.querySelector(`#main-tabs .tab[data-tab="${tab}"]`);
+    if (targetTab) targetTab.classList.add('active');
+    document.getElementById(tab)?.classList.add('active');
+
+    if (tab === 'entities' && item) selectEntityTabNoUrl(item);
+    else if (tab === 'substrates' && item) {
+        selectSubstrateTabNoUrl(item, viewTab, entity);
+    }
+    else if (tab === 'entities') {
+        const entities = Object.keys(REPORT_DATA.entities).sort();
+        if (entities.length > 0) selectEntityTabNoUrl(entities[0]);
+    } else if (tab === 'substrates') {
+        const substrates = Object.keys(REPORT_DATA.substrates).sort();
+        if (substrates.length > 0) selectSubstrateTabNoUrl(substrates[0], viewTab, entity);
+    }
+
+    if (updateUrl) updateUrlHash(tab, item, viewTab, entity);
+}
+
+const mainTabs = document.querySelectorAll('#main-tabs .tab');
+const tabContents = document.querySelectorAll('.tab-content');
+
+mainTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+        const tabId = tab.dataset.tab;
+        mainTabs.forEach(t => t.classList.remove('active'));
+        tabContents.forEach(c => c.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById(tabId)?.classList.add('active');
+
+        if (tabId === 'entities') {
+            const entities = Object.keys(REPORT_DATA.entities).sort();
+            if (entities.length > 0) selectEntityTab(entities[0]);
+            updateUrlHash(tabId);
+        } else if (tabId === 'substrates') {
+            // Remember last substrate and view tab when returning to this tab
+            const substrates = Object.keys(REPORT_DATA.substrates).sort();
+            const substrateToShow = currentSubstrateName && substrates.includes(currentSubstrateName)
+                ? currentSubstrateName
+                : substrates[0];
+            if (substrateToShow) {
+                selectSubstrateTabNoUrl(substrateToShow, currentViewTab, currentEntityInView);
+                updateUrlHash('substrates', substrateToShow, currentViewTab, currentEntityInView);
+            }
+        } else {
+            updateUrlHash(tabId);
+        }
+    });
+});
+
+// Entity sub-tabs
+const entityTabs = document.querySelectorAll('#entity-tabs .sub-tab');
+const entityDetails = document.getElementById('entity-details');
+
+function selectEntityTabNoUrl(entityName) {
+    entityTabs.forEach(t => t.classList.remove('active'));
+    const targetTab = document.querySelector(`#entity-tabs .sub-tab[data-entity="${entityName}"]`);
+    if (targetTab) targetTab.classList.add('active');
+    renderEntityDetails(entityName);
+}
+
+function selectEntityTab(entityName) {
+    selectEntityTabNoUrl(entityName);
+    updateUrlHash('entities', entityName);
+}
+
+function renderEntityDetails(entityName) {
+    const entity = REPORT_DATA.entities[entityName];
+    if (!entity) { entityDetails.innerHTML = '<p>Entity not found</p>'; return; }
+
+    const computedCount = entity.computed_columns ? entity.computed_columns.length : 0;
+    const rawCount = entity.schema.length - computedCount;
+
+    let html = '<div class="schema-entity-section">';
+    html += `<div class="schema-entity-header">`;
+    html += `<h4 class="schema-entity-name">${escapeHtml(entityName)}</h4>`;
+    html += `<div class="schema-meta">`;
+    html += `<span class="schema-meta-item">${entity.schema.length} fields</span>`;
+    html += `<span class="schema-meta-item">${computedCount} computed</span>`;
+    html += `<span class="schema-meta-item">${rawCount} raw</span>`;
+    html += `<span class="schema-meta-item">${entity.answer_key ? entity.answer_key.length : 0} records</span>`;
+    html += `</div>`;
+    html += `</div>`;
+    if (entity.description) {
+        html += `<p class="schema-entity-desc">${escapeHtml(entity.description)}</p>`;
+    }
+
+    // Schema table - no collapsible
+    html += '<div class="table-scroll"><table class="schema-table"><thead><tr>';
+    html += '<th>Field</th><th>Type</th><th>Formula</th><th>Description</th>';
+    html += '</tr></thead><tbody>';
+    entity.schema.forEach(field => {
+        const typeClass = field.type === 'calculated' ? 'type-calculated' : 'type-raw';
+        const formula = field.formula || '';
+        const desc = field.Description || field.description || '';
+        html += `<tr>
+            <td>${escapeHtml(field.name)}</td>
+            <td class="${typeClass}">${escapeHtml(field.type || 'raw')}</td>
+            <td class="formula-cell"><pre class="formula-pre">${escapeHtml(formula)}</pre></td>
+            <td class="desc-cell"><span class="desc-text">${escapeHtml(desc)}</span></td>
+        </tr>`;
+    });
+    html += '</tbody></table></div></div>';
+
+    // Answer key in collapsible
+    html += '<details><summary>Answer Key Data (' + (entity.answer_key?.length || 0) + ' records)</summary>';
+    if (entity.answer_key && entity.answer_key.length > 0) {
+        const computedCols = entity.computed_columns || [];
+        const cols = Object.keys(entity.answer_key[0]);
+        html += '<div class="table-scroll"><table class="data-table"><thead><tr>';
+        cols.forEach(col => {
+            const isComputed = computedCols.includes(col);
+            html += `<th class="${isComputed ? 'computed' : ''}">${escapeHtml(col)}</th>`;
+        });
+        html += '</tr></thead><tbody>';
+        entity.answer_key.forEach(row => {
+            html += '<tr>';
+            cols.forEach(col => {
+                const isComputed = computedCols.includes(col);
+                const val = row[col] !== null ? String(row[col]) : 'null';
+                html += `<td class="${isComputed ? 'computed' : ''}" title="${escapeHtml(val)}">${escapeHtml(val)}</td>`;
+            });
+            html += '</tr>';
+        });
+        html += '</tbody></table></div>';
+    } else { html += '<p>No data</p>'; }
+    html += '</details>';
+
+    // Substrate results tabs — open-source first, then a divider, then
+    // Effortless-licensed substrates, labelled with their real names.
+    html += '<h4>Substrate Results</h4>';
+    html += '<nav class="sub-tabs" id="entity-substrate-tabs">';
+    const orderedSubs = sortSubstrates(Object.keys(REPORT_DATA.substrates));
+    let dividerInserted = false;
+    let renderedCount = 0;
+    orderedSubs.forEach(substrate => {
+        const grades = REPORT_DATA.substrates[substrate];
+        const entityGrades = grades.entities ? grades.entities[entityName] : null;
+        if (!entityGrades) return;
+        if (!dividerInserted && isEffortless(substrate)) {
+            dividerInserted = true;
+            html += '<span class="sub-tab-group-divider" title="Licensed Effortless tools">EFFORTLESS LICENSED TOOLS</span>';
+        }
+        const passed = entityGrades.fields_passed;
+        const total = entityGrades.fields_tested;
+        const score = total > 0 ? (passed / total * 100).toFixed(0) : 0;
+        const scoreClass = getScoreClass(score);
+        const active = renderedCount === 0 ? 'active' : '';
+        const swatch = `<span class="substrate-swatch" style="background:${substrateColor(substrate)}"></span>`;
+        html += `<button class="sub-tab ${active} score-${scoreClass}" data-substrate="${escapeHtml(substrate)}" data-entity="${escapeHtml(entityName)}">${swatch}${escapeHtml(substrate)}: ${score}%</button>`;
+        renderedCount++;
+    });
+    html += '</nav><div id="entity-substrate-details"></div>';
+
+    entityDetails.innerHTML = html;
+
+    document.querySelectorAll('#entity-substrate-tabs .sub-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            document.querySelectorAll('#entity-substrate-tabs .sub-tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            renderEntitySubstrateDetails(tab.dataset.entity, tab.dataset.substrate);
+        });
+    });
+
+    const firstSubstrateTab = document.querySelector('#entity-substrate-tabs .sub-tab');
+    if (firstSubstrateTab) renderEntitySubstrateDetails(entityName, firstSubstrateTab.dataset.substrate);
+}
+
+function renderEntitySubstrateDetails(entityName, substrateName) {
+    const container = document.getElementById('entity-substrate-details');
+    if (!container) return;
+
+    const substrate = REPORT_DATA.substrates[substrateName];
+    const entity = REPORT_DATA.entities[entityName];
+    const entityGrades = substrate?.entities?.[entityName];
+
+    if (!entityGrades) { container.innerHTML = '<p class="no-results">No results.</p>'; return; }
+
+    const computedCols = entity.computed_columns || [];
+    const answerKey = entity.answer_key || [];
+    const pk = entity.primary_key;
+
+    const failureLookup = {};
+    if (entityGrades.failures) {
+        entityGrades.failures.forEach(f => { failureLookup[`${f.pk}|${f.field}`] = f; });
+    }
+
+    // Get all columns from the schema to preserve proper order (not from answer_key which may be unordered)
+    const schemaFields = entity.schema ? entity.schema.map(f => f.name.replace(/([A-Z])/g, (m, c, i) => i > 0 ? '_' + c.toLowerCase() : c.toLowerCase())) : [];
+    const allCols = schemaFields.length > 0 ? schemaFields : (answerKey.length > 0 ? Object.keys(answerKey[0]) : []);
+
+    let html = '<div class="table-scroll"><table class="graded-test-table"><thead><tr>';
+    allCols.forEach(col => {
+        const isComputed = computedCols.includes(col);
+        html += `<th class="${isComputed ? 'computed-col-header' : ''}">${escapeHtml(col)}</th>`;
+    });
+    html += '</tr></thead><tbody>';
+
+    answerKey.forEach(record => {
+        const pkVal = record[pk];
+        html += '<tr>';
+        allCols.forEach(col => {
+            const isComputed = computedCols.includes(col);
+            const val = record[col];
+            const failKey = `${pkVal}|${col}`;
+            const failure = failureLookup[failKey];
+
+            if (isComputed && failure) {
+                html += `<td class="cell-failed computed" title="Expected: ${escapeHtml(String(failure.expected))}&#10;Actual: ${escapeHtml(String(failure.actual))}">
+                    <span class="expected-actual"><span class="expected-label">E:</span><code class="expected">${escapeHtml(String(failure.expected))}</code></span>
+                    <span class="expected-actual"><span class="actual-label">A:</span><code class="actual">${escapeHtml(String(failure.actual))}</code></span>
+                </td>`;
+            } else if (isComputed) {
+                const valStr = val !== null ? String(val) : 'null';
+                html += `<td class="cell-passed computed" title="${escapeHtml(valStr)}"><span class="check-mark">&#10003;</span><code>${escapeHtml(valStr)}</code></td>`;
+            } else {
+                // Raw fact - just display the value without pass/fail styling
+                const valStr = val !== null ? String(val) : 'null';
+                html += `<td class="cell-raw" title="${escapeHtml(valStr)}">${escapeHtml(valStr)}</td>`;
+            }
+        });
+        html += '</tr>';
+    });
+    html += '</tbody></table></div>';
+    container.innerHTML = html;
+}
+
+if (entityTabs.length > 0 && REPORT_DATA.entities) {
+    entityTabs.forEach(tab => {
+        tab.addEventListener('click', () => selectEntityTab(tab.dataset.entity));
+    });
+}
+
+// Substrate sub-tabs
+const substrateTabs = document.querySelectorAll('#substrate-tabs .sub-tab');
+const substrateDetails = document.getElementById('substrate-details');
+
+// Shared tabs that exist on all substrates - preserve these when switching
+const SHARED_VIEW_TABS = ['data', 'schema', 'dynamic-description', 'dynamic-log', 'dynamic-results'];
+
+function isSharedViewTab(viewTab) {
+    return SHARED_VIEW_TABS.includes(viewTab);
+}
+
+function selectSubstrateTabNoUrl(substrateName, viewTab = null, entity = null) {
+    substrateTabs.forEach(t => t.classList.remove('active'));
+    const targetTab = document.querySelector(`#substrate-tabs .sub-tab[data-substrate="${substrateName}"]`);
+    if (targetTab) targetTab.classList.add('active');
+    currentSubstrateName = substrateName;
+    // If no viewTab specified, keep current if it's shared, otherwise default to 'data'
+    if (viewTab) {
+        currentViewTab = viewTab;
+    } else if (!isSharedViewTab(currentViewTab)) {
+        currentViewTab = 'data';
+    }
+    // Keep currentViewTab as-is if it's a shared tab
+    currentEntityInView = entity !== null ? entity : currentEntityInView;
+    renderSubstrateDetails(substrateName, currentViewTab, currentEntityInView);
+}
+
+function selectSubstrateTab(substrateName) {
+    // Preserve shared view tab when switching substrates
+    const viewTabToUse = isSharedViewTab(currentViewTab) ? currentViewTab : 'data';
+    selectSubstrateTabNoUrl(substrateName, viewTabToUse, currentEntityInView);
+    updateUrlHash('substrates', substrateName, currentViewTab, currentEntityInView);
+}
+
+function updateSubstrateUrl() {
+    if (currentSubstrateName) {
+        updateUrlHash('substrates', currentSubstrateName, currentViewTab, currentEntityInView);
+    }
+}
+
+function getScoreClass(score) {
+    if (score >= 100) return 'perfect';
+    if (score >= 80) return 'good';
+    if (score >= 60) return 'warning';
+    return 'danger';
+}
+
+function renderSubstrateDetails(substrateName, restoreViewTab = null, restoreEntity = null) {
+    const substrate = REPORT_DATA.substrates[substrateName];
+    if (!substrate) { substrateDetails.innerHTML = '<p>Substrate not found</p>'; return; }
+
+    const total = substrate.total_fields_tested;
+    const passed = substrate.fields_passed;
+    const failed = substrate.fields_failed;
+    const score = total > 0 ? (passed / total * 100).toFixed(1) : 0;
+    const elapsed = substrate.elapsed_seconds || 0;
+
+    let statusText = failed === 0 ? 'PASS' : 'FAIL';
+    let statusClass = failed === 0 ? 'score-good' : 'score-danger';
+
+    let html = '<div class="substrate-info">';
+    html += `<h3>${escapeHtml(substrateName)}</h3>`;
+    html += '<div class="substrate-stats">';
+    html += `<div class="substrate-stat"><span class="substrate-stat-label">Status:</span><span class="substrate-stat-value ${statusClass}">${statusText}</span></div>`;
+    html += `<div class="substrate-stat"><span class="substrate-stat-label">Score:</span><span class="substrate-stat-value">${score}%</span></div>`;
+    html += `<div class="substrate-stat"><span class="substrate-stat-label">Runtime:</span><span class="substrate-stat-value">${elapsed.toFixed(2)}s</span></div>`;
+    html += '</div></div>';
+
+    // Warning banner
+    const runMeta = substrate.run_metadata || {};
+    const lastRun = runMeta.last_run || {};
+    const lastSuccess = runMeta.last_successful_run || {};
+    if (lastRun.status === 'failure' && lastSuccess) {
+        const errorMsg = lastRun.error_message || 'Unknown error';
+        html += `<div class="warning-banner"><strong>⚠ Last run failed:</strong> <code>${escapeHtml(errorMsg)}</code></div>`;
+    }
+
+    if (substrate.error) {
+        html += `<div class="failure-card"><code class="actual">${escapeHtml(substrate.error)}</code></div>`;
+    }
+
+    // Unified tabs: Data, Schema, then substrate-specific tabs (loaded dynamically)
+    html += '<nav class="sub-tabs" id="substrate-view-tabs">';
+    html += `<button class="sub-tab active" data-view="data">Data</button>`;
+    html += `<button class="sub-tab" data-view="schema">Schema</button>`;
+    // Substrate-specific tabs will be added dynamically after fetch
+    html += '<span id="substrate-dynamic-tabs"></span>';
+    html += '</nav>';
+
+    // Tab content containers
+    html += '<div id="substrate-view-content">';
+
+    // Data tab - graded test results (now first/active)
+    html += '<div id="substrate-data-view" class="substrate-view active">';
+
+    // Get entities with results from current ontology
+    const entitiesWithResults = Object.keys(REPORT_DATA.entities).sort().filter(entityName => {
+        const entity = REPORT_DATA.entities[entityName];
+        const computedCols = entity.computed_columns || [];
+        const answerKey = entity.answer_key || [];
+        return computedCols.length > 0 && answerKey.length > 0;
+    });
+
+    // Get stale entities: in substrate's test_answers but NOT in current ontology
+    const testAnswers = substrate.test_answers || {};
+    const staleEntities = Object.keys(testAnswers).sort().filter(entityName => {
+        return !REPORT_DATA.entities[entityName];
+    });
+
+    const hasCurrentResults = entitiesWithResults.length > 0;
+    const hasStaleResults = staleEntities.length > 0;
+
+    if (!hasCurrentResults && !hasStaleResults) {
+        html += '<p class="no-results">No test results available.</p>';
+    } else {
+        // Entity tabs within substrate view
+        html += '<h4>Graded Test Results</h4>';
+        html += '<nav class="sub-tabs" id="substrate-entity-tabs">';
+
+        // Current ontology entities (with grading)
+        entitiesWithResults.forEach((entityName, i) => {
+            const entity = REPORT_DATA.entities[entityName];
+            const entityGrades = substrate.entities ? substrate.entities[entityName] : null;
+            const eTotal = entityGrades ? entityGrades.fields_tested : 0;
+            const ePassed = entityGrades ? entityGrades.fields_passed : 0;
+            const eScore = eTotal > 0 ? (ePassed / eTotal * 100).toFixed(0) : 0;
+            const eClass = getScoreClass(eScore);
+            const active = i === 0 ? 'active' : '';
+            html += `<button class="sub-tab ${active} score-${eClass}" data-entity="${escapeHtml(entityName)}">${escapeHtml(entityName)} (${ePassed}/${eTotal})</button>`;
+        });
+
+        // Stale entities (from previous ontology - no grading possible)
+        staleEntities.forEach((entityName, i) => {
+            const active = (!hasCurrentResults && i === 0) ? 'active' : '';
+            html += `<button class="sub-tab ${active} stale-entity" data-entity="${escapeHtml(entityName)}" data-stale="true">${escapeHtml(entityName)} (stale)</button>`;
+        });
+
+        html += '</nav>';
+        html += '<div id="substrate-entity-content"></div>';
+    }
+    html += '</div>';
+
+    // Schema tab
+    html += '<div id="substrate-schema-view" class="substrate-view">';
+    Object.keys(REPORT_DATA.entities).sort().forEach(entityName => {
+        const entity = REPORT_DATA.entities[entityName];
+        const computedCount = entity.computed_columns ? entity.computed_columns.length : 0;
+        const rawCount = entity.schema.length - computedCount;
+        html += '<div class="schema-entity-section">';
+        html += `<div class="schema-entity-header">`;
+        html += `<h4 class="schema-entity-name">${escapeHtml(entityName)}</h4>`;
+        html += `<div class="schema-meta">`;
+        html += `<span class="schema-meta-item">${entity.schema.length} fields</span>`;
+        html += `<span class="schema-meta-item">${computedCount} computed</span>`;
+        html += `<span class="schema-meta-item">${rawCount} raw</span>`;
+        html += `<span class="schema-meta-item">${entity.answer_key ? entity.answer_key.length : 0} records</span>`;
+        html += `</div>`;
+        html += `</div>`;
+        if (entity.description) {
+            html += `<p class="schema-entity-desc">${escapeHtml(entity.description)}</p>`;
+        }
+        html += '<div class="table-scroll"><table class="schema-table"><thead><tr>';
+        html += '<th>Field</th><th>Type</th><th>Formula</th><th>Description</th>';
+        html += '</tr></thead><tbody>';
+        entity.schema.forEach(field => {
+            const typeClass = field.type === 'calculated' ? 'type-calculated' : 'type-raw';
+            const formula = field.formula || '';
+            const desc = field.Description || field.description || '';
+            html += `<tr>
+                <td>${escapeHtml(field.name)}</td>
+                <td class="${typeClass}">${escapeHtml(field.type || 'raw')}</td>
+                <td class="formula-cell"><pre class="formula-pre">${escapeHtml(formula)}</pre></td>
+                <td class="desc-cell"><span class="desc-text">${escapeHtml(desc)}</span></td>
+            </tr>`;
+        });
+        html += '</tbody></table></div>';
+        html += '</div>';
+    });
+    html += '</div>';
+
+    // Container for dynamically loaded substrate-specific tabs
+    html += '<div id="substrate-dynamic-content"></div>';
+
+    html += '</div>'; // end substrate-view-content
+
+    substrateDetails.innerHTML = html;
+
+    // Load substrate-specific tabs
+    loadSubstrateTabs(substrateName);
+
+    // Attach handlers to view tabs with URL tracking
+    attachViewTabHandlers();
+
+    // Attach handlers to entity tabs with URL tracking
+    document.querySelectorAll('#substrate-entity-tabs .sub-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            document.querySelectorAll('#substrate-entity-tabs .sub-tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            currentEntityInView = tab.dataset.entity;
+            renderSubstrateEntityContent(substrateName, tab.dataset.entity);
+            updateSubstrateUrl();
+        });
+    });
+
+    // Restore view tab from URL if provided; otherwise default to 'data'
+    if (restoreViewTab) {
+        const viewTabBtn = document.querySelector(`#substrate-view-tabs .sub-tab[data-view="${restoreViewTab}"]`);
+        if (viewTabBtn) {
+            document.querySelectorAll('#substrate-view-tabs .sub-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.substrate-view').forEach(v => v.classList.remove('active'));
+            viewTabBtn.classList.add('active');
+            document.getElementById(`substrate-${restoreViewTab}-view`)?.classList.add('active');
+            currentViewTab = restoreViewTab;
+        } else {
+            // Tab doesn't exist on this substrate; default to 'data'
+            currentViewTab = 'data';
+            // Data tab is already active by default from the HTML
+        }
+    }
+
+    // Determine which entity to show
+    let entityToShow = null;
+    if (restoreEntity && entitiesWithResults.includes(restoreEntity)) {
+        entityToShow = restoreEntity;
+    } else if (entitiesWithResults.length > 0) {
+        entityToShow = entitiesWithResults[0];
+    }
+
+    // Restore entity tab from URL or default to first
+    if (entityToShow) {
+        const entityTabBtn = document.querySelector(`#substrate-entity-tabs .sub-tab[data-entity="${entityToShow}"]`);
+        if (entityTabBtn) {
+            document.querySelectorAll('#substrate-entity-tabs .sub-tab').forEach(t => t.classList.remove('active'));
+            entityTabBtn.classList.add('active');
+        }
+        currentEntityInView = entityToShow;
+        renderSubstrateEntityContent(substrateName, entityToShow);
+    }
+}
+
+function renderSubstrateEntityContent(substrateName, entityName) {
+    const container = document.getElementById('substrate-entity-content');
+    if (!container) return;
+
+    const substrate = REPORT_DATA.substrates[substrateName];
+    const entity = REPORT_DATA.entities[entityName];
+
+    // Check if this is a stale entity (not in current ontology)
+    if (!entity) {
+        renderStaleEntityContent(container, substrateName, entityName, substrate);
+        return;
+    }
+
+    const entityGrades = substrate.entities ? substrate.entities[entityName] : null;
+    const answerKey = entity.answer_key || [];
+    const computedCols = entity.computed_columns || [];
+    const computedColsInfo = entity.computed_columns_info || [];
+    const pk = entity.primary_key;
+
+    // Get substrate's actual test answers for this entity
+    const substrateTestAnswers = substrate.test_answers ? substrate.test_answers[entityName] : null;
+    const hasTestData = substrateTestAnswers && substrateTestAnswers.length > 0;
+
+    // Build lookup of test answers by primary key
+    const testAnswerLookup = {};
+    if (hasTestData) {
+        substrateTestAnswers.forEach(record => {
+            const pkVal = record[pk];
+            if (pkVal) testAnswerLookup[pkVal] = record;
+        });
+    }
+
+    const entityDesc = entity.description || '';
+    const eTotal = entityGrades ? entityGrades.fields_tested : 0;
+    const ePassed = entityGrades ? entityGrades.fields_passed : 0;
+    const eScore = eTotal > 0 ? (ePassed / eTotal * 100).toFixed(1) : 0;
+
+    let html = '<div class="entity-test-section">';
+    if (entityDesc) html += `<p class="entity-description">${escapeHtml(entityDesc)}</p>`;
+
+    // Show warning if no test data
+    if (!hasTestData) {
+        html += '<p class="no-test-data-warning" style="color: var(--warning-color); padding: 0.5rem; background: rgba(255,193,7,0.1); border-radius: 4px; margin-bottom: 1rem;">No test answers found for this entity. The substrate has not been run or did not produce output for this entity.</p>';
+    }
+
+    // Computed columns in collapsible
+    html += '<details><summary>Computed Columns (' + computedCols.length + ')</summary>';
+    html += '<div class="computed-cols-info"><ul>';
+    computedColsInfo.forEach(col => {
+        const formula = col.formula || '';
+        const desc = col.description || '';
+        html += `<li><span class="field-name">${escapeHtml(col.name)}</span>`;
+        if (formula) html += `<span class="formula-row"><span class="formula-label">Formula:</span><span class="formula">${escapeHtml(formula)}</span></span>`;
+        if (desc) html += `<span class="desc-row">${escapeHtml(desc)}</span>`;
+        html += '</li>';
+    });
+    html += '</ul></div></details>';
+
+    // Build failure lookup
+    const failureLookup = {};
+    if (entityGrades && entityGrades.failures) {
+        entityGrades.failures.forEach(f => { failureLookup[`${f.pk}|${f.field}`] = f; });
+    }
+
+    // Graded test table - show ALL columns with computed ones highlighted
+    // Get all columns from the schema to preserve proper order (not from answer_key which may be unordered)
+    const schemaFields = entity.schema ? entity.schema.map(f => f.name.replace(/([A-Z])/g, (m, c, i) => i > 0 ? '_' + c.toLowerCase() : c.toLowerCase())) : [];
+    const allCols = schemaFields.length > 0 ? schemaFields : (answerKey.length > 0 ? Object.keys(answerKey[0]) : []);
+
+    html += '<div class="table-scroll"><table class="graded-test-table"><thead><tr>';
+    allCols.forEach(col => {
+        const isComputed = computedCols.includes(col);
+        html += `<th class="${isComputed ? 'computed-col-header' : ''}">${escapeHtml(col)}</th>`;
+    });
+    html += '</tr></thead><tbody>';
+
+    answerKey.forEach(record => {
+        const pkVal = record[pk];
+        const testRecord = testAnswerLookup[pkVal] || {};
+        html += '<tr>';
+        allCols.forEach(col => {
+            const isComputed = computedCols.includes(col);
+            const expectedVal = record[col];
+            const actualVal = testRecord[col];
+            const failKey = `${pkVal}|${col}`;
+            const failure = failureLookup[failKey];
+
+            if (isComputed) {
+                if (!hasTestData) {
+                    // No test data - show expected value grayed out and crossed out
+                    const valStr = expectedVal !== null && expectedVal !== undefined ? String(expectedVal) : 'null';
+                    html += `<td class="cell-not-tested computed" title="Not tested - expected: ${escapeHtml(valStr)}" style="color: var(--text-secondary); background: rgba(108,117,125,0.1);"><code style="opacity: 0.5; text-decoration: line-through;">${escapeHtml(valStr)}</code></td>`;
+                } else if (failure) {
+                    html += `<td class="cell-failed computed" title="Expected: ${escapeHtml(String(failure.expected))}&#10;Actual: ${escapeHtml(String(failure.actual))}">
+                        <span class="expected-actual"><span class="expected-label">E:</span><code class="expected">${escapeHtml(String(failure.expected))}</code></span>
+                        <span class="expected-actual"><span class="actual-label">A:</span><code class="actual">${escapeHtml(String(failure.actual))}</code></span>
+                    </td>`;
+                } else {
+                    // Passed - show actual value from test answers
+                    const valStr = actualVal !== null && actualVal !== undefined ? String(actualVal) : 'null';
+                    html += `<td class="cell-passed computed" title="${escapeHtml(valStr)}"><span class="check-mark">&#10003;</span><code>${escapeHtml(valStr)}</code></td>`;
+                }
+            } else {
+                // Raw fact - display from answer key (these aren't tested, just context)
+                const valStr = expectedVal !== null && expectedVal !== undefined ? String(expectedVal) : 'null';
+                html += `<td class="cell-raw" title="${escapeHtml(valStr)}">${escapeHtml(valStr)}</td>`;
+            }
+        });
+        html += '</tr>';
+    });
+    html += '</tbody></table></div></div>';
+    container.innerHTML = html;
+}
+
+// Render stale entity content (entity from previous ontology, not in current rulebook)
+function renderStaleEntityContent(container, substrateName, entityName, substrate) {
+    const testAnswers = substrate.test_answers ? substrate.test_answers[entityName] : [];
+
+    let html = '<div class="stale-entity-section">';
+    html += '<div class="stale-entity-warning">';
+    html += '<strong>⚠ Stale Test Data</strong>';
+    html += '<p>This entity (<code>' + escapeHtml(entityName) + '</code>) is not part of the current ontology. ';
+    html += 'This data is from a previous rulebook and has not been updated.</p>';
+    html += '<p class="stale-explanation">This demonstrates a key failure mode of slower substrates (like English/LLM): ';
+    html += 'when the ontology changes, substrates that take time to re-run retain stale data from the previous model. ';
+    html += 'Unlike instant formal substrates, natural language requires effort to update.</p>';
+    html += '</div>';
+
+    if (!testAnswers || testAnswers.length === 0) {
+        html += '<p class="no-results">No test answer data found for this entity.</p>';
+    } else {
+        // Display all data as plain text - no grading possible without schema
+        const cols = Object.keys(testAnswers[0]);
+        html += '<h5>Raw Test Answers (' + testAnswers.length + ' records)</h5>';
+        html += '<div class="table-scroll"><table class="data-table stale-data-table"><thead><tr>';
+        cols.forEach(col => {
+            html += '<th>' + escapeHtml(col) + '</th>';
+        });
+        html += '</tr></thead><tbody>';
+        testAnswers.forEach(record => {
+            html += '<tr>';
+            cols.forEach(col => {
+                const val = record[col];
+                const display = val !== null && val !== undefined ? escapeHtml(String(val)) : '<span class="null-value">null</span>';
+                html += '<td>' + display + '</td>';
+            });
+            html += '</tr>';
+        });
+        html += '</tbody></table></div>';
+    }
+
+    html += '</div>';
+    container.innerHTML = html;
+}
+
+// Attach view tab handlers (Data, Schema, and dynamically loaded tabs)
+function attachViewTabHandlers() {
+    document.querySelectorAll('#substrate-view-tabs .sub-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            document.querySelectorAll('#substrate-view-tabs .sub-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.substrate-view').forEach(v => v.classList.remove('active'));
+            tab.classList.add('active');
+            const view = tab.dataset.view;
+            document.getElementById(`substrate-${view}-view`)?.classList.add('active');
+            currentViewTab = view;
+            updateSubstrateUrl();
+        });
+    });
+}
+
+// Load substrate-specific tabs from pre-loaded report_content data
+function loadSubstrateTabs(substrateName) {
+    const substrate = REPORT_DATA.substrates[substrateName];
+    const reportContent = substrate ? substrate.report_content : null;
+    const dynamicTabsContainer = document.getElementById('substrate-dynamic-tabs');
+    const dynamicContentContainer = document.getElementById('substrate-dynamic-content');
+
+    if (!dynamicTabsContainer || !dynamicContentContainer || !reportContent) return;
+
+    const tabs = reportContent.tabs || [];
+    const contents = reportContent.contents || {};
+
+    if (tabs.length === 0) {
+        // No substrate-specific tabs available
+        return;
+    }
+
+    // Build tab buttons for each substrate-specific tab
+    let tabButtonsHtml = '';
+    tabs.forEach(tab => {
+        tabButtonsHtml += `<button class="sub-tab" data-view="dynamic-${tab.id}">${escapeHtml(tab.label)}</button>`;
+    });
+    dynamicTabsContainer.innerHTML = tabButtonsHtml;
+
+    // Build content containers for each substrate-specific tab
+    let contentHtml = '';
+    tabs.forEach(tab => {
+        const tabContent = contents[tab.id] || '<p>Content not available</p>';
+        contentHtml += `<div id="substrate-dynamic-${tab.id}-view" class="substrate-view substrate-dynamic-view">${tabContent}</div>`;
+    });
+    dynamicContentContainer.innerHTML = contentHtml;
+
+    // Prism highlighting: the lifted tab content contains <code class="language-*">
+    // nodes that were never passed to Prism on initial page load.
+    if (window.Prism) {
+        Prism.highlightAllUnder(dynamicContentContainer);
+    }
+
+    // Re-attach handlers to include the new tabs
+    attachViewTabHandlers();
+}
+
+if (substrateTabs.length > 0 && REPORT_DATA.substrates) {
+    substrateTabs.forEach(tab => {
+        tab.addEventListener('click', () => selectSubstrateTab(tab.dataset.substrate));
+    });
+}
+
+// Initialize from URL
+const initialState = parseUrlHash();
+navigateToState(initialState, false);
+
+// Click handlers for navigation
+document.querySelectorAll('.substrate-link').forEach(link => {
+    link.addEventListener('click', (e) => {
+        e.preventDefault();
+        navigateToState({ tab: 'substrates', item: link.dataset.substrate });
+    });
+});
+
+document.querySelectorAll('.entity-link').forEach(header => {
+    header.addEventListener('click', () => {
+        navigateToState({ tab: 'entities', item: header.dataset.entity });
+    });
+});
+
+document.querySelectorAll('.substrate-row-link').forEach(cell => {
+    cell.addEventListener('click', () => {
+        navigateToState({ tab: 'substrates', item: cell.dataset.substrate });
+    });
+});
+
+document.querySelectorAll('.cell-fail, .cell-pass').forEach(cell => {
+    cell.addEventListener('click', () => {
+        navigateToState({ tab: 'substrates', item: cell.dataset.substrate });
+    });
+});
+
+function escapeHtml(str) {
+    if (str === null || str === undefined) return '';
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+}
+
+console.log('Orchestration Report loaded.');
+
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-go.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-turtle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+</body>
+</html>

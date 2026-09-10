@@ -1,0 +1,72 @@
+[
+  {
+    "rubric_dimension_id": "compensation-red-flags",
+    "name": "Compensation Red Flags",
+    "description": "Compensation transparency and alignment with staff/principal market expectations.",
+    "signals_positive": "transparent compensation range, top-of-range meets target minimum, staff/principal market rate",
+    "signals_negative": "equity-only compensation, unpaid or volunteer, below market for principal-level, hourly contractor rate far below salary"
+  },
+  {
+    "rubric_dimension_id": "culture-work-model",
+    "name": "Culture & Work Model",
+    "description": "Remote-first culture, work-life balance, and engineering autonomy indicators.",
+    "signals_positive": "remote-first, async-first, work-life balance, engineering autonomy, written communication culture, high-trust low-chaos",
+    "signals_negative": "mandatory return-to-office, 4+ days on-site, 60+ hour weeks, military-style command, fast-paced high-pressure, ambiguous expectations"
+  },
+  {
+    "rubric_dimension_id": "employment-structure",
+    "name": "Employment Structure",
+    "description": "Direct hire vs. staffing agency/contract positions.",
+    "signals_positive": "direct hire, full-time, equity, benefits",
+    "signals_negative": "staffing agency, contract-to-hire, vendor chain, W2 through third party, corp-to-corp"
+  },
+  {
+    "rubric_dimension_id": "ethical-alignment",
+    "name": "Ethical Alignment",
+    "description": "Company mission alignment with humane and privacy-respecting values.",
+    "signals_positive": "mission-driven, humane impact, privacy-respecting, healthcare, education, public-good",
+    "signals_negative": "weapons manufacturing, military contracting, surveillance technology, behavioral profiling, predatory lending"
+  },
+  {
+    "rubric_dimension_id": "industry-alignment",
+    "name": "Industry Alignment",
+    "description": "Company mission and product category alignment with candidate interests.",
+    "signals_positive": "developer tools, AI/ML, data infrastructure, open source, cloud platform",
+    "signals_negative": "adtech, gambling, payday lending, surveillance"
+  },
+  {
+    "rubric_dimension_id": "neurodivergence-compatibility",
+    "name": "Neurodivergence Compatibility",
+    "description": "Structured processes, predictable workflows, and low-meeting culture for neurodivergent-friendly work environments.",
+    "signals_positive": "clear communication norms, structured processes, predictable workflows, low-meeting culture, async-first, psychological safety",
+    "signals_negative": "constant context switching, interrupt-driven, ambiguity without support, high-meeting culture, synchronous dependency, chaotic environment"
+  },
+  {
+    "rubric_dimension_id": "operational-burden",
+    "name": "Operational Burden",
+    "description": "On-call/SRE load vs. platform engineering focus.",
+    "signals_positive": "platform engineering, build tools, developer experience, automation",
+    "signals_negative": "24/7 on-call, pager duty primary, incident commander rotation, SRE-heavy"
+  },
+  {
+    "rubric_dimension_id": "role-scope",
+    "name": "Role Scope",
+    "description": "Cross-team influence and architectural reach vs. narrow single-team execution.",
+    "signals_positive": "cross-team, architectural influence, system design ownership, technical strategy",
+    "signals_negative": "ticket taker, narrow scope, single feature team, no design authority"
+  },
+  {
+    "rubric_dimension_id": "seniority-mismatch",
+    "name": "Seniority Mismatch",
+    "description": "Role level vs. candidate expectations for staff+ positions.",
+    "signals_positive": "staff, principal, distinguished, fellow, architect, VP engineering, director",
+    "signals_negative": "junior, entry-level, associate, new grad, 0-2 years experience, intern"
+  },
+  {
+    "rubric_dimension_id": "technical-depth",
+    "name": "Technical Depth",
+    "description": "Infrastructure and platform work vs. web/feature dev.",
+    "signals_positive": "infrastructure, platform, distributed systems, systems programming, performance engineering",
+    "signals_negative": "WordPress, Squarespace, basic CRUD, landing pages, no-code"
+  }
+]

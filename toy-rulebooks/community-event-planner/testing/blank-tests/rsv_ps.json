@@ -1,0 +1,44 @@
+[
+  {
+    "rsvp_id": "rsvp-1",
+    "event_ref": "tech-talk-1",
+    "attendee_ref": "user1@attendees.local",
+    "status": "confirmed"
+  },
+  {
+    "rsvp_id": "rsvp-2",
+    "event_ref": "tech-talk-1",
+    "attendee_ref": "user2@attendees.local",
+    "status": "confirmed"
+  },
+  {
+    "rsvp_id": "rsvp-3",
+    "event_ref": "workshop-1",
+    "attendee_ref": "user1@attendees.local",
+    "status": "confirmed"
+  },
+  {
+    "rsvp_id": "rsvp-4",
+    "event_ref": "workshop-1",
+    "attendee_ref": "user3@attendees.local",
+    "status": "waitlist"
+  },
+  {
+    "rsvp_id": "rsvp-5",
+    "event_ref": "panel-1",
+    "attendee_ref": "user4@attendees.local",
+    "status": "confirmed"
+  },
+  {
+    "rsvp_id": "rsvp-6",
+    "event_ref": "panel-1",
+    "attendee_ref": "user5@attendees.local",
+    "status": "confirmed"
+  },
+  {
+    "rsvp_id": "rsvp-7",
+    "event_ref": "meetup-1",
+    "attendee_ref": "user2@attendees.local",
+    "status": "declined"
+  }
+]

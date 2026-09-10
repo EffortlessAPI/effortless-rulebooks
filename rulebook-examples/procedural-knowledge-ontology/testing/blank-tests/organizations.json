@@ -1,0 +1,34 @@
+[
+  {
+    "organization_id": "acme-corp",
+    "display_name": "ACME Corporation",
+    "organization_type": "Company",
+    "external_identifier": "org-001",
+    "semantic_type_iri": "http://www.w3.org/ns/prov#Organization",
+    "name": null
+  },
+  {
+    "organization_id": "acme-finance",
+    "display_name": "ACME Finance",
+    "organization_type": "Department",
+    "external_identifier": "dept-fin",
+    "semantic_type_iri": "https://w3id.org/pko/industry#Department",
+    "name": null
+  },
+  {
+    "organization_id": "acme-legal",
+    "display_name": "ACME Legal",
+    "organization_type": "Department",
+    "external_identifier": "dept-legal",
+    "semantic_type_iri": "https://w3id.org/pko/industry#Department",
+    "name": null
+  },
+  {
+    "organization_id": "acme-people",
+    "display_name": "ACME People Operations",
+    "organization_type": "Department",
+    "external_identifier": "dept-people",
+    "semantic_type_iri": "https://w3id.org/pko/industry#Department",
+    "name": null
+  }
+]

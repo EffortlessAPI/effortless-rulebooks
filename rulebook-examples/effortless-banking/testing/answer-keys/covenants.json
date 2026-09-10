@@ -8,18 +8,24 @@
     "next_test_date": "2026-06-30",
     "status": "Breached",
     "current_waiver_through": "2026-06-30",
-    "is_breached": true
+    "loan_label": "L-0042",
+    "loan_business": "pine-hardware-inc",
+    "is_breached": true,
+    "has_active_waiver": true
   },
   {
     "name": "l-0051-maxleverage",
     "loan": "l-0051",
     "covenant_type": "MaxLeverage",
-    "threshold_value": 3.0,
+    "threshold_value": 3,
     "test_frequency": "Annual",
     "next_test_date": "2026-03-01",
     "status": "Active",
     "current_waiver_through": null,
-    "is_breached": false
+    "loan_label": "L-0051",
+    "loan_business": "stillwater-roasters-llc",
+    "is_breached": false,
+    "has_active_waiver": false
   },
   {
     "name": "l-0051-mindscr",
@@ -30,7 +36,10 @@
     "next_test_date": "2025-06-30",
     "status": "Active",
     "current_waiver_through": null,
-    "is_breached": false
+    "loan_label": "L-0042",
+    "loan_business": "pine-hardware-inc",
+    "is_breached": true,
+    "has_active_waiver": true
   },
   {
     "name": "l-0051-reportingfinancials",
@@ -41,6 +50,9 @@
     "next_test_date": "2026-03-31",
     "status": "Active",
     "current_waiver_through": null,
-    "is_breached": false
+    "loan_label": "L-0051",
+    "loan_business": "stillwater-roasters-llc",
+    "is_breached": false,
+    "has_active_waiver": false
   }
 ]

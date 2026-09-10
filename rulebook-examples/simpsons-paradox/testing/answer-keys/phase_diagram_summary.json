@@ -1,0 +1,15 @@
+[
+  {
+    "phase_diagram_id": "phase-diagram-v1",
+    "phase_type_a_count": 0,
+    "phase_type_b_count": 0,
+    "phase_type_c_plus_count": 0,
+    "phase_type_c_minus_count": 0,
+    "phase_type_d_count": 0,
+    "name": "phase-diagram-v1",
+    "phase_point_count": 0,
+    "all_five_types_present": false,
+    "phase_taxonomy_witness": "A:0 B:0 C+:0 C-:0 D:0",
+    "phase_witness_note": "FAIL: missing distortion type in grid"
+  }
+]

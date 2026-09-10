@@ -245,17 +245,17 @@ already computes (cross-referenced as DR-N in the Definitional Rules below)._
 ### Structural Constraints (from the schema)
 
 - A user **must** have a display name.
-- A timer **must** have a label, a wind angle degrees, a max wind degrees, a max spring torque nm, and an escapement base hz.
+- A timer **must** have a label; a wind angle degrees; a max wind degrees; a max spring torque nm; and an escapement base hz.
 - A cas **must** reference exactly one timer as its houses timer.
 - A cas **must** have a material.
 - A bell **must** reference exactly one cas as its mounted on case.
 - A bell **must** have a diameter mm and a tone hz.
 - A winding knob **must** reference exactly one timer as its fixed to timer.
-- A winding knob **must** have a scale min, a scale max, a wind direction, and a shaft diameter mm, and record whether it is pointer fixed.
+- A winding knob **must** have a scale min; a scale max; a wind direction; and a shaft diameter mm, and record whether it is pointer fixed.
 - An arbor **must** reference exactly one timer as its in timer.
 - An arbor **must** have a diameter mm.
 - A mainspring **must** reference exactly one arbor as its wrapped on arbor.
-- A mainspring **must** have a drum diameter mm, a material, an inner end anchor, and an outer end anchor.
+- A mainspring **must** have a drum diameter mm; a material; an inner end anchor; and an outer end anchor.
 - A gear train **must** reference exactly one timer as its in timer.
 - A gear train **must** have a reduction ratio.
 - A gear **must** reference exactly one gear train as its in gear train.
@@ -293,7 +293,7 @@ already computes (cross-referenced as DR-N in the Definitional Rules below)._
 - A cook **must** reference exactly one user as its prepared by.
 - A cook **must** reference exactly one recipe as its follows recipe.
 - A cook **must** have a dish name and a started at.
-- A recipe **must** have a dish name, a recommended minutes, and an ideal temperature c.
+- A recipe **must** have a dish name; a recommended minutes; and an ideal temperature c.
 - A kitchen **must** have a display name.
 
 ## 4 Definitional Rules

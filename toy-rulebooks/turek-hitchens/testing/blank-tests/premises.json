@@ -1,0 +1,154 @@
+[
+  {
+    "label": "Atrocity From Permission",
+    "supports_argument": "morality-without-god",
+    "ordinal": 1,
+    "statement": "The worst atrocities flow from felt divine permission.",
+    "description": "Premise 1 of the morality without god.",
+    "name": null
+  },
+  {
+    "label": "Beginning Needs Beginner",
+    "supports_argument": "cosmological-argument",
+    "ordinal": 2,
+    "statement": "Whatever begins to exist has a cause/beginner.",
+    "description": "Premise 2 of the cosmological argument.",
+    "name": null
+  },
+  {
+    "label": "Burden Remains",
+    "supports_argument": "deism-theism-gap",
+    "ordinal": 2,
+    "statement": "The theist must still bridge from designer to revealed God.",
+    "description": "Premise 2 of the deism theism gap.",
+    "name": null
+  },
+  {
+    "label": "Capricious Or Absent",
+    "supports_argument": "argument-from-poor-design",
+    "ordinal": 2,
+    "statement": "Heat death and collisions imply capricious or no design.",
+    "description": "Premise 2 of the argument from poor design.",
+    "name": null
+  },
+  {
+    "label": "Cause Is Transcendent",
+    "supports_argument": "cosmological-argument",
+    "ordinal": 3,
+    "statement": "The creator-cause is spaceless, timeless, immaterial, intelligent, powerful, and personal.",
+    "description": "Premise 3 of the cosmological argument.",
+    "name": null
+  },
+  {
+    "label": "Chance Insufficient",
+    "supports_argument": "argument-from-fine-tuning",
+    "ordinal": 2,
+    "statement": "Such precision is not plausibly due to chance.",
+    "description": "Premise 2 of the argument from fine tuning.",
+    "name": null
+  },
+  {
+    "label": "Conscience Is Innate",
+    "supports_argument": "morality-without-god",
+    "ordinal": 3,
+    "statement": "Conscience (Socrates, Smith) is innate, not granted.",
+    "description": "Premise 3 of the morality without god.",
+    "name": null
+  },
+  {
+    "label": "Designer Inferred",
+    "supports_argument": "argument-from-design-of-life",
+    "ordinal": 3,
+    "statement": "A mind best explains biological information.",
+    "description": "Premise 3 of the argument from design of life.",
+    "name": null
+  },
+  {
+    "label": "Designer Not Pray-Answerer",
+    "supports_argument": "deism-theism-gap",
+    "ordinal": 1,
+    "statement": "A designer need not answer prayer or perform miracles.",
+    "description": "Premise 1 of the deism theism gap.",
+    "name": null
+  },
+  {
+    "label": "Fine-Tuning Observed",
+    "supports_argument": "argument-from-fine-tuning",
+    "ordinal": 1,
+    "statement": "Physical constants are set on a razor's edge.",
+    "description": "Premise 1 of the argument from fine tuning.",
+    "name": null
+  },
+  {
+    "label": "Information From Minds",
+    "supports_argument": "argument-from-design-of-life",
+    "ordinal": 2,
+    "statement": "Information only comes from minds.",
+    "description": "Premise 2 of the argument from design of life.",
+    "name": null
+  },
+  {
+    "label": "Lawgiver Is God",
+    "supports_argument": "moral-argument",
+    "ordinal": 3,
+    "statement": "That standard is the moral lawgiver, God's nature.",
+    "description": "Premise 3 of the moral argument.",
+    "name": null
+  },
+  {
+    "label": "Life Carries Information",
+    "supports_argument": "argument-from-design-of-life",
+    "ordinal": 1,
+    "statement": "DNA encodes specified complexity.",
+    "description": "Premise 1 of the argument from design of life.",
+    "name": null
+  },
+  {
+    "label": "No Unique Believer Virtue",
+    "supports_argument": "morality-without-god",
+    "ordinal": 2,
+    "statement": "No moral act is available only to believers.",
+    "description": "Premise 2 of the morality without god.",
+    "name": null
+  },
+  {
+    "label": "Objective Values Exist",
+    "supports_argument": "moral-argument",
+    "ordinal": 1,
+    "statement": "Objective moral values and duties exist.",
+    "description": "Premise 1 of the moral argument.",
+    "name": null
+  },
+  {
+    "label": "Tuner Inferred",
+    "supports_argument": "argument-from-fine-tuning",
+    "ordinal": 3,
+    "statement": "A fine-tuner best explains the balance.",
+    "description": "Premise 3 of the argument from fine tuning.",
+    "name": null
+  },
+  {
+    "label": "Universe Began",
+    "supports_argument": "cosmological-argument",
+    "ordinal": 1,
+    "statement": "The universe had a beginning (SURGE).",
+    "description": "Premise 1 of the cosmological argument.",
+    "name": null
+  },
+  {
+    "label": "Values Need Lawgiver",
+    "supports_argument": "moral-argument",
+    "ordinal": 2,
+    "statement": "Objective values require a standard beyond humanity.",
+    "description": "Premise 2 of the moral argument.",
+    "name": null
+  },
+  {
+    "label": "Waste And Extinction",
+    "supports_argument": "argument-from-poor-design",
+    "ordinal": 1,
+    "statement": "Profuse creation is mostly wiped out; 99.8% of species are extinct.",
+    "description": "Premise 1 of the argument from poor design.",
+    "name": null
+  }
+]

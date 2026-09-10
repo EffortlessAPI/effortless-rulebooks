@@ -3,19 +3,23 @@
 Take Test - OWL Execution Substrate
 
 GUARD: This substrate must compute calculated fields using its own native
-engine: SHACL via pyshacl. It must NOT import python_only_erb_simulator or
-call compute_lookups / compute_aggregations from any orchestration helper.
-Fields it cannot compute natively (SHACL rules that fail to compile, or
-formula classes the rulebook-to-owl translator doesn't yet support) must be
-left null and counted as failures by the grader. The forthcoming first-party
-`rulebook-to-owl` tool will close the gap; until then OWL is honestly partial.
+engine: the generated SHACL-AF SPARQL rules, executed by a SPARQL 1.1 engine
+(pyoxigraph). It must NOT import python_only_erb_simulator or call
+compute_lookups / compute_aggregations from any orchestration helper. Fields it
+cannot compute natively (SHACL rules that fail to compile, or formula classes
+the rulebook-to-owl translator doesn't yet support) must be left null and
+counted as failures by the grader.
 
-This script uses SHACL-SPARQL reasoning to compute derived values:
-1. Loads the generated ontology and SHACL rules
-2. Runs pyshacl multiple passes to resolve dependencies between computed fields
+This script executes the SHACL-AF rules to compute derived values:
+1. Loads the generated ontology, individuals and SHACL rules
+2. Executes every sh:SPARQLRule once, in ascending sh:order (the injector emits
+   each rule's depth in the formula DAG), with $this bound to each focus node
 3. Extracts results to test-answers/ directory
 
-The computation happens in the SHACL reasoner, not in Python code.
+The computation happens in the SPARQL engine, not in Python code; Python only
+sequences the rules. pyshacl was dropped because it evaluates every rule once per
+focus node and repeats whole passes until nothing changes, which on a large
+rulebook takes hours and never converges within its pass cap.
 """
 
 import json
@@ -30,19 +34,19 @@ def ensure_dependencies():
     """Install required packages if not present."""
     try:
         import rdflib
-        import pyshacl
+        import pyoxigraph
     except ImportError:
         print("Installing dependencies...")
         subprocess.check_call([
             sys.executable, "-m", "pip", "install",
-            "rdflib", "pyshacl", "--quiet"
+            "rdflib", "pyoxigraph", "--quiet"
         ])
 
 ensure_dependencies()
 
 from rdflib import Graph, Namespace, Literal, URIRef
 from rdflib.namespace import RDF, RDFS, XSD
-import pyshacl
+import pyoxigraph
 
 # Add project root to path for shared imports
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
@@ -66,14 +70,17 @@ NTWF = Namespace("https://w3id.org/effortless-ntwf#")
 SH = Namespace("http://www.w3.org/ns/shacl#")
 
 
-def _slugify_iri_local(value) -> str:
-    """Mirror inject-into-owl.py:slugify_iri_local — PK value → IRI local name.
+# The extractor must rebuild the exact IRI the injector minted, so it uses the
+# injector's own minting function rather than a copy that could drift.
+import importlib.util as _ilu
+_inj_spec = _ilu.spec_from_file_location("owl_injector", script_dir / "inject-into-owl.py")
+owl_injector = _ilu.module_from_spec(_inj_spec)
+_inj_spec.loader.exec_module(owl_injector)
 
-    Must stay byte-for-byte identical to the injector: the extractor's lookups
-    only hit if it reconstructs the exact IRI the injector wrote.
-    """
-    import re as _re
-    return _re.sub(r'[^A-Za-z0-9_\-.]', '-', str(value).strip())
+
+def individual_uri(table_name: str, pk_value) -> URIRef:
+    local = owl_injector.individual_iri(table_name, pk_value)[len(owl_injector.NS):]
+    return NTWF[local]
 
 
 def _primary_key_field(schema: list):
@@ -168,36 +175,47 @@ def rdf_value_to_python(value):
 # SHACL REASONING
 # =============================================================================
 
-def run_shacl_reasoning(data_graph: Graph, shacl_graph: Graph, max_passes: int = 5) -> int:
+THIS_VAR = re.compile(r'\$this\b')
+
+
+def load_sparql_rules(shacl_graph: Graph) -> list:
+    """Every sh:SPARQLRule as (order, label, target_class, construct), sorted by sh:order."""
+    rules = []
+    for shape, target in shacl_graph.subject_objects(SH.targetClass):
+        for rule in shacl_graph.objects(shape, SH.rule):
+            construct = shacl_graph.value(rule, SH.construct)
+            if construct is None:
+                continue
+            order = shacl_graph.value(rule, SH.order)
+            label = shacl_graph.value(rule, RDFS.label)
+            rules.append((int(order.toPython()) if order is not None else 0,
+                          str(label), str(target), str(construct)))
+    rules.sort(key=lambda r: (r[0], r[1]))
+    return rules
+
+
+def run_shacl_reasoning(store: "pyoxigraph.Store", rules: list) -> int:
+    """Execute each SHACL-AF rule once, in sh:order, inserting what it constructs.
+
+    SHACL-AF pre-binds $this to the focus node everywhere in the query, including
+    inside sub-SELECTs. A rule without a sub-SELECT is equivalent to one query with
+    $this as a free variable (its WHERE starts with `$this a <targetClass>`); a rule
+    WITH one must be evaluated per focus node, or its aggregate stops being
+    correlated with the row and counts the whole table.
+
+    Returns the number of distinct sh:order levels executed.
     """
-    Run SHACL reasoning with multiple passes to resolve dependencies.
-
-    Some computed fields depend on other computed fields. SHACL-SPARQL rules
-    don't automatically handle this in a single pass, so we run multiple passes
-    until no new triples are added.
-
-    Returns the number of passes executed.
-    """
-    passes = 0
-    for i in range(max_passes):
-        before = len(data_graph)
-        pyshacl.validate(
-            data_graph,
-            shacl_graph=shacl_graph,
-            inference='none',  # Don't use rdfs inference - it can cause incorrect property bindings
-            inplace=True,
-            advanced=True,
-            debug=False
-        )
-        after = len(data_graph)
-        passes += 1
-        added = after - before
-        print(f"   Pass {i+1}: {before} -> {after} triples ({added} added)")
-
-        if added == 0:
-            break
-
-    return passes
+    for order, label, target, construct in rules:
+        if re.search(r'WHERE\s*\{.*\bSELECT\b', construct, re.S):
+            focus = [s['n'] for s in store.query(f'SELECT ?n WHERE {{ ?n a <{target}> }}')]
+            triples = []
+            for node in focus:
+                triples.extend(store.query(THIS_VAR.sub(f'<{node.value}>', construct)))
+        else:
+            triples = list(store.query(THIS_VAR.sub('?this', construct)))
+        store.extend([pyoxigraph.Quad(t.subject, t.predicate, t.object, pyoxigraph.DefaultGraph())
+                      for t in triples])
+    return len({r[0] for r in rules})
 
 
 def extract_entity_results(
@@ -247,7 +265,7 @@ def extract_entity_results(
                 f"'{pk_field}'; cannot locate its individual in the graph. The "
                 f"OWL injector keys every individual by PK — fix the rulebook row."
             )
-        ind_uri = NTWF[_slugify_iri_local(pk_value)]
+        ind_uri = individual_uri(table_name, pk_value)
 
         # Start with RAW data only; never carry pre-computed values through.
         record = {}
@@ -360,40 +378,36 @@ def main():
             tables_with_computed[table_name] = computed_cols
 
     print(f"Tables with computed columns: {', '.join(tables_with_computed.keys())}")
+    owl_injector.register_pk_collisions(tables)
 
-    # Load ontology + individuals into a single graph
+    # Load ontology + individuals into a single store
     print("\nLoading ontology and data...")
-    data_graph = Graph()
-    data_graph.bind('effortless-ntwf', NTWF)
-    data_graph.bind('xsd', XSD)
-
-    data_graph.parse(ontology_path, format='turtle')
-    print(f"   Loaded: {ontology_path}")
-
-    data_graph.parse(individuals_path, format='turtle')
-    print(f"   Loaded: {individuals_path}")
-    print(f"   Total triples: {len(data_graph)}")
+    store = pyoxigraph.Store()
+    for path in (ontology_path, individuals_path):
+        store.load(path=str(path), format=pyoxigraph.RdfFormat.TURTLE)
+        print(f"   Loaded: {path}")
+    print(f"   Total triples: {len(store)}")
 
     # Load SHACL rules
     print("\nLoading SHACL rules...")
     shacl_graph = Graph()
-    shacl_graph.bind('effortless-ntwf', NTWF)
-    shacl_graph.bind('sh', SH)
     shacl_graph.parse(rules_path, format='turtle')
-    print(f"   Loaded: {rules_path}")
-    print(f"   Rule triples: {len(shacl_graph)}")
+    rules = load_sparql_rules(shacl_graph)
+    print(f"   Loaded: {rules_path} ({len(rules)} rules)")
 
-    # Run SHACL reasoning with multiple passes
-    print("\nRunning SHACL-SPARQL reasoning...")
-    print("   (Multiple passes to resolve dependencies between computed fields)")
-
+    print("\nExecuting SHACL-AF rules in sh:order...")
     try:
-        passes = run_shacl_reasoning(data_graph, shacl_graph)
-        print(f"   Completed in {passes} passes")
-        print(f"   Final triple count: {len(data_graph)}")
+        levels = run_shacl_reasoning(store, rules)
+        print(f"   Completed {len(rules)} rules across {levels} sh:order levels")
+        print(f"   Final triple count: {len(store)}")
     except Exception as e:
-        print(f"   ERROR: SHACL reasoning failed: {e}")
+        print(f"   ERROR: SHACL rule execution failed: {e}")
         sys.exit(1)
+
+    data_graph = Graph()
+    data_graph.parse(data=store.dump(format=pyoxigraph.RdfFormat.N_TRIPLES,
+                                     from_graph=pyoxigraph.DefaultGraph()),
+                     format='nt')
 
     # Extract results and save to test-answers/
     print("\nExtracting computed values...")

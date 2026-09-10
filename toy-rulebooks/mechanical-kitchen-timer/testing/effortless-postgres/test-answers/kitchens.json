@@ -1,0 +1,33 @@
+[
+  {
+    "kitchen_id": "Main",
+    "display_name": "Main Kitchen",
+    "total_timers": 4,
+    "total_cases": 4,
+    "total_bells": 4,
+    "total_users": 8,
+    "total_cooks": 18,
+    "total_recipes": 19,
+    "total_wind_actions": 5,
+    "total_tick_events": 23,
+    "total_ring_events": 1,
+    "timers_freshly_wound": 1,
+    "timers_mid_run": 1,
+    "timers_nearly_done": 1,
+    "timers_rung": 1,
+    "cooks_done": 3,
+    "cooks_cooking": 15,
+    "recipes_unused": 2,
+    "recipes_under_provisioned": 2,
+    "recipes_well_matched": 6,
+    "busy_users": 1,
+    "idle_users": 6,
+    "total_recipe_minutes": "832",
+    "avg_recipe_minutes": "43.7894736842105263",
+    "min_recipe_minutes": "2",
+    "max_recipe_minutes": "360",
+    "has_any_timer_rung": true,
+    "has_misprovisioned_recipe": true,
+    "operational_status": "busy"
+  }
+]

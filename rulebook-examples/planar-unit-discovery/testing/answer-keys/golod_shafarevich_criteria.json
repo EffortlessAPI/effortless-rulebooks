@@ -1,0 +1,38 @@
+[
+  {
+    "golod_shafarevich_criterion_id": "gs-q-sqrt-neg3",
+    "number_field": "q-sqrt-neg3",
+    "minimal_generator_count_d": 2,
+    "relation_count_r": 1,
+    "passes_criterion": false,
+    "source_reference": "src-golod-shafarevich-1964",
+    "description": "Q(sqrt(-3)): d=2, r=1, threshold=1; 1 is not > 1 \u2014 fails GS.",
+    "name": "q-sqrt-neg3-gs",
+    "relation_count_exceeds_threshold": false,
+    "satisfies_golod_shafarevich_tower": false
+  },
+  {
+    "golod_shafarevich_criterion_id": "gs-q-zeta-7",
+    "number_field": "q-zeta-7",
+    "minimal_generator_count_d": 3,
+    "relation_count_r": 5,
+    "passes_criterion": true,
+    "source_reference": "src-golod-shafarevich-1964",
+    "description": "Q(\u03b6_7) demonstration values: d=3, r=5, threshold=2.25; 5>2.25 \u2014 satisfies GS. Demonstration only; not a rigorous certificate.",
+    "name": "q-zeta-7-gs",
+    "relation_count_exceeds_threshold": false,
+    "satisfies_golod_shafarevich_tower": false
+  },
+  {
+    "golod_shafarevich_criterion_id": "gs-unknown-test",
+    "number_field": "q-sqrt-neg3",
+    "minimal_generator_count_d": 3,
+    "relation_count_r": 3,
+    "passes_criterion": false,
+    "source_reference": null,
+    "description": "Coverage row: PassesCriterion unevaluated.",
+    "name": "q-sqrt-neg3-gs",
+    "relation_count_exceeds_threshold": false,
+    "satisfies_golod_shafarevich_tower": false
+  }
+]

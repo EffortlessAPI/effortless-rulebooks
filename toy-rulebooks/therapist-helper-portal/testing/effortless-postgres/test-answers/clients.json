@@ -1,0 +1,62 @@
+[
+  {
+    "clients_id": "alex-r",
+    "client_name": "Alex Rivera",
+    "therapist": "tess@example.com",
+    "therapist_name": "Dr. Tess Brennan",
+    "start_date": "2026-01-15",
+    "name": "alex-r",
+    "session_count": 3,
+    "avg_mood_rating": "7.3333333333333333",
+    "goal_count": 2,
+    "avg_goal_progress": "80.35714285714285714300",
+    "last_session_label": "2026-04-16",
+    "is_at_risk": false,
+    "status_label": "On track"
+  },
+  {
+    "clients_id": "blair-m",
+    "client_name": "Blair Morgan",
+    "therapist": "tess@example.com",
+    "therapist_name": "Dr. Tess Brennan",
+    "start_date": "2026-02-03",
+    "name": "blair-m",
+    "session_count": 3,
+    "avg_mood_rating": "4.0000000000000000",
+    "goal_count": 2,
+    "avg_goal_progress": "50.00000000000000020850",
+    "last_session_label": "2026-04-17",
+    "is_at_risk": true,
+    "status_label": "At risk"
+  },
+  {
+    "clients_id": "casey-l",
+    "client_name": "Casey Lin",
+    "therapist": "rob@example.com",
+    "therapist_name": "Dr. Rob Singh",
+    "start_date": "2025-11-22",
+    "name": "casey-l",
+    "session_count": 2,
+    "avg_mood_rating": "6.5000000000000000",
+    "goal_count": 2,
+    "avg_goal_progress": "67.85714285714285714300",
+    "last_session_label": "2026-04-11",
+    "is_at_risk": false,
+    "status_label": "On track"
+  },
+  {
+    "clients_id": "drew-p",
+    "client_name": "Drew Patel",
+    "therapist": "rob@example.com",
+    "therapist_name": "Dr. Rob Singh",
+    "start_date": "2026-03-01",
+    "name": "drew-p",
+    "session_count": 2,
+    "avg_mood_rating": "8.5000000000000000",
+    "goal_count": 2,
+    "avg_goal_progress": "89.73214285714285714300",
+    "last_session_label": "2026-04-12",
+    "is_at_risk": false,
+    "status_label": "On track"
+  }
+]

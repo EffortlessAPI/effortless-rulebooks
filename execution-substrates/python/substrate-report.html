@@ -206,10 +206,10 @@ pre {
         <div class="header-stats">
             <div class="stat">
                 <span>Score:</span>
-                <span class="stat-value score-danger">13.0%</span>
+                <span class="stat-value score-danger">0.0%</span>
             </div>
             <div class="stat">
-                <span>90/691 passed</span>
+                <span>0/6 passed</span>
             </div>
         </div>
         <button id="theme-toggle" title="Toggle theme">
@@ -286,8 +286,6 @@ pre {
                 <h2>Execution Log</h2>
                 <pre>=== Python Substrate Test Run ===
 
-  -&gt; agent_capability_concepts: 6 records
-  -&gt; ai_agents: 2 records
 Traceback (most recent call last):
   File &quot;/Users/eejai42/development/effortless-rulebooks/execution-substrates/python/take-test.py&quot;, line 137, in &lt;module&gt;
     main()
@@ -299,12 +297,9 @@ Traceback (most recent call last):
     count = process_entity(input_path, str(output_path), entity, rulebook, project_root)
   File &quot;/Users/eejai42/development/effortless-rulebooks/execution-substrates/python/take-test.py&quot;, line 48, in process_entity
     computed = compute_all_calculated_fields(record, entity_name)
-  File &quot;/Users/eejai42/development/effortless-rulebooks/execution-substrates/python/python_only_erb_simulator.py&quot;, line 1632, in compute_all_calculated_fields
-    return compute_approval_gates_fields(record)
-  File &quot;/Users/eejai42/development/effortless-rulebooks/execution-substrates/python/python_only_erb_simulator.py&quot;, line 436, in compute_approval_gates_fields
-    result[&#x27;has_human_approver&#x27;] = calc_approval_gates_has_human_approver(result.get(&#x27;gate_approver_human&#x27;))
-                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-TypeError: calc_approval_gates_has_human_approver() takes 0 positional arguments but 1 was given
+  File &quot;/Users/eejai42/development/effortless-rulebooks/execution-substrates/python/python_only_erb_simulator.py&quot;, line 1674, in compute_all_calculated_fields
+    raise KeyError(f&quot;compute_all_calculated_fields called with unknown entity {entity_name!r}. &quot;f&quot;Known entities in this generated erb_calc.py: [&#x27;workflows&#x27;, &#x27;workflow_steps&#x27;, &#x27;approval_gates&#x27;, &#x27;step_precedence&#x27;, &#x27;roles&#x27;, &#x27;role_assignments&#x27;, &#x27;departments&#x27;, &#x27;human_agents&#x27;, &#x27;ai_agents&#x27;, &#x27;automated_pipelines&#x27;, &#x27;workflow_status_concepts&#x27;, &#x27;agent_capability_concepts&#x27;, &#x27;artifact_type_concepts&#x27;, &#x27;datasets&#x27;, &#x27;workflow_artifacts&#x27;, &#x27;governance_roles&#x27;, &#x27;change_log&#x27;, &#x27;vocabulary_reconciliations&#x27;, &#x27;scenarios&#x27;, &#x27;competency_questions&#x27;, &#x27;scenario_cq_effects&#x27;, &#x27;conformance_tests&#x27;, &#x27;__meta__&#x27;]. &quot;f&quot;Check that the rulebook used to generate this file matches the data being computed.&quot;)
+KeyError: &quot;compute_all_calculated_fields called with unknown entity &#x27;customers&#x27;. Known entities in this generated erb_calc.py: [&#x27;workflows&#x27;, &#x27;workflow_steps&#x27;, &#x27;approval_gates&#x27;, &#x27;step_precedence&#x27;, &#x27;roles&#x27;, &#x27;role_assignments&#x27;, &#x27;departments&#x27;, &#x27;human_agents&#x27;, &#x27;ai_agents&#x27;, &#x27;automated_pipelines&#x27;, &#x27;workflow_status_concepts&#x27;, &#x27;agent_capability_concepts&#x27;, &#x27;artifact_type_concepts&#x27;, &#x27;datasets&#x27;, &#x27;workflow_artifacts&#x27;, &#x27;governance_roles&#x27;, &#x27;change_log&#x27;, &#x27;vocabulary_reconciliations&#x27;, &#x27;scenarios&#x27;, &#x27;competency_questions&#x27;, &#x27;scenario_cq_effects&#x27;, &#x27;conformance_tests&#x27;, &#x27;__meta__&#x27;]. Check that the rulebook used to generate this file matches the data being computed.&quot;
 
 </pre>
             </div>
@@ -315,19 +310,19 @@ TypeError: calc_approval_gates_has_human_approver() takes 0 positional arguments
                 <h2>Test Summary</h2>
                 <div class="results-summary">
                     <div class="result-item">
-                        <div class="result-value score-danger">13.0%</div>
+                        <div class="result-value score-danger">0.0%</div>
                         <div class="result-label">Score</div>
                     </div>
                     <div class="result-item">
-                        <div class="result-value score-perfect">90</div>
+                        <div class="result-value score-perfect">0</div>
                         <div class="result-label">Passed</div>
                     </div>
                     <div class="result-item">
-                        <div class="result-value">601</div>
+                        <div class="result-value">6</div>
                         <div class="result-label">Failed</div>
                     </div>
                     <div class="result-item">
-                        <div class="result-value">691</div>
+                        <div class="result-value">6</div>
                         <div class="result-label">Total</div>
                     </div>
                 </div>
@@ -337,7 +332,7 @@ TypeError: calc_approval_gates_has_human_approver() takes 0 positional arguments
                 <div class="markdown-content">
                     <h3>language_candidates</h3>
                     <ul>
-                        <li>Fields: 90/691 (13.0%)</li>
+                        <li>Fields: 0/6 (0.0%)</li>
                         <li>Computed columns: has_grammar, question, predicted_answer, prediction_predicates, prediction_fail, is_description_of, is_open_closed_world_conflicted, relationship_to_concept</li>
                     </ul>
                 </div>

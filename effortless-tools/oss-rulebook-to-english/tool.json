@@ -1,0 +1,10 @@
+{
+  "name": "oss-rulebook-to-english",
+  "runtime": "script",
+  "entry": "transpiler.py",
+  "description": "Generate plain-English business-rule narrative from rulebook",
+  "tags": [
+    "oss",
+    "execution-substrate"
+  ]
+}

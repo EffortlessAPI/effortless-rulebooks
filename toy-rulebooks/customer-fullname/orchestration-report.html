@@ -833,8 +833,8 @@ footer {
                     <div class="stat-label">Tests Passing</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value score-warning">
-                        75.0%
+                    <div class="stat-value score-danger">
+                        50.0%
                     </div>
                     <div class="stat-label">Overall Score</div>
                 </div>
@@ -855,11 +855,11 @@ footer {
             <h2>Conformance Test Results</h2>
             <div class="substrate-links">
                 <div class="substrate-link-group">
-                        <a href="#" class="substrate-link score-danger" data-substrate="xlsx"><span class="substrate-swatch" style="background:#1F7244"></span>xlsx: 50%</a>
+                        <a href="#" class="substrate-link score-danger" data-substrate="xlsx"><span class="substrate-swatch" style="background:#1F7244"></span>xlsx: 0%</a>
                     </div>
                     <div class="substrate-link-group effortless-group">
                         <div class="substrate-link-group-label">Effortless Licensed Tools</div>
-                        <a href="#" class="substrate-link score-perfect" data-substrate="effortless-postgres"><span class="substrate-swatch" style="background:#336791"></span>postgres: 100%</a>
+                        <a href="#" class="substrate-link score-perfect" data-substrate="effortless-postgres"><span class="substrate-swatch" style="background:#336791"></span>effortless-postgres: 100%</a>
                     </div>
             </div>
 
@@ -876,9 +876,9 @@ footer {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="xlsx"><span class="substrate-swatch" style="background:#1F7244"></span>xlsx</td><td class="cell-fail" data-substrate="xlsx" data-entity="customers" title="4/8">4</td><td class="score-cell score-danger">50.0%</td><td class="time-cell">1.0s</td></tr>
+                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="xlsx"><span class="substrate-swatch" style="background:#1F7244"></span>xlsx</td><td class="cell-fail" data-substrate="xlsx" data-entity="customers" title="0/8">8</td><td class="score-cell score-danger">0.0%</td><td class="time-cell">0.0s</td></tr>
                         <tr class="effortless-divider"><td colspan="4"><span class="effortless-divider-badge">EFFORTLESS LICENSED TOOLS</span> <span class="effortless-divider-sub">production transpiler pipelines &mdash; expected 100% conformance</span></td></tr>
-                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="effortless-postgres"><span class="substrate-swatch" style="background:#336791"></span>postgres</td><td class="cell-pass" data-substrate="effortless-postgres" data-entity="customers" title="8/8">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">0.0s</td></tr>
+                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="effortless-postgres"><span class="substrate-swatch" style="background:#336791"></span>effortless-postgres</td><td class="cell-pass" data-substrate="effortless-postgres" data-entity="customers" title="8/8">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">1.0s</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -888,7 +888,7 @@ footer {
             <nav class="sub-tabs" id="substrate-tabs">
                 <button class="sub-tab active" data-substrate="xlsx"><span class="substrate-swatch" style="background:#1F7244"></span>xlsx</button>
                 <span class="sub-tab-group-divider" title="Licensed Effortless tools">EFFORTLESS LICENSED TOOLS</span>
-                <button class="sub-tab " data-substrate="effortless-postgres"><span class="substrate-swatch" style="background:#336791"></span>postgres</button>
+                <button class="sub-tab " data-substrate="effortless-postgres"><span class="substrate-swatch" style="background:#336791"></span>effortless-postgres</button>
             </nav>
             <div id="substrate-details"></div>
         </section>
@@ -922,11 +922,11 @@ const REPORT_DATA = {
     "total_entities": 1,
     "total_computed_columns": 2,
     "total_records": 4,
-    "overall_score": 75.0,
+    "overall_score": 50.0,
     "total_runtime_seconds": 1.0,
     "total_fields_tested": 16,
-    "total_passed": 12,
-    "total_failed": 4
+    "total_passed": 8,
+    "total_failed": 8
   },
   "entities": {
     "customers": {
@@ -1018,19 +1018,31 @@ const REPORT_DATA = {
     "xlsx": {
       "substrate": "xlsx",
       "total_fields_tested": 8,
-      "fields_passed": 4,
-      "fields_failed": 4,
-      "elapsed_seconds": 1.0,
+      "fields_passed": 0,
+      "fields_failed": 8,
+      "elapsed_seconds": 0.0,
       "entities": {
         "customers": {
           "fields_tested": 8,
-          "fields_passed": 4,
-          "fields_failed": 4,
+          "fields_passed": 0,
+          "fields_failed": 8,
           "failures": [
+            {
+              "pk": "emily-jones",
+              "field": "name",
+              "expected": "Jones, Emily",
+              "actual": "None"
+            },
             {
               "pk": "emily-jones",
               "field": "initials",
               "expected": "EJ",
+              "actual": "None"
+            },
+            {
+              "pk": "jane-smith",
+              "field": "name",
+              "expected": "Smith, Jane",
               "actual": "None"
             },
             {
@@ -1041,8 +1053,20 @@ const REPORT_DATA = {
             },
             {
               "pk": "john-doe",
+              "field": "name",
+              "expected": "Doe, John",
+              "actual": "None"
+            },
+            {
+              "pk": "john-doe",
               "field": "initials",
               "expected": "JD",
+              "actual": "None"
+            },
+            {
+              "pk": "mary-gutknecht",
+              "field": "name",
+              "expected": "Gutknecht, Mary",
               "actual": "None"
             },
             {
@@ -1058,9 +1082,9 @@ const REPORT_DATA = {
       "run_metadata": {
         "last_run": {
           "status": "success",
-          "duration_seconds": 1.0,
+          "duration_seconds": 0.0,
           "exit_code": 0,
-          "score": 50.0
+          "score": 0.0
         },
         "last_successful_run": null
       },
@@ -1070,28 +1094,28 @@ const REPORT_DATA = {
             "customer_id": "emily-jones",
             "first_name": "Emily",
             "last_name": "Jones",
-            "name": "Jones, Emily",
+            "name": null,
             "initials": null
           },
           {
             "customer_id": "jane-smith",
             "first_name": "Jane",
             "last_name": "Smith",
-            "name": "Smith, Jane",
+            "name": null,
             "initials": null
           },
           {
             "customer_id": "john-doe",
             "first_name": "John",
             "last_name": "Doe",
-            "name": "Doe, John",
+            "name": null,
             "initials": null
           },
           {
             "customer_id": "mary-gutknecht",
             "first_name": "Mary",
             "last_name": "Gutknecht",
-            "name": "Gutknecht, Mary",
+            "name": null,
             "initials": null
           }
         ]
@@ -1121,9 +1145,9 @@ const REPORT_DATA = {
         ],
         "contents": {
           "description": "<div class=\"card\">\n                <h2>What This Substrate Does</h2>\n                <div class=\"markdown-content\">\n                    <p>The XLSX substrate generates native Excel workbooks with embedded formulas, allowing the rulebook logic to execute directly within Microsoft Excel.</p>\n                    <h3>Orchestration Pattern</h3>\n                    <ol>\n                        <li><strong>Generate</strong>: <code>inject-into-xlsx.py</code> creates Excel workbook using openpyxl</li>\n                        <li><strong>Inject Formulas</strong>: Converts rulebook formulas to Excel cell references</li>\n                        <li><strong>Test</strong>: Opens workbook and validates calculated values match expected</li>\n                    </ol>\n                </div>\n            </div>\n            <div class=\"card\">\n                <h2>Key Features</h2>\n                <ul class=\"markdown-content\">\n                    <li><strong>Native Excel Formulas</strong>: Calculations run directly in Excel</li>\n                    <li><strong>Cell Reference Translation</strong>: <code>{{FieldRef}}</code> becomes <code>$B2</code>, etc.</li>\n                    <li><strong>Multi-Sheet Support</strong>: Each entity gets its own worksheet</li>\n                    <li><strong>Portable</strong>: Works offline without any dependencies</li>\n                </ul>\n            </div>",
-          "log": "<div class=\"card\">\n                <h2>Execution Log</h2>\n                <pre>=== XLSX (Excel) Substrate Test Run ===\n\n\n  Processing customers...\nFound 5 fields in test answers\nPrimary key field: customer_id\nReading from worksheet: Customers\nFound 5 columns, matched 5 to JSON fields\nLoaded 4 rows from xlsx\nFilled 4 null fields across 4 records\nUpdated /Users/eejai42/development/effortless-rulebooks/toy-rulebooks/customer-fullname/testing/xlsx/test-answers/customers.json\n\nxlsx: Processed 1 entities from rulebook.xlsx\n\n</pre>\n            </div>",
-          "results": "<div class=\"card\">\n                <h2>Test Summary</h2>\n                <div class=\"results-summary\">\n                    <div class=\"result-item\"><div class=\"result-value score-danger\">50.0%</div><div class=\"result-label\">Score</div></div>\n                    <div class=\"result-item\"><div class=\"result-value score-perfect\">4</div><div class=\"result-label\">Passed</div></div>\n                    <div class=\"result-item\"><div class=\"result-value\">4</div><div class=\"result-label\">Failed</div></div>\n                    <div class=\"result-item\"><div class=\"result-value\">8</div><div class=\"result-label\">Total</div></div>\n                </div>\n            </div>",
-          "workbook": "<div class=\"card\">\n                <h2>Generated Workbook</h2>\n                <div class=\"file-card\">\n                    <span class=\"file-icon\">\ud83d\udcd7</span>\n                    <div class=\"file-info\">\n                        <h3>rulebook.xlsx</h3>\n                        <div class=\"file-meta\">Size: 7.2 KB</div>\n                    </div>\n                </div>\n                <div class=\"markdown-content\" style=\"margin-top: 1rem;\">\n                    <h3>Sheets</h3>\n                    <ul>\n                        <li>One sheet per entity in the rulebook, each with all fields and calculated values</li>\n                    </ul>\n                </div>\n            </div>",
+          "log": "<div class=\"card\">\n                <h2>Execution Log</h2>\n                <pre>=== XLSX (Excel) Substrate Test Run ===\n\n\n  Processing customers...\nFound 5 fields in test answers\nPrimary key field: customer_id\nReading from worksheet: Customers\nFound 6 columns, matched 4 to JSON fields\nLoaded 3 rows from xlsx\nFilled 0 null fields across 0 records\nUpdated /Users/eejai42/development/effortless-rulebooks/toy-rulebooks/customer-fullname/testing/xlsx/test-answers/customers.json\n\nxlsx: Processed 1 entities from rulebook.xlsx\n\n</pre>\n            </div>",
+          "results": "<div class=\"card\">\n                <h2>Test Summary</h2>\n                <div class=\"results-summary\">\n                    <div class=\"result-item\"><div class=\"result-value score-danger\">0.0%</div><div class=\"result-label\">Score</div></div>\n                    <div class=\"result-item\"><div class=\"result-value score-perfect\">0</div><div class=\"result-label\">Passed</div></div>\n                    <div class=\"result-item\"><div class=\"result-value\">8</div><div class=\"result-label\">Failed</div></div>\n                    <div class=\"result-item\"><div class=\"result-value\">8</div><div class=\"result-label\">Total</div></div>\n                </div>\n            </div>",
+          "workbook": "<div class=\"card\">\n                <h2>Generated Workbook</h2>\n                <div class=\"file-card\">\n                    <span class=\"file-icon\">\ud83d\udcd7</span>\n                    <div class=\"file-info\">\n                        <h3>rulebook.xlsx</h3>\n                        <div class=\"file-meta\">Size: 6.7 KB</div>\n                    </div>\n                </div>\n                <div class=\"markdown-content\" style=\"margin-top: 1rem;\">\n                    <h3>Sheets</h3>\n                    <ul>\n                        <li>One sheet per entity in the rulebook, each with all fields and calculated values</li>\n                    </ul>\n                </div>\n            </div>",
           "formulas": "<div class=\"card\">\n                <h2>Formula Translation</h2>\n                <div class=\"markdown-content\">\n                    <p>Rulebook formulas are converted to Excel formulas with cell references:</p>\n                </div>\n                <div class=\"formula-example\">\n                    <strong>Rulebook:</strong> =SUBSTITUTE(LOWER({{DisplayName}}), \" \", \"-\")<br>\n                    <strong>Excel:</strong> =SUBSTITUTE(LOWER($B2), \" \", \"-\")\n                </div>\n                <div class=\"formula-example\">\n                    <strong>Rulebook:</strong> ={{FieldA}} &amp; \" - \" &amp; {{FieldB}}<br>\n                    <strong>Excel:</strong> =$C2 &amp; \" - \" &amp; $D2\n                </div>\n            </div>"
         }
       }
@@ -1133,7 +1157,7 @@ const REPORT_DATA = {
       "total_fields_tested": 8,
       "fields_passed": 8,
       "fields_failed": 0,
-      "elapsed_seconds": 0.0,
+      "elapsed_seconds": 1.0,
       "entities": {
         "customers": {
           "fields_tested": 8,
@@ -1146,12 +1170,12 @@ const REPORT_DATA = {
       "run_metadata": {
         "last_run": {
           "status": "success",
-          "duration_seconds": 0.0,
+          "duration_seconds": 1.0,
           "exit_code": 0,
           "score": 100.0
         },
         "last_successful_run": {
-          "duration_seconds": 0.0,
+          "duration_seconds": 1.0,
           "status": "success",
           "test_results": {
             "total_fields_tested": 8,
@@ -1305,7 +1329,9 @@ const REPORT_DATA = {
   },
   "_effortless_substrates": [
     "effortless-entity-framework",
+    "effortless-golang",
     "effortless-postgres",
+    "effortless-python",
     "effortless-xlsx"
   ],
   "_substrate_colors": {
@@ -1322,7 +1348,9 @@ const REPORT_DATA = {
     "explain-dag": "#37474F",
     "effortless-postgres": "#336791",
     "effortless-xlsx": "#107C41",
-    "effortless-entity-framework": "#512BD4"
+    "effortless-entity-framework": "#512BD4",
+    "effortless-python": "#FFD343",
+    "effortless-golang": "#007D9C"
   }
 };
 
@@ -1334,9 +1362,6 @@ const SUBSTRATE_COLORS = REPORT_DATA._substrate_colors || {};
 
 function isEffortless(name) { return EFFORTLESS_SUBSTRATES.has(name); }
 function substrateColor(name) { return SUBSTRATE_COLORS[name] || '#6c757d'; }
-function displayName(name) {
-    return isEffortless(name) ? name.replace(/^effortless-/, '') : name;
-}
 function sortSubstrates(names) {
     // Open-source first, effortless last; alpha within each group.
     return [...names].sort((a, b) => {
@@ -1571,7 +1596,7 @@ function renderEntityDetails(entityName) {
     html += '</details>';
 
     // Substrate results tabs — open-source first, then a divider, then
-    // Effortless-licensed substrates. Labels drop the "effortless-" prefix.
+    // Effortless-licensed substrates, labelled with their real names.
     html += '<h4>Substrate Results</h4>';
     html += '<nav class="sub-tabs" id="entity-substrate-tabs">';
     const orderedSubs = sortSubstrates(Object.keys(REPORT_DATA.substrates));
@@ -1591,7 +1616,7 @@ function renderEntityDetails(entityName) {
         const scoreClass = getScoreClass(score);
         const active = renderedCount === 0 ? 'active' : '';
         const swatch = `<span class="substrate-swatch" style="background:${substrateColor(substrate)}"></span>`;
-        html += `<button class="sub-tab ${active} score-${scoreClass}" data-substrate="${escapeHtml(substrate)}" data-entity="${escapeHtml(entityName)}">${swatch}${escapeHtml(displayName(substrate))}: ${score}%</button>`;
+        html += `<button class="sub-tab ${active} score-${scoreClass}" data-substrate="${escapeHtml(substrate)}" data-entity="${escapeHtml(entityName)}">${swatch}${escapeHtml(substrate)}: ${score}%</button>`;
         renderedCount++;
     });
     html += '</nav><div id="entity-substrate-details"></div>';

@@ -1,0 +1,58 @@
+[
+  {
+    "therapy_option_id": "anifrolumab",
+    "therapy_label": "Anifrolumab (anti-IFNAR1)",
+    "targets_pathway": "type-I-IFN",
+    "line_ordinal": 2,
+    "preferred_when": "type-I-IFN-signature mechanism",
+    "name": "Anifrolumab (anti-IFNAR1)",
+    "relative_path": "/admin/therapy-options/anifrolumab",
+    "created_by": "v2-step3",
+    "created_at": "2026-06-20T00:00:00Z",
+    "modified_by": "v2-step3",
+    "modified_at": "2026-06-20T00:00:00Z",
+    "modified_by_model": "claude-opus-4-8"
+  },
+  {
+    "therapy_option_id": "belimumab",
+    "therapy_label": "Belimumab (anti-BLyS)",
+    "targets_pathway": "B-cell/autoantibody",
+    "line_ordinal": 2,
+    "preferred_when": "serologically active, autoantibody-driven",
+    "name": "Belimumab (anti-BLyS)",
+    "relative_path": "/admin/therapy-options/belimumab",
+    "created_by": "v2-step3",
+    "created_at": "2026-06-20T00:00:00Z",
+    "modified_by": "v2-step3",
+    "modified_at": "2026-06-20T00:00:00Z",
+    "modified_by_model": "claude-opus-4-8"
+  },
+  {
+    "therapy_option_id": "mmf",
+    "therapy_label": "Mycophenolate (MMF)",
+    "targets_pathway": "organ-induction",
+    "line_ordinal": 1,
+    "preferred_when": "active nephritis (proteinuria-driven)",
+    "name": "Mycophenolate (MMF)",
+    "relative_path": "/admin/therapy-options/mmf",
+    "created_by": "v2-step3",
+    "created_at": "2026-06-20T00:00:00Z",
+    "modified_by": "v2-step3",
+    "modified_at": "2026-06-20T00:00:00Z",
+    "modified_by_model": "claude-opus-4-8"
+  },
+  {
+    "therapy_option_id": "secukinumab",
+    "therapy_label": "Secukinumab (anti-IL-17)",
+    "targets_pathway": "IL-17/23",
+    "line_ordinal": 2,
+    "preferred_when": "IL-17/23-axis disease (PsA/SpA)",
+    "name": "Secukinumab (anti-IL-17)",
+    "relative_path": "/admin/therapy-options/secukinumab",
+    "created_by": "v2-step3",
+    "created_at": "2026-06-20T00:00:00Z",
+    "modified_by": "v2-step3",
+    "modified_at": "2026-06-20T00:00:00Z",
+    "modified_by_model": "claude-opus-4-8"
+  }
+]

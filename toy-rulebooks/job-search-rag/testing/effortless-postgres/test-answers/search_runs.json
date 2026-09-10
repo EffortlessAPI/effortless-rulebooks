@@ -1,0 +1,24 @@
+[
+  {
+    "search_run_id": "run-2026-04-01",
+    "name": "2026-04-01 Morning Run",
+    "resume": "resume-platform-2026q1",
+    "resume_name": "Platform Engineer - 2026 Q1",
+    "run_date": "2026-04-01 03:00:00-05:00",
+    "archetype_weight": "0.25",
+    "fit_weight": "0.25",
+    "history_weight": "0.15",
+    "comp_weight": "0.15",
+    "negative_weight": "0.10",
+    "culture_weight": "0.10",
+    "base_salary": "220000",
+    "min_score_threshold": "0.45",
+    "disqualify_on_llm_flag": true,
+    "total_found": 6,
+    "total_scored": 6,
+    "total_excluded": 1,
+    "total_deduplicated": 1,
+    "failed_listings": 0,
+    "score_results": 6
+  }
+]

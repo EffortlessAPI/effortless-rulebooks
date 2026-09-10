@@ -13,12 +13,12 @@
     "project_type_requires_manager_approval": null,
     "project_type": "clientfacing",
     "project_type_description": null,
-    "is_approved": false
+    "is_approved": null
   },
   {
     "project_id": "gdpr-compliance-audit",
     "name": "GDPR Compliance Audit",
-    "is_approved": true,
+    "is_approved": null,
     "approved_by": "mike-johnson",
     "approved_by_email_address": null,
     "project_type_name": null,
@@ -34,7 +34,7 @@
   {
     "project_id": "internal-tools-dashboard",
     "name": "Internal Tools Dashboard",
-    "is_approved": true,
+    "is_approved": null,
     "approved_by": "sarah-chen",
     "approved_by_email_address": null,
     "project_type_name": null,

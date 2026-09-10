@@ -17,7 +17,7 @@ import sys
 import re
 from pathlib import Path
 from dataclasses import dataclass
-from typing import List, Dict, Any, Optional, Union
+from typing import List, Dict, Any, Optional, Tuple, Union
 from enum import Enum, auto
 
 # Add project root to path for shared imports
@@ -495,6 +495,42 @@ def escape_sparql_string(s: str) -> str:
     return s.replace('\\', '\\\\').replace('"', '\\"').replace("'", "\\'")
 
 
+def _julian_day(d: str) -> str:
+    """Julian Day Number of a date/dateTime's own calendar date (integer arithmetic,
+    portable SPARQL 1.1). Subtracting two gives the exact day count Postgres gets
+    from `end::date - start::date`."""
+    a = f'FLOOR((14 - MONTH({d})) / 12)'
+    y = f'(YEAR({d}) + 4800 - {a})'
+    m = f'(MONTH({d}) + 12 * {a} - 3)'
+    return (f'(DAY({d}) + FLOOR((153 * {m} + 2) / 5) + 365 * {y} + FLOOR({y} / 4) '
+            f'- FLOOR({y} / 100) + FLOOR({y} / 400) - 32045)')
+
+
+def _epoch_seconds(d: str) -> str:
+    """Seconds since an arbitrary epoch for an absolute instant: the value's own
+    wall-clock time minus its UTC offset, so two instants subtract to Postgres's
+    EXTRACT(EPOCH FROM (end - start))."""
+    tz = f'TZ({d})'
+    offset = (f'IF({tz} = "" || {tz} = "Z", 0, IF(SUBSTR({tz}, 1, 1) = "-", -1, 1) * '
+              f'(xsd:integer(SUBSTR({tz}, 2, 2)) * 3600 + xsd:integer(SUBSTR({tz}, 5, 2)) * 60))')
+    return (f'({_julian_day(d)} * 86400 + COALESCE(HOURS({d}), 0) * 3600 + '
+            f'COALESCE(MINUTES({d}), 0) * 60 + COALESCE(SECONDS({d}), 0) - {offset})')
+
+
+def _raw_boolean_fields(table: Optional[str]) -> set:
+    return {c.get('name') for c in TABLE_SCHEMAS.get(table or '', [])
+            if c.get('type', 'raw') == 'raw' and (c.get('datatype') or '').lower() == 'boolean'}
+
+
+def _boolean_operand(arg: ExprNode, field_bindings: Dict[str, str]) -> str:
+    """Postgres reads a blank RAW boolean as FALSE inside NOT/AND/OR (it emits
+    COALESCE(col, FALSE)); a derived boolean stays NULL. Mirror exactly that."""
+    compiled = compile_to_sparql(arg, field_bindings)
+    if isinstance(arg, FieldRef) and arg.name in _raw_boolean_fields(_COMPILE_CTX['table']):
+        return f'COALESCE({compiled}, false)'
+    return compiled
+
+
 def compile_to_sparql(expr: ExprNode, field_bindings: Dict[str, str] = None) -> str:
     """Compile an expression node to a SPARQL expression."""
     if field_bindings is None:
@@ -517,7 +553,7 @@ def compile_to_sparql(expr: ExprNode, field_bindings: Dict[str, str] = None) -> 
 
     if isinstance(expr, UnaryOp):
         if expr.op == 'NOT':
-            operand = compile_to_sparql(expr.operand, field_bindings)
+            operand = _boolean_operand(expr.operand, field_bindings)
             return f'(!({operand}))'
         raise ValueError(f"Unknown unary op: {expr.op}")
 
@@ -559,10 +595,15 @@ def compile_to_sparql(expr: ExprNode, field_bindings: Dict[str, str] = None) -> 
             # correctly reads an absent value as blank (matching Postgres, where
             # the same `<> ""` compiles to `IS NOT NULL`). No effect on a bound
             # field: COALESCE(STR(bound), "") == STR(bound).
+            # A literal that itself contains '#' (an IRI written as text, e.g.
+            # "https://w3id.org/pko#nextVersion") can only equal the field's whole
+            # text, so the namespace is not stripped for it.
             if left_is_field and right_is_str:
-                left = f'REPLACE(COALESCE(STR({left}), ""), "^.*#", "")'
+                left = (f'COALESCE(STR({left}), "")' if '#' in expr.right.value
+                        else f'REPLACE(COALESCE(STR({left}), ""), "^.*#", "")')
             elif right_is_field and left_is_str:
-                right = f'REPLACE(COALESCE(STR({right}), ""), "^.*#", "")'
+                right = (f'COALESCE(STR({right}), "")' if '#' in expr.left.value
+                         else f'REPLACE(COALESCE(STR({right}), ""), "^.*#", "")')
 
         # Ordered comparison (<, <=, >, >=) of a field against a STRING LITERAL.
         #
@@ -608,12 +649,19 @@ def compile_to_sparql(expr: ExprNode, field_bindings: Dict[str, str] = None) -> 
         )
 
     if isinstance(expr, FuncCall):
+        if expr.name in AGGREGATE_FUNCS:
+            if _COMPILE_CTX['table'] is None:
+                raise ValueError(f"{expr.name} is only valid inside a table's rule")
+            var = f"?_agg{len(_COMPILE_CTX['blocks'])}"
+            _COMPILE_CTX['blocks'].append(aggregation_block(_COMPILE_CTX['table'], expr, var))
+            return var
+
         if expr.name == 'AND':
-            parts = [compile_to_sparql(arg, field_bindings) for arg in expr.args]
+            parts = [_boolean_operand(arg, field_bindings) for arg in expr.args]
             return '(' + ' && '.join(parts) + ')'
 
         if expr.name == 'OR':
-            parts = [compile_to_sparql(arg, field_bindings) for arg in expr.args]
+            parts = [_boolean_operand(arg, field_bindings) for arg in expr.args]
             return '(' + ' || '.join(parts) + ')'
 
         if expr.name == 'IF':
@@ -622,12 +670,14 @@ def compile_to_sparql(expr: ExprNode, field_bindings: Dict[str, str] = None) -> 
             cond = compile_to_sparql(expr.args[0], field_bindings)
             then_val = compile_to_sparql(expr.args[1], field_bindings)
             else_val = compile_to_sparql(expr.args[2], field_bindings) if len(expr.args) > 2 else '""'
-            return f'IF({cond}, {then_val}, {else_val})'
+            # Postgres's CASE WHEN takes the ELSE branch on a NULL condition; SPARQL's
+            # IF would propagate the error and leave the whole result unbound.
+            return f'IF(COALESCE({cond}, false), {then_val}, {else_val})'
 
         if expr.name == 'NOT':
             if len(expr.args) != 1:
                 raise ValueError("NOT requires 1 argument")
-            operand = compile_to_sparql(expr.args[0], field_bindings)
+            operand = _boolean_operand(expr.args[0], field_bindings)
             return f'(!({operand}))'
 
         if expr.name == 'LOWER':
@@ -677,13 +727,14 @@ def compile_to_sparql(expr: ExprNode, field_bindings: Dict[str, str] = None) -> 
                     f'IF(DAY({end}) < DAY({start}), 1, 0))'
                 )
             if unit == 'day':
-                # Approximate day count from y/m/d; adequate for the staleness
-                # demo (the conformance answer-key uses the same FORMULA path).
-                return (
-                    f'((YEAR({end}) - YEAR({start})) * 365 + '
-                    f'(MONTH({end}) - MONTH({start})) * 30 + '
-                    f'(DAY({end}) - DAY({start})))'
-                )
+                # Exact calendar-day difference, as Postgres's end::date - start::date.
+                return f'({_julian_day(end)} - {_julian_day(start)})'
+            if unit == 'minute':
+                # Postgres: ROUND(EXTRACT(EPOCH FROM (end - start)) / 60).
+                return f'ROUND(({_epoch_seconds(end)} - {_epoch_seconds(start)}) / 60)'
+            if unit == 'hour':
+                # Postgres: EXTRACT(EPOCH FROM (end - start)) / 3600, unrounded.
+                return f'(({_epoch_seconds(end)} - {_epoch_seconds(start)}) / 3600)'
             raise ValueError(f"DATETIME_DIFF unit not supported: {unit}")
 
         if expr.name == 'NOW':
@@ -694,9 +745,33 @@ def compile_to_sparql(expr: ExprNode, field_bindings: Dict[str, str] = None) -> 
         if expr.name == 'FIND':
             if len(expr.args) != 2:
                 raise ValueError("FIND requires 2 arguments")
-            needle = compile_to_sparql(expr.args[0], field_bindings)
-            haystack = compile_to_sparql(expr.args[1], field_bindings)
-            return f'CONTAINS({haystack}, {needle})'
+            needle = f'STR({compile_to_sparql(expr.args[0], field_bindings)})'
+            haystack = f'STR({compile_to_sparql(expr.args[1], field_bindings)})'
+            # 1-based position, 0 when absent: Postgres POSITION(needle IN haystack).
+            return f'IF(CONTAINS({haystack}, {needle}), STRLEN(STRBEFORE({haystack}, {needle})) + 1, 0)'
+
+        if expr.name == 'LEFT':
+            if len(expr.args) != 2:
+                raise ValueError("LEFT requires 2 arguments")
+            text = compile_to_sparql(expr.args[0], field_bindings)
+            count = compile_to_sparql(expr.args[1], field_bindings)
+            return f'SUBSTR(STR({text}), 1, {count})'
+
+        if expr.name == 'LEN':
+            if len(expr.args) != 1:
+                raise ValueError("LEN requires 1 argument")
+            text = f'STR({compile_to_sparql(expr.args[0], field_bindings)})'
+            # Postgres takes LENGTH(NULLIF(text, '')): a blank has no length. ?__null
+            # is never bound, so that branch leaves the result unbound.
+            return f'IF({text} = "", ?__null, STRLEN({text}))'
+
+        if expr.name == 'ROUNDUP':
+            if len(expr.args) != 2 or not isinstance(expr.args[1], LiteralInt):
+                raise ValueError("ROUNDUP requires (number, integer-literal digits)")
+            number = compile_to_sparql(expr.args[0], field_bindings)
+            scale = 10 ** expr.args[1].value
+            # Postgres: CEIL(number * 10^digits) / 10^digits.
+            return f'(CEIL(({number}) * {scale}) / {scale})'
 
         if expr.name == 'SUM':
             # SUM of values - use arithmetic addition
@@ -736,7 +811,15 @@ def compile_to_sparql(expr: ExprNode, field_bindings: Dict[str, str] = None) -> 
             # every machine, with no -06/-05 offset baked in by a date->
             # timestamptz cast. (A bare string field keeps its slashes because
             # STR() is identity and the IRI branch never fires for a literal.)
-            parts.append(f'IF(isIRI({c}), REPLACE(STR({c}), "^.*[#/]", ""), STR({c}))')
+            # Postgres CONCAT skips a NULL part, so an unbound part contributes "".
+            # A dateTime renders as Postgres's timestamptz text, e.g.
+            # "2026-01-01 00:00:00-06", taken in the value's own UTC offset.
+            tz = f'TZ({c})'
+            pg_datetime = (f'CONCAT(SUBSTR(STR({c}), 1, 10), " ", SUBSTR(STR({c}), 12, 8), '
+                           f'IF({tz} = "Z", "+00", IF(STRENDS({tz}, ":00"), SUBSTR({tz}, 1, 3), {tz})))')
+            parts.append(
+                f'COALESCE(IF(isIRI({c}), REPLACE(STR({c}), "^.*[#/]", ""), '
+                f'IF(DATATYPE({c}) = xsd:dateTime, {pg_datetime}, STR({c}))), "")')
         return 'CONCAT(' + ', '.join(parts) + ')'
 
     raise ValueError(f"Unknown expression node type: {type(expr)}")
@@ -829,16 +912,36 @@ def build_pk_index(tables: Dict[str, Any]) -> Dict[str, str]:
     return idx
 
 
+# PK slugs that more than one table uses. A bare effortless-ntwf:<pk> IRI would merge
+# those rows into ONE individual carrying both tables' properties, so these (and
+# only these) are table-scoped. Populated by register_pk_collisions().
+COLLIDING_PK_SLUGS: set = set()
+
+
+def register_pk_collisions(tables: Dict[str, Any]) -> None:
+    owners: Dict[str, set] = {}
+    for tname, pk in build_pk_index(tables).items():
+        for row in tables[tname].get('data', []):
+            value = row.get(pk)
+            if value is not None and str(value).strip():
+                owners.setdefault(slugify_iri_local(value), set()).add(tname)
+    COLLIDING_PK_SLUGS.clear()
+    COLLIDING_PK_SLUGS.update(slug for slug, owning in owners.items() if len(owning) > 1)
+
+
 def individual_iri(table_name: str, pk_value: Any) -> str:
     """Mint a stable, PK-keyed individual IRI: effortless-ntwf:<pkvalue>.
 
-    PK values are globally unique across this rulebook (ntwf-* / prod-deploy-* /
-    department-* etc.), so the IRI is the bare PK — human-readable and stable
-    across reorderings. Edges resolve by minting the same IRI from the FK value.
-    The PK slug is the IRI's local name verbatim (kebab-case, colon-separated
-    from the prefix) — the owly `effortless-ntwf:prod-deploy-step-3` form.
+    The IRI is the bare PK — human-readable and stable across reorderings. Edges
+    resolve by minting the same IRI from the FK value. The PK slug is the IRI's
+    local name verbatim (kebab-case, colon-separated from the prefix) — the owly
+    `effortless-ntwf:prod-deploy-step-3` form. A PK value shared by two tables is
+    prefixed with its table (effortless-ntwf:RulebookReleases-erb-pko-1.0.0).
     """
-    return f'{NS}{slugify_iri_local(pk_value)}'
+    slug = slugify_iri_local(pk_value)
+    if slug in COLLIDING_PK_SLUGS:
+        return f'{NS}{table_name}-{slug}'
+    return f'{NS}{slug}'
 
 
 def find_inverse_pairs(tables: Dict[str, Any]) -> Dict[str, str]:
@@ -1553,11 +1656,16 @@ def _compile_lookup_value(expr: ExprNode, state: Dict[str, Any]) -> str:
         tvar = _next_join_var(state['counter'][0]); state['counter'][0] += 1
         pkvar = _next_join_var(state['counter'][0]); state['counter'][0] += 1
         rvar = _next_join_var(state['counter'][0]); state['counter'][0] += 1
-        # Three flat, sibling OPTIONALs — no nesting, clean variable scoping:
+        # Two flat, sibling OPTIONALs — no nesting, clean variable scoping:
         #   1. bind the local FK value (a PK string, or an edge-bound IRI)
         #   2. find the target individual whose PK datatype property equals it,
-        #      anchored to the target class so the join can't wander cross-table
-        #   3. read the result column off that individual
+        #      anchored to the target class, AND read the result column off it.
+        # The result read must live in the same group as the PK match. As a third
+        # sibling OPTIONAL it ran even when (2) matched nothing — a blank or
+        # dangling FK — and bound the target variable to EVERY node carrying the
+        # result property, returning every value in the graph where Postgres
+        # returns NULL (and, with properties shared across tables, a value that
+        # depended on which rule happened to run first).
         # Match on the trailing LOCAL NAME of the target's PK property, not its
         # raw STR(). When the target's PK column is the row's own id (ConceptId,
         # StatusId, …), the ABox promotes that value to a self IRI
@@ -1570,9 +1678,8 @@ def _compile_lookup_value(expr: ExprNode, state: Dict[str, Any]) -> str:
         # Postgres's string = string MATCH on the id column.
         state['triples'].append(f'{INDENT}OPTIONAL {{ $this {local_key_prop} {kvar} . }}')
         state['triples'].append(
-            f'{INDENT}OPTIONAL {{ {tvar} a {target_class} ; {target_pk_prop} {pkvar} . '
+            f'{INDENT}OPTIONAL {{ {tvar} a {target_class} ; {target_pk_prop} {pkvar} ; {result_prop} {rvar} . '
             f'FILTER(REPLACE(STR({pkvar}), "^.*[#/]", "") = REPLACE(STR({kvar}), "^.*[#/]", "")) }}')
-        state['triples'].append(f'{INDENT}OPTIONAL {{ {tvar} {result_prop} {rvar} . }}')
         # Return the bare looked-up value, NOT STR(rvar). A standalone lookup is a
         # straight copy of one field, so it must keep the source datatype — a
         # copied boolean stays boolean, a copied number stays numeric — or
@@ -1747,90 +1854,88 @@ def build_closure_count_where(table_name: str, expr: ExprNode, closure: Dict[str
     return '\n'.join(parts)
 
 
-def build_aggregation_where(table_name: str, expr: ExprNode) -> str:
-    """Build the WHERE body for a COUNTIFS aggregation as a sub-SELECT COUNT.
+AGGREGATE_FUNCS = {'COUNTIFS': 'COUNT', 'SUMIFS': 'SUM', 'MAXIFS': 'MAX', 'MINIFS': 'MIN'}
 
-    COUNTIFS(Child!{{BackFK}}, Parent!{{ParentPK}}, [Child!{{Col}}, Value]...)
-    counts Child individuals whose BackFK edge points at $this and whose extra
-    column criteria all hold. The first (range, criteria) pair is always the
-    parent back-reference; remaining pairs are equality filters on the child.
+# table -> schema, so an aggregation can tell a relationship edge from a derived
+# key and find the parent's PK. Populated by generate_shacl_rules().
+TABLE_SCHEMAS: Dict[str, List[Dict[str, Any]]] = {}
 
-    SPECIAL CASE: a COUNTIFS whose first range names a CLOSURE relation (a
-    closure-typed field's view, e.g. vw_step_precedence_closure) counts pairs of
-    the reasoned transitive closure, not child individuals. We route those to
-    build_closure_count_where so the reasoner matches the Postgres closure view.
+# Per-rule compile context: a scalar formula can contain aggregations (e.g.
+# DATETIME_DIFF({{AsOfInstant}}, MAXIFS(...), "days")); each is hoisted into a
+# sub-SELECT block bound to its own variable.
+_COMPILE_CTX: Dict[str, Any] = {'table': None, 'blocks': []}
+
+
+def _key_text(var: str) -> str:
+    """A key's comparable text: an IRI's local name, a literal's lexical form."""
+    return f'IF(isIRI({var}), REPLACE(STR({var}), "^.*[#/]", ""), STR({var}))'
+
+
+def _column(table: str, name: str) -> Optional[Dict[str, Any]]:
+    return next((c for c in TABLE_SCHEMAS.get(table, []) if c.get('name') == name), None)
+
+
+def aggregation_block(table_name: str, expr: FuncCall, result_var: str) -> List[str]:
+    """Sub-SELECT lines binding result_var to COUNTIFS/SUMIFS/MAXIFS/MINIFS over a child table.
+
+    Children match on every (Child!{{Col}}, criteria) pair, as in Postgres's WHERE:
+      - criteria = the parent's PK and Col is a relationship: Col's edge points at $this.
+      - criteria = any other parent field ({{Field}} or Parent!{{Field}}): Col's text
+        equals that field's text on $this. A blank parent value matches nothing,
+        as Postgres compares against NULLIF(value, '').
+      - criteria = a literal: Col equals it.
+    $this is pre-bound by SHACL-AF, so the sub-SELECT stays correlated with the row.
     """
-    if not (isinstance(expr, FuncCall) and expr.name in ('COUNTIFS', 'SUMIFS')):
-        raise ValueError("aggregation formula must be COUNTIFS(...) or SUMIFS(...)")
-
-    # SUMIFS(sum_range, range1, criteria1, [range2, criteria2]...) — the value to
-    # sum is the FIRST arg; the remaining args are the SAME (range, criteria)
-    # pairs COUNTIFS uses. We strip the sum_range off, parse the rest exactly like
-    # COUNTIFS, and emit SUM(?sumval) over the matched children instead of COUNT.
-    is_sum = (expr.name == 'SUMIFS')
-    sum_range = None
-    if is_sum:
-        if len(expr.args) < 3:
-            raise ValueError("SUMIFS requires a sum_range plus at least one (range, criteria) pair")
-        sum_range = expr.args[0]
-        if not isinstance(sum_range, QualifiedRef):
-            raise ValueError("SUMIFS first argument must be Child!{{ColumnToSum}}")
-        args = expr.args[1:]
-    else:
-        args = expr.args
+    kind = AGGREGATE_FUNCS[expr.name]
+    value_ref = None
+    args = expr.args
+    if kind != 'COUNT':
+        if len(args) < 3:
+            raise ValueError(f"{expr.name} requires a value range plus at least one (range, criteria) pair")
+        value_ref, args = args[0], args[1:]
+        if not isinstance(value_ref, QualifiedRef):
+            raise ValueError(f"{expr.name} first argument must be Child!{{{{Column}}}}")
     if len(args) < 2 or len(args) % 2 != 0:
         raise ValueError("aggregation requires an even number of (range, criteria) args")
-
-    first_range = args[0]
-    if isinstance(first_range, QualifiedRef) and first_range.table in CLOSURE_RELATIONS:
-        if is_sum:
-            raise ValueError("SUMIFS over a closure relation is not supported")
-        return build_closure_count_where(table_name, expr, CLOSURE_RELATIONS[first_range.table])
-
-    # First pair shape detection. Two legal forms:
-    #   (a) PARENT-SCOPED: Child!{{BackFK}}, Parent!{{ParentPK}}
-    #       — criteria is a QualifiedRef naming the parent's PK. The child is
-    #         linked to $this via the BackFK object-property edge.
-    #   (b) UNSCOPED VALUE-FILTER: Child!{{Col}}, <literal/TRUE/FALSE>
-    #       — criteria is a literal. There is NO parent back-reference (e.g. a
-    #         single-workflow model where every child belongs to the one parent,
-    #         so the count is over ALL children matching the filter). The old
-    #         code assumed (a) unconditionally and emitted `?child <col> $this`,
-    #         which for a derived BOOLEAN column (IsAgentTypeChange, …) binds
-    #         $this as the object of a bool property and matches nothing → 0.
-    back_range = args[0]
-    if not isinstance(back_range, QualifiedRef):
+    if not isinstance(args[0], QualifiedRef):
         raise ValueError("aggregation first range must be Child!{{Column}}")
-    child_table = back_range.table
-    if is_sum and sum_range.table != child_table:
-        raise ValueError("SUMIFS sum_range and back-FK range must name the same child table")
+    child_table = args[0].table
+    if value_ref is not None and value_ref.table != child_table:
+        raise ValueError(f"{expr.name} value range and criteria ranges must name the same child table")
 
+    parent_pk = get_pk_field(TABLE_SCHEMAS.get(table_name, []))
     triples = [f'{INDENT}    ?child a {NS}{child_table} .']
     filters = []
-
-    first_crit = args[1]
-    # Pairs to turn into value-filters. In form (a) that's pairs[2:]; in form (b)
-    # the FIRST pair is itself a value-filter, so include it.
-    filter_start = 2
-    if isinstance(first_crit, QualifiedRef):
-        # (a) parent-scoped: link the child to $this via the BackFK edge.
-        back_fk_prop = field_to_property_uri(back_range.column)
-        triples.append(f'{INDENT}    ?child {back_fk_prop} $this .')
-    else:
-        # (b) unscoped value-filter: the first pair is (Child!{{Col}}, value).
-        filter_start = 0
-
-    # (range, criteria) pairs → equality filters on the child.
-    for k in range(filter_start, len(args), 2):
-        rng = args[k]
-        crit = args[k + 1]
-        if not isinstance(rng, QualifiedRef):
-            raise ValueError("COUNTIFS criteria range must be Child!{{Column}}")
+    for k in range(0, len(args), 2):
+        rng, crit = args[k], args[k + 1]
+        if not isinstance(rng, QualifiedRef) or rng.table != child_table:
+            raise ValueError("every aggregation criteria range must be Child!{{Column}} on one child table")
         col_prop = field_to_property_uri(rng.column)
-        n = k
-        cvar = f'?c{n}'
+        cvar = f'?c{k}'
+        if isinstance(crit, (FieldRef, QualifiedRef)):
+            if isinstance(crit, QualifiedRef) and crit.table != table_name:
+                raise ValueError(
+                    f"criteria {crit.table}!{{{{{crit.column}}}}} must name a field of {table_name}")
+            parent_col = crit.name if isinstance(crit, FieldRef) else crit.column
+            child_col = _column(child_table, rng.column)
+            if parent_col == parent_pk and child_col is not None and is_relationship(child_col):
+                triples.append(f'{INDENT}    ?child {col_prop} $this .')
+                continue
+            pvar = f'?p{k}'
+            triples.append(f'{INDENT}    $this {field_to_property_uri(parent_col)} {pvar} .')
+            triples.append(f'{INDENT}    ?child {col_prop} {cvar} .')
+            # Postgres reads a RAW parent field as NULLIF(value, ''), so a blank one
+            # matches nothing; a derived key is compared as-is, so "" matches every
+            # child whose key is also "".
+            parent_field = _column(table_name, parent_col)
+            blank_guard = (f'{_key_text(pvar)} != "" && '
+                           if parent_field is None or parent_field.get('type', 'raw') == 'raw' else '')
+            filters.append(
+                f'{INDENT}    FILTER({blank_guard}{_key_text(cvar)} = {_key_text(pvar)})')
+            continue
         triples.append(f'{INDENT}    OPTIONAL {{ ?child {col_prop} {cvar} . }}')
-        # Criteria value: TRUE/FALSE literal or a string/number literal.
+        if isinstance(crit, FuncCall) and crit.name in ('TRUE', 'FALSE') and not crit.args:
+            crit = LiteralBool(crit.name == 'TRUE')
         if isinstance(crit, LiteralBool):
             want = 'true' if crit.value else 'false'
             filters.append(f'{INDENT}    FILTER(BOUND({cvar}) && {cvar} = {want})')
@@ -1839,30 +1944,115 @@ def build_aggregation_where(table_name: str, expr: ExprNode) -> str:
         elif isinstance(crit, LiteralInt):
             filters.append(f'{INDENT}    FILTER({cvar} = {crit.value})')
         else:
-            raise ValueError(f"unsupported COUNTIFS criteria: {type(crit).__name__}")
+            raise ValueError(f"unsupported {expr.name} criteria: {type(crit).__name__}")
 
-    # For SUMIFS, bind the value to sum off each matched child. COALESCE to 0 so a
-    # child missing the literal contributes 0 (not UNDEF, which would void the SUM)
-    # — and so the aggregate is 0, never UNDEF, when no child matches.
-    if is_sum:
-        sum_prop = field_to_property_uri(sum_range.column)
-        triples.append(f'{INDENT}    OPTIONAL {{ ?child {sum_prop} ?sumraw . }}')
+    if kind == 'COUNT':
+        agg = 'COUNT(DISTINCT ?child)'
+    elif kind == 'SUM':
+        # A child missing the value contributes 0, and no match sums to 0.
+        triples.append(f'{INDENT}    OPTIONAL {{ ?child {field_to_property_uri(value_ref.column)} ?sumraw . }}')
         triples.append(f'{INDENT}    BIND(COALESCE(?sumraw, 0) AS ?sumval)')
         agg = 'SUM(?sumval)'
     else:
-        agg = 'COUNT(?child)'
+        # MAX/MIN over no matching child is unbound, as Postgres's MAX is NULL.
+        triples.append(f'{INDENT}    ?child {field_to_property_uri(value_ref.column)} ?aggval .')
+        agg = f'{kind}(?aggval)'
 
-    inner = '\n'.join(triples + filters)
-    # Sub-SELECT aggregates the matching children, grouped per $this row.
-    parts = [
-        f'    $this a {NS}{table_name} .',
+    return [
         f'{INDENT}{{',
-        f'{INDENT}    SELECT ({agg} AS ?_result) WHERE {{',
-        inner,
+        f'{INDENT}    SELECT ({agg} AS {result_var}) WHERE {{',
+        *triples,
+        *filters,
         f'{INDENT}    }}',
         f'{INDENT}}}',
     ]
-    return '\n'.join(parts)
+
+
+def build_aggregation_where(table_name: str, expr: ExprNode) -> str:
+    """WHERE body for an aggregation field.
+
+    A COUNTIFS whose first range names a CLOSURE relation (a closure-typed field's
+    view, e.g. vw_step_precedence_closure) counts pairs of the reasoned transitive
+    closure, not child individuals, so it is routed to build_closure_count_where.
+    A bare aggregate becomes one sub-SELECT; an aggregate inside a scalar formula
+    is hoisted by the scalar compiler."""
+    if (isinstance(expr, FuncCall) and expr.name == 'COUNTIFS' and expr.args
+            and isinstance(expr.args[0], QualifiedRef) and expr.args[0].table in CLOSURE_RELATIONS):
+        return build_closure_count_where(table_name, expr, CLOSURE_RELATIONS[expr.args[0].table])
+    if isinstance(expr, FuncCall) and expr.name in AGGREGATE_FUNCS:
+        return '\n'.join([f'    $this a {NS}{table_name} .'] + aggregation_block(table_name, expr, '?_result'))
+    return build_scalar_where(table_name, expr, 'aggregation')
+
+
+def build_scalar_where(table_name: str, expr: ExprNode, calc_type: str, datatype: str = 'string') -> str:
+    field_bindings: Dict[str, str] = {}
+    _COMPILE_CTX.update(table=table_name, blocks=[])
+    try:
+        sparql_expr = compile_to_sparql(expr, field_bindings)
+        blocks = _COMPILE_CTX['blocks']
+    finally:
+        _COMPILE_CTX.update(table=None, blocks=[])
+    where_parts = [f'    $this a {NS}{table_name} .']
+    for field_name, var_name in sorted(field_bindings.items()):
+        where_parts.append(f'    OPTIONAL {{ $this {field_to_property_uri(field_name)} {var_name} . }}')
+    for block in blocks:
+        where_parts.extend(block)
+    # A CALCULATED RELATIONSHIP — a formula-bearing field whose type is
+    # `relationship` — computes a foreign-key PK string (e.g.
+    # IF(flag,'verdict-at-risk','verdict-ok')). The CONSTRUCT must assert a real
+    # effortless-ntwf: edge to that individual, not a string literal, so the
+    # computed PK is coerced into the ontology IRI. This is the one place a scalar
+    # BIND becomes an object-property edge.
+    if calc_type == 'relationship':
+        sparql_expr = f'IRI(CONCAT("{ONT_NS}", STR({sparql_expr})))'
+    elif (datatype or '').lower() == 'integer':
+        # Postgres casts an integer field's value with ::integer, which rounds.
+        sparql_expr = f'IF(isNumeric({sparql_expr}), ROUND({sparql_expr}), {sparql_expr})'
+    where_parts.append(f'                BIND({sparql_expr} AS ?_result)')
+    return '\n'.join(where_parts)
+
+
+def formula_dependency_depths(tables: Dict[str, Any]) -> Dict[Tuple[str, str], int]:
+    """(table, field) -> depth in the formula DAG, emitted as sh:order.
+
+    SHACL-AF executes rules in ascending sh:order, so a rule runs only after every
+    rule that produces a value it reads. Without it an engine must re-run all
+    rules until nothing changes, and a rule that fired early on a half-computed
+    input leaves a stale value beside the converged one."""
+    formulas = {}
+    for tname, tdef in tables.items():
+        if tname.startswith('_') or tname.startswith('$') or not isinstance(tdef, dict):
+            continue
+        for col in tdef.get('schema', []):
+            if col.get('formula'):
+                formulas[(tname, col['name'])] = col['formula']
+
+    deps = {}
+    for (tname, fname), formula in formulas.items():
+        refs = set()
+        for m in re.finditer(r'(?:(\w+)!)?\{\{(\w+)\}\}', formula):
+            ref = (m.group(1) or tname, m.group(2))
+            if ref in formulas and ref != (tname, fname):
+                refs.add(ref)
+        deps[(tname, fname)] = refs
+
+    depths: Dict[Tuple[str, str], int] = {}
+    visiting = set()
+
+    def depth(key):
+        if key in depths:
+            return depths[key]
+        if key in visiting:
+            raise ValueError(f"formula dependency cycle through {key[0]}.{key[1]}")
+        visiting.add(key)
+        d = 1 + max((depth(r) for r in deps[key]), default=-1)
+        visiting.discard(key)
+        depths[key] = d
+        return d
+
+    for key in formulas:
+        depth(key)
+    return depths
 
 
 def generate_shacl_rules(tables: Dict[str, Any]) -> str:
@@ -1871,6 +2061,9 @@ def generate_shacl_rules(tables: Dict[str, Any]) -> str:
     # vw_step_precedence_closure) is recognized and counted against the reasoned
     # transitive triples rather than mis-generated as a child-rollup that finds 0.
     register_closure_relations(tables)
+    rule_depths = formula_dependency_depths(tables)
+    TABLE_SCHEMAS.clear()
+    TABLE_SCHEMAS.update({t: d.get('schema', []) for t, d in tables.items() if isinstance(d, dict)})
 
     lines = []
 
@@ -1936,25 +2129,7 @@ def generate_shacl_rules(tables: Dict[str, Any]) -> str:
                 elif calc['type'] == 'aggregation':
                     where_clause = build_aggregation_where(table_name, expr)
                 else:
-                    field_bindings = {}
-                    sparql_expr = compile_to_sparql(expr, field_bindings)
-                    where_parts = [f'    $this a {NS}{table_name} .']
-                    for field_name, var_name in sorted(field_bindings.items()):
-                        prop_uri = field_to_property_uri(field_name)
-                        where_parts.append(f'    OPTIONAL {{ $this {prop_uri} {var_name} . }}')
-                    # A CALCULATED RELATIONSHIP — a formula-bearing field whose
-                    # type is `relationship` — computes a foreign-key PK string
-                    # (e.g. IF(flag,'verdict-at-risk','verdict-ok')). The CONSTRUCT
-                    # must assert a real effortless-ntwf: edge to that individual,
-                    # not a string literal, so we coerce the computed PK into the
-                    # ontology IRI. This is the one place a scalar BIND becomes an
-                    # object-property edge.
-                    if calc['type'] == 'relationship':
-                        sparql_expr = (
-                            f'IRI(CONCAT("{ONT_NS}", STR({sparql_expr})))'
-                        )
-                    where_parts.append(f'                BIND({sparql_expr} AS ?_result)')
-                    where_clause = '\n'.join(where_parts)
+                    where_clause = build_scalar_where(table_name, expr, calc['type'], calc['datatype'])
 
                 # Target property
                 target_prop = field_to_property_uri(calc['name'])
@@ -1963,6 +2138,7 @@ def generate_shacl_rules(tables: Dict[str, Any]) -> str:
                 rule_lines.append(f'    sh:rule [')
                 rule_lines.append(f'        a sh:SPARQLRule ;')
                 rule_lines.append(f'        rdfs:label "{rule_name}" ;')
+                rule_lines.append(f'        sh:order {rule_depths[(table_name, calc["name"])]} ;')
                 rule_lines.append(f'        sh:prefixes {NS} ;')
                 rule_lines.append(f'        sh:construct """')
                 rule_lines.append(f'            PREFIX {ONT_PREFIX}: <{ONT_NS}>')
@@ -2123,6 +2299,9 @@ def main():
               if isinstance(v, dict) and 'schema' in v}
 
     print(f"Found {len(tables)} tables: {', '.join(tables.keys())}")
+    register_pk_collisions(tables)
+    if COLLIDING_PK_SLUGS:
+        print(f"Table-scoping IRIs for PK values shared across tables: {', '.join(sorted(COLLIDING_PK_SLUGS))}")
 
     # Count calculated fields
     total_calc = 0

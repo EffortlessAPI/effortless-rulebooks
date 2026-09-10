@@ -1,0 +1,112 @@
+[
+  {
+    "domain_id": "domain-fermats-last-theorem",
+    "slug": "fermats-last-theorem",
+    "title": "Fermat's Last Theorem",
+    "role": "flagship-consumer",
+    "status": "deeply-modeled",
+    "description": "Flagship theorem network migrated from Fermat Witness Lab v21.",
+    "canonical_theorem_id": "fermats-last-theorem",
+    "relative_path": "domains/fermats-last-theorem",
+    "is_flagship": true
+  },
+  {
+    "domain_id": "domain-analytic-prime-distribution",
+    "slug": "analytic-prime-distribution",
+    "title": "Analytic Prime Distribution / Chebotarev",
+    "role": "provider-theorem",
+    "status": "foundation-stub",
+    "description": "Chebotarev density for finite Galois quotients.",
+    "canonical_theorem_id": "analytic-prime-distribution",
+    "relative_path": "domains/analytic-prime-distribution",
+    "is_flagship": false
+  },
+  {
+    "domain_id": "domain-hilbert-specialization",
+    "slug": "hilbert-specialization",
+    "title": "Hilbert Specialization",
+    "role": "provider-theorem",
+    "status": "foundation-stub",
+    "description": "Hilbert irreducibility with simultaneous weak approximation.",
+    "canonical_theorem_id": "hilbert-specialization",
+    "relative_path": "domains/hilbert-specialization",
+    "is_flagship": false
+  },
+  {
+    "domain_id": "domain-mazur-modular-curve-arithmetic",
+    "slug": "mazur-modular-curve-arithmetic",
+    "title": "Mazur Modular-Curve Arithmetic",
+    "role": "provider-theorem",
+    "status": "foundation-stub",
+    "description": "Formal immersion at the cusp plus finiteness of the Eisenstein quotient.",
+    "canonical_theorem_id": "mazur-modular-curve-arithmetic",
+    "relative_path": "domains/mazur-modular-curve-arithmetic",
+    "is_flagship": false
+  },
+  {
+    "domain_id": "domain-global-deformation-duality",
+    "slug": "global-deformation-duality",
+    "title": "Global Deformation and Duality",
+    "role": "provider-theorem",
+    "status": "foundation-stub",
+    "description": "Schlessinger/Mazur representability and Poitou-Tate global-local duality.",
+    "canonical_theorem_id": "global-deformation-duality",
+    "relative_path": "domains/global-deformation-duality",
+    "is_flagship": false
+  },
+  {
+    "domain_id": "domain-modular-curve-comparison",
+    "slug": "modular-curve-cohomological-comparison",
+    "title": "Modular-Curve Cohomological Comparison",
+    "role": "provider-theorem",
+    "status": "foundation-stub",
+    "description": "Betti-etale, de Rham/Dieudonne, Eichler-Shimura, and nearby-cycles comparison.",
+    "canonical_theorem_id": "modular-curve-cohomological-comparison",
+    "relative_path": "domains/modular-curve-cohomological-comparison",
+    "is_flagship": false
+  },
+  {
+    "domain_id": "domain-universal-level-lowering",
+    "slug": "universal-level-lowering",
+    "title": "Universal Ribet Level Lowering",
+    "role": "provider-theorem",
+    "status": "foundation-stub",
+    "description": "Uniform one-prime descent for every admissible hypothetical FLT level.",
+    "canonical_theorem_id": "universal-level-lowering",
+    "relative_path": "domains/universal-level-lowering",
+    "is_flagship": false
+  },
+  {
+    "domain_id": "domain-solvable-artin-automorphy",
+    "slug": "solvable-artin-automorphy",
+    "title": "Solvable Artin Automorphy",
+    "role": "provider-theorem",
+    "status": "foundation-stub",
+    "description": "Solvable base change, automorphic induction, and converse theorem.",
+    "canonical_theorem_id": "solvable-artin-automorphy",
+    "relative_path": "domains/solvable-artin-automorphy",
+    "is_flagship": false
+  },
+  {
+    "domain_id": "domain-natural-number-arithmetic",
+    "slug": "natural-number-arithmetic",
+    "title": "Natural-Number Arithmetic (Peano)",
+    "role": "foundation-internalized",
+    "status": "deeply-modeled",
+    "description": "Peano naturals with the four elementary operations. Each result is derived from the recursive definitions and imports no theorem above the Peano kernel trust boundary.",
+    "canonical_theorem_id": "natural-number-addition-2-plus-2-equals-4",
+    "relative_path": "domains/natural-number-arithmetic",
+    "is_flagship": false
+  },
+  {
+    "domain_id": "domain-bit-calculator-arithmetic",
+    "slug": "bit-calculator-arithmetic",
+    "title": "Gate-Level Bit Calculator",
+    "role": "foundation-internalized",
+    "status": "deeply-modeled",
+    "description": "4-bit arithmetic (add/sub/mul/div) computed by a Rosetta-style logic-gate netlist. A federated provider whose full proof model lives in domains/natural-number-arithmetic/bit-calculator/. Nothing arithmetic is stored -- only input bits; every result bit is a fixed-point computation over gate truth tables. Second, independent zero-import witness of the four flagship arithmetic facts.",
+    "canonical_theorem_id": "bit-calculator-4bit-arithmetic",
+    "relative_path": "domains/natural-number-arithmetic/bit-calculator",
+    "is_flagship": false
+  }
+]

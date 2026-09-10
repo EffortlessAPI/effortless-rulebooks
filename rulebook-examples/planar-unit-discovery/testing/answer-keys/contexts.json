@@ -1,0 +1,26 @@
+[
+  {
+    "context_id": "euclidean-plane-r2",
+    "display_name": "Euclidean Plane R2",
+    "kind": "mathematical_context",
+    "assumptions_json": "{\"ambient_space\":\"R^2\",\"metric\":\"standard_euclidean\"}",
+    "description": "Standard two-dimensional Euclidean geometry.",
+    "name": "euclidean-plane-r2"
+  },
+  {
+    "context_id": "planar-unit-distance-problem",
+    "display_name": "Planar Unit Distance Problem",
+    "kind": "problem_context",
+    "assumptions_json": "{\"object\":\"finite point sets in R^2\",\"edge_rule\":\"distance equals one\"}",
+    "description": "Maximize the number of unit-distance pairs among n points in the plane.",
+    "name": "planar-unit-distance-problem"
+  },
+  {
+    "context_id": "superlinear-lower-bound",
+    "display_name": "Superlinear Lower Bound",
+    "kind": "theorem_context",
+    "assumptions_json": "{\"target\":\"U(n) > n^(1+epsilon)\"}",
+    "description": "The neighborhood anchored by the superlinear lower bound.",
+    "name": "superlinear-lower-bound"
+  }
+]

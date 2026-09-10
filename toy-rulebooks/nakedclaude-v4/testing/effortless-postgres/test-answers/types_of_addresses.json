@@ -1,0 +1,16 @@
+[
+  {
+    "types_of_addresse_id": "billing",
+    "name": "Billing",
+    "addresses": "1200-ocean-dr-miami-fl-florida-33139, 23-hudson-lane-brooklyn-ny-new-york-11201, 500-pine-st-suite-200-seattle-wa-washington-98101, 742-evergreen-terrace-springfield-il-illinois-97477, 88-industrial-way-austin-tx-texas-78701",
+    "is_shipping_address": false,
+    "is_billing_address": true
+  },
+  {
+    "types_of_addresse_id": "shipping",
+    "name": "Shipping",
+    "addresses": "90-industrial-way-loading-dock-b-austin-tx-texas-78701",
+    "is_shipping_address": true,
+    "is_billing_address": false
+  }
+]

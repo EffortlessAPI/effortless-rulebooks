@@ -1,0 +1,74 @@
+[
+  {
+    "template_step_id": "import-step-casecells",
+    "sort_order": 5,
+    "target_table": "CaseCells",
+    "row_description": "2\u00d7K CaseCells: every (stratum \u00d7 treatment) with Cases and Successes.",
+    "required_fields": "CaseCellId, Study, StratumLabel, TreatmentLabel, Cases, Successes",
+    "mechanical_check": "CellCount = 2 \u00d7 StratumCount; all IsValidIngestionCell.",
+    "name": "import-step-casecells"
+  },
+  {
+    "template_step_id": "import-step-catalog",
+    "sort_order": 6,
+    "target_table": "CandidateStudyCatalog",
+    "row_description": "Mark catalog row imported: IngestionStatus=imported, LinkedStudyId set.",
+    "required_fields": "CandidateId, IngestionStatus, LinkedStudyId",
+    "mechanical_check": "LinkedStudyId matches new Studies.StudyId.",
+    "name": "import-step-catalog"
+  },
+  {
+    "template_step_id": "import-step-rankings",
+    "sort_order": 8,
+    "target_table": "TreatmentRankings",
+    "row_description": "One TreatmentRankings row (A vs B) with AdjustmentRationale.",
+    "required_fields": "TreatmentRankingId, Study, TreatmentA, TreatmentB, AdjustmentRationale",
+    "mechanical_check": "Exactly one ranking row per study.",
+    "name": "import-step-rankings"
+  },
+  {
+    "template_step_id": "import-step-strata",
+    "sort_order": 4,
+    "target_table": "Strata",
+    "row_description": "One Strata row per stratum with StratumLabel and Description.",
+    "required_fields": "StratumId, Study, StratumLabel, Description",
+    "mechanical_check": "COUNT(Strata) >= 2.",
+    "name": "import-step-strata"
+  },
+  {
+    "template_step_id": "import-step-stratum-var",
+    "sort_order": 2,
+    "target_table": "StratumVariables",
+    "row_description": "One StratumVariables row naming the confounder before classification.",
+    "required_fields": "VariableName, CausalRole, MechanismNote",
+    "mechanical_check": "CausalRole in {confounder, mediator, contested, unknown}.",
+    "name": "import-step-stratum-var"
+  },
+  {
+    "template_step_id": "import-step-studies",
+    "sort_order": 1,
+    "target_table": "Studies",
+    "row_description": "One Studies row with StudyId, Title, Source, SourceUrl, Domain, PublicationYear, IsSynthetic=FALSE.",
+    "required_fields": "StudyId, Title, Source, SourceUrl",
+    "mechanical_check": "StudyId unique; Source is citation string.",
+    "name": "import-step-studies"
+  },
+  {
+    "template_step_id": "import-step-summaries",
+    "sort_order": 7,
+    "target_table": "StratumSummaries",
+    "row_description": "One StratumSummaries row per (stratum \u00d7 treatment) \u2014 keys for derived rates.",
+    "required_fields": "StratumSummaryId, Study, StratumLabel, TreatmentLabel",
+    "mechanical_check": "COUNT = 2 \u00d7 StratumCount.",
+    "name": "import-step-summaries"
+  },
+  {
+    "template_step_id": "import-step-treatments",
+    "sort_order": 3,
+    "target_table": "Treatments",
+    "row_description": "Two Treatments rows (A and B) with human-readable descriptions.",
+    "required_fields": "TreatmentId, Study, TreatmentLabel, Description",
+    "mechanical_check": "Exactly two rows per study.",
+    "name": "import-step-treatments"
+  }
+]

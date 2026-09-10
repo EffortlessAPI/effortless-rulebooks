@@ -7,7 +7,8 @@
     "started_at": "2026-05-21T11:25:00Z",
     "follows_recipe": "tea recipe",
     "status": "Pending",
-    "timer_can_cover_recipe": false
+    "timer_can_cover_recipe": false,
+    "suitability_verdict": "appropriate"
   },
   {
     "cook_id": "baker's espresso",
@@ -17,17 +18,8 @@
     "started_at": "2026-05-21T09:25:00Z",
     "follows_recipe": "instant coffee recipe",
     "status": "Pending",
-    "timer_can_cover_recipe": false
-  },
-  {
-    "cook_id": "baker's espresso",
-    "on_timer": "Olive",
-    "prepared_by": "Lena",
-    "dish_name": "instant coffee",
-    "started_at": "2026-05-21T09:25:00Z",
-    "follows_recipe": "instant coffee recipe",
-    "status": "Pending",
-    "timer_can_cover_recipe": false
+    "timer_can_cover_recipe": false,
+    "suitability_verdict": "appropriate"
   },
   {
     "cook_id": "croissant batch",
@@ -37,7 +29,8 @@
     "started_at": "2026-05-21T10:05:00Z",
     "follows_recipe": "croissant recipe",
     "status": "Pending",
-    "timer_can_cover_recipe": false
+    "timer_can_cover_recipe": false,
+    "suitability_verdict": "appropriate"
   },
   {
     "cook_id": "flan dessert",
@@ -47,7 +40,8 @@
     "started_at": "2026-05-21T10:35:00Z",
     "follows_recipe": "flan recipe",
     "status": "Pending",
-    "timer_can_cover_recipe": false
+    "timer_can_cover_recipe": false,
+    "suitability_verdict": "appropriate"
   },
   {
     "cook_id": "late cake bake",
@@ -57,17 +51,8 @@
     "started_at": "2026-05-21T10:25:00Z",
     "follows_recipe": "cake recipe",
     "status": "Pending",
-    "timer_can_cover_recipe": false
-  },
-  {
-    "cook_id": "late cake bake",
-    "on_timer": "Rufus",
-    "prepared_by": "Marcus",
-    "dish_name": "vanilla cake",
-    "started_at": "2026-05-21T10:25:00Z",
-    "follows_recipe": "cake recipe",
-    "status": "Pending",
-    "timer_can_cover_recipe": false
+    "timer_can_cover_recipe": false,
+    "suitability_verdict": "appropriate"
   },
   {
     "cook_id": "morning coffee",
@@ -77,17 +62,8 @@
     "started_at": "2026-05-21T07:40:00Z",
     "follows_recipe": "instant coffee recipe",
     "status": "Pending",
-    "timer_can_cover_recipe": false
-  },
-  {
-    "cook_id": "morning coffee",
-    "on_timer": "Bessie",
-    "prepared_by": "Marcus",
-    "dish_name": "instant coffee",
-    "started_at": "2026-05-21T07:40:00Z",
-    "follows_recipe": "instant coffee recipe",
-    "status": "Pending",
-    "timer_can_cover_recipe": false
+    "timer_can_cover_recipe": false,
+    "suitability_verdict": "appropriate"
   },
   {
     "cook_id": "overnight yogurt",
@@ -97,17 +73,8 @@
     "started_at": "2026-05-21T09:35:00Z",
     "follows_recipe": "yogurt recipe",
     "status": "Pending",
-    "timer_can_cover_recipe": false
-  },
-  {
-    "cook_id": "overnight yogurt",
-    "on_timer": "Olive",
-    "prepared_by": "Lena",
-    "dish_name": "homemade yogurt",
-    "started_at": "2026-05-21T09:35:00Z",
-    "follows_recipe": "yogurt recipe",
-    "status": "Pending",
-    "timer_can_cover_recipe": false
+    "timer_can_cover_recipe": false,
+    "suitability_verdict": "appropriate"
   },
   {
     "cook_id": "paella special",
@@ -117,7 +84,8 @@
     "started_at": "2026-05-21T10:10:00Z",
     "follows_recipe": "paella recipe",
     "status": "Pending",
-    "timer_can_cover_recipe": false
+    "timer_can_cover_recipe": false,
+    "suitability_verdict": "appropriate"
   },
   {
     "cook_id": "preheat for pizza",
@@ -127,7 +95,8 @@
     "started_at": "2026-05-21T10:02:00Z",
     "follows_recipe": "pizza recipe",
     "status": "Pending",
-    "timer_can_cover_recipe": false
+    "timer_can_cover_recipe": false,
+    "suitability_verdict": "appropriate"
   },
   {
     "cook_id": "ramen lunch",
@@ -137,7 +106,8 @@
     "started_at": "2026-05-21T11:26:00Z",
     "follows_recipe": "ramen recipe",
     "status": "Pending",
-    "timer_can_cover_recipe": false
+    "timer_can_cover_recipe": false,
+    "suitability_verdict": "appropriate"
   },
   {
     "cook_id": "rib roast",
@@ -147,7 +117,8 @@
     "started_at": "2026-05-21T10:00:00Z",
     "follows_recipe": "rib roast recipe",
     "status": "Pending",
-    "timer_can_cover_recipe": false
+    "timer_can_cover_recipe": false,
+    "suitability_verdict": "appropriate"
   },
   {
     "cook_id": "risotto dinner",
@@ -157,7 +128,8 @@
     "started_at": "2026-05-21T09:40:00Z",
     "follows_recipe": "risotto recipe",
     "status": "Pending",
-    "timer_can_cover_recipe": false
+    "timer_can_cover_recipe": false,
+    "suitability_verdict": "appropriate"
   },
   {
     "cook_id": "salad starter",
@@ -167,7 +139,8 @@
     "started_at": "2026-05-21T07:46:00Z",
     "follows_recipe": "salad recipe",
     "status": "Pending",
-    "timer_can_cover_recipe": false
+    "timer_can_cover_recipe": false,
+    "suitability_verdict": "appropriate"
   },
   {
     "cook_id": "soft-boiled egg",
@@ -177,7 +150,8 @@
     "started_at": "2026-05-21T07:45:00Z",
     "follows_recipe": "soft-boiled egg recipe",
     "status": "Pending",
-    "timer_can_cover_recipe": false
+    "timer_can_cover_recipe": false,
+    "suitability_verdict": "appropriate"
   },
   {
     "cook_id": "soup of the day",
@@ -187,7 +161,8 @@
     "started_at": "2026-05-21T09:45:00Z",
     "follows_recipe": "soup recipe",
     "status": "Pending",
-    "timer_can_cover_recipe": false
+    "timer_can_cover_recipe": false,
+    "suitability_verdict": "appropriate"
   },
   {
     "cook_id": "spaghetti al pomodoro",
@@ -197,7 +172,8 @@
     "started_at": "2026-05-21T09:30:00Z",
     "follows_recipe": "spaghetti recipe",
     "status": "Pending",
-    "timer_can_cover_recipe": false
+    "timer_can_cover_recipe": false,
+    "suitability_verdict": "appropriate"
   },
   {
     "cook_id": "steak dinner",
@@ -207,7 +183,8 @@
     "started_at": "2026-05-21T10:30:00Z",
     "follows_recipe": "steak recipe",
     "status": "Pending",
-    "timer_can_cover_recipe": false
+    "timer_can_cover_recipe": false,
+    "suitability_verdict": "appropriate"
   },
   {
     "cook_id": "steamed broccoli side",
@@ -217,6 +194,7 @@
     "started_at": "2026-05-21T09:32:00Z",
     "follows_recipe": "broccoli recipe",
     "status": "Pending",
-    "timer_can_cover_recipe": false
+    "timer_can_cover_recipe": false,
+    "suitability_verdict": "appropriate"
   }
 ]

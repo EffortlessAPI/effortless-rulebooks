@@ -1,0 +1,122 @@
+[
+  {
+    "point_id": "hept-0-center",
+    "display_name": "Heptagon Center",
+    "x": 0,
+    "y": 0,
+    "context": "euclidean-plane-r2",
+    "name": "heptagon-center"
+  },
+  {
+    "point_id": "hept-1",
+    "display_name": "Heptagon Vertex 1",
+    "x": 1,
+    "y": 0,
+    "context": "euclidean-plane-r2",
+    "name": "heptagon-vertex-1"
+  },
+  {
+    "point_id": "hept-2",
+    "display_name": "Heptagon Vertex 2",
+    "x": 0.6234898,
+    "y": 0.7818315,
+    "context": "euclidean-plane-r2",
+    "name": "heptagon-vertex-2"
+  },
+  {
+    "point_id": "hept-3",
+    "display_name": "Heptagon Vertex 3",
+    "x": -0.2225209,
+    "y": 0.9749279,
+    "context": "euclidean-plane-r2",
+    "name": "heptagon-vertex-3"
+  },
+  {
+    "point_id": "hept-4",
+    "display_name": "Heptagon Vertex 4",
+    "x": -0.9009689,
+    "y": 0.4338837,
+    "context": "euclidean-plane-r2",
+    "name": "heptagon-vertex-4"
+  },
+  {
+    "point_id": "hept-5",
+    "display_name": "Heptagon Vertex 5",
+    "x": -0.9009689,
+    "y": -0.4338837,
+    "context": "euclidean-plane-r2",
+    "name": "heptagon-vertex-5"
+  },
+  {
+    "point_id": "hept-6",
+    "display_name": "Heptagon Vertex 6",
+    "x": -0.2225209,
+    "y": -0.9749279,
+    "context": "euclidean-plane-r2",
+    "name": "heptagon-vertex-6"
+  },
+  {
+    "point_id": "hept-7",
+    "display_name": "Heptagon Vertex 7",
+    "x": 0.6234898,
+    "y": -0.7818315,
+    "context": "euclidean-plane-r2",
+    "name": "heptagon-vertex-7"
+  },
+  {
+    "point_id": "sq-a",
+    "display_name": "Square A",
+    "x": 0,
+    "y": 0,
+    "context": "euclidean-plane-r2",
+    "name": "square-a"
+  },
+  {
+    "point_id": "sq-b",
+    "display_name": "Square B",
+    "x": 1,
+    "y": 0,
+    "context": "euclidean-plane-r2",
+    "name": "square-b"
+  },
+  {
+    "point_id": "sq-c",
+    "display_name": "Square C",
+    "x": 1,
+    "y": 1,
+    "context": "euclidean-plane-r2",
+    "name": "square-c"
+  },
+  {
+    "point_id": "sq-d",
+    "display_name": "Square D",
+    "x": 0,
+    "y": 1,
+    "context": "euclidean-plane-r2",
+    "name": "square-d"
+  },
+  {
+    "point_id": "tri-a",
+    "display_name": "Triangle A",
+    "x": 0,
+    "y": 0,
+    "context": "euclidean-plane-r2",
+    "name": "triangle-a"
+  },
+  {
+    "point_id": "tri-b",
+    "display_name": "Triangle B",
+    "x": 1,
+    "y": 0,
+    "context": "euclidean-plane-r2",
+    "name": "triangle-b"
+  },
+  {
+    "point_id": "tri-c",
+    "display_name": "Triangle C",
+    "x": 0.5,
+    "y": 0.8660254037844386,
+    "context": "euclidean-plane-r2",
+    "name": "triangle-c"
+  }
+]

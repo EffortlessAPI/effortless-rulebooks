@@ -4,6 +4,7 @@
     "availability_start": "2026-05-24 14:00:00",
     "availability_end": "2026-05-24 21:00:00",
     "name": "alice@speakers.local",
+    "assignment_count": 2,
     "is_overbooked": false
   },
   {
@@ -11,6 +12,7 @@
     "availability_start": "2026-05-25 09:00:00",
     "availability_end": "2026-05-25 18:00:00",
     "name": "bob@speakers.local",
+    "assignment_count": 2,
     "is_overbooked": false
   },
   {
@@ -18,6 +20,7 @@
     "availability_start": "2026-05-23 15:00:00",
     "availability_end": "2026-05-23 20:00:00",
     "name": "carol@speakers.local",
+    "assignment_count": 2,
     "is_overbooked": false
   },
   {
@@ -25,6 +28,7 @@
     "availability_start": "2026-05-25 14:00:00",
     "availability_end": "2026-05-25 18:00:00",
     "name": "dave@speakers.local",
+    "assignment_count": 0,
     "is_overbooked": false
   },
   {
@@ -32,6 +36,7 @@
     "availability_start": "2026-05-23 09:00:00",
     "availability_end": "2026-05-25 21:00:00",
     "name": "overbooked@speakers.local",
-    "is_overbooked": false
+    "assignment_count": 4,
+    "is_overbooked": true
   }
 ]

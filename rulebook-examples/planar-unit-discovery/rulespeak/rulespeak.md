@@ -226,7 +226,7 @@ _A CMCC semantic mirror of the planar unit-distance theorem neighborhood. Every 
 | Is Currently Valid | True when an empty string. | _TRUE for current valid theorems; FALSE for retracted/disproven; null for unevaluated._ |
 | Anchored Bound is Currently Valid | True when the linked anchored lower bound is currently valid. | _Surfaces the anchored bound's current-validity onto the theorem. If the anchored bound got retracted, this goes FALSE — and the theorem either needs re-anchoring or also needs retraction._ |
 | Is Historically Anchored | True when all of the following hold: the is currently valid is true and the anchored bound is currently valid is true. | _TRUE iff both the theorem and its anchored bound are currently valid. Bitemporally-aware version of the older AlgebraicChainClosed gate — catches the case where a theorem's anchored bound has been retracted._ |
-| Anchored Bound is Auditable Via Its Pathway | True when the linked anchored lower bound is an auditable via its pathway. | _Surfaces the anchored bound's pathway-appropriate audit gate onto the theorem._ |
+| Anchored Bound is Auditable Via Its Pathway | True when the linked anchored lower bound is auditable via its pathway. | _Surfaces the anchored bound's pathway-appropriate audit gate onto the theorem._ |
 | Is Audited and Closed | True when all of the following hold: the historically anchored flag is set and the anchored bound is auditable via its pathway flag is set. | _The pathway-aware replacement for FullyAuditedAndClosed. TRUE iff the theorem is bitemporally valid, its anchored bound is bitemporally valid, AND the anchored bound passes its OWN pathway's audit gate (algebraic chain for Sawin-style; obligations+witness for Erdős-style pigeonhole). Erdős's theorem closes here even though the older algebraic-only gate said it couldn't._ |
 | **Metric** | A metric is identified by its name and is related to optionally a context (its ambient context). | — |
 | Name | Computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | — |
@@ -549,10 +549,10 @@ already computes (cross-referenced as DR-N in the Definitional Rules below)._
 
 ### Structural Constraints (from the schema)
 
-- A domain **must** have a display name, a role in model, and a description.
-- A context **must** have a display name, a kind, an assumptions JSON, and a description.
+- A domain **must** have a display name; a role in model; and a description.
+- A context **must** have a display name; a kind; an assumptions JSON; and a description.
 - A point **must** reference exactly one context.
-- A point **must** have a display name, a x, and a y.
+- A point **must** have a display name; a x; and a y.
 - A point set **must** reference exactly one point set member as its members.
 - A point set **must** reference exactly one point pair as its pairs.
 - A point set **must** have a display name and a description.
@@ -564,13 +564,13 @@ already computes (cross-referenced as DR-N in the Definitional Rules below)._
 - A point pair **must** have a tolerance.
 - A unit distance graph **must** reference exactly one point set.
 - A number field **must** reference exactly one prime ideal.
-- A number field **must** have a display name, a defining polynomial, a degree, a discriminant, a class number, a signature real embeddings, and a signature complex embeddings.
+- A number field **must** have a display name; a defining polynomial; a degree; a discriminant; a class number; a signature real embeddings; and a signature complex embeddings.
 - A prime ideal **must** reference exactly one number field.
-- A prime ideal **must** have a generator description, a norm, and a norm threshold.
+- A prime ideal **must** have a generator description; a norm; and a norm threshold.
 - A minkowski lattice **must** reference exactly one number field.
 - A minkowski lattice **must** reference exactly one short vector.
 - A minkowski lattice **must** reference exactly one planar projection as its projections.
-- A minkowski lattice **must** have a determinant, a gram matrix JSON, and a short vector threshold squared.
+- A minkowski lattice **must** have a determinant; a gram matrix JSON; and a short vector threshold squared.
 - A short vector **must** reference exactly one minkowski lattice.
 - A short vector **must** have a coords JSON and a norm squared.
 - A construction family **must** reference exactly one construction instance as its instances.
@@ -582,47 +582,47 @@ already computes (cross-referenced as DR-N in the Definitional Rules below)._
 - An asymptotic function **must** reference exactly one asymptotic lower bound as its lower bounds.
 - An asymptotic function **must** have a display name and a definition text.
 - An asymptotic lower bound **must** reference exactly one asymptotic function.
-- An asymptotic lower bound **must** have a display name, an exponent, a coefficient, a statement text, a source citation, a valid from, a tx from, and a proof pathway, and record whether it is an explicit.
+- An asymptotic lower bound **must** have a display name; an exponent; a coefficient; a statement text; a source citation; a valid from; a tx from; and a proof pathway, and record whether it is an explicit.
 - A theorem **must** reference exactly one asymptotic function.
 - A theorem **must** reference exactly one asymptotic lower bound as its anchored lower bound.
-- A theorem **must** have a display name, a statement text, a proof citation, a claimed exponent, a valid from, and a tx from, and record whether it is an anchor and whether it is a proven.
-- A metric **must** have a display name, a metric kind, and a definition text.
+- A theorem **must** have a display name; a statement text; a proof citation; a claimed exponent; a valid from; and a tx from, and record whether it is an anchor and whether it is a proven.
+- A metric **must** have a display name; a metric kind; and a definition text.
 - A field embedding **must** reference exactly one number field.
-- A field embedding **must** have an embedding type, an index in signature, and a target space dim.
+- A field embedding **must** have an embedding type; an index in signature; and a target space dim.
 - A minkowski embedding **must** reference exactly one number field.
-- A minkowski embedding **must** record whether it is a canonical.
+- A minkowski embedding **must** record whether it is canonical.
 - A gram matrice **must** reference exactly one minkowski lattice.
 - A gram matrice **must** have a matrix JSON, and record whether it is symmetric.
 - A planar projection **must** reference exactly one minkowski lattice as its source lattice.
 - A planar projection **must** reference exactly one context as its target context.
 - A planar projection **must** reference exactly one projected short vector.
-- A planar projection **must** have a display name, a projection kind, a scaling factor, and a rotation degrees.
+- A planar projection **must** have a display name; a projection kind; a scaling factor; and a rotation degrees.
 - A projected short vector **must** reference exactly one short vector.
 - A projected short vector **must** reference exactly one planar projection.
-- A projected short vector **must** have a projected x, a projected y, and a unit tolerance.
+- A projected short vector **must** have a projected x; a projected y; and a unit tolerance.
 - A golod shafarevich criteria **must** reference exactly one number field.
 - A golod shafarevich criteria **must** have a minimal generator count d and a relation count r.
 - A semantic bridge **must** reference exactly one domain as its from domain.
 - A semantic bridge **must** reference exactly one domain as its to domain.
-- A semantic bridge **must** have a display name, a bridge kind, a from concept table, and a to concept table.
+- A semantic bridge **must** have a display name; a bridge kind; a from concept table; and a to concept table.
 - A semantic route **must** reference exactly one semantic route step as its steps.
-- A semantic route **must** have a display name, a start concept, and an end concept.
+- A semantic route **must** have a display name; a start concept; and an end concept.
 - A semantic route step **must** reference exactly one semantic route.
-- A semantic route step **must** have a step order, a from concept, and a to concept.
-- A source reference **must** have a short label, a full citation, a valid from, and a tx from.
+- A semantic route step **must** have a step order; a from concept; and a to concept.
+- A source reference **must** have a short label; a full citation; a valid from; and a tx from.
 - A lemma **must** reference exactly one source reference.
-- A lemma **must** have a label, a statement text, a feeds object table, a valid from, and a tx from.
-- A mirror contract **must** have a rule label, a rule statement, a rule kind, and an applies to scope.
+- A lemma **must** have a label; a statement text; a feeds object table; a valid from; and a tx from.
+- A mirror contract **must** have a rule label; a rule statement; a rule kind; and an applies to scope.
 - A conjecture **must** reference exactly one asymptotic function as its target function.
-- A conjecture **must** have a display name, a statement text, a valid from, and a tx from, and record whether it is a conjectural upper bound and whether it is a conjectural lower bound.
+- A conjecture **must** have a display name; a statement text; a valid from; and a tx from, and record whether it is a conjectural upper bound and whether it is a conjectural lower bound.
 - A proof obligation **must** reference exactly one asymptotic lower bound as its parent bound.
 - A proof obligation **must** reference exactly one lemma as its required lemma.
-- A proof obligation **must** have an obligation kind, a valid from, and a tx from.
+- A proof obligation **must** have an obligation kind; a valid from; and a tx from.
 - A citation link **must** reference exactly one source reference as its citing source.
 - A citation link **must** reference exactly one source reference as its cited source.
-- A citation link **must** have a citation kind, a valid from, and a tx from.
-- An answer key **must** have a target table, a target row ID, a target field, a data type, a gate level, a valid from, and a tx from.
-- A temporal snapshot **must** have a label, a snapshot date, and a description.
+- A citation link **must** have a citation kind; a valid from; and a tx from.
+- An answer key **must** have a target table; a target row ID; a target field; a data type; a gate level; a valid from; and a tx from.
+- A temporal snapshot **must** have a label; a snapshot date; and a description.
 - A lower bound validity at snapshot **must** reference exactly one asymptotic lower bound.
 - A lower bound validity at snapshot **must** reference exactly one temporal snapshot.
 - A lower bound validity at snapshot **must** record whether it is a valid at this snapshot.
@@ -668,7 +668,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-29 Density Exponent Estimate** | A unit distance graph's density exponent estimate is computed as the logarithm of the edge count divided by the logarithm of the vertex count. |
 | **DR-30 Name** | A number field's name is computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
 | **DR-31 Ambient Lattice Dimension** | A number field's ambient lattice dimension is computed as the signature real embeddings plus 2 times the signature complex embeddings. |
-| **DR-32 Is Totally Real** | A number field is considered a totally real if the signature complex embeddings is 0. |
+| **DR-32 Is Totally Real** | A number field is considered totally-real if the signature complex embeddings is 0. |
 | **DR-33 Is Totally Complex** | A number field is considered a totally complex if the signature real embeddings is 0. |
 | **DR-34 Is PID** | A number field is considered a PID if the class number is 1. |
 | **DR-35 Small Norm Prime Ideal Count** | A number field's small norm prime ideal count is the number of the number field's prime ideals that are small norms. |
@@ -723,7 +723,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-84 Is Superlinear** | An asymptotic lower bound is considered a superlinear if the exponent is greater than 1. |
 | **DR-85 Exceeds Trivial Linear Bound** | An asymptotic lower bound is considered to exceed a trivial linear bound if the exponent is at least 1. |
 | **DR-86 Witnessed by Max Density Exponent** | An asymptotic lower bound's witnessed by max density exponent is the max observed density exponent estimate of the asymptotic lower bound's growth sequence. |
-| **DR-87 Witness Consistent** | An asymptotic lower bound is considered to witnes a consistent if the witnessed by max density exponent is at least the exponent. |
+| **DR-87 Witness Consistent** | An asymptotic lower bound is considered to witnes consistent if the witnessed by max density exponent is at least the exponent. |
 | **DR-88 Witness Source Family** | An asymptotic lower bound's witness source family is the construction family of the asymptotic lower bound's growth sequence. |
 | **DR-89 Witness Family is Algebraic** | An asymptotic lower bound's witness family is algebraic is true when the asymptotic lower bound's witness source family is an algebraic construction. |
 | **DR-90 Is Algebraically Anchored** | An asymptotic lower bound is considered algebraically-anchored if all of the following hold: the witness consistent flag is set; the witness family is algebraic flag is set; and the superlinear flag is set. |
@@ -733,7 +733,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-94 All Obligations Satisfied** | An asymptotic lower bound is flagged all obligations satisfied if the satisfied obligation count is the obligation count. |
 | **DR-95 Is Algebraic Tower Proof** | An asymptotic lower bound is considered an algebraic tower proof if the proof pathway is “algebraic-tower”. |
 | **DR-96 Is Combinatorial Proof** | An asymptotic lower bound is considered a combinatorial proof if the proof pathway is “combinatorial-pigeonhole”. |
-| **DR-97 Is Auditable Via Its Pathway** | An asymptotic lower bound is considered an auditable via its pathway if at least one of the following holds: all of the following hold: the algebraic tower proof flag is set and the algebraically anchored flag is set; all of the following hold: the combinatorial proof flag is set; the all obligations satisfied flag is set; and the witness consistent flag is set; or all of the following hold: the proof pathway is “witness-only” and the witness consistent flag is set. |
+| **DR-97 Is Auditable Via Its Pathway** | An asymptotic lower bound is considered auditable-via-its-pathway if at least one of the following holds: all of the following hold: the algebraic tower proof flag is set and the algebraically anchored flag is set; all of the following hold: the combinatorial proof flag is set; the all obligations satisfied flag is set; and the witness consistent flag is set; or all of the following hold: the proof pathway is “witness-only” and the witness consistent flag is set. |
 | **DR-98 Name** | A theorem's name is computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
 | **DR-99 Anchored Bound Exponent** | A theorem's anchored bound exponent — taken from the linked anchored lower bound. |
 | **DR-100 Anchored Bound is Superlinear** | A theorem's anchored bound is superlinear when the linked anchored lower bound is a superlinear. |
@@ -748,7 +748,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-109 Fully Audited and Closed** | A theorem is flagged fully audited and closed if all of the following hold: the algebraic chain closed flag is set and the anchored bound all obligations satisfied flag is set. |
 | **DR-110 Anchored Bound is Currently Valid** | A theorem's anchored bound is currently valid when the linked anchored lower bound is currently valid. |
 | **DR-111 Is Historically Anchored** | A theorem is considered historically-anchored if all of the following hold: the is currently valid is true and the anchored bound is currently valid is true. |
-| **DR-112 Anchored Bound is Auditable Via Its Pathway** | A theorem's anchored bound is auditable via its pathway when the linked anchored lower bound is an auditable via its pathway. |
+| **DR-112 Anchored Bound is Auditable Via Its Pathway** | A theorem's anchored bound is auditable via its pathway when the linked anchored lower bound is auditable via its pathway. |
 | **DR-113 Is Audited and Closed** | A theorem is considered audited-and-closed if all of the following hold: the historically anchored flag is set and the anchored bound is auditable via its pathway flag is set. |
 | **DR-114 Name** | A metric's name is computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
 | **DR-115 Is Euclidean** | A metric is considered an euclidean if the metric kind is “euclidean”. |
@@ -786,7 +786,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-147 Relation Count Exceeds Threshold** | A golod shafarevich criteria is flagged relation count exceeds threshold if the relation count r is greater than the criterion threshold. |
 | **DR-148 Satisfies Golod Shafarevich Tower** | A golod shafarevich criteria is considered to satisfie a golod shafarevich tower only if the golod shafarevich criteria is flagged relation count exceeds threshold. |
 | **DR-149 Name** | A semantic bridge's name is computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
-| **DR-150 Is Analogy** | A semantic bridge is considered an analogy if the bridge kind is “analogy”. |
+| **DR-150 Is Analogy** | A semantic bridge is considered analogy if the bridge kind is “analogy”. |
 | **DR-151 Name** | A semantic route's name is computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
 | **DR-152 Step Count** | A semantic route's step count is the number of semantic route steps related to the semantic route. |
 | **DR-153 Validated Step Count** | A semantic route's validated step count is the number of the semantic route's semantic route steps that are validated. |
@@ -804,14 +804,14 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-165 Name** | A conjecture's name is computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
 | **DR-166 Is Still Open** | A conjecture is considered still-open if the is resolved is false. |
 | **DR-167 Name** | A proof obligation's name is computed as the parent bound, followed by a slash, followed by the required lemma. |
-| **DR-168 Is Necessary** | A proof obligation is considered a necessary if the obligation kind is “necessary”. |
+| **DR-168 Is Necessary** | A proof obligation is considered necessary if the obligation kind is “necessary”. |
 | **DR-169 Is Lemma Loaded** | A proof obligation's is lemma loaded when the linked required lemma is loaded. |
 | **DR-170 Is Lemma Load Bearing** | A proof obligation's is lemma load bearing when the linked required lemma is load bearing. |
 | **DR-171 Bound Claimed Exponent** | A proof obligation's bound claimed exponent — taken from the linked parent bound. |
 | **DR-172 Is Currently Open** | A proof obligation is considered currently-open if the is satisfied is false. |
 | **DR-173 Name** | A citation link's name is computed as the citing source, followed by “-cites-”, followed by the cited source. |
-| **DR-174 Is Dependency** | A citation link is considered a dependency if the citation kind is “depends-on”. |
-| **DR-175 Is Improvement** | A citation link is considered an improvement if the citation kind is “improves”. |
+| **DR-174 Is Dependency** | A citation link is considered dependency if the citation kind is “depends-on”. |
+| **DR-175 Is Improvement** | A citation link is considered improvement if the citation kind is “improves”. |
 | **DR-176 Citing Year** | A citation link's citing year — taken from the linked citing source. |
 | **DR-177 Cited Year** | A citation link's cited year — taken from the linked cited source. |
 | **DR-178 Name** | An answer key's name is computed as the target table, followed by a slash, followed by the target row ID, followed by a slash, followed by the target field. |

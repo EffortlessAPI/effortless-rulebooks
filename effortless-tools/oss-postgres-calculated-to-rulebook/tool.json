@@ -1,0 +1,10 @@
+{
+  "name": "oss-postgres-calculated-to-rulebook",
+  "runtime": "script",
+  "entry": "transpiler.py",
+  "description": "Refresh calculated/lookup/aggregation field values in the rulebook from the vw_* views (raws verified, never written)",
+  "tags": [
+    "oss",
+    "execution-substrate"
+  ]
+}

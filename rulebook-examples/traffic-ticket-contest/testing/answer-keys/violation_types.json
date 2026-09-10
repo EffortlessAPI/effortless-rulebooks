@@ -1,0 +1,79 @@
+[
+  {
+    "violation_type_id": "vt-cvc-21453a",
+    "code": "CVC-21453A",
+    "jurisdiction": "j-ca-la",
+    "description": "Failure to stop at a red signal",
+    "base_fine_usd": 490.0,
+    "points": 1,
+    "is_mock_data": true,
+    "name": "cvc-21453a",
+    "is_school_eligible_by_cap": false
+  },
+  {
+    "violation_type_id": "vt-cvc-22350",
+    "code": "CVC-22350",
+    "jurisdiction": "j-ca-la",
+    "description": "Unsafe speed for conditions (basic speed law)",
+    "base_fine_usd": 238.0,
+    "points": 1,
+    "is_mock_data": true,
+    "name": "cvc-22350",
+    "is_school_eligible_by_cap": false
+  },
+  {
+    "violation_type_id": "vt-cvc-23123",
+    "code": "CVC-23123",
+    "jurisdiction": "j-ca-la",
+    "description": "Handheld cell phone use while driving",
+    "base_fine_usd": 162.0,
+    "points": 0,
+    "is_mock_data": true,
+    "name": "cvc-23123",
+    "is_school_eligible_by_cap": false
+  },
+  {
+    "violation_type_id": "vt-ttc-544007",
+    "code": "TTC-544007",
+    "jurisdiction": "j-tx-aus",
+    "description": "Disregarding a red light",
+    "base_fine_usd": 275.0,
+    "points": 2,
+    "is_mock_data": true,
+    "name": "ttc-544007",
+    "is_school_eligible_by_cap": false
+  },
+  {
+    "violation_type_id": "vt-ttc-545351",
+    "code": "TTC-545351",
+    "jurisdiction": "j-tx-aus",
+    "description": "Exceeding the posted speed limit",
+    "base_fine_usd": 205.0,
+    "points": 2,
+    "is_mock_data": true,
+    "name": "ttc-545351",
+    "is_school_eligible_by_cap": false
+  },
+  {
+    "violation_type_id": "vt-vtl-1111d",
+    "code": "VTL-1111D",
+    "jurisdiction": "j-ny-nyc",
+    "description": "Failure to obey a steady red signal",
+    "base_fine_usd": 280.0,
+    "points": 3,
+    "is_mock_data": true,
+    "name": "vtl-1111d",
+    "is_school_eligible_by_cap": false
+  },
+  {
+    "violation_type_id": "vt-vtl-1180b",
+    "code": "VTL-1180B",
+    "jurisdiction": "j-ny-nyc",
+    "description": "Speeding 11-20 mph over the limit",
+    "base_fine_usd": 300.0,
+    "points": 4,
+    "is_mock_data": true,
+    "name": "vtl-1180b",
+    "is_school_eligible_by_cap": false
+  }
+]

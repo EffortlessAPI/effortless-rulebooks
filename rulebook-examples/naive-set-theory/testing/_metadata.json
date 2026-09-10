@@ -1,0 +1,69 @@
+{
+  "truth_values": {
+    "primary_key": "truth_value_id",
+    "computed_columns": [
+      "name",
+      "is_classical",
+      "is_undefined",
+      "count_of_facts"
+    ],
+    "record_count": 3
+  },
+  "connectives": {
+    "primary_key": "connective_id",
+    "computed_columns": [
+      "name",
+      "count_of_truth_table_rows"
+    ],
+    "record_count": 3
+  },
+  "truth_table_rows": {
+    "primary_key": "truth_table_row_id",
+    "computed_columns": [
+      "output_symbol",
+      "name"
+    ],
+    "record_count": 21
+  },
+  "set_rules": {
+    "primary_key": "set_rule_id",
+    "computed_columns": [
+      "name",
+      "is_classical",
+      "is_the_missing_rule"
+    ],
+    "record_count": 12
+  },
+  "sets": {
+    "primary_key": "set_id",
+    "computed_columns": [
+      "name",
+      "is_russell_set",
+      "count_of_memberships",
+      "count_of_null_memberships"
+    ],
+    "record_count": 8
+  },
+  "membership_facts": {
+    "primary_key": "membership_fact_id",
+    "computed_columns": [
+      "name",
+      "container_label",
+      "membership_value_symbol",
+      "is_bivalent",
+      "is_null",
+      "is_grounded",
+      "count_of_evaluation_steps"
+    ],
+    "record_count": 10
+  },
+  "evaluation_steps": {
+    "primary_key": "evaluation_step_id",
+    "computed_columns": [
+      "name",
+      "is_stable",
+      "outcome"
+    ],
+    "record_count": 3
+  }
+}

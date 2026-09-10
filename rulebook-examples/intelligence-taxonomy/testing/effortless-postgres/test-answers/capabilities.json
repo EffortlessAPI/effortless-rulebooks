@@ -1,0 +1,30 @@
+[
+  {
+    "capabilities_id": "creativity",
+    "name": "creativity",
+    "description": "Novel synthesis, divergent thinking, and open-ended generation.",
+    "tier": "emergent",
+    "weight": "1.5"
+  },
+  {
+    "capabilities_id": "memory",
+    "name": "memory",
+    "description": "Storing, retaining, and recalling information across time.",
+    "tier": "foundational",
+    "weight": "1.0"
+  },
+  {
+    "capabilities_id": "perception",
+    "name": "perception",
+    "description": "Sensing the environment and interpreting raw input into structure.",
+    "tier": "foundational",
+    "weight": "1.0"
+  },
+  {
+    "capabilities_id": "reasoning",
+    "name": "reasoning",
+    "description": "Inference, deduction, and structured problem-solving.",
+    "tier": "composite",
+    "weight": "1.3"
+  }
+]

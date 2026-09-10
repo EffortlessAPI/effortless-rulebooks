@@ -1,0 +1,92 @@
+[
+  {
+    "membership_fact_id": "a-in-empty-set",
+    "element": "a",
+    "container": "empty-set",
+    "membership_value": "false",
+    "name": null,
+    "is_null": null,
+    "is_grounded": null
+  },
+  {
+    "membership_fact_id": "a-in-pair-ab",
+    "element": "a",
+    "container": "pair-ab",
+    "membership_value": "true",
+    "name": null,
+    "is_null": null,
+    "is_grounded": null
+  },
+  {
+    "membership_fact_id": "a-in-russell-set",
+    "element": "a",
+    "container": "russell-set",
+    "membership_value": "true",
+    "name": null,
+    "is_null": null,
+    "is_grounded": null
+  },
+  {
+    "membership_fact_id": "a-in-singleton-a",
+    "element": "a",
+    "container": "singleton-a",
+    "membership_value": "true",
+    "name": null,
+    "is_null": null,
+    "is_grounded": null
+  },
+  {
+    "membership_fact_id": "b-in-pair-ab",
+    "element": "b",
+    "container": "pair-ab",
+    "membership_value": "true",
+    "name": null,
+    "is_null": null,
+    "is_grounded": null
+  },
+  {
+    "membership_fact_id": "empty-set-in-russell-set",
+    "element": "empty-set",
+    "container": "russell-set",
+    "membership_value": "true",
+    "name": null,
+    "is_null": null,
+    "is_grounded": null
+  },
+  {
+    "membership_fact_id": "russell-set-in-russell-set",
+    "element": "russell-set",
+    "container": "russell-set",
+    "membership_value": "null",
+    "name": null,
+    "is_null": null,
+    "is_grounded": null
+  },
+  {
+    "membership_fact_id": "singleton-a-in-nested",
+    "element": "singleton-a",
+    "container": "nested",
+    "membership_value": "true",
+    "name": null,
+    "is_null": null,
+    "is_grounded": null
+  },
+  {
+    "membership_fact_id": "universal-u-in-russell-set",
+    "element": "universal-u",
+    "container": "russell-set",
+    "membership_value": "false",
+    "name": null,
+    "is_null": null,
+    "is_grounded": null
+  },
+  {
+    "membership_fact_id": "universal-u-in-universal-u",
+    "element": "universal-u",
+    "container": "universal-u",
+    "membership_value": "true",
+    "name": null,
+    "is_null": null,
+    "is_grounded": null
+  }
+]

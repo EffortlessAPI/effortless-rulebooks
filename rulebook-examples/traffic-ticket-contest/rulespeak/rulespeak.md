@@ -1057,7 +1057,7 @@ already computes (cross-referenced as DR-N in the Definitional Rules below)._
 ### Structural Constraints (from the schema)
 
 - A platform naviation **must** record whether it is licensed.
-- A jurisdiction **must** have a code, a display name, a days to respond, a days to pay after ruling, a late penalty pct, a days late to collections, a point suspension threshold, a point warning threshold, and a traffic school point cap.
+- A jurisdiction **must** have a code; a display name; a days to respond; a days to pay after ruling; a late penalty pct; a days late to collections; a point suspension threshold; a point warning threshold; and a traffic school point cap.
 - An app user **must** record whether it is an effortless employee.
 - A reference document **must** have a library.
 - A state machine **must** have a subject table name and a subject state column.
@@ -1067,15 +1067,15 @@ already computes (cross-referenced as DR-N in the Definitional Rules below)._
 - A state transition rule **must** reference exactly one machine state as its from state.
 - A state transition rule **must** reference exactly one machine state as its to state.
 - A state transition **must** reference exactly one state machine.
-- A state transition **must** have a subject table name, a subject ID, and a to state key.
-- A work queue item **must** have a subject table name, a subject ID, an item type, and a current state key.
+- A state transition **must** have a subject table name; a subject ID; and a to state key.
+- A work queue item **must** have a subject table name; a subject ID; an item type; and a current state key.
 - An ai model **must** record whether it is active.
 - A model pricing version **must** reference exactly one ai model.
 - A model pricing version **must** record whether it is active.
 - An assistant turn **must** reference exactly one ai model.
 - An assistant turn **must** reference exactly one model pricing version.
 - A platform **must** record whether it is active.
-- An ERB package **must** record whether it is active, whether it is licensed, and whether it is a key.
+- An ERB package **must** record whether it is active; whether it is licensed; and whether it is a key.
 - An ERB feature **must** reference exactly one ERB package.
 - An ERB feature **must** record whether it is licensed and whether it is a key.
 - An ERB table **must** reference exactly one ERB package.
@@ -1085,21 +1085,21 @@ already computes (cross-referenced as DR-N in the Definitional Rules below)._
 - An ERB field **must** have a field name.
 - An API endpoint **must** have a path.
 - A subject state instance **must** reference exactly one state machine.
-- A subject state instance **must** have a subject table name, a subject ID, a state key, and a sequence index.
+- A subject state instance **must** have a subject table name; a subject ID; a state key; and a sequence index.
 - A violation type **must** reference exactly one jurisdiction.
-- A violation type **must** have a code, a description, a base fine USD, and a points.
+- A violation type **must** have a code; a description; a base fine USD; and a points.
 - A driver **must** reference exactly one jurisdiction as its home jurisdiction.
-- A driver **must** have a license number, a first name, and a last name.
+- A driver **must** have a license number; a first name; and a last name.
 - A citation **must** reference exactly one driver.
 - A citation **must** reference exactly one violation type.
 - A citation **must** reference exactly one jurisdiction.
-- A citation **must** have a citation number, an issued on, and an as of date, and record whether it is contest requested.
+- A citation **must** have a citation number; an issued on; and an as of date, and record whether it is contest requested.
 - A hearing **must** reference exactly one citation.
 - A hearing **must** have a hearing number and a requested on.
 - A payment **must** reference exactly one citation.
-- A payment **must** have a payment number, a paid on, an amount USD, and a method.
+- A payment **must** have a payment number; a paid on; an amount USD; and a method.
 - A case event **must** reference exactly one citation.
-- A case event **must** have an event number, an occurred on, a track, and a to state.
+- A case event **must** have an event number; an occurred on; a track; and a to state.
 
 ## 4 Definitional Rules
 
@@ -1160,7 +1160,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-47 Relative Path** | A jurisdiction rule's relative path is computed as “/library/jurisdiction-rules/”, followed by the jurisdiction rule ID. |
 | **DR-48 Jurisdiction Name** | A jurisdiction rule's jurisdiction name — taken from the linked jurisdiction. |
 | **DR-49 Jurisdiction Type** | A jurisdiction rule's jurisdiction type — taken from the linked jurisdiction. |
-| **DR-50 Is Federal** | A jurisdiction rule is considered a federal if the jurisdiction type is “Country”. |
+| **DR-50 Is Federal** | A jurisdiction rule is considered federal if the jurisdiction type is “Country”. |
 | **DR-51 Name Redacted** | An app user's name redacted is the same as its name. |
 | **DR-52 Email Address Redacted** | An app user's email address redacted is the same as its email address. |
 | **DR-53 Role Title** | An app user's role title — taken from the linked role. |
@@ -1183,7 +1183,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-70 Due in Days** | A work queue item's due in days is computed as the number of days from today's date to the due date. ⚠︎ mechanical <!-- rulespeak:reword --> |
 | **DR-71 Is Overdue** | A work queue item is considered an overdue if the due in days is less than 0. |
 | **DR-72 Urgency Bucket** | The work queue item's urgency bucket is determined by the following priority:<br>1. “follow-up”, if the due in days is blank;<br>2. “urgent”, if the due in days is at most 0;<br>3. “due-3-days”, if the due in days is at most 3;<br>4. in all other cases, “upcoming”. |
-| **DR-73 Is Urgent** | A work queue item is considered an urgent if the urgency bucket is “urgent”. |
+| **DR-73 Is Urgent** | A work queue item is considered urgent if the urgency bucket is “urgent”. |
 | **DR-74 Name** | An ai model's name is the same as its ai model ID. |
 | **DR-75 Pricing Version Count** | An ai model's pricing version count is the number of model pricing versions related to the ai model. |
 | **DR-76 Turn Count** | An ai model's turn count is the number of assistant turns related to the ai model. |
@@ -1257,7 +1257,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-144 External Llm Can Delete** | An ERB field is flagged external llm can delete if the external llm CRUD mentions “D”. |
 | **DR-145 Name** | An API endpoint's name is the same as its API endpoint ID. |
 | **DR-146 Name** | A subject state instance's name is the same as its subject state instance ID. |
-| **DR-147 Is Current** | A subject state instance is considered a current if the exited at is blank. |
+| **DR-147 Is Current** | A subject state instance is considered current if the exited at is blank. |
 | **DR-148 Has Complete Lineage** | A subject state instance is considered to have a complete lineage if the sequence index is at least 1. |
 | **DR-149 Name** | A violation type's name is computed as the lower-cased code with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
 | **DR-150 Jurisdiction Label** | A violation type's jurisdiction label is the display name of the violation type's jurisdiction. |
@@ -1289,7 +1289,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-176 Latest Hearing Outcome** | A citation's latest hearing outcome is the largest outcome across the hearings related to the citation. |
 | **DR-177 Contest Status** | The citation's contest status is determined by the following priority:<br>1. “NotContested”, if the contest requested flag is not set;<br>2. “HearingRequested”, if the count of hearings is 0;<br>3. “Scheduled”, if at least one of the following holds: the latest hearing outcome is “Pending” or the latest hearing outcome is blank;<br>4. in all other cases, “Heard”. |
 | **DR-178 Is Dismissed** | A citation is considered dismissed if the latest hearing outcome is “Dismissed”. |
-| **DR-179 Is Guilty** | A citation is considered a guilty if at least one of the following holds: the latest hearing outcome is “Guilty”; the latest hearing outcome is “Upheld”; or all of the following hold: the response overdue flag is set and the contest requested flag is not set. |
+| **DR-179 Is Guilty** | A citation is considered guilty if at least one of the following holds: the latest hearing outcome is “Guilty”; the latest hearing outcome is “Upheld”; or all of the following hold: the response overdue flag is set and the contest requested flag is not set. |
 | **DR-180 Amount Due USD** | The citation's amount due USD is determined by the following priority:<br>1. 0, if the dismissed flag is set;<br>2. the base fine USD times 1 plus the late penalty pct, if the payment late flag is set;<br>3. in all other cases, the base fine USD. |
 | **DR-181 Payment Due Date** | A citation's payment due date is computed as the response due date interpreted as a date plus the days to pay after ruling. |
 | **DR-182 Is Payment Late** | A citation is considered a payment late if all of the following hold: the guilty flag is set; the paid on is blank; and the as of date is greater than the payment due date. |

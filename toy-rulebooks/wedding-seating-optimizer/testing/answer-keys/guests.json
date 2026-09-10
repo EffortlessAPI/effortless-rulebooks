@@ -8,7 +8,8 @@
     "language": "en",
     "age_band": "adult",
     "assigned_table": "t-head",
-    "mood": "Unhappy",
+    "satisfaction": 0,
+    "mood": "Neutral",
     "bride_flag": 1,
     "groom_flag": 0
   },
@@ -21,7 +22,8 @@
     "language": "en",
     "age_band": "senior",
     "assigned_table": "t-family-b",
-    "mood": "Unhappy",
+    "satisfaction": 0,
+    "mood": "Neutral",
     "bride_flag": 1,
     "groom_flag": 0
   },
@@ -34,7 +36,8 @@
     "language": "en",
     "age_band": "adult",
     "assigned_table": "t-family-b",
-    "mood": "Unhappy",
+    "satisfaction": 0,
+    "mood": "Neutral",
     "bride_flag": 1,
     "groom_flag": 0
   },
@@ -47,7 +50,8 @@
     "language": "en",
     "age_band": "child",
     "assigned_table": "t-family-b",
-    "mood": "Unhappy",
+    "satisfaction": 0,
+    "mood": "Neutral",
     "bride_flag": 1,
     "groom_flag": 0
   },
@@ -60,7 +64,8 @@
     "language": "en",
     "age_band": "senior",
     "assigned_table": "t-head",
-    "mood": "Unhappy",
+    "satisfaction": 0,
+    "mood": "Neutral",
     "bride_flag": 1,
     "groom_flag": 0
   },
@@ -73,7 +78,8 @@
     "language": "es",
     "age_band": "senior",
     "assigned_table": "t-head",
-    "mood": "Unhappy",
+    "satisfaction": 0,
+    "mood": "Neutral",
     "bride_flag": 0,
     "groom_flag": 1
   },
@@ -86,7 +92,8 @@
     "language": "en",
     "age_band": "adult",
     "assigned_table": "t-misc",
-    "mood": "Unhappy",
+    "satisfaction": 0,
+    "mood": "Neutral",
     "bride_flag": 1,
     "groom_flag": 0
   },
@@ -99,7 +106,8 @@
     "language": "en",
     "age_band": "adult",
     "assigned_table": "t-friends",
-    "mood": "Unhappy",
+    "satisfaction": 0,
+    "mood": "Neutral",
     "bride_flag": 1,
     "groom_flag": 0
   },
@@ -112,7 +120,8 @@
     "language": "en",
     "age_band": "adult",
     "assigned_table": "t-friends",
-    "mood": "Unhappy",
+    "satisfaction": 0,
+    "mood": "Neutral",
     "bride_flag": 1,
     "groom_flag": 0
   },
@@ -125,7 +134,8 @@
     "language": "en",
     "age_band": "adult",
     "assigned_table": "t-friends",
-    "mood": "Unhappy",
+    "satisfaction": 0,
+    "mood": "Neutral",
     "bride_flag": 0,
     "groom_flag": 1
   },
@@ -138,7 +148,8 @@
     "language": "en",
     "age_band": "adult",
     "assigned_table": "t-friends",
-    "mood": "Unhappy",
+    "satisfaction": 0,
+    "mood": "Neutral",
     "bride_flag": 0,
     "groom_flag": 1
   },
@@ -151,7 +162,8 @@
     "language": "es",
     "age_band": "child",
     "assigned_table": "t-misc",
-    "mood": "Unhappy",
+    "satisfaction": 0,
+    "mood": "Neutral",
     "bride_flag": 0,
     "groom_flag": 1
   },
@@ -164,7 +176,8 @@
     "language": "en",
     "age_band": "child",
     "assigned_table": "t-misc",
-    "mood": "Unhappy",
+    "satisfaction": 0,
+    "mood": "Neutral",
     "bride_flag": 1,
     "groom_flag": 0
   },
@@ -177,7 +190,8 @@
     "language": "en",
     "age_band": "senior",
     "assigned_table": "t-head",
-    "mood": "Unhappy",
+    "satisfaction": 0,
+    "mood": "Neutral",
     "bride_flag": 1,
     "groom_flag": 0
   },
@@ -190,7 +204,8 @@
     "language": "es",
     "age_band": "senior",
     "assigned_table": "t-head",
-    "mood": "Unhappy",
+    "satisfaction": 0,
+    "mood": "Neutral",
     "bride_flag": 0,
     "groom_flag": 1
   },
@@ -203,7 +218,8 @@
     "language": "fr",
     "age_band": "adult",
     "assigned_table": "t-misc",
-    "mood": "Unhappy",
+    "satisfaction": 0,
+    "mood": "Neutral",
     "bride_flag": 0,
     "groom_flag": 1
   },
@@ -216,7 +232,8 @@
     "language": "en",
     "age_band": "adult",
     "assigned_table": "t-misc",
-    "mood": "Unhappy",
+    "satisfaction": 0,
+    "mood": "Neutral",
     "bride_flag": 0,
     "groom_flag": 1
   },
@@ -229,7 +246,8 @@
     "language": "es",
     "age_band": "adult",
     "assigned_table": "t-family-g",
-    "mood": "Unhappy",
+    "satisfaction": 0,
+    "mood": "Neutral",
     "bride_flag": 0,
     "groom_flag": 1
   },
@@ -242,7 +260,8 @@
     "language": "es",
     "age_band": "adult",
     "assigned_table": "t-family-g",
-    "mood": "Unhappy",
+    "satisfaction": 0,
+    "mood": "Neutral",
     "bride_flag": 0,
     "groom_flag": 1
   },
@@ -255,7 +274,8 @@
     "language": "en",
     "age_band": "adult",
     "assigned_table": "t-head",
-    "mood": "Unhappy",
+    "satisfaction": 0,
+    "mood": "Neutral",
     "bride_flag": 0,
     "groom_flag": 1
   },
@@ -268,7 +288,8 @@
     "language": "es",
     "age_band": "senior",
     "assigned_table": "t-family-g",
-    "mood": "Unhappy",
+    "satisfaction": 0,
+    "mood": "Neutral",
     "bride_flag": 0,
     "groom_flag": 1
   },
@@ -281,7 +302,8 @@
     "language": "es",
     "age_band": "senior",
     "assigned_table": "t-family-g",
-    "mood": "Unhappy",
+    "satisfaction": 0,
+    "mood": "Neutral",
     "bride_flag": 0,
     "groom_flag": 1
   },
@@ -294,7 +316,8 @@
     "language": "en",
     "age_band": "senior",
     "assigned_table": "t-family-b",
-    "mood": "Unhappy",
+    "satisfaction": 0,
+    "mood": "Neutral",
     "bride_flag": 1,
     "groom_flag": 0
   }

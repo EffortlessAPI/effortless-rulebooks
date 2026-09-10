@@ -1,0 +1,170 @@
+[
+  {
+    "truth_table_row_id": "conjunction|false|false|false",
+    "connective": "conjunction",
+    "left_input": "false",
+    "right_input": "false",
+    "output": "false",
+    "name": null
+  },
+  {
+    "truth_table_row_id": "conjunction|false|null|false",
+    "connective": "conjunction",
+    "left_input": "false",
+    "right_input": "null",
+    "output": "false",
+    "name": null
+  },
+  {
+    "truth_table_row_id": "conjunction|false|true|false",
+    "connective": "conjunction",
+    "left_input": "false",
+    "right_input": "true",
+    "output": "false",
+    "name": null
+  },
+  {
+    "truth_table_row_id": "conjunction|null|false|false",
+    "connective": "conjunction",
+    "left_input": "null",
+    "right_input": "false",
+    "output": "false",
+    "name": null
+  },
+  {
+    "truth_table_row_id": "conjunction|null|null|null",
+    "connective": "conjunction",
+    "left_input": "null",
+    "right_input": "null",
+    "output": "null",
+    "name": null
+  },
+  {
+    "truth_table_row_id": "conjunction|null|true|null",
+    "connective": "conjunction",
+    "left_input": "null",
+    "right_input": "true",
+    "output": "null",
+    "name": null
+  },
+  {
+    "truth_table_row_id": "conjunction|true|false|false",
+    "connective": "conjunction",
+    "left_input": "true",
+    "right_input": "false",
+    "output": "false",
+    "name": null
+  },
+  {
+    "truth_table_row_id": "conjunction|true|null|null",
+    "connective": "conjunction",
+    "left_input": "true",
+    "right_input": "null",
+    "output": "null",
+    "name": null
+  },
+  {
+    "truth_table_row_id": "conjunction|true|true|true",
+    "connective": "conjunction",
+    "left_input": "true",
+    "right_input": "true",
+    "output": "true",
+    "name": null
+  },
+  {
+    "truth_table_row_id": "disjunction|false|false|false",
+    "connective": "disjunction",
+    "left_input": "false",
+    "right_input": "false",
+    "output": "false",
+    "name": null
+  },
+  {
+    "truth_table_row_id": "disjunction|false|null|null",
+    "connective": "disjunction",
+    "left_input": "false",
+    "right_input": "null",
+    "output": "null",
+    "name": null
+  },
+  {
+    "truth_table_row_id": "disjunction|false|true|true",
+    "connective": "disjunction",
+    "left_input": "false",
+    "right_input": "true",
+    "output": "true",
+    "name": null
+  },
+  {
+    "truth_table_row_id": "disjunction|null|false|null",
+    "connective": "disjunction",
+    "left_input": "null",
+    "right_input": "false",
+    "output": "null",
+    "name": null
+  },
+  {
+    "truth_table_row_id": "disjunction|null|null|null",
+    "connective": "disjunction",
+    "left_input": "null",
+    "right_input": "null",
+    "output": "null",
+    "name": null
+  },
+  {
+    "truth_table_row_id": "disjunction|null|true|true",
+    "connective": "disjunction",
+    "left_input": "null",
+    "right_input": "true",
+    "output": "true",
+    "name": null
+  },
+  {
+    "truth_table_row_id": "disjunction|true|false|true",
+    "connective": "disjunction",
+    "left_input": "true",
+    "right_input": "false",
+    "output": "true",
+    "name": null
+  },
+  {
+    "truth_table_row_id": "disjunction|true|null|true",
+    "connective": "disjunction",
+    "left_input": "true",
+    "right_input": "null",
+    "output": "true",
+    "name": null
+  },
+  {
+    "truth_table_row_id": "disjunction|true|true|true",
+    "connective": "disjunction",
+    "left_input": "true",
+    "right_input": "true",
+    "output": "true",
+    "name": null
+  },
+  {
+    "truth_table_row_id": "negation|false|_|true",
+    "connective": "negation",
+    "left_input": "false",
+    "right_input": null,
+    "output": "true",
+    "name": null
+  },
+  {
+    "truth_table_row_id": "negation|null|_|null",
+    "connective": "negation",
+    "left_input": "null",
+    "right_input": null,
+    "output": "null",
+    "name": null
+  },
+  {
+    "truth_table_row_id": "negation|true|_|false",
+    "connective": "negation",
+    "left_input": "true",
+    "right_input": null,
+    "output": "false",
+    "name": null
+  }
+]

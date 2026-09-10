@@ -62,12 +62,16 @@ def _apply_rulebook_override(rulebook_path: str):
     RULEBOOK_DIR = os.path.dirname(RULEBOOK_PATH)
     PROJECT_ROOT = os.path.dirname(RULEBOOK_DIR)
     domain = os.path.basename(PROJECT_ROOT)
-    expected_filename = f"{domain}-rulebook.json"
+    # BOTH hub filenames are valid under the project-shape contract:
+    # <domain>-rulebook.json and effortless-rulebook.json. The folder disambiguates,
+    # so the check is that the file is one of the two — not that it is the first.
+    # Insisting on <domain>-rulebook.json rejected five real projects.
+    valid_filenames = (f"{domain}-rulebook.json", "effortless-rulebook.json")
     actual_filename = os.path.basename(RULEBOOK_PATH)
-    if actual_filename != expected_filename:
+    if actual_filename not in valid_filenames:
         raise ValueError(
             f"Rulebook filename mismatch: got '{actual_filename}', "
-            f"expected '{expected_filename}' (derived from domain '{domain}'). "
+            f"expected one of {valid_filenames} (domain '{domain}'). "
             "Rename the file or pass the correct path."
         )
     TESTING_DIR = os.path.join(PROJECT_ROOT, "testing")
@@ -90,6 +94,9 @@ EFFORTLESS_SUBSTRATES = {
     "effortless-postgres",
     "effortless-xlsx",
     "effortless-entity-framework",
+    "effortless-python",
+    "effortless-golang",
+    "effortless-typescript",
 }
 
 # Stable per-substrate color palette. Each substrate keeps the same color
@@ -112,6 +119,9 @@ SUBSTRATE_COLORS = {
     "effortless-postgres":         "#336791",  # postgres elephant blue
     "effortless-xlsx":             "#107C41",  # excel green
     "effortless-entity-framework": "#512BD4",  # dotnet purple
+    "effortless-python":           "#FFD343",  # python yellow, against the open-source blue
+    "effortless-golang":           "#007D9C",  # deeper gopher, against the open-source cyan
+    "effortless-typescript":       "#3178C6",  # typescript blue
 }
 
 
@@ -119,14 +129,13 @@ def get_substrate_color(name: str) -> str:
     return SUBSTRATE_COLORS.get(name, "#6c757d")
 
 
-def display_name(substrate: str) -> str:
-    """Drop the `effortless-` prefix when rendering — the visually-distinct
-    "EFFORTLESS LICENSED TOOLS" group already conveys that membership, so
-    the prefix in every label becomes redundant chrome. Internal identifiers
-    (data-substrate, file paths, etc.) keep the prefix."""
-    if substrate.startswith("effortless-"):
-        return substrate[len("effortless-"):]
-    return substrate
+# Substrates render under their real names — a licensed substrate is always
+# labelled `effortless-<tech>`, never shortened to `<tech>`. Stripping the
+# prefix made `effortless-python` indistinguishable from the open-source
+# python substrate, so a reader seeing "python: 100%" on a domain the
+# open-source tool cannot compile reasonably concluded the open-source tool
+# had been changed. The group heading conveys licensing; the name conveys
+# which tool produced the score, and those are not the same fact.
 
 
 # =============================================================================
@@ -881,7 +890,7 @@ def generate_matrix_rows(data: dict) -> str:
             warning_badge = f' <span class="warning-badge" title="Last run failed: {escape(error_msg)}">&#9888;</span>'
         color = get_substrate_color(substrate_name)
         swatch = f'<span class="substrate-swatch" style="background:{color}"></span>'
-        cells.append(f'<td class="substrate-name substrate-row-link" data-substrate="{escape(substrate_name)}">{swatch}{escape(display_name(substrate_label))}{warning_badge}</td>')
+        cells.append(f'<td class="substrate-name substrate-row-link" data-substrate="{escape(substrate_name)}">{swatch}{escape(substrate_label)}{warning_badge}</td>')
 
         # Entity cells
         for entity in entities:
@@ -964,7 +973,7 @@ def generate_substrate_tabs(data: dict) -> str:
         swatch = f'<span class="substrate-swatch" style="background:{color}"></span>'
         parts.append(
             f'<button class="sub-tab {active}" data-substrate="{escape(substrate)}">'
-            f'{swatch}{escape(display_name(substrate))}</button>'
+            f'{swatch}{escape(substrate)}</button>'
         )
     return '\n                '.join(parts)
 
@@ -987,7 +996,7 @@ def generate_substrate_links(data: dict) -> str:
         return (
             f'<a href="#" class="substrate-link score-{score_class}" '
             f'data-substrate="{escape(substrate)}">'
-            f'{swatch}{escape(display_name(substrate))}: {score:.0f}%</a>'
+            f'{swatch}{escape(substrate)}: {score:.0f}%</a>'
         )
 
     ordered = sorted_substrates(data)
@@ -1870,9 +1879,6 @@ const SUBSTRATE_COLORS = REPORT_DATA._substrate_colors || {};
 
 function isEffortless(name) { return EFFORTLESS_SUBSTRATES.has(name); }
 function substrateColor(name) { return SUBSTRATE_COLORS[name] || '#6c757d'; }
-function displayName(name) {
-    return isEffortless(name) ? name.replace(/^effortless-/, '') : name;
-}
 function sortSubstrates(names) {
     // Open-source first, effortless last; alpha within each group.
     return [...names].sort((a, b) => {
@@ -2107,7 +2113,7 @@ function renderEntityDetails(entityName) {
     html += '</details>';
 
     // Substrate results tabs — open-source first, then a divider, then
-    // Effortless-licensed substrates. Labels drop the "effortless-" prefix.
+    // Effortless-licensed substrates, labelled with their real names.
     html += '<h4>Substrate Results</h4>';
     html += '<nav class="sub-tabs" id="entity-substrate-tabs">';
     const orderedSubs = sortSubstrates(Object.keys(REPORT_DATA.substrates));
@@ -2127,7 +2133,7 @@ function renderEntityDetails(entityName) {
         const scoreClass = getScoreClass(score);
         const active = renderedCount === 0 ? 'active' : '';
         const swatch = `<span class="substrate-swatch" style="background:${substrateColor(substrate)}"></span>`;
-        html += `<button class="sub-tab ${active} score-${scoreClass}" data-substrate="${escapeHtml(substrate)}" data-entity="${escapeHtml(entityName)}">${swatch}${escapeHtml(displayName(substrate))}: ${score}%</button>`;
+        html += `<button class="sub-tab ${active} score-${scoreClass}" data-substrate="${escapeHtml(substrate)}" data-entity="${escapeHtml(entityName)}">${swatch}${escapeHtml(substrate)}: ${score}%</button>`;
         renderedCount++;
     });
     html += '</nav><div id="entity-substrate-details"></div>';

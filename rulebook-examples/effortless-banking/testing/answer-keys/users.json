@@ -7,7 +7,10 @@
     "is_rm": true,
     "is_underwriter": false,
     "is_branch_banker": false,
-    "is_admin": false
+    "is_admin": false,
+    "count_of_portfolio_businesses": 5,
+    "count_of_originated_loans": 3,
+    "count_of_underwritten_loans": 0
   },
   {
     "name": "maya-chen",
@@ -17,17 +20,23 @@
     "is_rm": false,
     "is_underwriter": false,
     "is_branch_banker": true,
-    "is_admin": false
+    "is_admin": false,
+    "count_of_portfolio_businesses": 0,
+    "count_of_originated_loans": 0,
+    "count_of_underwritten_loans": 0
   },
   {
     "name": "priya-iyer",
     "full_name": "Priya Iyer",
-    "role": "Underwriter",
+    "role": "Admin",
     "email": "priya.iyer@firstvalley.bank",
     "is_rm": false,
-    "is_underwriter": true,
+    "is_underwriter": false,
     "is_branch_banker": false,
-    "is_admin": false
+    "is_admin": true,
+    "count_of_portfolio_businesses": 0,
+    "count_of_originated_loans": 0,
+    "count_of_underwritten_loans": 2
   },
   {
     "name": "renee-okafor",
@@ -37,7 +46,10 @@
     "is_rm": false,
     "is_underwriter": false,
     "is_branch_banker": false,
-    "is_admin": true
+    "is_admin": true,
+    "count_of_portfolio_businesses": 0,
+    "count_of_originated_loans": 0,
+    "count_of_underwritten_loans": 0
   },
   {
     "name": "thomas-bell",
@@ -47,6 +59,9 @@
     "is_rm": false,
     "is_underwriter": true,
     "is_branch_banker": false,
-    "is_admin": false
+    "is_admin": false,
+    "count_of_portfolio_businesses": 0,
+    "count_of_originated_loans": 0,
+    "count_of_underwritten_loans": 1
   }
 ]

@@ -1,0 +1,98 @@
+[
+  {
+    "product_id": "cable-usb-c",
+    "name": "cable-usb-c",
+    "sku": "CABLE-USB-C",
+    "order_line_items": "alice-johnson-1010-line-4, bobby-1001-line-2, brian-lee-1018-line-2, caroline-1045-line-3",
+    "display_name": "USB-C Cable (2m)",
+    "description": "Two-meter braided USB-C to USB-C cable, 100W power delivery.",
+    "unit_price": "12",
+    "cost": "3.4",
+    "is_active": true,
+    "stock_quantity": 1240
+  },
+  {
+    "product_id": "case-leather",
+    "name": "case-leather",
+    "sku": "CASE-LEATHER",
+    "order_line_items": null,
+    "display_name": "Leather Case",
+    "description": "Hand-stitched full-grain leather carrying case.",
+    "unit_price": "65",
+    "cost": "22.5",
+    "is_active": false,
+    "stock_quantity": 0
+  },
+  {
+    "product_id": "gadget-100",
+    "name": "gadget-100",
+    "sku": "GADGET-100",
+    "order_line_items": "alice-johnson-1010-line-3, caroline-1045-line-2",
+    "display_name": "Pocket Gadget",
+    "description": "Compact gadget that fits in your pocket. Bestseller for two years running.",
+    "unit_price": "24.5",
+    "cost": "9.1",
+    "is_active": true,
+    "stock_quantity": 612
+  },
+  {
+    "product_id": "gadget-200",
+    "name": "gadget-200",
+    "sku": "GADGET-200",
+    "order_line_items": "bobby-1042-line-1, carla-smith-1024-line-2, carla-smith-1037-line-2",
+    "display_name": "Pro Gadget",
+    "description": "Professional-grade gadget with extended battery life.",
+    "unit_price": "89",
+    "cost": "32",
+    "is_active": true,
+    "stock_quantity": 75
+  },
+  {
+    "product_id": "hub-7port",
+    "name": "hub-7port",
+    "sku": "HUB-7PORT",
+    "order_line_items": "bobby-1042-line-2, brian-lee-1018-line-1",
+    "display_name": "7-Port USB Hub",
+    "description": "Powered 7-port USB-A hub with individual switches.",
+    "unit_price": "34.99",
+    "cost": "11.8",
+    "is_active": true,
+    "stock_quantity": 240
+  },
+  {
+    "product_id": "stand-alu",
+    "name": "stand-alu",
+    "sku": "STAND-ALU",
+    "order_line_items": "bobby-1001-line-3, carla-smith-1024-line-1, carla-smith-1037-line-1",
+    "display_name": "Aluminum Stand",
+    "description": "Adjustable aluminum stand for laptops and tablets.",
+    "unit_price": "45",
+    "cost": "18.75",
+    "is_active": true,
+    "stock_quantity": 92
+  },
+  {
+    "product_id": "widget-001",
+    "name": "widget-001",
+    "sku": "WIDGET-001",
+    "order_line_items": "alice-johnson-1010-line-1, bobby-1001-line-1",
+    "display_name": "Standard Widget",
+    "description": "Our flagship widget. Multipurpose, durable, and affordable.",
+    "unit_price": "19.99",
+    "cost": "7.5",
+    "is_active": true,
+    "stock_quantity": 425
+  },
+  {
+    "product_id": "widget-002",
+    "name": "widget-002",
+    "sku": "WIDGET-002",
+    "order_line_items": "alice-johnson-1010-line-2, caroline-1045-line-1",
+    "display_name": "Deluxe Widget",
+    "description": "Premium widget with reinforced housing and extended warranty.",
+    "unit_price": "39.99",
+    "cost": "14.2",
+    "is_active": true,
+    "stock_quantity": 180
+  }
+]

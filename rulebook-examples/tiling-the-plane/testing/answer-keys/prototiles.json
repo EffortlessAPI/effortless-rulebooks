@@ -1,0 +1,74 @@
+[
+  {
+    "prototile_id": "dodecagon",
+    "display_name": "Regular Dodecagon",
+    "sides": 12,
+    "edge_length": 1.0,
+    "name": "regular-dodecagon",
+    "interior_angle_deg": 150.0,
+    "vertex_angle_turns": 0.4166666666666667,
+    "is_regular": true,
+    "is_triangle": false,
+    "is_square": false
+  },
+  {
+    "prototile_id": "hexagon",
+    "display_name": "Regular Hexagon",
+    "sides": 6,
+    "edge_length": 1.0,
+    "name": "regular-hexagon",
+    "interior_angle_deg": 120.0,
+    "vertex_angle_turns": 0.3333333333333333,
+    "is_regular": true,
+    "is_triangle": false,
+    "is_square": false
+  },
+  {
+    "prototile_id": "octagon",
+    "display_name": "Regular Octagon",
+    "sides": 8,
+    "edge_length": 1.0,
+    "name": "regular-octagon",
+    "interior_angle_deg": 135.0,
+    "vertex_angle_turns": 0.375,
+    "is_regular": true,
+    "is_triangle": false,
+    "is_square": false
+  },
+  {
+    "prototile_id": "pentagon",
+    "display_name": "Regular Pentagon",
+    "sides": 5,
+    "edge_length": 1.0,
+    "name": "regular-pentagon",
+    "interior_angle_deg": 108.0,
+    "vertex_angle_turns": 0.3,
+    "is_regular": true,
+    "is_triangle": false,
+    "is_square": false
+  },
+  {
+    "prototile_id": "square",
+    "display_name": "Square",
+    "sides": 4,
+    "edge_length": 1.0,
+    "name": "square",
+    "interior_angle_deg": 90.0,
+    "vertex_angle_turns": 0.25,
+    "is_regular": true,
+    "is_triangle": false,
+    "is_square": true
+  },
+  {
+    "prototile_id": "triangle",
+    "display_name": "Equilateral Triangle",
+    "sides": 3,
+    "edge_length": 1.0,
+    "name": "equilateral-triangle",
+    "interior_angle_deg": 60.0,
+    "vertex_angle_turns": 0.16666666666666666,
+    "is_regular": true,
+    "is_triangle": true,
+    "is_square": false
+  }
+]

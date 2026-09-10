@@ -173,7 +173,7 @@ export function Corpus() {
       >
         <p className="muted">
           Builds are sequential on purpose: every <code>effortless build</code> goes through the
-          ssotme-proxy on <code>:4242</code>, and concurrent builds corrupt each other. The runner is
+          local transpiler host on <code>:4242</code>, and concurrent builds corrupt each other. The runner is
           detached — closing this tab does not stop it, and reopening this page reattaches to it.
         </p>
       </Panel>

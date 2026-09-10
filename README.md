@@ -89,6 +89,8 @@ Two other measurable receipts, on top of the conformance matrix above:
 
 The empirical claim above rests on a stronger theoretical one: the **Conceptual Model Completeness Conjecture (CMCC)** — that Schema, Data, Lookups, Aggregations, and Formulas (SDLAF), over a bitemporal ACID DAG, are sufficient to express any finitely-computable, design-time semantic, without sidecar code or a bespoke grammar. It's falsifiable by construction: produce one sentence describing such a semantic that doesn't decompose into SDLAF, and the conjecture has a counterexample. None has survived attempt so far.
 
+Most of what SDLAF does on its own — joins, rollups, calculated fields — is expressivity plain SQL has had for 25+ years, and shouldn't impress anyone by itself: SDLAF without recursion is exactly **FO(Aggr)**, first-order logic with aggregation, the same class as SQL without `WITH RECURSIVE`. The sharper, checkable claim is the boundary of that class: **transitive closure is provably not expressible in FO(Aggr)** (Immerman, "Languages that Capture Complexity Classes," SIAM J. Comput., 1987). That's why closure is never a calculated field anywhere in this repo — [rulebook-examples/talismans-special-solutions](rulebook-examples/talismans-special-solutions/) is the worked demonstration: its `precedesStep`/`delegatesTo` closures are handed to a distinct, substrate-native mechanism per target (`WITH RECURSIVE` in Postgres, `owl:TransitiveProperty` in OWL, an explicit graph traversal in Python), proven to agree by the conformance harness rather than assumed.
+
 - [Executive summary](https://medium.com/effortlessapi/executive-summary-the-conceptual-model-completeness-conjecture-cmcc-5490fadaa73e)
 - [CMCC vs. traditional Model-Driven Engineering](https://medium.com/@eejai42/why-the-conceptual-model-completeness-conjecture-cmcc-transcends-traditional-model-driven-241ba020031a) — MDE's thirty-year track record of underdelivering is the correct prior to bring here; this is the argument for why CMCC's substrate-equivalence claim is checked empirically (the conformance harness above) rather than merely asserted
 - [As a universal computational framework (Zenodo)](https://zenodo.org/records/15252466)
@@ -127,7 +129,7 @@ Every governed project — the root included — fills the same slots:
 effortless-rulebooks/                    ← the platform IS the repo; itself a project
 ├── effortless.json
 ├── effortless-rulebook/effortless-rulebook.json   ← the ONE governing rulebook
-├── orchestration/  ssotme-proxy/  execution-substrates/  testing/   ← the compiler, the bus, the substrates, the harness
+├── orchestration/  effortless-tools/  execution-substrates/  testing/  ← the compiler, the bus, the substrates, the harness
 ├── app/                                 ← the React explorer (./start.sh --portal)
 ├── rulespeak/  postgres/  progress-report/  docs/  ← this project's outputs
 ├── rulebook-examples/<slug>/            ← fully implemented showcase projects
@@ -178,13 +180,27 @@ The `effortless-*` Claude skill suite is modeled in the root rulebook (`ClaudeSk
 
 ---
 
-## Local transpiler bus (`localhost:4242`)
+## Local transpiler bus (`127.0.0.1:4242`)
 
-> **All 13 local transpilers live on `localhost:4242`.** Start the bus with
-> `./start.sh` from `ssotme-proxy/` at the repo root. The ssotme-proxy then
-> exposes every repo-local transpiler — `postgres-calculated-to-rulebook`,
-> `rulebook-to-python`, `rulebook-to-golang`, `rulebook-to-cobol`,
-> `rulebook-to-owl`, and more — as first-class `ssotme://` routes any
-> `effortless build` can call.
+> **All 11 local transpilers are hosted by the effortless CLI itself.** Start
+> the bus with `effortless serve -port 4242` from the repo root; it serves every
+> tool under `effortless-tools/<name>/` — `oss-postgres-calculated-to-rulebook`,
+> `oss-rulebook-to-python`, `oss-rulebook-to-golang`, `oss-rulebook-to-cobol`,
+> `oss-rulebook-to-owl`, and more — as a first-class route any `effortless
+> build` can call. `GET /` lists them.
+>
+> **Address it as `127.0.0.1`, never `localhost`.** The host binds the literal
+> prefix `http://127.0.0.1:<port>/`, so a request carrying a `localhost` Host
+> header gets a bare 404 with no explanation.
+>
+> **Every repo-local route carries the `oss-` prefix.** The bare names
+> (`rulebook-to-python`, `rulebook-to-xlsx`, `rulebook-to-owl`,
+> `rulebook-to-airtable`, `airtable-to-rulebook`) belong to the commercial
+> catalog as `effortless/effortless/<tool>`; the prefix is the only thing
+> keeping a repo-local route from shadowing one.
+> `orchestration/local_tool_shim.py` refuses to run if any tool is missing it.
 
-This is the current launch path. The effortless CLI is absorbing the bus (`effortless serve`, refactor Step 12); until then `ssotme-proxy/` at the repo root is the live bus.
+The CLI absorbed the bus in September 2026 (refactor Step 12). The hand-rolled
+`ssotme-proxy/` it replaced is deleted: each injector is now a `script` tool
+under `effortless-tools/`, and the CLI hands it the rulebook directly instead of
+the proxy having to identify the calling project from the build process.

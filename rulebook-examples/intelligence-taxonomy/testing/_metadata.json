@@ -1,0 +1,31 @@
+{
+  "capabilities": {
+    "primary_key": "capabilities_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 4
+  },
+  "intelligences": {
+    "primary_key": "intelligences_id",
+    "computed_columns": [
+      "name",
+      "assessment_count",
+      "total_weighted_score",
+      "taxonomy_class"
+    ],
+    "record_count": 4
+  },
+  "assessments": {
+    "primary_key": "assessments_id",
+    "computed_columns": [
+      "name",
+      "intelligence_name",
+      "capability_name",
+      "capability_tier",
+      "capability_weight",
+      "weighted_score"
+    ],
+    "record_count": 16
+  }
+}

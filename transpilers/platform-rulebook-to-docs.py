@@ -563,7 +563,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--clean", action="store_true", help="Remove all files under output dir before writing.")
     args = parser.parse_args(argv)
 
-    # Allow env-var overrides from ssotme-proxy if this script is ever invoked
+    # Allow env-var overrides from the local-tool shim if this script is ever invoked
     # via the proxy, but never silently fall back to wrong paths. Both env vars
     # have to point at real, expected locations.
     env_input = sys.modules["os"].environ.get("ERB_RULEBOOK_PATH") if "os" in sys.modules else None

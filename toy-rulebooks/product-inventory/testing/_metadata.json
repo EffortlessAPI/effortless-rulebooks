@@ -1,0 +1,30 @@
+{
+  "transaction_types": {
+    "primary_key": "transaction_type_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 3
+  },
+  "products": {
+    "primary_key": "product_id",
+    "computed_columns": [
+      "name",
+      "current_quantity",
+      "is_low_stock",
+      "reorder_status"
+    ],
+    "record_count": 4
+  },
+  "transactions": {
+    "primary_key": "transaction_id",
+    "computed_columns": [
+      "name",
+      "product_name",
+      "product_unit_price",
+      "transaction_type_name",
+      "amount"
+    ],
+    "record_count": 10
+  }
+}

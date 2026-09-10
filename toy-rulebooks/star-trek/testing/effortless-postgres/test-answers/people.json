@@ -1,0 +1,34 @@
+[
+  {
+    "person_id": "person-gene-roddenberry",
+    "name": "Gene Roddenberry",
+    "birth_year": 1921,
+    "nationality": "American",
+    "bio": "Creator and producer of Star Trek",
+    "crew_assignments": ""
+  },
+  {
+    "person_id": "person-leonard-nimoy",
+    "name": "Leonard Nimoy",
+    "birth_year": 1931,
+    "nationality": "American",
+    "bio": "Actor famous for playing Spock",
+    "crew_assignments": ""
+  },
+  {
+    "person_id": "person-patrick-stewart",
+    "name": "Patrick Stewart",
+    "birth_year": 1940,
+    "nationality": "British",
+    "bio": "Actor famous for playing Captain Jean-Luc Picard",
+    "crew_assignments": ""
+  },
+  {
+    "person_id": "person-william-shatner",
+    "name": "William Shatner",
+    "birth_year": 1931,
+    "nationality": "Canadian",
+    "bio": "Actor famous for playing Captain James T. Kirk",
+    "crew_assignments": ""
+  }
+]

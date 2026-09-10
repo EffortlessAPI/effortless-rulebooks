@@ -310,7 +310,7 @@ print(' '.join(get_active_project_substrates()))
 }
 
 # =============================================================================
-# PROJECT-SCOPED TRANSPILER HELPERS (ssotme-proxy)
+# PROJECT-SCOPED TRANSPILER HELPERS (CLI local tool host)
 # =============================================================================
 
 # Returns the effortless.json path for the active domain (empty if none)
@@ -500,12 +500,15 @@ if rel and "/" not in rel and not rel.startswith("effortless-rulebook"):
 PYEOF
 }
 
-# Check if ssotme-proxy is running on localhost:4242
+# Check if the CLI's local transpiler host is running on 127.0.0.1:4242.
+# GET / returns the JSON tool listing. The host binds the literal HttpListener
+# prefix http://127.0.0.1:<port>/, so a "localhost" Host header 404s -- always
+# address it as 127.0.0.1.
 proxy_is_running() {
     python3 -c "
 import urllib.request
 try:
-    urllib.request.urlopen('http://localhost:4242/ping', timeout=2)
+    urllib.request.urlopen('http://127.0.0.1:4242/', timeout=2)
     print('true')
 except:
     print('false')
@@ -536,9 +539,9 @@ show_menu() {
     if [ -n "$PROJECT_TRANSPILERS" ]; then
         proxy_is_running && PROXY_RUNNING=true
         if $PROXY_RUNNING; then
-            echo -e "  Proxy:    ${DIM}localhost:4242${NC} ${GREEN}● live${NC}"
+            echo -e "  Tools:    ${DIM}127.0.0.1:4242${NC} ${GREEN}● live${NC}"
         else
-            echo -e "  Proxy:    ${DIM}localhost:4242${NC} ${RED}● offline${NC}"
+            echo -e "  Tools:    ${DIM}127.0.0.1:4242${NC} ${RED}● offline${NC}"
         fi
     fi
 
@@ -585,8 +588,8 @@ show_menu() {
         if $PROXY_RUNNING; then
             echo -e "  ${GREEN}[B]${NC} ${BOLD}BUILD${NC} — regenerate AND test all ${WHITE}${PROJECT_NAME}${NC} substrates ${DIM}(default; opens report)${NC}"
         else
-            echo -e "  ${RED}[B]${NC} ${BOLD}BUILD${NC} — ${RED}proxy offline${NC} — start it first:"
-            echo -e "      ${DIM}ssotme-proxy/start.sh${NC}"
+            echo -e "  ${RED}[B]${NC} ${BOLD}BUILD${NC} — ${RED}tool host offline${NC} — start it first:"
+            echo -e "      ${DIM}effortless serve -port 4242${NC}"
         fi
     fi
 
@@ -1995,18 +1998,20 @@ if $CI_MODE; then
     exit $EXIT_CODE
 fi
 
-# Start ssotme-proxy before entering the interactive menu if it's not running
+# Start the CLI's local transpiler host before entering the interactive menu.
+# `effortless serve` hosts every tool under the repo root's effortless-tools/
+# and records its port/pid in .effortless/serve.json.
 PROJECT_TRANSPILERS=$(get_project_transpilers)
 if [ -n "$PROJECT_TRANSPILERS" ]; then
     if ! proxy_is_running; then
-        echo -e "${CYAN}Starting ssotme-proxy on localhost:4242...${NC}"
-        bash "$PROJECT_ROOT/ssotme-proxy/start.sh" > /dev/null 2>&1 &
+        echo -e "${CYAN}Starting the local transpiler host on 127.0.0.1:4242...${NC}"
+        (cd "$PROJECT_ROOT" && effortless serve -port 4242 > /dev/null 2>&1 &)
         sleep 2
         if proxy_is_running; then
-            echo -e "${GREEN}✓ ssotme-proxy started${NC}"
+            echo -e "${GREEN}✓ local transpiler host started${NC}"
         else
-            echo -e "${YELLOW}⚠ ssotme-proxy failed to start. You can start it manually with:${NC}"
-            echo -e "  ${DIM}bash $PROJECT_ROOT/ssotme-proxy/start.sh &${NC}"
+            echo -e "${YELLOW}⚠ local transpiler host failed to start. You can start it manually with:${NC}"
+            echo -e "  ${DIM}(cd $PROJECT_ROOT && effortless serve -port 4242 &)${NC}"
         fi
         sleep 1
     fi
@@ -2048,8 +2053,8 @@ while true; do
                     echo ""
                     run_substrates ""
                 else
-                    echo -e "${RED}ssotme-proxy is offline.${NC} Start it with:"
-                    echo -e "  ${WHITE}python3 $PROJECT_ROOT/ssotme-proxy/server.py &${NC}"
+                    echo -e "${RED}The local transpiler host is offline.${NC} Start it with:"
+                    echo -e "  ${WHITE}(cd $PROJECT_ROOT && effortless serve -port 4242 &)${NC}"
                     echo ""
                     read -p "Press Enter to continue..."
                 fi
@@ -2127,8 +2132,8 @@ while true; do
                             exit 1
                         fi
                     else
-                        echo -e "${RED}ssotme-proxy is offline.${NC} Start it with:"
-                        echo -e "  ${WHITE}python3 $PROJECT_ROOT/ssotme-proxy/server.py &${NC}"
+                        echo -e "${RED}The local transpiler host is offline.${NC} Start it with:"
+                        echo -e "  ${WHITE}(cd $PROJECT_ROOT && effortless serve -port 4242 &)${NC}"
                     fi
                     echo ""
                     read -p "Press Enter to continue..."

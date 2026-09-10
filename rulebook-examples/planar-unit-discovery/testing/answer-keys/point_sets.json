@@ -1,0 +1,23 @@
+[
+  {
+    "point_set_id": "heptagon-with-center",
+    "display_name": "Heptagon With Center",
+    "description": "The \u03c3_1 projection of {0, 1, \u03b6_7, \u03b6_7^2, \u2026, \u03b6_7^6} from Z[\u03b6_7]'s Minkowski lattice: 7 unit-circle vertices plus the origin. Produces 7 spoke unit-distance pairs (center\u2194vertex); no vertex-vertex pairs are unit (closest chord is 2sin(\u03c0/7) \u2248 0.868). Demonstrates the Q(\u03b6_7) chain end-to-end but does NOT itself achieve density exponent > 1.",
+    "name": "heptagon-with-center",
+    "max_possible_edges": 0.0
+  },
+  {
+    "point_set_id": "unit-square",
+    "display_name": "Unit Square",
+    "description": "Four vertices of an axis-aligned unit square. Note: only 4 of 6 pairs are unit; the diagonals are sqrt(2).",
+    "name": "unit-square",
+    "max_possible_edges": 0.0
+  },
+  {
+    "point_set_id": "unit-triangle",
+    "display_name": "Unit Triangle",
+    "description": "Three vertices of an equilateral triangle with side 1.",
+    "name": "unit-triangle",
+    "max_possible_edges": 0.0
+  }
+]

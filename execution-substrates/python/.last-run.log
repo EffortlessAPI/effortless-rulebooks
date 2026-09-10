@@ -1,7 +1,5 @@
 === Python Substrate Test Run ===
 
-  -> agent_capability_concepts: 6 records
-  -> ai_agents: 2 records
 Traceback (most recent call last):
   File "/Users/eejai42/development/effortless-rulebooks/execution-substrates/python/take-test.py", line 137, in <module>
     main()
@@ -13,10 +11,7 @@ Traceback (most recent call last):
     count = process_entity(input_path, str(output_path), entity, rulebook, project_root)
   File "/Users/eejai42/development/effortless-rulebooks/execution-substrates/python/take-test.py", line 48, in process_entity
     computed = compute_all_calculated_fields(record, entity_name)
-  File "/Users/eejai42/development/effortless-rulebooks/execution-substrates/python/python_only_erb_simulator.py", line 1632, in compute_all_calculated_fields
-    return compute_approval_gates_fields(record)
-  File "/Users/eejai42/development/effortless-rulebooks/execution-substrates/python/python_only_erb_simulator.py", line 436, in compute_approval_gates_fields
-    result['has_human_approver'] = calc_approval_gates_has_human_approver(result.get('gate_approver_human'))
-                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-TypeError: calc_approval_gates_has_human_approver() takes 0 positional arguments but 1 was given
+  File "/Users/eejai42/development/effortless-rulebooks/execution-substrates/python/python_only_erb_simulator.py", line 1674, in compute_all_calculated_fields
+    raise KeyError(f"compute_all_calculated_fields called with unknown entity {entity_name!r}. "f"Known entities in this generated erb_calc.py: ['workflows', 'workflow_steps', 'approval_gates', 'step_precedence', 'roles', 'role_assignments', 'departments', 'human_agents', 'ai_agents', 'automated_pipelines', 'workflow_status_concepts', 'agent_capability_concepts', 'artifact_type_concepts', 'datasets', 'workflow_artifacts', 'governance_roles', 'change_log', 'vocabulary_reconciliations', 'scenarios', 'competency_questions', 'scenario_cq_effects', 'conformance_tests', '__meta__']. "f"Check that the rulebook used to generate this file matches the data being computed.")
+KeyError: "compute_all_calculated_fields called with unknown entity 'customers'. Known entities in this generated erb_calc.py: ['workflows', 'workflow_steps', 'approval_gates', 'step_precedence', 'roles', 'role_assignments', 'departments', 'human_agents', 'ai_agents', 'automated_pipelines', 'workflow_status_concepts', 'agent_capability_concepts', 'artifact_type_concepts', 'datasets', 'workflow_artifacts', 'governance_roles', 'change_log', 'vocabulary_reconciliations', 'scenarios', 'competency_questions', 'scenario_cq_effects', 'conformance_tests', '__meta__']. Check that the rulebook used to generate this file matches the data being computed."
 

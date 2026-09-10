@@ -10,6 +10,7 @@ effortless-ntwf:AIAgentsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_AIAgents_RelativePath" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -20,13 +21,14 @@ effortless-ntwf:AIAgentsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:AIAgents .
     OPTIONAL { $this effortless-ntwf:aIAgentId ?ai_agent_id . }
-                BIND(CONCAT("ai-agents/", IF(isIRI(?ai_agent_id), REPLACE(STR(?ai_agent_id), "^.*[#/]", ""), STR(?ai_agent_id))) AS ?_result)
+                BIND(CONCAT("ai-agents/", COALESCE(IF(isIRI(?ai_agent_id), REPLACE(STR(?ai_agent_id), "^.*[#/]", ""), IF(DATATYPE(?ai_agent_id) = xsd:dateTime, CONCAT(SUBSTR(STR(?ai_agent_id), 1, 10), " ", SUBSTR(STR(?ai_agent_id), 12, 8), IF(TZ(?ai_agent_id) = "Z", "+00", IF(STRENDS(TZ(?ai_agent_id), ":00"), SUBSTR(TZ(?ai_agent_id), 1, 3), TZ(?ai_agent_id)))), STR(?ai_agent_id))), "")) AS ?_result)
             }
         """ ;
     ] ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_AIAgents_Iri" ;
+        sh:order 1 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -44,6 +46,7 @@ effortless-ntwf:AIAgentsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_AIAgents_CountAttributedArtifacts" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -54,7 +57,7 @@ effortless-ntwf:AIAgentsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:AIAgents .
                 {
-                    SELECT (COUNT(?child) AS ?_result) WHERE {
+                    SELECT (COUNT(DISTINCT ?child) AS ?_result) WHERE {
                     ?child a effortless-ntwf:WorkflowArtifacts .
                     ?child effortless-ntwf:attributedToAIAgent $this .
                     }
@@ -65,6 +68,7 @@ effortless-ntwf:AIAgentsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_AIAgents_CountImpactedWorkflows" ;
+        sh:order 2 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -75,7 +79,7 @@ effortless-ntwf:AIAgentsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:AIAgents .
                 {
-                    SELECT (COUNT(?child) AS ?_result) WHERE {
+                    SELECT (COUNT(DISTINCT ?child) AS ?_result) WHERE {
                     ?child a effortless-ntwf:WorkflowArtifacts .
                     ?child effortless-ntwf:attributedToAIAgent $this .
                     OPTIONAL { ?child effortless-ntwf:hasProducingWorkflow ?c2 . }
@@ -92,6 +96,7 @@ effortless-ntwf:AgentCapabilityConceptsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_AgentCapabilityConcepts_RelativePath" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -102,13 +107,14 @@ effortless-ntwf:AgentCapabilityConceptsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:AgentCapabilityConcepts .
     OPTIONAL { $this effortless-ntwf:conceptId ?concept_id . }
-                BIND(CONCAT("concepts/agent-capability/", IF(isIRI(?concept_id), REPLACE(STR(?concept_id), "^.*[#/]", ""), STR(?concept_id))) AS ?_result)
+                BIND(CONCAT("concepts/agent-capability/", COALESCE(IF(isIRI(?concept_id), REPLACE(STR(?concept_id), "^.*[#/]", ""), IF(DATATYPE(?concept_id) = xsd:dateTime, CONCAT(SUBSTR(STR(?concept_id), 1, 10), " ", SUBSTR(STR(?concept_id), 12, 8), IF(TZ(?concept_id) = "Z", "+00", IF(STRENDS(TZ(?concept_id), ":00"), SUBSTR(TZ(?concept_id), 1, 3), TZ(?concept_id)))), STR(?concept_id))), "")) AS ?_result)
             }
         """ ;
     ] ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_AgentCapabilityConcepts_Iri" ;
+        sh:order 1 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -130,6 +136,7 @@ effortless-ntwf:ApprovalGatesShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_ApprovalGates_ParentPath" ;
+        sh:order 3 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -140,8 +147,7 @@ effortless-ntwf:ApprovalGatesShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:ApprovalGates .
                 OPTIONAL { $this effortless-ntwf:workflowStep ?j0 . }
-                OPTIONAL { ?j1 a effortless-ntwf:WorkflowSteps ; effortless-ntwf:workflowStepId ?j2 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) }
-                OPTIONAL { ?j1 effortless-ntwf:relativePath ?j3 . }
+                OPTIONAL { ?j1 a effortless-ntwf:WorkflowSteps ; effortless-ntwf:workflowStepId ?j2 ; effortless-ntwf:relativePath ?j3 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) }
                 BIND(?j3 AS ?_result)
             }
         """ ;
@@ -149,6 +155,7 @@ effortless-ntwf:ApprovalGatesShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_ApprovalGates_RelativePath" ;
+        sh:order 4 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -160,13 +167,14 @@ effortless-ntwf:ApprovalGatesShape a sh:NodeShape ;
     $this a effortless-ntwf:ApprovalGates .
     OPTIONAL { $this effortless-ntwf:approvalGateId ?approval_gate_id . }
     OPTIONAL { $this effortless-ntwf:parentPath ?parent_path . }
-                BIND(CONCAT(IF(isIRI(?parent_path), REPLACE(STR(?parent_path), "^.*[#/]", ""), STR(?parent_path)), "/approval-gates/", IF(isIRI(?approval_gate_id), REPLACE(STR(?approval_gate_id), "^.*[#/]", ""), STR(?approval_gate_id))) AS ?_result)
+                BIND(CONCAT(COALESCE(IF(isIRI(?parent_path), REPLACE(STR(?parent_path), "^.*[#/]", ""), IF(DATATYPE(?parent_path) = xsd:dateTime, CONCAT(SUBSTR(STR(?parent_path), 1, 10), " ", SUBSTR(STR(?parent_path), 12, 8), IF(TZ(?parent_path) = "Z", "+00", IF(STRENDS(TZ(?parent_path), ":00"), SUBSTR(TZ(?parent_path), 1, 3), TZ(?parent_path)))), STR(?parent_path))), ""), "/approval-gates/", COALESCE(IF(isIRI(?approval_gate_id), REPLACE(STR(?approval_gate_id), "^.*[#/]", ""), IF(DATATYPE(?approval_gate_id) = xsd:dateTime, CONCAT(SUBSTR(STR(?approval_gate_id), 1, 10), " ", SUBSTR(STR(?approval_gate_id), 12, 8), IF(TZ(?approval_gate_id) = "Z", "+00", IF(STRENDS(TZ(?approval_gate_id), ":00"), SUBSTR(TZ(?approval_gate_id), 1, 3), TZ(?approval_gate_id)))), STR(?approval_gate_id))), "")) AS ?_result)
             }
         """ ;
     ] ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_ApprovalGates_Iri" ;
+        sh:order 5 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -184,6 +192,7 @@ effortless-ntwf:ApprovalGatesShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_ApprovalGates_Name" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -201,6 +210,7 @@ effortless-ntwf:ApprovalGatesShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_ApprovalGates_GateRole" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -211,8 +221,7 @@ effortless-ntwf:ApprovalGatesShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:ApprovalGates .
                 OPTIONAL { $this effortless-ntwf:workflowStep ?j0 . }
-                OPTIONAL { ?j1 a effortless-ntwf:WorkflowSteps ; effortless-ntwf:workflowStepId ?j2 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) }
-                OPTIONAL { ?j1 effortless-ntwf:assignedRole ?j3 . }
+                OPTIONAL { ?j1 a effortless-ntwf:WorkflowSteps ; effortless-ntwf:workflowStepId ?j2 ; effortless-ntwf:assignedRole ?j3 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) }
                 BIND(?j3 AS ?_result)
             }
         """ ;
@@ -220,6 +229,7 @@ effortless-ntwf:ApprovalGatesShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_ApprovalGates_GateApproverHuman" ;
+        sh:order 1 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -230,8 +240,7 @@ effortless-ntwf:ApprovalGatesShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:ApprovalGates .
                 OPTIONAL { $this effortless-ntwf:gateRole ?j0 . }
-                OPTIONAL { ?j1 a effortless-ntwf:Roles ; effortless-ntwf:roleId ?j2 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) }
-                OPTIONAL { ?j1 effortless-ntwf:filledByHumanAgent ?j3 . }
+                OPTIONAL { ?j1 a effortless-ntwf:Roles ; effortless-ntwf:roleId ?j2 ; effortless-ntwf:filledByHumanAgent ?j3 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) }
                 BIND(?j3 AS ?_result)
             }
         """ ;
@@ -239,6 +248,7 @@ effortless-ntwf:ApprovalGatesShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_ApprovalGates_HasHumanApprover" ;
+        sh:order 2 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -260,6 +270,7 @@ effortless-ntwf:ArtifactTypeConceptsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_ArtifactTypeConcepts_RelativePath" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -270,13 +281,14 @@ effortless-ntwf:ArtifactTypeConceptsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:ArtifactTypeConcepts .
     OPTIONAL { $this effortless-ntwf:conceptId ?concept_id . }
-                BIND(CONCAT("concepts/artifact-type/", IF(isIRI(?concept_id), REPLACE(STR(?concept_id), "^.*[#/]", ""), STR(?concept_id))) AS ?_result)
+                BIND(CONCAT("concepts/artifact-type/", COALESCE(IF(isIRI(?concept_id), REPLACE(STR(?concept_id), "^.*[#/]", ""), IF(DATATYPE(?concept_id) = xsd:dateTime, CONCAT(SUBSTR(STR(?concept_id), 1, 10), " ", SUBSTR(STR(?concept_id), 12, 8), IF(TZ(?concept_id) = "Z", "+00", IF(STRENDS(TZ(?concept_id), ":00"), SUBSTR(TZ(?concept_id), 1, 3), TZ(?concept_id)))), STR(?concept_id))), "")) AS ?_result)
             }
         """ ;
     ] ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_ArtifactTypeConcepts_Iri" ;
+        sh:order 1 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -298,6 +310,7 @@ effortless-ntwf:AutomatedPipelinesShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_AutomatedPipelines_RelativePath" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -308,13 +321,14 @@ effortless-ntwf:AutomatedPipelinesShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:AutomatedPipelines .
     OPTIONAL { $this effortless-ntwf:automatedPipelineId ?automated_pipeline_id . }
-                BIND(CONCAT("automated-pipelines/", IF(isIRI(?automated_pipeline_id), REPLACE(STR(?automated_pipeline_id), "^.*[#/]", ""), STR(?automated_pipeline_id))) AS ?_result)
+                BIND(CONCAT("automated-pipelines/", COALESCE(IF(isIRI(?automated_pipeline_id), REPLACE(STR(?automated_pipeline_id), "^.*[#/]", ""), IF(DATATYPE(?automated_pipeline_id) = xsd:dateTime, CONCAT(SUBSTR(STR(?automated_pipeline_id), 1, 10), " ", SUBSTR(STR(?automated_pipeline_id), 12, 8), IF(TZ(?automated_pipeline_id) = "Z", "+00", IF(STRENDS(TZ(?automated_pipeline_id), ":00"), SUBSTR(TZ(?automated_pipeline_id), 1, 3), TZ(?automated_pipeline_id)))), STR(?automated_pipeline_id))), "")) AS ?_result)
             }
         """ ;
     ] ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_AutomatedPipelines_Iri" ;
+        sh:order 1 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -336,6 +350,7 @@ effortless-ntwf:ChangeLogShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_ChangeLog_RelativePath" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -346,13 +361,14 @@ effortless-ntwf:ChangeLogShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:ChangeLog .
     OPTIONAL { $this effortless-ntwf:changeLogId ?change_log_id . }
-                BIND(CONCAT("change-log/", IF(isIRI(?change_log_id), REPLACE(STR(?change_log_id), "^.*[#/]", ""), STR(?change_log_id))) AS ?_result)
+                BIND(CONCAT("change-log/", COALESCE(IF(isIRI(?change_log_id), REPLACE(STR(?change_log_id), "^.*[#/]", ""), IF(DATATYPE(?change_log_id) = xsd:dateTime, CONCAT(SUBSTR(STR(?change_log_id), 1, 10), " ", SUBSTR(STR(?change_log_id), 12, 8), IF(TZ(?change_log_id) = "Z", "+00", IF(STRENDS(TZ(?change_log_id), ":00"), SUBSTR(TZ(?change_log_id), 1, 3), TZ(?change_log_id)))), STR(?change_log_id))), "")) AS ?_result)
             }
         """ ;
     ] ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_ChangeLog_Iri" ;
+        sh:order 1 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -370,6 +386,7 @@ effortless-ntwf:ChangeLogShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_ChangeLog_Name" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -381,13 +398,14 @@ effortless-ntwf:ChangeLogShape a sh:NodeShape ;
     $this a effortless-ntwf:ChangeLog .
     OPTIONAL { $this effortless-ntwf:changeDate ?change_date . }
     OPTIONAL { $this effortless-ntwf:version ?version . }
-                BIND(CONCAT(IF(isIRI(?version), REPLACE(STR(?version), "^.*[#/]", ""), STR(?version)), " (", IF(isIRI(?change_date), REPLACE(STR(?change_date), "^.*[#/]", ""), STR(?change_date)), ")") AS ?_result)
+                BIND(CONCAT(COALESCE(IF(isIRI(?version), REPLACE(STR(?version), "^.*[#/]", ""), IF(DATATYPE(?version) = xsd:dateTime, CONCAT(SUBSTR(STR(?version), 1, 10), " ", SUBSTR(STR(?version), 12, 8), IF(TZ(?version) = "Z", "+00", IF(STRENDS(TZ(?version), ":00"), SUBSTR(TZ(?version), 1, 3), TZ(?version)))), STR(?version))), ""), " (", COALESCE(IF(isIRI(?change_date), REPLACE(STR(?change_date), "^.*[#/]", ""), IF(DATATYPE(?change_date) = xsd:dateTime, CONCAT(SUBSTR(STR(?change_date), 1, 10), " ", SUBSTR(STR(?change_date), 12, 8), IF(TZ(?change_date) = "Z", "+00", IF(STRENDS(TZ(?change_date), ":00"), SUBSTR(TZ(?change_date), 1, 3), TZ(?change_date)))), STR(?change_date))), ""), ")") AS ?_result)
             }
         """ ;
     ] ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_ChangeLog_IsBreakingChange" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -405,6 +423,7 @@ effortless-ntwf:ChangeLogShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_ChangeLog_IsBackwardCompatible" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -426,6 +445,7 @@ effortless-ntwf:CompetencyQuestionsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_CompetencyQuestions_RelativePath" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -436,13 +456,14 @@ effortless-ntwf:CompetencyQuestionsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:CompetencyQuestions .
     OPTIONAL { $this effortless-ntwf:competencyQuestionId ?competency_question_id . }
-                BIND(CONCAT("competency-questions/", IF(isIRI(?competency_question_id), REPLACE(STR(?competency_question_id), "^.*[#/]", ""), STR(?competency_question_id))) AS ?_result)
+                BIND(CONCAT("competency-questions/", COALESCE(IF(isIRI(?competency_question_id), REPLACE(STR(?competency_question_id), "^.*[#/]", ""), IF(DATATYPE(?competency_question_id) = xsd:dateTime, CONCAT(SUBSTR(STR(?competency_question_id), 1, 10), " ", SUBSTR(STR(?competency_question_id), 12, 8), IF(TZ(?competency_question_id) = "Z", "+00", IF(STRENDS(TZ(?competency_question_id), ":00"), SUBSTR(TZ(?competency_question_id), 1, 3), TZ(?competency_question_id)))), STR(?competency_question_id))), "")) AS ?_result)
             }
         """ ;
     ] ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_CompetencyQuestions_Iri" ;
+        sh:order 1 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -460,6 +481,7 @@ effortless-ntwf:CompetencyQuestionsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_CompetencyQuestions_Name" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -481,6 +503,7 @@ effortless-ntwf:ConformanceTestsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_ConformanceTests_RelativePath" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -491,13 +514,14 @@ effortless-ntwf:ConformanceTestsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:ConformanceTests .
     OPTIONAL { $this effortless-ntwf:conformanceTestId ?conformance_test_id . }
-                BIND(CONCAT("conformance-tests/", IF(isIRI(?conformance_test_id), REPLACE(STR(?conformance_test_id), "^.*[#/]", ""), STR(?conformance_test_id))) AS ?_result)
+                BIND(CONCAT("conformance-tests/", COALESCE(IF(isIRI(?conformance_test_id), REPLACE(STR(?conformance_test_id), "^.*[#/]", ""), IF(DATATYPE(?conformance_test_id) = xsd:dateTime, CONCAT(SUBSTR(STR(?conformance_test_id), 1, 10), " ", SUBSTR(STR(?conformance_test_id), 12, 8), IF(TZ(?conformance_test_id) = "Z", "+00", IF(STRENDS(TZ(?conformance_test_id), ":00"), SUBSTR(TZ(?conformance_test_id), 1, 3), TZ(?conformance_test_id)))), STR(?conformance_test_id))), "")) AS ?_result)
             }
         """ ;
     ] ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_ConformanceTests_Iri" ;
+        sh:order 1 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -515,6 +539,7 @@ effortless-ntwf:ConformanceTestsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_ConformanceTests_Name" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -536,6 +561,7 @@ effortless-ntwf:DatasetsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Datasets_RelativePath" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -546,13 +572,14 @@ effortless-ntwf:DatasetsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:Datasets .
     OPTIONAL { $this effortless-ntwf:datasetId ?dataset_id . }
-                BIND(CONCAT("datasets/", IF(isIRI(?dataset_id), REPLACE(STR(?dataset_id), "^.*[#/]", ""), STR(?dataset_id))) AS ?_result)
+                BIND(CONCAT("datasets/", COALESCE(IF(isIRI(?dataset_id), REPLACE(STR(?dataset_id), "^.*[#/]", ""), IF(DATATYPE(?dataset_id) = xsd:dateTime, CONCAT(SUBSTR(STR(?dataset_id), 1, 10), " ", SUBSTR(STR(?dataset_id), 12, 8), IF(TZ(?dataset_id) = "Z", "+00", IF(STRENDS(TZ(?dataset_id), ":00"), SUBSTR(TZ(?dataset_id), 1, 3), TZ(?dataset_id)))), STR(?dataset_id))), "")) AS ?_result)
             }
         """ ;
     ] ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Datasets_Iri" ;
+        sh:order 1 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -570,6 +597,7 @@ effortless-ntwf:DatasetsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Datasets_IsConsumed" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -591,6 +619,7 @@ effortless-ntwf:DepartmentsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Departments_RelativePath" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -601,13 +630,14 @@ effortless-ntwf:DepartmentsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:Departments .
     OPTIONAL { $this effortless-ntwf:departmentId ?department_id . }
-                BIND(CONCAT("departments/", IF(isIRI(?department_id), REPLACE(STR(?department_id), "^.*[#/]", ""), STR(?department_id))) AS ?_result)
+                BIND(CONCAT("departments/", COALESCE(IF(isIRI(?department_id), REPLACE(STR(?department_id), "^.*[#/]", ""), IF(DATATYPE(?department_id) = xsd:dateTime, CONCAT(SUBSTR(STR(?department_id), 1, 10), " ", SUBSTR(STR(?department_id), 12, 8), IF(TZ(?department_id) = "Z", "+00", IF(STRENDS(TZ(?department_id), ":00"), SUBSTR(TZ(?department_id), 1, 3), TZ(?department_id)))), STR(?department_id))), "")) AS ?_result)
             }
         """ ;
     ] ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Departments_Iri" ;
+        sh:order 1 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -625,6 +655,7 @@ effortless-ntwf:DepartmentsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Departments_Name" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -646,6 +677,7 @@ effortless-ntwf:GovernanceRolesShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_GovernanceRoles_RelativePath" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -656,13 +688,14 @@ effortless-ntwf:GovernanceRolesShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:GovernanceRoles .
     OPTIONAL { $this effortless-ntwf:governanceRoleId ?governance_role_id . }
-                BIND(CONCAT("governance-roles/", IF(isIRI(?governance_role_id), REPLACE(STR(?governance_role_id), "^.*[#/]", ""), STR(?governance_role_id))) AS ?_result)
+                BIND(CONCAT("governance-roles/", COALESCE(IF(isIRI(?governance_role_id), REPLACE(STR(?governance_role_id), "^.*[#/]", ""), IF(DATATYPE(?governance_role_id) = xsd:dateTime, CONCAT(SUBSTR(STR(?governance_role_id), 1, 10), " ", SUBSTR(STR(?governance_role_id), 12, 8), IF(TZ(?governance_role_id) = "Z", "+00", IF(STRENDS(TZ(?governance_role_id), ":00"), SUBSTR(TZ(?governance_role_id), 1, 3), TZ(?governance_role_id)))), STR(?governance_role_id))), "")) AS ?_result)
             }
         """ ;
     ] ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_GovernanceRoles_Iri" ;
+        sh:order 1 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -680,6 +713,7 @@ effortless-ntwf:GovernanceRolesShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_GovernanceRoles_Name" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -697,6 +731,7 @@ effortless-ntwf:GovernanceRolesShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_GovernanceRoles_CanApproveChanges" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -718,6 +753,7 @@ effortless-ntwf:HumanAgentsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_HumanAgents_RelativePath" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -728,13 +764,14 @@ effortless-ntwf:HumanAgentsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:HumanAgents .
     OPTIONAL { $this effortless-ntwf:humanAgentId ?human_agent_id . }
-                BIND(CONCAT("human-agents/", IF(isIRI(?human_agent_id), REPLACE(STR(?human_agent_id), "^.*[#/]", ""), STR(?human_agent_id))) AS ?_result)
+                BIND(CONCAT("human-agents/", COALESCE(IF(isIRI(?human_agent_id), REPLACE(STR(?human_agent_id), "^.*[#/]", ""), IF(DATATYPE(?human_agent_id) = xsd:dateTime, CONCAT(SUBSTR(STR(?human_agent_id), 1, 10), " ", SUBSTR(STR(?human_agent_id), 12, 8), IF(TZ(?human_agent_id) = "Z", "+00", IF(STRENDS(TZ(?human_agent_id), ":00"), SUBSTR(TZ(?human_agent_id), 1, 3), TZ(?human_agent_id)))), STR(?human_agent_id))), "")) AS ?_result)
             }
         """ ;
     ] ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_HumanAgents_Iri" ;
+        sh:order 1 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -756,6 +793,7 @@ effortless-ntwf:RoleAssignmentsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_RoleAssignments_ParentPath" ;
+        sh:order 1 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -766,8 +804,7 @@ effortless-ntwf:RoleAssignmentsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:RoleAssignments .
                 OPTIONAL { $this effortless-ntwf:role ?j0 . }
-                OPTIONAL { ?j1 a effortless-ntwf:Roles ; effortless-ntwf:roleId ?j2 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) }
-                OPTIONAL { ?j1 effortless-ntwf:relativePath ?j3 . }
+                OPTIONAL { ?j1 a effortless-ntwf:Roles ; effortless-ntwf:roleId ?j2 ; effortless-ntwf:relativePath ?j3 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) }
                 BIND(?j3 AS ?_result)
             }
         """ ;
@@ -775,6 +812,7 @@ effortless-ntwf:RoleAssignmentsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_RoleAssignments_RelativePath" ;
+        sh:order 2 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -786,13 +824,14 @@ effortless-ntwf:RoleAssignmentsShape a sh:NodeShape ;
     $this a effortless-ntwf:RoleAssignments .
     OPTIONAL { $this effortless-ntwf:parentPath ?parent_path . }
     OPTIONAL { $this effortless-ntwf:roleAssignmentId ?role_assignment_id . }
-                BIND(CONCAT(IF(isIRI(?parent_path), REPLACE(STR(?parent_path), "^.*[#/]", ""), STR(?parent_path)), "/assignments/", IF(isIRI(?role_assignment_id), REPLACE(STR(?role_assignment_id), "^.*[#/]", ""), STR(?role_assignment_id))) AS ?_result)
+                BIND(CONCAT(COALESCE(IF(isIRI(?parent_path), REPLACE(STR(?parent_path), "^.*[#/]", ""), IF(DATATYPE(?parent_path) = xsd:dateTime, CONCAT(SUBSTR(STR(?parent_path), 1, 10), " ", SUBSTR(STR(?parent_path), 12, 8), IF(TZ(?parent_path) = "Z", "+00", IF(STRENDS(TZ(?parent_path), ":00"), SUBSTR(TZ(?parent_path), 1, 3), TZ(?parent_path)))), STR(?parent_path))), ""), "/assignments/", COALESCE(IF(isIRI(?role_assignment_id), REPLACE(STR(?role_assignment_id), "^.*[#/]", ""), IF(DATATYPE(?role_assignment_id) = xsd:dateTime, CONCAT(SUBSTR(STR(?role_assignment_id), 1, 10), " ", SUBSTR(STR(?role_assignment_id), 12, 8), IF(TZ(?role_assignment_id) = "Z", "+00", IF(STRENDS(TZ(?role_assignment_id), ":00"), SUBSTR(TZ(?role_assignment_id), 1, 3), TZ(?role_assignment_id)))), STR(?role_assignment_id))), "")) AS ?_result)
             }
         """ ;
     ] ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_RoleAssignments_Iri" ;
+        sh:order 3 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -810,6 +849,7 @@ effortless-ntwf:RoleAssignmentsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_RoleAssignments_Name" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -822,13 +862,14 @@ effortless-ntwf:RoleAssignmentsShape a sh:NodeShape ;
     OPTIONAL { $this effortless-ntwf:role ?role . }
     OPTIONAL { $this effortless-ntwf:validFrom ?valid_from . }
     OPTIONAL { $this effortless-ntwf:validTo ?valid_to . }
-                BIND(CONCAT(IF(isIRI(?role), REPLACE(STR(?role), "^.*[#/]", ""), STR(?role)), " [", IF(isIRI(?valid_from), REPLACE(STR(?valid_from), "^.*[#/]", ""), STR(?valid_from)), " -> ", IF(isIRI(IF((!BOUND(?valid_to) || STR(?valid_to) = ""), "open", ?valid_to)), REPLACE(STR(IF((!BOUND(?valid_to) || STR(?valid_to) = ""), "open", ?valid_to)), "^.*[#/]", ""), STR(IF((!BOUND(?valid_to) || STR(?valid_to) = ""), "open", ?valid_to))), "]") AS ?_result)
+                BIND(CONCAT(COALESCE(IF(isIRI(?role), REPLACE(STR(?role), "^.*[#/]", ""), IF(DATATYPE(?role) = xsd:dateTime, CONCAT(SUBSTR(STR(?role), 1, 10), " ", SUBSTR(STR(?role), 12, 8), IF(TZ(?role) = "Z", "+00", IF(STRENDS(TZ(?role), ":00"), SUBSTR(TZ(?role), 1, 3), TZ(?role)))), STR(?role))), ""), " [", COALESCE(IF(isIRI(?valid_from), REPLACE(STR(?valid_from), "^.*[#/]", ""), IF(DATATYPE(?valid_from) = xsd:dateTime, CONCAT(SUBSTR(STR(?valid_from), 1, 10), " ", SUBSTR(STR(?valid_from), 12, 8), IF(TZ(?valid_from) = "Z", "+00", IF(STRENDS(TZ(?valid_from), ":00"), SUBSTR(TZ(?valid_from), 1, 3), TZ(?valid_from)))), STR(?valid_from))), ""), " -> ", COALESCE(IF(isIRI(IF(COALESCE((!BOUND(?valid_to) || STR(?valid_to) = ""), false), "open", ?valid_to)), REPLACE(STR(IF(COALESCE((!BOUND(?valid_to) || STR(?valid_to) = ""), false), "open", ?valid_to)), "^.*[#/]", ""), IF(DATATYPE(IF(COALESCE((!BOUND(?valid_to) || STR(?valid_to) = ""), false), "open", ?valid_to)) = xsd:dateTime, CONCAT(SUBSTR(STR(IF(COALESCE((!BOUND(?valid_to) || STR(?valid_to) = ""), false), "open", ?valid_to)), 1, 10), " ", SUBSTR(STR(IF(COALESCE((!BOUND(?valid_to) || STR(?valid_to) = ""), false), "open", ?valid_to)), 12, 8), IF(TZ(IF(COALESCE((!BOUND(?valid_to) || STR(?valid_to) = ""), false), "open", ?valid_to)) = "Z", "+00", IF(STRENDS(TZ(IF(COALESCE((!BOUND(?valid_to) || STR(?valid_to) = ""), false), "open", ?valid_to)), ":00"), SUBSTR(TZ(IF(COALESCE((!BOUND(?valid_to) || STR(?valid_to) = ""), false), "open", ?valid_to)), 1, 3), TZ(IF(COALESCE((!BOUND(?valid_to) || STR(?valid_to) = ""), false), "open", ?valid_to))))), STR(IF(COALESCE((!BOUND(?valid_to) || STR(?valid_to) = ""), false), "open", ?valid_to)))), ""), "]") AS ?_result)
             }
         """ ;
     ] ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_RoleAssignments_FillerType" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -841,13 +882,14 @@ effortless-ntwf:RoleAssignmentsShape a sh:NodeShape ;
     OPTIONAL { $this effortless-ntwf:filledByAIAgent ?filled_by_ai_agent . }
     OPTIONAL { $this effortless-ntwf:filledByAutomatedPipeline ?filled_by_automated_pipeline . }
     OPTIONAL { $this effortless-ntwf:filledByHumanAgent ?filled_by_human_agent . }
-                BIND(IF((!((!BOUND(?filled_by_human_agent) || STR(?filled_by_human_agent) = ""))), "HumanAgent", IF((!((!BOUND(?filled_by_ai_agent) || STR(?filled_by_ai_agent) = ""))), "AIAgent", IF((!((!BOUND(?filled_by_automated_pipeline) || STR(?filled_by_automated_pipeline) = ""))), "AutomatedPipeline", ""))) AS ?_result)
+                BIND(IF(COALESCE((!((!BOUND(?filled_by_human_agent) || STR(?filled_by_human_agent) = ""))), false), "HumanAgent", IF(COALESCE((!((!BOUND(?filled_by_ai_agent) || STR(?filled_by_ai_agent) = ""))), false), "AIAgent", IF(COALESCE((!((!BOUND(?filled_by_automated_pipeline) || STR(?filled_by_automated_pipeline) = ""))), false), "AutomatedPipeline", ""))) AS ?_result)
             }
         """ ;
     ] ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_RoleAssignments_IsCurrent" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -865,6 +907,7 @@ effortless-ntwf:RoleAssignmentsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_RoleAssignments_WasActiveAsOfAuditDate" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -883,6 +926,7 @@ effortless-ntwf:RoleAssignmentsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_RoleAssignments_IsAgentTypeChange" ;
+        sh:order 1 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -901,6 +945,7 @@ effortless-ntwf:RoleAssignmentsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_RoleAssignments_RequiresComplianceAudit" ;
+        sh:order 1 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -923,6 +968,7 @@ effortless-ntwf:RolesShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Roles_RelativePath" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -933,13 +979,14 @@ effortless-ntwf:RolesShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:Roles .
     OPTIONAL { $this effortless-ntwf:roleId ?role_id . }
-                BIND(CONCAT("roles/", IF(isIRI(?role_id), REPLACE(STR(?role_id), "^.*[#/]", ""), STR(?role_id))) AS ?_result)
+                BIND(CONCAT("roles/", COALESCE(IF(isIRI(?role_id), REPLACE(STR(?role_id), "^.*[#/]", ""), IF(DATATYPE(?role_id) = xsd:dateTime, CONCAT(SUBSTR(STR(?role_id), 1, 10), " ", SUBSTR(STR(?role_id), 12, 8), IF(TZ(?role_id) = "Z", "+00", IF(STRENDS(TZ(?role_id), ":00"), SUBSTR(TZ(?role_id), 1, 3), TZ(?role_id)))), STR(?role_id))), "")) AS ?_result)
             }
         """ ;
     ] ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Roles_Iri" ;
+        sh:order 1 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -957,6 +1004,7 @@ effortless-ntwf:RolesShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Roles_Name" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -974,6 +1022,7 @@ effortless-ntwf:RolesShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Roles_FilledByArmCount" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -986,13 +1035,14 @@ effortless-ntwf:RolesShape a sh:NodeShape ;
     OPTIONAL { $this effortless-ntwf:filledByAIAgent ?filled_by_ai_agent . }
     OPTIONAL { $this effortless-ntwf:filledByAutomatedPipeline ?filled_by_automated_pipeline . }
     OPTIONAL { $this effortless-ntwf:filledByHumanAgent ?filled_by_human_agent . }
-                BIND(((IF((!((!BOUND(?filled_by_human_agent) || STR(?filled_by_human_agent) = ""))), 1, 0) + IF((!((!BOUND(?filled_by_ai_agent) || STR(?filled_by_ai_agent) = ""))), 1, 0)) + IF((!((!BOUND(?filled_by_automated_pipeline) || STR(?filled_by_automated_pipeline) = ""))), 1, 0)) AS ?_result)
+                BIND(IF(isNumeric(((IF(COALESCE((!((!BOUND(?filled_by_human_agent) || STR(?filled_by_human_agent) = ""))), false), 1, 0) + IF(COALESCE((!((!BOUND(?filled_by_ai_agent) || STR(?filled_by_ai_agent) = ""))), false), 1, 0)) + IF(COALESCE((!((!BOUND(?filled_by_automated_pipeline) || STR(?filled_by_automated_pipeline) = ""))), false), 1, 0))), ROUND(((IF(COALESCE((!((!BOUND(?filled_by_human_agent) || STR(?filled_by_human_agent) = ""))), false), 1, 0) + IF(COALESCE((!((!BOUND(?filled_by_ai_agent) || STR(?filled_by_ai_agent) = ""))), false), 1, 0)) + IF(COALESCE((!((!BOUND(?filled_by_automated_pipeline) || STR(?filled_by_automated_pipeline) = ""))), false), 1, 0))), ((IF(COALESCE((!((!BOUND(?filled_by_human_agent) || STR(?filled_by_human_agent) = ""))), false), 1, 0) + IF(COALESCE((!((!BOUND(?filled_by_ai_agent) || STR(?filled_by_ai_agent) = ""))), false), 1, 0)) + IF(COALESCE((!((!BOUND(?filled_by_automated_pipeline) || STR(?filled_by_automated_pipeline) = ""))), false), 1, 0))) AS ?_result)
             }
         """ ;
     ] ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Roles_HasExactlyOneFiller" ;
+        sh:order 1 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1010,6 +1060,7 @@ effortless-ntwf:RolesShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Roles_FillerType" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1022,13 +1073,14 @@ effortless-ntwf:RolesShape a sh:NodeShape ;
     OPTIONAL { $this effortless-ntwf:filledByAIAgent ?filled_by_ai_agent . }
     OPTIONAL { $this effortless-ntwf:filledByAutomatedPipeline ?filled_by_automated_pipeline . }
     OPTIONAL { $this effortless-ntwf:filledByHumanAgent ?filled_by_human_agent . }
-                BIND(IF((!((!BOUND(?filled_by_human_agent) || STR(?filled_by_human_agent) = ""))), "HumanAgent", IF((!((!BOUND(?filled_by_ai_agent) || STR(?filled_by_ai_agent) = ""))), "AIAgent", IF((!((!BOUND(?filled_by_automated_pipeline) || STR(?filled_by_automated_pipeline) = ""))), "AutomatedPipeline", ""))) AS ?_result)
+                BIND(IF(COALESCE((!((!BOUND(?filled_by_human_agent) || STR(?filled_by_human_agent) = ""))), false), "HumanAgent", IF(COALESCE((!((!BOUND(?filled_by_ai_agent) || STR(?filled_by_ai_agent) = ""))), false), "AIAgent", IF(COALESCE((!((!BOUND(?filled_by_automated_pipeline) || STR(?filled_by_automated_pipeline) = ""))), false), "AutomatedPipeline", ""))) AS ?_result)
             }
         """ ;
     ] ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Roles_FillsApprovalGate" ;
+        sh:order 1 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1039,7 +1091,7 @@ effortless-ntwf:RolesShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:Roles .
                 {
-                    SELECT (COUNT(?child) AS ?_result) WHERE {
+                    SELECT (COUNT(DISTINCT ?child) AS ?_result) WHERE {
                     ?child a effortless-ntwf:WorkflowSteps .
                     ?child effortless-ntwf:assignedRole $this .
                     OPTIONAL { ?child effortless-ntwf:isApprovalGate ?c2 . }
@@ -1052,6 +1104,7 @@ effortless-ntwf:RolesShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Roles_EscalationViolation" ;
+        sh:order 2 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1074,6 +1127,7 @@ effortless-ntwf:ScenarioCQEffectsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_ScenarioCQEffects_RelativePath" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1084,13 +1138,14 @@ effortless-ntwf:ScenarioCQEffectsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:ScenarioCQEffects .
     OPTIONAL { $this effortless-ntwf:scenarioCQEffectId ?scenario_cq_effect_id . }
-                BIND(CONCAT("scenario-cq-effects/", IF(isIRI(?scenario_cq_effect_id), REPLACE(STR(?scenario_cq_effect_id), "^.*[#/]", ""), STR(?scenario_cq_effect_id))) AS ?_result)
+                BIND(CONCAT("scenario-cq-effects/", COALESCE(IF(isIRI(?scenario_cq_effect_id), REPLACE(STR(?scenario_cq_effect_id), "^.*[#/]", ""), IF(DATATYPE(?scenario_cq_effect_id) = xsd:dateTime, CONCAT(SUBSTR(STR(?scenario_cq_effect_id), 1, 10), " ", SUBSTR(STR(?scenario_cq_effect_id), 12, 8), IF(TZ(?scenario_cq_effect_id) = "Z", "+00", IF(STRENDS(TZ(?scenario_cq_effect_id), ":00"), SUBSTR(TZ(?scenario_cq_effect_id), 1, 3), TZ(?scenario_cq_effect_id)))), STR(?scenario_cq_effect_id))), "")) AS ?_result)
             }
         """ ;
     ] ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_ScenarioCQEffects_Iri" ;
+        sh:order 1 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1108,6 +1163,7 @@ effortless-ntwf:ScenarioCQEffectsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_ScenarioCQEffects_Name" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1129,6 +1185,7 @@ effortless-ntwf:ScenariosShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Scenarios_RelativePath" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1139,13 +1196,14 @@ effortless-ntwf:ScenariosShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:Scenarios .
     OPTIONAL { $this effortless-ntwf:scenarioId ?scenario_id . }
-                BIND(CONCAT("scenarios/", IF(isIRI(?scenario_id), REPLACE(STR(?scenario_id), "^.*[#/]", ""), STR(?scenario_id))) AS ?_result)
+                BIND(CONCAT("scenarios/", COALESCE(IF(isIRI(?scenario_id), REPLACE(STR(?scenario_id), "^.*[#/]", ""), IF(DATATYPE(?scenario_id) = xsd:dateTime, CONCAT(SUBSTR(STR(?scenario_id), 1, 10), " ", SUBSTR(STR(?scenario_id), 12, 8), IF(TZ(?scenario_id) = "Z", "+00", IF(STRENDS(TZ(?scenario_id), ":00"), SUBSTR(TZ(?scenario_id), 1, 3), TZ(?scenario_id)))), STR(?scenario_id))), "")) AS ?_result)
             }
         """ ;
     ] ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Scenarios_Iri" ;
+        sh:order 1 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1163,6 +1221,7 @@ effortless-ntwf:ScenariosShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Scenarios_Name" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1184,6 +1243,7 @@ effortless-ntwf:StepPrecedenceShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_StepPrecedence_ParentPath" ;
+        sh:order 3 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1194,8 +1254,7 @@ effortless-ntwf:StepPrecedenceShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:StepPrecedence .
                 OPTIONAL { $this effortless-ntwf:fromStep ?j0 . }
-                OPTIONAL { ?j1 a effortless-ntwf:WorkflowSteps ; effortless-ntwf:workflowStepId ?j2 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) }
-                OPTIONAL { ?j1 effortless-ntwf:relativePath ?j3 . }
+                OPTIONAL { ?j1 a effortless-ntwf:WorkflowSteps ; effortless-ntwf:workflowStepId ?j2 ; effortless-ntwf:relativePath ?j3 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) }
                 BIND(?j3 AS ?_result)
             }
         """ ;
@@ -1203,6 +1262,7 @@ effortless-ntwf:StepPrecedenceShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_StepPrecedence_RelativePath" ;
+        sh:order 4 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1214,13 +1274,14 @@ effortless-ntwf:StepPrecedenceShape a sh:NodeShape ;
     $this a effortless-ntwf:StepPrecedence .
     OPTIONAL { $this effortless-ntwf:parentPath ?parent_path . }
     OPTIONAL { $this effortless-ntwf:stepPrecedenceId ?step_precedence_id . }
-                BIND(CONCAT(IF(isIRI(?parent_path), REPLACE(STR(?parent_path), "^.*[#/]", ""), STR(?parent_path)), "/precedence/", IF(isIRI(?step_precedence_id), REPLACE(STR(?step_precedence_id), "^.*[#/]", ""), STR(?step_precedence_id))) AS ?_result)
+                BIND(CONCAT(COALESCE(IF(isIRI(?parent_path), REPLACE(STR(?parent_path), "^.*[#/]", ""), IF(DATATYPE(?parent_path) = xsd:dateTime, CONCAT(SUBSTR(STR(?parent_path), 1, 10), " ", SUBSTR(STR(?parent_path), 12, 8), IF(TZ(?parent_path) = "Z", "+00", IF(STRENDS(TZ(?parent_path), ":00"), SUBSTR(TZ(?parent_path), 1, 3), TZ(?parent_path)))), STR(?parent_path))), ""), "/precedence/", COALESCE(IF(isIRI(?step_precedence_id), REPLACE(STR(?step_precedence_id), "^.*[#/]", ""), IF(DATATYPE(?step_precedence_id) = xsd:dateTime, CONCAT(SUBSTR(STR(?step_precedence_id), 1, 10), " ", SUBSTR(STR(?step_precedence_id), 12, 8), IF(TZ(?step_precedence_id) = "Z", "+00", IF(STRENDS(TZ(?step_precedence_id), ":00"), SUBSTR(TZ(?step_precedence_id), 1, 3), TZ(?step_precedence_id)))), STR(?step_precedence_id))), "")) AS ?_result)
             }
         """ ;
     ] ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_StepPrecedence_Iri" ;
+        sh:order 5 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1238,6 +1299,7 @@ effortless-ntwf:StepPrecedenceShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_StepPrecedence_Name" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1249,7 +1311,7 @@ effortless-ntwf:StepPrecedenceShape a sh:NodeShape ;
     $this a effortless-ntwf:StepPrecedence .
     OPTIONAL { $this effortless-ntwf:fromStep ?from_step . }
     OPTIONAL { $this effortless-ntwf:toStep ?to_step . }
-                BIND(CONCAT(IF(isIRI(?from_step), REPLACE(STR(?from_step), "^.*[#/]", ""), STR(?from_step)), " -> ", IF(isIRI(?to_step), REPLACE(STR(?to_step), "^.*[#/]", ""), STR(?to_step))) AS ?_result)
+                BIND(CONCAT(COALESCE(IF(isIRI(?from_step), REPLACE(STR(?from_step), "^.*[#/]", ""), IF(DATATYPE(?from_step) = xsd:dateTime, CONCAT(SUBSTR(STR(?from_step), 1, 10), " ", SUBSTR(STR(?from_step), 12, 8), IF(TZ(?from_step) = "Z", "+00", IF(STRENDS(TZ(?from_step), ":00"), SUBSTR(TZ(?from_step), 1, 3), TZ(?from_step)))), STR(?from_step))), ""), " -> ", COALESCE(IF(isIRI(?to_step), REPLACE(STR(?to_step), "^.*[#/]", ""), IF(DATATYPE(?to_step) = xsd:dateTime, CONCAT(SUBSTR(STR(?to_step), 1, 10), " ", SUBSTR(STR(?to_step), 12, 8), IF(TZ(?to_step) = "Z", "+00", IF(STRENDS(TZ(?to_step), ":00"), SUBSTR(TZ(?to_step), 1, 3), TZ(?to_step)))), STR(?to_step))), "")) AS ?_result)
             }
         """ ;
     ] .
@@ -1260,6 +1322,7 @@ effortless-ntwf:VocabularyReconciliationsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_VocabularyReconciliations_RelativePath" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1270,13 +1333,14 @@ effortless-ntwf:VocabularyReconciliationsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:VocabularyReconciliations .
     OPTIONAL { $this effortless-ntwf:reconciliationId ?reconciliation_id . }
-                BIND(CONCAT("reconciliations/", IF(isIRI(?reconciliation_id), REPLACE(STR(?reconciliation_id), "^.*[#/]", ""), STR(?reconciliation_id))) AS ?_result)
+                BIND(CONCAT("reconciliations/", COALESCE(IF(isIRI(?reconciliation_id), REPLACE(STR(?reconciliation_id), "^.*[#/]", ""), IF(DATATYPE(?reconciliation_id) = xsd:dateTime, CONCAT(SUBSTR(STR(?reconciliation_id), 1, 10), " ", SUBSTR(STR(?reconciliation_id), 12, 8), IF(TZ(?reconciliation_id) = "Z", "+00", IF(STRENDS(TZ(?reconciliation_id), ":00"), SUBSTR(TZ(?reconciliation_id), 1, 3), TZ(?reconciliation_id)))), STR(?reconciliation_id))), "")) AS ?_result)
             }
         """ ;
     ] ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_VocabularyReconciliations_Iri" ;
+        sh:order 1 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1294,6 +1358,7 @@ effortless-ntwf:VocabularyReconciliationsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_VocabularyReconciliations_Name" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1305,7 +1370,7 @@ effortless-ntwf:VocabularyReconciliationsShape a sh:NodeShape ;
     $this a effortless-ntwf:VocabularyReconciliations .
     OPTIONAL { $this effortless-ntwf:deprecatedTerm ?deprecated_term . }
     OPTIONAL { $this effortless-ntwf:replacementTerm ?replacement_term . }
-                BIND(CONCAT(IF(isIRI(?deprecated_term), REPLACE(STR(?deprecated_term), "^.*[#/]", ""), STR(?deprecated_term)), " owl:sameAs ", IF(isIRI(?replacement_term), REPLACE(STR(?replacement_term), "^.*[#/]", ""), STR(?replacement_term))) AS ?_result)
+                BIND(CONCAT(COALESCE(IF(isIRI(?deprecated_term), REPLACE(STR(?deprecated_term), "^.*[#/]", ""), IF(DATATYPE(?deprecated_term) = xsd:dateTime, CONCAT(SUBSTR(STR(?deprecated_term), 1, 10), " ", SUBSTR(STR(?deprecated_term), 12, 8), IF(TZ(?deprecated_term) = "Z", "+00", IF(STRENDS(TZ(?deprecated_term), ":00"), SUBSTR(TZ(?deprecated_term), 1, 3), TZ(?deprecated_term)))), STR(?deprecated_term))), ""), " owl:sameAs ", COALESCE(IF(isIRI(?replacement_term), REPLACE(STR(?replacement_term), "^.*[#/]", ""), IF(DATATYPE(?replacement_term) = xsd:dateTime, CONCAT(SUBSTR(STR(?replacement_term), 1, 10), " ", SUBSTR(STR(?replacement_term), 12, 8), IF(TZ(?replacement_term) = "Z", "+00", IF(STRENDS(TZ(?replacement_term), ":00"), SUBSTR(TZ(?replacement_term), 1, 3), TZ(?replacement_term)))), STR(?replacement_term))), "")) AS ?_result)
             }
         """ ;
     ] .
@@ -1316,6 +1381,7 @@ effortless-ntwf:WorkflowArtifactsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_WorkflowArtifacts_ParentPath" ;
+        sh:order 3 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1326,8 +1392,7 @@ effortless-ntwf:WorkflowArtifactsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:WorkflowArtifacts .
                 OPTIONAL { $this effortless-ntwf:producedByStep ?j0 . }
-                OPTIONAL { ?j1 a effortless-ntwf:WorkflowSteps ; effortless-ntwf:workflowStepId ?j2 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) }
-                OPTIONAL { ?j1 effortless-ntwf:relativePath ?j3 . }
+                OPTIONAL { ?j1 a effortless-ntwf:WorkflowSteps ; effortless-ntwf:workflowStepId ?j2 ; effortless-ntwf:relativePath ?j3 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) }
                 BIND(?j3 AS ?_result)
             }
         """ ;
@@ -1335,6 +1400,7 @@ effortless-ntwf:WorkflowArtifactsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_WorkflowArtifacts_RelativePath" ;
+        sh:order 4 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1346,13 +1412,14 @@ effortless-ntwf:WorkflowArtifactsShape a sh:NodeShape ;
     $this a effortless-ntwf:WorkflowArtifacts .
     OPTIONAL { $this effortless-ntwf:artifactId ?artifact_id . }
     OPTIONAL { $this effortless-ntwf:parentPath ?parent_path . }
-                BIND(CONCAT(IF(isIRI(?parent_path), REPLACE(STR(?parent_path), "^.*[#/]", ""), STR(?parent_path)), "/artifacts/", IF(isIRI(?artifact_id), REPLACE(STR(?artifact_id), "^.*[#/]", ""), STR(?artifact_id))) AS ?_result)
+                BIND(CONCAT(COALESCE(IF(isIRI(?parent_path), REPLACE(STR(?parent_path), "^.*[#/]", ""), IF(DATATYPE(?parent_path) = xsd:dateTime, CONCAT(SUBSTR(STR(?parent_path), 1, 10), " ", SUBSTR(STR(?parent_path), 12, 8), IF(TZ(?parent_path) = "Z", "+00", IF(STRENDS(TZ(?parent_path), ":00"), SUBSTR(TZ(?parent_path), 1, 3), TZ(?parent_path)))), STR(?parent_path))), ""), "/artifacts/", COALESCE(IF(isIRI(?artifact_id), REPLACE(STR(?artifact_id), "^.*[#/]", ""), IF(DATATYPE(?artifact_id) = xsd:dateTime, CONCAT(SUBSTR(STR(?artifact_id), 1, 10), " ", SUBSTR(STR(?artifact_id), 12, 8), IF(TZ(?artifact_id) = "Z", "+00", IF(STRENDS(TZ(?artifact_id), ":00"), SUBSTR(TZ(?artifact_id), 1, 3), TZ(?artifact_id)))), STR(?artifact_id))), "")) AS ?_result)
             }
         """ ;
     ] ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_WorkflowArtifacts_Iri" ;
+        sh:order 5 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1370,6 +1437,7 @@ effortless-ntwf:WorkflowArtifactsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_WorkflowArtifacts_ProducingAgentType" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1382,13 +1450,14 @@ effortless-ntwf:WorkflowArtifactsShape a sh:NodeShape ;
     OPTIONAL { $this effortless-ntwf:attributedToAIAgent ?attributed_to_ai_agent . }
     OPTIONAL { $this effortless-ntwf:attributedToAutomatedPipeline ?attributed_to_automated_pipeline . }
     OPTIONAL { $this effortless-ntwf:attributedToHumanAgent ?attributed_to_human_agent . }
-                BIND(IF((!((!BOUND(?attributed_to_human_agent) || STR(?attributed_to_human_agent) = ""))), "HumanAgent", IF((!((!BOUND(?attributed_to_ai_agent) || STR(?attributed_to_ai_agent) = ""))), "AIAgent", IF((!((!BOUND(?attributed_to_automated_pipeline) || STR(?attributed_to_automated_pipeline) = ""))), "AutomatedPipeline", ""))) AS ?_result)
+                BIND(IF(COALESCE((!((!BOUND(?attributed_to_human_agent) || STR(?attributed_to_human_agent) = ""))), false), "HumanAgent", IF(COALESCE((!((!BOUND(?attributed_to_ai_agent) || STR(?attributed_to_ai_agent) = ""))), false), "AIAgent", IF(COALESCE((!((!BOUND(?attributed_to_automated_pipeline) || STR(?attributed_to_automated_pipeline) = ""))), false), "AutomatedPipeline", ""))) AS ?_result)
             }
         """ ;
     ] ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_WorkflowArtifacts_HasDerivationParent" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1406,6 +1475,7 @@ effortless-ntwf:WorkflowArtifactsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_WorkflowArtifacts_ProducedByWorkflow" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1416,8 +1486,7 @@ effortless-ntwf:WorkflowArtifactsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:WorkflowArtifacts .
                 OPTIONAL { $this effortless-ntwf:producedByStep ?j0 . }
-                OPTIONAL { ?j1 a effortless-ntwf:WorkflowSteps ; effortless-ntwf:workflowStepId ?j2 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) }
-                OPTIONAL { ?j1 effortless-ntwf:workflow ?j3 . }
+                OPTIONAL { ?j1 a effortless-ntwf:WorkflowSteps ; effortless-ntwf:workflowStepId ?j2 ; effortless-ntwf:workflow ?j3 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) }
                 BIND(?j3 AS ?_result)
             }
         """ ;
@@ -1425,6 +1494,7 @@ effortless-ntwf:WorkflowArtifactsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_WorkflowArtifacts_HasProducingWorkflow" ;
+        sh:order 1 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1446,6 +1516,7 @@ effortless-ntwf:WorkflowStatusConceptsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_WorkflowStatusConcepts_RelativePath" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1456,13 +1527,14 @@ effortless-ntwf:WorkflowStatusConceptsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:WorkflowStatusConcepts .
     OPTIONAL { $this effortless-ntwf:conceptId ?concept_id . }
-                BIND(CONCAT("concepts/workflow-status/", IF(isIRI(?concept_id), REPLACE(STR(?concept_id), "^.*[#/]", ""), STR(?concept_id))) AS ?_result)
+                BIND(CONCAT("concepts/workflow-status/", COALESCE(IF(isIRI(?concept_id), REPLACE(STR(?concept_id), "^.*[#/]", ""), IF(DATATYPE(?concept_id) = xsd:dateTime, CONCAT(SUBSTR(STR(?concept_id), 1, 10), " ", SUBSTR(STR(?concept_id), 12, 8), IF(TZ(?concept_id) = "Z", "+00", IF(STRENDS(TZ(?concept_id), ":00"), SUBSTR(TZ(?concept_id), 1, 3), TZ(?concept_id)))), STR(?concept_id))), "")) AS ?_result)
             }
         """ ;
     ] ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_WorkflowStatusConcepts_Iri" ;
+        sh:order 1 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1484,6 +1556,7 @@ effortless-ntwf:WorkflowStepsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_WorkflowSteps_ParentPath" ;
+        sh:order 1 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1494,8 +1567,7 @@ effortless-ntwf:WorkflowStepsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:WorkflowSteps .
                 OPTIONAL { $this effortless-ntwf:workflow ?j0 . }
-                OPTIONAL { ?j1 a effortless-ntwf:Workflows ; effortless-ntwf:workflowId ?j2 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) }
-                OPTIONAL { ?j1 effortless-ntwf:relativePath ?j3 . }
+                OPTIONAL { ?j1 a effortless-ntwf:Workflows ; effortless-ntwf:workflowId ?j2 ; effortless-ntwf:relativePath ?j3 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) }
                 BIND(?j3 AS ?_result)
             }
         """ ;
@@ -1503,6 +1575,7 @@ effortless-ntwf:WorkflowStepsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_WorkflowSteps_RelativePath" ;
+        sh:order 2 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1514,13 +1587,14 @@ effortless-ntwf:WorkflowStepsShape a sh:NodeShape ;
     $this a effortless-ntwf:WorkflowSteps .
     OPTIONAL { $this effortless-ntwf:parentPath ?parent_path . }
     OPTIONAL { $this effortless-ntwf:workflowStepId ?workflow_step_id . }
-                BIND(CONCAT(IF(isIRI(?parent_path), REPLACE(STR(?parent_path), "^.*[#/]", ""), STR(?parent_path)), "/steps/", IF(isIRI(?workflow_step_id), REPLACE(STR(?workflow_step_id), "^.*[#/]", ""), STR(?workflow_step_id))) AS ?_result)
+                BIND(CONCAT(COALESCE(IF(isIRI(?parent_path), REPLACE(STR(?parent_path), "^.*[#/]", ""), IF(DATATYPE(?parent_path) = xsd:dateTime, CONCAT(SUBSTR(STR(?parent_path), 1, 10), " ", SUBSTR(STR(?parent_path), 12, 8), IF(TZ(?parent_path) = "Z", "+00", IF(STRENDS(TZ(?parent_path), ":00"), SUBSTR(TZ(?parent_path), 1, 3), TZ(?parent_path)))), STR(?parent_path))), ""), "/steps/", COALESCE(IF(isIRI(?workflow_step_id), REPLACE(STR(?workflow_step_id), "^.*[#/]", ""), IF(DATATYPE(?workflow_step_id) = xsd:dateTime, CONCAT(SUBSTR(STR(?workflow_step_id), 1, 10), " ", SUBSTR(STR(?workflow_step_id), 12, 8), IF(TZ(?workflow_step_id) = "Z", "+00", IF(STRENDS(TZ(?workflow_step_id), ":00"), SUBSTR(TZ(?workflow_step_id), 1, 3), TZ(?workflow_step_id)))), STR(?workflow_step_id))), "")) AS ?_result)
             }
         """ ;
     ] ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_WorkflowSteps_Iri" ;
+        sh:order 3 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1538,6 +1612,7 @@ effortless-ntwf:WorkflowStepsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_WorkflowSteps_Name" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1555,6 +1630,7 @@ effortless-ntwf:WorkflowStepsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_WorkflowSteps_PrecedingStepCount" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1575,6 +1651,7 @@ effortless-ntwf:WorkflowStepsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_WorkflowSteps_InferredSequencePosition" ;
+        sh:order 1 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1585,13 +1662,14 @@ effortless-ntwf:WorkflowStepsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:WorkflowSteps .
     OPTIONAL { $this effortless-ntwf:precedingStepCount ?preceding_step_count . }
-                BIND((?preceding_step_count + 1) AS ?_result)
+                BIND(IF(isNumeric((?preceding_step_count + 1)), ROUND((?preceding_step_count + 1)), (?preceding_step_count + 1)) AS ?_result)
             }
         """ ;
     ] ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_WorkflowSteps_SequencePosition" ;
+        sh:order 2 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1603,13 +1681,14 @@ effortless-ntwf:WorkflowStepsShape a sh:NodeShape ;
     $this a effortless-ntwf:WorkflowSteps .
     OPTIONAL { $this effortless-ntwf:inferredSequencePosition ?inferred_sequence_position . }
     OPTIONAL { $this effortless-ntwf:sequencePositionOverride ?sequence_position_override . }
-                BIND(IF((REPLACE(COALESCE(STR(?sequence_position_override), ""), "^.*#", "") != ""), ?sequence_position_override, ?inferred_sequence_position) AS ?_result)
+                BIND(IF(isNumeric(IF(COALESCE((REPLACE(COALESCE(STR(?sequence_position_override), ""), "^.*#", "") != ""), false), ?sequence_position_override, ?inferred_sequence_position)), ROUND(IF(COALESCE((REPLACE(COALESCE(STR(?sequence_position_override), ""), "^.*#", "") != ""), false), ?sequence_position_override, ?inferred_sequence_position)), IF(COALESCE((REPLACE(COALESCE(STR(?sequence_position_override), ""), "^.*#", "") != ""), false), ?sequence_position_override, ?inferred_sequence_position)) AS ?_result)
             }
         """ ;
     ] ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_WorkflowSteps_ExecutingHumanAgent" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1620,8 +1699,7 @@ effortless-ntwf:WorkflowStepsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:WorkflowSteps .
                 OPTIONAL { $this effortless-ntwf:assignedRole ?j0 . }
-                OPTIONAL { ?j1 a effortless-ntwf:Roles ; effortless-ntwf:roleId ?j2 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) }
-                OPTIONAL { ?j1 effortless-ntwf:filledByHumanAgent ?j3 . }
+                OPTIONAL { ?j1 a effortless-ntwf:Roles ; effortless-ntwf:roleId ?j2 ; effortless-ntwf:filledByHumanAgent ?j3 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) }
                 BIND(?j3 AS ?_result)
             }
         """ ;
@@ -1629,6 +1707,7 @@ effortless-ntwf:WorkflowStepsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_WorkflowSteps_ExecutingAIAgent" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1639,8 +1718,7 @@ effortless-ntwf:WorkflowStepsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:WorkflowSteps .
                 OPTIONAL { $this effortless-ntwf:assignedRole ?j0 . }
-                OPTIONAL { ?j1 a effortless-ntwf:Roles ; effortless-ntwf:roleId ?j2 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) }
-                OPTIONAL { ?j1 effortless-ntwf:filledByAIAgent ?j3 . }
+                OPTIONAL { ?j1 a effortless-ntwf:Roles ; effortless-ntwf:roleId ?j2 ; effortless-ntwf:filledByAIAgent ?j3 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) }
                 BIND(?j3 AS ?_result)
             }
         """ ;
@@ -1648,6 +1726,7 @@ effortless-ntwf:WorkflowStepsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_WorkflowSteps_ExecutingAutomatedPipeline" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1658,8 +1737,7 @@ effortless-ntwf:WorkflowStepsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:WorkflowSteps .
                 OPTIONAL { $this effortless-ntwf:assignedRole ?j0 . }
-                OPTIONAL { ?j1 a effortless-ntwf:Roles ; effortless-ntwf:roleId ?j2 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) }
-                OPTIONAL { ?j1 effortless-ntwf:filledByAutomatedPipeline ?j3 . }
+                OPTIONAL { ?j1 a effortless-ntwf:Roles ; effortless-ntwf:roleId ?j2 ; effortless-ntwf:filledByAutomatedPipeline ?j3 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) }
                 BIND(?j3 AS ?_result)
             }
         """ ;
@@ -1667,6 +1745,7 @@ effortless-ntwf:WorkflowStepsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_WorkflowSteps_ExecutingAgentType" ;
+        sh:order 1 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1679,13 +1758,14 @@ effortless-ntwf:WorkflowStepsShape a sh:NodeShape ;
     OPTIONAL { $this effortless-ntwf:executingAIAgent ?executing_ai_agent . }
     OPTIONAL { $this effortless-ntwf:executingAutomatedPipeline ?executing_automated_pipeline . }
     OPTIONAL { $this effortless-ntwf:executingHumanAgent ?executing_human_agent . }
-                BIND(IF((!((!BOUND(?executing_human_agent) || STR(?executing_human_agent) = ""))), "HumanAgent", IF((!((!BOUND(?executing_ai_agent) || STR(?executing_ai_agent) = ""))), "AIAgent", IF((!((!BOUND(?executing_automated_pipeline) || STR(?executing_automated_pipeline) = ""))), "AutomatedPipeline", ""))) AS ?_result)
+                BIND(IF(COALESCE((!((!BOUND(?executing_human_agent) || STR(?executing_human_agent) = ""))), false), "HumanAgent", IF(COALESCE((!((!BOUND(?executing_ai_agent) || STR(?executing_ai_agent) = ""))), false), "AIAgent", IF(COALESCE((!((!BOUND(?executing_automated_pipeline) || STR(?executing_automated_pipeline) = ""))), false), "AutomatedPipeline", ""))) AS ?_result)
             }
         """ ;
     ] ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_WorkflowSteps_IsExecutedByAI" ;
+        sh:order 1 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1703,6 +1783,7 @@ effortless-ntwf:WorkflowStepsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_WorkflowSteps_IsExecutedByHuman" ;
+        sh:order 1 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1720,6 +1801,7 @@ effortless-ntwf:WorkflowStepsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_WorkflowSteps_IsApprovalGate" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1737,6 +1819,7 @@ effortless-ntwf:WorkflowStepsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_WorkflowSteps_ApprovalConsistencyViolation" ;
+        sh:order 1 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1748,13 +1831,14 @@ effortless-ntwf:WorkflowStepsShape a sh:NodeShape ;
     $this a effortless-ntwf:WorkflowSteps .
     OPTIONAL { $this effortless-ntwf:executingHumanAgent ?executing_human_agent . }
     OPTIONAL { $this effortless-ntwf:requiresHumanApproval ?requires_human_approval . }
-                BIND((?requires_human_approval && (!BOUND(?executing_human_agent) || STR(?executing_human_agent) = "")) AS ?_result)
+                BIND((COALESCE(?requires_human_approval, false) && (!BOUND(?executing_human_agent) || STR(?executing_human_agent) = "")) AS ?_result)
             }
         """ ;
     ] ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_WorkflowSteps_ApprovalIsHumanFilled" ;
+        sh:order 1 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1766,13 +1850,14 @@ effortless-ntwf:WorkflowStepsShape a sh:NodeShape ;
     $this a effortless-ntwf:WorkflowSteps .
     OPTIONAL { $this effortless-ntwf:executingHumanAgent ?executing_human_agent . }
     OPTIONAL { $this effortless-ntwf:requiresHumanApproval ?requires_human_approval . }
-                BIND(IF(?requires_human_approval, (!((!BOUND(?executing_human_agent) || STR(?executing_human_agent) = ""))), true) AS ?_result)
+                BIND(IF(COALESCE(?requires_human_approval, false), (!((!BOUND(?executing_human_agent) || STR(?executing_human_agent) = ""))), true) AS ?_result)
             }
         """ ;
     ] ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_WorkflowSteps_OwningDepartment" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1783,8 +1868,7 @@ effortless-ntwf:WorkflowStepsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:WorkflowSteps .
                 OPTIONAL { $this effortless-ntwf:assignedRole ?j0 . }
-                OPTIONAL { ?j1 a effortless-ntwf:Roles ; effortless-ntwf:roleId ?j2 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) }
-                OPTIONAL { ?j1 effortless-ntwf:ownedBy ?j3 . }
+                OPTIONAL { ?j1 a effortless-ntwf:Roles ; effortless-ntwf:roleId ?j2 ; effortless-ntwf:ownedBy ?j3 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) }
                 BIND(?j3 AS ?_result)
             }
         """ ;
@@ -1792,6 +1876,7 @@ effortless-ntwf:WorkflowStepsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_WorkflowSteps_IsLegalOwned" ;
+        sh:order 1 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1809,6 +1894,7 @@ effortless-ntwf:WorkflowStepsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_WorkflowSteps_IsEngineeringOwned" ;
+        sh:order 1 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1830,6 +1916,7 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Workflows_RelativePath" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1840,13 +1927,14 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:Workflows .
     OPTIONAL { $this effortless-ntwf:workflowId ?workflow_id . }
-                BIND(CONCAT("workflows/", IF(isIRI(?workflow_id), REPLACE(STR(?workflow_id), "^.*[#/]", ""), STR(?workflow_id))) AS ?_result)
+                BIND(CONCAT("workflows/", COALESCE(IF(isIRI(?workflow_id), REPLACE(STR(?workflow_id), "^.*[#/]", ""), IF(DATATYPE(?workflow_id) = xsd:dateTime, CONCAT(SUBSTR(STR(?workflow_id), 1, 10), " ", SUBSTR(STR(?workflow_id), 12, 8), IF(TZ(?workflow_id) = "Z", "+00", IF(STRENDS(TZ(?workflow_id), ":00"), SUBSTR(TZ(?workflow_id), 1, 3), TZ(?workflow_id)))), STR(?workflow_id))), "")) AS ?_result)
             }
         """ ;
     ] ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Workflows_Iri" ;
+        sh:order 1 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1864,6 +1952,7 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Workflows_Name" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1881,6 +1970,7 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Workflows_CountOfNonProposedSteps" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1891,7 +1981,7 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:Workflows .
                 {
-                    SELECT (COUNT(?child) AS ?_result) WHERE {
+                    SELECT (COUNT(DISTINCT ?child) AS ?_result) WHERE {
                     ?child a effortless-ntwf:WorkflowSteps .
                     ?child effortless-ntwf:workflow $this .
                     }
@@ -1902,6 +1992,7 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Workflows_HasMoreThan1Step" ;
+        sh:order 1 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1919,6 +2010,7 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Workflows_CountAISteps" ;
+        sh:order 2 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1929,7 +2021,7 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:Workflows .
                 {
-                    SELECT (COUNT(?child) AS ?_result) WHERE {
+                    SELECT (COUNT(DISTINCT ?child) AS ?_result) WHERE {
                     ?child a effortless-ntwf:WorkflowSteps .
                     ?child effortless-ntwf:workflow $this .
                     OPTIONAL { ?child effortless-ntwf:isExecutedByAI ?c2 . }
@@ -1942,6 +2034,7 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Workflows_CountHumanSteps" ;
+        sh:order 2 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1952,7 +2045,7 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:Workflows .
                 {
-                    SELECT (COUNT(?child) AS ?_result) WHERE {
+                    SELECT (COUNT(DISTINCT ?child) AS ?_result) WHERE {
                     ?child a effortless-ntwf:WorkflowSteps .
                     ?child effortless-ntwf:workflow $this .
                     OPTIONAL { ?child effortless-ntwf:isExecutedByHuman ?c2 . }
@@ -1965,6 +2058,7 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Workflows_CountHumanRequiredSteps" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1975,7 +2069,7 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:Workflows .
                 {
-                    SELECT (COUNT(?child) AS ?_result) WHERE {
+                    SELECT (COUNT(DISTINCT ?child) AS ?_result) WHERE {
                     ?child a effortless-ntwf:WorkflowSteps .
                     ?child effortless-ntwf:workflow $this .
                     OPTIONAL { ?child effortless-ntwf:requiresHumanApproval ?c2 . }
@@ -1988,6 +2082,7 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Workflows_CountApprovalConsistencyViolations" ;
+        sh:order 2 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -1998,7 +2093,7 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:Workflows .
                 {
-                    SELECT (COUNT(?child) AS ?_result) WHERE {
+                    SELECT (COUNT(DISTINCT ?child) AS ?_result) WHERE {
                     ?child a effortless-ntwf:WorkflowSteps .
                     ?child effortless-ntwf:workflow $this .
                     OPTIONAL { ?child effortless-ntwf:approvalConsistencyViolation ?c2 . }
@@ -2011,6 +2106,7 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Workflows_HasConsistencyViolation" ;
+        sh:order 3 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -2028,6 +2124,7 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Workflows_HasAIAgentStep" ;
+        sh:order 3 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -2045,6 +2142,7 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Workflows_MonthsSinceModified" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -2055,13 +2153,14 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:Workflows .
     OPTIONAL { $this effortless-ntwf:modified ?modified . }
-                BIND(((YEAR(NOW()) - YEAR(?modified)) * 12 + (MONTH(NOW()) - MONTH(?modified)) - IF(DAY(NOW()) < DAY(?modified), 1, 0)) AS ?_result)
+                BIND(IF(isNumeric(((YEAR(NOW()) - YEAR(?modified)) * 12 + (MONTH(NOW()) - MONTH(?modified)) - IF(DAY(NOW()) < DAY(?modified), 1, 0))), ROUND(((YEAR(NOW()) - YEAR(?modified)) * 12 + (MONTH(NOW()) - MONTH(?modified)) - IF(DAY(NOW()) < DAY(?modified), 1, 0))), ((YEAR(NOW()) - YEAR(?modified)) * 12 + (MONTH(NOW()) - MONTH(?modified)) - IF(DAY(NOW()) < DAY(?modified), 1, 0))) AS ?_result)
             }
         """ ;
     ] ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Workflows_IsStale" ;
+        sh:order 1 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -2080,6 +2179,7 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Workflows_IsStaleAndHasAIAgent" ;
+        sh:order 4 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -2098,6 +2198,7 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Workflows_CountDerivationLinks" ;
+        sh:order 1 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -2108,10 +2209,12 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:Workflows .
                 {
-                    SELECT (COUNT(?child) AS ?_result) WHERE {
+                    SELECT (COUNT(DISTINCT ?child) AS ?_result) WHERE {
                     ?child a effortless-ntwf:WorkflowArtifacts .
-                    ?child effortless-ntwf:producedByWorkflow $this .
+                    $this effortless-ntwf:workflowId ?p0 .
+                    ?child effortless-ntwf:producedByWorkflow ?c0 .
                     OPTIONAL { ?child effortless-ntwf:hasDerivationParent ?c2 . }
+                    FILTER(IF(isIRI(?p0), REPLACE(STR(?p0), "^.*[#/]", ""), STR(?p0)) != "" && IF(isIRI(?c0), REPLACE(STR(?c0), "^.*[#/]", ""), STR(?c0)) = IF(isIRI(?p0), REPLACE(STR(?p0), "^.*[#/]", ""), STR(?p0)))
                     FILTER(BOUND(?c2) && ?c2 = true)
                     }
                 }
@@ -2121,6 +2224,7 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Workflows_CountLegalOwnedSteps" ;
+        sh:order 2 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -2131,7 +2235,7 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:Workflows .
                 {
-                    SELECT (COUNT(?child) AS ?_result) WHERE {
+                    SELECT (COUNT(DISTINCT ?child) AS ?_result) WHERE {
                     ?child a effortless-ntwf:WorkflowSteps .
                     ?child effortless-ntwf:workflow $this .
                     OPTIONAL { ?child effortless-ntwf:isLegalOwned ?c2 . }
@@ -2144,6 +2248,7 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Workflows_CountEngineeringOwnedSteps" ;
+        sh:order 2 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -2154,7 +2259,7 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:Workflows .
                 {
-                    SELECT (COUNT(?child) AS ?_result) WHERE {
+                    SELECT (COUNT(DISTINCT ?child) AS ?_result) WHERE {
                     ?child a effortless-ntwf:WorkflowSteps .
                     ?child effortless-ntwf:workflow $this .
                     OPTIONAL { ?child effortless-ntwf:isEngineeringOwned ?c2 . }
@@ -2167,6 +2272,7 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Workflows_InvolvesEngineeringAndLegal" ;
+        sh:order 3 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -2185,6 +2291,7 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Workflows_CountInferredPrecedencePairs" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -2206,6 +2313,7 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Workflows_CountAssertedPrecedencePairs" ;
+        sh:order 0 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -2227,6 +2335,7 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Workflows_CountOfPrecedenceClosurePairs" ;
+        sh:order 1 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -2238,13 +2347,14 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
     $this a effortless-ntwf:Workflows .
     OPTIONAL { $this effortless-ntwf:countAssertedPrecedencePairs ?count_asserted_precedence_pairs . }
     OPTIONAL { $this effortless-ntwf:countInferredPrecedencePairs ?count_inferred_precedence_pairs . }
-                BIND((?count_asserted_precedence_pairs + ?count_inferred_precedence_pairs) AS ?_result)
+                BIND(IF(isNumeric((?count_asserted_precedence_pairs + ?count_inferred_precedence_pairs)), ROUND((?count_asserted_precedence_pairs + ?count_inferred_precedence_pairs)), (?count_asserted_precedence_pairs + ?count_inferred_precedence_pairs)) AS ?_result)
             }
         """ ;
     ] ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Workflows_CountRolesWithBadFillerCardinality" ;
+        sh:order 2 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -2255,7 +2365,7 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:Workflows .
                 {
-                    SELECT (COUNT(?child) AS ?_result) WHERE {
+                    SELECT (COUNT(DISTINCT ?child) AS ?_result) WHERE {
                     ?child a effortless-ntwf:Roles .
                     OPTIONAL { ?child effortless-ntwf:hasExactlyOneFiller ?c0 . }
                     FILTER(BOUND(?c0) && ?c0 = false)
@@ -2267,6 +2377,7 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Workflows_CountAgentTypeChanges" ;
+        sh:order 2 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -2277,7 +2388,7 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:Workflows .
                 {
-                    SELECT (COUNT(?child) AS ?_result) WHERE {
+                    SELECT (COUNT(DISTINCT ?child) AS ?_result) WHERE {
                     ?child a effortless-ntwf:RoleAssignments .
                     OPTIONAL { ?child effortless-ntwf:isAgentTypeChange ?c0 . }
                     FILTER(BOUND(?c0) && ?c0 = true)
@@ -2289,6 +2400,7 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Workflows_CountComplianceAuditChanges" ;
+        sh:order 2 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -2299,7 +2411,7 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:Workflows .
                 {
-                    SELECT (COUNT(?child) AS ?_result) WHERE {
+                    SELECT (COUNT(DISTINCT ?child) AS ?_result) WHERE {
                     ?child a effortless-ntwf:RoleAssignments .
                     OPTIONAL { ?child effortless-ntwf:requiresComplianceAudit ?c0 . }
                     FILTER(BOUND(?c0) && ?c0 = true)
@@ -2311,6 +2423,7 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Workflows_CountApprovalGateSteps" ;
+        sh:order 1 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -2321,7 +2434,7 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:Workflows .
                 {
-                    SELECT (COUNT(?child) AS ?_result) WHERE {
+                    SELECT (COUNT(DISTINCT ?child) AS ?_result) WHERE {
                     ?child a effortless-ntwf:WorkflowSteps .
                     ?child effortless-ntwf:workflow $this .
                     OPTIONAL { ?child effortless-ntwf:isApprovalGate ?c2 . }
@@ -2334,6 +2447,7 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Workflows_CountGatesWithoutHumanApprover" ;
+        sh:order 3 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -2344,7 +2458,7 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:Workflows .
                 {
-                    SELECT (COUNT(?child) AS ?_result) WHERE {
+                    SELECT (COUNT(DISTINCT ?child) AS ?_result) WHERE {
                     ?child a effortless-ntwf:ApprovalGates .
                     OPTIONAL { ?child effortless-ntwf:hasHumanApprover ?c0 . }
                     FILTER(BOUND(?c0) && ?c0 = false)
@@ -2356,6 +2470,7 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Workflows_CountWorkflowArtifacts" ;
+        sh:order 1 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -2366,9 +2481,11 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:Workflows .
                 {
-                    SELECT (COUNT(?child) AS ?_result) WHERE {
+                    SELECT (COUNT(DISTINCT ?child) AS ?_result) WHERE {
                     ?child a effortless-ntwf:WorkflowArtifacts .
-                    ?child effortless-ntwf:producedByWorkflow $this .
+                    $this effortless-ntwf:workflowId ?p0 .
+                    ?child effortless-ntwf:producedByWorkflow ?c0 .
+                    FILTER(IF(isIRI(?p0), REPLACE(STR(?p0), "^.*[#/]", ""), STR(?p0)) != "" && IF(isIRI(?c0), REPLACE(STR(?c0), "^.*[#/]", ""), STR(?c0)) = IF(isIRI(?p0), REPLACE(STR(?p0), "^.*[#/]", ""), STR(?p0)))
                     }
                 }
             }
@@ -2377,6 +2494,7 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Workflows_CountRolesWithEscalationViolation" ;
+        sh:order 3 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -2387,7 +2505,7 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:Workflows .
                 {
-                    SELECT (COUNT(?child) AS ?_result) WHERE {
+                    SELECT (COUNT(DISTINCT ?child) AS ?_result) WHERE {
                     ?child a effortless-ntwf:Roles .
                     OPTIONAL { ?child effortless-ntwf:escalationViolation ?c0 . }
                     FILTER(BOUND(?c0) && ?c0 = true)
@@ -2399,6 +2517,7 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Workflows_CountUnconsumedDatasets" ;
+        sh:order 1 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -2409,7 +2528,7 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:Workflows .
                 {
-                    SELECT (COUNT(?child) AS ?_result) WHERE {
+                    SELECT (COUNT(DISTINCT ?child) AS ?_result) WHERE {
                     ?child a effortless-ntwf:Datasets .
                     OPTIONAL { ?child effortless-ntwf:isConsumed ?c0 . }
                     FILTER(BOUND(?c0) && ?c0 = false)
@@ -2421,6 +2540,7 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Workflows_Cq1Satisfied" ;
+        sh:order 2 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -2439,6 +2559,7 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Workflows_Cq2Satisfied" ;
+        sh:order 4 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -2457,6 +2578,7 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Workflows_Cq3Satisfied" ;
+        sh:order 4 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -2474,6 +2596,7 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Workflows_Cq4Satisfied" ;
+        sh:order 2 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -2492,6 +2615,7 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Workflows_Cq5Satisfied" ;
+        sh:order 2 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -2509,6 +2633,7 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Workflows_Cq6Satisfied" ;
+        sh:order 4 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -2526,6 +2651,7 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Workflows_Cq7Satisfied" ;
+        sh:order 4 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
@@ -2543,6 +2669,7 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Workflows_Cq8Satisfied" ;
+        sh:order 2 ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
             PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>

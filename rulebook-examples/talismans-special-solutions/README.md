@@ -30,6 +30,28 @@ Excel, English prose, and the conformance tests are generated **siblings**.
 It is not a different approach to modeling. It is a **superset**: the same modeling, minus the
 assembly.
 
+### The precise claim, not just the marketing one
+
+Most of what makes this run — joins, rollups, calculated fields — is **FO(Aggr)**: first-order
+logic with aggregation, the same expressivity plain SQL has had for 25+ years. Nobody should be
+impressed by that part on its own.
+
+The part worth checking is narrower and has a name. **Transitive closure (TC) is provably not
+expressible in FO(Aggr)** — Immerman, *"Languages that Capture Complexity Classes"* (SIAM J.
+Comput., 1987), and the descriptive-complexity results that followed. No formula, however large,
+computes reachability over a DAG of unbounded depth from inside that expressivity class. That is
+why `precedesStep` and `delegatesTo` closure in this rulebook are **never** calculated fields:
+they are a `WITH RECURSIVE` view in Postgres (`vw_step_precedence_closure`, `vw_roles_closure`),
+an `owl:TransitiveProperty` in OWL, and an explicit traversal in Python — three different,
+substrate-native mechanisms crossing the one boundary the rulebook's own declarative core cannot
+cross on its own. The conformance suite then proves the three independently-built crossings agree.
+
+Every framework that survives contact with a real DAG hits this same wall — OCL added
+`closure()`, SQL added `WITH RECURSIVE`, OWL has transitive properties — because the wall is a
+theorem, not a gap in any one implementation. This repo's contribution isn't inventing new
+expressivity; it's **naming the boundary explicitly** instead of quietly faking it with a
+bounded-depth lookup chain, and proving the substrate-native crossings match.
+
 ### The receipt
 
 One source — `effortless-rulebook/talismans-special-solutions-rulebook.json`, the full NTWF worked
@@ -203,7 +225,7 @@ These are two different worlds, and the demo only needs the second one to *run*:
 | --- | --- | --- | --- |
 | `effortless build` + the CLI | Regenerates every substrate from the rulebook | Only when you **edit the rulebook** | **No** |
 | The cpln `*.cpln.app` transpiler URLs in `effortless.json` | Hosted **code generators** invoked by `effortless build` | Build only | **No** |
-| The `localhost:4242` ssotme-proxy bus | Local build-time transpiler router | Build only | **No** |
+| The `127.0.0.1:4242` local transpiler host | Local build-time transpiler router | Build only | **No** |
 | Express :8088 + Vite :5173 + local Postgres + in-process Python reasoner | The actual running application | Every request | **Yes** |
 
 So the long list of cpln URLs and the `:4242` bus are the **compiler toolchain**, not the
@@ -963,12 +985,22 @@ It makes OWL part of a larger model-driven system.
 
 ---
 
-## Local transpiler bus (`localhost:4242`)
+## Local transpiler bus (`127.0.0.1:4242`)
 
-> **All 13 local transpilers live on `localhost:4242`.** Start the bus with
-> `./start.sh` from `ssotme-proxy/` at the repo root (it is root
-> infrastructure again — see the root rulebook's `LegacyRunnerCapabilities`).
-> The ssotme-proxy then exposes every repo-local transpiler —
-> `postgres-calculated-to-rulebook`, `rulebook-to-python`, `rulebook-to-golang`,
-> `rulebook-to-cobol`, `rulebook-to-owl`, and more — as first-class `ssotme://`
-> routes any `effortless build` can call.
+> **All 11 local transpilers are hosted by the effortless CLI itself.** Start
+> the bus with `effortless serve -port 4242` from the repo root; it serves every
+> tool under `effortless-tools/<name>/` — `oss-postgres-calculated-to-rulebook`,
+> `oss-rulebook-to-python`, `oss-rulebook-to-golang`, `oss-rulebook-to-cobol`,
+> `oss-rulebook-to-owl`, and more — as a first-class route any `effortless
+> build` can call. `GET /` lists them.
+>
+> **Address it as `127.0.0.1`, never `localhost`.** The host binds the literal
+> prefix `http://127.0.0.1:<port>/`, so a request carrying a `localhost` Host
+> header gets a bare 404 with no explanation.
+>
+> **Every repo-local route carries the `oss-` prefix.** The bare names
+> (`rulebook-to-python`, `rulebook-to-xlsx`, `rulebook-to-owl`,
+> `rulebook-to-airtable`, `airtable-to-rulebook`) belong to the commercial
+> catalog as `effortless/effortless/<tool>`; the prefix is the only thing
+> keeping a repo-local route from shadowing one.
+> `orchestration/local_tool_shim.py` refuses to run if any tool is missing it.

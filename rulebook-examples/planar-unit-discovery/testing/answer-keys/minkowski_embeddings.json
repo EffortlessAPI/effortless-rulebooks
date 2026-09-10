@@ -1,0 +1,42 @@
+[
+  {
+    "minkowski_embedding_id": "minkowski-degenerate-test",
+    "number_field": "q-sqrt-neg3",
+    "target_lattice": null,
+    "is_canonical": false,
+    "preserves_additive_structure": false,
+    "description": "Coverage row: hypothetical non-additive map.",
+    "name": "q-sqrt-neg3-minkowski-embedding",
+    "dimension_match": true
+  },
+  {
+    "minkowski_embedding_id": "minkowski-q-sqrt-neg3",
+    "number_field": "q-sqrt-neg3",
+    "target_lattice": "lat-q-sqrt-neg3",
+    "is_canonical": true,
+    "preserves_additive_structure": true,
+    "description": "Canonical Minkowski embedding of Q(sqrt(-3)) into R^2.",
+    "name": "q-sqrt-neg3-minkowski-embedding",
+    "dimension_match": true
+  },
+  {
+    "minkowski_embedding_id": "minkowski-q-zeta-7",
+    "number_field": "q-zeta-7",
+    "target_lattice": "lat-q-zeta-7",
+    "is_canonical": true,
+    "preserves_additive_structure": true,
+    "description": "Canonical embedding of Q(\u03b6_7) into R^6 (signature (0,3) means 3 complex pairs \u21d2 ambient R^6).",
+    "name": "q-zeta-7-minkowski-embedding",
+    "dimension_match": true
+  },
+  {
+    "minkowski_embedding_id": "minkowski-unknown-test",
+    "number_field": "q-sqrt-neg3",
+    "target_lattice": null,
+    "is_canonical": false,
+    "preserves_additive_structure": false,
+    "description": "Coverage row: unevaluated additivity.",
+    "name": "q-sqrt-neg3-minkowski-embedding",
+    "dimension_match": true
+  }
+]

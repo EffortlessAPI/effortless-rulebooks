@@ -17,7 +17,7 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Architecture | A defined attribute. | _Catalog of N independent Effortless projects under rulebook-examples/. Each project's rulebook JSON is its own hub / durable SSoT, with input spokes (Airtable, LLM edits, admin portal) and a project-chosen subset of the platform's 15+ substrates as output spokes. The platform itself is one such project (effortless-platform/) describing ERB._ |
 | Entry Point | A defined attribute. | _./start.sh boots the admin portal (web UI) — local dev experience for any rulebook project_ |
 | Portal URL | A defined attribute. | _http://localhost:7777 — admin portal served by run-web-portal.sh_ |
-| Proxy URL | A defined attribute. | _http://localhost:4242 — ssotme-proxy serving substrate transpilers as HTTP routes_ |
+| Proxy URL | A defined attribute. | _http://127.0.0.1:4242 — the effortless CLI's local transpiler host, serving substrate transpilers as HTTP routes_ |
 | Repository Root | A defined attribute. | _effortlessly-invariant-rulesbooks/_ |
 | Rulebook Domains | A defined attribute. | _Reverse relationship: all RulebookDomains rows of this project._ |
 | Claude Skills | A defined attribute. | _Reverse relationship: all ClaudeSkills rows of this project._ |
@@ -378,7 +378,7 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Domain Open Finding Count | Taken from the linked domain. | _Order 3. Open findings on the linked domain._ |
 | Is Dense Derivation | True when the derived ratio is at least 1. | _Order 3. At least one derived field per entity._ |
 | Is Catalog Complete | True when all of the following hold: the domain flag is set and the tagged flag is set. | _Order 3. Linked to a real domain and tagged._ |
-| Domain is Consistent | True when the rulebook flavor's domain is a fully consistent. | _Order 4. Whether the linked domain has no open findings._ |
+| Domain is Consistent | True when the rulebook flavor's domain is fully consistent. | _Order 4. Whether the linked domain has no open findings._ |
 | Domain is Standard Layout | True when the linked domain is a standard layout. | _Order 4. Whether the linked domain's rulebook is at the canonical path._ |
 | Is Showcase Card | True when all of the following hold: the catalog complete flag is set and the domain open finding count (a missing value counts as 1) is 0. | _Order 4. Complete card whose domain has no open findings._ |
 | Is Catalog Ready | True when all of the following hold: the showcase card flag is set and the domain is consistent (a missing value counts as false). ⚠︎ mechanical <!-- rulespeak:reword --> | _Order 5. Card and domain are both clean — safe to feature._ |
@@ -618,6 +618,8 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Avg Story Progress | The average derived progress percent across the user stories related to the ERB feature. | _Order 4. Mean criteria-derived progress of the feature's stories._ |
 | Is Complete | True when the done percent is 100. | _Order 4. Every story asserted done._ |
 | Feature State | Determined by priority: “complete” if the complete flag is set; “in-progress” if the avg story progress (a missing value counts as 0) is greater than 0; in all other cases, “planned”. | _Order 5. complete / in-progress / planned._ |
+| ERB Epic | A defined attribute. | _The epic this feature belongs to._ |
+| Sort Order | A defined attribute. | _Display order within the epic._ |
 | **User Story** | User stories of the repo-consistency programme (progress-report contract). | — |
 | Name | The same as its req ID. | _Order 1. Display alias (calculated). Order 1._ |
 | Req ID | A defined attribute. | _Requirement code shown in the report (US-001 ...)._ |
@@ -855,14 +857,14 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Status | A defined attribute. | _Operational status (active, proof-of-concept, deprecated). Lifecycle, not trustworthiness._ |
 | Description | A defined attribute. | _Purpose and capabilities_ |
 | Catalog Tools | A defined attribute. | _Reverse relationship: AddToolCatalog rows whose SubstrateId points here._ |
-| Proxy Routes | A defined attribute. | _Reverse relationship: SsotmeProxy rows whose SubstrateId points here._ |
+| Local Tool Routes | A defined attribute. | _Reverse relationship: LocalToolRoutes rows whose SubstrateId points here._ |
 | Tradeoffs | A defined attribute. | _Reverse relationship: SubstrateTradeoffs rows whose SubstrateId points here._ |
 | Project | A defined attribute. | _FK to ProjectMetadata — roots this catalog row to the platform row so repo-wide rollups exist on one dashboard record._ |
 | Is Fully Expressive | True when the expressive completeness is “full”. | _Order 1. Substrate expresses every formula type (Expressive = full)._ |
 | Fully Expressive Flag | Determined by priority: 1 if the expressive completeness is “full”; in all other cases, 0. | _Order 1. 1 when fully expressive — rollup carrier._ |
 | Is Reference Quality | True when the maturity is “reference-quality”. | _Order 1. Maturity is reference-quality._ |
 | Tradeoff Count | The number of substrate tradeoffs related to the execution substrate. | _Order 1. Tradeoff rows recorded for this substrate._ |
-| Proxy Route Count | The number of ssotme proxy related to the execution substrate. | _Order 1. ssotme-proxy routes that produce this substrate._ |
+| Proxy Route Count | The number of local tool routes related to the execution substrate. | _Order 1. Local transpiler routes that produce this substrate._ |
 | Catalog Tool Count | The number of add tool catalog related to the execution substrate. | _Order 1. Add-tool catalog entries targeting this substrate._ |
 | Is Peer Complete | True when all of the following hold: the fully expressive flag is set and the can be answer key flag is set. | _Order 2. Fully expressive and eligible as an answer key — a peer-complete substrate._ |
 | Peer Complete Flag | Determined by priority: 1 if all of the following hold: the fully expressive flag is set and the can be answer key flag is set; in all other cases, 0. | _Order 2. 1 when peer-complete — rollup carrier._ |
@@ -886,7 +888,7 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Is Heavy Shell | True when all of the following hold: the shell script flag is set and the dependency band is “heavy”. | _Order 3. Bash script with a heavy dependency fan-in._ |
 | Review Priority | Determined by priority: “review” if the heavy shell flag is set; “watch” if the dependency band is “heavy”; in all other cases, “ok”. | _Order 4. review / watch / ok._ |
 | Needs Review | True when the review priority is “review”. | _Order 5. Flagged for dependency review._ |
-| **Ssotme Proxy** | Local HTTP transpiler server on localhost:4242. Each transpiler is an HTTP route; injectors are the route bodies. Used by `effortless build` to call substrate generators uniformly. | — |
+| **Local Tool Route** | The repo's local transpiler routes, hosted by the effortless CLI itself (`effortless serve -port 4242` over effortless-tools/ at the repo root). Each tool is a folder whose transpiler.py calls orchestration/local_tool_shim.py, which translates the CLI's EFFORTLESS_INPUT_DIR/EFFORTLESS_OUTPUT_DIR contract into the injectors' ERB_RULEBOOK_PATH/ERB_OUTPUT_DIR one. Replaced the hand-rolled ssotme-proxy on 2026-09-12. | — |
 | Name | The same as its route. | _Order 1. Display alias (calculated). Order 1._ |
 | Route | A defined attribute. | _POST /{route-name}_ |
 | Substrate ID | A defined attribute. | _FK to ExecutionSubstrates.SubstrateId_ |
@@ -946,7 +948,7 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Output Path | A defined attribute. | _Default RelativePath under the project (e.g. /python, /golang)_ |
 | Substrate ID | A defined attribute. | _FK to ExecutionSubstrates for code-gen tools_ |
 | Description | A defined attribute. | — |
-| Is Local Proxy | True when the source is “local-proxy”. | _Order 1. Tool is served by the local ssotme-proxy._ |
+| Is Local Proxy | True when the source is “local-proxy”. | _Order 1. Tool is served by the local transpiler host._ |
 | Substrate Name | Taken from the linked substrate ID. | _Order 1. Name of the target substrate._ |
 | Substrate Maturity | Taken from the linked substrate ID. | _Order 1. Maturity of the target substrate._ |
 | Is Proxy Backed Reference | True when all of the following hold: the local proxy flag is set and the substrate maturity is “reference-quality”. | _Order 2. Local-proxy tool whose substrate is reference-quality._ |
@@ -1124,6 +1126,96 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Narrative State | Determined by priority: “ready” if the substantive flag is set; in all other cases, “stub”. | _Order 3. ready / stub._ |
 | Is Ready | True when the narrative state is “ready”. | _Order 4. Narrative is ready for publication._ |
 | Section Label | Determined by priority: the name, followed by “ (ready)” if the ready flag is set; in all other cases, the name, followed by “ (stub)”. | _Order 5. Display label with readiness._ |
+| **ERB Table** | One row per table in this rulebook, mirrored from its structure by the Sync step. Security permissions and delivery features point at these rows rather than at bare table names. | — |
+| Table Name | A defined attribute. | _The rulebook table name again, kept as a plain column so it can be displayed and filtered like any other field._ |
+| Description | A defined attribute. | _What this table holds. Copied from the rulebook on first sync and never overwritten afterwards, so edits made here stick._ |
+| Is Meta Table | True when an empty string. | _True when this table exists to serve the editor or a module (an ERB table, a settings bag) rather than the domain. Set by sync._ |
+| Is Tenant Scoped | True when an empty string. | _True when rows of this table belong to one tenant and must be filtered by tenant for every non-exempt role._ |
+| Tenant Parent Table | A defined attribute. | _For a tenant-scoped table with no tenant column of its own: the parent table the tenant is reached through._ |
+| Tenant Parent Field | A defined attribute. | _The field on this table that points at TenantParentTable, when tenancy is inherited from a parent._ |
+| Sort Order | A defined attribute. | _Display order in lists and reports._ |
+| **ERB Field** | One row per field of every table in this rulebook, mirrored by the Sync step. Field-level permissions point at these rows. | — |
+| ERB Table | A defined attribute. | _The table this field belongs to._ |
+| Field Name | A defined attribute. | _The field name as it appears in the rulebook schema._ |
+| Field Type | A defined attribute. | _How the value is produced: raw, calculated, lookup, relationship or aggregation. Only raw and relationship fields are real columns on the base table._ |
+| Datatype | A defined attribute. | _The rulebook datatype: string, integer, number, boolean, datetime._ |
+| Is Primary Key | True when an empty string. | _True for the field that identifies a row of its table._ |
+| Description | A defined attribute. | _What this field means. Copied from the rulebook on first sync and never overwritten afterwards._ |
+| **ERB Role** | A named role that users hold. Its default CRUD and default row filter apply to every table unless an ERBRoleTablePermissions row overrides them. Each role becomes a database role and gets its own schema of permitted views. | — |
+| Title | A defined attribute. | _Human-readable name shown in the editor._ |
+| Description | A defined attribute. | _What this role is for and who typically holds it._ |
+| Default CRUD | A defined attribute. | _Default permissions as any subset of the letters C, R, U and D, for example R or CRUD. Applies to every table with no override._ |
+| Default Row Filter | A defined attribute. | _Default row restriction as a predicate, for example customer_email = {{email}}. Empty means every row. Overridden per table by ERBRoleTablePermissions.RowFilter._ |
+| Is Admin Equivalent | True when an empty string. | _True for a role that bypasses every restriction and sees every table and row._ |
+| Is Tenant Exempt | True when an empty string. | _True for a role allowed to see across tenants; tenant-scoped tables then need no row filter for it._ |
+| Sort Order | A defined attribute. | _Display order._ |
+| **ERB User** | The people and service accounts that sign in to the application, each holding one role. Identity helpers can resolve a signed-in user to a row here by email or external id. | — |
+| Email Address | A defined attribute. | _The email address the user signs in with. Unique._ |
+| Display Name | A defined attribute. | _Name shown in the application._ |
+| ERB Role | A defined attribute. | _The role this user holds._ |
+| External User ID | A defined attribute. | _The subject (sub) claim of the identity provider token, when the application resolves users by id rather than email._ |
+| Is Active | True when an empty string. | _False disables the account without deleting its history._ |
+| **ERB Role Table Permission** | A per-table override of one role default CRUD and row filter. A table with no row here inherits the role defaults. | — |
+| ERB Role | A defined attribute. | _The role this override belongs to._ |
+| ERB Table | A defined attribute. | _The table being overridden._ |
+| CRUD | A defined attribute. | _Permissions for this table as a subset of C, R, U and D. Empty means no access._ |
+| Row Filter | A defined attribute. | _Row restriction for this table as a predicate; may use {{variable}} placeholders. Empty falls back to the role default filter._ |
+| **ERB Role Field Permission** | A per-field override for one role, used to hide or protect individual columns such as cost, margin or personal data that the table-level grant would otherwise expose. | — |
+| ERB Role | A defined attribute. | _The role this override belongs to._ |
+| ERB Field | A defined attribute. | _The field being overridden._ |
+| CRUD | A defined attribute. | _Permissions for this field as a subset of C, R, U and D. Omitting R removes the column from the role view; omitting U removes it from the role update grant._ |
+| **ERB Context Variable** | The identity facts a row filter may refer to as {{name}}. Each becomes a generated helper function app.name() that reads the current transaction token or resolves from other helpers. Seeded with user_id, email and role. | — |
+| Datatype | A defined attribute. | _The value type: string, integer, number or boolean. Drives the cast applied in generated SQL._ |
+| Source | A defined attribute. | _jwt-claim to read a claim from the transaction token, or resolver to compute the value with ResolverSql._ |
+| Claim Path | A defined attribute. | _For jwt-claim: the claim to read, for example email or app_metadata.tenant._ |
+| Resolver SQL | A defined attribute. | _For resolver: a SQL expression returning one value; may call other helpers such as app.email()._ |
+| Description | A defined attribute. | _What this variable represents and where its value ultimately comes from._ |
+| **ERB Epic** | The large themes user stories are grouped under. Each epic belongs to one package. | — |
+| Title | A defined attribute. | _Epic name shown in the report._ |
+| ERB Package | A defined attribute. | _The package this epic is sold as part of._ |
+| Sort Order | A defined attribute. | _Display order within the package._ |
+| **ERB Effort Class** | Complexity bands a story is placed in. The weight multiplies acceptance criteria into units of work, so it moves the price. The most demanding band must be named G3. | — |
+| Title | A defined attribute. | _Band name such as Routine or Demanding._ |
+| Complexity Weight | A defined attribute. | _Multiplier applied per acceptance criterion. Must be non-zero for any band a story uses._ |
+| Sort Order | A defined attribute. | _Display order from easiest to hardest._ |
+| **ERB Delivery Discipline** | How every quoted price divides across kinds of work. The client-visible shares must sum to 100. | — |
+| Title | A defined attribute. | _Discipline name._ |
+| Share Percent | A defined attribute. | _Percentage of every price attributed to this discipline._ |
+| Description | A defined attribute. | _What this discipline covers._ |
+| Client Visible | True when an empty string. | _False hides the discipline from the client-facing report and from the sum-to-100 check._ |
+| Sort Order | A defined attribute. | _Display order._ |
+| **ERB Build Phas** | The phases work is scheduled and priced in. Exactly one phase is the current bid. | — |
+| Phase Number | A defined attribute. | _Ordinal of this phase in the plan._ |
+| Title | A defined attribute. | _Phase name shown in the report._ |
+| Quoted Price | A defined attribute. | _The price quoted for this phase, in the currency of the proposal._ |
+| Duration Months | A defined attribute. | _Planned duration in months._ |
+| Phase Kind | A defined attribute. | _fixed-price, time-and-materials or priced-option. Drives the commercial grouping._ |
+| Is Current Bid | True when an empty string. | _True for the single phase this document is asking for._ |
+| **ERB User Story** | The atom of scope: one selectable piece of work, placed in a phase, an epic, a feature and an effort class. | — |
+| Req ID | A defined attribute. | _The requirement identifier shown to the client, for example ACC-01._ |
+| Story Text | A defined attribute. | _The story in the form: as a role I can do something so that outcome._ |
+| ERB Build Phase | A defined attribute. | _The phase this story is delivered in._ |
+| ERB Epic | A defined attribute. | _The epic this story sits under. Read directly, not inferred through the feature._ |
+| ERB Feature | A defined attribute. | _The feature this story implements._ |
+| ERB Effort Class | A defined attribute. | _The complexity band, chosen by what the work is._ |
+| Depends on Story | A defined attribute. | _A story that must exist before this one. Drives the scope cascade; must be acyclic._ |
+| Needs New Rulebook Modelling | True when an empty string. | _True when delivering this story requires new core modelling in the rulebook._ |
+| Spike Coverage Percent | A defined attribute. | _How much of this story was prototyped before the bid, as a percentage._ |
+| Rulebook Gap Note | A defined attribute. | _The note shown when the story needs new modelling._ |
+| Roadblock | A defined attribute. | _When set, the story is waiting on someone outside the build._ |
+| **ERB Acceptance Criteria** | What is being committed to for a story, one testable statement per row. The unit of pricing and the acceptance ledger. | — |
+| ERB User Story | A defined attribute. | _The story this criterion belongs to._ |
+| Criterion | A defined attribute. | _The testable statement._ |
+| Sort Order | A defined attribute. | _The order criteria are read in._ |
+| Depends on Criterion | A defined attribute. | _A criterion that must pass before this one is meaningful._ |
+| Is Accepted | True when an empty string. | _True once the client has accepted this criterion as met._ |
+| **ERB Proposal Section** | Your own prose for the Progress Report, keyed by section. A meta table that drives the document only. | — |
+| Section Key | A defined attribute. | _Which section this targets, for example what-this-is or cost-curve._ |
+| Title | A defined attribute. | _Heading override; blank keeps the shipped heading._ |
+| Body | A defined attribute. | _The prose. Supports **bold**, *italic* and {placeholder} facts._ |
+| Mode | A defined attribute. | _replace, append or prepend; default append._ |
+| Sort Order | A defined attribute. | _Order within a section key._ |
+| Client Visible | True when an empty string. | _False hides this row from the client-facing document._ |
 
 ## 2 Fact Types
 
@@ -1158,6 +1250,7 @@ _The repo-governing rulebook: every governed project including the root, witness
 - an **ERB feature category** references exactly one **ERB package**
 - an **ERB feature** references exactly one **ERB feature category**
 - an **ERB feature** references exactly one **ERB package**
+- an **ERB feature** may reference one **ERB epic**
 - a **user story** references exactly one **build phas**
 - a **user story** references exactly one **ERB feature category**
 - a **user story** references exactly one **ERB feature**
@@ -1175,10 +1268,9 @@ _The repo-governing rulebook: every governed project including the root, witness
 - a **project slot witness** references exactly one **rulebook domain**
 - a **project slot witness** references exactly one **project layout slot**
 - an **execution substrate** may reference one **add tool catalog**
-- an **execution substrate** may reference one **ssotme proxy**
 - an **execution substrate** may reference one **substrate tradeoff**
 - an **execution substrate** references exactly one **project metadata**
-- a **ssotme proxy** may reference one **execution substrate**
+- a **local tool route** may reference one **execution substrate**
 - an **add tool catalog** may reference one **execution substrate**
 - a **substrate contract phas** may reference one **evaluation artifact**
 - an **evaluation step** references exactly one **substrate contract phas**
@@ -1186,6 +1278,21 @@ _The repo-governing rulebook: every governed project including the root, witness
 - a **substrate tradeoff dimension** may reference one **substrate tradeoff**
 - a **substrate tradeoff** references exactly one **execution substrate**
 - a **substrate tradeoff** references exactly one **substrate tradeoff dimension**
+- an **ERB table** may reference one **ERB table**
+- an **ERB field** may reference one **ERB table**
+- an **ERB user** may reference one **ERB role**
+- an **ERB role table permission** may reference one **ERB role**
+- an **ERB role table permission** may reference one **ERB table**
+- an **ERB role field permission** may reference one **ERB role**
+- an **ERB role field permission** may reference one **ERB field**
+- an **ERB epic** may reference one **ERB package**
+- an **ERB user story** may reference one **ERB build phas**
+- an **ERB user story** may reference one **ERB epic**
+- an **ERB user story** may reference one **ERB feature**
+- an **ERB user story** may reference one **ERB effort class**
+- an **ERB user story** may reference one **ERB user story**
+- an **ERB acceptance criteria** may reference one **ERB user story**
+- an **ERB acceptance criteria** may reference one **ERB acceptance criteria**
 
 ## 3 Operative Rules
 
@@ -1197,41 +1304,41 @@ already computes (cross-referenced as DR-N in the Definitional Rules below)._
 ### Structural Constraints (from the schema)
 
 - A project metadata **must** have a name and a purpose.
-- An ontology axiom **must** have a short name, a statement, a why, and a status.
-- A framing invariant **must** have a name, a category, a wrong framing, a correct framing, a why, a severity, and a status.
-- A platform feature **must** have a name, a short name, a tier, a priority, a one line summary, a readme file path, a readme stub content, and a status.
-- A rulebook source spoke **must** have a name, a kind, a direction, and a purpose, and record whether it is required.
+- An ontology axiom **must** have a short name; a statement; a why; and a status.
+- A framing invariant **must** have a name; a category; a wrong framing; a correct framing; a why; a severity; and a status.
+- A platform feature **must** have a name; a short name; a tier; a priority; a one line summary; a readme file path; a readme stub content; and a status.
+- A rulebook source spoke **must** have a name; a kind; a direction; and a purpose, and record whether it is required.
 - A rulebook domain **must** reference exactly one project metadata as its project.
-- A rulebook domain **must** have an area, a kind, a domain name, a relative path, and a rulebook path, and record whether it is an intentional exception.
+- A rulebook domain **must** have an area; a kind; a domain name; a relative path; and a rulebook path, and record whether it is an intentional exception.
 - A project launch profile **must** reference exactly one rulebook domain as its domain.
-- A project launch profile **must** have a working directory, a start command, an experience description, a prerequisite notes, and an experience kind, and record whether it is start required and whether it requires local URL.
+- A project launch profile **must** have a working directory; a start command; an experience description; a prerequisite notes; and an experience kind, and record whether it is start required and whether it requires local URL.
 - A project local service **must** reference exactly one project launch profile as its launch profile.
-- A project local service **must** have a service role, a local URL, a health URL, a sort order, and an is primary flag.
+- A project local service **must** have a service role; a local URL; a health URL; a sort order; and an is primary flag.
 - A legacy runner capability **must** reference exactly one project metadata as its project.
-- A legacy runner capability **must** have a title, a decision, a destination, and a status.
+- A legacy runner capability **must** have a title; a decision; a destination; and a status.
 - A conformance run **must** reference exactly one rulebook domain as its domain.
 - A conformance run **must** have a ran on.
 - A conformance result **must** reference exactly one conformance run as its run.
 - A conformance result **must** have a substrate name and a status.
-- A test suite **must** have a suite kind, a runner, and an expected substrate count, and record whether it is registered.
+- A test suite **must** have a suite kind; a runner; and an expected substrate count, and record whether it is registered.
 - A corpus run **must** have a mode and a started on, and record whether it is a latest.
 - A corpus domain run **must** reference exactly one corpus run.
 - A corpus domain run **must** reference exactly one rulebook domain as its domain.
-- A corpus domain run **must** have a build status, a db status, and a conformance status.
-- A rulebook flavor **must** have a sort order, a project slug, a display name, a tagline, a logo path, a flavor, a complexity, an entity count, a calculated count, an aggregation count, a lookup count, and a learning focus.
-- A field type taxonomy **must** have a type name, an intent, a storage mode, and an expressive tier, and record whether it is read only in ui.
-- A formula dialect **must** have a name, an origin, a field ref syntax, a string concat, and a status, and record whether it is case sensitive.
-- A demo narrative **must** have an order, a narrative name, a step name, a what happens, and a key lesson.
-- A glossary **must** have a term, a category, a definition, and an implemented as.
-- A rulebook tag **must** have a label, a category, a color, an emoji, and a description.
+- A corpus domain run **must** have a build status; a db status; and a conformance status.
+- A rulebook flavor **must** have a sort order; a project slug; a display name; a tagline; a logo path; a flavor; a complexity; an entity count; a calculated count; an aggregation count; a lookup count; and a learning focus.
+- A field type taxonomy **must** have a type name; an intent; a storage mode; and an expressive tier, and record whether it is read only in ui.
+- A formula dialect **must** have a name; an origin; a field ref syntax; a string concat; and a status, and record whether it is case sensitive.
+- A demo narrative **must** have an order; a narrative name; a step name; a what happens; and a key lesson.
+- A glossary **must** have a term; a category; a definition; and an implemented as.
+- A rulebook tag **must** have a label; a category; a color; an emoji; and a description.
 - A flavor tag **must** reference exactly one rulebook flavor as its flavor.
 - A flavor tag **must** reference exactly one rulebook tag as its tag.
 - A claude skill **must** reference exactly one project metadata as its project.
-- A claude skill **must** have a name, a category, a load gate, a status, a one line summary, an audience, and a clone URL, and record whether it is an entry point and whether it is highlight in readme.
+- A claude skill **must** have a name; a category; a load gate; a status; a one line summary; an audience; and a clone URL, and record whether it is an entry point and whether it is highlight in readme.
 - A build phas **must** reference exactly one project metadata as its project.
-- A build phas **must** have a phase number, a title, and a phase kind, and record whether it is a current bid.
-- An effort class **must** have a title, a complexity weight, and a sort order.
-- A delivery discipline **must** have a title, a share percent, and a sort order, and record whether it is client visible.
+- A build phas **must** have a phase number; a title; and a phase kind, and record whether it is a current bid.
+- An effort class **must** have a title; a complexity weight; and a sort order.
+- A delivery discipline **must** have a title; a share percent; and a sort order, and record whether it is client visible.
 - An ERB package **must** reference exactly one project metadata as its project.
 - An ERB package **must** have a title and a sort order.
 - An ERB feature category **must** reference exactly one ERB package.
@@ -1243,44 +1350,44 @@ already computes (cross-referenced as DR-N in the Definitional Rules below)._
 - A user story **must** reference exactly one ERB feature category as its epic.
 - A user story **must** reference exactly one ERB feature as its feature.
 - A user story **must** reference exactly one effort class.
-- A user story **must** have a req ID, a story text, a status, and a dev progress percent.
+- A user story **must** have a req ID; a story text; a status; and a dev progress percent.
 - An acceptance criteria **must** reference exactly one user story.
 - An acceptance criteria **must** have a criterion, and record whether it is a met.
 - A consistency rule **must** reference exactly one project metadata as its project.
-- A consistency rule **must** have a rule code, a severity, a scope, and a statement, and record whether it is scanner derived.
+- A consistency rule **must** have a rule code; a severity; a scope; and a statement, and record whether it is scanner derived.
 - A consistency finding **must** reference exactly one consistency rule as its rule.
-- A consistency finding **must** have a detail, a status, and a detected on.
+- A consistency finding **must** have a detail; a status; and a detected on.
 - A mobile nav tab **must** reference exactly one project metadata as its project.
-- A mobile nav tab **must** have a label, an icon, a root path, and a sort order.
+- A mobile nav tab **must** have a label; an icon; a root path; and a sort order.
 - A mobile route **must** reference exactly one mobile nav tab as its tab.
-- A mobile route **must** have a path, a title, a route kind, and a sort order.
+- A mobile route **must** have a path; a title; a route kind; and a sort order.
 - A skill route **must** reference exactly one claude skill as its from skill.
 - A skill route **must** reference exactly one claude skill as its to skill.
 - A project layout slot **must** reference exactly one project metadata as its project.
-- A project layout slot **must** have a title, a kind, a pattern, and a description, and record whether it is required for root, whether it is required for example, and whether it is required for toy.
+- A project layout slot **must** have a title; a kind; a pattern; and a description, and record whether it is required for root; whether it is required for example; and whether it is required for toy.
 - A project slot witness **must** reference exactly one rulebook domain as its domain.
 - A project slot witness **must** reference exactly one project layout slot as its slot.
-- A project slot witness **must** have a witnessed detail and a witnessed on, and record whether it is a present.
+- A project slot witness **must** have a witnessed detail and a witnessed on, and record whether it is present.
 - A CMCC summary **must** have a name and a description.
 - A project goal **must** have a name and a description.
 - An architectural highlight **must** have a name and a description.
 - An execution substrate **must** reference exactly one project metadata as its project.
-- An execution substrate **must** have a name, a technology, a relative path, an injector script, a transpiler source, a maturity, an expressive completeness, a determinism, and a runtime kind, and record whether it can be answer key.
-- An orchestration component **must** have a name, a file path, a language, and a purpose.
-- A ssotme proxy **must** have a route and a description.
-- A testing framework **must** have a name, a file path, and a purpose.
+- An execution substrate **must** have a name; a technology; a relative path; an injector script; a transpiler source; a maturity; an expressive completeness; a determinism; and a runtime kind, and record whether it can be answer key.
+- An orchestration component **must** have a name; a file path; a language; and a purpose.
+- A local tool route **must** have a route and a description.
+- A testing framework **must** have a name; a file path; and a purpose.
 - A core data flow **must** have a name and a steps.
-- A dependency **must** have a name, a type, and a purpose, and record whether it is required.
-- An add tool catalog **must** have a name, a category, a source, an install URL, and a description.
-- A substrate contract phas **must** have an order, a name, an input, an output, and a description, and record whether it is domain agnostic.
+- A dependency **must** have a name; a type; and a purpose, and record whether it is required.
+- An add tool catalog **must** have a name; a category; a source; an install URL; and a description.
+- A substrate contract phas **must** have an order; a name; an input; an output; and a description, and record whether it is domain agnostic.
 - An evaluation step **must** reference exactly one substrate contract phas as its phase ID.
-- An evaluation step **must** have an order, a name, and a description.
-- An evaluation artifact **must** have a name, a format, a path pattern, and a description.
-- A substrate tradeoff dimension **must** have a name, a description, and an order.
+- An evaluation step **must** have an order; a name; and a description.
+- An evaluation artifact **must** have a name; a format; a path pattern; and a description.
+- A substrate tradeoff dimension **must** have a name; a description; and an order.
 - A substrate tradeoff **must** reference exactly one execution substrate as its substrate ID.
 - A substrate tradeoff **must** reference exactly one substrate tradeoff dimension as its dimension ID.
-- A fuzzy grading provider **must** have a name, a model, and a determinism, and record whether it is local runtime.
-- A project configuration **must** have a file name, a file path, a format, and a purpose.
+- A fuzzy grading provider **must** have a name; a model; and a determinism, and record whether it is local runtime.
+- A project configuration **must** have a file name; a file path; a format; and a purpose.
 - A build pipeline **must** have an aspect and an authority.
 - A portal cli parity **must** have a name and a description.
 - A write through invariant **must** have a name and a description.
@@ -1320,7 +1427,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-20 Shippable Tab Count** | A project metadata's shippable tab count is the total shippable flag across the mobile nav tabs related to the project metadata. |
 | **DR-21 Healthy Skill Count** | A project metadata's healthy skill count is the total healthy flag across the claude skills related to the project metadata. |
 | **DR-22 Programme Progress Percent** | A project metadata's programme progress percent is the average weighted done percent across the build phases related to the project metadata. |
-| **DR-23 Is Repo Consistent** | A project metadata is considered a repo consistent if the clean domain count is the domain count. |
+| **DR-23 Is Repo Consistent** | A project metadata is considered repo-consistent if the clean domain count is the domain count. |
 | **DR-24 Layout Slot Count** | A project metadata's layout slot count is the number of project layout slots related to the project metadata. |
 | **DR-25 Fully Implemented Count** | A project metadata's fully implemented count is the total fully implemented flag across the rulebook domains related to the project metadata. |
 | **DR-26 Runner Capability Count** | A project metadata's runner capability count is the number of legacy runner capabilities related to the project metadata. |
@@ -1339,11 +1446,11 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-39 Guard Ratio** | The ontology axiom's guard ratio is determined by the following priority:<br>1. 0, if the invariant count is 0;<br>2. in all other cases, the critical invariant count divided by the invariant count rounded to 2 decimal place(s). |
 | **DR-40 Guard State** | The ontology axiom's guard state is determined by the following priority:<br>1. “guarded”, if the well guarded flag is set;<br>2. “exposed”, if the load bearing flag is set;<br>3. in all other cases, “dormant”. |
 | **DR-41 Is Exposed Foundation** | An ontology axiom is considered an exposed foundation if the guard state is “exposed”. |
-| **DR-42 Is Critical** | A framing invariant is considered a critical if the severity is “critical”. |
+| **DR-42 Is Critical** | A framing invariant is considered critical if the severity is “critical”. |
 | **DR-43 Critical Flag** | The framing invariant's critical flag is determined by the following priority:<br>1. 1, if the severity is “critical”;<br>2. in all other cases, 0. |
 | **DR-44 Axiom Short Name** | A framing invariant's axiom short name — taken from the linked violated axiom ID. |
 | **DR-45 Axiom is Active** | A framing invariant's axiom is active when the linked violated axiom ID is active. |
-| **DR-46 Is Active Critical** | A framing invariant is considered an active critical if all of the following hold: the critical flag is set and the status is “active”. |
+| **DR-46 Is Active Critical** | A framing invariant is considered active-critical if all of the following hold: the critical flag is set and the status is “active”. |
 | **DR-47 Is Enforceable** | A framing invariant is considered enforceable if all of the following hold: the active critical flag is set and the axiom is active (a missing value counts as false). ⚠︎ mechanical <!-- rulespeak:reword --> |
 | **DR-48 Axiom is Load Bearing** | A framing invariant's axiom is load bearing when the linked violated axiom ID is load bearing. |
 | **DR-49 Enforcement State** | The framing invariant's enforcement state is determined by the following priority:<br>1. “enforced”, if the enforceable flag is set;<br>2. “advisory”, if the axiom is load bearing (a missing value counts as false);<br>3. in all other cases, “orphan”. ⚠︎ mechanical <!-- rulespeak:reword --> |
@@ -1360,9 +1467,9 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-60 Doc State** | The platform feature's doc state is determined by the following priority:<br>1. “headline-gap”, if the headline gap flag is set;<br>2. “gap”, if the needs readme work flag is set;<br>3. “documented”, if the shipped flag is set;<br>4. in all other cases, “pending”. |
 | **DR-61 Is Axiom Backed** | A platform feature is considered axiom-backed if all of the following hold: the axiom is load bearing (a missing value counts as false) and the shipped flag is set. ⚠︎ mechanical <!-- rulespeak:reword --> |
 | **DR-62 Is Showcase Feature** | A platform feature is considered a showcase feature if all of the following hold: the axiom backed flag is set and the doc state is “documented”. |
-| **DR-63 Is Bidirectional** | A rulebook source spoke is considered a bidirectional if the direction is “bidirectional”. |
-| **DR-64 Is Optional** | A rulebook source spoke is considered an optional if the required flag is not set. |
-| **DR-65 Is Optional Bidirectional** | A rulebook source spoke is considered an optional bidirectional if all of the following hold: the optional flag is set and the bidirectional flag is set. |
+| **DR-63 Is Bidirectional** | A rulebook source spoke is considered bidirectional if the direction is “bidirectional”. |
+| **DR-64 Is Optional** | A rulebook source spoke is considered optional if the required flag is not set. |
+| **DR-65 Is Optional Bidirectional** | A rulebook source spoke is considered optional-bidirectional if all of the following hold: the optional flag is set and the bidirectional flag is set. |
 | **DR-66 Spoke Kind** | The rulebook source spoke's spoke kind is determined by the following priority:<br>1. “editing-surface”, if the optional bidirectional flag is set;<br>2. “required-sync”, if the bidirectional flag is set;<br>3. in all other cases, “one-way”. |
 | **DR-67 Is Advertised Surface** | A rulebook source spoke is considered an advertised surface if all of the following hold: the spoke kind is “editing-surface” and the required flag is not set. |
 | **DR-68 Surface Label** | The rulebook source spoke's surface label is determined by the following priority:<br>1. the name, followed by “ (optional surface)”, if the advertised surface flag is set;<br>2. in all other cases, the name. |
@@ -1379,14 +1486,14 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-79 Has Flavor Card** | A rulebook domain is considered to have a flavor card if the flavor card count is greater than 0. |
 | **DR-80 Is Progression Root** | A rulebook domain is considered a progression root if all of the following hold: the parent domain ID is blank and the child domain count is greater than 0. |
 | **DR-81 Is Standard Layout** | A rulebook domain is considered a standard layout if at least one of the following holds: the rulebook path (a missing value counts as an empty string) is the expected rulebook path or the rulebook path (a missing value counts as an empty string) is the relative path, followed by “effortless-rulebook/effortless-rulebook.json”. |
-| **DR-82 Is Fully Consistent** | A rulebook domain is considered a fully consistent if the open finding count is 0. |
+| **DR-82 Is Fully Consistent** | A rulebook domain is considered fully-consistent if the open finding count is 0. |
 | **DR-83 Clean Flag** | The rulebook domain's clean flag is determined by the following priority:<br>1. 1, if the open finding count is 0;<br>2. in all other cases, 0. |
 | **DR-84 Consistency Grade** | The rulebook domain's consistency grade is determined by the following priority:<br>1. “clean”, if the open finding count is 0;<br>2. “minor”, if the open finding count is at most 2;<br>3. in all other cases, “major”. |
 | **DR-85 Needs Flavor Card** | A rulebook domain is considered to need a flavor card if all of the following hold: the area is not “root”; the intentional exception flag is not set; and the flavor card flag is not set. |
 | **DR-86 Needs Flavor Flag** | The rulebook domain's needs flavor flag is determined by the following priority:<br>1. 1, if all of the following hold: the area is not “root”; the intentional exception flag is not set; and the flavor card flag is not set;<br>2. in all other cases, 0. |
 | **DR-87 Layout Flag** | The rulebook domain's layout flag is determined by the following priority:<br>1. 1, if the standard layout flag is set;<br>2. in all other cases, 0. |
 | **DR-88 Conformance Score** | A rulebook domain's conformance score is computed as the count of the following that hold: the fully consistent flag is set; the standard layout flag is set; the flavor card flag is set; and the rulebook flag is set. |
-| **DR-89 Is Showcase Ready** | A rulebook domain is considered a showcase ready if all of the following hold: the fully consistent flag is set; the standard layout flag is set; and the toy flag is not set. |
+| **DR-89 Is Showcase Ready** | A rulebook domain is considered showcase-ready if all of the following hold: the fully consistent flag is set; the standard layout flag is set; and the toy flag is not set. |
 | **DR-90 Conformance Band** | The rulebook domain's conformance band is determined by the following priority:<br>1. “exemplary”, if the conformance score is 4;<br>2. “acceptable”, if the conformance score is at least 2;<br>3. in all other cases, “needs-work”. |
 | **DR-91 Showcase Flag** | The rulebook domain's showcase flag is determined by the following priority:<br>1. 1, if the showcase ready flag is set;<br>2. in all other cases, 0. |
 | **DR-92 Slot Witness Count** | A rulebook domain's slot witness count is the number of project slot witnesses related to the rulebook domain. |
@@ -1496,10 +1603,10 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-196 Domain Open Finding Count** | A rulebook flavor's domain open finding count — taken from the linked domain. |
 | **DR-197 Is Dense Derivation** | A rulebook flavor is considered a dense derivation if the derived ratio is at least 1. |
 | **DR-198 Is Catalog Complete** | A rulebook flavor is considered a catalog complete if all of the following hold: the domain flag is set and the tagged flag is set. |
-| **DR-199 Domain is Consistent** | A rulebook flavor's domain is consistent is true when the rulebook flavor's domain is a fully consistent. |
+| **DR-199 Domain is Consistent** | A rulebook flavor's domain is consistent is true when the rulebook flavor's domain is fully consistent. |
 | **DR-200 Domain is Standard Layout** | A rulebook flavor's domain is standard layout when the linked domain is a standard layout. |
 | **DR-201 Is Showcase Card** | A rulebook flavor is considered a showcase card if all of the following hold: the catalog complete flag is set and the domain open finding count (a missing value counts as 1) is 0. |
-| **DR-202 Is Catalog Ready** | A rulebook flavor is considered a catalog ready if all of the following hold: the showcase card flag is set and the domain is consistent (a missing value counts as false). ⚠︎ mechanical <!-- rulespeak:reword --> |
+| **DR-202 Is Catalog Ready** | A rulebook flavor is considered catalog-ready if all of the following hold: the showcase card flag is set and the domain is consistent (a missing value counts as false). ⚠︎ mechanical <!-- rulespeak:reword --> |
 | **DR-203 Domain Conformance Score** | A rulebook flavor's domain conformance score — taken from the linked domain. |
 | **DR-204 Name** | A field type taxonomy's name is the same as its type name. |
 | **DR-205 Is Stored** | A field type taxonomy is considered stored if the storage mode is “stored”. |
@@ -1666,7 +1773,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-366 Story is Ahead of Criterion** | An acceptance criteria is flagged story is ahead of criterion if all of the following hold: the met flag is not set and the story derived progress (a missing value counts as 0) is at least 50. |
 | **DR-367 Name** | A consistency rule's name is the same as its rule code. |
 | **DR-368 Finding Count** | A consistency rule's finding count is the number of consistency findings related to the consistency rule. |
-| **DR-369 Is Critical** | A consistency rule is considered a critical if the severity is “critical”. |
+| **DR-369 Is Critical** | A consistency rule is considered critical if the severity is “critical”. |
 | **DR-370 Is Repo Scope** | A consistency rule is considered a repo scope if the scope is not “demo”. |
 | **DR-371 Open Finding Count** | A consistency rule's open finding count is the total open flag across the consistency findings related to the consistency rule. |
 | **DR-372 Has Findings** | A consistency rule is considered to have a findings if the finding count is greater than 0. |
@@ -1677,7 +1784,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-377 Rule State** | The consistency rule's rule state is determined by the following priority:<br>1. “satisfied”, if the satisfied flag is set;<br>2. “critical-open”, if the open critical flag is 1;<br>3. in all other cases, “open”. |
 | **DR-378 Resolution Percent** | The consistency rule's resolution percent is determined by the following priority:<br>1. 100, if the finding count is 0;<br>2. in all other cases, 100 times the accepted or fixed count divided by the finding count rounded to 0 decimal place(s). |
 | **DR-379 Rule Label** | A consistency rule's rule label is computed as the rule code, followed by “ [”, followed by the rule state, followed by “]”. |
-| **DR-380 Is Sweep Priority** | A consistency rule is considered a sweep priority if all of the following hold: the rule state is not “satisfied” and the resolution percent is less than 50. |
+| **DR-380 Is Sweep Priority** | A consistency rule is considered sweep-priority if all of the following hold: the rule state is not “satisfied” and the resolution percent is less than 50. |
 | **DR-381 Name** | A consistency finding's name is computed as the domain (a missing value counts as “repo”), followed by “ x ”, followed by the rule. ⚠︎ mechanical <!-- rulespeak:reword --> |
 | **DR-382 Is Open** | A consistency finding is considered open if the status is “open”. |
 | **DR-383 Open Flag** | The consistency finding's open flag is determined by the following priority:<br>1. 1, if the status is “open”;<br>2. in all other cases, 0. |
@@ -1686,7 +1793,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-386 Rule is Scanner Derived** | A consistency finding's rule is scanner derived when the linked rule is scanner derived. |
 | **DR-387 Rule Code** | A consistency finding's rule code — taken from the linked rule. |
 | **DR-388 Domain Name** | A consistency finding's domain name — taken from the linked domain. |
-| **DR-389 Is Open Critical** | A consistency finding is considered an open critical if all of the following hold: the open flag is set and the rule severity is “critical”. |
+| **DR-389 Is Open Critical** | A consistency finding is considered open-critical if all of the following hold: the open flag is set and the rule severity is “critical”. |
 | **DR-390 Is Hand Closable** | A consistency finding is considered hand-closable if all of the following hold: the open flag is set and the rule is scanner derived flag is not set. |
 | **DR-391 Domain Finding Count** | A consistency finding's domain finding count — taken from the linked domain. |
 | **DR-392 Rule Finding Count** | A consistency finding's rule finding count — taken from the linked rule. |
@@ -1718,7 +1825,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-418 Parent Depth** | A mobile route's parent depth — taken from the linked parent route. |
 | **DR-419 Is Leaf Route** | A mobile route is considered a leaf route if the child route count is 0. |
 | **DR-420 Tab Route Count** | A mobile route's tab route count — taken from the linked tab. |
-| **DR-421 Is Depth Consistent** | A mobile route is considered a depth consistent if the depth is at most 1 if the parent route is blank, in all other cases the depth is the parent depth plus 1. |
+| **DR-421 Is Depth Consistent** | A mobile route is considered depth-consistent if the depth is at most 1 if the parent route is blank, in all other cases the depth is the parent depth plus 1. |
 | **DR-422 Tab Unbuilt Count** | A mobile route's tab unbuilt count is the unbuilt route count of the mobile route's tab. |
 | **DR-423 Share of Tab** | The mobile route's share of tab is determined by the following priority:<br>1. 0, if the tab route count (a missing value counts as 0) is 0;<br>2. in all other cases, 100 divided by the tab route count rounded to 0 decimal place(s). |
 | **DR-424 Tab Coverage Percent** | A mobile route's tab coverage percent is the build coverage percent of the mobile route's tab. |
@@ -1765,23 +1872,23 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-465 Description Length** | A CMCC summary's description length is computed as the length of the description. |
 | **DR-466 Is Substantive** | A CMCC summary is considered substantive if the description length is at least 200. |
 | **DR-467 Narrative State** | The CMCC summary's narrative state is determined by the following priority:<br>1. “ready”, if the substantive flag is set;<br>2. in all other cases, “stub”. |
-| **DR-468 Is Ready** | A CMCC summary is considered a ready if the narrative state is “ready”. |
+| **DR-468 Is Ready** | A CMCC summary is considered ready if the narrative state is “ready”. |
 | **DR-469 Section Label** | The CMCC summary's section label is determined by the following priority:<br>1. the name, followed by “ (ready)”, if the ready flag is set;<br>2. in all other cases, the name, followed by “ (stub)”. |
 | **DR-470 Description Length** | A project goal's description length is computed as the length of the description. |
 | **DR-471 Is Substantive** | A project goal is considered substantive if the description length is at least 200. |
 | **DR-472 Narrative State** | The project goal's narrative state is determined by the following priority:<br>1. “ready”, if the substantive flag is set;<br>2. in all other cases, “stub”. |
-| **DR-473 Is Ready** | A project goal is considered a ready if the narrative state is “ready”. |
+| **DR-473 Is Ready** | A project goal is considered ready if the narrative state is “ready”. |
 | **DR-474 Section Label** | The project goal's section label is determined by the following priority:<br>1. the name, followed by “ (ready)”, if the ready flag is set;<br>2. in all other cases, the name, followed by “ (stub)”. |
 | **DR-475 Description Length** | An architectural highlight's description length is computed as the length of the description. |
 | **DR-476 Is Substantive** | An architectural highlight is considered substantive if the description length is at least 200. |
 | **DR-477 Narrative State** | The architectural highlight's narrative state is determined by the following priority:<br>1. “ready”, if the substantive flag is set;<br>2. in all other cases, “stub”. |
-| **DR-478 Is Ready** | An architectural highlight is considered a ready if the narrative state is “ready”. |
+| **DR-478 Is Ready** | An architectural highlight is considered ready if the narrative state is “ready”. |
 | **DR-479 Section Label** | The architectural highlight's section label is determined by the following priority:<br>1. the name, followed by “ (ready)”, if the ready flag is set;<br>2. in all other cases, the name, followed by “ (stub)”. |
 | **DR-480 Is Fully Expressive** | An execution substrate is considered fully-expressive if the expressive completeness is “full”. |
 | **DR-481 Fully Expressive Flag** | The execution substrate's fully expressive flag is determined by the following priority:<br>1. 1, if the expressive completeness is “full”;<br>2. in all other cases, 0. |
-| **DR-482 Is Reference Quality** | An execution substrate is considered a reference quality if the maturity is “reference-quality”. |
+| **DR-482 Is Reference Quality** | An execution substrate is considered reference-quality if the maturity is “reference-quality”. |
 | **DR-483 Tradeoff Count** | An execution substrate's tradeoff count is the number of substrate tradeoffs related to the execution substrate. |
-| **DR-484 Proxy Route Count** | An execution substrate's proxy route count is the number of ssotme proxy related to the execution substrate. |
+| **DR-484 Proxy Route Count** | An execution substrate's proxy route count is the number of local tool routes related to the execution substrate. |
 | **DR-485 Catalog Tool Count** | An execution substrate's catalog tool count is the number of add tool catalog related to the execution substrate. |
 | **DR-486 Is Peer Complete** | An execution substrate is considered a peer complete if all of the following hold: the fully expressive flag is set and the can be answer key flag is set. |
 | **DR-487 Peer Complete Flag** | The execution substrate's peer complete flag is determined by the following priority:<br>1. 1, if all of the following hold: the fully expressive flag is set and the can be answer key flag is set;<br>2. in all other cases, 0. |
@@ -1799,25 +1906,25 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-499 Is Heavy Shell** | An orchestration component is considered a heavy shell if all of the following hold: the shell script flag is set and the dependency band is “heavy”. |
 | **DR-500 Review Priority** | The orchestration component's review priority is determined by the following priority:<br>1. “review”, if the heavy shell flag is set;<br>2. “watch”, if the dependency band is “heavy”;<br>3. in all other cases, “ok”. |
 | **DR-501 Needs Review** | An orchestration component is considered to need a review if the review priority is “review”. |
-| **DR-502 Name** | A ssotme proxy's name is the same as its route. |
-| **DR-503 Http Method** | A ssotme proxy's http method is computed as the first the position of a space within the route minus 1 character(s) of the route. ⚠︎ mechanical <!-- rulespeak:reword --> |
-| **DR-504 Route Path** | A ssotme proxy's route path is computed as the position of a space within the route plus 1 character(s) of the route starting at position 200. ⚠︎ mechanical <!-- rulespeak:reword --> |
-| **DR-505 Has Substrate** | A ssotme proxy is considered to have a substrate if the substrate ID has a value. |
-| **DR-506 Is Post** | A ssotme proxy is considered a post if the http method is “POST”. |
-| **DR-507 Route Slug** | A ssotme proxy's route slug is computed as the route path with every a slash replaced by an empty string. |
-| **DR-508 Substrate is Fully Expressive** | A ssotme proxy's substrate is fully expressive when the linked substrate ID is fully expressive. |
-| **DR-509 Is Full Bus Route** | A ssotme proxy is considered a full bus route if all of the following hold: the substrate flag is set and the substrate is fully expressive (a missing value counts as false). ⚠︎ mechanical <!-- rulespeak:reword --> |
-| **DR-510 Is Post Spoke** | A ssotme proxy is considered a post spoke if all of the following hold: the post flag is set and the substrate flag is not set. |
-| **DR-511 Route Class** | The ssotme proxy's route class is determined by the following priority:<br>1. “full-substrate”, if the full bus route flag is set;<br>2. “partial-substrate”, if the substrate flag is set;<br>3. “spoke”, if the post spoke flag is set;<br>4. in all other cases, “other”. |
-| **DR-512 Is Bus Headline** | A ssotme proxy is considered a bus headline if the route class is “full-substrate”. |
-| **DR-513 Is Global** | A testing framework is considered a global if the scope is “global”. |
+| **DR-502 Name** | A local tool route's name is the same as its route. |
+| **DR-503 Http Method** | A local tool route's http method is computed as the first the position of a space within the route minus 1 character(s) of the route. ⚠︎ mechanical <!-- rulespeak:reword --> |
+| **DR-504 Route Path** | A local tool route's route path is computed as the position of a space within the route plus 1 character(s) of the route starting at position 200. ⚠︎ mechanical <!-- rulespeak:reword --> |
+| **DR-505 Has Substrate** | A local tool route is considered to have a substrate if the substrate ID has a value. |
+| **DR-506 Is Post** | A local tool route is considered a post if the http method is “POST”. |
+| **DR-507 Route Slug** | A local tool route's route slug is computed as the route path with every a slash replaced by an empty string. |
+| **DR-508 Substrate is Fully Expressive** | A local tool route's substrate is fully expressive when the linked substrate ID is fully expressive. |
+| **DR-509 Is Full Bus Route** | A local tool route is considered a full bus route if all of the following hold: the substrate flag is set and the substrate is fully expressive (a missing value counts as false). ⚠︎ mechanical <!-- rulespeak:reword --> |
+| **DR-510 Is Post Spoke** | A local tool route is considered a post spoke if all of the following hold: the post flag is set and the substrate flag is not set. |
+| **DR-511 Route Class** | The local tool route's route class is determined by the following priority:<br>1. “full-substrate”, if the full bus route flag is set;<br>2. “partial-substrate”, if the substrate flag is set;<br>3. “spoke”, if the post spoke flag is set;<br>4. in all other cases, “other”. |
+| **DR-512 Is Bus Headline** | A local tool route is considered a bus headline if the route class is “full-substrate”. |
+| **DR-513 Is Global** | A testing framework is considered global if the scope is “global”. |
 | **DR-514 Is Glob Pattern** | A testing framework is considered a glob pattern if the length of the file path (a missing value counts as an empty string) is not the length of the file path (a missing value counts as an empty string) with every “*” replaced by an empty string. ⚠︎ mechanical <!-- rulespeak:reword --> |
 | **DR-515 Is Global Glob** | A testing framework is considered a global glob if all of the following hold: the global flag is set and the glob pattern flag is set. |
 | **DR-516 Scope Label** | The testing framework's scope label is determined by the following priority:<br>1. “global-glob”, if the global glob flag is set;<br>2. “global-file”, if the global flag is set;<br>3. in all other cases, “domain”. |
 | **DR-517 Is Domain Agnostic** | A testing framework is considered domain-agnostic if the scope label is not “domain”. |
 | **DR-518 Agnostic Label** | The testing framework's agnostic label is determined by the following priority:<br>1. “domain-agnostic”, if the domain agnostic flag is set;<br>2. in all other cases, “domain-bound”. |
 | **DR-519 Step Count** | The core data flow's step count is determined by the following priority:<br>1. 0, if the steps is blank;<br>2. in all other cases, the length of the steps minus the length of the steps with every “|” replaced by an empty string plus 1. ⚠︎ mechanical <!-- rulespeak:reword --> |
-| **DR-520 Has Invariant** | A core data flow is considered to have an invariant if the invariant has a value. |
+| **DR-520 Has Invariant** | A core data flow is considered to have invariant if the invariant has a value. |
 | **DR-521 Is Multi Step** | A core data flow is considered a multi step if the step count is greater than 1. |
 | **DR-522 Is Invariant Backed** | A core data flow is considered invariant-backed if all of the following hold: the invariant flag is set and the step count is greater than 0. |
 | **DR-523 Flow Maturity** | The core data flow's flow maturity is determined by the following priority:<br>1. “pipeline” if the multi step flag is set, in all other cases “atomic”, if the invariant backed flag is set;<br>2. in all other cases, “undocumented”. |
@@ -1829,7 +1936,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-529 Criticality** | The dependency's criticality is determined by the following priority:<br>1. “core”, if the required language flag is set;<br>2. “required”, if the required flag is set;<br>3. in all other cases, “optional”. |
 | **DR-530 Is Core** | A dependency is considered a core if the criticality is “core”. |
 | **DR-531 Bootstrap Tier** | The dependency's bootstrap tier is determined by the following priority:<br>1. “tier-0”, if the core flag is set;<br>2. “tier-1”, if the required flag is set;<br>3. in all other cases, “tier-2”. |
-| **DR-532 Is Local Proxy** | An add tool catalog is considered a local proxy if the source is “local-proxy”. |
+| **DR-532 Is Local Proxy** | An add tool catalog is considered local-proxy if the source is “local-proxy”. |
 | **DR-533 Substrate Name** | An add tool catalog's substrate name — taken from the linked substrate ID. |
 | **DR-534 Substrate Maturity** | An add tool catalog's substrate maturity — taken from the linked substrate ID. |
 | **DR-535 Is Proxy Backed Reference** | An add tool catalog is considered a proxy backed reference if all of the following hold: the local proxy flag is set and the substrate maturity is “reference-quality”. |
@@ -1883,7 +1990,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-583 Dimension Tradeoff Count** | A substrate tradeoff's dimension tradeoff count — taken from the linked dimension ID. |
 | **DR-584 Is Full Substrate Noted** | A substrate tradeoff is considered full-substrate-noted if all of the following hold: the substrate is fully expressive (a missing value counts as false) and the note flag is set. ⚠︎ mechanical <!-- rulespeak:reword --> |
 | **DR-585 Dimension Full Count** | A substrate tradeoff's dimension full count is the fully expressive tradeoff count of the substrate tradeoff's dimension ID. |
-| **DR-586 Is Dominant Dimension Entry** | A substrate tradeoff is considered a dominant dimension entry if all of the following hold: the substrate is fully expressive (a missing value counts as false) and the dimension full count (a missing value counts as 0) is at least 5. ⚠︎ mechanical <!-- rulespeak:reword --> |
+| **DR-586 Is Dominant Dimension Entry** | A substrate tradeoff is considered dominant-dimension-entry if all of the following hold: the substrate is fully expressive (a missing value counts as false) and the dimension full count (a missing value counts as 0) is at least 5. ⚠︎ mechanical <!-- rulespeak:reword --> |
 | **DR-587 Is Deterministic** | A fuzzy grading provider is considered deterministic if the determinism is “deterministic”. |
 | **DR-588 Requires API Key** | A fuzzy grading provider is considered to require an API key if the env var has a value. |
 | **DR-589 Is Local Deterministic** | A fuzzy grading provider is considered local-deterministic if all of the following hold: the local runtime flag is set and the deterministic flag is set. |
@@ -1899,7 +2006,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-599 Needs Guard** | A project configuration is considered to need a guard if the drift risk is “high”. |
 | **DR-600 Guard Label** | The project configuration's guard label is determined by the following priority:<br>1. “guard: validate on build”, if the needs guard flag is set;<br>2. in all other cases, “no guard needed”. |
 | **DR-601 Name** | A build pipeline's name is the same as its aspect. |
-| **DR-602 Has Cli Equivalent** | A build pipeline is considered to have a cli equivalent if the cli equivalent has a value. |
+| **DR-602 Has Cli Equivalent** | A build pipeline is considered to have cli equivalent if the cli equivalent has a value. |
 | **DR-603 Is Project Scoped** | A build pipeline is considered project-scoped if the length of the authority (a missing value counts as an empty string) is not the length of the authority (a missing value counts as an empty string) with every “{active-project}” replaced by an empty string. ⚠︎ mechanical <!-- rulespeak:reword --> |
 | **DR-604 Is Cli Parity Gap** | A build pipeline is considered a cli parity gap if the cli equivalent flag is not set. |
 | **DR-605 Is Scoped With Cli** | A build pipeline is considered a scoped with cli if all of the following hold: the project scoped flag is set and the cli equivalent flag is set. |
@@ -1909,27 +2016,27 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-609 Description Length** | A portal cli parity's description length is computed as the length of the description. |
 | **DR-610 Is Substantive** | A portal cli parity is considered substantive if the description length is at least 200. |
 | **DR-611 Narrative State** | The portal cli parity's narrative state is determined by the following priority:<br>1. “ready”, if the substantive flag is set;<br>2. in all other cases, “stub”. |
-| **DR-612 Is Ready** | A portal cli parity is considered a ready if the narrative state is “ready”. |
+| **DR-612 Is Ready** | A portal cli parity is considered ready if the narrative state is “ready”. |
 | **DR-613 Section Label** | The portal cli parity's section label is determined by the following priority:<br>1. the name, followed by “ (ready)”, if the ready flag is set;<br>2. in all other cases, the name, followed by “ (stub)”. |
 | **DR-614 Description Length** | A write through invariant's description length is computed as the length of the description. |
 | **DR-615 Is Substantive** | A write through invariant is considered substantive if the description length is at least 200. |
 | **DR-616 Narrative State** | The write through invariant's narrative state is determined by the following priority:<br>1. “ready”, if the substantive flag is set;<br>2. in all other cases, “stub”. |
-| **DR-617 Is Ready** | A write through invariant is considered a ready if the narrative state is “ready”. |
+| **DR-617 Is Ready** | A write through invariant is considered ready if the narrative state is “ready”. |
 | **DR-618 Section Label** | The write through invariant's section label is determined by the following priority:<br>1. the name, followed by “ (ready)”, if the ready flag is set;<br>2. in all other cases, the name, followed by “ (stub)”. |
 | **DR-619 Description Length** | A bootstrap story's description length is computed as the length of the description. |
 | **DR-620 Is Substantive** | A bootstrap story is considered substantive if the description length is at least 200. |
 | **DR-621 Narrative State** | The bootstrap story's narrative state is determined by the following priority:<br>1. “ready”, if the substantive flag is set;<br>2. in all other cases, “stub”. |
-| **DR-622 Is Ready** | A bootstrap story is considered a ready if the narrative state is “ready”. |
+| **DR-622 Is Ready** | A bootstrap story is considered ready if the narrative state is “ready”. |
 | **DR-623 Section Label** | The bootstrap story's section label is determined by the following priority:<br>1. the name, followed by “ (ready)”, if the ready flag is set;<br>2. in all other cases, the name, followed by “ (stub)”. |
 | **DR-624 Description Length** | A developer journey's description length is computed as the length of the description. |
 | **DR-625 Is Substantive** | A developer journey is considered substantive if the description length is at least 200. |
 | **DR-626 Narrative State** | The developer journey's narrative state is determined by the following priority:<br>1. “ready”, if the substantive flag is set;<br>2. in all other cases, “stub”. |
-| **DR-627 Is Ready** | A developer journey is considered a ready if the narrative state is “ready”. |
+| **DR-627 Is Ready** | A developer journey is considered ready if the narrative state is “ready”. |
 | **DR-628 Section Label** | The developer journey's section label is determined by the following priority:<br>1. the name, followed by “ (ready)”, if the ready flag is set;<br>2. in all other cases, the name, followed by “ (stub)”. |
 | **DR-629 Description Length** | A resilience claim's description length is computed as the length of the description. |
 | **DR-630 Is Substantive** | A resilience claim is considered substantive if the description length is at least 200. |
 | **DR-631 Narrative State** | The resilience claim's narrative state is determined by the following priority:<br>1. “ready”, if the substantive flag is set;<br>2. in all other cases, “stub”. |
-| **DR-632 Is Ready** | A resilience claim is considered a ready if the narrative state is “ready”. |
+| **DR-632 Is Ready** | A resilience claim is considered ready if the narrative state is “ready”. |
 | **DR-633 Section Label** | The resilience claim's section label is determined by the following priority:<br>1. the name, followed by “ (ready)”, if the ready flag is set;<br>2. in all other cases, the name, followed by “ (stub)”. |
 
 ## 5 Traceability to Schema
@@ -2422,7 +2529,7 @@ the same logic the rulebook stores, written for a business reader._
 | **ExecutionSubstrates.FullyExpressiveFlag** | formula | `If(ExpressiveCompleteness = "full", 1, 0)` |
 | **ExecutionSubstrates.IsReferenceQuality** | formula | `Maturity = "reference-quality"` |
 | **ExecutionSubstrates.TradeoffCount** | rollup | `Count(SubstrateTradeoffs via SubstrateId)` |
-| **ExecutionSubstrates.ProxyRouteCount** | rollup | `Count(SsotmeProxy via SubstrateId)` |
+| **ExecutionSubstrates.ProxyRouteCount** | rollup | `Count(LocalToolRoutes via SubstrateId)` |
 | **ExecutionSubstrates.CatalogToolCount** | rollup | `Count(AddToolCatalog via SubstrateId)` |
 | **ExecutionSubstrates.IsPeerComplete** | formula | `And(IsFullyExpressive, CanBeAnswerKey)` |
 | **ExecutionSubstrates.PeerCompleteFlag** | formula | `If(And(IsFullyExpressive, CanBeAnswerKey), 1, 0)` |
@@ -2440,17 +2547,17 @@ the same logic the rulebook stores, written for a business reader._
 | **OrchestrationComponents.IsHeavyShell** | formula | `And(IsShellScript, DependencyBand = "heavy")` |
 | **OrchestrationComponents.ReviewPriority** | formula | `If(IsHeavyShell, "review", If(DependencyBand = "heavy", "watch", "ok"))` |
 | **OrchestrationComponents.NeedsReview** | formula | `ReviewPriority = "review"` |
-| **SsotmeProxy.Name** | formula | `Route` |
-| **SsotmeProxy.HttpMethod** | formula | `Left(Route, Find(" ", Route) - 1)` |
-| **SsotmeProxy.RoutePath** | formula | `Mid(Route, Find(" ", Route) + 1, 200)` |
-| **SsotmeProxy.HasSubstrate** | formula | `SubstrateId <> ""` |
-| **SsotmeProxy.IsPost** | formula | `HttpMethod = "POST"` |
-| **SsotmeProxy.RouteSlug** | formula | `Replace(RoutePath, "/", "")` |
-| **SsotmeProxy.SubstrateIsFullyExpressive** | lookup | `Lookup(ExecutionSubstrates.IsFullyExpressive via SubstrateId)` |
-| **SsotmeProxy.IsFullBusRoute** | formula | `And(HasSubstrate, Coalesce(SubstrateIsFullyExpressive, False()))` |
-| **SsotmeProxy.IsPostSpoke** | formula | `And(IsPost, Not(HasSubstrate))` |
-| **SsotmeProxy.RouteClass** | formula | `If(IsFullBusRoute, "full-substrate", If(HasSubstrate, "partial-substrate", If(IsPostSpoke, "spoke", "other")))` |
-| **SsotmeProxy.IsBusHeadline** | formula | `RouteClass = "full-substrate"` |
+| **LocalToolRoutes.Name** | formula | `Route` |
+| **LocalToolRoutes.HttpMethod** | formula | `Left(Route, Find(" ", Route) - 1)` |
+| **LocalToolRoutes.RoutePath** | formula | `Mid(Route, Find(" ", Route) + 1, 200)` |
+| **LocalToolRoutes.HasSubstrate** | formula | `SubstrateId <> ""` |
+| **LocalToolRoutes.IsPost** | formula | `HttpMethod = "POST"` |
+| **LocalToolRoutes.RouteSlug** | formula | `Replace(RoutePath, "/", "")` |
+| **LocalToolRoutes.SubstrateIsFullyExpressive** | lookup | `Lookup(ExecutionSubstrates.IsFullyExpressive via SubstrateId)` |
+| **LocalToolRoutes.IsFullBusRoute** | formula | `And(HasSubstrate, Coalesce(SubstrateIsFullyExpressive, False()))` |
+| **LocalToolRoutes.IsPostSpoke** | formula | `And(IsPost, Not(HasSubstrate))` |
+| **LocalToolRoutes.RouteClass** | formula | `If(IsFullBusRoute, "full-substrate", If(HasSubstrate, "partial-substrate", If(IsPostSpoke, "spoke", "other")))` |
+| **LocalToolRoutes.IsBusHeadline** | formula | `RouteClass = "full-substrate"` |
 | **TestingFramework.IsGlobal** | formula | `Scope = "global"` |
 | **TestingFramework.IsGlobPattern** | formula | `Len(Coalesce(FilePath, "")) <> Len(Replace(Coalesce(FilePath, ""), "*", ""))` |
 | **TestingFramework.IsGlobalGlob** | formula | `And(IsGlobal, IsGlobPattern)` |

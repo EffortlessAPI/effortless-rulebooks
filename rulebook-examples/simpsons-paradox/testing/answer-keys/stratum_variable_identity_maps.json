@@ -1,0 +1,1668 @@
+[
+  {
+    "map_id": "map-ab-test-traffic-mix-time_varying_segment",
+    "stratum_variable": "ab-test-traffic-mix-time_varying_segment",
+    "confounder_identity": "id-user-platform-segment",
+    "variable_name_normalized": "time_varying_segment",
+    "name": "map-ab-test-traffic-mix-time_varying_segment"
+  },
+  {
+    "map_id": "map-abdulkadiroglu-angrist-dynarski-kane-pathak-2011-lottery-result",
+    "stratum_variable": "abdulkadiroglu-angrist-dynarski-kane-pathak-2011-lottery-result",
+    "confounder_identity": "id-institutional-unit",
+    "variable_name_normalized": "lottery_result",
+    "name": "map-abdulkadiroglu-angrist-dynarski-kane-pathak-2011-lottery-result"
+  },
+  {
+    "map_id": "map-accord-study-group-2008-baseline-hba1c",
+    "stratum_variable": "accord-study-group-2008-baseline-hba1c",
+    "confounder_identity": "id-disease-severity",
+    "variable_name_normalized": "baseline_hba1c",
+    "name": "map-accord-study-group-2008-baseline-hba1c"
+  },
+  {
+    "map_id": "map-acemoglu-autor-2011-task-type",
+    "stratum_variable": "acemoglu-autor-2011-task-type",
+    "confounder_identity": "id-institutional-unit",
+    "variable_name_normalized": "task_type",
+    "name": "map-acemoglu-autor-2011-task-type"
+  },
+  {
+    "map_id": "map-acharya-imbierowicz-steffen-teichmann-2020-bank-capitalization-tier",
+    "stratum_variable": "acharya-imbierowicz-steffen-teichmann-2020-bank-capitalization-tier",
+    "confounder_identity": "id-socioeconomic-status",
+    "variable_name_normalized": "bank_capitalization_tier",
+    "name": "map-acharya-imbierowicz-steffen-teichmann-2020-bank-capitalization-tier"
+  },
+  {
+    "map_id": "map-ad-ctr-platform-mix-platform",
+    "stratum_variable": "ad-ctr-platform-mix-platform",
+    "confounder_identity": "id-user-platform-segment",
+    "variable_name_normalized": "platform",
+    "name": "map-ad-ctr-platform-mix-platform"
+  },
+  {
+    "map_id": "map-air-pollution-mortality-city-city",
+    "stratum_variable": "air-pollution-mortality-city-city",
+    "confounder_identity": "id-geographic-composition",
+    "variable_name_normalized": "city",
+    "name": "map-air-pollution-mortality-city-city"
+  },
+  {
+    "map_id": "map-allhat-collaborative-research-group-2002-race",
+    "stratum_variable": "allhat-collaborative-research-group-2002-race",
+    "confounder_identity": "id-demographic-group",
+    "variable_name_normalized": "race",
+    "name": "map-allhat-collaborative-research-group-2002-race"
+  },
+  {
+    "map_id": "map-alon-tienda-2007-institutional-selectivity-tier",
+    "stratum_variable": "alon-tienda-2007-institutional-selectivity-tier",
+    "confounder_identity": "id-institutional-unit",
+    "variable_name_normalized": "institutional_selectivity_tier",
+    "name": "map-alon-tienda-2007-institutional-selectivity-tier"
+  },
+  {
+    "map_id": "map-angrist-lavy-1999-grade",
+    "stratum_variable": "angrist-lavy-1999-grade",
+    "confounder_identity": "id-institutional-unit",
+    "variable_name_normalized": "grade",
+    "name": "map-angrist-lavy-1999-grade"
+  },
+  {
+    "map_id": "map-angrist-pischke-2009-proximity-to-college",
+    "stratum_variable": "angrist-pischke-2009-proximity-to-college",
+    "confounder_identity": "id-institutional-unit",
+    "variable_name_normalized": "proximity_to_college",
+    "name": "map-angrist-pischke-2009-proximity-to-college"
+  },
+  {
+    "map_id": "map-angwin-larson-mattu-kirchner-2016-crime-type",
+    "stratum_variable": "angwin-larson-mattu-kirchner-2016-crime-type",
+    "confounder_identity": "id-legal-case-context",
+    "variable_name_normalized": "crime_type",
+    "name": "map-angwin-larson-mattu-kirchner-2016-crime-type"
+  },
+  {
+    "map_id": "map-appleton-1996-age",
+    "stratum_variable": "appleton-1996-age",
+    "confounder_identity": "id-age-composition",
+    "variable_name_normalized": "age_group_at_baseline",
+    "name": "map-appleton-1996-age"
+  },
+  {
+    "map_id": "map-arcidiacono-kinsler-ransom-2019-legacy",
+    "stratum_variable": "arcidiacono-kinsler-ransom-2019-legacy",
+    "confounder_identity": "id-institutional-unit",
+    "variable_name_normalized": "legacy",
+    "name": "map-arcidiacono-kinsler-ransom-2019-legacy"
+  },
+  {
+    "map_id": "map-astrazeneca-mystic-trial-pacific-trial-crossover-2017-pd-l1-expression-quartile",
+    "stratum_variable": "astrazeneca-mystic-trial-pacific-trial-crossover-2017-pd-l1-expression-quartile",
+    "confounder_identity": "id-disease-severity",
+    "variable_name_normalized": "pd_l1_expression_quartile",
+    "name": "map-astrazeneca-mystic-trial-pacific-trial-crossover-2017-pd-l1-expression-quartile"
+  },
+  {
+    "map_id": "map-autor-dorn-2013-local-labor-market",
+    "stratum_variable": "autor-dorn-2013-local-labor-market",
+    "confounder_identity": "id-exposure-mix",
+    "variable_name_normalized": "local_labor_market",
+    "name": "map-autor-dorn-2013-local-labor-market"
+  },
+  {
+    "map_id": "map-autor-levy-murnane-2003-routine-vs-non-routine",
+    "stratum_variable": "autor-levy-murnane-2003-routine-vs-non-routine",
+    "confounder_identity": "id-institutional-unit",
+    "variable_name_normalized": "routine_vs_non_routine",
+    "name": "map-autor-levy-murnane-2003-routine-vs-non-routine"
+  },
+  {
+    "map_id": "map-baden-et-al-2021-age",
+    "stratum_variable": "baden-et-al-2021-age",
+    "confounder_identity": "id-age-composition",
+    "variable_name_normalized": "age",
+    "name": "map-baden-et-al-2021-age"
+  },
+  {
+    "map_id": "map-bail-risk-score-pretrial_risk_tier",
+    "stratum_variable": "bail-risk-score-pretrial_risk_tier",
+    "confounder_identity": "id-disease-severity",
+    "variable_name_normalized": "pretrial_risk_tier",
+    "name": "map-bail-risk-score-pretrial_risk_tier"
+  },
+  {
+    "map_id": "map-baker-kramer-2001-sex",
+    "stratum_variable": "baker-kramer-2001-sex",
+    "confounder_identity": "id-demographic-group",
+    "variable_name_normalized": "sex",
+    "name": "map-baker-kramer-2001-sex"
+  },
+  {
+    "map_id": "map-bakshy-eckles-bernstein-2014-user-activity-level",
+    "stratum_variable": "bakshy-eckles-bernstein-2014-user-activity-level",
+    "confounder_identity": "id-user-platform-segment",
+    "variable_name_normalized": "user_activity_level",
+    "name": "map-bakshy-eckles-bernstein-2014-user-activity-level"
+  },
+  {
+    "map_id": "map-balanced-synthetic-stratum",
+    "stratum_variable": "balanced-synthetic-stratum",
+    "confounder_identity": "id-mechanism-other",
+    "variable_name_normalized": "stratum",
+    "name": "map-balanced-synthetic-stratum"
+  },
+  {
+    "map_id": "map-baldus-woodworth-pulaski-1983-aggravating-circumstances-tier",
+    "stratum_variable": "baldus-woodworth-pulaski-1983-aggravating-circumstances-tier",
+    "confounder_identity": "id-legal-case-context",
+    "variable_name_normalized": "aggravating_circumstances_tier",
+    "name": "map-baldus-woodworth-pulaski-1983-aggravating-circumstances-tier"
+  },
+  {
+    "map_id": "map-bartlett-morse-stanton-wallace-2022-loan-channel",
+    "stratum_variable": "bartlett-morse-stanton-wallace-2022-loan-channel",
+    "confounder_identity": "id-credit-risk-tier",
+    "variable_name_normalized": "loan_channel",
+    "name": "map-bartlett-morse-stanton-wallace-2022-loan-channel"
+  },
+  {
+    "map_id": "map-berger-udell-1995-firm-size",
+    "stratum_variable": "berger-udell-1995-firm-size",
+    "confounder_identity": "id-socioeconomic-status",
+    "variable_name_normalized": "firm_size",
+    "name": "map-berger-udell-1995-firm-size"
+  },
+  {
+    "map_id": "map-berkeley-1973-department",
+    "stratum_variable": "berkeley-1973-department",
+    "confounder_identity": "id-contested-org-choice",
+    "variable_name_normalized": "department",
+    "name": "map-berkeley-1973-department"
+  },
+  {
+    "map_id": "map-berkeley-six-dept-1973-department",
+    "stratum_variable": "berkeley-six-dept-1973-department",
+    "confounder_identity": "id-contested-org-choice",
+    "variable_name_normalized": "department",
+    "name": "map-berkeley-six-dept-1973-department"
+  },
+  {
+    "map_id": "map-bhutta-hizmo-ringo-2022-credit-score",
+    "stratum_variable": "bhutta-hizmo-ringo-2022-credit-score",
+    "confounder_identity": "id-credit-risk-tier",
+    "variable_name_normalized": "credit_score",
+    "name": "map-bhutta-hizmo-ringo-2022-credit-score"
+  },
+  {
+    "map_id": "map-blau-devaro-2007-occupation",
+    "stratum_variable": "blau-devaro-2007-occupation",
+    "confounder_identity": "id-socioeconomic-status",
+    "variable_name_normalized": "occupation",
+    "name": "map-blau-devaro-2007-occupation"
+  },
+  {
+    "map_id": "map-blau-kahn-2017-occupation",
+    "stratum_variable": "blau-kahn-2017-occupation",
+    "confounder_identity": "id-socioeconomic-status",
+    "variable_name_normalized": "occupation",
+    "name": "map-blau-kahn-2017-occupation"
+  },
+  {
+    "map_id": "map-borjas-immigrant-cohort-arrival_cohort",
+    "stratum_variable": "borjas-immigrant-cohort-arrival_cohort",
+    "confounder_identity": "id-age-composition",
+    "variable_name_normalized": "arrival_cohort",
+    "name": "map-borjas-immigrant-cohort-arrival_cohort"
+  },
+  {
+    "map_id": "map-bound-lovenheim-turner-2010-institution-selectivity",
+    "stratum_variable": "bound-lovenheim-turner-2010-institution-selectivity",
+    "confounder_identity": "id-institutional-unit",
+    "variable_name_normalized": "institution_selectivity",
+    "name": "map-bound-lovenheim-turner-2010-institution-selectivity"
+  },
+  {
+    "map_id": "map-brame-bushway-paternoster-turner-2014-offense-type",
+    "stratum_variable": "brame-bushway-paternoster-turner-2014-offense-type",
+    "confounder_identity": "id-legal-case-context",
+    "variable_name_normalized": "offense_type",
+    "name": "map-brame-bushway-paternoster-turner-2014-offense-type"
+  },
+  {
+    "map_id": "map-bwp-weight-class",
+    "stratum_variable": "bwp-weight-class",
+    "confounder_identity": "id-collider-proxy",
+    "variable_name_normalized": "birth_weight_category",
+    "name": "map-bwp-weight-class"
+  },
+  {
+    "map_id": "map-cabg-vs-pci-severity-coronary_severity",
+    "stratum_variable": "cabg-vs-pci-severity-coronary_severity",
+    "confounder_identity": "id-disease-severity",
+    "variable_name_normalized": "coronary_severity",
+    "name": "map-cabg-vs-pci-severity-coronary_severity"
+  },
+  {
+    "map_id": "map-card-1992-industry-fast-food-vs-retail-vs-manufact",
+    "stratum_variable": "card-1992-industry-fast-food-vs-retail-vs-manufact",
+    "confounder_identity": "id-socioeconomic-status",
+    "variable_name_normalized": "industry_fast_food_vs_retail_vs_manufact",
+    "name": "map-card-1992-industry-fast-food-vs-retail-vs-manufact"
+  },
+  {
+    "map_id": "map-carnevale-strohl-2010-institutional-tier",
+    "stratum_variable": "carnevale-strohl-2010-institutional-tier",
+    "confounder_identity": "id-institutional-unit",
+    "variable_name_normalized": "institutional_tier",
+    "name": "map-carnevale-strohl-2010-institutional-tier"
+  },
+  {
+    "map_id": "map-cast-1989-arrhythmia-burden",
+    "stratum_variable": "cast-1989-arrhythmia-burden",
+    "confounder_identity": "id-disease-severity",
+    "variable_name_normalized": "arrhythmia_burden",
+    "name": "map-cast-1989-arrhythmia-burden"
+  },
+  {
+    "map_id": "map-castilla-2008-department",
+    "stratum_variable": "castilla-2008-department",
+    "confounder_identity": "id-institutional-unit",
+    "variable_name_normalized": "department",
+    "name": "map-castilla-2008-department"
+  },
+  {
+    "map_id": "map-cdc-covid-19-case-surveillance-2020-age-group",
+    "stratum_variable": "cdc-covid-19-case-surveillance-2020-age-group",
+    "confounder_identity": "id-age-composition",
+    "variable_name_normalized": "age_group",
+    "name": "map-cdc-covid-19-case-surveillance-2020-age-group"
+  },
+  {
+    "map_id": "map-cesarean-birth-weight-2006-birth_weight",
+    "stratum_variable": "cesarean-birth-weight-2006-birth_weight",
+    "confounder_identity": "id-collider-proxy",
+    "variable_name_normalized": "birth_weight",
+    "name": "map-cesarean-birth-weight-2006-birth_weight"
+  },
+  {
+    "map_id": "map-cfpb-consumer-credit-panel-zip-code-income-tier",
+    "stratum_variable": "cfpb-consumer-credit-panel-zip-code-income-tier",
+    "confounder_identity": "id-socioeconomic-status",
+    "variable_name_normalized": "zip_code_income_tier",
+    "name": "map-cfpb-consumer-credit-panel-zip-code-income-tier"
+  },
+  {
+    "map_id": "map-chetty-deming-friedman-2023-legacy",
+    "stratum_variable": "chetty-deming-friedman-2023-legacy",
+    "confounder_identity": "id-institutional-unit",
+    "variable_name_normalized": "legacy",
+    "name": "map-chetty-deming-friedman-2023-legacy"
+  },
+  {
+    "map_id": "map-chetty-et-al-2014-commuting-zone",
+    "stratum_variable": "chetty-et-al-2014-commuting-zone",
+    "confounder_identity": "id-geographic-composition",
+    "variable_name_normalized": "commuting_zone",
+    "name": "map-chetty-et-al-2014-commuting-zone"
+  },
+  {
+    "map_id": "map-chetty-friedman-rockoff-2014-school",
+    "stratum_variable": "chetty-friedman-rockoff-2014-school",
+    "confounder_identity": "id-institutional-unit",
+    "variable_name_normalized": "school",
+    "name": "map-chetty-friedman-rockoff-2014-school"
+  },
+  {
+    "map_id": "map-chetty-friedman-saez-turner-yagan-2020-college-selectivity-tier",
+    "stratum_variable": "chetty-friedman-saez-turner-yagan-2020-college-selectivity-tier",
+    "confounder_identity": "id-institutional-unit",
+    "variable_name_normalized": "college_selectivity_tier",
+    "name": "map-chetty-friedman-saez-turner-yagan-2020-college-selectivity-tier"
+  },
+  {
+    "map_id": "map-chetty-hendren-katz-2016-age-at-time-of-move",
+    "stratum_variable": "chetty-hendren-katz-2016-age-at-time-of-move",
+    "confounder_identity": "id-age-composition",
+    "variable_name_normalized": "age_at_time_of_move",
+    "name": "map-chetty-hendren-katz-2016-age-at-time-of-move"
+  },
+  {
+    "map_id": "map-clemens-bly-1998-home_away",
+    "stratum_variable": "clemens-bly-1998-home_away",
+    "confounder_identity": "id-situational-context",
+    "variable_name_normalized": "home_away",
+    "name": "map-clemens-bly-1998-home_away"
+  },
+  {
+    "map_id": "map-cochran-smoking-1968-age_group",
+    "stratum_variable": "cochran-smoking-1968-age_group",
+    "confounder_identity": "id-age-composition",
+    "variable_name_normalized": "age_group",
+    "name": "map-cochran-smoking-1968-age_group"
+  },
+  {
+    "map_id": "map-coffee-smoking",
+    "stratum_variable": "coffee-smoking",
+    "confounder_identity": "id-smoking-behavior",
+    "variable_name_normalized": "smoking_status",
+    "name": "map-coffee-smoking"
+  },
+  {
+    "map_id": "map-coffee-smoking-lung-1968-smoking_status",
+    "stratum_variable": "coffee-smoking-lung-1968-smoking_status",
+    "confounder_identity": "id-smoking-behavior",
+    "variable_name_normalized": "smoking_status",
+    "name": "map-coffee-smoking-lung-1968-smoking_status"
+  },
+  {
+    "map_id": "map-coleman-et-al-1966-family-ses",
+    "stratum_variable": "coleman-et-al-1966-family-ses",
+    "confounder_identity": "id-socioeconomic-status",
+    "variable_name_normalized": "family_ses",
+    "name": "map-coleman-et-al-1966-family-ses"
+  },
+  {
+    "map_id": "map-college-grad-rate-selectivity-incoming_preparation",
+    "stratum_variable": "college-grad-rate-selectivity-incoming_preparation",
+    "confounder_identity": "id-institutional-unit",
+    "variable_name_normalized": "incoming_preparation",
+    "name": "map-college-grad-rate-selectivity-incoming_preparation"
+  },
+  {
+    "map_id": "map-college-scorecard-field-of-study",
+    "stratum_variable": "college-scorecard-field-of-study",
+    "confounder_identity": "id-institutional-unit",
+    "variable_name_normalized": "field_of_study",
+    "name": "map-college-scorecard-field-of-study"
+  },
+  {
+    "map_id": "map-collider-only-synthetic-constructed_collider",
+    "stratum_variable": "collider-only-synthetic-constructed_collider",
+    "confounder_identity": "id-collider-proxy",
+    "variable_name_normalized": "constructed_collider",
+    "name": "map-collider-only-synthetic-constructed_collider"
+  },
+  {
+    "map_id": "map-compas-recidivism-base-group_base_rate",
+    "stratum_variable": "compas-recidivism-base-group_base_rate",
+    "confounder_identity": "id-method-specification",
+    "variable_name_normalized": "group_base_rate",
+    "name": "map-compas-recidivism-base-group_base_rate"
+  },
+  {
+    "map_id": "map-compressed-synthetic-stratum",
+    "stratum_variable": "compressed-synthetic-stratum",
+    "confounder_identity": "id-mechanism-other",
+    "variable_name_normalized": "difficulty",
+    "name": "map-compressed-synthetic-stratum"
+  },
+  {
+    "map_id": "map-cornfield-et-al-1959-exposure-dose",
+    "stratum_variable": "cornfield-et-al-1959-exposure-dose",
+    "confounder_identity": "id-treatment-indication",
+    "variable_name_normalized": "exposure_dose",
+    "name": "map-cornfield-et-al-1959-exposure-dose"
+  },
+  {
+    "map_id": "map-costa-rica-us-life-expectancy-age_group",
+    "stratum_variable": "costa-rica-us-life-expectancy-age_group",
+    "confounder_identity": "id-age-composition",
+    "variable_name_normalized": "age_group",
+    "name": "map-costa-rica-us-life-expectancy-age_group"
+  },
+  {
+    "map_id": "map-covid-italy-china-cfr-2020-age_group",
+    "stratum_variable": "covid-italy-china-cfr-2020-age_group",
+    "confounder_identity": "id-age-composition",
+    "variable_name_normalized": "age_group",
+    "name": "map-covid-italy-china-cfr-2020-age_group"
+  },
+  {
+    "map_id": "map-dagan-et-al-2021-age-group",
+    "stratum_variable": "dagan-et-al-2021-age-group",
+    "confounder_identity": "id-age-composition",
+    "variable_name_normalized": "age_group",
+    "name": "map-dagan-et-al-2021-age-group"
+  },
+  {
+    "map_id": "map-dale-krueger-2002-application-portfolio-which-schools-one",
+    "stratum_variable": "dale-krueger-2002-application-portfolio-which-schools-one",
+    "confounder_identity": "id-institutional-unit",
+    "variable_name_normalized": "application_portfolio_which_schools_one",
+    "name": "map-dale-krueger-2002-application-portfolio-which-schools-one"
+  },
+  {
+    "map_id": "map-dcct-research-group-1993-baseline-hba1c",
+    "stratum_variable": "dcct-research-group-1993-baseline-hba1c",
+    "confounder_identity": "id-disease-severity",
+    "variable_name_normalized": "baseline_hba1c",
+    "name": "map-dcct-research-group-1993-baseline-hba1c"
+  },
+  {
+    "map_id": "map-deng-xu-kohavi-walker-2013-pre-experiment-user-behavior-stratum",
+    "stratum_variable": "deng-xu-kohavi-walker-2013-pre-experiment-user-behavior-stratum",
+    "confounder_identity": "id-user-platform-segment",
+    "variable_name_normalized": "pre_experiment_user_behavior_stratum",
+    "name": "map-deng-xu-kohavi-walker-2013-pre-experiment-user-behavior-stratum"
+  },
+  {
+    "map_id": "map-diabetes-metformin-bmi-bmi_category",
+    "stratum_variable": "diabetes-metformin-bmi-bmi_category",
+    "confounder_identity": "id-collider-proxy",
+    "variable_name_normalized": "bmi_category",
+    "name": "map-diabetes-metformin-bmi-bmi_category"
+  },
+  {
+    "map_id": "map-dialysis-bmi-survival-esrd_status",
+    "stratum_variable": "dialysis-bmi-survival-esrd_status",
+    "confounder_identity": "id-collider-proxy",
+    "variable_name_normalized": "esrd_status",
+    "name": "map-dialysis-bmi-survival-esrd_status"
+  },
+  {
+    "map_id": "map-dmitriev-frasca-lu-kohavi-olariu-2016-traffic-allocation-method",
+    "stratum_variable": "dmitriev-frasca-lu-kohavi-olariu-2016-traffic-allocation-method",
+    "confounder_identity": "id-user-platform-segment",
+    "variable_name_normalized": "traffic_allocation_method",
+    "name": "map-dmitriev-frasca-lu-kohavi-olariu-2016-traffic-allocation-method"
+  },
+  {
+    "map_id": "map-dockery-et-al-1993-ses",
+    "stratum_variable": "dockery-et-al-1993-ses",
+    "confounder_identity": "id-socioeconomic-status",
+    "variable_name_normalized": "ses",
+    "name": "map-dockery-et-al-1993-ses"
+  },
+  {
+    "map_id": "map-doll-hill-1950-age",
+    "stratum_variable": "doll-hill-1950-age",
+    "confounder_identity": "id-age-composition",
+    "variable_name_normalized": "age",
+    "name": "map-doll-hill-1950-age"
+  },
+  {
+    "map_id": "map-doll-hill-1954-age-group",
+    "stratum_variable": "doll-hill-1954-age-group",
+    "confounder_identity": "id-age-composition",
+    "variable_name_normalized": "age_group",
+    "name": "map-doll-hill-1954-age-group"
+  },
+  {
+    "map_id": "map-early-childhood-longitudinal-study-kindergarten-ses",
+    "stratum_variable": "early-childhood-longitudinal-study-kindergarten-ses",
+    "confounder_identity": "id-socioeconomic-status",
+    "variable_name_normalized": "ses",
+    "name": "map-early-childhood-longitudinal-study-kindergarten-ses"
+  },
+  {
+    "map_id": "map-eeoc-charge-data-industry",
+    "stratum_variable": "eeoc-charge-data-industry",
+    "confounder_identity": "id-socioeconomic-status",
+    "variable_name_normalized": "industry",
+    "name": "map-eeoc-charge-data-industry"
+  },
+  {
+    "map_id": "map-efron-morris-1975-first-vs-second-half-of-season",
+    "stratum_variable": "efron-morris-1975-first-vs-second-half-of-season",
+    "confounder_identity": "id-situational-context",
+    "variable_name_normalized": "first_vs_second_half_of_season",
+    "name": "map-efron-morris-1975-first-vs-second-half-of-season"
+  },
+  {
+    "map_id": "map-ellsbury-vs-lowell-2007-season",
+    "stratum_variable": "ellsbury-vs-lowell-2007-season",
+    "confounder_identity": "id-situational-context",
+    "variable_name_normalized": "season",
+    "name": "map-ellsbury-vs-lowell-2007-season"
+  },
+  {
+    "map_id": "map-espenshade-radford-2009-applicant-type",
+    "stratum_variable": "espenshade-radford-2009-applicant-type",
+    "confounder_identity": "id-institutional-unit",
+    "variable_name_normalized": "applicant_type",
+    "name": "map-espenshade-radford-2009-applicant-type"
+  },
+  {
+    "map_id": "map-exercise-cholesterol-age-age_group",
+    "stratum_variable": "exercise-cholesterol-age-age_group",
+    "confounder_identity": "id-age-composition",
+    "variable_name_normalized": "age_group",
+    "name": "map-exercise-cholesterol-age-age_group"
+  },
+  {
+    "map_id": "map-fdic-small-business-lending-survey-2016-bank-size",
+    "stratum_variable": "fdic-small-business-lending-survey-2016-bank-size",
+    "confounder_identity": "id-socioeconomic-status",
+    "variable_name_normalized": "bank_size",
+    "name": "map-fdic-small-business-lending-survey-2016-bank-size"
+  },
+  {
+    "map_id": "map-federal-reserve-scf-income-quartile",
+    "stratum_variable": "federal-reserve-scf-income-quartile",
+    "confounder_identity": "id-socioeconomic-status",
+    "variable_name_normalized": "income_quartile",
+    "name": "map-federal-reserve-scf-income-quartile"
+  },
+  {
+    "map_id": "map-fertility-income-country-country",
+    "stratum_variable": "fertility-income-country-country",
+    "confounder_identity": "id-geographic-composition",
+    "variable_name_normalized": "country",
+    "name": "map-fertility-income-country-country"
+  },
+  {
+    "map_id": "map-fibrinolytic-therapy-trialists-1994-time-from-symptom-onset",
+    "stratum_variable": "fibrinolytic-therapy-trialists-1994-time-from-symptom-onset",
+    "confounder_identity": "id-trial-timing-design",
+    "variable_name_normalized": "time_from_symptom_onset",
+    "name": "map-fibrinolytic-therapy-trialists-1994-time-from-symptom-onset"
+  },
+  {
+    "map_id": "map-field-goal-distance-kick_distance",
+    "stratum_variable": "field-goal-distance-kick_distance",
+    "confounder_identity": "id-situational-context",
+    "variable_name_normalized": "kick_distance",
+    "name": "map-field-goal-distance-kick_distance"
+  },
+  {
+    "map_id": "map-fillmore-et-al-2006-former-vs-never-drinker-status",
+    "stratum_variable": "fillmore-et-al-2006-former-vs-never-drinker-status",
+    "confounder_identity": "id-smoking-behavior",
+    "variable_name_normalized": "former_vs_never_drinker_status",
+    "name": "map-fillmore-et-al-2006-former-vs-never-drinker-status"
+  },
+  {
+    "map_id": "map-finn-achilles-1990-school",
+    "stratum_variable": "finn-achilles-1990-school",
+    "confounder_identity": "id-institutional-unit",
+    "variable_name_normalized": "school",
+    "name": "map-finn-achilles-1990-school"
+  },
+  {
+    "map_id": "map-flannery-et-al-2020-flu-season",
+    "stratum_variable": "flannery-et-al-2020-flu-season",
+    "confounder_identity": "id-treatment-indication",
+    "variable_name_normalized": "flu_season",
+    "name": "map-flannery-et-al-2020-flu-season"
+  },
+  {
+    "map_id": "map-florida-reef-fish-1994-gear_type",
+    "stratum_variable": "florida-reef-fish-1994-gear_type",
+    "confounder_identity": "id-situational-context",
+    "variable_name_normalized": "gear_type",
+    "name": "map-florida-reef-fish-1994-gear_type"
+  },
+  {
+    "map_id": "map-flu-vaccine-elderly-mortality-age_group",
+    "stratum_variable": "flu-vaccine-elderly-mortality-age_group",
+    "confounder_identity": "id-age-composition",
+    "variable_name_normalized": "age_group",
+    "name": "map-flu-vaccine-elderly-mortality-age_group"
+  },
+  {
+    "map_id": "map-folic-acid-neural-tube-1991-maternal_age",
+    "stratum_variable": "folic-acid-neural-tube-1991-maternal_age",
+    "confounder_identity": "id-age-composition",
+    "variable_name_normalized": "maternal_age",
+    "name": "map-folic-acid-neural-tube-1991-maternal_age"
+  },
+  {
+    "map_id": "map-folic-fortification-2000-region",
+    "stratum_variable": "folic-fortification-2000-region",
+    "confounder_identity": "id-geographic-composition",
+    "variable_name_normalized": "region",
+    "name": "map-folic-fortification-2000-region"
+  },
+  {
+    "map_id": "map-fortin-lemieux-firpo-2011-quantile",
+    "stratum_variable": "fortin-lemieux-firpo-2011-quantile",
+    "confounder_identity": "id-institutional-unit",
+    "variable_name_normalized": "quantile",
+    "name": "map-fortin-lemieux-firpo-2011-quantile"
+  },
+  {
+    "map_id": "map-framingham-heart-study-sex",
+    "stratum_variable": "framingham-heart-study-sex",
+    "confounder_identity": "id-demographic-group",
+    "variable_name_normalized": "sex",
+    "name": "map-framingham-heart-study-sex"
+  },
+  {
+    "map_id": "map-fryer-2016-interaction-type",
+    "stratum_variable": "fryer-2016-interaction-type",
+    "confounder_identity": "id-exposure-mix",
+    "variable_name_normalized": "interaction_type",
+    "name": "map-fryer-2016-interaction-type"
+  },
+  {
+    "map_id": "map-gender-pay-gap-industry-industry_sector",
+    "stratum_variable": "gender-pay-gap-industry-industry_sector",
+    "confounder_identity": "id-socioeconomic-status",
+    "variable_name_normalized": "industry_sector",
+    "name": "map-gender-pay-gap-industry-industry_sector"
+  },
+  {
+    "map_id": "map-ginther-kahn-2004-field-subarea",
+    "stratum_variable": "ginther-kahn-2004-field-subarea",
+    "confounder_identity": "id-method-specification",
+    "variable_name_normalized": "field_subarea",
+    "name": "map-ginther-kahn-2004-field-subarea"
+  },
+  {
+    "map_id": "map-golf-scoring-course-course_difficulty",
+    "stratum_variable": "golf-scoring-course-course_difficulty",
+    "confounder_identity": "id-situational-context",
+    "variable_name_normalized": "course_difficulty",
+    "name": "map-golf-scoring-course-course_difficulty"
+  },
+  {
+    "map_id": "map-gross-risinger-et-al-2017-crime-category",
+    "stratum_variable": "gross-risinger-et-al-2017-crime-category",
+    "confounder_identity": "id-legal-case-context",
+    "variable_name_normalized": "crime_category",
+    "name": "map-gross-risinger-et-al-2017-crime-category"
+  },
+  {
+    "map_id": "map-hammond-horn-1958-age",
+    "stratum_variable": "hammond-horn-1958-age",
+    "confounder_identity": "id-selection-frailty",
+    "variable_name_normalized": "age",
+    "name": "map-hammond-horn-1958-age"
+  },
+  {
+    "map_id": "map-hanley-power-lines-2000-source_study",
+    "stratum_variable": "hanley-power-lines-2000-source_study",
+    "confounder_identity": "id-method-specification",
+    "variable_name_normalized": "source_study",
+    "name": "map-hanley-power-lines-2000-source_study"
+  },
+  {
+    "map_id": "map-hannan-1994-patient-risk",
+    "stratum_variable": "hannan-1994-patient-risk",
+    "confounder_identity": "id-disease-severity",
+    "variable_name_normalized": "patient_risk_class",
+    "name": "map-hannan-1994-patient-risk"
+  },
+  {
+    "map_id": "map-hanushek-1989-state",
+    "stratum_variable": "hanushek-1989-state",
+    "confounder_identity": "id-geographic-composition",
+    "variable_name_normalized": "state",
+    "name": "map-hanushek-1989-state"
+  },
+  {
+    "map_id": "map-harris-steffensmeier-ulmer-painter-davis-2009-offense-type",
+    "stratum_variable": "harris-steffensmeier-ulmer-painter-davis-2009-offense-type",
+    "confounder_identity": "id-legal-case-context",
+    "variable_name_normalized": "offense_type",
+    "name": "map-harris-steffensmeier-ulmer-painter-davis-2009-offense-type"
+  },
+  {
+    "map_id": "map-head-start-impact-study-age-3-vs-4-year-olds",
+    "stratum_variable": "head-start-impact-study-age-3-vs-4-year-olds",
+    "confounder_identity": "id-age-composition",
+    "variable_name_normalized": "age_3_vs_4_year_olds",
+    "name": "map-head-start-impact-study-age-3-vs-4-year-olds"
+  },
+  {
+    "map_id": "map-healthy-worker-mortality-employment_status",
+    "stratum_variable": "healthy-worker-mortality-employment_status",
+    "confounder_identity": "id-selection-frailty",
+    "variable_name_normalized": "employment_status",
+    "name": "map-healthy-worker-mortality-employment_status"
+  },
+  {
+    "map_id": "map-heckman-1979-labor-force-participation-decision",
+    "stratum_variable": "heckman-1979-labor-force-participation-decision",
+    "confounder_identity": "id-collider-proxy",
+    "variable_name_normalized": "labor_force_participation_decision",
+    "name": "map-heckman-1979-labor-force-participation-decision"
+  },
+  {
+    "map_id": "map-hernan-hernandez-diaz-robins-2004-time-since-initiation",
+    "stratum_variable": "hernan-hernandez-diaz-robins-2004-time-since-initiation",
+    "confounder_identity": "id-treatment-indication",
+    "variable_name_normalized": "time_since_initiation",
+    "name": "map-hernan-hernandez-diaz-robins-2004-time-since-initiation"
+  },
+  {
+    "map_id": "map-hernandez-diaz-schisterman-hernan-2006-birth-weight-category",
+    "stratum_variable": "hernandez-diaz-schisterman-hernan-2006-birth-weight-category",
+    "confounder_identity": "id-collider-proxy",
+    "variable_name_normalized": "birth_weight_category",
+    "name": "map-hernandez-diaz-schisterman-hernan-2006-birth-weight-category"
+  },
+  {
+    "map_id": "map-hiester-1984-handedness-of-pitcher",
+    "stratum_variable": "hiester-1984-handedness-of-pitcher",
+    "confounder_identity": "id-situational-context",
+    "variable_name_normalized": "handedness_of_pitcher",
+    "name": "map-hiester-1984-handedness-of-pitcher"
+  },
+  {
+    "map_id": "map-hmda-loan-to-income-ratio",
+    "stratum_variable": "hmda-loan-to-income-ratio",
+    "confounder_identity": "id-credit-risk-tier",
+    "variable_name_normalized": "loan_to_income_ratio",
+    "name": "map-hmda-loan-to-income-ratio"
+  },
+  {
+    "map_id": "map-hoekstra-2009-sat-score-band-near-threshold",
+    "stratum_variable": "hoekstra-2009-sat-score-band-near-threshold",
+    "confounder_identity": "id-situational-context",
+    "variable_name_normalized": "sat_score_band_near_threshold",
+    "name": "map-hoekstra-2009-sat-score-band-near-threshold"
+  },
+  {
+    "map_id": "map-hohnhold-o-brien-tang-2015-user-tenure-cohort",
+    "stratum_variable": "hohnhold-o-brien-tang-2015-user-tenure-cohort",
+    "confounder_identity": "id-age-composition",
+    "variable_name_normalized": "user_tenure_cohort",
+    "name": "map-hohnhold-o-brien-tang-2015-user-tenure-cohort"
+  },
+  {
+    "map_id": "map-hospital-mortality-readmission-case_mix",
+    "stratum_variable": "hospital-mortality-readmission-case_mix",
+    "confounder_identity": "id-disease-severity",
+    "variable_name_normalized": "case_mix",
+    "name": "map-hospital-mortality-readmission-case_mix"
+  },
+  {
+    "map_id": "map-housing-discrimination-audit-neighborhood_income",
+    "stratum_variable": "housing-discrimination-audit-neighborhood_income",
+    "confounder_identity": "id-socioeconomic-status",
+    "variable_name_normalized": "neighborhood_income",
+    "name": "map-housing-discrimination-audit-neighborhood_income"
+  },
+  {
+    "map_id": "map-hoxby-2000-grade",
+    "stratum_variable": "hoxby-2000-grade",
+    "confounder_identity": "id-institutional-unit",
+    "variable_name_normalized": "grade",
+    "name": "map-hoxby-2000-grade"
+  },
+  {
+    "map_id": "map-hoxby-avery-2013-geographic-isolation",
+    "stratum_variable": "hoxby-avery-2013-geographic-isolation",
+    "confounder_identity": "id-geographic-composition",
+    "variable_name_normalized": "geographic_isolation",
+    "name": "map-hoxby-avery-2013-geographic-isolation"
+  },
+  {
+    "map_id": "map-hoxby-murarka-2009-lottery-winner-vs-loser",
+    "stratum_variable": "hoxby-murarka-2009-lottery-winner-vs-loser",
+    "confounder_identity": "id-collider-proxy",
+    "variable_name_normalized": "lottery_winner_vs_loser",
+    "name": "map-hoxby-murarka-2009-lottery-winner-vs-loser"
+  },
+  {
+    "map_id": "map-hrt-whi-2002-study_design",
+    "stratum_variable": "hrt-whi-2002-study_design",
+    "confounder_identity": "id-trial-timing-design",
+    "variable_name_normalized": "study_design",
+    "name": "map-hrt-whi-2002-study_design"
+  },
+  {
+    "map_id": "map-hsieh-moretti-2019-city-housing-market",
+    "stratum_variable": "hsieh-moretti-2019-city-housing-market",
+    "confounder_identity": "id-geographic-composition",
+    "variable_name_normalized": "city_housing_market",
+    "name": "map-hsieh-moretti-2019-city-housing-market"
+  },
+  {
+    "map_id": "map-income-education-state-state",
+    "stratum_variable": "income-education-state-state",
+    "confounder_identity": "id-geographic-composition",
+    "variable_name_normalized": "state",
+    "name": "map-income-education-state-state"
+  },
+  {
+    "map_id": "map-ironman-gender-age-2010-age_cohort",
+    "stratum_variable": "ironman-gender-age-2010-age_cohort",
+    "confounder_identity": "id-age-composition",
+    "variable_name_normalized": "age_cohort",
+    "name": "map-ironman-gender-age-2010-age_cohort"
+  },
+  {
+    "map_id": "map-isis-2-collaborative-group-1988-age-group",
+    "stratum_variable": "isis-2-collaborative-group-1988-age-group",
+    "confounder_identity": "id-age-composition",
+    "variable_name_normalized": "age_group",
+    "name": "map-isis-2-collaborative-group-1988-age-group"
+  },
+  {
+    "map_id": "map-israel-covid-severe-2021-age_group",
+    "stratum_variable": "israel-covid-severe-2021-age_group",
+    "confounder_identity": "id-age-composition",
+    "variable_name_normalized": "age_group",
+    "name": "map-israel-covid-severe-2021-age_group"
+  },
+  {
+    "map_id": "map-israeli-ministry-of-health-age-group-50-vs-50",
+    "stratum_variable": "israeli-ministry-of-health-age-group-50-vs-50",
+    "confounder_identity": "id-age-composition",
+    "variable_name_normalized": "age_group_50_vs_50",
+    "name": "map-israeli-ministry-of-health-age-group-50-vs-50"
+  },
+  {
+    "map_id": "map-jeter-justice-1997-season",
+    "stratum_variable": "jeter-justice-1997-season",
+    "confounder_identity": "id-situational-context",
+    "variable_name_normalized": "season_year",
+    "name": "map-jeter-justice-1997-season"
+  },
+  {
+    "map_id": "map-johari-koomen-pekelis-walsh-2017-sequential-test-timing",
+    "stratum_variable": "johari-koomen-pekelis-walsh-2017-sequential-test-timing",
+    "confounder_identity": "id-user-platform-segment",
+    "variable_name_normalized": "sequential_test_timing",
+    "name": "map-johari-koomen-pekelis-walsh-2017-sequential-test-timing"
+  },
+  {
+    "map_id": "map-johnson-2006-model-specification",
+    "stratum_variable": "johnson-2006-model-specification",
+    "confounder_identity": "id-method-specification",
+    "variable_name_normalized": "model_specification",
+    "name": "map-johnson-2006-model-specification"
+  },
+  {
+    "map_id": "map-juhn-murphy-pierce-1993-education",
+    "stratum_variable": "juhn-murphy-pierce-1993-education",
+    "confounder_identity": "id-institutional-unit",
+    "variable_name_normalized": "education",
+    "name": "map-juhn-murphy-pierce-1993-education"
+  },
+  {
+    "map_id": "map-katz-murphy-1992-demographic-group-age-gender-race",
+    "stratum_variable": "katz-murphy-1992-demographic-group-age-gender-race",
+    "confounder_identity": "id-age-composition",
+    "variable_name_normalized": "demographic_group_age_gender_race",
+    "name": "map-katz-murphy-1992-demographic-group-age-gender-race"
+  },
+  {
+    "map_id": "map-keys-mukherjee-seru-vig-2010-fico-score-band",
+    "stratum_variable": "keys-mukherjee-seru-vig-2010-fico-score-band",
+    "confounder_identity": "id-credit-risk-tier",
+    "variable_name_normalized": "fico_score_band",
+    "name": "map-keys-mukherjee-seru-vig-2010-fico-score-band"
+  },
+  {
+    "map_id": "map-kidney-1986-stone-size",
+    "stratum_variable": "kidney-1986-stone-size",
+    "confounder_identity": "id-disease-severity",
+    "variable_name_normalized": "stone_size",
+    "name": "map-kidney-1986-stone-size"
+  },
+  {
+    "map_id": "map-kidney-balanced-stone-size",
+    "stratum_variable": "kidney-balanced-stone-size",
+    "confounder_identity": "id-disease-severity",
+    "variable_name_normalized": "stone_size",
+    "name": "map-kidney-balanced-stone-size"
+  },
+  {
+    "map_id": "map-kidney-dialysis-facility-1990-case_mix",
+    "stratum_variable": "kidney-dialysis-facility-1990-case_mix",
+    "confounder_identity": "id-disease-severity",
+    "variable_name_normalized": "case_mix",
+    "name": "map-kidney-dialysis-facility-1990-case_mix"
+  },
+  {
+    "map_id": "map-kline-rose-walters-2022-industry",
+    "stratum_variable": "kline-rose-walters-2022-industry",
+    "confounder_identity": "id-socioeconomic-status",
+    "variable_name_normalized": "industry",
+    "name": "map-kline-rose-walters-2022-industry"
+  },
+  {
+    "map_id": "map-kohavi-deng-longbotham-xu-2014-user-segment",
+    "stratum_variable": "kohavi-deng-longbotham-xu-2014-user-segment",
+    "confounder_identity": "id-user-platform-segment",
+    "variable_name_normalized": "user_segment",
+    "name": "map-kohavi-deng-longbotham-xu-2014-user-segment"
+  },
+  {
+    "map_id": "map-kohavi-longbotham-2017-device-type",
+    "stratum_variable": "kohavi-longbotham-2017-device-type",
+    "confounder_identity": "id-user-platform-segment",
+    "variable_name_normalized": "device_type",
+    "name": "map-kohavi-longbotham-2017-device-type"
+  },
+  {
+    "map_id": "map-kohavi-longbotham-sommerfield-henne-2009-user-segment",
+    "stratum_variable": "kohavi-longbotham-sommerfield-henne-2009-user-segment",
+    "confounder_identity": "id-user-platform-segment",
+    "variable_name_normalized": "user_segment",
+    "name": "map-kohavi-longbotham-sommerfield-henne-2009-user-segment"
+  },
+  {
+    "map_id": "map-krueger-1999-school",
+    "stratum_variable": "krueger-1999-school",
+    "confounder_identity": "id-institutional-unit",
+    "variable_name_normalized": "school",
+    "name": "map-krueger-1999-school"
+  },
+  {
+    "map_id": "map-kutateladze-andiloro-johnson-spohn-2014-stage-in-process",
+    "stratum_variable": "kutateladze-andiloro-johnson-spohn-2014-stage-in-process",
+    "confounder_identity": "id-age-composition",
+    "variable_name_normalized": "stage_in_process",
+    "name": "map-kutateladze-andiloro-johnson-spohn-2014-stage-in-process"
+  },
+  {
+    "map_id": "map-lollar-vs-mccatty-pitching-1982-season",
+    "stratum_variable": "lollar-vs-mccatty-pitching-1982-season",
+    "confounder_identity": "id-situational-context",
+    "variable_name_normalized": "season",
+    "name": "map-lollar-vs-mccatty-pitching-1982-season"
+  },
+  {
+    "map_id": "map-long-2004-income-quartile",
+    "stratum_variable": "long-2004-income-quartile",
+    "confounder_identity": "id-socioeconomic-status",
+    "variable_name_normalized": "income_quartile",
+    "name": "map-long-2004-income-quartile"
+  },
+  {
+    "map_id": "map-lucente-baseball-1995-month_half",
+    "stratum_variable": "lucente-baseball-1995-month_half",
+    "confounder_identity": "id-situational-context",
+    "variable_name_normalized": "month_half",
+    "name": "map-lucente-baseball-1995-month_half"
+  },
+  {
+    "map_id": "map-mammography-length-bias-detection_mode",
+    "stratum_variable": "mammography-length-bias-detection_mode",
+    "confounder_identity": "id-selection-frailty",
+    "variable_name_normalized": "detection_mode",
+    "name": "map-mammography-length-bias-detection_mode"
+  },
+  {
+    "map_id": "map-mantel-haenszel-1959-age",
+    "stratum_variable": "mantel-haenszel-1959-age",
+    "confounder_identity": "id-age-composition",
+    "variable_name_normalized": "age",
+    "name": "map-mantel-haenszel-1959-age"
+  },
+  {
+    "map_id": "map-marathon-finishing-times-by-age-and-temperature-boston-marat-race-day-temperature",
+    "stratum_variable": "marathon-finishing-times-by-age-and-temperature-boston-marat-race-day-temperature",
+    "confounder_identity": "id-situational-context",
+    "variable_name_normalized": "race_day_temperature",
+    "name": "map-marathon-finishing-times-by-age-and-temperature-boston-marat-race-day-temperature"
+  },
+  {
+    "map_id": "map-measles-outbreak-vaccinated-vaccination_base_rate",
+    "stratum_variable": "measles-outbreak-vaccinated-vaccination_base_rate",
+    "confounder_identity": "id-exposure-mix",
+    "variable_name_normalized": "vaccination_base_rate",
+    "name": "map-measles-outbreak-vaccinated-vaccination_base_rate"
+  },
+  {
+    "map_id": "map-melanoma-sex",
+    "stratum_variable": "melanoma-sex",
+    "confounder_identity": "id-demographic-group",
+    "variable_name_normalized": "patient_sex",
+    "name": "map-melanoma-sex"
+  },
+  {
+    "map_id": "map-minimum-wage-region-region",
+    "stratum_variable": "minimum-wage-region-region",
+    "confounder_identity": "id-geographic-composition",
+    "variable_name_normalized": "region",
+    "name": "map-minimum-wage-region-region"
+  },
+  {
+    "map_id": "map-mlb-park-factor-adjustments-home-vs-away-park",
+    "stratum_variable": "mlb-park-factor-adjustments-home-vs-away-park",
+    "confounder_identity": "id-situational-context",
+    "variable_name_normalized": "home_vs_away_park",
+    "name": "map-mlb-park-factor-adjustments-home-vs-away-park"
+  },
+  {
+    "map_id": "map-moretti-2013-city",
+    "stratum_variable": "moretti-2013-city",
+    "confounder_identity": "id-geographic-composition",
+    "variable_name_normalized": "city",
+    "name": "map-moretti-2013-city"
+  },
+  {
+    "map_id": "map-moss-racusin-et-al-2012-faculty-mentor-s-gender",
+    "stratum_variable": "moss-racusin-et-al-2012-faculty-mentor-s-gender",
+    "confounder_identity": "id-demographic-group",
+    "variable_name_normalized": "faculty_mentor_s_gender",
+    "name": "map-moss-racusin-et-al-2012-faculty-mentor-s-gender"
+  },
+  {
+    "map_id": "map-mosteller-1995-grade-level",
+    "stratum_variable": "mosteller-1995-grade-level",
+    "confounder_identity": "id-institutional-unit",
+    "variable_name_normalized": "grade_level",
+    "name": "map-mosteller-1995-grade-level"
+  },
+  {
+    "map_id": "map-mrfit-1982-baseline-ecg-abnormality",
+    "stratum_variable": "mrfit-1982-baseline-ecg-abnormality",
+    "confounder_identity": "id-disease-severity",
+    "variable_name_normalized": "baseline_ecg_abnormality",
+    "name": "map-mrfit-1982-baseline-ecg-abnormality"
+  },
+  {
+    "map_id": "map-munnell-tootell-browne-mceneaney-1996-credit-score",
+    "stratum_variable": "munnell-tootell-browne-mceneaney-1996-credit-score",
+    "confounder_identity": "id-credit-risk-tier",
+    "variable_name_normalized": "credit_score",
+    "name": "map-munnell-tootell-browne-mceneaney-1996-credit-score"
+  },
+  {
+    "map_id": "map-naep-race",
+    "stratum_variable": "naep-race",
+    "confounder_identity": "id-demographic-group",
+    "variable_name_normalized": "race",
+    "name": "map-naep-race"
+  },
+  {
+    "map_id": "map-naep-state-demographics-state_composition",
+    "stratum_variable": "naep-state-demographics-state_composition",
+    "confounder_identity": "id-geographic-composition",
+    "variable_name_normalized": "state_composition",
+    "name": "map-naep-state-demographics-state_composition"
+  },
+  {
+    "map_id": "map-nba-shooting-shot-mix-shot_type",
+    "stratum_variable": "nba-shooting-shot-mix-shot_type",
+    "confounder_identity": "id-situational-context",
+    "variable_name_normalized": "shot_type",
+    "name": "map-nba-shooting-shot-mix-shot_type"
+  },
+  {
+    "map_id": "map-nces-ipeds-institution-type",
+    "stratum_variable": "nces-ipeds-institution-type",
+    "confounder_identity": "id-institutional-unit",
+    "variable_name_normalized": "institution_type",
+    "name": "map-nces-ipeds-institution-type"
+  },
+  {
+    "map_id": "map-neumark-bank-van-nort-1996-restaurant-tier-high-price-vs-low-price",
+    "stratum_variable": "neumark-bank-van-nort-1996-restaurant-tier-high-price-vs-low-price",
+    "confounder_identity": "id-user-platform-segment",
+    "variable_name_normalized": "restaurant_tier_high_price_vs_low_price",
+    "name": "map-neumark-bank-van-nort-1996-restaurant-tier-high-price-vs-low-price"
+  },
+  {
+    "map_id": "map-nfl-completion-depth-pass_depth",
+    "stratum_variable": "nfl-completion-depth-pass_depth",
+    "confounder_identity": "id-situational-context",
+    "variable_name_normalized": "pass_depth",
+    "name": "map-nfl-completion-depth-pass_depth"
+  },
+  {
+    "map_id": "map-nfl-quarterback-rating-by-game-situation-2010-down-and-distance",
+    "stratum_variable": "nfl-quarterback-rating-by-game-situation-2010-down-and-distance",
+    "confounder_identity": "id-situational-context",
+    "variable_name_normalized": "down_and_distance",
+    "name": "map-nfl-quarterback-rating-by-game-situation-2010-down-and-distance"
+  },
+  {
+    "map_id": "map-nhanes-air-quality-and-respiratory-income",
+    "stratum_variable": "nhanes-air-quality-and-respiratory-income",
+    "confounder_identity": "id-socioeconomic-status",
+    "variable_name_normalized": "income",
+    "name": "map-nhanes-air-quality-and-respiratory-income"
+  },
+  {
+    "map_id": "map-nhl-shooting-percentage-by-game-state-2010-score-situation-trailing-vs-leading-vs-t",
+    "stratum_variable": "nhl-shooting-percentage-by-game-state-2010-score-situation-trailing-vs-leading-vs-t",
+    "confounder_identity": "id-situational-context",
+    "variable_name_normalized": "score_situation_trailing_vs_leading_vs_t",
+    "name": "map-nhl-shooting-percentage-by-game-state-2010-score-situation-trailing-vs-leading-vs-t"
+  },
+  {
+    "map_id": "map-noncollapsibility-or-synthetic-noncollapsible_measure",
+    "stratum_variable": "noncollapsibility-or-synthetic-noncollapsible_measure",
+    "confounder_identity": "id-method-specification",
+    "variable_name_normalized": "noncollapsible_measure",
+    "name": "map-noncollapsibility-or-synthetic-noncollapsible_measure"
+  },
+  {
+    "map_id": "map-north-carolina-death-penalty-1990-victim_race",
+    "stratum_variable": "north-carolina-death-penalty-1990-victim_race",
+    "confounder_identity": "id-legal-case-context",
+    "variable_name_normalized": "victim_race",
+    "name": "map-north-carolina-death-penalty-1990-victim_race"
+  },
+  {
+    "map_id": "map-nsf-ncses-survey-of-doctoral-recipients-field-of-science",
+    "stratum_variable": "nsf-ncses-survey-of-doctoral-recipients-field-of-science",
+    "confounder_identity": "id-institutional-unit",
+    "variable_name_normalized": "field_of_science",
+    "name": "map-nsf-ncses-survey-of-doctoral-recipients-field-of-science"
+  },
+  {
+    "map_id": "map-nypd-stop-frisk-hitrate-precinct_base_rate",
+    "stratum_variable": "nypd-stop-frisk-hitrate-precinct_base_rate",
+    "confounder_identity": "id-institutional-unit",
+    "variable_name_normalized": "precinct_base_rate",
+    "name": "map-nypd-stop-frisk-hitrate-precinct_base_rate"
+  },
+  {
+    "map_id": "map-oaxaca-1973-education-experience-occupation",
+    "stratum_variable": "oaxaca-1973-education-experience-occupation",
+    "confounder_identity": "id-socioeconomic-status",
+    "variable_name_normalized": "education_experience_occupation",
+    "name": "map-oaxaca-1973-education-experience-occupation"
+  },
+  {
+    "map_id": "map-obesity-paradox-hf-heart_failure_status",
+    "stratum_variable": "obesity-paradox-hf-heart_failure_status",
+    "confounder_identity": "id-collider-proxy",
+    "variable_name_normalized": "heart_failure_status",
+    "name": "map-obesity-paradox-hf-heart_failure_status"
+  },
+  {
+    "map_id": "map-olympic-sprint-times-by-heat-type-1996-preliminary-heat-vs-semifinal-vs-final",
+    "stratum_variable": "olympic-sprint-times-by-heat-type-1996-preliminary-heat-vs-semifinal-vs-final",
+    "confounder_identity": "id-situational-context",
+    "variable_name_normalized": "preliminary_heat_vs_semifinal_vs_final",
+    "name": "map-olympic-sprint-times-by-heat-type-1996-preliminary-heat-vs-semifinal-vs-final"
+  },
+  {
+    "map_id": "map-oncology-trial-stage-cancer_stage",
+    "stratum_variable": "oncology-trial-stage-cancer_stage",
+    "confounder_identity": "id-age-composition",
+    "variable_name_normalized": "cancer_stage",
+    "name": "map-oncology-trial-stage-cancer_stage"
+  },
+  {
+    "map_id": "map-open-university-1975-age_band",
+    "stratum_variable": "open-university-1975-age_band",
+    "confounder_identity": "id-age-composition",
+    "variable_name_normalized": "age_band",
+    "name": "map-open-university-1975-age_band"
+  },
+  {
+    "map_id": "map-our-world-in-data-covid-19-dataset-2020-country",
+    "stratum_variable": "our-world-in-data-covid-19-dataset-2020-country",
+    "confounder_identity": "id-geographic-composition",
+    "variable_name_normalized": "country",
+    "name": "map-our-world-in-data-covid-19-dataset-2020-country"
+  },
+  {
+    "map_id": "map-panama-sweden-mortality-1975-age_group",
+    "stratum_variable": "panama-sweden-mortality-1975-age_group",
+    "confounder_identity": "id-age-composition",
+    "variable_name_normalized": "age_group",
+    "name": "map-panama-sweden-mortality-1975-age_group"
+  },
+  {
+    "map_id": "map-petersen-rajan-1994-firm-age",
+    "stratum_variable": "petersen-rajan-1994-firm-age",
+    "confounder_identity": "id-age-composition",
+    "variable_name_normalized": "firm_age",
+    "name": "map-petersen-rajan-1994-firm-age"
+  },
+  {
+    "map_id": "map-phe-covid-2021-age",
+    "stratum_variable": "phe-covid-2021-age",
+    "confounder_identity": "id-age-composition",
+    "variable_name_normalized": "age_group",
+    "name": "map-phe-covid-2021-age"
+  },
+  {
+    "map_id": "map-piketty-saez-2003-income-fractile",
+    "stratum_variable": "piketty-saez-2003-income-fractile",
+    "confounder_identity": "id-socioeconomic-status",
+    "variable_name_normalized": "income_fractile",
+    "name": "map-piketty-saez-2003-income-fractile"
+  },
+  {
+    "map_id": "map-pisa-immigration-2015-country",
+    "stratum_variable": "pisa-immigration-2015-country",
+    "confounder_identity": "id-geographic-composition",
+    "variable_name_normalized": "country",
+    "name": "map-pisa-immigration-2015-country"
+  },
+  {
+    "map_id": "map-pitcher-era-ballpark-ballpark",
+    "stratum_variable": "pitcher-era-ballpark-ballpark",
+    "confounder_identity": "id-situational-context",
+    "variable_name_normalized": "ballpark",
+    "name": "map-pitcher-era-ballpark-ballpark"
+  },
+  {
+    "map_id": "map-plato-trial-geographic-region-north-america-vs-europ",
+    "stratum_variable": "plato-trial-geographic-region-north-america-vs-europ",
+    "confounder_identity": "id-geographic-composition",
+    "variable_name_normalized": "geographic_region_north_america_vs_europ",
+    "name": "map-plato-trial-geographic-region-north-america-vs-europ"
+  },
+  {
+    "map_id": "map-polack-et-al-2020-age-group",
+    "stratum_variable": "polack-et-al-2020-age-group",
+    "confounder_identity": "id-age-composition",
+    "variable_name_normalized": "age_group",
+    "name": "map-polack-et-al-2020-age-group"
+  },
+  {
+    "map_id": "map-police-force-encounter-encounter_conditioning",
+    "stratum_variable": "police-force-encounter-encounter_conditioning",
+    "confounder_identity": "id-collider-proxy",
+    "variable_name_normalized": "encounter_conditioning",
+    "name": "map-police-force-encounter-encounter_conditioning"
+  },
+  {
+    "map_id": "map-predimed-trial-cardiovascular-risk-tier",
+    "stratum_variable": "predimed-trial-cardiovascular-risk-tier",
+    "confounder_identity": "id-disease-severity",
+    "variable_name_normalized": "cardiovascular_risk_tier",
+    "name": "map-predimed-trial-cardiovascular-risk-tier"
+  },
+  {
+    "map_id": "map-radelet-1981-victim-race",
+    "stratum_variable": "radelet-1981-victim-race",
+    "confounder_identity": "id-legal-case-context",
+    "variable_name_normalized": "victim_race",
+    "name": "map-radelet-1981-victim-race"
+  },
+  {
+    "map_id": "map-recsys-offline-eval-exposure_popularity",
+    "stratum_variable": "recsys-offline-eval-exposure_popularity",
+    "confounder_identity": "id-exposure-mix",
+    "variable_name_normalized": "exposure_popularity",
+    "name": "map-recsys-offline-eval-exposure_popularity"
+  },
+  {
+    "map_id": "map-red-meat-colorectal-bmi-bmi_category",
+    "stratum_variable": "red-meat-colorectal-bmi-bmi_category",
+    "confounder_identity": "id-collider-proxy",
+    "variable_name_normalized": "bmi_category",
+    "name": "map-red-meat-colorectal-bmi-bmi_category"
+  },
+  {
+    "map_id": "map-rehavi-starr-2012-arrest-offense",
+    "stratum_variable": "rehavi-starr-2012-arrest-offense",
+    "confounder_identity": "id-legal-case-context",
+    "variable_name_normalized": "arrest_offense",
+    "name": "map-rehavi-starr-2012-arrest-offense"
+  },
+  {
+    "map_id": "map-reintjes-2000-hospital-incidence",
+    "stratum_variable": "reintjes-2000-hospital-incidence",
+    "confounder_identity": "id-institutional-unit",
+    "variable_name_normalized": "hospital_incidence_level",
+    "name": "map-reintjes-2000-hospital-incidence"
+  },
+  {
+    "map_id": "map-religiosity-happiness-country-national_wealth",
+    "stratum_variable": "religiosity-happiness-country-national_wealth",
+    "confounder_identity": "id-socioeconomic-status",
+    "variable_name_normalized": "national_wealth",
+    "name": "map-religiosity-happiness-country-national_wealth"
+  },
+  {
+    "map_id": "map-returns-to-education-field-field_of_study",
+    "stratum_variable": "returns-to-education-field-field_of_study",
+    "confounder_identity": "id-institutional-unit",
+    "variable_name_normalized": "field_of_study",
+    "name": "map-returns-to-education-field-field_of_study"
+  },
+  {
+    "map_id": "map-robinson-1950-literacy-state_aggregation",
+    "stratum_variable": "robinson-1950-literacy-state_aggregation",
+    "confounder_identity": "id-geographic-composition",
+    "variable_name_normalized": "state_aggregation",
+    "name": "map-robinson-1950-literacy-state_aggregation"
+  },
+  {
+    "map_id": "map-rogers-nicewander-1988-position_group",
+    "stratum_variable": "rogers-nicewander-1988-position_group",
+    "confounder_identity": "id-situational-context",
+    "variable_name_normalized": "position_group",
+    "name": "map-rogers-nicewander-1988-position_group"
+  },
+  {
+    "map_id": "map-rosiglitazone-mi-pool-2007-trial_allocation_profile",
+    "stratum_variable": "rosiglitazone-mi-pool-2007-trial_allocation_profile",
+    "confounder_identity": "id-trial-timing-design",
+    "variable_name_normalized": "trial_allocation_profile",
+    "name": "map-rosiglitazone-mi-pool-2007-trial_allocation_profile"
+  },
+  {
+    "map_id": "map-rothstein-2004-institution",
+    "stratum_variable": "rothstein-2004-institution",
+    "confounder_identity": "id-institutional-unit",
+    "variable_name_normalized": "institution",
+    "name": "map-rothstein-2004-institution"
+  },
+  {
+    "map_id": "map-rothstein-2010-prior-year-assignment",
+    "stratum_variable": "rothstein-2010-prior-year-assignment",
+    "confounder_identity": "id-method-specification",
+    "variable_name_normalized": "prior_year_assignment",
+    "name": "map-rothstein-2010-prior-year-assignment"
+  },
+  {
+    "map_id": "map-saez-2019-income-fractile",
+    "stratum_variable": "saez-2019-income-fractile",
+    "confounder_identity": "id-socioeconomic-status",
+    "variable_name_normalized": "income_fractile",
+    "name": "map-saez-2019-income-fractile"
+  },
+  {
+    "map_id": "map-sarsons-2017-gender-of-co-authors",
+    "stratum_variable": "sarsons-2017-gender-of-co-authors",
+    "confounder_identity": "id-demographic-group",
+    "variable_name_normalized": "gender_of_co_authors",
+    "name": "map-sarsons-2017-gender-of-co-authors"
+  },
+  {
+    "map_id": "map-sat-school-spending",
+    "stratum_variable": "sat-school-spending",
+    "confounder_identity": "id-institutional-unit",
+    "variable_name_normalized": "state_school_spending",
+    "name": "map-sat-school-spending"
+  },
+  {
+    "map_id": "map-sba-small-business-lending-data-loan-size",
+    "stratum_variable": "sba-small-business-lending-data-loan-size",
+    "confounder_identity": "id-credit-risk-tier",
+    "variable_name_normalized": "loan_size",
+    "name": "map-sba-small-business-lending-data-loan-size"
+  },
+  {
+    "map_id": "map-schizophrenia-antipsychotic-illness_severity",
+    "stratum_variable": "schizophrenia-antipsychotic-illness_severity",
+    "confounder_identity": "id-disease-severity",
+    "variable_name_normalized": "illness_severity",
+    "name": "map-schizophrenia-antipsychotic-illness_severity"
+  },
+  {
+    "map_id": "map-seatbelt-crash-severity-crash_occurrence",
+    "stratum_variable": "seatbelt-crash-severity-crash_occurrence",
+    "confounder_identity": "id-collider-proxy",
+    "variable_name_normalized": "crash_occurrence",
+    "name": "map-seatbelt-crash-severity-crash_occurrence"
+  },
+  {
+    "map_id": "map-sentencing-offense-type-offense_category",
+    "stratum_variable": "sentencing-offense-type-offense_category",
+    "confounder_identity": "id-legal-case-context",
+    "variable_name_normalized": "offense_category",
+    "name": "map-sentencing-offense-type-offense_category"
+  },
+  {
+    "map_id": "map-shapiro-et-al-1988-age-group",
+    "stratum_variable": "shapiro-et-al-1988-age-group",
+    "confounder_identity": "id-age-composition",
+    "variable_name_normalized": "age_group",
+    "name": "map-shapiro-et-al-1988-age-group"
+  },
+  {
+    "map_id": "map-sick-quitter-alcohol-abstainer_composition",
+    "stratum_variable": "sick-quitter-alcohol-abstainer_composition",
+    "confounder_identity": "id-selection-frailty",
+    "variable_name_normalized": "abstainer_composition",
+    "name": "map-sick-quitter-alcohol-abstainer_composition"
+  },
+  {
+    "map_id": "map-simonsen-et-al-2005-frailty",
+    "stratum_variable": "simonsen-et-al-2005-frailty",
+    "confounder_identity": "id-selection-frailty",
+    "variable_name_normalized": "frailty",
+    "name": "map-simonsen-et-al-2005-frailty"
+  },
+  {
+    "map_id": "map-snow-cholera-water-1855-water_company",
+    "stratum_variable": "snow-cholera-water-1855-water_company",
+    "confounder_identity": "id-treatment-indication",
+    "variable_name_normalized": "water_company",
+    "name": "map-snow-cholera-water-1855-water_company"
+  },
+  {
+    "map_id": "map-soccer-expected-goals-home",
+    "stratum_variable": "soccer-expected-goals-home",
+    "confounder_identity": "id-situational-context",
+    "variable_name_normalized": "home",
+    "name": "map-soccer-expected-goals-home"
+  },
+  {
+    "map_id": "map-soccer-pass-completion-by-league-2017-match-situation-pressing-vs-not-pressing",
+    "stratum_variable": "soccer-pass-completion-by-league-2017-match-situation-pressing-vs-not-pressing",
+    "confounder_identity": "id-situational-context",
+    "variable_name_normalized": "match_situation_pressing_vs_not_pressing",
+    "name": "map-soccer-pass-completion-by-league-2017-match-situation-pressing-vs-not-pressing"
+  },
+  {
+    "map_id": "map-spohn-2000-offense-severity",
+    "stratum_variable": "spohn-2000-offense-severity",
+    "confounder_identity": "id-disease-severity",
+    "variable_name_normalized": "offense_severity",
+    "name": "map-spohn-2000-offense-severity"
+  },
+  {
+    "map_id": "map-sprint-research-group-2015-age",
+    "stratum_variable": "sprint-research-group-2015-age",
+    "confounder_identity": "id-age-composition",
+    "variable_name_normalized": "age",
+    "name": "map-sprint-research-group-2015-age"
+  },
+  {
+    "map_id": "map-star-class-size-school",
+    "stratum_variable": "star-class-size-school",
+    "confounder_identity": "id-institutional-unit",
+    "variable_name_normalized": "school",
+    "name": "map-star-class-size-school"
+  },
+  {
+    "map_id": "map-starr-rehavi-2014-charge-severity",
+    "stratum_variable": "starr-rehavi-2014-charge-severity",
+    "confounder_identity": "id-disease-severity",
+    "variable_name_normalized": "charge_severity",
+    "name": "map-starr-rehavi-2014-charge-severity"
+  },
+  {
+    "map_id": "map-steroid-asthma-severity-disease_severity",
+    "stratum_variable": "steroid-asthma-severity-disease_severity",
+    "confounder_identity": "id-disease-severity",
+    "variable_name_normalized": "disease_severity",
+    "name": "map-steroid-asthma-severity-disease_severity"
+  },
+  {
+    "map_id": "map-surgeon-volume-mortality-baseline_risk",
+    "stratum_variable": "surgeon-volume-mortality-baseline_risk",
+    "confounder_identity": "id-disease-severity",
+    "variable_name_normalized": "baseline_risk",
+    "name": "map-surgeon-volume-mortality-baseline_risk"
+  },
+  {
+    "map_id": "map-tang-agarwal-o-brien-meyer-2010-concurrent-experiment-assignment",
+    "stratum_variable": "tang-agarwal-o-brien-meyer-2010-concurrent-experiment-assignment",
+    "confounder_identity": "id-user-platform-segment",
+    "variable_name_normalized": "concurrent_experiment_assignment",
+    "name": "map-tang-agarwal-o-brien-meyer-2010-concurrent-experiment-assignment"
+  },
+  {
+    "map_id": "map-tb-treatment-resistance-drug_resistance",
+    "stratum_variable": "tb-treatment-resistance-drug_resistance",
+    "confounder_identity": "id-disease-severity",
+    "variable_name_normalized": "drug_resistance",
+    "name": "map-tb-treatment-resistance-drug_resistance"
+  },
+  {
+    "map_id": "map-teacher-vam-prior-achievement-incoming_achievement",
+    "stratum_variable": "teacher-vam-prior-achievement-incoming_achievement",
+    "confounder_identity": "id-institutional-unit",
+    "variable_name_normalized": "incoming_achievement",
+    "name": "map-teacher-vam-prior-achievement-incoming_achievement"
+  },
+  {
+    "map_id": "map-tennis-first-serve-percentage-by-surface-2010-surface-type-hard",
+    "stratum_variable": "tennis-first-serve-percentage-by-surface-2010-surface-type-hard",
+    "confounder_identity": "id-situational-context",
+    "variable_name_normalized": "surface_type_hard",
+    "name": "map-tennis-first-serve-percentage-by-surface-2010-surface-type-hard"
+  },
+  {
+    "map_id": "map-timss-2019-international-math-and-science-ses",
+    "stratum_variable": "timss-2019-international-math-and-science-ses",
+    "confounder_identity": "id-socioeconomic-status",
+    "variable_name_normalized": "ses",
+    "name": "map-timss-2019-international-math-and-science-ses"
+  },
+  {
+    "map_id": "map-titanic-1912-sex",
+    "stratum_variable": "titanic-1912-sex",
+    "confounder_identity": "id-situational-context",
+    "variable_name_normalized": "passenger_sex",
+    "name": "map-titanic-1912-sex"
+  },
+  {
+    "map_id": "map-tolbutamide-ugdp-1970-center_baseline_risk",
+    "stratum_variable": "tolbutamide-ugdp-1970-center_baseline_risk",
+    "confounder_identity": "id-disease-severity",
+    "variable_name_normalized": "center_baseline_risk",
+    "name": "map-tolbutamide-ugdp-1970-center_baseline_risk"
+  },
+  {
+    "map_id": "map-trauma-center-mortality-injury_severity",
+    "stratum_variable": "trauma-center-mortality-injury_severity",
+    "confounder_identity": "id-disease-severity",
+    "variable_name_normalized": "injury_severity",
+    "name": "map-trauma-center-mortality-injury_severity"
+  },
+  {
+    "map_id": "map-triton-timi-38-prior-stroke",
+    "stratum_variable": "triton-timi-38-prior-stroke",
+    "confounder_identity": "id-trial-timing-design",
+    "variable_name_normalized": "prior_stroke",
+    "name": "map-triton-timi-38-prior-stroke"
+  },
+  {
+    "map_id": "map-uc-irvine-admissions-1985-department",
+    "stratum_variable": "uc-irvine-admissions-1985-department",
+    "confounder_identity": "id-contested-org-choice",
+    "variable_name_normalized": "department",
+    "name": "map-uc-irvine-admissions-1985-department"
+  },
+  {
+    "map_id": "map-uc-systemwide-admissions-major_campus",
+    "stratum_variable": "uc-systemwide-admissions-major_campus",
+    "confounder_identity": "id-institutional-unit",
+    "variable_name_normalized": "major_campus",
+    "name": "map-uc-systemwide-admissions-major_campus"
+  },
+  {
+    "map_id": "map-uk-biobank-ukbb-observational-indication-for-statin-cardiovascular-ris",
+    "stratum_variable": "uk-biobank-ukbb-observational-indication-for-statin-cardiovascular-ris",
+    "confounder_identity": "id-disease-severity",
+    "variable_name_normalized": "indication_for_statin_cardiovascular_ris",
+    "name": "map-uk-biobank-ukbb-observational-indication-for-statin-cardiovascular-ris"
+  },
+  {
+    "map_id": "map-unemployment-education-cycle-education_composition",
+    "stratum_variable": "unemployment-education-cycle-education_composition",
+    "confounder_identity": "id-situational-context",
+    "variable_name_normalized": "education_composition",
+    "name": "map-unemployment-education-cycle-education_composition"
+  },
+  {
+    "map_id": "map-us-wage-composition-stagnation-workforce_composition",
+    "stratum_variable": "us-wage-composition-stagnation-workforce_composition",
+    "confounder_identity": "id-situational-context",
+    "variable_name_normalized": "workforce_composition",
+    "name": "map-us-wage-composition-stagnation-workforce_composition"
+  },
+  {
+    "map_id": "map-ussc-2017-offense-type",
+    "stratum_variable": "ussc-2017-offense-type",
+    "confounder_identity": "id-legal-case-context",
+    "variable_name_normalized": "offense_type",
+    "name": "map-ussc-2017-offense-type"
+  },
+  {
+    "map_id": "map-von-kugelgen-mohamed-scholkopf-2021-stratum",
+    "stratum_variable": "von-kugelgen-mohamed-scholkopf-2021-stratum",
+    "confounder_identity": "id-method-specification",
+    "variable_name_normalized": "stratum",
+    "name": "map-von-kugelgen-mohamed-scholkopf-2021-stratum"
+  },
+  {
+    "map_id": "map-voter-turnout-education-state-state",
+    "stratum_variable": "voter-turnout-education-state-state",
+    "confounder_identity": "id-geographic-composition",
+    "variable_name_normalized": "state",
+    "name": "map-voter-turnout-education-state-state"
+  },
+  {
+    "map_id": "map-wade-boggs-vs-don-mattingly-season-year",
+    "stratum_variable": "wade-boggs-vs-don-mattingly-season-year",
+    "confounder_identity": "id-situational-context",
+    "variable_name_normalized": "season_year",
+    "name": "map-wade-boggs-vs-don-mattingly-season-year"
+  },
+  {
+    "map_id": "map-wainer-sat-states-1992-region",
+    "stratum_variable": "wainer-sat-states-1992-region",
+    "confounder_identity": "id-geographic-composition",
+    "variable_name_normalized": "region",
+    "name": "map-wainer-sat-states-1992-region"
+  },
+  {
+    "map_id": "map-warfarin-bleeding-age-age_group",
+    "stratum_variable": "warfarin-bleeding-age-age_group",
+    "confounder_identity": "id-age-composition",
+    "variable_name_normalized": "age_group",
+    "name": "map-warfarin-bleeding-age-age_group"
+  },
+  {
+    "map_id": "map-western-2006-education-level",
+    "stratum_variable": "western-2006-education-level",
+    "confounder_identity": "id-institutional-unit",
+    "variable_name_normalized": "education_level",
+    "name": "map-western-2006-education-level"
+  },
+  {
+    "map_id": "map-wilson-batting-2000-inning_half",
+    "stratum_variable": "wilson-batting-2000-inning_half",
+    "confounder_identity": "id-situational-context",
+    "variable_name_normalized": "inning_half",
+    "name": "map-wilson-batting-2000-inning_half"
+  },
+  {
+    "map_id": "map-women-s-health-initiative-2002-age-at-menopause-onset",
+    "stratum_variable": "women-s-health-initiative-2002-age-at-menopause-onset",
+    "confounder_identity": "id-age-composition",
+    "variable_name_normalized": "age_at_menopause_onset",
+    "name": "map-women-s-health-initiative-2002-age-at-menopause-onset"
+  },
+  {
+    "map_id": "map-women-s-health-study-age-group",
+    "stratum_variable": "women-s-health-study-age-group",
+    "confounder_identity": "id-age-composition",
+    "variable_name_normalized": "age_group",
+    "name": "map-women-s-health-study-age-group"
+  },
+  {
+    "map_id": "map-xu-chen-fernandez-sinno-bhasin-2015-user-tenure",
+    "stratum_variable": "xu-chen-fernandez-sinno-bhasin-2015-user-tenure",
+    "confounder_identity": "id-user-platform-segment",
+    "variable_name_normalized": "user_tenure",
+    "name": "map-xu-chen-fernandez-sinno-bhasin-2015-user-tenure"
+  },
+  {
+    "map_id": "map-yule-1903-age-group",
+    "stratum_variable": "yule-1903-age-group",
+    "confounder_identity": "id-age-composition",
+    "variable_name_normalized": "age_group",
+    "name": "map-yule-1903-age-group"
+  },
+  {
+    "map_id": "map-yusuf-et-al-hope-trial-2000-diabetes-status",
+    "stratum_variable": "yusuf-et-al-hope-trial-2000-diabetes-status",
+    "confounder_identity": "id-disease-severity",
+    "variable_name_normalized": "diabetes_status",
+    "name": "map-yusuf-et-al-hope-trial-2000-diabetes-status"
+  }
+]

@@ -1,0 +1,20 @@
+[
+  {
+    "unit_distance_graph_id": "g-heptagon-center",
+    "point_set": "heptagon-with-center",
+    "name": "heptagon-with-center-graph",
+    "max_possible_edges": 0.0
+  },
+  {
+    "unit_distance_graph_id": "g-sq",
+    "point_set": "unit-square",
+    "name": "unit-square-graph",
+    "max_possible_edges": 0.0
+  },
+  {
+    "unit_distance_graph_id": "g-tri",
+    "point_set": "unit-triangle",
+    "name": "unit-triangle-graph",
+    "max_possible_edges": 0.0
+  }
+]

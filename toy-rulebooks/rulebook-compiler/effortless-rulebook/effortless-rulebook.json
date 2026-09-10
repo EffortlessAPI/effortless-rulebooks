@@ -1,0 +1,28 @@
+{
+  "HelloWhos": {
+    "schema": [
+      { "name": "HelloWhoId", "datatype": "string", "type": "raw" },
+      { "name": "Name", "datatype": "string", "type": "raw" },
+      { "name": "Introduction", "datatype": "string", "type": "calculated", "formula": "=\"Hi... \" & {{Name}} & \".\"" }
+    ],
+    "data": [
+      { "HelloWhoId": "world", "Name": "World", "Introduction": "Hi... World." },
+      { "HelloWhoId": "bob", "Name": "Bob", "Introduction": "Hi... Bob." },
+      { "HelloWhoId": "everyone", "Name": "All", "Introduction": "Hi... All." },
+      {"HelloWhoId": "loui", "Name": "LOU", "Introduction": "Hi... LOU."}
+    ]
+  },
+  "Speakers": {
+    "schema": [
+      { "name": "SpeakerId", "datatype": "string", "type": "raw" },
+      { "name": "Name", "datatype": "string", "type": "raw" },
+      { "name": "Phrase", "datatype": "string", "type": "raw", "Description": "The HelloWho this speaker is." },
+      { "name": "Introduction", "datatype": "string", "type": "lookup", "Description": "The speaker's introduction, looked up from their HelloWho.", "formula": "=IFNA(INDEX(HelloWhos!{{Introduction}}, MATCH({{Phrase}},HelloWhos!{{HelloWhoId}}, 0)), \"\")" }
+    ],
+    "data": [
+      { "SpeakerId": "speaker-1", "Name": "speaker-1", "Phrase": "world", "Introduction": "Hi... World." },
+      { "SpeakerId": "speaker-2", "Name": "speaker-2", "Phrase": "loui", "Introduction": "Hi... LOU." },
+      { "SpeakerId": "speaker-3", "Name": "speaker-3", "Phrase": "everyone", "Introduction": "Hi... All." }
+    ]
+  }
+}

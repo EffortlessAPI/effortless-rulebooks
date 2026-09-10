@@ -1,0 +1,16 @@
+[
+  {
+    "counterfactual_trajectory_id": "cf-context",
+    "trajectory_label": "Untreated SLE projection (context only)",
+    "individual": "ind-a-reyes",
+    "autoimmune_disease": "sle",
+    "projected_severity": 6,
+    "horizon_months": 12,
+    "intervention_applied": "none",
+    "name": "Untreated SLE projection (context only)",
+    "parent_path": "/intake/new-patient/reyes-ana",
+    "relative_path": "/intake/new-patient/reyes-ana/trajectories/cf-context",
+    "autoimmune_disease_label": "Systemic Lupus Erythematosus",
+    "is_worsening_trajectory": false
+  }
+]

@@ -1,0 +1,71 @@
+[
+  {
+    "planar_projection_id": "proj-q-sqrt-neg3-first-two",
+    "display_name": "First-Two-Coords of Lat Q-sqrt-neg3",
+    "source_lattice": "lat-q-sqrt-neg3",
+    "target_context": "euclidean-plane-r2",
+    "projection_kind": "first-two-coords",
+    "scaling_factor": 1,
+    "rotation_degrees": 0,
+    "is_isometric": true,
+    "preserves_unit_distance": true,
+    "name": "first-two-coords-of-lat-q-sqrt-neg3",
+    "is_scaling_preserving": true
+  },
+  {
+    "planar_projection_id": "proj-q-sqrt-neg3-rotated-scaled",
+    "display_name": "Rotated-Scaled of Lat Q-sqrt-neg3",
+    "source_lattice": "lat-q-sqrt-neg3",
+    "target_context": "euclidean-plane-r2",
+    "projection_kind": "rotation-scale",
+    "scaling_factor": 2,
+    "rotation_degrees": 45,
+    "is_isometric": false,
+    "preserves_unit_distance": false,
+    "description": "Coverage row: scaling by 2 destroys unit-distance preservation.",
+    "name": "rotated-scaled-of-lat-q-sqrt-neg3",
+    "is_scaling_preserving": false
+  },
+  {
+    "planar_projection_id": "proj-q-sqrt-neg3-unverified",
+    "display_name": "Unverified Affine of Lat Q-sqrt-neg3",
+    "source_lattice": "lat-q-sqrt-neg3",
+    "target_context": "euclidean-plane-r2",
+    "projection_kind": "rational-affine",
+    "scaling_factor": 1,
+    "rotation_degrees": 0,
+    "is_isometric": false,
+    "preserves_unit_distance": false,
+    "description": "Coverage row: properties not yet evaluated.",
+    "name": "unverified-affine-of-lat-q-sqrt-neg3",
+    "is_scaling_preserving": true
+  },
+  {
+    "planar_projection_id": "proj-q-zeta-7-sigma1",
+    "display_name": "\u03c31 Projection of Lat Q-zeta-7",
+    "source_lattice": "lat-q-zeta-7",
+    "target_context": "euclidean-plane-r2",
+    "projection_kind": "first-two-coords",
+    "scaling_factor": 1,
+    "rotation_degrees": 0,
+    "is_isometric": false,
+    "preserves_unit_distance": false,
+    "description": "Pick out the first complex embedding \u03c3_1: \u03b6_7 \u21a6 e^(2\u03c0i/7) and read off (Re, Im) \u2208 R^2. NOT isometric (the R^2 image is a 2D shadow of a 6D lattice); whether it preserves unit distance depends on which lattice points get sampled \u2014 captured row-by-row in ProjectedShortVectors.",
+    "name": "\u03c31-projection-of-lat-q-zeta-7",
+    "is_scaling_preserving": true
+  },
+  {
+    "planar_projection_id": "proj-q-zeta-7-sigma1-scaled",
+    "display_name": "Scaled \u03c31 Projection of Lat Q-zeta-7",
+    "source_lattice": "lat-q-zeta-7",
+    "target_context": "euclidean-plane-r2",
+    "projection_kind": "rotation-scale",
+    "scaling_factor": 0.5773502691896258,
+    "rotation_degrees": 0,
+    "is_isometric": false,
+    "preserves_unit_distance": false,
+    "description": "\u03c31 followed by scaling by 1/sqrt(3) so that the powers of \u03b6_7 (which have squared L2-norm 3 in R^6) land near the unit circle in R^2.",
+    "name": "scaled-\u03c31-projection-of-lat-q-zeta-7",
+    "is_scaling_preserving": false
+  }
+]

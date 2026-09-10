@@ -3,28 +3,28 @@
     "customer_id": "emily-jones",
     "first_name": "Emily",
     "last_name": "Jones",
-    "name": "Jones, Emily",
+    "name": null,
     "initials": null
   },
   {
     "customer_id": "jane-smith",
     "first_name": "Jane",
     "last_name": "Smith",
-    "name": "Smith, Jane",
+    "name": null,
     "initials": null
   },
   {
     "customer_id": "john-doe",
     "first_name": "John",
     "last_name": "Doe",
-    "name": "Doe, John",
+    "name": null,
     "initials": null
   },
   {
     "customer_id": "mary-gutknecht",
     "first_name": "Mary",
     "last_name": "Gutknecht",
-    "name": "Gutknecht, Mary",
+    "name": null,
     "initials": null
   }
 ]

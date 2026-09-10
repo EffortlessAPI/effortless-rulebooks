@@ -1,0 +1,16 @@
+[
+  {
+    "procedure_type_id": "communication-policy",
+    "name": "Employee Communication Policy Procedure",
+    "label": "Employee Communication Policy Procedure",
+    "definition": "A controlled procedure that creates, approves, and distributes workforce policy communications.",
+    "semantic_type_iri": "https://w3id.org/pko#ProcedureType"
+  },
+  {
+    "procedure_type_id": "financial-sop",
+    "name": "Financial Standard Operating Procedure",
+    "label": "Financial Standard Operating Procedure",
+    "definition": "A controlled procedure for financial operations, approvals, evidence, and auditability.",
+    "semantic_type_iri": "https://w3id.org/pko#ProcedureType"
+  }
+]

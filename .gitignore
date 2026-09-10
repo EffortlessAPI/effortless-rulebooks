@@ -86,3 +86,12 @@ rulebook-examples/simpsons-paradox/temp.txt
 # per-project logs it points at, which are machine-local and regenerated.
 orchestration/corpus-runs/
 orchestration/corpus-runs.log
+
+# Compiled Go substrate binaries. `go build ./...` in a generated module drops
+# a binary named after the module (erb_test); it is a build artifact of the
+# generated source, not source itself.
+erb_test
+**/effortless-golang/erb_test
+**/effortless-typescript/dist/
+**/effortless-typescript/package-lock.json
+**/bootstrap/git-ignored-articles/**/*

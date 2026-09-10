@@ -9,6 +9,10 @@
     "ocr_indexed": true,
     "uploaded_via": "RMDashboard",
     "uploaded_at": "2025-02-28",
+    "business_label": null,
+    "loan_label": "L-0051",
+    "uploaded_by_user_label": "Priya Iyer",
+    "attached_to": "Loan",
     "from_customer_portal": false
   },
   {
@@ -21,6 +25,10 @@
     "ocr_indexed": true,
     "uploaded_via": "RMDashboard",
     "uploaded_at": "2025-02-28",
+    "business_label": null,
+    "loan_label": "L-0051",
+    "uploaded_by_user_label": "Priya Iyer",
+    "attached_to": "Loan",
     "from_customer_portal": false
   },
   {
@@ -33,6 +41,10 @@
     "ocr_indexed": true,
     "uploaded_via": "RMDashboard",
     "uploaded_at": "2019-06-21",
+    "business_label": "Pine Hardware Inc.",
+    "loan_label": null,
+    "uploaded_by_user_label": "Devon Marshall",
+    "attached_to": "Loan",
     "from_customer_portal": false
   },
   {
@@ -45,6 +57,10 @@
     "ocr_indexed": true,
     "uploaded_via": "RMDashboard",
     "uploaded_at": "2025-01-22",
+    "business_label": "Stillwater Roasters LLC",
+    "loan_label": null,
+    "uploaded_by_user_label": "Devon Marshall",
+    "attached_to": "Loan",
     "from_customer_portal": false
   },
   {
@@ -57,6 +73,10 @@
     "ocr_indexed": true,
     "uploaded_via": "BusinessClientPortal",
     "uploaded_at": "2025-01-15",
+    "business_label": "Stillwater Roasters LLC",
+    "loan_label": null,
+    "uploaded_by_user_label": null,
+    "attached_to": "Loan",
     "from_customer_portal": true
   }
 ]

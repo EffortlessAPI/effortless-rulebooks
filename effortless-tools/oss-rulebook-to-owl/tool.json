@@ -1,0 +1,10 @@
+{
+  "name": "oss-rulebook-to-owl",
+  "runtime": "script",
+  "entry": "transpiler.py",
+  "description": "Generate RDF/OWL ontology from rulebook",
+  "tags": [
+    "oss",
+    "execution-substrate"
+  ]
+}

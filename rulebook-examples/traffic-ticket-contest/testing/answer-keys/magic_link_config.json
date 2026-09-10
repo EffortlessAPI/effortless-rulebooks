@@ -1,0 +1,13 @@
+[
+  {
+    "magic_link_config_id": "magic-link-config",
+    "name": "Magic Link Config",
+    "user_table_name": "app_users",
+    "email_field": "email_address",
+    "role_field": "role",
+    "enabled": true,
+    "tenant_id": "42906c25-456f-4010-a3f8-a3594ad510ef",
+    "public_key_pem": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxH0lNCkwn+/vdF8OfKUa\nslGGsy/efmeGGbPiOEcLwpRvAFLZ+AVCbeavOQOESXFG9Ciqxj+IBCNI8AG/VWsg\nFVRGkGHykY3AKxsc3E6b9P0wMH6JD7NSTw3Dtxp3nVAKUJE9C/Bn8kTck+MgOaam\nEMXF/h+xpHLUstMbVsfK+VyPYEDh9eV6gl/3rsgF3WhjmaRG52AMaYP5kYNTuhNd\ns4dMVuA/d3xO+xfIxTeus6H9EjrK+zBr0u3uJkAOyaFO7RvDciz3qlFv41owGgC8\ncw126K9X9htW33LWxep3a/yVMUYDgbgErZ/R3TO4HFoU6urJ2lsDMEU3GiQnR1gA\nlwIDAQAB\n-----END PUBLIC KEY-----\n",
+    "is_active_field": ""
+  }
+]

@@ -6,9 +6,27 @@ This repo follows the Effortless Rulebook (ERB) methodology. Load the `effortles
 
 **2026-09-07 reversal.** The 2026-08-30 refactor demoted the CLI orchestrator, the `ssotme-proxy` transpiler bus, the execution-substrate conformance harness, and the honest hard-domain conformance matrix to `rulebook-examples/legacy-runner/`, staged for eventual separation/replacement, while a new root (React explorer + generated editor + a 37-table governing rulebook) took over the repo root. That demotion is reversed: the compiler, the CLI, and the witnessed cross-substrate conformance evidence are the single most differentiating thing in this repo, and burying them behind "no longer privileged, gets no new platform features" doctrine language made external review more skeptical of the repo even though nothing in the engineering had regressed. `rulebook-examples/legacy-runner/` no longer exists as a directory — its entire contents (orchestration, ssotme-proxy, execution-substrates, testing, transpilers, devops, diagnostics, research-campaigns, execution-substrate-gt-explorer, xlsx, plus loose config/docs) moved back up to the literal repo root via `git mv`, and its rulebook was hand-merged into the root's own `effortless-rulebook/effortless-rulebook.json` (legacy's `legacy-runner-rulebook.json` is retired). The old admin portal (`admin-portal/`, `run-web-portal.sh`, and its rulebook tables `AppUsers`/`UserRoles`/`AppPermissions`/`AppNavigation`/`AppScreens`/`AppAPIs`/`RoleScreenHints`/`ClickTargets`/`AdminPortalRuntime`) was deleted outright, not archived — the React explorer is its full replacement. `./start.sh` now launches the CLI orchestrator menu by default; `./start.sh --portal` launches the React explorer + generated rulebook editor (the one web experience for the repo). See `LegacyRunnerCapabilities` in the root rulebook for the capability-by-capability record of what was reversed and why.
 
+**2026-09-12: the CLI absorbed the transpiler bus.** `ssotme-proxy/` is deleted.
+The hand-rolled bus existed only because the old CLI POSTed an empty body, so
+the proxy had to identify the calling project by finding the CLI process behind
+the inbound TCP connection (`lsof`) and reading its cwd — which hard-coded the
+repo's folder layout and ignored the step's own `-i`. The CLI now hosts local
+tools natively: each injector is a `script` tool under `effortless-tools/<name>/`
+whose `transpiler.py` calls `orchestration/local_tool_shim.py`, and the CLI hands
+it the rulebook in `EFFORTLESS_INPUT_DIR` and collects `EFFORTLESS_OUTPUT_DIR`
+into the step's FileSet. Start it with `effortless serve -port 4242` from the
+repo root (the orchestrator menu and talismans' `ensure-orchestrator.sh` both do
+this automatically). Two traps this introduced, both silent:
+**(1)** the host binds the literal prefix `http://127.0.0.1:<port>/`, so a
+`localhost` URL 404s — every step URL says `127.0.0.1`;
+**(2)** a collected file with no declared overwrite mode is written once and
+*never* overwritten, which would freeze every substrate after its first build
+while the build still reported green — the shim therefore writes
+`effortless-overwrite-modes.json` (`{"**/*": "Always"}`) on every run.
+
 # THE REPO IS THE PLATFORM, AND THE PLATFORM IS A PROJECT
 
-There is no privileged child folder among the demos: every governed subdirectory of `rulebook-examples/` and `toy-rulebooks/` is an ordinary Effortless project, all with **the same shape**, so any effortless-rulebook-project viewer/editor can open any of them. The repo root is also an Effortless project (`effortless.json` + `effortless-rulebook/effortless-rulebook.json`) — and unlike those demos, the root additionally IS the platform: the CLI orchestrator (`./start.sh`, `orchestration/orchestrate.sh`), the `ssotme-proxy` transpiler bus (`:4242`), the execution-substrate conformance harness, the generated rulebook editor, and the React explorer (`./start.sh --portal`) all live here.
+There is no privileged child folder among the demos: every governed subdirectory of `rulebook-examples/` and `toy-rulebooks/` is an ordinary Effortless project, all with **the same shape**, so any effortless-rulebook-project viewer/editor can open any of them. The repo root is also an Effortless project (`effortless.json` + `effortless-rulebook/effortless-rulebook.json`) — and unlike those demos, the root additionally IS the platform: the CLI orchestrator (`./start.sh`, `orchestration/orchestrate.sh`), the local transpiler bus (`effortless serve -port 4242` over `effortless-tools/`), the execution-substrate conformance harness, the generated rulebook editor, and the React explorer (`./start.sh --portal`) all live here.
 
 **The root rulebook governs — including its own platform infrastructure.** `./effortless-rulebook/effortless-rulebook.json` is the single governing rulebook for the whole repo. It models every governed demo project (`RulebookDomains`), the canonical shape (`ProjectLayoutSlots`), strict filesystem/manifest observations (`ProjectSlotWitnesses`), consistency rules and witnessed violations (`ConsistencyRules`, `ConsistencyFindings`), the delivery programme (`UserStories`… — the `rulebook-to-progress-report` contract), the skill catalog (`ClaudeSkills`, `SkillRoutes`), the route proposal, AND (since the 2026-09-07 reversal) the root's own platform infrastructure: `ExecutionSubstrates`, `SubstrateTradeoffs`, `SsotmeProxy`, `TestingFramework`, `SubstrateContractPhases`, `EvaluationSteps`, `EvaluationArtifacts`, `OrchestrationComponents`, `CoreDataFlows`, `Dependencies`, `AddToolCatalog`, `BuildPipeline`, `FuzzyGradingProviders`, and narrative singletons (`PortalCliParity`, `WriteThroughInvariant`, `BootstrapStory`, `DeveloperJourney`, `ResilienceClaim`). Coverage, readiness, toy/example classification, misfiling, and finding priority are rulebook formulas exposed by generated `vw_*` columns; never recompute or hand-assert them.
 
@@ -28,20 +46,30 @@ Inconsistency is pruned by working `ConsistencyFindings` to zero — not by edit
 
 **Do not close findings through the editor's save path.** The generated editor's `POST /api/save-changes` rewrites the whole rulebook (keys reordered, every derived column baked into `data`; finding cr-21-01). Close hand-recorded findings with `scripts/mark-finding-fixed.py` or the root explorer's work queue on `/consistency`, which runs that script and then PATCHes the editor's base table so the views recompute at once. A rule's `IsScannerDerived` flag decides which findings may be closed by hand; the rest close only by re-running the scan.
 
-Every new project must register `rulebooktorulespeak` and end its README with this block (count matches the runner's `ssotme-proxy` registry):
+Every new project must register `rulebooktorulespeak` and end its README with this block (count matches `effortless-tools/` at the repo root):
 
 ```markdown
 ---
 
-## Local transpiler bus (`localhost:4242`)
+## Local transpiler bus (`127.0.0.1:4242`)
 
-> **All 13 local transpilers live on `localhost:4242`.** Start the bus with
-> `./start.sh` from `ssotme-proxy/` at the repo root (it is root
-> infrastructure again — see the root rulebook's `LegacyRunnerCapabilities`).
-> The ssotme-proxy then exposes every repo-local transpiler —
-> `postgres-calculated-to-rulebook`, `rulebook-to-python`, `rulebook-to-golang`,
-> `rulebook-to-cobol`, `rulebook-to-owl`, and more — as first-class `ssotme://`
-> routes any `effortless build` can call.
+> **All 11 local transpilers are hosted by the effortless CLI itself.** Start
+> the bus with `effortless serve -port 4242` from the repo root; it serves every
+> tool under `effortless-tools/<name>/` — `oss-postgres-calculated-to-rulebook`,
+> `oss-rulebook-to-python`, `oss-rulebook-to-golang`, `oss-rulebook-to-cobol`,
+> `oss-rulebook-to-owl`, and more — as a first-class route any `effortless
+> build` can call. `GET /` lists them.
+>
+> **Address it as `127.0.0.1`, never `localhost`.** The host binds the literal
+> prefix `http://127.0.0.1:<port>/`, so a request carrying a `localhost` Host
+> header gets a bare 404 with no explanation.
+>
+> **Every repo-local route carries the `oss-` prefix.** The bare names
+> (`rulebook-to-python`, `rulebook-to-xlsx`, `rulebook-to-owl`,
+> `rulebook-to-airtable`, `airtable-to-rulebook`) belong to the commercial
+> catalog as `effortless/effortless/<tool>`; the prefix is the only thing
+> keeping a repo-local route from shadowing one.
+> `orchestration/local_tool_shim.py` refuses to run if any tool is missing it.
 ```
 
 ## Rulebook JSON is HEAD
@@ -86,6 +114,7 @@ There is no repo-wide "active project" scratchpad. The user's message names the 
 - Single-argument `COUNTIF(Child!{{FK}}, {{Id}})` is mis-emitted; write `COUNTIFS(Child!{{FK}}, Parent!{{Id}})`.
 - Bare `LOOKUP(Target!{{Field}}, Local!{{FK}}, Target!{{Id}})` is not translated; write `INDEX(Target!{{Field}}, MATCH({{FK}}, Target!{{Id}}, 0))`.
 - A string formula such as `={{A}}-{{B}}` or `={{A}}/{{B}}` is parsed as arithmetic and emits invalid SQL; use `CONCAT({{A}}, "-", {{B}})`.
+- A table with no `<Entity>Id` key but a calculated `Name` gets a **synthesized** Postgres PK equal to the lowercased slug of that Name, and every FK referencing it is rewritten to the slug (`WitnessLoops` → `witnessloops`). Any formula that renders that FK or compares it to the target's own text field then computes against the slug. Give such a table a leading raw `<Entity>Id` holding the key verbatim (cr-25).
 
 Every generated `vw_*` view must answer `SELECT *`; the database loads even when a `calc_*` body is invalid, because SQL-function bodies are checked at call time. After a build, probe every view (`SELECT count(*) FROM vw_x`) before trusting it. `rulebook-to-postgres` emits `postgres/reset-rulebook-db.sh` as the real, fully-regenerated destructive dev-reset script (it is NOT preserved across builds — every rebuild overwrites it in full); it also still emits a legacy `postgres/init-db.sh` compatibility shim that execs into `reset-rulebook-db.sh`, which will be removed once every consumer has migrated. Reference `reset-rulebook-db.sh` directly in new code, not `init-db.sh`.
 
@@ -138,7 +167,7 @@ first two phases, shared with `run-conformance.py --project-build --reset-db`, s
 the explorer's per-project button and the corpus runner cannot drift apart.
 
 **Builds are sequential and must stay that way.** Every `effortless build` goes
-through the ssotme-proxy on `:4242`; concurrent builds corrupt each other. The
+through the local transpiler host on `:4242`; concurrent builds corrupt each other. The
 explorer refuses to launch a second fan-out while one is live for the same reason.
 
 **The result is rulebook rows, not a log file.** One `CorpusRuns` row per
@@ -161,6 +190,21 @@ the runner **detached** and polls that file, so a fan-out survives a page reload
 two people can watch it, and closing the tab does not kill it. The run directory
 and its logs are gitignored — the rulebook rows are the durable record.
 
+# Never write a rulebook with ASCII escaping
+
+`json.dump()` defaults to `ensure_ascii=True`, and .NET's `System.Text.Json`
+defaults to an encoder that escapes the same way: every non-ASCII character
+becomes `\uXXXX`. The JSON still means the same thing, so nothing errors, but
+the file comes back with hundreds of changed lines that bury the real edit, and
+the next UTF-8 writer flips them all back. On 2026-09-12 a one-off edit script
+(renaming `SsotmeProxy` to `LocalToolRoutes`) rewrote all 480 such characters
+in the root rulebook. **Any script that writes a rulebook, including a one-off,
+passes `ensure_ascii=False`** (a .NET writer sets
+`Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping`). Check with
+`python3 scripts/check-rulebook-encoding.py`, which exits 1 when a rulebook is
+escaped; `--fix` restores UTF-8 by rewriting only the escape sequences and
+refuses to write if the parsed document would change.
+
 # No unbounded call to an external daemon inside a build
 
 `cr-22`. A hung probe inside a build is worse than a failed one: the work already
@@ -173,7 +217,7 @@ the database fully reset. macOS has no `timeout(1)` — write the bound explicit
 
 # The orchestrator, the transpiler bus, and the conformance harness are root infrastructure
 
-`orchestration/` (the CLI menu, `orchestrate.sh`), `ssotme-proxy/` (the transpiler bus on `:4242`), `execution-substrates/` (every injector + take-test harness), and `testing/` (the conformance framework) live at the repo root. They are not a legacy artifact kept alongside the "real" root — they ARE the root's platform infrastructure, restored there by the 2026-09-07 reversal after a brief 2026-08-30 staging at `rulebook-examples/legacy-runner/` (now deleted; see "Active continuation" above). `LegacyRunnerCapabilities` in the root rulebook records what was staged for replacement/separation and what was restored, with an honest rationale on each row — update that table, never prose, when a decision changes. The admin portal these capabilities once supported is gone for good (deleted, not restored); the React explorer (`./start.sh --portal`) is its permanent replacement. Do not make the explorer depend on a second admin portal or a two-rulebook overlay — there is exactly one rulebook governing this repo.
+`orchestration/` (the CLI menu, `orchestrate.sh`), `effortless-tools/` (the local transpiler bus the CLI hosts on `:4242`), `execution-substrates/` (every injector + take-test harness), and `testing/` (the conformance framework) live at the repo root. They are not a legacy artifact kept alongside the "real" root — they ARE the root's platform infrastructure, restored there by the 2026-09-07 reversal after a brief 2026-08-30 staging at `rulebook-examples/legacy-runner/` (now deleted; see "Active continuation" above). `LegacyRunnerCapabilities` in the root rulebook records what was staged for replacement/separation and what was restored, with an honest rationale on each row — update that table, never prose, when a decision changes. The admin portal these capabilities once supported is gone for good (deleted, not restored); the React explorer (`./start.sh --portal`) is its permanent replacement. Do not make the explorer depend on a second admin portal or a two-rulebook overlay — there is exactly one rulebook governing this repo.
 
 # Making a video about a project? Load the `effortless-video` skill.
 

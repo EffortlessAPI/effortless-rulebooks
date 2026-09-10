@@ -1,0 +1,56 @@
+[
+  {
+    "roadmap_id": "phase-0-freeze",
+    "name": "phase-0-freeze",
+    "sequence_no": 0,
+    "title": "Freeze and verify v21",
+    "status": "complete",
+    "acceptance_criteria": "Source ZIP and SQLite hashes preserved; v21 verifier passes.",
+    "depends_on": ""
+  },
+  {
+    "roadmap_id": "phase-1-catalog",
+    "name": "phase-1-catalog",
+    "sequence_no": 1,
+    "title": "Install theorem catalog rulebook",
+    "status": "planned",
+    "acceptance_criteria": "Effortless build creates Postgres, RuleSpeak, OWL, and ExplainDAG projections from the new SSoT.",
+    "depends_on": "phase-0-freeze"
+  },
+  {
+    "roadmap_id": "phase-2-flt-migration",
+    "name": "phase-2-flt-migration",
+    "sequence_no": 2,
+    "title": "Migrate FLT flagship domain",
+    "status": "planned",
+    "acceptance_criteria": "571 loops, 113 proof facts, 305 invariants, and seven provider dependencies rebuild from blank.",
+    "depends_on": "phase-1-catalog"
+  },
+  {
+    "roadmap_id": "phase-3-provider-stubs",
+    "name": "phase-3-provider-stubs",
+    "sequence_no": 3,
+    "title": "Install seven provider theorem stubs",
+    "status": "planned",
+    "acceptance_criteria": "Each provider has a versioned theorem contract, source frontier, witness schemas, and consumer links.",
+    "depends_on": "phase-1-catalog"
+  },
+  {
+    "roadmap_id": "phase-4-cross-domain-conformance",
+    "name": "phase-4-cross-domain-conformance",
+    "sequence_no": 4,
+    "title": "Cross-domain conformance",
+    "status": "planned",
+    "acceptance_criteria": "Provider status changes trigger deterministic rebuilds of every dependent theorem without status inflation.",
+    "depends_on": "phase-2-flt-migration,phase-3-provider-stubs"
+  },
+  {
+    "roadmap_id": "phase-5-substrates",
+    "name": "phase-5-substrates",
+    "sequence_no": 5,
+    "title": "Math-specific projections",
+    "status": "planned",
+    "acceptance_criteria": "English, OWL, ExplainDAG, SQL, Python, and proof-assistant skeletons agree on theorem status and dependencies.",
+    "depends_on": "phase-4-cross-domain-conformance"
+  }
+]

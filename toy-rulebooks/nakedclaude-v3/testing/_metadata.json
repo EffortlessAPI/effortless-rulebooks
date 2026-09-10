@@ -1,0 +1,76 @@
+{
+  "customers": {
+    "primary_key": "customer_id",
+    "computed_columns": [
+      "is_stopped",
+      "status_is_blocking",
+      "status_display_name",
+      "status_description",
+      "average_order_value",
+      "lifetime_margin_percent",
+      "customer_since_days",
+      "days_since_last_order",
+      "count_of_multiple_payment_orders",
+      "has_multi_payment_orders"
+    ],
+    "record_count": 5
+  },
+  "statuses": {
+    "primary_key": "statuse_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 7
+  },
+  "products": {
+    "primary_key": "product_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 8
+  },
+  "orders": {
+    "primary_key": "order_id",
+    "computed_columns": [
+      "name",
+      "item_count",
+      "total_quantity",
+      "sub_total",
+      "tax_amount",
+      "order_total",
+      "total_paid",
+      "amount_due",
+      "is_paid_in_full",
+      "payment_count",
+      "is_multi_payment_order",
+      "last_payment_date",
+      "payment_status_label"
+    ],
+    "record_count": 7
+  },
+  "order_line_items": {
+    "primary_key": "order_line_item_id",
+    "computed_columns": [
+      "name",
+      "pre_discount",
+      "discount_amount",
+      "sub_total"
+    ],
+    "record_count": 18
+  },
+  "payments": {
+    "primary_key": "payment_id",
+    "computed_columns": [
+      "name",
+      "order_date",
+      "order_number",
+      "order_status",
+      "order_total",
+      "is_completed",
+      "completed_amount",
+      "order_amount_due",
+      "order_is_paid_in_full"
+    ],
+    "record_count": 9
+  }
+}

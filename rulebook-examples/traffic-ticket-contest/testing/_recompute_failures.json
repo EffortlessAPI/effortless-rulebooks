@@ -1,0 +1,506 @@
+[
+  {
+    "entity": "AuditLogEntries",
+    "field": "Name",
+    "formula": "=LOWER(SUBSTITUTE(\"audit-\" & {{Citation}} & \"-\" & DATETIME_FORMAT({{Timestamp}}, \"YYYY-MM-DDTHH-mm-ss\") & \"-\" & {{ActionType}}, \" \", \"-\"))",
+    "record_id": "audit-0002-hearing-req",
+    "error": "ValueError: Unknown function: DATETIME_FORMAT",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "AuditLogEntries",
+    "field": "Name",
+    "formula": "=LOWER(SUBSTITUTE(\"audit-\" & {{Citation}} & \"-\" & DATETIME_FORMAT({{Timestamp}}, \"YYYY-MM-DDTHH-mm-ss\") & \"-\" & {{ActionType}}, \" \", \"-\"))",
+    "record_id": "audit-0002-scheduled",
+    "error": "ValueError: Unknown function: DATETIME_FORMAT",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "AuditLogEntries",
+    "field": "Name",
+    "formula": "=LOWER(SUBSTITUTE(\"audit-\" & {{Citation}} & \"-\" & DATETIME_FORMAT({{Timestamp}}, \"YYYY-MM-DDTHH-mm-ss\") & \"-\" & {{ActionType}}, \" \", \"-\"))",
+    "record_id": "audit-0003-dismissed",
+    "error": "ValueError: Unknown function: DATETIME_FORMAT",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "AuditLogEntries",
+    "field": "Name",
+    "formula": "=LOWER(SUBSTITUTE(\"audit-\" & {{Citation}} & \"-\" & DATETIME_FORMAT({{Timestamp}}, \"YYYY-MM-DDTHH-mm-ss\") & \"-\" & {{ActionType}}, \" \", \"-\"))",
+    "record_id": "audit-0003-notowed-override",
+    "error": "ValueError: Unknown function: DATETIME_FORMAT",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "AuditLogEntries",
+    "field": "Name",
+    "formula": "=LOWER(SUBSTITUTE(\"audit-\" & {{Citation}} & \"-\" & DATETIME_FORMAT({{Timestamp}}, \"YYYY-MM-DDTHH-mm-ss\") & \"-\" & {{ActionType}}, \" \", \"-\"))",
+    "record_id": "audit-0005-paid",
+    "error": "ValueError: Unknown function: DATETIME_FORMAT",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "AuditLogEntries",
+    "field": "Name",
+    "formula": "=LOWER(SUBSTITUTE(\"audit-\" & {{Citation}} & \"-\" & DATETIME_FORMAT({{Timestamp}}, \"YYYY-MM-DDTHH-mm-ss\") & \"-\" & {{ActionType}}, \" \", \"-\"))",
+    "record_id": "audit-0004-late",
+    "error": "ValueError: Unknown function: DATETIME_FORMAT",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "AuditLogEntries",
+    "field": "Name",
+    "formula": "=LOWER(SUBSTITUTE(\"audit-\" & {{Citation}} & \"-\" & DATETIME_FORMAT({{Timestamp}}, \"YYYY-MM-DDTHH-mm-ss\") & \"-\" & {{ActionType}}, \" \", \"-\"))",
+    "record_id": "audit-0001-overdue",
+    "error": "ValueError: Unknown function: DATETIME_FORMAT",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "AppUsers",
+    "field": "NameRedacted",
+    "formula": "={{Name}}",
+    "record_id": "admin-ej-ssot-me",
+    "error": "drift: stored='a***' python-recompute='admin-ej-ssot-me'",
+    "severity": "drift"
+  },
+  {
+    "entity": "AppUsers",
+    "field": "EmailAddressRedacted",
+    "formula": "={{EmailAddress}}",
+    "record_id": "admin-ej-ssot-me",
+    "error": "drift: stored='e***@ssot.me' python-recompute='ej@ssot.me'",
+    "severity": "drift"
+  },
+  {
+    "entity": "AppUsers",
+    "field": "NameRedacted",
+    "formula": "={{Name}}",
+    "record_id": "eejai42-gmail",
+    "error": "drift: stored='e***' python-recompute='eejai42-gmail'",
+    "severity": "drift"
+  },
+  {
+    "entity": "AppUsers",
+    "field": "EmailAddressRedacted",
+    "formula": "={{EmailAddress}}",
+    "record_id": "eejai42-gmail",
+    "error": "drift: stored='e***@gmail.com' python-recompute='eejai42@gmail.com'",
+    "severity": "drift"
+  },
+  {
+    "entity": "AppUsers",
+    "field": "NameRedacted",
+    "formula": "={{Name}}",
+    "record_id": "manager-niko-ssot-me",
+    "error": "drift: stored='m***' python-recompute='manager-niko-ssot-me'",
+    "severity": "drift"
+  },
+  {
+    "entity": "AppUsers",
+    "field": "EmailAddressRedacted",
+    "formula": "={{EmailAddress}}",
+    "record_id": "manager-niko-ssot-me",
+    "error": "drift: stored='n***@ssot.me' python-recompute='niko@ssot.me'",
+    "severity": "drift"
+  },
+  {
+    "entity": "AppUsers",
+    "field": "NameRedacted",
+    "formula": "={{Name}}",
+    "record_id": "representative-example",
+    "error": "drift: stored='r***' python-recompute='representative-example'",
+    "severity": "drift"
+  },
+  {
+    "entity": "AppUsers",
+    "field": "EmailAddressRedacted",
+    "formula": "={{EmailAddress}}",
+    "record_id": "representative-example",
+    "error": "drift: stored='r***@example.com' python-recompute='representative@example.com'",
+    "severity": "drift"
+  },
+  {
+    "entity": "AppUsers",
+    "field": "NameRedacted",
+    "formula": "={{Name}}",
+    "record_id": "manager-example",
+    "error": "drift: stored='m***' python-recompute='manager-example'",
+    "severity": "drift"
+  },
+  {
+    "entity": "AppUsers",
+    "field": "EmailAddressRedacted",
+    "formula": "={{EmailAddress}}",
+    "record_id": "manager-example",
+    "error": "drift: stored='m***@example.com' python-recompute='manager@example.com'",
+    "severity": "drift"
+  },
+  {
+    "entity": "AppUsers",
+    "field": "NameRedacted",
+    "formula": "={{Name}}",
+    "record_id": "external-llm-example",
+    "error": "drift: stored='e***' python-recompute='external-llm-example'",
+    "severity": "drift"
+  },
+  {
+    "entity": "AppUsers",
+    "field": "EmailAddressRedacted",
+    "formula": "={{EmailAddress}}",
+    "record_id": "external-llm-example",
+    "error": "drift: stored='e***@example.com' python-recompute='external-llm@example.com'",
+    "severity": "drift"
+  },
+  {
+    "entity": "AppUsers",
+    "field": "NameRedacted",
+    "formula": "={{Name}}",
+    "record_id": "admin-example",
+    "error": "drift: stored='a***' python-recompute='admin-example'",
+    "severity": "drift"
+  },
+  {
+    "entity": "AppUsers",
+    "field": "EmailAddressRedacted",
+    "formula": "={{EmailAddress}}",
+    "record_id": "admin-example",
+    "error": "drift: stored='a***@example.com' python-recompute='admin@example.com'",
+    "severity": "drift"
+  },
+  {
+    "entity": "ERBPackages",
+    "field": "ShippedFeatureCount",
+    "formula": "=COUNTIF({{ERBFeatures.Status}}, \"shipped\")",
+    "record_id": "citations",
+    "error": "ValueError: Unknown function: COUNTIF",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "ERBPackages",
+    "field": "ShippedFeatureCount",
+    "formula": "=COUNTIF({{ERBFeatures.Status}}, \"shipped\")",
+    "record_id": "core",
+    "error": "ValueError: Unknown function: COUNTIF",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "ERBPackages",
+    "field": "ShippedFeatureCount",
+    "formula": "=COUNTIF({{ERBFeatures.Status}}, \"shipped\")",
+    "record_id": "platform-meta",
+    "error": "ValueError: Unknown function: COUNTIF",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "ERBPackages",
+    "field": "ShippedFeatureCount",
+    "formula": "=COUNTIF({{ERBFeatures.Status}}, \"shipped\")",
+    "record_id": "access-control",
+    "error": "ValueError: Unknown function: COUNTIF",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "ERBPackages",
+    "field": "ShippedFeatureCount",
+    "formula": "=COUNTIF({{ERBFeatures.Status}}, \"shipped\")",
+    "record_id": "state-machines",
+    "error": "ValueError: Unknown function: COUNTIF",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "ERBPackages",
+    "field": "ShippedFeatureCount",
+    "formula": "=COUNTIF({{ERBFeatures.Status}}, \"shipped\")",
+    "record_id": "assistant",
+    "error": "ValueError: Unknown function: COUNTIF",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Citations",
+    "field": "ResponseDueDate",
+    "formula": "={{IssuedOn}} + {{DaysToRespond}}",
+    "record_id": "c-0001",
+    "error": "TypeError: can only concatenate str (not \"int\") to str",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Citations",
+    "field": "DaysUntilResponseDue",
+    "formula": "=DAYS({{ResponseDueDate}}, {{AsOfDate}})",
+    "record_id": "c-0001",
+    "error": "ValueError: Unknown function: DAYS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Citations",
+    "field": "PaymentDueDate",
+    "formula": "=DATEVALUE({{ResponseDueDate}}) + {{DaysToPayAfterRuling}}",
+    "record_id": "c-0001",
+    "error": "ValueError: Unknown function: DATEVALUE",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Citations",
+    "field": "ResponseDueDate",
+    "formula": "={{IssuedOn}} + {{DaysToRespond}}",
+    "record_id": "c-0002",
+    "error": "TypeError: can only concatenate str (not \"int\") to str",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Citations",
+    "field": "DaysUntilResponseDue",
+    "formula": "=DAYS({{ResponseDueDate}}, {{AsOfDate}})",
+    "record_id": "c-0002",
+    "error": "ValueError: Unknown function: DAYS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Citations",
+    "field": "PaymentDueDate",
+    "formula": "=DATEVALUE({{ResponseDueDate}}) + {{DaysToPayAfterRuling}}",
+    "record_id": "c-0002",
+    "error": "ValueError: Unknown function: DATEVALUE",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Citations",
+    "field": "ResponseDueDate",
+    "formula": "={{IssuedOn}} + {{DaysToRespond}}",
+    "record_id": "c-0003",
+    "error": "TypeError: can only concatenate str (not \"int\") to str",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Citations",
+    "field": "DaysUntilResponseDue",
+    "formula": "=DAYS({{ResponseDueDate}}, {{AsOfDate}})",
+    "record_id": "c-0003",
+    "error": "ValueError: Unknown function: DAYS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Citations",
+    "field": "PaymentDueDate",
+    "formula": "=DATEVALUE({{ResponseDueDate}}) + {{DaysToPayAfterRuling}}",
+    "record_id": "c-0003",
+    "error": "ValueError: Unknown function: DATEVALUE",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Citations",
+    "field": "ResponseDueDate",
+    "formula": "={{IssuedOn}} + {{DaysToRespond}}",
+    "record_id": "c-0004",
+    "error": "TypeError: can only concatenate str (not \"int\") to str",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Citations",
+    "field": "DaysUntilResponseDue",
+    "formula": "=DAYS({{ResponseDueDate}}, {{AsOfDate}})",
+    "record_id": "c-0004",
+    "error": "ValueError: Unknown function: DAYS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Citations",
+    "field": "PaymentDueDate",
+    "formula": "=DATEVALUE({{ResponseDueDate}}) + {{DaysToPayAfterRuling}}",
+    "record_id": "c-0004",
+    "error": "ValueError: Unknown function: DATEVALUE",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Citations",
+    "field": "ResponseDueDate",
+    "formula": "={{IssuedOn}} + {{DaysToRespond}}",
+    "record_id": "c-0005",
+    "error": "TypeError: can only concatenate str (not \"int\") to str",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Citations",
+    "field": "DaysUntilResponseDue",
+    "formula": "=DAYS({{ResponseDueDate}}, {{AsOfDate}})",
+    "record_id": "c-0005",
+    "error": "ValueError: Unknown function: DAYS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Citations",
+    "field": "PaymentDueDate",
+    "formula": "=DATEVALUE({{ResponseDueDate}}) + {{DaysToPayAfterRuling}}",
+    "record_id": "c-0005",
+    "error": "ValueError: Unknown function: DATEVALUE",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Citations",
+    "field": "ResponseDueDate",
+    "formula": "={{IssuedOn}} + {{DaysToRespond}}",
+    "record_id": "c-0006",
+    "error": "TypeError: can only concatenate str (not \"int\") to str",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Citations",
+    "field": "DaysUntilResponseDue",
+    "formula": "=DAYS({{ResponseDueDate}}, {{AsOfDate}})",
+    "record_id": "c-0006",
+    "error": "ValueError: Unknown function: DAYS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Citations",
+    "field": "PaymentDueDate",
+    "formula": "=DATEVALUE({{ResponseDueDate}}) + {{DaysToPayAfterRuling}}",
+    "record_id": "c-0006",
+    "error": "ValueError: Unknown function: DATEVALUE",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Citations",
+    "field": "ResponseDueDate",
+    "formula": "={{IssuedOn}} + {{DaysToRespond}}",
+    "record_id": "c-0007",
+    "error": "TypeError: can only concatenate str (not \"int\") to str",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Citations",
+    "field": "DaysUntilResponseDue",
+    "formula": "=DAYS({{ResponseDueDate}}, {{AsOfDate}})",
+    "record_id": "c-0007",
+    "error": "ValueError: Unknown function: DAYS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Citations",
+    "field": "PaymentDueDate",
+    "formula": "=DATEVALUE({{ResponseDueDate}}) + {{DaysToPayAfterRuling}}",
+    "record_id": "c-0007",
+    "error": "ValueError: Unknown function: DATEVALUE",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Citations",
+    "field": "ResponseDueDate",
+    "formula": "={{IssuedOn}} + {{DaysToRespond}}",
+    "record_id": "c-0008",
+    "error": "TypeError: can only concatenate str (not \"int\") to str",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Citations",
+    "field": "DaysUntilResponseDue",
+    "formula": "=DAYS({{ResponseDueDate}}, {{AsOfDate}})",
+    "record_id": "c-0008",
+    "error": "ValueError: Unknown function: DAYS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Citations",
+    "field": "PaymentDueDate",
+    "formula": "=DATEVALUE({{ResponseDueDate}}) + {{DaysToPayAfterRuling}}",
+    "record_id": "c-0008",
+    "error": "ValueError: Unknown function: DATEVALUE",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Citations",
+    "field": "ResponseDueDate",
+    "formula": "={{IssuedOn}} + {{DaysToRespond}}",
+    "record_id": "c-0009",
+    "error": "TypeError: can only concatenate str (not \"int\") to str",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Citations",
+    "field": "DaysUntilResponseDue",
+    "formula": "=DAYS({{ResponseDueDate}}, {{AsOfDate}})",
+    "record_id": "c-0009",
+    "error": "ValueError: Unknown function: DAYS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Citations",
+    "field": "PaymentDueDate",
+    "formula": "=DATEVALUE({{ResponseDueDate}}) + {{DaysToPayAfterRuling}}",
+    "record_id": "c-0009",
+    "error": "ValueError: Unknown function: DATEVALUE",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Citations",
+    "field": "ResponseDueDate",
+    "formula": "={{IssuedOn}} + {{DaysToRespond}}",
+    "record_id": "c-0010",
+    "error": "TypeError: can only concatenate str (not \"int\") to str",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Citations",
+    "field": "DaysUntilResponseDue",
+    "formula": "=DAYS({{ResponseDueDate}}, {{AsOfDate}})",
+    "record_id": "c-0010",
+    "error": "ValueError: Unknown function: DAYS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Citations",
+    "field": "PaymentDueDate",
+    "formula": "=DATEVALUE({{ResponseDueDate}}) + {{DaysToPayAfterRuling}}",
+    "record_id": "c-0010",
+    "error": "ValueError: Unknown function: DATEVALUE",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Citations",
+    "field": "ResponseDueDate",
+    "formula": "={{IssuedOn}} + {{DaysToRespond}}",
+    "record_id": "c-0011",
+    "error": "TypeError: can only concatenate str (not \"int\") to str",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Citations",
+    "field": "DaysUntilResponseDue",
+    "formula": "=DAYS({{ResponseDueDate}}, {{AsOfDate}})",
+    "record_id": "c-0011",
+    "error": "ValueError: Unknown function: DAYS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Citations",
+    "field": "PaymentDueDate",
+    "formula": "=DATEVALUE({{ResponseDueDate}}) + {{DaysToPayAfterRuling}}",
+    "record_id": "c-0011",
+    "error": "ValueError: Unknown function: DATEVALUE",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Citations",
+    "field": "ResponseDueDate",
+    "formula": "={{IssuedOn}} + {{DaysToRespond}}",
+    "record_id": "c-0012",
+    "error": "TypeError: can only concatenate str (not \"int\") to str",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Citations",
+    "field": "DaysUntilResponseDue",
+    "formula": "=DAYS({{ResponseDueDate}}, {{AsOfDate}})",
+    "record_id": "c-0012",
+    "error": "ValueError: Unknown function: DAYS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Citations",
+    "field": "PaymentDueDate",
+    "formula": "=DATEVALUE({{ResponseDueDate}}) + {{DaysToPayAfterRuling}}",
+    "record_id": "c-0012",
+    "error": "ValueError: Unknown function: DATEVALUE",
+    "severity": "missing-value"
+  }
+]

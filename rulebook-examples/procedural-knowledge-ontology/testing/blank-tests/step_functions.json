@@ -1,0 +1,50 @@
+[
+  {
+    "step_function_id": "sf-close02",
+    "step": "close-02",
+    "function": "extract-trial-balance",
+    "name": null
+  },
+  {
+    "step_function_id": "sf-close04",
+    "step": "close-04",
+    "function": "classify-variance",
+    "name": null
+  },
+  {
+    "step_function_id": "sf-close07",
+    "step": "close-07",
+    "function": "post-close-entries",
+    "name": null
+  },
+  {
+    "step_function_id": "sf-policy03",
+    "step": "policy-03",
+    "function": "draft-policy",
+    "name": null
+  },
+  {
+    "step_function_id": "sf-policy06-email",
+    "step": "policy-06",
+    "function": "render-email",
+    "name": null
+  },
+  {
+    "step_function_id": "sf-policy06-sms",
+    "step": "policy-06",
+    "function": "render-sms",
+    "name": null
+  },
+  {
+    "step_function_id": "sf-policy07",
+    "step": "policy-07",
+    "function": "send-notification",
+    "name": null
+  },
+  {
+    "step_function_id": "sf-policy08",
+    "step": "policy-08",
+    "function": "collect-acknowledgement",
+    "name": null
+  }
+]

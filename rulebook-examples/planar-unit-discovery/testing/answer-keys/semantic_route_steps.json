@@ -1,0 +1,154 @@
+[
+  {
+    "semantic_route_step_id": "experimental-1",
+    "semantic_route": "rte-experimental-shortcut",
+    "step_order": 1,
+    "from_concept": "NumberFields",
+    "to_concept": "AsymptoticLowerBounds",
+    "bridge_used": null,
+    "is_validated": false,
+    "description": "Coverage row: marked invalid \u2014 shortcut bypasses load-bearing bridges.",
+    "name": "rte-experimental-shortcut-1"
+  },
+  {
+    "semantic_route_step_id": "geo-1",
+    "semantic_route": "rte-geometry-to-graph",
+    "step_order": 1,
+    "from_concept": "Points",
+    "to_concept": "PointSets",
+    "bridge_used": null,
+    "is_validated": true,
+    "name": "rte-geometry-to-graph-1"
+  },
+  {
+    "semantic_route_step_id": "geo-2",
+    "semantic_route": "rte-geometry-to-graph",
+    "step_order": 2,
+    "from_concept": "PointSets",
+    "to_concept": "PointPairs",
+    "bridge_used": null,
+    "is_validated": true,
+    "name": "rte-geometry-to-graph-2"
+  },
+  {
+    "semantic_route_step_id": "geo-3",
+    "semantic_route": "rte-geometry-to-graph",
+    "step_order": 3,
+    "from_concept": "PointPairs",
+    "to_concept": "UnitDistanceGraphs",
+    "bridge_used": "bridge-metric-to-graph",
+    "is_validated": false,
+    "description": "Coverage row: not yet validated.",
+    "name": "rte-geometry-to-graph-3"
+  },
+  {
+    "semantic_route_step_id": "spine-1",
+    "semantic_route": "rte-full-semantic-spine",
+    "step_order": 1,
+    "from_concept": "NumberFields",
+    "to_concept": "FieldEmbeddings",
+    "bridge_used": null,
+    "is_validated": true,
+    "name": "rte-full-semantic-spine-1"
+  },
+  {
+    "semantic_route_step_id": "spine-10",
+    "semantic_route": "rte-full-semantic-spine",
+    "step_order": 10,
+    "from_concept": "GrowthSequences",
+    "to_concept": "AsymptoticLowerBounds",
+    "bridge_used": null,
+    "is_validated": true,
+    "name": "rte-full-semantic-spine-10"
+  },
+  {
+    "semantic_route_step_id": "spine-11",
+    "semantic_route": "rte-full-semantic-spine",
+    "step_order": 11,
+    "from_concept": "AsymptoticLowerBounds",
+    "to_concept": "Theorems",
+    "bridge_used": "bridge-asymptotic-to-theorem",
+    "is_validated": true,
+    "name": "rte-full-semantic-spine-11"
+  },
+  {
+    "semantic_route_step_id": "spine-2",
+    "semantic_route": "rte-full-semantic-spine",
+    "step_order": 2,
+    "from_concept": "FieldEmbeddings",
+    "to_concept": "MinkowskiEmbeddings",
+    "bridge_used": null,
+    "is_validated": true,
+    "name": "rte-full-semantic-spine-2"
+  },
+  {
+    "semantic_route_step_id": "spine-3",
+    "semantic_route": "rte-full-semantic-spine",
+    "step_order": 3,
+    "from_concept": "MinkowskiEmbeddings",
+    "to_concept": "MinkowskiLattices",
+    "bridge_used": "bridge-field-to-lattice",
+    "is_validated": true,
+    "name": "rte-full-semantic-spine-3"
+  },
+  {
+    "semantic_route_step_id": "spine-4",
+    "semantic_route": "rte-full-semantic-spine",
+    "step_order": 4,
+    "from_concept": "MinkowskiLattices",
+    "to_concept": "GramMatrices",
+    "bridge_used": null,
+    "is_validated": true,
+    "name": "rte-full-semantic-spine-4"
+  },
+  {
+    "semantic_route_step_id": "spine-5",
+    "semantic_route": "rte-full-semantic-spine",
+    "step_order": 5,
+    "from_concept": "MinkowskiLattices",
+    "to_concept": "ShortVectors",
+    "bridge_used": null,
+    "is_validated": true,
+    "name": "rte-full-semantic-spine-5"
+  },
+  {
+    "semantic_route_step_id": "spine-6",
+    "semantic_route": "rte-full-semantic-spine",
+    "step_order": 6,
+    "from_concept": "ShortVectors",
+    "to_concept": "PlanarProjections",
+    "bridge_used": "bridge-lattice-to-plane",
+    "is_validated": true,
+    "name": "rte-full-semantic-spine-6"
+  },
+  {
+    "semantic_route_step_id": "spine-7",
+    "semantic_route": "rte-full-semantic-spine",
+    "step_order": 7,
+    "from_concept": "PlanarProjections",
+    "to_concept": "ProjectedShortVectors",
+    "bridge_used": null,
+    "is_validated": true,
+    "name": "rte-full-semantic-spine-7"
+  },
+  {
+    "semantic_route_step_id": "spine-8",
+    "semantic_route": "rte-full-semantic-spine",
+    "step_order": 8,
+    "from_concept": "ProjectedShortVectors",
+    "to_concept": "ConstructionInstances",
+    "bridge_used": null,
+    "is_validated": true,
+    "name": "rte-full-semantic-spine-8"
+  },
+  {
+    "semantic_route_step_id": "spine-9",
+    "semantic_route": "rte-full-semantic-spine",
+    "step_order": 9,
+    "from_concept": "ConstructionInstances",
+    "to_concept": "GrowthSequences",
+    "bridge_used": "bridge-local-to-asymptotic",
+    "is_validated": true,
+    "name": "rte-full-semantic-spine-9"
+  }
+]

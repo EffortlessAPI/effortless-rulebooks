@@ -405,11 +405,11 @@ already computes (cross-referenced as DR-N in the Definitional Rules below)._
 - A dataset **must** have a title.
 - A workflow artifact **must** have a title.
 - A scenario **must** have a label and an edits.
-- A competency question **must** have a number, a display name, a question text, a target table, a target field, an answer kind, and an expected answer.
+- A competency question **must** have a number; a display name; a question text; a target table; a target field; an answer kind; and an expected answer.
 - A scenario CQ effect **must** reference exactly one scenario.
 - A scenario CQ effect **must** reference exactly one competency question.
 - A scenario CQ effect **must** have an effect kind.
-- A conformance test **must** have a display name, a section, a test kind, and a sort order, and record whether it is enabled.
+- A conformance test **must** have a display name; a section; a test kind; and a sort order, and record whether it is enabled.
 
 ## 4 Definitional Rules
 
@@ -438,7 +438,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-15 Count Derivation Links** | A workflow's count derivation links is the number of the workflow's workflow artifacts that have a derivation parent. |
 | **DR-16 Count Legal Owned Steps** | A workflow's count legal owned steps is the number of the workflow's workflow steps that are legal-owned. |
 | **DR-17 Count Engineering Owned Steps** | A workflow's count engineering owned steps is the number of the workflow's workflow steps that are engineering-owned. |
-| **DR-18 Involves Engineering and Legal** | A workflow is considered to involve an engineering and legal if all of the following hold: the count engineering owned steps is greater than 0 and the count legal owned steps is greater than 0. |
+| **DR-18 Involves Engineering and Legal** | A workflow is considered to involve engineering and legal if all of the following hold: the count engineering owned steps is greater than 0 and the count legal owned steps is greater than 0. |
 | **DR-19 Count Inferred Precedence Pairs** | A workflow's count inferred precedence pairs is the number of vw step precedence closure related to the workflow. |
 | **DR-20 Count Asserted Precedence Pairs** | A workflow's count asserted precedence pairs is the number of vw step precedence closure related to the workflow. |
 | **DR-21 Count of Precedence Closure Pairs** | A workflow's count of precedence closure pairs is computed as the count asserted precedence pairs plus the count inferred precedence pairs. |
@@ -456,7 +456,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-33 Cq4 Satisfied** | A workflow is flagged cq4 satisfied if the count derivation links is the count workflow artifacts minus 1. |
 | **DR-34 Cq5 Satisfied** | A workflow is flagged cq5 satisfied if the stale flag is not set. |
 | **DR-35 Cq6 Satisfied** | A workflow is flagged cq6 satisfied if the count roles with escalation violation is 0. |
-| **DR-36 Cq7 Satisfied** | A workflow is flagged cq7 satisfied only if the workflow is considered to involve an engineering and legal. |
+| **DR-36 Cq7 Satisfied** | A workflow is flagged cq7 satisfied only if the workflow is considered to involve engineering and legal. |
 | **DR-37 Cq8 Satisfied** | A workflow is flagged cq8 satisfied if the count unconsumed datasets is 0. |
 | **DR-38 Parent Path** | A workflow step's parent path is the relative path of the workflow step's workflow. |
 | **DR-39 Relative Path** | A workflow step's relative path is computed as the parent path, followed by “/steps/”, followed by the workflow step ID. |
@@ -501,7 +501,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-78 Iri** | A role assignment's iri is computed as the relative path with every a slash replaced by a hyphen. |
 | **DR-79 Name** | A role assignment's name is computed as the role, followed by “ [”, followed by the valid from, followed by “ -> ”, followed by “open” if the valid to is blank, in all other cases the valid to, followed by “]”. |
 | **DR-80 Filler Type** | The role assignment's filler type is determined by the following priority:<br>1. “HumanAgent”, if the filled by human agent has a value;<br>2. “AIAgent”, if the filled by AI agent has a value;<br>3. “AutomatedPipeline”, if the filled by automated pipeline has a value;<br>4. in all other cases, an empty string. |
-| **DR-81 Is Current** | A role assignment is considered a current if the valid to is blank. |
+| **DR-81 Is Current** | A role assignment is considered current if the valid to is blank. |
 | **DR-82 Was Active As of Audit Date** | A role assignment is considered to have been active as of audit date if all of the following hold: the valid from is at most “2026-03-01” and at least one of the following holds: the valid to is blank or the valid to is greater than “2026-03-01”. |
 | **DR-83 Is Agent Type Change** | A role assignment is considered an agent type change if all of the following hold: the prior filler type has a value and the prior filler type is not the filler type. |
 | **DR-84 Requires Compliance Audit** | A role assignment is considered to require a compliance audit if all of the following hold: the prior filler type has a value; the prior filler type is “AIAgent”; and the filler type is “HumanAgent”. |

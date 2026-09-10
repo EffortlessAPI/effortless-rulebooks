@@ -25,7 +25,12 @@
     "is_live_ontology_editor": false,
     "is_open_world": false,
     "is_description_of": null,
-    "is_open_closed_world_conflicted": null
+    "is_open_closed_world_conflicted": null,
+    "hockett_assessed_count": null,
+    "hockett_yes_count": null,
+    "is_hockett_assessed": null,
+    "hockett_score": null,
+    "hockett_vs_gate": null
   },
   {
     "language_candidate_id": "a-game-of-fortnite",
@@ -53,7 +58,45 @@
     "is_live_ontology_editor": false,
     "is_open_world": false,
     "is_description_of": null,
-    "is_open_closed_world_conflicted": null
+    "is_open_closed_world_conflicted": null,
+    "hockett_assessed_count": null,
+    "hockett_yes_count": null,
+    "is_hockett_assessed": null,
+    "hockett_score": null,
+    "hockett_vs_gate": null
+  },
+  {
+    "language_candidate_id": "a-live-sdlaf-container",
+    "name": "A Live SDLAF Container",
+    "predicted_answer": null,
+    "is_stable_ontology_reference": true,
+    "has_linear_decoding_pressure": false,
+    "is_parsed": false,
+    "has_syntax": false,
+    "category": "Running Software",
+    "is_language": false,
+    "sort_order": 25,
+    "question": null,
+    "relationship_to_concept": null,
+    "distance_from_concept": 1,
+    "has_grammar": null,
+    "dimensionality_while_editing": "MultiDimensionalNonSymbolic",
+    "is_open_world": false,
+    "is_description_of": null,
+    "resolves_to_an_ast": false,
+    "model_object_facility_layer": "M4",
+    "prediction_predicates": null,
+    "can_be_held": false,
+    "prediction_fail": null,
+    "has_identity": true,
+    "is_live_ontology_editor": true,
+    "is_closed_world": true,
+    "is_open_closed_world_conflicted": null,
+    "hockett_assessed_count": null,
+    "hockett_yes_count": null,
+    "is_hockett_assessed": null,
+    "hockett_score": null,
+    "hockett_vs_gate": null
   },
   {
     "language_candidate_id": "a-running-app",
@@ -81,7 +124,12 @@
     "is_stable_ontology_reference": false,
     "is_open_world": false,
     "is_description_of": null,
-    "is_open_closed_world_conflicted": null
+    "is_open_closed_world_conflicted": null,
+    "hockett_assessed_count": null,
+    "hockett_yes_count": null,
+    "is_hockett_assessed": null,
+    "hockett_score": null,
+    "hockett_vs_gate": null
   },
   {
     "language_candidate_id": "a-smartphone",
@@ -109,7 +157,12 @@
     "is_live_ontology_editor": false,
     "is_open_world": false,
     "is_description_of": null,
-    "is_open_closed_world_conflicted": null
+    "is_open_closed_world_conflicted": null,
+    "hockett_assessed_count": null,
+    "hockett_yes_count": null,
+    "is_hockett_assessed": null,
+    "hockett_score": null,
+    "hockett_vs_gate": null
   },
   {
     "language_candidate_id": "a-thunderstorm",
@@ -137,7 +190,12 @@
     "is_open_world": false,
     "is_closed_world": false,
     "is_description_of": null,
-    "is_open_closed_world_conflicted": null
+    "is_open_closed_world_conflicted": null,
+    "hockett_assessed_count": null,
+    "hockett_yes_count": null,
+    "is_hockett_assessed": null,
+    "hockett_score": null,
+    "hockett_vs_gate": null
   },
   {
     "language_candidate_id": "a-uml-file",
@@ -165,7 +223,12 @@
     "is_live_ontology_editor": false,
     "is_open_world": false,
     "is_closed_world": false,
-    "is_open_closed_world_conflicted": null
+    "is_open_closed_world_conflicted": null,
+    "hockett_assessed_count": null,
+    "hockett_yes_count": null,
+    "is_hockett_assessed": null,
+    "hockett_score": null,
+    "hockett_vs_gate": null
   },
   {
     "language_candidate_id": "an-docx-doc",
@@ -193,7 +256,45 @@
     "is_live_ontology_editor": false,
     "is_open_world": false,
     "is_closed_world": false,
-    "is_open_closed_world_conflicted": null
+    "is_open_closed_world_conflicted": null,
+    "hockett_assessed_count": null,
+    "hockett_yes_count": null,
+    "is_hockett_assessed": null,
+    "hockett_score": null,
+    "hockett_vs_gate": null
+  },
+  {
+    "language_candidate_id": "an-sdlaf-container",
+    "name": "An SDLAF Container",
+    "predicted_answer": null,
+    "is_stable_ontology_reference": true,
+    "has_linear_decoding_pressure": false,
+    "is_parsed": false,
+    "has_syntax": false,
+    "category": "Conceptual Structure",
+    "is_language": false,
+    "sort_order": 24,
+    "question": null,
+    "relationship_to_concept": null,
+    "distance_from_concept": 2,
+    "has_grammar": null,
+    "dimensionality_while_editing": "MultiDimensionalSymbolic",
+    "is_open_world": false,
+    "is_description_of": null,
+    "resolves_to_an_ast": false,
+    "model_object_facility_layer": "M3",
+    "prediction_predicates": null,
+    "can_be_held": false,
+    "prediction_fail": null,
+    "has_identity": false,
+    "is_live_ontology_editor": false,
+    "is_closed_world": true,
+    "is_open_closed_world_conflicted": null,
+    "hockett_assessed_count": null,
+    "hockett_yes_count": null,
+    "is_hockett_assessed": null,
+    "hockett_score": null,
+    "hockett_vs_gate": null
   },
   {
     "language_candidate_id": "an-xlsx-doc",
@@ -221,7 +322,12 @@
     "is_live_ontology_editor": false,
     "is_open_world": false,
     "is_closed_world": false,
-    "is_open_closed_world_conflicted": null
+    "is_open_closed_world_conflicted": null,
+    "hockett_assessed_count": null,
+    "hockett_yes_count": null,
+    "is_hockett_assessed": null,
+    "hockett_score": null,
+    "hockett_vs_gate": null
   },
   {
     "language_candidate_id": "ant-pheromone-trail-system",
@@ -249,7 +355,12 @@
     "is_open_closed_world_conflicted": null,
     "dimensionality_while_editing": "",
     "model_object_facility_layer": "",
-    "sort_order": 0
+    "sort_order": 0,
+    "hockett_assessed_count": null,
+    "hockett_yes_count": null,
+    "is_hockett_assessed": null,
+    "hockett_score": null,
+    "hockett_vs_gate": null
   },
   {
     "language_candidate_id": "binary-code",
@@ -277,7 +388,12 @@
     "is_live_ontology_editor": false,
     "is_open_world": false,
     "is_closed_world": false,
-    "is_open_closed_world_conflicted": null
+    "is_open_closed_world_conflicted": null,
+    "hockett_assessed_count": null,
+    "hockett_yes_count": null,
+    "is_hockett_assessed": null,
+    "hockett_score": null,
+    "hockett_vs_gate": null
   },
   {
     "language_candidate_id": "bonobo-lexigram-keyboard-communication",
@@ -305,7 +421,12 @@
     "is_open_closed_world_conflicted": null,
     "dimensionality_while_editing": "",
     "model_object_facility_layer": "",
-    "sort_order": 0
+    "sort_order": 0,
+    "hockett_assessed_count": null,
+    "hockett_yes_count": null,
+    "is_hockett_assessed": null,
+    "hockett_score": null,
+    "hockett_vs_gate": null
   },
   {
     "language_candidate_id": "cuttlefish-chromatophore-displays",
@@ -333,7 +454,12 @@
     "is_open_closed_world_conflicted": null,
     "dimensionality_while_editing": "",
     "model_object_facility_layer": "",
-    "sort_order": 0
+    "sort_order": 0,
+    "hockett_assessed_count": null,
+    "hockett_yes_count": null,
+    "is_hockett_assessed": null,
+    "hockett_score": null,
+    "hockett_vs_gate": null
   },
   {
     "language_candidate_id": "docx-editing",
@@ -361,7 +487,12 @@
     "is_open_world": false,
     "is_closed_world": false,
     "is_description_of": null,
-    "is_open_closed_world_conflicted": null
+    "is_open_closed_world_conflicted": null,
+    "hockett_assessed_count": null,
+    "hockett_yes_count": null,
+    "is_hockett_assessed": null,
+    "hockett_score": null,
+    "hockett_vs_gate": null
   },
   {
     "language_candidate_id": "dolphin-signature-whistles",
@@ -389,7 +520,12 @@
     "is_open_closed_world_conflicted": null,
     "dimensionality_while_editing": "",
     "model_object_facility_layer": "",
-    "sort_order": 0
+    "sort_order": 0,
+    "hockett_assessed_count": null,
+    "hockett_yes_count": null,
+    "is_hockett_assessed": null,
+    "hockett_score": null,
+    "hockett_vs_gate": null
   },
   {
     "language_candidate_id": "editing-airtable-base",
@@ -417,7 +553,12 @@
     "is_parsed": false,
     "has_linear_decoding_pressure": false,
     "is_open_world": false,
-    "is_open_closed_world_conflicted": null
+    "is_open_closed_world_conflicted": null,
+    "hockett_assessed_count": null,
+    "hockett_yes_count": null,
+    "is_hockett_assessed": null,
+    "hockett_score": null,
+    "hockett_vs_gate": null
   },
   {
     "language_candidate_id": "english",
@@ -445,7 +586,12 @@
     "has_identity": false,
     "is_live_ontology_editor": false,
     "is_closed_world": false,
-    "is_open_closed_world_conflicted": null
+    "is_open_closed_world_conflicted": null,
+    "hockett_assessed_count": null,
+    "hockett_yes_count": null,
+    "is_hockett_assessed": null,
+    "hockett_score": null,
+    "hockett_vs_gate": null
   },
   {
     "language_candidate_id": "falsifier-a",
@@ -473,7 +619,12 @@
     "is_open_world": false,
     "is_closed_world": false,
     "is_description_of": null,
-    "is_open_closed_world_conflicted": null
+    "is_open_closed_world_conflicted": null,
+    "hockett_assessed_count": null,
+    "hockett_yes_count": null,
+    "is_hockett_assessed": null,
+    "hockett_score": null,
+    "hockett_vs_gate": null
   },
   {
     "language_candidate_id": "falsifier-b",
@@ -501,7 +652,12 @@
     "is_live_ontology_editor": false,
     "is_open_world": false,
     "is_closed_world": false,
-    "is_open_closed_world_conflicted": null
+    "is_open_closed_world_conflicted": null,
+    "hockett_assessed_count": null,
+    "hockett_yes_count": null,
+    "is_hockett_assessed": null,
+    "hockett_score": null,
+    "hockett_vs_gate": null
   },
   {
     "language_candidate_id": "homesign-single-child",
@@ -529,7 +685,12 @@
     "is_open_closed_world_conflicted": null,
     "dimensionality_while_editing": "",
     "model_object_facility_layer": "",
-    "sort_order": 0
+    "sort_order": 0,
+    "hockett_assessed_count": null,
+    "hockett_yes_count": null,
+    "is_hockett_assessed": null,
+    "hockett_score": null,
+    "hockett_vs_gate": null
   },
   {
     "language_candidate_id": "honeybee-waggle-dance",
@@ -557,7 +718,12 @@
     "is_open_closed_world_conflicted": null,
     "dimensionality_while_editing": "OneDimensionalSymbolic",
     "model_object_facility_layer": "",
-    "sort_order": 0
+    "sort_order": 0,
+    "hockett_assessed_count": null,
+    "hockett_yes_count": null,
+    "is_hockett_assessed": null,
+    "hockett_score": null,
+    "hockett_vs_gate": null
   },
   {
     "language_candidate_id": "killer-whale-pod-dialects",
@@ -585,7 +751,12 @@
     "is_open_closed_world_conflicted": null,
     "dimensionality_while_editing": "",
     "model_object_facility_layer": "",
-    "sort_order": 0
+    "sort_order": 0,
+    "hockett_assessed_count": null,
+    "hockett_yes_count": null,
+    "is_hockett_assessed": null,
+    "hockett_score": null,
+    "hockett_vs_gate": null
   },
   {
     "language_candidate_id": "math",
@@ -613,7 +784,12 @@
     "has_identity": false,
     "is_live_ontology_editor": false,
     "is_open_world": false,
-    "is_open_closed_world_conflicted": null
+    "is_open_closed_world_conflicted": null,
+    "hockett_assessed_count": null,
+    "hockett_yes_count": null,
+    "is_hockett_assessed": null,
+    "hockett_score": null,
+    "hockett_vs_gate": null
   },
   {
     "language_candidate_id": "nicaraguan-sign-language-early-cohort",
@@ -641,7 +817,12 @@
     "is_open_closed_world_conflicted": null,
     "dimensionality_while_editing": "",
     "model_object_facility_layer": "",
-    "sort_order": 0
+    "sort_order": 0,
+    "hockett_assessed_count": null,
+    "hockett_yes_count": null,
+    "is_hockett_assessed": null,
+    "hockett_score": null,
+    "hockett_vs_gate": null
   },
   {
     "language_candidate_id": "owa-cwa-falsifier",
@@ -669,7 +850,12 @@
     "prediction_predicates": null,
     "can_be_held": false,
     "has_identity": false,
-    "is_live_ontology_editor": false
+    "is_live_ontology_editor": false,
+    "hockett_assessed_count": null,
+    "hockett_yes_count": null,
+    "is_hockett_assessed": null,
+    "hockett_score": null,
+    "hockett_vs_gate": null
   },
   {
     "language_candidate_id": "owl-rdf-graphql-generally",
@@ -697,7 +883,12 @@
     "has_identity": false,
     "is_live_ontology_editor": false,
     "is_open_world": false,
-    "is_open_closed_world_conflicted": null
+    "is_open_closed_world_conflicted": null,
+    "hockett_assessed_count": null,
+    "hockett_yes_count": null,
+    "is_hockett_assessed": null,
+    "hockett_score": null,
+    "hockett_vs_gate": null
   },
   {
     "language_candidate_id": "python",
@@ -725,7 +916,12 @@
     "has_identity": false,
     "is_live_ontology_editor": false,
     "is_closed_world": false,
-    "is_open_closed_world_conflicted": null
+    "is_open_closed_world_conflicted": null,
+    "hockett_assessed_count": null,
+    "hockett_yes_count": null,
+    "is_hockett_assessed": null,
+    "hockett_score": null,
+    "hockett_vs_gate": null
   },
   {
     "language_candidate_id": "running-calculator-app",
@@ -753,7 +949,12 @@
     "is_open_world": false,
     "is_closed_world": false,
     "is_description_of": null,
-    "is_open_closed_world_conflicted": null
+    "is_open_closed_world_conflicted": null,
+    "hockett_assessed_count": null,
+    "hockett_yes_count": null,
+    "is_hockett_assessed": null,
+    "hockett_score": null,
+    "hockett_vs_gate": null
   },
   {
     "language_candidate_id": "sign-language",
@@ -781,7 +982,12 @@
     "has_identity": false,
     "is_live_ontology_editor": false,
     "is_closed_world": false,
-    "is_open_closed_world_conflicted": null
+    "is_open_closed_world_conflicted": null,
+    "hockett_assessed_count": null,
+    "hockett_yes_count": null,
+    "is_hockett_assessed": null,
+    "hockett_score": null,
+    "hockett_vs_gate": null
   },
   {
     "language_candidate_id": "songbird-song-learned-dialects",
@@ -809,7 +1015,12 @@
     "is_open_closed_world_conflicted": null,
     "dimensionality_while_editing": "",
     "model_object_facility_layer": "",
-    "sort_order": 0
+    "sort_order": 0,
+    "hockett_assessed_count": null,
+    "hockett_yes_count": null,
+    "is_hockett_assessed": null,
+    "hockett_score": null,
+    "hockett_vs_gate": null
   },
   {
     "language_candidate_id": "spoken-words",
@@ -837,7 +1048,12 @@
     "has_identity": false,
     "is_live_ontology_editor": false,
     "is_closed_world": false,
-    "is_open_closed_world_conflicted": null
+    "is_open_closed_world_conflicted": null,
+    "hockett_assessed_count": null,
+    "hockett_yes_count": null,
+    "is_hockett_assessed": null,
+    "hockett_score": null,
+    "hockett_vs_gate": null
   },
   {
     "language_candidate_id": "the-mona-lisa",
@@ -865,7 +1081,12 @@
     "is_open_world": false,
     "is_closed_world": false,
     "is_description_of": null,
-    "is_open_closed_world_conflicted": null
+    "is_open_closed_world_conflicted": null,
+    "hockett_assessed_count": null,
+    "hockett_yes_count": null,
+    "is_hockett_assessed": null,
+    "hockett_score": null,
+    "hockett_vs_gate": null
   },
   {
     "language_candidate_id": "vervet-monkey-alarm-calls",
@@ -893,7 +1114,12 @@
     "is_open_closed_world_conflicted": null,
     "dimensionality_while_editing": "",
     "model_object_facility_layer": "",
-    "sort_order": 0
+    "sort_order": 0,
+    "hockett_assessed_count": null,
+    "hockett_yes_count": null,
+    "is_hockett_assessed": null,
+    "hockett_score": null,
+    "hockett_vs_gate": null
   },
   {
     "language_candidate_id": "xlsx-editing",
@@ -921,6 +1147,11 @@
     "is_open_world": false,
     "is_closed_world": false,
     "is_description_of": null,
-    "is_open_closed_world_conflicted": null
+    "is_open_closed_world_conflicted": null,
+    "hockett_assessed_count": null,
+    "hockett_yes_count": null,
+    "is_hockett_assessed": null,
+    "hockett_score": null,
+    "hockett_vs_gate": null
   }
 ]

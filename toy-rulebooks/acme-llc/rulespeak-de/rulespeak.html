@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="de" data-lang="de" class="show-rulespeak show-desc show-inputs">
+<html lang="de" data-lang="de" class="show-english show-desc show-consumers">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -164,6 +164,23 @@ span.input-static:hover{background:#fcfcfe}
 .input-glyph{font-size:12px;color:var(--muted)}
 .input-name{font-weight:700;color:var(--ink)}
 .input-table{font-size:11px;color:var(--muted);margin-left:auto}
+
+/* ── 6 Example Data (optional section) ─────────────────────────────────── */
+.sample-data{max-width:1040px;margin:32px auto 8px;padding:0 20px}
+.sample-title{font-size:20px;margin:0 0 6px}
+.sample-note{color:var(--muted);font-size:13px;margin:0 0 16px;max-width:70ch}
+.sample-entity{font-size:15px;margin:20px 0 8px;color:var(--raw)}
+.sample-scroll{overflow-x:auto}
+.sample-table{border-collapse:collapse;font-size:13px;background:var(--card);
+  border:1px solid var(--line);border-radius:6px}
+.sample-table th,.sample-table td{padding:6px 12px;border-bottom:1px solid var(--line);
+  text-align:left;vertical-align:top;white-space:nowrap}
+.sample-table thead th{background:#f5f5fa;font-weight:600;color:var(--ink)}
+.sample-table tbody tr:last-child td{border-bottom:none}
+.sample-table th.sample-derived{background:var(--calc-bg);color:var(--calc)}
+.sample-table td.sample-derived{color:var(--calc)}
+.sample-fx{margin-left:4px;opacity:.75}
+.sample-legend{color:var(--muted);font-size:12px;margin-top:12px}
 .input-en{display:block;margin-top:3px;font-size:13px;color:var(--muted)}
 .ref-pill{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;
   border:1px solid var(--line);border-radius:999px;padding:3px 10px;background:#fff;color:var(--ink)}
@@ -226,12 +243,12 @@ html[data-lang="de"] .lang-doc[data-lang="de"]{display:block}
   <div class="gear-pop" role="dialog" aria-label="Dokumentationsoptionen" hidden>
     <p class="gear-pop-title">In diesem Dokument anzeigen</p>
     <label class="gear-opt" title="Die deklarative Geschäftsregel (nur dann / muss / Priorität)">
-      <input type="checkbox" data-elem="rulespeak" checked>
+      <input type="checkbox" data-elem="rulespeak">
       <span class="gear-opt-label">RuleSpeak®</span>
       <span class="gear-opt-hint">Die deklarative Geschäftsregel (nur dann / muss / Priorität)</span>
     </label>
     <label class="gear-opt" title="Die Formel als klarsprachlicher Satz vorgelesen">
-      <input type="checkbox" data-elem="english">
+      <input type="checkbox" data-elem="english" checked>
       <span class="gear-opt-label">Klartext</span>
       <span class="gear-opt-hint">Die Formel als klarsprachlicher Satz vorgelesen</span>
     </label>
@@ -246,12 +263,12 @@ html[data-lang="de"] .lang-doc[data-lang="de"]{display:block}
       <span class="gear-opt-hint">Der erläuternde Kommentar des Autors zu einem Feld, falls vorhanden</span>
     </label>
     <label class="gear-opt" title="Die Felder, die jede Regel liest (ihre DAG-Eingaben / vorgelagert)">
-      <input type="checkbox" data-elem="inputs" checked>
+      <input type="checkbox" data-elem="inputs">
       <span class="gear-opt-label">Links zu Eingaben</span>
       <span class="gear-opt-hint">Die Felder, die jede Regel liest (ihre DAG-Eingaben / vorgelagert)</span>
     </label>
     <label class="gear-opt" title="Die Regeln, die diese hier lesen (ihre DAG-Verbraucher / nachgelagert)">
-      <input type="checkbox" data-elem="consumers">
+      <input type="checkbox" data-elem="consumers" checked>
       <span class="gear-opt-label">Links zu Verbrauchern</span>
       <span class="gear-opt-hint">Die Regeln, die diese hier lesen (ihre DAG-Verbraucher / nachgelagert)</span>
     </label>
@@ -286,6 +303,7 @@ html[data-lang="de"] .lang-doc[data-lang="de"]{display:block}
       <span class="pill pill-muted">string</span>
       <span class="pill pill-dr">DR-1</span>
     </div>
+    <p class="field-note elem elem-desc">Identifier for the customer.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
         <span class="view-label">In RuleSpeak®</span>
@@ -315,61 +333,51 @@ html[data-lang="de"] .lang-doc[data-lang="de"]{display:block}
         <a class="ref-pill tone-raw" href="#de-f-customers-emailaddress">● Email Address <span class="ref-pill-tbl">Customer</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Identifier for the customer.</p>
     </article>
   <article class="field tone-raw" id="de-f-customers-emailaddress" data-entity="Customer" data-field="Email Address">
     <div class="field-head">
       <span class="field-glyph" title="Grundwahrheit">●</span>
       <span class="field-name">Email Address</span>
-      <span class="pill pill-type">Grundwahrheit</span>
+      <span class="pill pill-type" title="Grundwahrheit. Direkt in die Datenbank geschrieben (Datentyp string); nicht aus etwas anderem berechnet. Alles Abgeleitete führt letztlich auf Werte wie diesen zurück.">Grundwahrheit</span>
       <span class="pill pill-muted">string</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Grundwahrheit. Direkt in die Datenbank geschrieben (Datentyp <code>string</code>); nicht aus etwas anderem berechnet. Alles Abgeleitete führt letztlich auf Werte wie diesen zurück.</p>
-    </div>
+    <p class="field-note elem elem-desc">The customer's email address</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Verbraucher <span class="count">1 direkt</span> <span class="prov-hint">Regeln, die diese hier lesen</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#de-f-customers-name">ƒ Name <span class="ref-pill-tbl">Customer</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">The customer's email address</p>
     </article>
   <article class="field tone-raw" id="de-f-customers-firstname" data-entity="Customer" data-field="First Name">
     <div class="field-head">
       <span class="field-glyph" title="Grundwahrheit">●</span>
       <span class="field-name">First Name</span>
-      <span class="pill pill-type">Grundwahrheit</span>
+      <span class="pill pill-type" title="Grundwahrheit. Direkt in die Datenbank geschrieben (Datentyp string); nicht aus etwas anderem berechnet. Alles Abgeleitete führt letztlich auf Werte wie diesen zurück.">Grundwahrheit</span>
       <span class="pill pill-muted">string</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Grundwahrheit. Direkt in die Datenbank geschrieben (Datentyp <code>string</code>); nicht aus etwas anderem berechnet. Alles Abgeleitete führt letztlich auf Werte wie diesen zurück.</p>
-    </div>
+    <p class="field-note elem elem-desc">First Name of the customer - used to make the full name</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Verbraucher <span class="count">1 direkt</span> <span class="prov-hint">Regeln, die diese hier lesen</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#de-f-customers-fullname">ƒ Full Name <span class="ref-pill-tbl">Customer</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">First Name of the customer - used to make the full name</p>
     </article>
   <article class="field tone-raw" id="de-f-customers-lastname" data-entity="Customer" data-field="Last Name">
     <div class="field-head">
       <span class="field-glyph" title="Grundwahrheit">●</span>
       <span class="field-name">Last Name</span>
-      <span class="pill pill-type">Grundwahrheit</span>
+      <span class="pill pill-type" title="Grundwahrheit. Direkt in die Datenbank geschrieben (Datentyp string); nicht aus etwas anderem berechnet. Alles Abgeleitete führt letztlich auf Werte wie diesen zurück.">Grundwahrheit</span>
       <span class="pill pill-muted">string</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Grundwahrheit. Direkt in die Datenbank geschrieben (Datentyp <code>string</code>); nicht aus etwas anderem berechnet. Alles Abgeleitete führt letztlich auf Werte wie diesen zurück.</p>
-    </div>
+    <p class="field-note elem elem-desc">Last Name of the customer - used to make the full name</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Verbraucher <span class="count">1 direkt</span> <span class="prov-hint">Regeln, die diese hier lesen</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#de-f-customers-fullname">ƒ Full Name <span class="ref-pill-tbl">Customer</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Last Name of the customer - used to make the full name</p>
     </article>
   <article class="field tone-calc" id="de-f-customers-fullname" data-entity="Customer" data-field="Full Name">
     <div class="field-head">
@@ -380,6 +388,7 @@ html[data-lang="de"] .lang-doc[data-lang="de"]{display:block}
       <span class="pill pill-muted">string</span>
       <span class="pill pill-dr">DR-2</span>
     </div>
+    <p class="field-note elem elem-desc">Full name is computed from the first and last name of the customer</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
         <span class="view-label">In RuleSpeak®</span>
@@ -414,7 +423,6 @@ html[data-lang="de"] .lang-doc[data-lang="de"]{display:block}
         <a class="ref-pill tone-raw" href="#de-f-customers-lastname">● Last Name <span class="ref-pill-tbl">Customer</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Full name is computed from the first and last name of the customer</p>
     </article>
 </section>
 <footer class="doc-footer">
@@ -427,7 +435,7 @@ html[data-lang="de"] .lang-doc[data-lang="de"]{display:block}
 (function(){
   var LANGS=['de'];
   var ELEMS=['rulespeak','english','formula','desc','inputs','consumers'];
-  var DEFAULTS={'rulespeak':true,'english':false,'formula':false,'desc':true,'inputs':true,'consumers':false};
+  var DEFAULTS={'rulespeak':false,'english':true,'formula':false,'desc':true,'inputs':false,'consumers':true};
   var root=document.documentElement;
 
   // ── Language switching. All .lang-select controls stay in sync; the choice

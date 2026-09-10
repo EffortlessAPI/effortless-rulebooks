@@ -9,8 +9,29 @@
       "prediction_fail",
       "is_description_of",
       "is_open_closed_world_conflicted",
-      "relationship_to_concept"
+      "relationship_to_concept",
+      "hockett_assessed_count",
+      "hockett_yes_count",
+      "is_hockett_assessed",
+      "hockett_score",
+      "hockett_vs_gate"
     ],
-    "record_count": 33
+    "record_count": 35
+  },
+  "hockett_features": {
+    "primary_key": "hockett_feature_id",
+    "computed_columns": [
+      "assessment_count",
+      "yes_count"
+    ],
+    "record_count": 16
+  },
+  "hockett_assessments": {
+    "primary_key": "hockett_assessment_id",
+    "computed_columns": [
+      "name",
+      "is_yes_flag"
+    ],
+    "record_count": 65
   }
 }

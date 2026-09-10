@@ -39,17 +39,20 @@
       {
         "VenueId": "main-hall",
         "Location": "Downtown Community Center",
-        "Capacity": 150
+        "Capacity": 150,
+        "Name": "main-hall"
       },
       {
         "VenueId": "conference-room",
         "Location": "Tech Hub Building",
-        "Capacity": 50
+        "Capacity": 50,
+        "Name": "conference-room"
       },
       {
         "VenueId": "outdoor-amphitheater",
         "Location": "Central Park",
-        "Capacity": 300
+        "Capacity": 300,
+        "Name": "outdoor-amphitheater"
       }
     ]
   },
@@ -116,27 +119,42 @@
       {
         "SpeakerId": "alice@speakers.local",
         "AvailabilityStart": "2026-05-24 14:00:00",
-        "AvailabilityEnd": "2026-05-24 21:00:00"
+        "AvailabilityEnd": "2026-05-24 21:00:00",
+        "Name": "alice@speakers.local",
+        "AssignmentCount": 2,
+        "IsOverbooked": false
       },
       {
         "SpeakerId": "bob@speakers.local",
         "AvailabilityStart": "2026-05-25 09:00:00",
-        "AvailabilityEnd": "2026-05-25 18:00:00"
+        "AvailabilityEnd": "2026-05-25 18:00:00",
+        "Name": "bob@speakers.local",
+        "AssignmentCount": 2,
+        "IsOverbooked": false
       },
       {
         "SpeakerId": "carol@speakers.local",
         "AvailabilityStart": "2026-05-23 15:00:00",
-        "AvailabilityEnd": "2026-05-23 20:00:00"
+        "AvailabilityEnd": "2026-05-23 20:00:00",
+        "Name": "carol@speakers.local",
+        "AssignmentCount": 2,
+        "IsOverbooked": false
       },
       {
         "SpeakerId": "dave@speakers.local",
         "AvailabilityStart": "2026-05-25 14:00:00",
-        "AvailabilityEnd": "2026-05-25 18:00:00"
+        "AvailabilityEnd": "2026-05-25 18:00:00",
+        "Name": "dave@speakers.local",
+        "AssignmentCount": 0,
+        "IsOverbooked": false
       },
       {
         "SpeakerId": "overbooked@speakers.local",
         "AvailabilityStart": "2026-05-23 09:00:00",
-        "AvailabilityEnd": "2026-05-25 21:00:00"
+        "AvailabilityEnd": "2026-05-25 21:00:00",
+        "Name": "overbooked@speakers.local",
+        "AssignmentCount": 4,
+        "IsOverbooked": true
       }
     ]
   },
@@ -342,7 +360,24 @@
         "EventDate": "2026-05-24 14:00:00",
         "DurationMinutes": 60,
         "RegistrationCloseDaysBeforeEvent": 0,
-        "Category": "Tech"
+        "Category": "Tech",
+        "Name": "tech-talk-1",
+        "VenueName": "main-hall",
+        "VenueCapacity": 150,
+        "EventEnd": "2026-05-24T14:00:00-05:00",
+        "TotalSpeakersAssigned": 3,
+        "HasSpeakers": true,
+        "BookedCapacity": 2,
+        "AvailableCapacity": 148,
+        "AtCapacity": false,
+        "VenueConflictCount": 2,
+        "HasVenueConflict": true,
+        "EventStatus": "issues",
+        "RegistrationDeadline": "2026-05-24T00:00:00-05:00",
+        "IsRegistrationOpen": false,
+        "CapacityHeadroom": 146,
+        "HasHeadroomForOverbooking": true,
+        "RecommendedOverbookingFactor": 1.2
       },
       {
         "EventId": "workshop-1",
@@ -350,7 +385,24 @@
         "EventDate": "2026-05-25 10:00:00",
         "DurationMinutes": 120,
         "RegistrationCloseDaysBeforeEvent": 1,
-        "Category": "Learning"
+        "Category": "Learning",
+        "Name": "workshop-1",
+        "VenueName": "conference-room",
+        "VenueCapacity": 50,
+        "EventEnd": "2026-05-25T10:00:00-05:00",
+        "TotalSpeakersAssigned": 2,
+        "HasSpeakers": true,
+        "BookedCapacity": 1,
+        "AvailableCapacity": 49,
+        "AtCapacity": false,
+        "VenueConflictCount": 1,
+        "HasVenueConflict": false,
+        "EventStatus": "ready",
+        "RegistrationDeadline": "2026-05-24T00:00:00-05:00",
+        "IsRegistrationOpen": false,
+        "CapacityHeadroom": 48,
+        "HasHeadroomForOverbooking": true,
+        "RecommendedOverbookingFactor": 1.2
       },
       {
         "EventId": "panel-1",
@@ -358,7 +410,24 @@
         "EventDate": "2026-05-25 15:00:00",
         "DurationMinutes": 90,
         "RegistrationCloseDaysBeforeEvent": 1,
-        "Category": "Community"
+        "Category": "Community",
+        "Name": "panel-1",
+        "VenueName": "outdoor-amphitheater",
+        "VenueCapacity": 300,
+        "EventEnd": "2026-05-25T15:00:00-05:00",
+        "TotalSpeakersAssigned": 3,
+        "HasSpeakers": true,
+        "BookedCapacity": 2,
+        "AvailableCapacity": 298,
+        "AtCapacity": false,
+        "VenueConflictCount": 1,
+        "HasVenueConflict": false,
+        "EventStatus": "ready",
+        "RegistrationDeadline": "2026-05-24T00:00:00-05:00",
+        "IsRegistrationOpen": false,
+        "CapacityHeadroom": 296,
+        "HasHeadroomForOverbooking": true,
+        "RecommendedOverbookingFactor": 1.2
       },
       {
         "EventId": "meetup-1",
@@ -366,7 +435,24 @@
         "EventDate": "2026-05-23 18:00:00",
         "DurationMinutes": 120,
         "RegistrationCloseDaysBeforeEvent": 1,
-        "Category": "Community"
+        "Category": "Community",
+        "Name": "meetup-1",
+        "VenueName": "main-hall",
+        "VenueCapacity": 150,
+        "EventEnd": "2026-05-23T18:00:00-05:00",
+        "TotalSpeakersAssigned": 2,
+        "HasSpeakers": true,
+        "BookedCapacity": 0,
+        "AvailableCapacity": 150,
+        "AtCapacity": false,
+        "VenueConflictCount": 2,
+        "HasVenueConflict": true,
+        "EventStatus": "issues",
+        "RegistrationDeadline": "2026-05-22T00:00:00-05:00",
+        "IsRegistrationOpen": false,
+        "CapacityHeadroom": 150,
+        "HasHeadroomForOverbooking": true,
+        "RecommendedOverbookingFactor": 1.2
       }
     ]
   },
@@ -457,52 +543,122 @@
       {
         "AssignmentId": "assign-1",
         "EventRef": "tech-talk-1",
-        "SpeakerRef": "alice@speakers.local"
+        "SpeakerRef": "alice@speakers.local",
+        "Name": "assign-1",
+        "EventName": "tech-talk-1",
+        "SpeakerName": "alice@speakers.local",
+        "EventDate": "2026-05-24T14:00:00-05:00",
+        "SpeakerAvailStart": "2026-05-24T14:00:00-05:00",
+        "SpeakerAvailEnd": "2026-05-24T21:00:00-05:00",
+        "IsAvailable": true
       },
       {
         "AssignmentId": "assign-2",
         "EventRef": "tech-talk-1",
-        "SpeakerRef": "bob@speakers.local"
+        "SpeakerRef": "bob@speakers.local",
+        "Name": "assign-2",
+        "EventName": "tech-talk-1",
+        "SpeakerName": "bob@speakers.local",
+        "EventDate": "2026-05-24T14:00:00-05:00",
+        "SpeakerAvailStart": "2026-05-25T09:00:00-05:00",
+        "SpeakerAvailEnd": "2026-05-25T18:00:00-05:00",
+        "IsAvailable": false
       },
       {
         "AssignmentId": "assign-3",
         "EventRef": "workshop-1",
-        "SpeakerRef": "bob@speakers.local"
+        "SpeakerRef": "bob@speakers.local",
+        "Name": "assign-3",
+        "EventName": "workshop-1",
+        "SpeakerName": "bob@speakers.local",
+        "EventDate": "2026-05-25T10:00:00-05:00",
+        "SpeakerAvailStart": "2026-05-25T09:00:00-05:00",
+        "SpeakerAvailEnd": "2026-05-25T18:00:00-05:00",
+        "IsAvailable": true
       },
       {
         "AssignmentId": "assign-4",
         "EventRef": "panel-1",
-        "SpeakerRef": "alice@speakers.local"
+        "SpeakerRef": "alice@speakers.local",
+        "Name": "assign-4",
+        "EventName": "panel-1",
+        "SpeakerName": "alice@speakers.local",
+        "EventDate": "2026-05-25T15:00:00-05:00",
+        "SpeakerAvailStart": "2026-05-24T14:00:00-05:00",
+        "SpeakerAvailEnd": "2026-05-24T21:00:00-05:00",
+        "IsAvailable": false
       },
       {
         "AssignmentId": "assign-5",
         "EventRef": "panel-1",
-        "SpeakerRef": "carol@speakers.local"
+        "SpeakerRef": "carol@speakers.local",
+        "Name": "assign-5",
+        "EventName": "panel-1",
+        "SpeakerName": "carol@speakers.local",
+        "EventDate": "2026-05-25T15:00:00-05:00",
+        "SpeakerAvailStart": "2026-05-23T15:00:00-05:00",
+        "SpeakerAvailEnd": "2026-05-23T20:00:00-05:00",
+        "IsAvailable": false
       },
       {
         "AssignmentId": "assign-6",
         "EventRef": "meetup-1",
-        "SpeakerRef": "carol@speakers.local"
+        "SpeakerRef": "carol@speakers.local",
+        "Name": "assign-6",
+        "EventName": "meetup-1",
+        "SpeakerName": "carol@speakers.local",
+        "EventDate": "2026-05-23T18:00:00-05:00",
+        "SpeakerAvailStart": "2026-05-23T15:00:00-05:00",
+        "SpeakerAvailEnd": "2026-05-23T20:00:00-05:00",
+        "IsAvailable": true
       },
       {
         "AssignmentId": "assign-7",
         "EventRef": "tech-talk-1",
-        "SpeakerRef": "overbooked@speakers.local"
+        "SpeakerRef": "overbooked@speakers.local",
+        "Name": "assign-7",
+        "EventName": "tech-talk-1",
+        "SpeakerName": "overbooked@speakers.local",
+        "EventDate": "2026-05-24T14:00:00-05:00",
+        "SpeakerAvailStart": "2026-05-23T09:00:00-05:00",
+        "SpeakerAvailEnd": "2026-05-25T21:00:00-05:00",
+        "IsAvailable": true
       },
       {
         "AssignmentId": "assign-8",
         "EventRef": "workshop-1",
-        "SpeakerRef": "overbooked@speakers.local"
+        "SpeakerRef": "overbooked@speakers.local",
+        "Name": "assign-8",
+        "EventName": "workshop-1",
+        "SpeakerName": "overbooked@speakers.local",
+        "EventDate": "2026-05-25T10:00:00-05:00",
+        "SpeakerAvailStart": "2026-05-23T09:00:00-05:00",
+        "SpeakerAvailEnd": "2026-05-25T21:00:00-05:00",
+        "IsAvailable": true
       },
       {
         "AssignmentId": "assign-9",
         "EventRef": "panel-1",
-        "SpeakerRef": "overbooked@speakers.local"
+        "SpeakerRef": "overbooked@speakers.local",
+        "Name": "assign-9",
+        "EventName": "panel-1",
+        "SpeakerName": "overbooked@speakers.local",
+        "EventDate": "2026-05-25T15:00:00-05:00",
+        "SpeakerAvailStart": "2026-05-23T09:00:00-05:00",
+        "SpeakerAvailEnd": "2026-05-25T21:00:00-05:00",
+        "IsAvailable": true
       },
       {
         "AssignmentId": "assign-10",
         "EventRef": "meetup-1",
-        "SpeakerRef": "overbooked@speakers.local"
+        "SpeakerRef": "overbooked@speakers.local",
+        "Name": "assign-10",
+        "EventName": "meetup-1",
+        "SpeakerName": "overbooked@speakers.local",
+        "EventDate": "2026-05-23T18:00:00-05:00",
+        "SpeakerAvailStart": "2026-05-23T09:00:00-05:00",
+        "SpeakerAvailEnd": "2026-05-25T21:00:00-05:00",
+        "IsAvailable": true
       }
     ]
   },
@@ -527,19 +683,24 @@
     ],
     "data": [
       {
-        "AttendeeId": "user1@attendees.local"
+        "AttendeeId": "user1@attendees.local",
+        "Name": "user1@attendees.local"
       },
       {
-        "AttendeeId": "user2@attendees.local"
+        "AttendeeId": "user2@attendees.local",
+        "Name": "user2@attendees.local"
       },
       {
-        "AttendeeId": "user3@attendees.local"
+        "AttendeeId": "user3@attendees.local",
+        "Name": "user3@attendees.local"
       },
       {
-        "AttendeeId": "user4@attendees.local"
+        "AttendeeId": "user4@attendees.local",
+        "Name": "user4@attendees.local"
       },
       {
-        "AttendeeId": "user5@attendees.local"
+        "AttendeeId": "user5@attendees.local",
+        "Name": "user5@attendees.local"
       }
     ]
   },

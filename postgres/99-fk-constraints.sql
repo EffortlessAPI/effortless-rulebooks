@@ -122,6 +122,9 @@ ALTER TABLE erb_features ADD CONSTRAINT fk_erb_features_category
 ALTER TABLE erb_features DROP CONSTRAINT IF EXISTS fk_erb_features_erb_package;
 ALTER TABLE erb_features ADD CONSTRAINT fk_erb_features_erb_package
   FOREIGN KEY (erb_package) REFERENCES erb_packages (erb_package_id);
+ALTER TABLE erb_features DROP CONSTRAINT IF EXISTS fk_erb_features_erb_epic;
+ALTER TABLE erb_features ADD CONSTRAINT fk_erb_features_erb_epic
+  FOREIGN KEY (erb_epic) REFERENCES erb_epics (erb_epic_id);
 
 -- UserStories
 ALTER TABLE user_stories DROP CONSTRAINT IF EXISTS fk_user_stories_build_phase;
@@ -194,9 +197,9 @@ ALTER TABLE execution_substrates DROP CONSTRAINT IF EXISTS fk_execution_substrat
 ALTER TABLE execution_substrates ADD CONSTRAINT fk_execution_substrates_project
   FOREIGN KEY (project) REFERENCES project_metadata (project_id);
 
--- SsotmeProxy
-ALTER TABLE ssotme_proxy DROP CONSTRAINT IF EXISTS fk_ssotme_proxy_substrate_id;
-ALTER TABLE ssotme_proxy ADD CONSTRAINT fk_ssotme_proxy_substrate_id
+-- LocalToolRoutes
+ALTER TABLE local_tool_routes DROP CONSTRAINT IF EXISTS fk_local_tool_routes_substrate_id;
+ALTER TABLE local_tool_routes ADD CONSTRAINT fk_local_tool_routes_substrate_id
   FOREIGN KEY (substrate_id) REFERENCES execution_substrates (substrate_id);
 
 -- AddToolCatalog
@@ -225,4 +228,65 @@ ALTER TABLE substrate_tradeoffs DROP CONSTRAINT IF EXISTS fk_substrate_tradeoffs
 ALTER TABLE substrate_tradeoffs ADD CONSTRAINT fk_substrate_tradeoffs_dimension_id
   FOREIGN KEY (dimension_id) REFERENCES substrate_tradeoff_dimensions (dimension_id);
 
--- 49 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
+-- ERBTables
+ALTER TABLE erb_tables DROP CONSTRAINT IF EXISTS fk_erb_tables_tenant_parent_table;
+ALTER TABLE erb_tables ADD CONSTRAINT fk_erb_tables_tenant_parent_table
+  FOREIGN KEY (tenant_parent_table) REFERENCES erb_tables (erb_table_id);
+
+-- ERBFields
+ALTER TABLE erb_fields DROP CONSTRAINT IF EXISTS fk_erb_fields_erb_table;
+ALTER TABLE erb_fields ADD CONSTRAINT fk_erb_fields_erb_table
+  FOREIGN KEY (erb_table) REFERENCES erb_tables (erb_table_id);
+
+-- ERBUsers
+ALTER TABLE erb_users DROP CONSTRAINT IF EXISTS fk_erb_users_erb_role;
+ALTER TABLE erb_users ADD CONSTRAINT fk_erb_users_erb_role
+  FOREIGN KEY (erb_role) REFERENCES erb_roles (erb_role_id);
+
+-- ERBRoleTablePermissions
+ALTER TABLE erb_role_table_permissions DROP CONSTRAINT IF EXISTS fk_erb_role_table_permissions_erb_role;
+ALTER TABLE erb_role_table_permissions ADD CONSTRAINT fk_erb_role_table_permissions_erb_role
+  FOREIGN KEY (erb_role) REFERENCES erb_roles (erb_role_id);
+ALTER TABLE erb_role_table_permissions DROP CONSTRAINT IF EXISTS fk_erb_role_table_permissions_erb_table;
+ALTER TABLE erb_role_table_permissions ADD CONSTRAINT fk_erb_role_table_permissions_erb_table
+  FOREIGN KEY (erb_table) REFERENCES erb_tables (erb_table_id);
+
+-- ERBRoleFieldPermissions
+ALTER TABLE erb_role_field_permissions DROP CONSTRAINT IF EXISTS fk_erb_role_field_permissions_erb_role;
+ALTER TABLE erb_role_field_permissions ADD CONSTRAINT fk_erb_role_field_permissions_erb_role
+  FOREIGN KEY (erb_role) REFERENCES erb_roles (erb_role_id);
+ALTER TABLE erb_role_field_permissions DROP CONSTRAINT IF EXISTS fk_erb_role_field_permissions_erb_field;
+ALTER TABLE erb_role_field_permissions ADD CONSTRAINT fk_erb_role_field_permissions_erb_field
+  FOREIGN KEY (erb_field) REFERENCES erb_fields (erb_field_id);
+
+-- ERBEpics
+ALTER TABLE erb_epics DROP CONSTRAINT IF EXISTS fk_erb_epics_erb_package;
+ALTER TABLE erb_epics ADD CONSTRAINT fk_erb_epics_erb_package
+  FOREIGN KEY (erb_package) REFERENCES erb_packages (erb_package_id);
+
+-- ERBUserStories
+ALTER TABLE erb_user_stories DROP CONSTRAINT IF EXISTS fk_erb_user_stories_erb_build_phase;
+ALTER TABLE erb_user_stories ADD CONSTRAINT fk_erb_user_stories_erb_build_phase
+  FOREIGN KEY (erb_build_phase) REFERENCES erb_build_phases (erb_build_phase_id);
+ALTER TABLE erb_user_stories DROP CONSTRAINT IF EXISTS fk_erb_user_stories_erb_epic;
+ALTER TABLE erb_user_stories ADD CONSTRAINT fk_erb_user_stories_erb_epic
+  FOREIGN KEY (erb_epic) REFERENCES erb_epics (erb_epic_id);
+ALTER TABLE erb_user_stories DROP CONSTRAINT IF EXISTS fk_erb_user_stories_erb_feature;
+ALTER TABLE erb_user_stories ADD CONSTRAINT fk_erb_user_stories_erb_feature
+  FOREIGN KEY (erb_feature) REFERENCES erb_features (erb_feature_id);
+ALTER TABLE erb_user_stories DROP CONSTRAINT IF EXISTS fk_erb_user_stories_erb_effort_class;
+ALTER TABLE erb_user_stories ADD CONSTRAINT fk_erb_user_stories_erb_effort_class
+  FOREIGN KEY (erb_effort_class) REFERENCES erb_effort_classes (erb_effort_class_id);
+ALTER TABLE erb_user_stories DROP CONSTRAINT IF EXISTS fk_erb_user_stories_depends_on_story;
+ALTER TABLE erb_user_stories ADD CONSTRAINT fk_erb_user_stories_depends_on_story
+  FOREIGN KEY (depends_on_story) REFERENCES erb_user_stories (erb_user_story_id);
+
+-- ERBAcceptanceCriteria
+ALTER TABLE erb_acceptance_criteria DROP CONSTRAINT IF EXISTS fk_erb_acceptance_criteria_erb_user_story;
+ALTER TABLE erb_acceptance_criteria ADD CONSTRAINT fk_erb_acceptance_criteria_erb_user_story
+  FOREIGN KEY (erb_user_story) REFERENCES erb_user_stories (erb_user_story_id);
+ALTER TABLE erb_acceptance_criteria DROP CONSTRAINT IF EXISTS fk_erb_acceptance_criteria_depends_on_criterion;
+ALTER TABLE erb_acceptance_criteria ADD CONSTRAINT fk_erb_acceptance_criteria_depends_on_criterion
+  FOREIGN KEY (depends_on_criterion) REFERENCES erb_acceptance_criteria (erb_acceptance_criterion_id);
+
+-- 65 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).

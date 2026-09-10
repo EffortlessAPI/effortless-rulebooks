@@ -1,0 +1,160 @@
+{
+  "app_users": {
+    "primary_key": "app_user_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 3
+  },
+  "clients": {
+    "primary_key": "client_id",
+    "computed_columns": [
+      "category_name",
+      "category_discount",
+      "is_stopped",
+      "status_display_name",
+      "status_description",
+      "count_of_big_invoices",
+      "billing_address_state_tax_rate",
+      "billing_address",
+      "shipping_address",
+      "average_order_value",
+      "is_vip",
+      "has_recent_invoices",
+      "last_invoice",
+      "customer_since_days"
+    ],
+    "record_count": 5
+  },
+  "client_approvals": {
+    "primary_key": "client_approval_id",
+    "computed_columns": [
+      "name",
+      "approved_by_contact_name",
+      "approved_by_email_address",
+      "approved_by_phone_number",
+      "approved_by_role",
+      "is_approved",
+      "client_name",
+      "client_email",
+      "client_phone",
+      "client_category"
+    ],
+    "record_count": 3
+  },
+  "client_categories": {
+    "primary_key": "client_categorie_id",
+    "computed_columns": [
+      "count_of_clients"
+    ],
+    "record_count": 3
+  },
+  "statuses": {
+    "primary_key": "statuse_id",
+    "computed_columns": [
+      "name",
+      "count_of_clients"
+    ],
+    "record_count": 7
+  },
+  "products": {
+    "primary_key": "product_id",
+    "computed_columns": [
+      "name",
+      "profit",
+      "margin",
+      "is_high_margin",
+      "stock_quantity",
+      "cogs",
+      "count_of_vip_orders",
+      "has_been_ordered_by_vip_customers"
+    ],
+    "record_count": 8
+  },
+  "invoices": {
+    "primary_key": "invoice_id",
+    "computed_columns": [
+      "name",
+      "client_is_vip",
+      "client_hast_recent_invoices",
+      "client_email",
+      "client_phone",
+      "client_company_name",
+      "client_category_name",
+      "client_category_discount",
+      "item_count",
+      "total_quantity",
+      "sub_total",
+      "is_big_order",
+      "tax_rate",
+      "tax_amount",
+      "invoice_total",
+      "total_paid",
+      "amount_due",
+      "is_paid_in_full",
+      "payment_count",
+      "last_payment_date",
+      "payment_status_label"
+    ],
+    "record_count": 7
+  },
+  "invoice_line_items": {
+    "primary_key": "invoice_line_item_id",
+    "computed_columns": [
+      "name",
+      "client_is_vip",
+      "client_hast_recent_invoices",
+      "invoice_number",
+      "invoice_total",
+      "invoice_total_paid",
+      "product_sku",
+      "product_display_name",
+      "unit_price",
+      "pre_discount",
+      "discount_percent",
+      "discount_amount",
+      "sub_total"
+    ],
+    "record_count": 18
+  },
+  "inventory_adjustments": {
+    "primary_key": "inventory_adjustment_id",
+    "computed_columns": [
+      "adjustment_name"
+    ],
+    "record_count": 8
+  },
+  "payments": {
+    "primary_key": "payment_id",
+    "computed_columns": [
+      "name",
+      "invoice_date",
+      "invoice_number",
+      "invoice_status",
+      "invoice_total",
+      "is_completed",
+      "completed_amount",
+      "order_amount_due",
+      "order_is_paid_in_full"
+    ],
+    "record_count": 9
+  },
+  "addresses": {
+    "primary_key": "addresse_id",
+    "computed_columns": [
+      "name",
+      "type_of_address_is_shipping_address",
+      "type_of_address_is_billing_address",
+      "state_code",
+      "state_tax_rate"
+    ],
+    "record_count": 6
+  },
+  "states": {
+    "primary_key": "state_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 50
+  }
+}

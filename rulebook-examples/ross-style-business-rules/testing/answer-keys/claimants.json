@@ -1,0 +1,52 @@
+[
+  {
+    "name": "Alice",
+    "claimant_id": "clm-1",
+    "claimant_name": "Alice",
+    "favorite_color": "Blue",
+    "policy": "pol-1",
+    "count_of_incidents": 1,
+    "is_high_risk": false,
+    "policy_is_active": true
+  },
+  {
+    "name": "Bob",
+    "claimant_id": "clm-2",
+    "claimant_name": "Bob",
+    "favorite_color": "Red",
+    "policy": "pol-3",
+    "count_of_incidents": 1,
+    "is_high_risk": false,
+    "policy_is_active": true
+  },
+  {
+    "name": "Carol",
+    "claimant_id": "clm-3",
+    "claimant_name": "Carol",
+    "favorite_color": "Green",
+    "policy": "pol-1",
+    "count_of_incidents": 3,
+    "is_high_risk": true,
+    "policy_is_active": true
+  },
+  {
+    "name": "Dave",
+    "claimant_id": "clm-4",
+    "claimant_name": "Dave",
+    "favorite_color": "Red",
+    "policy": "pol-2",
+    "count_of_incidents": 1,
+    "is_high_risk": false,
+    "policy_is_active": false
+  },
+  {
+    "name": "Erin",
+    "claimant_id": "clm-5",
+    "claimant_name": "Erin",
+    "favorite_color": "Blue",
+    "policy": "pol-1",
+    "count_of_incidents": 1,
+    "is_high_risk": false,
+    "policy_is_active": true
+  }
+]

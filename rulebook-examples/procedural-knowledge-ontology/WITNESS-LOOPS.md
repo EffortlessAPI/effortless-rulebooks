@@ -93,15 +93,28 @@ Always confirm the column discriminates in Postgres.
 
 **LOOP 1 COMPLETE.** 12 roles, 60 questions, 462 witnessed predicates.
 **LOOP 2 COMPLETE.** 12 roles, 45 questions, 836 witnessed predicates total.
+**LOOP 3 COMPLETE.** 2 roles (process-steward, knowledge-authority), 3
+questions, 64 witnessed predicates. Unlike loops 1-2, this is not a 12-role
+sweep — it is exactly the three gaps found comparing this rulebook against
+Jessica Talisman's *Intentional Arrangement* article series (process mining,
+controlled vocabulary/taxonomy, the informal knowledge-broker network), each
+owned by the role that would actually ask the question. See the README
+"Every derived field exists because a named role asked a question" section.
 
-| | baseline | after loop 1 | after loop 2 |
-|---|---|---|---|
-| tables | 51 | 65 | 69 |
-| fields | 483 | 1096 | 1479 |
-| derived | 75 | 559 | 906 |
-| **witnessed** | **0** | **462** | **836** |
-| discriminating booleans | 10 | 135 | 238 |
-| pg functions | 182 | 753 | 1138 |
+| | baseline | after loop 1 | after loop 2 | after loop 3 (current) |
+|---|---|---|---|---|
+| tables | 51 | 65 | 69 | 89 |
+| fields | 483 | 1096 | 1479 | 1771 |
+| derived | 75 | 559 | 906 | 1033 |
+| **witnessed** | **0** | **462** | **836** | **900** |
+| discriminating booleans | 10 | 135 | 238 | 277 |
+| pg functions | 182 | 753 | 1138 | 1308 |
+
+The gap between "after loop 2" (69 tables) and loop 3's baseline (85 tables
+before loop 3's own 4) is other repo-wide work landed outside this ledger —
+the 8-table access-control layer, the `App*` navigation tables, and
+`RulebookTables`/`TestSuites`/`TestCases` — not reconstructed here since the
+intermediate counts were never captured.
 
 Loop 2's rule — a question must only be askable BECAUSE of loop 1's
 predicates — produced questions that mostly CORRECT loop 1 rather than

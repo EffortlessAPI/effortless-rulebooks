@@ -1,0 +1,22 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix effortless-ntwf: <https://w3id.org/effortless-ntwf#> .
+
+# === Individuals: HelloWhos ===
+
+effortless-ntwf:world a effortless-ntwf:HelloWhos ;
+    effortless-ntwf:helloWhoId "world" ;
+    effortless-ntwf:name "World" .
+
+effortless-ntwf:bob a effortless-ntwf:HelloWhos ;
+    effortless-ntwf:helloWhoId "bob" ;
+    effortless-ntwf:name "Bobby" .
+
+effortless-ntwf:bob2 a effortless-ntwf:HelloWhos ;
+    effortless-ntwf:helloWhoId "bob2" ;
+    effortless-ntwf:name "Robby" .
+
+effortless-ntwf:everyone a effortless-ntwf:HelloWhos ;
+    effortless-ntwf:helloWhoId "everyone" ;
+    effortless-ntwf:name "Everyone" .

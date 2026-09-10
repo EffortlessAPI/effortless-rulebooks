@@ -1,0 +1,16 @@
+[
+  {
+    "delivered_communication_id": "dc-hr4821-email-001",
+    "channel": "Email",
+    "recipient_key": "emp-anon-0001",
+    "sent_at": null,
+    "rendered_content_hash": null,
+    "approved_content_hash": null,
+    "delivery_status": "NotYetSent",
+    "semantic_type_iri": "urn:effortless:pko-extension#DeliveredCommunication",
+    "name": "Email -> emp-anon-0001 @ ",
+    "procedure_execution": "exec-policy-hr4821",
+    "has_authorization": false,
+    "is_defensible": false
+  }
+]

@@ -127,11 +127,11 @@
         "datatype": "boolean",
         "type": "lookup",
         "nullable": true,
-        "Description": "Whether the claimant's current policy is active (ground truth carried over from the policy).",
+        "Description": "Whether the claimant's current policy is active (ground truth carried over from the policy). (Was wrapped in IFERROR(..., FALSE); rulebook-to-postgres mistranslates that wrapper — it emitted the field as a nonexistent base-table column and broke 03-create-views.sql. INDEX/MATCH already yields NULL when the FK does not match.)",
         "RelatedTo": "Policies",
         "LookupField": "IsActive",
         "ViaField": "Policy",
-        "formula": "=IFERROR(INDEX(Policies!{{IsActive}}, MATCH({{Policy}}, Policies!{{PolicyId}}, 0)), FALSE)"
+        "formula": "=INDEX(Policies!{{IsActive}}, MATCH({{Policy}}, Policies!{{PolicyId}}, 0))"
       }
     ],
     "data": [
@@ -224,11 +224,11 @@
         "datatype": "string",
         "type": "lookup",
         "nullable": true,
-        "Description": "Name of the incident's claimant (for readability).",
+        "Description": "Name of the incident's claimant (for readability). (Was wrapped in IFERROR(..., \"\"); rulebook-to-postgres mistranslates that wrapper — it emitted the field as a nonexistent base-table column and broke 03-create-views.sql. INDEX/MATCH already yields NULL when the FK does not match.)",
         "RelatedTo": "Claimants",
         "LookupField": "ClaimantName",
         "ViaField": "Claimant",
-        "formula": "=IFERROR(INDEX(Claimants!{{ClaimantName}}, MATCH({{Claimant}}, Claimants!{{ClaimantId}}, 0)), \"\")"
+        "formula": "=INDEX(Claimants!{{ClaimantName}}, MATCH({{Claimant}}, Claimants!{{ClaimantId}}, 0))"
       }
     ],
     "data": [
@@ -343,11 +343,11 @@
         "datatype": "string",
         "type": "lookup",
         "nullable": true,
-        "Description": "The claimant of the referenced incident.",
+        "Description": "The claimant of the referenced incident. (Was wrapped in IFERROR(..., \"\"); rulebook-to-postgres mistranslates that wrapper — it emitted the field as a nonexistent base-table column and broke 03-create-views.sql. INDEX/MATCH already yields NULL when the FK does not match.)",
         "RelatedTo": "Incidents",
         "LookupField": "Claimant",
         "ViaField": "Incident",
-        "formula": "=IFERROR(INDEX(Incidents!{{Claimant}}, MATCH({{Incident}}, Incidents!{{IncidentId}}, 0)), \"\")"
+        "formula": "=INDEX(Incidents!{{Claimant}}, MATCH({{Incident}}, Incidents!{{IncidentId}}, 0))"
       },
       {
         "name": "ClaimantOfRecord",
@@ -362,55 +362,55 @@
         "datatype": "boolean",
         "type": "lookup",
         "nullable": true,
-        "Description": "Whether the incident claimant's current policy is active.",
+        "Description": "Whether the incident claimant's current policy is active. (Was wrapped in IFERROR(..., FALSE); rulebook-to-postgres mistranslates that wrapper — it emitted the field as a nonexistent base-table column and broke 03-create-views.sql. INDEX/MATCH already yields NULL when the FK does not match.)",
         "RelatedTo": "Claimants",
         "LookupField": "PolicyIsActive",
         "ViaField": "IncidentClaimant",
-        "formula": "=IFERROR(INDEX(Claimants!{{PolicyIsActive}}, MATCH({{IncidentClaimant}}, Claimants!{{ClaimantId}}, 0)), FALSE)"
+        "formula": "=INDEX(Claimants!{{PolicyIsActive}}, MATCH({{IncidentClaimant}}, Claimants!{{ClaimantId}}, 0))"
       },
       {
         "name": "AdditionalClaimantPolicyActive",
         "datatype": "boolean",
         "type": "lookup",
         "nullable": true,
-        "Description": "Whether the additional claimant's current policy is active (false when there is no additional claimant).",
+        "Description": "Whether the additional claimant's current policy is active (false when there is no additional claimant). (Was wrapped in IFERROR(..., FALSE); rulebook-to-postgres mistranslates that wrapper — it emitted the field as a nonexistent base-table column and broke 03-create-views.sql. INDEX/MATCH already yields NULL when the FK does not match.)",
         "RelatedTo": "Claimants",
         "LookupField": "PolicyIsActive",
         "ViaField": "AdditionalClaimant",
-        "formula": "=IFERROR(INDEX(Claimants!{{PolicyIsActive}}, MATCH({{AdditionalClaimant}}, Claimants!{{ClaimantId}}, 0)), FALSE)"
+        "formula": "=INDEX(Claimants!{{PolicyIsActive}}, MATCH({{AdditionalClaimant}}, Claimants!{{ClaimantId}}, 0))"
       },
       {
         "name": "AdditionalClaimantFavoriteColor",
         "datatype": "string",
         "type": "lookup",
         "nullable": true,
-        "Description": "The additional claimant's favorite color (blank when there is no additional claimant).",
+        "Description": "The additional claimant's favorite color (blank when there is no additional claimant). (Was wrapped in IFERROR(..., \"\"); rulebook-to-postgres mistranslates that wrapper — it emitted the field as a nonexistent base-table column and broke 03-create-views.sql. INDEX/MATCH already yields NULL when the FK does not match.)",
         "RelatedTo": "Claimants",
         "LookupField": "FavoriteColor",
         "ViaField": "AdditionalClaimant",
-        "formula": "=IFERROR(INDEX(Claimants!{{FavoriteColor}}, MATCH({{AdditionalClaimant}}, Claimants!{{ClaimantId}}, 0)), \"\")"
+        "formula": "=INDEX(Claimants!{{FavoriteColor}}, MATCH({{AdditionalClaimant}}, Claimants!{{ClaimantId}}, 0))"
       },
       {
         "name": "ClaimantOfRecordIncidentCount",
         "datatype": "integer",
         "type": "lookup",
         "nullable": true,
-        "Description": "The incident count of the claimant of record.",
+        "Description": "The incident count of the claimant of record. (Was wrapped in IFERROR(..., 0); rulebook-to-postgres mistranslates that wrapper — it emitted the field as a nonexistent base-table column and broke 03-create-views.sql. INDEX/MATCH already yields NULL when the FK does not match.)",
         "RelatedTo": "Claimants",
         "LookupField": "CountOfIncidents",
         "ViaField": "ClaimantOfRecord",
-        "formula": "=IFERROR(INDEX(Claimants!{{CountOfIncidents}}, MATCH({{ClaimantOfRecord}}, Claimants!{{ClaimantId}}, 0)), 0)"
+        "formula": "=INDEX(Claimants!{{CountOfIncidents}}, MATCH({{ClaimantOfRecord}}, Claimants!{{ClaimantId}}, 0))"
       },
       {
         "name": "ClaimantOfRecordIsHighRisk",
         "datatype": "boolean",
         "type": "lookup",
         "nullable": true,
-        "Description": "Whether the claimant of record is high-risk (DR-2). Carries the named rule — IsValid references this field rather than re-deriving the threshold inline, keeping the '> 2 incidents' definition in exactly one place.",
+        "Description": "Whether the claimant of record is high-risk (DR-2). Carries the named rule — IsValid references this field rather than re-deriving the threshold inline, keeping the '> 2 incidents' definition in exactly one place. (Was wrapped in IFERROR(..., FALSE); rulebook-to-postgres mistranslates that wrapper — it emitted the field as a nonexistent base-table column and broke 03-create-views.sql. INDEX/MATCH already yields NULL when the FK does not match.)",
         "RelatedTo": "Claimants",
         "LookupField": "IsHighRisk",
         "ViaField": "ClaimantOfRecord",
-        "formula": "=IFERROR(INDEX(Claimants!{{IsHighRisk}}, MATCH({{ClaimantOfRecord}}, Claimants!{{ClaimantId}}, 0)), FALSE)"
+        "formula": "=INDEX(Claimants!{{IsHighRisk}}, MATCH({{ClaimantOfRecord}}, Claimants!{{ClaimantId}}, 0))"
       },
       {
         "name": "IsValid",

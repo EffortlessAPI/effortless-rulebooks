@@ -1,0 +1,37 @@
+[
+  {
+    "customer_id": "alice-johnson",
+    "name": "Alice Johnson",
+    "current_color": "Red",
+    "is_approved": false,
+    "notes": "Initial mock entry for Alice."
+  },
+  {
+    "customer_id": "bob",
+    "name": "Bob",
+    "current_color": "Green",
+    "is_approved": true,
+    "notes": "A customer currently in launch."
+  },
+  {
+    "customer_id": "brian-lee",
+    "name": "Brian Lee",
+    "current_color": "Blue",
+    "is_approved": false,
+    "notes": "Initial mock entry for Brian."
+  },
+  {
+    "customer_id": "carla-smith",
+    "name": "Carla Smith",
+    "current_color": "Yellow",
+    "is_approved": false,
+    "notes": "Initial mock entry for Carla."
+  },
+  {
+    "customer_id": "caroline",
+    "name": "Caroline",
+    "current_color": "Red",
+    "is_approved": false,
+    "notes": ""
+  }
+]

@@ -1,0 +1,90 @@
+[
+  {
+    "domain_id": "clinical-trials",
+    "display_name": "Clinical Trials",
+    "expansion_target": 15,
+    "legacy_studies_domain": "medicine",
+    "plan_source_section": "Domain 4: Clinical Trials",
+    "name": "clinical-trials"
+  },
+  {
+    "domain_id": "criminal-justice",
+    "display_name": "Criminal Justice",
+    "expansion_target": 15,
+    "legacy_studies_domain": "legal",
+    "plan_source_section": "Domain 2: Criminal Justice",
+    "name": "criminal-justice"
+  },
+  {
+    "domain_id": "economics",
+    "display_name": "Economics",
+    "expansion_target": 25,
+    "legacy_studies_domain": "economics",
+    "plan_source_section": "Domain 1: Economics",
+    "name": "economics"
+  },
+  {
+    "domain_id": "education-outcomes",
+    "display_name": "Education Outcomes",
+    "expansion_target": 15,
+    "legacy_studies_domain": "education",
+    "plan_source_section": "Domain 10: Education Outcomes",
+    "name": "education-outcomes"
+  },
+  {
+    "domain_id": "epidemiology-vaccines",
+    "display_name": "Epidemiology / Vaccines",
+    "expansion_target": 20,
+    "legacy_studies_domain": "epidemiology",
+    "plan_source_section": "Domain 6: Epidemiology / Vaccines",
+    "name": "epidemiology-vaccines"
+  },
+  {
+    "domain_id": "financial-lending",
+    "display_name": "Financial Lending",
+    "expansion_target": 12,
+    "legacy_studies_domain": null,
+    "plan_source_section": "Domain 11: Financial Lending",
+    "name": "financial-lending"
+  },
+  {
+    "domain_id": "higher-education",
+    "display_name": "Higher Education",
+    "expansion_target": 15,
+    "legacy_studies_domain": "education",
+    "plan_source_section": "Domain 3: Higher Education",
+    "name": "higher-education"
+  },
+  {
+    "domain_id": "hiring-promotion",
+    "display_name": "Hiring & Promotion",
+    "expansion_target": 12,
+    "legacy_studies_domain": null,
+    "plan_source_section": "Domain 7: Hiring & Promotion",
+    "name": "hiring-promotion"
+  },
+  {
+    "domain_id": "online-ab-testing",
+    "display_name": "Online A/B Testing",
+    "expansion_target": 10,
+    "legacy_studies_domain": "social-science",
+    "plan_source_section": "Domain 8: Online A/B Testing",
+    "name": "online-ab-testing"
+  },
+  {
+    "domain_id": "public-health-smoking",
+    "display_name": "Public Health / Smoking",
+    "expansion_target": 12,
+    "legacy_studies_domain": "epidemiology",
+    "plan_source_section": "Domain 9: Public Health / Smoking",
+    "name": "public-health-smoking"
+  },
+  {
+    "domain_id": "sports-analytics",
+    "display_name": "Sports Analytics",
+    "expansion_target": 15,
+    "legacy_studies_domain": "sports",
+    "plan_source_section": "Domain 5: Sports Analytics",
+    "name": "sports-analytics"
+  }
+]

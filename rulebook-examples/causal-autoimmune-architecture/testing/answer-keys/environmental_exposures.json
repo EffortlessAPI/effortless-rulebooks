@@ -1,0 +1,15 @@
+[
+  {
+    "environmental_exposure_id": "exp-context",
+    "exposure_label": "Smoking pack-years (context only)",
+    "individual": "ind-a-reyes",
+    "exposure_level": 3,
+    "exposure_start_date": "2015-01-01",
+    "is_maternal_effect": false,
+    "name": "Smoking pack-years (context only)",
+    "parent_path": "/intake/new-patient/reyes-ana",
+    "relative_path": "/intake/new-patient/reyes-ana/exposures/exp-context",
+    "individual_ancestry_label": "European",
+    "is_high_exposure": false
+  }
+]

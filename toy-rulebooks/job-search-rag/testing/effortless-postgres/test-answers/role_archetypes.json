@@ -1,0 +1,30 @@
+[
+  {
+    "role_archetype_id": "ai-systems-engineer",
+    "name": "AI Systems Engineer / AI Platform Architect",
+    "description": "Designs and builds production ML/AI infrastructure: model serving, training pipelines, vector stores, embedding services, and LLM orchestration layers.",
+    "signals_positive": "ML infrastructure, model serving, training pipeline, vector database, LLM orchestration, embedding service, MLOps, GPU cluster",
+    "signals_negative": "frontend only, marketing automation, junior data analyst, manual QA"
+  },
+  {
+    "role_archetype_id": "devrel-evangelist",
+    "name": "Developer Relations / Technical Evangelist",
+    "description": "External-facing technical role bridging engineering and developer community. Produces technical content, speaks at conferences, and drives API/SDK adoption.",
+    "signals_positive": "developer relations, developer advocacy, technical writing, conference speaking, SDK adoption, API evangelism, community building",
+    "signals_negative": "sales quota, cold calling, non-technical marketing, pure product management"
+  },
+  {
+    "role_archetype_id": "principal-data-platform",
+    "name": "Principal Data Platform Engineer",
+    "description": "Owns data infrastructure at scale: data pipelines, warehousing, streaming, and analytical platform services.",
+    "signals_positive": "data platform, data pipeline, streaming, data warehouse, Spark, Kafka, Flink, dbt, analytical infrastructure",
+    "signals_negative": "BI analyst, dashboard builder, Excel reporting, entry-level data"
+  },
+  {
+    "role_archetype_id": "staff-platform-architect",
+    "name": "Staff Platform Architect",
+    "description": "Cross-team technical leadership for platform and infrastructure. Drives architectural decisions, defines system boundaries, and mentors engineering teams.",
+    "signals_positive": "platform architecture, system design, cross-team influence, technical strategy, API design, distributed systems, mentorship",
+    "signals_negative": "individual contributor only, no architecture scope, ticket taker, single-team"
+  }
+]

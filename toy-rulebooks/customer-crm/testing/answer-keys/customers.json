@@ -6,6 +6,9 @@
     "last_name": "Lovelace",
     "name": "ada.lovelace@analytical.engine",
     "full_name": "Lovelace, Ada",
+    "lifetime_sales": 50.0,
+    "unpaid_order_count": 0,
+    "large_order_count": 1.0,
     "is_vip": false
   },
   {
@@ -15,6 +18,9 @@
     "last_name": "Turing",
     "name": "alan.turing@bletchley.uk",
     "full_name": "Turing, Alan",
+    "lifetime_sales": 99.0,
+    "unpaid_order_count": 0,
+    "large_order_count": 0,
     "is_vip": false
   },
   {
@@ -24,6 +30,9 @@
     "last_name": "Hopper",
     "name": "grace.hopper@nautical.mil",
     "full_name": "Hopper, Grace",
+    "lifetime_sales": 320.5,
+    "unpaid_order_count": 2,
+    "large_order_count": 1.0,
     "is_vip": false
   },
   {
@@ -33,7 +42,10 @@
     "last_name": "Johnson",
     "name": "katherine.johnson@nasa.gov",
     "full_name": "Johnson, Katherine",
-    "is_vip": false
+    "lifetime_sales": 1152.0,
+    "unpaid_order_count": 1,
+    "large_order_count": 2.0,
+    "is_vip": true
   },
   {
     "customers_id": "linus.torvalds@kernel.org",
@@ -42,6 +54,9 @@
     "last_name": "Torvalds",
     "name": "linus.torvalds@kernel.org",
     "full_name": "Torvalds, Linus",
-    "is_vip": false
+    "lifetime_sales": 2580.0,
+    "unpaid_order_count": 1,
+    "large_order_count": 1.0,
+    "is_vip": true
   }
 ]

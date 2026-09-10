@@ -1,0 +1,65 @@
+{
+  "users": {
+    "primary_key": "users_id",
+    "computed_columns": [
+      "name",
+      "client_count"
+    ],
+    "record_count": 4
+  },
+  "clients": {
+    "primary_key": "clients_id",
+    "computed_columns": [
+      "therapist_name",
+      "name",
+      "session_count",
+      "avg_mood_rating",
+      "goal_count",
+      "avg_goal_progress",
+      "last_session_label",
+      "is_at_risk",
+      "status_label"
+    ],
+    "record_count": 4
+  },
+  "goals": {
+    "primary_key": "goals_id",
+    "computed_columns": [
+      "client_name",
+      "client_therapist",
+      "name",
+      "update_count",
+      "avg_score_achieved",
+      "latest_score",
+      "progress_pct",
+      "remaining_gap",
+      "is_on_track"
+    ],
+    "record_count": 8
+  },
+  "sessions": {
+    "primary_key": "sessions_id",
+    "computed_columns": [
+      "client_name",
+      "client_therapist",
+      "name",
+      "update_count",
+      "avg_score_achieved",
+      "is_productive",
+      "status_label"
+    ],
+    "record_count": 10
+  },
+  "goal_updates": {
+    "primary_key": "goal_updates_id",
+    "computed_columns": [
+      "goal_title",
+      "goal_client",
+      "goal_target_score",
+      "goal_client_therapist",
+      "session_label",
+      "name"
+    ],
+    "record_count": 15
+  }
+}

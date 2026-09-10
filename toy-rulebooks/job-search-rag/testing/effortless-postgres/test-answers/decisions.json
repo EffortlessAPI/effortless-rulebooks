@@ -1,0 +1,38 @@
+[
+  {
+    "decision_id": "dec-a1-yes",
+    "name": "YES: Staff Platform Engineer",
+    "job_listing": "ziprecruiter-a1",
+    "verdict": "yes",
+    "reason": "Perfect archetype match. Direct hire, strong comp, platform scope.",
+    "recorded_at": "2026-04-01 04:15:00-05:00",
+    "is_scoring_signal": true,
+    "job_listing_name": "Staff Platform Engineer",
+    "company": "Acme Cloud",
+    "board": "ziprecruiter"
+  },
+  {
+    "decision_id": "dec-b2-no",
+    "name": "NO: Principal ML Engineer",
+    "job_listing": "ziprecruiter-b2",
+    "verdict": "no",
+    "reason": "Staffing agency. Contract-to-hire is a dealbreaker.",
+    "recorded_at": "2026-04-01 04:20:00-05:00",
+    "is_scoring_signal": false,
+    "job_listing_name": "Principal ML Engineer",
+    "company": "TechVentures Staffing",
+    "board": "ziprecruiter"
+  },
+  {
+    "decision_id": "dec-d4-maybe",
+    "name": "MAYBE: AI Infrastructure Lead",
+    "job_listing": "ziprecruiter-d4",
+    "verdict": "maybe",
+    "reason": "Great role but hybrid in SF. Need to check if fully remote is negotiable.",
+    "recorded_at": "2026-04-01 04:25:00-05:00",
+    "is_scoring_signal": false,
+    "job_listing_name": "AI Infrastructure Lead",
+    "company": "DeepTech AI",
+    "board": "ziprecruiter"
+  }
+]

@@ -1,0 +1,25 @@
+[
+  {
+    "model_summary_id": "simpsons-paradox-v1",
+    "name": "simpsons-paradox-v1",
+    "reversal_count": 89,
+    "non_reversal_count": 153,
+    "study_count": 242,
+    "explained_count": 85,
+    "total_paradox_strength": 3.328593565157105,
+    "avg_paradox_strength": 0.013754518864285557,
+    "type_a_count": 79,
+    "type_b_count": 10,
+    "type_d_count": 138,
+    "type_a_fraction": 0.32644628099173556,
+    "distortion_taxonomy_coverage": "A:79 B:10 C+:8 C-:7 D:138",
+    "distortion_only_count": 15,
+    "sweep_corrected_gap_range": 0,
+    "signal_purity_gap": 0,
+    "other_domain_study_count": 0,
+    "latent_type_d_fraction": 0.0,
+    "discovery_witness_note": "sweep: latentD=0.0 purityMax= catalogExact= identities=",
+    "domain_flip_gap_survives_geometry_control": false,
+    "expansion_wave3_discovery_note": "superseded=; econFlips=; flipPred=; catalogExact=; theorems="
+  }
+]

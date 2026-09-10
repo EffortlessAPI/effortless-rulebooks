@@ -67,7 +67,7 @@
     "show_code": "DS9",
     "rating": "{\n  \"specialValue\": \"NaN\"\n}",
     "finale_date": "",
-    "is_long_running": true,
+    "is_long_running": false,
     "series_ratings": "",
     "is_good": false
   },
@@ -85,7 +85,7 @@
     "show_code": "VOY",
     "rating": "{\n  \"specialValue\": \"NaN\"\n}",
     "finale_date": "",
-    "is_long_running": true,
+    "is_long_running": false,
     "series_ratings": "",
     "is_good": false
   },
@@ -103,7 +103,7 @@
     "show_code": "ENT",
     "rating": "{\n  \"specialValue\": \"NaN\"\n}",
     "finale_date": "",
-    "is_long_running": true,
+    "is_long_running": false,
     "series_ratings": "",
     "is_good": false
   },
@@ -121,7 +121,7 @@
     "show_code": "DIS",
     "rating": "{\n  \"specialValue\": \"NaN\"\n}",
     "finale_date": "",
-    "is_long_running": true,
+    "is_long_running": false,
     "series_ratings": "",
     "is_good": false
   },

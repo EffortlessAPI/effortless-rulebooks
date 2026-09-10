@@ -1,0 +1,37 @@
+[
+  {
+    "non_goal_id": "ng-clinical-use",
+    "statement": "This is not validated clinical decision support and must never be used for clinical purposes.",
+    "why_excluded": "Demonstration of inference structure only; all patients synthetic, all figures literature ranges.",
+    "name": "This is not validated clinical decision support and must never be used for clinical purposes.",
+    "relative_path": "/admin/non-goals/ng-clinical-use"
+  },
+  {
+    "non_goal_id": "ng-crud-ui",
+    "statement": "This is not a CRUD UI.",
+    "why_excluded": "The home screen is the witnessed red/green harness; the payoff is a derived diagnosis writeup.",
+    "name": "This is not a CRUD UI.",
+    "relative_path": "/admin/non-goals/ng-crud-ui"
+  },
+  {
+    "non_goal_id": "ng-full-breadth",
+    "statement": "The full omics breadth (counterfactual trajectories, most modalities, epistasis, exposures) is not on the keystone's dependency path.",
+    "why_excluded": "Kept as deliberate sparse context for breadth; pulled onto the path only when it earns its place (anti-hallucination rule).",
+    "name": "The full omics breadth (counterfactual trajectories, most modalities, epistasis, exposures) is not on the keystone's dependency path.",
+    "relative_path": "/admin/non-goals/ng-full-breadth"
+  },
+  {
+    "non_goal_id": "ng-llm-reasoning",
+    "statement": "The LLM does not perform higher-order reasoning or render the diagnosis.",
+    "why_excluded": "All reasoning lives in the open, editable DAG; the LLM is intake clerk + lab only.",
+    "name": "The LLM does not perform higher-order reasoning or render the diagnosis.",
+    "relative_path": "/admin/non-goals/ng-llm-reasoning"
+  },
+  {
+    "non_goal_id": "ng-publish-verbatim",
+    "statement": "Never publish the prospect's verbatim problem text.",
+    "why_excluded": "Anonymity / good manners; the public artifact uses a reworded generic grand-challenge prompt.",
+    "name": "Never publish the prospect's verbatim problem text.",
+    "relative_path": "/admin/non-goals/ng-publish-verbatim"
+  }
+]

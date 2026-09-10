@@ -1,0 +1,317 @@
+[
+  {
+    "label": "Adam Smith",
+    "field": "philosophy",
+    "era": "18th c.",
+    "cited_by": "christopher-hitchens",
+    "cited_as_hostile_witness": false,
+    "description": "The 'internal witness' in Theory of Moral Sentiments.",
+    "name": "adam-smith"
+  },
+  {
+    "label": "Albert Einstein",
+    "field": "physics",
+    "era": "20th c.",
+    "cited_by": "frank-turek",
+    "cited_as_hostile_witness": false,
+    "description": "General relativity; a determinist invoked on both sides.",
+    "name": "albert-einstein"
+  },
+  {
+    "label": "Antony Flew",
+    "field": "philosophy",
+    "era": "contemporary",
+    "cited_by": "frank-turek",
+    "cited_as_hostile_witness": false,
+    "description": "Prominent atheist turned deist over DNA evidence.",
+    "name": "antony-flew"
+  },
+  {
+    "label": "Aristotle",
+    "field": "philosophy",
+    "era": "ancient",
+    "cited_by": "frank-turek",
+    "cited_as_hostile_witness": false,
+    "description": "Defined nothing as 'what rocks dream about'.",
+    "name": "aristotle"
+  },
+  {
+    "label": "Arno Penzias",
+    "field": "physics",
+    "era": "20th c.",
+    "cited_by": "frank-turek",
+    "cited_as_hostile_witness": false,
+    "description": "Co-discovered the radiation echo; quoted on a balanced, supernatural-seeming universe.",
+    "name": "arno-penzias"
+  },
+  {
+    "label": "Arthur Eddington",
+    "field": "physics",
+    "era": "20th c.",
+    "cited_by": "frank-turek",
+    "cited_as_hostile_witness": false,
+    "description": "Called the cosmic beginning 'frankly supernatural'.",
+    "name": "arthur-eddington"
+  },
+  {
+    "label": "Blaise Pascal",
+    "field": "philosophy",
+    "era": "17th c.",
+    "cited_by": "christopher-hitchens",
+    "cited_as_hostile_witness": false,
+    "description": "Addressed those 'so made that they cannot believe'.",
+    "name": "blaise-pascal"
+  },
+  {
+    "label": "C. S. Lewis",
+    "field": "theology",
+    "era": "20th c.",
+    "cited_by": "christopher-hitchens",
+    "cited_as_hostile_witness": false,
+    "description": "Attributed conscience to the divine; Hitchens says without improving on Smith.",
+    "name": "c.-s.-lewis"
+  },
+  {
+    "label": "Chandra Wickramasinghe",
+    "field": "astronomy",
+    "era": "contemporary",
+    "cited_by": "frank-turek",
+    "cited_as_hostile_witness": true,
+    "description": "Called primordial-soup belief 'an article of faith'.",
+    "name": "chandra-wickramasinghe"
+  },
+  {
+    "label": "Charles Darwin",
+    "field": "biology",
+    "era": "19th c.",
+    "cited_by": "christopher-hitchens",
+    "cited_as_hostile_witness": false,
+    "description": "Natural selection; Hitchens's 'greater emancipator'.",
+    "name": "charles-darwin"
+  },
+  {
+    "label": "Daniel Dennett",
+    "field": "philosophy",
+    "era": "contemporary",
+    "cited_by": "frank-turek",
+    "cited_as_hostile_witness": true,
+    "description": "Materialist who treats consciousness as an illusion.",
+    "name": "daniel-dennett"
+  },
+  {
+    "label": "David Hume",
+    "field": "philosophy",
+    "era": "18th c.",
+    "cited_by": "christopher-hitchens",
+    "cited_as_hostile_witness": false,
+    "description": "On miracles and the is-ought problem.",
+    "name": "david-hume"
+  },
+  {
+    "label": "Edwin Hubble",
+    "field": "physics",
+    "era": "20th c.",
+    "cited_by": "frank-turek",
+    "cited_as_hostile_witness": false,
+    "description": "Discovered cosmic expansion (1929).",
+    "name": "edwin-hubble"
+  },
+  {
+    "label": "Francis Collins",
+    "field": "biology",
+    "era": "contemporary",
+    "cited_by": "christopher-hitchens",
+    "cited_as_hostile_witness": false,
+    "description": "Supervisor of the Human Genome Project; Hitchens's 'occasional debating enemy', invoked on the age of Homo sapiens.",
+    "name": "francis-collins"
+  },
+  {
+    "label": "Francis Crick",
+    "field": "biology",
+    "era": "20th c.",
+    "cited_by": "frank-turek",
+    "cited_as_hostile_witness": true,
+    "description": "Co-discoverer of DNA; floated panspermia.",
+    "name": "francis-crick"
+  },
+  {
+    "label": "Fred Hoyle",
+    "field": "astronomy",
+    "era": "20th c.",
+    "cited_by": "frank-turek",
+    "cited_as_hostile_witness": true,
+    "description": "Coined 'Big Bang'; spoke of a superintellect monkeying with physics.",
+    "name": "fred-hoyle"
+  },
+  {
+    "label": "Fyodor Dostoevsky",
+    "field": "literature",
+    "era": "19th c.",
+    "cited_by": "christopher-hitchens",
+    "cited_as_hostile_witness": false,
+    "description": "Brothers Karamazov; his character Smerdyakov voices the 'everything is permitted' line.",
+    "name": "fyodor-dostoevsky"
+  },
+  {
+    "label": "George Smoot",
+    "field": "physics",
+    "era": "20th c.",
+    "cited_by": "frank-turek",
+    "cited_as_hostile_witness": false,
+    "description": "Led the COBE result; quoted comparing it to looking at God.",
+    "name": "george-smoot"
+  },
+  {
+    "label": "Georges Lemaitre",
+    "field": "physics",
+    "era": "20th c.",
+    "cited_by": "christopher-hitchens",
+    "cited_as_hostile_witness": false,
+    "description": "Catholic physicist who first proposed the Big Bang.",
+    "name": "georges-lemaitre"
+  },
+  {
+    "label": "H. L. Mencken",
+    "field": "letters",
+    "era": "20th c.",
+    "cited_by": "christopher-hitchens",
+    "cited_as_hostile_witness": false,
+    "description": "Listed thousands of dead gods in Hitchens's anthology.",
+    "name": "h.-l.-mencken"
+  },
+  {
+    "label": "Lawrence Krauss",
+    "field": "physics",
+    "era": "contemporary",
+    "cited_by": "christopher-hitchens",
+    "cited_as_hostile_witness": false,
+    "description": "On the increasing red-shift rate.",
+    "name": "lawrence-krauss"
+  },
+  {
+    "label": "Lucretius",
+    "field": "philosophy",
+    "era": "ancient",
+    "cited_by": "christopher-hitchens",
+    "cited_as_hostile_witness": false,
+    "description": "Atomic theory predating the morality debate; cited with Democritus and Epicurus.",
+    "name": "lucretius"
+  },
+  {
+    "label": "Omar Khayyam",
+    "field": "literature",
+    "era": "medieval",
+    "cited_by": "christopher-hitchens",
+    "cited_as_hostile_witness": false,
+    "description": "Persian poet whose quatrain Hitchens borrows to ask Turek 'what is your authority for saying you know something I don't?'.",
+    "name": "omar-khayyam"
+  },
+  {
+    "label": "Richard Dawkins",
+    "field": "biology",
+    "era": "contemporary",
+    "cited_by": "frank-turek",
+    "cited_as_hostile_witness": true,
+    "description": "Hostile witness on DNA's information content.",
+    "name": "richard-dawkins"
+  },
+  {
+    "label": "Robert Jastrow",
+    "field": "astronomy",
+    "era": "20th c.",
+    "cited_by": "frank-turek",
+    "cited_as_hostile_witness": true,
+    "description": "Agnostic astronomer; Turek's hostile witness for an abrupt creation.",
+    "name": "robert-jastrow"
+  },
+  {
+    "label": "Robert Wilson",
+    "field": "physics",
+    "era": "20th c.",
+    "cited_by": "frank-turek",
+    "cited_as_hostile_witness": false,
+    "description": "Co-discovered the cosmic afterglow at Bell Labs.",
+    "name": "robert-wilson"
+  },
+  {
+    "label": "Socrates",
+    "field": "philosophy",
+    "era": "ancient",
+    "cited_by": "christopher-hitchens",
+    "cited_as_hostile_witness": false,
+    "description": "His inner daemon as a model of conscience.",
+    "name": "socrates"
+  },
+  {
+    "label": "Stephen Hawking",
+    "field": "physics",
+    "era": "20th-21st c.",
+    "cited_by": "christopher-hitchens",
+    "cited_as_hostile_witness": false,
+    "description": "Invoked by both; Hitchens warns against drafting him as a deist.",
+    "name": "stephen-hawking"
+  },
+  {
+    "label": "Stephen Jay Gould",
+    "field": "biology",
+    "era": "20th c.",
+    "cited_by": "christopher-hitchens",
+    "cited_as_hostile_witness": false,
+    "description": "Panda's thumb (poor design) and non-overlapping magisteria.",
+    "name": "stephen-jay-gould"
+  },
+  {
+    "label": "Steven Weinberg",
+    "field": "physics",
+    "era": "contemporary",
+    "cited_by": "frank-turek",
+    "cited_as_hostile_witness": true,
+    "description": "Atheist physicist on the delicate balance required for life.",
+    "name": "steven-weinberg"
+  },
+  {
+    "label": "Thomas Aquinas",
+    "field": "philosophy",
+    "era": "medieval",
+    "cited_by": "christopher-hitchens",
+    "cited_as_hostile_witness": false,
+    "description": "Source of the ontological move Hitchens parodies.",
+    "name": "thomas-aquinas"
+  },
+  {
+    "label": "Thomas Jefferson",
+    "field": "statesmanship",
+    "era": "18th c.",
+    "cited_by": "christopher-hitchens",
+    "cited_as_hostile_witness": false,
+    "description": "Author of Virginia's statute on religious freedom; a deist.",
+    "name": "thomas-jefferson"
+  },
+  {
+    "label": "William Gladstone",
+    "field": "statesmanship",
+    "era": "19th c.",
+    "cited_by": "christopher-hitchens",
+    "cited_as_hostile_witness": false,
+    "description": "Scholar of Latin and Greek; cited as having shown Greek moral precepts as 'prefigurations of Christianity'.",
+    "name": "william-gladstone"
+  },
+  {
+    "label": "William Paley",
+    "field": "philosophy",
+    "era": "18th-19th c.",
+    "cited_by": "christopher-hitchens",
+    "cited_as_hostile_witness": false,
+    "description": "The watchmaker analogy: design implies a designer.",
+    "name": "william-paley"
+  },
+  {
+    "label": "William Provine",
+    "field": "biology",
+    "era": "contemporary",
+    "cited_by": "frank-turek",
+    "cited_as_hostile_witness": true,
+    "description": "Materialist Darwinist who denies free will.",
+    "name": "william-provine"
+  }
+]

@@ -1,0 +1,48 @@
+{
+  "policies": {
+    "primary_key": "name",
+    "computed_columns": [
+      "name",
+      "count_of_covered_claimants"
+    ],
+    "record_count": 3
+  },
+  "claimants": {
+    "primary_key": "name",
+    "computed_columns": [
+      "name",
+      "count_of_incidents",
+      "is_high_risk",
+      "policy_is_active"
+    ],
+    "record_count": 5
+  },
+  "incidents": {
+    "primary_key": "name",
+    "computed_columns": [
+      "name",
+      "incident_claimant_name"
+    ],
+    "record_count": 7
+  },
+  "claims": {
+    "primary_key": "name",
+    "computed_columns": [
+      "name",
+      "references_incident",
+      "has_additional_claimant",
+      "incident_claimant",
+      "claimant_of_record",
+      "incident_claimant_policy_active",
+      "additional_claimant_policy_active",
+      "additional_claimant_favorite_color",
+      "claimant_of_record_incident_count",
+      "claimant_of_record_is_high_risk",
+      "is_valid",
+      "validity_deciding_factor",
+      "is_approvable",
+      "approvability_deciding_factor"
+    ],
+    "record_count": 5
+  }
+}

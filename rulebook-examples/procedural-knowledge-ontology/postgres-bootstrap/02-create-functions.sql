@@ -214,6 +214,46 @@ RETURNS NUMERIC AS $$
   WITH __erb_dedup_v1 AS (SELECT calc_agents_draft_decision_count(p_agent_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_agents_overridden_draft_count(p_agent_id)) AS v) __safe_numeric), 0) * COALESCE(100, 0))) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
+-- calc_agents_times_named_as_broker
+-- Field: Agents.TimesNamedAsBroker
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_agents_times_named_as_broker(p_agent_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM knowledge_broker_links WHERE calc_knowledge_broker_links_active_reliance_broker_key(knowledge_broker_link_id) = (SELECT NULLIF(agent_id, '') FROM agents WHERE agent_id = p_agent_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_agents_is_recognized_broker
+-- Field: Agents.IsRecognizedBroker
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_agents_is_recognized_broker(p_agent_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_agents_times_named_as_broker(p_agent_id))::NUMERIC >= 3)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_agents_at_risk_reliance_count
+-- Field: Agents.AtRiskRelianceCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_agents_at_risk_reliance_count(p_agent_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM knowledge_broker_links WHERE calc_knowledge_broker_links_at_risk_broker_key(knowledge_broker_link_id) = (SELECT NULLIF(agent_id, '') FROM agents WHERE agent_id = p_agent_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_agents_has_at_risk_knowledge_reliance
+-- Field: Agents.HasAtRiskKnowledgeReliance
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_agents_has_at_risk_knowledge_reliance(p_agent_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_agents_at_risk_reliance_count(p_agent_id))::NUMERIC > 0)::boolean;
+$$ LANGUAGE sql STABLE;
+
 -- calc_roles_current_agent_kind
 -- Field: Roles.CurrentAgentKind
 -- Type: lookup | DataType: string | Returns: TEXT
@@ -2008,6 +2048,36 @@ RETURNS NUMERIC AS $$
   SELECT ((SELECT COUNT(*) FROM requirements WHERE calc_requirements_unwatched_unowned_flag(requirement_id) = 'unwatched-unowned'))::numeric;
 $$ LANGUAGE sql STABLE;
 
+-- calc_procedure_versions_mining_run_count
+-- Field: ProcedureVersions.MiningRunCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_versions_mining_run_count(p_procedure_version_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM process_mining_runs WHERE procedure_version = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_versions_drifted_mining_run_count
+-- Field: ProcedureVersions.DriftedMiningRunCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_versions_drifted_mining_run_count(p_procedure_version_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM process_mining_runs WHERE calc_process_mining_runs_drifted_mining_run_key(process_mining_run_id) = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_procedure_versions_has_unresolved_mining_drift
+-- Field: ProcedureVersions.HasUnresolvedMiningDrift
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_procedure_versions_has_unresolved_mining_drift(p_procedure_version_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_procedure_versions_drifted_mining_run_count(p_procedure_version_id))::NUMERIC > 0)::boolean;
+$$ LANGUAGE sql STABLE;
+
 -- get_procedure_versions_version_number
 -- Helper function: Get VersionNumber from ProcedureVersions by ProcedureVersionId
 -- Used for join-free cross-table references in aggregations
@@ -2880,6 +2950,42 @@ RETURNS TEXT AS $$
   SELECT (SELECT semantic_type_iri FROM rulebook_fields WHERE rulebook_field_id = p_rulebook_field_id);
 $$ LANGUAGE sql STABLE;
 
+-- get_vocabulary_terms_pref_label
+-- Helper function: Get PrefLabel from VocabularyTerms by VocabularyTermId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_vocabulary_terms_pref_label(p_vocabulary_term_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT pref_label FROM vocabulary_terms WHERE vocabulary_term_id = p_vocabulary_term_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_vocabulary_terms_alt_labels
+-- Helper function: Get AltLabels from VocabularyTerms by VocabularyTermId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_vocabulary_terms_alt_labels(p_vocabulary_term_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT alt_labels FROM vocabulary_terms WHERE vocabulary_term_id = p_vocabulary_term_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_vocabulary_terms_definition
+-- Helper function: Get Definition from VocabularyTerms by VocabularyTermId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_vocabulary_terms_definition(p_vocabulary_term_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT definition FROM vocabulary_terms WHERE vocabulary_term_id = p_vocabulary_term_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_vocabulary_terms_semantic_type_iri
+-- Helper function: Get SemanticTypeIri from VocabularyTerms by VocabularyTermId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_vocabulary_terms_semantic_type_iri(p_vocabulary_term_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT semantic_type_iri FROM vocabulary_terms WHERE vocabulary_term_id = p_vocabulary_term_id);
+$$ LANGUAGE sql STABLE;
+
 -- calc_requirements_name
 -- Field: Requirements.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -3158,6 +3264,16 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_requirements_unwatched_unowned_flag(p_requirement_id TEXT)
 RETURNS TEXT AS $$
   SELECT (CASE WHEN calc_requirements_is_unwatched_and_unowned(p_requirement_id) THEN ('unwatched-unowned')::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_requirements_uses_controlled_vocabulary
+-- Field: Requirements.UsesControlledVocabulary
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_requirements_uses_controlled_vocabulary(p_requirement_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((SELECT NULLIF(controlled_term, '') FROM requirements WHERE requirement_id = p_requirement_id) IS NOT NULL)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_step_requirements_requirement_is_blocking
@@ -11753,9 +11869,9 @@ $$ LANGUAGE sql STABLE;
 -- Type: calculated | DataType: string | Returns: TEXT
 
 
-CREATE OR REPLACE FUNCTION calc_rulebook_tables_name(p_rulebook_tables_id TEXT)
+CREATE OR REPLACE FUNCTION calc_rulebook_tables_name(p_rulebook_table_id TEXT)
 RETURNS TEXT AS $$
-  SELECT ((SELECT NULLIF(table_name, '') FROM rulebook_tables WHERE rulebook_tables_id = p_rulebook_tables_id))::text;
+  SELECT ((SELECT NULLIF(table_name, '') FROM rulebook_tables WHERE rulebook_table_id = p_rulebook_table_id))::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_tables_field_count
@@ -11763,9 +11879,9 @@ $$ LANGUAGE sql STABLE;
 -- Type: aggregation | DataType: number | Returns: NUMERIC
 
 
-CREATE OR REPLACE FUNCTION calc_rulebook_tables_field_count(p_rulebook_tables_id TEXT)
+CREATE OR REPLACE FUNCTION calc_rulebook_tables_field_count(p_rulebook_table_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM rulebook_fields WHERE target_table = (SELECT NULLIF(table_name, '') FROM rulebook_tables WHERE rulebook_tables_id = p_rulebook_tables_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM rulebook_fields WHERE target_table = (SELECT NULLIF(rulebook_table_id, '') FROM rulebook_tables WHERE rulebook_table_id = p_rulebook_table_id)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_tables_policy_count
@@ -11773,9 +11889,9 @@ $$ LANGUAGE sql STABLE;
 -- Type: aggregation | DataType: number | Returns: NUMERIC
 
 
-CREATE OR REPLACE FUNCTION calc_rulebook_tables_policy_count(p_rulebook_tables_id TEXT)
+CREATE OR REPLACE FUNCTION calc_rulebook_tables_policy_count(p_rulebook_table_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM access_policies WHERE target_table = (SELECT NULLIF(table_name, '') FROM rulebook_tables WHERE rulebook_tables_id = p_rulebook_tables_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM access_policies WHERE target_table = (SELECT NULLIF(rulebook_table_id, '') FROM rulebook_tables WHERE rulebook_table_id = p_rulebook_table_id)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_tables_is_unsecured
@@ -11783,9 +11899,9 @@ $$ LANGUAGE sql STABLE;
 -- Type: calculated | DataType: boolean | Returns: BOOLEAN
 
 
-CREATE OR REPLACE FUNCTION calc_rulebook_tables_is_unsecured(p_rulebook_tables_id TEXT)
+CREATE OR REPLACE FUNCTION calc_rulebook_tables_is_unsecured(p_rulebook_table_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_rulebook_tables_policy_count(p_rulebook_tables_id))::NUMERIC = 0)::boolean;
+  SELECT ((calc_rulebook_tables_policy_count(p_rulebook_table_id))::NUMERIC = 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_access_principals_organization_scope
@@ -11927,57 +12043,57 @@ RETURNS TEXT AS $$
 $$ LANGUAGE sql STABLE;
 
 -- get_rulebook_tables_table_name
--- Helper function: Get TableName from RulebookTables by RulebookTablesId
+-- Helper function: Get TableName from RulebookTables by RulebookTableId
 -- Used for join-free cross-table references in aggregations
 
-CREATE OR REPLACE FUNCTION get_rulebook_tables_table_name(p_rulebook_tables_id TEXT)
+CREATE OR REPLACE FUNCTION get_rulebook_tables_table_name(p_rulebook_table_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (SELECT table_name FROM rulebook_tables WHERE rulebook_tables_id = p_rulebook_tables_id);
+  SELECT (SELECT table_name FROM rulebook_tables WHERE rulebook_table_id = p_rulebook_table_id);
 $$ LANGUAGE sql STABLE;
 
 -- get_rulebook_tables_physical_table
--- Helper function: Get PhysicalTable from RulebookTables by RulebookTablesId
+-- Helper function: Get PhysicalTable from RulebookTables by RulebookTableId
 -- Used for join-free cross-table references in aggregations
 
-CREATE OR REPLACE FUNCTION get_rulebook_tables_physical_table(p_rulebook_tables_id TEXT)
+CREATE OR REPLACE FUNCTION get_rulebook_tables_physical_table(p_rulebook_table_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (SELECT physical_table FROM rulebook_tables WHERE rulebook_tables_id = p_rulebook_tables_id);
+  SELECT (SELECT physical_table FROM rulebook_tables WHERE rulebook_table_id = p_rulebook_table_id);
 $$ LANGUAGE sql STABLE;
 
 -- get_rulebook_tables_physical_view
--- Helper function: Get PhysicalView from RulebookTables by RulebookTablesId
+-- Helper function: Get PhysicalView from RulebookTables by RulebookTableId
 -- Used for join-free cross-table references in aggregations
 
-CREATE OR REPLACE FUNCTION get_rulebook_tables_physical_view(p_rulebook_tables_id TEXT)
+CREATE OR REPLACE FUNCTION get_rulebook_tables_physical_view(p_rulebook_table_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (SELECT physical_view FROM rulebook_tables WHERE rulebook_tables_id = p_rulebook_tables_id);
+  SELECT (SELECT physical_view FROM rulebook_tables WHERE rulebook_table_id = p_rulebook_table_id);
 $$ LANGUAGE sql STABLE;
 
 -- get_rulebook_tables_subject_area
--- Helper function: Get SubjectArea from RulebookTables by RulebookTablesId
+-- Helper function: Get SubjectArea from RulebookTables by RulebookTableId
 -- Used for join-free cross-table references in aggregations
 
-CREATE OR REPLACE FUNCTION get_rulebook_tables_subject_area(p_rulebook_tables_id TEXT)
+CREATE OR REPLACE FUNCTION get_rulebook_tables_subject_area(p_rulebook_table_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (SELECT subject_area FROM rulebook_tables WHERE rulebook_tables_id = p_rulebook_tables_id);
+  SELECT (SELECT subject_area FROM rulebook_tables WHERE rulebook_table_id = p_rulebook_table_id);
 $$ LANGUAGE sql STABLE;
 
 -- get_rulebook_tables_is_extension
--- Helper function: Get IsExtension from RulebookTables by RulebookTablesId
+-- Helper function: Get IsExtension from RulebookTables by RulebookTableId
 -- Used for join-free cross-table references in aggregations
 
-CREATE OR REPLACE FUNCTION get_rulebook_tables_is_extension(p_rulebook_tables_id TEXT)
+CREATE OR REPLACE FUNCTION get_rulebook_tables_is_extension(p_rulebook_table_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (SELECT is_extension FROM rulebook_tables WHERE rulebook_tables_id = p_rulebook_tables_id);
+  SELECT (SELECT is_extension FROM rulebook_tables WHERE rulebook_table_id = p_rulebook_table_id);
 $$ LANGUAGE sql STABLE;
 
 -- get_rulebook_tables_semantic_type_iri
--- Helper function: Get SemanticTypeIri from RulebookTables by RulebookTablesId
+-- Helper function: Get SemanticTypeIri from RulebookTables by RulebookTableId
 -- Used for join-free cross-table references in aggregations
 
-CREATE OR REPLACE FUNCTION get_rulebook_tables_semantic_type_iri(p_rulebook_tables_id TEXT)
+CREATE OR REPLACE FUNCTION get_rulebook_tables_semantic_type_iri(p_rulebook_table_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (SELECT semantic_type_iri FROM rulebook_tables WHERE rulebook_tables_id = p_rulebook_tables_id);
+  SELECT (SELECT semantic_type_iri FROM rulebook_tables WHERE rulebook_table_id = p_rulebook_table_id);
 $$ LANGUAGE sql STABLE;
 
 -- calc_access_policies_name
@@ -12172,7 +12288,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_role_schema_views_source_view(p_role_schema_view_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (SELECT physical_view::text FROM rulebook_tables WHERE rulebook_tables_id = (SELECT target_table FROM role_schema_views WHERE role_schema_view_id = p_role_schema_view_id));
+  SELECT (SELECT physical_view::text FROM rulebook_tables WHERE rulebook_table_id = (SELECT target_table FROM role_schema_views WHERE role_schema_view_id = p_role_schema_view_id));
 $$ LANGUAGE sql STABLE;
 
 -- calc_role_schema_views_table_field_count
@@ -12576,6 +12692,307 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_issued_tokens_is_dev_minted(p_issued_token_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT ((SELECT NULLIF(issuer, '') FROM issued_tokens WHERE issued_token_id = p_issued_token_id) = 'dev-mint')::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_process_mining_runs_as_of_instant
+-- Field: ProcessMiningRuns.AsOfInstant
+-- Type: lookup | DataType: datetime | Returns: TIMESTAMPTZ
+-- Lookup: AsOfInstant from related EvaluationContexts
+
+
+CREATE OR REPLACE FUNCTION calc_process_mining_runs_as_of_instant(p_process_mining_run_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT as_of_instant::timestamptz FROM evaluation_contexts WHERE evaluation_context_id = (SELECT evaluation_context FROM process_mining_runs WHERE process_mining_run_id = p_process_mining_run_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_process_mining_runs_procedure_version_is_live
+-- Field: ProcessMiningRuns.ProcedureVersionIsLive
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: IsLive from related ProcedureVersions
+
+
+CREATE OR REPLACE FUNCTION calc_process_mining_runs_procedure_version_is_live(p_process_mining_run_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_procedure_versions_is_live((SELECT procedure_version FROM process_mining_runs WHERE process_mining_run_id = p_process_mining_run_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_process_mining_runs_name
+-- Field: ProcessMiningRuns.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_process_mining_runs_name(p_process_mining_run_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT((SELECT NULLIF(event_log_source, '') FROM process_mining_runs WHERE process_mining_run_id = p_process_mining_run_id), ' / ', (SELECT mined_at::timestamptz FROM process_mining_runs WHERE process_mining_run_id = p_process_mining_run_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_process_mining_runs_conformance_rate
+-- Field: ProcessMiningRuns.ConformanceRate
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_process_mining_runs_conformance_rate(p_process_mining_run_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN ((SELECT discovered_variant_count FROM process_mining_runs WHERE process_mining_run_id = p_process_mining_run_id))::NUMERIC = 0 THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT conforming_variant_count FROM process_mining_runs WHERE process_mining_run_id = p_process_mining_run_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT discovered_variant_count FROM process_mining_runs WHERE process_mining_run_id = p_process_mining_run_id)) AS v) __safe_numeric), 0), 0)))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_process_mining_runs_is_conformant
+-- Field: ProcessMiningRuns.IsConformant
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_process_mining_runs_is_conformant(p_process_mining_run_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_process_mining_runs_conformance_rate(p_process_mining_run_id))::NUMERIC >= 0.8)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_process_mining_runs_has_major_drift_from_documentation
+-- Field: ProcessMiningRuns.HasMajorDriftFromDocumentation
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_process_mining_runs_has_major_drift_from_documentation(p_process_mining_run_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_process_mining_runs_conformance_rate(p_process_mining_run_id))::NUMERIC < 0.5)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_process_mining_runs_days_since_mined
+-- Field: ProcessMiningRuns.DaysSinceMined
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_process_mining_runs_days_since_mined(p_process_mining_run_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((calc_process_mining_runs_as_of_instant(p_process_mining_run_id)::date - (SELECT mined_at::timestamptz FROM process_mining_runs WHERE process_mining_run_id = p_process_mining_run_id)::date))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_process_mining_runs_is_stale_mining_evidence
+-- Field: ProcessMiningRuns.IsStaleMiningEvidence
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_process_mining_runs_is_stale_mining_evidence(p_process_mining_run_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_process_mining_runs_days_since_mined(p_process_mining_run_id))::NUMERIC > 180)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_process_mining_runs_is_drift_on_live_version
+-- Field: ProcessMiningRuns.IsDriftOnLiveVersion
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_process_mining_runs_is_drift_on_live_version(p_process_mining_run_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_process_mining_runs_has_major_drift_from_documentation(p_process_mining_run_id) AND calc_process_mining_runs_procedure_version_is_live(p_process_mining_run_id)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_process_mining_runs_drifted_mining_run_key
+-- Field: ProcessMiningRuns.DriftedMiningRunKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_process_mining_runs_drifted_mining_run_key(p_process_mining_run_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_process_mining_runs_is_drift_on_live_version(p_process_mining_run_id) THEN ((SELECT NULLIF(procedure_version, '') FROM process_mining_runs WHERE process_mining_run_id = p_process_mining_run_id))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_vocabularies_name
+-- Field: Vocabularies.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_vocabularies_name(p_vocabulary_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(title, '') FROM vocabularies WHERE vocabulary_id = p_vocabulary_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_vocabularies_term_count
+-- Field: Vocabularies.TermCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_vocabularies_term_count(p_vocabulary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM vocabulary_terms WHERE vocabulary = (SELECT NULLIF(vocabulary_id, '') FROM vocabularies WHERE vocabulary_id = p_vocabulary_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_vocabularies_orphan_term_count
+-- Field: Vocabularies.OrphanTermCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_vocabularies_orphan_term_count(p_vocabulary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM vocabulary_terms WHERE calc_vocabulary_terms_orphan_term_vocabulary_key(vocabulary_term_id) = (SELECT NULLIF(vocabulary_id, '') FROM vocabularies WHERE vocabulary_id = p_vocabulary_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_vocabularies_has_orphan_terms
+-- Field: Vocabularies.HasOrphanTerms
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_vocabularies_has_orphan_terms(p_vocabulary_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_vocabularies_orphan_term_count(p_vocabulary_id))::NUMERIC > 0)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- get_vocabularies_title
+-- Helper function: Get Title from Vocabularies by VocabularyId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_vocabularies_title(p_vocabulary_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT title FROM vocabularies WHERE vocabulary_id = p_vocabulary_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_vocabularies_scheme_uri
+-- Helper function: Get SchemeUri from Vocabularies by VocabularyId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_vocabularies_scheme_uri(p_vocabulary_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT scheme_uri FROM vocabularies WHERE vocabulary_id = p_vocabulary_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_vocabularies_semantic_type_iri
+-- Helper function: Get SemanticTypeIri from Vocabularies by VocabularyId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_vocabularies_semantic_type_iri(p_vocabulary_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT semantic_type_iri FROM vocabularies WHERE vocabulary_id = p_vocabulary_id);
+$$ LANGUAGE sql STABLE;
+
+-- calc_vocabulary_terms_name
+-- Field: VocabularyTerms.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_vocabulary_terms_name(p_vocabulary_term_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(pref_label, '') FROM vocabulary_terms WHERE vocabulary_term_id = p_vocabulary_term_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_vocabulary_terms_usage_count
+-- Field: VocabularyTerms.UsageCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_vocabulary_terms_usage_count(p_vocabulary_term_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM requirements WHERE controlled_term = (SELECT NULLIF(vocabulary_term_id, '') FROM vocabulary_terms WHERE vocabulary_term_id = p_vocabulary_term_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_vocabulary_terms_is_orphan_term
+-- Field: VocabularyTerms.IsOrphanTerm
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_vocabulary_terms_is_orphan_term(p_vocabulary_term_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_vocabulary_terms_usage_count(p_vocabulary_term_id))::NUMERIC = 0)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_vocabulary_terms_is_widely_adopted_term
+-- Field: VocabularyTerms.IsWidelyAdoptedTerm
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_vocabulary_terms_is_widely_adopted_term(p_vocabulary_term_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_vocabulary_terms_usage_count(p_vocabulary_term_id))::NUMERIC >= 2)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_vocabulary_terms_orphan_term_vocabulary_key
+-- Field: VocabularyTerms.OrphanTermVocabularyKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_vocabulary_terms_orphan_term_vocabulary_key(p_vocabulary_term_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_vocabulary_terms_is_orphan_term(p_vocabulary_term_id) THEN ((SELECT NULLIF(vocabulary, '') FROM vocabulary_terms WHERE vocabulary_term_id = p_vocabulary_term_id))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_broker_links_as_of_instant
+-- Field: KnowledgeBrokerLinks.AsOfInstant
+-- Type: lookup | DataType: datetime | Returns: TIMESTAMPTZ
+-- Lookup: AsOfInstant from related EvaluationContexts
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_broker_links_as_of_instant(p_knowledge_broker_link_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT as_of_instant::timestamptz FROM evaluation_contexts WHERE evaluation_context_id = (SELECT evaluation_context FROM knowledge_broker_links WHERE knowledge_broker_link_id = p_knowledge_broker_link_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_broker_links_broker_is_still_engaged
+-- Field: KnowledgeBrokerLinks.BrokerIsStillEngaged
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: IsStillEngaged from related Agents
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_broker_links_broker_is_still_engaged(p_knowledge_broker_link_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_agents_is_still_engaged((SELECT broker FROM knowledge_broker_links WHERE knowledge_broker_link_id = p_knowledge_broker_link_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_broker_links_name
+-- Field: KnowledgeBrokerLinks.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_broker_links_name(p_knowledge_broker_link_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT((SELECT NULLIF(seeker, '') FROM knowledge_broker_links WHERE knowledge_broker_link_id = p_knowledge_broker_link_id), ' -> ', (SELECT NULLIF(broker, '') FROM knowledge_broker_links WHERE knowledge_broker_link_id = p_knowledge_broker_link_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_broker_links_days_since_consulted
+-- Field: KnowledgeBrokerLinks.DaysSinceConsulted
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_broker_links_days_since_consulted(p_knowledge_broker_link_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((calc_knowledge_broker_links_as_of_instant(p_knowledge_broker_link_id)::date - (SELECT last_consulted_at::timestamptz FROM knowledge_broker_links WHERE knowledge_broker_link_id = p_knowledge_broker_link_id)::date))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_broker_links_is_active_reliance
+-- Field: KnowledgeBrokerLinks.IsActiveReliance
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_broker_links_is_active_reliance(p_knowledge_broker_link_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((NOT ((SELECT NULLIF(frequency, '') FROM knowledge_broker_links WHERE knowledge_broker_link_id = p_knowledge_broker_link_id) = 'Rarely') AND (calc_knowledge_broker_links_days_since_consulted(p_knowledge_broker_link_id))::NUMERIC <= 180));
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_broker_links_is_at_risk_reliance
+-- Field: KnowledgeBrokerLinks.IsAtRiskReliance
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_broker_links_is_at_risk_reliance(p_knowledge_broker_link_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_knowledge_broker_links_is_active_reliance(p_knowledge_broker_link_id) AND NOT (calc_knowledge_broker_links_broker_is_still_engaged(p_knowledge_broker_link_id))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_broker_links_active_reliance_broker_key
+-- Field: KnowledgeBrokerLinks.ActiveRelianceBrokerKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_broker_links_active_reliance_broker_key(p_knowledge_broker_link_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_knowledge_broker_links_is_active_reliance(p_knowledge_broker_link_id) THEN ((SELECT NULLIF(broker, '') FROM knowledge_broker_links WHERE knowledge_broker_link_id = p_knowledge_broker_link_id))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_knowledge_broker_links_at_risk_broker_key
+-- Field: KnowledgeBrokerLinks.AtRiskBrokerKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_knowledge_broker_links_at_risk_broker_key(p_knowledge_broker_link_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_knowledge_broker_links_is_at_risk_reliance(p_knowledge_broker_link_id) THEN ((SELECT NULLIF(broker, '') FROM knowledge_broker_links WHERE knowledge_broker_link_id = p_knowledge_broker_link_id))::text ELSE ('')::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- ============================================================================

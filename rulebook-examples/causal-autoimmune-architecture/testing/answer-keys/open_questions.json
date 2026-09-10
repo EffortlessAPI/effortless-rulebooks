@@ -1,0 +1,38 @@
+[
+  {
+    "open_question_id": "oq-extract-vs-invent",
+    "question": "Does the LLM extract facts present in the case, or invent plausible facts for a described case?",
+    "context": "Mode #1 (extract) vs mode #2 (invent) changes how strong the claim is.",
+    "resolution": "Mode #1 at intake (extract/interpret), and synthetic-but-transparent test results for the invented case \u2014 every number visible, sourced, editable.",
+    "is_resolved": true,
+    "name": "Does the LLM extract facts present in the case, or invent plausible facts for a described case?",
+    "relative_path": "/admin/open-questions/oq-extract-vs-invent"
+  },
+  {
+    "open_question_id": "oq-fragment-fields-where",
+    "question": "On which tables do the narrative fragment fields live, and how are per-case fragments composed up into one report \u2014 section order, headers, grouping?",
+    "context": "Decision is 'pure derived fields': sentence wording is per-row calculated fields (cell-simple, predicate-gated), reusable atoms in __meta__. Still open: do fragments hang off the patient/IndividualPredictions row and reference sibling facts, or off each evidence/gate row and roll up as text? And the renderer owns only ordering/concatenation \u2014 confirm it never composes wording. This is the next loop's design.",
+    "resolution": "",
+    "is_resolved": false,
+    "name": "On which tables do the narrative fragment fields live, and how are per-case fragments composed up into one report \u2014 section order, headers, grouping?",
+    "relative_path": "/admin/open-questions/oq-fragment-fields-where"
+  },
+  {
+    "open_question_id": "oq-publish-now",
+    "question": "Publish README now as a design/thesis doc, or hold until the harness goes green?",
+    "context": "Repo is at Loop 0.5 (harness red, no LLM intake yet). Receipts land harder green.",
+    "resolution": "",
+    "is_resolved": false,
+    "name": "Publish README now as a design/thesis doc, or hold until the harness goes green?",
+    "relative_path": "/admin/open-questions/oq-publish-now"
+  },
+  {
+    "open_question_id": "oq-reworded-prompt",
+    "question": "Confirm the reworded README prompt shares no distinctive phrasing with the prospect's original.",
+    "context": "Anonymity / no verbatim leakage before publishing.",
+    "resolution": "",
+    "is_resolved": false,
+    "name": "Confirm the reworded README prompt shares no distinctive phrasing with the prospect's original.",
+    "relative_path": "/admin/open-questions/oq-reworded-prompt"
+  }
+]

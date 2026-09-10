@@ -1,0 +1,29 @@
+[
+  {
+    "materialized_entity_id": "mat-identity-cluster-summaries",
+    "entity_table": "IdentityClusterSummaries",
+    "refresh_contract": "eager-on-write",
+    "refresh_function": "refresh_identity_cluster_summaries()",
+    "upstream_tables": "StratumVariableIdentityMaps, StratumVariables, Studies, TreatmentRankings",
+    "justification": "Loop-81 (retroactively recorded here in loop-93): an N-way join over a sealed set of stratum-variable identity maps, refreshed as an explicit container-level action rather than recomputed per read. Pre-existing principled materialization; this row documents it under the same governance convention introduced for SweepStudySummary.",
+    "name": "mat-identity-cluster-summaries"
+  },
+  {
+    "materialized_entity_id": "mat-identity-domain-cells",
+    "entity_table": "IdentityDomainCells",
+    "refresh_contract": "eager-on-write",
+    "refresh_function": "refresh_identity_domain_cells()",
+    "upstream_tables": "StratumVariableIdentityMaps, StratumVariables, Studies, TreatmentRankings",
+    "justification": "Loop-82 (retroactively recorded here in loop-93): domain \u00d7 identity cross-tabulation over the same sealed identity-map set as IdentityClusterSummaries, same refresh-on-write contract. Pre-existing principled materialization; this row documents it under the same governance convention introduced for SweepStudySummary.",
+    "name": "mat-identity-domain-cells"
+  },
+  {
+    "materialized_entity_id": "mat-sweep-study-summary",
+    "entity_table": "SweepStudySummary",
+    "refresh_contract": "eager-on-write",
+    "refresh_function": "refresh_sweep_study_summary()",
+    "upstream_tables": "AllocationSweep, SweepStudyConfig",
+    "justification": "Loop-93: computing calc_model_summary_latent_type_d_count (or any ModelSummary/DiscoveryFindings field touching PooledGapCrossesZero/SweepPooledGapRange) fanned a 242-study TreatmentRankings scan out into 242 independent 10-row AllocationSweep sub-scans with zero memoization, measured at 22.5s for a single field (single-study sub-scan alone: 67.7ms). AllocationSweep/SweepStudyConfig are both sealed per build (raw sweep-simulation input, unchanged unless the sweep is re-run), so materializing SweepStudySummary once collapses every downstream consumer (TreatmentRankings.PooledGapCrossesZero/SweepPooledGapRange, 37+ ModelSummary aggregates, DiscoveryFindings rows keyed to H-latent-d and related hypotheses) from a nested function fan-out to a single indexed row read.",
+    "name": "mat-sweep-study-summary"
+  }
+]

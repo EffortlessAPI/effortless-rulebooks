@@ -1,0 +1,38 @@
+[
+  {
+    "number_field_id": "q-sqrt-neg3",
+    "display_name": "Q(sqrt(-3))",
+    "defining_polynomial": "x^2+3",
+    "degree": 2,
+    "discriminant": -3,
+    "class_number": 1,
+    "signature_real_embeddings": 0,
+    "signature_complex_embeddings": 1,
+    "name": "q(sqrt(-3))",
+    "ambient_lattice_dimension": 2,
+    "is_totally_real": false,
+    "is_totally_complex": true,
+    "is_pid": true,
+    "satisfies_golod_shafarevich": false,
+    "is_algebraic_source_candidate": false,
+    "field_embedding_count_matches_signature": false
+  },
+  {
+    "number_field_id": "q-zeta-7",
+    "display_name": "Q(zeta_7)",
+    "defining_polynomial": "x^6+x^5+x^4+x^3+x^2+x+1",
+    "degree": 6,
+    "discriminant": -16807,
+    "class_number": 1,
+    "signature_real_embeddings": 0,
+    "signature_complex_embeddings": 3,
+    "name": "q(zeta_7)",
+    "ambient_lattice_dimension": 6,
+    "is_totally_real": false,
+    "is_totally_complex": true,
+    "is_pid": true,
+    "satisfies_golod_shafarevich": false,
+    "is_algebraic_source_candidate": false,
+    "field_embedding_count_matches_signature": false
+  }
+]

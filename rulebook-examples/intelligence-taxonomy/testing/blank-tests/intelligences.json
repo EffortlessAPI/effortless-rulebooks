@@ -1,0 +1,30 @@
+[
+  {
+    "intelligences_id": "calculator",
+    "description": "A pocket arithmetic device.",
+    "substrate": "digital",
+    "name": null,
+    "taxonomy_class": null
+  },
+  {
+    "intelligences_id": "gpt-5",
+    "description": "A large language model trained on broad text.",
+    "substrate": "digital",
+    "name": null,
+    "taxonomy_class": null
+  },
+  {
+    "intelligences_id": "human",
+    "description": "A neurotypical human adult.",
+    "substrate": "biological",
+    "name": null,
+    "taxonomy_class": null
+  },
+  {
+    "intelligences_id": "octopus",
+    "description": "A cephalopod problem-solver with distributed cognition.",
+    "substrate": "biological",
+    "name": null,
+    "taxonomy_class": null
+  }
+]

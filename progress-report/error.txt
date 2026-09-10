@@ -1,0 +1,8 @@
+rulebook-to-progress-report could not generate a report.
+
+The rulebook is missing 4 required table(s): ERBUserStories, ERBAcceptanceCriteria, ERBBuildPhases, ERBEpics.
+See RULEBOOK-CONTRACT.md for the input contract — it lists every required table, the fields each must carry, and what the document does with them. The rulebook editor's Modules page creates them (Delivery module); a rulebook that already has them under other names maps them in _meta.erb.aliases.
+
+The input contract — every required table, the fields each must
+carry, and what the document does with them — is in
+RULEBOOK-CONTRACT.md alongside this tool.

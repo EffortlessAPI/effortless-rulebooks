@@ -1,0 +1,32 @@
+[
+  {
+    "ai_model_id": "erb-internal-classifier",
+    "title": "ERB Internal Classifier",
+    "provider": "erb-internal",
+    "description": "Self-hosted lightweight classifier for the question-kind routing step. Internal cost basis only.",
+    "is_internal": true,
+    "is_active": true,
+    "context_window_tokens": 8192,
+    "name": "erb-internal-classifier"
+  },
+  {
+    "ai_model_id": "gpt-4o",
+    "title": "GPT-4o",
+    "provider": "openai",
+    "description": "Higher-capability OpenAI model for complex company/claim reasoning.",
+    "is_internal": false,
+    "is_active": true,
+    "context_window_tokens": 128000,
+    "name": "gpt-4o"
+  },
+  {
+    "ai_model_id": "gpt-4o-mini",
+    "title": "GPT-4o mini",
+    "provider": "openai",
+    "description": "Low-cost OpenAI model. Default for classification and most assistant answers.",
+    "is_internal": false,
+    "is_active": true,
+    "context_window_tokens": 128000,
+    "name": "gpt-4o-mini"
+  }
+]

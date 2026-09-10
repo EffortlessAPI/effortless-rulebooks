@@ -8,6 +8,7 @@
     "phone": "555-0188",
     "contact_type": "APClerk",
     "is_authorized_signer": false,
+    "business_label": "Pine Hardware Inc.",
     "is_officer": false,
     "is_ap_clerk": true
   },
@@ -20,6 +21,7 @@
     "phone": "555-0260",
     "contact_type": "Officer",
     "is_authorized_signer": true,
+    "business_label": "Ridgeway Consulting LLC",
     "is_officer": true,
     "is_ap_clerk": false
   },
@@ -32,6 +34,7 @@
     "phone": "555-0142",
     "contact_type": "Officer",
     "is_authorized_signer": true,
+    "business_label": "Stillwater Roasters LLC",
     "is_officer": true,
     "is_ap_clerk": false
   },
@@ -44,6 +47,7 @@
     "phone": "555-0143",
     "contact_type": "Officer",
     "is_authorized_signer": true,
+    "business_label": "Stillwater Roasters LLC",
     "is_officer": true,
     "is_ap_clerk": false
   }

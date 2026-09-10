@@ -1,0 +1,23 @@
+[
+  {
+    "minkowski_lattice_id": "lat-q-sqrt-neg3",
+    "number_field": "q-sqrt-neg3",
+    "determinant": 1.7320508075688772,
+    "gram_matrix_json": "[[1,0],[0,3]]",
+    "short_vector_threshold_squared": 4,
+    "name": "q-sqrt-neg3-lattice",
+    "has_any_planar_projection": false,
+    "is_load_bearing_for_unit_distance_construction": false
+  },
+  {
+    "minkowski_lattice_id": "lat-q-zeta-7",
+    "number_field": "q-zeta-7",
+    "determinant": 129.64181424216494,
+    "gram_matrix_json": "[[2,-1,0,0,0,-1],[-1,2,-1,0,0,0],[0,-1,2,-1,0,0],[0,0,-1,2,-1,0],[0,0,0,-1,2,-1],[-1,0,0,0,-1,2]]",
+    "short_vector_threshold_squared": 4,
+    "description": "Minkowski lattice of Z[\u03b6_7] under the canonical embedding into R^6. Determinant sqrt(16807) \u2248 129.642 (= sqrt of |disc(K)|). The Gram matrix is stylized as the cyclotomic-like circulant pattern; the real Z[\u03b6_7] Gram on the power basis is integral but the entries are not as clean.",
+    "name": "q-zeta-7-lattice",
+    "has_any_planar_projection": false,
+    "is_load_bearing_for_unit_distance_construction": false
+  }
+]

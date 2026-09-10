@@ -1,0 +1,70 @@
+{
+  "venues": {
+    "primary_key": "venue_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 3
+  },
+  "speakers": {
+    "primary_key": "speaker_id",
+    "computed_columns": [
+      "name",
+      "assignment_count",
+      "is_overbooked"
+    ],
+    "record_count": 5
+  },
+  "events": {
+    "primary_key": "event_id",
+    "computed_columns": [
+      "name",
+      "venue_name",
+      "venue_capacity",
+      "event_end",
+      "total_speakers_assigned",
+      "has_speakers",
+      "booked_capacity",
+      "available_capacity",
+      "at_capacity",
+      "venue_conflict_count",
+      "has_venue_conflict",
+      "event_status",
+      "registration_deadline",
+      "is_registration_open",
+      "capacity_headroom",
+      "has_headroom_for_overbooking",
+      "recommended_overbooking_factor"
+    ],
+    "record_count": 4
+  },
+  "assignments": {
+    "primary_key": "assignment_id",
+    "computed_columns": [
+      "name",
+      "event_name",
+      "speaker_name",
+      "event_date",
+      "speaker_avail_start",
+      "speaker_avail_end",
+      "is_available"
+    ],
+    "record_count": 10
+  },
+  "attendees": {
+    "primary_key": "attendee_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 5
+  },
+  "rsv_ps": {
+    "primary_key": "rsvp_id",
+    "computed_columns": [
+      "name",
+      "event_name",
+      "attendee_name"
+    ],
+    "record_count": 7
+  }
+}

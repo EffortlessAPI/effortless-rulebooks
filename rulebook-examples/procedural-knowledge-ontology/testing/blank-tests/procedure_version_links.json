@@ -1,0 +1,11 @@
+[
+  {
+    "procedure_version_link_id": "close-v1.0.0-to-v1.1.0",
+    "previous_procedure_version": "close-v1.0.0",
+    "next_procedure_version": "close-v1.1.0",
+    "relation_iri": "https://w3id.org/pko#nextVersion",
+    "change_summary": "Added timestamp control, AI variance triage, and explicit knowledge capture.",
+    "name": null,
+    "superseded_version_key": null
+  }
+]

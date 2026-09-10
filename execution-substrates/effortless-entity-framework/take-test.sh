@@ -33,10 +33,18 @@ mkdir -p "$SCRIPT_DIR/test-answers"
     # leak into this build (a leftover BaseClass file referencing a now-
     # removed entity would fail compilation).
     rm -rf obj/Patched
-    EF_PROP_ARG=""
-    if [ -n "$EF_TOOL_DIR" ]; then
-        EF_PROP_ARG="-p:EF_TOOL_DIR=$EF_TOOL_DIR"
+    # The orchestrator runs this script directly (not via inject-substrate.sh), so
+    # the tool dir is derived from the active project when not handed in. Without
+    # it the csproj fell back to a global legacy path that no longer exists.
+    if [ -z "$EF_TOOL_DIR" ]; then
+        : "${ERB_DOMAIN_DIR:?ERB_DOMAIN_DIR must be set to the active project directory}"
+        EF_TOOL_DIR="$ERB_DOMAIN_DIR/effortless-entity-framework"
     fi
+    if [ ! -f "$EF_TOOL_DIR/DataClasses/SoAEntityBase.cs" ]; then
+        echo "FATAL: no rulebook-to-entity-framework output at $EF_TOOL_DIR (run effortless build)" >&2
+        exit 1
+    fi
+    EF_PROP_ARG="-p:EF_TOOL_DIR=$EF_TOOL_DIR"
 
     echo "Building runner..."
     dotnet build EffortlessEntityFrameworkRunner.csproj --nologo -v quiet $EF_PROP_ARG

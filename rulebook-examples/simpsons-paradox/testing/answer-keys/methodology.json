@@ -1,0 +1,112 @@
+[
+  {
+    "methodology_id": "method-01-cmcc",
+    "phase": "axiom",
+    "title": "CMCC: any sufficiently crisp conceptual world decomposes into a DAG of S/D/L/A/F primitives",
+    "statement": "The Conceptual Model Conjecture (CMCC) holds that every domain can be decomposed into Schema, Data, Lookups, Aggregations, and Functions arranged as a directed acyclic graph. Each node is locally simple; complexity emerges from composition, not from any single node. This is the working assumption for the entire model, not a hypothesis to relitigate each turn.",
+    "why_it_matters": "If CMCC holds, the paradox can be derived rather than modeled. The model does not need a 'ReversalDetection' entity \u2014 it just needs the right leaf data and the right DAG edges. The paradox falls out as a consequence.",
+    "illustrated_by_loop": "loop-01",
+    "tradition_id": "tradition-historical",
+    "pioneering_researcher": null,
+    "name": "method-01-cmcc"
+  },
+  {
+    "methodology_id": "method-02-dag-first",
+    "phase": "decomposition",
+    "title": "Model the domain entities first; derived facts emerge from the DAG",
+    "statement": "Start with the empirical leaf data: Cases and Successes in each (Study, Stratum, Treatment) cell. Never model the phenomenon of interest (the paradox) directly. The paradox is a derived fact \u2014 it emerges when you ask the right questions of a correctly-shaped DAG.",
+    "why_it_matters": "Modeling the paradox directly (e.g. a 'ReversalDetection' table) would conflate the phenomenon with the domain. The domain is Studies, Treatments, Strata, and CaseCells. The paradox is a read on that domain.",
+    "illustrated_by_loop": "loop-01, loop-04",
+    "tradition_id": "tradition-dag",
+    "pioneering_researcher": "researcher-spirtes-glymour-scheines",
+    "name": "method-02-dag-first"
+  },
+  {
+    "methodology_id": "method-03-effortless-loops",
+    "phase": "decomposition",
+    "title": "Build the model incrementally via Effortless Loops \u2014 one new concept per loop",
+    "statement": "Each loop introduces exactly one new first-class concept and asks the natural-language question that concept answers. The loop ends when the new derived fact is witnessed in the database. Loop N's NextSuggestion seeds Loop N+1.",
+    "why_it_matters": "Introducing multiple concepts per loop makes it hard to witness whether each concept earns its place. One concept per loop forces the question: 'what new thing can I now ask that I couldn't before?'",
+    "illustrated_by_loop": "loop-01, loop-02, loop-03, loop-04, loop-05",
+    "tradition_id": "tradition-historical",
+    "pioneering_researcher": null,
+    "name": "method-03-effortless-loops"
+  },
+  {
+    "methodology_id": "method-04-witness-not-claim",
+    "phase": "derivation",
+    "title": "Every derived fact must be witnessed from the database, not claimed from the rulebook",
+    "statement": "A field is not 'done' when it is added to the rulebook. It is done when a Postgres query returns the expected value for the seeded data. MockDataNote in each Loop row states what value is expected and from which study. If the DB returns a different value, the formula or the seed data is wrong.",
+    "why_it_matters": "Without witnessing, silent fallbacks and mistranslations accumulate invisibly. The rulebook says CellSuccessRate = Successes/Cases; the DB must actually return 0.931 for kidney small-A.",
+    "illustrated_by_loop": "loop-01, loop-06, loop-12, loop-17",
+    "tradition_id": "tradition-dag",
+    "pioneering_researcher": "researcher-spirtes-glymour-scheines",
+    "name": "method-04-witness-not-claim"
+  },
+  {
+    "methodology_id": "method-05-synthetic-controls",
+    "phase": "validation",
+    "title": "Introduce synthetic control studies to test structural impossibility",
+    "statement": "For every interesting derived boolean (IsReversal, IsSignFlip), add at least one synthetic study where the boolean MUST be false by construction. Witnessing the false case in the DB proves the derivation is not vacuously true.",
+    "why_it_matters": "Without a structural-impossibility witness, a bug in the formula that always returns TRUE would pass all the positive tests. The balanced-synthetic and kidney-balanced studies exist solely to witness IsReversal=FALSE and AllocationDistortion=0.",
+    "illustrated_by_loop": "loop-07, loop-14",
+    "tradition_id": "tradition-epidemiology",
+    "pioneering_researcher": "researcher-greenland",
+    "name": "method-05-synthetic-controls"
+  },
+  {
+    "methodology_id": "method-06-real-data-hydration",
+    "phase": "hydration",
+    "title": "Real study data lives in the rulebook JSON \u2014 the SSoT is unified",
+    "statement": "The rulebook JSON is the single source of truth for both schema and instance data. Real published study counts (Successes, Cases per cell) live directly in each table's data array alongside the synthetic studies. Provenance for each real study is recorded in data/raw/<study-id>/provenance.md. The view chain computes every derived field from the rulebook without any separate hydration step.",
+    "why_it_matters": "Keeping schema and instance data together in one document makes the instrument self-contained and auditable. The rulebook JSON can be shared, forked, or loaded without a separate SQL hydration step. The schema still defines derivations; the data rows supply the raw inputs.",
+    "illustrated_by_loop": "loop-01, loop-20, loop-20b",
+    "tradition_id": "tradition-epidemiology",
+    "pioneering_researcher": "researcher-robins",
+    "name": "method-06-real-data-hydration"
+  },
+  {
+    "methodology_id": "method-07-continuous-geometry",
+    "phase": "taxonomy",
+    "title": "Replace binary reversal criterion with continuous geometry: IsSignFlip + AllocationDistortion",
+    "statement": "The original IsReversal (unanimous per-stratum winner disagrees with pooled winner) is a binary that excludes partial reversals. The sign-flip definition (WeightedStratumGapSum and SignedPooledGap have opposite signs) captures the full continuum. AllocationDistortion = |WSGSUM \u2212 SignedPooledGap| is the scalar severity regardless of direction.",
+    "why_it_matters": "Berkeley 1973 fails the unanimity criterion (dept-C gives male a marginal win) but IS a Simpson-type paradox under the continuous definition. Excluding Berkeley from the analysis would be a category error.",
+    "illustrated_by_loop": "loop-17, loop-18",
+    "tradition_id": "tradition-historical",
+    "pioneering_researcher": "researcher-blyth",
+    "name": "method-07-continuous-geometry"
+  },
+  {
+    "methodology_id": "method-08-four-type-taxonomy",
+    "phase": "taxonomy",
+    "title": "Classify studies into four types (A/B/C/D) by distortion geometry, independent of causal label",
+    "statement": "Type A = IsSignFlip AND ReversalIntensity=1.0 (full unanimous reversal). Type B = IsSignFlip AND ReversalIntensity<1.0 (partial sign-flip). Type C = NOT IsSignFlip AND AllocationDistortion>threshold (compression without flip). Type D = AllocationDistortion\u22480 (neutral). The geometry is computed from allocation and rates alone \u2014 no causal story is required.",
+    "why_it_matters": "The taxonomy makes PolicyImplication derivable. A researcher reading DistortionType=A knows to stratify immediately without needing to know what caused the allocation imbalance.",
+    "illustrated_by_loop": "loop-19, loop-21",
+    "tradition_id": "tradition-historical",
+    "pioneering_researcher": "researcher-blyth",
+    "name": "method-08-four-type-taxonomy"
+  },
+  {
+    "methodology_id": "method-09-model-self-portrait",
+    "phase": "conclusion",
+    "title": "The model witnesses its own epistemic coverage via ModelSummary",
+    "statement": "ModelSummary is a single-row table that aggregates ReversalCount, ExplainedCount, TypeACount, TypeBCount, TypeCCount, TypeDCount, and AvgAllocationDistortion across all studies. It is the model's self-portrait \u2014 a derived fact about the model's own completeness.",
+    "why_it_matters": "Without ModelSummary, you can query any individual study but cannot ask 'how many studies does this instrument explain?' The self-portrait is the epistemic coverage claim.",
+    "illustrated_by_loop": "loop-10",
+    "tradition_id": "tradition-dag",
+    "pioneering_researcher": "researcher-spirtes-glymour-scheines",
+    "name": "method-09-model-self-portrait"
+  },
+  {
+    "methodology_id": "method-10-policy-from-geometry",
+    "phase": "conclusion",
+    "title": "Policy implication is derived from geometry, not asserted from domain knowledge",
+    "statement": "PolicyImplication is a calculated field derived from DistortionType. No domain-specific knowledge about medicine, law, or education is encoded. The instrument tells a researcher what to do next with the pooled conclusion (stratify, investigate, check bias, or trust) purely from the allocation geometry.",
+    "why_it_matters": "Domain-neutral policy derivation means the instrument generalizes across clinical, judicial, educational, and other settings without re-tuning. The same formula works for kidney stones, Berkeley admissions, and antibiotic prophylaxis.",
+    "illustrated_by_loop": "loop-21, loop-26",
+    "tradition_id": "tradition-ai-fairness",
+    "pioneering_researcher": "researcher-chouldechova",
+    "name": "method-10-policy-from-geometry"
+  }
+]

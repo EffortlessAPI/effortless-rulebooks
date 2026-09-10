@@ -1,0 +1,54 @@
+[
+  {
+    "model_pricing_version_id": "erb-internal-classifier-2026-01",
+    "ai_model": "erb-internal-classifier",
+    "label": "Internal classifier (2026-01)",
+    "currency": "usd",
+    "input_price_per_m_tok": 0,
+    "cached_input_price_per_m_tok": 0,
+    "output_price_per_m_tok": 0,
+    "effective_date": "2026-01-01",
+    "is_active": true,
+    "notes": "Self-hosted; no external per-token charge (internal cost basis only).",
+    "name": "erb-internal-classifier-2026-01"
+  },
+  {
+    "model_pricing_version_id": "gpt-4o-2024-08",
+    "ai_model": "gpt-4o",
+    "label": "GPT-4o (2024-08)",
+    "currency": "usd",
+    "input_price_per_m_tok": 2.5,
+    "cached_input_price_per_m_tok": 1.25,
+    "output_price_per_m_tok": 10,
+    "effective_date": "2024-08-06",
+    "is_active": true,
+    "notes": "Current public OpenAI pricing.",
+    "name": "gpt-4o-2024-08"
+  },
+  {
+    "model_pricing_version_id": "gpt-4o-mini-2024-07",
+    "ai_model": "gpt-4o-mini",
+    "label": "GPT-4o mini (2024-07, superseded)",
+    "currency": "usd",
+    "input_price_per_m_tok": 0.2,
+    "cached_input_price_per_m_tok": 0.1,
+    "output_price_per_m_tok": 0.8,
+    "effective_date": "2024-07-18",
+    "is_active": false,
+    "notes": "Original launch pricing; superseded.",
+    "name": "gpt-4o-mini-2024-07"
+  },
+  {
+    "model_pricing_version_id": "gpt-4o-mini-2025-07",
+    "ai_model": "gpt-4o-mini",
+    "label": "GPT-4o mini (2025-07)",
+    "currency": "usd",
+    "input_price_per_m_tok": 0.15,
+    "cached_input_price_per_m_tok": 0.075,
+    "output_price_per_m_tok": 0.6,
+    "effective_date": "2025-07-18",
+    "is_active": true,
+    "notes": "Current public OpenAI pricing.",
+    "name": "gpt-4o-mini-2025-07"
+  }
+]

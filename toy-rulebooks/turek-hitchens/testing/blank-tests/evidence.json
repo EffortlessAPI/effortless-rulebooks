@@ -1,0 +1,51 @@
+[
+  {
+    "label": "DNA Information",
+    "supports_argument": "argument-from-design-of-life",
+    "evidence_kind": "observational",
+    "description": "DNA's information content, likened to a thousand encyclopedias (citing Dawkins).",
+    "name": null
+  },
+  {
+    "label": "Red Shift Increasing",
+    "supports_argument": "argument-from-poor-design",
+    "evidence_kind": "observational",
+    "description": "Krauss: the Hubble red-light-shift rate is increasing; the universe dissipates at speed.",
+    "name": null
+  },
+  {
+    "label": "SURGE: Einstein Relativity",
+    "supports_argument": "cosmological-argument",
+    "evidence_kind": "theoretical",
+    "description": "General relativity makes space-time-matter co-relative, originating together.",
+    "name": null
+  },
+  {
+    "label": "SURGE: Galaxy Seeds",
+    "supports_argument": "cosmological-argument",
+    "evidence_kind": "observational",
+    "description": "COBE's one-part-in-100,000 temperature variations that let galaxies form.",
+    "name": null
+  },
+  {
+    "label": "SURGE: Radiation Echo",
+    "supports_argument": "cosmological-argument",
+    "evidence_kind": "observational",
+    "description": "Cosmic afterglow found by Penzias and Wilson; remnant heat of the Big Bang.",
+    "name": null
+  },
+  {
+    "label": "SURGE: Second Law",
+    "supports_argument": "cosmological-argument",
+    "evidence_kind": "theoretical",
+    "description": "Second law of thermodynamics \u2014 the universe runs toward heat death, so it cannot be eternal.",
+    "name": null
+  },
+  {
+    "label": "SURGE: Universe Expanding",
+    "supports_argument": "cosmological-argument",
+    "evidence_kind": "observational",
+    "description": "Hubble's 1929 discovery of expansion; reversed, it collapses to a singularity.",
+    "name": null
+  }
+]

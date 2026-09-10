@@ -1,0 +1,14 @@
+{
+  "tables_added": [],
+  "tables_removed": [],
+  "columns_added": [
+    "HelloWhos.IsBob"
+  ],
+  "columns_removed": [],
+  "datatypes_changed": [],
+  "formulas_changed": [],
+  "descriptions_updated": [],
+  "rows_added": 0,
+  "rows_removed": 0,
+  "rows_updated": 0
+}

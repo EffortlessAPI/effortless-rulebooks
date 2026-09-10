@@ -237,10 +237,16 @@ fi
 # Version 2: English-only/no-XLSX -> all RuleSpeak® languages plus XLSX.
 # Version 3: init-db.sh -> the compatibility reset wrapper, because current
 #            rulebook-to-postgres emits reset-rulebook-db.sh.
+# Version 4: pin -p mode=check-add on the Postgres step, so a rebuild of a
+#            running container adds tables/columns and upserts rows instead
+#            of dropping and reseeding whatever the user has in the editor.
 #
 # Each migration changes only its exact prior default. Any other value is an
 # intentional user customization and is preserved.
-PIPELINE_DEFAULTS_VERSION=3
+# Version 6: the ERB module steps (rulebook-to-rbac, the Postgres policy
+#            compiler, the progress report) are added, disabled; the portal's
+#            Modules page switches them on with their module.
+PIPELINE_DEFAULTS_VERSION=6
 if ! node - "$EFFORTLESS_ROOT_TARGET/effortless.json" "$PIPELINE_DEFAULTS_VERSION" <<'NODE'
 const fs = require('fs');
 const file = process.argv[2];
@@ -291,6 +297,96 @@ if (currentVersion < targetVersion) {
     }
   }
 
+  if (currentVersion < 4) {
+    const postgres = byName.get('rulebooktopostgres');
+    if (!postgres) {
+      throw new Error('pipeline defaults v4 migration requires the rulebooktopostgres step');
+    }
+
+    // Matched by prefix, not by equality: the -i flag was rewritten to this
+    // project's real rulebook filename when effortless.json was seeded, so
+    // there is no single expected string to compare against. An explicit
+    // mode= of any value is the user's choice and is left alone.
+    const command = String(postgres.CommandLine || '');
+    if (command.startsWith('rulebook-to-postgres ') && !/(^|\s)-p\s+mode=/.test(command)) {
+      postgres.CommandLine = command + ' -p mode=check-add';
+      console.log('[entrypoint] pinned mode=check-add on the Postgres step: rebuilds of a running container now add tables/columns and upsert rows instead of reseeding from scratch');
+    } else {
+      console.log('[entrypoint] preserved customized Postgres command while advancing defaults to v4');
+    }
+  }
+
+  if (currentVersion < 5) {
+    // The former all-languages default becomes a focused four-language default,
+    // and 'every language' moves to its own step the portal can switch on. Only
+    // the untouched former default is rewritten -- a hand-edited languages= list
+    // is the user's choice and survives.
+    const core = byName.get('rulebooktorulespeak');
+    if (!core) {
+      throw new Error('pipeline defaults v5 migration requires the rulebooktorulespeak step');
+    }
+
+    const command = String(core.CommandLine || '');
+    if (/(^|\s)-p\s+languages=all(\s|$)/.test(command)) {
+      core.CommandLine = command.replace(/((^|\s)-p\s+languages=)all(\s|$)/, '$1en,de,ja,hi$3');
+      console.log('[entrypoint] narrowed the default RuleSpeak build to en,de,ja,hi; every-language builds now live on their own step');
+    } else {
+      console.log('[entrypoint] preserved customized RuleSpeak languages while advancing defaults to v5');
+    }
+
+    if (!byName.get('rulebooktorulespeakall')) {
+      const at = steps.indexOf(core);
+      steps.splice(at + 1, 0, {
+        IsSSoTTranspiler: false,
+        Name: 'rulebooktorulespeakall',
+        RelativePath: core.RelativePath,
+        CommandLine: command.replace(/((^|\s)-p\s+languages=)[^\s]+/, '$1all'),
+        IsDisabled: true,
+        Description: 'Generate the RuleSpeak® document in EVERY registered language. Disabled by default; the portal\'s language picker turns this on (and the core-languages step off) when someone asks for the remaining languages.',
+      });
+      console.log('[entrypoint] added the every-language RuleSpeak step (disabled by default)');
+    }
+  }
+
+  if (currentVersion < 6) {
+    const rb = '../effortless-rulebook/effortless-rulebook.json';
+    const inputOf = (step) => {
+      const m = String((step && step.CommandLine) || '').match(/-i\s+(\S+)/);
+      return m ? m[1] : rb;
+    };
+    const postgres = byName.get('rulebooktopostgres');
+    if (!byName.get('rulebooktorbac') && postgres) {
+      const at = steps.indexOf(postgres);
+      steps.splice(at + 1, 0, {
+        IsSSoTTranspiler: false,
+        Name: 'rulebooktorbac',
+        RelativePath: '/rbac',
+        CommandLine: 'rulebook-to-rbac -i ' + inputOf(postgres),
+        IsDisabled: true,
+        Description: 'Security module: read the ERBRoles / ERBUsers / permission tables and emit rbac/effortless-rbac.json, the database-neutral role model the policy generators compile. Disabled until the Security module is switched on in the portal\'s Modules page.',
+      }, {
+        IsSSoTTranspiler: false,
+        Name: 'rbactopostgrespolicies',
+        RelativePath: '/postgres',
+        CommandLine: 'effortless-rbac-to-postgres-policies -i ../rbac/effortless-rbac.json',
+        IsDisabled: true,
+        Description: 'Security module: compile rbac/effortless-rbac.json into postgres/06-rbac-policies.sql -- roles, grants, row-level security, identity helpers, one schema per role. Applied by the database reset step after the data. Disabled until the Security module is on.',
+      });
+      console.log('[entrypoint] added the Security module build steps (disabled by default)');
+    }
+    if (!byName.get('rulebooktoprogressreport')) {
+      steps.push({
+        IsSSoTTranspiler: false,
+        Name: 'rulebooktoprogressreport',
+        RelativePath: '/progress-report',
+        CommandLine: 'rulebook-to-progress-report -i ' + inputOf(postgres),
+        IsDisabled: true,
+        Description: 'Delivery module: render the Progress Report from the ERBUserStories / ERBAcceptanceCriteria / ERBBuildPhases tables, shown under the portal\'s Progress Report tab. Disabled until the Delivery module is switched on.',
+      });
+      console.log('[entrypoint] added the Delivery module build step (disabled by default)');
+    }
+  }
+
   if (marker) marker.Value = String(targetVersion);
   else settings.push({ Name: 'editor-pipeline-defaults-version', Value: String(targetVersion) });
   const tmp = file + '.tmp-defaults';
@@ -302,6 +398,37 @@ then
   echo "[entrypoint] FATAL: could not migrate the editor pipeline defaults." >&2
   echo "error" > "$BOOT_STATE_FILE"
   exit 1
+fi
+
+# ERB modules: a rulebook that arrives with a module already switched on
+# (_meta.erb.modules.<name>.enabled) gets that module's build steps switched
+# on BEFORE the first build, so the very first boot compiles its policies /
+# report rather than waiting for the generated API to notice and a rebuild.
+# Mirrors the module->steps table in the API's erb-schema.js.
+if [ -f "$RULEBOOK_PATH" ]; then
+  node - "$EFFORTLESS_ROOT_TARGET/effortless.json" "$RULEBOOK_PATH" <<'NODE' || echo "[entrypoint] warning: could not reconcile ERB module build steps (continuing)"
+const fs = require('fs');
+const [file, rulebookPath] = process.argv.slice(2);
+const MODULE_STEPS = {
+  security: ['rulebooktorbac', 'rbactopostgrespolicies', 'rbactosqlserverpolicies'],
+  delivery: ['rulebooktoprogressreport'],
+};
+let modules = {};
+try { modules = (JSON.parse(fs.readFileSync(rulebookPath, 'utf8'))._meta || {}).erb?.modules || {}; } catch { process.exit(0); }
+const cfg = JSON.parse(fs.readFileSync(file, 'utf8'));
+const steps = Array.isArray(cfg.ProjectTranspilers) ? cfg.ProjectTranspilers : [];
+const switched = [];
+for (const [name, list] of Object.entries(MODULE_STEPS)) {
+  if (modules[name]?.enabled !== true) continue;
+  for (const step of steps) if (list.includes(step.Name) && step.IsDisabled === true) { step.IsDisabled = false; switched.push(step.Name); }
+}
+if (switched.length) {
+  const tmp = file + '.tmp-modules';
+  fs.writeFileSync(tmp, JSON.stringify(cfg, null, 2) + '\n');
+  fs.renameSync(tmp, file);
+  console.log('[entrypoint] ERB modules already on in the rulebook: switched on build steps ' + switched.join(', '));
+}
+NODE
 fi
 
 # Fail loudly, immediately, if the project's effortless-rulebook/ folder was
@@ -368,8 +495,8 @@ fi
 # connecting through the published -p 5432 port arrives via Docker Desktop's
 # host-forwarding proxy, which does NOT present a Docker-internal bridge
 # address (varies by platform), so a scoped rule can't reliably match. This
-# is a disposable, reseeded-every-rebuild dev DB behind the user's own
-# firewall -- open trust to any host is fine here.
+# is a container-local dev DB, rebuilt from scratch on every container start,
+# behind the user's own firewall -- open trust to any host is fine here.
 if ! grep -q "0.0.0.0/0" /var/lib/postgresql/data/pg_hba.conf 2>/dev/null; then
   echo "host    all             all             0.0.0.0/0               trust" >> /var/lib/postgresql/data/pg_hba.conf
   echo "host    all             all             ::/0                    trust" >> /var/lib/postgresql/data/pg_hba.conf
@@ -399,6 +526,9 @@ export DATABASE_URL="postgresql://postgres:postgres@localhost:5432/effortless-ru
 # reset-rulebook-db.sh filename and uses init-db.sh only for an older
 # rulebook-to-postgres version.
 #
+# The run wrapper is also where this container's data-safety rule lives, so
+# read the comments inside it before changing the initdb step.
+#
 # Both wrappers are written before every build because rulebook-to-postgres
 # creates the postgres directory during the first build.
 mkdir -p /app/effortless-root/postgres
@@ -415,15 +545,80 @@ cat > /app/effortless-root/postgres/run-rulebook-db-reset.sh <<'EOF'
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+# Which filename does the installed rulebook-to-postgres emit?
 if [ -f "$SCRIPT_DIR/reset-rulebook-db.sh" ]; then
-  exec "$SCRIPT_DIR/reset-rulebook-db.sh"
+  DB_APPLY_SCRIPT="$SCRIPT_DIR/reset-rulebook-db.sh"
 elif [ -f "$SCRIPT_DIR/init-db.sh" ]; then
-  echo "[db-reset] reset-rulebook-db.sh not found; using legacy init-db.sh" >&2
-  exec "$SCRIPT_DIR/init-db.sh"
+  echo "[db-apply] reset-rulebook-db.sh not found; using legacy init-db.sh" >&2
+  DB_APPLY_SCRIPT="$SCRIPT_DIR/init-db.sh"
 else
-  echo "[db-reset] no database reset script found; expected reset-rulebook-db.sh or legacy init-db.sh" >&2
+  echo "[db-apply] no database apply script found; expected reset-rulebook-db.sh or legacy init-db.sh" >&2
   exit 127
 fi
+
+# ------------------------------------------------------------------------
+# The first apply in this container's life is a build from scratch. Every
+# apply after it must be additive.
+#
+# The Postgres cluster lives inside the container with no volume, so it is
+# always empty at boot -- the first apply has nothing to preserve and the
+# from-scratch build is free. Every rebuild after that runs while somebody
+# has the editor open, with rows they added through the UI and edits not yet
+# saved back to the rulebook. Those must survive: a rulebook change should
+# add the new tables and columns, upsert the rulebook's own rows, and leave
+# everything else exactly where it is.
+#
+# rulebook-to-postgres already generates that shape in its default
+# mode=check-add (CREATE TABLE IF NOT EXISTS, ADD COLUMN IF NOT EXISTS,
+# CREATE OR REPLACE for the derived layer, ON CONFLICT DO UPDATE for rows),
+# and the rulebooktopostgres step pins mode=check-add so this does not
+# depend on a default that lives in another tool. The block below is the
+# check that it actually held.
+#
+# On a violation this REFUSES the step. It does not fall back to applying
+# some safer-looking subset: half-applied SQL against a live editor is a
+# worse outcome than a build step that stops and says which file would have
+# destroyed data.
+# ------------------------------------------------------------------------
+STAMP_FILE="${EFFORTLESS_EDITOR_DB_STAMP:-/tmp/rulebook-db-applied}"
+
+if [ ! -f "$STAMP_FILE" ]; then
+  echo "[db-apply] first apply for this container -- building the database from scratch"
+elif [ "${EFFORTLESS_EDITOR_ALLOW_DB_RESET:-}" = "1" ]; then
+  echo "[db-apply] EFFORTLESS_EDITOR_ALLOW_DB_RESET=1 -- destructive SQL allowed on this rebuild"
+else
+  OFFENDING_FILES=""
+  shopt -s nullglob
+  for sql_file in "$SCRIPT_DIR"/[0-9][0-9]*-*.sql; do
+    # Comments come off first: 00-bootstrap.sql ships an inert, commented-out
+    # drop-everything block that must not trip this.
+    #
+    # pipefail is off inside the subshell on purpose. grep -q exits at its
+    # first match, sed then dies of SIGPIPE, and pipefail would report that
+    # as "no match" -- turning the guard into a silent no-op.
+    if ( set +o pipefail; sed 's/--.*$//' "$sql_file" \
+         | grep -qiE '(DROP[[:space:]]+(TABLE|SCHEMA|DATABASE)|TRUNCATE[[:space:]]|DELETE[[:space:]]+FROM)' ); then
+      OFFENDING_FILES="$OFFENDING_FILES $(basename "$sql_file")"
+    fi
+  done
+  if [ -n "$OFFENDING_FILES" ]; then
+    echo "[db-apply] REFUSING to apply: this rebuild would destroy data in a running editor." >&2
+    echo "[db-apply]   offending file(s):$OFFENDING_FILES" >&2
+    echo "[db-apply] While the container is up, a rebuild is additive only. The usual cause" >&2
+    echo "[db-apply] is the rulebooktopostgres step in effortless.json having lost its" >&2
+    echo "[db-apply] '-p mode=check-add' (mode=drop-all generates DROP TABLE), or a" >&2
+    echo "[db-apply] hand-written NNb-customize-*.sql that drops or deletes." >&2
+    echo "[db-apply] To wipe on purpose: restart the container -- the DB is built from" >&2
+    echo "[db-apply] scratch on every boot -- or set EFFORTLESS_EDITOR_ALLOW_DB_RESET=1." >&2
+    exit 1
+  fi
+  echo "[db-apply] rebuild while running -- applying additively (new tables/columns, upserted rows)"
+fi
+
+# Not exec'd: the stamp is only written once the apply has actually succeeded,
+# so a build that dies before the SQL lands is still treated as the first one.
+"$DB_APPLY_SCRIPT"
+touch "$STAMP_FILE"
 EOF
 chmod +x \
   /app/effortless-root/postgres/chmod-initdb.sh \
@@ -1025,8 +1220,12 @@ while true; do
     fi
 
     # A genuine outside change (hand-edited, or written by another process). A
-    # rebuild would drop and recreate the database, so offer it rather than
-    # doing it. No answer within the timeout means no rebuild.
+    # rebuild no longer drops the database -- it adds tables/columns and
+    # upserts rulebook rows (see run-rulebook-db-reset.sh) -- but it still
+    # takes the API and portal down for the duration, and it still pushes the
+    # rulebook's own values over any edits made here to the same rows. Enough
+    # to be worth asking about rather than doing. No answer within the timeout
+    # means no rebuild.
     if ! prompt_for_rebuild; then
       continue
     fi

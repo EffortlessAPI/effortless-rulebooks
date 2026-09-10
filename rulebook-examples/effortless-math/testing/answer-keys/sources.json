@@ -1,0 +1,674 @@
+[
+  {
+    "source_id": "src-a2-theta-v20",
+    "citation": "The A2 lattice theta series and its weight-one modular transformation law.",
+    "source_url": "https://people.math.rochester.edu/faculty/doug/otherpapers/Schoeneberg.pdf",
+    "source_kind": "classical-monograph",
+    "role": "Explicit weight-one Eisenstein/theta series congruent to one modulo 3.",
+    "name": "src-a2-theta-v20"
+  },
+  {
+    "source_id": "src-brauer-nesbitt-v17",
+    "citation": "Brauer\u2013Nesbitt semisimplification uniqueness from character data.",
+    "source_url": "https://math.berkeley.edu/~ribet/Articles/ps.pdf",
+    "source_kind": "primary-paper-context",
+    "role": "Complete class traces determine the semisimplification.",
+    "name": "src-brauer-nesbitt-v17"
+  },
+  {
+    "source_id": "src-buzzard-finite-flat",
+    "citation": "K. Buzzard, Finite flat group schemes course notes.",
+    "source_url": "https://www.ma.imperial.ac.uk/~buzzard/maths/research/notes/finite_flat_group_schemes_course.pdf",
+    "source_kind": "course-notes",
+    "role": "Finite-flat Hopf algebra foundations.",
+    "name": "src-buzzard-finite-flat"
+  },
+  {
+    "source_id": "src-carayol-local-ring-v13",
+    "citation": "H. Carayol, Representations and pseudo-representations / modular Galois representations over complete local rings.",
+    "source_url": "https://www.kurims.kyoto-u.ac.jp/~kyodo/kokyuroku/contents/pdf/0884-03.pdf",
+    "source_kind": "author-exposition",
+    "role": "Trace descent, uniqueness, and pseudo-representation construction over local rings.",
+    "name": "src-carayol-local-ring-v13"
+  },
+  {
+    "source_id": "src-chebotarev-density-v17",
+    "citation": "Chebotarev density theorem for finite Galois quotients.",
+    "source_url": "https://www.jmilne.org/math/CourseNotes/ANT.pdf",
+    "source_kind": "research-notes",
+    "role": "Every conjugacy class has unramified Frobenius representatives.",
+    "name": "src-chebotarev-density-v17"
+  },
+  {
+    "source_id": "src-conrad-j0p-component",
+    "citation": "B. Conrad, J_1(p) Has Connected Fibers.",
+    "source_url": "https://virtualmath1.stanford.edu/~conrad/papers/j1p.pdf",
+    "source_kind": "primary-paper",
+    "role": "Component group of J_0(p), including order numerator((p-1)/12).",
+    "name": "src-conrad-j0p-component"
+  },
+  {
+    "source_id": "src-cremona-1997",
+    "citation": "J. E. Cremona, Algorithms for Modular Elliptic Curves, 2nd ed., Cambridge University Press, 1997.",
+    "source_url": "https://johncremona.github.io/book/fulltext/index.html",
+    "source_kind": "research-monograph",
+    "role": "Explicit elliptic-curve and modular-form algorithms and tables.",
+    "name": "src-cremona-1997"
+  },
+  {
+    "source_id": "src-ddt-ihara-v7",
+    "citation": "H. Darmon, F. Diamond, R. Taylor, Fermat's Last Theorem, \u00a74.5, especially Lemmas 4.28 and 4.30.",
+    "source_url": "https://www.math.mcgill.ca/darmon/pub/Articles/Expository/05.DDT/paper.pdf",
+    "source_kind": "research-exposition",
+    "role": "Exact decomposition of the Ihara/degeneracy argument into homology surjectivity, a noncompact exact sequence, Eisenstein boundary removal, and assembly.",
+    "name": "src-ddt-ihara-v7"
+  },
+  {
+    "source_id": "src-ddt-lifting-v9",
+    "citation": "H. Darmon, F. Diamond, R. Taylor, Fermat's Last Theorem, Remark 4.3 and the local Hecke-algebra lifting step.",
+    "source_url": "https://www.math.mcgill.ca/darmon/pub/Articles/Expository/05.DDT/paper.pdf",
+    "source_kind": "research-exposition",
+    "role": "Use of Deligne\u2013Serre lifting in the FLT level-lowering architecture.",
+    "name": "src-ddt-lifting-v9"
+  },
+  {
+    "source_id": "src-ddt-multiplicity-v15",
+    "citation": "H. Darmon, F. Diamond, R. Taylor, Fermat's Last Theorem, Theorem 4.26 and localized Tate/homology modules.",
+    "source_url": "https://www.math.mcgill.ca/darmon/pub/Articles/Expository/05.DDT/paper.pdf",
+    "source_kind": "research-exposition",
+    "role": "Multiplicity-two fiber, rational rank two, and Nakayama freeness.",
+    "name": "src-ddt-multiplicity-v15"
+  },
+  {
+    "source_id": "src-ddt-multiplicity-v8",
+    "citation": "H. Darmon, F. Diamond, R. Taylor, Fermat's Last Theorem, \u00a74.5, Theorem 4.26.",
+    "source_url": "https://www.math.mcgill.ca/darmon/pub/Articles/Expository/05.DDT/paper.pdf",
+    "source_kind": "research-exposition",
+    "role": "Multiplicity-one target: for irreducible m and l not dividing N, J_0(N)[m] has dimension two.",
+    "name": "src-ddt-multiplicity-v8"
+  },
+  {
+    "source_id": "src-ddt-theorem426-v16",
+    "citation": "H. Darmon, F. Diamond, R. Taylor, Fermat's Last Theorem, Theorem 4.26 and its proof in the good-reduction case.",
+    "source_url": "https://www.math.mcgill.ca/darmon/pub/Articles/Expository/05.DDT/paper.pdf",
+    "source_kind": "research-exposition",
+    "role": "Universal multiplicity-two theorem and its good/residual-prime case split.",
+    "name": "src-ddt-theorem426-v16"
+  },
+  {
+    "source_id": "src-deligne-ladic-v13",
+    "citation": "P. Deligne, Formes modulaires et repr\u00e9sentations l-adiques.",
+    "source_url": "https://publications.ias.edu/sites/default/files/5_FormesModulaires.pdf",
+    "source_kind": "primary-paper",
+    "role": "Galois representations attached to weight at least two eigenforms.",
+    "name": "src-deligne-ladic-v13"
+  },
+  {
+    "source_id": "src-deligne-serre-1974",
+    "citation": "P. Deligne and J.-P. Serre, Formes modulaires de poids 1, Lemma 6.11.",
+    "source_url": "https://numdam.org/articles/10.24033/asens.1277/",
+    "source_kind": "primary-paper",
+    "role": "General lifting lemma for a simultaneous residual eigensystem of commuting operators on a finite free module.",
+    "name": "src-deligne-serre-1974"
+  },
+  {
+    "source_id": "src-deligne-serre-lifting",
+    "citation": "N. Achenjang, Fermat's Last Theorem overview notes, including a Deligne\u2013Serre lifting lemma.",
+    "source_url": "https://people.math.harvard.edu/~achenjang/assets/pdf/FLT_Overview_Notes.pdf",
+    "source_kind": "course-notes",
+    "role": "Finite local Hecke eigenpacket lifting.",
+    "name": "src-deligne-serre-lifting"
+  },
+  {
+    "source_id": "src-dr-special-fiber",
+    "citation": "Deligne\u2013Rapoport special-fiber description: X_0(Nq) at q is built from two copies of X_0(N) meeting at supersingular points.",
+    "source_url": "https://math.bu.edu/individuals/jsweinst/AWS/AWSLectureNotes.pdf",
+    "source_kind": "course-notes",
+    "role": "Integral model and special-fiber component contract.",
+    "name": "src-dr-special-fiber"
+  },
+  {
+    "source_id": "src-dr-x055-at5",
+    "citation": "Deligne\u2013Rapoport special-fiber contract for X_0(Nq) at q: two copies of X_0(N) meeting at supersingular \u0393_0(N)-structures.",
+    "source_url": "https://math.bu.edu/individuals/jsweinst/AWS/AWSLectureNotes.pdf",
+    "source_kind": "course-notes",
+    "role": "Special-fiber input contract for X_0(55) at 5.",
+    "name": "src-dr-x055-at5"
+  },
+  {
+    "source_id": "src-eichler-shimura-etale-v14",
+    "citation": "P. Deligne, Formes modulaires et repr\u00e9sentations l-adiques; Eichler\u2013Shimura/\u00e9tale cohomology realization of modular Galois representations.",
+    "source_url": "https://publications.ias.edu/sites/default/files/5_FormesModulaires.pdf",
+    "source_kind": "primary-paper",
+    "role": "Localized \u00e9tale cohomology with commuting Hecke and Galois actions and good-prime Frobenius relations.",
+    "name": "src-eichler-shimura-etale-v14"
+  },
+  {
+    "source_id": "src-emerton-ss11",
+    "citation": "M. Emerton, Supersingular elliptic curves, theta series and weight two modular forms.",
+    "source_url": "https://www.math.uchicago.edu/~emerton/pdffiles/two.pdf",
+    "source_kind": "primary-paper",
+    "role": "The two supersingular j-invariants in characteristic 11 are 0 and 1728.",
+    "name": "src-emerton-ss11"
+  },
+  {
+    "source_id": "src-etale-comparison-v15",
+    "citation": "Modular-curve Betti\u2013\u00e9tale comparison and Eichler\u2013Shimura package.",
+    "source_url": "https://publications.ias.edu/sites/default/files/5_FormesModulaires.pdf",
+    "source_kind": "primary-paper",
+    "role": "Hecke/Galois actions, comparison, pairing, and good-prime relation.",
+    "name": "src-etale-comparison-v15"
+  },
+  {
+    "source_id": "src-fong-swan-v18",
+    "citation": "Fong\u2013Swan lifting theorem for representations of finite solvable groups.",
+    "source_url": "https://people.math.harvard.edu/~achenjang/assets/pdf/FLT_Overview_Notes.pdf",
+    "source_kind": "expository-source",
+    "role": "Characteristic-zero finite-image lift of the mod-3 image.",
+    "name": "src-fong-swan-v18"
+  },
+  {
+    "source_id": "src-g12-explicit-v20",
+    "citation": "M. Deraux, explicit Shephard\u2013Todd G12 matrices, with G12 isomorphic to GL2(F3).",
+    "source_url": "https://ems.press/journals/cmh/articles/15747",
+    "source_kind": "primary-paper",
+    "role": "Explicit characteristic-zero lift of the natural GL2(F3) representation.",
+    "name": "src-g12-explicit-v20"
+  },
+  {
+    "source_id": "src-geometric-comparison-v17",
+    "citation": "Artin comparison, Oda Dieudonn\u00e9/de Rham comparison, and geometric Eichler\u2013Shimura.",
+    "source_url": "https://www.numdam.org/article/ASENS_1969_4_2_1_63_0.pdf",
+    "source_kind": "comparison-package",
+    "role": "Functorial comparison of modular-curve realizations.",
+    "name": "src-geometric-comparison-v17"
+  },
+  {
+    "source_id": "src-global-deformation-duality-kernel-v21",
+    "citation": "Mazur representability together with global Galois cohomology and Poitou-Tate duality.",
+    "source_url": "https://bpb-us-e1.wpmucdn.com/sites.harvard.edu/dist/a/189/files/2023/01/Deforming-Galois-Representations.pdf",
+    "source_kind": "foundation-kernel",
+    "role": "Actual deformation functor, obstruction theory, and global-local duality.",
+    "name": "src-global-deformation-duality-kernel-v21"
+  },
+  {
+    "source_id": "src-hilbert-specialization-kernel-v21",
+    "citation": "Hilbert irreducibility and weak approximation for rational specialization outside thin sets.",
+    "source_url": "https://www.ms.uky.edu/~sohum/ma561/notes/workspace/books/serre_galois_theory.pdf",
+    "source_kind": "foundation-kernel",
+    "role": "Universal thin-set avoidance with prescribed local opens.",
+    "name": "src-hilbert-specialization-kernel-v21"
+  },
+  {
+    "source_id": "src-ihara-classical-v7",
+    "citation": "J. Manning and J. Shotton, Ihara's Lemma for Shimura Curves..., introduction recalling the classical modular-curve theorem.",
+    "source_url": "https://www.maths.dur.ac.uk/users/jack.g.shotton/papers/quaternion.pdf",
+    "source_kind": "primary-paper",
+    "role": "Classical statement: the two degeneracy pullbacks are injective after localization at a non-Eisenstein maximal ideal.",
+    "name": "src-ihara-classical-v7"
+  },
+  {
+    "source_id": "src-ihara-level-lowering",
+    "citation": "R. Magner, Ribet's Level-Lowering Theorem for Modular Representations.",
+    "source_url": "https://math.bu.edu/people/rmagner/extras/RibetLevelLowering.pdf",
+    "source_kind": "expository-notes",
+    "role": "Ihara, multiplicity-one, and lower-level eigenform obligations.",
+    "name": "src-ihara-level-lowering"
+  },
+  {
+    "source_id": "src-kohel-stein-components",
+    "citation": "D. Kohel and W. Stein, Component Groups of Quotients of J_0(N).",
+    "source_url": "https://wstein.org/papers/ants/kohel_stein.pdf",
+    "source_kind": "primary-paper",
+    "role": "Character group as degree-zero divisors on supersingular objects and component-group computation.",
+    "name": "src-kohel-stein-components"
+  },
+  {
+    "source_id": "src-kummer-fppf-v20",
+    "citation": "Kummer theory and finite flat group schemes over a DVR.",
+    "source_url": "https://www.math.uni-frankfurt.de/~stix/skripte/STIXfinflatGrpschemes20120918.pdf",
+    "source_kind": "research-notes",
+    "role": "Explicit finite-flat extension of Z/p by mu_p from a unit Kummer class.",
+    "name": "src-kummer-fppf-v20"
+  },
+  {
+    "source_id": "src-lagarias-odlyzko-v19",
+    "citation": "J. C. Lagarias and A. M. Odlyzko, Effective versions of the Chebotarev density theorem.",
+    "source_url": "https://aareyanmanzoor.github.io/assets/articles/lagarias-odlyzko.pdf",
+    "source_kind": "primary-paper",
+    "role": "Analytic density and existence of Frobenius primes in each finite conjugacy class.",
+    "name": "src-lagarias-odlyzko-v19"
+  },
+  {
+    "source_id": "src-martin-1996",
+    "citation": "Y. Martin, Eta-quotients and elliptic curves, Proceedings of the American Mathematical Society 125 (1997), 3169\u20133176.",
+    "source_url": "https://uva.theopenscholar.com/files/ken-ono/files/026_8.pdf",
+    "source_kind": "primary-paper",
+    "role": "Eta-quotient newforms associated with elliptic curves.",
+    "name": "src-martin-1996"
+  },
+  {
+    "source_id": "src-mazur-1978",
+    "citation": "B. Mazur, Rational isogenies of prime degree, Inventiones Mathematicae 44 (1978), 129\u2013162.",
+    "source_url": "https://eudml.org/doc/142700",
+    "source_kind": "primary-paper",
+    "role": "Prime-degree rational isogenies and the irreducibility input used for Frey curves.",
+    "name": "src-mazur-1978"
+  },
+  {
+    "source_id": "src-mazur-deformation-1989",
+    "citation": "B. Mazur, Deforming Galois representations, in Galois Groups over Q (1989).",
+    "source_url": "https://bpb-us-e1.wpmucdn.com/sites.harvard.edu/dist/a/189/files/2023/01/Deforming-Galois-Representations.pdf",
+    "source_kind": "primary-paper",
+    "role": "Universal deformation functors and representability.",
+    "name": "src-mazur-deformation-1989"
+  },
+  {
+    "source_id": "src-mazur-formal-immersion-v19",
+    "citation": "B. Mazur, Rational isogenies of prime degree; modular curves, Eisenstein quotients, and formal immersion.",
+    "source_url": "https://www.math.columbia.edu/~goldfeld/Mazur-Goldfeld1978.pdf",
+    "source_kind": "primary-paper",
+    "role": "Rational isogeny classification and formal-immersion argument.",
+    "name": "src-mazur-formal-immersion-v19"
+  },
+  {
+    "source_id": "src-mazur-kenku-isogeny-v18",
+    "citation": "Mazur\u2013Kenku classification of rational cyclic isogenies.",
+    "source_url": "https://www.math.harvard.edu/~mazur/papers/modular_curves_eisenstein_ideal.pdf",
+    "source_kind": "primary-paper-family",
+    "role": "Allowed rational cyclic isogeny degrees and formal-immersion obstruction.",
+    "name": "src-mazur-kenku-isogeny-v18"
+  },
+  {
+    "source_id": "src-mazur-modular-curve-kernel-v21",
+    "citation": "Mazur formal immersion, Eisenstein quotient finiteness, and rational isogeny geometry.",
+    "source_url": "https://www.math.columbia.edu/~goldfeld/Mazur-Goldfeld1978.pdf",
+    "source_kind": "foundation-kernel",
+    "role": "Formal immersion and finite/rank-zero quotient geometry.",
+    "name": "src-mazur-modular-curve-kernel-v21"
+  },
+  {
+    "source_id": "src-mazur-ribet-multiplicity-v16",
+    "citation": "B. Mazur and K. Ribet, Two-dimensional representations in the arithmetic of modular curves.",
+    "source_url": "https://math.berkeley.edu/~ribet/Articles/mazur-ribet.pdf",
+    "source_kind": "primary-paper",
+    "role": "Residual-prime multiplicity and N\u00e9ron/group-scheme arguments.",
+    "name": "src-mazur-ribet-multiplicity-v16"
+  },
+  {
+    "source_id": "src-modular-curve-comparison-kernel-v21",
+    "citation": "Functorial comparison for modular curves: Betti-etale, de Rham/Dieudonne, Eichler-Shimura, and semistable nearby cycles.",
+    "source_url": "https://www.numdam.org/article/ASENS_1969_4_2_1_63_0.pdf",
+    "source_kind": "foundation-kernel",
+    "role": "Actual geometric realization of the finite comparison models.",
+    "name": "src-modular-curve-comparison-kernel-v21"
+  },
+  {
+    "source_id": "src-nearby-cycles-v17",
+    "citation": "Semistable nearby-cycles and monodromy comparison for modular Jacobians.",
+    "source_url": "https://math.berkeley.edu/~ribet/Articles/mazur-ribet.pdf",
+    "source_kind": "primary-paper-context",
+    "role": "Identifies actual bad-prime cohomology with the monodromy model.",
+    "name": "src-nearby-cycles-v17"
+  },
+  {
+    "source_id": "src-nyssen-pseudo-v13",
+    "citation": "L. Nyssen, Pseudo-repr\u00e9sentations.",
+    "source_url": "https://eudml.org/doc/165454",
+    "source_kind": "primary-paper",
+    "role": "Pseudo-representations over Henselian local rings with absolutely irreducible residual trace.",
+    "name": "src-nyssen-pseudo-v13"
+  },
+  {
+    "source_id": "src-oort-tate-raynaud-v17",
+    "citation": "Oort\u2013Tate/Raynaud finite-flat group-scheme classification.",
+    "source_url": "https://www.math.uni-frankfurt.de/~stix/skripte/STIXfinflatGrpschemes20120918.pdf",
+    "source_kind": "course-notes-with-primary-references",
+    "role": "Finite-flat middle-extension classification for Tate p-torsion.",
+    "name": "src-oort-tate-raynaud-v17"
+  },
+  {
+    "source_id": "src-prime-distribution-kernel-v21",
+    "citation": "Prime distribution and specialization kernel: analytic Chebotarev plus finite quotient Frobenius classification.",
+    "source_url": "https://aareyanmanzoor.github.io/assets/articles/lagarias-odlyzko.pdf",
+    "source_kind": "foundation-kernel",
+    "role": "Analytic prime-ideal theorem and class-density realization.",
+    "name": "src-prime-distribution-kernel-v21"
+  },
+  {
+    "source_id": "src-raynaud-component-formula",
+    "citation": "B. W. Jordan and A. J. Scholl, Modular curves and N\u00e9ron models of generalized Jacobians, \u00a71.3.",
+    "source_url": "https://www.dpmms.cam.ac.uk/~ajs1005/preprints/neronfinal.pdf",
+    "source_kind": "primary-paper",
+    "role": "For a regular semistable model, the character group is H_1 of the reduced graph and the component group is ker(b)/im(a), with a the graph Laplacian.",
+    "name": "src-raynaud-component-formula"
+  },
+  {
+    "source_id": "src-ribet-1990",
+    "citation": "K. A. Ribet, On modular representations of Gal(Qbar/Q) arising from modular forms, Inventiones Mathematicae 100 (1990), 431\u2013476.",
+    "source_url": "https://math.berkeley.edu/~ribet/Articles/invent_100.pdf",
+    "source_kind": "primary-paper",
+    "role": "Level lowering and the implication from semistable modularity to FLT.",
+    "name": "src-ribet-1990"
+  },
+  {
+    "source_id": "src-ribet-degeneracy-v6",
+    "citation": "K. A. Ribet, Raising the levels of modular representations.",
+    "source_url": "https://math.berkeley.edu/~ribet/Articles/dpp.pdf",
+    "source_kind": "primary-paper",
+    "role": "Two degeneracy maps, old subvariety, composition matrix, and non-Eisenstein localization.",
+    "name": "src-ribet-degeneracy-v6"
+  },
+  {
+    "source_id": "src-ribet-level-lowering-notes",
+    "citation": "R. Magner, Ribet Level-Lowering Theorem notes.",
+    "source_url": "https://math.bu.edu/people/rmagner/extras/RibetLevelLowering.pdf",
+    "source_kind": "notes",
+    "role": "Level-lowering proof obligations.",
+    "name": "src-ribet-level-lowering-notes"
+  },
+  {
+    "source_id": "src-ribet-level-raising",
+    "citation": "K. Ribet, Raising the levels of modular representations.",
+    "source_url": "https://math.berkeley.edu/~ribet/Articles/dpp.pdf",
+    "source_kind": "primary-paper",
+    "role": "Degeneracy maps and Hecke matrices.",
+    "name": "src-ribet-level-raising"
+  },
+  {
+    "source_id": "src-ribet-multiplicities-v16",
+    "citation": "K. Ribet, Multiplicities of Galois representations in Jacobians of Shimura curves.",
+    "source_url": "https://math.berkeley.edu/~ribet/Articles/ps.pdf",
+    "source_kind": "primary-paper",
+    "role": "Multiplicity freeness and constituent structure for modular Jacobian torsion.",
+    "name": "src-ribet-multiplicities-v16"
+  },
+  {
+    "source_id": "src-ribet-stein-gorenstein-v15",
+    "citation": "K. Ribet and W. Stein, Lectures on Modular Forms and Hecke Operators, Chapter 18.",
+    "source_url": "https://wstein.org/books/ribet-stein/main.pdf",
+    "source_kind": "research-monograph",
+    "role": "Tate-module freeness, self-duality, and Gorenstein consequences.",
+    "name": "src-ribet-stein-gorenstein-v15"
+  },
+  {
+    "source_id": "src-ribet-stein-hecke",
+    "citation": "K. Ribet and W. Stein, Lectures on Modular Forms and Hecke Operators.",
+    "source_url": "https://wstein.org/books/ribet-stein/main.pdf",
+    "source_kind": "monograph",
+    "role": "Old/new subspaces and level optimization.",
+    "name": "src-ribet-stein-hecke"
+  },
+  {
+    "source_id": "src-ribet-stein-integral-v9",
+    "citation": "K. Ribet and W. Stein, Lectures on Modular Forms and Hecke Operators, chapters on integrality and Hecke algebras.",
+    "source_url": "https://wstein.org/books/ribet-stein/main.pdf",
+    "source_kind": "research-monograph",
+    "role": "Integral q-expansion lattices and scalar Hecke action on a rank-one form space.",
+    "name": "src-ribet-stein-integral-v9"
+  },
+  {
+    "source_id": "src-ribet-stein-multiplicity-v8",
+    "citation": "K. Ribet and W. Stein, Lectures on Modular Forms and Hecke Operators, \u00a79.",
+    "source_url": "https://wstein.org/books/ribet-stein/main.pdf",
+    "source_kind": "research-monograph",
+    "role": "Full Hecke multiplicity one, oldforms, and the U_q stabilization polynomial.",
+    "name": "src-ribet-stein-multiplicity-v8"
+  },
+  {
+    "source_id": "src-ribet-stein-oldnew",
+    "citation": "K. Ribet and W. Stein, Lectures on Modular Forms and Hecke Operators.",
+    "source_url": "https://wstein.org/books/ribet-stein/main.pdf",
+    "source_kind": "research-monograph",
+    "role": "Degeneracy maps, old/new spaces, localized Hecke modules, and component groups.",
+    "name": "src-ribet-stein-oldnew"
+  },
+  {
+    "source_id": "src-ribet-survey-1995",
+    "citation": "K. A. Ribet, Galois representations and modular forms, Bulletin of the AMS 32 (1995), 375\u2013402.",
+    "source_url": "https://wstein.org/edu/Fall2003/252/references/ribet-galois_reps/bulletins.pdf",
+    "source_kind": "author-survey",
+    "role": "Explicit proof architecture, Frey curve, irreducibility, level 2 obstruction.",
+    "name": "src-ribet-survey-1995"
+  },
+  {
+    "source_id": "src-ribet-toulouse-1990",
+    "citation": "K. A. Ribet, From the Taniyama-Shimura Conjecture to Fermat's Last Theorem, Annales de la Facult\u00e9 des Sciences de Toulouse 11 (1990), 116\u2013139.",
+    "source_url": "https://math.berkeley.edu/~ribet/Articles/toulousela.pdf",
+    "source_kind": "author-proof-exposition",
+    "role": "Frey semistability conditions, conductor, minimal discriminant, irreducibility, finiteness criterion, and level lowering architecture.",
+    "name": "src-ribet-toulouse-1990"
+  },
+  {
+    "source_id": "src-rouquier-pseudo-v13",
+    "citation": "R. Rouquier, Caract\u00e9risation des caract\u00e8res et pseudo-caract\u00e8res.",
+    "source_url": "https://www.math.ucla.edu/~rouquier/papers/carcar.pdf",
+    "source_kind": "primary-paper",
+    "role": "Absolutely irreducible pseudocharacters and Azumaya/matrix representations.",
+    "name": "src-rouquier-pseudo-v13"
+  },
+  {
+    "source_id": "src-serre-hilbert-v19",
+    "citation": "J.-P. Serre, Topics in Galois Theory, Chapter 3.",
+    "source_url": "https://www.ms.uky.edu/~sohum/ma561/notes/workspace/books/serre_galois_theory.pdf",
+    "source_kind": "research-monograph",
+    "role": "Hilbert irreducibility, thin sets, and weak approximation.",
+    "name": "src-serre-hilbert-v19"
+  },
+  {
+    "source_id": "src-solvable-automorphy-kernel-v21",
+    "citation": "Solvable base change, automorphic induction, and converse theorem in the Langlands-Tunnell route.",
+    "source_url": "https://projecteuclid.org/journals/bulletin-of-the-american-mathematical-society-new-series/volume-5/issue-2/Artins-conjecture-for-representations-of-octahedral-type/bams/1183548294.full",
+    "source_kind": "foundation-kernel",
+    "role": "Analytic automorphy for the tetrahedral and octahedral cases.",
+    "name": "src-solvable-automorphy-kernel-v21"
+  },
+  {
+    "source_id": "src-stein-hecke-modsym-v8",
+    "citation": "W. Stein, Modular Forms: A Computational Approach, Hecke operators and modular symbols.",
+    "source_url": "https://wstein.org/books/modform/stein-modform.pdf",
+    "source_kind": "research-monograph",
+    "role": "Finite computation of Hecke operators on Manin symbols.",
+    "name": "src-stein-hecke-modsym-v8"
+  },
+  {
+    "source_id": "src-stein-manin-v7",
+    "citation": "W. Stein, Modular Forms: A Computational Approach, Chapter 8 on Manin and modular symbols.",
+    "source_url": "https://wstein.org/books/modform/stein-modform.pdf",
+    "source_kind": "research-monograph",
+    "role": "Manin-symbol presentation, relations, continued-fraction reduction, and degeneracy maps.",
+    "name": "src-stein-manin-v7"
+  },
+  {
+    "source_id": "src-stein-modsym-degeneracy-v7",
+    "citation": "Computational modular-symbol degeneracy maps, including duality with f(q)\u21a6f(q^d).",
+    "source_url": "https://sites.math.rutgers.edu/~sg1108/Mathematics/ModSym.pdf",
+    "source_kind": "software-mathematics-manual",
+    "role": "Independent specification of level-changing maps on cuspidal modular symbols.",
+    "name": "src-stein-modsym-degeneracy-v7"
+  },
+  {
+    "source_id": "src-stix-finite-flat",
+    "citation": "J. Stix, A course on finite flat group schemes and p-divisible groups.",
+    "source_url": "https://www.math.uni-frankfurt.de/~stix/skripte/STIXfinflatGrpschemes20120918.pdf",
+    "source_kind": "course-notes",
+    "role": "Finite-flat extensions and Cartier duality.",
+    "name": "src-stix-finite-flat"
+  },
+  {
+    "source_id": "src-sturm-1987",
+    "citation": "J. Sturm, On the congruence of modular forms, Lecture Notes in Mathematics 1240 (1987), 275\u2013280.",
+    "source_url": "https://link.springer.com/chapter/10.1007/BFb0072985",
+    "source_kind": "primary-paper",
+    "role": "Finite coefficient bound for equality and congruence of modular forms.",
+    "name": "src-sturm-1987"
+  },
+  {
+    "source_id": "src-sturm-v8",
+    "citation": "J. Sturm, On the congruence of modular forms.",
+    "source_url": "https://link.springer.com/chapter/10.1007/BFb0072985",
+    "source_kind": "primary-paper",
+    "role": "Finite coefficient bound for identifying modular forms.",
+    "name": "src-sturm-v8"
+  },
+  {
+    "source_id": "src-subgroups-gl2-v18",
+    "citation": "Subgroups of GL2(F_l) containing transvections.",
+    "source_url": "https://people.math.harvard.edu/~landesman/assets/subgroups-of-gl2.pdf",
+    "source_kind": "research-notes",
+    "role": "Elementary matrices generate SL2 and control large residual images.",
+    "name": "src-subgroups-gl2-v18"
+  },
+  {
+    "source_id": "src-tate-curve-via-ribet",
+    "citation": "Tate-curve local criterion as stated in Ribet, From the Taniyama-Shimura Conjecture to Fermat's Last Theorem, Proposition 3.4\u20133.5.",
+    "source_url": "https://math.berkeley.edu/~ribet/Articles/toulousela.pdf",
+    "source_kind": "primary-exposition",
+    "role": "Kummer description of torsion at multiplicative primes and the finite-flat criterion at the residual prime.",
+    "name": "src-tate-curve-via-ribet"
+  },
+  {
+    "source_id": "src-tate-duality-v10",
+    "citation": "J. Tate, Duality theorems in Galois cohomology over number fields.",
+    "source_url": "https://virtualmath1.stanford.edu/~conrad/BSDseminar/refs/TateICM.pdf",
+    "source_kind": "primary-paper",
+    "role": "Global-local duality underlying Selmer dimension formulas.",
+    "name": "src-tate-duality-v10"
+  },
+  {
+    "source_id": "src-taylor-wiles-1995",
+    "citation": "R. Taylor and A. Wiles, Ring-theoretic properties of certain Hecke algebras, Annals of Mathematics 141 (1995), 553\u2013572.",
+    "source_url": "https://annals.math.princeton.edu/1995/141-3/p02",
+    "source_kind": "primary-paper",
+    "role": "The ring-theoretic ingredient completing the modularity argument.",
+    "name": "src-taylor-wiles-1995"
+  },
+  {
+    "source_id": "src-taylor-wiles-annals-1995",
+    "citation": "R. Taylor and A. Wiles, Ring-theoretic properties of certain Hecke algebras, Annals of Mathematics 141 (1995), 553\u2013572.",
+    "source_url": "https://annals.math.princeton.edu/1995/141-3/p02",
+    "source_kind": "primary-paper",
+    "role": "Taylor\u2013Wiles systems, complete intersections, and R=T.",
+    "name": "src-taylor-wiles-annals-1995"
+  },
+  {
+    "source_id": "src-tunnell-1981",
+    "citation": "J. Tunnell, Artin's conjecture for representations of octahedral type, Bulletin of the AMS 5 (1981), 173\u2013175.",
+    "source_url": "https://projecteuclid.org/journals/bulletin-of-the-american-mathematical-society-new-series/volume-5/issue-2/Artins-conjecture-for-representations-of-octahedral-type/bams/1183548294.full",
+    "source_kind": "primary-paper",
+    "role": "Residual modularity in the irreducible mod-3 branch.",
+    "name": "src-tunnell-1981"
+  },
+  {
+    "source_id": "src-tunnell-1981-v10",
+    "citation": "J. Tunnell, Artin's conjecture for representations of octahedral type, Bulletin AMS 5 (1981), 173\u2013175.",
+    "source_url": "https://www.ams.org/bull/1981-05-02/S0273-0979-1981-14936-3/",
+    "source_kind": "primary-paper",
+    "role": "Automorphy of octahedral Artin representations.",
+    "name": "src-tunnell-1981-v10"
+  },
+  {
+    "source_id": "src-tunnell-v19",
+    "citation": "J. Tunnell, Artin's conjecture for representations of octahedral type.",
+    "source_url": "https://projecteuclid.org/journals/bulletin-of-the-american-mathematical-society-new-series/volume-5/issue-2/Artins-conjecture-for-representations-of-octahedral-type/bams/1183548294.full",
+    "source_kind": "primary-paper",
+    "role": "Octahedral Artin automorphy and the solvable projective-image branch.",
+    "name": "src-tunnell-v19"
+  },
+  {
+    "source_id": "src-tw-proposition3-v11",
+    "citation": "R. Taylor and A. Wiles, Ring-theoretic properties of certain Hecke algebras, Proposition 3.",
+    "source_url": "https://virtualmath1.stanford.edu/~rltaylor/hecke.pdf",
+    "source_kind": "primary-paper",
+    "role": "Reduced algebraic patching proposition.",
+    "name": "src-tw-proposition3-v11"
+  },
+  {
+    "source_id": "src-tw-selection-v20",
+    "citation": "Taylor\u2013Wiles auxiliary-prime selection through finite quotients and Chebotarev.",
+    "source_url": "https://virtualmath1.stanford.edu/~rltaylor/hecke.pdf",
+    "source_kind": "primary-paper",
+    "role": "Selection of auxiliary primes killing dual Selmer.",
+    "name": "src-tw-selection-v20"
+  },
+  {
+    "source_id": "src-tw-theorem2-v11",
+    "citation": "R. Taylor and A. Wiles, Ring-theoretic properties of certain Hecke algebras, Theorem 2.",
+    "source_url": "https://virtualmath1.stanford.edu/~rltaylor/hecke.pdf",
+    "source_kind": "primary-paper",
+    "role": "Auxiliary-level freeness over the diamond group ring.",
+    "name": "src-tw-theorem2-v11"
+  },
+  {
+    "source_id": "src-tw-theorem3-v11",
+    "citation": "R. Taylor and A. Wiles, Ring-theoretic properties of certain Hecke algebras, Theorem 3 and appendix.",
+    "source_url": "https://virtualmath1.stanford.edu/~rltaylor/hecke.pdf",
+    "source_kind": "primary-paper",
+    "role": "Arithmetic application of the patching proposition.",
+    "name": "src-tw-theorem3-v11"
+  },
+  {
+    "source_id": "src-universal-level-lowering-kernel-v21",
+    "citation": "Ribet universal one-prime level lowering for irreducible finite local representations.",
+    "source_url": "https://math.berkeley.edu/~ribet/Articles/toulouse.pdf",
+    "source_kind": "foundation-kernel",
+    "role": "Uniform theorem behind the finite modular-symbol/component/multiplicity certificate generators.",
+    "name": "src-universal-level-lowering-kernel-v21"
+  },
+  {
+    "source_id": "src-weight-change-v18",
+    "citation": "Weight-one to weight-two mod-3 congruence mechanism.",
+    "source_url": "https://people.math.harvard.edu/~achenjang/assets/pdf/FLT_Overview_Notes.pdf",
+    "source_kind": "expository-source",
+    "role": "Weight-one Eisenstein series congruent to one and eigenpacket extraction.",
+    "name": "src-weight-change-v18"
+  },
+  {
+    "source_id": "src-wiles-1995",
+    "citation": "A. Wiles, Modular elliptic curves and Fermat's Last Theorem, Annals of Mathematics 141 (1995), 443\u2013551.",
+    "source_url": "https://annals.math.princeton.edu/1995/141-3/p01",
+    "source_kind": "primary-paper",
+    "role": "Semistable modularity theorem and modularity lifting.",
+    "name": "src-wiles-1995"
+  },
+  {
+    "source_id": "src-wiles-3-5-1995",
+    "citation": "A. Wiles, Modular elliptic curves and Fermat's Last Theorem, Chapter 5 (the 3\u20135 switch).",
+    "source_url": "https://annals.math.princeton.edu/1995/141-3/p01",
+    "source_kind": "primary-paper",
+    "role": "Residual modularity of every semistable elliptic curve via mod 3 and mod 5.",
+    "name": "src-wiles-3-5-1995"
+  },
+  {
+    "source_id": "src-wiles-annals-1995-v10",
+    "citation": "A. Wiles, Modular elliptic curves and Fermat's Last Theorem, Annals of Mathematics 141 (1995), 443\u2013551.",
+    "source_url": "https://annals.math.princeton.edu/1995/141-3/p01",
+    "source_kind": "primary-paper",
+    "role": "Residual modularity branches and modularity lifting.",
+    "name": "src-wiles-annals-1995-v10"
+  },
+  {
+    "source_id": "src-wiles-hecke-galois-v13",
+    "citation": "A. Wiles, Modular elliptic curves and Fermat's Last Theorem, construction of Hecke-algebra-valued Galois representations.",
+    "source_url": "https://sites.math.rutgers.edu/~zeilberg/EM22/AW1995.pdf",
+    "source_kind": "primary-paper",
+    "role": "Compatible T_n-valued Galois representations with Hecke traces and determinants.",
+    "name": "src-wiles-hecke-galois-v13"
+  },
+  {
+    "source_id": "src-wiles-local-comparison-v14",
+    "citation": "A. Wiles, Modular elliptic curves and Fermat's Last Theorem, local properties of Hecke-algebra-valued representations.",
+    "source_url": "https://annals.math.princeton.edu/1995/141-3/p01",
+    "source_kind": "primary-paper",
+    "role": "Ordinary/finite-flat and Steinberg local-global compatibility.",
+    "name": "src-wiles-local-comparison-v14"
+  },
+  {
+    "source_id": "src-x015-lmfdb-v18",
+    "citation": "LMFDB record 15a1, a model for X0(15), with rank zero and torsion Z/2 x Z/4.",
+    "source_url": "https://www.lmfdb.org/EllipticCurve/Q/15a1/",
+    "source_kind": "database",
+    "role": "Finite model, Mordell\u2013Weil structure, and modular-curve identification.",
+    "name": "src-x015-lmfdb-v18"
+  }
+]

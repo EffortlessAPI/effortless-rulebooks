@@ -1,0 +1,4 @@
+[api] 86 views available
+[api] catalog: 1771 fields (1033 derived)
+[api] PKO Procedure Register on http://localhost:8099
+[api] reading views from postgresql://postgres@localhost:5432/erb_procedural_knowledge_ontology

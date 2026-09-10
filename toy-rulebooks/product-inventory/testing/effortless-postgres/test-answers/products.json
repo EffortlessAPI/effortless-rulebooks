@@ -1,0 +1,38 @@
+[
+  {
+    "product_id": "GADGET-B",
+    "name": "GADGET-B",
+    "unit_price": "24.5",
+    "reorder_level": 30,
+    "current_quantity": 15,
+    "is_low_stock": true,
+    "reorder_status": "This needs to be reordered IMMEDIATELY!!"
+  },
+  {
+    "product_id": "PART-C",
+    "name": "PART-C",
+    "unit_price": "5.0",
+    "reorder_level": 100,
+    "current_quantity": 70,
+    "is_low_stock": true,
+    "reorder_status": "This needs to be reordered IMMEDIATELY!!"
+  },
+  {
+    "product_id": "TOOL-D",
+    "name": "TOOL-D",
+    "unit_price": "99.99",
+    "reorder_level": 10,
+    "current_quantity": 5,
+    "is_low_stock": true,
+    "reorder_status": "This needs to be reordered IMMEDIATELY!!"
+  },
+  {
+    "product_id": "WIDGET-A",
+    "name": "WIDGET-A",
+    "unit_price": "12.99",
+    "reorder_level": 50,
+    "current_quantity": 45,
+    "is_low_stock": true,
+    "reorder_status": "This needs to be reordered IMMEDIATELY!!"
+  }
+]

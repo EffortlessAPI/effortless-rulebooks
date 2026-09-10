@@ -1,0 +1,107 @@
+{
+  "domains": {
+    "primary_key": "domain_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 10
+  },
+  "proof_statuses": {
+    "primary_key": "proof_status_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 9
+  },
+  "theorems": {
+    "primary_key": "theorem_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 13
+  },
+  "theorem_dependencies": {
+    "primary_key": "dependency_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 11
+  },
+  "foundation_kernels": {
+    "primary_key": "kernel_order",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 9
+  },
+  "proof_facts": {
+    "primary_key": "fact_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 135
+  },
+  "loops": {
+    "primary_key": "loop_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 575
+  },
+  "invariant_checks": {
+    "primary_key": "invariant_check_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 313
+  },
+  "sources": {
+    "primary_key": "source_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 84
+  },
+  "trust_boundaries": {
+    "primary_key": "trust_boundary_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 10
+  },
+  "artifact_registry": {
+    "primary_key": "artifact_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 11
+  },
+  "migration_mappings": {
+    "primary_key": "mapping_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 7
+  },
+  "project_roadmap": {
+    "primary_key": "roadmap_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 6
+  },
+  "conclusions": {
+    "primary_key": "conclusion_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 8
+  },
+  "legacy_parent_audits": {
+    "primary_key": "edge_order",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 9
+  }
+}

@@ -1,0 +1,17 @@
+[
+  {
+    "growth_sequence_id": "non-algebraic-growth",
+    "construction_family": "non-algebraic-baseline",
+    "name": "non-algebraic-baseline-growth"
+  },
+  {
+    "growth_sequence_id": "sqrt-lat-growth",
+    "construction_family": "sqrt-lattice-projection",
+    "name": "sqrt-lattice-projection-growth"
+  },
+  {
+    "growth_sequence_id": "zeta7-sigma1-growth",
+    "construction_family": "zeta7-sigma1-projection",
+    "name": "zeta7-sigma1-projection-growth"
+  }
+]

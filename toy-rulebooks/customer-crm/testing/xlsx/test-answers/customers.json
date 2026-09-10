@@ -1,0 +1,62 @@
+[
+  {
+    "customers_id": "ada.lovelace@analytical.engine",
+    "email": "ada.lovelace@analytical.engine",
+    "first_name": "Ada",
+    "last_name": "Lovelace",
+    "name": null,
+    "full_name": null,
+    "lifetime_sales": null,
+    "unpaid_order_count": null,
+    "large_order_count": null,
+    "is_vip": null
+  },
+  {
+    "customers_id": "alan.turing@bletchley.uk",
+    "email": "alan.turing@bletchley.uk",
+    "first_name": "Alan",
+    "last_name": "Turing",
+    "name": null,
+    "full_name": null,
+    "lifetime_sales": null,
+    "unpaid_order_count": null,
+    "large_order_count": null,
+    "is_vip": null
+  },
+  {
+    "customers_id": "grace.hopper@nautical.mil",
+    "email": "grace.hopper@nautical.mil",
+    "first_name": "Grace",
+    "last_name": "Hopper",
+    "name": null,
+    "full_name": null,
+    "lifetime_sales": null,
+    "unpaid_order_count": null,
+    "large_order_count": null,
+    "is_vip": null
+  },
+  {
+    "customers_id": "katherine.johnson@nasa.gov",
+    "email": "katherine.johnson@nasa.gov",
+    "first_name": "Katherine",
+    "last_name": "Johnson",
+    "name": null,
+    "full_name": null,
+    "lifetime_sales": null,
+    "unpaid_order_count": null,
+    "large_order_count": null,
+    "is_vip": null
+  },
+  {
+    "customers_id": "linus.torvalds@kernel.org",
+    "email": "linus.torvalds@kernel.org",
+    "first_name": "Linus",
+    "last_name": "Torvalds",
+    "name": null,
+    "full_name": null,
+    "lifetime_sales": null,
+    "unpaid_order_count": null,
+    "large_order_count": null,
+    "is_vip": null
+  }
+]

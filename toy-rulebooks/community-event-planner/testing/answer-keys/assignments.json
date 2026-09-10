@@ -4,20 +4,35 @@
     "event_ref": "tech-talk-1",
     "speaker_ref": "alice@speakers.local",
     "name": "assign-1",
-    "is_available": false
+    "event_name": "tech-talk-1",
+    "speaker_name": "alice@speakers.local",
+    "event_date": "2026-05-24T14:00:00-05:00",
+    "speaker_avail_start": "2026-05-24T14:00:00-05:00",
+    "speaker_avail_end": "2026-05-24T21:00:00-05:00",
+    "is_available": true
   },
   {
     "assignment_id": "assign-10",
     "event_ref": "meetup-1",
     "speaker_ref": "overbooked@speakers.local",
     "name": "assign-10",
-    "is_available": false
+    "event_name": "meetup-1",
+    "speaker_name": "overbooked@speakers.local",
+    "event_date": "2026-05-23T18:00:00-05:00",
+    "speaker_avail_start": "2026-05-23T09:00:00-05:00",
+    "speaker_avail_end": "2026-05-25T21:00:00-05:00",
+    "is_available": true
   },
   {
     "assignment_id": "assign-2",
     "event_ref": "tech-talk-1",
     "speaker_ref": "bob@speakers.local",
     "name": "assign-2",
+    "event_name": "tech-talk-1",
+    "speaker_name": "bob@speakers.local",
+    "event_date": "2026-05-24T14:00:00-05:00",
+    "speaker_avail_start": "2026-05-25T09:00:00-05:00",
+    "speaker_avail_end": "2026-05-25T18:00:00-05:00",
     "is_available": false
   },
   {
@@ -25,13 +40,23 @@
     "event_ref": "workshop-1",
     "speaker_ref": "bob@speakers.local",
     "name": "assign-3",
-    "is_available": false
+    "event_name": "workshop-1",
+    "speaker_name": "bob@speakers.local",
+    "event_date": "2026-05-25T10:00:00-05:00",
+    "speaker_avail_start": "2026-05-25T09:00:00-05:00",
+    "speaker_avail_end": "2026-05-25T18:00:00-05:00",
+    "is_available": true
   },
   {
     "assignment_id": "assign-4",
     "event_ref": "panel-1",
     "speaker_ref": "alice@speakers.local",
     "name": "assign-4",
+    "event_name": "panel-1",
+    "speaker_name": "alice@speakers.local",
+    "event_date": "2026-05-25T15:00:00-05:00",
+    "speaker_avail_start": "2026-05-24T14:00:00-05:00",
+    "speaker_avail_end": "2026-05-24T21:00:00-05:00",
     "is_available": false
   },
   {
@@ -39,6 +64,11 @@
     "event_ref": "panel-1",
     "speaker_ref": "carol@speakers.local",
     "name": "assign-5",
+    "event_name": "panel-1",
+    "speaker_name": "carol@speakers.local",
+    "event_date": "2026-05-25T15:00:00-05:00",
+    "speaker_avail_start": "2026-05-23T15:00:00-05:00",
+    "speaker_avail_end": "2026-05-23T20:00:00-05:00",
     "is_available": false
   },
   {
@@ -46,27 +76,47 @@
     "event_ref": "meetup-1",
     "speaker_ref": "carol@speakers.local",
     "name": "assign-6",
-    "is_available": false
+    "event_name": "meetup-1",
+    "speaker_name": "carol@speakers.local",
+    "event_date": "2026-05-23T18:00:00-05:00",
+    "speaker_avail_start": "2026-05-23T15:00:00-05:00",
+    "speaker_avail_end": "2026-05-23T20:00:00-05:00",
+    "is_available": true
   },
   {
     "assignment_id": "assign-7",
     "event_ref": "tech-talk-1",
     "speaker_ref": "overbooked@speakers.local",
     "name": "assign-7",
-    "is_available": false
+    "event_name": "tech-talk-1",
+    "speaker_name": "overbooked@speakers.local",
+    "event_date": "2026-05-24T14:00:00-05:00",
+    "speaker_avail_start": "2026-05-23T09:00:00-05:00",
+    "speaker_avail_end": "2026-05-25T21:00:00-05:00",
+    "is_available": true
   },
   {
     "assignment_id": "assign-8",
     "event_ref": "workshop-1",
     "speaker_ref": "overbooked@speakers.local",
     "name": "assign-8",
-    "is_available": false
+    "event_name": "workshop-1",
+    "speaker_name": "overbooked@speakers.local",
+    "event_date": "2026-05-25T10:00:00-05:00",
+    "speaker_avail_start": "2026-05-23T09:00:00-05:00",
+    "speaker_avail_end": "2026-05-25T21:00:00-05:00",
+    "is_available": true
   },
   {
     "assignment_id": "assign-9",
     "event_ref": "panel-1",
     "speaker_ref": "overbooked@speakers.local",
     "name": "assign-9",
-    "is_available": false
+    "event_name": "panel-1",
+    "speaker_name": "overbooked@speakers.local",
+    "event_date": "2026-05-25T15:00:00-05:00",
+    "speaker_avail_start": "2026-05-23T09:00:00-05:00",
+    "speaker_avail_end": "2026-05-25T21:00:00-05:00",
+    "is_available": true
   }
 ]

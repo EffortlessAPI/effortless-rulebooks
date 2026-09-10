@@ -1,0 +1,32 @@
+[
+  {
+    "evaluation_step_id": "russell-set-in-russell-set-try-false",
+    "membership_fact": "russell-set-in-russell-set",
+    "step_order": 2,
+    "trial_value": "false",
+    "resulting_value": "true",
+    "name": "try false",
+    "is_stable": false,
+    "outcome": "contradiction"
+  },
+  {
+    "evaluation_step_id": "russell-set-in-russell-set-try-null",
+    "membership_fact": "russell-set-in-russell-set",
+    "step_order": 3,
+    "trial_value": "null",
+    "resulting_value": "null",
+    "name": "try null",
+    "is_stable": true,
+    "outcome": "stable fixed point"
+  },
+  {
+    "evaluation_step_id": "russell-set-in-russell-set-try-true",
+    "membership_fact": "russell-set-in-russell-set",
+    "step_order": 1,
+    "trial_value": "true",
+    "resulting_value": "false",
+    "name": "try true",
+    "is_stable": false,
+    "outcome": "contradiction"
+  }
+]

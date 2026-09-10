@@ -1,0 +1,22 @@
+[
+  {
+    "striker_id": "Bessie's striker",
+    "on_arm": "Bessie's hammer arm",
+    "material": "steel"
+  },
+  {
+    "striker_id": "Olive's striker",
+    "on_arm": "Olive's hammer arm",
+    "material": "steel"
+  },
+  {
+    "striker_id": "Rufus's striker",
+    "on_arm": "Rufus's hammer arm",
+    "material": "steel"
+  },
+  {
+    "striker_id": "Twigs's striker",
+    "on_arm": "Twigs's hammer arm",
+    "material": "steel"
+  }
+]

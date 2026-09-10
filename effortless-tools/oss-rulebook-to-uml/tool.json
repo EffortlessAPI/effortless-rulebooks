@@ -1,0 +1,10 @@
+{
+  "name": "oss-rulebook-to-uml",
+  "runtime": "script",
+  "entry": "transpiler.py",
+  "description": "Generate PlantUML class diagram + OCL constraints from rulebook",
+  "tags": [
+    "oss",
+    "execution-substrate"
+  ]
+}

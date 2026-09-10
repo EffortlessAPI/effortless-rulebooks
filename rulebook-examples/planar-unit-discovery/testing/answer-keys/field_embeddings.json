@@ -1,0 +1,71 @@
+[
+  {
+    "field_embedding_id": "emb-coverage-broken-pair",
+    "number_field": "q-zeta-7",
+    "embedding_type": "complex",
+    "index_in_signature": 99,
+    "target_space_dim": 2,
+    "has_conjugate_pair_in_field": false,
+    "description": "Coverage row: hypothetical complex embedding whose conjugate is NOT in K \u2014 for nullable-bool data coverage.",
+    "name": "q-zeta-7/complex-99",
+    "is_real_embedding": false,
+    "is_complex_embedding": true
+  },
+  {
+    "field_embedding_id": "emb-coverage-real-null",
+    "number_field": "q-sqrt-neg3",
+    "embedding_type": "real",
+    "index_in_signature": 0,
+    "target_space_dim": 1,
+    "has_conjugate_pair_in_field": false,
+    "description": "Coverage row: real embedding \u2014 conjugate-pair concept doesn't apply, so HasConjugatePairInField is null.",
+    "name": "q-sqrt-neg3/real-0",
+    "is_real_embedding": true,
+    "is_complex_embedding": false
+  },
+  {
+    "field_embedding_id": "emb-q-sqrt-neg3-c1",
+    "number_field": "q-sqrt-neg3",
+    "embedding_type": "complex",
+    "index_in_signature": 1,
+    "target_space_dim": 2,
+    "has_conjugate_pair_in_field": true,
+    "description": "The single complex embedding pair of Q(sqrt(-3)).",
+    "name": "q-sqrt-neg3/complex-1",
+    "is_real_embedding": false,
+    "is_complex_embedding": true
+  },
+  {
+    "field_embedding_id": "emb-q-zeta-7-c1",
+    "number_field": "q-zeta-7",
+    "embedding_type": "complex",
+    "index_in_signature": 1,
+    "target_space_dim": 2,
+    "has_conjugate_pair_in_field": true,
+    "name": "q-zeta-7/complex-1",
+    "is_real_embedding": false,
+    "is_complex_embedding": true
+  },
+  {
+    "field_embedding_id": "emb-q-zeta-7-c2",
+    "number_field": "q-zeta-7",
+    "embedding_type": "complex",
+    "index_in_signature": 2,
+    "target_space_dim": 2,
+    "has_conjugate_pair_in_field": true,
+    "name": "q-zeta-7/complex-2",
+    "is_real_embedding": false,
+    "is_complex_embedding": true
+  },
+  {
+    "field_embedding_id": "emb-q-zeta-7-c3",
+    "number_field": "q-zeta-7",
+    "embedding_type": "complex",
+    "index_in_signature": 3,
+    "target_space_dim": 2,
+    "has_conjugate_pair_in_field": true,
+    "name": "q-zeta-7/complex-3",
+    "is_real_embedding": false,
+    "is_complex_embedding": true
+  }
+]

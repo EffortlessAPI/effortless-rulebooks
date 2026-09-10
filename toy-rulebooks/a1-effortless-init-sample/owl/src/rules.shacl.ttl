@@ -1,0 +1,47 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix effortless-ntwf: <https://w3id.org/effortless-ntwf#> .
+
+# === Shape with rules for HelloWhos ===
+effortless-ntwf:HelloWhosShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:HelloWhos ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_HelloWhos_Introduction" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:introduction ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:HelloWhos .
+    OPTIONAL { $this effortless-ntwf:name ?name . }
+                BIND(CONCAT("Hi, ", IF(isIRI(?name), REPLACE(STR(?name), "^.*[#/]", ""), STR(?name)), ".") AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_HelloWhos_IsBob" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:isBob ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:HelloWhos .
+    OPTIONAL { $this effortless-ntwf:name ?name . }
+                BIND(((REPLACE(COALESCE(STR(?name), ""), "^.*#", "") = "Bob") || (REPLACE(COALESCE(STR(?name), ""), "^.*#", "") = "Bobby") || (REPLACE(COALESCE(STR(?name), ""), "^.*#", "") = "Robert")) AS ?_result)
+            }
+        """ ;
+    ] .
+
+# Generated 2 SHACL rules

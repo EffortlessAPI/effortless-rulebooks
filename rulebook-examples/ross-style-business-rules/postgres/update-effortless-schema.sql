@@ -109,10 +109,14 @@ COMMENT ON COLUMN claims.is_flagged_for_review IS 'Ground truth: whether the cla
 CREATE INDEX IF NOT EXISTS idx_claimants_claimant_name ON claimants (claimant_name);
 CREATE INDEX IF NOT EXISTS idx_claimants_policy ON claimants (policy);
 
+-- Incidents
+CREATE INDEX IF NOT EXISTS idx_incidents_claimant ON incidents (claimant);
+
 -- Claims
 CREATE INDEX IF NOT EXISTS idx_claims_incident ON claims (incident);
+CREATE INDEX IF NOT EXISTS idx_claims_additional_claimant ON claims (additional_claimant);
 
--- 3 FK index(es) declared.
+-- 5 FK index(es) declared.
 
 
 -- === 2/3. Drop the derived layer ==========================================
@@ -209,14 +213,15 @@ RETURNS INTEGER AS $$
   SELECT ((SELECT COUNT(*) FROM claimants WHERE policy = (SELECT NULLIF(policy_id, '') FROM policies WHERE policy_id = p_policy_id)))::integer;
 $$ LANGUAGE sql STABLE;
 
--- calc_claimants_policy_is_active_policy_id
+-- calc_claimants_policy_is_active
 -- Field: Claimants.PolicyIsActive
--- Type: lookup | DataType: boolean
--- Lookup: PolicyId from Policies via PolicyIsActive
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: IsActive from related Policies
 
-CREATE OR REPLACE FUNCTION calc_claimants_policy_is_active_policy_id(p_claimant_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT policy_id FROM policies WHERE policy_id = (SELECT policy_is_active FROM claimants WHERE claimant_id = p_claimant_id));
+
+CREATE OR REPLACE FUNCTION calc_claimants_policy_is_active(p_claimant_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT is_active::boolean FROM policies WHERE policy_id = (SELECT policy FROM claimants WHERE claimant_id = p_claimant_id));
 $$ LANGUAGE sql STABLE;
 
 -- get_policies_policyholder_name
@@ -267,14 +272,15 @@ RETURNS BOOLEAN AS $$
   SELECT ((calc_claimants_count_of_incidents(p_claimant_id))::NUMERIC > 2)::boolean;
 $$ LANGUAGE sql STABLE;
 
--- calc_incidents_incident_claimant_name_claimant_id
+-- calc_incidents_incident_claimant_name
 -- Field: Incidents.IncidentClaimantName
--- Type: lookup | DataType: string
--- Lookup: ClaimantId from Claimants via IncidentClaimantName
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: ClaimantName from related Claimants
 
-CREATE OR REPLACE FUNCTION calc_incidents_incident_claimant_name_claimant_id(p_incident_id TEXT)
+
+CREATE OR REPLACE FUNCTION calc_incidents_incident_claimant_name(p_incident_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (SELECT claimant_id FROM claimants WHERE claimant_id = (SELECT incident_claimant_name FROM incidents WHERE incident_id = p_incident_id));
+  SELECT (SELECT claimant_name::text FROM claimants WHERE claimant_id = (SELECT claimant FROM incidents WHERE incident_id = p_incident_id));
 $$ LANGUAGE sql STABLE;
 
 -- get_claimants_claimant_name
@@ -314,64 +320,70 @@ RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(incident_id, '') FROM incidents WHERE incident_id = p_incident_id))::text;
 $$ LANGUAGE sql STABLE;
 
--- calc_claims_incident_claimant_incident_id
+-- calc_claims_incident_claimant
 -- Field: Claims.IncidentClaimant
--- Type: lookup | DataType: string
--- Lookup: IncidentId from Incidents via IncidentClaimant
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Claimant from related Incidents
 
-CREATE OR REPLACE FUNCTION calc_claims_incident_claimant_incident_id(p_claim_id TEXT)
+
+CREATE OR REPLACE FUNCTION calc_claims_incident_claimant(p_claim_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (SELECT incident_id FROM incidents WHERE incident_id = (SELECT incident_claimant FROM claims WHERE claim_id = p_claim_id));
+  SELECT (SELECT claimant::text FROM incidents WHERE incident_id = (SELECT incident FROM claims WHERE claim_id = p_claim_id));
 $$ LANGUAGE sql STABLE;
 
--- calc_claims_incident_claimant_policy_active_claimant_id
+-- calc_claims_incident_claimant_policy_active
 -- Field: Claims.IncidentClaimantPolicyActive
--- Type: lookup | DataType: boolean
--- Lookup: ClaimantId from Claimants via IncidentClaimantPolicyActive
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: PolicyIsActive from related Claimants
 
-CREATE OR REPLACE FUNCTION calc_claims_incident_claimant_policy_active_claimant_id(p_claim_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT claimant_id FROM claimants WHERE claimant_id = (SELECT incident_claimant_policy_active FROM claims WHERE claim_id = p_claim_id));
+
+CREATE OR REPLACE FUNCTION calc_claims_incident_claimant_policy_active(p_claim_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_claimants_policy_is_active(calc_claims_incident_claimant(p_claim_id));
 $$ LANGUAGE sql STABLE;
 
--- calc_claims_additional_claimant_policy_active_claimant_id
+-- calc_claims_additional_claimant_policy_active
 -- Field: Claims.AdditionalClaimantPolicyActive
--- Type: lookup | DataType: boolean
--- Lookup: ClaimantId from Claimants via AdditionalClaimantPolicyActive
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: PolicyIsActive from related Claimants
 
-CREATE OR REPLACE FUNCTION calc_claims_additional_claimant_policy_active_claimant_id(p_claim_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT claimant_id FROM claimants WHERE claimant_id = (SELECT additional_claimant_policy_active FROM claims WHERE claim_id = p_claim_id));
+
+CREATE OR REPLACE FUNCTION calc_claims_additional_claimant_policy_active(p_claim_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_claimants_policy_is_active((SELECT additional_claimant FROM claims WHERE claim_id = p_claim_id));
 $$ LANGUAGE sql STABLE;
 
--- calc_claims_additional_claimant_favorite_color_claimant_id
+-- calc_claims_additional_claimant_favorite_color
 -- Field: Claims.AdditionalClaimantFavoriteColor
--- Type: lookup | DataType: string
--- Lookup: ClaimantId from Claimants via AdditionalClaimantFavoriteColor
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: FavoriteColor from related Claimants
 
-CREATE OR REPLACE FUNCTION calc_claims_additional_claimant_favorite_color_claimant_id(p_claim_id TEXT)
+
+CREATE OR REPLACE FUNCTION calc_claims_additional_claimant_favorite_color(p_claim_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (SELECT claimant_id FROM claimants WHERE claimant_id = (SELECT additional_claimant_favorite_color FROM claims WHERE claim_id = p_claim_id));
+  SELECT (SELECT favorite_color::text FROM claimants WHERE claimant_id = (SELECT additional_claimant FROM claims WHERE claim_id = p_claim_id));
 $$ LANGUAGE sql STABLE;
 
--- calc_claims_claimant_of_record_incident_count_claimant_id
+-- calc_claims_claimant_of_record_incident_count
 -- Field: Claims.ClaimantOfRecordIncidentCount
--- Type: lookup | DataType: integer
--- Lookup: ClaimantId from Claimants via ClaimantOfRecordIncidentCount
+-- Type: lookup | DataType: integer | Returns: INTEGER
+-- Lookup: CountOfIncidents from related Claimants
 
-CREATE OR REPLACE FUNCTION calc_claims_claimant_of_record_incident_count_claimant_id(p_claim_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT claimant_id FROM claimants WHERE claimant_id = (SELECT claimant_of_record_incident_count FROM claims WHERE claim_id = p_claim_id));
+
+CREATE OR REPLACE FUNCTION calc_claims_claimant_of_record_incident_count(p_claim_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT calc_claimants_count_of_incidents(calc_claims_claimant_of_record(p_claim_id));
 $$ LANGUAGE sql STABLE;
 
--- calc_claims_claimant_of_record_is_high_risk_claimant_id
+-- calc_claims_claimant_of_record_is_high_risk
 -- Field: Claims.ClaimantOfRecordIsHighRisk
--- Type: lookup | DataType: boolean
--- Lookup: ClaimantId from Claimants via ClaimantOfRecordIsHighRisk
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: IsHighRisk from related Claimants
 
-CREATE OR REPLACE FUNCTION calc_claims_claimant_of_record_is_high_risk_claimant_id(p_claim_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT claimant_id FROM claimants WHERE claimant_id = (SELECT claimant_of_record_is_high_risk FROM claims WHERE claim_id = p_claim_id));
+
+CREATE OR REPLACE FUNCTION calc_claims_claimant_of_record_is_high_risk(p_claim_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_claimants_is_high_risk(calc_claims_claimant_of_record(p_claim_id));
 $$ LANGUAGE sql STABLE;
 
 -- get_incidents_incident_description
@@ -429,7 +441,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_claims_claimant_of_record(p_claim_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN calc_claims_has_additional_claimant(p_claim_id) THEN ((SELECT NULLIF(additional_claimant, '') FROM claims WHERE claim_id = p_claim_id))::text ELSE ((SELECT NULLIF(incident_claimant, '') FROM claims WHERE claim_id = p_claim_id))::text END)::text;
+  SELECT (CASE WHEN calc_claims_has_additional_claimant(p_claim_id) THEN ((SELECT NULLIF(additional_claimant, '') FROM claims WHERE claim_id = p_claim_id))::text ELSE (calc_claims_incident_claimant(p_claim_id))::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_claims_is_valid
@@ -439,7 +451,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_claims_is_valid(p_claim_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_claims_references_incident(p_claim_id) AND (COALESCE((SELECT incident_claimant_policy_active FROM claims WHERE claim_id = p_claim_id), FALSE) OR COALESCE((SELECT additional_claimant_policy_active FROM claims WHERE claim_id = p_claim_id), FALSE)) AND (NOT (calc_claims_has_additional_claimant(p_claim_id)) OR LOWER((SELECT NULLIF(additional_claimant_favorite_color, '') FROM claims WHERE claim_id = p_claim_id)) = 'red') AND NOT (COALESCE((SELECT claimant_of_record_is_high_risk FROM claims WHERE claim_id = p_claim_id), FALSE))))::boolean;
+  SELECT ((calc_claims_references_incident(p_claim_id) AND (calc_claims_incident_claimant_policy_active(p_claim_id) OR calc_claims_additional_claimant_policy_active(p_claim_id)) AND (NOT (calc_claims_has_additional_claimant(p_claim_id)) OR LOWER(calc_claims_additional_claimant_favorite_color(p_claim_id)) = 'red') AND NOT (calc_claims_claimant_of_record_is_high_risk(p_claim_id))))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_claims_validity_deciding_factor
@@ -449,7 +461,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_claims_validity_deciding_factor(p_claim_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN calc_claims_is_valid(p_claim_id) THEN ('Valid — all conditions met')::text ELSE (CASE WHEN NOT (calc_claims_references_incident(p_claim_id)) THEN ('No incident referenced')::text ELSE (CASE WHEN NOT ((COALESCE((SELECT incident_claimant_policy_active FROM claims WHERE claim_id = p_claim_id), FALSE) OR COALESCE((SELECT additional_claimant_policy_active FROM claims WHERE claim_id = p_claim_id), FALSE))) THEN ('No active policy on incident claimant or additional claimant')::text ELSE (CASE WHEN (calc_claims_has_additional_claimant(p_claim_id) AND LOWER((SELECT NULLIF(additional_claimant_favorite_color, '') FROM claims WHERE claim_id = p_claim_id)) <> 'red') THEN ('Additional claimant''s favorite color is not red')::text ELSE (CASE WHEN COALESCE((SELECT claimant_of_record_is_high_risk FROM claims WHERE claim_id = p_claim_id), FALSE) THEN ('Claimant of record is high-risk (DR-2)')::text ELSE ('Undetermined')::text END)::text END)::text END)::text END)::text END)::text;
+  SELECT (CASE WHEN calc_claims_is_valid(p_claim_id) THEN ('Valid — all conditions met')::text ELSE (CASE WHEN NOT (calc_claims_references_incident(p_claim_id)) THEN ('No incident referenced')::text ELSE (CASE WHEN NOT ((calc_claims_incident_claimant_policy_active(p_claim_id) OR calc_claims_additional_claimant_policy_active(p_claim_id))) THEN ('No active policy on incident claimant or additional claimant')::text ELSE (CASE WHEN (calc_claims_has_additional_claimant(p_claim_id) AND LOWER(calc_claims_additional_claimant_favorite_color(p_claim_id)) <> 'red') THEN ('Additional claimant''s favorite color is not red')::text ELSE (CASE WHEN calc_claims_claimant_of_record_is_high_risk(p_claim_id) THEN ('Claimant of record is high-risk (DR-2)')::text ELSE ('Undetermined')::text END)::text END)::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_claims_is_approvable
@@ -533,8 +545,7 @@ SELECT
   t.policy,                                                                     -- The claimant's current policy (foreign key to Policies).
   calc_claimants_count_of_incidents(t.claimant_id) AS count_of_incidents,       -- The number of incidents whose claimant is this claimant.
   calc_claimants_is_high_risk(t.claimant_id) AS is_high_risk,                   -- A claimant must be considered high-risk if the claimant's incident count exceeds 2. (Ross: 'must be considered ... if'; '>2' means 3 or more.)
-  t.policy_is_active,                                                           -- Whether the claimant's current policy is active (ground truth carried over from the policy).
-  calc_claimants_policy_is_active_policy_id(t.claimant_id) AS policy_is_active_policy_id-- Whether the claimant's current policy is active (ground truth carried over from the policy).
+  calc_claimants_policy_is_active(t.claimant_id) AS policy_is_active            -- Whether the claimant's current policy is active (ground truth carried over from the policy). (Was wrapped in IFERROR(..., FALSE); rulebook-to-postgres mistranslates that wrapper — it emitted the field as a nonexistent base-table column and broke 03-create-views.sql. INDEX/MATCH already yields NULL when the FK does not match.)
 FROM claimants t;
 
 -- ----------------------------------------------------------------------------
@@ -548,8 +559,7 @@ SELECT
   t.incident_id,                                                                -- Stable identifier for the incident.
   t.incident_description,                                                       -- Short description of the incident.
   t.claimant,                                                                   -- The claimant involved in this incident (foreign key to Claimants via ClaimantId).
-  t.incident_claimant_name,                                                     -- Name of the incident's claimant (for readability).
-  calc_incidents_incident_claimant_name_claimant_id(t.incident_id) AS incident_claimant_name_claimant_id-- Name of the incident's claimant (for readability).
+  calc_incidents_incident_claimant_name(t.incident_id) AS incident_claimant_name-- Name of the incident's claimant (for readability). (Was wrapped in IFERROR(..., ""); rulebook-to-postgres mistranslates that wrapper — it emitted the field as a nonexistent base-table column and broke 03-create-views.sql. INDEX/MATCH already yields NULL when the FK does not match.)
 FROM incidents t;
 
 -- ----------------------------------------------------------------------------
@@ -566,19 +576,13 @@ SELECT
   t.is_flagged_for_review,                                                      -- Ground truth: whether the claim has been flagged for manual review (e.g., possible fraud). A claim can be valid yet still be held here — which is exactly why 'approvable' is 'only if valid', not 'iff valid'.
   calc_claims_references_incident(t.claim_id) AS references_incident,           -- A claim references an incident when its incident is present.
   calc_claims_has_additional_claimant(t.claim_id) AS has_additional_claimant,   -- A claim has an additional claimant when one is present.
-  t.incident_claimant,                                                          -- The claimant of the referenced incident.
-  calc_claims_incident_claimant_incident_id(t.claim_id) AS incident_claimant_incident_id,-- The claimant of the referenced incident.
+  calc_claims_incident_claimant(t.claim_id) AS incident_claimant,               -- The claimant of the referenced incident. (Was wrapped in IFERROR(..., ""); rulebook-to-postgres mistranslates that wrapper — it emitted the field as a nonexistent base-table column and broke 03-create-views.sql. INDEX/MATCH already yields NULL when the FK does not match.)
   calc_claims_claimant_of_record(t.claim_id) AS claimant_of_record,             -- The claimant of record for a claim is determined by priority: (1) the additional claimant, if one exists; (2) otherwise the incident's claimant. Per R. Ross: expressed as a priority ordering, not an 'otherwise/else' procedure — the ordering is the rule.
-  t.incident_claimant_policy_active,                                            -- Whether the incident claimant's current policy is active.
-  calc_claims_incident_claimant_policy_active_claimant_id(t.claim_id) AS incident_claimant_policy_active_claimant_id,-- Whether the incident claimant's current policy is active.
-  t.additional_claimant_policy_active,                                          -- Whether the additional claimant's current policy is active (false when there is no additional claimant).
-  calc_claims_additional_claimant_policy_active_claimant_id(t.claim_id) AS additional_claimant_policy_active_claimant_id,-- Whether the additional claimant's current policy is active (false when there is no additional claimant).
-  t.additional_claimant_favorite_color,                                         -- The additional claimant's favorite color (blank when there is no additional claimant).
-  calc_claims_additional_claimant_favorite_color_claimant_id(t.claim_id) AS additional_claimant_favorite_color_claimant_id,-- The additional claimant's favorite color (blank when there is no additional claimant).
-  t.claimant_of_record_incident_count,                                          -- The incident count of the claimant of record.
-  calc_claims_claimant_of_record_incident_count_claimant_id(t.claim_id) AS claimant_of_record_incident_count_claimant_id,-- The incident count of the claimant of record.
-  t.claimant_of_record_is_high_risk,                                            -- Whether the claimant of record is high-risk (DR-2). Carries the named rule — IsValid references this field rather than re-deriving the threshold inline, keeping the '> 2 incidents' definition in exactly one place.
-  calc_claims_claimant_of_record_is_high_risk_claimant_id(t.claim_id) AS claimant_of_record_is_high_risk_claimant_id,-- Whether the claimant of record is high-risk (DR-2). Carries the named rule — IsValid references this field rather than re-deriving the threshold inline, keeping the '> 2 incidents' definition in exactly one place.
+  calc_claims_incident_claimant_policy_active(t.claim_id) AS incident_claimant_policy_active,-- Whether the incident claimant's current policy is active. (Was wrapped in IFERROR(..., FALSE); rulebook-to-postgres mistranslates that wrapper — it emitted the field as a nonexistent base-table column and broke 03-create-views.sql. INDEX/MATCH already yields NULL when the FK does not match.)
+  calc_claims_additional_claimant_policy_active(t.claim_id) AS additional_claimant_policy_active,-- Whether the additional claimant's current policy is active (false when there is no additional claimant). (Was wrapped in IFERROR(..., FALSE); rulebook-to-postgres mistranslates that wrapper — it emitted the field as a nonexistent base-table column and broke 03-create-views.sql. INDEX/MATCH already yields NULL when the FK does not match.)
+  calc_claims_additional_claimant_favorite_color(t.claim_id) AS additional_claimant_favorite_color,-- The additional claimant's favorite color (blank when there is no additional claimant). (Was wrapped in IFERROR(..., ""); rulebook-to-postgres mistranslates that wrapper — it emitted the field as a nonexistent base-table column and broke 03-create-views.sql. INDEX/MATCH already yields NULL when the FK does not match.)
+  calc_claims_claimant_of_record_incident_count(t.claim_id) AS claimant_of_record_incident_count,-- The incident count of the claimant of record. (Was wrapped in IFERROR(..., 0); rulebook-to-postgres mistranslates that wrapper — it emitted the field as a nonexistent base-table column and broke 03-create-views.sql. INDEX/MATCH already yields NULL when the FK does not match.)
+  calc_claims_claimant_of_record_is_high_risk(t.claim_id) AS claimant_of_record_is_high_risk,-- Whether the claimant of record is high-risk (DR-2). Carries the named rule — IsValid references this field rather than re-deriving the threshold inline, keeping the '> 2 incidents' definition in exactly one place. (Was wrapped in IFERROR(..., FALSE); rulebook-to-postgres mistranslates that wrapper — it emitted the field as a nonexistent base-table column and broke 03-create-views.sql. INDEX/MATCH already yields NULL when the FK does not match.)
   calc_claims_is_valid(t.claim_id) AS is_valid,                                 -- All of the following must be true for a claim to be considered valid: it references an incident; at least one of the incident claimant's or the additional claimant's current policy is active; if an additional claimant exists, that claimant's favorite color is red; and the claimant of record is not high-risk (DR-2). Note: DR-4's fourth condition intentionally references the named high-risk rule rather than restating the incident-count threshold.
   calc_claims_validity_deciding_factor(t.claim_id) AS validity_deciding_factor, -- Names the single deciding reason for a claim's validity verdict — the first unmet condition, or that all conditions are met.
   calc_claims_is_approvable(t.claim_id) AS is_approvable,                       -- A claim may be considered approvable only if it is valid and not flagged for review. Per R. Ross: 'only if', not 'if and only if' — validity is necessary but not sufficient. Stating it as 'iff' would wrongly make 'valid' and 'approvable' the same concept.

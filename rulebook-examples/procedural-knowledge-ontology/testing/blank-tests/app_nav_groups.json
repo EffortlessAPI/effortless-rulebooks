@@ -1,0 +1,163 @@
+[
+  {
+    "app_nav_group_id": "assurance",
+    "group_label": "Assurance",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppNavGroup",
+    "name": null,
+    "route_count": null
+  },
+  {
+    "app_nav_group_id": "attest",
+    "group_label": "Attestation",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppNavGroup",
+    "name": null,
+    "route_count": null
+  },
+  {
+    "app_nav_group_id": "audience",
+    "group_label": "Audience",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppNavGroup",
+    "name": null,
+    "route_count": null
+  },
+  {
+    "app_nav_group_id": "authority",
+    "group_label": "Authority",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppNavGroup",
+    "name": null,
+    "route_count": null
+  },
+  {
+    "app_nav_group_id": "backlog",
+    "group_label": "My Backlog",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppNavGroup",
+    "name": null,
+    "route_count": null
+  },
+  {
+    "app_nav_group_id": "cadence",
+    "group_label": "Cadence",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppNavGroup",
+    "name": null,
+    "route_count": null
+  },
+  {
+    "app_nav_group_id": "compliance",
+    "group_label": "Compliance",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppNavGroup",
+    "name": null,
+    "route_count": null
+  },
+  {
+    "app_nav_group_id": "conformance",
+    "group_label": "Conformance",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppNavGroup",
+    "name": null,
+    "route_count": null
+  },
+  {
+    "app_nav_group_id": "controls",
+    "group_label": "Controls",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppNavGroup",
+    "name": null,
+    "route_count": null
+  },
+  {
+    "app_nav_group_id": "delivery",
+    "group_label": "Delivery",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppNavGroup",
+    "name": null,
+    "route_count": null
+  },
+  {
+    "app_nav_group_id": "evidence",
+    "group_label": "Evidence",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppNavGroup",
+    "name": null,
+    "route_count": null
+  },
+  {
+    "app_nav_group_id": "execution",
+    "group_label": "Execution",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppNavGroup",
+    "name": null,
+    "route_count": null
+  },
+  {
+    "app_nav_group_id": "governance",
+    "group_label": "Governance",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppNavGroup",
+    "name": null,
+    "route_count": null
+  },
+  {
+    "app_nav_group_id": "inferences",
+    "group_label": "Inferences",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppNavGroup",
+    "name": null,
+    "route_count": null
+  },
+  {
+    "app_nav_group_id": "knowledge",
+    "group_label": "Knowledge",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppNavGroup",
+    "name": null,
+    "route_count": null
+  },
+  {
+    "app_nav_group_id": "loops",
+    "group_label": "Loops",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppNavGroup",
+    "name": null,
+    "route_count": null
+  },
+  {
+    "app_nav_group_id": "model",
+    "group_label": "The Model",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppNavGroup",
+    "name": null,
+    "route_count": null
+  },
+  {
+    "app_nav_group_id": "ownership",
+    "group_label": "Ownership",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppNavGroup",
+    "name": null,
+    "route_count": null
+  },
+  {
+    "app_nav_group_id": "provenance",
+    "group_label": "Provenance",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppNavGroup",
+    "name": null,
+    "route_count": null
+  },
+  {
+    "app_nav_group_id": "quality",
+    "group_label": "Quality",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppNavGroup",
+    "name": null,
+    "route_count": null
+  },
+  {
+    "app_nav_group_id": "readiness",
+    "group_label": "Readiness",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppNavGroup",
+    "name": null,
+    "route_count": null
+  },
+  {
+    "app_nav_group_id": "selfcheck",
+    "group_label": "Self-check",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppNavGroup",
+    "name": null,
+    "route_count": null
+  },
+  {
+    "app_nav_group_id": "witnesses",
+    "group_label": "Witnesses",
+    "semantic_type_iri": "urn:effortless:pko-extension#AppNavGroup",
+    "name": null,
+    "route_count": null
+  }
+]

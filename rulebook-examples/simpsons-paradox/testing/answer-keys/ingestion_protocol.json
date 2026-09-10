@@ -1,0 +1,172 @@
+[
+  {
+    "protocol_id": "ingest-adapter-strata",
+    "rule_type": "adapter-metadata",
+    "target_table": "Strata",
+    "field_name": "",
+    "requirement_statement": "One Strata row per (study, stratum) with Description.",
+    "mechanical_check": "COUNT(Strata) = StratumCount.",
+    "sort_order": 15,
+    "name": "ingest-adapter-strata"
+  },
+  {
+    "protocol_id": "ingest-adapter-stratum-variable",
+    "rule_type": "adapter-metadata",
+    "target_table": "StratumVariables",
+    "field_name": "",
+    "requirement_statement": "One StratumVariables row with CausalRole and MechanismNote.",
+    "mechanical_check": "CausalRole in {confounder, mediator, contested, unknown}.",
+    "sort_order": 17,
+    "name": "ingest-adapter-stratum-variable"
+  },
+  {
+    "protocol_id": "ingest-adapter-treatments",
+    "rule_type": "adapter-metadata",
+    "target_table": "Treatments",
+    "field_name": "",
+    "requirement_statement": "Two Treatments rows with Description.",
+    "mechanical_check": "Exactly two Treatments rows per study.",
+    "sort_order": 16,
+    "name": "ingest-adapter-treatments"
+  },
+  {
+    "protocol_id": "ingest-excl-continuous-outcome",
+    "rule_type": "exclusion",
+    "target_table": "Studies",
+    "field_name": "",
+    "requirement_statement": "Exclude continuous outcomes without stated dichotomisation.",
+    "mechanical_check": "Reject if only mean/SD reported.",
+    "sort_order": 13,
+    "name": "ingest-excl-continuous-outcome"
+  },
+  {
+    "protocol_id": "ingest-excl-posthoc-strata",
+    "rule_type": "exclusion",
+    "target_table": "Studies",
+    "field_name": "",
+    "requirement_statement": "Exclude post-hoc stratum splitting to force a reversal.",
+    "mechanical_check": "Stratum variable named in original publication.",
+    "sort_order": 14,
+    "name": "ingest-excl-posthoc-strata"
+  },
+  {
+    "protocol_id": "ingest-incl-2xk-table",
+    "rule_type": "inclusion",
+    "target_table": "Studies",
+    "field_name": "",
+    "requirement_statement": "Published or citable 2xK contingency table with aggregate counts.",
+    "mechanical_check": "Source citation present; counts are integers.",
+    "sort_order": 10,
+    "name": "ingest-incl-2xk-table"
+  },
+  {
+    "protocol_id": "ingest-incl-binary-outcome",
+    "rule_type": "inclusion",
+    "target_table": "CaseCells",
+    "field_name": "Successes",
+    "requirement_statement": "Binary outcome encodable as Successes out of Cases.",
+    "mechanical_check": "Successes/Cases in [0,1].",
+    "sort_order": 12,
+    "name": "ingest-incl-binary-outcome"
+  },
+  {
+    "protocol_id": "ingest-incl-named-confounder",
+    "rule_type": "inclusion",
+    "target_table": "StratumVariables",
+    "field_name": "VariableName",
+    "requirement_statement": "Stratifying variable named before classification.",
+    "mechanical_check": "StratumVariables.VariableName non-empty.",
+    "sort_order": 11,
+    "name": "ingest-incl-named-confounder"
+  },
+  {
+    "protocol_id": "ingest-input-cases",
+    "rule_type": "required-input",
+    "target_table": "CaseCells",
+    "field_name": "Cases",
+    "requirement_statement": "Total observations in the cell \u2014 the denominator for the success rate.",
+    "mechanical_check": "Positive integer > 0.",
+    "sort_order": 4,
+    "name": "ingest-input-cases"
+  },
+  {
+    "protocol_id": "ingest-input-stratum",
+    "rule_type": "required-input",
+    "target_table": "CaseCells",
+    "field_name": "StratumLabel",
+    "requirement_statement": "Every cell must name its stratum \u2014 the subgroup being stratified on.",
+    "mechanical_check": "Non-empty string; consistent label for both A and B cells within the same stratum.",
+    "sort_order": 2,
+    "name": "ingest-input-stratum"
+  },
+  {
+    "protocol_id": "ingest-input-study",
+    "rule_type": "required-input",
+    "target_table": "CaseCells",
+    "field_name": "Study",
+    "requirement_statement": "Every cell row must name its parent study with a stable unique slug.",
+    "mechanical_check": "Non-empty string; identical across all cells in the study; matches Studies.StudyId.",
+    "sort_order": 1,
+    "name": "ingest-input-study"
+  },
+  {
+    "protocol_id": "ingest-input-successes",
+    "rule_type": "required-input",
+    "target_table": "CaseCells",
+    "field_name": "Successes",
+    "requirement_statement": "Count of successful outcomes in the cell \u2014 the numerator.",
+    "mechanical_check": "Non-negative integer; Successes <= Cases.",
+    "sort_order": 5,
+    "name": "ingest-input-successes"
+  },
+  {
+    "protocol_id": "ingest-input-treatment",
+    "rule_type": "required-input",
+    "target_table": "CaseCells",
+    "field_name": "TreatmentLabel",
+    "requirement_statement": "Every cell must be labeled A or B \u2014 exactly two treatments per study.",
+    "mechanical_check": "Value in {A, B}; both labels appear.",
+    "sort_order": 3,
+    "name": "ingest-input-treatment"
+  },
+  {
+    "protocol_id": "ingest-struct-binary-treatment",
+    "rule_type": "structural",
+    "target_table": "Studies",
+    "field_name": "",
+    "requirement_statement": "Exactly two treatment arms (A and B) per study.",
+    "mechanical_check": "Exactly two distinct TreatmentLabel values in CaseCells.",
+    "sort_order": 7,
+    "name": "ingest-struct-binary-treatment"
+  },
+  {
+    "protocol_id": "ingest-struct-min-two-strata",
+    "rule_type": "structural",
+    "target_table": "Studies",
+    "field_name": "",
+    "requirement_statement": "At least two strata required.",
+    "mechanical_check": "TreatmentRankings.StratumCount >= 2.",
+    "sort_order": 6,
+    "name": "ingest-struct-min-two-strata"
+  },
+  {
+    "protocol_id": "ingest-struct-paired-cells",
+    "rule_type": "structural",
+    "target_table": "Studies",
+    "field_name": "",
+    "requirement_statement": "Every stratum must have exactly one A-cell and one B-cell.",
+    "mechanical_check": "Studies.CellCount = 2 x StratumCount.",
+    "sort_order": 8,
+    "name": "ingest-struct-paired-cells"
+  },
+  {
+    "protocol_id": "ingest-struct-valid-counts",
+    "rule_type": "structural",
+    "target_table": "CaseCells",
+    "field_name": "",
+    "requirement_statement": "Every cell must pass IsValidIngestionCell.",
+    "mechanical_check": "Cases > 0 AND 0 <= Successes <= Cases.",
+    "sort_order": 9,
+    "name": "ingest-struct-valid-counts"
+  }
+]

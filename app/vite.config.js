@@ -389,7 +389,7 @@ function corpusPlugin() {
             if (body.note) args.push("--note", String(body.note).slice(0, 500));
 
             // Refuse to start a second fan-out while one is live: every
-            // `effortless build` goes through the ssotme-proxy on :4242 and
+            // `effortless build` goes through the CLI's local transpiler host on :4242 and
             // concurrent builds corrupt each other.
             for (const runId of await listRunIds()) {
               const status = await readStatus(runId).catch(() => null);

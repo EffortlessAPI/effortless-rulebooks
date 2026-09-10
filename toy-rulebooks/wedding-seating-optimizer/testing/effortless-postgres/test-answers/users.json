@@ -1,0 +1,23 @@
+[
+  {
+    "user_id": "u-bride",
+    "name": "bride@wed.test",
+    "email": "bride@wed.test",
+    "role": "bride",
+    "display_name": "Alex (Bride)"
+  },
+  {
+    "user_id": "u-coord",
+    "name": "coord@wed.test",
+    "email": "coord@wed.test",
+    "role": "coordinator",
+    "display_name": "Casey (Coordinator)"
+  },
+  {
+    "user_id": "u-groom",
+    "name": "groom@wed.test",
+    "email": "groom@wed.test",
+    "role": "groom",
+    "display_name": "Sam (Groom)"
+  }
+]

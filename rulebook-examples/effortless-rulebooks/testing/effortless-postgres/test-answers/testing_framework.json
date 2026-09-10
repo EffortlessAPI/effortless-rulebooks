@@ -1,0 +1,30 @@
+[
+  {
+    "test_id": "test-001",
+    "name": "Test Case Definitions",
+    "file_path": "test-cases/*.yaml",
+    "purpose": "YAML scenarios defining inputs and expected outputs; shared across all substrates",
+    "scope": "global"
+  },
+  {
+    "test_id": "test-002",
+    "name": "Substrate-Specific Take-Test",
+    "file_path": "execution-substrates/{technology}/take-test.py",
+    "purpose": "Load rulebook, execute test cases, compare results against expected",
+    "scope": "per-substrate"
+  },
+  {
+    "test_id": "test-003",
+    "name": "Test Orchestrator",
+    "file_path": "orchestration/test-orchestrator.py",
+    "purpose": "Run all substrate tests; aggregate pass/fail; identify conformance gaps",
+    "scope": "global"
+  },
+  {
+    "test_id": "test-004",
+    "name": "Conformance Report",
+    "file_path": "orchestration/conformance-report.html",
+    "purpose": "Visual comparison of substrate outputs; highlight mismatches",
+    "scope": "global"
+  }
+]

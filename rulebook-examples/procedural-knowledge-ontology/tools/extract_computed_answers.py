@@ -101,7 +101,7 @@ def main() -> int:
             loop["DerivedAfter"] = derived
 
     with RB.open("w") as fh:
-        json.dump(rb, fh, indent=2)
+        json.dump(rb, fh, indent=1, ensure_ascii=False)
         fh.write("\n")
 
     print(f"wrote WitnessedAnswer for {written} of {len(rb['RoleQuestions']['data'])} questions")

@@ -1,0 +1,130 @@
+[
+  {
+    "assessments_id": "calculator-creativity",
+    "intelligence": "calculator",
+    "capability": "creativity",
+    "raw_score": 0,
+    "name": null,
+    "weighted_score": null
+  },
+  {
+    "assessments_id": "calculator-memory",
+    "intelligence": "calculator",
+    "capability": "memory",
+    "raw_score": 50,
+    "name": null,
+    "weighted_score": null
+  },
+  {
+    "assessments_id": "calculator-perception",
+    "intelligence": "calculator",
+    "capability": "perception",
+    "raw_score": 10,
+    "name": null,
+    "weighted_score": null
+  },
+  {
+    "assessments_id": "calculator-reasoning",
+    "intelligence": "calculator",
+    "capability": "reasoning",
+    "raw_score": 95,
+    "name": null,
+    "weighted_score": null
+  },
+  {
+    "assessments_id": "gpt-5-creativity",
+    "intelligence": "gpt-5",
+    "capability": "creativity",
+    "raw_score": 65,
+    "name": null,
+    "weighted_score": null
+  },
+  {
+    "assessments_id": "gpt-5-memory",
+    "intelligence": "gpt-5",
+    "capability": "memory",
+    "raw_score": 95,
+    "name": null,
+    "weighted_score": null
+  },
+  {
+    "assessments_id": "gpt-5-perception",
+    "intelligence": "gpt-5",
+    "capability": "perception",
+    "raw_score": 30,
+    "name": null,
+    "weighted_score": null
+  },
+  {
+    "assessments_id": "gpt-5-reasoning",
+    "intelligence": "gpt-5",
+    "capability": "reasoning",
+    "raw_score": 80,
+    "name": null,
+    "weighted_score": null
+  },
+  {
+    "assessments_id": "human-creativity",
+    "intelligence": "human",
+    "capability": "creativity",
+    "raw_score": 80,
+    "name": null,
+    "weighted_score": null
+  },
+  {
+    "assessments_id": "human-memory",
+    "intelligence": "human",
+    "capability": "memory",
+    "raw_score": 80,
+    "name": null,
+    "weighted_score": null
+  },
+  {
+    "assessments_id": "human-perception",
+    "intelligence": "human",
+    "capability": "perception",
+    "raw_score": 85,
+    "name": null,
+    "weighted_score": null
+  },
+  {
+    "assessments_id": "human-reasoning",
+    "intelligence": "human",
+    "capability": "reasoning",
+    "raw_score": 85,
+    "name": null,
+    "weighted_score": null
+  },
+  {
+    "assessments_id": "octopus-creativity",
+    "intelligence": "octopus",
+    "capability": "creativity",
+    "raw_score": 70,
+    "name": null,
+    "weighted_score": null
+  },
+  {
+    "assessments_id": "octopus-memory",
+    "intelligence": "octopus",
+    "capability": "memory",
+    "raw_score": 60,
+    "name": null,
+    "weighted_score": null
+  },
+  {
+    "assessments_id": "octopus-perception",
+    "intelligence": "octopus",
+    "capability": "perception",
+    "raw_score": 90,
+    "name": null,
+    "weighted_score": null
+  },
+  {
+    "assessments_id": "octopus-reasoning",
+    "intelligence": "octopus",
+    "capability": "reasoning",
+    "raw_score": 65,
+    "name": null,
+    "weighted_score": null
+  }
+]

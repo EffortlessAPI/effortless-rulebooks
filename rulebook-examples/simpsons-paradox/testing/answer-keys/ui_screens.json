@@ -1,0 +1,122 @@
+[
+  {
+    "screen_id": "screen-01-study-list",
+    "title": "Study List",
+    "route": "/",
+    "primary_entity": "Studies",
+    "purpose": "Show all studies with their DistortionType badge and AllocationDistortion magnitude so a user can immediately see which studies exhibit the paradox and how severely.",
+    "key_fields": "Title, DistortionType (from TreatmentRankings), AllocationDistortion, PolicyImplication, IsSignFlip, TotalCases",
+    "user_action": "Click a study row to navigate to the Study Detail screen.",
+    "tradition_id": "tradition-historical",
+    "primary_conclusion": "conc-05-real-data-generalizes",
+    "name": "screen-01-study-list"
+  },
+  {
+    "screen_id": "screen-02-study-detail",
+    "title": "Study Detail",
+    "route": "/study/:studyId",
+    "primary_entity": "TreatmentRankings",
+    "purpose": "Show one study's complete geometry: pooled rates, per-stratum rates, allocation fractions, AllocationDistortion, DistortionType, and PolicyImplication \u2014 the full causal picture for this study.",
+    "key_fields": "PooledRateA, PooledRateB, PooledWinner, PerStratumWinner, IsReversal, IsSignFlip, WeightedStratumGapSum, SignedPooledGap, AllocationDistortion, DistortionType, PolicyImplication, ConfoundersInStudy, IsParadoxExplained",
+    "user_action": "Expand strata panel to see per-stratum breakdown; navigate to Strata Detail.",
+    "tradition_id": "tradition-historical",
+    "primary_conclusion": "conc-01-paradox-is-derived",
+    "name": "screen-02-study-detail"
+  },
+  {
+    "screen_id": "screen-03-strata-detail",
+    "title": "Strata Detail",
+    "route": "/study/:studyId/strata",
+    "primary_entity": "StratumSummaries",
+    "purpose": "Show every (stratum, treatment) cell for a study: StratumSuccessRate, AllocationBias, StratumGap, WeightedStratumGap \u2014 the leaf-level evidence for why the pooled conclusion is or isn't misleading.",
+    "key_fields": "StratumLabel, TreatmentLabel, StratumSuccessRate, StratumRateA, StratumRateB, StratumWinner, AllocationBias, AllocationFractionA, AllocationFractionB, StratumGap, WeightedStratumGap, StratumFraction",
+    "user_action": "Hover a cell for the raw Successes/Cases count from CaseCells.",
+    "tradition_id": "tradition-epidemiology",
+    "primary_conclusion": "conc-02-reversal-from-allocation",
+    "name": "screen-03-strata-detail"
+  },
+  {
+    "screen_id": "screen-04-confounder-panel",
+    "title": "Confounder Panel",
+    "route": "/study/:studyId/confounder",
+    "primary_entity": "StratumVariables",
+    "purpose": "Show the stratifying variable's causal role for a study: VariableName, CausalRole, AffectsTreatmentAssignment, AffectsOutcome, IsConfounder, MechanismNote.",
+    "key_fields": "VariableName, CausalRole, AffectsTreatmentAssignment, AffectsOutcome, IsConfounder, MechanismNote",
+    "user_action": "Read the mechanism note; understand why IsParadoxExplained is TRUE or FALSE for this study.",
+    "tradition_id": "tradition-dag",
+    "primary_conclusion": "conc-09-causal-vs-geometric",
+    "name": "screen-04-confounder-panel"
+  },
+  {
+    "screen_id": "screen-05-distortion-plane",
+    "title": "Distortion Plane",
+    "route": "/plane",
+    "primary_entity": "TreatmentRankings",
+    "purpose": "Plot all studies on a 2D plane: AllocationDistortion (x-axis) \u00d7 ReversalIntensity (y-axis), colored by DistortionType. Shows the geometric taxonomy at a glance and reveals how the four types partition the plane.",
+    "key_fields": "Title (from Studies), AllocationDistortion, ReversalIntensity, IsSignFlip, DistortionType, PolicyImplication, ParadoxStrength",
+    "user_action": "Click a data point to navigate to that study's Study Detail screen.",
+    "tradition_id": "tradition-historical",
+    "primary_conclusion": "conc-04-type-c-exists",
+    "name": "screen-05-distortion-plane"
+  },
+  {
+    "screen_id": "screen-06-model-summary",
+    "title": "Model Summary",
+    "route": "/summary",
+    "primary_entity": "ModelSummary",
+    "purpose": "Show the instrument's self-portrait: how many studies, how many of each DistortionType, average AllocationDistortion, total paradox strength \u2014 the epistemic coverage of the full model instance.",
+    "key_fields": "StudyCount, ReversalCount, ExplainedCount, TypeACount, TypeBCount, TypeCCount, TypeDCount, AvgAllocationDistortion, TotalParadoxStrength",
+    "user_action": "Navigate to Study List or Distortion Plane from this summary.",
+    "tradition_id": "tradition-historical",
+    "primary_conclusion": "conc-07-model-self-portrait",
+    "name": "screen-06-model-summary"
+  },
+  {
+    "screen_id": "screen-07-loop-history",
+    "title": "Loop History",
+    "route": "/loops",
+    "primary_entity": "Loops",
+    "purpose": "Show the full build history: all 31 loops with their status, new concept, domain question, and mock data note. Lets a developer understand why the model is shaped the way it is \u2014 the DAG is the story.",
+    "key_fields": "LoopId, Title, Status, NewConcept, DomainQuestion, MockDataNote, NextSuggestion",
+    "user_action": "Filter by Status (complete/planned); click a loop to expand its full detail.",
+    "tradition_id": "tradition-historical",
+    "primary_conclusion": "conc-10-instrument-specifiable",
+    "name": "screen-07-loop-history"
+  },
+  {
+    "screen_id": "screen-08-methodology",
+    "title": "Methodology",
+    "route": "/methodology",
+    "primary_entity": "Methodology",
+    "purpose": "Show the ten first-principles methodological axioms that shaped this model \u2014 from CMCC as the floor, through DAG-first decomposition, to the four-type taxonomy. Enables a developer to apply the same process to a new domain.",
+    "key_fields": "Phase, Title, Statement, WhyItMatters, IllustratedByLoop",
+    "user_action": "Click IllustratedByLoop to jump to that loop in the Loop History screen.",
+    "tradition_id": "tradition-dag",
+    "primary_conclusion": "conc-10-instrument-specifiable",
+    "name": "screen-08-methodology"
+  },
+  {
+    "screen_id": "screen-09-conclusions",
+    "title": "Conclusions",
+    "route": "/conclusions",
+    "primary_entity": "Conclusions",
+    "purpose": "Show all witnessed and planned conclusions, grouped by category (domain / instrument / methodology / open-question). The read-out of what this model has actually established.",
+    "key_fields": "Category, Status, Title, Evidence, WitnessedInLoop, TargetLoop",
+    "user_action": "Filter by Status (witnessed/planned/open); click WitnessedInLoop to navigate to Loop History.",
+    "tradition_id": "tradition-historical",
+    "primary_conclusion": "conc-10-instrument-specifiable",
+    "name": "screen-09-conclusions"
+  },
+  {
+    "screen_id": "screen-10-discovery",
+    "title": "Discovery Research",
+    "route": "/discovery",
+    "primary_entity": "DiscoveryFindings",
+    "purpose": "Show pre-registered DiscoveryHypotheses and witnessed DiscoveryFindings \u2014 loop-61 corpus patterns and loop-62 causal-role \u00d7 manifest/latent sweep with study-level breakdown by StratumCausalRole.",
+    "key_fields": "HypothesisId, HypothesisStatement, ObservedMetric, IsConfirmed, Evidence, WitnessedInLoop",
+    "user_action": "Review PASS/FAIL cards; filter by RegisteredInLoop; drill into studies by causal role and flip mode.",
+    "tradition_id": "tradition-epidemiology",
+    "primary_conclusion": "conc-18-causal-role-flip-mode",
+    "name": "screen-10-discovery"
+  }
+]

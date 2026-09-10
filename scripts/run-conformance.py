@@ -49,7 +49,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from erb_project import build_project, reset_db  # noqa: E402
+from erb_project import build_project, reset_db, rulebook_path  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 RULEBOOK_PATH = REPO_ROOT / "effortless-rulebook" / "effortless-rulebook.json"
@@ -88,7 +88,7 @@ def resolve_domain_id(rulebook: dict, slug: str) -> str:
     )
 
 
-def run_harness(slug: str, domain_dir: Path) -> Path:
+def run_harness(slug: str, domain_dir: Path, allow_no_substrates: bool = False) -> Path | None:
     """Invoke the existing, unreimplemented harness against this domain.
     Returns the path to the testing/_substrate_results.json it produced."""
     effortless_json = domain_dir / "effortless.json"
@@ -117,7 +117,10 @@ def run_harness(slug: str, domain_dir: Path) -> Path:
     # invoking the same machinery; without it every substrate fails with
     # "ERB_TESTING_DIR is not set" and grades 0% on missing test-answers.
     env["ERB_TESTING_DIR"] = str(domain_dir / "testing")
-    env["ERB_RULEBOOK_PATH"] = str(domain_dir / "effortless-rulebook" / f"{slug}-rulebook.json")
+    # BOTH hub filenames are valid per the project-shape contract — <slug>-rulebook.json
+    # and effortless-rulebook.json; the folder disambiguates. Resolving instead of
+    # assuming: five projects use the second name and were reported as harness errors.
+    env["ERB_RULEBOOK_PATH"] = str(rulebook_path(slug, domain_dir))
 
     print(f"[run-conformance] running test-orchestrator.py for ERB_DOMAIN={slug}", flush=True)
     result = subprocess.run(
@@ -133,6 +136,12 @@ def run_harness(slug: str, domain_dir: Path) -> Path:
 
     results_path = domain_dir / "testing" / "_substrate_results.json"
     if not results_path.is_file():
+        if allow_no_substrates:
+            # The caller has checked the registry and this project declares that it
+            # grades nothing (no execution substrates registered at all). Producing
+            # no results file is then the correct outcome, not a failure.
+            print(f"[run-conformance] {slug} graded no substrates, as its TestSuites row declares", flush=True)
+            return None
         raise SystemExit(
             f"test-orchestrator.py exited 0 but did not produce {results_path}. "
             f"Refusing to record a conformance run with no results file."
@@ -148,13 +157,13 @@ def run_report_generator(slug: str, domain_dir: Path) -> Path:
     if not report_script.is_file():
         raise SystemExit(f"report generator missing: {report_script}")
 
-    rulebook_path = domain_dir / "effortless-rulebook" / f"{slug}-rulebook.json"
+    rb_path = rulebook_path(slug, domain_dir)
     output_path = domain_dir / "orchestration-report.html"
     print(f"[run-conformance] generating aggregate report for {slug}", flush=True)
     result = subprocess.run(
         [
             sys.executable, str(report_script),
-            "--rulebook", str(rulebook_path),
+            "--rulebook", str(rb_path),
             "--output", str(output_path),
         ],
         cwd=str(ORCHESTRATOR_DIR),
@@ -257,6 +266,10 @@ def main() -> None:
                     help="run `effortless build` in the project directory before grading")
     ap.add_argument("--reset-db", action="store_true",
                     help="createdb + postgres-bootstrap/reset-rulebook-db.sh before grading")
+    ap.add_argument("--allow-no-substrates", action="store_true",
+                    help="a harness run that grades nothing is reported as zero substrates rather than "
+                         "an error. Pass this ONLY when the project's TestSuites row declares "
+                         "ExpectedSubstrateCount 0, i.e. it is not supposed to grade anything.")
     args = ap.parse_args()
 
     domain_dir = find_domain_dir(args.slug)
@@ -275,7 +288,13 @@ def main() -> None:
     if args.reset_db:
         reset_db(args.slug, domain_dir, log)
 
-    results_path = run_harness(args.slug, domain_dir)
+    results_path = run_harness(args.slug, domain_dir, args.allow_no_substrates)
+    if results_path is None:
+        # Nothing was graded and nothing was supposed to be. Report it plainly and
+        # record no ConformanceRuns row — a run with no substrates is not evidence.
+        print(json.dumps({"run_id": None, "substrates": 0, "substrates_passed": 0,
+                          "no_substrates": True, "report_path": None}))
+        return
     results = json.loads(results_path.read_text(encoding="utf-8"))
     if not results:
         raise SystemExit(f"{results_path} is empty — refusing to record a run with zero substrates")

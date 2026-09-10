@@ -1,0 +1,44 @@
+[
+  {
+    "domain_id": "algebraic-number-theory",
+    "display_name": "Algebraic Number Theory",
+    "role_in_model": "source_of_structured_constructions",
+    "description": "Number fields, rings of integers, prime ideals.",
+    "name": "algebraic-number-theory"
+  },
+  {
+    "domain_id": "asymptotic-combinatorics",
+    "display_name": "Asymptotic Combinatorics",
+    "role_in_model": "growth_accounting",
+    "description": "Construction families, growth sequences, lower bounds.",
+    "name": "asymptotic-combinatorics"
+  },
+  {
+    "domain_id": "euclidean-geometry",
+    "display_name": "Euclidean Geometry",
+    "role_in_model": "ambient_space_and_metric",
+    "description": "Points, configurations, distance, unit-distance predicate.",
+    "name": "euclidean-geometry"
+  },
+  {
+    "domain_id": "graph-theory",
+    "display_name": "Graph Theory",
+    "role_in_model": "combinatorial_shadow",
+    "description": "Unit-distance graphs and edge counts.",
+    "name": "graph-theory"
+  },
+  {
+    "domain_id": "lattice-embeddings",
+    "display_name": "Lattice Embeddings",
+    "role_in_model": "bridge_algebra_to_geometry",
+    "description": "Minkowski lattices, short vectors, planar projection.",
+    "name": "lattice-embeddings"
+  },
+  {
+    "domain_id": "theorem-layer",
+    "display_name": "Theorem Layer",
+    "role_in_model": "fixed_point_anchor",
+    "description": "Theorem anchors and their bounds.",
+    "name": "theorem-layer"
+  }
+]

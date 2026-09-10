@@ -828,19 +828,19 @@ footer {
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-value" id="passing-count">
-                        2 / 2
+                        1 / 2
                     </div>
                     <div class="stat-label">Tests Passing</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value score-perfect">
-                        100.0%
+                    <div class="stat-value score-danger">
+                        55.6%
                     </div>
                     <div class="stat-label">Overall Score</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-value">
-                        4.6s
+                        0.0s
                     </div>
                     <div class="stat-label">Total Runtime</div>
                 </div>
@@ -859,7 +859,7 @@ footer {
                     </div>
                     <div class="substrate-link-group effortless-group">
                         <div class="substrate-link-group-label">Effortless Licensed Tools</div>
-                        <a href="#" class="substrate-link score-perfect" data-substrate="effortless-postgres"><span class="substrate-swatch" style="background:#336791"></span>postgres: 100%</a>
+                        <a href="#" class="substrate-link score-danger" data-substrate="effortless-postgres"><span class="substrate-swatch" style="background:#336791"></span>effortless-postgres: 11%</a>
                     </div>
             </div>
 
@@ -879,9 +879,9 @@ footer {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="xlsx"><span class="substrate-swatch" style="background:#1F7244"></span>xlsx</td><td class="cell-pass" data-substrate="xlsx" data-entity="job_boards" title="4/4">&#10003;</td><td class="cell-pass" data-substrate="xlsx" data-entity="resume_sections" title="4/4">&#10003;</td><td class="cell-pass" data-substrate="xlsx" data-entity="resumes" title="2/2">&#10003;</td><td class="cell-pass" data-substrate="xlsx" data-entity="search_urls" title="8/8">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">0.4s</td></tr>
+                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="xlsx"><span class="substrate-swatch" style="background:#1F7244"></span>xlsx</td><td class="cell-pass" data-substrate="xlsx" data-entity="job_boards" title="4/4">&#10003;</td><td class="cell-pass" data-substrate="xlsx" data-entity="resume_sections" title="4/4">&#10003;</td><td class="cell-pass" data-substrate="xlsx" data-entity="resumes" title="2/2">&#10003;</td><td class="cell-pass" data-substrate="xlsx" data-entity="search_urls" title="8/8">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">0.0s</td></tr>
                         <tr class="effortless-divider"><td colspan="7"><span class="effortless-divider-badge">EFFORTLESS LICENSED TOOLS</span> <span class="effortless-divider-sub">production transpiler pipelines &mdash; expected 100% conformance</span></td></tr>
-                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="effortless-postgres"><span class="substrate-swatch" style="background:#336791"></span>postgres</td><td class="cell-pass" data-substrate="effortless-postgres" data-entity="job_boards" title="4/4">&#10003;</td><td class="cell-pass" data-substrate="effortless-postgres" data-entity="resume_sections" title="4/4">&#10003;</td><td class="cell-pass" data-substrate="effortless-postgres" data-entity="resumes" title="2/2">&#10003;</td><td class="cell-pass" data-substrate="effortless-postgres" data-entity="search_urls" title="8/8">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">4.2s</td></tr>
+                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="effortless-postgres"><span class="substrate-swatch" style="background:#336791"></span>effortless-postgres</td><td class="cell-fail" data-substrate="effortless-postgres" data-entity="job_boards" title="2/4">2</td><td class="cell-fail" data-substrate="effortless-postgres" data-entity="resume_sections" title="0/4">4</td><td class="cell-fail" data-substrate="effortless-postgres" data-entity="resumes" title="0/2">2</td><td class="cell-fail" data-substrate="effortless-postgres" data-entity="search_urls" title="0/8">8</td><td class="score-cell score-danger">11.1%</td><td class="time-cell">0.0s</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -891,7 +891,7 @@ footer {
             <nav class="sub-tabs" id="substrate-tabs">
                 <button class="sub-tab active" data-substrate="xlsx"><span class="substrate-swatch" style="background:#1F7244"></span>xlsx</button>
                 <span class="sub-tab-group-divider" title="Licensed Effortless tools">EFFORTLESS LICENSED TOOLS</span>
-                <button class="sub-tab " data-substrate="effortless-postgres"><span class="substrate-swatch" style="background:#336791"></span>postgres</button>
+                <button class="sub-tab " data-substrate="effortless-postgres"><span class="substrate-swatch" style="background:#336791"></span>effortless-postgres</button>
             </nav>
             <div id="substrate-details"></div>
         </section>
@@ -917,22 +917,22 @@ const REPORT_DATA = {
   "meta": {
     "project_name": "Job Search RAG",
     "directory_name": "job-search-rag",
-    "rulebook_path": "/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-rulebooks/rulebook-examples/job-search-rag/effortless-rulebook/job-search-rag-rulebook.json",
+    "rulebook_path": "/Users/eejai42/development/effortless-rulebooks/toy-rulebooks/job-search-rag/effortless-rulebook/job-search-rag-rulebook.json",
     "rulebook_name": "Job Search RAG",
     "rulebook_description": "Local LLM + RAG pipeline filtering jobs across boards using semantic search.",
     "base_id": null
   },
   "summary": {
     "total_substrates": 2,
-    "passing_substrates": 2,
+    "passing_substrates": 1,
     "total_entities": 4,
     "total_computed_columns": 5,
     "total_records": 17,
-    "overall_score": 100.0,
-    "total_runtime_seconds": 4.643884897232056,
+    "overall_score": 55.55555555555556,
+    "total_runtime_seconds": 0.0,
     "total_fields_tested": 36,
-    "total_passed": 36,
-    "total_failed": 0
+    "total_passed": 20,
+    "total_failed": 16
   },
   "entities": {
     "job_boards": {
@@ -1356,53 +1356,144 @@ const REPORT_DATA = {
     "effortless-postgres": {
       "substrate": "effortless-postgres",
       "total_fields_tested": 18,
-      "fields_passed": 18,
-      "fields_failed": 0,
-      "elapsed_seconds": 4.219497919082642,
+      "fields_passed": 2,
+      "fields_failed": 16,
+      "elapsed_seconds": 0.0,
       "entities": {
-        "resumes": {
-          "fields_tested": 2,
+        "job_boards": {
+          "fields_tested": 4,
           "fields_passed": 2,
-          "fields_failed": 0,
-          "failures": []
+          "fields_failed": 2,
+          "failures": [
+            {
+              "pk": "weworkremotely",
+              "field": "job_listings",
+              "expected": "None",
+              "actual": "1"
+            },
+            {
+              "pk": "ziprecruiter",
+              "field": "job_listings",
+              "expected": "None",
+              "actual": "5"
+            }
+          ]
         },
         "search_urls": {
           "fields_tested": 8,
-          "fields_passed": 8,
-          "fields_failed": 0,
-          "failures": []
+          "fields_passed": 0,
+          "fields_failed": 8,
+          "failures": [
+            {
+              "pk": "indeed-principal-data-platform",
+              "field": "job_board_name",
+              "expected": "None",
+              "actual": "Indeed"
+            },
+            {
+              "pk": "indeed-staff-platform-architect",
+              "field": "job_board_name",
+              "expected": "None",
+              "actual": "Indeed"
+            },
+            {
+              "pk": "li-staff-platform-architect",
+              "field": "job_board_name",
+              "expected": "None",
+              "actual": "LinkedIn"
+            },
+            {
+              "pk": "wwr-principal-architect",
+              "field": "job_board_name",
+              "expected": "None",
+              "actual": "WeWorkRemotely"
+            },
+            {
+              "pk": "wwr-staff-engineer",
+              "field": "job_board_name",
+              "expected": "None",
+              "actual": "WeWorkRemotely"
+            },
+            {
+              "pk": "zr-devrel-engineer",
+              "field": "job_board_name",
+              "expected": "None",
+              "actual": "ZipRecruiter"
+            },
+            {
+              "pk": "zr-principal-data-platform",
+              "field": "job_board_name",
+              "expected": "None",
+              "actual": "ZipRecruiter"
+            },
+            {
+              "pk": "zr-staff-platform-architect",
+              "field": "job_board_name",
+              "expected": "None",
+              "actual": "ZipRecruiter"
+            }
+          ]
         },
-        "job_boards": {
-          "fields_tested": 4,
-          "fields_passed": 4,
-          "fields_failed": 0,
-          "failures": []
+        "resumes": {
+          "fields_tested": 2,
+          "fields_passed": 0,
+          "fields_failed": 2,
+          "failures": [
+            {
+              "pk": "resume-platform-2026q1",
+              "field": "resume_sections",
+              "expected": "None",
+              "actual": "8"
+            },
+            {
+              "pk": "resume-platform-2026q1",
+              "field": "search_runs",
+              "expected": "None",
+              "actual": "1"
+            }
+          ]
         },
         "resume_sections": {
           "fields_tested": 4,
-          "fields_passed": 4,
-          "fields_failed": 0,
-          "failures": []
+          "fields_passed": 0,
+          "fields_failed": 4,
+          "failures": [
+            {
+              "pk": "resume-platform-2026q1-core-strengths",
+              "field": "resume_name",
+              "expected": "None",
+              "actual": "Platform Engineer - 2026 Q1"
+            },
+            {
+              "pk": "resume-platform-2026q1-earlier-roles",
+              "field": "resume_name",
+              "expected": "None",
+              "actual": "Platform Engineer - 2026 Q1"
+            },
+            {
+              "pk": "resume-platform-2026q1-experience",
+              "field": "resume_name",
+              "expected": "None",
+              "actual": "Platform Engineer - 2026 Q1"
+            },
+            {
+              "pk": "resume-platform-2026q1-summary",
+              "field": "resume_name",
+              "expected": "None",
+              "actual": "Platform Engineer - 2026 Q1"
+            }
+          ]
         }
       },
       "error": null,
       "run_metadata": {
         "last_run": {
           "status": "success",
-          "duration_seconds": 4.219497919082642,
+          "duration_seconds": 0.0,
           "exit_code": 0,
-          "score": 100.0
+          "score": 11.11111111111111
         },
-        "last_successful_run": {
-          "duration_seconds": 4.219497919082642,
-          "status": "success",
-          "test_results": {
-            "total_fields_tested": 18,
-            "fields_passed": 18,
-            "fields_failed": 0,
-            "score": 100.0
-          }
-        }
+        "last_successful_run": null
       },
       "test_answers": {
         "resumes": [
@@ -1708,19 +1799,19 @@ const REPORT_DATA = {
         ],
         "contents": {
           "description": "<div class=\"card\">\n                <h2>What This Substrate Does</h2>\n                <p>PostgreSQL is the reference substrate. The <code>rulebook-to-postgres</code>\n                transpiler emits a complete schema &mdash; tables, type-safe\n                <code>calc_*</code> and <code>get_*</code> functions, aggregating views, RLS\n                policies and seed data &mdash; so the database itself enforces every\n                rule in the rulebook. Unlike the other substrates, PostgreSQL has <strong>no\n                expressive gaps</strong>: full joins, aggregations, recursive queries, all\n                formula types.</p>\n            </div>\n            <div class=\"card\">\n                <h2>Architecture</h2>\n                <div class=\"arch-diagram\">\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502               effortless-rulebook.json                       \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n                              \u2502  rulebook-to-postgres\n                              \u25bc\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502  postgres/                                                   \u2502\n\u2502    00-bootstrap.sql          \u2190 extensions, schemas, roles    \u2502\n\u2502    01-drop-and-create-tables.sql                             \u2502\n\u2502    01b-customize-schema.sql  \u2190 hand edits survive rebuilds   \u2502\n\u2502    02-create-functions.sql   \u2190 calc_*() per computed field   \u2502\n\u2502    02b-customize-functions.sql                               \u2502\n\u2502    03-create-views.sql       \u2190 vw_* with full joins + aggs   \u2502\n\u2502    03b-customize-views.sql                                   \u2502\n\u2502    04-create-policies.sql    \u2190 row-level security            \u2502\n\u2502    04b-customize-policies.sql                                \u2502\n\u2502    05-insert-data.sql        \u2190 seed records                  \u2502\n\u2502    05b-customize-data.sql                                    \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518</div>\n            </div>\n            <div class=\"card\">\n                <h2>Key Features</h2>\n                <ul>\n                    <li><strong>Reference implementation</strong> \u2014 the other substrates are graded against the same behaviour PostgreSQL produces.</li>\n                    <li><strong><code>calc_*</code> functions</strong> \u2014 every calculated field becomes a SQL function with the right types.</li>\n                    <li><strong><code>vw_*</code> views</strong> \u2014 application code reads views, never base tables, so derived values stay consistent.</li>\n                    <li><strong><code>*b-customize-*</code> files</strong> \u2014 hand edits live in sibling files that survive regeneration.</li>\n                    <li><strong>Row-level security</strong> \u2014 tenant isolation and role gating generated from rulebook metadata.</li>\n                </ul>\n            </div>\n            <div class=\"card\">\n                <h2>Generated Files</h2>\n                <ul>\n                    <li><code>00-bootstrap.sql</code> \u2014 extensions, schema, utility functions</li>\n                    <li><code>01-drop-and-create-tables.sql</code> \u2014 base tables with FKs</li>\n                    <li><code>02-create-functions.sql</code> \u2014 <code>calc_*</code> functions for every computed field</li>\n                    <li><code>03-create-views.sql</code> \u2014 <code>vw_*</code> views joining raw+computed</li>\n                    <li><code>04-create-policies.sql</code> \u2014 RLS and role-based policies</li>\n                    <li><code>05-insert-data.sql</code> \u2014 seed records from the rulebook</li>\n                    <li><code>*b-customize-*.sql</code> \u2014 hand-edit companion files that survive regeneration</li>\n                </ul>\n            </div>",
-          "log": "<div class=\"card\">\n                <h2>Execution Log</h2>\n                <pre>=== PostgreSQL Substrate Test Run ===\n\neffortless-postgres: Starting test...\neffortless-postgres: Connecting to database and querying views...\nPostgreSQL Substrate: Starting test...\nPostgreSQL Substrate: Connected to database\nPostgreSQL Substrate: Found 1 views\n  -&gt; customers: 3 records\nPostgreSQL Substrate: Processed 1 views, 3 total records\n\n</pre>\n            </div>",
-          "results": "<div class=\"card\">\n                <h2>Test Summary</h2>\n                <div class=\"results-summary\">\n                    <div class=\"result-item\"><div class=\"result-value score-perfect\">100.0%</div><div class=\"result-label\">Score</div></div>\n                    <div class=\"result-item\"><div class=\"result-value score-perfect\">18</div><div class=\"result-label\">Passed</div></div>\n                    <div class=\"result-item\"><div class=\"result-value\">0</div><div class=\"result-label\">Failed</div></div>\n                    <div class=\"result-item\"><div class=\"result-value\">18</div><div class=\"result-label\">Total</div></div>\n                </div>\n            </div>",
-          "sql-bootstrap": "<div class=\"card\">\n                <div class=\"code-header\">\n                    <h2>00 \u00b7 Bootstrap</h2>\n                    <div>\n                        <span class=\"code-info\">1 lines \u00b7 1 KB</span>\n                    </div>\n                </div>\n                <pre class=\"line-numbers\"><code class=\"language-sql\">-- (file not generated yet)</code></pre>\n            </div>",
-          "sql-tables": "<div class=\"card\">\n                <div class=\"code-header\">\n                    <h2>01 \u00b7 Tables</h2>\n                    <div>\n                        <span class=\"code-info\">1 lines \u00b7 1 KB</span>\n                    </div>\n                </div>\n                <pre class=\"line-numbers\"><code class=\"language-sql\">-- (file not generated yet)</code></pre>\n            </div>",
-          "sql-tables-b": "<div class=\"card\">\n                <div class=\"code-header\">\n                    <h2>01b \u00b7 Customize</h2>\n                    <div>\n                        <span class=\"code-info\">1 lines \u00b7 1 KB</span>\n                    </div>\n                </div>\n                <pre class=\"line-numbers\"><code class=\"language-sql\">-- (file not generated yet)</code></pre>\n            </div>",
-          "sql-fns": "<div class=\"card\">\n                <div class=\"code-header\">\n                    <h2>02 \u00b7 Functions</h2>\n                    <div>\n                        <span class=\"code-info\">1 lines \u00b7 1 KB</span>\n                    </div>\n                </div>\n                <pre class=\"line-numbers\"><code class=\"language-sql\">-- (file not generated yet)</code></pre>\n            </div>",
-          "sql-fns-b": "<div class=\"card\">\n                <div class=\"code-header\">\n                    <h2>02b \u00b7 Customize</h2>\n                    <div>\n                        <span class=\"code-info\">1 lines \u00b7 1 KB</span>\n                    </div>\n                </div>\n                <pre class=\"line-numbers\"><code class=\"language-sql\">-- (file not generated yet)</code></pre>\n            </div>",
-          "sql-views": "<div class=\"card\">\n                <div class=\"code-header\">\n                    <h2>03 \u00b7 Views</h2>\n                    <div>\n                        <span class=\"code-info\">1 lines \u00b7 1 KB</span>\n                    </div>\n                </div>\n                <pre class=\"line-numbers\"><code class=\"language-sql\">-- (file not generated yet)</code></pre>\n            </div>",
-          "sql-views-b": "<div class=\"card\">\n                <div class=\"code-header\">\n                    <h2>03b \u00b7 Customize</h2>\n                    <div>\n                        <span class=\"code-info\">1 lines \u00b7 1 KB</span>\n                    </div>\n                </div>\n                <pre class=\"line-numbers\"><code class=\"language-sql\">-- (file not generated yet)</code></pre>\n            </div>",
-          "sql-policies": "<div class=\"card\">\n                <div class=\"code-header\">\n                    <h2>04 \u00b7 Policies</h2>\n                    <div>\n                        <span class=\"code-info\">1 lines \u00b7 1 KB</span>\n                    </div>\n                </div>\n                <pre class=\"line-numbers\"><code class=\"language-sql\">-- (file not generated yet)</code></pre>\n            </div>",
-          "sql-policies-b": "<div class=\"card\">\n                <div class=\"code-header\">\n                    <h2>04b \u00b7 Customize</h2>\n                    <div>\n                        <span class=\"code-info\">1 lines \u00b7 1 KB</span>\n                    </div>\n                </div>\n                <pre class=\"line-numbers\"><code class=\"language-sql\">-- (file not generated yet)</code></pre>\n            </div>",
-          "sql-data": "<div class=\"card\">\n                <div class=\"code-header\">\n                    <h2>05 \u00b7 Data</h2>\n                    <div>\n                        <span class=\"code-info\">1 lines \u00b7 1 KB</span>\n                    </div>\n                </div>\n                <pre class=\"line-numbers\"><code class=\"language-sql\">-- (file not generated yet)</code></pre>\n            </div>",
-          "sql-data-b": "<div class=\"card\">\n                <div class=\"code-header\">\n                    <h2>05b \u00b7 Customize</h2>\n                    <div>\n                        <span class=\"code-info\">1 lines \u00b7 1 KB</span>\n                    </div>\n                </div>\n                <pre class=\"line-numbers\"><code class=\"language-sql\">-- (file not generated yet)</code></pre>\n            </div>"
+          "log": "<div class=\"card\">\n                <h2>Execution Log</h2>\n                <pre>=== PostgreSQL Substrate Test Run ===\n\neffortless-postgres: Starting test...\neffortless-postgres: Connecting to database and querying views...\nPostgreSQL Substrate: Starting test...\nPostgreSQL Substrate: Connected to database\nPostgreSQL Substrate: Found 3 views\n  -&gt; assessments: 16 records\n  -&gt; capabilities: 4 records\n  -&gt; intelligences: 4 records\nPostgreSQL Substrate: Processed 3 views, 24 total records\n\n</pre>\n            </div>",
+          "results": "<div class=\"card\">\n                <h2>Test Summary</h2>\n                <div class=\"results-summary\">\n                    <div class=\"result-item\"><div class=\"result-value score-danger\">22.4%</div><div class=\"result-label\">Score</div></div>\n                    <div class=\"result-item\"><div class=\"result-value score-perfect\">26</div><div class=\"result-label\">Passed</div></div>\n                    <div class=\"result-item\"><div class=\"result-value\">90</div><div class=\"result-label\">Failed</div></div>\n                    <div class=\"result-item\"><div class=\"result-value\">116</div><div class=\"result-label\">Total</div></div>\n                </div>\n            </div>",
+          "sql-bootstrap": "<div class=\"card\">\n                <div class=\"code-header\">\n                    <h2>00 \u00b7 Bootstrap</h2>\n                    <div>\n                        <span class=\"code-info\">46 lines \u00b7 2 KB</span>\n                    </div>\n                </div>\n                <pre class=\"line-numbers\"><code class=\"language-sql\">-- ============================================================================\n-- 00-BOOTSTRAP - Run first by init-db.sh (overwrite Never)\n-- ============================================================================\n-- Use this file for one-time setup or to add your own bootstrap SQL.\n-- The full clean-slate drop is NOT hand-coded here. It is owned by the\n-- rulebook-to-postgres tool: effortless.json invokes it with\n-- `-p mode=drop-all -p stage=dev -p drop_all=true`, which emits the dynamic\n-- DROP (views -&gt; functions -&gt; tables, CASCADE) into 01-drop-and-create-tables.sql,\n-- a file the tool regenerates on EVERY build. Keeping the drop there (rather than\n-- in this overwrite-Never file) means the rebuild stays automatic and in sync\n-- with the tool \u2014 nothing to maintain by hand.\n--\n-- The commented block below is the tool&#x27;s reference clean-slate script, left\n-- here only as documentation. Uncomment it ONLY if you ever run init-db.sh\n-- without the drop-all mode and need a manual wipe.\n-- ============================================================================\n\n-- DO $$\n-- DECLARE r RECORD; v_count INTEGER := 0;\n-- BEGIN\n--     RAISE NOTICE &#x27;Dropping views...&#x27;;\n--     FOR r IN (SELECT table_name FROM information_schema.views WHERE table_schema = &#x27;public&#x27;) LOOP\n--         EXECUTE &#x27;DROP VIEW IF EXISTS &#x27; || quote_ident(r.table_name) || &#x27; CASCADE&#x27;;\n--         v_count := v_count + 1;\n--     END LOOP;\n--     RAISE NOTICE &#x27;Dropped % views&#x27;, v_count; v_count := 0;\n--\n--     RAISE NOTICE &#x27;Dropping functions...&#x27;;\n--     FOR r IN (SELECT DISTINCT p.proname as function_name, pg_get_function_identity_arguments(p.oid) as function_args\n--               FROM pg_proc p JOIN pg_namespace n ON p.pronamespace = n.oid\n--               WHERE n.nspname = &#x27;public&#x27; AND p.prokind = &#x27;f&#x27;) LOOP\n--         EXECUTE &#x27;DROP FUNCTION IF EXISTS &#x27; || quote_ident(r.function_name) || &#x27;(&#x27; || r.function_args || &#x27;) CASCADE&#x27;;\n--         v_count := v_count + 1;\n--     END LOOP;\n--     RAISE NOTICE &#x27;Dropped % functions&#x27;, v_count; v_count := 0;\n--\n--     RAISE NOTICE &#x27;Dropping tables...&#x27;;\n--     FOR r IN (SELECT table_name FROM information_schema.tables WHERE table_schema = &#x27;public&#x27; AND table_type = &#x27;BASE TABLE&#x27;) LOOP\n--         EXECUTE &#x27;DROP TABLE IF EXISTS &#x27; || quote_ident(r.table_name) || &#x27; CASCADE&#x27;;\n--         v_count := v_count + 1;\n--     END LOOP;\n--     RAISE NOTICE &#x27;Dropped % tables&#x27;, v_count;\n-- END $$;\n\n\n</code></pre>\n            </div>",
+          "sql-tables": "<div class=\"card\">\n                <div class=\"code-header\">\n                    <h2>01 \u00b7 Tables</h2>\n                    <div>\n                        <span class=\"code-info\">110 lines \u00b7 7 KB</span>\n                    </div>\n                </div>\n                <pre class=\"line-numbers\"><code class=\"language-sql\">-- ============================================================================\n-- DROP AND CREATE TABLES (drop-all mode) - Clean slate + Normalized schema\n-- ============================================================================\n-- GENERATED FILE \u2014 DO NOT EDIT. Rewritten by every `effortless build`.\n--\n-- SOURCE OF TRUTH: effortless-rulebook/effortless-rulebook.json\n-- Every table below is defined there. To add a table, a column, or a\n-- calculated field, edit the rulebook and rebuild \u2014 never this file, and\n-- never a *b-customize-*.sql file. A table defined outside the rulebook\n-- gets no view, no calculated fields, no RuleSpeak and no Explainer DAG.\n-- ============================================================================\n-- Generated by rulebook-to-postgres tool\n-- Mode: drop-all    Stage: dev\n-- Total Tables: 3\n-- Total Raw Fields: 9\n-- ============================================================================\n\nSET timezone = &#x27;UTC&#x27;;\n\n-- ============================================================================\n-- DROP ALL OBJECTS - Clean slate for database\n-- ============================================================================\n-- GENERATED FILE \u2014 DO NOT EDIT. Rewritten by every `effortless build`.\n-- Generated by rulebook-to-postgres tool\n-- ============================================================================\n\nDO $$ \nDECLARE r RECORD; v_count INTEGER := 0;\nBEGIN\n    RAISE NOTICE &#x27;Dropping views...&#x27;;\n    FOR r IN (SELECT table_name FROM information_schema.views WHERE table_schema = &#x27;public&#x27;) LOOP\n        EXECUTE &#x27;DROP VIEW IF EXISTS &#x27; || quote_ident(r.table_name) || &#x27; CASCADE&#x27;;\n        v_count := v_count + 1;\n    END LOOP;\n    RAISE NOTICE &#x27;Dropped % views&#x27;, v_count; v_count := 0;\n    \n    RAISE NOTICE &#x27;Dropping functions...&#x27;;\n    FOR r IN (SELECT DISTINCT p.proname as function_name, pg_get_function_identity_arguments(p.oid) as function_args\n              FROM pg_proc p JOIN pg_namespace n ON p.pronamespace = n.oid\n              WHERE n.nspname = &#x27;public&#x27; AND p.prokind = &#x27;f&#x27;) LOOP\n        EXECUTE &#x27;DROP FUNCTION IF EXISTS &#x27; || quote_ident(r.function_name) || &#x27;(&#x27; || r.function_args || &#x27;) CASCADE&#x27;;\n        v_count := v_count + 1;\n    END LOOP;\n    RAISE NOTICE &#x27;Dropped % functions&#x27;, v_count; v_count := 0;\n    \n    RAISE NOTICE &#x27;Dropping tables...&#x27;;\n    FOR r IN (SELECT table_name FROM information_schema.tables WHERE table_schema = &#x27;public&#x27; AND table_type = &#x27;BASE TABLE&#x27;) LOOP\n        EXECUTE &#x27;DROP TABLE IF EXISTS &#x27; || quote_ident(r.table_name) || &#x27; CASCADE&#x27;;\n        v_count := v_count + 1;\n    END LOOP;\n    RAISE NOTICE &#x27;Dropped % tables&#x27;, v_count;\nEND $$;\n\n-- ============================================================================\n-- CREATE TABLES - Normalized data only (no calculated fields)\n-- ============================================================================\n\n-- ----------------------------------------------------------------------------\n-- Capabilities: Cognitive capabilities being assessed. Tiered foundational/composite/emergent and weighted by importance.\n-- ----------------------------------------------------------------------------\nCREATE TABLE capabilities (\n  capabilities_id                     TEXT                 PRIMARY KEY,         -- Slug for the capability (e.g. &#x27;reasoning&#x27;). First raw field is the PK.\n  description                         TEXT                ,                     -- Short prose describing the capability.\n  tier                                TEXT                ,                     -- Capability tier: foundational, composite, or emergent.\n  weight                              NUMERIC                                   -- Importance multiplier used when computing WeightedScore on each Assessment.\n);\nCOMMENT ON TABLE capabilities IS &#x27;Cognitive capabilities being assessed. Tiered foundational/composite/emergent and weighted by importance.&#x27;;\nCOMMENT ON COLUMN capabilities.capabilities_id IS &#x27;Slug for the capability (e.g. &#x27;&#x27;reasoning&#x27;&#x27;). First raw field is the PK.&#x27;;\nCOMMENT ON COLUMN capabilities.description IS &#x27;Short prose describing the capability.&#x27;;\nCOMMENT ON COLUMN capabilities.tier IS &#x27;Capability tier: foundational, composite, or emergent.&#x27;;\nCOMMENT ON COLUMN capabilities.weight IS &#x27;Importance multiplier used when computing WeightedScore on each Assessment.&#x27;;\n\n-- ----------------------------------------------------------------------------\n-- Intelligences: Agents being classified by the taxonomy. Each Intelligence&#x27;s TaxonomyClass is derived from the rollup of its Assessments.\n-- ----------------------------------------------------------------------------\nCREATE TABLE intelligences (\n  intelligences_id                    TEXT                 PRIMARY KEY,         -- Slug for the intelligence (e.g. &#x27;human&#x27;). First raw field is the PK.\n  description                         TEXT                ,                     -- Short prose describing what this intelligence is.\n  substrate                           TEXT                                      -- Substrate kind: biological, digital, or collective.\n);\nCOMMENT ON TABLE intelligences IS &#x27;Agents being classified by the taxonomy. Each Intelligence&#x27;&#x27;s TaxonomyClass is derived from the rollup of its Assessments.&#x27;;\nCOMMENT ON COLUMN intelligences.intelligences_id IS &#x27;Slug for the intelligence (e.g. &#x27;&#x27;human&#x27;&#x27;). First raw field is the PK.&#x27;;\nCOMMENT ON COLUMN intelligences.description IS &#x27;Short prose describing what this intelligence is.&#x27;;\nCOMMENT ON COLUMN intelligences.substrate IS &#x27;Substrate kind: biological, digital, or collective.&#x27;;\n\n-- ----------------------------------------------------------------------------\n-- Assessments: Per-capability scores for each intelligence. The junction table whose calculated WeightedScore feeds the rollup on Intelligences.\n-- ----------------------------------------------------------------------------\nCREATE TABLE assessments (\n  assessments_id                      TEXT                 PRIMARY KEY,         -- Slug encoding the intelligence-capability pair (e.g. &#x27;human-reasoning&#x27;). First raw field is the PK.\n  intelligence                        TEXT                ,                     -- FK to Intelligences. Holds the value of Intelligences.IntelligencesId.\n  capability                          TEXT                ,                     -- FK to Capabilities. Holds the value of Capabilities.CapabilitiesId.\n  raw_score                           INTEGER                                   -- User-editable assessment score from 0 to 100. Edit this in the UI to watch the cascade.\n);\nCOMMENT ON TABLE assessments IS &#x27;Per-capability scores for each intelligence. The junction table whose calculated WeightedScore feeds the rollup on Intelligences.&#x27;;\nCOMMENT ON COLUMN assessments.assessments_id IS &#x27;Slug encoding the intelligence-capability pair (e.g. &#x27;&#x27;human-reasoning&#x27;&#x27;). First raw field is the PK.&#x27;;\nCOMMENT ON COLUMN assessments.intelligence IS &#x27;FK to Intelligences. Holds the value of Intelligences.IntelligencesId.&#x27;;\nCOMMENT ON COLUMN assessments.capability IS &#x27;FK to Capabilities. Holds the value of Capabilities.CapabilitiesId.&#x27;;\nCOMMENT ON COLUMN assessments.raw_score IS &#x27;User-editable assessment score from 0 to 100. Edit this in the UI to watch the cascade.&#x27;;\n\n-- ============================================================================\n-- FK INDEXES - Performance only, always applied\n-- ============================================================================\n\n-- Assessments\nCREATE INDEX IF NOT EXISTS idx_assessments_intelligence ON assessments (intelligence);\nCREATE INDEX IF NOT EXISTS idx_assessments_capability ON assessments (capability);\n\n-- 2 FK index(es) declared.\n</code></pre>\n            </div>",
+          "sql-tables-b": "<div class=\"card\">\n                <div class=\"code-header\">\n                    <h2>01b \u00b7 Customize</h2>\n                    <div>\n                        <span class=\"code-info\">16 lines \u00b7 1 KB</span>\n                    </div>\n                </div>\n                <pre class=\"line-numbers\"><code class=\"language-sql\">-- ============================================================================\n-- CUSTOMIZE SCHEMA - User-defined schema customizations\n-- ============================================================================\n-- This file is for YOUR custom changes that should persist across\n-- regeneration of the base ERB files.\n--\n-- IMPORTANT:\n--   - This file runs AFTER the main schema script\n--   - Define your customizations in the ERBCustomizations table in Airtable\n--   - Those changes will appear here after the next build\n--\n-- ============================================================================\n\n-- Your custom schema changes will appear here:\n\n</code></pre>\n            </div>",
+          "sql-fns": "<div class=\"card\">\n                <div class=\"code-header\">\n                    <h2>02 \u00b7 Functions</h2>\n                    <div>\n                        <span class=\"code-info\">190 lines \u00b7 8 KB</span>\n                    </div>\n                </div>\n                <pre class=\"line-numbers\"><code class=\"language-sql\">-- ============================================================================\n-- CREATE FUNCTIONS - Calculation functions for lookup/calculated fields\n-- ============================================================================\n-- Generated by rulebook-to-postgres tool\n-- Mode: drop-all    Stage: dev\n-- ============================================================================\n\n\n-- Disable body validation so LANGUAGE sql functions can forward-reference\n-- each other within this file. (pg_dump does the same thing for the same\n-- reason.) Without this, SQL functions parse-check at CREATE time and fail\n-- on the first forward call site; plpgsql didn&#x27;t, which is how this file\n-- ever worked. Dependency order is still enforced at EXECUTION time.\nSET check_function_bodies = off;\n\n-- ============================================================================\n-- LOOKUP FUNCTIONS\n-- These functions perform lookups via foreign key relationships\n-- ============================================================================\n\n-- calc_capabilities_name\n-- Field: Capabilities.Name\n-- Type: calculated | DataType: string | Returns: TEXT\n\n\nCREATE OR REPLACE FUNCTION calc_capabilities_name(p_capabilities_id TEXT)\nRETURNS TEXT AS $$\n  SELECT ((SELECT NULLIF(capabilities_id, &#x27;&#x27;) FROM capabilities WHERE capabilities_id = p_capabilities_id))::text;\n$$ LANGUAGE sql STABLE;\n\n-- calc_intelligences_name\n-- Field: Intelligences.Name\n-- Type: calculated | DataType: string | Returns: TEXT\n\n\nCREATE OR REPLACE FUNCTION calc_intelligences_name(p_intelligences_id TEXT)\nRETURNS TEXT AS $$\n  SELECT ((SELECT NULLIF(intelligences_id, &#x27;&#x27;) FROM intelligences WHERE intelligences_id = p_intelligences_id))::text;\n$$ LANGUAGE sql STABLE;\n\n-- calc_intelligences_assessment_count\n-- Field: Intelligences.AssessmentCount\n-- Type: aggregation | DataType: integer | Returns: INTEGER\n\n\nCREATE OR REPLACE FUNCTION calc_intelligences_assessment_count(p_intelligences_id TEXT)\nRETURNS INTEGER AS $$\n  SELECT ((SELECT COUNT(*) FROM assessments WHERE intelligence = (SELECT NULLIF(intelligences_id, &#x27;&#x27;) FROM intelligences WHERE intelligences_id = p_intelligences_id)))::integer;\n$$ LANGUAGE sql STABLE;\n\n-- calc_intelligences_total_weighted_score\n-- Field: Intelligences.TotalWeightedScore\n-- Type: aggregation | DataType: number | Returns: NUMERIC\n\n\nCREATE OR REPLACE FUNCTION calc_intelligences_total_weighted_score(p_intelligences_id TEXT)\nRETURNS NUMERIC AS $$\n  SELECT ((SELECT COALESCE(SUM((calc_assessments_weighted_score(assessments_id))::numeric), 0) FROM assessments WHERE intelligence = p_intelligences_id))::numeric;\n$$ LANGUAGE sql STABLE;\n\n-- calc_intelligences_taxonomy_class\n-- Field: Intelligences.TaxonomyClass\n-- Type: calculated | DataType: string | Returns: TEXT\n\n\nCREATE OR REPLACE FUNCTION calc_intelligences_taxonomy_class(p_intelligences_id TEXT)\nRETURNS TEXT AS $$\n  WITH __erb_dedup_v1 AS (SELECT calc_intelligences_total_weighted_score(p_intelligences_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC &gt;= 350 THEN (&#x27;Generalist&#x27;)::text ELSE (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC &gt;= 220 THEN (&#x27;Broad&#x27;)::text ELSE (&#x27;Narrow&#x27;)::text END)::text END)::text;\n$$ LANGUAGE sql STABLE;\n\n-- calc_assessments_intelligence_name\n-- Field: Assessments.IntelligenceName\n-- Type: lookup | DataType: string | Returns: TEXT\n-- Lookup: Name from related Intelligences\n\n\nCREATE OR REPLACE FUNCTION calc_assessments_intelligence_name(p_assessments_id TEXT)\nRETURNS TEXT AS $$\n  SELECT calc_intelligences_name((SELECT intelligence FROM assessments WHERE assessments_id = p_assessments_id));\n$$ LANGUAGE sql STABLE;\n\n-- calc_assessments_capability_name\n-- Field: Assessments.CapabilityName\n-- Type: lookup | DataType: string | Returns: TEXT\n-- Lookup: Name from related Capabilities\n\n\nCREATE OR REPLACE FUNCTION calc_assessments_capability_name(p_assessments_id TEXT)\nRETURNS TEXT AS $$\n  SELECT calc_capabilities_name((SELECT capability FROM assessments WHERE assessments_id = p_assessments_id));\n$$ LANGUAGE sql STABLE;\n\n-- calc_assessments_capability_tier\n-- Field: Assessments.CapabilityTier\n-- Type: lookup | DataType: string | Returns: TEXT\n-- Lookup: Tier from related Capabilities\n\n\nCREATE OR REPLACE FUNCTION calc_assessments_capability_tier(p_assessments_id TEXT)\nRETURNS TEXT AS $$\n  SELECT (SELECT tier::text FROM capabilities WHERE capabilities_id = (SELECT capability FROM assessments WHERE assessments_id = p_assessments_id));\n$$ LANGUAGE sql STABLE;\n\n-- calc_assessments_capability_weight\n-- Field: Assessments.CapabilityWeight\n-- Type: lookup | DataType: number | Returns: NUMERIC\n-- Lookup: Weight from related Capabilities\n\n\nCREATE OR REPLACE FUNCTION calc_assessments_capability_weight(p_assessments_id TEXT)\nRETURNS NUMERIC AS $$\n  SELECT (SELECT weight::numeric FROM capabilities WHERE capabilities_id = (SELECT capability FROM assessments WHERE assessments_id = p_assessments_id));\n$$ LANGUAGE sql STABLE;\n\n-- get_intelligences_description\n-- Helper function: Get Description from Intelligences by IntelligencesId\n-- Used for join-free cross-table references in aggregations\n\nCREATE OR REPLACE FUNCTION get_intelligences_description(p_intelligences_id TEXT)\nRETURNS TEXT AS $$\n  SELECT (SELECT description FROM intelligences WHERE intelligences_id = p_intelligences_id);\n$$ LANGUAGE sql STABLE;\n\n-- get_intelligences_substrate\n-- Helper function: Get Substrate from Intelligences by IntelligencesId\n-- Used for join-free cross-table references in aggregations\n\nCREATE OR REPLACE FUNCTION get_intelligences_substrate(p_intelligences_id TEXT)\nRETURNS TEXT AS $$\n  SELECT (SELECT substrate FROM intelligences WHERE intelligences_id = p_intelligences_id);\n$$ LANGUAGE sql STABLE;\n\n-- get_capabilities_description\n-- Helper function: Get Description from Capabilities by CapabilitiesId\n-- Used for join-free cross-table references in aggregations\n\nCREATE OR REPLACE FUNCTION get_capabilities_description(p_capabilities_id TEXT)\nRETURNS TEXT AS $$\n  SELECT (SELECT description FROM capabilities WHERE capabilities_id = p_capabilities_id);\n$$ LANGUAGE sql STABLE;\n\n-- get_capabilities_tier\n-- Helper function: Get Tier from Capabilities by CapabilitiesId\n-- Used for join-free cross-table references in aggregations\n\nCREATE OR REPLACE FUNCTION get_capabilities_tier(p_capabilities_id TEXT)\nRETURNS TEXT AS $$\n  SELECT (SELECT tier FROM capabilities WHERE capabilities_id = p_capabilities_id);\n$$ LANGUAGE sql STABLE;\n\n-- get_capabilities_weight\n-- Helper function: Get Weight from Capabilities by CapabilitiesId\n-- Used for join-free cross-table references in aggregations\n\nCREATE OR REPLACE FUNCTION get_capabilities_weight(p_capabilities_id TEXT)\nRETURNS NUMERIC AS $$\n  SELECT (SELECT weight FROM capabilities WHERE capabilities_id = p_capabilities_id);\n$$ LANGUAGE sql STABLE;\n\n-- calc_assessments_name\n-- Field: Assessments.Name\n-- Type: calculated | DataType: string | Returns: TEXT\n\n\nCREATE OR REPLACE FUNCTION calc_assessments_name(p_assessments_id TEXT)\nRETURNS TEXT AS $$\n  SELECT ((SELECT NULLIF(assessments_id, &#x27;&#x27;) FROM assessments WHERE assessments_id = p_assessments_id))::text;\n$$ LANGUAGE sql STABLE;\n\n-- calc_assessments_weighted_score\n-- Field: Assessments.WeightedScore\n-- Type: calculated | DataType: number | Returns: NUMERIC\n\n\nCREATE OR REPLACE FUNCTION calc_assessments_weighted_score(p_assessments_id TEXT)\nRETURNS NUMERIC AS $$\n  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ &#x27;^-?[0-9]*\\.?[0-9]+$&#x27; THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT raw_score FROM assessments WHERE assessments_id = p_assessments_id)) AS v) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ &#x27;^-?[0-9]*\\.?[0-9]+$&#x27; THEN v::numeric ELSE NULL END FROM (SELECT (calc_assessments_capability_weight(p_assessments_id)) AS v) __safe_numeric), 0)))::numeric;\n$$ LANGUAGE sql STABLE;\n\n-- ============================================================================\n-- MANY-SIDE RELATIONSHIP FUNCTIONS\n-- These functions aggregate child records for many-side relationships\n-- ============================================================================\n\n-- ============================================================================\n-- INVERSE RELATIONSHIP FUNCTIONS\n-- These functions perform reverse FK lookups for inverse-side relationships\n-- ============================================================================\n\n</code></pre>\n            </div>",
+          "sql-fns-b": "<div class=\"card\">\n                <div class=\"code-header\">\n                    <h2>02b \u00b7 Customize</h2>\n                    <div>\n                        <span class=\"code-info\">16 lines \u00b7 1 KB</span>\n                    </div>\n                </div>\n                <pre class=\"line-numbers\"><code class=\"language-sql\">-- ============================================================================\n-- CUSTOMIZE FUNCTIONS - User-defined functions customizations\n-- ============================================================================\n-- This file is for YOUR custom changes that should persist across\n-- regeneration of the base ERB files.\n--\n-- IMPORTANT:\n--   - This file runs AFTER the main functions script\n--   - Define your customizations in the ERBCustomizations table in Airtable\n--   - Those changes will appear here after the next build\n--\n-- ============================================================================\n\n-- Your custom functions changes will appear here:\n\n</code></pre>\n            </div>",
+          "sql-views": "<div class=\"card\">\n                <div class=\"code-header\">\n                    <h2>03 \u00b7 Views</h2>\n                    <div>\n                        <span class=\"code-info\">66 lines \u00b7 5 KB</span>\n                    </div>\n                </div>\n                <pre class=\"line-numbers\"><code class=\"language-sql\">-- ============================================================================\n-- CREATE VIEWS - Combine raw data with calculated fields\n-- ============================================================================\n-- Generated by rulebook-to-postgres tool\n-- Mode: drop-all    Stage: dev\n-- Total Views: 3\n-- ============================================================================\n\n-- ----------------------------------------------------------------------------\n-- Drop pass: every rulebook-owned view, reverse iteration order, CASCADE.\n-- The rulebook is HEAD \u2014 the surviving view set must mirror it exactly.\n-- ----------------------------------------------------------------------------\nDROP VIEW IF EXISTS vw_assessments CASCADE;\nDROP VIEW IF EXISTS vw_intelligences CASCADE;\nDROP VIEW IF EXISTS vw_capabilities CASCADE;\n\n-- ----------------------------------------------------------------------------\n-- vw_capabilities: Cognitive capabilities being assessed. Tiered foundational/composite/emergent and weighted by importance.\n-- Combines base table columns with calculated/lookup/aggregation fields.\n-- ----------------------------------------------------------------------------\nDROP VIEW IF EXISTS vw_capabilities CASCADE;\nCREATE VIEW vw_capabilities WITH (security_invoker = ON) AS\nSELECT\n  t.capabilities_id,                                                            -- Slug for the capability (e.g. &#x27;reasoning&#x27;). First raw field is the PK.\n  calc_capabilities_name(t.capabilities_id) AS name,                            -- Display name (derived from PK).\n  t.description,                                                                -- Short prose describing the capability.\n  t.tier,                                                                       -- Capability tier: foundational, composite, or emergent.\n  t.weight                                                                      -- Importance multiplier used when computing WeightedScore on each Assessment.\nFROM capabilities t;\n\n-- ----------------------------------------------------------------------------\n-- vw_intelligences: Agents being classified by the taxonomy. Each Intelligence&#x27;s TaxonomyClass is derived from the rollup of its Assessments.\n-- Combines base table columns with calculated/lookup/aggregation fields.\n-- ----------------------------------------------------------------------------\nDROP VIEW IF EXISTS vw_intelligences CASCADE;\nCREATE VIEW vw_intelligences WITH (security_invoker = ON) AS\nSELECT\n  t.intelligences_id,                                                           -- Slug for the intelligence (e.g. &#x27;human&#x27;). First raw field is the PK.\n  calc_intelligences_name(t.intelligences_id) AS name,                          -- Display name (derived from PK).\n  t.description,                                                                -- Short prose describing what this intelligence is.\n  t.substrate,                                                                  -- Substrate kind: biological, digital, or collective.\n  calc_intelligences_assessment_count(t.intelligences_id) AS assessment_count,  -- How many capabilities this intelligence has been assessed on.\n  calc_intelligences_total_weighted_score(t.intelligences_id) AS total_weighted_score,-- Sum of WeightedScore across all this intelligence&#x27;s assessments. Second hop in the DAG.\n  calc_intelligences_taxonomy_class(t.intelligences_id) AS taxonomy_class       -- Taxonomic bucket derived from TotalWeightedScore. Third hop in the DAG.\nFROM intelligences t;\n\n-- ----------------------------------------------------------------------------\n-- vw_assessments: Per-capability scores for each intelligence. The junction table whose calculated WeightedScore feeds the rollup on Intelligences.\n-- Combines base table columns with calculated/lookup/aggregation fields.\n-- ----------------------------------------------------------------------------\nDROP VIEW IF EXISTS vw_assessments CASCADE;\nCREATE VIEW vw_assessments WITH (security_invoker = ON) AS\nSELECT\n  t.assessments_id,                                                             -- Slug encoding the intelligence-capability pair (e.g. &#x27;human-reasoning&#x27;). First raw field is the PK.\n  calc_assessments_name(t.assessments_id) AS name,                              -- Display name (derived from PK).\n  t.intelligence,                                                               -- FK to Intelligences. Holds the value of Intelligences.IntelligencesId.\n  t.capability,                                                                 -- FK to Capabilities. Holds the value of Capabilities.CapabilitiesId.\n  t.raw_score,                                                                  -- User-editable assessment score from 0 to 100. Edit this in the UI to watch the cascade.\n  calc_assessments_intelligence_name(t.assessments_id) AS intelligence_name,    -- Display name pulled from the related Intelligences row.\n  calc_assessments_capability_name(t.assessments_id) AS capability_name,        -- Display name pulled from the related Capabilities row.\n  calc_assessments_capability_tier(t.assessments_id) AS capability_tier,        -- Tier (foundational/composite/emergent) pulled from the related Capabilities row.\n  calc_assessments_capability_weight(t.assessments_id) AS capability_weight,    -- Importance multiplier pulled from the related Capabilities row.\n  calc_assessments_weighted_score(t.assessments_id) AS weighted_score           -- RawScore scaled by the capability&#x27;s Weight. First hop in the DAG.\nFROM assessments t;\n\n</code></pre>\n            </div>",
+          "sql-views-b": "<div class=\"card\">\n                <div class=\"code-header\">\n                    <h2>03b \u00b7 Customize</h2>\n                    <div>\n                        <span class=\"code-info\">16 lines \u00b7 1 KB</span>\n                    </div>\n                </div>\n                <pre class=\"line-numbers\"><code class=\"language-sql\">-- ============================================================================\n-- CUSTOMIZE VIEWS - User-defined views customizations\n-- ============================================================================\n-- This file is for YOUR custom changes that should persist across\n-- regeneration of the base ERB files.\n--\n-- IMPORTANT:\n--   - This file runs AFTER the main views script\n--   - Define your customizations in the ERBCustomizations table in Airtable\n--   - Those changes will appear here after the next build\n--\n-- ============================================================================\n\n-- Your custom views changes will appear here:\n\n</code></pre>\n            </div>",
+          "sql-policies": "<div class=\"card\">\n                <div class=\"code-header\">\n                    <h2>04 \u00b7 Policies</h2>\n                    <div>\n                        <span class=\"code-info\">19 lines \u00b7 1 KB</span>\n                    </div>\n                </div>\n                <pre class=\"line-numbers\"><code class=\"language-sql\">-- ============================================================================\n-- CREATE POLICIES - Row Level Security policies\n-- ============================================================================\n-- Generated by rulebook-to-postgres tool\n-- Mode: drop-all    Stage: dev\n-- ============================================================================\n\n-- Enable RLS on all tables\n\nALTER TABLE capabilities ENABLE ROW LEVEL SECURITY;\nALTER TABLE intelligences ENABLE ROW LEVEL SECURITY;\nALTER TABLE assessments ENABLE ROW LEVEL SECURITY;\n\n-- TODO: Add specific RLS policies based on your security requirements\n-- Example:\n-- CREATE POLICY &quot;Users can view their own data&quot; ON app_user\n--   FOR SELECT USING (auth.uid() = user_id);\n\n</code></pre>\n            </div>",
+          "sql-policies-b": "<div class=\"card\">\n                <div class=\"code-header\">\n                    <h2>04b \u00b7 Customize</h2>\n                    <div>\n                        <span class=\"code-info\">16 lines \u00b7 1 KB</span>\n                    </div>\n                </div>\n                <pre class=\"line-numbers\"><code class=\"language-sql\">-- ============================================================================\n-- CUSTOMIZE POLICIES - User-defined policies customizations\n-- ============================================================================\n-- This file is for YOUR custom changes that should persist across\n-- regeneration of the base ERB files.\n--\n-- IMPORTANT:\n--   - This file runs AFTER the main policies script\n--   - Define your customizations in the ERBCustomizations table in Airtable\n--   - Those changes will appear here after the next build\n--\n-- ============================================================================\n\n-- Your custom policies changes will appear here:\n\n</code></pre>\n            </div>",
+          "sql-data": "<div class=\"card\">\n                <div class=\"code-header\">\n                    <h2>05 \u00b7 Data</h2>\n                    <div>\n                        <span class=\"code-info\">90 lines \u00b7 7 KB</span>\n                    </div>\n                </div>\n                <pre class=\"line-numbers\"><code class=\"language-sql\">-- ============================================================================\n-- INSERT DATA - Load data from rulebook\n-- ============================================================================\n-- Generated by rulebook-to-postgres tool\n-- Mode: drop-all    Stage: dev\n-- PK strategy: string (FK values are rewritten to match each PK)\n-- ============================================================================\n\n-- ----------------------------------------------------------------------------\n-- Capabilities: Cognitive capabilities being assessed. Tiered foundational/composite/emergent and weighted by importance.\n-- ----------------------------------------------------------------------------\nINSERT INTO capabilities (capabilities_id, description, tier, weight)\nVALUES (&#x27;memory&#x27;, &#x27;Storing, retaining, and recalling information across time.&#x27;, &#x27;foundational&#x27;, 1.0) ON CONFLICT (capabilities_id) DO UPDATE SET description = EXCLUDED.description, tier = EXCLUDED.tier, weight = EXCLUDED.weight;\n\nINSERT INTO capabilities (capabilities_id, description, tier, weight)\nVALUES (&#x27;perception&#x27;, &#x27;Sensing the environment and interpreting raw input into structure.&#x27;, &#x27;foundational&#x27;, 1.0) ON CONFLICT (capabilities_id) DO UPDATE SET description = EXCLUDED.description, tier = EXCLUDED.tier, weight = EXCLUDED.weight;\n\nINSERT INTO capabilities (capabilities_id, description, tier, weight)\nVALUES (&#x27;reasoning&#x27;, &#x27;Inference, deduction, and structured problem-solving.&#x27;, &#x27;composite&#x27;, 1.3) ON CONFLICT (capabilities_id) DO UPDATE SET description = EXCLUDED.description, tier = EXCLUDED.tier, weight = EXCLUDED.weight;\n\nINSERT INTO capabilities (capabilities_id, description, tier, weight)\nVALUES (&#x27;creativity&#x27;, &#x27;Novel synthesis, divergent thinking, and open-ended generation.&#x27;, &#x27;emergent&#x27;, 1.5) ON CONFLICT (capabilities_id) DO UPDATE SET description = EXCLUDED.description, tier = EXCLUDED.tier, weight = EXCLUDED.weight;\n\n-- ----------------------------------------------------------------------------\n-- Intelligences: Agents being classified by the taxonomy. Each Intelligence&#x27;s TaxonomyClass is derived from the rollup of its Assessments.\n-- ----------------------------------------------------------------------------\nINSERT INTO intelligences (intelligences_id, description, substrate)\nVALUES (&#x27;human&#x27;, &#x27;A neurotypical human adult.&#x27;, &#x27;biological&#x27;) ON CONFLICT (intelligences_id) DO UPDATE SET description = EXCLUDED.description, substrate = EXCLUDED.substrate;\n\nINSERT INTO intelligences (intelligences_id, description, substrate)\nVALUES (&#x27;octopus&#x27;, &#x27;A cephalopod problem-solver with distributed cognition.&#x27;, &#x27;biological&#x27;) ON CONFLICT (intelligences_id) DO UPDATE SET description = EXCLUDED.description, substrate = EXCLUDED.substrate;\n\nINSERT INTO intelligences (intelligences_id, description, substrate)\nVALUES (&#x27;gpt-5&#x27;, &#x27;A large language model trained on broad text.&#x27;, &#x27;digital&#x27;) ON CONFLICT (intelligences_id) DO UPDATE SET description = EXCLUDED.description, substrate = EXCLUDED.substrate;\n\nINSERT INTO intelligences (intelligences_id, description, substrate)\nVALUES (&#x27;calculator&#x27;, &#x27;A pocket arithmetic device.&#x27;, &#x27;digital&#x27;) ON CONFLICT (intelligences_id) DO UPDATE SET description = EXCLUDED.description, substrate = EXCLUDED.substrate;\n\n-- ----------------------------------------------------------------------------\n-- Assessments: Per-capability scores for each intelligence. The junction table whose calculated WeightedScore feeds the rollup on Intelligences.\n-- ----------------------------------------------------------------------------\nINSERT INTO assessments (assessments_id, intelligence, capability, raw_score)\nVALUES (&#x27;human-memory&#x27;, &#x27;human&#x27;, &#x27;memory&#x27;, 80) ON CONFLICT (assessments_id) DO UPDATE SET intelligence = EXCLUDED.intelligence, capability = EXCLUDED.capability, raw_score = EXCLUDED.raw_score;\n\nINSERT INTO assessments (assessments_id, intelligence, capability, raw_score)\nVALUES (&#x27;human-perception&#x27;, &#x27;human&#x27;, &#x27;perception&#x27;, 85) ON CONFLICT (assessments_id) DO UPDATE SET intelligence = EXCLUDED.intelligence, capability = EXCLUDED.capability, raw_score = EXCLUDED.raw_score;\n\nINSERT INTO assessments (assessments_id, intelligence, capability, raw_score)\nVALUES (&#x27;human-reasoning&#x27;, &#x27;human&#x27;, &#x27;reasoning&#x27;, 85) ON CONFLICT (assessments_id) DO UPDATE SET intelligence = EXCLUDED.intelligence, capability = EXCLUDED.capability, raw_score = EXCLUDED.raw_score;\n\nINSERT INTO assessments (assessments_id, intelligence, capability, raw_score)\nVALUES (&#x27;human-creativity&#x27;, &#x27;human&#x27;, &#x27;creativity&#x27;, 80) ON CONFLICT (assessments_id) DO UPDATE SET intelligence = EXCLUDED.intelligence, capability = EXCLUDED.capability, raw_score = EXCLUDED.raw_score;\n\nINSERT INTO assessments (assessments_id, intelligence, capability, raw_score)\nVALUES (&#x27;octopus-memory&#x27;, &#x27;octopus&#x27;, &#x27;memory&#x27;, 60) ON CONFLICT (assessments_id) DO UPDATE SET intelligence = EXCLUDED.intelligence, capability = EXCLUDED.capability, raw_score = EXCLUDED.raw_score;\n\nINSERT INTO assessments (assessments_id, intelligence, capability, raw_score)\nVALUES (&#x27;octopus-perception&#x27;, &#x27;octopus&#x27;, &#x27;perception&#x27;, 90) ON CONFLICT (assessments_id) DO UPDATE SET intelligence = EXCLUDED.intelligence, capability = EXCLUDED.capability, raw_score = EXCLUDED.raw_score;\n\nINSERT INTO assessments (assessments_id, intelligence, capability, raw_score)\nVALUES (&#x27;octopus-reasoning&#x27;, &#x27;octopus&#x27;, &#x27;reasoning&#x27;, 65) ON CONFLICT (assessments_id) DO UPDATE SET intelligence = EXCLUDED.intelligence, capability = EXCLUDED.capability, raw_score = EXCLUDED.raw_score;\n\nINSERT INTO assessments (assessments_id, intelligence, capability, raw_score)\nVALUES (&#x27;octopus-creativity&#x27;, &#x27;octopus&#x27;, &#x27;creativity&#x27;, 70) ON CONFLICT (assessments_id) DO UPDATE SET intelligence = EXCLUDED.intelligence, capability = EXCLUDED.capability, raw_score = EXCLUDED.raw_score;\n\nINSERT INTO assessments (assessments_id, intelligence, capability, raw_score)\nVALUES (&#x27;gpt-5-memory&#x27;, &#x27;gpt-5&#x27;, &#x27;memory&#x27;, 95) ON CONFLICT (assessments_id) DO UPDATE SET intelligence = EXCLUDED.intelligence, capability = EXCLUDED.capability, raw_score = EXCLUDED.raw_score;\n\nINSERT INTO assessments (assessments_id, intelligence, capability, raw_score)\nVALUES (&#x27;gpt-5-perception&#x27;, &#x27;gpt-5&#x27;, &#x27;perception&#x27;, 30) ON CONFLICT (assessments_id) DO UPDATE SET intelligence = EXCLUDED.intelligence, capability = EXCLUDED.capability, raw_score = EXCLUDED.raw_score;\n\nINSERT INTO assessments (assessments_id, intelligence, capability, raw_score)\nVALUES (&#x27;gpt-5-reasoning&#x27;, &#x27;gpt-5&#x27;, &#x27;reasoning&#x27;, 80) ON CONFLICT (assessments_id) DO UPDATE SET intelligence = EXCLUDED.intelligence, capability = EXCLUDED.capability, raw_score = EXCLUDED.raw_score;\n\nINSERT INTO assessments (assessments_id, intelligence, capability, raw_score)\nVALUES (&#x27;gpt-5-creativity&#x27;, &#x27;gpt-5&#x27;, &#x27;creativity&#x27;, 65) ON CONFLICT (assessments_id) DO UPDATE SET intelligence = EXCLUDED.intelligence, capability = EXCLUDED.capability, raw_score = EXCLUDED.raw_score;\n\nINSERT INTO assessments (assessments_id, intelligence, capability, raw_score)\nVALUES (&#x27;calculator-memory&#x27;, &#x27;calculator&#x27;, &#x27;memory&#x27;, 50) ON CONFLICT (assessments_id) DO UPDATE SET intelligence = EXCLUDED.intelligence, capability = EXCLUDED.capability, raw_score = EXCLUDED.raw_score;\n\nINSERT INTO assessments (assessments_id, intelligence, capability, raw_score)\nVALUES (&#x27;calculator-perception&#x27;, &#x27;calculator&#x27;, &#x27;perception&#x27;, 10) ON CONFLICT (assessments_id) DO UPDATE SET intelligence = EXCLUDED.intelligence, capability = EXCLUDED.capability, raw_score = EXCLUDED.raw_score;\n\nINSERT INTO assessments (assessments_id, intelligence, capability, raw_score)\nVALUES (&#x27;calculator-reasoning&#x27;, &#x27;calculator&#x27;, &#x27;reasoning&#x27;, 95) ON CONFLICT (assessments_id) DO UPDATE SET intelligence = EXCLUDED.intelligence, capability = EXCLUDED.capability, raw_score = EXCLUDED.raw_score;\n\nINSERT INTO assessments (assessments_id, intelligence, capability, raw_score)\nVALUES (&#x27;calculator-creativity&#x27;, &#x27;calculator&#x27;, &#x27;creativity&#x27;, 0) ON CONFLICT (assessments_id) DO UPDATE SET intelligence = EXCLUDED.intelligence, capability = EXCLUDED.capability, raw_score = EXCLUDED.raw_score;\n\n</code></pre>\n            </div>",
+          "sql-data-b": "<div class=\"card\">\n                <div class=\"code-header\">\n                    <h2>05b \u00b7 Customize</h2>\n                    <div>\n                        <span class=\"code-info\">16 lines \u00b7 1 KB</span>\n                    </div>\n                </div>\n                <pre class=\"line-numbers\"><code class=\"language-sql\">-- ============================================================================\n-- CUSTOMIZE DATA - User-defined data customizations\n-- ============================================================================\n-- This file is for YOUR custom changes that should persist across\n-- regeneration of the base ERB files.\n--\n-- IMPORTANT:\n--   - This file runs AFTER the main data script\n--   - Define your customizations in the ERBCustomizations table in Airtable\n--   - Those changes will appear here after the next build\n--\n-- ============================================================================\n\n-- Your custom data changes will appear here:\n\n</code></pre>\n            </div>"
         }
       }
     },
@@ -1729,11 +1820,11 @@ const REPORT_DATA = {
       "total_fields_tested": 18,
       "fields_passed": 18,
       "fields_failed": 0,
-      "elapsed_seconds": 0.42438697814941406,
+      "elapsed_seconds": 0.0,
       "entities": {
-        "resumes": {
-          "fields_tested": 2,
-          "fields_passed": 2,
+        "job_boards": {
+          "fields_tested": 4,
+          "fields_passed": 4,
           "fields_failed": 0,
           "failures": []
         },
@@ -1743,9 +1834,9 @@ const REPORT_DATA = {
           "fields_failed": 0,
           "failures": []
         },
-        "job_boards": {
-          "fields_tested": 4,
-          "fields_passed": 4,
+        "resumes": {
+          "fields_tested": 2,
+          "fields_passed": 2,
           "fields_failed": 0,
           "failures": []
         },
@@ -1760,12 +1851,12 @@ const REPORT_DATA = {
       "run_metadata": {
         "last_run": {
           "status": "success",
-          "duration_seconds": 0.42438697814941406,
+          "duration_seconds": 0.0,
           "exit_code": 0,
           "score": 100.0
         },
         "last_successful_run": {
-          "duration_seconds": 0.42438697814941406,
+          "duration_seconds": 0.0,
           "status": "success",
           "test_results": {
             "total_fields_tested": 18,
@@ -1776,73 +1867,6 @@ const REPORT_DATA = {
         }
       },
       "test_answers": {
-        "resumes": [
-          {
-            "resume_id": "resume-platform-2026q1",
-            "name": "Platform Engineer - 2026 Q1",
-            "description": "Emphasizes distributed systems, platform architecture, and AI/ML infrastructure. Targets staff+ IC and architect roles.",
-            "file_path": "data/resume.md",
-            "indexed_at": "2026-04-01T07:45:00Z"
-          }
-        ],
-        "search_urls": [
-          {
-            "search_url_id": "indeed-principal-data-platform",
-            "name": "Principal Engineer Data Platform - Remote",
-            "job_board": "indeed",
-            "url": "https://www.indeed.com/jobs?q=principal+engineer+data+platform&l=Remote&sc=0kf%3Aattr%28DSQF7%29%3B",
-            "is_enabled": true
-          },
-          {
-            "search_url_id": "indeed-staff-platform-architect",
-            "name": "Staff Platform Architect - Remote",
-            "job_board": "indeed",
-            "url": "https://www.indeed.com/jobs?q=staff+platform+architect&l=Remote&sc=0kf%3Aattr%28DSQF7%29%3B",
-            "is_enabled": true
-          },
-          {
-            "search_url_id": "li-staff-platform-architect",
-            "name": "Staff Platform Architect - Remote",
-            "job_board": "linkedin",
-            "url": "https://www.linkedin.com/jobs/search/?keywords=staff+platform+architect&f_WT=2",
-            "is_enabled": true
-          },
-          {
-            "search_url_id": "wwr-principal-architect",
-            "name": "Principal Architect",
-            "job_board": "weworkremotely",
-            "url": "https://weworkremotely.com/remote-jobs/search?term=principal+architect",
-            "is_enabled": true
-          },
-          {
-            "search_url_id": "wwr-staff-engineer",
-            "name": "Staff Engineer",
-            "job_board": "weworkremotely",
-            "url": "https://weworkremotely.com/remote-jobs/search?term=staff+engineer",
-            "is_enabled": true
-          },
-          {
-            "search_url_id": "zr-devrel-engineer",
-            "name": "Developer Relations Engineer - Remote",
-            "job_board": "ziprecruiter",
-            "url": "https://www.ziprecruiter.com/jobs-search?search=developer+relations+engineer&location=Remote+(USA)",
-            "is_enabled": true
-          },
-          {
-            "search_url_id": "zr-principal-data-platform",
-            "name": "Principal Engineer Data Platform - Remote",
-            "job_board": "ziprecruiter",
-            "url": "https://www.ziprecruiter.com/jobs-search?search=principal+engineer+data+platform&location=Remote+(USA)",
-            "is_enabled": true
-          },
-          {
-            "search_url_id": "zr-staff-platform-architect",
-            "name": "Staff Platform Architect - Remote",
-            "job_board": "ziprecruiter",
-            "url": "https://www.ziprecruiter.com/jobs-search?search=staff+platform+architect&location=Remote+(USA)",
-            "is_enabled": true
-          }
-        ],
         "job_boards": [
           {
             "job_board_id": "indeed",
@@ -1880,40 +1904,6 @@ const REPORT_DATA = {
             "is_headless": true,
             "browser_channel": null
           }
-        ],
-        "resume_sections": [
-          {
-            "resume_section_id": "resume-platform-2026q1-core-strengths",
-            "name": "Core Strengths",
-            "resume": "resume-platform-2026q1",
-            "section_order": 2,
-            "content": "## Core Strengths\n- Distributed systems architecture (Kubernetes, gRPC, service mesh)\n- ML/AI platform engineering (model serving, training pipelines, vector stores)\n- Technical strategy and mentorship across 50+ engineer orgs\n- Data infrastructure (Kafka, Spark, Flink, dbt)",
-            "chroma_doc_id": "resume-core-strengths"
-          },
-          {
-            "resume_section_id": "resume-platform-2026q1-earlier-roles",
-            "name": "Earlier Roles",
-            "resume": "resume-platform-2026q1",
-            "section_order": 4,
-            "content": "## Earlier Roles\n### Software Engineer \u2014 StartupCo (2014-2018)\nFull-stack development, API design, early DevOps adoption.\n### Junior Developer \u2014 Agency LLC (2011-2014)\nWeb application development, client projects, learned software engineering fundamentals.",
-            "chroma_doc_id": "resume-earlier-roles"
-          },
-          {
-            "resume_section_id": "resume-platform-2026q1-experience",
-            "name": "Experience",
-            "resume": "resume-platform-2026q1",
-            "section_order": 3,
-            "content": "## Experience\n### Staff Platform Engineer \u2014 CloudScale Inc (2022-2026)\nLed platform architecture for ML serving infrastructure. Designed multi-region Kubernetes deployment strategy. Reduced model inference latency 40%.\n### Senior Engineer \u2014 DataForge (2018-2022)\nBuilt real-time data pipelines processing 2M events/sec. Migrated monolith to event-driven microservices.",
-            "chroma_doc_id": "resume-experience"
-          },
-          {
-            "resume_section_id": "resume-platform-2026q1-summary",
-            "name": "Summary",
-            "resume": "resume-platform-2026q1",
-            "section_order": 1,
-            "content": "## Summary\nSenior platform engineer with 15+ years building distributed systems, data pipelines, and AI/ML infrastructure. Track record of cross-team technical leadership at scale.",
-            "chroma_doc_id": "resume-summary"
-          }
         ]
       },
       "report_content": {
@@ -1941,9 +1931,9 @@ const REPORT_DATA = {
         ],
         "contents": {
           "description": "<div class=\"card\">\n                <h2>What This Substrate Does</h2>\n                <div class=\"markdown-content\">\n                    <p>The XLSX substrate generates native Excel workbooks with embedded formulas, allowing the rulebook logic to execute directly within Microsoft Excel.</p>\n                    <h3>Orchestration Pattern</h3>\n                    <ol>\n                        <li><strong>Generate</strong>: <code>inject-into-xlsx.py</code> creates Excel workbook using openpyxl</li>\n                        <li><strong>Inject Formulas</strong>: Converts rulebook formulas to Excel cell references</li>\n                        <li><strong>Test</strong>: Opens workbook and validates calculated values match expected</li>\n                    </ol>\n                </div>\n            </div>\n            <div class=\"card\">\n                <h2>Key Features</h2>\n                <ul class=\"markdown-content\">\n                    <li><strong>Native Excel Formulas</strong>: Calculations run directly in Excel</li>\n                    <li><strong>Cell Reference Translation</strong>: <code>{{FieldRef}}</code> becomes <code>$B2</code>, etc.</li>\n                    <li><strong>Multi-Sheet Support</strong>: Each entity gets its own worksheet</li>\n                    <li><strong>Portable</strong>: Works offline without any dependencies</li>\n                </ul>\n            </div>",
-          "log": "<div class=\"card\">\n                <h2>Execution Log</h2>\n                <pre>=== XLSX (Excel) Substrate Test Run ===\n\n\n  Processing job_boards...\nFound 7 fields in test answers\nPrimary key field: job_board_id\nReading from worksheet: JobBoards\nFound 8 columns, matched 7 to JSON fields\nLoaded 4 rows from xlsx\nFilled 0 null fields across 0 records\nUpdated /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-rulebooks/rulebook-examples/job-search-rag/testing/xlsx/test-answers/job_boards.json\n\n  Processing resume_sections...\nFound 6 fields in test answers\nPrimary key field: resume_section_id\nReading from worksheet: ResumeSections\nFound 7 columns, matched 6 to JSON fields\nLoaded 4 rows from xlsx\nFilled 0 null fields across 0 records\nUpdated /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-rulebooks/rulebook-examples/job-search-rag/testing/xlsx/test-answers/resume_sections.json\n\n  Processing resumes...\nFound 5 fields in test answers\nPrimary key field: resume_id\nReading from worksheet: Resumes\nFound 7 columns, matched 5 to JSON fields\nLoaded 1 rows from xlsx\nFilled 0 null fields across 0 records\nUpdated /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-rulebooks/rulebook-examples/job-search-rag/testing/xlsx/test-answers/resumes.json\n\n  Processing search_urls...\nFound 5 fields in test answers\nPrimary key field: search_url_id\nReading from worksheet: SearchUrls\nFound 6 columns, matched 5 to JSON fields\nLoaded 8 rows from xlsx\nFilled 0 null fields across 0 records\nUpdated /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-rulebooks/rulebook-examples/job-search-rag/testing/xlsx/test-answers/search_urls.json\n\nxlsx: Processed 4 entities from rulebook.xlsx\n\n</pre>\n            </div>",
+          "log": "<div class=\"card\">\n                <h2>Execution Log</h2>\n                <pre>=== XLSX (Excel) Substrate Test Run ===\n\n\n  Processing job_boards...\nFound 7 fields in test answers\nPrimary key field: job_board_id\nError: Could not find worksheet with column &#x27;JobBoardId&#x27;\n\n</pre>\n            </div>",
           "results": "<div class=\"card\">\n                <h2>Test Summary</h2>\n                <div class=\"results-summary\">\n                    <div class=\"result-item\"><div class=\"result-value score-perfect\">100.0%</div><div class=\"result-label\">Score</div></div>\n                    <div class=\"result-item\"><div class=\"result-value score-perfect\">18</div><div class=\"result-label\">Passed</div></div>\n                    <div class=\"result-item\"><div class=\"result-value\">0</div><div class=\"result-label\">Failed</div></div>\n                    <div class=\"result-item\"><div class=\"result-value\">18</div><div class=\"result-label\">Total</div></div>\n                </div>\n            </div>",
-          "workbook": "<div class=\"card\">\n                <h2>Generated Workbook</h2>\n                <div class=\"file-card\">\n                    <span class=\"file-icon\">\ud83d\udcd7</span>\n                    <div class=\"file-info\">\n                        <h3>rulebook.xlsx</h3>\n                        <div class=\"file-meta\">Size: 33.0 KB</div>\n                    </div>\n                </div>\n                <div class=\"markdown-content\" style=\"margin-top: 1rem;\">\n                    <h3>Sheets</h3>\n                    <ul>\n                        <li>One sheet per entity in the rulebook, each with all fields and calculated values</li>\n                    </ul>\n                </div>\n            </div>",
+          "workbook": "<div class=\"card\">\n                <h2>Generated Workbook</h2>\n                <div class=\"file-card\">\n                    <span class=\"file-icon\">\ud83d\udcd7</span>\n                    <div class=\"file-info\">\n                        <h3>rulebook.xlsx</h3>\n                        <div class=\"file-meta\">Size: 6.7 KB</div>\n                    </div>\n                </div>\n                <div class=\"markdown-content\" style=\"margin-top: 1rem;\">\n                    <h3>Sheets</h3>\n                    <ul>\n                        <li>One sheet per entity in the rulebook, each with all fields and calculated values</li>\n                    </ul>\n                </div>\n            </div>",
           "formulas": "<div class=\"card\">\n                <h2>Formula Translation</h2>\n                <div class=\"markdown-content\">\n                    <p>Rulebook formulas are converted to Excel formulas with cell references:</p>\n                </div>\n                <div class=\"formula-example\">\n                    <strong>Rulebook:</strong> =SUBSTITUTE(LOWER({{DisplayName}}), \" \", \"-\")<br>\n                    <strong>Excel:</strong> =SUBSTITUTE(LOWER($B2), \" \", \"-\")\n                </div>\n                <div class=\"formula-example\">\n                    <strong>Rulebook:</strong> ={{FieldA}} &amp; \" - \" &amp; {{FieldB}}<br>\n                    <strong>Excel:</strong> =$C2 &amp; \" - \" &amp; $D2\n                </div>\n            </div>"
         }
       }
@@ -2194,7 +2184,9 @@ const REPORT_DATA = {
   },
   "_effortless_substrates": [
     "effortless-entity-framework",
+    "effortless-golang",
     "effortless-postgres",
+    "effortless-python",
     "effortless-xlsx"
   ],
   "_substrate_colors": {
@@ -2209,10 +2201,11 @@ const REPORT_DATA = {
     "owl": "#7B1FA2",
     "english": "#795548",
     "explain-dag": "#37474F",
-    "airtable": "#FCB400",
     "effortless-postgres": "#336791",
     "effortless-xlsx": "#107C41",
-    "effortless-entity-framework": "#512BD4"
+    "effortless-entity-framework": "#512BD4",
+    "effortless-python": "#FFD343",
+    "effortless-golang": "#007D9C"
   }
 };
 
@@ -2224,9 +2217,6 @@ const SUBSTRATE_COLORS = REPORT_DATA._substrate_colors || {};
 
 function isEffortless(name) { return EFFORTLESS_SUBSTRATES.has(name); }
 function substrateColor(name) { return SUBSTRATE_COLORS[name] || '#6c757d'; }
-function displayName(name) {
-    return isEffortless(name) ? name.replace(/^effortless-/, '') : name;
-}
 function sortSubstrates(names) {
     // Open-source first, effortless last; alpha within each group.
     return [...names].sort((a, b) => {
@@ -2461,7 +2451,7 @@ function renderEntityDetails(entityName) {
     html += '</details>';
 
     // Substrate results tabs — open-source first, then a divider, then
-    // Effortless-licensed substrates. Labels drop the "effortless-" prefix.
+    // Effortless-licensed substrates, labelled with their real names.
     html += '<h4>Substrate Results</h4>';
     html += '<nav class="sub-tabs" id="entity-substrate-tabs">';
     const orderedSubs = sortSubstrates(Object.keys(REPORT_DATA.substrates));
@@ -2481,7 +2471,7 @@ function renderEntityDetails(entityName) {
         const scoreClass = getScoreClass(score);
         const active = renderedCount === 0 ? 'active' : '';
         const swatch = `<span class="substrate-swatch" style="background:${substrateColor(substrate)}"></span>`;
-        html += `<button class="sub-tab ${active} score-${scoreClass}" data-substrate="${escapeHtml(substrate)}" data-entity="${escapeHtml(entityName)}">${swatch}${escapeHtml(displayName(substrate))}: ${score}%</button>`;
+        html += `<button class="sub-tab ${active} score-${scoreClass}" data-substrate="${escapeHtml(substrate)}" data-entity="${escapeHtml(entityName)}">${swatch}${escapeHtml(substrate)}: ${score}%</button>`;
         renderedCount++;
     });
     html += '</nav><div id="entity-substrate-details"></div>';

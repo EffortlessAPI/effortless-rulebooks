@@ -1,0 +1,14 @@
+{
+  "tables_added": [],
+  "tables_removed": [],
+  "columns_added": [],
+  "columns_removed": [],
+  "datatypes_changed": [],
+  "formulas_changed": [
+    "Speakers.Introduction"
+  ],
+  "descriptions_updated": [],
+  "rows_added": 1,
+  "rows_removed": 0,
+  "rows_updated": 1
+}

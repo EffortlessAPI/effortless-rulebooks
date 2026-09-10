@@ -6,7 +6,11 @@
     "duration_minutes": 50,
     "mood_rating": 7,
     "notes": "Good engagement.",
+    "client_name": "Alex Rivera",
+    "client_therapist": "tess@example.com",
     "name": "ses-001",
+    "update_count": 1,
+    "avg_score_achieved": 5.0,
     "is_productive": false,
     "status_label": "Light"
   },
@@ -17,9 +21,13 @@
     "duration_minutes": 50,
     "mood_rating": 8,
     "notes": "Reported better sleep.",
+    "client_name": "Alex Rivera",
+    "client_therapist": "tess@example.com",
     "name": "ses-002",
-    "is_productive": false,
-    "status_label": "Light"
+    "update_count": 2,
+    "avg_score_achieved": 6.0,
+    "is_productive": true,
+    "status_label": "Productive"
   },
   {
     "sessions_id": "ses-003",
@@ -28,9 +36,13 @@
     "duration_minutes": 50,
     "mood_rating": 7,
     "notes": "",
+    "client_name": "Alex Rivera",
+    "client_therapist": "tess@example.com",
     "name": "ses-003",
-    "is_productive": false,
-    "status_label": "Light"
+    "update_count": 2,
+    "avg_score_achieved": 6.5,
+    "is_productive": true,
+    "status_label": "Productive"
   },
   {
     "sessions_id": "ses-004",
@@ -39,7 +51,11 @@
     "duration_minutes": 45,
     "mood_rating": 4,
     "notes": "Tough week.",
+    "client_name": "Blair Morgan",
+    "client_therapist": "tess@example.com",
     "name": "ses-004",
+    "update_count": 1,
+    "avg_score_achieved": 3.0,
     "is_productive": false,
     "status_label": "Light"
   },
@@ -50,7 +66,11 @@
     "duration_minutes": 45,
     "mood_rating": 5,
     "notes": "",
+    "client_name": "Blair Morgan",
+    "client_therapist": "tess@example.com",
     "name": "ses-005",
+    "update_count": 2,
+    "avg_score_achieved": 3.5,
     "is_productive": false,
     "status_label": "Light"
   },
@@ -61,7 +81,11 @@
     "duration_minutes": 45,
     "mood_rating": 3,
     "notes": "Sleep poor.",
+    "client_name": "Blair Morgan",
+    "client_therapist": "tess@example.com",
     "name": "ses-006",
+    "update_count": 1,
+    "avg_score_achieved": 2.0,
     "is_productive": false,
     "status_label": "Light"
   },
@@ -72,7 +96,11 @@
     "duration_minutes": 60,
     "mood_rating": 6,
     "notes": "Grief work.",
+    "client_name": "Casey Lin",
+    "client_therapist": "rob@example.com",
     "name": "ses-007",
+    "update_count": 1,
+    "avg_score_achieved": 4.0,
     "is_productive": false,
     "status_label": "Light"
   },
@@ -83,9 +111,13 @@
     "duration_minutes": 60,
     "mood_rating": 7,
     "notes": "",
+    "client_name": "Casey Lin",
+    "client_therapist": "rob@example.com",
     "name": "ses-008",
-    "is_productive": false,
-    "status_label": "Light"
+    "update_count": 2,
+    "avg_score_achieved": 5.5,
+    "is_productive": true,
+    "status_label": "Productive"
   },
   {
     "sessions_id": "ses-009",
@@ -94,7 +126,11 @@
     "duration_minutes": 50,
     "mood_rating": 8,
     "notes": "Strong.",
+    "client_name": "Drew Patel",
+    "client_therapist": "rob@example.com",
     "name": "ses-009",
+    "update_count": 1,
+    "avg_score_achieved": 7.0,
     "is_productive": false,
     "status_label": "Light"
   },
@@ -105,8 +141,12 @@
     "duration_minutes": 50,
     "mood_rating": 9,
     "notes": "Excellent.",
+    "client_name": "Drew Patel",
+    "client_therapist": "rob@example.com",
     "name": "ses-010",
-    "is_productive": false,
-    "status_label": "Light"
+    "update_count": 2,
+    "avg_score_achieved": 7.0,
+    "is_productive": true,
+    "status_label": "Productive"
   }
 ]

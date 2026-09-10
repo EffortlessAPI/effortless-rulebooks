@@ -1,0 +1,58 @@
+[
+  {
+    "tool_id": "close-workpaper",
+    "name": "Close Workpaper Workbook",
+    "label": "Close Workpaper Workbook",
+    "purpose": "Controlled reconciliation workbook",
+    "semantic_type_iri": "http://w3id.org/nfdi4ing/metadata4ing#Tool"
+  },
+  {
+    "tool_id": "consent-registry",
+    "name": "Employee Consent Registry",
+    "label": "Employee Consent Registry",
+    "purpose": "Consent and channel preference system",
+    "semantic_type_iri": "http://w3id.org/nfdi4ing/metadata4ing#Tool"
+  },
+  {
+    "tool_id": "email-gateway",
+    "name": "Email Gateway",
+    "label": "Email Gateway",
+    "purpose": "Transactional employee email service",
+    "semantic_type_iri": "http://w3id.org/nfdi4ing/metadata4ing#Tool"
+  },
+  {
+    "tool_id": "erp-ledger",
+    "name": "ERP General Ledger",
+    "label": "ERP General Ledger",
+    "purpose": "Financial system of record",
+    "semantic_type_iri": "http://w3id.org/nfdi4ing/metadata4ing#Tool"
+  },
+  {
+    "tool_id": "knowledge-capture-form",
+    "name": "Knowledge Capture Form",
+    "label": "Knowledge Capture Form",
+    "purpose": "Structured elicitation and review interface",
+    "semantic_type_iri": "http://w3id.org/nfdi4ing/metadata4ing#Tool"
+  },
+  {
+    "tool_id": "policy-registry",
+    "name": "Policy Registry",
+    "label": "Policy Registry",
+    "purpose": "Versioned workforce-policy source of truth",
+    "semantic_type_iri": "http://w3id.org/nfdi4ing/metadata4ing#Tool"
+  },
+  {
+    "tool_id": "sms-gateway",
+    "name": "SMS Gateway",
+    "label": "SMS Gateway",
+    "purpose": "Transactional SMS service",
+    "semantic_type_iri": "http://w3id.org/nfdi4ing/metadata4ing#Tool"
+  },
+  {
+    "tool_id": "variance-model",
+    "name": "Variance AI Console",
+    "label": "Variance AI Console",
+    "purpose": "Approved AI variance-triage interface",
+    "semantic_type_iri": "http://w3id.org/nfdi4ing/metadata4ing#Tool"
+  }
+]

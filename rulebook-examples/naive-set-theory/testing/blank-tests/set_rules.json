@@ -1,0 +1,110 @@
+[
+  {
+    "set_rule_id": "rule-1",
+    "rule_number": 1,
+    "title": "Membership",
+    "statement": "A set is a collection of distinct objects; x in S asserts x is a member of S.",
+    "name": null,
+    "is_classical": null,
+    "is_the_missing_rule": null
+  },
+  {
+    "set_rule_id": "rule-10",
+    "rule_number": 10,
+    "title": "Nesting",
+    "statement": "Sets may be members of other sets.",
+    "name": null,
+    "is_classical": null,
+    "is_the_missing_rule": null
+  },
+  {
+    "set_rule_id": "rule-11",
+    "rule_number": 11,
+    "title": "Self-membership",
+    "statement": "A set may be a member of itself; S in S is a well-formed question.",
+    "name": null,
+    "is_classical": null,
+    "is_the_missing_rule": null
+  },
+  {
+    "set_rule_id": "rule-12",
+    "rule_number": 12,
+    "title": "NULL membership",
+    "statement": "If a set's condition loops back on itself with no stable True/False value, x in S = NULL.",
+    "name": null,
+    "is_classical": null,
+    "is_the_missing_rule": null
+  },
+  {
+    "set_rule_id": "rule-2",
+    "rule_number": 2,
+    "title": "Extensionality",
+    "statement": "A set is fully determined by its members; sets with the same membership profile are identical.",
+    "name": null,
+    "is_classical": null,
+    "is_the_missing_rule": null
+  },
+  {
+    "set_rule_id": "rule-3",
+    "rule_number": 3,
+    "title": "Order-independence",
+    "statement": "The order in which members are listed carries no information.",
+    "name": null,
+    "is_classical": null,
+    "is_the_missing_rule": null
+  },
+  {
+    "set_rule_id": "rule-4",
+    "rule_number": 4,
+    "title": "Repetition-independence",
+    "statement": "Listing a member more than once adds nothing.",
+    "name": null,
+    "is_classical": null,
+    "is_the_missing_rule": null
+  },
+  {
+    "set_rule_id": "rule-5",
+    "rule_number": 5,
+    "title": "Two descriptions",
+    "statement": "A set may be given by enumeration or by a membership condition phi.",
+    "name": null,
+    "is_classical": null,
+    "is_the_missing_rule": null
+  },
+  {
+    "set_rule_id": "rule-6",
+    "rule_number": 6,
+    "title": "Comprehension",
+    "statement": "Any condition you can state determines a set of exactly the objects satisfying it.",
+    "name": null,
+    "is_classical": null,
+    "is_the_missing_rule": null
+  },
+  {
+    "set_rule_id": "rule-7",
+    "rule_number": 7,
+    "title": "Unbounded size",
+    "statement": "A set may have any number of members: none, finitely many, or infinitely many.",
+    "name": null,
+    "is_classical": null,
+    "is_the_missing_rule": null
+  },
+  {
+    "set_rule_id": "rule-8",
+    "rule_number": 8,
+    "title": "Empty set",
+    "statement": "There is a set with no members.",
+    "name": null,
+    "is_classical": null,
+    "is_the_missing_rule": null
+  },
+  {
+    "set_rule_id": "rule-9",
+    "rule_number": 9,
+    "title": "Singletons",
+    "statement": "For any object there is a one-member set, distinct from that member.",
+    "name": null,
+    "is_classical": null,
+    "is_the_missing_rule": null
+  }
+]

@@ -25,7 +25,12 @@
     "dimensionality_while_editing": "N/A",
     "relationship_to_concept": "IsMirrorOf",
     "model_object_facility_layer": "NA",
-    "sort_order": 2
+    "sort_order": 2,
+    "hockett_assessed_count": 0,
+    "hockett_yes_count": 0,
+    "is_hockett_assessed": false,
+    "hockett_score": "not assessed",
+    "hockett_vs_gate": ""
   },
   {
     "language_candidate_id": "a-game-of-fortnite",
@@ -53,7 +58,45 @@
     "dimensionality_while_editing": "MultiDimensionalNonSymbolic",
     "relationship_to_concept": "IsMirrorOf",
     "model_object_facility_layer": "M4",
-    "sort_order": 4
+    "sort_order": 4,
+    "hockett_assessed_count": 0,
+    "hockett_yes_count": 0,
+    "is_hockett_assessed": false,
+    "hockett_score": "not assessed",
+    "hockett_vs_gate": ""
+  },
+  {
+    "language_candidate_id": "a-live-sdlaf-container",
+    "name": "A Live SDLAF Container",
+    "is_language": false,
+    "has_grammar": false,
+    "has_syntax": false,
+    "can_be_held": false,
+    "question": "Is A Live SDLAF Container a language?",
+    "predicted_answer": false,
+    "prediction_predicates": "No Syntax & No Parsing Neede & Is the Thing & No Decoding Pressure & No AST, Is Stable Ontology AND Can't Be Held, Has Identity",
+    "prediction_fail": "",
+    "category": "Running Software",
+    "has_identity": true,
+    "is_parsed": false,
+    "resolves_to_an_ast": false,
+    "has_linear_decoding_pressure": false,
+    "is_stable_ontology_reference": true,
+    "is_live_ontology_editor": true,
+    "is_open_world": false,
+    "is_closed_world": true,
+    "is_description_of": false,
+    "distance_from_concept": 1,
+    "is_open_closed_world_conflicted": false,
+    "dimensionality_while_editing": "MultiDimensionalNonSymbolic",
+    "relationship_to_concept": "IsMirrorOf",
+    "model_object_facility_layer": "M4",
+    "sort_order": 25,
+    "hockett_assessed_count": 0,
+    "hockett_yes_count": 0,
+    "is_hockett_assessed": false,
+    "hockett_score": "not assessed",
+    "hockett_vs_gate": ""
   },
   {
     "language_candidate_id": "a-running-app",
@@ -81,7 +124,12 @@
     "dimensionality_while_editing": "MultiDimensionalNonSymbolic",
     "relationship_to_concept": "IsMirrorOf",
     "model_object_facility_layer": "M4",
-    "sort_order": 12
+    "sort_order": 12,
+    "hockett_assessed_count": 0,
+    "hockett_yes_count": 0,
+    "is_hockett_assessed": false,
+    "hockett_score": "not assessed",
+    "hockett_vs_gate": ""
   },
   {
     "language_candidate_id": "a-smartphone",
@@ -109,7 +157,12 @@
     "dimensionality_while_editing": "N/A",
     "relationship_to_concept": "IsMirrorOf",
     "model_object_facility_layer": "NA",
-    "sort_order": 10
+    "sort_order": 10,
+    "hockett_assessed_count": 0,
+    "hockett_yes_count": 0,
+    "is_hockett_assessed": false,
+    "hockett_score": "not assessed",
+    "hockett_vs_gate": ""
   },
   {
     "language_candidate_id": "a-thunderstorm",
@@ -137,7 +190,12 @@
     "dimensionality_while_editing": "N/A",
     "relationship_to_concept": "IsMirrorOf",
     "model_object_facility_layer": "NA",
-    "sort_order": 18
+    "sort_order": 18,
+    "hockett_assessed_count": 0,
+    "hockett_yes_count": 0,
+    "is_hockett_assessed": false,
+    "hockett_score": "not assessed",
+    "hockett_vs_gate": ""
   },
   {
     "language_candidate_id": "a-uml-file",
@@ -165,7 +223,12 @@
     "dimensionality_while_editing": "OneDimensionalSymbolic",
     "relationship_to_concept": "IsDescriptionOf",
     "model_object_facility_layer": "M2",
-    "sort_order": 23
+    "sort_order": 23,
+    "hockett_assessed_count": 0,
+    "hockett_yes_count": 0,
+    "is_hockett_assessed": false,
+    "hockett_score": "not assessed",
+    "hockett_vs_gate": ""
   },
   {
     "language_candidate_id": "an-docx-doc",
@@ -193,7 +256,45 @@
     "dimensionality_while_editing": "OneDimensionalSymbolic",
     "relationship_to_concept": "IsDescriptionOf",
     "model_object_facility_layer": "M2",
-    "sort_order": 15
+    "sort_order": 15,
+    "hockett_assessed_count": 0,
+    "hockett_yes_count": 0,
+    "is_hockett_assessed": false,
+    "hockett_score": "not assessed",
+    "hockett_vs_gate": ""
+  },
+  {
+    "language_candidate_id": "an-sdlaf-container",
+    "name": "An SDLAF Container",
+    "is_language": false,
+    "has_grammar": false,
+    "has_syntax": false,
+    "can_be_held": false,
+    "question": "Is An SDLAF Container a language?",
+    "predicted_answer": false,
+    "prediction_predicates": "No Syntax & No Parsing Neede & Describes the thing & No Decoding Pressure & No AST, Is Stable Ontology AND Can't Be Held, Has no Identity",
+    "prediction_fail": "",
+    "category": "Conceptual Structure",
+    "has_identity": false,
+    "is_parsed": false,
+    "resolves_to_an_ast": false,
+    "has_linear_decoding_pressure": false,
+    "is_stable_ontology_reference": true,
+    "is_live_ontology_editor": false,
+    "is_open_world": false,
+    "is_closed_world": true,
+    "is_description_of": true,
+    "distance_from_concept": 2,
+    "is_open_closed_world_conflicted": false,
+    "dimensionality_while_editing": "MultiDimensionalSymbolic",
+    "relationship_to_concept": "IsDescriptionOf",
+    "model_object_facility_layer": "M3",
+    "sort_order": 24,
+    "hockett_assessed_count": 0,
+    "hockett_yes_count": 0,
+    "is_hockett_assessed": false,
+    "hockett_score": "not assessed",
+    "hockett_vs_gate": ""
   },
   {
     "language_candidate_id": "an-xlsx-doc",
@@ -221,7 +322,12 @@
     "dimensionality_while_editing": "OneDimensionalSymbolic",
     "relationship_to_concept": "IsDescriptionOf",
     "model_object_facility_layer": "M2",
-    "sort_order": 13
+    "sort_order": 13,
+    "hockett_assessed_count": 0,
+    "hockett_yes_count": 0,
+    "is_hockett_assessed": false,
+    "hockett_score": "not assessed",
+    "hockett_vs_gate": ""
   },
   {
     "language_candidate_id": "ant-pheromone-trail-system",
@@ -249,7 +355,12 @@
     "dimensionality_while_editing": "",
     "relationship_to_concept": "IsDescriptionOf",
     "model_object_facility_layer": "",
-    "sort_order": 0
+    "sort_order": 0,
+    "hockett_assessed_count": 0,
+    "hockett_yes_count": 0,
+    "is_hockett_assessed": false,
+    "hockett_score": "not assessed",
+    "hockett_vs_gate": ""
   },
   {
     "language_candidate_id": "binary-code",
@@ -277,7 +388,12 @@
     "dimensionality_while_editing": "OneDimensionalSymbolic",
     "relationship_to_concept": "IsDescriptionOf",
     "model_object_facility_layer": "M2",
-    "sort_order": 21
+    "sort_order": 21,
+    "hockett_assessed_count": 0,
+    "hockett_yes_count": 0,
+    "is_hockett_assessed": false,
+    "hockett_score": "not assessed",
+    "hockett_vs_gate": ""
   },
   {
     "language_candidate_id": "bonobo-lexigram-keyboard-communication",
@@ -305,7 +421,12 @@
     "dimensionality_while_editing": "",
     "relationship_to_concept": "IsDescriptionOf",
     "model_object_facility_layer": "",
-    "sort_order": 0
+    "sort_order": 0,
+    "hockett_assessed_count": 0,
+    "hockett_yes_count": 0,
+    "is_hockett_assessed": false,
+    "hockett_score": "not assessed",
+    "hockett_vs_gate": ""
   },
   {
     "language_candidate_id": "cuttlefish-chromatophore-displays",
@@ -333,7 +454,12 @@
     "dimensionality_while_editing": "",
     "relationship_to_concept": "IsDescriptionOf",
     "model_object_facility_layer": "",
-    "sort_order": 0
+    "sort_order": 0,
+    "hockett_assessed_count": 0,
+    "hockett_yes_count": 0,
+    "is_hockett_assessed": false,
+    "hockett_score": "not assessed",
+    "hockett_vs_gate": ""
   },
   {
     "language_candidate_id": "docx-editing",
@@ -361,7 +487,12 @@
     "dimensionality_while_editing": "MultiDimensionalNonSymbolic",
     "relationship_to_concept": "IsMirrorOf",
     "model_object_facility_layer": "M4",
-    "sort_order": 16
+    "sort_order": 16,
+    "hockett_assessed_count": 0,
+    "hockett_yes_count": 0,
+    "is_hockett_assessed": false,
+    "hockett_score": "not assessed",
+    "hockett_vs_gate": ""
   },
   {
     "language_candidate_id": "dolphin-signature-whistles",
@@ -389,7 +520,12 @@
     "dimensionality_while_editing": "",
     "relationship_to_concept": "IsDescriptionOf",
     "model_object_facility_layer": "",
-    "sort_order": 0
+    "sort_order": 0,
+    "hockett_assessed_count": 0,
+    "hockett_yes_count": 0,
+    "is_hockett_assessed": false,
+    "hockett_score": "not assessed",
+    "hockett_vs_gate": ""
   },
   {
     "language_candidate_id": "editing-airtable-base",
@@ -417,7 +553,12 @@
     "dimensionality_while_editing": "MultiDimensionalNonSymbolic",
     "relationship_to_concept": "IsDescriptionOf",
     "model_object_facility_layer": "M4",
-    "sort_order": 6
+    "sort_order": 6,
+    "hockett_assessed_count": 0,
+    "hockett_yes_count": 0,
+    "is_hockett_assessed": false,
+    "hockett_score": "not assessed",
+    "hockett_vs_gate": ""
   },
   {
     "language_candidate_id": "english",
@@ -445,7 +586,12 @@
     "dimensionality_while_editing": "OneDimensionalSymbolic",
     "relationship_to_concept": "IsDescriptionOf",
     "model_object_facility_layer": "M1",
-    "sort_order": 1
+    "sort_order": 1,
+    "hockett_assessed_count": 0,
+    "hockett_yes_count": 0,
+    "is_hockett_assessed": false,
+    "hockett_score": "not assessed",
+    "hockett_vs_gate": ""
   },
   {
     "language_candidate_id": "falsifier-a",
@@ -473,7 +619,12 @@
     "dimensionality_while_editing": "N/A",
     "relationship_to_concept": "IsMirrorOf",
     "model_object_facility_layer": "NA",
-    "sort_order": 8
+    "sort_order": 8,
+    "hockett_assessed_count": 0,
+    "hockett_yes_count": 0,
+    "is_hockett_assessed": false,
+    "hockett_score": "not assessed",
+    "hockett_vs_gate": ""
   },
   {
     "language_candidate_id": "falsifier-b",
@@ -501,7 +652,12 @@
     "dimensionality_while_editing": "N/A",
     "relationship_to_concept": "IsDescriptionOf",
     "model_object_facility_layer": "M1",
-    "sort_order": 9
+    "sort_order": 9,
+    "hockett_assessed_count": 0,
+    "hockett_yes_count": 0,
+    "is_hockett_assessed": false,
+    "hockett_score": "not assessed",
+    "hockett_vs_gate": ""
   },
   {
     "language_candidate_id": "homesign-single-child",
@@ -529,7 +685,12 @@
     "dimensionality_while_editing": "",
     "relationship_to_concept": "IsDescriptionOf",
     "model_object_facility_layer": "",
-    "sort_order": 0
+    "sort_order": 0,
+    "hockett_assessed_count": 0,
+    "hockett_yes_count": 0,
+    "is_hockett_assessed": false,
+    "hockett_score": "not assessed",
+    "hockett_vs_gate": ""
   },
   {
     "language_candidate_id": "honeybee-waggle-dance",
@@ -557,7 +718,12 @@
     "dimensionality_while_editing": "OneDimensionalSymbolic",
     "relationship_to_concept": "IsDescriptionOf",
     "model_object_facility_layer": "",
-    "sort_order": 0
+    "sort_order": 0,
+    "hockett_assessed_count": 0,
+    "hockett_yes_count": 0,
+    "is_hockett_assessed": false,
+    "hockett_score": "not assessed",
+    "hockett_vs_gate": ""
   },
   {
     "language_candidate_id": "killer-whale-pod-dialects",
@@ -585,7 +751,12 @@
     "dimensionality_while_editing": "",
     "relationship_to_concept": "IsDescriptionOf",
     "model_object_facility_layer": "",
-    "sort_order": 0
+    "sort_order": 0,
+    "hockett_assessed_count": 0,
+    "hockett_yes_count": 0,
+    "is_hockett_assessed": false,
+    "hockett_score": "not assessed",
+    "hockett_vs_gate": ""
   },
   {
     "language_candidate_id": "math",
@@ -613,7 +784,12 @@
     "dimensionality_while_editing": "OneDimensionalSymbolic",
     "relationship_to_concept": "IsDescriptionOf",
     "model_object_facility_layer": "M1",
-    "sort_order": 7
+    "sort_order": 7,
+    "hockett_assessed_count": 0,
+    "hockett_yes_count": 0,
+    "is_hockett_assessed": false,
+    "hockett_score": "not assessed",
+    "hockett_vs_gate": ""
   },
   {
     "language_candidate_id": "nicaraguan-sign-language-early-cohort",
@@ -641,7 +817,12 @@
     "dimensionality_while_editing": "",
     "relationship_to_concept": "IsDescriptionOf",
     "model_object_facility_layer": "",
-    "sort_order": 0
+    "sort_order": 0,
+    "hockett_assessed_count": 0,
+    "hockett_yes_count": 0,
+    "is_hockett_assessed": false,
+    "hockett_score": "not assessed",
+    "hockett_vs_gate": ""
   },
   {
     "language_candidate_id": "owa-cwa-falsifier",
@@ -669,7 +850,12 @@
     "dimensionality_while_editing": "OneDimensionalSymbolic",
     "relationship_to_concept": "IsDescriptionOf",
     "model_object_facility_layer": "M1",
-    "sort_order": 23
+    "sort_order": 23,
+    "hockett_assessed_count": 0,
+    "hockett_yes_count": 0,
+    "is_hockett_assessed": false,
+    "hockett_score": "not assessed",
+    "hockett_vs_gate": ""
   },
   {
     "language_candidate_id": "owl-rdf-graphql-generally",
@@ -697,7 +883,12 @@
     "dimensionality_while_editing": "OneDimensionalSymbolic",
     "relationship_to_concept": "IsDescriptionOf",
     "model_object_facility_layer": "M2",
-    "sort_order": 17
+    "sort_order": 17,
+    "hockett_assessed_count": 0,
+    "hockett_yes_count": 0,
+    "is_hockett_assessed": false,
+    "hockett_score": "not assessed",
+    "hockett_vs_gate": ""
   },
   {
     "language_candidate_id": "python",
@@ -725,7 +916,12 @@
     "dimensionality_while_editing": "OneDimensionalSymbolic",
     "relationship_to_concept": "IsDescriptionOf",
     "model_object_facility_layer": "M1",
-    "sort_order": 11
+    "sort_order": 11,
+    "hockett_assessed_count": 0,
+    "hockett_yes_count": 0,
+    "is_hockett_assessed": false,
+    "hockett_score": "not assessed",
+    "hockett_vs_gate": ""
   },
   {
     "language_candidate_id": "running-calculator-app",
@@ -753,7 +949,12 @@
     "dimensionality_while_editing": "MultiDimensionalNonSymbolic",
     "relationship_to_concept": "IsMirrorOf",
     "model_object_facility_layer": "M1",
-    "sort_order": 22
+    "sort_order": 22,
+    "hockett_assessed_count": 0,
+    "hockett_yes_count": 0,
+    "is_hockett_assessed": false,
+    "hockett_score": "not assessed",
+    "hockett_vs_gate": ""
   },
   {
     "language_candidate_id": "sign-language",
@@ -781,7 +982,12 @@
     "dimensionality_while_editing": "OneDimensionalSymbolic",
     "relationship_to_concept": "IsDescriptionOf",
     "model_object_facility_layer": "M1",
-    "sort_order": 5
+    "sort_order": 5,
+    "hockett_assessed_count": 0,
+    "hockett_yes_count": 0,
+    "is_hockett_assessed": false,
+    "hockett_score": "not assessed",
+    "hockett_vs_gate": ""
   },
   {
     "language_candidate_id": "songbird-song-learned-dialects",
@@ -809,7 +1015,12 @@
     "dimensionality_while_editing": "",
     "relationship_to_concept": "IsDescriptionOf",
     "model_object_facility_layer": "",
-    "sort_order": 0
+    "sort_order": 0,
+    "hockett_assessed_count": 0,
+    "hockett_yes_count": 0,
+    "is_hockett_assessed": false,
+    "hockett_score": "not assessed",
+    "hockett_vs_gate": ""
   },
   {
     "language_candidate_id": "spoken-words",
@@ -837,7 +1048,12 @@
     "dimensionality_while_editing": "OneDimensionalSymbolic",
     "relationship_to_concept": "IsDescriptionOf",
     "model_object_facility_layer": "M1",
-    "sort_order": 3
+    "sort_order": 3,
+    "hockett_assessed_count": 0,
+    "hockett_yes_count": 0,
+    "is_hockett_assessed": false,
+    "hockett_score": "not assessed",
+    "hockett_vs_gate": ""
   },
   {
     "language_candidate_id": "the-mona-lisa",
@@ -865,7 +1081,12 @@
     "dimensionality_while_editing": "N/A",
     "relationship_to_concept": "IsMirrorOf",
     "model_object_facility_layer": "NA",
-    "sort_order": 20
+    "sort_order": 20,
+    "hockett_assessed_count": 0,
+    "hockett_yes_count": 0,
+    "is_hockett_assessed": false,
+    "hockett_score": "not assessed",
+    "hockett_vs_gate": ""
   },
   {
     "language_candidate_id": "vervet-monkey-alarm-calls",
@@ -893,7 +1114,12 @@
     "dimensionality_while_editing": "",
     "relationship_to_concept": "IsDescriptionOf",
     "model_object_facility_layer": "",
-    "sort_order": 0
+    "sort_order": 0,
+    "hockett_assessed_count": 0,
+    "hockett_yes_count": 0,
+    "is_hockett_assessed": false,
+    "hockett_score": "not assessed",
+    "hockett_vs_gate": ""
   },
   {
     "language_candidate_id": "xlsx-editing",
@@ -921,6 +1147,11 @@
     "dimensionality_while_editing": "MultiDimensionalNonSymbolic",
     "relationship_to_concept": "IsMirrorOf",
     "model_object_facility_layer": "M4",
-    "sort_order": 14
+    "sort_order": 14,
+    "hockett_assessed_count": 0,
+    "hockett_yes_count": 0,
+    "is_hockett_assessed": false,
+    "hockett_score": "not assessed",
+    "hockett_vs_gate": ""
   }
 ]

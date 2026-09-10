@@ -1,0 +1,50 @@
+[
+  {
+    "cell_id": "cell-id-age-composition-x-education",
+    "confounder_identity": "id-age-composition",
+    "domain": "education",
+    "name": "cell-id-age-composition-x-education"
+  },
+  {
+    "cell_id": "cell-id-age-composition-x-epidemiology",
+    "confounder_identity": "id-age-composition",
+    "domain": "epidemiology",
+    "name": "cell-id-age-composition-x-epidemiology"
+  },
+  {
+    "cell_id": "cell-id-age-composition-x-medicine",
+    "confounder_identity": "id-age-composition",
+    "domain": "medicine",
+    "name": "cell-id-age-composition-x-medicine"
+  },
+  {
+    "cell_id": "cell-id-disease-severity-x-education",
+    "confounder_identity": "id-disease-severity",
+    "domain": "education",
+    "name": "cell-id-disease-severity-x-education"
+  },
+  {
+    "cell_id": "cell-id-disease-severity-x-epidemiology",
+    "confounder_identity": "id-disease-severity",
+    "domain": "epidemiology",
+    "name": "cell-id-disease-severity-x-epidemiology"
+  },
+  {
+    "cell_id": "cell-id-disease-severity-x-medicine",
+    "confounder_identity": "id-disease-severity",
+    "domain": "medicine",
+    "name": "cell-id-disease-severity-x-medicine"
+  },
+  {
+    "cell_id": "cell-id-institutional-unit-x-economics",
+    "confounder_identity": "id-institutional-unit",
+    "domain": "economics",
+    "name": "cell-id-institutional-unit-x-economics"
+  },
+  {
+    "cell_id": "cell-id-institutional-unit-x-education",
+    "confounder_identity": "id-institutional-unit",
+    "domain": "education",
+    "name": "cell-id-institutional-unit-x-education"
+  }
+]

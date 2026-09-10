@@ -1,0 +1,65 @@
+[
+  {
+    "action_id": "approve-close",
+    "label": "Approve close",
+    "definition": "Authorize publication of the financial statements package.",
+    "semantic_type_iri": "https://w3id.org/pko#Action",
+    "name": null
+  },
+  {
+    "action_id": "approve-policy",
+    "label": "Approve employment policy",
+    "definition": "Authorize the policy's semantic content and channel requirements.",
+    "semantic_type_iri": "https://w3id.org/pko#Action",
+    "name": null
+  },
+  {
+    "action_id": "freeze-ledgers",
+    "label": "Freeze ledgers",
+    "definition": "Prevent late transaction entry after the close cutoff.",
+    "semantic_type_iri": "https://w3id.org/pko#Action",
+    "name": null
+  },
+  {
+    "action_id": "interview-practitioner",
+    "label": "Interview practitioner",
+    "definition": "Elicit tacit, implicit, and explicit procedural knowledge.",
+    "semantic_type_iri": "https://w3id.org/pko#Action",
+    "name": null
+  },
+  {
+    "action_id": "investigate-variance",
+    "label": "Investigate variance",
+    "definition": "Apply documented checks and situated judgment to explain a material variance.",
+    "semantic_type_iri": "https://w3id.org/pko#Action",
+    "name": null
+  },
+  {
+    "action_id": "reconcile-account",
+    "label": "Reconcile account",
+    "definition": "Compare balances, source records, and supporting evidence.",
+    "semantic_type_iri": "https://w3id.org/pko#Action",
+    "name": null
+  },
+  {
+    "action_id": "review-close-package",
+    "label": "Review close package",
+    "definition": "Perform an independent control review.",
+    "semantic_type_iri": "https://w3id.org/pko#Action",
+    "name": null
+  },
+  {
+    "action_id": "review-feedback",
+    "label": "Review procedural feedback",
+    "definition": "Evaluate questions, issues, and lessons for future versions.",
+    "semantic_type_iri": "https://w3id.org/pko#Action",
+    "name": null
+  },
+  {
+    "action_id": "review-policy",
+    "label": "Review employment policy",
+    "definition": "Review legal, privacy, and operational commitments.",
+    "semantic_type_iri": "https://w3id.org/pko#Action",
+    "name": null
+  }
+]

@@ -15,7 +15,7 @@
       "RelativePath": "/postgres-bootstrap",
       "CommandLine": "-exec ./ensure-orchestrator.sh",
       "IsDisabled": false,
-      "Description": "Ensure the local ssotme-proxy orchestrator (localhost:4242 transpiler bus) is running so the repo-local http://localhost:4242/* tools below (rulebook-to-owl, postgres-calculated-to-rulebook) are reachable. Idempotent: boots the proxy only if it is not already live."
+      "Description": "Ensure the effortless CLI's local transpiler host (127.0.0.1:4242, serving the repo root's effortless-tools/) is running so the repo-local http://127.0.0.1:4242/* tools below (oss-rulebook-to-owl, oss-postgres-calculated-to-rulebook) are reachable. Idempotent: boots the host only if it is not already live."
     },
     {
       "IsSSoTTranspiler": false,
@@ -23,10 +23,10 @@
       "RelativePath": "/postgres-bootstrap",
       "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/talismans-special-solutions-rulebook.json -p mode=drop-all -p stage=dev -p drop_all=true",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.09.07.0336",
-      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-09-07-0336-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "LastVersionUsed": "v2026.09.12.2340",
+      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-09-12-2340-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "_LocalDevUrl": "http://localhost:30038",
-      "_ClosureNote": "The Postgres transpiler emits the transitive-closure views. postgres-bootstrap/03-create-views.sql (committed) contains both vw_step_precedence_closure and vw_roles_closure as WITH RECURSIVE views with is_inferred/hop_distance columns, and the committed SQL is what the demo runs against \u2014 closure is present out of the box. (_LocalDevUrl is an optional pointer for running the transpiler locally during tool development; it is not needed to build or run this demo.)",
+      "_ClosureNote": "The Postgres transpiler emits the transitive-closure views. postgres-bootstrap/03-create-views.sql (committed) contains both vw_step_precedence_closure and vw_roles_closure as WITH RECURSIVE views with is_inferred/hop_distance columns, and the committed SQL is what the demo runs against — closure is present out of the box. (_LocalDevUrl is an optional pointer for running the transpiler locally during tool development; it is not needed to build or run this demo.)",
       "Description": "Generate Postgres schema + seed data from the rulebook"
     },
     {
@@ -46,9 +46,9 @@
     },
     {
       "IsSSoTTranspiler": false,
-      "Name": "httplocalhost4242postgrescalculatedtorulebook",
+      "Name": "oss-postgres-calculated-to-rulebook",
       "RelativePath": "/postgres-bootstrap",
-      "CommandLine": "http://localhost:4242/postgres-calculated-to-rulebook -i ../effortless-rulebook/talismans-special-solutions-rulebook.json",
+      "CommandLine": "http://127.0.0.1:4242/oss-postgres-calculated-to-rulebook -i ../effortless-rulebook/talismans-special-solutions-rulebook.json",
       "IsDisabled": true,
       "_IsDisabledNote": "INTENTIONALLY DISABLED guardrail. This reverse spoke refreshes derived-field DISPLAY copies in the rulebook from Postgres views. It is kept off because an earlier run wrote stale step DATA back into the sacred rulebook from a prod-built DB and overwrote a curated re-curation of the workflow steps. Keep IsDisabled:true until the spoke is verified to write derived/display fields ONLY (never raw step data) AND the DB has been rebuilt cleanly from a closure-enabled tool. The shipped model is the 5-step Production Deployment Workflow (see README).",
       "Description": "Reverse spoke: refresh rulebook derived-field display copies from Postgres views after the destructive rebuild (raws verified, never written)."
@@ -59,14 +59,14 @@
       "RelativePath": "/rulespeak",
       "CommandLine": "rulebook-to-rulespeak -i ../effortless-rulebook/talismans-special-solutions-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.08.30.1537",
-      "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-08-30-1537-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+      "LastVersionUsed": "v2026.09.12.2353",
+      "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-09-12-2353-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
       "IsSSoTTranspiler": false,
-      "Name": "httplocalhost4242rulebooktoowl",
+      "Name": "oss-rulebook-to-owl",
       "RelativePath": "/owl",
-      "CommandLine": "http://localhost:4242/rulebook-to-owl -i ../effortless-rulebook/talismans-special-solutions-rulebook.json",
+      "CommandLine": "http://127.0.0.1:4242/oss-rulebook-to-owl -i ../effortless-rulebook/talismans-special-solutions-rulebook.json",
       "IsDisabled": false
     },
     {
@@ -75,22 +75,22 @@
       "RelativePath": "/app/frontend/src",
       "CommandLine": "https://effortless-rulebook-to-react-exp-v2026-06-11-1530-cmvbd4phczmeg.7pktzg2z971j0.cpln.app -i ../../../effortless-rulebook/talismans-special-solutions-rulebook.json",
       "IsDisabled": false,
-      "_HeadPointerNote": "Pinned to the explicit v2026.06.11.1530 cpln URL (NOT the bare tool name) because [latest] still resolves to the older v2026.06.10.1301 \u2014 the publish on 2026-06-11 built+activated v1530 but the HeadVersion pointer did not flip to it. v1530 is the version carrying the hovercard portal/edge-clamp fix (DagHoverCard renders via createPortal to document.body, fixed-positioned + four-edge viewport-clamped). Re-point CommandLine back to the bare 'rulebook-to-react-explainer-dag' once [latest] correctly advances to v1530 or newer.",
-      "Description": "Generate the self-contained React Explainer DAG module (app/frontend/src/explainer-dag/) \u2014 embedded rulebook + dagResolver + DagCell/DagToggle/FieldChip/FieldDag \u2014 the canonical, fully-generated provenance visualizer. Replaces the former hand-written explain-dag/ module."
+      "_HeadPointerNote": "Pinned to the explicit v2026.06.11.1530 cpln URL (NOT the bare tool name) because [latest] still resolves to the older v2026.06.10.1301 — the publish on 2026-06-11 built+activated v1530 but the HeadVersion pointer did not flip to it. v1530 is the version carrying the hovercard portal/edge-clamp fix (DagHoverCard renders via createPortal to document.body, fixed-positioned + four-edge viewport-clamped). Re-point CommandLine back to the bare 'rulebook-to-react-explainer-dag' once [latest] correctly advances to v1530 or newer.",
+      "Description": "Generate the self-contained React Explainer DAG module (app/frontend/src/explainer-dag/) — embedded rulebook + dagResolver + DagCell/DagToggle/FieldChip/FieldDag — the canonical, fully-generated provenance visualizer. Replaces the former hand-written explain-dag/ module."
     },
     {
       "IsSSoTTranspiler": false,
-      "Name": "httplocalhost4242rulebooktopython",
+      "Name": "oss-rulebook-to-python",
       "RelativePath": "/python",
-      "CommandLine": "http://localhost:4242/rulebook-to-python -i ../effortless-rulebook/talismans-special-solutions-rulebook.json",
+      "CommandLine": "http://127.0.0.1:4242/oss-rulebook-to-python -i ../effortless-rulebook/talismans-special-solutions-rulebook.json",
       "IsDisabled": true,
       "Description": "Open-source Python transpiler [DISABLED: scores ~13% here by design. The open-source bus tools serve the toys; this domain is compiled by the commercial rulebook-to-python. Re-enable only to demonstrate the open-source ceiling.]"
     },
     {
       "IsSSoTTranspiler": false,
-      "Name": "httplocalhost4242rulebooktogolang",
+      "Name": "oss-rulebook-to-golang",
       "RelativePath": "/golang",
-      "CommandLine": "http://localhost:4242/rulebook-to-golang -i ../effortless-rulebook/talismans-special-solutions-rulebook.json",
+      "CommandLine": "http://127.0.0.1:4242/oss-rulebook-to-golang -i ../effortless-rulebook/talismans-special-solutions-rulebook.json",
       "IsDisabled": true,
       "Description": "Open-source Go transpiler [DISABLED: scores ~10% here by design. The open-source bus tools serve the toys; this domain is compiled by the commercial rulebook-to-go. Re-enable only to demonstrate the open-source ceiling.]"
     },
@@ -100,7 +100,37 @@
       "RelativePath": "/effortless-python",
       "CommandLine": "rulebook-to-python -i ../effortless-rulebook/talismans-special-solutions-rulebook.json",
       "IsDisabled": false,
+      "LastVersionUsed": "v2026.09.13.0308",
+      "LastUrl": "https://effortless-rulebook-to-python-v2026-09-13-0308-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "Description": "Commercial Python transpiler. Compiles this domain to 100%; the open-source bus tool cannot and is disabled above."
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktogo",
+      "RelativePath": "/effortless-golang",
+      "CommandLine": "rulebook-to-go -i ../effortless-rulebook/talismans-special-solutions-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.09.13.0108",
+      "LastUrl": "https://effortless-rulebook-to-go-v2026-09-13-0108-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "Description": "Commercial rulebook-to-go: compiles the rulebook to a native Go calculation module (erb_sdk.go + main.go + go.mod + erb_closure.go). The open-source httplocalhost4242ossrulebooktogolang above stays disabled — it cannot compile this domain."
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktoentityframework",
+      "RelativePath": "/effortless-entity-framework",
+      "CommandLine": "rulebook-to-entity-framework -i ../effortless-rulebook/talismans-special-solutions-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.09.13.0144",
+      "LastUrl": "https://effortless-rulebook-to-entity-fr-v2026-09-13-0144-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktotypescript",
+      "RelativePath": "/effortless-typescript",
+      "CommandLine": "rulebook-to-typescript -i ../effortless-rulebook/talismans-special-solutions-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.09.13.0311",
+      "LastUrl": "https://effortless-rulebook-to-typescrip-v2026-09-13-0311-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
       "IsSSoTTranspiler": false,
@@ -108,8 +138,8 @@
       "RelativePath": "/effortless-rulebook",
       "CommandLine": "effortless-rulebook-editor -i talismans-special-solutions-rulebook.json -p rulebookPath=talismans-special-solutions-rulebook.json -p dockerfilePath=docker/Dockerfile",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.09.07.0138",
-      "LastUrl": "https://effortless-effortless-rulebook-e-v2026-09-07-0138-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+      "LastVersionUsed": "v2026.09.10.1047",
+      "LastUrl": "https://effortless-effortless-rulebook-e-v2026-09-10-1047-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     }
   ],
   "ShowHidden": false,

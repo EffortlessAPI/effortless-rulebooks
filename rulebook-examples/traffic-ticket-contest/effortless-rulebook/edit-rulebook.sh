@@ -19,7 +19,7 @@ DOCKERFILE_PATH="docker/Dockerfile"
 EXTERNAL_SRC_MOUNTED=
 EXTERNAL_SRC_HOST_PATH=""
 RULEBOOK_SELF_UPDATE_PATH="traffic-ticket-contest-rulebook.json"
-EDITOR_RUNTIME_VERSION="2026.9.7.138"
+EDITOR_RUNTIME_VERSION="2026.9.10.1047"
 
 # The launcher is the OUTER half of the editor and therefore cannot rely on the
 # container's inner `effortless -upgradeAll`. Update and regenerate this runtime
@@ -327,8 +327,10 @@ echo "                            to the real app automatically once ready, and 
 echo "                            its own Rebuild button + log view at any time)"
 echo "  PG:   postgresql://postgres:postgres@localhost:$RESOLVED_PG_PORT/effortless-rulebook"
 echo "                            (for a host psql client / GUI tool -- this is the"
-echo "                            ONLY supported way to inspect data directly; the"
-echo "                            DB is reseeded from the rulebook on every rebuild)"
+echo "                            ONLY supported way to inspect data directly. Built"
+echo "                            from scratch each time the container starts; while it"
+echo "                            runs, a rebuild only adds tables/columns and upserts"
+echo "                            the rulebook's own rows)"
 echo ""
 echo "Edit effortless-rulebook.json to trigger a rebuild -- the container watches"
 echo "the file (and the UI's Rebuild button) and rebuilds automatically."

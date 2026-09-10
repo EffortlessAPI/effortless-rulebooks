@@ -637,11 +637,11 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
       <div class="view elem elem-english">
         <span class="view-label">In plain words</span>
-        <p class="view-body">The <a class="ref" href="#en-f-policies-isactive">is active</a> of the linked <a class="ref" href="#en-f-claimants-policy">policy</a>, or no if that has an error.</p>
+        <p class="view-body">The <a class="ref" href="#en-f-policies-isactive">is active</a> of the linked <a class="ref" href="#en-f-claimants-policy">policy</a>.</p>
       </div>
       <div class="view elem elem-formula">
         <span class="view-label">As a formula</span>
-        <div class="view-body fx"><span class="fx-eq">= </span>IFERROR(INDEX(<a class="fx-chip" href="#en-f-policies-isactive">Is Active</a>, MATCH(<a class="fx-chip" href="#en-f-claimants-policy">Policy</a>, <span class="fx-chip">Policy ID</span>, 0)), FALSE)</div>
+        <div class="view-body fx"><span class="fx-eq">= </span>INDEX(<a class="fx-chip" href="#en-f-policies-isactive">Is Active</a>, MATCH(<a class="fx-chip" href="#en-f-claimants-policy">Policy</a>, <span class="fx-chip">Policy ID</span>, 0))</div>
       </div>
     </div>
     <details class="prov prov-inputs elem elem-inputs" open>
@@ -680,7 +680,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <span class="ref-pill tone-raw">● Policy ID <span class="ref-pill-tbl">Policy</span></span>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Whether the claimant's current policy is active (ground truth carried over from the policy).</p>
+    <p class="field-note elem elem-desc">Whether the claimant's current policy is active (ground truth carried over from the policy). (Was wrapped in IFERROR(..., FALSE); rulebook-to-postgres mistranslates that wrapper — it emitted the field as a nonexistent base-table column and broke 03-create-views.sql. INDEX/MATCH already yields NULL when the FK does not match.)</p>
     </article>
 </section>
 <section class="entity" id="en-t-incidents" data-entity="Incident">
@@ -785,11 +785,11 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
       <div class="view elem elem-english">
         <span class="view-label">In plain words</span>
-        <p class="view-body">The <a class="ref" href="#en-f-claimants-claimantname">claimant name</a> of the linked <a class="ref" href="#en-f-incidents-claimant">claimant</a>, or &quot;&quot; if that has an error.</p>
+        <p class="view-body">The <a class="ref" href="#en-f-claimants-claimantname">claimant name</a> of the linked <a class="ref" href="#en-f-incidents-claimant">claimant</a>.</p>
       </div>
       <div class="view elem elem-formula">
         <span class="view-label">As a formula</span>
-        <div class="view-body fx"><span class="fx-eq">= </span>IFERROR(INDEX(<a class="fx-chip" href="#en-f-claimants-claimantname">Claimant Name</a>, MATCH(<a class="fx-chip" href="#en-f-incidents-claimant">Claimant</a>, <span class="fx-chip">Claimant ID</span>, 0)), &quot;&quot;)</div>
+        <div class="view-body fx"><span class="fx-eq">= </span>INDEX(<a class="fx-chip" href="#en-f-claimants-claimantname">Claimant Name</a>, MATCH(<a class="fx-chip" href="#en-f-incidents-claimant">Claimant</a>, <span class="fx-chip">Claimant ID</span>, 0))</div>
       </div>
     </div>
     <details class="prov prov-inputs elem elem-inputs" open>
@@ -817,7 +817,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <span class="ref-pill tone-raw">● Claimant ID <span class="ref-pill-tbl">Claimant</span></span>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Name of the incident's claimant (for readability).</p>
+    <p class="field-note elem elem-desc">Name of the incident's claimant (for readability). (Was wrapped in IFERROR(..., &quot;&quot;); rulebook-to-postgres mistranslates that wrapper — it emitted the field as a nonexistent base-table column and broke 03-create-views.sql. INDEX/MATCH already yields NULL when the FK does not match.)</p>
     </article>
 </section>
 <section class="entity" id="en-t-claims" data-entity="Claim">
@@ -1055,11 +1055,11 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
       <div class="view elem elem-english">
         <span class="view-label">In plain words</span>
-        <p class="view-body">The <a class="ref" href="#en-f-incidents-claimant">claimant</a> of the linked <a class="ref" href="#en-f-claims-incident">incident</a>, or &quot;&quot; if that has an error.</p>
+        <p class="view-body">The <a class="ref" href="#en-f-incidents-claimant">claimant</a> of the linked <a class="ref" href="#en-f-claims-incident">incident</a>.</p>
       </div>
       <div class="view elem elem-formula">
         <span class="view-label">As a formula</span>
-        <div class="view-body fx"><span class="fx-eq">= </span>IFERROR(INDEX(<a class="fx-chip" href="#en-f-incidents-claimant">Claimant</a>, MATCH(<a class="fx-chip" href="#en-f-claims-incident">Incident</a>, <span class="fx-chip">Incident ID</span>, 0)), &quot;&quot;)</div>
+        <div class="view-body fx"><span class="fx-eq">= </span>INDEX(<a class="fx-chip" href="#en-f-incidents-claimant">Claimant</a>, MATCH(<a class="fx-chip" href="#en-f-claims-incident">Incident</a>, <span class="fx-chip">Incident ID</span>, 0))</div>
       </div>
     </div>
     <details class="prov prov-inputs elem elem-inputs" open>
@@ -1100,7 +1100,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <span class="ref-pill tone-raw">● Incident ID <span class="ref-pill-tbl">Incident</span></span>
       </div>
     </details>
-    <p class="field-note elem elem-desc">The claimant of the referenced incident.</p>
+    <p class="field-note elem elem-desc">The claimant of the referenced incident. (Was wrapped in IFERROR(..., &quot;&quot;); rulebook-to-postgres mistranslates that wrapper — it emitted the field as a nonexistent base-table column and broke 03-create-views.sql. INDEX/MATCH already yields NULL when the FK does not match.)</p>
     </article>
   <article class="field tone-calc" id="en-f-claims-claimantofrecord" data-entity="Claim" data-field="Claimant of Record">
     <div class="field-head">
@@ -1138,7 +1138,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         </a>
         <a class="input tone-lookup" href="#en-f-claims-incidentclaimant">
           <span class="input-head"><span class="input-glyph">↗</span><span class="input-name">Incident Claimant</span><span class="input-table">Claim</span></span>
-          <span class="input-en">The claimant of the linked incident, or &quot;&quot; if that has an error.</span>
+          <span class="input-en">The claimant of the linked incident.</span>
         </a>
       </div>
     </details>
@@ -1180,11 +1180,11 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
       <div class="view elem elem-english">
         <span class="view-label">In plain words</span>
-        <p class="view-body">The <a class="ref" href="#en-f-claimants-policyisactive">policy is active</a> of the linked <a class="ref" href="#en-f-claims-incidentclaimant">incident claimant</a>, or no if that has an error.</p>
+        <p class="view-body">The <a class="ref" href="#en-f-claimants-policyisactive">policy is active</a> of the linked <a class="ref" href="#en-f-claims-incidentclaimant">incident claimant</a>.</p>
       </div>
       <div class="view elem elem-formula">
         <span class="view-label">As a formula</span>
-        <div class="view-body fx"><span class="fx-eq">= </span>IFERROR(INDEX(<a class="fx-chip" href="#en-f-claimants-policyisactive">Policy is Active</a>, MATCH(<a class="fx-chip" href="#en-f-claims-incidentclaimant">Incident Claimant</a>, <span class="fx-chip">Claimant ID</span>, 0)), FALSE)</div>
+        <div class="view-body fx"><span class="fx-eq">= </span>INDEX(<a class="fx-chip" href="#en-f-claimants-policyisactive">Policy is Active</a>, MATCH(<a class="fx-chip" href="#en-f-claims-incidentclaimant">Incident Claimant</a>, <span class="fx-chip">Claimant ID</span>, 0))</div>
       </div>
     </div>
     <details class="prov prov-inputs elem elem-inputs" open>
@@ -1192,11 +1192,11 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <div class="prov-grid">
         <a class="input tone-lookup" href="#en-f-claimants-policyisactive">
           <span class="input-head"><span class="input-glyph">↗</span><span class="input-name">Policy is Active</span><span class="input-table">Claimant</span></span>
-          <span class="input-en">The is active of the linked policy, or no if that has an error.</span>
+          <span class="input-en">The is active of the linked policy.</span>
         </a>
         <a class="input tone-lookup" href="#en-f-claims-incidentclaimant">
           <span class="input-head"><span class="input-glyph">↗</span><span class="input-name">Incident Claimant</span><span class="input-table">Claim</span></span>
-          <span class="input-en">The claimant of the linked incident, or &quot;&quot; if that has an error.</span>
+          <span class="input-en">The claimant of the linked incident.</span>
         </a>
         <span class="input input-static tone-raw">
           <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Claimant ID</span><span class="input-table">Claimant</span></span>
@@ -1225,7 +1225,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <span class="ref-pill tone-raw">● Claimant ID <span class="ref-pill-tbl">Claimant</span></span>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Whether the incident claimant's current policy is active.</p>
+    <p class="field-note elem elem-desc">Whether the incident claimant's current policy is active. (Was wrapped in IFERROR(..., FALSE); rulebook-to-postgres mistranslates that wrapper — it emitted the field as a nonexistent base-table column and broke 03-create-views.sql. INDEX/MATCH already yields NULL when the FK does not match.)</p>
     </article>
   <article class="field tone-lookup" id="en-f-claims-additionalclaimantpolicyactive" data-entity="Claim" data-field="Additional Claimant Policy Active">
     <div class="field-head">
@@ -1243,11 +1243,11 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
       <div class="view elem elem-english">
         <span class="view-label">In plain words</span>
-        <p class="view-body">The <a class="ref" href="#en-f-claimants-policyisactive">policy is active</a> of the linked <a class="ref" href="#en-f-claims-additionalclaimant">additional claimant</a>, or no if that has an error.</p>
+        <p class="view-body">The <a class="ref" href="#en-f-claimants-policyisactive">policy is active</a> of the linked <a class="ref" href="#en-f-claims-additionalclaimant">additional claimant</a>.</p>
       </div>
       <div class="view elem elem-formula">
         <span class="view-label">As a formula</span>
-        <div class="view-body fx"><span class="fx-eq">= </span>IFERROR(INDEX(<a class="fx-chip" href="#en-f-claimants-policyisactive">Policy is Active</a>, MATCH(<a class="fx-chip" href="#en-f-claims-additionalclaimant">Additional Claimant</a>, <span class="fx-chip">Claimant ID</span>, 0)), FALSE)</div>
+        <div class="view-body fx"><span class="fx-eq">= </span>INDEX(<a class="fx-chip" href="#en-f-claimants-policyisactive">Policy is Active</a>, MATCH(<a class="fx-chip" href="#en-f-claims-additionalclaimant">Additional Claimant</a>, <span class="fx-chip">Claimant ID</span>, 0))</div>
       </div>
     </div>
     <details class="prov prov-inputs elem elem-inputs" open>
@@ -1255,7 +1255,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <div class="prov-grid">
         <a class="input tone-lookup" href="#en-f-claimants-policyisactive">
           <span class="input-head"><span class="input-glyph">↗</span><span class="input-name">Policy is Active</span><span class="input-table">Claimant</span></span>
-          <span class="input-en">The is active of the linked policy, or no if that has an error.</span>
+          <span class="input-en">The is active of the linked policy.</span>
         </a>
         <a class="input tone-raw" href="#en-f-claims-additionalclaimant">
           <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Additional Claimant</span><span class="input-table">Claim</span></span>
@@ -1286,7 +1286,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <span class="ref-pill tone-raw">● Claimant ID <span class="ref-pill-tbl">Claimant</span></span>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Whether the additional claimant's current policy is active (false when there is no additional claimant).</p>
+    <p class="field-note elem elem-desc">Whether the additional claimant's current policy is active (false when there is no additional claimant). (Was wrapped in IFERROR(..., FALSE); rulebook-to-postgres mistranslates that wrapper — it emitted the field as a nonexistent base-table column and broke 03-create-views.sql. INDEX/MATCH already yields NULL when the FK does not match.)</p>
     </article>
   <article class="field tone-lookup" id="en-f-claims-additionalclaimantfavoritecolor" data-entity="Claim" data-field="Additional Claimant Favorite Color">
     <div class="field-head">
@@ -1304,11 +1304,11 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
       <div class="view elem elem-english">
         <span class="view-label">In plain words</span>
-        <p class="view-body">The <a class="ref" href="#en-f-claimants-favoritecolor">favorite color</a> of the linked <a class="ref" href="#en-f-claims-additionalclaimant">additional claimant</a>, or &quot;&quot; if that has an error.</p>
+        <p class="view-body">The <a class="ref" href="#en-f-claimants-favoritecolor">favorite color</a> of the linked <a class="ref" href="#en-f-claims-additionalclaimant">additional claimant</a>.</p>
       </div>
       <div class="view elem elem-formula">
         <span class="view-label">As a formula</span>
-        <div class="view-body fx"><span class="fx-eq">= </span>IFERROR(INDEX(<a class="fx-chip" href="#en-f-claimants-favoritecolor">Favorite Color</a>, MATCH(<a class="fx-chip" href="#en-f-claims-additionalclaimant">Additional Claimant</a>, <span class="fx-chip">Claimant ID</span>, 0)), &quot;&quot;)</div>
+        <div class="view-body fx"><span class="fx-eq">= </span>INDEX(<a class="fx-chip" href="#en-f-claimants-favoritecolor">Favorite Color</a>, MATCH(<a class="fx-chip" href="#en-f-claims-additionalclaimant">Additional Claimant</a>, <span class="fx-chip">Claimant ID</span>, 0))</div>
       </div>
     </div>
     <details class="prov prov-inputs elem elem-inputs" open>
@@ -1345,7 +1345,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <span class="ref-pill tone-raw">● Claimant ID <span class="ref-pill-tbl">Claimant</span></span>
       </div>
     </details>
-    <p class="field-note elem elem-desc">The additional claimant's favorite color (blank when there is no additional claimant).</p>
+    <p class="field-note elem elem-desc">The additional claimant's favorite color (blank when there is no additional claimant). (Was wrapped in IFERROR(..., &quot;&quot;); rulebook-to-postgres mistranslates that wrapper — it emitted the field as a nonexistent base-table column and broke 03-create-views.sql. INDEX/MATCH already yields NULL when the FK does not match.)</p>
     </article>
   <article class="field tone-lookup" id="en-f-claims-claimantofrecordincidentcount" data-entity="Claim" data-field="Claimant of Record Incident Count">
     <div class="field-head">
@@ -1363,11 +1363,11 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
       <div class="view elem elem-english">
         <span class="view-label">In plain words</span>
-        <p class="view-body">The <a class="ref" href="#en-f-claimants-countofincidents">count of incidents</a> of the linked <a class="ref" href="#en-f-claims-claimantofrecord">claimant of record</a>, or 0 if that has an error.</p>
+        <p class="view-body">The <a class="ref" href="#en-f-claimants-countofincidents">count of incidents</a> of the linked <a class="ref" href="#en-f-claims-claimantofrecord">claimant of record</a>.</p>
       </div>
       <div class="view elem elem-formula">
         <span class="view-label">As a formula</span>
-        <div class="view-body fx"><span class="fx-eq">= </span>IFERROR(INDEX(<a class="fx-chip" href="#en-f-claimants-countofincidents">Count of Incidents</a>, MATCH(<a class="fx-chip" href="#en-f-claims-claimantofrecord">Claimant of Record</a>, <span class="fx-chip">Claimant ID</span>, 0)), 0)</div>
+        <div class="view-body fx"><span class="fx-eq">= </span>INDEX(<a class="fx-chip" href="#en-f-claimants-countofincidents">Count of Incidents</a>, MATCH(<a class="fx-chip" href="#en-f-claims-claimantofrecord">Claimant of Record</a>, <span class="fx-chip">Claimant ID</span>, 0))</div>
       </div>
     </div>
     <details class="prov prov-inputs elem elem-inputs" open>
@@ -1397,7 +1397,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <span class="ref-pill tone-raw">● Incident ID <span class="ref-pill-tbl">Incident</span></span>
       </div>
     </details>
-    <p class="field-note elem elem-desc">The incident count of the claimant of record.</p>
+    <p class="field-note elem elem-desc">The incident count of the claimant of record. (Was wrapped in IFERROR(..., 0); rulebook-to-postgres mistranslates that wrapper — it emitted the field as a nonexistent base-table column and broke 03-create-views.sql. INDEX/MATCH already yields NULL when the FK does not match.)</p>
     </article>
   <article class="field tone-lookup" id="en-f-claims-claimantofrecordishighrisk" data-entity="Claim" data-field="Claimant of Record is High Risk">
     <div class="field-head">
@@ -1415,11 +1415,11 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
       <div class="view elem elem-english">
         <span class="view-label">In plain words</span>
-        <p class="view-body">The <a class="ref" href="#en-f-claimants-ishighrisk">is high risk</a> of the linked <a class="ref" href="#en-f-claims-claimantofrecord">claimant of record</a>, or no if that has an error.</p>
+        <p class="view-body">The <a class="ref" href="#en-f-claimants-ishighrisk">is high risk</a> of the linked <a class="ref" href="#en-f-claims-claimantofrecord">claimant of record</a>.</p>
       </div>
       <div class="view elem elem-formula">
         <span class="view-label">As a formula</span>
-        <div class="view-body fx"><span class="fx-eq">= </span>IFERROR(INDEX(<a class="fx-chip" href="#en-f-claimants-ishighrisk">Is High Risk</a>, MATCH(<a class="fx-chip" href="#en-f-claims-claimantofrecord">Claimant of Record</a>, <span class="fx-chip">Claimant ID</span>, 0)), FALSE)</div>
+        <div class="view-body fx"><span class="fx-eq">= </span>INDEX(<a class="fx-chip" href="#en-f-claimants-ishighrisk">Is High Risk</a>, MATCH(<a class="fx-chip" href="#en-f-claims-claimantofrecord">Claimant of Record</a>, <span class="fx-chip">Claimant ID</span>, 0))</div>
       </div>
     </div>
     <details class="prov prov-inputs elem elem-inputs" open>
@@ -1458,7 +1458,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <span class="ref-pill tone-raw">● Incident ID <span class="ref-pill-tbl">Incident</span></span>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Whether the claimant of record is high-risk (DR-2). Carries the named rule — IsValid references this field rather than re-deriving the threshold inline, keeping the '&gt; 2 incidents' definition in exactly one place.</p>
+    <p class="field-note elem elem-desc">Whether the claimant of record is high-risk (DR-2). Carries the named rule — IsValid references this field rather than re-deriving the threshold inline, keeping the '&gt; 2 incidents' definition in exactly one place. (Was wrapped in IFERROR(..., FALSE); rulebook-to-postgres mistranslates that wrapper — it emitted the field as a nonexistent base-table column and broke 03-create-views.sql. INDEX/MATCH already yields NULL when the FK does not match.)</p>
     </article>
   <article class="field tone-calc" id="en-f-claims-isvalid" data-entity="Claim" data-field="Is Valid">
     <div class="field-head">
@@ -1492,11 +1492,11 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         </a>
         <a class="input tone-lookup" href="#en-f-claims-incidentclaimantpolicyactive">
           <span class="input-head"><span class="input-glyph">↗</span><span class="input-name">Incident Claimant Policy Active</span><span class="input-table">Claim</span></span>
-          <span class="input-en">The policy is active of the linked incident claimant, or no if that has an error.</span>
+          <span class="input-en">The policy is active of the linked incident claimant.</span>
         </a>
         <a class="input tone-lookup" href="#en-f-claims-additionalclaimantpolicyactive">
           <span class="input-head"><span class="input-glyph">↗</span><span class="input-name">Additional Claimant Policy Active</span><span class="input-table">Claim</span></span>
-          <span class="input-en">The policy is active of the linked additional claimant, or no if that has an error.</span>
+          <span class="input-en">The policy is active of the linked additional claimant.</span>
         </a>
         <a class="input tone-calc" href="#en-f-claims-hasadditionalclaimant">
           <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Has Additional Claimant</span><span class="input-table">Claim</span></span>
@@ -1504,11 +1504,11 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         </a>
         <a class="input tone-lookup" href="#en-f-claims-additionalclaimantfavoritecolor">
           <span class="input-head"><span class="input-glyph">↗</span><span class="input-name">Additional Claimant Favorite Color</span><span class="input-table">Claim</span></span>
-          <span class="input-en">The favorite color of the linked additional claimant, or &quot;&quot; if that has an error.</span>
+          <span class="input-en">The favorite color of the linked additional claimant.</span>
         </a>
         <a class="input tone-lookup" href="#en-f-claims-claimantofrecordishighrisk">
           <span class="input-head"><span class="input-glyph">↗</span><span class="input-name">Claimant of Record is High Risk</span><span class="input-table">Claim</span></span>
-          <span class="input-en">The is high risk of the linked claimant of record, or no if that has an error.</span>
+          <span class="input-en">The is high risk of the linked claimant of record.</span>
         </a>
       </div>
     </details>
@@ -1572,11 +1572,11 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         </a>
         <a class="input tone-lookup" href="#en-f-claims-incidentclaimantpolicyactive">
           <span class="input-head"><span class="input-glyph">↗</span><span class="input-name">Incident Claimant Policy Active</span><span class="input-table">Claim</span></span>
-          <span class="input-en">The policy is active of the linked incident claimant, or no if that has an error.</span>
+          <span class="input-en">The policy is active of the linked incident claimant.</span>
         </a>
         <a class="input tone-lookup" href="#en-f-claims-additionalclaimantpolicyactive">
           <span class="input-head"><span class="input-glyph">↗</span><span class="input-name">Additional Claimant Policy Active</span><span class="input-table">Claim</span></span>
-          <span class="input-en">The policy is active of the linked additional claimant, or no if that has an error.</span>
+          <span class="input-en">The policy is active of the linked additional claimant.</span>
         </a>
         <a class="input tone-calc" href="#en-f-claims-hasadditionalclaimant">
           <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Has Additional Claimant</span><span class="input-table">Claim</span></span>
@@ -1584,11 +1584,11 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         </a>
         <a class="input tone-lookup" href="#en-f-claims-additionalclaimantfavoritecolor">
           <span class="input-head"><span class="input-glyph">↗</span><span class="input-name">Additional Claimant Favorite Color</span><span class="input-table">Claim</span></span>
-          <span class="input-en">The favorite color of the linked additional claimant, or &quot;&quot; if that has an error.</span>
+          <span class="input-en">The favorite color of the linked additional claimant.</span>
         </a>
         <a class="input tone-lookup" href="#en-f-claims-claimantofrecordishighrisk">
           <span class="input-head"><span class="input-glyph">↗</span><span class="input-name">Claimant of Record is High Risk</span><span class="input-table">Claim</span></span>
-          <span class="input-en">The is high risk of the linked claimant of record, or no if that has an error.</span>
+          <span class="input-en">The is high risk of the linked claimant of record.</span>
         </a>
       </div>
     </details>

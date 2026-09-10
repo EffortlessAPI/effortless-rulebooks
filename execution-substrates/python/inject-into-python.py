@@ -897,7 +897,7 @@ def main():
     if handle_clean_arg(GENERATED_FILES, "Python substrate: Removes generated calculation library"):
         return
 
-    # ERB_OUTPUT_DIR allows ssotme-proxy to redirect output into a project folder
+    # ERB_OUTPUT_DIR allows the local-tool shim to redirect output into a project folder
     env_output = os.environ.get("ERB_OUTPUT_DIR")
     script_dir = Path(env_output).resolve() if env_output else Path(__file__).resolve().parent
 

@@ -1,0 +1,30 @@
+[
+  {
+    "construction_family_id": "non-algebraic-baseline",
+    "display_name": "Non-Algebraic Baseline",
+    "description_of_nth_member": "A purely geometric family (unit triangle, unit square, etc.) with no algebraic source. Used as a contrast \u2014 IsAlgebraicConstruction is FALSE for this family.",
+    "source_number_field": null,
+    "source_minkowski_lattice": null,
+    "description": "Coverage row: a non-algebraic family. Its instances point at PointSets that aren't projections of any lattice.",
+    "name": "non-algebraic-baseline",
+    "is_algebraic_construction": false
+  },
+  {
+    "construction_family_id": "sqrt-lattice-projection",
+    "display_name": "Sqrt Lattice Projection",
+    "description_of_nth_member": "Project the first n short vectors of the Minkowski lattice of Q(sqrt(-3)) into R^2 via the embedding's first two real coordinates.",
+    "source_number_field": "q-sqrt-neg3",
+    "source_minkowski_lattice": "lat-q-sqrt-neg3",
+    "name": "sqrt-lattice-projection",
+    "is_algebraic_construction": false
+  },
+  {
+    "construction_family_id": "zeta7-sigma1-projection",
+    "display_name": "Q(\u03b6_7) \u03c3_1 Projection",
+    "description_of_nth_member": "Project the n smallest elements of Z[\u03b6_7] under \u03c3_1 into R^2. The n=8 instance is the heptagon-with-center; larger n loads additional non-unit lattice elements (sums and differences). Sawin-style higher n configurations involve restricting to elements with controlled multi-\u03c3 norms \u2014 not loaded here.",
+    "source_number_field": "q-zeta-7",
+    "source_minkowski_lattice": "lat-q-zeta-7",
+    "name": "q(\u03b6_7)-\u03c3_1-projection",
+    "is_algebraic_construction": false
+  }
+]

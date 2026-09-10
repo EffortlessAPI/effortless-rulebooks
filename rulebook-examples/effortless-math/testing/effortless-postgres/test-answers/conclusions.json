@@ -1,0 +1,82 @@
+[
+  {
+    "conclusion_id": "conc-bitcalc-add",
+    "name": "conc-bitcalc-add",
+    "category": "instrument",
+    "status": "witnessed",
+    "report_tier": "supporting",
+    "title": "add4(2,2) settles to 0100 = 4 by logic gates",
+    "evidence": "vw_computation_answer.value_ok = true in erb_bit_calculator; and the Python netlist_sim agrees (24/24 computations across both substrates).",
+    "witnessed_in_loop": "bit-calculator-integration"
+  },
+  {
+    "conclusion_id": "conc-bitcalc-div",
+    "name": "conc-bitcalc-div",
+    "category": "instrument",
+    "status": "witnessed",
+    "report_tier": "supporting",
+    "title": "div4(4,2) settles to quotient 0010 = 2 by logic gates",
+    "evidence": "vw_computation_answer.value_ok = true in erb_bit_calculator; and the Python netlist_sim agrees (24/24 computations across both substrates).",
+    "witnessed_in_loop": "bit-calculator-integration"
+  },
+  {
+    "conclusion_id": "conc-bitcalc-mul",
+    "name": "conc-bitcalc-mul",
+    "category": "instrument",
+    "status": "witnessed",
+    "report_tier": "supporting",
+    "title": "mul4(2,2) settles to 00000100 = 4 by logic gates",
+    "evidence": "vw_computation_answer.value_ok = true in erb_bit_calculator; and the Python netlist_sim agrees (24/24 computations across both substrates).",
+    "witnessed_in_loop": "bit-calculator-integration"
+  },
+  {
+    "conclusion_id": "conc-bitcalc-sub",
+    "name": "conc-bitcalc-sub",
+    "category": "instrument",
+    "status": "witnessed",
+    "report_tier": "supporting",
+    "title": "sub4(4,2) settles to 0010 = 2 by logic gates",
+    "evidence": "vw_computation_answer.value_ok = true in erb_bit_calculator; and the Python netlist_sim agrees (24/24 computations across both substrates).",
+    "witnessed_in_loop": "bit-calculator-integration"
+  },
+  {
+    "conclusion_id": "conc-flt-not-zero-import",
+    "name": "conc-flt-not-zero-import",
+    "category": "methodology",
+    "status": "witnessed",
+    "report_tier": "critical",
+    "title": "The migrated FLT object remains conditional on seven foundation providers.",
+    "evidence": "v21 contains one contradiction trace and seven active foundation-kernel imports; no provider is marked fully internalized.",
+    "witnessed_in_loop": "migration-bootstrap"
+  },
+  {
+    "conclusion_id": "conc-nna-first-zero-import-theorems",
+    "name": "conc-nna-first-zero-import-theorems",
+    "category": "methodology",
+    "status": "witnessed",
+    "report_tier": "critical",
+    "title": "The natural-number-arithmetic domain contributes the network's first FULLY_INTERNALIZED_FOR_SCOPE, zero-import theorems.",
+    "evidence": "Four theorems (+, -, *, /) reach FULLY_INTERNALIZED_FOR_SCOPE with ActiveImportCount=0, backed by a Peano kernel with theorem_content_internalized=1 and a TrustBoundary with CanClaimZeroImports=true.",
+    "witnessed_in_loop": "loop-576"
+  },
+  {
+    "conclusion_id": "conc-nna-same-genes-as-flt",
+    "name": "conc-nna-same-genes-as-flt",
+    "category": "instrument",
+    "status": "witnessed",
+    "report_tier": "informational",
+    "title": "Elementary arithmetic and FLT share one execution model.",
+    "evidence": "2+2=4 is modeled with the exact same tables as Fermat's Last Theorem (Domains, Theorems, FoundationKernels, ProofFacts, InvariantChecks, TrustBoundaries, Conclusions) with no special-case schema.",
+    "witnessed_in_loop": "loop-576"
+  },
+  {
+    "conclusion_id": "conc-theorem-network-created",
+    "name": "conc-theorem-network-created",
+    "category": "instrument",
+    "status": "witnessed",
+    "report_tier": "critical",
+    "title": "FLT and seven foundation kernels are represented as one cross-theorem provider/consumer network.",
+    "evidence": "The catalog contains eight theorem contracts and seven load-bearing FLT provider dependencies.",
+    "witnessed_in_loop": "migration-bootstrap"
+  }
+]

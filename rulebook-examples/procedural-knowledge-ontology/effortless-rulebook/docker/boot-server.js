@@ -90,8 +90,8 @@ const STEP_COPY = {
     'Housekeeping. Marks the setup script the previous step just wrote as runnable, so the next step can run it.',
   ],
   initdb: [
-    'Create the database and load your data',
-    'Wipes and rebuilds the database from scratch, then loads in the data from your rulebook. This is why a rebuild is never started without asking you first.',
+    'Update the database and load your data',
+    'Applies the design above to the database and loads in the data from your rulebook. The first run after startup builds it from scratch; after that it only adds what is new -- tables, columns, and rows -- so anything you have entered here stays put.',
   ],
   rulebooktonodepostgresapi: [
     'Build the API',
@@ -107,11 +107,15 @@ const STEP_COPY = {
   ],
   rulebooktorulespeaken: [
     'Write the rules out in plain English',
-    'Turns your rules into readable English sentences a person can check, in English only. The portal offers a one-click way to switch to this faster English-only build instead of all ten languages.',
+    'Turns your rules into readable English sentences a person can check, in English only. The leanest of the three RuleSpeak steps.',
   ],
   rulebooktorulespeak: [
-    'Write the rules out in plain language (10 languages)',
-    'Turns your rules into readable sentences a person can check -- the same document in ten languages, with a language picker. This is the default.',
+    'Write the rules out in plain language (4 languages)',
+    'Turns your rules into readable sentences a person can check -- the same document in English, German, Japanese and Hindi, with a language picker. This is the default; the portal can add the remaining languages in one click.',
+  ],
+  rulebooktorulespeakall: [
+    'Write the rules out in every language',
+    'The same document in every language the renderer knows. Off by default because it is the slowest of the three; the portal turns it on when someone asks for the remaining languages.',
   ],
   rulebooktoxlsx: [
     'Export everything to an Excel workbook',
@@ -1083,6 +1087,7 @@ function proxyToInternalUI(req, res) {
 const STATIC_TOOL_DIRS = {
   '/__tools/rulespeak': '/app/effortless-root/rulespeak',
   '/__tools/xlsx': '/app/effortless-root/xlsx',
+  '/__tools/progress-report': '/app/effortless-root/progress-report',
 };
 const path = require('path');
 

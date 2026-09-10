@@ -1,0 +1,51 @@
+[
+  {
+    "name": null,
+    "incident_id": "inc-1",
+    "incident_description": "Water damage",
+    "claimant": "clm-1",
+    "incident_claimant_name": null
+  },
+  {
+    "name": null,
+    "incident_id": "inc-2",
+    "incident_description": "Fender bender",
+    "claimant": "clm-3",
+    "incident_claimant_name": null
+  },
+  {
+    "name": null,
+    "incident_id": "inc-3",
+    "incident_description": "Hail damage",
+    "claimant": "clm-3",
+    "incident_claimant_name": null
+  },
+  {
+    "name": null,
+    "incident_id": "inc-4",
+    "incident_description": "Theft",
+    "claimant": "clm-3",
+    "incident_claimant_name": null
+  },
+  {
+    "name": null,
+    "incident_id": "inc-5",
+    "incident_description": "Roof leak",
+    "claimant": "clm-5",
+    "incident_claimant_name": null
+  },
+  {
+    "name": null,
+    "incident_id": "inc-6",
+    "incident_description": "Broken window",
+    "claimant": "clm-2",
+    "incident_claimant_name": null
+  },
+  {
+    "name": null,
+    "incident_id": "inc-7",
+    "incident_description": "Storm damage",
+    "claimant": "clm-4",
+    "incident_claimant_name": null
+  }
+]

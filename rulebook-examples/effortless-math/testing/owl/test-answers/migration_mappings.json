@@ -1,0 +1,51 @@
+[
+  {
+    "mapping_id": "map-foundation-kernels",
+    "source_table": "foundation_kernels_v21",
+    "target_table": "FoundationKernels",
+    "strategy": "direct-row-copy",
+    "notes": "Retain kernel IDs and status fields."
+  },
+  {
+    "mapping_id": "map-proof-trace",
+    "source_table": "proof_trace",
+    "target_table": "ProofFacts",
+    "strategy": "one-row-per-derived-fact",
+    "notes": "Retain rule IDs, antecedents, derivation kinds, and contradiction flag."
+  },
+  {
+    "mapping_id": "map-loops",
+    "source_table": "loops",
+    "target_table": "Loops",
+    "strategy": "direct-row-copy",
+    "notes": "All 571 loops are historical domain data."
+  },
+  {
+    "mapping_id": "map-invariants",
+    "source_table": "invariant_checks",
+    "target_table": "InvariantChecks",
+    "strategy": "direct-row-copy",
+    "notes": "Do not convert IMPORTED rows into PASS rows."
+  },
+  {
+    "mapping_id": "map-sources",
+    "source_table": "sources",
+    "target_table": "Sources",
+    "strategy": "direct-row-copy",
+    "notes": "Preserve source IDs because edges reference them."
+  },
+  {
+    "mapping_id": "map-active-imports",
+    "source_table": "import_surface(load_bearing=1)",
+    "target_table": "TheoremDependencies",
+    "strategy": "provider-contract-reference",
+    "notes": "The seven v21 kernel imports become cross-domain provider dependencies."
+  },
+  {
+    "mapping_id": "map-parent-audit",
+    "source_table": "nine_parent_audit_v21",
+    "target_table": "LegacyParentAudits",
+    "strategy": "provenance-only",
+    "notes": "Parent removal does not imply theorem-content internalization."
+  }
+]

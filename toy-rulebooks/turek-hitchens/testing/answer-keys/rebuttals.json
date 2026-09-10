@@ -1,0 +1,79 @@
+[
+  {
+    "label": "Accelerating Expansion",
+    "made_by": "christopher-hitchens",
+    "rebuts_claim": "constants-are-fine-tuned",
+    "description": "Krauss: the red-shift rate is increasing \u2014 the cosmos is flying apart, hardly careful tuning.",
+    "name": "accelerating-expansion"
+  },
+  {
+    "label": "Borrowing Charge Is False",
+    "made_by": "christopher-hitchens",
+    "rebuts_claim": "hitchens-borrows-morality",
+    "description": "Conscience is innate (Socrates, Smith); no borrowing from theism is required.",
+    "name": "borrowing-charge-is-false"
+  },
+  {
+    "label": "Cause Need Not Choose",
+    "made_by": "christopher-hitchens",
+    "rebuts_claim": "beginning-implies-beginner",
+    "description": "'I don't have to know' the origin; positing a choosing being just relabels the mystery.",
+    "name": "cause-need-not-choose"
+  },
+  {
+    "label": "Hume's Premise Is Wrong",
+    "made_by": "frank-turek",
+    "rebuts_claim": "miracles-fail-humes-test",
+    "description": "Hume's 'regular beats rare' rule would deny the Big Bang and one's own birth \u2014 singular events happen.",
+    "name": "hume's-premise-is-wrong"
+  },
+  {
+    "label": "I Am A Primate And Still Reason",
+    "made_by": "christopher-hitchens",
+    "rebuts_claim": "materialism-defeats-reason",
+    "description": "Being a primate doesn't bar reasoning about heroism and self-sacrifice.",
+    "name": "i-am-a-primate-and-still-reason"
+  },
+  {
+    "label": "Information Argument Is Faith",
+    "made_by": "christopher-hitchens",
+    "rebuts_claim": "information-implies-mind",
+    "description": "The origin-of-life quotes are all statements of uncertainty, not evidence of a mind.",
+    "name": "information-argument-is-faith"
+  },
+  {
+    "label": "Morality Predates Atoms",
+    "made_by": "christopher-hitchens",
+    "rebuts_claim": "objective-morality-needs-god",
+    "description": "The question of the good predates Lucretius, Democritus, and Epicurus and the atomic theory; it needs no deity.",
+    "name": "morality-predates-atoms"
+  },
+  {
+    "label": "Nature Is The Greater Abortion Provider",
+    "made_by": "christopher-hitchens",
+    "rebuts_claim": "abortion-is-a-double-standard",
+    "description": "A false distinction: nature, not God, ends most pregnancies; the unborn has a real claim, but that is no moral equivalent to a commanded genocide.",
+    "name": "nature-is-the-greater-abortion-provider"
+  },
+  {
+    "label": "Not All Pardons Are Immoral",
+    "made_by": "christopher-hitchens",
+    "rebuts_claim": "vicarious-redemption-is-immoral",
+    "description": "Hitchens clarifies: not all pardons \u2014 only assuming another's responsibility \u2014 are immoral.",
+    "name": "not-all-pardons-are-immoral"
+  },
+  {
+    "label": "Optimality Objection Misfires",
+    "made_by": "christopher-hitchens",
+    "rebuts_claim": "design-need-not-be-optimal",
+    "description": "Profuse extinction and a heat-death trajectory are not what design predicts.",
+    "name": "optimality-objection-misfires"
+  },
+  {
+    "label": "Religious People Aren't The Point",
+    "made_by": "frank-turek",
+    "rebuts_claim": "religion-poisons-everything",
+    "description": "Bad believers say nothing about whether God exists; everything poisons religion.",
+    "name": "religious-people-aren't-the-point"
+  }
+]

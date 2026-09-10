@@ -1,0 +1,74 @@
+[
+  {
+    "dependency_id": "dep-001",
+    "name": "Python",
+    "version": "3.8+",
+    "type": "Language",
+    "purpose": "Orchestration scripts, injectors, test runners",
+    "required": true
+  },
+  {
+    "dependency_id": "dep-002",
+    "name": "Bash",
+    "version": "latest",
+    "type": "Language",
+    "purpose": "Menu orchestration, subprocess management",
+    "required": true
+  },
+  {
+    "dependency_id": "dep-003",
+    "name": "Go",
+    "version": "1.19+",
+    "type": "Language",
+    "purpose": "Go substrate code generation and testing",
+    "required": false
+  },
+  {
+    "dependency_id": "dep-004",
+    "name": "PostgreSQL",
+    "version": "13+",
+    "type": "Database",
+    "purpose": "SQL substrate execution; DDL/functions/views generation",
+    "required": false
+  },
+  {
+    "dependency_id": "dep-005",
+    "name": "Docker",
+    "version": "latest",
+    "type": "Tool",
+    "purpose": "Container orchestration for PostgreSQL and reproducible environments",
+    "required": false
+  },
+  {
+    "dependency_id": "dep-006",
+    "name": "Airtable API",
+    "version": "v0",
+    "type": "External Service",
+    "purpose": "Schema + data pull via airtable-to-rulebook; reverse sync via rulebook-to-airtable",
+    "required": false
+  },
+  {
+    "dependency_id": "dep-007",
+    "name": "Node.js",
+    "version": "16+",
+    "type": "Language",
+    "purpose": "Report generation (HTML), optional utilities",
+    "required": false
+  },
+  {
+    "dependency_id": "dep-008",
+    "name": "SSoTme CLI (effortless)",
+    "version": "latest",
+    "type": "Tool",
+    "purpose": "Transpiler registry and version management for effortless-rulebook-to-postgres, etc.",
+    "required": false
+  },
+  {
+    "dependency_id": "dep-009",
+    "name": "C# / Entity Framework",
+    "version": ".NET 6+",
+    "type": "Language",
+    "purpose": "Entity Framework substrate code generation",
+    "required": false
+  }
+]

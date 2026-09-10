@@ -8,10 +8,4 @@
 | Passed | 0 |
 | Failed | 0 |
 | Score | 0.0% |
-| Duration | 4s |
-
-## Error
-
-```
-No test-answers found
-```
+| Duration | < 1s |

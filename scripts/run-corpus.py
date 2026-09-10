@@ -21,7 +21,7 @@ conformance rows are written by run-conformance.py as each project finishes,
 so they survive even if a later project blows up.
 
 Builds are sequential on purpose: every `effortless build` goes through the
-ssotme-proxy on :4242 and concurrent builds corrupt each other.
+the CLI's local transpiler host on :4242 and concurrent builds corrupt each other.
 
 Usage:
     python3 scripts/run-corpus.py --mode build-only
@@ -163,12 +163,14 @@ def run_pytest_suite(suite: dict, log) -> None:
         raise SystemExit(f"pytest exited {code}: {summary or first_error(lines, last)}")
 
 
-def run_conformance_for(slug: str, log) -> dict:
+def run_conformance_for(slug: str, log, allow_no_substrates: bool = False) -> dict:
     """Delegate to the existing single-project path. --skip-build because this
     runner does ONE root build at the end instead of forty. The rows it appends
     to the rulebook land immediately, so a later project failing cannot lose
     this project's result."""
     cmd = [sys.executable, "scripts/run-conformance.py", slug, "--skip-build"]
+    if allow_no_substrates:
+        cmd.append("--allow-no-substrates")
     log(f"[conformance] {' '.join(cmd)}")
     proc = subprocess.Popen(cmd, cwd=str(REPO_ROOT), stdout=subprocess.PIPE,
                             stderr=subprocess.STDOUT, text=True, bufsize=1)
@@ -268,8 +270,13 @@ def run_one(target: dict, mode: str, status: Status, run_dir: Path) -> None:
             return
 
         phase("conformance", RUNNING)
+        # A suite that DECLARES it grades nothing (ExpectedSubstrateCount 0, no
+        # execution substrates registered at all) is allowed to produce no results.
+        # The declaration is what makes that legitimate rather than a silent hole —
+        # a suite that should grade substrates and produces none is still an error.
+        expects_none = (target["suite"].get("ExpectedSubstrateCount") or 0) == 0
         try:
-            summary = run_conformance_for(slug, log)
+            summary = run_conformance_for(slug, log, allow_no_substrates=expects_none)
         except SystemExit as e:
             row["conformance_outcome"] = "harness-error"
             fail("conformance", str(e))
@@ -280,6 +287,15 @@ def run_one(target: dict, mode: str, status: Status, run_dir: Path) -> None:
         row["conformance_run_id"] = summary.get("run_id")
         row["substrates_tested"] = tested
         row["substrates_passed"] = passed
+
+        if summary.get("no_substrates"):
+            log("[conformance] nothing to grade — this project registers no execution substrates")
+            row["conformance"] = SKIPPED
+            row["conformance_outcome"] = "no-substrates"
+            row["state"] = "done"
+            row["duration_seconds"] = round(time.time() - started, 1)
+            status.flush()
+            return
 
         # The harness exiting 0 only means it RAN. Green means every substrate
         # it graded agreed with the answer keys — that is the bar the corpus is

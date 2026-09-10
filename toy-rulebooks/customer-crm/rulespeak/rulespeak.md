@@ -110,11 +110,11 @@ already computes (cross-referenced as DR-N in the Definitional Rules below)._
 
 - A user **must** have an email and a role.
 - A customer **must** have an email.
-- An order **must** have an order number, an order date, a customer, and a total.
-- A payment **must** have a payment number, an order ID, a payment date, an amount, and a method.
-- A jet model **must** have a model code, a manufacturer, and a generation.
-- A flight control system **must** have an FCS code, a jet model ID, an architecture, a redundancy channels, and a unit price.
-- An order line **must** have a line number, an order ID, an FCS ID, and a quantity.
+- An order **must** have an order number; an order date; a customer; and a total.
+- A payment **must** have a payment number; an order ID; a payment date; an amount; and a method.
+- A jet model **must** have a model code; a manufacturer; and a generation.
+- A flight control system **must** have an FCS code; a jet model ID; an architecture; a redundancy channels; and a unit price.
+- An order line **must** have a line number; an order ID; an FCS ID; and a quantity.
 
 ## 4 Definitional Rules
 

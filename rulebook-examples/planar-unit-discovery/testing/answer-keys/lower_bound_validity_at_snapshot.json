@@ -1,0 +1,327 @@
+[
+  {
+    "lower_bound_validity_at_snapshot_id": "lbv-erdos-1946",
+    "asymptotic_lower_bound": "erdos-sqrt-bound",
+    "temporal_snapshot": "snap-erdos-1946",
+    "is_valid_at_this_snapshot": true,
+    "name": "erdos-sqrt-bound-at-snap-erdos-1946",
+    "is_curator_confirmed_at_this_snapshot": false
+  },
+  {
+    "lower_bound_validity_at_snapshot_id": "lbv-erdos-1983",
+    "asymptotic_lower_bound": "erdos-sqrt-bound",
+    "temporal_snapshot": "snap-st-1983",
+    "is_valid_at_this_snapshot": true,
+    "name": "erdos-sqrt-bound-at-snap-st-1983",
+    "is_curator_confirmed_at_this_snapshot": false
+  },
+  {
+    "lower_bound_validity_at_snapshot_id": "lbv-erdos-1984",
+    "asymptotic_lower_bound": "erdos-sqrt-bound",
+    "temporal_snapshot": "snap-spencer-st-1984",
+    "is_valid_at_this_snapshot": true,
+    "name": "erdos-sqrt-bound-at-snap-spencer-st-1984",
+    "is_curator_confirmed_at_this_snapshot": false
+  },
+  {
+    "lower_bound_validity_at_snapshot_id": "lbv-erdos-2024",
+    "asymptotic_lower_bound": "erdos-sqrt-bound",
+    "temporal_snapshot": "snap-sawin-2026",
+    "is_valid_at_this_snapshot": true,
+    "name": "erdos-sqrt-bound-at-snap-sawin-2026",
+    "is_curator_confirmed_at_this_snapshot": false
+  },
+  {
+    "lower_bound_validity_at_snapshot_id": "lbv-erdos-future",
+    "asymptotic_lower_bound": "erdos-sqrt-bound",
+    "temporal_snapshot": "snap-future-projected",
+    "is_valid_at_this_snapshot": true,
+    "name": "erdos-sqrt-bound-at-snap-future-projected",
+    "is_curator_confirmed_at_this_snapshot": false
+  },
+  {
+    "lower_bound_validity_at_snapshot_id": "lbv-erdos-mid-overclaim",
+    "asymptotic_lower_bound": "erdos-sqrt-bound",
+    "temporal_snapshot": "snap-mid-overclaim-2025",
+    "is_valid_at_this_snapshot": true,
+    "name": "erdos-sqrt-bound-at-snap-mid-overclaim-2025",
+    "is_curator_confirmed_at_this_snapshot": false
+  },
+  {
+    "lower_bound_validity_at_snapshot_id": "lbv-erdos-now",
+    "asymptotic_lower_bound": "erdos-sqrt-bound",
+    "temporal_snapshot": "snap-now",
+    "is_valid_at_this_snapshot": true,
+    "name": "erdos-sqrt-bound-at-snap-now",
+    "is_curator_confirmed_at_this_snapshot": false
+  },
+  {
+    "lower_bound_validity_at_snapshot_id": "lbv-erdos-openai-day",
+    "asymptotic_lower_bound": "erdos-sqrt-bound",
+    "temporal_snapshot": "snap-openai-2026-may-20",
+    "is_valid_at_this_snapshot": true,
+    "name": "erdos-sqrt-bound-at-snap-openai-2026-may-20",
+    "is_curator_confirmed_at_this_snapshot": false
+  },
+  {
+    "lower_bound_validity_at_snapshot_id": "lbv-pending-1946",
+    "asymptotic_lower_bound": "pending-bound-unevaluated",
+    "temporal_snapshot": "snap-erdos-1946",
+    "is_valid_at_this_snapshot": false,
+    "name": "pending-bound-unevaluated-at-snap-erdos-1946",
+    "is_curator_confirmed_at_this_snapshot": false
+  },
+  {
+    "lower_bound_validity_at_snapshot_id": "lbv-pending-1983",
+    "asymptotic_lower_bound": "pending-bound-unevaluated",
+    "temporal_snapshot": "snap-st-1983",
+    "is_valid_at_this_snapshot": false,
+    "name": "pending-bound-unevaluated-at-snap-st-1983",
+    "is_curator_confirmed_at_this_snapshot": false
+  },
+  {
+    "lower_bound_validity_at_snapshot_id": "lbv-pending-1984",
+    "asymptotic_lower_bound": "pending-bound-unevaluated",
+    "temporal_snapshot": "snap-spencer-st-1984",
+    "is_valid_at_this_snapshot": false,
+    "name": "pending-bound-unevaluated-at-snap-spencer-st-1984",
+    "is_curator_confirmed_at_this_snapshot": false
+  },
+  {
+    "lower_bound_validity_at_snapshot_id": "lbv-pending-2024",
+    "asymptotic_lower_bound": "pending-bound-unevaluated",
+    "temporal_snapshot": "snap-sawin-2026",
+    "is_valid_at_this_snapshot": true,
+    "description": "Updated in Loop 5.1: snap-sawin-2026's date moved from 2024-01-01 to 2026-05-20, which coincides with pending bound's ValidFrom; pending is now date-valid at this snapshot (but not curator-confirmed).",
+    "name": "pending-bound-unevaluated-at-snap-sawin-2026",
+    "is_curator_confirmed_at_this_snapshot": false
+  },
+  {
+    "lower_bound_validity_at_snapshot_id": "lbv-pending-future",
+    "asymptotic_lower_bound": "pending-bound-unevaluated",
+    "temporal_snapshot": "snap-future-projected",
+    "is_valid_at_this_snapshot": true,
+    "name": "pending-bound-unevaluated-at-snap-future-projected",
+    "is_curator_confirmed_at_this_snapshot": false
+  },
+  {
+    "lower_bound_validity_at_snapshot_id": "lbv-pending-mid-overclaim",
+    "asymptotic_lower_bound": "pending-bound-unevaluated",
+    "temporal_snapshot": "snap-mid-overclaim-2025",
+    "is_valid_at_this_snapshot": false,
+    "name": "pending-bound-unevaluated-at-snap-mid-overclaim-2025",
+    "is_curator_confirmed_at_this_snapshot": false
+  },
+  {
+    "lower_bound_validity_at_snapshot_id": "lbv-pending-now",
+    "asymptotic_lower_bound": "pending-bound-unevaluated",
+    "temporal_snapshot": "snap-now",
+    "is_valid_at_this_snapshot": true,
+    "name": "pending-bound-unevaluated-at-snap-now",
+    "is_curator_confirmed_at_this_snapshot": false
+  },
+  {
+    "lower_bound_validity_at_snapshot_id": "lbv-pending-openai-day",
+    "asymptotic_lower_bound": "pending-bound-unevaluated",
+    "temporal_snapshot": "snap-openai-2026-may-20",
+    "is_valid_at_this_snapshot": true,
+    "description": "Pending bound's ValidFrom=2026-05-20 coincides with OpenAI announcement day; date-valid (but IsCurrentlyValid=null, so excluded from CuratorConfirmed).",
+    "name": "pending-bound-unevaluated-at-snap-openai-2026-may-20",
+    "is_curator_confirmed_at_this_snapshot": false
+  },
+  {
+    "lower_bound_validity_at_snapshot_id": "lbv-retracted-1946",
+    "asymptotic_lower_bound": "hypothetical-retracted-overclaim",
+    "temporal_snapshot": "snap-erdos-1946",
+    "is_valid_at_this_snapshot": false,
+    "name": "hypothetical-retracted-overclaim-at-snap-erdos-1946",
+    "is_curator_confirmed_at_this_snapshot": false
+  },
+  {
+    "lower_bound_validity_at_snapshot_id": "lbv-retracted-1983",
+    "asymptotic_lower_bound": "hypothetical-retracted-overclaim",
+    "temporal_snapshot": "snap-st-1983",
+    "is_valid_at_this_snapshot": false,
+    "name": "hypothetical-retracted-overclaim-at-snap-st-1983",
+    "is_curator_confirmed_at_this_snapshot": false
+  },
+  {
+    "lower_bound_validity_at_snapshot_id": "lbv-retracted-1984",
+    "asymptotic_lower_bound": "hypothetical-retracted-overclaim",
+    "temporal_snapshot": "snap-spencer-st-1984",
+    "is_valid_at_this_snapshot": false,
+    "name": "hypothetical-retracted-overclaim-at-snap-spencer-st-1984",
+    "is_curator_confirmed_at_this_snapshot": false
+  },
+  {
+    "lower_bound_validity_at_snapshot_id": "lbv-retracted-2024",
+    "asymptotic_lower_bound": "hypothetical-retracted-overclaim",
+    "temporal_snapshot": "snap-sawin-2026",
+    "is_valid_at_this_snapshot": false,
+    "name": "hypothetical-retracted-overclaim-at-snap-sawin-2026",
+    "is_curator_confirmed_at_this_snapshot": false
+  },
+  {
+    "lower_bound_validity_at_snapshot_id": "lbv-retracted-future",
+    "asymptotic_lower_bound": "hypothetical-retracted-overclaim",
+    "temporal_snapshot": "snap-future-projected",
+    "is_valid_at_this_snapshot": false,
+    "name": "hypothetical-retracted-overclaim-at-snap-future-projected",
+    "is_curator_confirmed_at_this_snapshot": false
+  },
+  {
+    "lower_bound_validity_at_snapshot_id": "lbv-retracted-mid-overclaim",
+    "asymptotic_lower_bound": "hypothetical-retracted-overclaim",
+    "temporal_snapshot": "snap-mid-overclaim-2025",
+    "is_valid_at_this_snapshot": true,
+    "description": "The one moment in time where the overclaim was alive \u2014 visible HERE only.",
+    "name": "hypothetical-retracted-overclaim-at-snap-mid-overclaim-2025",
+    "is_curator_confirmed_at_this_snapshot": false
+  },
+  {
+    "lower_bound_validity_at_snapshot_id": "lbv-retracted-now",
+    "asymptotic_lower_bound": "hypothetical-retracted-overclaim",
+    "temporal_snapshot": "snap-now",
+    "is_valid_at_this_snapshot": false,
+    "name": "hypothetical-retracted-overclaim-at-snap-now",
+    "is_curator_confirmed_at_this_snapshot": false
+  },
+  {
+    "lower_bound_validity_at_snapshot_id": "lbv-retracted-openai-day",
+    "asymptotic_lower_bound": "hypothetical-retracted-overclaim",
+    "temporal_snapshot": "snap-openai-2026-may-20",
+    "is_valid_at_this_snapshot": false,
+    "name": "hypothetical-retracted-overclaim-at-snap-openai-2026-may-20",
+    "is_curator_confirmed_at_this_snapshot": false
+  },
+  {
+    "lower_bound_validity_at_snapshot_id": "lbv-sawin-1946",
+    "asymptotic_lower_bound": "sawin-n1014",
+    "temporal_snapshot": "snap-erdos-1946",
+    "is_valid_at_this_snapshot": false,
+    "name": "sawin-n1014-at-snap-erdos-1946",
+    "is_curator_confirmed_at_this_snapshot": false
+  },
+  {
+    "lower_bound_validity_at_snapshot_id": "lbv-sawin-1983",
+    "asymptotic_lower_bound": "sawin-n1014",
+    "temporal_snapshot": "snap-st-1983",
+    "is_valid_at_this_snapshot": false,
+    "name": "sawin-n1014-at-snap-st-1983",
+    "is_curator_confirmed_at_this_snapshot": false
+  },
+  {
+    "lower_bound_validity_at_snapshot_id": "lbv-sawin-1984",
+    "asymptotic_lower_bound": "sawin-n1014",
+    "temporal_snapshot": "snap-spencer-st-1984",
+    "is_valid_at_this_snapshot": false,
+    "name": "sawin-n1014-at-snap-spencer-st-1984",
+    "is_curator_confirmed_at_this_snapshot": false
+  },
+  {
+    "lower_bound_validity_at_snapshot_id": "lbv-sawin-2024",
+    "asymptotic_lower_bound": "sawin-n1014",
+    "temporal_snapshot": "snap-sawin-2026",
+    "is_valid_at_this_snapshot": true,
+    "name": "sawin-n1014-at-snap-sawin-2026",
+    "is_curator_confirmed_at_this_snapshot": false
+  },
+  {
+    "lower_bound_validity_at_snapshot_id": "lbv-sawin-future",
+    "asymptotic_lower_bound": "sawin-n1014",
+    "temporal_snapshot": "snap-future-projected",
+    "is_valid_at_this_snapshot": true,
+    "name": "sawin-n1014-at-snap-future-projected",
+    "is_curator_confirmed_at_this_snapshot": false
+  },
+  {
+    "lower_bound_validity_at_snapshot_id": "lbv-sawin-mid-overclaim",
+    "asymptotic_lower_bound": "sawin-n1014",
+    "temporal_snapshot": "snap-mid-overclaim-2025",
+    "is_valid_at_this_snapshot": false,
+    "description": "Updated to FALSE in Loop 5.1: Sawin's bound now has ValidFrom=2026-05-20, so it was NOT yet valid at the 2025-07-01 mid-overclaim moment.",
+    "name": "sawin-n1014-at-snap-mid-overclaim-2025",
+    "is_curator_confirmed_at_this_snapshot": false
+  },
+  {
+    "lower_bound_validity_at_snapshot_id": "lbv-sawin-now",
+    "asymptotic_lower_bound": "sawin-n1014",
+    "temporal_snapshot": "snap-now",
+    "is_valid_at_this_snapshot": true,
+    "name": "sawin-n1014-at-snap-now",
+    "is_curator_confirmed_at_this_snapshot": false
+  },
+  {
+    "lower_bound_validity_at_snapshot_id": "lbv-sawin-openai-day",
+    "asymptotic_lower_bound": "sawin-n1014",
+    "temporal_snapshot": "snap-openai-2026-may-20",
+    "is_valid_at_this_snapshot": true,
+    "description": "Sawin's bound becomes valid on the SAME DAY as OpenAI's announcement (companion paper); the boundary moment when n^1.014 enters the historical record.",
+    "name": "sawin-n1014-at-snap-openai-2026-may-20",
+    "is_curator_confirmed_at_this_snapshot": false
+  },
+  {
+    "lower_bound_validity_at_snapshot_id": "lbv-zeta7-1946",
+    "asymptotic_lower_bound": "zeta7-witness-bound",
+    "temporal_snapshot": "snap-erdos-1946",
+    "is_valid_at_this_snapshot": false,
+    "name": "zeta7-witness-bound-at-snap-erdos-1946",
+    "is_curator_confirmed_at_this_snapshot": false
+  },
+  {
+    "lower_bound_validity_at_snapshot_id": "lbv-zeta7-1983",
+    "asymptotic_lower_bound": "zeta7-witness-bound",
+    "temporal_snapshot": "snap-st-1983",
+    "is_valid_at_this_snapshot": false,
+    "name": "zeta7-witness-bound-at-snap-st-1983",
+    "is_curator_confirmed_at_this_snapshot": false
+  },
+  {
+    "lower_bound_validity_at_snapshot_id": "lbv-zeta7-1984",
+    "asymptotic_lower_bound": "zeta7-witness-bound",
+    "temporal_snapshot": "snap-spencer-st-1984",
+    "is_valid_at_this_snapshot": false,
+    "name": "zeta7-witness-bound-at-snap-spencer-st-1984",
+    "is_curator_confirmed_at_this_snapshot": false
+  },
+  {
+    "lower_bound_validity_at_snapshot_id": "lbv-zeta7-2024",
+    "asymptotic_lower_bound": "zeta7-witness-bound",
+    "temporal_snapshot": "snap-sawin-2026",
+    "is_valid_at_this_snapshot": false,
+    "name": "zeta7-witness-bound-at-snap-sawin-2026",
+    "is_curator_confirmed_at_this_snapshot": false
+  },
+  {
+    "lower_bound_validity_at_snapshot_id": "lbv-zeta7-future",
+    "asymptotic_lower_bound": "zeta7-witness-bound",
+    "temporal_snapshot": "snap-future-projected",
+    "is_valid_at_this_snapshot": true,
+    "name": "zeta7-witness-bound-at-snap-future-projected",
+    "is_curator_confirmed_at_this_snapshot": false
+  },
+  {
+    "lower_bound_validity_at_snapshot_id": "lbv-zeta7-mid-overclaim",
+    "asymptotic_lower_bound": "zeta7-witness-bound",
+    "temporal_snapshot": "snap-mid-overclaim-2025",
+    "is_valid_at_this_snapshot": false,
+    "name": "zeta7-witness-bound-at-snap-mid-overclaim-2025",
+    "is_curator_confirmed_at_this_snapshot": false
+  },
+  {
+    "lower_bound_validity_at_snapshot_id": "lbv-zeta7-now",
+    "asymptotic_lower_bound": "zeta7-witness-bound",
+    "temporal_snapshot": "snap-now",
+    "is_valid_at_this_snapshot": true,
+    "name": "zeta7-witness-bound-at-snap-now",
+    "is_curator_confirmed_at_this_snapshot": false
+  },
+  {
+    "lower_bound_validity_at_snapshot_id": "lbv-zeta7-openai-day",
+    "asymptotic_lower_bound": "zeta7-witness-bound",
+    "temporal_snapshot": "snap-openai-2026-may-20",
+    "is_valid_at_this_snapshot": false,
+    "name": "zeta7-witness-bound-at-snap-openai-2026-may-20",
+    "is_curator_confirmed_at_this_snapshot": false
+  }
+]

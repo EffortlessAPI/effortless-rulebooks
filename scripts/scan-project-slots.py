@@ -79,7 +79,7 @@ SLOTS: tuple[dict[str, Any], ...] = (
         "id": "slot-readme-bus",
         "title": "README local-bus section",
         "kind": "readme-final-section",
-        "pattern": "## Local transpiler bus (`localhost:4242`)",
+        "pattern": "## Local transpiler bus (`127.0.0.1:4242`)",
         "root": True,
         "example": True,
         "toy": True,

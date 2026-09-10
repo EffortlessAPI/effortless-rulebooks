@@ -30,14 +30,15 @@ const pool = new Pool({ connectionString: DATABASE_URL });
 // that populated copy to a temp `rulebook-to-save.json` and run the
 // rulebook-to-xlsx transpiler over it to produce a workbook of current values.
 //
-// Why we call the injector directly instead of the :4242 ssotme-proxy: the
-// proxy hard-resolves its input to the *committed* <domain>-rulebook.json (it
-// identifies the project by the CLI's cwd and ignores `-i`), so routing through
-// it would export the SEED data, not the live DB. The injector itself honors
-// ERB_RULEBOOK_PATH — the exact env var the proxy sets internally (see
-// effortless-platform/ssotme-proxy/server.py run_injector). We point that at
-// our temp rulebook and run the same script the proxy would. No fallbacks: any
-// view-query / temp-write / transpiler failure surfaces to the client.
+// Why we call the injector directly instead of the :4242 local transpiler host:
+// that host is the build path, and a build step names one committed rulebook.
+// This endpoint has to export a rulebook that only exists for the length of the
+// request — the live DB values written to a temp file — so there is no build
+// step to hang it off. The injector honors ERB_RULEBOOK_PATH, the same env var
+// the host's shim sets (see orchestration/local_tool_shim.py), so we point that
+// at our temp rulebook and run exactly the script a build would run. No
+// fallbacks: any view-query / temp-write / transpiler failure surfaces to the
+// client.
 // ===========================================================================
 const REPO_ROOT = path.resolve(__dirname, '..', '..'); // <...>/effortless-rulebooks
 const XLSX_INJECTOR = path.join(REPO_ROOT, 'execution-substrates', 'xlsx', 'inject-into-xlsx.py');

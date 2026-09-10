@@ -1,0 +1,23 @@
+[
+  {
+    "name": null,
+    "policy_id": "pol-1",
+    "policyholder_name": "Northside Mutual",
+    "is_active": true,
+    "count_of_covered_claimants": null
+  },
+  {
+    "name": null,
+    "policy_id": "pol-2",
+    "policyholder_name": "Lapsed Holdings",
+    "is_active": false,
+    "count_of_covered_claimants": null
+  },
+  {
+    "name": null,
+    "policy_id": "pol-3",
+    "policyholder_name": "Harbor Assurance",
+    "is_active": true,
+    "count_of_covered_claimants": null
+  }
+]

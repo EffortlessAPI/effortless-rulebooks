@@ -208,27 +208,27 @@ already computes (cross-referenced as DR-N in the Definitional Rules below)._
 
 ### Structural Constraints (from the schema)
 
-- A user **must** have a full name, a role, and an email.
+- A user **must** have a full name; a role; and an email.
 - A business **must** reference exactly one user as its relationship manager.
-- A business **must** have a legal name, a business structure, an NAICS code, and a status.
+- A business **must** have a legal name; a business structure; an NAICS code; and a status.
 - A beneficial owner **must** reference exactly one business.
-- A beneficial owner **must** have a full name, a date of birth, an SSN, an address, and an ownership percentage, and record whether it is a control person.
+- A beneficial owner **must** have a full name; a date of birth; an SSN; an address; and an ownership percentage, and record whether it is a control person.
 - A contact **must** reference exactly one business.
-- A contact **must** have a full name, a title, and a contact type, and record whether it is an authorized signer.
+- A contact **must** have a full name; a title; and a contact type, and record whether it is an authorized signer.
 - An account **must** reference exactly one business.
-- An account **must** have an account type, an account number last4, a current balance USD, and an opened at, and record whether it has an ACH, whether it has a wire, and whether it has a card.
+- An account **must** have an account type; an account number last4; a current balance USD; and an opened at, and record whether it has an ACH; whether it has a wire; and whether it has a card.
 - A loan **must** reference exactly one business.
 - A loan **must** reference exactly one user as its originating RM.
 - A loan **must** reference exactly one user as its underwriter.
-- A loan **must** have a loan number, a loan purpose, a principal USD, a rate pct, a term months, an underwriting stage, a risk rating, a risk rating label, and an originated at.
+- A loan **must** have a loan number; a loan purpose; a principal USD; a rate pct; a term months; an underwriting stage; a risk rating; a risk rating label; and an originated at.
 - A covenant **must** reference exactly one loan.
-- A covenant **must** have a covenant type, a test frequency, a next test date, and a status.
+- A covenant **must** have a covenant type; a test frequency; a next test date; and a status.
 - A risk rating history **must** reference exactly one loan.
 - A risk rating history **must** reference exactly one user as its changed by user.
-- A risk rating history **must** have an effective date, a new grade, and a reason.
-- A document **must** have a filename, a document type, and an uploaded at, and record whether it is ocr indexed.
+- A risk rating history **must** have an effective date; a new grade; and a reason.
+- A document **must** have a filename; a document type; and an uploaded at, and record whether it is ocr indexed.
 - An interaction **must** reference exactly one business.
-- An interaction **must** have an interaction type, a subject, and an interaction date.
+- An interaction **must** have an interaction type; a subject; and an interaction date.
 
 ### BSA/AML (CDD)
 
@@ -323,7 +323,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-50 Count of Breached Covenants** | A loan's count of breached covenants is the number of the loan's covenants that are breached. |
 | **DR-51 Count of Risk Rating History** | A loan's count of risk rating history is the number of risk rating history related to the loan. |
 | **DR-52 Count of Documents** | A loan's count of documents is the number of documents related to the loan. |
-| **DR-53 Has Breached Covenant** | A loan is considered to have a breached covenant if the count of breached covenants is greater than 0. |
+| **DR-53 Has Breached Covenant** | A loan is considered to have breached covenant if the count of breached covenants is greater than 0. |
 | **DR-54 On Watchlist** | A loan is flagged on watchlist if at least one of the following holds: the classified asset flag is set or the breached covenant flag is set. |
 | **DR-55 Health Score** | A loan's health score is computed as the count of the following that hold: the DSCR in band flag is set; the LTV in band flag is set; the classified asset flag is not set; and the breached covenant flag is not set. |
 | **DR-56 Name** | A covenant's name is computed as the loan, followed by a hyphen, followed by the lower-cased covenant type with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |

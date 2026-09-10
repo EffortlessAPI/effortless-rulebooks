@@ -1,0 +1,74 @@
+[
+  {
+    "temporal_snapshot_id": "snap-erdos-1946",
+    "label": "Erd\u0151s 1946 publication",
+    "snapshot_date": "1946-01-01",
+    "description": "Erd\u0151s's original 'On sets of distances of n points' establishes U(n) \u2265 n^{1+c/loglogn}. The starting line of the lower-bound program.",
+    "is_historical": true,
+    "anchoring_source_reference": "src-erdos-1946",
+    "name": "erd\u0151s-1946-publication"
+  },
+  {
+    "temporal_snapshot_id": "snap-future-projected",
+    "label": "Future improvement (projected)",
+    "snapshot_date": "2030-01-01",
+    "description": "Placeholder for the next plausible improvement \u2014 for forward-looking 'will the chain still close in 2030' queries.",
+    "is_historical": false,
+    "anchoring_source_reference": null,
+    "name": "future-improvement-(projected)"
+  },
+  {
+    "temporal_snapshot_id": "snap-mid-overclaim-2025",
+    "label": "Mid-overclaim 2025-07",
+    "snapshot_date": "2025-07-01",
+    "description": "A moment during the hypothetical-retracted-overclaim's brief validity window (2025-06-15 \u2192 2025-08-01). At this instant the rulebook briefly held an exponent-1.5 claim that was retracted shortly after \u2014 useful for proving the bitemporal layer captures transient overclaims.",
+    "is_historical": true,
+    "anchoring_source_reference": "src-experimental-preprint",
+    "name": "mid-overclaim-2025-07"
+  },
+  {
+    "temporal_snapshot_id": "snap-now",
+    "label": "Current moment",
+    "snapshot_date": "2026-05-28",
+    "description": "The 'now' anchor \u2014 present-day state of the rulebook.",
+    "is_historical": false,
+    "anchoring_source_reference": null,
+    "name": "current-moment"
+  },
+  {
+    "temporal_snapshot_id": "snap-openai-2026-may-20",
+    "label": "OpenAI autonomous-AI announcement",
+    "snapshot_date": "2026-05-20",
+    "description": "OpenAI's reasoning model autonomously proved U(n) grows superlinearly (inexplicit exponent > 1), disproving Erd\u0151s's polynomial-improvement conjecture and showing the square-grid was not optimal. First autonomous AI proof of a central open mathematics problem.",
+    "is_historical": true,
+    "anchoring_source_reference": "src-openai-2026",
+    "name": "openai-autonomous-ai-announcement"
+  },
+  {
+    "temporal_snapshot_id": "snap-sawin-2026",
+    "label": "Sawin 2026 companion paper (explicit n^1.014)",
+    "snapshot_date": "2026-05-20",
+    "description": "Sawin's companion paper, posted the same day as the OpenAI announcement, makes the exponent explicit at 1.014 using cyclotomic fields, Golod\u2013Shafarevich tower argument, and Minkowski lattice projection. The structural chain Q(\u03b6_p) \u2192 O_K \u2192 Minkowski lattice \u2192 short-vector counting \u2192 planar projection is what the rulebook's algebraic-tower pathway models.",
+    "is_historical": true,
+    "anchoring_source_reference": "src-sawin-2026",
+    "name": "sawin-2026-companion-paper-(explicit-n^1.014)"
+  },
+  {
+    "temporal_snapshot_id": "snap-spencer-st-1984",
+    "label": "Spencer\u2013Szemer\u00e9di\u2013Trotter 1984",
+    "snapshot_date": "1984-01-01",
+    "description": "Specialization of ST to unit distances: U(n) = O(n^{4/3}). The ceiling.",
+    "is_historical": true,
+    "anchoring_source_reference": "src-spencer-st-1984",
+    "name": "spencer\u2013szemer\u00e9di\u2013trotter-1984"
+  },
+  {
+    "temporal_snapshot_id": "snap-st-1983",
+    "label": "Szemer\u00e9di\u2013Trotter 1983",
+    "snapshot_date": "1983-01-01",
+    "description": "Szemer\u00e9di\u2013Trotter incidence bound published. Sets up the upper-bound side.",
+    "is_historical": true,
+    "anchoring_source_reference": "src-szemeredi-trotter-1983",
+    "name": "szemer\u00e9di\u2013trotter-1983"
+  }
+]

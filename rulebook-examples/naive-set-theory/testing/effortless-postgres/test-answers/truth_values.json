@@ -1,0 +1,35 @@
+[
+  {
+    "truth_value_id": "false",
+    "name": "false",
+    "symbol": "F",
+    "glyph": "\u22a5",
+    "rank": -1,
+    "is_classical": true,
+    "is_undefined": false,
+    "count_of_facts": 2,
+    "facts_with_value": null
+  },
+  {
+    "truth_value_id": "null",
+    "name": "null",
+    "symbol": "N",
+    "glyph": "\u2217",
+    "rank": 0,
+    "is_classical": false,
+    "is_undefined": true,
+    "count_of_facts": 1,
+    "facts_with_value": null
+  },
+  {
+    "truth_value_id": "true",
+    "name": "true",
+    "symbol": "T",
+    "glyph": "\u22a4",
+    "rank": 1,
+    "is_classical": true,
+    "is_undefined": false,
+    "count_of_facts": 7,
+    "facts_with_value": null
+  }
+]

@@ -1,0 +1,43 @@
+{
+  "SSoTmeProjectId": "ae08d1c4-a936-494b-be27-3e1b6d950ee3",
+  "Name": "rulebook-compiler",
+  "ProjectSettings": [
+    {
+      "Name": "project-name",
+      "Value": "rulebook-compiler"
+    }
+  ],
+  "ProjectTranspilers": [
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "compile-rulebook",
+      "RelativePath": "/effortless-rulebook",
+      "CommandLine": "compile-rulebook -i effortless-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.09.12.1638",
+      "LastUrl": "https://effortless-compile-rulebook-v2026-09-12-1638-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebook-to-rulespeak",
+      "RelativePath": "/rulespeak",
+      "CommandLine": "rulebook-to-rulespeak -i ../effortless-rulebook/effortless-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.09.11.0137",
+      "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-09-11-0137-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebook-to-xlsx",
+      "RelativePath": "/effortless-rulebook",
+      "CommandLine": "rulebook-to-xlsx -i effortless-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.09.12.1547",
+      "LastUrl": "https://effortless-rulebook-to-xlsx-v2026-09-12-1547-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    }
+  ],
+  "ShowHidden": false,
+  "ShowAllFiles": false,
+  "CurrentPath": "/effortless-rulebook",
+  "SSoTmeProjectFiles": null
+}

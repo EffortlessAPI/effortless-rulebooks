@@ -1,0 +1,402 @@
+[
+  {
+    "state_id": "ak-alaska",
+    "name": "ak-alaska",
+    "code": "AK",
+    "text": "Alaska",
+    "tax_rate": "0",
+    "addresses": null
+  },
+  {
+    "state_id": "al-alabama",
+    "name": "al-alabama",
+    "code": "AL",
+    "text": "Alabama",
+    "tax_rate": "0.04",
+    "addresses": null
+  },
+  {
+    "state_id": "ar-arkansas",
+    "name": "ar-arkansas",
+    "code": "AR",
+    "text": "Arkansas",
+    "tax_rate": "0.065",
+    "addresses": null
+  },
+  {
+    "state_id": "az-arizona",
+    "name": "az-arizona",
+    "code": "AZ",
+    "text": "Arizona",
+    "tax_rate": "0.056",
+    "addresses": null
+  },
+  {
+    "state_id": "ca-california",
+    "name": "ca-california",
+    "code": "CA",
+    "text": "California",
+    "tax_rate": "0.0725",
+    "addresses": null
+  },
+  {
+    "state_id": "co-colorado",
+    "name": "co-colorado",
+    "code": "CO",
+    "text": "Colorado",
+    "tax_rate": "0.029",
+    "addresses": null
+  },
+  {
+    "state_id": "ct-connecticut",
+    "name": "ct-connecticut",
+    "code": "CT",
+    "text": "Connecticut",
+    "tax_rate": "0.0635",
+    "addresses": null
+  },
+  {
+    "state_id": "de-delaware",
+    "name": "de-delaware",
+    "code": "DE",
+    "text": "Delaware",
+    "tax_rate": "0",
+    "addresses": null
+  },
+  {
+    "state_id": "fl-florida",
+    "name": "fl-florida",
+    "code": "FL",
+    "text": "Florida",
+    "tax_rate": "0.06",
+    "addresses": "1200-ocean-dr-miami-fl-florida-33139"
+  },
+  {
+    "state_id": "ga-georgia",
+    "name": "ga-georgia",
+    "code": "GA",
+    "text": "Georgia",
+    "tax_rate": "0.04",
+    "addresses": null
+  },
+  {
+    "state_id": "hi-hawaii",
+    "name": "hi-hawaii",
+    "code": "HI",
+    "text": "Hawaii",
+    "tax_rate": "0.04",
+    "addresses": null
+  },
+  {
+    "state_id": "ia-iowa",
+    "name": "ia-iowa",
+    "code": "IA",
+    "text": "Iowa",
+    "tax_rate": "0.06",
+    "addresses": null
+  },
+  {
+    "state_id": "id-idaho",
+    "name": "id-idaho",
+    "code": "ID",
+    "text": "Idaho",
+    "tax_rate": "0.06",
+    "addresses": null
+  },
+  {
+    "state_id": "il-illinois",
+    "name": "il-illinois",
+    "code": "IL",
+    "text": "Illinois",
+    "tax_rate": "0.0625",
+    "addresses": "742-evergreen-terrace-springfield-il-illinois-97477"
+  },
+  {
+    "state_id": "in-indiana",
+    "name": "in-indiana",
+    "code": "IN",
+    "text": "Indiana",
+    "tax_rate": "0.07",
+    "addresses": null
+  },
+  {
+    "state_id": "ks-kansas",
+    "name": "ks-kansas",
+    "code": "KS",
+    "text": "Kansas",
+    "tax_rate": "0.065",
+    "addresses": null
+  },
+  {
+    "state_id": "ky-kentucky",
+    "name": "ky-kentucky",
+    "code": "KY",
+    "text": "Kentucky",
+    "tax_rate": "0.06",
+    "addresses": null
+  },
+  {
+    "state_id": "la-louisiana",
+    "name": "la-louisiana",
+    "code": "LA",
+    "text": "Louisiana",
+    "tax_rate": "0.0445",
+    "addresses": null
+  },
+  {
+    "state_id": "ma-massachusetts",
+    "name": "ma-massachusetts",
+    "code": "MA",
+    "text": "Massachusetts",
+    "tax_rate": "0.0625",
+    "addresses": null
+  },
+  {
+    "state_id": "md-maryland",
+    "name": "md-maryland",
+    "code": "MD",
+    "text": "Maryland",
+    "tax_rate": "0.06",
+    "addresses": null
+  },
+  {
+    "state_id": "me-maine",
+    "name": "me-maine",
+    "code": "ME",
+    "text": "Maine",
+    "tax_rate": "0.055",
+    "addresses": null
+  },
+  {
+    "state_id": "mi-michigan",
+    "name": "mi-michigan",
+    "code": "MI",
+    "text": "Michigan",
+    "tax_rate": "0.06",
+    "addresses": null
+  },
+  {
+    "state_id": "mn-minnesota",
+    "name": "mn-minnesota",
+    "code": "MN",
+    "text": "Minnesota",
+    "tax_rate": "0.0687",
+    "addresses": null
+  },
+  {
+    "state_id": "mo-missouri",
+    "name": "mo-missouri",
+    "code": "MO",
+    "text": "Missouri",
+    "tax_rate": "0.04225",
+    "addresses": null
+  },
+  {
+    "state_id": "ms-mississippi",
+    "name": "ms-mississippi",
+    "code": "MS",
+    "text": "Mississippi",
+    "tax_rate": "0.07",
+    "addresses": null
+  },
+  {
+    "state_id": "mt-montana",
+    "name": "mt-montana",
+    "code": "MT",
+    "text": "Montana",
+    "tax_rate": "0",
+    "addresses": null
+  },
+  {
+    "state_id": "nc-north-carolina",
+    "name": "nc-north-carolina",
+    "code": "NC",
+    "text": "North Carolina",
+    "tax_rate": "0.0475",
+    "addresses": null
+  },
+  {
+    "state_id": "nd-north-dakota",
+    "name": "nd-north-dakota",
+    "code": "ND",
+    "text": "North Dakota",
+    "tax_rate": "0.05",
+    "addresses": null
+  },
+  {
+    "state_id": "ne-nebraska",
+    "name": "ne-nebraska",
+    "code": "NE",
+    "text": "Nebraska",
+    "tax_rate": "0.055",
+    "addresses": null
+  },
+  {
+    "state_id": "nh-new-hampshire",
+    "name": "nh-new-hampshire",
+    "code": "NH",
+    "text": "New Hampshire",
+    "tax_rate": "0",
+    "addresses": null
+  },
+  {
+    "state_id": "nj-new-jersey",
+    "name": "nj-new-jersey",
+    "code": "NJ",
+    "text": "New Jersey",
+    "tax_rate": "0.066625",
+    "addresses": null
+  },
+  {
+    "state_id": "nm-new-mexico",
+    "name": "nm-new-mexico",
+    "code": "NM",
+    "text": "New Mexico",
+    "tax_rate": "0.05125",
+    "addresses": null
+  },
+  {
+    "state_id": "nv-nevada",
+    "name": "nv-nevada",
+    "code": "NV",
+    "text": "Nevada",
+    "tax_rate": "0.0686",
+    "addresses": null
+  },
+  {
+    "state_id": "ny-new-york",
+    "name": "ny-new-york",
+    "code": "NY",
+    "text": "New York",
+    "tax_rate": "0.04",
+    "addresses": "23-hudson-lane-brooklyn-ny-new-york-11201"
+  },
+  {
+    "state_id": "oh-ohio",
+    "name": "oh-ohio",
+    "code": "OH",
+    "text": "Ohio",
+    "tax_rate": "0.0575",
+    "addresses": null
+  },
+  {
+    "state_id": "ok-oklahoma",
+    "name": "ok-oklahoma",
+    "code": "OK",
+    "text": "Oklahoma",
+    "tax_rate": "0.045",
+    "addresses": null
+  },
+  {
+    "state_id": "or-oregon",
+    "name": "or-oregon",
+    "code": "OR",
+    "text": "Oregon",
+    "tax_rate": "0",
+    "addresses": null
+  },
+  {
+    "state_id": "pa-pennsylvania",
+    "name": "pa-pennsylvania",
+    "code": "PA",
+    "text": "Pennsylvania",
+    "tax_rate": "0.06",
+    "addresses": null
+  },
+  {
+    "state_id": "ri-rhode-island",
+    "name": "ri-rhode-island",
+    "code": "RI",
+    "text": "Rhode Island",
+    "tax_rate": "0.07",
+    "addresses": null
+  },
+  {
+    "state_id": "sc-south-carolina",
+    "name": "sc-south-carolina",
+    "code": "SC",
+    "text": "South Carolina",
+    "tax_rate": "0.06",
+    "addresses": null
+  },
+  {
+    "state_id": "sd-south-dakota",
+    "name": "sd-south-dakota",
+    "code": "SD",
+    "text": "South Dakota",
+    "tax_rate": "0.045",
+    "addresses": null
+  },
+  {
+    "state_id": "tn-tennessee",
+    "name": "tn-tennessee",
+    "code": "TN",
+    "text": "Tennessee",
+    "tax_rate": "0.07",
+    "addresses": null
+  },
+  {
+    "state_id": "tx-texas",
+    "name": "tx-texas",
+    "code": "TX",
+    "text": "Texas",
+    "tax_rate": "0.0625",
+    "addresses": "88-industrial-way-austin-tx-texas-78701, 90-industrial-way-loading-dock-b-austin-tx-texas-78701"
+  },
+  {
+    "state_id": "ut-utah",
+    "name": "ut-utah",
+    "code": "UT",
+    "text": "Utah",
+    "tax_rate": "0.0485",
+    "addresses": null
+  },
+  {
+    "state_id": "va-virginia",
+    "name": "va-virginia",
+    "code": "VA",
+    "text": "Virginia",
+    "tax_rate": "0.053",
+    "addresses": null
+  },
+  {
+    "state_id": "vt-vermont",
+    "name": "vt-vermont",
+    "code": "VT",
+    "text": "Vermont",
+    "tax_rate": "0.06",
+    "addresses": null
+  },
+  {
+    "state_id": "wa-washington",
+    "name": "wa-washington",
+    "code": "WA",
+    "text": "Washington",
+    "tax_rate": "0.065",
+    "addresses": "500-pine-st-suite-200-seattle-wa-washington-98101"
+  },
+  {
+    "state_id": "wi-wisconsin",
+    "name": "wi-wisconsin",
+    "code": "WI",
+    "text": "Wisconsin",
+    "tax_rate": "0.05",
+    "addresses": null
+  },
+  {
+    "state_id": "wv-west-virginia",
+    "name": "wv-west-virginia",
+    "code": "WV",
+    "text": "West Virginia",
+    "tax_rate": "0.06",
+    "addresses": null
+  },
+  {
+    "state_id": "wy-wyoming",
+    "name": "wy-wyoming",
+    "code": "WY",
+    "text": "Wyoming",
+    "tax_rate": "0.04",
+    "addresses": null
+  }
+]

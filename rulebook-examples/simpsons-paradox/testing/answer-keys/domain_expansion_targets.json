@@ -1,0 +1,112 @@
+[
+  {
+    "domain_target_id": "domain-target-clinical-trials",
+    "domain": "clinical-trials",
+    "legacy_domain_alias": "medicine",
+    "target_min_count": 15,
+    "name": "domain-target-clinical-trials",
+    "projected_count": 0,
+    "gap_count": 15,
+    "is_under_represented": true
+  },
+  {
+    "domain_target_id": "domain-target-criminal-justice",
+    "domain": "criminal-justice",
+    "legacy_domain_alias": "legal",
+    "target_min_count": 15,
+    "name": "domain-target-criminal-justice",
+    "projected_count": 0,
+    "gap_count": 15,
+    "is_under_represented": true
+  },
+  {
+    "domain_target_id": "domain-target-economics",
+    "domain": "economics",
+    "legacy_domain_alias": "economics",
+    "target_min_count": 25,
+    "name": "domain-target-economics",
+    "projected_count": 0,
+    "gap_count": 25,
+    "is_under_represented": true
+  },
+  {
+    "domain_target_id": "domain-target-education-outcomes",
+    "domain": "education-outcomes",
+    "legacy_domain_alias": "education",
+    "target_min_count": 15,
+    "name": "domain-target-education-outcomes",
+    "projected_count": 0,
+    "gap_count": 15,
+    "is_under_represented": true
+  },
+  {
+    "domain_target_id": "domain-target-epidemiology-vaccines",
+    "domain": "epidemiology-vaccines",
+    "legacy_domain_alias": "epidemiology",
+    "target_min_count": 20,
+    "name": "domain-target-epidemiology-vaccines",
+    "projected_count": 0,
+    "gap_count": 20,
+    "is_under_represented": true
+  },
+  {
+    "domain_target_id": "domain-target-financial-lending",
+    "domain": "financial-lending",
+    "legacy_domain_alias": "financial-lending",
+    "target_min_count": 12,
+    "name": "domain-target-financial-lending",
+    "projected_count": 0,
+    "gap_count": 12,
+    "is_under_represented": true
+  },
+  {
+    "domain_target_id": "domain-target-higher-education",
+    "domain": "higher-education",
+    "legacy_domain_alias": "education",
+    "target_min_count": 15,
+    "name": "domain-target-higher-education",
+    "projected_count": 0,
+    "gap_count": 15,
+    "is_under_represented": true
+  },
+  {
+    "domain_target_id": "domain-target-hiring-promotion",
+    "domain": "hiring-promotion",
+    "legacy_domain_alias": "hiring-promotion",
+    "target_min_count": 12,
+    "name": "domain-target-hiring-promotion",
+    "projected_count": 0,
+    "gap_count": 12,
+    "is_under_represented": true
+  },
+  {
+    "domain_target_id": "domain-target-online-ab-testing",
+    "domain": "online-ab-testing",
+    "legacy_domain_alias": "online-ab-testing",
+    "target_min_count": 10,
+    "name": "domain-target-online-ab-testing",
+    "projected_count": 0,
+    "gap_count": 10,
+    "is_under_represented": true
+  },
+  {
+    "domain_target_id": "domain-target-public-health-smoking",
+    "domain": "public-health-smoking",
+    "legacy_domain_alias": "public-health-smoking",
+    "target_min_count": 12,
+    "name": "domain-target-public-health-smoking",
+    "projected_count": 0,
+    "gap_count": 12,
+    "is_under_represented": true
+  },
+  {
+    "domain_target_id": "domain-target-sports-analytics",
+    "domain": "sports-analytics",
+    "legacy_domain_alias": "sports",
+    "target_min_count": 15,
+    "name": "domain-target-sports-analytics",
+    "projected_count": 0,
+    "gap_count": 15,
+    "is_under_represented": true
+  }
+]

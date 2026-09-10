@@ -1,0 +1,96 @@
+{
+  "users": {
+    "primary_key": "name",
+    "computed_columns": [
+      "name",
+      "full_name"
+    ],
+    "record_count": 2
+  },
+  "customers": {
+    "primary_key": "name",
+    "computed_columns": [
+      "name",
+      "full_name",
+      "lifetime_sales",
+      "unpaid_order_count",
+      "large_order_count",
+      "is_vip"
+    ],
+    "record_count": 5
+  },
+  "orders": {
+    "primary_key": "name",
+    "computed_columns": [
+      "name",
+      "customer_first_name",
+      "customer_last_name",
+      "customer_full_name",
+      "customer_email",
+      "amount_paid",
+      "balance",
+      "is_paid",
+      "unpaid_flag",
+      "is_recent",
+      "recent_total",
+      "fcs_subtotal",
+      "fcs_unit_count"
+    ],
+    "record_count": 10
+  },
+  "payments": {
+    "primary_key": "name",
+    "computed_columns": [
+      "name",
+      "order_number",
+      "order_date",
+      "order_total",
+      "order_amount_paid",
+      "order_balance",
+      "order_is_paid",
+      "order_customer",
+      "customer_full_name",
+      "customer_email"
+    ],
+    "record_count": 9
+  },
+  "jet_models": {
+    "primary_key": "name",
+    "computed_columns": [
+      "name",
+      "is_fifth_gen",
+      "fcs_variant_count",
+      "total_units_ordered",
+      "total_revenue"
+    ],
+    "record_count": 5
+  },
+  "flight_control_systems": {
+    "primary_key": "name",
+    "computed_columns": [
+      "name",
+      "jet_manufacturer",
+      "jet_generation",
+      "is_triple_redundant",
+      "is_quad_redundant",
+      "meets_fifth_gen_spec",
+      "total_units_ordered",
+      "total_revenue"
+    ],
+    "record_count": 6
+  },
+  "order_lines": {
+    "primary_key": "name",
+    "computed_columns": [
+      "name",
+      "fcs_unit_price",
+      "fcs_architecture",
+      "fcs_jet_model",
+      "fcs_meets_fifth_gen_spec",
+      "order_number",
+      "order_customer",
+      "line_total"
+    ],
+    "record_count": 8
+  }
+}

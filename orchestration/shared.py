@@ -59,7 +59,7 @@ def get_rulebook_path():
     """Get the path to the rulebook JSON for the active domain.
 
     Priority:
-      1. ERB_RULEBOOK_PATH env var (set by ssotme-proxy for project-scoped runs)
+      1. ERB_RULEBOOK_PATH env var (set by the local-tool shim for project-scoped runs)
       2. ERB_DOMAIN → (rulebook-examples or toy-rulebooks)/<domain>/effortless-rulebook/<domain>-rulebook.json
 
     Fails loudly if ERB_RULEBOOK_PATH points at a directory or doesn't end in

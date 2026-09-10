@@ -1,0 +1,200 @@
+[
+  {
+    "erb_feature_category_id": "assistant",
+    "title": "AI Assistant",
+    "icon": "\ud83e\udd16",
+    "sort_order": 9,
+    "description": "An in-app assistant answering questions about a citation, the rulebook, or the portal \u2014 with full token/cost accounting.",
+    "created_at": "2026-06-06T12:00:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-06T12:00:00Z",
+    "modified_by": "admin-example"
+  },
+  {
+    "erb_feature_category_id": "audit",
+    "title": "Audit & History",
+    "icon": "\ud83e\uddfe",
+    "sort_order": 8,
+    "description": "The append-only event log and per-row audit trail that coexist with the computed current state.",
+    "created_at": "2026-06-06T12:00:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-06T12:00:00Z",
+    "modified_by": "admin-example"
+  },
+  {
+    "erb_feature_category_id": "auth",
+    "title": "Auth & Identity",
+    "icon": "\ud83d\udd11",
+    "sort_order": 16,
+    "description": "Authentication, session, impersonation, and the live per-request identity resolution that drives role, redaction, and licensing.",
+    "created_at": "2026-06-07T00:00:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-07T00:00:00Z",
+    "modified_by": "admin-example"
+  },
+  {
+    "erb_feature_category_id": "dashboard",
+    "title": "Dashboards",
+    "icon": "\ud83d\udcc8",
+    "sort_order": 17,
+    "description": "Analytics and operational dashboards for reps, managers, and outcome feedback.",
+    "created_at": "2026-06-07T00:00:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-07T00:00:00Z",
+    "modified_by": "admin-example"
+  },
+  {
+    "erb_feature_category_id": "data-model",
+    "title": "Data Model",
+    "icon": "\ud83d\uddc4\ufe0f",
+    "sort_order": 18,
+    "description": "Underlying schema and entities that back a feature surface.",
+    "created_at": "2026-06-07T00:00:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-07T00:00:00Z",
+    "modified_by": "admin-example"
+  },
+  {
+    "erb_feature_category_id": "devops",
+    "title": "DevOps & Tooling",
+    "icon": "\ud83d\udee0\ufe0f",
+    "sort_order": 12,
+    "description": "Build pipeline, code generation, and operational plumbing.",
+    "created_at": "2026-06-07T00:00:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-07T00:00:00Z",
+    "modified_by": "admin-example"
+  },
+  {
+    "erb_feature_category_id": "hearings",
+    "title": "Hearings & Contests",
+    "icon": "\ud83c\udfdb\ufe0f",
+    "sort_order": 4,
+    "description": "Requesting, scheduling, and recording the outcome of a contested-citation hearing.",
+    "created_at": "2026-06-06T12:00:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-06T12:00:00Z",
+    "modified_by": "admin-example"
+  },
+  {
+    "erb_feature_category_id": "intake",
+    "title": "Intake & Response",
+    "icon": "\ud83d\udcdd",
+    "sort_order": 1,
+    "description": "Getting a citation into the system and capturing the driver's response (pay or contest) before the deadline.",
+    "created_at": "2026-06-06T12:00:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-06T12:00:00Z",
+    "modified_by": "admin-example"
+  },
+  {
+    "erb_feature_category_id": "library",
+    "title": "Reference Library",
+    "icon": "\ud83d\udcda",
+    "sort_order": 10,
+    "description": "Glossary, business rules, and per-jurisdiction source documents that explain how the system decides.",
+    "created_at": "2026-06-06T12:00:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-06T12:00:00Z",
+    "modified_by": "admin-example"
+  },
+  {
+    "erb_feature_category_id": "license",
+    "title": "License & Points",
+    "icon": "\ud83e\udeaa",
+    "sort_order": 6,
+    "description": "Rolling up active points to drive the Valid \u2192 Warning \u2192 Suspended license track.",
+    "created_at": "2026-06-06T12:00:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-06T12:00:00Z",
+    "modified_by": "admin-example"
+  },
+  {
+    "erb_feature_category_id": "licensing",
+    "title": "Packages & Licensing",
+    "icon": "\ud83e\udeaa",
+    "sort_order": 15,
+    "description": "Package enable/disable, per-feature/table/route licensing toggles, and the vendor-only unlicensed-surface model that the whole UI responds to.",
+    "created_at": "2026-06-07T00:00:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-07T00:00:00Z",
+    "modified_by": "admin-example"
+  },
+  {
+    "erb_feature_category_id": "navigation",
+    "title": "Navigation & Routing",
+    "icon": "\ud83e\udded",
+    "sort_order": 13,
+    "description": "The route designer, the live DB-driven sidebar, role URL worlds, and per-route access gating \u2014 how users move through the platform.",
+    "created_at": "2026-06-07T00:00:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-07T00:00:00Z",
+    "modified_by": "admin-example"
+  },
+  {
+    "erb_feature_category_id": "payments",
+    "title": "Payments & Penalties",
+    "icon": "\ud83d\udcb3",
+    "sort_order": 5,
+    "description": "Paying fines, computing late penalties, and tracking the slide into collections.",
+    "created_at": "2026-06-06T12:00:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-06T12:00:00Z",
+    "modified_by": "admin-example"
+  },
+  {
+    "erb_feature_category_id": "permissions",
+    "title": "Permissions & RBAC",
+    "icon": "\ud83d\udd10",
+    "sort_order": 14,
+    "description": "The role\u2192table\u2192field CRUD cascade, per-role WHERE policies, PII redaction, and the derived row-level security that enforces it all in Postgres.",
+    "created_at": "2026-06-07T00:00:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-07T00:00:00Z",
+    "modified_by": "admin-example"
+  },
+  {
+    "erb_feature_category_id": "platform",
+    "title": "Platform & Meta",
+    "icon": "\u2699\ufe0f",
+    "sort_order": 11,
+    "description": "Cross-cutting platform machinery: permissions, RLS, state machines, and the self-describing meta layer.",
+    "created_at": "2026-06-07T00:00:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-07T00:00:00Z",
+    "modified_by": "admin-example"
+  },
+  {
+    "erb_feature_category_id": "rules-engine",
+    "title": "Rules Engine",
+    "icon": "\u2696\ufe0f",
+    "sort_order": 3,
+    "description": "Multi-jurisdiction regulations as data: deadlines, fines, penalties, and point thresholds are rows, not hardcoded constants.",
+    "created_at": "2026-06-06T12:00:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-06T12:00:00Z",
+    "modified_by": "admin-example"
+  },
+  {
+    "erb_feature_category_id": "state-machine",
+    "title": "State Machines",
+    "icon": "\ud83d\udd01",
+    "sort_order": 2,
+    "description": "The four computed tracks \u2014 Citation, Contest, Payment, License \u2014 that derive current status from facts + rules on every read.",
+    "created_at": "2026-06-06T12:00:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-06T12:00:00Z",
+    "modified_by": "admin-example"
+  },
+  {
+    "erb_feature_category_id": "workqueue",
+    "title": "Work Queue & Deadlines",
+    "icon": "\u23f0",
+    "sort_order": 7,
+    "description": "Surfacing what needs attention now: overdue responses, due payments, and upcoming hearings.",
+    "created_at": "2026-06-06T12:00:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-06T12:00:00Z",
+    "modified_by": "admin-example"
+  }
+]

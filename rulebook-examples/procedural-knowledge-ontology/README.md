@@ -33,7 +33,13 @@ The single rulebook includes:
 - practitioner elicitation, rationales, exceptions, and known knowledge gaps;
 - stewardship, authority, change requests, periodic reviews, and semantic versioning;
 - communities of practice, mentorship, retrospectives, and learning evidence;
-- financial-control semantics and email/SMS communication policy semantics.
+- financial-control semantics and email/SMS communication policy semantics;
+- process-mining conformance evidence — what a mined event log shows a live
+  procedure actually doing, checked against what it was documented to do;
+- controlled vocabulary and taxonomy — SKOS-style concept schemes and terms
+  that requirements point at instead of restating the same concept in free text;
+- the informal knowledge-broker network — who people actually go to for a
+  topic, independent of any formal role assignment.
 
 The mock data contains two complete procedure families:
 
@@ -74,6 +80,18 @@ Some of what the witnesses found, all from data that was already in the model:
 | `StepTransitions.IsUnwalkedRecoveryPath` | 4 recovery paths never once exercised, including the route taken when reconciliation fails |
 | `KnowledgeFragments.IsUndefendableTacitClaim` | tacit know-how whose only source has no current role assignment |
 | `RoleAssignments.IsHumanToNonHumanHandover` | an AI agent took over a control function from a named human, on a date, with the approving authority recorded |
+| `ProcessMiningRuns.IsDriftOnLiveVersion` | a mined event log shows the live close procedure bypassing its own documented cutoff control — the model never had a way for "what we mined" to contradict "what we modeled" until loop 3 |
+| `VocabularyTerms.IsWidelyAdoptedTerm` | two independent requirements (`req-close-evidence`, `req-policy-retention`) restate the identical 7-year retention obligation in free text, with nothing to check one against the other, until both point at the same controlled term |
+| `Agents.HasAtRiskKnowledgeReliance` | someone is actively relied on for segregation-of-duties questions by a coworker even though they hold no current role at all — invisible to `RoleAssignments`, visible to `KnowledgeBrokerLinks` |
+
+Loop 3 exists because comparing this rulebook against Jessica Talisman's
+*Intentional Arrangement* Process Knowledge Management article series (see
+Attribution below) surfaced three concepts the essays argue for at length that
+had no table: process mining as an elicitation channel, controlled
+vocabulary/taxonomy, and the informal knowledge-broker network. Unlike loops 1
+and 2 (a full 12-role sweep each), loop 3 is exactly those three named gaps,
+each owned by the role that would actually ask the question — see `loop-03` in
+`WitnessLoops` and `WITNESS-LOOPS.md`.
 
 Two rules keep this honest:
 
@@ -93,7 +111,7 @@ python3 tools/reconcile_field_catalog.py --check   # catalog drift is an error
 
 The project does not relabel every enterprise concept as PKO.
 
-Exact PKO, P-Plan, PROV-O, DCAT, DCMI, OWL-Time, PRO, Metadata4Ing, and ODRL mappings are recorded in the `SemanticMappings` table. Concepts that PKO 2.0.0 does not define directly—such as `KnowledgeFragment`, `ElicitationSession`, `KnowledgeGap`, `StewardshipAssignment`, and `OperationalBinding`—are explicitly identified as `urn:effortless:pko-extension:*`.
+Exact PKO, P-Plan, PROV-O, DCAT, DCMI, OWL-Time, PRO, Metadata4Ing, and ODRL mappings are recorded in the `SemanticMappings` table. Concepts that PKO 2.0.0 does not define directly—such as `KnowledgeFragment`, `ElicitationSession`, `KnowledgeGap`, `StewardshipAssignment`, `OperationalBinding`, `ProcessMiningRun`, `Vocabulary`, `VocabularyTerm`, and `KnowledgeBrokerLink`—are explicitly identified as `urn:effortless:pko-extension:*`.
 
 See [`PKO-ALIGNMENT.md`](PKO-ALIGNMENT.md).
 
@@ -106,13 +124,46 @@ See [`PKO-ALIGNMENT.md`](PKO-ALIGNMENT.md).
 ./start.sh open       # full loop, then open the generated documentation
 ```
 
-`./start.sh` is the one command for this domain. It has no server — the deliverables are documents — so start.sh validates the rulebook, regenerates all projections, exercises the BPM process-export adapter end-to-end, and runs the conformance tests.
+`./start.sh` is the one command for the document projections: it validates the rulebook, regenerates every projection, exercises the BPM process-export adapter end-to-end, and runs the conformance tests.
 
 Separately, the standard ERB build produces the plain-English RuleSpeak rendering via the published transpiler:
 
 ```bash
 effortless build      # -> rulespeak/rulespeak.html + rulespeak.md
 ```
+
+## The PKO Procedure Register — a live app, not only documents
+
+Beyond the document projections above, `app/` is a real Postgres-backed web
+app over this same rulebook — every read is `SELECT * FROM vw_<entity>`, no
+formula evaluator or lookup resolver in app code (see `app/backend/server.js`).
+
+- **A 5-role console with real access control.** Sign-in mints an RS256 JWT;
+  each of the twelve modeled roles reads through its own narrowed Postgres
+  schema (`pko_<role>`, generated from `AccessPrincipals` / `AccessPolicies` /
+  `FieldGrants` / `RoleSchemas` / `RoleSchemaViews` — see the project CLAUDE.md
+  "access-control layer" section), so what a role can query in the app is
+  exactly what its rulebook grants say it can.
+- **A generic Explorer, not a hand-built page per table.** It reads the field
+  catalog (`RulebookFields`) and renders every one of the 89 tables — witness
+  loop, extension, or PKO-core alike — with click-through provenance from any
+  calculated/lookup/aggregation field back through the DAG. A new table never
+  needs a new screen.
+- **An admin board**: a live test-suite runner, the witness board (every
+  discriminating/vacuous boolean, per table), the loop tracker, and a
+  provenance tracer.
+
+Run it locally:
+
+```bash
+node app/backend/server.js &      # API on :8099, reads erb_procedural_knowledge_ontology
+cd app/frontend && npm run dev    # UI, proxies /api to :8099
+```
+
+`tools/verify_access_control.sh` (18 assertions through the live HTTP API) and
+`tools/run_denial_witnesses.py` (17 witnesses, 13 denials + 4 positive
+controls) are the acceptance tests for this layer; both must be green after
+any rulebook change that touches access control.
 
 ### Running the steps individually
 
@@ -185,16 +236,34 @@ The current canonical rulebook passes the validation contract. See [`generated/v
 
 PKO was created by Valentina Anita Carriero, Mario Scrocca, Ilaria Baroni, Antonia Azzini, and Irene Celino and is published under CC BY 4.0. This experiment references and aligns to PKO; it is not an official PKO distribution and does not imply endorsement by PKO's authors, Jessica Talisman, or any other third party.
 
+The rulebook's non-PKO extension tables (`KnowledgeFragment`, `ElicitationSession`,
+`KnowledgeGap`, `StewardshipAssignment`, `OperationalBinding`, and loop 3's
+`ProcessMiningRun` / `Vocabulary` / `VocabularyTerm` / `KnowledgeBrokerLink`)
+were shaped against Jessica Talisman's *Intentional Arrangement* Process
+Knowledge Management article series (Substack), which argues for these
+concepts independent of PKO 2.0.0. Referencing her published argument implies
+no endorsement by her of this experiment.
+
 See [`NOTICE.md`](NOTICE.md).
 
 ---
 
-## Local transpiler bus (`localhost:4242`)
+## Local transpiler bus (`127.0.0.1:4242`)
 
-> **All 13 local transpilers live on `localhost:4242`.** Start the bus with
-> `./start.sh` from `ssotme-proxy/` at the repo root (it is root
-> infrastructure again — see the root rulebook's `LegacyRunnerCapabilities`).
-> The ssotme-proxy then exposes every repo-local transpiler —
-> `postgres-calculated-to-rulebook`, `rulebook-to-python`, `rulebook-to-golang`,
-> `rulebook-to-cobol`, `rulebook-to-owl`, and more — as first-class `ssotme://`
-> routes any `effortless build` can call.
+> **All 11 local transpilers are hosted by the effortless CLI itself.** Start
+> the bus with `effortless serve -port 4242` from the repo root; it serves every
+> tool under `effortless-tools/<name>/` — `oss-postgres-calculated-to-rulebook`,
+> `oss-rulebook-to-python`, `oss-rulebook-to-golang`, `oss-rulebook-to-cobol`,
+> `oss-rulebook-to-owl`, and more — as a first-class route any `effortless
+> build` can call. `GET /` lists them.
+>
+> **Address it as `127.0.0.1`, never `localhost`.** The host binds the literal
+> prefix `http://127.0.0.1:<port>/`, so a request carrying a `localhost` Host
+> header gets a bare 404 with no explanation.
+>
+> **Every repo-local route carries the `oss-` prefix.** The bare names
+> (`rulebook-to-python`, `rulebook-to-xlsx`, `rulebook-to-owl`,
+> `rulebook-to-airtable`, `airtable-to-rulebook`) belong to the commercial
+> catalog as `effortless/effortless/<tool>`; the prefix is the only thing
+> keeping a repo-local route from shadowing one.
+> `orchestration/local_tool_shim.py` refuses to run if any tool is missing it.

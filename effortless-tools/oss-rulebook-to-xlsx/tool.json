@@ -1,0 +1,10 @@
+{
+  "name": "oss-rulebook-to-xlsx",
+  "runtime": "script",
+  "entry": "transpiler.py",
+  "description": "Generate Excel workbook with formulas from rulebook",
+  "tags": [
+    "oss",
+    "execution-substrate"
+  ]
+}

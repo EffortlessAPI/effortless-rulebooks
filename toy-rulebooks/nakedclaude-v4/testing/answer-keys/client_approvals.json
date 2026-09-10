@@ -9,7 +9,7 @@
     "client_phone": "+1-206-555-0142",
     "approved_by_contact_name": "EJ Alexandra",
     "approved_by": "ej-ssot-me-admin",
-    "name": "alice-johnson-APVD",
+    "name": "Alice Johnson-APVD",
     "approved_by_role": "Admin",
     "client": "alice-johnson",
     "client_name": "Alice Johnson",
@@ -25,7 +25,7 @@
     "client_phone": "+1-512-555-0177",
     "approved_by_contact_name": "EJ Alexandra",
     "approved_by": "ej-ssot-me-admin",
-    "name": "brian-lee-APVD",
+    "name": "Brian Lee-APVD",
     "approved_by_role": "Admin",
     "client": "brian-lee",
     "client_name": "Brian Lee",
@@ -36,7 +36,7 @@
     "client_category": "prospect",
     "client_email": "brian.lee@contoso.example",
     "client_phone": "+1-512-555-0177",
-    "name": "brian-lee-PEND",
+    "name": "Brian Lee-PEND",
     "client": "brian-lee",
     "client_name": "Brian Lee",
     "approved_by": "",
@@ -44,7 +44,7 @@
     "approved_by_email_address": "",
     "approved_by_phone_number": "",
     "approved_by_role": "",
-    "is_approved": true,
+    "is_approved": false,
     "notes": ""
   }
 ]

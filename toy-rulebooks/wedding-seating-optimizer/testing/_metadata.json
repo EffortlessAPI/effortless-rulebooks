@@ -1,0 +1,52 @@
+{
+  "tables": {
+    "primary_key": "table_id",
+    "computed_columns": [
+      "head_count",
+      "open_seats",
+      "over_capacity",
+      "raw_happiness",
+      "violation_count",
+      "happiness",
+      "grade",
+      "bride_side_count",
+      "groom_side_count",
+      "side_skew"
+    ],
+    "record_count": 5
+  },
+  "guests": {
+    "primary_key": "guest_id",
+    "computed_columns": [
+      "table_label",
+      "table_seats",
+      "table_head_count",
+      "relationships_as_a",
+      "relationships_as_b",
+      "satisfaction_a",
+      "satisfaction_b",
+      "satisfaction",
+      "mood",
+      "bride_flag",
+      "groom_flag"
+    ],
+    "record_count": 23
+  },
+  "relationships": {
+    "primary_key": "rel_id",
+    "computed_columns": [
+      "guest_a_name",
+      "guest_b_name",
+      "guest_a_table",
+      "guest_b_table",
+      "same_table",
+      "seated_table",
+      "effective_score",
+      "is_must_not_violation",
+      "is_satisfied",
+      "violation_table",
+      "violation_flag"
+    ],
+    "record_count": 20
+  }
+}

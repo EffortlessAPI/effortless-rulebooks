@@ -24,7 +24,7 @@ containerized rulebook editor/viewer for any Effortless project:
   `rulebook-to-node-postgres-api`, `rulebook-to-vite-admin-portal`,
   `rulebook-to-explainer-dag` (into the portal's Vite `public/`, so the
   provenance assets are served at `/rulebook-explainer-dag/*`),
-  `rulebook-to-rulespeak` (all 10 languages, via `languages=all`), and
+  `rulebook-to-rulespeak` (the core languages, via `languages=en,de,ja,hi`), and
   `rulebook-to-xlsx`.
 - `edit-rulebook.sh` -- thin launcher, generated INTO the rulebook's own
   folder (see Parameters below), not alongside the other files. Runs
@@ -188,18 +188,29 @@ Which languages the portal offers is **derived** from which of the two RuleSpeak
 steps are enabled in `effortless.json` -- there is no separate language setting to
 keep in sync:
 
-| `rulebooktorulespeaken` (English) | `rulebooktorulespeak` (all 10) | Portal language picker |
-|---|---|---|
-| enabled | disabled | English only |
-| disabled | enabled | all 10, with the picker (the default) |
-| enabled | enabled | all 10 (both write `/rulespeak`; the 10-language step is ordered last, so it wins) |
-| disabled | disabled | no picker -- the RuleSpeak® tab is shown disabled, explaining that the docs steps are off |
+Three steps write the same `/rulespeak` output, ordered English -> core -> all, so
+when more than one is on the LAST one is the document left on disk:
 
-The picker's **"Add the other 9 languages"** button is a one-click shortcut for the
-common transition: it POSTs to `/__boot/pipeline-toggle` to turn the 10-language
-step on and the English-only step off, kicks a rebuild, and sends you to the build
-screen to watch it. The Admin tab exposes both steps as independent checkboxes for
-any combination the button does not cover.
+| Enabled step | Portal language picker |
+|---|---|
+| `rulebooktorulespeaken` only | English only |
+| `rulebooktorulespeak` (the default) | whatever its `-p languages=` names -- `en,de,ja,hi` out of the box |
+| `rulebooktorulespeakall` | every registered language |
+| more than one | the widest of those enabled, since it is ordered last |
+| none | no picker -- the RuleSpeak® tab is shown disabled, explaining that the docs steps are off |
+
+Crucially the picker does not infer its list from WHICH step is on; it reads the
+`-p languages=` list off the enabled step's command line. Narrowing or widening
+the default set is therefore a one-line edit to this manifest, and the dropdown
+follows automatically -- it can never offer a language whose document was never
+rendered.
+
+The picker's **"Add the other N languages"** button is a one-click shortcut for the
+common transition: it POSTs to `/__boot/pipeline-toggle` to turn the every-language
+step on and the narrower ones off, kicks a rebuild, and sends you to the build
+screen to watch it. N is computed from the registry against what is actually built,
+never hard-coded. The Admin tab exposes all three steps as independent checkboxes
+for any combination the button does not cover.
 
 ## Watching it boot
 
@@ -344,6 +355,17 @@ own path-derived (or explicitly pinned) container name is replaced.
 
 Postgres (container-internal 5432, user/pass `postgres`/`postgres`, db
 `effortless-rulebook`) is published to the resolved host port printed by the
-launcher. The DB is reseeded from the mounted rulebook on every rebuild, so
-treat it as disposable/read-only for inspection, not a place to persist manual
-changes.
+launcher.
+
+The cluster lives inside the container with no volume, so it is built from
+scratch every time the container starts. While the container is up, a rebuild
+is additive: `rulebook-to-postgres` runs in `mode=check-add` (pinned on the
+`rulebooktopostgres` step), so a rulebook change adds new tables and columns,
+upserts the rulebook's own rows, and leaves rows that exist only in the
+database alone. `run-rulebook-db-reset.sh` checks that before applying
+anything and fails the step if the generated SQL would drop a table or delete
+rows; set `EFFORTLESS_EDITOR_ALLOW_DB_RESET=1` to allow it deliberately.
+
+Treat the DB as the editor's working copy, not a system of record: the durable
+artifact is `effortless-rulebook.json`, and edits made here belong there
+(`POST /api/save-changes`) before the container goes away.

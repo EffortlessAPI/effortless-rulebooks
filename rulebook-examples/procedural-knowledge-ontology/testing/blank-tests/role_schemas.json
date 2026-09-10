@@ -1,0 +1,134 @@
+[
+  {
+    "role_schema_id": "schema-cfo",
+    "principal": "principal-cfo",
+    "schema_name": "pko_cfo",
+    "is_sealed": true,
+    "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema",
+    "name": null,
+    "search_path": null,
+    "view_count": null,
+    "is_empty_schema": null
+  },
+  {
+    "role_schema_id": "schema-close-automation",
+    "principal": "principal-close-automation",
+    "schema_name": "pko_close_automation",
+    "is_sealed": true,
+    "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema",
+    "name": null,
+    "search_path": null,
+    "view_count": null,
+    "is_empty_schema": null
+  },
+  {
+    "role_schema_id": "schema-communications-manager",
+    "principal": "principal-communications-manager",
+    "schema_name": "pko_communications_manager",
+    "is_sealed": true,
+    "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema",
+    "name": null,
+    "search_path": null,
+    "view_count": null,
+    "is_empty_schema": null
+  },
+  {
+    "role_schema_id": "schema-controller",
+    "principal": "principal-controller",
+    "schema_name": "pko_controller",
+    "is_sealed": true,
+    "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema",
+    "name": null,
+    "search_path": null,
+    "view_count": null,
+    "is_empty_schema": null
+  },
+  {
+    "role_schema_id": "schema-employment-counsel",
+    "principal": "principal-employment-counsel",
+    "schema_name": "pko_employment_counsel",
+    "is_sealed": true,
+    "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema",
+    "name": null,
+    "search_path": null,
+    "view_count": null,
+    "is_empty_schema": null
+  },
+  {
+    "role_schema_id": "schema-finance-analyst",
+    "principal": "principal-finance-analyst",
+    "schema_name": "pko_finance_analyst",
+    "is_sealed": true,
+    "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema",
+    "name": null,
+    "search_path": null,
+    "view_count": null,
+    "is_empty_schema": null
+  },
+  {
+    "role_schema_id": "schema-hr-policy-owner",
+    "principal": "principal-hr-policy-owner",
+    "schema_name": "pko_hr_policy_owner",
+    "is_sealed": true,
+    "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema",
+    "name": null,
+    "search_path": null,
+    "view_count": null,
+    "is_empty_schema": null
+  },
+  {
+    "role_schema_id": "schema-knowledge-authority",
+    "principal": "principal-knowledge-authority",
+    "schema_name": "pko_knowledge_authority",
+    "is_sealed": true,
+    "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema",
+    "name": null,
+    "search_path": null,
+    "view_count": null,
+    "is_empty_schema": null
+  },
+  {
+    "role_schema_id": "schema-notification-publisher",
+    "principal": "principal-notification-publisher",
+    "schema_name": "pko_notification_publisher",
+    "is_sealed": true,
+    "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema",
+    "name": null,
+    "search_path": null,
+    "view_count": null,
+    "is_empty_schema": null
+  },
+  {
+    "role_schema_id": "schema-policy-drafting-agent",
+    "principal": "principal-policy-drafting-agent",
+    "schema_name": "pko_policy_drafting_agent",
+    "is_sealed": true,
+    "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema",
+    "name": null,
+    "search_path": null,
+    "view_count": null,
+    "is_empty_schema": null
+  },
+  {
+    "role_schema_id": "schema-process-steward",
+    "principal": "principal-process-steward",
+    "schema_name": "pko_process_steward",
+    "is_sealed": true,
+    "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema",
+    "name": null,
+    "search_path": null,
+    "view_count": null,
+    "is_empty_schema": null
+  },
+  {
+    "role_schema_id": "schema-variance-review-agent",
+    "principal": "principal-variance-review-agent",
+    "schema_name": "pko_variance_review_agent",
+    "is_sealed": true,
+    "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema",
+    "name": null,
+    "search_path": null,
+    "view_count": null,
+    "is_empty_schema": null
+  }
+]

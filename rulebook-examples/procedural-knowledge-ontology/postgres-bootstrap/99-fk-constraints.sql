@@ -161,6 +161,9 @@ ALTER TABLE requirements ADD CONSTRAINT fk_requirements_witness_field_name
 ALTER TABLE requirements DROP CONSTRAINT IF EXISTS fk_requirements_accountable_role;
 ALTER TABLE requirements ADD CONSTRAINT fk_requirements_accountable_role
   FOREIGN KEY (accountable_role) REFERENCES roles (role_id);
+ALTER TABLE requirements DROP CONSTRAINT IF EXISTS fk_requirements_controlled_term;
+ALTER TABLE requirements ADD CONSTRAINT fk_requirements_controlled_term
+  FOREIGN KEY (controlled_term) REFERENCES vocabulary_terms (vocabulary_term_id);
 
 -- StepRequirements
 ALTER TABLE step_requirements DROP CONSTRAINT IF EXISTS fk_step_requirements_step;
@@ -446,6 +449,9 @@ ALTER TABLE rulebook_fields ADD CONSTRAINT fk_rulebook_fields_invented_for_quest
   FOREIGN KEY (invented_for_question) REFERENCES role_questions (role_question_id);
 
 -- TestCases
+ALTER TABLE test_cases DROP CONSTRAINT IF EXISTS fk_test_cases_target_table;
+ALTER TABLE test_cases ADD CONSTRAINT fk_test_cases_target_table
+  FOREIGN KEY (target_table) REFERENCES rulebook_tables (rulebook_table_id);
 ALTER TABLE test_cases DROP CONSTRAINT IF EXISTS fk_test_cases_defends_question;
 ALTER TABLE test_cases ADD CONSTRAINT fk_test_cases_defends_question
   FOREIGN KEY (defends_question) REFERENCES role_questions (role_question_id);
@@ -653,6 +659,11 @@ ALTER TABLE app_route_references DROP CONSTRAINT IF EXISTS fk_app_route_referenc
 ALTER TABLE app_route_references ADD CONSTRAINT fk_app_route_references_to_route
   FOREIGN KEY (to_route) REFERENCES app_routes (app_route_id);
 
+-- RulebookTables
+ALTER TABLE rulebook_tables DROP CONSTRAINT IF EXISTS fk_rulebook_tables_table_name;
+ALTER TABLE rulebook_tables ADD CONSTRAINT fk_rulebook_tables_table_name
+  FOREIGN KEY (table_name) REFERENCES rulebook_tables (rulebook_table_id);
+
 -- AccessPrincipals
 ALTER TABLE access_principals DROP CONSTRAINT IF EXISTS fk_access_principals_domain_role;
 ALTER TABLE access_principals ADD CONSTRAINT fk_access_principals_domain_role
@@ -664,7 +675,7 @@ ALTER TABLE access_policies ADD CONSTRAINT fk_access_policies_principal
   FOREIGN KEY (principal) REFERENCES access_principals (access_principal_id);
 ALTER TABLE access_policies DROP CONSTRAINT IF EXISTS fk_access_policies_target_table;
 ALTER TABLE access_policies ADD CONSTRAINT fk_access_policies_target_table
-  FOREIGN KEY (target_table) REFERENCES rulebook_tables (rulebook_tables_id);
+  FOREIGN KEY (target_table) REFERENCES rulebook_tables (rulebook_table_id);
 
 -- FieldGrants
 ALTER TABLE field_grants DROP CONSTRAINT IF EXISTS fk_field_grants_principal;
@@ -688,7 +699,7 @@ ALTER TABLE role_schema_views ADD CONSTRAINT fk_role_schema_views_principal
   FOREIGN KEY (principal) REFERENCES access_principals (access_principal_id);
 ALTER TABLE role_schema_views DROP CONSTRAINT IF EXISTS fk_role_schema_views_target_table;
 ALTER TABLE role_schema_views ADD CONSTRAINT fk_role_schema_views_target_table
-  FOREIGN KEY (target_table) REFERENCES rulebook_tables (rulebook_tables_id);
+  FOREIGN KEY (target_table) REFERENCES rulebook_tables (rulebook_table_id);
 
 -- AccessDenialTests
 ALTER TABLE access_denial_tests DROP CONSTRAINT IF EXISTS fk_access_denial_tests_target_policy;
@@ -699,7 +710,7 @@ ALTER TABLE access_denial_tests ADD CONSTRAINT fk_access_denial_tests_principal
   FOREIGN KEY (principal) REFERENCES access_principals (access_principal_id);
 ALTER TABLE access_denial_tests DROP CONSTRAINT IF EXISTS fk_access_denial_tests_target_table;
 ALTER TABLE access_denial_tests ADD CONSTRAINT fk_access_denial_tests_target_table
-  FOREIGN KEY (target_table) REFERENCES rulebook_tables (rulebook_tables_id);
+  FOREIGN KEY (target_table) REFERENCES rulebook_tables (rulebook_table_id);
 
 -- AppUsers
 ALTER TABLE app_users DROP CONSTRAINT IF EXISTS fk_app_users_linked_agent;
@@ -722,4 +733,36 @@ ALTER TABLE issued_tokens DROP CONSTRAINT IF EXISTS fk_issued_tokens_principal;
 ALTER TABLE issued_tokens ADD CONSTRAINT fk_issued_tokens_principal
   FOREIGN KEY (principal) REFERENCES access_principals (access_principal_id);
 
--- 192 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
+-- ProcessMiningRuns
+ALTER TABLE process_mining_runs DROP CONSTRAINT IF EXISTS fk_process_mining_runs_procedure_version;
+ALTER TABLE process_mining_runs ADD CONSTRAINT fk_process_mining_runs_procedure_version
+  FOREIGN KEY (procedure_version) REFERENCES procedure_versions (procedure_version_id);
+ALTER TABLE process_mining_runs DROP CONSTRAINT IF EXISTS fk_process_mining_runs_evaluation_context;
+ALTER TABLE process_mining_runs ADD CONSTRAINT fk_process_mining_runs_evaluation_context
+  FOREIGN KEY (evaluation_context) REFERENCES evaluation_contexts (evaluation_context_id);
+
+-- Vocabularies
+ALTER TABLE vocabularies DROP CONSTRAINT IF EXISTS fk_vocabularies_governing_role;
+ALTER TABLE vocabularies ADD CONSTRAINT fk_vocabularies_governing_role
+  FOREIGN KEY (governing_role) REFERENCES roles (role_id);
+
+-- VocabularyTerms
+ALTER TABLE vocabulary_terms DROP CONSTRAINT IF EXISTS fk_vocabulary_terms_vocabulary;
+ALTER TABLE vocabulary_terms ADD CONSTRAINT fk_vocabulary_terms_vocabulary
+  FOREIGN KEY (vocabulary) REFERENCES vocabularies (vocabulary_id);
+
+-- KnowledgeBrokerLinks
+ALTER TABLE knowledge_broker_links DROP CONSTRAINT IF EXISTS fk_knowledge_broker_links_seeker;
+ALTER TABLE knowledge_broker_links ADD CONSTRAINT fk_knowledge_broker_links_seeker
+  FOREIGN KEY (seeker) REFERENCES agents (agent_id);
+ALTER TABLE knowledge_broker_links DROP CONSTRAINT IF EXISTS fk_knowledge_broker_links_broker;
+ALTER TABLE knowledge_broker_links ADD CONSTRAINT fk_knowledge_broker_links_broker
+  FOREIGN KEY (broker) REFERENCES agents (agent_id);
+ALTER TABLE knowledge_broker_links DROP CONSTRAINT IF EXISTS fk_knowledge_broker_links_topic;
+ALTER TABLE knowledge_broker_links ADD CONSTRAINT fk_knowledge_broker_links_topic
+  FOREIGN KEY (topic) REFERENCES vocabulary_terms (vocabulary_term_id);
+ALTER TABLE knowledge_broker_links DROP CONSTRAINT IF EXISTS fk_knowledge_broker_links_evaluation_context;
+ALTER TABLE knowledge_broker_links ADD CONSTRAINT fk_knowledge_broker_links_evaluation_context
+  FOREIGN KEY (evaluation_context) REFERENCES evaluation_contexts (evaluation_context_id);
+
+-- 203 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).

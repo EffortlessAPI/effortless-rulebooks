@@ -1,0 +1,15 @@
+[
+  {
+    "epistatic_interaction_id": "epi-context",
+    "interaction_label": "IRF5 x STAT4 (context only)",
+    "individual": "ind-a-reyes",
+    "primary_variant": "var-a-irf5",
+    "secondary_variant": "var-c-stat4",
+    "epistasis_score": 0.4,
+    "has_pleiotropy": false,
+    "name": "IRF5 x STAT4 (context only)",
+    "parent_path": "/intake/new-patient/reyes-ana",
+    "relative_path": "/intake/new-patient/reyes-ana/epistasis/epi-context",
+    "is_high_order_epistasis": false
+  }
+]

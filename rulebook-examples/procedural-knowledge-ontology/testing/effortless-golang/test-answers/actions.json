@@ -1,0 +1,65 @@
+[
+  {
+    "action_id": "approve-close",
+    "name": "Approve close",
+    "label": "Approve close",
+    "definition": "Authorize publication of the financial statements package.",
+    "semantic_type_iri": "https://w3id.org/pko#Action"
+  },
+  {
+    "action_id": "approve-policy",
+    "name": "Approve employment policy",
+    "label": "Approve employment policy",
+    "definition": "Authorize the policy's semantic content and channel requirements.",
+    "semantic_type_iri": "https://w3id.org/pko#Action"
+  },
+  {
+    "action_id": "freeze-ledgers",
+    "name": "Freeze ledgers",
+    "label": "Freeze ledgers",
+    "definition": "Prevent late transaction entry after the close cutoff.",
+    "semantic_type_iri": "https://w3id.org/pko#Action"
+  },
+  {
+    "action_id": "interview-practitioner",
+    "name": "Interview practitioner",
+    "label": "Interview practitioner",
+    "definition": "Elicit tacit, implicit, and explicit procedural knowledge.",
+    "semantic_type_iri": "https://w3id.org/pko#Action"
+  },
+  {
+    "action_id": "investigate-variance",
+    "name": "Investigate variance",
+    "label": "Investigate variance",
+    "definition": "Apply documented checks and situated judgment to explain a material variance.",
+    "semantic_type_iri": "https://w3id.org/pko#Action"
+  },
+  {
+    "action_id": "reconcile-account",
+    "name": "Reconcile account",
+    "label": "Reconcile account",
+    "definition": "Compare balances, source records, and supporting evidence.",
+    "semantic_type_iri": "https://w3id.org/pko#Action"
+  },
+  {
+    "action_id": "review-close-package",
+    "name": "Review close package",
+    "label": "Review close package",
+    "definition": "Perform an independent control review.",
+    "semantic_type_iri": "https://w3id.org/pko#Action"
+  },
+  {
+    "action_id": "review-feedback",
+    "name": "Review procedural feedback",
+    "label": "Review procedural feedback",
+    "definition": "Evaluate questions, issues, and lessons for future versions.",
+    "semantic_type_iri": "https://w3id.org/pko#Action"
+  },
+  {
+    "action_id": "review-policy",
+    "name": "Review employment policy",
+    "label": "Review employment policy",
+    "definition": "Review legal, privacy, and operational commitments.",
+    "semantic_type_iri": "https://w3id.org/pko#Action"
+  }
+]

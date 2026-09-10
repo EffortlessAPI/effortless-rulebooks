@@ -1,0 +1,10 @@
+{
+  "name": "oss-rulebook-to-golang",
+  "runtime": "script",
+  "entry": "transpiler.py",
+  "description": "Generate Go structs + business-logic from rulebook",
+  "tags": [
+    "oss",
+    "execution-substrate"
+  ]
+}

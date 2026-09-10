@@ -325,7 +325,7 @@ def main() -> int:
             ]))
 
     with RB.open("w") as fh:
-        json.dump(rb, fh, indent=2)
+        json.dump(rb, fh, indent=1, ensure_ascii=False)
         fh.write("\n")
 
     print(f"applied. run: python3 tools/reconcile_field_catalog.py")

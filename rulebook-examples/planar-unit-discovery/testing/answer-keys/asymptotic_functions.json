@@ -1,0 +1,8 @@
+[
+  {
+    "asymptotic_function_id": "u-n",
+    "display_name": "U(n)",
+    "definition_text": "U(n) = max over P \u2282 R^2 with |P|=n of e(G(P)) \u2014 the maximum number of unit-distance pairs among n planar points.",
+    "name": "u(n)"
+  }
+]

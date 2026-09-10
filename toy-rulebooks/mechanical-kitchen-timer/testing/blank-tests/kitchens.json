@@ -1,0 +1,9 @@
+[
+  {
+    "kitchen_id": "Main",
+    "display_name": "Main Kitchen",
+    "has_any_timer_rung": null,
+    "has_misprovisioned_recipe": null,
+    "operational_status": null
+  }
+]

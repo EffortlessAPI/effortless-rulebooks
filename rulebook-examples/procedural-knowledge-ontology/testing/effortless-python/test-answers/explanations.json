@@ -1,0 +1,20 @@
+[
+  {
+    "explanation_id": "exp-close-variance",
+    "procedure_version": "close-v1.1.0",
+    "step": "close-04",
+    "title": "Variance escalation explanation",
+    "description": "Explains the derived path from source timestamps, materiality, recurrence, and anomaly classification to the escalation decision.",
+    "semantic_type_iri": "https://w3id.org/pko#Explanation",
+    "name": "Variance escalation explanation"
+  },
+  {
+    "explanation_id": "exp-policy-channel",
+    "procedure_version": "policy-v1.0.0",
+    "step": "policy-07",
+    "title": "Channel eligibility explanation",
+    "description": "Explains why each recipient received email, SMS, both, or an exception task based on consent and channel policy.",
+    "semantic_type_iri": "https://w3id.org/pko#Explanation",
+    "name": "Channel eligibility explanation"
+  }
+]

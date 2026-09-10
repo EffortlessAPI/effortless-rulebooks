@@ -1,0 +1,92 @@
+[
+  {
+    "test_for_success_id": "tfs-all-seven",
+    "claim": "All seven oracle patients resolve to their expected keystone value.",
+    "how_witnessed": "Build verification asserts the scenarios.md oracle against vw_individualpredictions.",
+    "related_harness_file": "admin-app/tests/L7-keystone.test.js",
+    "status": "red",
+    "name": "All seven oracle patients resolve to their expected keystone value.",
+    "relative_path": "/admin/tests-for-success/tfs-all-seven"
+  },
+  {
+    "test_for_success_id": "tfs-both-sides",
+    "claim": "The same machine produces TRUE for {A,G} and FALSE for {B,C,D,E,F}.",
+    "how_witnessed": "L7-cohort.test.js asserts exactly {A,G} actionable as a set.",
+    "related_harness_file": "admin-app/tests/L7-cohort.test.js",
+    "status": "red",
+    "name": "The same machine produces TRUE for {A,G} and FALSE for {B,C,D,E,F}.",
+    "relative_path": "/admin/tests-for-success/tfs-both-sides"
+  },
+  {
+    "test_for_success_id": "tfs-extraction-faithful",
+    "claim": "Extracted leaf facts are checkable against the source case text, independently of the verdict.",
+    "how_witnessed": "Three-panel witness view: per-fact provenance pointer back into the case text.",
+    "related_harness_file": "",
+    "status": "planned",
+    "name": "Extracted leaf facts are checkable against the source case text, independently of the verdict.",
+    "relative_path": "/admin/tests-for-success/tfs-extraction-faithful"
+  },
+  {
+    "test_for_success_id": "tfs-no-hand-entry",
+    "claim": "Raw facts alone derive the keystone with no hand-entered answer anywhere.",
+    "how_witnessed": "Every leaf in the harness is a raw observation; keystone == AND(gates) cross-check.",
+    "related_harness_file": "admin-app/tests/L7-keystone.test.js",
+    "status": "red",
+    "name": "Raw facts alone derive the keystone with no hand-entered answer anywhere.",
+    "relative_path": "/admin/tests-for-success/tfs-no-hand-entry"
+  },
+  {
+    "test_for_success_id": "tfs-one-gate-each",
+    "claim": "Five of seven patients fail, each on exactly one gate.",
+    "how_witnessed": "Coverage matrix in scenarios.md; L6/L7 harness assert the deciding gate per patient.",
+    "related_harness_file": "admin-app/tests/L6-gates.test.js",
+    "status": "red",
+    "name": "Five of seven patients fail, each on exactly one gate.",
+    "relative_path": "/admin/tests-for-success/tfs-one-gate-each"
+  },
+  {
+    "test_for_success_id": "tfs-report-cell-simple",
+    "claim": "No narrative fragment field traverses, joins, or aggregates; each reads only sibling fields of its own row plus __meta__ phrases.",
+    "how_witnessed": "Static lint over fragment formulas: reject any formula that references another table or a rollup/lookup across rows; fragments may reference {{SiblingField}} and __meta__ keys only.",
+    "related_harness_file": "admin-app/tests/report-fragments.test.js",
+    "status": "planned",
+    "name": "No narrative fragment field traverses, joins, or aggregates; each reads only sibling fields of its own row plus __meta__ phrases.",
+    "relative_path": "/admin/tests-for-success/tfs-report-cell-simple"
+  },
+  {
+    "test_for_success_id": "tfs-report-covers-every-dag-node",
+    "claim": "Every DAG node linked to a patient, down to ground truth, is represented somewhere in that patient's report.",
+    "how_witnessed": "Walk the patient's subgraph (keystone -> gates -> evidence -> raw leaves); assert each visited node contributes at least one rendered fragment, or is deliberately suppressed by a false predicate that the report names.",
+    "related_harness_file": "admin-app/tests/report-coverage.test.js",
+    "status": "planned",
+    "name": "Every DAG node linked to a patient, down to ground truth, is represented somewhere in that patient's report.",
+    "relative_path": "/admin/tests-for-success/tfs-report-covers-every-dag-node"
+  },
+  {
+    "test_for_success_id": "tfs-report-covers-every-word",
+    "claim": "Every word the patient gave us appears somewhere in that patient's derived report (no patient input is dropped).",
+    "how_witnessed": "Coverage check: tokenize each patient's source intake text; assert each meaningful token is traceable into at least one rendered report fragment (directly quoted or its derived translation).",
+    "related_harness_file": "admin-app/tests/report-coverage.test.js",
+    "status": "planned",
+    "name": "Every word the patient gave us appears somewhere in that patient's derived report (no patient input is dropped).",
+    "relative_path": "/admin/tests-for-success/tfs-report-covers-every-word"
+  },
+  {
+    "test_for_success_id": "tfs-report-deterministic",
+    "claim": "The same patient row always renders the byte-identical report; the report is a pure projection of the DAG with no model in the loop.",
+    "how_witnessed": "Render each patient twice and diff; assert zero difference and that the renderer makes no LLM/network calls.",
+    "related_harness_file": "admin-app/tests/report-deterministic.test.js",
+    "status": "planned",
+    "name": "The same patient row always renders the byte-identical report; the report is a pure projection of the DAG with no model in the loop.",
+    "relative_path": "/admin/tests-for-success/tfs-report-deterministic"
+  },
+  {
+    "test_for_success_id": "tfs-witnessed-reasoning",
+    "claim": "Each derived node carries an expert-verifiable line of reasoning.",
+    "how_witnessed": "Derivation trace from derivation-spec.md printed in every test name/failure.",
+    "related_harness_file": "admin-app/tests/README.md",
+    "status": "red",
+    "name": "Each derived node carries an expert-verifiable line of reasoning.",
+    "relative_path": "/admin/tests-for-success/tfs-witnessed-reasoning"
+  }
+]

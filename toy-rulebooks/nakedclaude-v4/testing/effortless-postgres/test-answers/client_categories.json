@@ -1,0 +1,26 @@
+[
+  {
+    "client_categorie_id": "active",
+    "name": "Active",
+    "clients": "alice-johnson, bob, carla-smith",
+    "discount": "0.05",
+    "notes": "",
+    "count_of_clients": 3
+  },
+  {
+    "client_categorie_id": "gold",
+    "name": "Gold",
+    "clients": "caroline",
+    "discount": "0.15",
+    "notes": "",
+    "count_of_clients": 1
+  },
+  {
+    "client_categorie_id": "prospect",
+    "name": "Prospect",
+    "clients": "brian-lee",
+    "discount": "0",
+    "notes": "",
+    "count_of_clients": 1
+  }
+]

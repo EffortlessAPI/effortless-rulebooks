@@ -1,0 +1,74 @@
+[
+  {
+    "mirror_contract_id": "mirror-deprecated-aggregation",
+    "rule_label": "Deprecated: ad-hoc aggregations",
+    "rule_statement": "Earlier draft superseded by the formal aggregation field type.",
+    "rule_kind": "describe",
+    "applies_to_scope": "historic",
+    "is_binding_on_agents": false,
+    "description": "Coverage row: deprecated rule retained for audit.",
+    "name": "deprecated:-ad-hoc-aggregations",
+    "is_rejection_rule": false
+  },
+  {
+    "mirror_contract_id": "mirror-describe",
+    "rule_label": "Describe, do not derive",
+    "rule_statement": "The rulebook describes what the paper proves; it does not attempt to derive new mathematical content. Calculated fields surface relationships already present in the data.",
+    "rule_kind": "describe",
+    "applies_to_scope": "all-tables",
+    "is_binding_on_agents": true,
+    "name": "describe,-do-not-derive",
+    "is_rejection_rule": false
+  },
+  {
+    "mirror_contract_id": "mirror-experimental-augment",
+    "rule_label": "Experimental augment policy (under discussion)",
+    "rule_statement": "Hypothetical: allow non-source rows when prefixed `hypothetical-`. Under discussion.",
+    "rule_kind": "describe",
+    "applies_to_scope": "coverage-rows",
+    "is_binding_on_agents": false,
+    "description": "Coverage row: rule not yet binding.",
+    "name": "experimental-augment-policy-(under-discussion)",
+    "is_rejection_rule": false
+  },
+  {
+    "mirror_contract_id": "mirror-gate-substrate",
+    "rule_label": "Gate on multi-substrate parity",
+    "rule_statement": "A rulebook is only valid when it compiles to at least two structurally-different substrates and produces field-for-field identical outputs against the same input data, gated by an answer-key.",
+    "rule_kind": "gate",
+    "applies_to_scope": "release",
+    "is_binding_on_agents": true,
+    "name": "gate-on-multi-substrate-parity",
+    "is_rejection_rule": false
+  },
+  {
+    "mirror_contract_id": "mirror-load",
+    "rule_label": "Load what is named",
+    "rule_statement": "Every named mathematical object in the source papers must appear as a row in the rulebook before the rulebook can claim to mirror the result.",
+    "rule_kind": "load",
+    "applies_to_scope": "all-tables",
+    "is_binding_on_agents": true,
+    "name": "load-what-is-named",
+    "is_rejection_rule": false
+  },
+  {
+    "mirror_contract_id": "mirror-no-epistemic",
+    "rule_label": "No epistemic-state columns",
+    "rule_statement": "Columns that track the modeler's certainty (GapStatus, candidate, partial_candidate, \u2026) are rejected at the storage layer. Curation notes live in commit messages, not in row data.",
+    "rule_kind": "reject",
+    "applies_to_scope": "all-tables",
+    "is_binding_on_agents": true,
+    "name": "no-epistemic-state-columns",
+    "is_rejection_rule": true
+  },
+  {
+    "mirror_contract_id": "mirror-no-invent",
+    "rule_label": "No invented intermediates",
+    "rule_statement": "Modeler-added objects are allowed only with OriginatedHere=true. Speculative intermediates that are not in the source are rejected.",
+    "rule_kind": "reject",
+    "applies_to_scope": "math-content-tables",
+    "is_binding_on_agents": true,
+    "name": "no-invented-intermediates",
+    "is_rejection_rule": true
+  }
+]

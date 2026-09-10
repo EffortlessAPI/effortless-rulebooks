@@ -1,0 +1,42 @@
+[
+  {
+    "tissue_id": "blood",
+    "tissue_label": "Blood",
+    "name": "Blood",
+    "relative_path": "/tissues/blood",
+    "count_of_omics_assays": 36,
+    "omics_assays": null
+  },
+  {
+    "tissue_id": "gut",
+    "tissue_label": "Gut",
+    "name": "Gut",
+    "relative_path": "/tissues/gut",
+    "count_of_omics_assays": 0,
+    "omics_assays": null
+  },
+  {
+    "tissue_id": "kidney",
+    "tissue_label": "Kidney",
+    "name": "Kidney",
+    "relative_path": "/tissues/kidney",
+    "count_of_omics_assays": 0,
+    "omics_assays": null
+  },
+  {
+    "tissue_id": "skin",
+    "tissue_label": "Skin",
+    "name": "Skin",
+    "relative_path": "/tissues/skin",
+    "count_of_omics_assays": 0,
+    "omics_assays": null
+  },
+  {
+    "tissue_id": "synovium",
+    "tissue_label": "Synovium",
+    "name": "Synovium",
+    "relative_path": "/tissues/synovium",
+    "count_of_omics_assays": 0,
+    "omics_assays": null
+  }
+]

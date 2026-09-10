@@ -1,0 +1,47 @@
+[
+  {
+    "wind_action_id": "Lena wound Olive",
+    "performed_by": "Lena",
+    "turned_knob": "Olive's knob",
+    "target_angle_deg": "120",
+    "occurred_at": "2026-05-21 04:30:00-05:00",
+    "applied_to_timer": "Olive",
+    "resulted_in_ring": false
+  },
+  {
+    "wind_action_id": "Marcus readjusted Bessie",
+    "performed_by": "Marcus",
+    "turned_knob": "Bessie's knob",
+    "target_angle_deg": "60",
+    "occurred_at": "2026-05-21 06:30:00-05:00",
+    "applied_to_timer": "Bessie",
+    "resulted_in_ring": true
+  },
+  {
+    "wind_action_id": "Marcus wound Bessie",
+    "performed_by": "Marcus",
+    "turned_knob": "Bessie's knob",
+    "target_angle_deg": "60",
+    "occurred_at": "2026-05-21 02:45:00-05:00",
+    "applied_to_timer": "Bessie",
+    "resulted_in_ring": true
+  },
+  {
+    "wind_action_id": "Marcus wound Rufus",
+    "performed_by": "Marcus",
+    "turned_knob": "Rufus's knob",
+    "target_angle_deg": "360",
+    "occurred_at": "2026-05-21 05:00:00-05:00",
+    "applied_to_timer": "Rufus",
+    "resulted_in_ring": false
+  },
+  {
+    "wind_action_id": "Marcus wound Twigs",
+    "performed_by": "Marcus",
+    "turned_knob": "Twigs's knob",
+    "target_angle_deg": "30",
+    "occurred_at": "2026-05-21 06:25:00-05:00",
+    "applied_to_timer": "Twigs",
+    "resulted_in_ring": false
+  }
+]

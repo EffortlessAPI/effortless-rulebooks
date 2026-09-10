@@ -1,0 +1,66 @@
+[
+  {
+    "procedure_resource_id": "pr-close-api",
+    "name": "close-v1.1.0 / res-erp-api",
+    "procedure_version": "close-v1.1.0",
+    "resource": "res-erp-api",
+    "relation": "references",
+    "relation_iri": "http://purl.org/dc/terms/references"
+  },
+  {
+    "procedure_resource_id": "pr-close-check",
+    "name": "close-v1.1.0 / res-close-checklist",
+    "procedure_version": "close-v1.1.0",
+    "resource": "res-close-checklist",
+    "relation": "references",
+    "relation_iri": "http://purl.org/dc/terms/references"
+  },
+  {
+    "procedure_resource_id": "pr-close-source",
+    "name": "close-v1.1.0 / res-close-sop-pdf",
+    "procedure_version": "close-v1.1.0",
+    "resource": "res-close-sop-pdf",
+    "relation": "wasExtractedFrom",
+    "relation_iri": "https://w3id.org/pko#wasExtractedFrom"
+  },
+  {
+    "procedure_resource_id": "pr-policy-consent",
+    "name": "policy-v1.0.0 / res-consent-registry",
+    "procedure_version": "policy-v1.0.0",
+    "resource": "res-consent-registry",
+    "relation": "references",
+    "relation_iri": "http://purl.org/dc/terms/references"
+  },
+  {
+    "procedure_resource_id": "pr-policy-email",
+    "name": "policy-v1.0.0 / res-email-template",
+    "procedure_version": "policy-v1.0.0",
+    "resource": "res-email-template",
+    "relation": "references",
+    "relation_iri": "http://purl.org/dc/terms/references"
+  },
+  {
+    "procedure_resource_id": "pr-policy-sms",
+    "name": "policy-v1.0.0 / res-sms-template",
+    "procedure_version": "policy-v1.0.0",
+    "resource": "res-sms-template",
+    "relation": "references",
+    "relation_iri": "http://purl.org/dc/terms/references"
+  },
+  {
+    "procedure_resource_id": "pr-policy-source",
+    "name": "policy-v1.0.0 / res-policy-source",
+    "procedure_version": "policy-v1.0.0",
+    "resource": "res-policy-source",
+    "relation": "wasExtractedFrom",
+    "relation_iri": "https://w3id.org/pko#wasExtractedFrom"
+  },
+  {
+    "procedure_resource_id": "pr-policy-ticket",
+    "name": "policy-v1.0.0 / res-change-ticket",
+    "procedure_version": "policy-v1.0.0",
+    "resource": "res-change-ticket",
+    "relation": "references",
+    "relation_iri": "http://purl.org/dc/terms/references"
+  }
+]

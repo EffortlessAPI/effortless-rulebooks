@@ -1,0 +1,62 @@
+[
+  {
+    "test_suite_id": "suite-integrity",
+    "name": "Referential integrity",
+    "label": "Referential integrity",
+    "test_count": 160,
+    "pass_count": 160,
+    "blocking_fail_count": 0,
+    "is_green": true,
+    "semantic_type_iri": "urn:effortless:pko-extension#TestSuite"
+  },
+  {
+    "test_suite_id": "suite-invariant",
+    "name": "Domain invariants",
+    "label": "Domain invariants",
+    "test_count": 7,
+    "pass_count": 7,
+    "blocking_fail_count": 0,
+    "is_green": true,
+    "semantic_type_iri": "urn:effortless:pko-extension#TestSuite"
+  },
+  {
+    "test_suite_id": "suite-provenance",
+    "name": "Question provenance",
+    "label": "Question provenance",
+    "test_count": 107,
+    "pass_count": 107,
+    "blocking_fail_count": 0,
+    "is_green": true,
+    "semantic_type_iri": "urn:effortless:pko-extension#TestSuite"
+  },
+  {
+    "test_suite_id": "suite-structure",
+    "name": "Model structure",
+    "label": "Model structure",
+    "test_count": 69,
+    "pass_count": 69,
+    "blocking_fail_count": 0,
+    "is_green": true,
+    "semantic_type_iri": "urn:effortless:pko-extension#TestSuite"
+  },
+  {
+    "test_suite_id": "suite-substrate",
+    "name": "Substrate translation",
+    "label": "Substrate translation",
+    "test_count": 993,
+    "pass_count": 991,
+    "blocking_fail_count": 0,
+    "is_green": true,
+    "semantic_type_iri": "urn:effortless:pko-extension#TestSuite"
+  },
+  {
+    "test_suite_id": "suite-witness",
+    "name": "Witness behaviour",
+    "label": "Witness behaviour",
+    "test_count": 458,
+    "pass_count": 225,
+    "blocking_fail_count": 0,
+    "is_green": true,
+    "semantic_type_iri": "urn:effortless:pko-extension#TestSuite"
+  }
+]

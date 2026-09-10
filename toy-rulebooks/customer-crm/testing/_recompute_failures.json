@@ -1,198 +1,122 @@
 [
   {
     "entity": "Orders",
-    "field": "Balance",
-    "formula": "={{Total}} - {{AmountPaid}}",
-    "record_id": null,
-    "error": "SyntaxError: Unexpected character '-' at position 10"
+    "field": "IsRecent",
+    "formula": "=DATEDIFF(TODAY(), {{OrderDate}}, \"days\") <= 90",
+    "record_id": "ORD-1004",
+    "error": "drift: stored=True python-recompute=False",
+    "severity": "drift"
   },
   {
     "entity": "Orders",
     "field": "IsRecent",
     "formula": "=DATEDIFF(TODAY(), {{OrderDate}}, \"days\") <= 90",
-    "record_id": null,
-    "error": "ValueError: Unknown function: DATEDIFF"
-  },
-  {
-    "entity": "Orders",
-    "field": "Balance",
-    "formula": "={{Total}} - {{AmountPaid}}",
-    "record_id": null,
-    "error": "SyntaxError: Unexpected character '-' at position 10"
+    "record_id": "ORD-1005",
+    "error": "drift: stored=True python-recompute=False",
+    "severity": "drift"
   },
   {
     "entity": "Orders",
     "field": "IsRecent",
     "formula": "=DATEDIFF(TODAY(), {{OrderDate}}, \"days\") <= 90",
-    "record_id": null,
-    "error": "ValueError: Unknown function: DATEDIFF"
-  },
-  {
-    "entity": "Orders",
-    "field": "Balance",
-    "formula": "={{Total}} - {{AmountPaid}}",
-    "record_id": null,
-    "error": "SyntaxError: Unexpected character '-' at position 10"
+    "record_id": "ORD-1006",
+    "error": "drift: stored=True python-recompute=False",
+    "severity": "drift"
   },
   {
     "entity": "Orders",
     "field": "IsRecent",
     "formula": "=DATEDIFF(TODAY(), {{OrderDate}}, \"days\") <= 90",
-    "record_id": null,
-    "error": "ValueError: Unknown function: DATEDIFF"
-  },
-  {
-    "entity": "Orders",
-    "field": "Balance",
-    "formula": "={{Total}} - {{AmountPaid}}",
-    "record_id": null,
-    "error": "SyntaxError: Unexpected character '-' at position 10"
+    "record_id": "ORD-1007",
+    "error": "drift: stored=True python-recompute=False",
+    "severity": "drift"
   },
   {
     "entity": "Orders",
     "field": "IsRecent",
     "formula": "=DATEDIFF(TODAY(), {{OrderDate}}, \"days\") <= 90",
-    "record_id": null,
-    "error": "ValueError: Unknown function: DATEDIFF"
-  },
-  {
-    "entity": "Orders",
-    "field": "Balance",
-    "formula": "={{Total}} - {{AmountPaid}}",
-    "record_id": null,
-    "error": "SyntaxError: Unexpected character '-' at position 10"
+    "record_id": "ORD-1008",
+    "error": "drift: stored=True python-recompute=False",
+    "severity": "drift"
   },
   {
     "entity": "Orders",
     "field": "IsRecent",
     "formula": "=DATEDIFF(TODAY(), {{OrderDate}}, \"days\") <= 90",
-    "record_id": null,
-    "error": "ValueError: Unknown function: DATEDIFF"
-  },
-  {
-    "entity": "Orders",
-    "field": "Balance",
-    "formula": "={{Total}} - {{AmountPaid}}",
-    "record_id": null,
-    "error": "SyntaxError: Unexpected character '-' at position 10"
+    "record_id": "ORD-1009",
+    "error": "drift: stored=True python-recompute=False",
+    "severity": "drift"
   },
   {
     "entity": "Orders",
     "field": "IsRecent",
     "formula": "=DATEDIFF(TODAY(), {{OrderDate}}, \"days\") <= 90",
-    "record_id": null,
-    "error": "ValueError: Unknown function: DATEDIFF"
-  },
-  {
-    "entity": "Orders",
-    "field": "Balance",
-    "formula": "={{Total}} - {{AmountPaid}}",
-    "record_id": null,
-    "error": "SyntaxError: Unexpected character '-' at position 10"
-  },
-  {
-    "entity": "Orders",
-    "field": "IsRecent",
-    "formula": "=DATEDIFF(TODAY(), {{OrderDate}}, \"days\") <= 90",
-    "record_id": null,
-    "error": "ValueError: Unknown function: DATEDIFF"
-  },
-  {
-    "entity": "Orders",
-    "field": "Balance",
-    "formula": "={{Total}} - {{AmountPaid}}",
-    "record_id": null,
-    "error": "SyntaxError: Unexpected character '-' at position 10"
-  },
-  {
-    "entity": "Orders",
-    "field": "IsRecent",
-    "formula": "=DATEDIFF(TODAY(), {{OrderDate}}, \"days\") <= 90",
-    "record_id": null,
-    "error": "ValueError: Unknown function: DATEDIFF"
-  },
-  {
-    "entity": "Orders",
-    "field": "Balance",
-    "formula": "={{Total}} - {{AmountPaid}}",
-    "record_id": null,
-    "error": "SyntaxError: Unexpected character '-' at position 10"
-  },
-  {
-    "entity": "Orders",
-    "field": "IsRecent",
-    "formula": "=DATEDIFF(TODAY(), {{OrderDate}}, \"days\") <= 90",
-    "record_id": null,
-    "error": "ValueError: Unknown function: DATEDIFF"
-  },
-  {
-    "entity": "Orders",
-    "field": "Balance",
-    "formula": "={{Total}} - {{AmountPaid}}",
-    "record_id": null,
-    "error": "SyntaxError: Unexpected character '-' at position 10"
-  },
-  {
-    "entity": "Orders",
-    "field": "IsRecent",
-    "formula": "=DATEDIFF(TODAY(), {{OrderDate}}, \"days\") <= 90",
-    "record_id": null,
-    "error": "ValueError: Unknown function: DATEDIFF"
+    "record_id": "ORD-1010",
+    "error": "drift: stored=True python-recompute=False",
+    "severity": "drift"
   },
   {
     "entity": "OrderLines",
     "field": "LineTotal",
     "formula": "={{Quantity}} * {{FCSUnitPrice}}",
-    "record_id": null,
-    "error": "SyntaxError: Unexpected character '*' at position 13"
+    "record_id": "OL-3001",
+    "error": "drift: stored=25.2 python-recompute=0",
+    "severity": "drift"
   },
   {
     "entity": "OrderLines",
     "field": "LineTotal",
     "formula": "={{Quantity}} * {{FCSUnitPrice}}",
-    "record_id": null,
-    "error": "SyntaxError: Unexpected character '*' at position 13"
+    "record_id": "OL-3002",
+    "error": "drift: stored=4.2 python-recompute=0",
+    "severity": "drift"
   },
   {
     "entity": "OrderLines",
     "field": "LineTotal",
     "formula": "={{Quantity}} * {{FCSUnitPrice}}",
-    "record_id": null,
-    "error": "SyntaxError: Unexpected character '*' at position 13"
+    "record_id": "OL-3003",
+    "error": "drift: stored=48.0 python-recompute=0",
+    "severity": "drift"
   },
   {
     "entity": "OrderLines",
     "field": "LineTotal",
     "formula": "={{Quantity}} * {{FCSUnitPrice}}",
-    "record_id": null,
-    "error": "SyntaxError: Unexpected character '*' at position 13"
+    "record_id": "OL-3004",
+    "error": "drift: stored=37.0 python-recompute=0",
+    "severity": "drift"
   },
   {
     "entity": "OrderLines",
     "field": "LineTotal",
     "formula": "={{Quantity}} * {{FCSUnitPrice}}",
-    "record_id": null,
-    "error": "SyntaxError: Unexpected character '*' at position 13"
+    "record_id": "OL-3005",
+    "error": "drift: stored=36.0 python-recompute=0",
+    "severity": "drift"
   },
   {
     "entity": "OrderLines",
     "field": "LineTotal",
     "formula": "={{Quantity}} * {{FCSUnitPrice}}",
-    "record_id": null,
-    "error": "SyntaxError: Unexpected character '*' at position 13"
+    "record_id": "OL-3006",
+    "error": "drift: stored=46.4 python-recompute=0",
+    "severity": "drift"
   },
   {
     "entity": "OrderLines",
     "field": "LineTotal",
     "formula": "={{Quantity}} * {{FCSUnitPrice}}",
-    "record_id": null,
-    "error": "SyntaxError: Unexpected character '*' at position 13"
+    "record_id": "OL-3007",
+    "error": "drift: stored=46.5 python-recompute=0",
+    "severity": "drift"
   },
   {
     "entity": "OrderLines",
     "field": "LineTotal",
     "formula": "={{Quantity}} * {{FCSUnitPrice}}",
-    "record_id": null,
-    "error": "SyntaxError: Unexpected character '*' at position 13"
+    "record_id": "OL-3008",
+    "error": "drift: stored=4.2 python-recompute=0",
+    "severity": "drift"
   }
 ]

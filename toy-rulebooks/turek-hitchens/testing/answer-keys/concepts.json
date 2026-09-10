@@ -1,0 +1,366 @@
+[
+  {
+    "label": "Amalekites Genocide",
+    "category": "theological",
+    "introduced_by": "christopher-hitchens",
+    "description": "God's Old Testament injunction to Moses that too many Amalekite children were spared \u2014 Hitchens's exhibit of divinely-commanded atrocity, not equivalent to a hard medical decision.",
+    "name": "amalekites-genocide"
+  },
+  {
+    "label": "Andromeda Collision",
+    "category": "cosmology",
+    "introduced_by": "christopher-hitchens",
+    "description": "The Andromeda galaxy on a direct collision course \u2014 Hitchens's exhibit for capricious or absent design.",
+    "name": "andromeda-collision"
+  },
+  {
+    "label": "Atonement",
+    "category": "theological",
+    "introduced_by": "frank-turek",
+    "description": "Christ's sacrifice is retroactive to everyone before him, so God 'always had a witness' (creation, conscience, Christ).",
+    "name": "atonement"
+  },
+  {
+    "label": "Big Bang",
+    "category": "cosmology",
+    "introduced_by": "frank-turek",
+    "description": "The accepted origin of the universe; Turek accepts it and infers a 'banger'.",
+    "name": "big-bang"
+  },
+  {
+    "label": "Borrowing From Theism",
+    "category": "moral",
+    "introduced_by": "frank-turek",
+    "description": "Turek's charge: Hitchens must 'sit in God's lap to slap his face'.",
+    "name": "borrowing-from-theism"
+  },
+  {
+    "label": "Burden Of Proof",
+    "category": "method",
+    "introduced_by": "frank-turek",
+    "description": "Who must establish the claim; both accept a share.",
+    "name": "burden-of-proof"
+  },
+  {
+    "label": "Celestial Dictatorship",
+    "category": "theological",
+    "introduced_by": "christopher-hitchens",
+    "description": "Theism framed as totalitarian, master-slave submission \u2014 the oldest enemy of our moral autonomy.",
+    "name": "celestial-dictatorship"
+  },
+  {
+    "label": "Choice Argument",
+    "category": "cosmology",
+    "introduced_by": "frank-turek",
+    "description": "Turek's claim that moving from non-existence to existence requires a choice, and only persons choose.",
+    "name": "choice-argument"
+  },
+  {
+    "label": "Conscience",
+    "category": "moral",
+    "introduced_by": "christopher-hitchens",
+    "description": "Innate moral sense (Socrates's daemon, Smith's internal witness).",
+    "name": "conscience"
+  },
+  {
+    "label": "Consciousness",
+    "category": "method",
+    "introduced_by": "frank-turek",
+    "description": "Subjective experience Turek says chemicals cannot explain.",
+    "name": "consciousness"
+  },
+  {
+    "label": "Contraception",
+    "category": "moral",
+    "introduced_by": "christopher-hitchens",
+    "description": "Hitchens calls it nonsensical and immoral for the Church to equate contraception with abortion; cites the ectopic pregnancy as a humanist no-starter.",
+    "name": "contraception"
+  },
+  {
+    "label": "Determinism",
+    "category": "method",
+    "introduced_by": "frank-turek",
+    "description": "Physical law fixes all events (Einstein, Provine's Darwinism); Turek says it undercuts trust in reasoning.",
+    "name": "determinism"
+  },
+  {
+    "label": "Divine Command",
+    "category": "moral",
+    "introduced_by": "frank-turek",
+    "description": "The divine-command standard: right and wrong fixed by God's nature and command.",
+    "name": "divine-command"
+  },
+  {
+    "label": "Divine Permission",
+    "category": "moral",
+    "introduced_by": "christopher-hitchens",
+    "description": "Felt divine authorization Hitchens links to atrocity.",
+    "name": "divine-permission"
+  },
+  {
+    "label": "Empathy",
+    "category": "moral",
+    "introduced_by": "christopher-hitchens",
+    "description": "Biologically grounded basis for morality raised in audience Q&A.",
+    "name": "empathy"
+  },
+  {
+    "label": "Enlightenment Values",
+    "category": "method",
+    "introduced_by": "christopher-hitchens",
+    "description": "The post-religious values Turek says Hitchens wants all to adopt \u2014 which Turek reframes as 'the dictatorship of Christopher Hitchens'.",
+    "name": "enlightenment-values"
+  },
+  {
+    "label": "Eschatology",
+    "category": "theological",
+    "introduced_by": "christopher-hitchens",
+    "description": "End-times doctrine; the rapture, Armageddon, the apocalypse, a 'cult of death' set against a promised new Heaven and new earth.",
+    "name": "eschatology"
+  },
+  {
+    "label": "Event Horizon",
+    "category": "cosmology",
+    "introduced_by": "christopher-hitchens",
+    "description": "Hawking's 'lip of the black hole'; Hitchens uses it to show our God-talk is the vocabulary of our infancy.",
+    "name": "event-horizon"
+  },
+  {
+    "label": "Fine-Tuning",
+    "category": "design",
+    "introduced_by": "frank-turek",
+    "description": "Constants on a razor's edge permitting life.",
+    "name": "fine-tuning"
+  },
+  {
+    "label": "Free Will",
+    "category": "method",
+    "introduced_by": "frank-turek",
+    "description": "Genuine choice Turek says materialism cannot supply.",
+    "name": "free-will"
+  },
+  {
+    "label": "Good Samaritan",
+    "category": "moral",
+    "introduced_by": "christopher-hitchens",
+    "description": "The Samaritan helped without religious instruction and predates Christianity \u2014 morality 'written on your heart'.",
+    "name": "good-samaritan"
+  },
+  {
+    "label": "Heat Death",
+    "category": "cosmology",
+    "introduced_by": "frank-turek",
+    "description": "The far-future maximal-entropy state; used by both (Turek vs eternity, Hitchens for poor design).",
+    "name": "heat-death"
+  },
+  {
+    "label": "Hume On Miracles",
+    "category": "method",
+    "introduced_by": "christopher-hitchens",
+    "description": "Error is always likelier than a suspension of nature in one's favor.",
+    "name": "hume-on-miracles"
+  },
+  {
+    "label": "Irreducible Complexity",
+    "category": "design",
+    "introduced_by": "frank-turek",
+    "description": "Raised in audience Q&A: whether such biological structures could have formed by chance.",
+    "name": "irreducible-complexity"
+  },
+  {
+    "label": "Is-Ought Problem",
+    "category": "epistemic",
+    "introduced_by": "christopher-hitchens",
+    "description": "Hume's bar on deriving an 'ought' from an 'is'.",
+    "name": "is-ought-problem"
+  },
+  {
+    "label": "Materialism",
+    "category": "method",
+    "introduced_by": "frank-turek",
+    "description": "Only matter exists; Turek's target across the four supporting arguments.",
+    "name": "materialism"
+  },
+  {
+    "label": "Mind-Forged Manacles",
+    "category": "theological",
+    "introduced_by": "christopher-hitchens",
+    "description": "Blake's phrase for self-imposed religious tyranny (limbo, hell).",
+    "name": "mind-forged-manacles"
+  },
+  {
+    "label": "Miracle",
+    "category": "theological",
+    "introduced_by": "christopher-hitchens",
+    "description": "A suspension of natural order (the regular course of nature), per Hume.",
+    "name": "miracle"
+  },
+  {
+    "label": "Moral Lawgiver",
+    "category": "moral",
+    "introduced_by": "frank-turek",
+    "description": "The prescriber Turek infers from the prescription of morality.",
+    "name": "moral-lawgiver"
+  },
+  {
+    "label": "Naturalism",
+    "category": "method",
+    "introduced_by": "christopher-hitchens",
+    "description": "Natural causes suffice to explain the world; every origin question now has a natural or sufficient explanation.",
+    "name": "naturalism"
+  },
+  {
+    "label": "Non-Overlapping Magisteria",
+    "category": "method",
+    "introduced_by": "christopher-hitchens",
+    "description": "Gould's thesis that science and religion address separate domains.",
+    "name": "non-overlapping-magisteria"
+  },
+  {
+    "label": "Objective Moral Values",
+    "category": "moral",
+    "introduced_by": "frank-turek",
+    "description": "Mind-independent moral facts at the center of the moral exchange.",
+    "name": "objective-moral-values"
+  },
+  {
+    "label": "Occam's Razor",
+    "category": "method",
+    "introduced_by": "christopher-hitchens",
+    "description": "Dispose of needless assumptions \u2014 Hitchens removes the prime mover.",
+    "name": "occam's-razor"
+  },
+  {
+    "label": "Ontological Argument",
+    "category": "method",
+    "introduced_by": "christopher-hitchens",
+    "description": "To conceive a thing is for it to be 'real in the mind' (parodied via limbo).",
+    "name": "ontological-argument"
+  },
+  {
+    "label": "Optimal Design",
+    "category": "design",
+    "introduced_by": "frank-turek",
+    "description": "Turek's closing: design need not be optimal; you can't call it suboptimal without knowing the designer's purpose (vs. Gould's panda's thumb).",
+    "name": "optimal-design"
+  },
+  {
+    "label": "Original Sin",
+    "category": "theological",
+    "introduced_by": "frank-turek",
+    "description": "'We were well in the beginning but then we messed up'; the Fall, which Hitchens parodies as 'created sick, commanded to be well'.",
+    "name": "original-sin"
+  },
+  {
+    "label": "Panspermia",
+    "category": "design",
+    "introduced_by": "frank-turek",
+    "description": "Crick/Hoyle's seeded-life proposal; Turek calls it a backhanded concession.",
+    "name": "panspermia"
+  },
+  {
+    "label": "Parable Of The Talents",
+    "category": "theological",
+    "introduced_by": "frank-turek",
+    "description": "Turek's counter that Jesus did not simply preach 'take no thought for tomorrow'.",
+    "name": "parable-of-the-talents"
+  },
+  {
+    "label": "Prime Mover",
+    "category": "method",
+    "introduced_by": "christopher-hitchens",
+    "description": "The first-cause designer Hitchens applies Occam's razor to remove \u2014 'we don't need the prime mover at all'.",
+    "name": "prime-mover"
+  },
+  {
+    "label": "Probability Argument",
+    "category": "epistemic",
+    "introduced_by": "frank-turek",
+    "description": "Turek's cross-examination framing: not a proof of God but a cumulative case that God is the more probable explanation.",
+    "name": "probability-argument"
+  },
+  {
+    "label": "Problem Of Evil",
+    "category": "theological",
+    "introduced_by": "christopher-hitchens",
+    "description": "Implicit in 'created sick, commanded to be well' \u2014 suffering counts against a good designer.",
+    "name": "problem-of-evil"
+  },
+  {
+    "label": "Resurrection",
+    "category": "theological",
+    "introduced_by": "christopher-hitchens",
+    "description": "Hitchens notes it was 'commonplace' in the gospels.",
+    "name": "resurrection"
+  },
+  {
+    "label": "Scapegoating",
+    "category": "theological",
+    "introduced_by": "christopher-hitchens",
+    "description": "Casting sins onto a substitute; called primitive and barbaric.",
+    "name": "scapegoating"
+  },
+  {
+    "label": "Singularity",
+    "category": "cosmology",
+    "introduced_by": "frank-turek",
+    "description": "The point reversed expansion collapses to; Turek equates it with 'nothing'.",
+    "name": "singularity"
+  },
+  {
+    "label": "Solipsism",
+    "category": "epistemic",
+    "introduced_by": "christopher-hitchens",
+    "description": "Religion's appeal to self-regard \u2014 wanting to be objects of a divine plan \u2014 likened to a quick peek at one's horoscope.",
+    "name": "solipsism"
+  },
+  {
+    "label": "Specified Complexity",
+    "category": "design",
+    "introduced_by": "frank-turek",
+    "description": "Information in living systems Turek says only minds produce.",
+    "name": "specified-complexity"
+  },
+  {
+    "label": "Suicide Bombing",
+    "category": "moral",
+    "introduced_by": "christopher-hitchens",
+    "description": "Wickedness Hitchens says is characteristically religious, alongside genital mutilation and circumcision dictated 'in God's name'.",
+    "name": "suicide-bombing"
+  },
+  {
+    "label": "Termination Of Pregnancy",
+    "category": "moral",
+    "introduced_by": "frank-turek",
+    "description": "The abortion exchange: Turek presses Hitchens's book on the unborn child / fetus; embryology and early viability are invoked.",
+    "name": "termination-of-pregnancy"
+  },
+  {
+    "label": "Theocracy",
+    "category": "theological",
+    "introduced_by": "christopher-hitchens",
+    "description": "Hitchens's post-9/11 cause: opposing theocracy and its messianic, end-times depredations internationally.",
+    "name": "theocracy"
+  },
+  {
+    "label": "Vicarious Redemption",
+    "category": "theological",
+    "introduced_by": "christopher-hitchens",
+    "description": "Salvation by another's suffering through human sacrifice; Hitchens's central moral objection.",
+    "name": "vicarious-redemption"
+  },
+  {
+    "label": "Virgin Birth",
+    "category": "theological",
+    "introduced_by": "christopher-hitchens",
+    "description": "Parthenogenesis: a miracle a design argument can never reach, even if a male-free pregnancy could be tracked.",
+    "name": "virgin-birth"
+  },
+  {
+    "label": "Watchmaker",
+    "category": "design",
+    "introduced_by": "christopher-hitchens",
+    "description": "Paley's image: design implies a designer.",
+    "name": "watchmaker"
+  }
+]

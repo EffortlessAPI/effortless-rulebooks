@@ -1,0 +1,20 @@
+[
+  {
+    "label": "Christopher Hitchens",
+    "side": "negative",
+    "description": "Author of 'God Is Not Great'. Argues the negative; self-describes as anti-theist, not merely atheist.",
+    "name": "christopher-hitchens"
+  },
+  {
+    "label": "Frank Turek",
+    "side": "affirmative",
+    "description": "Christian apologist, founder of CrossExamined.org, co-author of 'I Don't Have Enough Faith to Be an Atheist'. Argues the affirmative for a generic theism.",
+    "name": "frank-turek"
+  },
+  {
+    "label": "Timothy Hulley",
+    "side": "moderator",
+    "description": "Dean of the VCU Honors College; moderates phases and relays audience questions for the event hosted by the United Secular Alliance.",
+    "name": "timothy-hulley"
+  }
+]

@@ -1,0 +1,57 @@
+[
+  {
+    "procedure_status_change_id": "status-close-draft-validation",
+    "from_status": "Draft",
+    "to_status": "Validation",
+    "changed_at": "2026-04-08 10:00:00-05:00",
+    "motivation": "Ready for control and ontology validation.",
+    "semantic_type_iri": "https://w3id.org/pko#ChangeOfStatus",
+    "name": "close-v1.1.0: Draft -> Validation",
+    "procedure_version": "close-v1.1.0",
+    "changed_by_agent": "maria-chen"
+  },
+  {
+    "procedure_status_change_id": "status-close-validation-approval",
+    "from_status": "Validation",
+    "to_status": "Approval",
+    "changed_at": "2026-04-12 14:00:00-05:00",
+    "motivation": "All requirements and test cases passed.",
+    "semantic_type_iri": "https://w3id.org/pko#ChangeOfStatus",
+    "name": "close-v1.1.0: Validation -> Approval",
+    "procedure_version": "close-v1.1.0",
+    "changed_by_agent": "devon-okafor"
+  },
+  {
+    "procedure_status_change_id": "status-close-approval-approved",
+    "from_status": "Approval",
+    "to_status": "Approved",
+    "changed_at": "2026-04-15 09:00:00-05:00",
+    "motivation": "Final authority approved release.",
+    "semantic_type_iri": "https://w3id.org/pko#ChangeOfStatus",
+    "name": "close-v1.1.0: Approval -> Approved",
+    "procedure_version": "close-v1.1.0",
+    "changed_by_agent": "priya-raman"
+  },
+  {
+    "procedure_status_change_id": "status-policy-draft-validation",
+    "from_status": "Draft",
+    "to_status": "Validation",
+    "changed_at": "2026-05-20 09:00:00-05:00",
+    "motivation": "Ready for legal and communications review.",
+    "semantic_type_iri": "https://w3id.org/pko#ChangeOfStatus",
+    "name": "policy-v1.0.0: Draft -> Validation",
+    "procedure_version": "policy-v1.0.0",
+    "changed_by_agent": "elena-garcia"
+  },
+  {
+    "procedure_status_change_id": "status-policy-validation-approved",
+    "from_status": "Validation",
+    "to_status": "Approved",
+    "changed_at": "2026-06-01 09:00:00-05:00",
+    "motivation": "Approved with channel safeguards.",
+    "semantic_type_iri": "https://w3id.org/pko#ChangeOfStatus",
+    "name": "policy-v1.0.0: Validation -> Approved",
+    "procedure_version": "policy-v1.0.0",
+    "changed_by_agent": "priya-raman"
+  }
+]

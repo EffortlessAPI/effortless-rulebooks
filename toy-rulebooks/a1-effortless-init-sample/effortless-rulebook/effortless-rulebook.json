@@ -1,0 +1,55 @@
+{
+  "Name": "a1-effortless-init-sample",
+  "Description": "A starter rulebook. Replace the HelloWhos entity with your own.",
+  "HelloWhos": {
+    "Description": "The smallest complete rulebook: an id, a display name, and a rule that derives a greeting from it.",
+    "schema": [
+      {
+        "name": "HelloWhoId",
+        "datatype": "string",
+        "type": "raw",
+        "description": "The unique identifier for the HelloWho entity.",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Introduction",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "formula": "=\"Hi, \" & {{Name}} & \".\""
+      },
+      {"name": "IsBob", "datatype": "boolean", "formula": "=OR({{Name}}=\"Bob\", {{Name}}=\"Bobby\", {{Name}}=\"Robert\")", "type": "calculated"}
+    ],
+    "data": [
+      {
+        "HelloWhoId": "world",
+        "Name": "World",
+        "Introduction": "Hi, World.",
+        "IsBob": false
+      },
+      {
+        "HelloWhoId": "bob",
+        "Name": "Bobby",
+        "Introduction": "Hi, Bobby.",
+        "IsBob": true
+      },      {
+        "HelloWhoId": "bob2",
+        "Name": "Robby",
+        "Introduction": "Hi, Robby.",
+        "IsBob": false
+      },
+      {
+        "HelloWhoId": "everyone",
+        "Name": "Everyone",
+        "Introduction": "Hi, Everyone.",
+        "IsBob": false
+      }
+    ]
+  }
+}

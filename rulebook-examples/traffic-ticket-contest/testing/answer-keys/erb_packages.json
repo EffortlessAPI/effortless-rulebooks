@@ -1,0 +1,68 @@
+[
+  {
+    "erb_package_id": "access-control",
+    "title": "Roles & User Management",
+    "description": "The role/user administration surface: the Roles catalog and the AppUsers directory, plus the role/user admin pages and the permission model (role\u2192table\u2192field CRUD, per-role WHERE policies, role-specific schemas, derived RLS). Turn it OFF and an admin temporarily loses the management tools \u2014 a quick way to see the simpler app a non-admin sees. The underlying RLS keeps enforcing in Postgres regardless; this only hides the management UI.",
+    "status": "shipped",
+    "is_active": true,
+    "is_licensed": true,
+    "sort_order": 4,
+    "is_key": false,
+    "feature_count": 0
+  },
+  {
+    "erb_package_id": "assistant",
+    "title": "Assistant & Cost Analytics",
+    "description": "The portal assistant (the chat-agent state machine) plus its cost/usage telemetry: the AI model catalog (AiModels), the versioned model price book (ModelPricingVersions), and per-turn AssistantTurns rows whose token costs roll up to accounts and records. Turn it off to hide the assistant analytics surface; the assistant route still functions.",
+    "status": "shipped",
+    "is_active": true,
+    "is_licensed": true,
+    "sort_order": 6,
+    "is_key": false,
+    "feature_count": 0
+  },
+  {
+    "erb_package_id": "citations",
+    "title": "Citations & Contests",
+    "description": "Core package: citations, hearings, payments, license points.",
+    "status": "active",
+    "is_active": true,
+    "is_licensed": true,
+    "sort_order": 1,
+    "is_key": false,
+    "feature_count": 0
+  },
+  {
+    "erb_package_id": "core",
+    "title": "Core Platform",
+    "description": "Cross-cutting platform machinery shared by all packages: the rulebook-driven permission model, role-specific schemas, the enforced CRUD API, row-level security, the generic state-machine backbone, the work queue, and dev-ops/build tooling.",
+    "status": "shipped",
+    "is_active": true,
+    "is_licensed": true,
+    "sort_order": 2,
+    "is_key": true,
+    "feature_count": 0
+  },
+  {
+    "erb_package_id": "platform-meta",
+    "title": "Platform Meta & Knowledge Base",
+    "description": "The self-describing meta layer you usually keep hidden: the feature catalog and statuses, the table/field schema catalog, the custom API-endpoint registry, ERB versions, customizations, the glossary, and the business-rule library. Turn this off and the entire \"how the platform describes itself\" surface disappears, leaving just the working app.",
+    "status": "shipped",
+    "is_active": true,
+    "is_licensed": true,
+    "sort_order": 3,
+    "is_key": true,
+    "feature_count": 0
+  },
+  {
+    "erb_package_id": "state-machines",
+    "title": "State Machine Admin",
+    "description": "The state-machine configuration surface: the StateMachines / MachineStates / StateTransitionRules / StateTransitions tables and the admin routes that view and edit them (machines, states, transition rules, transition log). Turn it off to hide the entire state-machine admin UI; the machines still drive entity lifecycles in Postgres.",
+    "status": "shipped",
+    "is_active": true,
+    "is_licensed": true,
+    "sort_order": 5,
+    "is_key": false,
+    "feature_count": 0
+  }
+]

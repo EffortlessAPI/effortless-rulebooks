@@ -1,0 +1,97 @@
+[
+  {
+    "identity_cluster_id": "cluster-id-age-composition",
+    "confounder_identity": "id-age-composition",
+    "name": "cluster-id-age-composition"
+  },
+  {
+    "identity_cluster_id": "cluster-id-collider-proxy",
+    "confounder_identity": "id-collider-proxy",
+    "name": "cluster-id-collider-proxy"
+  },
+  {
+    "identity_cluster_id": "cluster-id-contested-org-choice",
+    "confounder_identity": "id-contested-org-choice",
+    "name": "cluster-id-contested-org-choice"
+  },
+  {
+    "identity_cluster_id": "cluster-id-credit-risk-tier",
+    "confounder_identity": "id-credit-risk-tier",
+    "name": "cluster-id-credit-risk-tier"
+  },
+  {
+    "identity_cluster_id": "cluster-id-demographic-group",
+    "confounder_identity": "id-demographic-group",
+    "name": "cluster-id-demographic-group"
+  },
+  {
+    "identity_cluster_id": "cluster-id-disease-severity",
+    "confounder_identity": "id-disease-severity",
+    "name": "cluster-id-disease-severity"
+  },
+  {
+    "identity_cluster_id": "cluster-id-exposure-mix",
+    "confounder_identity": "id-exposure-mix",
+    "name": "cluster-id-exposure-mix"
+  },
+  {
+    "identity_cluster_id": "cluster-id-geographic-composition",
+    "confounder_identity": "id-geographic-composition",
+    "name": "cluster-id-geographic-composition"
+  },
+  {
+    "identity_cluster_id": "cluster-id-institutional-unit",
+    "confounder_identity": "id-institutional-unit",
+    "name": "cluster-id-institutional-unit"
+  },
+  {
+    "identity_cluster_id": "cluster-id-legal-case-context",
+    "confounder_identity": "id-legal-case-context",
+    "name": "cluster-id-legal-case-context"
+  },
+  {
+    "identity_cluster_id": "cluster-id-mechanism-other",
+    "confounder_identity": "id-mechanism-other",
+    "name": "cluster-id-mechanism-other"
+  },
+  {
+    "identity_cluster_id": "cluster-id-method-specification",
+    "confounder_identity": "id-method-specification",
+    "name": "cluster-id-method-specification"
+  },
+  {
+    "identity_cluster_id": "cluster-id-selection-frailty",
+    "confounder_identity": "id-selection-frailty",
+    "name": "cluster-id-selection-frailty"
+  },
+  {
+    "identity_cluster_id": "cluster-id-situational-context",
+    "confounder_identity": "id-situational-context",
+    "name": "cluster-id-situational-context"
+  },
+  {
+    "identity_cluster_id": "cluster-id-smoking-behavior",
+    "confounder_identity": "id-smoking-behavior",
+    "name": "cluster-id-smoking-behavior"
+  },
+  {
+    "identity_cluster_id": "cluster-id-socioeconomic-status",
+    "confounder_identity": "id-socioeconomic-status",
+    "name": "cluster-id-socioeconomic-status"
+  },
+  {
+    "identity_cluster_id": "cluster-id-treatment-indication",
+    "confounder_identity": "id-treatment-indication",
+    "name": "cluster-id-treatment-indication"
+  },
+  {
+    "identity_cluster_id": "cluster-id-trial-timing-design",
+    "confounder_identity": "id-trial-timing-design",
+    "name": "cluster-id-trial-timing-design"
+  },
+  {
+    "identity_cluster_id": "cluster-id-user-platform-segment",
+    "confounder_identity": "id-user-platform-segment",
+    "name": "cluster-id-user-platform-segment"
+  }
+]

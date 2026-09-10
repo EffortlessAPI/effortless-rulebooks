@@ -1,0 +1,35 @@
+[
+  {
+    "faq_id": "faq-close-workpapers",
+    "procedure_version": "close-v1.1.0",
+    "step": "close-08",
+    "category": "Storage",
+    "target_kind": "Procedure",
+    "question": "Where are close workpapers stored?",
+    "answer": "In the controlled close evidence repository linked from the execution record; email attachments are not the system of record.",
+    "semantic_type_iri": "https://w3id.org/pko#FrequentlyAskedQuestion",
+    "name": null
+  },
+  {
+    "faq_id": "faq-policy-ai",
+    "procedure_version": "policy-v1.0.0",
+    "step": "policy-03",
+    "category": "Authority",
+    "target_kind": "Procedure",
+    "question": "Can the drafting AI approve a workforce policy?",
+    "answer": "No. It may draft from approved sources, but a human policy owner and legal reviewer must approve the commitments.",
+    "semantic_type_iri": "https://w3id.org/pko#FrequentlyAskedQuestion",
+    "name": null
+  },
+  {
+    "faq_id": "faq-policy-optout",
+    "procedure_version": "policy-v1.0.0",
+    "step": "policy-07",
+    "category": "Consent",
+    "target_kind": "Step",
+    "question": "What happens when an employee opts out of SMS?",
+    "answer": "The pipeline suppresses SMS and continues through the approved email channel.",
+    "semantic_type_iri": "https://w3id.org/pko#FrequentlyAskedQuestion",
+    "name": null
+  }
+]

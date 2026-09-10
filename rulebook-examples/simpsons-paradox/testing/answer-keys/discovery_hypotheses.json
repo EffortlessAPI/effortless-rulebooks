@@ -1,0 +1,308 @@
+[
+  {
+    "hypothesis_id": "H-age-identity-flip-rate",
+    "statement": "Age-composition identity (id-age-composition) produces manifest flip rate \u2265 40% among real studies \u2014 cross-domain demographic confounding is flip-prone, not latent-only.",
+    "expected_outcome": "AgeIdentityManifestFlipRate >= 0.40 AND AgeIdentityStudyCount >= 10",
+    "registered_in_loop": "loop-80",
+    "tradition_id": "tradition-epidemiology",
+    "epistemic_tier": "corpus-hypothesis",
+    "name": "H-age-identity-flip-rate"
+  },
+  {
+    "hypothesis_id": "H-catalog-exact-match",
+    "statement": "Catalog ExpectedDistortionType exact-match rate is below 50% \u2014 curator tags behave as mechanism priors, not taxonomy predictors.",
+    "expected_outcome": "TypePredictionMatchRate < 0.5",
+    "registered_in_loop": "loop-65",
+    "tradition_id": "tradition-epidemiology",
+    "epistemic_tier": "corpus-hypothesis",
+    "name": "H-catalog-exact-match"
+  },
+  {
+    "hypothesis_id": "H-causal-latent",
+    "statement": "Collider/selection studies produce latent-only flips under allocation sweep without manifest sign-flips at observed allocation.",
+    "expected_outcome": "ColliderSelectionManifestCount = 0 AND ColliderSelectionLatentOnlyCount >= 5",
+    "registered_in_loop": "loop-62",
+    "tradition_id": "tradition-epidemiology",
+    "epistemic_tier": "corpus-hypothesis",
+    "name": "H-causal-latent"
+  },
+  {
+    "hypothesis_id": "H-causal-manifest",
+    "statement": "Confounder-labeled studies produce manifest sign-flips at observed allocation (IsSignFlip=TRUE) far more often than collider/selection studies \u2014 reversal mode differs by mechanism class.",
+    "expected_outcome": "ConfounderSignFlipCount > ColliderSelectionManifestCount AND ConfounderSignFlipCount >= 10",
+    "registered_in_loop": "loop-62",
+    "tradition_id": "tradition-dag",
+    "epistemic_tier": "corpus-hypothesis",
+    "name": "H-causal-manifest"
+  },
+  {
+    "hypothesis_id": "H-collider-identity-low-manifest",
+    "statement": "Collider-proxy identity (id-collider-proxy) produces \u226415% manifest flip rate \u2014 near-zero manifest, predominantly latent Type-D geometry.",
+    "expected_outcome": "ManifestFlipRate(cluster-id-collider-proxy) <= 0.15 AND StudyCount(cluster-id-collider-proxy) >= 5",
+    "registered_in_loop": "loop-84",
+    "tradition_id": "tradition-dag",
+    "epistemic_tier": "corpus-hypothesis",
+    "name": "H-collider-identity-low-manifest"
+  },
+  {
+    "hypothesis_id": "H-collider-no-manifest-theorem",
+    "statement": "At scale (\u226510 collider/selection studies post expansion), zero manifest sign-flips: ColliderSelectionManifestCount = 0.",
+    "expected_outcome": "ColliderSelectionManifestCount = 0 AND ColliderSelectionCount >= 10",
+    "registered_in_loop": "loop-75",
+    "tradition_id": "tradition-dag",
+    "epistemic_tier": "consistency-check",
+    "name": "H-collider-no-manifest-theorem"
+  },
+  {
+    "hypothesis_id": "H-collider-no-manifest-v2",
+    "statement": "Collider and selection studies produce zero manifest sign-flips (DistortionType A or B) at observed allocation \u2014 including hernandez-diaz birth-weight collider tagged Expected A in catalog.",
+    "expected_outcome": "ColliderSelectionManifestCount = 0",
+    "registered_in_loop": "loop-68",
+    "tradition_id": "tradition-dag",
+    "epistemic_tier": "corpus-hypothesis",
+    "name": "H-collider-no-manifest-v2"
+  },
+  {
+    "hypothesis_id": "H-confounder-drift-type-d",
+    "name": "H-confounder-drift-type-d",
+    "statement": "When studies are bucketed by real-world valid-time (cohort midpoint, not publication year), case-mix / geographic / situational confounder archetypes (MechanismClass in severity-case-mix, geography, sports-situation) show DriftDirection=rising toward clean Type-D outcomes in ConfounderDistortionTimeline, while age / institutional / SES archetypes (demographic-composition, organizational-unit, ses-income) show DriftDirection in (flat, single-decade) -- i.e. the drift is confounder-specific, not corpus-wide.",
+    "expected_outcome": "COUNTIFS(ConfounderDistortionTimeline[MechanismClass],\"severity-case-mix|geography|sports-situation\",ConfounderDistortionTimeline[DriftDirection],\"rising\") = COUNTIFS(ConfounderDistortionTimeline[MechanismClass],\"severity-case-mix|geography|sports-situation\") AND COUNTIFS(ConfounderDistortionTimeline[MechanismClass],\"demographic-composition|organizational-unit|ses-income\",ConfounderDistortionTimeline[DriftDirection],\"rising\") = 0",
+    "registered_in_loop": "loop-92",
+    "tradition_id": "tradition-dag",
+    "epistemic_tier": "corpus-hypothesis"
+  },
+  {
+    "hypothesis_id": "H-control-no-manifest-flip",
+    "name": "H-control-no-manifest-flip",
+    "statement": "Zero manifest sign flips among control studies. These studies were selected for absence of paradox, so no pooled-vs-stratified reversal should be present.",
+    "expected_outcome": "COUNTIF(TreatmentRankings[IsSignFlip],TRUE,Studies[IsControlStudy],TRUE) = 0",
+    "registered_in_loop": "loop-88",
+    "tradition_id": "tradition-dag",
+    "epistemic_tier": "corpus-hypothesis"
+  },
+  {
+    "hypothesis_id": "H-control-safety-corridor",
+    "name": "H-control-safety-corridor",
+    "statement": "No control study with MaxStratumImbalance < 0.033 (the safe-corridor threshold) has IsSignFlip=TRUE. The safety corridor hypothesis predicts zero flips below this boundary.",
+    "expected_outcome": "COUNTIF(TreatmentRankings[IsSignFlip],TRUE,TreatmentRankings[MaxStratumImbalance],\"<0.033\",Studies[IsControlStudy],TRUE) = 0",
+    "registered_in_loop": "loop-88",
+    "tradition_id": "tradition-dag",
+    "epistemic_tier": "corpus-hypothesis"
+  },
+  {
+    "hypothesis_id": "H-control-type-d-predominance",
+    "name": "H-control-type-d-predominance",
+    "statement": "At least 70% of control studies encode as Type-D (neutral allocation, no sign flip) \u2014 Type-D is the expected basin for studies selected for absence of paradox.",
+    "expected_outcome": "COUNTIF(TreatmentRankings[IsSignFlip],TRUE,Studies[IsControlStudy],TRUE) / COUNTIF(Studies[IsControlStudy],TRUE) < 0.3",
+    "registered_in_loop": "loop-88",
+    "tradition_id": "tradition-dag",
+    "epistemic_tier": "corpus-hypothesis"
+  },
+  {
+    "hypothesis_id": "H-corrected-gap-invariant",
+    "statement": "CorrectedGap is allocation-invariant for every study: MAX(SweepStudySummary.SweepCorrectedGapRange) < 0.0001 and zero failing studies.",
+    "expected_outcome": "MaxStudySweepCorrectedGapRange < 0.0001 AND CorrectedGapInvariantFailCount = 0",
+    "registered_in_loop": "loop-73",
+    "tradition_id": "tradition-dag",
+    "epistemic_tier": "consistency-check",
+    "name": "H-corrected-gap-invariant"
+  },
+  {
+    "hypothesis_id": "H-cplus-magnitude",
+    "statement": "C+ studies carry higher mean AllocationDistortion than C- studies and Type-D studies \u2014 magnitude inflation is the largest quantitative error class and invisible to is_sign_flip.",
+    "expected_outcome": "CPlusAvgDistortion > CMinusAvgDistortion AND CPlusAvgDistortion > TypeDAvgDistortion",
+    "registered_in_loop": "loop-68",
+    "tradition_id": "tradition-epidemiology",
+    "epistemic_tier": "corpus-hypothesis",
+    "name": "H-cplus-magnitude"
+  },
+  {
+    "hypothesis_id": "H-explained-bidirectional",
+    "statement": "IsParadoxExplained \u27fa confounder manifest sign-flip: ExplainedConfounderCount = ConfounderSignFlipCount, no false-positive explained rows, no unexplained confounder sign-flips.",
+    "expected_outcome": "ExplainedConfounderCount = ConfounderSignFlipCount AND FalsePositiveExplainedCount = 0 AND UnexplainedConfounderSignFlipCount = 0",
+    "registered_in_loop": "loop-74",
+    "tradition_id": "tradition-dag",
+    "epistemic_tier": "consistency-check",
+    "name": "H-explained-bidirectional"
+  },
+  {
+    "hypothesis_id": "H-explained-confounder",
+    "statement": "IsParadoxExplained is TRUE for all and only confounder sign-flip studies \u2014 adjust-resolvable confounding is the unique condition that makes a reversal fully explained.",
+    "expected_outcome": "ExplainedConfounderCount = SignFlipCount AND ExplainedNonConfounderCount = 0",
+    "registered_in_loop": "loop-63",
+    "tradition_id": "tradition-dag",
+    "epistemic_tier": "corpus-hypothesis",
+    "name": "H-explained-confounder"
+  },
+  {
+    "hypothesis_id": "H-geographic-stable-type-d",
+    "statement": "Geographic-composition identity (id-geographic-composition) has \u226525% Type-D fraction \u2014 stable latent-D presence distinct from manifest-flip-prone identities.",
+    "expected_outcome": "TypeDFraction(cluster-id-geographic-composition) >= 0.25 AND StudyCount(cluster-id-geographic-composition) >= 3",
+    "registered_in_loop": "loop-84",
+    "tradition_id": "tradition-dag",
+    "epistemic_tier": "corpus-hypothesis",
+    "name": "H-geographic-stable-type-d"
+  },
+  {
+    "hypothesis_id": "H-identity-map-coverage",
+    "statement": "At least 95% of real-study StratumVariables carry a ConfounderIdentity map \u2014 ontology covers the corpus.",
+    "expected_outcome": "IdentityMapCoverageRate >= 0.95",
+    "registered_in_loop": "loop-80",
+    "tradition_id": "tradition-historical",
+    "epistemic_tier": "consistency-check",
+    "name": "H-identity-map-coverage"
+  },
+  {
+    "hypothesis_id": "H-latent-d",
+    "statement": "More than half of Type-D (SAFE) studies would flip their pooled winner under counterfactual allocation reweighting.",
+    "expected_outcome": "LatentTypeDFraction > 0.5",
+    "registered_in_loop": "loop-61",
+    "tradition_id": "tradition-historical",
+    "epistemic_tier": "corpus-hypothesis",
+    "name": "H-latent-d"
+  },
+  {
+    "hypothesis_id": "H-mechanism-other-drain",
+    "statement": "After ontology drain, id-mechanism-other contains \u22645 studies \u2014 the catch-all is no longer the dominant bucket.",
+    "expected_outcome": "StudyCount(cluster-id-mechanism-other) <= 5",
+    "registered_in_loop": "loop-83",
+    "tradition_id": "tradition-dag",
+    "epistemic_tier": "corpus-hypothesis",
+    "name": "H-mechanism-other-drain"
+  },
+  {
+    "hypothesis_id": "H-perfect-balance-sufficient-safety",
+    "name": "H-perfect-balance-sufficient-safety",
+    "statement": "Perfect allocation balance (ArmSizeRatio=0.5 AND MaxStratumImbalance=0.0) is a domain-agnostic sufficient condition for no manifest Simpson's Paradox \u2014 no such study produces IsSignFlip=TRUE regardless of mechanism class, domain, or confounder identity.",
+    "expected_outcome": "PerfectBalanceFlipCount=0 AND PerfectBalanceStudyCount>=100",
+    "registered_in_loop": "loop-86",
+    "tradition_id": "tradition-dag",
+    "epistemic_tier": "consistency-check"
+  },
+  {
+    "hypothesis_id": "H-purity",
+    "statement": "Every sign-flip study has SignalPurity strictly below 0.5.",
+    "expected_outcome": "SignFlipSignalPurityMax < 0.5",
+    "registered_in_loop": "loop-61",
+    "tradition_id": "tradition-dag",
+    "epistemic_tier": "consistency-check",
+    "name": "H-purity"
+  },
+  {
+    "hypothesis_id": "H-purity-inversion",
+    "name": "H-purity-inversion",
+    "statement": "Mechanism classes with PolicyDefault='do-not-condition' or 'do-not-naively-adjust' (collider-selection, selection-frailty) have strictly higher mean SignalPurity than all stratify-* mechanism classes. High SignalPurity anti-predicts safe stratification \u2014 it is a trap for researchers who use data cleanliness as a quality heuristic.",
+    "expected_outcome": "MeanPurityColliderSelection > MeanPurityAllStratifyClasses AND MeanPuritySelectionFrailty >= 0.95",
+    "registered_in_loop": "loop-87",
+    "tradition_id": "tradition-dag",
+    "epistemic_tier": "consistency-check"
+  },
+  {
+    "hypothesis_id": "H-purity-trap-flag-coverage",
+    "name": "H-purity-trap-flag-coverage",
+    "statement": "PurityTrapFlag=TRUE covers \u226580% of collider/selection studies and \u22645% of demographic-composition confounder studies \u2014 the flag correctly discriminates the trap from the safe-stratification zone.",
+    "expected_outcome": "PurityTrapCoverage(collider-selection) >= 0.80 AND PurityTrapFalsePositiveRate(demographic-composition) <= 0.05",
+    "registered_in_loop": "loop-87",
+    "tradition_id": "tradition-dag",
+    "epistemic_tier": "corpus-hypothesis"
+  },
+  {
+    "hypothesis_id": "H-safety-corridor-lower-bound",
+    "name": "H-safety-corridor-lower-bound",
+    "statement": "The minimum observed MaxStratumImbalance among all manifest sign-flip studies is 0.033 (flu-vaccine-elderly-mortality). No sign-flip occurs below this threshold \u2014 the gap [0.0, 0.033) is a corpus-level safety corridor.",
+    "expected_outcome": "MinSignFlipStratumImbalance >= 0.033 AND SafeCorridorFlipCount=0",
+    "registered_in_loop": "loop-86",
+    "tradition_id": "tradition-dag",
+    "epistemic_tier": "corpus-hypothesis"
+  },
+  {
+    "hypothesis_id": "H-selection-frailty-zero-manifest",
+    "statement": "Selection-frailty identity (id-selection-frailty) produces zero manifest sign-flips \u2014 pure latent-D geometry, no allocation-reversal at observed weights.",
+    "expected_outcome": "ManifestFlipCount(cluster-id-selection-frailty) = 0 AND StudyCount(cluster-id-selection-frailty) >= 3",
+    "registered_in_loop": "loop-84",
+    "tradition_id": "tradition-dag",
+    "epistemic_tier": "corpus-hypothesis",
+    "name": "H-selection-frailty-zero-manifest"
+  },
+  {
+    "hypothesis_id": "H-severity-epi-latent-only",
+    "statement": "Disease-severity identity within epidemiology domain shows zero manifest flips \u2014 latent-only geometry in that domain.",
+    "expected_outcome": "ManifestFlipCount(cell-id-disease-severity-x-epidemiology) = 0",
+    "registered_in_loop": "loop-82",
+    "tradition_id": "tradition-epidemiology",
+    "epistemic_tier": "corpus-hypothesis",
+    "name": "H-severity-epi-latent-only"
+  },
+  {
+    "hypothesis_id": "H-severity-medicine-manifest",
+    "statement": "Disease-severity identity within medicine domain has manifest flip rate \u226545% \u2014 severity drives reversals in clinical settings.",
+    "expected_outcome": "ManifestFlipRate(cell-id-disease-severity-x-medicine) >= 0.45",
+    "registered_in_loop": "loop-82",
+    "tradition_id": "tradition-epidemiology",
+    "epistemic_tier": "corpus-hypothesis",
+    "name": "H-severity-medicine-manifest"
+  },
+  {
+    "hypothesis_id": "H-severity-vs-age-latent",
+    "statement": "Disease-severity identity shows lower Type-D latent fraction than age-composition identity \u2014 severity drives manifest reversals more than hidden sweep sensitivity.",
+    "expected_outcome": "SeverityIdentityLatentFractionAmongTypeD < AgeIdentityLatentFractionAmongTypeD",
+    "registered_in_loop": "loop-80",
+    "tradition_id": "tradition-dag",
+    "epistemic_tier": "corpus-pattern-superseded",
+    "name": "H-severity-vs-age-latent"
+  },
+  {
+    "hypothesis_id": "H-small-effect",
+    "statement": "Allocation-stable Type-D studies carry larger observed pooled gaps than latent Type-D studies.",
+    "expected_outcome": "AvgPooledGapStableD > AvgPooledGapLatentD",
+    "registered_in_loop": "loop-61",
+    "tradition_id": "tradition-epidemiology",
+    "epistemic_tier": "corpus-hypothesis",
+    "name": "H-small-effect"
+  },
+  {
+    "hypothesis_id": "H-synthetic-edge-coverage",
+    "name": "H-synthetic-edge-coverage",
+    "statement": "All four corpus theorem boundary regions (near-zero-distortion, equal-weight sign-flip, zero-corrected-gap, collider-purity) are covered by at least one synthetic study.",
+    "expected_outcome": "COUNTIF(Studies[IsSynthetic],TRUE) >= 4 AND all four boundary regions represented",
+    "registered_in_loop": "loop-89",
+    "tradition_id": "tradition-dag",
+    "epistemic_tier": "corpus-hypothesis"
+  },
+  {
+    "hypothesis_id": "H-theorem-portfolio",
+    "statement": "Four Category=theorem conclusions are witnessed: SignalPurity (conc-12/20) plus three new theorems from loops 73\u201375.",
+    "expected_outcome": "TheoremCount >= 4",
+    "registered_in_loop": "loop-76",
+    "tradition_id": "tradition-historical",
+    "epistemic_tier": "consistency-check",
+    "name": "H-theorem-portfolio"
+  },
+  {
+    "hypothesis_id": "H-ultra-fragile",
+    "statement": "At least four Type-D studies are sweep-fragile: signal_purity=1, allocation_distortion=0, sweep_pooled_gap_range>0.3, allocation_fragility>=10 \u2014 perfectly safe by pooled metrics yet latent-flip under reweighting.",
+    "expected_outcome": "SweepFragileCount >= 4",
+    "registered_in_loop": "loop-68",
+    "tradition_id": "tradition-historical",
+    "epistemic_tier": "corpus-hypothesis",
+    "name": "H-ultra-fragile"
+  },
+  {
+    "hypothesis_id": "H-unexplained-flips-only-nonconfounders",
+    "statement": "All unexplained sign-flips (IsSignFlip=TRUE AND IsParadoxExplained=FALSE) have ConfounderIdentity \u2208 {id-contested-org-choice, id-collider-proxy} OR CausalRole=contested \u2014 no unexplained flip belongs to an unambiguous confounder identity.",
+    "expected_outcome": "UnexplainedConfounderSignFlipCount = 0",
+    "registered_in_loop": "loop-85",
+    "tradition_id": "tradition-dag",
+    "epistemic_tier": "consistency-check",
+    "name": "H-unexplained-flips-only-nonconfounders"
+  },
+  {
+    "hypothesis_id": "H-unexplained-nonconfounder",
+    "statement": "Studies with IsSignFlip=TRUE and CausalRole != confounder (contested or mediator) have IsParadoxExplained=FALSE.",
+    "expected_outcome": "ContestedOrMediatorExplainedCount = 0",
+    "registered_in_loop": "loop-63",
+    "tradition_id": "tradition-dag",
+    "epistemic_tier": "corpus-hypothesis",
+    "name": "H-unexplained-nonconfounder"
+  }
+]

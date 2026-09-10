@@ -1,0 +1,83 @@
+[
+  {
+    "short_vector_id": "lat-q-sqrt-neg3-v1",
+    "minkowski_lattice": "lat-q-sqrt-neg3",
+    "coords_json": "[1,0]",
+    "norm_squared": 1,
+    "name": "lat-q-sqrt-neg3/",
+    "is_short": false
+  },
+  {
+    "short_vector_id": "lat-q-sqrt-neg3-v2",
+    "minkowski_lattice": "lat-q-sqrt-neg3",
+    "coords_json": "[0,1]",
+    "norm_squared": 3,
+    "name": "lat-q-sqrt-neg3/",
+    "is_short": false
+  },
+  {
+    "short_vector_id": "lat-q-sqrt-neg3-v3",
+    "minkowski_lattice": "lat-q-sqrt-neg3",
+    "coords_json": "[2,0]",
+    "norm_squared": 4,
+    "name": "lat-q-sqrt-neg3/",
+    "is_short": false
+  },
+  {
+    "short_vector_id": "lat-q-sqrt-neg3-v4",
+    "minkowski_lattice": "lat-q-sqrt-neg3",
+    "coords_json": "[3,0]",
+    "norm_squared": 9,
+    "name": "lat-q-sqrt-neg3/",
+    "is_short": false
+  },
+  {
+    "short_vector_id": "lat-q-zeta-7-v-difference-small",
+    "minkowski_lattice": "lat-q-zeta-7",
+    "coords_json": "[0.3765102,-0.7818315,1.2225209,-0.9749279,1.9009689,-0.4338837]",
+    "norm_squared": 6,
+    "description": "Image of (1 - \u03b6_7) under Minkowski; just above the short-vector threshold (squared norm 6 > 4).",
+    "name": "lat-q-zeta-7/",
+    "is_short": false
+  },
+  {
+    "short_vector_id": "lat-q-zeta-7-v-large",
+    "minkowski_lattice": "lat-q-zeta-7",
+    "coords_json": "[2,0,2,0,2,0]",
+    "norm_squared": 12,
+    "name": "lat-q-zeta-7/",
+    "is_short": false
+  },
+  {
+    "short_vector_id": "lat-q-zeta-7-v-zeta0",
+    "minkowski_lattice": "lat-q-zeta-7",
+    "coords_json": "[1,0,1,0,1,0]",
+    "norm_squared": 3,
+    "name": "lat-q-zeta-7/",
+    "is_short": false
+  },
+  {
+    "short_vector_id": "lat-q-zeta-7-v-zeta1",
+    "minkowski_lattice": "lat-q-zeta-7",
+    "coords_json": "[0.6234898,0.7818315,-0.2225209,0.9749279,-0.9009689,0.4338837]",
+    "norm_squared": 3,
+    "name": "lat-q-zeta-7/",
+    "is_short": false
+  },
+  {
+    "short_vector_id": "lat-q-zeta-7-v-zeta2",
+    "minkowski_lattice": "lat-q-zeta-7",
+    "coords_json": "[-0.2225209,0.9749279,-0.9009689,-0.4338837,0.6234898,-0.7818315]",
+    "norm_squared": 3,
+    "name": "lat-q-zeta-7/",
+    "is_short": false
+  },
+  {
+    "short_vector_id": "lat-q-zeta-7-v-zeta3",
+    "minkowski_lattice": "lat-q-zeta-7",
+    "coords_json": "[-0.9009689,0.4338837,0.6234898,-0.7818315,-0.2225209,-0.9749279]",
+    "norm_squared": 3,
+    "name": "lat-q-zeta-7/",
+    "is_short": false
+  }
+]

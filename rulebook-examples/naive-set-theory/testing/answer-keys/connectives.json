@@ -1,0 +1,23 @@
+[
+  {
+    "connective_id": "conjunction",
+    "symbol": "\u2227",
+    "arity": 2,
+    "kleene_rule": "min of ranks",
+    "name": "conjunction"
+  },
+  {
+    "connective_id": "disjunction",
+    "symbol": "\u2228",
+    "arity": 2,
+    "kleene_rule": "max of ranks",
+    "name": "disjunction"
+  },
+  {
+    "connective_id": "negation",
+    "symbol": "\u00ac",
+    "arity": 1,
+    "kleene_rule": "negate rank",
+    "name": "negation"
+  }
+]

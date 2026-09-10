@@ -1,0 +1,24 @@
+[
+  {
+    "user_feedback_id": "fb-close-retro",
+    "provided_at": "2026-07-02 16:30:00-05:00",
+    "feedback_text": "The feed timestamp check should be a required precondition, not a troubleshooting note.",
+    "disposition": "Accepted",
+    "change_request_key": "cr-close-timestamp",
+    "semantic_type_iri": "https://w3id.org/pko#UserFeedbackOccurrence",
+    "name": "Accepted: The feed timestamp check should be a required precondition, ",
+    "procedure_execution": "exec-close-2026-q2",
+    "provided_by_agent": "devon-okafor"
+  },
+  {
+    "user_feedback_id": "fb-policy-sms",
+    "provided_at": "2026-07-19 10:30:00-05:00",
+    "feedback_text": "Add a secondary path for employees whose carrier reports a delayed delivery receipt.",
+    "disposition": "UnderReview",
+    "change_request_key": "cr-policy-delivery",
+    "semantic_type_iri": "https://w3id.org/pko#UserFeedbackOccurrence",
+    "name": "UnderReview: Add a secondary path for employees whose carrier reports a d",
+    "procedure_execution": "exec-policy-hr4821",
+    "provided_by_agent": "amina-yusuf"
+  }
+]

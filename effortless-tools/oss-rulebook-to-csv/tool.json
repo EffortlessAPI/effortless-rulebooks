@@ -1,0 +1,10 @@
+{
+  "name": "oss-rulebook-to-csv",
+  "runtime": "script",
+  "entry": "transpiler.py",
+  "description": "Generate CSV exports + rulebook.xlsx from rulebook",
+  "tags": [
+    "oss",
+    "execution-substrate"
+  ]
+}

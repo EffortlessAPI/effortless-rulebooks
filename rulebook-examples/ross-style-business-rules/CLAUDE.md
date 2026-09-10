@@ -32,10 +32,22 @@ Do not edit generated files. Edit the rulebook and rebuild.
 
 `app/` (Express `server.js` + Vite/React) is the domain app: `./start.sh` serves the web UI on `http://localhost:43104` and the API on `http://localhost:43304` against database `erb_ross_style_business_rules` (override with `PGHOST`/`PGUSER`/`PGPASSWORD`/`PGPORT`/`PGDATABASE`). It reads views only — `vw_claims`, `vw_policies`, `vw_claimants`, `vw_incidents` via `GET /api/views[/:name]` — and never recomputes a rule verdict in app code; `GET /api/rules` returns the Claims field descriptions (rule wording, metadata) from the hub. A missing view or a failing `SELECT` is a 500 with the exact expected thing named, shown in the UI.
 
-## Local transpiler bus (`localhost:4242`)
+## Local transpiler bus (`127.0.0.1:4242`)
 
-> **All 13 local transpilers live on `localhost:4242`.** Once you run
-> `./start.sh` from the repo root, the ssotme-proxy exposes every repo-local
-> transpiler — `rulebook-to-postgres`, `rulebook-to-python`, `rulebook-to-golang`,
-> `rulebook-to-cobol`, `rulebook-to-owl`, and more — as first-class `ssotme://`
-> routes any `effortless build` can call.
+> **All 11 local transpilers are hosted by the effortless CLI itself.** Once you
+> run `./start.sh` from the repo root (or `effortless serve -port 4242` there),
+> every tool under `effortless-tools/<name>/` — `oss-rulebook-to-python`,
+> `oss-rulebook-to-golang`, `oss-rulebook-to-cobol`, `oss-rulebook-to-owl`, and
+> more — is a first-class route any `effortless build` can call. `GET /` lists
+> them.
+>
+> **Address it as `127.0.0.1`, never `localhost`.** The host binds the literal
+> prefix `http://127.0.0.1:<port>/`, so a request carrying a `localhost` Host
+> header gets a bare 404 with no explanation.
+>
+> **Every repo-local route carries the `oss-` prefix.** The bare names
+> (`rulebook-to-python`, `rulebook-to-xlsx`, `rulebook-to-owl`,
+> `rulebook-to-airtable`, `airtable-to-rulebook`) belong to the commercial
+> catalog as `effortless/effortless/<tool>`; the prefix is the only thing
+> keeping a repo-local route from shadowing one.
+> `orchestration/local_tool_shim.py` refuses to run if any tool is missing it.

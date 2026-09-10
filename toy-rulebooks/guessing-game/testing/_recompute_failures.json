@@ -1,0 +1,146 @@
+[
+  {
+    "entity": "\u8fb9",
+    "field": "\u540d\u79f0",
+    "formula": "={{\u5f62\u72b6}} & \"-\" & {{\u6807\u7b7e}}",
+    "record_id": "e1",
+    "error": "drift: stored='\u5f62\u72b61-\u963f' python-recompute='1-\u963f'",
+    "severity": "drift"
+  },
+  {
+    "entity": "\u8fb9",
+    "field": "\u662f\u5426\u4e3a\u659c\u8fb9",
+    "formula": "={{\u957f\u5ea6}} = {{\u5f62\u72b6\u7684\u6700\u5927\u8fb9\u957f}}",
+    "record_id": "e1",
+    "error": "drift: stored='' python-recompute=False",
+    "severity": "drift"
+  },
+  {
+    "entity": "\u8fb9",
+    "field": "\u540d\u79f0",
+    "formula": "={{\u5f62\u72b6}} & \"-\" & {{\u6807\u7b7e}}",
+    "record_id": "e2",
+    "error": "drift: stored='\u5f62\u72b61-\u6bd4' python-recompute='1-\u6bd4'",
+    "severity": "drift"
+  },
+  {
+    "entity": "\u8fb9",
+    "field": "\u662f\u5426\u4e3a\u659c\u8fb9",
+    "formula": "={{\u957f\u5ea6}} = {{\u5f62\u72b6\u7684\u6700\u5927\u8fb9\u957f}}",
+    "record_id": "e2",
+    "error": "drift: stored='' python-recompute=False",
+    "severity": "drift"
+  },
+  {
+    "entity": "\u8fb9",
+    "field": "\u540d\u79f0",
+    "formula": "={{\u5f62\u72b6}} & \"-\" & {{\u6807\u7b7e}}",
+    "record_id": "e3",
+    "error": "drift: stored='\u5f62\u72b61-\u897f' python-recompute='1-\u897f'",
+    "severity": "drift"
+  },
+  {
+    "entity": "\u8fb9",
+    "field": "\u662f\u5426\u4e3a\u659c\u8fb9",
+    "formula": "={{\u957f\u5ea6}} = {{\u5f62\u72b6\u7684\u6700\u5927\u8fb9\u957f}}",
+    "record_id": "e3",
+    "error": "drift: stored=True python-recompute=False",
+    "severity": "drift"
+  },
+  {
+    "entity": "\u8fb9",
+    "field": "\u540d\u79f0",
+    "formula": "={{\u5f62\u72b6}} & \"-\" & {{\u6807\u7b7e}}",
+    "record_id": "e4",
+    "error": "drift: stored='\u5f62\u72b62-\u963f' python-recompute='2-\u963f'",
+    "severity": "drift"
+  },
+  {
+    "entity": "\u8fb9",
+    "field": "\u662f\u5426\u4e3a\u659c\u8fb9",
+    "formula": "={{\u957f\u5ea6}} = {{\u5f62\u72b6\u7684\u6700\u5927\u8fb9\u957f}}",
+    "record_id": "e4",
+    "error": "drift: stored=True python-recompute=False",
+    "severity": "drift"
+  },
+  {
+    "entity": "\u8fb9",
+    "field": "\u540d\u79f0",
+    "formula": "={{\u5f62\u72b6}} & \"-\" & {{\u6807\u7b7e}}",
+    "record_id": "e5",
+    "error": "drift: stored='\u5f62\u72b62-\u6bd4' python-recompute='2-\u6bd4'",
+    "severity": "drift"
+  },
+  {
+    "entity": "\u8fb9",
+    "field": "\u662f\u5426\u4e3a\u659c\u8fb9",
+    "formula": "={{\u957f\u5ea6}} = {{\u5f62\u72b6\u7684\u6700\u5927\u8fb9\u957f}}",
+    "record_id": "e5",
+    "error": "drift: stored=True python-recompute=False",
+    "severity": "drift"
+  },
+  {
+    "entity": "\u8fb9",
+    "field": "\u540d\u79f0",
+    "formula": "={{\u5f62\u72b6}} & \"-\" & {{\u6807\u7b7e}}",
+    "record_id": "e6",
+    "error": "drift: stored='\u5f62\u72b62-\u897f' python-recompute='2-\u897f'",
+    "severity": "drift"
+  },
+  {
+    "entity": "\u8fb9",
+    "field": "\u662f\u5426\u4e3a\u659c\u8fb9",
+    "formula": "={{\u957f\u5ea6}} = {{\u5f62\u72b6\u7684\u6700\u5927\u8fb9\u957f}}",
+    "record_id": "e6",
+    "error": "drift: stored=True python-recompute=False",
+    "severity": "drift"
+  },
+  {
+    "entity": "\u8fb9",
+    "field": "\u540d\u79f0",
+    "formula": "={{\u5f62\u72b6}} & \"-\" & {{\u6807\u7b7e}}",
+    "record_id": "e7",
+    "error": "drift: stored='\u5f62\u72b62-\u8fea' python-recompute='2-\u8fea'",
+    "severity": "drift"
+  },
+  {
+    "entity": "\u8fb9",
+    "field": "\u662f\u5426\u4e3a\u659c\u8fb9",
+    "formula": "={{\u957f\u5ea6}} = {{\u5f62\u72b6\u7684\u6700\u5927\u8fb9\u957f}}",
+    "record_id": "e7",
+    "error": "drift: stored=True python-recompute=False",
+    "severity": "drift"
+  },
+  {
+    "entity": "\u8fb9",
+    "field": "\u540d\u79f0",
+    "formula": "={{\u5f62\u72b6}} & \"-\" & {{\u6807\u7b7e}}",
+    "record_id": "e8",
+    "error": "drift: stored='\u5f62\u72b63-\u963f' python-recompute='3-\u963f'",
+    "severity": "drift"
+  },
+  {
+    "entity": "\u8fb9",
+    "field": "\u662f\u5426\u4e3a\u659c\u8fb9",
+    "formula": "={{\u957f\u5ea6}} = {{\u5f62\u72b6\u7684\u6700\u5927\u8fb9\u957f}}",
+    "record_id": "e8",
+    "error": "drift: stored=True python-recompute=False",
+    "severity": "drift"
+  },
+  {
+    "entity": "\u8fb9",
+    "field": "\u540d\u79f0",
+    "formula": "={{\u5f62\u72b6}} & \"-\" & {{\u6807\u7b7e}}",
+    "record_id": "e9",
+    "error": "drift: stored='\u5f62\u72b63-\u6bd4' python-recompute='3-\u6bd4'",
+    "severity": "drift"
+  },
+  {
+    "entity": "\u8fb9",
+    "field": "\u662f\u5426\u4e3a\u659c\u8fb9",
+    "formula": "={{\u957f\u5ea6}} = {{\u5f62\u72b6\u7684\u6700\u5927\u8fb9\u957f}}",
+    "record_id": "e9",
+    "error": "drift: stored=True python-recompute=False",
+    "severity": "drift"
+  }
+]

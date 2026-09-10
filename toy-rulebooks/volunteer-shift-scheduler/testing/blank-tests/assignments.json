@@ -1,0 +1,92 @@
+[
+  {
+    "assignment_id": "a-alex-intake",
+    "volunteer": "alex-kim",
+    "shift": "harvest-intake-midday",
+    "volunteer_name": null,
+    "shift_name": null,
+    "shift_duration_hours": null,
+    "name": null
+  },
+  {
+    "assignment_id": "a-alex-teardown",
+    "volunteer": "alex-kim",
+    "shift": "harvest-teardown-evening",
+    "volunteer_name": null,
+    "shift_name": null,
+    "shift_duration_hours": null,
+    "name": null
+  },
+  {
+    "assignment_id": "a-jamie-foodbank-distrib",
+    "volunteer": "jamie-rivera",
+    "shift": "foodbank-distrib-afternoon",
+    "volunteer_name": null,
+    "shift_name": null,
+    "shift_duration_hours": null,
+    "name": null
+  },
+  {
+    "assignment_id": "a-jamie-setup",
+    "volunteer": "jamie-rivera",
+    "shift": "harvest-setup-morning",
+    "volunteer_name": null,
+    "shift_name": null,
+    "shift_duration_hours": null,
+    "name": null
+  },
+  {
+    "assignment_id": "a-morgan-foodbank-sort",
+    "volunteer": "morgan-lee",
+    "shift": "foodbank-sort-morning",
+    "volunteer_name": null,
+    "shift_name": null,
+    "shift_duration_hours": null,
+    "name": null
+  },
+  {
+    "assignment_id": "a-morgan-intake",
+    "volunteer": "morgan-lee",
+    "shift": "harvest-intake-midday",
+    "volunteer_name": null,
+    "shift_name": null,
+    "shift_duration_hours": null,
+    "name": null
+  },
+  {
+    "assignment_id": "a-morgan-setup",
+    "volunteer": "morgan-lee",
+    "shift": "harvest-setup-morning",
+    "volunteer_name": null,
+    "shift_name": null,
+    "shift_duration_hours": null,
+    "name": null
+  },
+  {
+    "assignment_id": "a-sam-intake",
+    "volunteer": "sam-park",
+    "shift": "harvest-intake-midday",
+    "volunteer_name": null,
+    "shift_name": null,
+    "shift_duration_hours": null,
+    "name": null
+  },
+  {
+    "assignment_id": "a-sam-setup",
+    "volunteer": "sam-park",
+    "shift": "harvest-setup-morning",
+    "volunteer_name": null,
+    "shift_name": null,
+    "shift_duration_hours": null,
+    "name": null
+  },
+  {
+    "assignment_id": "a-sam-teardown",
+    "volunteer": "sam-park",
+    "shift": "harvest-teardown-evening",
+    "volunteer_name": null,
+    "shift_name": null,
+    "shift_duration_hours": null,
+    "name": null
+  }
+]

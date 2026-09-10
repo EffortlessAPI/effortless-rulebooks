@@ -1,0 +1,112 @@
+[
+  {
+    "component_id": "comp-01-distortion-badge",
+    "component_name": "DistortionBadge",
+    "used_on_screens": "screen-01-study-list, screen-02-study-detail, screen-05-distortion-plane",
+    "primary_entity": "TreatmentRankings",
+    "description": "A colored pill/chip that shows DistortionType (A/B/C/D) and PolicyImplication for one study. Color-coded: A=red (stratify-immediately), B=orange (investigate-confounder), C=yellow (check-allocation-bias), D=green (pooled-analysis-trustworthy).",
+    "required_fields": "DistortionType, PolicyImplication",
+    "visual_spec": "Pill shape, 2\u20133 chars for the type letter, tooltip on hover showing PolicyImplication text. Consistent color across all screens.",
+    "name": "comp-01-distortion-badge"
+  },
+  {
+    "component_id": "comp-02-rate-comparison-bar",
+    "component_name": "RateComparisonBar",
+    "used_on_screens": "screen-02-study-detail, screen-03-strata-detail",
+    "primary_entity": "TreatmentRankings",
+    "description": "A side-by-side horizontal bar chart comparing PooledRateA vs PooledRateB (or StratumRateA vs StratumRateB for strata). The bar for the loser under equal-weight allocation is visually distinguished from the bar for the pooled loser.",
+    "required_fields": "PooledRateA, PooledRateB, PooledWinner, WeightedStratumGapSum, SignedPooledGap, IsSignFlip",
+    "visual_spec": "Two horizontal bars, labeled A and B. Arrow or bracket showing the gap. IsSignFlip=TRUE triggers a 'reversal' annotation. Width proportional to rate (0\u20131 scale).",
+    "name": "comp-02-rate-comparison-bar"
+  },
+  {
+    "component_id": "comp-03-allocation-heatmap",
+    "component_name": "AllocationHeatmap",
+    "used_on_screens": "screen-03-strata-detail",
+    "primary_entity": "StratumSummaries",
+    "description": "A grid of (Stratum \u00d7 Treatment) cells where cell color encodes AllocationBias magnitude and sign. Positive bias (A over-allocated here) in one color; negative (B over-allocated) in another. Cell text shows AllocationFractionA and AllocationFractionB.",
+    "required_fields": "StratumLabel, TreatmentLabel, AllocationBias, AllocationFractionA, AllocationFractionB, StratumSuccessRate",
+    "visual_spec": "Matrix layout: rows=strata, cols=treatments. Diverging color scale centered at 0. Tooltip shows raw Cases and Successes from CaseCells.",
+    "name": "comp-03-allocation-heatmap"
+  },
+  {
+    "component_id": "comp-04-distortion-plane-scatter",
+    "component_name": "DistortionPlaneScatter",
+    "used_on_screens": "screen-05-distortion-plane",
+    "primary_entity": "TreatmentRankings",
+    "description": "A 2D scatter plot with AllocationDistortion on the x-axis and ReversalIntensity on the y-axis. Each point is one study, colored by DistortionType. Quadrant lines at AllocationDistortion=0.01 (threshold) and ReversalIntensity=1.0 (unanimity) divide the plane into the four types.",
+    "required_fields": "AllocationDistortion, ReversalIntensity, DistortionType, PolicyImplication, IsSignFlip",
+    "visual_spec": "SVG or canvas scatter. Labeled quadrant regions. Clickable points. Legend showing type \u2192 color \u2192 policy action.",
+    "name": "comp-04-distortion-plane-scatter"
+  },
+  {
+    "component_id": "comp-05-stratum-gap-waterfall",
+    "component_name": "StratumGapWaterfall",
+    "used_on_screens": "screen-03-strata-detail",
+    "primary_entity": "StratumSummaries",
+    "description": "A waterfall chart showing how each stratum's WeightedStratumGap contributes to WeightedStratumGapSum, then how the allocation re-weights them to produce SignedPooledGap. The visual makes the mechanism equation explicit: pooled = \u03a3(weight \u00d7 rate).",
+    "required_fields": "StratumLabel, StratumGap, StratumFraction, WeightedStratumGap, WeightedStratumGapSum, SignedPooledGap",
+    "visual_spec": "Waterfall/stacked bar: each stratum's WeightedStratumGap as a segment; running sum shown; final total vs actual SignedPooledGap shown side-by-side. IsSignFlip highlights the sign difference.",
+    "name": "comp-05-stratum-gap-waterfall"
+  },
+  {
+    "component_id": "comp-06-model-summary-scorecard",
+    "component_name": "ModelSummaryScorecard",
+    "used_on_screens": "screen-06-model-summary",
+    "primary_entity": "ModelSummary",
+    "description": "A summary scorecard showing all ModelSummary fields as labeled metric tiles: StudyCount, ReversalCount, ExplainedCount, TypeA/B/C/D counts, AvgAllocationDistortion, TotalParadoxStrength.",
+    "required_fields": "StudyCount, ReversalCount, ExplainedCount, TotalParadoxStrength, AvgParadoxStrength",
+    "visual_spec": "Grid of metric tiles. Each tile: large number, small label. Color: ReversalCount in orange/red; ExplainedCount in green; TypeD in grey. Single row layout on desktop, 2-column on mobile.",
+    "name": "comp-06-model-summary-scorecard"
+  },
+  {
+    "component_id": "comp-07-confounder-card",
+    "component_name": "ConfounderCard",
+    "used_on_screens": "screen-04-confounder-panel",
+    "primary_entity": "StratumVariables",
+    "description": "A card showing one StratumVariable row: VariableName, CausalRole badge, AffectsTreatmentAssignment checkbox, AffectsOutcome checkbox, IsConfounder result, and MechanismNote prose block.",
+    "required_fields": "VariableName, CausalRole, AffectsTreatmentAssignment, AffectsOutcome, IsConfounder, MechanismNote",
+    "visual_spec": "Card with header=VariableName, CausalRole as a badge (confounder=red, mediator=orange, contested=yellow, unknown=grey), two boolean indicators, and MechanismNote as body text.",
+    "name": "comp-07-confounder-card"
+  },
+  {
+    "component_id": "comp-08-loop-timeline",
+    "component_name": "LoopTimeline",
+    "used_on_screens": "screen-07-loop-history",
+    "primary_entity": "Loops",
+    "description": "A vertical timeline of all Loops rows, grouped by Status. Each entry shows LoopId, Title, Status indicator, NewConcept chip, and an expandable section with DomainQuestion, MockDataNote, and NextSuggestion.",
+    "required_fields": "LoopId, Title, Status, NewConcept, DomainQuestion, MockDataNote, NextSuggestion",
+    "visual_spec": "Vertical list. Status=complete: solid circle; in-progress: half-filled; planned: open circle. Expandable accordion per entry. Color: complete=green, in-progress=blue, planned=grey.",
+    "name": "comp-08-loop-timeline"
+  },
+  {
+    "component_id": "comp-09-policy-action-banner",
+    "component_name": "PolicyActionBanner",
+    "used_on_screens": "screen-02-study-detail",
+    "primary_entity": "TreatmentRankings",
+    "description": "A prominent banner at the top of the Study Detail screen showing PolicyImplication as a clear action statement, color-coded by DistortionType. Includes a one-sentence explanation of why this action follows from the geometry.",
+    "required_fields": "PolicyImplication, DistortionType, AllocationDistortion, IsSignFlip",
+    "visual_spec": "Full-width colored banner. Large icon (e.g. warning triangle for A, magnifying glass for B, scale for C, checkmark for D). Bold action text. Secondary line explaining the geometric basis.",
+    "name": "comp-09-policy-action-banner"
+  },
+  {
+    "component_id": "comp-10-conclusion-list",
+    "component_name": "ConclusionList",
+    "used_on_screens": "screen-09-conclusions",
+    "primary_entity": "Conclusions",
+    "description": "A filterable list of Conclusions rows grouped by Category and Status. Each entry shows the Title, Status badge, Evidence summary, and a link to the WitnessedInLoop or TargetLoop.",
+    "required_fields": "Category, Status, Title, Evidence, WitnessedInLoop, TargetLoop",
+    "visual_spec": "Grouped list with category headers. Status badge: witnessed=green, planned=blue, open=orange. Evidence shown as collapsed text (expand on click). Loop links navigate to LoopTimeline.",
+    "name": "comp-10-conclusion-list"
+  },
+  {
+    "component_id": "comp-11-discovery-panel",
+    "component_name": "DiscoveryResearchPanel",
+    "used_on_screens": "screen-10-discovery",
+    "primary_entity": "DiscoveryFindings",
+    "description": "Grouped hypothesis cards with observed metrics, PASS/FAIL badges, and a study table filtered by StratumCausalRole \u00d7 flip mode (manifest / latent-only / stable).",
+    "required_fields": "HypothesisId, HypothesisStatement, ObservedMetric, IsConfirmed, Evidence, WitnessedInLoop",
+    "visual_spec": "Two sections: hypothesis cards (green PASS / red FAIL) then study table with columns Study, StratumCausalRole, IsSignFlip, PooledGapCrossesZero, IsLatentOnlyFlip, DistortionType.",
+    "name": "comp-11-discovery-panel"
+  }
+]

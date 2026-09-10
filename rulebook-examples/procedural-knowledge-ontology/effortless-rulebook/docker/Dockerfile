@@ -85,7 +85,7 @@ WORKDIR /app
 # (/postgres), reset wrapper exec (/postgres), rulebook-to-node-postgres-api
 # (/api), rulebook-to-vite-admin-portal (/admin-portal),
 # rulebook-to-explainer-dag (/admin-portal/public, served at
-# /rulebook-explainer-dag/*), rulebook-to-rulespeak (/rulespeak, all 10
+# /rulebook-explainer-dag/*), rulebook-to-rulespeak (/rulespeak, the core
 # languages), rulebook-to-xlsx (/xlsx).
 COPY effortless.editor.json /app/effortless.editor.json.seed
 COPY container-entrypoint.sh /app/container-entrypoint.sh

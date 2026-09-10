@@ -139,14 +139,14 @@ already computes (cross-referenced as DR-N in the Definitional Rules below)._
 - A rubric dimension **must** have a name.
 - A resume **must** have a name and a file path.
 - A resume section **must** reference exactly one resume.
-- A resume section **must** have a name, a section order, a content, and a chroma doc ID.
+- A resume section **must** have a name; a section order; a content; and a chroma doc ID.
 - A search run **must** reference exactly one resume.
-- A search run **must** have a name, a run date, an archetype weight, a fit weight, a history weight, a comp weight, a negative weight, a culture weight, a base salary, and a min score threshold, and record whether it is disqualify on llm flag.
+- A search run **must** have a name; a run date; an archetype weight; a fit weight; a history weight; a comp weight; a negative weight; a culture weight; a base salary; and a min score threshold, and record whether it is disqualify on llm flag.
 - A job listing **must** reference exactly one job board.
-- A job listing **must** have a name, an external ID, a company, a URL, and a full text.
+- A job listing **must** have a name; an external ID; a company; a URL; and a full text.
 - A score result **must** reference exactly one job listing.
 - A score result **must** reference exactly one search run.
-- A score result **must** have a fit score, an archetype score, a history score, a comp score, a negative score, and a culture score, and record whether it is disqualified.
+- A score result **must** have a fit score; an archetype score; a history score; a comp score; a negative score; and a culture score, and record whether it is disqualified.
 - A decision **must** reference exactly one job listing.
 - A decision **must** have a verdict and a recorded at.
 

@@ -24,6 +24,32 @@ There is no upstream to "restore from." The JSON is the upstream.
 
 This folder is a **self-contained Effortless Rulebook (ERB) project**. The rulebook is the single source of truth. All other artifacts (Postgres, Python, Go, substrates) are mechanically derived from it.
 
+## Closure is not a formula — it's the FO(Aggr) boundary, not a modeling choice
+
+**This is the project's central theoretical claim, not a footnote — lead with it, not with the
+SDLAF machinery around it.** The rulebook's declarative core — Schema, Data, Lookups,
+Aggregations, Formulas (SDLAF), no recursion — is exactly **FO(Aggr)**: first-order logic with
+aggregation over a finite relational structure, the same expressivity SQL without `WITH RECURSIVE`
+has had for 25+ years. Most of what this project demonstrates (role lookups, rollups, derived
+booleans) is *that* class, and nobody should find it impressive on its own.
+
+**Transitive closure (TC) is provably not expressible in FO(Aggr)** — Immerman, "Languages that
+Capture Complexity Classes" (SIAM J. Comput., 1987), and the descriptive-complexity results built
+on it. No formula, however large, computes reachability over a DAG of unbounded depth from inside
+SDLAF's expressivity class. That is exactly why `precedesStep` / `delegatesTo` closure is **never**
+a calculated field here: it is handed to a distinct, substrate-native mechanism per target —
+
+- Postgres: a `WITH RECURSIVE` view (`vw_step_precedence_closure`, `vw_roles_closure`), emitted by
+  the `rulebook-to-postgres` `closure` field type;
+- OWL: an `owl:TransitiveProperty`;
+- Python: an explicit graph traversal.
+
+— and the conformance harness proves the three independently-built crossings agree. Every
+framework that survives contact with a real DAG hits this same wall eventually (OCL's
+`closure()`, SQL's `WITH RECURSIVE`, OWL's transitive properties) because the wall is a theorem,
+not a gap in any one implementation. When documenting, pitching, or extending this project, this
+boundary — not the SDLAF machinery around it — is the falsifiable, load-bearing claim.
+
 ## Aim for RIGHT — always most faithful to the original 4-part series
 
 The North Star for this demo is **fidelity to Jessica Talisman's *Intentional Arrangement* 4-part
@@ -98,10 +124,12 @@ Arrangement* series — as **one curated worked example**, the *Production Deplo
 - **SKOS controlled vocabularies**: workflow status + agent capability schemes.
 - **Aggregations & boolean derivations**: `COUNTIFS` rollups, including conditional counts over
   *derived* child fields (e.g. counting steps where the calculated `IsExecutedByAI` is true).
-- **Transitive closure (first-class)**: `ntwf:precedesStep` and `ntwf:delegatesTo` are materialized
-  by the `rulebook-to-postgres` `closure` field type as `WITH RECURSIVE` views
-  (`vw_step_precedence_closure`, `vw_roles_closure`) — asserted edges + inferred reachability, each
-  row tagged `is_inferred` / `hop_distance`. This is what makes the article's headline inference fire.
+- **Transitive closure crosses the FO(Aggr) boundary, not a formula**: `ntwf:precedesStep` and
+  `ntwf:delegatesTo` are materialized by the `rulebook-to-postgres` `closure` field type as
+  `WITH RECURSIVE` views (`vw_step_precedence_closure`, `vw_roles_closure`) — asserted edges +
+  inferred reachability, each row tagged `is_inferred` / `hop_distance`. Transitive closure is
+  provably outside FO(Aggr) (Immerman 1987); see "Closure is not a formula" above. This is what
+  makes the article's headline inference fire.
 - **Load-bearing lookups**: `INDEX/MATCH` lookups resolve the role→agent indirection and the
   gate→role→approver chain that the competency questions depend on. The project is **not** lookup-free
   (an earlier revision was); full article coverage made a small set of lookups load-bearing. It is

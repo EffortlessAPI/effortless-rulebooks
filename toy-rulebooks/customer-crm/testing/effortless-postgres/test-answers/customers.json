@@ -1,0 +1,62 @@
+[
+  {
+    "name": "ada.lovelace@analytical.engine",
+    "customers_id": "ada.lovelace@analytical.engine",
+    "email": "ada.lovelace@analytical.engine",
+    "first_name": "Ada",
+    "last_name": "Lovelace",
+    "full_name": "Lovelace, Ada",
+    "lifetime_sales": "0",
+    "unpaid_order_count": "0",
+    "large_order_count": "1.0",
+    "is_vip": false
+  },
+  {
+    "name": "alan.turing@bletchley.uk",
+    "customers_id": "alan.turing@bletchley.uk",
+    "email": "alan.turing@bletchley.uk",
+    "first_name": "Alan",
+    "last_name": "Turing",
+    "full_name": "Turing, Alan",
+    "lifetime_sales": "0",
+    "unpaid_order_count": "0",
+    "large_order_count": "0",
+    "is_vip": false
+  },
+  {
+    "name": "grace.hopper@nautical.mil",
+    "customers_id": "grace.hopper@nautical.mil",
+    "email": "grace.hopper@nautical.mil",
+    "first_name": "Grace",
+    "last_name": "Hopper",
+    "full_name": "Hopper, Grace",
+    "lifetime_sales": "0",
+    "unpaid_order_count": "2",
+    "large_order_count": "1.00",
+    "is_vip": false
+  },
+  {
+    "name": "katherine.johnson@nasa.gov",
+    "customers_id": "katherine.johnson@nasa.gov",
+    "email": "katherine.johnson@nasa.gov",
+    "first_name": "Katherine",
+    "last_name": "Johnson",
+    "full_name": "Johnson, Katherine",
+    "lifetime_sales": "0",
+    "unpaid_order_count": "1",
+    "large_order_count": "2.0",
+    "is_vip": false
+  },
+  {
+    "name": "linus.torvalds@kernel.org",
+    "customers_id": "linus.torvalds@kernel.org",
+    "email": "linus.torvalds@kernel.org",
+    "first_name": "Linus",
+    "last_name": "Torvalds",
+    "full_name": "Torvalds, Linus",
+    "lifetime_sales": "0",
+    "unpaid_order_count": "1",
+    "large_order_count": "1.0",
+    "is_vip": false
+  }
+]

@@ -1,0 +1,50 @@
+[
+  {
+    "client_approval_id": "alice-johnson-apvd",
+    "approved_by_email_address": null,
+    "approved_by_phone_number": null,
+    "client_category": null,
+    "client_email": null,
+    "is_approved": null,
+    "client_phone": null,
+    "approved_by_contact_name": null,
+    "approved_by": "ej-ssot-me-admin",
+    "name": null,
+    "approved_by_role": null,
+    "client": "alice-johnson",
+    "client_name": null,
+    "notes": ""
+  },
+  {
+    "client_approval_id": "brian-lee-apvd",
+    "approved_by_email_address": null,
+    "approved_by_phone_number": null,
+    "client_category": null,
+    "client_email": null,
+    "is_approved": null,
+    "client_phone": null,
+    "approved_by_contact_name": null,
+    "approved_by": "ej-ssot-me-admin",
+    "name": null,
+    "approved_by_role": null,
+    "client": "brian-lee",
+    "client_name": null,
+    "notes": ""
+  },
+  {
+    "client_approval_id": "brian-lee-pend",
+    "client_category": null,
+    "client_email": null,
+    "client_phone": null,
+    "name": null,
+    "client": "brian-lee",
+    "client_name": null,
+    "approved_by": "",
+    "approved_by_contact_name": null,
+    "approved_by_email_address": null,
+    "approved_by_phone_number": null,
+    "approved_by_role": null,
+    "is_approved": null,
+    "notes": ""
+  }
+]

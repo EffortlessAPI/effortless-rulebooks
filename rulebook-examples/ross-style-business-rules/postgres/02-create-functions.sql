@@ -38,14 +38,15 @@ RETURNS INTEGER AS $$
   SELECT ((SELECT COUNT(*) FROM claimants WHERE policy = (SELECT NULLIF(policy_id, '') FROM policies WHERE policy_id = p_policy_id)))::integer;
 $$ LANGUAGE sql STABLE;
 
--- calc_claimants_policy_is_active_policy_id
+-- calc_claimants_policy_is_active
 -- Field: Claimants.PolicyIsActive
--- Type: lookup | DataType: boolean
--- Lookup: PolicyId from Policies via PolicyIsActive
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: IsActive from related Policies
 
-CREATE OR REPLACE FUNCTION calc_claimants_policy_is_active_policy_id(p_claimant_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT policy_id FROM policies WHERE policy_id = (SELECT policy_is_active FROM claimants WHERE claimant_id = p_claimant_id));
+
+CREATE OR REPLACE FUNCTION calc_claimants_policy_is_active(p_claimant_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT is_active::boolean FROM policies WHERE policy_id = (SELECT policy FROM claimants WHERE claimant_id = p_claimant_id));
 $$ LANGUAGE sql STABLE;
 
 -- get_policies_policyholder_name
@@ -96,14 +97,15 @@ RETURNS BOOLEAN AS $$
   SELECT ((calc_claimants_count_of_incidents(p_claimant_id))::NUMERIC > 2)::boolean;
 $$ LANGUAGE sql STABLE;
 
--- calc_incidents_incident_claimant_name_claimant_id
+-- calc_incidents_incident_claimant_name
 -- Field: Incidents.IncidentClaimantName
--- Type: lookup | DataType: string
--- Lookup: ClaimantId from Claimants via IncidentClaimantName
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: ClaimantName from related Claimants
 
-CREATE OR REPLACE FUNCTION calc_incidents_incident_claimant_name_claimant_id(p_incident_id TEXT)
+
+CREATE OR REPLACE FUNCTION calc_incidents_incident_claimant_name(p_incident_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (SELECT claimant_id FROM claimants WHERE claimant_id = (SELECT incident_claimant_name FROM incidents WHERE incident_id = p_incident_id));
+  SELECT (SELECT claimant_name::text FROM claimants WHERE claimant_id = (SELECT claimant FROM incidents WHERE incident_id = p_incident_id));
 $$ LANGUAGE sql STABLE;
 
 -- get_claimants_claimant_name
@@ -143,64 +145,70 @@ RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(incident_id, '') FROM incidents WHERE incident_id = p_incident_id))::text;
 $$ LANGUAGE sql STABLE;
 
--- calc_claims_incident_claimant_incident_id
+-- calc_claims_incident_claimant
 -- Field: Claims.IncidentClaimant
--- Type: lookup | DataType: string
--- Lookup: IncidentId from Incidents via IncidentClaimant
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Claimant from related Incidents
 
-CREATE OR REPLACE FUNCTION calc_claims_incident_claimant_incident_id(p_claim_id TEXT)
+
+CREATE OR REPLACE FUNCTION calc_claims_incident_claimant(p_claim_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (SELECT incident_id FROM incidents WHERE incident_id = (SELECT incident_claimant FROM claims WHERE claim_id = p_claim_id));
+  SELECT (SELECT claimant::text FROM incidents WHERE incident_id = (SELECT incident FROM claims WHERE claim_id = p_claim_id));
 $$ LANGUAGE sql STABLE;
 
--- calc_claims_incident_claimant_policy_active_claimant_id
+-- calc_claims_incident_claimant_policy_active
 -- Field: Claims.IncidentClaimantPolicyActive
--- Type: lookup | DataType: boolean
--- Lookup: ClaimantId from Claimants via IncidentClaimantPolicyActive
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: PolicyIsActive from related Claimants
 
-CREATE OR REPLACE FUNCTION calc_claims_incident_claimant_policy_active_claimant_id(p_claim_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT claimant_id FROM claimants WHERE claimant_id = (SELECT incident_claimant_policy_active FROM claims WHERE claim_id = p_claim_id));
+
+CREATE OR REPLACE FUNCTION calc_claims_incident_claimant_policy_active(p_claim_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_claimants_policy_is_active(calc_claims_incident_claimant(p_claim_id));
 $$ LANGUAGE sql STABLE;
 
--- calc_claims_additional_claimant_policy_active_claimant_id
+-- calc_claims_additional_claimant_policy_active
 -- Field: Claims.AdditionalClaimantPolicyActive
--- Type: lookup | DataType: boolean
--- Lookup: ClaimantId from Claimants via AdditionalClaimantPolicyActive
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: PolicyIsActive from related Claimants
 
-CREATE OR REPLACE FUNCTION calc_claims_additional_claimant_policy_active_claimant_id(p_claim_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT claimant_id FROM claimants WHERE claimant_id = (SELECT additional_claimant_policy_active FROM claims WHERE claim_id = p_claim_id));
+
+CREATE OR REPLACE FUNCTION calc_claims_additional_claimant_policy_active(p_claim_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_claimants_policy_is_active((SELECT additional_claimant FROM claims WHERE claim_id = p_claim_id));
 $$ LANGUAGE sql STABLE;
 
--- calc_claims_additional_claimant_favorite_color_claimant_id
+-- calc_claims_additional_claimant_favorite_color
 -- Field: Claims.AdditionalClaimantFavoriteColor
--- Type: lookup | DataType: string
--- Lookup: ClaimantId from Claimants via AdditionalClaimantFavoriteColor
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: FavoriteColor from related Claimants
 
-CREATE OR REPLACE FUNCTION calc_claims_additional_claimant_favorite_color_claimant_id(p_claim_id TEXT)
+
+CREATE OR REPLACE FUNCTION calc_claims_additional_claimant_favorite_color(p_claim_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (SELECT claimant_id FROM claimants WHERE claimant_id = (SELECT additional_claimant_favorite_color FROM claims WHERE claim_id = p_claim_id));
+  SELECT (SELECT favorite_color::text FROM claimants WHERE claimant_id = (SELECT additional_claimant FROM claims WHERE claim_id = p_claim_id));
 $$ LANGUAGE sql STABLE;
 
--- calc_claims_claimant_of_record_incident_count_claimant_id
+-- calc_claims_claimant_of_record_incident_count
 -- Field: Claims.ClaimantOfRecordIncidentCount
--- Type: lookup | DataType: integer
--- Lookup: ClaimantId from Claimants via ClaimantOfRecordIncidentCount
+-- Type: lookup | DataType: integer | Returns: INTEGER
+-- Lookup: CountOfIncidents from related Claimants
 
-CREATE OR REPLACE FUNCTION calc_claims_claimant_of_record_incident_count_claimant_id(p_claim_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT claimant_id FROM claimants WHERE claimant_id = (SELECT claimant_of_record_incident_count FROM claims WHERE claim_id = p_claim_id));
+
+CREATE OR REPLACE FUNCTION calc_claims_claimant_of_record_incident_count(p_claim_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT calc_claimants_count_of_incidents(calc_claims_claimant_of_record(p_claim_id));
 $$ LANGUAGE sql STABLE;
 
--- calc_claims_claimant_of_record_is_high_risk_claimant_id
+-- calc_claims_claimant_of_record_is_high_risk
 -- Field: Claims.ClaimantOfRecordIsHighRisk
--- Type: lookup | DataType: boolean
--- Lookup: ClaimantId from Claimants via ClaimantOfRecordIsHighRisk
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: IsHighRisk from related Claimants
 
-CREATE OR REPLACE FUNCTION calc_claims_claimant_of_record_is_high_risk_claimant_id(p_claim_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT claimant_id FROM claimants WHERE claimant_id = (SELECT claimant_of_record_is_high_risk FROM claims WHERE claim_id = p_claim_id));
+
+CREATE OR REPLACE FUNCTION calc_claims_claimant_of_record_is_high_risk(p_claim_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_claimants_is_high_risk(calc_claims_claimant_of_record(p_claim_id));
 $$ LANGUAGE sql STABLE;
 
 -- get_incidents_incident_description
@@ -258,7 +266,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_claims_claimant_of_record(p_claim_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN calc_claims_has_additional_claimant(p_claim_id) THEN ((SELECT NULLIF(additional_claimant, '') FROM claims WHERE claim_id = p_claim_id))::text ELSE ((SELECT NULLIF(incident_claimant, '') FROM claims WHERE claim_id = p_claim_id))::text END)::text;
+  SELECT (CASE WHEN calc_claims_has_additional_claimant(p_claim_id) THEN ((SELECT NULLIF(additional_claimant, '') FROM claims WHERE claim_id = p_claim_id))::text ELSE (calc_claims_incident_claimant(p_claim_id))::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_claims_is_valid
@@ -268,7 +276,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_claims_is_valid(p_claim_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_claims_references_incident(p_claim_id) AND (COALESCE((SELECT incident_claimant_policy_active FROM claims WHERE claim_id = p_claim_id), FALSE) OR COALESCE((SELECT additional_claimant_policy_active FROM claims WHERE claim_id = p_claim_id), FALSE)) AND (NOT (calc_claims_has_additional_claimant(p_claim_id)) OR LOWER((SELECT NULLIF(additional_claimant_favorite_color, '') FROM claims WHERE claim_id = p_claim_id)) = 'red') AND NOT (COALESCE((SELECT claimant_of_record_is_high_risk FROM claims WHERE claim_id = p_claim_id), FALSE))))::boolean;
+  SELECT ((calc_claims_references_incident(p_claim_id) AND (calc_claims_incident_claimant_policy_active(p_claim_id) OR calc_claims_additional_claimant_policy_active(p_claim_id)) AND (NOT (calc_claims_has_additional_claimant(p_claim_id)) OR LOWER(calc_claims_additional_claimant_favorite_color(p_claim_id)) = 'red') AND NOT (calc_claims_claimant_of_record_is_high_risk(p_claim_id))))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_claims_validity_deciding_factor
@@ -278,7 +286,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_claims_validity_deciding_factor(p_claim_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN calc_claims_is_valid(p_claim_id) THEN ('Valid — all conditions met')::text ELSE (CASE WHEN NOT (calc_claims_references_incident(p_claim_id)) THEN ('No incident referenced')::text ELSE (CASE WHEN NOT ((COALESCE((SELECT incident_claimant_policy_active FROM claims WHERE claim_id = p_claim_id), FALSE) OR COALESCE((SELECT additional_claimant_policy_active FROM claims WHERE claim_id = p_claim_id), FALSE))) THEN ('No active policy on incident claimant or additional claimant')::text ELSE (CASE WHEN (calc_claims_has_additional_claimant(p_claim_id) AND LOWER((SELECT NULLIF(additional_claimant_favorite_color, '') FROM claims WHERE claim_id = p_claim_id)) <> 'red') THEN ('Additional claimant''s favorite color is not red')::text ELSE (CASE WHEN COALESCE((SELECT claimant_of_record_is_high_risk FROM claims WHERE claim_id = p_claim_id), FALSE) THEN ('Claimant of record is high-risk (DR-2)')::text ELSE ('Undetermined')::text END)::text END)::text END)::text END)::text END)::text;
+  SELECT (CASE WHEN calc_claims_is_valid(p_claim_id) THEN ('Valid — all conditions met')::text ELSE (CASE WHEN NOT (calc_claims_references_incident(p_claim_id)) THEN ('No incident referenced')::text ELSE (CASE WHEN NOT ((calc_claims_incident_claimant_policy_active(p_claim_id) OR calc_claims_additional_claimant_policy_active(p_claim_id))) THEN ('No active policy on incident claimant or additional claimant')::text ELSE (CASE WHEN (calc_claims_has_additional_claimant(p_claim_id) AND LOWER(calc_claims_additional_claimant_favorite_color(p_claim_id)) <> 'red') THEN ('Additional claimant''s favorite color is not red')::text ELSE (CASE WHEN calc_claims_claimant_of_record_is_high_risk(p_claim_id) THEN ('Claimant of record is high-risk (DR-2)')::text ELSE ('Undetermined')::text END)::text END)::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_claims_is_approvable

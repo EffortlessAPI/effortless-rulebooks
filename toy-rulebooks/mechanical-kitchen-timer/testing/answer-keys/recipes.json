@@ -5,7 +5,8 @@
     "recommended_minutes": 25,
     "ideal_temperature_c": 100,
     "duration_category": "medium",
-    "cooking_temp_profile": "boiling"
+    "cooking_temp_profile": "boiling",
+    "assignment_verdict": "well-matched"
   },
   {
     "recipe_id": "cake recipe",
@@ -13,7 +14,8 @@
     "recommended_minutes": 35,
     "ideal_temperature_c": 180,
     "duration_category": "medium",
-    "cooking_temp_profile": "warm oven"
+    "cooking_temp_profile": "warm oven",
+    "assignment_verdict": "well-matched"
   },
   {
     "recipe_id": "creme brulee recipe",
@@ -21,7 +23,8 @@
     "recommended_minutes": 55,
     "ideal_temperature_c": 165,
     "duration_category": "long",
-    "cooking_temp_profile": "warm oven"
+    "cooking_temp_profile": "warm oven",
+    "assignment_verdict": "well-matched"
   },
   {
     "recipe_id": "croissant recipe",
@@ -29,7 +32,8 @@
     "recommended_minutes": 18,
     "ideal_temperature_c": 200,
     "duration_category": "medium",
-    "cooking_temp_profile": "hot oven"
+    "cooking_temp_profile": "hot oven",
+    "assignment_verdict": "well-matched"
   },
   {
     "recipe_id": "flan recipe",
@@ -37,7 +41,8 @@
     "recommended_minutes": 50,
     "ideal_temperature_c": 170,
     "duration_category": "long",
-    "cooking_temp_profile": "warm oven"
+    "cooking_temp_profile": "warm oven",
+    "assignment_verdict": "well-matched"
   },
   {
     "recipe_id": "instant coffee recipe",
@@ -45,7 +50,8 @@
     "recommended_minutes": 2,
     "ideal_temperature_c": 90,
     "duration_category": "quick",
-    "cooking_temp_profile": "boiling"
+    "cooking_temp_profile": "boiling",
+    "assignment_verdict": "well-matched"
   },
   {
     "recipe_id": "paella recipe",
@@ -53,7 +59,8 @@
     "recommended_minutes": 40,
     "ideal_temperature_c": 100,
     "duration_category": "medium",
-    "cooking_temp_profile": "boiling"
+    "cooking_temp_profile": "boiling",
+    "assignment_verdict": "well-matched"
   },
   {
     "recipe_id": "pizza recipe",
@@ -61,7 +68,8 @@
     "recommended_minutes": 8,
     "ideal_temperature_c": 240,
     "duration_category": "short",
-    "cooking_temp_profile": "hot oven"
+    "cooking_temp_profile": "hot oven",
+    "assignment_verdict": "well-matched"
   },
   {
     "recipe_id": "ramen recipe",
@@ -69,7 +77,8 @@
     "recommended_minutes": 5,
     "ideal_temperature_c": 100,
     "duration_category": "short",
-    "cooking_temp_profile": "boiling"
+    "cooking_temp_profile": "boiling",
+    "assignment_verdict": "well-matched"
   },
   {
     "recipe_id": "rib roast recipe",
@@ -77,7 +86,8 @@
     "recommended_minutes": 90,
     "ideal_temperature_c": 175,
     "duration_category": "long",
-    "cooking_temp_profile": "warm oven"
+    "cooking_temp_profile": "warm oven",
+    "assignment_verdict": "well-matched"
   },
   {
     "recipe_id": "risotto recipe",
@@ -85,7 +95,8 @@
     "recommended_minutes": 30,
     "ideal_temperature_c": 100,
     "duration_category": "medium",
-    "cooking_temp_profile": "boiling"
+    "cooking_temp_profile": "boiling",
+    "assignment_verdict": "well-matched"
   },
   {
     "recipe_id": "salad recipe",
@@ -93,7 +104,8 @@
     "recommended_minutes": 7,
     "ideal_temperature_c": 20,
     "duration_category": "short",
-    "cooking_temp_profile": "low"
+    "cooking_temp_profile": "low",
+    "assignment_verdict": "well-matched"
   },
   {
     "recipe_id": "soft-boiled egg recipe",
@@ -101,7 +113,8 @@
     "recommended_minutes": 10,
     "ideal_temperature_c": 100,
     "duration_category": "short",
-    "cooking_temp_profile": "boiling"
+    "cooking_temp_profile": "boiling",
+    "assignment_verdict": "well-matched"
   },
   {
     "recipe_id": "soup recipe",
@@ -109,7 +122,8 @@
     "recommended_minutes": 25,
     "ideal_temperature_c": 100,
     "duration_category": "medium",
-    "cooking_temp_profile": "boiling"
+    "cooking_temp_profile": "boiling",
+    "assignment_verdict": "well-matched"
   },
   {
     "recipe_id": "sourdough recipe",
@@ -117,7 +131,8 @@
     "recommended_minutes": 45,
     "ideal_temperature_c": 220,
     "duration_category": "long",
-    "cooking_temp_profile": "hot oven"
+    "cooking_temp_profile": "hot oven",
+    "assignment_verdict": "well-matched"
   },
   {
     "recipe_id": "spaghetti recipe",
@@ -125,7 +140,8 @@
     "recommended_minutes": 12,
     "ideal_temperature_c": 100,
     "duration_category": "short",
-    "cooking_temp_profile": "boiling"
+    "cooking_temp_profile": "boiling",
+    "assignment_verdict": "well-matched"
   },
   {
     "recipe_id": "steak recipe",
@@ -133,7 +149,8 @@
     "recommended_minutes": 11,
     "ideal_temperature_c": 230,
     "duration_category": "short",
-    "cooking_temp_profile": "hot oven"
+    "cooking_temp_profile": "hot oven",
+    "assignment_verdict": "well-matched"
   },
   {
     "recipe_id": "tea recipe",
@@ -141,7 +158,8 @@
     "recommended_minutes": 4,
     "ideal_temperature_c": 95,
     "duration_category": "quick",
-    "cooking_temp_profile": "boiling"
+    "cooking_temp_profile": "boiling",
+    "assignment_verdict": "well-matched"
   },
   {
     "recipe_id": "yogurt recipe",
@@ -149,6 +167,7 @@
     "recommended_minutes": 360,
     "ideal_temperature_c": 40,
     "duration_category": "long",
-    "cooking_temp_profile": "low"
+    "cooking_temp_profile": "low",
+    "assignment_verdict": "well-matched"
   }
 ]

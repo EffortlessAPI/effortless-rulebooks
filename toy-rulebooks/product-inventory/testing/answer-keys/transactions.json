@@ -6,7 +6,8 @@
     "quantity": 100,
     "transaction_date": "2026-05-01T10:00:00Z",
     "notes": "Initial stock delivery",
-    "name": "TXN-001"
+    "name": "TXN-001",
+    "amount": 0
   },
   {
     "transaction_id": "TXN-002",
@@ -15,7 +16,8 @@
     "quantity": -25,
     "transaction_date": "2026-05-05T14:30:00Z",
     "notes": "Bulk order",
-    "name": "TXN-002"
+    "name": "TXN-002",
+    "amount": 0
   },
   {
     "transaction_id": "TXN-003",
@@ -24,7 +26,8 @@
     "quantity": -30,
     "transaction_date": "2026-05-10T09:00:00Z",
     "notes": "Customer purchase",
-    "name": "TXN-003"
+    "name": "TXN-003",
+    "amount": 0
   },
   {
     "transaction_id": "TXN-004",
@@ -33,7 +36,8 @@
     "quantity": 50,
     "transaction_date": "2026-05-02T11:00:00Z",
     "notes": null,
-    "name": "TXN-004"
+    "name": "TXN-004",
+    "amount": 0
   },
   {
     "transaction_id": "TXN-005",
@@ -42,7 +46,8 @@
     "quantity": -35,
     "transaction_date": "2026-05-08T13:15:00Z",
     "notes": "Order fulfillment",
-    "name": "TXN-005"
+    "name": "TXN-005",
+    "amount": 0
   },
   {
     "transaction_id": "TXN-006",
@@ -51,7 +56,8 @@
     "quantity": 200,
     "transaction_date": "2026-05-01T08:00:00Z",
     "notes": "Bulk purchase from supplier",
-    "name": "TXN-006"
+    "name": "TXN-006",
+    "amount": 0
   },
   {
     "transaction_id": "TXN-007",
@@ -60,7 +66,8 @@
     "quantity": -80,
     "transaction_date": "2026-05-06T10:30:00Z",
     "notes": null,
-    "name": "TXN-007"
+    "name": "TXN-007",
+    "amount": 0
   },
   {
     "transaction_id": "TXN-008",
@@ -69,7 +76,8 @@
     "quantity": -50,
     "transaction_date": "2026-05-12T15:45:00Z",
     "notes": "Retail sale",
-    "name": "TXN-008"
+    "name": "TXN-008",
+    "amount": 0
   },
   {
     "transaction_id": "TXN-009",
@@ -78,7 +86,8 @@
     "quantity": 8,
     "transaction_date": "2026-05-03T09:30:00Z",
     "notes": "Premium tool restock",
-    "name": "TXN-009"
+    "name": "TXN-009",
+    "amount": 0
   },
   {
     "transaction_id": "TXN-010",
@@ -87,6 +96,7 @@
     "quantity": -3,
     "transaction_date": "2026-05-09T16:00:00Z",
     "notes": "Professional customer order",
-    "name": "TXN-010"
+    "name": "TXN-010",
+    "amount": 0
   }
 ]

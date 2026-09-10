@@ -1,7 +1,7 @@
 [
   {
     "season_id": "1-tos-season-1",
-    "name": "1-tos-Season-1",
+    "name": "TOS-Season-1",
     "series": "1-tos",
     "season_number": 1,
     "title": "The Original Series Season 1",
@@ -14,7 +14,7 @@
   },
   {
     "season_id": "1-tos-season-2",
-    "name": "1-tos-Season-2",
+    "name": "TOS-Season-2",
     "series": "1-tos",
     "season_number": 2,
     "title": "The Original Series Season 2",
@@ -27,7 +27,7 @@
   },
   {
     "season_id": "1-tos-season-3",
-    "name": "1-tos-Season-3",
+    "name": "TOS-Season-3",
     "series": "1-tos",
     "season_number": 3,
     "title": "The Original Series Season 3",
@@ -40,7 +40,7 @@
   },
   {
     "season_id": "10-snw-season-1",
-    "name": "10-snw-Season-1",
+    "name": "SNW-Season-1",
     "series": "10-snw",
     "season_number": 1,
     "title": "Strange New Worlds Season 1",
@@ -53,7 +53,7 @@
   },
   {
     "season_id": "10-snw-season-2",
-    "name": "10-snw-Season-2",
+    "name": "SNW-Season-2",
     "series": "10-snw",
     "season_number": 2,
     "title": "Strange New Worlds Season 2",
@@ -66,7 +66,7 @@
   },
   {
     "season_id": "2-tng-season-1",
-    "name": "2-tng-Season-1",
+    "name": "TNG-Season-1",
     "series": "2-tng",
     "season_number": 1,
     "title": "The Next Generation Season 1",
@@ -79,7 +79,7 @@
   },
   {
     "season_id": "2-tng-season-2",
-    "name": "2-tng-Season-2",
+    "name": "TNG-Season-2",
     "series": "2-tng",
     "season_number": 2,
     "title": "The Next Generation Season 2",
@@ -92,7 +92,7 @@
   },
   {
     "season_id": "2-tng-season-3",
-    "name": "2-tng-Season-3",
+    "name": "TNG-Season-3",
     "series": "2-tng",
     "season_number": 3,
     "title": "The Next Generation Season 3",
@@ -105,7 +105,7 @@
   },
   {
     "season_id": "2-tng-season-4",
-    "name": "2-tng-Season-4",
+    "name": "TNG-Season-4",
     "series": "2-tng",
     "season_number": 4,
     "title": "The Next Generation Season 4",
@@ -118,7 +118,7 @@
   },
   {
     "season_id": "2-tng-season-5",
-    "name": "2-tng-Season-5",
+    "name": "TNG-Season-5",
     "series": "2-tng",
     "season_number": 5,
     "title": "The Next Generation Season 5",
@@ -131,7 +131,7 @@
   },
   {
     "season_id": "2-tng-season-6",
-    "name": "2-tng-Season-6",
+    "name": "TNG-Season-6",
     "series": "2-tng",
     "season_number": 6,
     "title": "The Next Generation Season 6",
@@ -144,7 +144,7 @@
   },
   {
     "season_id": "2-tng-season-7",
-    "name": "2-tng-Season-7",
+    "name": "TNG-Season-7",
     "series": "2-tng",
     "season_number": 7,
     "title": "The Next Generation Season 7",
@@ -157,7 +157,7 @@
   },
   {
     "season_id": "3-ds9-season-1",
-    "name": "3-ds9-Season-1",
+    "name": "DS9-Season-1",
     "series": "3-ds9",
     "season_number": 1,
     "title": "Deep Space Nine Season 1",
@@ -170,7 +170,7 @@
   },
   {
     "season_id": "3-ds9-season-2",
-    "name": "3-ds9-Season-2",
+    "name": "DS9-Season-2",
     "series": "3-ds9",
     "season_number": 2,
     "title": "Deep Space Nine Season 2",
@@ -183,7 +183,7 @@
   },
   {
     "season_id": "3-ds9-season-3",
-    "name": "3-ds9-Season-3",
+    "name": "DS9-Season-3",
     "series": "3-ds9",
     "season_number": 3,
     "title": "Deep Space Nine Season 3",
@@ -196,7 +196,7 @@
   },
   {
     "season_id": "3-ds9-season-4",
-    "name": "3-ds9-Season-4",
+    "name": "DS9-Season-4",
     "series": "3-ds9",
     "season_number": 4,
     "title": "Deep Space Nine Season 4",
@@ -209,7 +209,7 @@
   },
   {
     "season_id": "3-ds9-season-5",
-    "name": "3-ds9-Season-5",
+    "name": "DS9-Season-5",
     "series": "3-ds9",
     "season_number": 5,
     "title": "Deep Space Nine Season 5",
@@ -222,7 +222,7 @@
   },
   {
     "season_id": "3-ds9-season-6",
-    "name": "3-ds9-Season-6",
+    "name": "DS9-Season-6",
     "series": "3-ds9",
     "season_number": 6,
     "title": "Deep Space Nine Season 6",
@@ -235,7 +235,7 @@
   },
   {
     "season_id": "3-ds9-season-7",
-    "name": "3-ds9-Season-7",
+    "name": "DS9-Season-7",
     "series": "3-ds9",
     "season_number": 7,
     "title": "Deep Space Nine Season 7",
@@ -248,7 +248,7 @@
   },
   {
     "season_id": "4-voy-season-1",
-    "name": "4-voy-Season-1",
+    "name": "VOY-Season-1",
     "series": "4-voy",
     "season_number": 1,
     "title": "Voyager Season 1",
@@ -261,7 +261,7 @@
   },
   {
     "season_id": "4-voy-season-2",
-    "name": "4-voy-Season-2",
+    "name": "VOY-Season-2",
     "series": "4-voy",
     "season_number": 2,
     "title": "Voyager Season 2",
@@ -274,7 +274,7 @@
   },
   {
     "season_id": "4-voy-season-3",
-    "name": "4-voy-Season-3",
+    "name": "VOY-Season-3",
     "series": "4-voy",
     "season_number": 3,
     "title": "Voyager Season 3",
@@ -287,7 +287,7 @@
   },
   {
     "season_id": "4-voy-season-4",
-    "name": "4-voy-Season-4",
+    "name": "VOY-Season-4",
     "series": "4-voy",
     "season_number": 4,
     "title": "Voyager Season 4",
@@ -300,7 +300,7 @@
   },
   {
     "season_id": "4-voy-season-5",
-    "name": "4-voy-Season-5",
+    "name": "VOY-Season-5",
     "series": "4-voy",
     "season_number": 5,
     "title": "Voyager Season 5",
@@ -313,7 +313,7 @@
   },
   {
     "season_id": "4-voy-season-6",
-    "name": "4-voy-Season-6",
+    "name": "VOY-Season-6",
     "series": "4-voy",
     "season_number": 6,
     "title": "Voyager Season 6",
@@ -326,7 +326,7 @@
   },
   {
     "season_id": "4-voy-season-7",
-    "name": "4-voy-Season-7",
+    "name": "VOY-Season-7",
     "series": "4-voy",
     "season_number": 7,
     "title": "Voyager Season 7",
@@ -339,7 +339,7 @@
   },
   {
     "season_id": "5-ent-season-1",
-    "name": "5-ent-Season-1",
+    "name": "ENT-Season-1",
     "series": "5-ent",
     "season_number": 1,
     "title": "Enterprise Season 1",
@@ -352,7 +352,7 @@
   },
   {
     "season_id": "5-ent-season-2",
-    "name": "5-ent-Season-2",
+    "name": "ENT-Season-2",
     "series": "5-ent",
     "season_number": 2,
     "title": "Enterprise Season 2",
@@ -365,7 +365,7 @@
   },
   {
     "season_id": "5-ent-season-3",
-    "name": "5-ent-Season-3",
+    "name": "ENT-Season-3",
     "series": "5-ent",
     "season_number": 3,
     "title": "Enterprise Season 3",
@@ -378,7 +378,7 @@
   },
   {
     "season_id": "5-ent-season-4",
-    "name": "5-ent-Season-4",
+    "name": "ENT-Season-4",
     "series": "5-ent",
     "season_number": 4,
     "title": "Enterprise Season 4",
@@ -391,7 +391,7 @@
   },
   {
     "season_id": "6-dis-season-1",
-    "name": "6-dis-Season-1",
+    "name": "DIS-Season-1",
     "series": "6-dis",
     "season_number": 1,
     "title": "Discovery Season 1",
@@ -404,7 +404,7 @@
   },
   {
     "season_id": "6-dis-season-2",
-    "name": "6-dis-Season-2",
+    "name": "DIS-Season-2",
     "series": "6-dis",
     "season_number": 2,
     "title": "Discovery Season 2",
@@ -417,7 +417,7 @@
   },
   {
     "season_id": "6-dis-season-3",
-    "name": "6-dis-Season-3",
+    "name": "DIS-Season-3",
     "series": "6-dis",
     "season_number": 3,
     "title": "Discovery Season 3",
@@ -430,7 +430,7 @@
   },
   {
     "season_id": "6-dis-season-4",
-    "name": "6-dis-Season-4",
+    "name": "DIS-Season-4",
     "series": "6-dis",
     "season_number": 4,
     "title": "Discovery Season 4",
@@ -443,7 +443,7 @@
   },
   {
     "season_id": "6-dis-season-5",
-    "name": "6-dis-Season-5",
+    "name": "DIS-Season-5",
     "series": "6-dis",
     "season_number": 5,
     "title": "Discovery Season 5",
@@ -456,7 +456,7 @@
   },
   {
     "season_id": "7-pic-season-1",
-    "name": "7-pic-Season-1",
+    "name": "PIC-Season-1",
     "series": "7-pic",
     "season_number": 1,
     "title": "Picard Season 1",
@@ -469,7 +469,7 @@
   },
   {
     "season_id": "7-pic-season-2",
-    "name": "7-pic-Season-2",
+    "name": "PIC-Season-2",
     "series": "7-pic",
     "season_number": 2,
     "title": "Picard Season 2",
@@ -482,7 +482,7 @@
   },
   {
     "season_id": "7-pic-season-3",
-    "name": "7-pic-Season-3",
+    "name": "PIC-Season-3",
     "series": "7-pic",
     "season_number": 3,
     "title": "Picard Season 3",
@@ -495,7 +495,7 @@
   },
   {
     "season_id": "8-lds-season-1",
-    "name": "8-lds-Season-1",
+    "name": "LDS-Season-1",
     "series": "8-lds",
     "season_number": 1,
     "title": "Lower Decks Season 1",
@@ -508,7 +508,7 @@
   },
   {
     "season_id": "8-lds-season-2",
-    "name": "8-lds-Season-2",
+    "name": "LDS-Season-2",
     "series": "8-lds",
     "season_number": 2,
     "title": "Lower Decks Season 2",
@@ -521,7 +521,7 @@
   },
   {
     "season_id": "8-lds-season-3",
-    "name": "8-lds-Season-3",
+    "name": "LDS-Season-3",
     "series": "8-lds",
     "season_number": 3,
     "title": "Lower Decks Season 3",
@@ -534,7 +534,7 @@
   },
   {
     "season_id": "8-lds-season-4",
-    "name": "8-lds-Season-4",
+    "name": "LDS-Season-4",
     "series": "8-lds",
     "season_number": 4,
     "title": "Lower Decks Season 4",
@@ -547,7 +547,7 @@
   },
   {
     "season_id": "9-pro-season-1",
-    "name": "9-pro-Season-1",
+    "name": "PRO-Season-1",
     "series": "9-pro",
     "season_number": 1,
     "title": "Prodigy Season 1",
@@ -560,7 +560,7 @@
   },
   {
     "season_id": "9-pro-season-2",
-    "name": "9-pro-Season-2",
+    "name": "PRO-Season-2",
     "series": "9-pro",
     "season_number": 2,
     "title": "Prodigy Season 2",

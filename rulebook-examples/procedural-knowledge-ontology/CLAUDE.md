@@ -18,7 +18,7 @@ Multiple agents work this repo concurrently. A branch switch under another agent
 
 The rulebook JSON is a contended file — other agents write it mid-session, and a watcher auto-commits.
 
-- Write it with `json.dump(..., indent=1, ensure_ascii=False)`. **The file uses 1-space indent**; `indent=2` reflows all ~130k lines and will clobber a concurrent agent's work on the next merge.
+- Write it with `json.dump(..., indent=1, ensure_ascii=False)`. Every writer under `tools/` does; five of them once wrote `indent=2` with ASCII escaping, so check any new one. **The file uses 1-space indent**; `indent=2` reflows all ~130k lines and will clobber a concurrent agent's work on the next merge.
 - Re-read immediately before every write. Insert only your own top-level keys; never rewrite the whole document from a stale read.
 - Verify row counts **after** committing, via `git show HEAD:<path>`. Verifying before the commit is worthless here — a concurrent rebuild already emptied eight seeded tables between verification and commit once.
 - Keep seed scripts idempotent so a lost write is simply re-appliable.
@@ -27,7 +27,7 @@ The rulebook JSON is a contended file — other agents write it mid-session, and
 
 **Location:** `effortless-rulebook/procedural-knowledge-ontology-rulebook.json`
 
-65 tables encoding procedural knowledge, structurally aligned to the **Procedural Knowledge Ontology (PKO) 2.0.0** (`https://w3id.org/pko/2.0.0`) and its industry module 2.0.0.
+89 tables encoding procedural knowledge, structurally aligned to the **Procedural Knowledge Ontology (PKO) 2.0.0** (`https://w3id.org/pko/2.0.0`) and its industry module 2.0.0.
 
 The defining structural commitment: **procedure specifications and procedure executions are separate tables.** `Procedures` says what should happen; `ProcedureExecutions` records what did. They are linked by `pko:hasExecutedProcedure`, never merged.
 
@@ -62,6 +62,7 @@ A **green build is not evidence that a formula ran.**
 3. **Multi-criteria `COUNTIFS` silently drops the 2nd+ criteria.** Use the composite-key echo: `IF(cond, {{ParentFk}}, "")` on the child, then a single-criterion `COUNTIFS` against that column.
 4. `INDEX/MATCH` only matches the target table's **primary key**.
 5. `VALUE(LEFT("20:00", 2))` does not translate — the transpiler casts the string to a timestamp and the view errors on load. Store the integer.
+6. **A table with no `<Entity>Id` gets a slugged PK, and its FKs are rewritten to the slug.** `RulebookTables` had only `TableName`, so Postgres stored `witnessloops` for `WitnessLoops` and every policy/column count read 0. It now leads with `RulebookTableId` (cr-25). Every new table leads with its `<Entity>Id`.
 
 ### Time-dependent witnesses use a modeled instant, not the wall clock
 
@@ -75,14 +76,14 @@ To show a witness can fire, the violation is seeded, the column is confirmed red
 
 ```bash
 effortless build      # runs rulebook-to-rulespeak -> rulespeak/, rulebook-to-postgres
-                      # -> postgres-bootstrap/, then ./reset-rulebook-db.sh
-./reset-rulebook-db.sh          # DROP + CREATE erb_procedural_knowledge_ontology, then load it
+                      # -> postgres-bootstrap/, then postgres-bootstrap/reset-rulebook-db.sh
+bash init-db.sh       # DROP + CREATE erb_procedural_knowledge_ontology, then load it
 ./start.sh            # validate + regenerate all projections + run tests
 ```
 
 ### Loading the database
 
-`./reset-rulebook-db.sh` at the project root **drops and recreates**
+`init-db.sh` at the project root **drops and recreates**
 `erb_procedural_knowledge_ontology` (`WITH (FORCE)`) and then execs
 `postgres-bootstrap/reset-rulebook-db.sh`, which loads a freshly created, empty database
 to completion in one run — consistency rule cr-20: no step may require schema a
@@ -196,7 +197,7 @@ Every table's semantics are recorded as data in the `SemanticMappings` table. Wh
 | aligned | A reused external standard (P-Plan, PROV-O, DCAT, DCMI, OWL-Time, PRO, Metadata4Ing, ODRL) |
 | `extension` | NOT defined by PKO — carries an explicit `urn:effortless:pko-extension#` IRI |
 
-Do not relabel an extension as `exact` to make the model look more PKO-native. `KnowledgeFragments`, `ElicitationSessions`, `KnowledgeGaps`, `StewardshipAssignments`, and `OperationalBindings` are deliberately extensions. See `PKO-ALIGNMENT.md`.
+Do not relabel an extension as `exact` to make the model look more PKO-native. `KnowledgeFragments`, `ElicitationSessions`, `KnowledgeGaps`, `StewardshipAssignments`, `OperationalBindings`, `ProcessMiningRuns`, `Vocabularies`, `VocabularyTerms`, and `KnowledgeBrokerLinks` are deliberately extensions. See `PKO-ALIGNMENT.md`.
 
 ## Why the relational shape is not a semantic downgrade
 
@@ -230,10 +231,22 @@ Do not edit generated files. Edit the rulebook and rebuild.
 
 PKO was created by Valentina Anita Carriero, Mario Scrocca, Ilaria Baroni, Antonia Azzini, and Irene Celino (CC BY 4.0). This domain aligns to PKO; it is not an official PKO distribution and implies no endorsement. Keep the demo neutral — see `NOTICE.md`.
 
-## Local transpiler bus (`localhost:4242`)
+## Local transpiler bus (`127.0.0.1:4242`)
 
-> **All 13 local transpilers live on `localhost:4242`.** Once you run
-> `./start.sh` from the repo root, the ssotme-proxy exposes every repo-local
-> transpiler — `rulebook-to-postgres`, `rulebook-to-python`, `rulebook-to-golang`,
-> `rulebook-to-cobol`, `rulebook-to-owl`, and more — as first-class `ssotme://`
-> routes any `effortless build` can call.
+> **All 11 local transpilers are hosted by the effortless CLI itself.** Once you
+> run `./start.sh` from the repo root (or `effortless serve -port 4242` there),
+> every tool under `effortless-tools/<name>/` — `oss-rulebook-to-python`,
+> `oss-rulebook-to-golang`, `oss-rulebook-to-cobol`, `oss-rulebook-to-owl`, and
+> more — is a first-class route any `effortless build` can call. `GET /` lists
+> them.
+>
+> **Address it as `127.0.0.1`, never `localhost`.** The host binds the literal
+> prefix `http://127.0.0.1:<port>/`, so a request carrying a `localhost` Host
+> header gets a bare 404 with no explanation.
+>
+> **Every repo-local route carries the `oss-` prefix.** The bare names
+> (`rulebook-to-python`, `rulebook-to-xlsx`, `rulebook-to-owl`,
+> `rulebook-to-airtable`, `airtable-to-rulebook`) belong to the commercial
+> catalog as `effortless/effortless/<tool>`; the prefix is the only thing
+> keeping a repo-local route from shadowing one.
+> `orchestration/local_tool_shim.py` refuses to run if any tool is missing it.

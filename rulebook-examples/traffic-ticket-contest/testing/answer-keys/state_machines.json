@@ -1,0 +1,38 @@
+[
+  {
+    "state_machine_id": "citation-lifecycle",
+    "title": "Citation Lifecycle",
+    "description": "Top-level citation status: Issued -> Responded -> InContest -> Adjudicated -> Closed.",
+    "subject_table_name": "Citations",
+    "subject_state_column": "CitationStatus",
+    "erb_package": "citations",
+    "name": "citation-lifecycle"
+  },
+  {
+    "state_machine_id": "contest-track",
+    "title": "Contest / Hearing",
+    "description": "Contest track: NotContested | HearingRequested -> Scheduled -> Heard.",
+    "subject_table_name": "Citations",
+    "subject_state_column": "ContestStatus",
+    "erb_package": "citations",
+    "name": "contest-track"
+  },
+  {
+    "state_machine_id": "license-track",
+    "title": "License Points",
+    "description": "License track: Valid -> Warning -> Suspended.",
+    "subject_table_name": "Drivers",
+    "subject_state_column": "LicenseStatus",
+    "erb_package": "citations",
+    "name": "license-track"
+  },
+  {
+    "state_machine_id": "payment-track",
+    "title": "Payment / Penalty",
+    "description": "Payment track: Pending -> Due -> Late -> Collections | Paid | NotOwed.",
+    "subject_table_name": "Citations",
+    "subject_state_column": "PaymentStatus",
+    "erb_package": "citations",
+    "name": "payment-track"
+  }
+]

@@ -354,7 +354,7 @@ def main() -> int:
 
     if args.write:
         with RB.open("w") as fh:
-            json.dump(rb, fh, indent=2)
+            json.dump(rb, fh, indent=1, ensure_ascii=False)
             fh.write("\n")
 
     if args.json:

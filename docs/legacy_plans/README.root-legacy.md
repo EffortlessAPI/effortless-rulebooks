@@ -107,7 +107,7 @@ The shape of the whole thing: a semantic build loop where business meaning lives
 - **[Portal/CLI parity](docs/features/README.portal-cli-parity.md)** — the admin portal and `./start.sh --cli` are peer interfaces to the same pipeline. Every portal mutation shells out to the same CLI command.
 - **[Locally-designated SSoT](docs/features/README.local-ssot.md)** — the answer key for a conformance run is whichever spoke the user designates: Airtable export, Excel workbook, hand-edited JSON, Postgres dump.
 - **[Per-rulebook formula dialect](docs/features/README.dialect-binding.md)** — each rulebook declares its formula dialect (Excel, Airtable, …). Substrates honor it; conformance claims are scoped to that dialect.
-- **[ssotme-proxy transpiler bus](docs/features/README.ssotme-proxy.md)** — a local HTTP server on `localhost:4242` makes repo-local transpilers and officially-licensed ones look identical to the CLI.
+- **[ssotme-proxy transpiler bus](docs/features/README.local-tool-host.md)** — a local HTTP server on `localhost:4242` makes repo-local transpilers and officially-licensed ones look identical to the CLI.
 
 → [Full feature catalog with tiers, priorities, and status](docs/derived/features.md)
 
@@ -178,7 +178,7 @@ The root **`./start.sh`** is the single entry point. It always clears its ports 
 ./start.sh --cli      # force the CLI menu explicitly
 ```
 
-From the CLI menu, **`[B] BUILD`** on any domain runs every transpiler, then runs every substrate's conformance test, then regenerates and opens `orchestration-report.html`. There is no "build without testing" — testing *is* the build. Individual transpiler entries do the same for a single substrate. `start.sh` also boots the [ssotme-proxy transpiler bus on `localhost:4242`](docs/features/README.ssotme-proxy.md), which serves all of the repo-local transpilers as first-class `ssotme://` routes any `effortless build` can call.
+From the CLI menu, **`[B] BUILD`** on any domain runs every transpiler, then runs every substrate's conformance test, then regenerates and opens `orchestration-report.html`. There is no "build without testing" — testing *is* the build. Individual transpiler entries do the same for a single substrate. `start.sh` also boots the [ssotme-proxy transpiler bus on `localhost:4242`](docs/features/README.local-tool-host.md), which serves all of the repo-local transpilers as first-class `ssotme://` routes any `effortless build` can call.
 
 The admin portal and `./start.sh --cli` are peer interfaces to the same pipeline — every portal mutation shells out to the same CLI command ([portal/CLI parity](docs/features/README.portal-cli-parity.md)).
 

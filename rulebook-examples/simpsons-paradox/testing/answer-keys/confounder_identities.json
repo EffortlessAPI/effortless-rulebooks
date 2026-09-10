@@ -1,0 +1,154 @@
+[
+  {
+    "confounder_identity_id": "id-age-composition",
+    "display_name": "Age Composition",
+    "mechanism_class": "demographic-composition",
+    "description": "Age or cohort stratification shifts treatment exposure and baseline outcome rates independently \u2014 classic demographic confounding (CFR by age, trial subgroups, school entry age).",
+    "policy_default": "stratify-by-age",
+    "name": "id-age-composition"
+  },
+  {
+    "confounder_identity_id": "id-collider-proxy",
+    "display_name": "Collider / Conditioning Proxy",
+    "mechanism_class": "collider-selection",
+    "description": "BMI, birth-weight category, or other collider/selection variables \u2014 latent sweep sensitivity without manifest flip.",
+    "policy_default": "do-not-condition",
+    "name": "id-collider-proxy"
+  },
+  {
+    "confounder_identity_id": "id-contested-org-choice",
+    "display_name": "Contested Organizational Choice",
+    "mechanism_class": "contested-mediator",
+    "description": "Department or institution where causal role is disputed (Berkeley) \u2014 geometry without adjust-resolvable explanation.",
+    "policy_default": "do-not-naively-adjust",
+    "name": "id-contested-org-choice"
+  },
+  {
+    "confounder_identity_id": "id-credit-risk-tier",
+    "display_name": "Credit / Risk Tier",
+    "mechanism_class": "lending-risk",
+    "description": "Credit score, FICO band, or loan-risk tier \u2014 financial lending allocation confounds.",
+    "policy_default": "stratify-by-risk-tier",
+    "name": "id-credit-risk-tier"
+  },
+  {
+    "confounder_identity_id": "id-demographic-group",
+    "display_name": "Demographic Group",
+    "mechanism_class": "race-sex-group",
+    "description": "Race, sex, or demographic group base rates \u2014 distinct from age composition when not age-stratified.",
+    "policy_default": "stratify-by-demographic",
+    "name": "id-demographic-group"
+  },
+  {
+    "confounder_identity_id": "id-disease-severity",
+    "display_name": "Disease Severity / Case Mix",
+    "mechanism_class": "severity-case-mix",
+    "description": "Illness severity, stage, or case-mix drives both treatment selection and prognosis \u2014 dominant in medicine and epidemiology reversals.",
+    "policy_default": "stratify-by-severity",
+    "name": "id-disease-severity"
+  },
+  {
+    "confounder_identity_id": "id-exposure-mix",
+    "display_name": "Exposure Mix / Context Heterogeneity",
+    "mechanism_class": "exposure-heterogeneity",
+    "description": "Vaccination base rate, exposure popularity, local labor market, or interaction type \u2014 aggregate exposure pool is heterogeneous across strata, driving allocation distortion.",
+    "policy_default": "stratify-by-exposure-context",
+    "name": "id-exposure-mix"
+  },
+  {
+    "confounder_identity_id": "id-geographic-composition",
+    "display_name": "Geographic Composition",
+    "mechanism_class": "geography",
+    "description": "Country, region, state, or city composition drives aggregate rate differences without per-unit reversal.",
+    "policy_default": "stratify-by-geography",
+    "name": "id-geographic-composition"
+  },
+  {
+    "confounder_identity_id": "id-institutional-unit",
+    "display_name": "Institutional Unit",
+    "mechanism_class": "organizational-unit",
+    "description": "School, department, hospital, or center choice correlates with both treatment exposure and outcomes \u2014 admissions and quality comparisons.",
+    "policy_default": "investigate-unit-choice",
+    "name": "id-institutional-unit"
+  },
+  {
+    "confounder_identity_id": "id-legal-case-context",
+    "display_name": "Legal Case Context",
+    "mechanism_class": "legal-offense-victim",
+    "description": "Offense type, charge severity, victim characteristics, or stage in criminal process \u2014 legal/sentencing paradox encodes.",
+    "policy_default": "stratify-by-offense-context",
+    "name": "id-legal-case-context"
+  },
+  {
+    "confounder_identity_id": "id-mechanism-other",
+    "display_name": "Other Mechanism",
+    "mechanism_class": "other",
+    "description": "Catch-all for stratum variables not yet assigned a canonical archetype \u2014 pending ontology refinement.",
+    "policy_default": "investigate-confounder",
+    "name": "id-mechanism-other"
+  },
+  {
+    "confounder_identity_id": "id-method-specification",
+    "display_name": "Methodological Specification",
+    "mechanism_class": "analytic-method",
+    "description": "Model specification choice, source study, group base rate, field subarea, or noncollapsible measure \u2014 reversals arise from analytic decisions rather than substantive confounding.",
+    "policy_default": "investigate-specification",
+    "name": "id-method-specification"
+  },
+  {
+    "confounder_identity_id": "id-selection-frailty",
+    "display_name": "Selection / Frailty",
+    "mechanism_class": "healthy-vaccinee",
+    "description": "Frailty, employment, abstainer composition, or healthy-vaccinee selection \u2014 epidemiology selection bias.",
+    "policy_default": "model-selection-explicitly",
+    "name": "id-selection-frailty"
+  },
+  {
+    "confounder_identity_id": "id-situational-context",
+    "display_name": "Situational Context",
+    "mechanism_class": "sports-situation",
+    "description": "Game situation, score state, home/away, surface, or down-and-distance \u2014 sports analytics allocation confounds.",
+    "policy_default": "stratify-by-situation",
+    "name": "id-situational-context"
+  },
+  {
+    "confounder_identity_id": "id-smoking-behavior",
+    "display_name": "Smoking / Substance Behavior",
+    "mechanism_class": "behavioral-exposure",
+    "description": "Smoking status, drinking pattern, or substance-use history drives outcome differences independent of treatment \u2014 behavioral confounder that inverts pooled comparisons.",
+    "policy_default": "stratify-by-behavior",
+    "name": "id-smoking-behavior"
+  },
+  {
+    "confounder_identity_id": "id-socioeconomic-status",
+    "display_name": "Socioeconomic Status",
+    "mechanism_class": "ses-income",
+    "description": "Income, SES, or neighborhood tier confounds pooled comparisons in economics, education, and lending encodes.",
+    "policy_default": "stratify-by-ses",
+    "name": "id-socioeconomic-status"
+  },
+  {
+    "confounder_identity_id": "id-treatment-indication",
+    "display_name": "Treatment Indication",
+    "mechanism_class": "clinical-indication",
+    "description": "Baseline risk tier, HbA1c, PD-L1, or indication-for-treatment stratification in trials.",
+    "policy_default": "stratify-by-indication",
+    "name": "id-treatment-indication"
+  },
+  {
+    "confounder_identity_id": "id-trial-timing-design",
+    "display_name": "Trial Timing / Design Profile",
+    "mechanism_class": "design-artifact",
+    "description": "Trial allocation profile, treatment timing from symptom onset, study design type, or protocol subgroup definition \u2014 design-level strata, not substantive confounders.",
+    "policy_default": "stratify-by-protocol-design",
+    "name": "id-trial-timing-design"
+  },
+  {
+    "confounder_identity_id": "id-user-platform-segment",
+    "display_name": "User / Platform Segment",
+    "mechanism_class": "ab-test-segment",
+    "description": "User tenure, device, platform, or experiment segment \u2014 online A/B and recsys allocation confounds.",
+    "policy_default": "stratify-by-segment",
+    "name": "id-user-platform-segment"
+  }
+]

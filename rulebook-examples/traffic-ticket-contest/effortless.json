@@ -32,17 +32,17 @@
     },
     {
       "IsSSoTTranspiler": false,
-      "Name": "httplocalhost4242postgrescalculatedtorulebook",
+      "Name": "oss-postgres-calculated-to-rulebook",
       "RelativePath": "/postgres-bootstrap",
-      "CommandLine": "http://localhost:4242/postgres-calculated-to-rulebook -i ../effortless-rulebook/traffic-ticket-contest-rulebook.json",
+      "CommandLine": "http://127.0.0.1:4242/oss-postgres-calculated-to-rulebook -i ../effortless-rulebook/traffic-ticket-contest-rulebook.json",
       "IsDisabled": true,
       "Description": "Reverse spoke: refresh rulebook derived-field display copies from Postgres views after the destructive rebuild (raws verified, never written). DISABLED for now — it was failing on missing .pg-raw-data.json and mutating/auto-committing the rulebook during builds."
     },
     {
       "IsSSoTTranspiler": false,
-      "Name": "httplocalhost4242rulebooktoexplaindag",
+      "Name": "oss-rulebook-to-explain-dag",
       "RelativePath": "/explain-dag",
-      "CommandLine": "http://localhost:4242/rulebook-to-explain-dag -i ../effortless-rulebook/traffic-ticket-contest-rulebook.json",
+      "CommandLine": "http://127.0.0.1:4242/oss-rulebook-to-explain-dag -i ../effortless-rulebook/traffic-ticket-contest-rulebook.json",
       "IsDisabled": false
     },
     {
@@ -51,14 +51,14 @@
       "RelativePath": "/rulespeak",
       "CommandLine": "rulebook-to-rulespeak -i ../effortless-rulebook/traffic-ticket-contest-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.08.30.1537",
-      "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-08-30-1537-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+      "LastVersionUsed": "v2026.09.11.0137",
+      "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-09-11-0137-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
       "IsSSoTTranspiler": false,
-      "Name": "httplocalhost4242rulebooktopython",
+      "Name": "oss-rulebook-to-python",
       "RelativePath": "/python",
-      "CommandLine": "http://localhost:4242/rulebook-to-python -i ../effortless-rulebook/traffic-ticket-contest-rulebook.json",
+      "CommandLine": "http://127.0.0.1:4242/oss-rulebook-to-python -i ../effortless-rulebook/traffic-ticket-contest-rulebook.json",
       "IsDisabled": false
     },
     {
@@ -67,8 +67,8 @@
       "RelativePath": "/effortless-rulebook",
       "CommandLine": "effortless-rulebook-editor -i traffic-ticket-contest-rulebook.json -p rulebookPath=traffic-ticket-contest-rulebook.json -p dockerfilePath=docker/Dockerfile",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.09.07.0138",
-      "LastUrl": "https://effortless-effortless-rulebook-e-v2026-09-07-0138-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+      "LastVersionUsed": "v2026.09.10.1047",
+      "LastUrl": "https://effortless-effortless-rulebook-e-v2026-09-10-1047-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     }
   ],
   "ShowHidden": false,

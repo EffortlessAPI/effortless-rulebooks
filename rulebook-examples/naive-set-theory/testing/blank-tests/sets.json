@@ -1,0 +1,66 @@
+[
+  {
+    "set_id": "a",
+    "label": "a",
+    "condition_expression": "atom (primitive element)",
+    "is_self_referential": false,
+    "name": null,
+    "is_russell_set": null
+  },
+  {
+    "set_id": "b",
+    "label": "b",
+    "condition_expression": "atom (primitive element)",
+    "is_self_referential": false,
+    "name": null,
+    "is_russell_set": null
+  },
+  {
+    "set_id": "empty-set",
+    "label": "\u2205",
+    "condition_expression": "false (nothing satisfies)",
+    "is_self_referential": false,
+    "name": null,
+    "is_russell_set": null
+  },
+  {
+    "set_id": "nested",
+    "label": "{{a}}",
+    "condition_expression": "x = {a}",
+    "is_self_referential": false,
+    "name": null,
+    "is_russell_set": null
+  },
+  {
+    "set_id": "pair-ab",
+    "label": "{a, b}",
+    "condition_expression": "x = a OR x = b",
+    "is_self_referential": false,
+    "name": null,
+    "is_russell_set": null
+  },
+  {
+    "set_id": "russell-set",
+    "label": "R",
+    "condition_expression": "x not-in x",
+    "is_self_referential": true,
+    "name": null,
+    "is_russell_set": null
+  },
+  {
+    "set_id": "singleton-a",
+    "label": "{a}",
+    "condition_expression": "x = a",
+    "is_self_referential": false,
+    "name": null,
+    "is_russell_set": null
+  },
+  {
+    "set_id": "universal-u",
+    "label": "U",
+    "condition_expression": "x is a set (U includes itself)",
+    "is_self_referential": true,
+    "name": null,
+    "is_russell_set": null
+  }
+]

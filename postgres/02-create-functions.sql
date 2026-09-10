@@ -1686,7 +1686,7 @@ $$ LANGUAGE sql STABLE;
 -- Used for join-free cross-table references in aggregations
 
 CREATE OR REPLACE FUNCTION get_consistency_findings_detected_on(p_consistency_finding_id TEXT)
-RETURNS DATE AS $$
+RETURNS TIMESTAMPTZ AS $$
   SELECT (SELECT detected_on FROM consistency_findings WHERE consistency_finding_id = p_consistency_finding_id);
 $$ LANGUAGE sql STABLE;
 
@@ -1722,7 +1722,7 @@ $$ LANGUAGE sql STABLE;
 -- Used for join-free cross-table references in aggregations
 
 CREATE OR REPLACE FUNCTION get_project_slot_witnesses_witnessed_on(p_project_slot_witness_id TEXT)
-RETURNS DATE AS $$
+RETURNS TIMESTAMPTZ AS $$
   SELECT (SELECT witnessed_on FROM project_slot_witnesses WHERE project_slot_witness_id = p_project_slot_witness_id);
 $$ LANGUAGE sql STABLE;
 
@@ -4658,6 +4658,15 @@ RETURNS TEXT AS $$
   SELECT (SELECT summary FROM erb_features WHERE erb_feature_id = p_erb_feature_id);
 $$ LANGUAGE sql STABLE;
 
+-- get_erb_features_sort_order
+-- Helper function: Get SortOrder from ERBFeatures by ERBFeatureId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_erb_features_sort_order(p_erb_feature_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT sort_order FROM erb_features WHERE erb_feature_id = p_erb_feature_id);
+$$ LANGUAGE sql STABLE;
+
 -- calc_erb_packages_name
 -- Field: ERBPackages.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -4901,6 +4910,24 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_erb_features_category_story_count(p_erb_feature_id TEXT)
 RETURNS NUMERIC AS $$
   SELECT calc_erb_feature_categories_story_count((SELECT category FROM erb_features WHERE erb_feature_id = p_erb_feature_id));
+$$ LANGUAGE sql STABLE;
+
+-- get_erb_epics_title
+-- Helper function: Get Title from ERBEpics by ERBEpicId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_erb_epics_title(p_erb_epic_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT title FROM erb_epics WHERE erb_epic_id = p_erb_epic_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_erb_epics_sort_order
+-- Helper function: Get SortOrder from ERBEpics by ERBEpicId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_erb_epics_sort_order(p_erb_epic_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT sort_order FROM erb_epics WHERE erb_epic_id = p_erb_epic_id);
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_features_name
@@ -6606,30 +6633,30 @@ RETURNS TEXT AS $$
   SELECT (SELECT description FROM add_tool_catalog WHERE tool_id = p_tool_id);
 $$ LANGUAGE sql STABLE;
 
--- get_ssotme_proxy_route
--- Helper function: Get Route from SsotmeProxy by RouteId
+-- get_local_tool_routes_route
+-- Helper function: Get Route from LocalToolRoutes by RouteId
 -- Used for join-free cross-table references in aggregations
 
-CREATE OR REPLACE FUNCTION get_ssotme_proxy_route(p_route_id TEXT)
+CREATE OR REPLACE FUNCTION get_local_tool_routes_route(p_route_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (SELECT route FROM ssotme_proxy WHERE route_id = p_route_id);
+  SELECT (SELECT route FROM local_tool_routes WHERE route_id = p_route_id);
 $$ LANGUAGE sql STABLE;
 
--- get_ssotme_proxy_injector_script
--- Helper function: Get InjectorScript from SsotmeProxy by RouteId
+-- get_local_tool_routes_injector_script
+-- Helper function: Get InjectorScript from LocalToolRoutes by RouteId
 -- Used for join-free cross-table references in aggregations
 
-CREATE OR REPLACE FUNCTION get_ssotme_proxy_injector_script(p_route_id TEXT)
+CREATE OR REPLACE FUNCTION get_local_tool_routes_injector_script(p_route_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (SELECT injector_script FROM ssotme_proxy WHERE route_id = p_route_id);
+  SELECT (SELECT injector_script FROM local_tool_routes WHERE route_id = p_route_id);
 $$ LANGUAGE sql STABLE;
 
--- get_ssotme_proxy_description
--- Helper function: Get Description from SsotmeProxy by RouteId
+-- get_local_tool_routes_description
+-- Helper function: Get Description from LocalToolRoutes by RouteId
 -- Used for join-free cross-table references in aggregations
-CREATE OR REPLACE FUNCTION get_ssotme_proxy_description(p_route_id TEXT)
+CREATE OR REPLACE FUNCTION get_local_tool_routes_description(p_route_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (SELECT description FROM ssotme_proxy WHERE route_id = p_route_id);
+  SELECT (SELECT description FROM local_tool_routes WHERE route_id = p_route_id);
 $$ LANGUAGE sql STABLE;
 
 -- get_substrate_tradeoffs_pro
@@ -6706,7 +6733,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_execution_substrates_proxy_route_count(p_substrate_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM ssotme_proxy WHERE substrate_id = (SELECT NULLIF(substrate_id, '') FROM execution_substrates WHERE substrate_id = p_substrate_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM local_tool_routes WHERE substrate_id = (SELECT NULLIF(substrate_id, '') FROM execution_substrates WHERE substrate_id = p_substrate_id)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_execution_substrates_catalog_tool_count
@@ -6879,15 +6906,15 @@ RETURNS BOOLEAN AS $$
   SELECT (calc_orchestration_components_review_priority(p_component_id) = 'review')::boolean;
 $$ LANGUAGE sql STABLE;
 
--- calc_ssotme_proxy_substrate_is_fully_expressive
--- Field: SsotmeProxy.SubstrateIsFullyExpressive
+-- calc_local_tool_routes_substrate_is_fully_expressive
+-- Field: LocalToolRoutes.SubstrateIsFullyExpressive
 -- Type: lookup | DataType: boolean | Returns: BOOLEAN
 -- Lookup: IsFullyExpressive from related ExecutionSubstrates
 
 
-CREATE OR REPLACE FUNCTION calc_ssotme_proxy_substrate_is_fully_expressive(p_route_id TEXT)
+CREATE OR REPLACE FUNCTION calc_local_tool_routes_substrate_is_fully_expressive(p_route_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT calc_execution_substrates_is_fully_expressive((SELECT substrate_id FROM ssotme_proxy WHERE route_id = p_route_id));
+  SELECT calc_execution_substrates_is_fully_expressive((SELECT substrate_id FROM local_tool_routes WHERE route_id = p_route_id));
 $$ LANGUAGE sql STABLE;
 
 -- get_execution_substrates_name
@@ -7007,104 +7034,104 @@ RETURNS TEXT AS $$
   SELECT (SELECT description FROM execution_substrates WHERE substrate_id = p_substrate_id);
 $$ LANGUAGE sql STABLE;
 
--- calc_ssotme_proxy_name
--- Field: SsotmeProxy.Name
+-- calc_local_tool_routes_name
+-- Field: LocalToolRoutes.Name
 -- Type: calculated | DataType: string | Returns: TEXT
 
 
-CREATE OR REPLACE FUNCTION calc_ssotme_proxy_name(p_route_id TEXT)
+CREATE OR REPLACE FUNCTION calc_local_tool_routes_name(p_route_id TEXT)
 RETURNS TEXT AS $$
-  SELECT ((SELECT NULLIF(route, '') FROM ssotme_proxy WHERE route_id = p_route_id))::text;
+  SELECT ((SELECT NULLIF(route, '') FROM local_tool_routes WHERE route_id = p_route_id))::text;
 $$ LANGUAGE sql STABLE;
 
--- calc_ssotme_proxy_http_method
--- Field: SsotmeProxy.HttpMethod
+-- calc_local_tool_routes_http_method
+-- Field: LocalToolRoutes.HttpMethod
 -- Type: calculated | DataType: string | Returns: TEXT
 
 
-CREATE OR REPLACE FUNCTION calc_ssotme_proxy_http_method(p_route_id TEXT)
+CREATE OR REPLACE FUNCTION calc_local_tool_routes_http_method(p_route_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (LEFT(((SELECT NULLIF(route, '') FROM ssotme_proxy WHERE route_id = p_route_id))::text, ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (POSITION(' ' IN (SELECT NULLIF(route, '') FROM ssotme_proxy WHERE route_id = p_route_id))) AS v) __safe_numeric), 0) - COALESCE(1, 0)))::integer))::text;
+  SELECT (LEFT(((SELECT NULLIF(route, '') FROM local_tool_routes WHERE route_id = p_route_id))::text, ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (POSITION(' ' IN (SELECT NULLIF(route, '') FROM local_tool_routes WHERE route_id = p_route_id))) AS v) __safe_numeric), 0) - COALESCE(1, 0)))::integer))::text;
 $$ LANGUAGE sql STABLE;
 
--- calc_ssotme_proxy_route_path
--- Field: SsotmeProxy.RoutePath
+-- calc_local_tool_routes_route_path
+-- Field: LocalToolRoutes.RoutePath
 -- Type: calculated | DataType: string | Returns: TEXT
 
 
-CREATE OR REPLACE FUNCTION calc_ssotme_proxy_route_path(p_route_id TEXT)
+CREATE OR REPLACE FUNCTION calc_local_tool_routes_route_path(p_route_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (SUBSTRING((SELECT NULLIF(route, '') FROM ssotme_proxy WHERE route_id = p_route_id), ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (POSITION(' ' IN (SELECT NULLIF(route, '') FROM ssotme_proxy WHERE route_id = p_route_id))) AS v) __safe_numeric), 0) + COALESCE(1, 0)))::integer, (200)::integer))::text;
+  SELECT (SUBSTRING((SELECT NULLIF(route, '') FROM local_tool_routes WHERE route_id = p_route_id), ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (POSITION(' ' IN (SELECT NULLIF(route, '') FROM local_tool_routes WHERE route_id = p_route_id))) AS v) __safe_numeric), 0) + COALESCE(1, 0)))::integer, (200)::integer))::text;
 $$ LANGUAGE sql STABLE;
 
--- calc_ssotme_proxy_has_substrate
--- Field: SsotmeProxy.HasSubstrate
+-- calc_local_tool_routes_has_substrate
+-- Field: LocalToolRoutes.HasSubstrate
 -- Type: calculated | DataType: boolean | Returns: BOOLEAN
 
 
-CREATE OR REPLACE FUNCTION calc_ssotme_proxy_has_substrate(p_route_id TEXT)
+CREATE OR REPLACE FUNCTION calc_local_tool_routes_has_substrate(p_route_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(substrate_id, '') FROM ssotme_proxy WHERE route_id = p_route_id) IS NOT NULL)::boolean;
+  SELECT ((SELECT NULLIF(substrate_id, '') FROM local_tool_routes WHERE route_id = p_route_id) IS NOT NULL)::boolean;
 $$ LANGUAGE sql STABLE;
 
--- calc_ssotme_proxy_is_post
--- Field: SsotmeProxy.IsPost
+-- calc_local_tool_routes_is_post
+-- Field: LocalToolRoutes.IsPost
 -- Type: calculated | DataType: boolean | Returns: BOOLEAN
 
 
-CREATE OR REPLACE FUNCTION calc_ssotme_proxy_is_post(p_route_id TEXT)
+CREATE OR REPLACE FUNCTION calc_local_tool_routes_is_post(p_route_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_ssotme_proxy_http_method(p_route_id) = 'POST')::boolean;
+  SELECT (calc_local_tool_routes_http_method(p_route_id) = 'POST')::boolean;
 $$ LANGUAGE sql STABLE;
 
--- calc_ssotme_proxy_route_slug
--- Field: SsotmeProxy.RouteSlug
+-- calc_local_tool_routes_route_slug
+-- Field: LocalToolRoutes.RouteSlug
 -- Type: calculated | DataType: string | Returns: TEXT
 
 
-CREATE OR REPLACE FUNCTION calc_ssotme_proxy_route_slug(p_route_id TEXT)
+CREATE OR REPLACE FUNCTION calc_local_tool_routes_route_slug(p_route_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (REPLACE(calc_ssotme_proxy_route_path(p_route_id), '/', ''))::text;
+  SELECT (REPLACE(calc_local_tool_routes_route_path(p_route_id), '/', ''))::text;
 $$ LANGUAGE sql STABLE;
 
--- calc_ssotme_proxy_is_full_bus_route
--- Field: SsotmeProxy.IsFullBusRoute
+-- calc_local_tool_routes_is_full_bus_route
+-- Field: LocalToolRoutes.IsFullBusRoute
 -- Type: calculated | DataType: boolean | Returns: BOOLEAN
 
 
-CREATE OR REPLACE FUNCTION calc_ssotme_proxy_is_full_bus_route(p_route_id TEXT)
+CREATE OR REPLACE FUNCTION calc_local_tool_routes_is_full_bus_route(p_route_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_ssotme_proxy_has_substrate(p_route_id) AND (COALESCE(calc_ssotme_proxy_substrate_is_fully_expressive(p_route_id), FALSE) = 'true')))::boolean;
+  SELECT ((calc_local_tool_routes_has_substrate(p_route_id) AND (COALESCE(calc_local_tool_routes_substrate_is_fully_expressive(p_route_id), FALSE) = 'true')))::boolean;
 $$ LANGUAGE sql STABLE;
 
--- calc_ssotme_proxy_is_post_spoke
--- Field: SsotmeProxy.IsPostSpoke
+-- calc_local_tool_routes_is_post_spoke
+-- Field: LocalToolRoutes.IsPostSpoke
 -- Type: calculated | DataType: boolean | Returns: BOOLEAN
 
 
-CREATE OR REPLACE FUNCTION calc_ssotme_proxy_is_post_spoke(p_route_id TEXT)
+CREATE OR REPLACE FUNCTION calc_local_tool_routes_is_post_spoke(p_route_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_ssotme_proxy_is_post(p_route_id) AND NOT (calc_ssotme_proxy_has_substrate(p_route_id))))::boolean;
+  SELECT ((calc_local_tool_routes_is_post(p_route_id) AND NOT (calc_local_tool_routes_has_substrate(p_route_id))))::boolean;
 $$ LANGUAGE sql STABLE;
 
--- calc_ssotme_proxy_route_class
--- Field: SsotmeProxy.RouteClass
+-- calc_local_tool_routes_route_class
+-- Field: LocalToolRoutes.RouteClass
 -- Type: calculated | DataType: string | Returns: TEXT
 
 
-CREATE OR REPLACE FUNCTION calc_ssotme_proxy_route_class(p_route_id TEXT)
+CREATE OR REPLACE FUNCTION calc_local_tool_routes_route_class(p_route_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN calc_ssotme_proxy_is_full_bus_route(p_route_id) THEN ('full-substrate')::text ELSE (CASE WHEN calc_ssotme_proxy_has_substrate(p_route_id) THEN ('partial-substrate')::text ELSE (CASE WHEN calc_ssotme_proxy_is_post_spoke(p_route_id) THEN ('spoke')::text ELSE ('other')::text END)::text END)::text END)::text;
+  SELECT (CASE WHEN calc_local_tool_routes_is_full_bus_route(p_route_id) THEN ('full-substrate')::text ELSE (CASE WHEN calc_local_tool_routes_has_substrate(p_route_id) THEN ('partial-substrate')::text ELSE (CASE WHEN calc_local_tool_routes_is_post_spoke(p_route_id) THEN ('spoke')::text ELSE ('other')::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
--- calc_ssotme_proxy_is_bus_headline
--- Field: SsotmeProxy.IsBusHeadline
+-- calc_local_tool_routes_is_bus_headline
+-- Field: LocalToolRoutes.IsBusHeadline
 -- Type: calculated | DataType: boolean | Returns: BOOLEAN
 
 
-CREATE OR REPLACE FUNCTION calc_ssotme_proxy_is_bus_headline(p_route_id TEXT)
+CREATE OR REPLACE FUNCTION calc_local_tool_routes_is_bus_headline(p_route_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_ssotme_proxy_route_class(p_route_id) = 'full-substrate')::boolean;
+  SELECT (calc_local_tool_routes_route_class(p_route_id) = 'full-substrate')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_testing_framework_is_global
@@ -8522,19 +8549,321 @@ RETURNS TEXT AS $$
   SELECT (CASE WHEN calc_resilience_claim_is_ready(p_resilience_claim_id) THEN (CONCAT((SELECT NULLIF(name, '') FROM resilience_claim WHERE resilience_claim_id = p_resilience_claim_id), ' (ready)'))::text ELSE (CONCAT((SELECT NULLIF(name, '') FROM resilience_claim WHERE resilience_claim_id = p_resilience_claim_id), ' (stub)'))::text END)::text;
 $$ LANGUAGE sql STABLE;
 
+-- get_erb_tables_table_name
+-- Helper function: Get TableName from ERBTables by ERBTableId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_erb_tables_table_name(p_erb_table_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT table_name FROM erb_tables WHERE erb_table_id = p_erb_table_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_erb_tables_description
+-- Helper function: Get Description from ERBTables by ERBTableId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_erb_tables_description(p_erb_table_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT description FROM erb_tables WHERE erb_table_id = p_erb_table_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_erb_tables_is_meta_table
+-- Helper function: Get IsMetaTable from ERBTables by ERBTableId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_erb_tables_is_meta_table(p_erb_table_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT is_meta_table FROM erb_tables WHERE erb_table_id = p_erb_table_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_erb_tables_is_tenant_scoped
+-- Helper function: Get IsTenantScoped from ERBTables by ERBTableId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_erb_tables_is_tenant_scoped(p_erb_table_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT is_tenant_scoped FROM erb_tables WHERE erb_table_id = p_erb_table_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_erb_tables_tenant_parent_field
+-- Helper function: Get TenantParentField from ERBTables by ERBTableId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_erb_tables_tenant_parent_field(p_erb_table_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT tenant_parent_field FROM erb_tables WHERE erb_table_id = p_erb_table_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_erb_tables_sort_order
+-- Helper function: Get SortOrder from ERBTables by ERBTableId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_erb_tables_sort_order(p_erb_table_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT sort_order FROM erb_tables WHERE erb_table_id = p_erb_table_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_erb_roles_title
+-- Helper function: Get Title from ERBRoles by ERBRoleId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_erb_roles_title(p_erb_role_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT title FROM erb_roles WHERE erb_role_id = p_erb_role_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_erb_roles_description
+-- Helper function: Get Description from ERBRoles by ERBRoleId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_erb_roles_description(p_erb_role_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT description FROM erb_roles WHERE erb_role_id = p_erb_role_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_erb_roles_default_crud
+-- Helper function: Get DefaultCRUD from ERBRoles by ERBRoleId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_erb_roles_default_crud(p_erb_role_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT default_crud FROM erb_roles WHERE erb_role_id = p_erb_role_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_erb_roles_default_row_filter
+-- Helper function: Get DefaultRowFilter from ERBRoles by ERBRoleId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_erb_roles_default_row_filter(p_erb_role_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT default_row_filter FROM erb_roles WHERE erb_role_id = p_erb_role_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_erb_roles_is_admin_equivalent
+-- Helper function: Get IsAdminEquivalent from ERBRoles by ERBRoleId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_erb_roles_is_admin_equivalent(p_erb_role_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT is_admin_equivalent FROM erb_roles WHERE erb_role_id = p_erb_role_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_erb_roles_is_tenant_exempt
+-- Helper function: Get IsTenantExempt from ERBRoles by ERBRoleId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_erb_roles_is_tenant_exempt(p_erb_role_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT is_tenant_exempt FROM erb_roles WHERE erb_role_id = p_erb_role_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_erb_roles_sort_order
+-- Helper function: Get SortOrder from ERBRoles by ERBRoleId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_erb_roles_sort_order(p_erb_role_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT sort_order FROM erb_roles WHERE erb_role_id = p_erb_role_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_erb_fields_field_name
+-- Helper function: Get FieldName from ERBFields by ERBFieldId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_erb_fields_field_name(p_erb_field_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT field_name FROM erb_fields WHERE erb_field_id = p_erb_field_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_erb_fields_field_type
+-- Helper function: Get FieldType from ERBFields by ERBFieldId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_erb_fields_field_type(p_erb_field_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT field_type FROM erb_fields WHERE erb_field_id = p_erb_field_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_erb_fields_datatype
+-- Helper function: Get Datatype from ERBFields by ERBFieldId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_erb_fields_datatype(p_erb_field_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT datatype FROM erb_fields WHERE erb_field_id = p_erb_field_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_erb_fields_is_primary_key
+-- Helper function: Get IsPrimaryKey from ERBFields by ERBFieldId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_erb_fields_is_primary_key(p_erb_field_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT is_primary_key FROM erb_fields WHERE erb_field_id = p_erb_field_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_erb_fields_description
+-- Helper function: Get Description from ERBFields by ERBFieldId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_erb_fields_description(p_erb_field_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT description FROM erb_fields WHERE erb_field_id = p_erb_field_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_erb_build_phases_phase_number
+-- Helper function: Get PhaseNumber from ERBBuildPhases by ERBBuildPhaseId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_erb_build_phases_phase_number(p_erb_build_phase_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT phase_number FROM erb_build_phases WHERE erb_build_phase_id = p_erb_build_phase_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_erb_build_phases_title
+-- Helper function: Get Title from ERBBuildPhases by ERBBuildPhaseId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_erb_build_phases_title(p_erb_build_phase_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT title FROM erb_build_phases WHERE erb_build_phase_id = p_erb_build_phase_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_erb_build_phases_quoted_price
+-- Helper function: Get QuotedPrice from ERBBuildPhases by ERBBuildPhaseId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_erb_build_phases_quoted_price(p_erb_build_phase_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT quoted_price FROM erb_build_phases WHERE erb_build_phase_id = p_erb_build_phase_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_erb_build_phases_duration_months
+-- Helper function: Get DurationMonths from ERBBuildPhases by ERBBuildPhaseId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_erb_build_phases_duration_months(p_erb_build_phase_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT duration_months FROM erb_build_phases WHERE erb_build_phase_id = p_erb_build_phase_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_erb_build_phases_phase_kind
+-- Helper function: Get PhaseKind from ERBBuildPhases by ERBBuildPhaseId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_erb_build_phases_phase_kind(p_erb_build_phase_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT phase_kind FROM erb_build_phases WHERE erb_build_phase_id = p_erb_build_phase_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_erb_effort_classes_title
+-- Helper function: Get Title from ERBEffortClasses by ERBEffortClassId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_erb_effort_classes_title(p_erb_effort_class_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT title FROM erb_effort_classes WHERE erb_effort_class_id = p_erb_effort_class_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_erb_effort_classes_complexity_weight
+-- Helper function: Get ComplexityWeight from ERBEffortClasses by ERBEffortClassId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_erb_effort_classes_complexity_weight(p_erb_effort_class_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT complexity_weight FROM erb_effort_classes WHERE erb_effort_class_id = p_erb_effort_class_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_erb_effort_classes_sort_order
+-- Helper function: Get SortOrder from ERBEffortClasses by ERBEffortClassId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_erb_effort_classes_sort_order(p_erb_effort_class_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT sort_order FROM erb_effort_classes WHERE erb_effort_class_id = p_erb_effort_class_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_erb_user_stories_story_text
+-- Helper function: Get StoryText from ERBUserStories by ERBUserStoryId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_erb_user_stories_story_text(p_erb_user_story_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT story_text FROM erb_user_stories WHERE erb_user_story_id = p_erb_user_story_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_erb_user_stories_needs_new_rulebook_modelling
+-- Helper function: Get NeedsNewRulebookModelling from ERBUserStories by ERBUserStoryId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_erb_user_stories_needs_new_rulebook_modelling(p_erb_user_story_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT needs_new_rulebook_modelling FROM erb_user_stories WHERE erb_user_story_id = p_erb_user_story_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_erb_user_stories_spike_coverage_percent
+-- Helper function: Get SpikeCoveragePercent from ERBUserStories by ERBUserStoryId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_erb_user_stories_spike_coverage_percent(p_erb_user_story_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT spike_coverage_percent FROM erb_user_stories WHERE erb_user_story_id = p_erb_user_story_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_erb_user_stories_rulebook_gap_note
+-- Helper function: Get RulebookGapNote from ERBUserStories by ERBUserStoryId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_erb_user_stories_rulebook_gap_note(p_erb_user_story_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT rulebook_gap_note FROM erb_user_stories WHERE erb_user_story_id = p_erb_user_story_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_erb_user_stories_roadblock
+-- Helper function: Get Roadblock from ERBUserStories by ERBUserStoryId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_erb_user_stories_roadblock(p_erb_user_story_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT roadblock FROM erb_user_stories WHERE erb_user_story_id = p_erb_user_story_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_erb_acceptance_criteria_criterion
+-- Helper function: Get Criterion from ERBAcceptanceCriteria by ERBAcceptanceCriterionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_erb_acceptance_criteria_criterion(p_erb_acceptance_criterion_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT criterion FROM erb_acceptance_criteria WHERE erb_acceptance_criterion_id = p_erb_acceptance_criterion_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_erb_acceptance_criteria_sort_order
+-- Helper function: Get SortOrder from ERBAcceptanceCriteria by ERBAcceptanceCriterionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_erb_acceptance_criteria_sort_order(p_erb_acceptance_criterion_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT sort_order FROM erb_acceptance_criteria WHERE erb_acceptance_criterion_id = p_erb_acceptance_criterion_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_erb_acceptance_criteria_is_accepted
+-- Helper function: Get IsAccepted from ERBAcceptanceCriteria by ERBAcceptanceCriterionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_erb_acceptance_criteria_is_accepted(p_erb_acceptance_criterion_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT is_accepted FROM erb_acceptance_criteria WHERE erb_acceptance_criterion_id = p_erb_acceptance_criterion_id);
+$$ LANGUAGE sql STABLE;
+
 -- ============================================================================
 -- MANY-SIDE RELATIONSHIP FUNCTIONS
 -- These functions aggregate child records for many-side relationships
 -- ============================================================================
 
--- ============================================================================
--- INVERSE RELATIONSHIP FUNCTIONS
--- These functions perform reverse FK lookups for inverse-side relationships
--- ============================================================================
-
 -- calc_project_metadata_rulebook_domains
 -- Field: ProjectMetadata.RulebookDomains
--- Type: Inverse relationship (reverse FK lookup from RulebookDomains.Project)
+-- Type: Many-side relationship (backref) to RulebookDomains
+-- Aggregates: RulebookDomains.DomainId where Project = parent
 
 CREATE OR REPLACE FUNCTION calc_project_metadata_rulebook_domains(p_project_id TEXT)
 RETURNS TEXT AS $$
@@ -8547,7 +8876,8 @@ $$ LANGUAGE sql STABLE;
 
 -- calc_project_metadata_claude_skills
 -- Field: ProjectMetadata.ClaudeSkills
--- Type: Inverse relationship (reverse FK lookup from ClaudeSkills.Project)
+-- Type: Many-side relationship (backref) to ClaudeSkills
+-- Aggregates: ClaudeSkills.SkillId where Project = parent
 
 CREATE OR REPLACE FUNCTION calc_project_metadata_claude_skills(p_project_id TEXT)
 RETURNS TEXT AS $$
@@ -8560,7 +8890,8 @@ $$ LANGUAGE sql STABLE;
 
 -- calc_project_metadata_build_phases
 -- Field: ProjectMetadata.BuildPhases
--- Type: Inverse relationship (reverse FK lookup from BuildPhases.Project)
+-- Type: Many-side relationship (backref) to BuildPhases
+-- Aggregates: BuildPhases.BuildPhaseId where Project = parent
 
 CREATE OR REPLACE FUNCTION calc_project_metadata_build_phases(p_project_id TEXT)
 RETURNS TEXT AS $$
@@ -8573,7 +8904,8 @@ $$ LANGUAGE sql STABLE;
 
 -- calc_project_metadata_erb_packages
 -- Field: ProjectMetadata.ERBPackages
--- Type: Inverse relationship (reverse FK lookup from ERBPackages.Project)
+-- Type: Many-side relationship (backref) to ERBPackages
+-- Aggregates: ERBPackages.ERBPackageId where Project = parent
 
 CREATE OR REPLACE FUNCTION calc_project_metadata_erb_packages(p_project_id TEXT)
 RETURNS TEXT AS $$
@@ -8586,7 +8918,8 @@ $$ LANGUAGE sql STABLE;
 
 -- calc_project_metadata_consistency_rules
 -- Field: ProjectMetadata.ConsistencyRules
--- Type: Inverse relationship (reverse FK lookup from ConsistencyRules.Project)
+-- Type: Many-side relationship (backref) to ConsistencyRules
+-- Aggregates: ConsistencyRules.ConsistencyRuleId where Project = parent
 
 CREATE OR REPLACE FUNCTION calc_project_metadata_consistency_rules(p_project_id TEXT)
 RETURNS TEXT AS $$
@@ -8599,7 +8932,8 @@ $$ LANGUAGE sql STABLE;
 
 -- calc_project_metadata_mobile_nav_tabs
 -- Field: ProjectMetadata.MobileNavTabs
--- Type: Inverse relationship (reverse FK lookup from MobileNavTabs.Project)
+-- Type: Many-side relationship (backref) to MobileNavTabs
+-- Aggregates: MobileNavTabs.MobileNavTabId where Project = parent
 
 CREATE OR REPLACE FUNCTION calc_project_metadata_mobile_nav_tabs(p_project_id TEXT)
 RETURNS TEXT AS $$
@@ -8612,7 +8946,8 @@ $$ LANGUAGE sql STABLE;
 
 -- calc_project_metadata_project_layout_slots
 -- Field: ProjectMetadata.ProjectLayoutSlots
--- Type: Inverse relationship (reverse FK lookup from ProjectLayoutSlots.Project)
+-- Type: Many-side relationship (backref) to ProjectLayoutSlots
+-- Aggregates: ProjectLayoutSlots.ProjectLayoutSlotId where Project = parent
 
 CREATE OR REPLACE FUNCTION calc_project_metadata_project_layout_slots(p_project_id TEXT)
 RETURNS TEXT AS $$
@@ -8625,7 +8960,8 @@ $$ LANGUAGE sql STABLE;
 
 -- calc_project_metadata_legacy_runner_capabilities
 -- Field: ProjectMetadata.LegacyRunnerCapabilities
--- Type: Inverse relationship (reverse FK lookup from LegacyRunnerCapabilities.Project)
+-- Type: Many-side relationship (backref) to LegacyRunnerCapabilities
+-- Aggregates: LegacyRunnerCapabilities.LegacyRunnerCapabilityId where Project = parent
 
 CREATE OR REPLACE FUNCTION calc_project_metadata_legacy_runner_capabilities(p_project_id TEXT)
 RETURNS TEXT AS $$
@@ -8638,7 +8974,8 @@ $$ LANGUAGE sql STABLE;
 
 -- calc_ontology_axioms_framing_invariants
 -- Field: OntologyAxioms.FramingInvariants
--- Type: Inverse relationship (reverse FK lookup from FramingInvariants.ViolatedAxiomId)
+-- Type: Many-side relationship (backref) to FramingInvariants
+-- Aggregates: FramingInvariants.InvariantId where ViolatedAxiomId = parent
 
 CREATE OR REPLACE FUNCTION calc_ontology_axioms_framing_invariants(p_axiom_id TEXT)
 RETURNS TEXT AS $$
@@ -8651,7 +8988,8 @@ $$ LANGUAGE sql STABLE;
 
 -- calc_ontology_axioms_platform_features
 -- Field: OntologyAxioms.PlatformFeatures
--- Type: Inverse relationship (reverse FK lookup from PlatformFeatures.RelatedAxiomId)
+-- Type: Many-side relationship (backref) to PlatformFeatures
+-- Aggregates: PlatformFeatures.FeatureId where RelatedAxiomId = parent
 
 CREATE OR REPLACE FUNCTION calc_ontology_axioms_platform_features(p_axiom_id TEXT)
 RETURNS TEXT AS $$
@@ -8661,6 +8999,445 @@ RETURNS TEXT AS $$
     WHERE related_axiom_id = p_axiom_id
   );
 $$ LANGUAGE sql STABLE;
+
+-- calc_rulebook_domains_demo_narratives
+-- Field: RulebookDomains.DemoNarratives
+-- Type: Many-side relationship (backref) to DemoNarratives
+-- Aggregates: DemoNarratives.NarrativeId where RelatedDomainId = parent
+
+CREATE OR REPLACE FUNCTION calc_rulebook_domains_demo_narratives(p_domain_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (
+    SELECT STRING_AGG(narrative_id::TEXT, ', ' ORDER BY narrative_id)
+    FROM demo_narratives
+    WHERE related_domain_id = p_domain_id
+  );
+$$ LANGUAGE sql STABLE;
+
+-- calc_rulebook_domains_consistency_findings
+-- Field: RulebookDomains.ConsistencyFindings
+-- Type: Many-side relationship (backref) to ConsistencyFindings
+-- Aggregates: ConsistencyFindings.ConsistencyFindingId where Domain = parent
+
+CREATE OR REPLACE FUNCTION calc_rulebook_domains_consistency_findings(p_domain_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (
+    SELECT STRING_AGG(consistency_finding_id::TEXT, ', ' ORDER BY consistency_finding_id)
+    FROM consistency_findings
+    WHERE domain = p_domain_id
+  );
+$$ LANGUAGE sql STABLE;
+
+-- calc_rulebook_domains_slot_witnesses
+-- Field: RulebookDomains.SlotWitnesses
+-- Type: Many-side relationship (backref) to ProjectSlotWitnesses
+-- Aggregates: ProjectSlotWitnesses.ProjectSlotWitnessId where Domain = parent
+
+CREATE OR REPLACE FUNCTION calc_rulebook_domains_slot_witnesses(p_domain_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (
+    SELECT STRING_AGG(project_slot_witness_id::TEXT, ', ' ORDER BY project_slot_witness_id)
+    FROM project_slot_witnesses
+    WHERE domain = p_domain_id
+  );
+$$ LANGUAGE sql STABLE;
+
+-- calc_rulebook_domains_conformance_runs
+-- Field: RulebookDomains.ConformanceRuns
+-- Type: Many-side relationship (backref) to ConformanceRuns
+-- Aggregates: ConformanceRuns.ConformanceRunId where Domain = parent
+
+CREATE OR REPLACE FUNCTION calc_rulebook_domains_conformance_runs(p_domain_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (
+    SELECT STRING_AGG(conformance_run_id::TEXT, ', ' ORDER BY conformance_run_id)
+    FROM conformance_runs
+    WHERE domain = p_domain_id
+  );
+$$ LANGUAGE sql STABLE;
+
+-- calc_rulebook_domains_corpus_domain_runs
+-- Field: RulebookDomains.CorpusDomainRuns
+-- Type: Many-side relationship (backref) to CorpusDomainRuns
+-- Aggregates: CorpusDomainRuns.CorpusDomainRunId where Domain = parent
+
+CREATE OR REPLACE FUNCTION calc_rulebook_domains_corpus_domain_runs(p_domain_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (
+    SELECT STRING_AGG(corpus_domain_run_id::TEXT, ', ' ORDER BY corpus_domain_run_id)
+    FROM corpus_domain_runs
+    WHERE domain = p_domain_id
+  );
+$$ LANGUAGE sql STABLE;
+
+-- calc_project_launch_profiles_local_services
+-- Field: ProjectLaunchProfiles.LocalServices
+-- Type: Many-side relationship (backref) to ProjectLocalServices
+-- Aggregates: ProjectLocalServices.ProjectLocalServiceId where LaunchProfile = parent
+
+CREATE OR REPLACE FUNCTION calc_project_launch_profiles_local_services(p_project_launch_profile_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (
+    SELECT STRING_AGG(project_local_service_id::TEXT, ', ' ORDER BY project_local_service_id)
+    FROM project_local_services
+    WHERE launch_profile = p_project_launch_profile_id
+  );
+$$ LANGUAGE sql STABLE;
+
+-- calc_conformance_runs_conformance_results
+-- Field: ConformanceRuns.ConformanceResults
+-- Type: Many-side relationship (backref) to ConformanceResults
+-- Aggregates: ConformanceResults.ConformanceResultId where Run = parent
+
+CREATE OR REPLACE FUNCTION calc_conformance_runs_conformance_results(p_conformance_run_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (
+    SELECT STRING_AGG(conformance_result_id::TEXT, ', ' ORDER BY conformance_result_id)
+    FROM conformance_results
+    WHERE run = p_conformance_run_id
+  );
+$$ LANGUAGE sql STABLE;
+
+-- calc_test_suites_corpus_domain_runs
+-- Field: TestSuites.CorpusDomainRuns
+-- Type: Many-side relationship (backref) to CorpusDomainRuns
+-- Aggregates: CorpusDomainRuns.CorpusDomainRunId where Suite = parent
+
+CREATE OR REPLACE FUNCTION calc_test_suites_corpus_domain_runs(p_test_suite_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (
+    SELECT STRING_AGG(corpus_domain_run_id::TEXT, ', ' ORDER BY corpus_domain_run_id)
+    FROM corpus_domain_runs
+    WHERE suite = p_test_suite_id
+  );
+$$ LANGUAGE sql STABLE;
+
+-- calc_corpus_runs_domain_runs
+-- Field: CorpusRuns.DomainRuns
+-- Type: Many-side relationship (backref) to CorpusDomainRuns
+-- Aggregates: CorpusDomainRuns.CorpusDomainRunId where CorpusRun = parent
+
+CREATE OR REPLACE FUNCTION calc_corpus_runs_domain_runs(p_corpus_run_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (
+    SELECT STRING_AGG(corpus_domain_run_id::TEXT, ', ' ORDER BY corpus_domain_run_id)
+    FROM corpus_domain_runs
+    WHERE corpus_run = p_corpus_run_id
+  );
+$$ LANGUAGE sql STABLE;
+
+-- calc_rulebook_flavors_flavor_tags
+-- Field: RulebookFlavors.FlavorTags
+-- Type: Many-side relationship (backref) to FlavorTags
+-- Aggregates: FlavorTags.FlavorTagId where Flavor = parent
+
+CREATE OR REPLACE FUNCTION calc_rulebook_flavors_flavor_tags(p_flavor_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (
+    SELECT STRING_AGG(flavor_tag_id::TEXT, ', ' ORDER BY flavor_tag_id)
+    FROM flavor_tags
+    WHERE flavor = p_flavor_id
+  );
+$$ LANGUAGE sql STABLE;
+
+-- calc_rulebook_tags_flavor_tags
+-- Field: RulebookTags.FlavorTags
+-- Type: Many-side relationship (backref) to FlavorTags
+-- Aggregates: FlavorTags.FlavorTagId where Tag = parent
+
+CREATE OR REPLACE FUNCTION calc_rulebook_tags_flavor_tags(p_tag_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (
+    SELECT STRING_AGG(flavor_tag_id::TEXT, ', ' ORDER BY flavor_tag_id)
+    FROM flavor_tags
+    WHERE tag = p_tag_id
+  );
+$$ LANGUAGE sql STABLE;
+
+-- calc_claude_skills_outbound_routes
+-- Field: ClaudeSkills.OutboundRoutes
+-- Type: Many-side relationship (backref) to SkillRoutes
+-- Aggregates: SkillRoutes.SkillRouteId where FromSkill = parent
+
+CREATE OR REPLACE FUNCTION calc_claude_skills_outbound_routes(p_skill_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (
+    SELECT STRING_AGG(skill_route_id::TEXT, ', ' ORDER BY skill_route_id)
+    FROM skill_routes
+    WHERE from_skill = p_skill_id
+  );
+$$ LANGUAGE sql STABLE;
+
+-- calc_claude_skills_inbound_routes
+-- Field: ClaudeSkills.InboundRoutes
+-- Type: Many-side relationship (backref) to SkillRoutes
+-- Aggregates: SkillRoutes.SkillRouteId where FromSkill = parent
+
+CREATE OR REPLACE FUNCTION calc_claude_skills_inbound_routes(p_skill_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (
+    SELECT STRING_AGG(skill_route_id::TEXT, ', ' ORDER BY skill_route_id)
+    FROM skill_routes
+    WHERE from_skill = p_skill_id
+  );
+$$ LANGUAGE sql STABLE;
+
+-- calc_build_phases_erb_packages
+-- Field: BuildPhases.ERBPackages
+-- Type: Many-side relationship (backref) to ERBPackages
+-- Aggregates: ERBPackages.ERBPackageId where PrimaryPhase = parent
+
+CREATE OR REPLACE FUNCTION calc_build_phases_erb_packages(p_build_phase_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (
+    SELECT STRING_AGG(erb_package_id::TEXT, ', ' ORDER BY erb_package_id)
+    FROM erb_packages
+    WHERE primary_phase = p_build_phase_id
+  );
+$$ LANGUAGE sql STABLE;
+
+-- calc_build_phases_user_stories
+-- Field: BuildPhases.UserStories
+-- Type: Many-side relationship (backref) to UserStories
+-- Aggregates: UserStories.UserStoryId where BuildPhase = parent
+
+CREATE OR REPLACE FUNCTION calc_build_phases_user_stories(p_build_phase_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (
+    SELECT STRING_AGG(user_story_id::TEXT, ', ' ORDER BY user_story_id)
+    FROM user_stories
+    WHERE build_phase = p_build_phase_id
+  );
+$$ LANGUAGE sql STABLE;
+
+-- calc_effort_classes_user_stories
+-- Field: EffortClasses.UserStories
+-- Type: Many-side relationship (backref) to UserStories
+-- Aggregates: UserStories.UserStoryId where EffortClass = parent
+
+CREATE OR REPLACE FUNCTION calc_effort_classes_user_stories(p_effort_class_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (
+    SELECT STRING_AGG(user_story_id::TEXT, ', ' ORDER BY user_story_id)
+    FROM user_stories
+    WHERE effort_class = p_effort_class_id
+  );
+$$ LANGUAGE sql STABLE;
+
+-- calc_erb_packages_erb_feature_categories
+-- Field: ERBPackages.ERBFeatureCategories
+-- Type: Many-side relationship (backref) to ERBFeatureCategories
+-- Aggregates: ERBFeatureCategories.ERBFeatureCategoryId where ERBPackage = parent
+
+CREATE OR REPLACE FUNCTION calc_erb_packages_erb_feature_categories(p_erb_package_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (
+    SELECT STRING_AGG(erb_feature_category_id::TEXT, ', ' ORDER BY erb_feature_category_id)
+    FROM erb_feature_categories
+    WHERE erb_package = p_erb_package_id
+  );
+$$ LANGUAGE sql STABLE;
+
+-- calc_erb_packages_erb_features
+-- Field: ERBPackages.ERBFeatures
+-- Type: Many-side relationship (backref) to ERBFeatures
+-- Aggregates: ERBFeatures.ERBFeatureId where ERBPackage = parent
+
+CREATE OR REPLACE FUNCTION calc_erb_packages_erb_features(p_erb_package_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (
+    SELECT STRING_AGG(erb_feature_id::TEXT, ', ' ORDER BY erb_feature_id)
+    FROM erb_features
+    WHERE erb_package = p_erb_package_id
+  );
+$$ LANGUAGE sql STABLE;
+
+-- calc_erb_feature_categories_erb_features
+-- Field: ERBFeatureCategories.ERBFeatures
+-- Type: Many-side relationship (backref) to ERBFeatures
+-- Aggregates: ERBFeatures.ERBFeatureId where Category = parent
+
+CREATE OR REPLACE FUNCTION calc_erb_feature_categories_erb_features(p_erb_feature_category_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (
+    SELECT STRING_AGG(erb_feature_id::TEXT, ', ' ORDER BY erb_feature_id)
+    FROM erb_features
+    WHERE category = p_erb_feature_category_id
+  );
+$$ LANGUAGE sql STABLE;
+
+-- calc_erb_feature_categories_user_stories
+-- Field: ERBFeatureCategories.UserStories
+-- Type: Many-side relationship (backref) to UserStories
+-- Aggregates: UserStories.UserStoryId where Epic = parent
+
+CREATE OR REPLACE FUNCTION calc_erb_feature_categories_user_stories(p_erb_feature_category_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (
+    SELECT STRING_AGG(user_story_id::TEXT, ', ' ORDER BY user_story_id)
+    FROM user_stories
+    WHERE epic = p_erb_feature_category_id
+  );
+$$ LANGUAGE sql STABLE;
+
+-- calc_erb_features_user_stories
+-- Field: ERBFeatures.UserStories
+-- Type: Many-side relationship (backref) to UserStories
+-- Aggregates: UserStories.UserStoryId where Feature = parent
+
+CREATE OR REPLACE FUNCTION calc_erb_features_user_stories(p_erb_feature_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (
+    SELECT STRING_AGG(user_story_id::TEXT, ', ' ORDER BY user_story_id)
+    FROM user_stories
+    WHERE feature = p_erb_feature_id
+  );
+$$ LANGUAGE sql STABLE;
+
+-- calc_user_stories_acceptance_criteria
+-- Field: UserStories.AcceptanceCriteria
+-- Type: Many-side relationship (backref) to AcceptanceCriteria
+-- Aggregates: AcceptanceCriteria.AcceptanceCriterionId where UserStory = parent
+
+CREATE OR REPLACE FUNCTION calc_user_stories_acceptance_criteria(p_user_story_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (
+    SELECT STRING_AGG(acceptance_criterion_id::TEXT, ', ' ORDER BY acceptance_criterion_id)
+    FROM acceptance_criteria
+    WHERE user_story = p_user_story_id
+  );
+$$ LANGUAGE sql STABLE;
+
+-- calc_consistency_rules_consistency_findings
+-- Field: ConsistencyRules.ConsistencyFindings
+-- Type: Many-side relationship (backref) to ConsistencyFindings
+-- Aggregates: ConsistencyFindings.ConsistencyFindingId where Rule = parent
+
+CREATE OR REPLACE FUNCTION calc_consistency_rules_consistency_findings(p_consistency_rule_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (
+    SELECT STRING_AGG(consistency_finding_id::TEXT, ', ' ORDER BY consistency_finding_id)
+    FROM consistency_findings
+    WHERE rule = p_consistency_rule_id
+  );
+$$ LANGUAGE sql STABLE;
+
+-- calc_mobile_nav_tabs_mobile_routes
+-- Field: MobileNavTabs.MobileRoutes
+-- Type: Many-side relationship (backref) to MobileRoutes
+-- Aggregates: MobileRoutes.MobileRouteId where Tab = parent
+
+CREATE OR REPLACE FUNCTION calc_mobile_nav_tabs_mobile_routes(p_mobile_nav_tab_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (
+    SELECT STRING_AGG(mobile_route_id::TEXT, ', ' ORDER BY mobile_route_id)
+    FROM mobile_routes
+    WHERE tab = p_mobile_nav_tab_id
+  );
+$$ LANGUAGE sql STABLE;
+
+-- calc_mobile_routes_child_routes
+-- Field: MobileRoutes.ChildRoutes
+-- Type: Many-side relationship (backref) to MobileRoutes
+-- Aggregates: MobileRoutes.MobileRouteId where ParentRoute = parent
+
+CREATE OR REPLACE FUNCTION calc_mobile_routes_child_routes(p_mobile_route_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (
+    SELECT STRING_AGG(mobile_route_id::TEXT, ', ' ORDER BY mobile_route_id)
+    FROM mobile_routes
+    WHERE parent_route = p_mobile_route_id
+  );
+$$ LANGUAGE sql STABLE;
+
+-- calc_project_layout_slots_witnesses
+-- Field: ProjectLayoutSlots.Witnesses
+-- Type: Many-side relationship (backref) to ProjectSlotWitnesses
+-- Aggregates: ProjectSlotWitnesses.ProjectSlotWitnessId where Slot = parent
+
+CREATE OR REPLACE FUNCTION calc_project_layout_slots_witnesses(p_project_layout_slot_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (
+    SELECT STRING_AGG(project_slot_witness_id::TEXT, ', ' ORDER BY project_slot_witness_id)
+    FROM project_slot_witnesses
+    WHERE slot = p_project_layout_slot_id
+  );
+$$ LANGUAGE sql STABLE;
+
+-- calc_execution_substrates_catalog_tools
+-- Field: ExecutionSubstrates.CatalogTools
+-- Type: Many-side relationship (backref) to AddToolCatalog
+-- Aggregates: AddToolCatalog.ToolId where SubstrateId = parent
+
+CREATE OR REPLACE FUNCTION calc_execution_substrates_catalog_tools(p_substrate_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (
+    SELECT STRING_AGG(tool_id::TEXT, ', ' ORDER BY tool_id)
+    FROM add_tool_catalog
+    WHERE substrate_id = p_substrate_id
+  );
+$$ LANGUAGE sql STABLE;
+
+-- calc_execution_substrates_tradeoffs
+-- Field: ExecutionSubstrates.Tradeoffs
+-- Type: Many-side relationship (backref) to SubstrateTradeoffs
+-- Aggregates: SubstrateTradeoffs.TradeoffId where SubstrateId = parent
+
+CREATE OR REPLACE FUNCTION calc_execution_substrates_tradeoffs(p_substrate_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (
+    SELECT STRING_AGG(tradeoff_id::TEXT, ', ' ORDER BY tradeoff_id)
+    FROM substrate_tradeoffs
+    WHERE substrate_id = p_substrate_id
+  );
+$$ LANGUAGE sql STABLE;
+
+-- calc_substrate_contract_phases_evaluation_steps
+-- Field: SubstrateContractPhases.EvaluationSteps
+-- Type: Many-side relationship (backref) to EvaluationSteps
+-- Aggregates: EvaluationSteps.StepId where PhaseId = parent
+
+CREATE OR REPLACE FUNCTION calc_substrate_contract_phases_evaluation_steps(p_phase_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (
+    SELECT STRING_AGG(step_id::TEXT, ', ' ORDER BY step_id)
+    FROM evaluation_steps
+    WHERE phase_id = p_phase_id
+  );
+$$ LANGUAGE sql STABLE;
+
+-- calc_substrate_contract_phases_consumed_artifacts
+-- Field: SubstrateContractPhases.ConsumedArtifacts
+-- Type: Many-side relationship (backref) to EvaluationArtifacts
+-- Aggregates: EvaluationArtifacts.ArtifactId where ProducedByPhaseId = parent
+
+CREATE OR REPLACE FUNCTION calc_substrate_contract_phases_consumed_artifacts(p_phase_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (
+    SELECT STRING_AGG(artifact_id::TEXT, ', ' ORDER BY artifact_id)
+    FROM evaluation_artifacts
+    WHERE produced_by_phase_id = p_phase_id
+  );
+$$ LANGUAGE sql STABLE;
+
+-- calc_substrate_tradeoff_dimensions_tradeoffs
+-- Field: SubstrateTradeoffDimensions.Tradeoffs
+-- Type: Many-side relationship (backref) to SubstrateTradeoffs
+-- Aggregates: SubstrateTradeoffs.TradeoffId where DimensionId = parent
+
+CREATE OR REPLACE FUNCTION calc_substrate_tradeoff_dimensions_tradeoffs(p_dimension_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (
+    SELECT STRING_AGG(tradeoff_id::TEXT, ', ' ORDER BY tradeoff_id)
+    FROM substrate_tradeoffs
+    WHERE dimension_id = p_dimension_id
+  );
+$$ LANGUAGE sql STABLE;
+
+-- ============================================================================
+-- INVERSE RELATIONSHIP FUNCTIONS
+-- These functions perform reverse FK lookups for inverse-side relationships
+-- ============================================================================
 
 -- calc_rulebook_domains_child_domains
 -- Field: RulebookDomains.ChildDomains
@@ -8675,19 +9452,6 @@ RETURNS TEXT AS $$
   );
 $$ LANGUAGE sql STABLE;
 
--- calc_rulebook_domains_demo_narratives
--- Field: RulebookDomains.DemoNarratives
--- Type: Inverse relationship (reverse FK lookup from DemoNarratives.RelatedDomainId)
-
-CREATE OR REPLACE FUNCTION calc_rulebook_domains_demo_narratives(p_domain_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (
-    SELECT STRING_AGG(narrative_id::TEXT, ', ' ORDER BY narrative_id)
-    FROM demo_narratives
-    WHERE related_domain_id = p_domain_id
-  );
-$$ LANGUAGE sql STABLE;
-
 -- calc_rulebook_domains_flavor_cards
 -- Field: RulebookDomains.FlavorCards
 -- Type: Inverse relationship (reverse FK lookup from RulebookFlavors.Domain)
@@ -8697,45 +9461,6 @@ RETURNS TEXT AS $$
   SELECT (
     SELECT STRING_AGG(flavor_id::TEXT, ', ' ORDER BY flavor_id)
     FROM rulebook_flavors
-    WHERE domain = p_domain_id
-  );
-$$ LANGUAGE sql STABLE;
-
--- calc_rulebook_domains_consistency_findings
--- Field: RulebookDomains.ConsistencyFindings
--- Type: Inverse relationship (reverse FK lookup from ConsistencyFindings.Domain)
-
-CREATE OR REPLACE FUNCTION calc_rulebook_domains_consistency_findings(p_domain_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (
-    SELECT STRING_AGG(consistency_finding_id::TEXT, ', ' ORDER BY consistency_finding_id)
-    FROM consistency_findings
-    WHERE domain = p_domain_id
-  );
-$$ LANGUAGE sql STABLE;
-
--- calc_rulebook_domains_slot_witnesses
--- Field: RulebookDomains.SlotWitnesses
--- Type: Inverse relationship (reverse FK lookup from ProjectSlotWitnesses.Domain)
-
-CREATE OR REPLACE FUNCTION calc_rulebook_domains_slot_witnesses(p_domain_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (
-    SELECT STRING_AGG(project_slot_witness_id::TEXT, ', ' ORDER BY project_slot_witness_id)
-    FROM project_slot_witnesses
-    WHERE domain = p_domain_id
-  );
-$$ LANGUAGE sql STABLE;
-
--- calc_rulebook_domains_conformance_runs
--- Field: RulebookDomains.ConformanceRuns
--- Type: Inverse relationship (reverse FK lookup from ConformanceRuns.Domain)
-
-CREATE OR REPLACE FUNCTION calc_rulebook_domains_conformance_runs(p_domain_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (
-    SELECT STRING_AGG(conformance_run_id::TEXT, ', ' ORDER BY conformance_run_id)
-    FROM conformance_runs
     WHERE domain = p_domain_id
   );
 $$ LANGUAGE sql STABLE;
@@ -8766,45 +9491,6 @@ RETURNS TEXT AS $$
   );
 $$ LANGUAGE sql STABLE;
 
--- calc_rulebook_domains_corpus_domain_runs
--- Field: RulebookDomains.CorpusDomainRuns
--- Type: Inverse relationship (reverse FK lookup from CorpusDomainRuns.Domain)
-
-CREATE OR REPLACE FUNCTION calc_rulebook_domains_corpus_domain_runs(p_domain_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (
-    SELECT STRING_AGG(corpus_domain_run_id::TEXT, ', ' ORDER BY corpus_domain_run_id)
-    FROM corpus_domain_runs
-    WHERE domain = p_domain_id
-  );
-$$ LANGUAGE sql STABLE;
-
--- calc_project_launch_profiles_local_services
--- Field: ProjectLaunchProfiles.LocalServices
--- Type: Inverse relationship (reverse FK lookup from ProjectLocalServices.LaunchProfile)
-
-CREATE OR REPLACE FUNCTION calc_project_launch_profiles_local_services(p_project_launch_profile_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (
-    SELECT STRING_AGG(project_local_service_id::TEXT, ', ' ORDER BY project_local_service_id)
-    FROM project_local_services
-    WHERE launch_profile = p_project_launch_profile_id
-  );
-$$ LANGUAGE sql STABLE;
-
--- calc_conformance_runs_conformance_results
--- Field: ConformanceRuns.ConformanceResults
--- Type: Inverse relationship (reverse FK lookup from ConformanceResults.Run)
-
-CREATE OR REPLACE FUNCTION calc_conformance_runs_conformance_results(p_conformance_run_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (
-    SELECT STRING_AGG(conformance_result_id::TEXT, ', ' ORDER BY conformance_result_id)
-    FROM conformance_results
-    WHERE run = p_conformance_run_id
-  );
-$$ LANGUAGE sql STABLE;
-
 -- calc_conformance_runs_corpus_domain_runs
 -- Field: ConformanceRuns.CorpusDomainRuns
 -- Type: Inverse relationship (reverse FK lookup from CorpusDomainRuns.ConformanceRun)
@@ -8818,302 +9504,16 @@ RETURNS TEXT AS $$
   );
 $$ LANGUAGE sql STABLE;
 
--- calc_test_suites_corpus_domain_runs
--- Field: TestSuites.CorpusDomainRuns
--- Type: Inverse relationship (reverse FK lookup from CorpusDomainRuns.Suite)
+-- calc_execution_substrates_local_tool_routes
+-- Field: ExecutionSubstrates.LocalToolRoutes
+-- Type: Inverse relationship (reverse FK lookup from LocalToolRoutes.SubstrateId)
 
-CREATE OR REPLACE FUNCTION calc_test_suites_corpus_domain_runs(p_test_suite_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (
-    SELECT STRING_AGG(corpus_domain_run_id::TEXT, ', ' ORDER BY corpus_domain_run_id)
-    FROM corpus_domain_runs
-    WHERE suite = p_test_suite_id
-  );
-$$ LANGUAGE sql STABLE;
-
--- calc_corpus_runs_domain_runs
--- Field: CorpusRuns.DomainRuns
--- Type: Inverse relationship (reverse FK lookup from CorpusDomainRuns.CorpusRun)
-
-CREATE OR REPLACE FUNCTION calc_corpus_runs_domain_runs(p_corpus_run_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (
-    SELECT STRING_AGG(corpus_domain_run_id::TEXT, ', ' ORDER BY corpus_domain_run_id)
-    FROM corpus_domain_runs
-    WHERE corpus_run = p_corpus_run_id
-  );
-$$ LANGUAGE sql STABLE;
-
--- calc_rulebook_flavors_flavor_tags
--- Field: RulebookFlavors.FlavorTags
--- Type: Inverse relationship (reverse FK lookup from FlavorTags.Flavor)
-
-CREATE OR REPLACE FUNCTION calc_rulebook_flavors_flavor_tags(p_flavor_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (
-    SELECT STRING_AGG(flavor_tag_id::TEXT, ', ' ORDER BY flavor_tag_id)
-    FROM flavor_tags
-    WHERE flavor = p_flavor_id
-  );
-$$ LANGUAGE sql STABLE;
-
--- calc_rulebook_tags_flavor_tags
--- Field: RulebookTags.FlavorTags
--- Type: Inverse relationship (reverse FK lookup from FlavorTags.Tag)
-
-CREATE OR REPLACE FUNCTION calc_rulebook_tags_flavor_tags(p_tag_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (
-    SELECT STRING_AGG(flavor_tag_id::TEXT, ', ' ORDER BY flavor_tag_id)
-    FROM flavor_tags
-    WHERE tag = p_tag_id
-  );
-$$ LANGUAGE sql STABLE;
-
--- calc_claude_skills_outbound_routes
--- Field: ClaudeSkills.OutboundRoutes
--- Type: Inverse relationship (reverse FK lookup from SkillRoutes.FromSkill)
-
-CREATE OR REPLACE FUNCTION calc_claude_skills_outbound_routes(p_skill_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (
-    SELECT STRING_AGG(skill_route_id::TEXT, ', ' ORDER BY skill_route_id)
-    FROM skill_routes
-    WHERE from_skill = p_skill_id
-  );
-$$ LANGUAGE sql STABLE;
-
--- calc_claude_skills_inbound_routes
--- Field: ClaudeSkills.InboundRoutes
--- Type: Inverse relationship (reverse FK lookup from SkillRoutes.ToSkill)
-
-CREATE OR REPLACE FUNCTION calc_claude_skills_inbound_routes(p_skill_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (
-    SELECT STRING_AGG(skill_route_id::TEXT, ', ' ORDER BY skill_route_id)
-    FROM skill_routes
-    WHERE to_skill = p_skill_id
-  );
-$$ LANGUAGE sql STABLE;
-
--- calc_build_phases_erb_packages
--- Field: BuildPhases.ERBPackages
--- Type: Inverse relationship (reverse FK lookup from ERBPackages.PrimaryPhase)
-
-CREATE OR REPLACE FUNCTION calc_build_phases_erb_packages(p_build_phase_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (
-    SELECT STRING_AGG(erb_package_id::TEXT, ', ' ORDER BY erb_package_id)
-    FROM erb_packages
-    WHERE primary_phase = p_build_phase_id
-  );
-$$ LANGUAGE sql STABLE;
-
--- calc_build_phases_user_stories
--- Field: BuildPhases.UserStories
--- Type: Inverse relationship (reverse FK lookup from UserStories.BuildPhase)
-
-CREATE OR REPLACE FUNCTION calc_build_phases_user_stories(p_build_phase_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (
-    SELECT STRING_AGG(user_story_id::TEXT, ', ' ORDER BY user_story_id)
-    FROM user_stories
-    WHERE build_phase = p_build_phase_id
-  );
-$$ LANGUAGE sql STABLE;
-
--- calc_effort_classes_user_stories
--- Field: EffortClasses.UserStories
--- Type: Inverse relationship (reverse FK lookup from UserStories.EffortClass)
-
-CREATE OR REPLACE FUNCTION calc_effort_classes_user_stories(p_effort_class_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (
-    SELECT STRING_AGG(user_story_id::TEXT, ', ' ORDER BY user_story_id)
-    FROM user_stories
-    WHERE effort_class = p_effort_class_id
-  );
-$$ LANGUAGE sql STABLE;
-
--- calc_erb_packages_erb_feature_categories
--- Field: ERBPackages.ERBFeatureCategories
--- Type: Inverse relationship (reverse FK lookup from ERBFeatureCategories.ERBPackage)
-
-CREATE OR REPLACE FUNCTION calc_erb_packages_erb_feature_categories(p_erb_package_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (
-    SELECT STRING_AGG(erb_feature_category_id::TEXT, ', ' ORDER BY erb_feature_category_id)
-    FROM erb_feature_categories
-    WHERE erb_package = p_erb_package_id
-  );
-$$ LANGUAGE sql STABLE;
-
--- calc_erb_packages_erb_features
--- Field: ERBPackages.ERBFeatures
--- Type: Inverse relationship (reverse FK lookup from ERBFeatures.ERBPackage)
-
-CREATE OR REPLACE FUNCTION calc_erb_packages_erb_features(p_erb_package_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (
-    SELECT STRING_AGG(erb_feature_id::TEXT, ', ' ORDER BY erb_feature_id)
-    FROM erb_features
-    WHERE erb_package = p_erb_package_id
-  );
-$$ LANGUAGE sql STABLE;
-
--- calc_erb_feature_categories_erb_features
--- Field: ERBFeatureCategories.ERBFeatures
--- Type: Inverse relationship (reverse FK lookup from ERBFeatures.Category)
-
-CREATE OR REPLACE FUNCTION calc_erb_feature_categories_erb_features(p_erb_feature_category_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (
-    SELECT STRING_AGG(erb_feature_id::TEXT, ', ' ORDER BY erb_feature_id)
-    FROM erb_features
-    WHERE category = p_erb_feature_category_id
-  );
-$$ LANGUAGE sql STABLE;
-
--- calc_erb_feature_categories_user_stories
--- Field: ERBFeatureCategories.UserStories
--- Type: Inverse relationship (reverse FK lookup from UserStories.Epic)
-
-CREATE OR REPLACE FUNCTION calc_erb_feature_categories_user_stories(p_erb_feature_category_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (
-    SELECT STRING_AGG(user_story_id::TEXT, ', ' ORDER BY user_story_id)
-    FROM user_stories
-    WHERE epic = p_erb_feature_category_id
-  );
-$$ LANGUAGE sql STABLE;
-
--- calc_erb_features_user_stories
--- Field: ERBFeatures.UserStories
--- Type: Inverse relationship (reverse FK lookup from UserStories.Feature)
-
-CREATE OR REPLACE FUNCTION calc_erb_features_user_stories(p_erb_feature_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (
-    SELECT STRING_AGG(user_story_id::TEXT, ', ' ORDER BY user_story_id)
-    FROM user_stories
-    WHERE feature = p_erb_feature_id
-  );
-$$ LANGUAGE sql STABLE;
-
--- calc_user_stories_acceptance_criteria
--- Field: UserStories.AcceptanceCriteria
--- Type: Inverse relationship (reverse FK lookup from AcceptanceCriteria.UserStory)
-
-CREATE OR REPLACE FUNCTION calc_user_stories_acceptance_criteria(p_user_story_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (
-    SELECT STRING_AGG(acceptance_criterion_id::TEXT, ', ' ORDER BY acceptance_criterion_id)
-    FROM acceptance_criteria
-    WHERE user_story = p_user_story_id
-  );
-$$ LANGUAGE sql STABLE;
-
--- calc_consistency_rules_consistency_findings
--- Field: ConsistencyRules.ConsistencyFindings
--- Type: Inverse relationship (reverse FK lookup from ConsistencyFindings.Rule)
-
-CREATE OR REPLACE FUNCTION calc_consistency_rules_consistency_findings(p_consistency_rule_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (
-    SELECT STRING_AGG(consistency_finding_id::TEXT, ', ' ORDER BY consistency_finding_id)
-    FROM consistency_findings
-    WHERE rule = p_consistency_rule_id
-  );
-$$ LANGUAGE sql STABLE;
-
--- calc_mobile_nav_tabs_mobile_routes
--- Field: MobileNavTabs.MobileRoutes
--- Type: Inverse relationship (reverse FK lookup from MobileRoutes.Tab)
-
-CREATE OR REPLACE FUNCTION calc_mobile_nav_tabs_mobile_routes(p_mobile_nav_tab_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (
-    SELECT STRING_AGG(mobile_route_id::TEXT, ', ' ORDER BY mobile_route_id)
-    FROM mobile_routes
-    WHERE tab = p_mobile_nav_tab_id
-  );
-$$ LANGUAGE sql STABLE;
-
--- calc_mobile_routes_child_routes
--- Field: MobileRoutes.ChildRoutes
--- Type: Inverse relationship (reverse FK lookup from MobileRoutes.ParentRoute)
-
-CREATE OR REPLACE FUNCTION calc_mobile_routes_child_routes(p_mobile_route_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (
-    SELECT STRING_AGG(mobile_route_id::TEXT, ', ' ORDER BY mobile_route_id)
-    FROM mobile_routes
-    WHERE parent_route = p_mobile_route_id
-  );
-$$ LANGUAGE sql STABLE;
-
--- calc_project_layout_slots_witnesses
--- Field: ProjectLayoutSlots.Witnesses
--- Type: Inverse relationship (reverse FK lookup from ProjectSlotWitnesses.Slot)
-
-CREATE OR REPLACE FUNCTION calc_project_layout_slots_witnesses(p_project_layout_slot_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (
-    SELECT STRING_AGG(project_slot_witness_id::TEXT, ', ' ORDER BY project_slot_witness_id)
-    FROM project_slot_witnesses
-    WHERE slot = p_project_layout_slot_id
-  );
-$$ LANGUAGE sql STABLE;
-
--- calc_execution_substrates_catalog_tools
--- Field: ExecutionSubstrates.CatalogTools
--- Type: Inverse relationship (reverse FK lookup from AddToolCatalog.SubstrateId)
-
-CREATE OR REPLACE FUNCTION calc_execution_substrates_catalog_tools(p_substrate_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (
-    SELECT STRING_AGG(tool_id::TEXT, ', ' ORDER BY tool_id)
-    FROM add_tool_catalog
-    WHERE substrate_id = p_substrate_id
-  );
-$$ LANGUAGE sql STABLE;
-
--- calc_execution_substrates_proxy_routes
--- Field: ExecutionSubstrates.ProxyRoutes
--- Type: Inverse relationship (reverse FK lookup from SsotmeProxy.SubstrateId)
-
-CREATE OR REPLACE FUNCTION calc_execution_substrates_proxy_routes(p_substrate_id TEXT)
+CREATE OR REPLACE FUNCTION calc_execution_substrates_local_tool_routes(p_substrate_id TEXT)
 RETURNS TEXT AS $$
   SELECT (
     SELECT STRING_AGG(route_id::TEXT, ', ' ORDER BY route_id)
-    FROM ssotme_proxy
+    FROM local_tool_routes
     WHERE substrate_id = p_substrate_id
-  );
-$$ LANGUAGE sql STABLE;
-
--- calc_execution_substrates_tradeoffs
--- Field: ExecutionSubstrates.Tradeoffs
--- Type: Inverse relationship (reverse FK lookup from SubstrateTradeoffs.SubstrateId)
-
-CREATE OR REPLACE FUNCTION calc_execution_substrates_tradeoffs(p_substrate_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (
-    SELECT STRING_AGG(tradeoff_id::TEXT, ', ' ORDER BY tradeoff_id)
-    FROM substrate_tradeoffs
-    WHERE substrate_id = p_substrate_id
-  );
-$$ LANGUAGE sql STABLE;
-
--- calc_substrate_contract_phases_evaluation_steps
--- Field: SubstrateContractPhases.EvaluationSteps
--- Type: Inverse relationship (reverse FK lookup from EvaluationSteps.PhaseId)
-
-CREATE OR REPLACE FUNCTION calc_substrate_contract_phases_evaluation_steps(p_phase_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (
-    SELECT STRING_AGG(step_id::TEXT, ', ' ORDER BY step_id)
-    FROM evaluation_steps
-    WHERE phase_id = p_phase_id
   );
 $$ LANGUAGE sql STABLE;
 
@@ -9127,32 +9527,6 @@ RETURNS TEXT AS $$
     SELECT STRING_AGG(artifact_id::TEXT, ', ' ORDER BY artifact_id)
     FROM evaluation_artifacts
     WHERE produced_by_phase_id = p_phase_id
-  );
-$$ LANGUAGE sql STABLE;
-
--- calc_substrate_contract_phases_consumed_artifacts
--- Field: SubstrateContractPhases.ConsumedArtifacts
--- Type: Inverse relationship (reverse FK lookup from EvaluationArtifacts.ConsumedByPhaseId)
-
-CREATE OR REPLACE FUNCTION calc_substrate_contract_phases_consumed_artifacts(p_phase_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (
-    SELECT STRING_AGG(artifact_id::TEXT, ', ' ORDER BY artifact_id)
-    FROM evaluation_artifacts
-    WHERE consumed_by_phase_id = p_phase_id
-  );
-$$ LANGUAGE sql STABLE;
-
--- calc_substrate_tradeoff_dimensions_tradeoffs
--- Field: SubstrateTradeoffDimensions.Tradeoffs
--- Type: Inverse relationship (reverse FK lookup from SubstrateTradeoffs.DimensionId)
-
-CREATE OR REPLACE FUNCTION calc_substrate_tradeoff_dimensions_tradeoffs(p_dimension_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (
-    SELECT STRING_AGG(tradeoff_id::TEXT, ', ' ORDER BY tradeoff_id)
-    FROM substrate_tradeoffs
-    WHERE dimension_id = p_dimension_id
   );
 $$ LANGUAGE sql STABLE;
 

@@ -9,9 +9,12 @@
     "interaction_date": "2025-04-15",
     "due_date": null,
     "source": "SystemEvent",
+    "business_label": "Sunset Auto Body LLC",
+    "user_label": "Renee Okafor",
     "is_system_event": true,
     "is_task": false,
-    "from_customer": false
+    "from_customer": false,
+    "is_covenant_event": false
   },
   {
     "name": "pine-hardware-inc-2025-04-15-task-refi-term-sheet",
@@ -23,6 +26,8 @@
     "interaction_date": "2025-04-15",
     "due_date": "2025-04-18",
     "source": "RMDashboard",
+    "business_label": "Pine Hardware Inc.",
+    "user_label": "Devon Marshall",
     "is_system_event": false,
     "is_task": true,
     "from_customer": false,
@@ -38,13 +43,15 @@
     "interaction_date": "2025-04-15",
     "due_date": null,
     "source": "RMDashboard",
+    "business_label": "Pine Hardware Inc.",
+    "user_label": "Devon Marshall",
     "is_system_event": false,
     "is_task": false,
     "from_customer": false,
     "is_covenant_event": false
   },
   {
-    "name": "pine-hardware-inc-2025-05-02-systemevent-covenant-breach",
+    "name": "pine-hardware-inc-2025-05-02-systemevent-covenant-breach-l-0042-dscr",
     "business": "pine-hardware-inc",
     "user": null,
     "interaction_type": "SystemEvent",
@@ -53,9 +60,12 @@
     "interaction_date": "2025-05-02",
     "due_date": null,
     "source": "SystemEvent",
+    "business_label": "Sunset Auto Body LLC",
+    "user_label": "Renee Okafor",
     "is_system_event": true,
     "is_task": false,
-    "from_customer": false
+    "from_customer": false,
+    "is_covenant_event": false
   },
   {
     "name": "ridgeway-consulting-llc-2025-04-22-meeting-annual-review-prep",
@@ -67,6 +77,8 @@
     "interaction_date": "2025-04-22",
     "due_date": null,
     "source": "RMDashboard",
+    "business_label": "Ridgeway Consulting LLC",
+    "user_label": "Devon Marshall",
     "is_system_event": false,
     "is_task": false,
     "from_customer": false,
@@ -82,6 +94,8 @@
     "interaction_date": "2025-01-15",
     "due_date": null,
     "source": "BusinessClientPortal",
+    "business_label": "Stillwater Roasters LLC",
+    "user_label": null,
     "is_system_event": false,
     "is_task": false,
     "from_customer": true,
@@ -97,6 +111,8 @@
     "interaction_date": "2025-04-15",
     "due_date": null,
     "source": "RMDashboard",
+    "business_label": "Stillwater Roasters LLC",
+    "user_label": "Devon Marshall",
     "is_system_event": false,
     "is_task": false,
     "from_customer": false,
@@ -112,13 +128,15 @@
     "interaction_date": "2025-04-15",
     "due_date": null,
     "source": "RMDashboard",
+    "business_label": "Stillwater Roasters LLC",
+    "user_label": null,
     "is_system_event": false,
     "is_task": false,
-    "from_customer": false,
+    "from_customer": true,
     "is_covenant_event": false
   },
   {
-    "name": "sunset-auto-body-llc-2025-05-04-systemevent-sar-filed",
+    "name": "sunset-auto-body-llc-2025-05-04-systemevent-sar-filed-bsa-aml",
     "business": "sunset-auto-body-llc",
     "user": "renee-okafor",
     "interaction_type": "SystemEvent",
@@ -127,8 +145,11 @@
     "interaction_date": "2025-05-04",
     "due_date": null,
     "source": "SystemEvent",
+    "business_label": "Sunset Auto Body LLC",
+    "user_label": "Renee Okafor",
     "is_system_event": true,
     "is_task": false,
-    "from_customer": false
+    "from_customer": false,
+    "is_covenant_event": false
   }
 ]

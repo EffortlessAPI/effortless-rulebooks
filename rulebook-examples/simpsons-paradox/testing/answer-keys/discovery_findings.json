@@ -1,0 +1,248 @@
+[
+  {
+    "finding_id": "find-H-age-identity-flip-rate",
+    "hypothesis_id": "H-age-identity-flip-rate",
+    "witnessed_in_loop": "loop-80",
+    "name": "find-H-age-identity-flip-rate",
+    "evidence": ""
+  },
+  {
+    "finding_id": "find-H-catalog-exact-match",
+    "hypothesis_id": "H-catalog-exact-match",
+    "witnessed_in_loop": "loop-65",
+    "is_confirmed": true,
+    "observed_metric": "exactRate=0.194 (18/93); biggest bucket Expected A\u2192D: 23 studies",
+    "evidence": "PASS: 18/93 exact type matches (19.4%). Well below 50% threshold \u2014 catalog ExpectedDistortionType is a poor taxonomy predictor. Largest misprediction: Expected A observed D (23 rows).",
+    "name": "find-H-catalog-exact-match"
+  },
+  {
+    "finding_id": "find-H-causal-latent",
+    "hypothesis_id": "H-causal-latent",
+    "witnessed_in_loop": "loop-62",
+    "name": "find-H-causal-latent",
+    "evidence": ""
+  },
+  {
+    "finding_id": "find-H-causal-manifest",
+    "hypothesis_id": "H-causal-manifest",
+    "witnessed_in_loop": "loop-62",
+    "name": "find-H-causal-manifest",
+    "evidence": ""
+  },
+  {
+    "finding_id": "find-H-collider-identity-low-manifest",
+    "hypothesis_id": "H-collider-identity-low-manifest",
+    "witnessed_in_loop": "loop-84",
+    "name": "find-H-collider-identity-low-manifest",
+    "evidence": ""
+  },
+  {
+    "finding_id": "find-H-collider-no-manifest-theorem",
+    "hypothesis_id": "H-collider-no-manifest-theorem",
+    "witnessed_in_loop": "loop-75",
+    "name": "find-H-collider-no-manifest-theorem",
+    "evidence": ""
+  },
+  {
+    "finding_id": "find-H-collider-no-manifest-v2",
+    "hypothesis_id": "H-collider-no-manifest-v2",
+    "witnessed_in_loop": "loop-69",
+    "name": "find-H-collider-no-manifest-v2",
+    "evidence": ""
+  },
+  {
+    "finding_id": "find-H-confounder-drift-type-d",
+    "hypothesis_id": "H-confounder-drift-type-d",
+    "witnessed_in_loop": "loop-92",
+    "name": "find-H-confounder-drift-type-d",
+    "evidence": ""
+  },
+  {
+    "finding_id": "find-H-control-no-manifest-flip",
+    "hypothesis_id": "H-control-no-manifest-flip",
+    "witnessed_in_loop": "loop-91",
+    "name": "find-H-control-no-manifest-flip",
+    "evidence": ""
+  },
+  {
+    "finding_id": "find-H-control-safety-corridor",
+    "hypothesis_id": "H-control-safety-corridor",
+    "witnessed_in_loop": "loop-91",
+    "name": "find-H-control-safety-corridor",
+    "evidence": ""
+  },
+  {
+    "finding_id": "find-H-control-type-d-predominance",
+    "hypothesis_id": "H-control-type-d-predominance",
+    "witnessed_in_loop": "loop-91",
+    "name": "find-H-control-type-d-predominance",
+    "evidence": ""
+  },
+  {
+    "finding_id": "find-H-corrected-gap-invariant",
+    "hypothesis_id": "H-corrected-gap-invariant",
+    "witnessed_in_loop": "loop-73",
+    "name": "find-H-corrected-gap-invariant",
+    "evidence": ""
+  },
+  {
+    "finding_id": "find-H-cplus-magnitude",
+    "hypothesis_id": "H-cplus-magnitude",
+    "witnessed_in_loop": "loop-69",
+    "name": "find-H-cplus-magnitude",
+    "evidence": ""
+  },
+  {
+    "finding_id": "find-H-explained-bidirectional",
+    "hypothesis_id": "H-explained-bidirectional",
+    "witnessed_in_loop": "loop-74",
+    "name": "find-H-explained-bidirectional",
+    "evidence": ""
+  },
+  {
+    "finding_id": "find-H-explained-confounder",
+    "hypothesis_id": "H-explained-confounder",
+    "witnessed_in_loop": "loop-63",
+    "is_confirmed": true,
+    "observed_metric": "ExplainedConfounderCount=15, ExplainedNonConfounderCount=0",
+    "evidence": "15/15 confounder sign-flips have IsParadoxExplained=TRUE; 0/78 C+/C-/D explained; birth-weight (mediator) and both berkeley rows (contested) are FALSE. Invariant inv-explained-sign-flip-confounder PASS 15/0.",
+    "name": "find-H-explained-confounder"
+  },
+  {
+    "finding_id": "find-H-geographic-stable-type-d",
+    "hypothesis_id": "H-geographic-stable-type-d",
+    "witnessed_in_loop": "loop-84",
+    "name": "find-H-geographic-stable-type-d",
+    "evidence": ""
+  },
+  {
+    "finding_id": "find-H-identity-map-coverage",
+    "hypothesis_id": "H-identity-map-coverage",
+    "witnessed_in_loop": "loop-80",
+    "name": "find-H-identity-map-coverage",
+    "evidence": ""
+  },
+  {
+    "finding_id": "find-H-latent-d",
+    "hypothesis_id": "H-latent-d",
+    "witnessed_in_loop": "loop-61",
+    "name": "find-H-latent-d",
+    "evidence": ""
+  },
+  {
+    "finding_id": "find-H-mechanism-other-drain",
+    "hypothesis_id": "H-mechanism-other-drain",
+    "witnessed_in_loop": "loop-83",
+    "name": "find-H-mechanism-other-drain",
+    "evidence": ""
+  },
+  {
+    "finding_id": "find-H-perfect-balance-sufficient-safety",
+    "hypothesis_id": "H-perfect-balance-sufficient-safety",
+    "witnessed_in_loop": "loop-91",
+    "name": "find-H-perfect-balance-sufficient-safety",
+    "evidence": ""
+  },
+  {
+    "finding_id": "find-H-purity",
+    "hypothesis_id": "H-purity",
+    "witnessed_in_loop": "loop-64",
+    "is_confirmed": true,
+    "observed_metric": "SignFlipSignalPurityMax=0.4827 (<0.5); melanoma-altman-1991 near-miss: purity=0.479, is_sign_flip=FALSE",
+    "evidence": "18 sign-flip rows all have signal_purity < 0.5 (max=0.4827, jeter-justice). melanoma-altman-1991 is the known boundary case: C+ type, pooled_gap_crosses_zero=TRUE, purity=0.479, but no sign flip. Zero counterexamples. Law holds unconditionally.",
+    "name": "find-H-purity"
+  },
+  {
+    "finding_id": "find-H-purity-inversion",
+    "hypothesis_id": "H-purity-inversion",
+    "witnessed_in_loop": "loop-91",
+    "name": "find-H-purity-inversion",
+    "evidence": ""
+  },
+  {
+    "finding_id": "find-H-purity-trap-flag-coverage",
+    "hypothesis_id": "H-purity-trap-flag-coverage",
+    "witnessed_in_loop": "loop-91",
+    "name": "find-H-purity-trap-flag-coverage",
+    "evidence": ""
+  },
+  {
+    "finding_id": "find-H-safety-corridor-lower-bound",
+    "hypothesis_id": "H-safety-corridor-lower-bound",
+    "witnessed_in_loop": "loop-91",
+    "name": "find-H-safety-corridor-lower-bound",
+    "evidence": ""
+  },
+  {
+    "finding_id": "find-H-selection-frailty-zero-manifest",
+    "hypothesis_id": "H-selection-frailty-zero-manifest",
+    "witnessed_in_loop": "loop-84",
+    "name": "find-H-selection-frailty-zero-manifest",
+    "evidence": ""
+  },
+  {
+    "finding_id": "find-H-severity-epi-latent-only",
+    "hypothesis_id": "H-severity-epi-latent-only",
+    "witnessed_in_loop": "loop-82",
+    "name": "find-H-severity-epi-latent-only",
+    "evidence": ""
+  },
+  {
+    "finding_id": "find-H-severity-medicine-manifest",
+    "hypothesis_id": "H-severity-medicine-manifest",
+    "witnessed_in_loop": "loop-82",
+    "name": "find-H-severity-medicine-manifest",
+    "evidence": ""
+  },
+  {
+    "finding_id": "find-H-severity-vs-age-latent",
+    "hypothesis_id": "H-severity-vs-age-latent",
+    "witnessed_in_loop": "loop-80",
+    "name": "find-H-severity-vs-age-latent",
+    "evidence": ""
+  },
+  {
+    "finding_id": "find-H-small-effect",
+    "hypothesis_id": "H-small-effect",
+    "witnessed_in_loop": "loop-61",
+    "name": "find-H-small-effect",
+    "evidence": ""
+  },
+  {
+    "finding_id": "find-H-synthetic-edge-coverage",
+    "hypothesis_id": "H-synthetic-edge-coverage",
+    "witnessed_in_loop": "loop-91",
+    "name": "find-H-synthetic-edge-coverage",
+    "evidence": ""
+  },
+  {
+    "finding_id": "find-H-theorem-portfolio",
+    "hypothesis_id": "H-theorem-portfolio",
+    "witnessed_in_loop": "loop-76",
+    "name": "find-H-theorem-portfolio",
+    "evidence": ""
+  },
+  {
+    "finding_id": "find-H-ultra-fragile",
+    "hypothesis_id": "H-ultra-fragile",
+    "witnessed_in_loop": "loop-69",
+    "name": "find-H-ultra-fragile",
+    "evidence": ""
+  },
+  {
+    "finding_id": "find-H-unexplained-flips-only-nonconfounders",
+    "hypothesis_id": "H-unexplained-flips-only-nonconfounders",
+    "witnessed_in_loop": "loop-85",
+    "name": "find-H-unexplained-flips-only-nonconfounders",
+    "evidence": ""
+  },
+  {
+    "finding_id": "find-H-unexplained-nonconfounder",
+    "hypothesis_id": "H-unexplained-nonconfounder",
+    "witnessed_in_loop": "loop-63",
+    "is_confirmed": true,
+    "observed_metric": "ContestedOrMediatorExplainedCount=0",
+    "evidence": "berkeley-1973, berkeley-six-dept-1973 (contested), birth-weight-paradox (mediator) all have IsParadoxExplained=FALSE. Zero exceptions among non-confounder sign-flips.",
+    "name": "find-H-unexplained-nonconfounder"
+  }
+]

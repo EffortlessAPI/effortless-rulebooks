@@ -1,0 +1,172 @@
+[
+  {
+    "label": "Abortion Is A Double Standard",
+    "made_by": "frank-turek",
+    "phase": "cross-examination",
+    "supports_argument": "moral-argument",
+    "touches_concept": "termination-of-pregnancy",
+    "description": "If God taking a life prematurely is an outrage, why is Hitchens taking one via abortion a moral right?",
+    "name": null,
+    "is_rebutted": null
+  },
+  {
+    "label": "Atrocity From Divine Permission",
+    "made_by": "christopher-hitchens",
+    "phase": "opening",
+    "supports_argument": "morality-without-god",
+    "touches_concept": "divine-permission",
+    "description": "The most brutal acts come from believing one has divine permission.",
+    "name": null,
+    "is_rebutted": null
+  },
+  {
+    "label": "Beginning Implies Beginner",
+    "made_by": "frank-turek",
+    "phase": "opening",
+    "supports_argument": "cosmological-argument",
+    "touches_concept": "big-bang",
+    "description": "The Big Bang's beginning requires a transcendent beginner.",
+    "name": null,
+    "is_rebutted": null
+  },
+  {
+    "label": "Consciousness Defies Chemistry",
+    "made_by": "frank-turek",
+    "phase": "opening",
+    "supports_argument": "argument-from-consciousness",
+    "touches_concept": "consciousness",
+    "description": "No materialist account explains why matter is conscious.",
+    "name": null,
+    "is_rebutted": null
+  },
+  {
+    "label": "Constants Are Fine-Tuned",
+    "made_by": "frank-turek",
+    "phase": "opening",
+    "supports_argument": "argument-from-fine-tuning",
+    "touches_concept": "fine-tuning",
+    "description": "Life-permitting constants sit on a razor's edge, implying a tuner.",
+    "name": null,
+    "is_rebutted": null
+  },
+  {
+    "label": "Design Need Not Be Optimal",
+    "made_by": "frank-turek",
+    "phase": "closing",
+    "supports_argument": "teleological-argument",
+    "touches_concept": "fine-tuning",
+    "description": "Suboptimal design is still design; you can't judge it without the designer's purpose.",
+    "name": null,
+    "is_rebutted": null
+  },
+  {
+    "label": "Designer Is Not Enough",
+    "made_by": "christopher-hitchens",
+    "phase": "opening",
+    "supports_argument": "deism-theism-gap",
+    "touches_concept": "watchmaker",
+    "description": "Even a designer doesn't yield answered prayer, virgin birth, or resurrection.",
+    "name": null,
+    "is_rebutted": null
+  },
+  {
+    "label": "Everyone Is An Atheist",
+    "made_by": "christopher-hitchens",
+    "phase": "opening",
+    "supports_argument": "deism-theism-gap",
+    "touches_concept": "ontological-argument",
+    "description": "Everyone disbelieves in thousands of gods; the theist must justify the one exception.",
+    "name": null,
+    "is_rebutted": null
+  },
+  {
+    "label": "Fine-Tuning Cuts Both Ways",
+    "made_by": "christopher-hitchens",
+    "phase": "opening",
+    "supports_argument": "argument-from-poor-design",
+    "touches_concept": "heat-death",
+    "description": "Accelerating dissipation and extinction suggest capricious or absent design.",
+    "name": null,
+    "is_rebutted": null
+  },
+  {
+    "label": "Hitchens Borrows Morality",
+    "made_by": "frank-turek",
+    "phase": "rebuttal",
+    "supports_argument": "moral-argument",
+    "touches_concept": "borrowing-from-theism",
+    "description": "Hitchens must assume God's moral standard to argue against God.",
+    "name": null,
+    "is_rebutted": null
+  },
+  {
+    "label": "Information Implies Mind",
+    "made_by": "frank-turek",
+    "phase": "opening",
+    "supports_argument": "argument-from-design-of-life",
+    "touches_concept": "specified-complexity",
+    "description": "DNA's specified complexity could only come from a mind.",
+    "name": null,
+    "is_rebutted": null
+  },
+  {
+    "label": "Materialism Defeats Reason",
+    "made_by": "frank-turek",
+    "phase": "opening",
+    "supports_argument": "argument-from-reason",
+    "touches_concept": "materialism",
+    "description": "If thought is mere chemistry, reasoning cannot be trusted.",
+    "name": null,
+    "is_rebutted": null
+  },
+  {
+    "label": "Miracles Fail Humes Test",
+    "made_by": "christopher-hitchens",
+    "phase": "cross-examination",
+    "supports_argument": "deism-theism-gap",
+    "touches_concept": "hume-on-miracles",
+    "description": "A reported miracle is always less likely than the witness being mistaken.",
+    "name": null,
+    "is_rebutted": null
+  },
+  {
+    "label": "No Virtue Unique To Believers",
+    "made_by": "christopher-hitchens",
+    "phase": "opening",
+    "supports_argument": "morality-without-god",
+    "touches_concept": "conscience",
+    "description": "No moral act exists that only a believer could perform.",
+    "name": null,
+    "is_rebutted": null
+  },
+  {
+    "label": "Objective Morality Needs God",
+    "made_by": "frank-turek",
+    "phase": "opening",
+    "supports_argument": "moral-argument",
+    "touches_concept": "moral-lawgiver",
+    "description": "Objective moral values require a moral lawgiver beyond humanity.",
+    "name": null,
+    "is_rebutted": null
+  },
+  {
+    "label": "Religion Poisons Everything",
+    "made_by": "christopher-hitchens",
+    "phase": "closing",
+    "supports_argument": "religion-poisons-everything",
+    "touches_concept": "eschatology",
+    "description": "Religion demands servile submission and yearns for the end of the world.",
+    "name": null,
+    "is_rebutted": null
+  },
+  {
+    "label": "Vicarious Redemption Is Immoral",
+    "made_by": "christopher-hitchens",
+    "phase": "cross-examination",
+    "supports_argument": "morality-without-god",
+    "touches_concept": "vicarious-redemption",
+    "description": "One may pay a debt but cannot assume another's moral responsibility.",
+    "name": null,
+    "is_rebutted": null
+  }
+]

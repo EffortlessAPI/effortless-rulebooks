@@ -1,0 +1,62 @@
+[
+  {
+    "clients_id": "alex-r",
+    "client_name": "Alex Rivera",
+    "therapist": "tess@example.com",
+    "start_date": "2026-01-15",
+    "therapist_name": null,
+    "name": null,
+    "session_count": null,
+    "avg_mood_rating": null,
+    "goal_count": null,
+    "avg_goal_progress": null,
+    "last_session_label": null,
+    "is_at_risk": null,
+    "status_label": null
+  },
+  {
+    "clients_id": "blair-m",
+    "client_name": "Blair Morgan",
+    "therapist": "tess@example.com",
+    "start_date": "2026-02-03",
+    "therapist_name": null,
+    "name": null,
+    "session_count": null,
+    "avg_mood_rating": null,
+    "goal_count": null,
+    "avg_goal_progress": null,
+    "last_session_label": null,
+    "is_at_risk": null,
+    "status_label": null
+  },
+  {
+    "clients_id": "casey-l",
+    "client_name": "Casey Lin",
+    "therapist": "rob@example.com",
+    "start_date": "2025-11-22",
+    "therapist_name": null,
+    "name": null,
+    "session_count": null,
+    "avg_mood_rating": null,
+    "goal_count": null,
+    "avg_goal_progress": null,
+    "last_session_label": null,
+    "is_at_risk": null,
+    "status_label": null
+  },
+  {
+    "clients_id": "drew-p",
+    "client_name": "Drew Patel",
+    "therapist": "rob@example.com",
+    "start_date": "2026-03-01",
+    "therapist_name": null,
+    "name": null,
+    "session_count": null,
+    "avg_mood_rating": null,
+    "goal_count": null,
+    "avg_goal_progress": null,
+    "last_session_label": null,
+    "is_at_risk": null,
+    "status_label": null
+  }
+]

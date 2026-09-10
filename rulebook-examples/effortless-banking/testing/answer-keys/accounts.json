@@ -9,6 +9,8 @@
     "has_wire": true,
     "has_card": true,
     "opened_at": "2019-06-22",
+    "business_label": "Sunset Auto Body LLC",
+    "treasury_service_count": 0,
     "has_any_treasury_service": false
   },
   {
@@ -16,11 +18,13 @@
     "business": "ridgeway-consulting-llc",
     "account_type": "Checking",
     "account_number_last4": "0300",
-    "current_balance_usd": 92800.0,
+    "current_balance_usd": 92800,
     "has_ach": true,
     "has_wire": false,
     "has_card": false,
     "opened_at": "2023-09-06",
+    "business_label": "Sunset Auto Body LLC",
+    "treasury_service_count": 0,
     "has_any_treasury_service": false
   },
   {
@@ -33,6 +37,8 @@
     "has_wire": true,
     "has_card": false,
     "opened_at": "2024-03-13",
+    "business_label": "Sunset Auto Body LLC",
+    "treasury_service_count": 0,
     "has_any_treasury_service": false
   },
   {
@@ -40,11 +46,13 @@
     "business": "stillwater-roasters-llc",
     "account_type": "Savings",
     "account_number_last4": "0101",
-    "current_balance_usd": 75000.0,
+    "current_balance_usd": 75000,
     "has_ach": false,
     "has_wire": false,
     "has_card": false,
     "opened_at": "2024-03-13",
+    "business_label": "Stillwater Roasters LLC",
+    "treasury_service_count": 0,
     "has_any_treasury_service": false
   },
   {
@@ -52,11 +60,13 @@
     "business": "sunset-auto-body-llc",
     "account_type": "Checking",
     "account_number_last4": "0400",
-    "current_balance_usd": 41250.0,
+    "current_balance_usd": 41250,
     "has_ach": false,
     "has_wire": false,
     "has_card": false,
     "opened_at": "2022-11-03",
+    "business_label": "Sunset Auto Body LLC",
+    "treasury_service_count": 0,
     "has_any_treasury_service": false
   }
 ]

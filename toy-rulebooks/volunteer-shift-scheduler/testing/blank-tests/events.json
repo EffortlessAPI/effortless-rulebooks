@@ -1,0 +1,22 @@
+[
+  {
+    "event_id": "food-bank-saturday",
+    "name": "Food Bank Saturday",
+    "event_date": "2026-11-07T08:00:00Z",
+    "shift_count": null,
+    "total_slots_needed": null,
+    "total_slots_filled": null,
+    "coverage_percent": null,
+    "staffing_grade": null
+  },
+  {
+    "event_id": "harvest-festival-2026",
+    "name": "Harvest Festival",
+    "event_date": "2026-10-12T09:00:00Z",
+    "shift_count": null,
+    "total_slots_needed": null,
+    "total_slots_filled": null,
+    "coverage_percent": null,
+    "staffing_grade": null
+  }
+]

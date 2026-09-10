@@ -1,0 +1,30 @@
+[
+  {
+    "users_id": "client@example.com",
+    "full_name": "Alex Rivera",
+    "role": "client",
+    "name": null,
+    "client_count": null
+  },
+  {
+    "users_id": "rob@example.com",
+    "full_name": "Dr. Rob Singh",
+    "role": "therapist",
+    "name": null,
+    "client_count": null
+  },
+  {
+    "users_id": "sue@example.com",
+    "full_name": "Dr. Sue Chen (Supervisor)",
+    "role": "supervisor",
+    "name": null,
+    "client_count": null
+  },
+  {
+    "users_id": "tess@example.com",
+    "full_name": "Dr. Tess Brennan",
+    "role": "therapist",
+    "name": null,
+    "client_count": null
+  }
+]

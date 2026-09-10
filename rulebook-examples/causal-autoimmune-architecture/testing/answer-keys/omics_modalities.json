@@ -1,0 +1,74 @@
+[
+  {
+    "omics_modality_id": "atac-seq",
+    "modality_label": "ATAC-seq",
+    "is_single_cell": false,
+    "name": "ATAC-seq",
+    "relative_path": "/omics-modalities/atac-seq",
+    "count_of_omics_assays": 12,
+    "omics_assays": null
+  },
+  {
+    "omics_modality_id": "hi-c",
+    "modality_label": "Chromatin Conformation Hi-C (sparse context)",
+    "is_single_cell": false,
+    "name": "Chromatin Conformation Hi-C (sparse context)",
+    "relative_path": "/omics-modalities/hi-c",
+    "count_of_omics_assays": 0,
+    "omics_assays": null
+  },
+  {
+    "omics_modality_id": "long-read-genomes",
+    "modality_label": "Phased Telomere-to-Telomere Long-Read Genomes",
+    "is_single_cell": false,
+    "name": "Phased Telomere-to-Telomere Long-Read Genomes",
+    "relative_path": "/omics-modalities/long-read-genomes",
+    "count_of_omics_assays": 0,
+    "omics_assays": null
+  },
+  {
+    "omics_modality_id": "methylome",
+    "modality_label": "Methylome (sparse context)",
+    "is_single_cell": false,
+    "name": "Methylome (sparse context)",
+    "relative_path": "/omics-modalities/methylome",
+    "count_of_omics_assays": 0,
+    "omics_assays": null
+  },
+  {
+    "omics_modality_id": "microbiome",
+    "modality_label": "Microbiome",
+    "is_single_cell": false,
+    "name": "Microbiome",
+    "relative_path": "/omics-modalities/microbiome",
+    "count_of_omics_assays": 0,
+    "omics_assays": null
+  },
+  {
+    "omics_modality_id": "proteomics",
+    "modality_label": "Proteomics",
+    "is_single_cell": false,
+    "name": "Proteomics",
+    "relative_path": "/omics-modalities/proteomics",
+    "count_of_omics_assays": 12,
+    "omics_assays": null
+  },
+  {
+    "omics_modality_id": "rna-seq",
+    "modality_label": "RNA-seq",
+    "is_single_cell": false,
+    "name": "RNA-seq",
+    "relative_path": "/omics-modalities/rna-seq",
+    "count_of_omics_assays": 12,
+    "omics_assays": null
+  },
+  {
+    "omics_modality_id": "single-cell-rna",
+    "modality_label": "Single-Cell RNA-seq",
+    "is_single_cell": true,
+    "name": "Single-Cell RNA-seq",
+    "relative_path": "/omics-modalities/single-cell-rna",
+    "count_of_omics_assays": 0,
+    "omics_assays": null
+  }
+]

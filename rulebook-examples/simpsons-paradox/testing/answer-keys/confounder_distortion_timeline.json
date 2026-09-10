@@ -1,0 +1,541 @@
+[
+  {
+    "cell_id": "id-age-composition-x-1900",
+    "confounder_identity": "id-age-composition",
+    "valid_time_decade": 1900,
+    "name": "id-age-composition-x-1900",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-age-composition-x-1950",
+    "confounder_identity": "id-age-composition",
+    "valid_time_decade": 1950,
+    "name": "id-age-composition-x-1950",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-age-composition-x-1960",
+    "confounder_identity": "id-age-composition",
+    "valid_time_decade": 1960,
+    "name": "id-age-composition-x-1960",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-age-composition-x-1970",
+    "confounder_identity": "id-age-composition",
+    "valid_time_decade": 1970,
+    "name": "id-age-composition-x-1970",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-age-composition-x-1980",
+    "confounder_identity": "id-age-composition",
+    "valid_time_decade": 1980,
+    "name": "id-age-composition-x-1980",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-age-composition-x-1990",
+    "confounder_identity": "id-age-composition",
+    "valid_time_decade": 1990,
+    "name": "id-age-composition-x-1990",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-age-composition-x-2000",
+    "confounder_identity": "id-age-composition",
+    "valid_time_decade": 2000,
+    "name": "id-age-composition-x-2000",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-age-composition-x-2010",
+    "confounder_identity": "id-age-composition",
+    "valid_time_decade": 2010,
+    "name": "id-age-composition-x-2010",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-age-composition-x-2020",
+    "confounder_identity": "id-age-composition",
+    "valid_time_decade": 2020,
+    "name": "id-age-composition-x-2020",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-collider-proxy-x-1970",
+    "confounder_identity": "id-collider-proxy",
+    "valid_time_decade": 1970,
+    "name": "id-collider-proxy-x-1970",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-collider-proxy-x-1990",
+    "confounder_identity": "id-collider-proxy",
+    "valid_time_decade": 1990,
+    "name": "id-collider-proxy-x-1990",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-collider-proxy-x-2000",
+    "confounder_identity": "id-collider-proxy",
+    "valid_time_decade": 2000,
+    "name": "id-collider-proxy-x-2000",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-collider-proxy-x-2010",
+    "confounder_identity": "id-collider-proxy",
+    "valid_time_decade": 2010,
+    "name": "id-collider-proxy-x-2010",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-collider-proxy-x-2020",
+    "confounder_identity": "id-collider-proxy",
+    "valid_time_decade": 2020,
+    "name": "id-collider-proxy-x-2020",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-contested-org-choice-x-1970",
+    "confounder_identity": "id-contested-org-choice",
+    "valid_time_decade": 1970,
+    "name": "id-contested-org-choice-x-1970",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-contested-org-choice-x-1980",
+    "confounder_identity": "id-contested-org-choice",
+    "valid_time_decade": 1980,
+    "name": "id-contested-org-choice-x-1980",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-credit-risk-tier-x-1990",
+    "confounder_identity": "id-credit-risk-tier",
+    "valid_time_decade": 1990,
+    "name": "id-credit-risk-tier-x-1990",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-credit-risk-tier-x-2000",
+    "confounder_identity": "id-credit-risk-tier",
+    "valid_time_decade": 2000,
+    "name": "id-credit-risk-tier-x-2000",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-credit-risk-tier-x-2010",
+    "confounder_identity": "id-credit-risk-tier",
+    "valid_time_decade": 2010,
+    "name": "id-credit-risk-tier-x-2010",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-credit-risk-tier-x-2020",
+    "confounder_identity": "id-credit-risk-tier",
+    "valid_time_decade": 2020,
+    "name": "id-credit-risk-tier-x-2020",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-demographic-group-x-1950",
+    "confounder_identity": "id-demographic-group",
+    "valid_time_decade": 1950,
+    "name": "id-demographic-group-x-1950",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-demographic-group-x-1990",
+    "confounder_identity": "id-demographic-group",
+    "valid_time_decade": 1990,
+    "name": "id-demographic-group-x-1990",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-demographic-group-x-2000",
+    "confounder_identity": "id-demographic-group",
+    "valid_time_decade": 2000,
+    "name": "id-demographic-group-x-2000",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-demographic-group-x-2010",
+    "confounder_identity": "id-demographic-group",
+    "valid_time_decade": 2010,
+    "name": "id-demographic-group-x-2010",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-disease-severity-x-1970",
+    "confounder_identity": "id-disease-severity",
+    "valid_time_decade": 1970,
+    "name": "id-disease-severity-x-1970",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-disease-severity-x-1980",
+    "confounder_identity": "id-disease-severity",
+    "valid_time_decade": 1980,
+    "name": "id-disease-severity-x-1980",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-disease-severity-x-1990",
+    "confounder_identity": "id-disease-severity",
+    "valid_time_decade": 1990,
+    "name": "id-disease-severity-x-1990",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-disease-severity-x-2000",
+    "confounder_identity": "id-disease-severity",
+    "valid_time_decade": 2000,
+    "name": "id-disease-severity-x-2000",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-disease-severity-x-2010",
+    "confounder_identity": "id-disease-severity",
+    "valid_time_decade": 2010,
+    "name": "id-disease-severity-x-2010",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-exposure-mix-x-2010",
+    "confounder_identity": "id-exposure-mix",
+    "valid_time_decade": 2010,
+    "name": "id-exposure-mix-x-2010",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-exposure-mix-x-2020",
+    "confounder_identity": "id-exposure-mix",
+    "valid_time_decade": 2020,
+    "name": "id-exposure-mix-x-2020",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-geographic-composition-x-1950",
+    "confounder_identity": "id-geographic-composition",
+    "valid_time_decade": 1950,
+    "name": "id-geographic-composition-x-1950",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-geographic-composition-x-1980",
+    "confounder_identity": "id-geographic-composition",
+    "valid_time_decade": 1980,
+    "name": "id-geographic-composition-x-1980",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-geographic-composition-x-1990",
+    "confounder_identity": "id-geographic-composition",
+    "valid_time_decade": 1990,
+    "name": "id-geographic-composition-x-1990",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-geographic-composition-x-2000",
+    "confounder_identity": "id-geographic-composition",
+    "valid_time_decade": 2000,
+    "name": "id-geographic-composition-x-2000",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-geographic-composition-x-2010",
+    "confounder_identity": "id-geographic-composition",
+    "valid_time_decade": 2010,
+    "name": "id-geographic-composition-x-2010",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-geographic-composition-x-2020",
+    "confounder_identity": "id-geographic-composition",
+    "valid_time_decade": 2020,
+    "name": "id-geographic-composition-x-2020",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-institutional-unit-x-1980",
+    "confounder_identity": "id-institutional-unit",
+    "valid_time_decade": 1980,
+    "name": "id-institutional-unit-x-1980",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-institutional-unit-x-1990",
+    "confounder_identity": "id-institutional-unit",
+    "valid_time_decade": 1990,
+    "name": "id-institutional-unit-x-1990",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-institutional-unit-x-2000",
+    "confounder_identity": "id-institutional-unit",
+    "valid_time_decade": 2000,
+    "name": "id-institutional-unit-x-2000",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-institutional-unit-x-2010",
+    "confounder_identity": "id-institutional-unit",
+    "valid_time_decade": 2010,
+    "name": "id-institutional-unit-x-2010",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-institutional-unit-x-2020",
+    "confounder_identity": "id-institutional-unit",
+    "valid_time_decade": 2020,
+    "name": "id-institutional-unit-x-2020",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-legal-case-context-x-1980",
+    "confounder_identity": "id-legal-case-context",
+    "valid_time_decade": 1980,
+    "name": "id-legal-case-context-x-1980",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-legal-case-context-x-1990",
+    "confounder_identity": "id-legal-case-context",
+    "valid_time_decade": 1990,
+    "name": "id-legal-case-context-x-1990",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-legal-case-context-x-2000",
+    "confounder_identity": "id-legal-case-context",
+    "valid_time_decade": 2000,
+    "name": "id-legal-case-context-x-2000",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-legal-case-context-x-2010",
+    "confounder_identity": "id-legal-case-context",
+    "valid_time_decade": 2010,
+    "name": "id-legal-case-context-x-2010",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-method-specification-x-2000",
+    "confounder_identity": "id-method-specification",
+    "valid_time_decade": 2000,
+    "name": "id-method-specification-x-2000",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-method-specification-x-2010",
+    "confounder_identity": "id-method-specification",
+    "valid_time_decade": 2010,
+    "name": "id-method-specification-x-2010",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-method-specification-x-2020",
+    "confounder_identity": "id-method-specification",
+    "valid_time_decade": 2020,
+    "name": "id-method-specification-x-2020",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-selection-frailty-x-1950",
+    "confounder_identity": "id-selection-frailty",
+    "valid_time_decade": 1950,
+    "name": "id-selection-frailty-x-1950",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-selection-frailty-x-1980",
+    "confounder_identity": "id-selection-frailty",
+    "valid_time_decade": 1980,
+    "name": "id-selection-frailty-x-1980",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-selection-frailty-x-2000",
+    "confounder_identity": "id-selection-frailty",
+    "valid_time_decade": 2000,
+    "name": "id-selection-frailty-x-2000",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-situational-context-x-1910",
+    "confounder_identity": "id-situational-context",
+    "valid_time_decade": 1910,
+    "name": "id-situational-context-x-1910",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-situational-context-x-1970",
+    "confounder_identity": "id-situational-context",
+    "valid_time_decade": 1970,
+    "name": "id-situational-context-x-1970",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-situational-context-x-1980",
+    "confounder_identity": "id-situational-context",
+    "valid_time_decade": 1980,
+    "name": "id-situational-context-x-1980",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-situational-context-x-1990",
+    "confounder_identity": "id-situational-context",
+    "valid_time_decade": 1990,
+    "name": "id-situational-context-x-1990",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-situational-context-x-2000",
+    "confounder_identity": "id-situational-context",
+    "valid_time_decade": 2000,
+    "name": "id-situational-context-x-2000",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-situational-context-x-2010",
+    "confounder_identity": "id-situational-context",
+    "valid_time_decade": 2010,
+    "name": "id-situational-context-x-2010",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-smoking-behavior-x-1960",
+    "confounder_identity": "id-smoking-behavior",
+    "valid_time_decade": 1960,
+    "name": "id-smoking-behavior-x-1960",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-smoking-behavior-x-2000",
+    "confounder_identity": "id-smoking-behavior",
+    "valid_time_decade": 2000,
+    "name": "id-smoking-behavior-x-2000",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-smoking-behavior-x-2020",
+    "confounder_identity": "id-smoking-behavior",
+    "valid_time_decade": 2020,
+    "name": "id-smoking-behavior-x-2020",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-socioeconomic-status-x-1960",
+    "confounder_identity": "id-socioeconomic-status",
+    "valid_time_decade": 1960,
+    "name": "id-socioeconomic-status-x-1960",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-socioeconomic-status-x-1970",
+    "confounder_identity": "id-socioeconomic-status",
+    "valid_time_decade": 1970,
+    "name": "id-socioeconomic-status-x-1970",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-socioeconomic-status-x-1990",
+    "confounder_identity": "id-socioeconomic-status",
+    "valid_time_decade": 1990,
+    "name": "id-socioeconomic-status-x-1990",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-socioeconomic-status-x-2000",
+    "confounder_identity": "id-socioeconomic-status",
+    "valid_time_decade": 2000,
+    "name": "id-socioeconomic-status-x-2000",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-socioeconomic-status-x-2010",
+    "confounder_identity": "id-socioeconomic-status",
+    "valid_time_decade": 2010,
+    "name": "id-socioeconomic-status-x-2010",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-socioeconomic-status-x-2020",
+    "confounder_identity": "id-socioeconomic-status",
+    "valid_time_decade": 2020,
+    "name": "id-socioeconomic-status-x-2020",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-treatment-indication-x-1850",
+    "confounder_identity": "id-treatment-indication",
+    "valid_time_decade": 1850,
+    "name": "id-treatment-indication-x-1850",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-treatment-indication-x-1950",
+    "confounder_identity": "id-treatment-indication",
+    "valid_time_decade": 1950,
+    "name": "id-treatment-indication-x-1950",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-treatment-indication-x-2000",
+    "confounder_identity": "id-treatment-indication",
+    "valid_time_decade": 2000,
+    "name": "id-treatment-indication-x-2000",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-treatment-indication-x-2020",
+    "confounder_identity": "id-treatment-indication",
+    "valid_time_decade": 2020,
+    "name": "id-treatment-indication-x-2020",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-trial-timing-design-x-1990",
+    "confounder_identity": "id-trial-timing-design",
+    "valid_time_decade": 1990,
+    "name": "id-trial-timing-design-x-1990",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-trial-timing-design-x-2000",
+    "confounder_identity": "id-trial-timing-design",
+    "valid_time_decade": 2000,
+    "name": "id-trial-timing-design-x-2000",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-user-platform-segment-x-1990",
+    "confounder_identity": "id-user-platform-segment",
+    "valid_time_decade": 1990,
+    "name": "id-user-platform-segment-x-1990",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-user-platform-segment-x-2000",
+    "confounder_identity": "id-user-platform-segment",
+    "valid_time_decade": 2000,
+    "name": "id-user-platform-segment-x-2000",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-user-platform-segment-x-2010",
+    "confounder_identity": "id-user-platform-segment",
+    "valid_time_decade": 2010,
+    "name": "id-user-platform-segment-x-2010",
+    "drift_direction": "single-decade"
+  },
+  {
+    "cell_id": "id-user-platform-segment-x-2020",
+    "confounder_identity": "id-user-platform-segment",
+    "valid_time_decade": 2020,
+    "name": "id-user-platform-segment-x-2020",
+    "drift_direction": "single-decade"
+  }
+]

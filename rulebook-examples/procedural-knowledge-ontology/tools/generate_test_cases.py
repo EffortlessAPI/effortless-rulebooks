@@ -166,7 +166,7 @@ def main() -> int:
     rb["TestCases"]["data"] = cases
 
     with RB.open("w") as fh:
-        json.dump(rb, fh, indent=2)
+        json.dump(rb, fh, indent=1, ensure_ascii=False)
         fh.write("\n")
 
     kinds: dict[str, int] = {}

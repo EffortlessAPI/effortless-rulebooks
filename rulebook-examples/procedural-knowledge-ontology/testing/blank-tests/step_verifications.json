@@ -1,0 +1,112 @@
+[
+  {
+    "step_verification_id": "verify-ack",
+    "step": "policy-08",
+    "verification_kind": "SignalVerification",
+    "signal_identifier": "unresolved-recipient-count",
+    "expected_signal_value": "0",
+    "instruction": "All recipients acknowledged or have an exception task.",
+    "semantic_type_iri": "https://w3id.org/pko#SignalVerification",
+    "name": null
+  },
+  {
+    "step_verification_id": "verify-cfo",
+    "step": "close-06",
+    "verification_kind": "ApprovalVerification",
+    "signal_identifier": "cfo-approval",
+    "expected_signal_value": "APPROVED",
+    "instruction": "CFO approval record exists.",
+    "semantic_type_iri": "https://w3id.org/pko#StepVerification",
+    "name": null
+  },
+  {
+    "step_verification_id": "verify-close-cutoff",
+    "step": "close-01",
+    "verification_kind": "SignalVerification",
+    "signal_identifier": "ledger-lock-state",
+    "expected_signal_value": "LOCKED",
+    "instruction": "The ERP reports the close period locked.",
+    "semantic_type_iri": "https://w3id.org/pko#SignalVerification",
+    "name": null
+  },
+  {
+    "step_verification_id": "verify-controller",
+    "step": "close-05",
+    "verification_kind": "ApprovalVerification",
+    "signal_identifier": "controller-approval",
+    "expected_signal_value": "APPROVED",
+    "instruction": "Controller approval record exists.",
+    "semantic_type_iri": "https://w3id.org/pko#StepVerification",
+    "name": null
+  },
+  {
+    "step_verification_id": "verify-feed-time",
+    "step": "close-02",
+    "verification_kind": "SignalVerification",
+    "signal_identifier": "max-feed-age-minutes",
+    "expected_signal_value": "15",
+    "instruction": "All source feeds are no more than 15 minutes old.",
+    "semantic_type_iri": "https://w3id.org/pko#SignalVerification",
+    "name": null
+  },
+  {
+    "step_verification_id": "verify-legal",
+    "step": "policy-04",
+    "verification_kind": "ApprovalVerification",
+    "signal_identifier": "legal-approval",
+    "expected_signal_value": "APPROVED",
+    "instruction": "Employment counsel approval exists.",
+    "semantic_type_iri": "https://w3id.org/pko#StepVerification",
+    "name": null
+  },
+  {
+    "step_verification_id": "verify-policy-owner",
+    "step": "policy-05",
+    "verification_kind": "ApprovalVerification",
+    "signal_identifier": "policy-owner-approval",
+    "expected_signal_value": "APPROVED",
+    "instruction": "Human policy-owner approval exists.",
+    "semantic_type_iri": "https://w3id.org/pko#StepVerification",
+    "name": null
+  },
+  {
+    "step_verification_id": "verify-policy-source",
+    "step": "policy-03",
+    "verification_kind": "ProvenanceVerification",
+    "signal_identifier": "unapproved-source-count",
+    "expected_signal_value": "0",
+    "instruction": "Draft contains no unapproved source.",
+    "semantic_type_iri": "https://w3id.org/pko#StepVerification",
+    "name": null
+  },
+  {
+    "step_verification_id": "verify-quiet-hours",
+    "step": "policy-07",
+    "verification_kind": "SignalVerification",
+    "signal_identifier": "quiet-hours-violation-count",
+    "expected_signal_value": "0",
+    "instruction": "No message was sent during quiet hours.",
+    "semantic_type_iri": "https://w3id.org/pko#SignalVerification",
+    "name": null
+  },
+  {
+    "step_verification_id": "verify-reconciliation",
+    "step": "close-03",
+    "verification_kind": "SignalVerification",
+    "signal_identifier": "unexplained-material-variance",
+    "expected_signal_value": "0",
+    "instruction": "No unexplained material variance remains.",
+    "semantic_type_iri": "https://w3id.org/pko#SignalVerification",
+    "name": null
+  },
+  {
+    "step_verification_id": "verify-sms-consent",
+    "step": "policy-07",
+    "verification_kind": "SignalVerification",
+    "signal_identifier": "sms-without-consent-count",
+    "expected_signal_value": "0",
+    "instruction": "No SMS recipient lacks active consent.",
+    "semantic_type_iri": "https://w3id.org/pko#SignalVerification",
+    "name": null
+  }
+]

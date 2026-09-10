@@ -1,0 +1,42 @@
+{
+  "events": {
+    "primary_key": "event_id",
+    "computed_columns": [
+      "shift_count",
+      "total_slots_needed",
+      "total_slots_filled",
+      "coverage_percent",
+      "staffing_grade"
+    ],
+    "record_count": 2
+  },
+  "volunteers": {
+    "primary_key": "volunteer_id",
+    "computed_columns": [
+      "name",
+      "assignment_count",
+      "assigned_hours",
+      "load_status"
+    ],
+    "record_count": 5
+  },
+  "shifts": {
+    "primary_key": "shift_id",
+    "computed_columns": [
+      "event_name",
+      "filled_count",
+      "coverage_status"
+    ],
+    "record_count": 6
+  },
+  "assignments": {
+    "primary_key": "assignment_id",
+    "computed_columns": [
+      "name",
+      "volunteer_name",
+      "shift_name",
+      "shift_duration_hours"
+    ],
+    "record_count": 10
+  }
+}

@@ -20,20 +20,20 @@
 
 ## Results by Entity
 
-### resumes
+### job_boards
 
-- Fields: 2/2 (100.0%)
-- Computed columns: resume_sections, search_runs
+- Fields: 4/4 (100.0%)
+- Computed columns: job_listings
 
 ### search_urls
 
 - Fields: 8/8 (100.0%)
 - Computed columns: job_board_name
 
-### job_boards
+### resumes
 
-- Fields: 4/4 (100.0%)
-- Computed columns: job_listings
+- Fields: 2/2 (100.0%)
+- Computed columns: resume_sections, search_runs
 
 ### resume_sections
 

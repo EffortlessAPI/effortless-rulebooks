@@ -45,22 +45,30 @@ export const rulebook = {
       {
         "UsersId": "tess@example.com",
         "FullName": "Dr. Tess Brennan",
-        "Role": "therapist"
+        "Role": "therapist",
+        "Name": "tess@example.com",
+        "ClientCount": 2
       },
       {
         "UsersId": "rob@example.com",
         "FullName": "Dr. Rob Singh",
-        "Role": "therapist"
+        "Role": "therapist",
+        "Name": "rob@example.com",
+        "ClientCount": 2
       },
       {
         "UsersId": "sue@example.com",
         "FullName": "Dr. Sue Chen (Supervisor)",
-        "Role": "supervisor"
+        "Role": "supervisor",
+        "Name": "sue@example.com",
+        "ClientCount": 0
       },
       {
         "UsersId": "client@example.com",
         "FullName": "Alex Rivera",
-        "Role": "client"
+        "Role": "client",
+        "Name": "client@example.com",
+        "ClientCount": 0
       }
     ]
   },
@@ -169,25 +177,61 @@ export const rulebook = {
         "ClientsId": "alex-r",
         "ClientName": "Alex Rivera",
         "Therapist": "tess@example.com",
-        "StartDate": "2026-01-15"
+        "StartDate": "2026-01-15",
+        "TherapistName": "Dr. Tess Brennan",
+        "Name": "alex-r",
+        "SessionCount": 3,
+        "AvgMoodRating": 7.333333333333333,
+        "GoalCount": 2,
+        "AvgGoalProgress": 80.35714285714286,
+        "LastSessionLabel": "2026-04-16",
+        "IsAtRisk": false,
+        "StatusLabel": "On track"
       },
       {
         "ClientsId": "blair-m",
         "ClientName": "Blair Morgan",
         "Therapist": "tess@example.com",
-        "StartDate": "2026-02-03"
+        "StartDate": "2026-02-03",
+        "TherapistName": "Dr. Tess Brennan",
+        "Name": "blair-m",
+        "SessionCount": 3,
+        "AvgMoodRating": 4.0,
+        "GoalCount": 2,
+        "AvgGoalProgress": 50.0,
+        "LastSessionLabel": "2026-04-17",
+        "IsAtRisk": true,
+        "StatusLabel": "At risk"
       },
       {
         "ClientsId": "casey-l",
         "ClientName": "Casey Lin",
         "Therapist": "rob@example.com",
-        "StartDate": "2025-11-22"
+        "StartDate": "2025-11-22",
+        "TherapistName": "Dr. Rob Singh",
+        "Name": "casey-l",
+        "SessionCount": 2,
+        "AvgMoodRating": 6.5,
+        "GoalCount": 2,
+        "AvgGoalProgress": 67.85714285714286,
+        "LastSessionLabel": "2026-04-11",
+        "IsAtRisk": false,
+        "StatusLabel": "On track"
       },
       {
         "ClientsId": "drew-p",
         "ClientName": "Drew Patel",
         "Therapist": "rob@example.com",
-        "StartDate": "2026-03-01"
+        "StartDate": "2026-03-01",
+        "TherapistName": "Dr. Rob Singh",
+        "Name": "drew-p",
+        "SessionCount": 2,
+        "AvgMoodRating": 8.5,
+        "GoalCount": 2,
+        "AvgGoalProgress": 89.73214285714286,
+        "LastSessionLabel": "2026-04-12",
+        "IsAtRisk": false,
+        "StatusLabel": "On track"
       }
     ]
   },
@@ -293,49 +337,121 @@ export const rulebook = {
         "GoalsId": "alex-anxiety",
         "Title": "Reduce anxiety in social settings",
         "Client": "alex-r",
-        "TargetScore": 8
+        "TargetScore": 8,
+        "ClientName": "Alex Rivera",
+        "ClientTherapist": "tess@example.com",
+        "Name": "alex-anxiety",
+        "UpdateCount": 3,
+        "AvgScoreAchieved": 6.0,
+        "LatestScore": 7,
+        "ProgressPct": 75.0,
+        "RemainingGap": 2.0,
+        "IsOnTrack": true
       },
       {
         "GoalsId": "alex-sleep",
         "Title": "Improve sleep quality",
         "Client": "alex-r",
-        "TargetScore": 7
+        "TargetScore": 7,
+        "ClientName": "Alex Rivera",
+        "ClientTherapist": "tess@example.com",
+        "Name": "alex-sleep",
+        "UpdateCount": 2,
+        "AvgScoreAchieved": 6.0,
+        "LatestScore": 6,
+        "ProgressPct": 85.71428571428571,
+        "RemainingGap": 1.0,
+        "IsOnTrack": true
       },
       {
         "GoalsId": "blair-mood",
         "Title": "Stabilize daily mood",
         "Client": "blair-m",
-        "TargetScore": 8
+        "TargetScore": 8,
+        "ClientName": "Blair Morgan",
+        "ClientTherapist": "tess@example.com",
+        "Name": "blair-mood",
+        "UpdateCount": 3,
+        "AvgScoreAchieved": 2.6666666666666665,
+        "LatestScore": 3,
+        "ProgressPct": 33.333333333333336,
+        "RemainingGap": 5.333333333333333,
+        "IsOnTrack": false
       },
       {
         "GoalsId": "blair-journal",
         "Title": "Daily journaling",
         "Client": "blair-m",
-        "TargetScore": 6
+        "TargetScore": 6,
+        "ClientName": "Blair Morgan",
+        "ClientTherapist": "tess@example.com",
+        "Name": "blair-journal",
+        "UpdateCount": 1,
+        "AvgScoreAchieved": 4.0,
+        "LatestScore": 4,
+        "ProgressPct": 66.66666666666667,
+        "RemainingGap": 2.0,
+        "IsOnTrack": false
       },
       {
         "GoalsId": "casey-grief",
         "Title": "Work through grief",
         "Client": "casey-l",
-        "TargetScore": 9
+        "TargetScore": 9,
+        "ClientName": "Casey Lin",
+        "ClientTherapist": "rob@example.com",
+        "Name": "casey-grief",
+        "UpdateCount": 2,
+        "AvgScoreAchieved": 4.5,
+        "LatestScore": 5,
+        "ProgressPct": 50.0,
+        "RemainingGap": 4.5,
+        "IsOnTrack": false
       },
       {
         "GoalsId": "casey-routine",
         "Title": "Establish morning routine",
         "Client": "casey-l",
-        "TargetScore": 7
+        "TargetScore": 7,
+        "ClientName": "Casey Lin",
+        "ClientTherapist": "rob@example.com",
+        "Name": "casey-routine",
+        "UpdateCount": 1,
+        "AvgScoreAchieved": 6.0,
+        "LatestScore": 6,
+        "ProgressPct": 85.71428571428571,
+        "RemainingGap": 1.0,
+        "IsOnTrack": true
       },
       {
         "GoalsId": "drew-focus",
         "Title": "Improve work focus",
         "Client": "drew-p",
-        "TargetScore": 8
+        "TargetScore": 8,
+        "ClientName": "Drew Patel",
+        "ClientTherapist": "rob@example.com",
+        "Name": "drew-focus",
+        "UpdateCount": 2,
+        "AvgScoreAchieved": 7.5,
+        "LatestScore": 8,
+        "ProgressPct": 93.75,
+        "RemainingGap": 0.5,
+        "IsOnTrack": true
       },
       {
         "GoalsId": "drew-exercise",
         "Title": "Exercise 3x per week",
         "Client": "drew-p",
-        "TargetScore": 7
+        "TargetScore": 7,
+        "ClientName": "Drew Patel",
+        "ClientTherapist": "rob@example.com",
+        "Name": "drew-exercise",
+        "UpdateCount": 1,
+        "AvgScoreAchieved": 6.0,
+        "LatestScore": 6,
+        "ProgressPct": 85.71428571428571,
+        "RemainingGap": 1.0,
+        "IsOnTrack": true
       }
     ]
   },
@@ -443,7 +559,14 @@ export const rulebook = {
         "SessionLabel": "2026-04-02 am",
         "DurationMinutes": 50,
         "MoodRating": 7,
-        "Notes": "Good engagement."
+        "Notes": "Good engagement.",
+        "ClientName": "Alex Rivera",
+        "ClientTherapist": "tess@example.com",
+        "Name": "ses-001",
+        "UpdateCount": 1,
+        "AvgScoreAchieved": 5.0,
+        "IsProductive": false,
+        "StatusLabel": "Light"
       },
       {
         "SessionsId": "ses-002",
@@ -451,7 +574,14 @@ export const rulebook = {
         "SessionLabel": "2026-04-09 am",
         "DurationMinutes": 50,
         "MoodRating": 8,
-        "Notes": "Reported better sleep."
+        "Notes": "Reported better sleep.",
+        "ClientName": "Alex Rivera",
+        "ClientTherapist": "tess@example.com",
+        "Name": "ses-002",
+        "UpdateCount": 2,
+        "AvgScoreAchieved": 6.0,
+        "IsProductive": true,
+        "StatusLabel": "Productive"
       },
       {
         "SessionsId": "ses-003",
@@ -459,7 +589,14 @@ export const rulebook = {
         "SessionLabel": "2026-04-16 am",
         "DurationMinutes": 50,
         "MoodRating": 7,
-        "Notes": ""
+        "Notes": "",
+        "ClientName": "Alex Rivera",
+        "ClientTherapist": "tess@example.com",
+        "Name": "ses-003",
+        "UpdateCount": 2,
+        "AvgScoreAchieved": 6.5,
+        "IsProductive": true,
+        "StatusLabel": "Productive"
       },
       {
         "SessionsId": "ses-004",
@@ -467,7 +604,14 @@ export const rulebook = {
         "SessionLabel": "2026-04-03 pm",
         "DurationMinutes": 45,
         "MoodRating": 4,
-        "Notes": "Tough week."
+        "Notes": "Tough week.",
+        "ClientName": "Blair Morgan",
+        "ClientTherapist": "tess@example.com",
+        "Name": "ses-004",
+        "UpdateCount": 1,
+        "AvgScoreAchieved": 3.0,
+        "IsProductive": false,
+        "StatusLabel": "Light"
       },
       {
         "SessionsId": "ses-005",
@@ -475,7 +619,14 @@ export const rulebook = {
         "SessionLabel": "2026-04-10 pm",
         "DurationMinutes": 45,
         "MoodRating": 5,
-        "Notes": ""
+        "Notes": "",
+        "ClientName": "Blair Morgan",
+        "ClientTherapist": "tess@example.com",
+        "Name": "ses-005",
+        "UpdateCount": 2,
+        "AvgScoreAchieved": 3.5,
+        "IsProductive": false,
+        "StatusLabel": "Light"
       },
       {
         "SessionsId": "ses-006",
@@ -483,7 +634,14 @@ export const rulebook = {
         "SessionLabel": "2026-04-17 pm",
         "DurationMinutes": 45,
         "MoodRating": 3,
-        "Notes": "Sleep poor."
+        "Notes": "Sleep poor.",
+        "ClientName": "Blair Morgan",
+        "ClientTherapist": "tess@example.com",
+        "Name": "ses-006",
+        "UpdateCount": 1,
+        "AvgScoreAchieved": 2.0,
+        "IsProductive": false,
+        "StatusLabel": "Light"
       },
       {
         "SessionsId": "ses-007",
@@ -491,7 +649,14 @@ export const rulebook = {
         "SessionLabel": "2026-04-04 am",
         "DurationMinutes": 60,
         "MoodRating": 6,
-        "Notes": "Grief work."
+        "Notes": "Grief work.",
+        "ClientName": "Casey Lin",
+        "ClientTherapist": "rob@example.com",
+        "Name": "ses-007",
+        "UpdateCount": 1,
+        "AvgScoreAchieved": 4.0,
+        "IsProductive": false,
+        "StatusLabel": "Light"
       },
       {
         "SessionsId": "ses-008",
@@ -499,7 +664,14 @@ export const rulebook = {
         "SessionLabel": "2026-04-11 am",
         "DurationMinutes": 60,
         "MoodRating": 7,
-        "Notes": ""
+        "Notes": "",
+        "ClientName": "Casey Lin",
+        "ClientTherapist": "rob@example.com",
+        "Name": "ses-008",
+        "UpdateCount": 2,
+        "AvgScoreAchieved": 5.5,
+        "IsProductive": true,
+        "StatusLabel": "Productive"
       },
       {
         "SessionsId": "ses-009",
@@ -507,7 +679,14 @@ export const rulebook = {
         "SessionLabel": "2026-04-05 pm",
         "DurationMinutes": 50,
         "MoodRating": 8,
-        "Notes": "Strong."
+        "Notes": "Strong.",
+        "ClientName": "Drew Patel",
+        "ClientTherapist": "rob@example.com",
+        "Name": "ses-009",
+        "UpdateCount": 1,
+        "AvgScoreAchieved": 7.0,
+        "IsProductive": false,
+        "StatusLabel": "Light"
       },
       {
         "SessionsId": "ses-010",
@@ -515,7 +694,14 @@ export const rulebook = {
         "SessionLabel": "2026-04-12 pm",
         "DurationMinutes": 50,
         "MoodRating": 9,
-        "Notes": "Excellent."
+        "Notes": "Excellent.",
+        "ClientName": "Drew Patel",
+        "ClientTherapist": "rob@example.com",
+        "Name": "ses-010",
+        "UpdateCount": 2,
+        "AvgScoreAchieved": 7.0,
+        "IsProductive": true,
+        "StatusLabel": "Productive"
       }
     ]
   },
@@ -589,91 +775,181 @@ export const rulebook = {
         "GoalUpdatesId": "upd-001",
         "Goal": "alex-anxiety",
         "Session": "ses-001",
-        "ScoreAchieved": 5
+        "ScoreAchieved": 5,
+        "GoalTitle": "Reduce anxiety in social settings",
+        "GoalClient": "alex-r",
+        "GoalTargetScore": 8,
+        "GoalClientTherapist": "tess@example.com",
+        "SessionLabel": "2026-04-02",
+        "Name": "upd-001"
       },
       {
         "GoalUpdatesId": "upd-002",
         "Goal": "alex-anxiety",
         "Session": "ses-002",
-        "ScoreAchieved": 6
+        "ScoreAchieved": 6,
+        "GoalTitle": "Reduce anxiety in social settings",
+        "GoalClient": "alex-r",
+        "GoalTargetScore": 8,
+        "GoalClientTherapist": "tess@example.com",
+        "SessionLabel": "2026-04-09",
+        "Name": "upd-002"
       },
       {
         "GoalUpdatesId": "upd-003",
         "Goal": "alex-anxiety",
         "Session": "ses-003",
-        "ScoreAchieved": 7
+        "ScoreAchieved": 7,
+        "GoalTitle": "Reduce anxiety in social settings",
+        "GoalClient": "alex-r",
+        "GoalTargetScore": 8,
+        "GoalClientTherapist": "tess@example.com",
+        "SessionLabel": "2026-04-16",
+        "Name": "upd-003"
       },
       {
         "GoalUpdatesId": "upd-004",
         "Goal": "alex-sleep",
         "Session": "ses-002",
-        "ScoreAchieved": 6
+        "ScoreAchieved": 6,
+        "GoalTitle": "Improve sleep quality",
+        "GoalClient": "alex-r",
+        "GoalTargetScore": 7,
+        "GoalClientTherapist": "tess@example.com",
+        "SessionLabel": "2026-04-09",
+        "Name": "upd-004"
       },
       {
         "GoalUpdatesId": "upd-005",
         "Goal": "alex-sleep",
         "Session": "ses-003",
-        "ScoreAchieved": 6
+        "ScoreAchieved": 6,
+        "GoalTitle": "Improve sleep quality",
+        "GoalClient": "alex-r",
+        "GoalTargetScore": 7,
+        "GoalClientTherapist": "tess@example.com",
+        "SessionLabel": "2026-04-16",
+        "Name": "upd-005"
       },
       {
         "GoalUpdatesId": "upd-006",
         "Goal": "blair-mood",
         "Session": "ses-004",
-        "ScoreAchieved": 3
+        "ScoreAchieved": 3,
+        "GoalTitle": "Stabilize daily mood",
+        "GoalClient": "blair-m",
+        "GoalTargetScore": 8,
+        "GoalClientTherapist": "tess@example.com",
+        "SessionLabel": "2026-04-03",
+        "Name": "upd-006"
       },
       {
         "GoalUpdatesId": "upd-007",
         "Goal": "blair-mood",
         "Session": "ses-005",
-        "ScoreAchieved": 3
+        "ScoreAchieved": 3,
+        "GoalTitle": "Stabilize daily mood",
+        "GoalClient": "blair-m",
+        "GoalTargetScore": 8,
+        "GoalClientTherapist": "tess@example.com",
+        "SessionLabel": "2026-04-10",
+        "Name": "upd-007"
       },
       {
         "GoalUpdatesId": "upd-008",
         "Goal": "blair-mood",
         "Session": "ses-006",
-        "ScoreAchieved": 2
+        "ScoreAchieved": 2,
+        "GoalTitle": "Stabilize daily mood",
+        "GoalClient": "blair-m",
+        "GoalTargetScore": 8,
+        "GoalClientTherapist": "tess@example.com",
+        "SessionLabel": "2026-04-17",
+        "Name": "upd-008"
       },
       {
         "GoalUpdatesId": "upd-009",
         "Goal": "blair-journal",
         "Session": "ses-005",
-        "ScoreAchieved": 4
+        "ScoreAchieved": 4,
+        "GoalTitle": "Daily journaling",
+        "GoalClient": "blair-m",
+        "GoalTargetScore": 6,
+        "GoalClientTherapist": "tess@example.com",
+        "SessionLabel": "2026-04-10",
+        "Name": "upd-009"
       },
       {
         "GoalUpdatesId": "upd-010",
         "Goal": "casey-grief",
         "Session": "ses-007",
-        "ScoreAchieved": 4
+        "ScoreAchieved": 4,
+        "GoalTitle": "Work through grief",
+        "GoalClient": "casey-l",
+        "GoalTargetScore": 9,
+        "GoalClientTherapist": "rob@example.com",
+        "SessionLabel": "2026-04-04",
+        "Name": "upd-010"
       },
       {
         "GoalUpdatesId": "upd-011",
         "Goal": "casey-grief",
         "Session": "ses-008",
-        "ScoreAchieved": 5
+        "ScoreAchieved": 5,
+        "GoalTitle": "Work through grief",
+        "GoalClient": "casey-l",
+        "GoalTargetScore": 9,
+        "GoalClientTherapist": "rob@example.com",
+        "SessionLabel": "2026-04-11",
+        "Name": "upd-011"
       },
       {
         "GoalUpdatesId": "upd-012",
         "Goal": "casey-routine",
         "Session": "ses-008",
-        "ScoreAchieved": 6
+        "ScoreAchieved": 6,
+        "GoalTitle": "Establish morning routine",
+        "GoalClient": "casey-l",
+        "GoalTargetScore": 7,
+        "GoalClientTherapist": "rob@example.com",
+        "SessionLabel": "2026-04-11",
+        "Name": "upd-012"
       },
       {
         "GoalUpdatesId": "upd-013",
         "Goal": "drew-focus",
         "Session": "ses-009",
-        "ScoreAchieved": 7
+        "ScoreAchieved": 7,
+        "GoalTitle": "Improve work focus",
+        "GoalClient": "drew-p",
+        "GoalTargetScore": 8,
+        "GoalClientTherapist": "rob@example.com",
+        "SessionLabel": "2026-04-05",
+        "Name": "upd-013"
       },
       {
         "GoalUpdatesId": "upd-014",
         "Goal": "drew-focus",
         "Session": "ses-010",
-        "ScoreAchieved": 8
+        "ScoreAchieved": 8,
+        "GoalTitle": "Improve work focus",
+        "GoalClient": "drew-p",
+        "GoalTargetScore": 8,
+        "GoalClientTherapist": "rob@example.com",
+        "SessionLabel": "2026-04-12",
+        "Name": "upd-014"
       },
       {
         "GoalUpdatesId": "upd-015",
         "Goal": "drew-exercise",
         "Session": "ses-010",
-        "ScoreAchieved": 6
+        "ScoreAchieved": 6,
+        "GoalTitle": "Exercise 3x per week",
+        "GoalClient": "drew-p",
+        "GoalTargetScore": 7,
+        "GoalClientTherapist": "rob@example.com",
+        "SessionLabel": "2026-04-12",
+        "Name": "upd-015"
       }
     ]
   },

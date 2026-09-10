@@ -1,0 +1,62 @@
+[
+  {
+    "metric_id": "m-cosine-similarity-test",
+    "display_name": "Cosine Similarity",
+    "ambient_context": null,
+    "metric_kind": "cosine-similarity",
+    "definition_text": "1 - <x,y>/(|x||y|)",
+    "satisfies_triangle_inequality": false,
+    "description": "Not a true metric \u2014 coverage row for SatisfiesTriangleInequality=false.",
+    "name": "cosine-similarity",
+    "is_euclidean": false,
+    "is_lattice_gram": false
+  },
+  {
+    "metric_id": "m-euclidean-r2",
+    "display_name": "Euclidean Metric on R2",
+    "ambient_context": "euclidean-plane-r2",
+    "metric_kind": "euclidean",
+    "definition_text": "d(x,y) = sqrt((x1-y1)^2 + (x2-y2)^2)",
+    "satisfies_triangle_inequality": true,
+    "description": "Standard 2D Euclidean distance \u2014 the metric used by every PointPair row.",
+    "name": "euclidean-metric-on-r2",
+    "is_euclidean": true,
+    "is_lattice_gram": false
+  },
+  {
+    "metric_id": "m-experimental-affine",
+    "display_name": "Experimental Affine Quasi-Metric",
+    "ambient_context": null,
+    "metric_kind": "experimental",
+    "definition_text": "Under evaluation",
+    "satisfies_triangle_inequality": false,
+    "description": "Unevaluated \u2014 coverage row for SatisfiesTriangleInequality=null.",
+    "name": "experimental-affine-quasi-metric",
+    "is_euclidean": false,
+    "is_lattice_gram": false
+  },
+  {
+    "metric_id": "m-gram-lat-q-sqrt-neg3",
+    "display_name": "Gram Metric on Q-sqrt-neg3 Lattice",
+    "ambient_context": "euclidean-plane-r2",
+    "metric_kind": "lattice-gram",
+    "definition_text": "d(v,w)^2 = (v-w)^T G (v-w) for Gram matrix G of the lattice",
+    "satisfies_triangle_inequality": true,
+    "description": "The intrinsic lattice metric \u2014 equals the Euclidean metric only when the embedding is isometric.",
+    "name": "gram-metric-on-q-sqrt-neg3-lattice",
+    "is_euclidean": false,
+    "is_lattice_gram": true
+  },
+  {
+    "metric_id": "m-taxicab-r2",
+    "display_name": "Taxicab Metric on R2",
+    "ambient_context": "euclidean-plane-r2",
+    "metric_kind": "taxicab",
+    "definition_text": "d(x,y) = |x1-y1| + |x2-y2|",
+    "satisfies_triangle_inequality": true,
+    "description": "L1 metric \u2014 included to show the Metrics table is general.",
+    "name": "taxicab-metric-on-r2",
+    "is_euclidean": false,
+    "is_lattice_gram": false
+  }
+]

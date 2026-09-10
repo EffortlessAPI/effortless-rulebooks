@@ -4,23 +4,44 @@
     "title": "Reduce anxiety in social settings",
     "client": "alex-r",
     "target_score": 8,
+    "client_name": "Alex Rivera",
+    "client_therapist": "tess@example.com",
     "name": "alex-anxiety",
-    "is_on_track": false
+    "update_count": 3,
+    "avg_score_achieved": 6.0,
+    "latest_score": 7,
+    "progress_pct": 75.0,
+    "remaining_gap": 2.0,
+    "is_on_track": true
   },
   {
     "goals_id": "alex-sleep",
     "title": "Improve sleep quality",
     "client": "alex-r",
     "target_score": 7,
+    "client_name": "Alex Rivera",
+    "client_therapist": "tess@example.com",
     "name": "alex-sleep",
-    "is_on_track": false
+    "update_count": 2,
+    "avg_score_achieved": 6.0,
+    "latest_score": 6,
+    "progress_pct": 85.71428571428571,
+    "remaining_gap": 1.0,
+    "is_on_track": true
   },
   {
     "goals_id": "blair-journal",
     "title": "Daily journaling",
     "client": "blair-m",
     "target_score": 6,
+    "client_name": "Blair Morgan",
+    "client_therapist": "tess@example.com",
     "name": "blair-journal",
+    "update_count": 1,
+    "avg_score_achieved": 4.0,
+    "latest_score": 4,
+    "progress_pct": 66.66666666666667,
+    "remaining_gap": 2.0,
     "is_on_track": false
   },
   {
@@ -28,7 +49,14 @@
     "title": "Stabilize daily mood",
     "client": "blair-m",
     "target_score": 8,
+    "client_name": "Blair Morgan",
+    "client_therapist": "tess@example.com",
     "name": "blair-mood",
+    "update_count": 3,
+    "avg_score_achieved": 2.6666666666666665,
+    "latest_score": 3,
+    "progress_pct": 33.333333333333336,
+    "remaining_gap": 5.333333333333333,
     "is_on_track": false
   },
   {
@@ -36,7 +64,14 @@
     "title": "Work through grief",
     "client": "casey-l",
     "target_score": 9,
+    "client_name": "Casey Lin",
+    "client_therapist": "rob@example.com",
     "name": "casey-grief",
+    "update_count": 2,
+    "avg_score_achieved": 4.5,
+    "latest_score": 5,
+    "progress_pct": 50.0,
+    "remaining_gap": 4.5,
     "is_on_track": false
   },
   {
@@ -44,23 +79,44 @@
     "title": "Establish morning routine",
     "client": "casey-l",
     "target_score": 7,
+    "client_name": "Casey Lin",
+    "client_therapist": "rob@example.com",
     "name": "casey-routine",
-    "is_on_track": false
+    "update_count": 1,
+    "avg_score_achieved": 6.0,
+    "latest_score": 6,
+    "progress_pct": 85.71428571428571,
+    "remaining_gap": 1.0,
+    "is_on_track": true
   },
   {
     "goals_id": "drew-exercise",
     "title": "Exercise 3x per week",
     "client": "drew-p",
     "target_score": 7,
+    "client_name": "Drew Patel",
+    "client_therapist": "rob@example.com",
     "name": "drew-exercise",
-    "is_on_track": false
+    "update_count": 1,
+    "avg_score_achieved": 6.0,
+    "latest_score": 6,
+    "progress_pct": 85.71428571428571,
+    "remaining_gap": 1.0,
+    "is_on_track": true
   },
   {
     "goals_id": "drew-focus",
     "title": "Improve work focus",
     "client": "drew-p",
     "target_score": 8,
+    "client_name": "Drew Patel",
+    "client_therapist": "rob@example.com",
     "name": "drew-focus",
-    "is_on_track": false
+    "update_count": 2,
+    "avg_score_achieved": 7.5,
+    "latest_score": 8,
+    "progress_pct": 93.75,
+    "remaining_gap": 0.5,
+    "is_on_track": true
   }
 ]

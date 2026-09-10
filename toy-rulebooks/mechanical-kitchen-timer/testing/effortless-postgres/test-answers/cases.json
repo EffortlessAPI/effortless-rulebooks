@@ -1,0 +1,22 @@
+[
+  {
+    "case_id": "Bessie's case",
+    "houses_timer": "Bessie",
+    "material": "chromed steel"
+  },
+  {
+    "case_id": "Olive's case",
+    "houses_timer": "Olive",
+    "material": "brushed aluminum"
+  },
+  {
+    "case_id": "Rufus's case",
+    "houses_timer": "Rufus",
+    "material": "chromed steel"
+  },
+  {
+    "case_id": "Twigs's case",
+    "houses_timer": "Twigs",
+    "material": "chromed steel"
+  }
+]

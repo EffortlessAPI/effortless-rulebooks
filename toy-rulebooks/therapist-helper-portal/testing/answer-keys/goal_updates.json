@@ -4,6 +4,11 @@
     "goal": "alex-anxiety",
     "session": "ses-001",
     "score_achieved": 5,
+    "goal_title": "Reduce anxiety in social settings",
+    "goal_client": "alex-r",
+    "goal_target_score": 8,
+    "goal_client_therapist": "tess@example.com",
+    "session_label": "2026-04-02",
     "name": "upd-001"
   },
   {
@@ -11,6 +16,11 @@
     "goal": "alex-anxiety",
     "session": "ses-002",
     "score_achieved": 6,
+    "goal_title": "Reduce anxiety in social settings",
+    "goal_client": "alex-r",
+    "goal_target_score": 8,
+    "goal_client_therapist": "tess@example.com",
+    "session_label": "2026-04-09",
     "name": "upd-002"
   },
   {
@@ -18,6 +28,11 @@
     "goal": "alex-anxiety",
     "session": "ses-003",
     "score_achieved": 7,
+    "goal_title": "Reduce anxiety in social settings",
+    "goal_client": "alex-r",
+    "goal_target_score": 8,
+    "goal_client_therapist": "tess@example.com",
+    "session_label": "2026-04-16",
     "name": "upd-003"
   },
   {
@@ -25,6 +40,11 @@
     "goal": "alex-sleep",
     "session": "ses-002",
     "score_achieved": 6,
+    "goal_title": "Improve sleep quality",
+    "goal_client": "alex-r",
+    "goal_target_score": 7,
+    "goal_client_therapist": "tess@example.com",
+    "session_label": "2026-04-09",
     "name": "upd-004"
   },
   {
@@ -32,6 +52,11 @@
     "goal": "alex-sleep",
     "session": "ses-003",
     "score_achieved": 6,
+    "goal_title": "Improve sleep quality",
+    "goal_client": "alex-r",
+    "goal_target_score": 7,
+    "goal_client_therapist": "tess@example.com",
+    "session_label": "2026-04-16",
     "name": "upd-005"
   },
   {
@@ -39,6 +64,11 @@
     "goal": "blair-mood",
     "session": "ses-004",
     "score_achieved": 3,
+    "goal_title": "Stabilize daily mood",
+    "goal_client": "blair-m",
+    "goal_target_score": 8,
+    "goal_client_therapist": "tess@example.com",
+    "session_label": "2026-04-03",
     "name": "upd-006"
   },
   {
@@ -46,6 +76,11 @@
     "goal": "blair-mood",
     "session": "ses-005",
     "score_achieved": 3,
+    "goal_title": "Stabilize daily mood",
+    "goal_client": "blair-m",
+    "goal_target_score": 8,
+    "goal_client_therapist": "tess@example.com",
+    "session_label": "2026-04-10",
     "name": "upd-007"
   },
   {
@@ -53,6 +88,11 @@
     "goal": "blair-mood",
     "session": "ses-006",
     "score_achieved": 2,
+    "goal_title": "Stabilize daily mood",
+    "goal_client": "blair-m",
+    "goal_target_score": 8,
+    "goal_client_therapist": "tess@example.com",
+    "session_label": "2026-04-17",
     "name": "upd-008"
   },
   {
@@ -60,6 +100,11 @@
     "goal": "blair-journal",
     "session": "ses-005",
     "score_achieved": 4,
+    "goal_title": "Daily journaling",
+    "goal_client": "blair-m",
+    "goal_target_score": 6,
+    "goal_client_therapist": "tess@example.com",
+    "session_label": "2026-04-10",
     "name": "upd-009"
   },
   {
@@ -67,6 +112,11 @@
     "goal": "casey-grief",
     "session": "ses-007",
     "score_achieved": 4,
+    "goal_title": "Work through grief",
+    "goal_client": "casey-l",
+    "goal_target_score": 9,
+    "goal_client_therapist": "rob@example.com",
+    "session_label": "2026-04-04",
     "name": "upd-010"
   },
   {
@@ -74,6 +124,11 @@
     "goal": "casey-grief",
     "session": "ses-008",
     "score_achieved": 5,
+    "goal_title": "Work through grief",
+    "goal_client": "casey-l",
+    "goal_target_score": 9,
+    "goal_client_therapist": "rob@example.com",
+    "session_label": "2026-04-11",
     "name": "upd-011"
   },
   {
@@ -81,6 +136,11 @@
     "goal": "casey-routine",
     "session": "ses-008",
     "score_achieved": 6,
+    "goal_title": "Establish morning routine",
+    "goal_client": "casey-l",
+    "goal_target_score": 7,
+    "goal_client_therapist": "rob@example.com",
+    "session_label": "2026-04-11",
     "name": "upd-012"
   },
   {
@@ -88,6 +148,11 @@
     "goal": "drew-focus",
     "session": "ses-009",
     "score_achieved": 7,
+    "goal_title": "Improve work focus",
+    "goal_client": "drew-p",
+    "goal_target_score": 8,
+    "goal_client_therapist": "rob@example.com",
+    "session_label": "2026-04-05",
     "name": "upd-013"
   },
   {
@@ -95,6 +160,11 @@
     "goal": "drew-focus",
     "session": "ses-010",
     "score_achieved": 8,
+    "goal_title": "Improve work focus",
+    "goal_client": "drew-p",
+    "goal_target_score": 8,
+    "goal_client_therapist": "rob@example.com",
+    "session_label": "2026-04-12",
     "name": "upd-014"
   },
   {
@@ -102,6 +172,11 @@
     "goal": "drew-exercise",
     "session": "ses-010",
     "score_achieved": 6,
+    "goal_title": "Exercise 3x per week",
+    "goal_client": "drew-p",
+    "goal_target_score": 7,
+    "goal_client_therapist": "rob@example.com",
+    "session_label": "2026-04-12",
     "name": "upd-015"
   }
 ]

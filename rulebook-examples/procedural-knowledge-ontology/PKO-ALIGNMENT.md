@@ -83,6 +83,9 @@ The following concepts are not represented as native PKO 2.0.0 classes. They are
 | `LearningActivities` | Retrospectives, drills, onboarding, and tabletop exercises |
 | `OperationalBindings` | Live links to operational records and freshness contracts |
 | channel constraints on `CommunicationPolicies` | Consent, quiet hours, retention, length, and authority rules |
+| `ProcessMiningRuns` | Conformance-checking a mined event log against a documented procedure version |
+| `Vocabularies` / `VocabularyTerms` | A SKOS-style controlled vocabulary/taxonomy that requirements point at instead of free-texting a concept |
+| `KnowledgeBrokerLinks` | The informal expertise network — who people actually consult, independent of any formal role |
 
 Each extension row carries an explicit `SemanticTypeIri` under `urn:effortless:pko-extension#`, and `SemanticMappings.MappingRelation` is `extension`, not `exact`.
 

@@ -12,6 +12,7 @@
       "project_type_name",
       "project_type_description",
       "project_type_requires_manager_approval",
+      "is_approved",
       "approved_by_role_is_manager",
       "approved_by_name",
       "approved_by_email_address",

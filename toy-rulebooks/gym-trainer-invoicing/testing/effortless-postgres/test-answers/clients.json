@@ -1,0 +1,62 @@
+[
+  {
+    "client_id": "c-morgan",
+    "name": "morgan@example.com",
+    "email": "morgan@example.com",
+    "full_name": "Morgan Diaz",
+    "trainer": "t-jamie",
+    "trainer_name": "Jamie Lin",
+    "trainer_email": "jamie@gym.test",
+    "trainer_hourly_rate": "95",
+    "session_count": 2,
+    "total_invoiced": "205.00",
+    "outstanding_balance": "205.00",
+    "overdue_count": 1,
+    "status": "Overdue"
+  },
+  {
+    "client_id": "c-robin",
+    "name": "robin@example.com",
+    "email": "robin@example.com",
+    "full_name": "Robin Cole",
+    "trainer": "t-alex",
+    "trainer_name": "Alex Reyes",
+    "trainer_email": "alex@gym.test",
+    "trainer_hourly_rate": "80",
+    "session_count": 4,
+    "total_invoiced": "447.000",
+    "outstanding_balance": "-53.000",
+    "overdue_count": 0,
+    "status": "Paid Up"
+  },
+  {
+    "client_id": "c-sam",
+    "name": "sam@example.com",
+    "email": "sam@example.com",
+    "full_name": "Sam Patel",
+    "trainer": "t-alex",
+    "trainer_name": "Alex Reyes",
+    "trainer_email": "alex@gym.test",
+    "trainer_hourly_rate": "80",
+    "session_count": 5,
+    "total_invoiced": "614.800",
+    "outstanding_balance": "614.800",
+    "overdue_count": 2,
+    "status": "Overdue"
+  },
+  {
+    "client_id": "c-taylor",
+    "name": "taylor@example.com",
+    "email": "taylor@example.com",
+    "full_name": "Taylor Brooks",
+    "trainer": "t-jamie",
+    "trainer_name": "Jamie Lin",
+    "trainer_email": "jamie@gym.test",
+    "trainer_hourly_rate": "95",
+    "session_count": 2,
+    "total_invoiced": "271.500",
+    "outstanding_balance": "271.500",
+    "overdue_count": 1,
+    "status": "Overdue"
+  }
+]

@@ -43,11 +43,11 @@
     },
     {
       "IsSSoTTranspiler": false,
-      "Name": "httplocalhost4242postgrescalculatedtorulebook",
+      "Name": "oss-postgres-calculated-to-rulebook",
       "RelativePath": "/postgres-bootstrap",
-      "CommandLine": "http://localhost:4242/postgres-calculated-to-rulebook -i ../effortless-rulebook/effortless-banking-rulebook.json -i .pg-dump.sql",
+      "CommandLine": "http://127.0.0.1:4242/oss-postgres-calculated-to-rulebook -i ../effortless-rulebook/effortless-banking-rulebook.json -i .pg-dump.sql",
       "IsDisabled": true,
-      "Description": "Pure function: sync rulebook data[] from pg_dump. Both files passed as zipped payload to ssotme-proxy."
+      "Description": "Pure function: sync rulebook data[] from pg_dump. Both files passed as zipped payload to the local transpiler host."
     },
     {
       "IsSSoTTranspiler": false,

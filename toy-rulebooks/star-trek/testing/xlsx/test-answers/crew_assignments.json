@@ -1,0 +1,46 @@
+[
+  {
+    "crew_assignment_id": "crew-roddenberry-generations-producer",
+    "name": null,
+    "person": "person-gene-roddenberry",
+    "person_name": null,
+    "movie": "movie-1-generations",
+    "movie_title": null,
+    "crew_type": "crew-producer",
+    "crew_type_name": null,
+    "notes": "Creator and executive producer (posthumous)"
+  },
+  {
+    "crew_assignment_id": "crew-shatner-kirk-generations",
+    "name": null,
+    "person": "person-william-shatner",
+    "person_name": null,
+    "movie": "movie-1-generations",
+    "movie_title": null,
+    "crew_type": "crew-actor",
+    "crew_type_name": null,
+    "notes": "Reprised role as Captain Kirk"
+  },
+  {
+    "crew_assignment_id": "crew-stewart-picard-first-contact",
+    "name": null,
+    "person": "person-patrick-stewart",
+    "person_name": null,
+    "movie": "movie-2-first-contact",
+    "movie_title": null,
+    "crew_type": "crew-actor",
+    "crew_type_name": null,
+    "notes": "Captain Picard"
+  },
+  {
+    "crew_assignment_id": "crew-stewart-picard-generations",
+    "name": null,
+    "person": "person-patrick-stewart",
+    "person_name": null,
+    "movie": "movie-1-generations",
+    "movie_title": null,
+    "crew_type": "crew-actor",
+    "crew_type_name": null,
+    "notes": "Captain Picard"
+  }
+]

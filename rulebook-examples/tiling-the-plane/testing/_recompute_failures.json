@@ -1,0 +1,218 @@
+[
+  {
+    "entity": "Prototiles",
+    "field": "Area",
+    "formula": "=0.25*{{Sides}}*POWER({{EdgeLength}},2)/TAN(PI()/{{Sides}})",
+    "record_id": "triangle",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Prototiles",
+    "field": "Area",
+    "formula": "=0.25*{{Sides}}*POWER({{EdgeLength}},2)/TAN(PI()/{{Sides}})",
+    "record_id": "pentagon",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Prototiles",
+    "field": "Area",
+    "formula": "=0.25*{{Sides}}*POWER({{EdgeLength}},2)/TAN(PI()/{{Sides}})",
+    "record_id": "square",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Prototiles",
+    "field": "Area",
+    "formula": "=0.25*{{Sides}}*POWER({{EdgeLength}},2)/TAN(PI()/{{Sides}})",
+    "record_id": "hexagon",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Prototiles",
+    "field": "Area",
+    "formula": "=0.25*{{Sides}}*POWER({{EdgeLength}},2)/TAN(PI()/{{Sides}})",
+    "record_id": "octagon",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Prototiles",
+    "field": "Area",
+    "formula": "=0.25*{{Sides}}*POWER({{EdgeLength}},2)/TAN(PI()/{{Sides}})",
+    "record_id": "dodecagon",
+    "error": "ValueError: Unknown function: POWER",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Tilings",
+    "field": "FundamentalDomainArea",
+    "formula": "=ABS({{LatticeDeterminant}})",
+    "record_id": "triangular",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Tilings",
+    "field": "HasLattice",
+    "formula": "=ABS({{LatticeDeterminant}})>0.0001",
+    "record_id": "triangular",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Tilings",
+    "field": "FundamentalDomainArea",
+    "formula": "=ABS({{LatticeDeterminant}})",
+    "record_id": "square",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Tilings",
+    "field": "HasLattice",
+    "formula": "=ABS({{LatticeDeterminant}})>0.0001",
+    "record_id": "square",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Tilings",
+    "field": "FundamentalDomainArea",
+    "formula": "=ABS({{LatticeDeterminant}})",
+    "record_id": "hexagonal",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Tilings",
+    "field": "HasLattice",
+    "formula": "=ABS({{LatticeDeterminant}})>0.0001",
+    "record_id": "hexagonal",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Tilings",
+    "field": "FundamentalDomainArea",
+    "formula": "=ABS({{LatticeDeterminant}})",
+    "record_id": "truncated-square",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Tilings",
+    "field": "HasLattice",
+    "formula": "=ABS({{LatticeDeterminant}})>0.0001",
+    "record_id": "truncated-square",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Tilings",
+    "field": "FundamentalDomainArea",
+    "formula": "=ABS({{LatticeDeterminant}})",
+    "record_id": "trihexagonal",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Tilings",
+    "field": "HasLattice",
+    "formula": "=ABS({{LatticeDeterminant}})>0.0001",
+    "record_id": "trihexagonal",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Tilings",
+    "field": "FundamentalDomainArea",
+    "formula": "=ABS({{LatticeDeterminant}})",
+    "record_id": "rhombitrihexagonal",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Tilings",
+    "field": "HasLattice",
+    "formula": "=ABS({{LatticeDeterminant}})>0.0001",
+    "record_id": "rhombitrihexagonal",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Tilings",
+    "field": "FundamentalDomainArea",
+    "formula": "=ABS({{LatticeDeterminant}})",
+    "record_id": "pentagonal-regular",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Tilings",
+    "field": "HasLattice",
+    "formula": "=ABS({{LatticeDeterminant}})>0.0001",
+    "record_id": "pentagonal-regular",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "VertexFigures",
+    "field": "AngleGapDeg",
+    "formula": "=ABS({{AngleSumDeg}}-360)",
+    "record_id": "vf-tri",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "VertexFigures",
+    "field": "AngleGapDeg",
+    "formula": "=ABS({{AngleSumDeg}}-360)",
+    "record_id": "vf-sq",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "VertexFigures",
+    "field": "AngleGapDeg",
+    "formula": "=ABS({{AngleSumDeg}}-360)",
+    "record_id": "vf-hex",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "VertexFigures",
+    "field": "AngleGapDeg",
+    "formula": "=ABS({{AngleSumDeg}}-360)",
+    "record_id": "vf-tsq",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "VertexFigures",
+    "field": "AngleGapDeg",
+    "formula": "=ABS({{AngleSumDeg}}-360)",
+    "record_id": "vf-trihex",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "VertexFigures",
+    "field": "AngleGapDeg",
+    "formula": "=ABS({{AngleSumDeg}}-360)",
+    "record_id": "vf-rtri",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "VertexFigures",
+    "field": "AngleGapDeg",
+    "formula": "=ABS({{AngleSumDeg}}-360)",
+    "record_id": "vf-pent",
+    "error": "ValueError: Unknown function: ABS",
+    "severity": "missing-value"
+  }
+]

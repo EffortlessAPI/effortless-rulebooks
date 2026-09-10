@@ -490,6 +490,50 @@ def _compile_and_arg(expr: ExprNode) -> str:
     return f'({compiled} is True)'
 
 
+def erb_num(value):
+    """Public alias for the arithmetic coercion used by emitted code."""
+    return _num_or_zero(value)
+
+
+def erb_mul(a, b):
+    """BinaryOp '*' for emitted code: numeric multiplication with the same
+    encoding tolerance as the interpreter. Without coercion `'12000' * 2` is
+    Python string repetition — '1200012000' — silently wrong rather than an error.
+    """
+    return _num_or_zero(a) * _num_or_zero(b)
+
+
+def erb_div(a, b):
+    """BinaryOp '/' for emitted code: division by zero returns None (Excel's
+    #DIV/0! treated as blank), matching the interpreter and the SQL oracle's
+    NULLIF(divisor, 0) guard rather than raising ZeroDivisionError.
+    """
+    divisor = _num_or_zero(b)
+    if divisor == 0:
+        return None
+    return _num_or_zero(a) / divisor
+
+
+def erb_cmp(a, op, b):
+    """Ordered comparison (< <= > >=) for emitted code, with the same rules as
+    the interpreter's _compare_operands: numbers and numeric strings compare as
+    numbers, two strings compare as strings, and anything that cannot be ordered
+    at all is False rather than a TypeError that would take the whole generated
+    module down.
+    """
+    pair = _compare_operands(a, b)
+    if pair is None:
+        return False
+    left, right = pair
+    if op == '<':
+        return left < right
+    if op == '<=':
+        return left <= right
+    if op == '>':
+        return left > right
+    return left >= right
+
+
 def compile_to_python(expr: ExprNode) -> str:
     """Compile an expression tree to a Python expression.
 
@@ -521,6 +565,26 @@ def compile_to_python(expr: ExprNode) -> str:
     if isinstance(expr, BinaryOp):
         left = compile_to_python(expr.left)
         right = compile_to_python(expr.right)
+        if expr.op in ('<', '<=', '>', '>='):
+            # Ordered comparison through the runtime: a declared number that
+            # arrived as a string must compare as a number, and two values that
+            # cannot be ordered report False instead of raising TypeError.
+            return f"_erb.erb_cmp({left}, '{expr.op}', {right})"
+
+        # Arithmetic first. These operators were absent from op_map entirely, so
+        # every arithmetic formula raised KeyError inside the compiler itself.
+        # Operands go through the runtime's numeric coercion so a declared number
+        # that arrived as a string adds instead of concatenating, and * does not
+        # string-repeat.
+        if expr.op in ('+', '-'):
+            return f'(_erb.erb_num({left}) {expr.op} _erb.erb_num({right}))'
+        if expr.op == '*':
+            return f'_erb.erb_mul({left}, {right})'
+        if expr.op == '/':
+            # Divide-by-zero is None, not ZeroDivisionError (matches the
+            # interpreter and the SQL oracle's NULLIF guard).
+            return f'_erb.erb_div({left}, {right})'
+
         op_map = {'=': '==', '<>': '!=', '<': '<', '<=': '<=', '>': '>', '>=': '>='}
         return f'({left} {op_map[expr.op]} {right})'
 
@@ -640,6 +704,18 @@ def compile_to_javascript(expr: ExprNode, obj_name: str = 'candidate') -> str:
     if isinstance(expr, BinaryOp):
         left = compile_to_javascript(expr.left, obj_name)
         right = compile_to_javascript(expr.right, obj_name)
+        # Arithmetic first. These were absent from op_map entirely, so every
+        # arithmetic formula raised KeyError inside the compiler. Operands go
+        # through Number(x) || 0, which gives the same answers as the
+        # interpreter and the SQL oracle: a numeric string converts, blank and
+        # null and unparsable text all become 0.
+        if expr.op in ('+', '-', '*'):
+            return f'((Number({left}) || 0) {expr.op} (Number({right}) || 0))'
+        if expr.op == '/':
+            # Divide-by-zero is null, not Infinity — matching the interpreter.
+            return (f'((Number({right}) || 0) === 0 ? null : '
+                    f'(Number({left}) || 0) / (Number({right}) || 0))')
+
         op_map = {'=': '===', '<>': '!==', '<': '<', '<=': '<=', '>': '>', '>=': '>='}
         return f'({left} {op_map[expr.op]} {right})'
 
@@ -984,6 +1060,98 @@ def evaluate(formula: str, context: dict) -> any:
     return _eval_expr(expr, context)
 
 
+def _to_number(value):
+    """
+    Coerce one value to a number for arithmetic/comparison, or return None when
+    it cannot be one.
+
+    The rulebook declares a field's datatype; it does not promise the ENCODING
+    the value arrives in. A number may reach here as int, float, Decimal, or as
+    a string holding a number — the last is what any writer that round-trips
+    through a driver returning NUMERIC as text produces. Treating that string as
+    text is how `{{Price}} * 2` silently became string repetition instead of
+    multiplication.
+
+    Booleans are deliberately NOT numbers here: `True * 2` meaning 2 is a Python
+    accident, not a rulebook rule.
+    """
+    if value is None or isinstance(value, bool):
+        return None
+    if isinstance(value, (int, float)):
+        return value
+    if isinstance(value, str):
+        stripped = value.strip()
+        if not stripped:
+            return None
+        try:
+            return int(stripped)
+        except ValueError:
+            pass
+        try:
+            return float(stripped)
+        except ValueError:
+            return None
+    return None
+
+
+def _num_or_zero(value):
+    """
+    Arithmetic operand coercion. Blank is 0 (Excel's rule), a numeric string is
+    its number, and anything that is not a number at all is 0 — which is what
+    the Postgres oracle computes for the same formula, since its safe numeric
+    cast yields NULL for unparsable text and COALESCE(..., 0) turns that into 0.
+    Matching the oracle matters more here than raising: a conformance run
+    comparing substrates must not disagree because one of them crashed.
+    """
+    number = _to_number(value)
+    return 0 if number is None else number
+
+
+def _compare_operands(left, right):
+    """
+    Prepare two operands for an ordered comparison (< <= > >=).
+
+    Returns a (left, right) pair of the same comparable kind, or None when the
+    two cannot be ordered at all. Numbers and numeric strings compare as
+    numbers; two strings compare as strings; a number against a non-numeric
+    string is not ordered (the caller reports False rather than raising, which
+    is what it already did for None).
+    """
+    if left is None or right is None:
+        return None
+
+    left_number, right_number = _to_number(left), _to_number(right)
+    if left_number is not None and right_number is not None:
+        return left_number, right_number
+
+    if isinstance(left, str) and isinstance(right, str):
+        return left, right
+
+    if isinstance(left, bool) and isinstance(right, bool):
+        return left, right
+
+    return None
+
+
+def _values_equal(left, right):
+    """
+    Equality with the same encoding-tolerance as the ordered comparisons: 12000
+    equals "12000", because one of those is a declared number that travelled as
+    text. Two strings still compare as strings, so `{{Status}} = "open"` is
+    unaffected.
+    """
+    if isinstance(left, str) and isinstance(right, str):
+        return left == right
+    if isinstance(left, bool) or isinstance(right, bool):
+        return left == right
+
+    left_number, right_number = _to_number(left), _to_number(right)
+    if left_number is not None and right_number is not None:
+        return left_number == right_number
+
+    return left == right
+
+
 def _eval_expr(node: ExprNode, ctx: dict) -> any:
     """
     Recursively evaluate an expression node given a context dict.
@@ -1028,30 +1196,32 @@ def _eval_expr(node: ExprNode, ctx: dict) -> any:
         right = _eval_expr(node.right, ctx)
 
         if node.op == '=':
-            return left == right
+            return _values_equal(left, right)
         if node.op == '<>':
-            return left != right
-        if node.op == '<':
-            # Handle None comparisons
-            if left is None or right is None:
+            return not _values_equal(left, right)
+        if node.op in ('<', '<=', '>', '>='):
+            # Encoding-tolerant ordering. A declared number that arrived as a
+            # string must still compare as a number, and two values that cannot
+            # be ordered at all report False rather than raising a TypeError
+            # that would take the whole evaluation down.
+            pair = _compare_operands(left, right)
+            if pair is None:
                 return False
-            return left < right
-        if node.op == '<=':
-            if left is None or right is None:
-                return False
-            return left <= right
-        if node.op == '>':
-            if left is None or right is None:
-                return False
-            return left > right
-        if node.op == '>=':
-            if left is None or right is None:
-                return False
-            return left >= right
-        # Arithmetic — Excel treats None/blank as 0 in arithmetic context.
+            l, r = pair
+            if node.op == '<':
+                return l < r
+            if node.op == '<=':
+                return l <= r
+            if node.op == '>':
+                return l > r
+            return l >= r
+        # Arithmetic — Excel treats None/blank as 0 in arithmetic context, and a
+        # declared number that arrived as a string is still a number (see
+        # _num_or_zero). Without that coercion `{{Price}} * 2` on "12000"
+        # returned '1200012000' — string repetition, silently, with no error.
         if node.op in ('+', '-', '*', '/'):
-            l = 0 if left is None else left
-            r = 0 if right is None else right
+            l = _num_or_zero(left)
+            r = _num_or_zero(right)
             if node.op == '+':
                 return l + r
             if node.op == '-':

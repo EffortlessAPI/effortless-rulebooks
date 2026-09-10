@@ -1,0 +1,29 @@
+[
+  {
+    "wallpaper_design_id": "starter-p4m",
+    "display_name": "Starter p4m",
+    "symmetry_group": "p4m",
+    "strokes": "[{\"color\":\"#2ea043\",\"width\":3,\"points\":[[0.2,0.8],[0.2,0.2],[0.8,0.2]]},{\"color\":\"#d29922\",\"width\":3,\"points\":[[0.5,0.5],[0.8,0.65]]}]",
+    "stroke_color": "#1f6feb",
+    "background_color": "#0a0d12",
+    "name": "starter-p4m"
+  },
+  {
+    "wallpaper_design_id": "starter-p6m",
+    "display_name": "Starter p6m",
+    "symmetry_group": "p6m",
+    "strokes": "[{\"color\":\"#1f6feb\",\"width\":3,\"points\":[[0.15,0.15],[0.85,0.85]]}]",
+    "stroke_color": "#a371f7",
+    "background_color": "#0a0d12",
+    "name": "starter-p6m"
+  },
+  {
+    "wallpaper_design_id": "starter-pgg",
+    "display_name": "Starter pgg",
+    "symmetry_group": "pgg",
+    "strokes": "[{\"color\":\"#2ea043\",\"width\":3,\"points\":[[0.2,0.8],[0.2,0.2],[0.8,0.2]]},{\"color\":\"#d29922\",\"width\":3,\"points\":[[0.5,0.5],[0.8,0.65]]}]",
+    "stroke_color": "#2ea043",
+    "background_color": "#0a0d12",
+    "name": "starter-pgg"
+  }
+]

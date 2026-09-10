@@ -1,0 +1,32 @@
+[
+  {
+    "witness_loop_id": "loop-01",
+    "loop_number": 1,
+    "title": "The founding questions",
+    "premise": "The model specified obligations precisely and witnessed their breach almost nowhere. Requirements, verifications, exceptions, and communication policies were all stated with real precision, and in each case the execution-side counterpart that would catch a violation was missing. Loop 1 asks each of the twelve named roles what it actually needs to know, and invents the atomic predicates required to answer.",
+    "started_at": "2026-07-19T17:00:00-05:00",
+    "completed_at": "2026-07-19T19:30:00-05:00",
+    "semantic_type_iri": "urn:effortless:pko-extension#WitnessLoop",
+    "fields_after": 1096,
+    "witnessed_after": 462,
+    "derived_after": 559,
+    "name": null,
+    "question_count": null,
+    "is_complete": null
+  },
+  {
+    "witness_loop_id": "loop-02",
+    "loop_number": 2,
+    "title": "Questions only loop 1 made askable",
+    "premise": "Loop 1 established WHAT can go wrong: a blocking control unmet, a verification skipped, a send refused, a claim whose source has left. Loop 2 asks the questions that only exist once those columns do \u2014 about the QUALITY of the assurance rather than its presence. Three examples that had no expressible form before loop 1 ran: only 4 of 13 requirements have any computed witness at all, so which controls are still trusted purely on assertion; verification_outcomes.is_self_witnessed reads 3/4, so how much of the evidence is the executor vouching for themselves; and send_intents.is_silently_dropped reads 4/7, a failure mode that could not be named until IsClearedToSend existed to refuse a send in the first place. Every loop-2 question records, in its own provenance, the loop-1 predicates that made it possible.",
+    "started_at": "2026-07-19T19:45:00-05:00",
+    "completed_at": "2026-07-19T20:30:00-05:00",
+    "semantic_type_iri": "urn:effortless:pko-extension#WitnessLoop",
+    "fields_after": 1479,
+    "witnessed_after": 836,
+    "derived_after": 906,
+    "name": null,
+    "question_count": null,
+    "is_complete": null
+  }
+]

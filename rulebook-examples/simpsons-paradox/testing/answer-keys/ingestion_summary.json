@@ -1,0 +1,11 @@
+[
+  {
+    "ingestion_summary_id": "ingestion-v1",
+    "name": "ingestion-v1",
+    "all_cells_valid": true,
+    "all_studies_structural": true,
+    "all_real_studies_compliant": true,
+    "ingestion_contract_passes": true,
+    "ingestion_witness_note": "PASS:  contract items;  cells valid; / real studies fully compliant"
+  }
+]

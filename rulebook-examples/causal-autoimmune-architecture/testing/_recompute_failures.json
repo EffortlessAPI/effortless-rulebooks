@@ -1,0 +1,578 @@
+[
+  {
+    "entity": "Individuals",
+    "field": "FederatedDatasetNodeLabel",
+    "formula": "=IF({{FederatedDataset}} = \"\", \"\", INDEX(FederatedDatasets!{{NodeLabel}}, MATCH({{FederatedDataset}}, FederatedDatasets!{{FederatedDatasetId}}, 0)))",
+    "record_id": "ind-h-yamamoto",
+    "error": "SyntaxError: Unexpected character '!' at position 57",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "Individuals",
+    "field": "FederatedDatasetNodeLabel",
+    "formula": "=IF({{FederatedDataset}} = \"\", \"\", INDEX(FederatedDatasets!{{NodeLabel}}, MATCH({{FederatedDataset}}, FederatedDatasets!{{FederatedDatasetId}}, 0)))",
+    "record_id": "ind-i-conteh",
+    "error": "SyntaxError: Unexpected character '!' at position 57",
+    "severity": "missing-value"
+  },
+  {
+    "entity": "EvidenceItems",
+    "field": "ZStat",
+    "formula": "=IF({{StandardError}} > 0, {{EffectSize}} / {{StandardError}}, 0)",
+    "record_id": "ev-b-2",
+    "error": "drift: stored=3.8536585365853657 python-recompute=3.853658536585366",
+    "severity": "drift"
+  },
+  {
+    "entity": "EvidenceItems",
+    "field": "ZStat",
+    "formula": "=IF({{StandardError}} > 0, {{EffectSize}} / {{StandardError}}, 0)",
+    "record_id": "ev-e-1",
+    "error": "drift: stored=3.761904761904762 python-recompute=3.7619047619047623",
+    "severity": "drift"
+  },
+  {
+    "entity": "EvidenceItems",
+    "field": "ZStat",
+    "formula": "=IF({{StandardError}} > 0, {{EffectSize}} / {{StandardError}}, 0)",
+    "record_id": "ev-j-2",
+    "error": "drift: stored=3.8536585365853657 python-recompute=3.853658536585366",
+    "severity": "drift"
+  },
+  {
+    "entity": "CausalMechanisms",
+    "field": "CausalConfidence",
+    "formula": "=IF(((0.30 * IF({{CountQualifiedEvidence}} >= 4, 1, {{CountQualifiedEvidence}} / 4)) + (0.20 * IF({{CountModalitiesSupporting}} >= 3, 1, {{CountModalitiesSupporting}} / 3)) + (0.30 * {{ReplicationFraction}}) + (0.20 * IF({{SurvivesNegativeControls}}, 1, 0))) > 1, 1, (0.30 * IF({{CountQualifiedEvidence}} >= 4, 1, {{CountQualifiedEvidence}} / 4)) + (0.20 * IF({{CountModalitiesSupporting}} >= 3, 1, {{CountModalitiesSupporting}} / 3)) + (0.30 * {{ReplicationFraction}}) + (0.20 * IF({{SurvivesNegativeControls}}, 1, 0)))",
+    "record_id": "cm-c",
+    "error": "drift: stored=0.4583333333333333 python-recompute=0.45833333333333326",
+    "severity": "drift"
+  },
+  {
+    "entity": "CausalMechanisms",
+    "field": "CausalConfidence",
+    "formula": "=IF(((0.30 * IF({{CountQualifiedEvidence}} >= 4, 1, {{CountQualifiedEvidence}} / 4)) + (0.20 * IF({{CountModalitiesSupporting}} >= 3, 1, {{CountModalitiesSupporting}} / 3)) + (0.30 * {{ReplicationFraction}}) + (0.20 * IF({{SurvivesNegativeControls}}, 1, 0))) > 1, 1, (0.30 * IF({{CountQualifiedEvidence}} >= 4, 1, {{CountQualifiedEvidence}} / 4)) + (0.20 * IF({{CountModalitiesSupporting}} >= 3, 1, {{CountModalitiesSupporting}} / 3)) + (0.30 * {{ReplicationFraction}}) + (0.20 * IF({{SurvivesNegativeControls}}, 1, 0)))",
+    "record_id": "cm-f",
+    "error": "drift: stored=0.8583333333333333 python-recompute=0.8583333333333332",
+    "severity": "drift"
+  },
+  {
+    "entity": "CausalMechanisms",
+    "field": "CausalConfidence",
+    "formula": "=IF(((0.30 * IF({{CountQualifiedEvidence}} >= 4, 1, {{CountQualifiedEvidence}} / 4)) + (0.20 * IF({{CountModalitiesSupporting}} >= 3, 1, {{CountModalitiesSupporting}} / 3)) + (0.30 * {{ReplicationFraction}}) + (0.20 * IF({{SurvivesNegativeControls}}, 1, 0))) > 1, 1, (0.30 * IF({{CountQualifiedEvidence}} >= 4, 1, {{CountQualifiedEvidence}} / 4)) + (0.20 * IF({{CountModalitiesSupporting}} >= 3, 1, {{CountModalitiesSupporting}} / 3)) + (0.30 * {{ReplicationFraction}}) + (0.20 * IF({{SurvivesNegativeControls}}, 1, 0)))",
+    "record_id": "cm-g",
+    "error": "drift: stored=0.8583333333333333 python-recompute=0.8583333333333332",
+    "severity": "drift"
+  },
+  {
+    "entity": "CausalMechanisms",
+    "field": "CausalConfidence",
+    "formula": "=IF(((0.30 * IF({{CountQualifiedEvidence}} >= 4, 1, {{CountQualifiedEvidence}} / 4)) + (0.20 * IF({{CountModalitiesSupporting}} >= 3, 1, {{CountModalitiesSupporting}} / 3)) + (0.30 * {{ReplicationFraction}}) + (0.20 * IF({{SurvivesNegativeControls}}, 1, 0))) > 1, 1, (0.30 * IF({{CountQualifiedEvidence}} >= 4, 1, {{CountQualifiedEvidence}} / 4)) + (0.20 * IF({{CountModalitiesSupporting}} >= 3, 1, {{CountModalitiesSupporting}} / 3)) + (0.30 * {{ReplicationFraction}}) + (0.20 * IF({{SurvivesNegativeControls}}, 1, 0)))",
+    "record_id": "cm-k",
+    "error": "drift: stored=0.8583333333333333 python-recompute=0.8583333333333332",
+    "severity": "drift"
+  },
+  {
+    "entity": "CausalMechanisms",
+    "field": "CausalConfidence",
+    "formula": "=IF(((0.30 * IF({{CountQualifiedEvidence}} >= 4, 1, {{CountQualifiedEvidence}} / 4)) + (0.20 * IF({{CountModalitiesSupporting}} >= 3, 1, {{CountModalitiesSupporting}} / 3)) + (0.30 * {{ReplicationFraction}}) + (0.20 * IF({{SurvivesNegativeControls}}, 1, 0))) > 1, 1, (0.30 * IF({{CountQualifiedEvidence}} >= 4, 1, {{CountQualifiedEvidence}} / 4)) + (0.20 * IF({{CountModalitiesSupporting}} >= 3, 1, {{CountModalitiesSupporting}} / 3)) + (0.30 * {{ReplicationFraction}}) + (0.20 * IF({{SurvivesNegativeControls}}, 1, 0)))",
+    "record_id": "cm-l",
+    "error": "drift: stored=0.8583333333333333 python-recompute=0.8583333333333332",
+    "severity": "drift"
+  },
+  {
+    "entity": "IndividualPredictions",
+    "field": "MeanBinAbsError",
+    "formula": "=IF({{CountBins}} > 0, {{SumBinAbsError}} / {{CountBins}}, 1)",
+    "record_id": "pred-f",
+    "error": "drift: stored=0.014 python-recompute=0.014000000000000002",
+    "severity": "drift"
+  },
+  {
+    "entity": "IndividualPredictions",
+    "field": "MeanBinAbsError",
+    "formula": "=IF({{CountBins}} > 0, {{SumBinAbsError}} / {{CountBins}}, 1)",
+    "record_id": "pred-k",
+    "error": "drift: stored=0.014 python-recompute=0.014000000000000002",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-a-0",
+    "error": "drift: stored=0.01 python-recompute=0.010000000000000009",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-a-1",
+    "error": "drift: stored=0.01 python-recompute=0.010000000000000009",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-a-2",
+    "error": "drift: stored=0.01 python-recompute=0.010000000000000009",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-a-3",
+    "error": "drift: stored=0.01 python-recompute=0.010000000000000009",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-a-4",
+    "error": "drift: stored=0.02 python-recompute=0.020000000000000018",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-c-0",
+    "error": "drift: stored=0.01 python-recompute=0.009999999999999995",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-c-1",
+    "error": "drift: stored=0.01 python-recompute=0.010000000000000009",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-c-2",
+    "error": "drift: stored=0.03 python-recompute=0.030000000000000027",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-c-3",
+    "error": "drift: stored=0.03 python-recompute=0.029999999999999916",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-d-0",
+    "error": "drift: stored=0.02 python-recompute=0.020000000000000004",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-d-1",
+    "error": "drift: stored=0.02 python-recompute=0.020000000000000018",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-d-3",
+    "error": "drift: stored=0.01 python-recompute=0.010000000000000009",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-d-4",
+    "error": "drift: stored=0.01 python-recompute=0.010000000000000009",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-e-1",
+    "error": "drift: stored=0.02 python-recompute=0.019999999999999962",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-e-2",
+    "error": "drift: stored=0.01 python-recompute=0.010000000000000009",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-e-3",
+    "error": "drift: stored=0.02 python-recompute=0.020000000000000018",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-e-4",
+    "error": "drift: stored=0.01 python-recompute=0.010000000000000009",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-f-0",
+    "error": "drift: stored=0.02 python-recompute=0.01999999999999999",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-f-2",
+    "error": "drift: stored=0.02 python-recompute=0.020000000000000018",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-f-4",
+    "error": "drift: stored=0.03 python-recompute=0.030000000000000027",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-g-0",
+    "error": "drift: stored=0.01 python-recompute=0.010000000000000009",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-g-1",
+    "error": "drift: stored=0.01 python-recompute=0.010000000000000009",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-g-2",
+    "error": "drift: stored=0.02 python-recompute=0.020000000000000018",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-g-3",
+    "error": "drift: stored=0.02 python-recompute=0.019999999999999907",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-g-4",
+    "error": "drift: stored=0.02 python-recompute=0.020000000000000018",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-b-1",
+    "error": "drift: stored=0.03 python-recompute=0.030000000000000027",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-b-2",
+    "error": "drift: stored=0.05 python-recompute=0.050000000000000044",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-b-3",
+    "error": "drift: stored=0.04 python-recompute=0.039999999999999925",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-b-4",
+    "error": "drift: stored=0.03 python-recompute=0.030000000000000027",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-h-0",
+    "error": "drift: stored=0.01 python-recompute=0.010000000000000009",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-h-1",
+    "error": "drift: stored=0.01 python-recompute=0.010000000000000009",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-h-2",
+    "error": "drift: stored=0.01 python-recompute=0.010000000000000009",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-h-3",
+    "error": "drift: stored=0.01 python-recompute=0.010000000000000009",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-h-4",
+    "error": "drift: stored=0.02 python-recompute=0.020000000000000018",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-i-0",
+    "error": "drift: stored=0.02 python-recompute=0.020000000000000004",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-i-1",
+    "error": "drift: stored=0.02 python-recompute=0.020000000000000018",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-i-3",
+    "error": "drift: stored=0.01 python-recompute=0.010000000000000009",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-i-4",
+    "error": "drift: stored=0.01 python-recompute=0.010000000000000009",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-j-1",
+    "error": "drift: stored=0.03 python-recompute=0.030000000000000027",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-j-2",
+    "error": "drift: stored=0.05 python-recompute=0.050000000000000044",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-j-3",
+    "error": "drift: stored=0.04 python-recompute=0.039999999999999925",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-j-4",
+    "error": "drift: stored=0.03 python-recompute=0.030000000000000027",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-k-0",
+    "error": "drift: stored=0.02 python-recompute=0.01999999999999999",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-k-2",
+    "error": "drift: stored=0.02 python-recompute=0.020000000000000018",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-k-4",
+    "error": "drift: stored=0.03 python-recompute=0.030000000000000027",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-l-0",
+    "error": "drift: stored=0.01 python-recompute=0.010000000000000009",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-l-1",
+    "error": "drift: stored=0.01 python-recompute=0.010000000000000009",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-l-2",
+    "error": "drift: stored=0.02 python-recompute=0.020000000000000018",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-l-3",
+    "error": "drift: stored=0.02 python-recompute=0.019999999999999907",
+    "severity": "drift"
+  },
+  {
+    "entity": "CalibrationBins",
+    "field": "BinAbsError",
+    "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})",
+    "record_id": "cb-l-4",
+    "error": "drift: stored=0.02 python-recompute=0.020000000000000018",
+    "severity": "drift"
+  },
+  {
+    "entity": "RoutingAndNavigation",
+    "field": "Depth",
+    "formula": "=IF({{ParentRouteKey}}=BLANK(), 0, LEN({{RouteKey}}) - LEN(SUBSTITUTE({{RouteKey}}, \".\", \"\")))",
+    "record_id": "nav-diagnosis-case",
+    "error": "drift: stored=0 python-recompute=1",
+    "severity": "drift"
+  },
+  {
+    "entity": "RoutingAndNavigation",
+    "field": "Depth",
+    "formula": "=IF({{ParentRouteKey}}=BLANK(), 0, LEN({{RouteKey}}) - LEN(SUBSTITUTE({{RouteKey}}, \".\", \"\")))",
+    "record_id": "nav-admin-owl",
+    "error": "drift: stored=0 python-recompute=1",
+    "severity": "drift"
+  },
+  {
+    "entity": "RoutingAndNavigation",
+    "field": "Depth",
+    "formula": "=IF({{ParentRouteKey}}=BLANK(), 0, LEN({{RouteKey}}) - LEN(SUBSTITUTE({{RouteKey}}, \".\", \"\")))",
+    "record_id": "nav-admin-cohort",
+    "error": "drift: stored=0 python-recompute=1",
+    "severity": "drift"
+  },
+  {
+    "entity": "SerologyObservations",
+    "field": "AntiDsDnaTrend",
+    "formula": "=IF(ISBLANK({{PriorAntiDsDnaIU}}),\"Stable\",IF({{AntiDsDnaIU}}>{{PriorAntiDsDnaIU}}*1.25,\"Rising\",IF({{AntiDsDnaIU}}<{{PriorAntiDsDnaIU}}*0.8,\"Falling\",\"Stable\")))",
+    "record_id": "sero-ind-a-reyes-2",
+    "error": "drift: stored='Rising' python-recompute='Stable'",
+    "severity": "drift"
+  },
+  {
+    "entity": "SerologyObservations",
+    "field": "AntiDsDnaTrend",
+    "formula": "=IF(ISBLANK({{PriorAntiDsDnaIU}}),\"Stable\",IF({{AntiDsDnaIU}}>{{PriorAntiDsDnaIU}}*1.25,\"Rising\",IF({{AntiDsDnaIU}}<{{PriorAntiDsDnaIU}}*0.8,\"Falling\",\"Stable\")))",
+    "record_id": "sero-ind-c-chen-2",
+    "error": "drift: stored='Rising' python-recompute='Stable'",
+    "severity": "drift"
+  },
+  {
+    "entity": "SerologyObservations",
+    "field": "AntiDsDnaTrend",
+    "formula": "=IF(ISBLANK({{PriorAntiDsDnaIU}}),\"Stable\",IF({{AntiDsDnaIU}}>{{PriorAntiDsDnaIU}}*1.25,\"Rising\",IF({{AntiDsDnaIU}}<{{PriorAntiDsDnaIU}}*0.8,\"Falling\",\"Stable\")))",
+    "record_id": "sero-ind-d-santos-2",
+    "error": "drift: stored='Rising' python-recompute='Stable'",
+    "severity": "drift"
+  },
+  {
+    "entity": "SerologyObservations",
+    "field": "AntiDsDnaTrend",
+    "formula": "=IF(ISBLANK({{PriorAntiDsDnaIU}}),\"Stable\",IF({{AntiDsDnaIU}}>{{PriorAntiDsDnaIU}}*1.25,\"Rising\",IF({{AntiDsDnaIU}}<{{PriorAntiDsDnaIU}}*0.8,\"Falling\",\"Stable\")))",
+    "record_id": "sero-ind-d-santos-3",
+    "error": "drift: stored='Rising' python-recompute='Stable'",
+    "severity": "drift"
+  },
+  {
+    "entity": "SerologyObservations",
+    "field": "AntiDsDnaTrend",
+    "formula": "=IF(ISBLANK({{PriorAntiDsDnaIU}}),\"Stable\",IF({{AntiDsDnaIU}}>{{PriorAntiDsDnaIU}}*1.25,\"Rising\",IF({{AntiDsDnaIU}}<{{PriorAntiDsDnaIU}}*0.8,\"Falling\",\"Stable\")))",
+    "record_id": "sero-ind-h-yamamoto-2",
+    "error": "drift: stored='Rising' python-recompute='Stable'",
+    "severity": "drift"
+  },
+  {
+    "entity": "SerologyObservations",
+    "field": "AntiDsDnaTrend",
+    "formula": "=IF(ISBLANK({{PriorAntiDsDnaIU}}),\"Stable\",IF({{AntiDsDnaIU}}>{{PriorAntiDsDnaIU}}*1.25,\"Rising\",IF({{AntiDsDnaIU}}<{{PriorAntiDsDnaIU}}*0.8,\"Falling\",\"Stable\")))",
+    "record_id": "sero-ind-i-conteh-2",
+    "error": "drift: stored='Rising' python-recompute='Stable'",
+    "severity": "drift"
+  },
+  {
+    "entity": "SerologyObservations",
+    "field": "AntiDsDnaTrend",
+    "formula": "=IF(ISBLANK({{PriorAntiDsDnaIU}}),\"Stable\",IF({{AntiDsDnaIU}}>{{PriorAntiDsDnaIU}}*1.25,\"Rising\",IF({{AntiDsDnaIU}}<{{PriorAntiDsDnaIU}}*0.8,\"Falling\",\"Stable\")))",
+    "record_id": "sero-ind-j-brooks-2",
+    "error": "drift: stored='Rising' python-recompute='Stable'",
+    "severity": "drift"
+  }
+]

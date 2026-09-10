@@ -1,0 +1,10 @@
+{
+  "name": "oss-rulebook-to-cobol",
+  "runtime": "script",
+  "entry": "transpiler.py",
+  "description": "Generate COBOL computation program from rulebook",
+  "tags": [
+    "oss",
+    "execution-substrate"
+  ]
+}

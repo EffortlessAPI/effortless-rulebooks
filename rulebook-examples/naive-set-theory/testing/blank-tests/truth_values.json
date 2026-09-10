@@ -1,0 +1,29 @@
+[
+  {
+    "truth_value_id": "false",
+    "symbol": "F",
+    "glyph": "\u22a5",
+    "rank": -1,
+    "name": null,
+    "is_classical": null,
+    "is_undefined": null
+  },
+  {
+    "truth_value_id": "null",
+    "symbol": "N",
+    "glyph": "\u2217",
+    "rank": 0,
+    "name": null,
+    "is_classical": null,
+    "is_undefined": null
+  },
+  {
+    "truth_value_id": "true",
+    "symbol": "T",
+    "glyph": "\u22a4",
+    "rank": 1,
+    "name": null,
+    "is_classical": null,
+    "is_undefined": null
+  }
+]

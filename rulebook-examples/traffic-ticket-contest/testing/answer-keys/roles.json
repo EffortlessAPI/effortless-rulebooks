@@ -1,0 +1,42 @@
+[
+  {
+    "role_id": "admin",
+    "title": "System Administrator",
+    "description": "System administrator \u2014 full access.",
+    "default_crud": "CRUD",
+    "order_index": 4,
+    "is_admin_equivalent": true,
+    "is_redacted_role": false,
+    "name": "admin"
+  },
+  {
+    "role_id": "external-llm",
+    "title": "External LLM (3rd Party)",
+    "description": "A 3rd-party / external LLM integration. A REDACTED role with tightly-scoped, read-mostly access.",
+    "default_crud": "R",
+    "order_index": 3,
+    "is_admin_equivalent": false,
+    "is_redacted_role": true,
+    "name": "external-llm"
+  },
+  {
+    "role_id": "manager",
+    "title": "Manager / Team Lead",
+    "description": "Manager / team lead \u2014 reviews and approves submissions; supervisor level.",
+    "default_crud": "CRUD",
+    "order_index": 2,
+    "is_admin_equivalent": false,
+    "is_redacted_role": false,
+    "name": "manager"
+  },
+  {
+    "role_id": "representative",
+    "title": "Representative",
+    "description": "Line agent \u2014 owns cases/records and completes domain workflows.",
+    "default_crud": "CRUD",
+    "order_index": 1,
+    "is_admin_equivalent": false,
+    "is_redacted_role": false,
+    "name": "representative"
+  }
+]

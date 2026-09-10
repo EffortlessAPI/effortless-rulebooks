@@ -1,0 +1,162 @@
+[
+  {
+    "hockett_feature_id": "arbitrariness",
+    "name": "Arbitrariness",
+    "feature_number": 8,
+    "definition": "The tie between a signal and its meaning is conventional rather than a resemblance.",
+    "is_original_thirteen": true,
+    "source": "Hockett, C. F. (1960). The Origin of Speech. Scientific American 203(3), 88-96. Features 14-16 were added in Hockett & Altmann (1968).",
+    "assessment_count": 0,
+    "yes_count": 0
+  },
+  {
+    "hockett_feature_id": "broadcast-transmission-and-directional-reception",
+    "name": "Broadcast Transmission And Directional Reception",
+    "feature_number": 2,
+    "definition": "The signal radiates to any receiver in range, and a receiver can locate its source.",
+    "is_original_thirteen": true,
+    "source": "Hockett, C. F. (1960). The Origin of Speech. Scientific American 203(3), 88-96. Features 14-16 were added in Hockett & Altmann (1968).",
+    "assessment_count": 0,
+    "yes_count": 0
+  },
+  {
+    "hockett_feature_id": "discreteness",
+    "name": "Discreteness",
+    "feature_number": 9,
+    "definition": "The signal is built from a repertoire of distinct units, so a small deviation either switches units outright or is heard as a noisy version of the same one.",
+    "is_original_thirteen": true,
+    "source": "Hockett, C. F. (1960). The Origin of Speech. Scientific American 203(3), 88-96. Features 14-16 were added in Hockett & Altmann (1968).",
+    "assessment_count": 0,
+    "yes_count": 0
+  },
+  {
+    "hockett_feature_id": "displacement",
+    "name": "Displacement",
+    "feature_number": 10,
+    "definition": "Messages can be about things remote in time or space.",
+    "is_original_thirteen": true,
+    "source": "Hockett, C. F. (1960). The Origin of Speech. Scientific American 203(3), 88-96. Features 14-16 were added in Hockett & Altmann (1968).",
+    "assessment_count": 0,
+    "yes_count": 0
+  },
+  {
+    "hockett_feature_id": "duality-of-patterning",
+    "name": "Duality Of Patterning",
+    "feature_number": 13,
+    "definition": "A small stock of meaningless units combines into a large stock of meaningful ones.",
+    "is_original_thirteen": true,
+    "source": "Hockett, C. F. (1960). The Origin of Speech. Scientific American 203(3), 88-96. Features 14-16 were added in Hockett & Altmann (1968).",
+    "assessment_count": 0,
+    "yes_count": 0
+  },
+  {
+    "hockett_feature_id": "interchangeability",
+    "name": "Interchangeability",
+    "feature_number": 4,
+    "definition": "Any user who can understand a message can also produce it.",
+    "is_original_thirteen": true,
+    "source": "Hockett, C. F. (1960). The Origin of Speech. Scientific American 203(3), 88-96. Features 14-16 were added in Hockett & Altmann (1968).",
+    "assessment_count": 0,
+    "yes_count": 0
+  },
+  {
+    "hockett_feature_id": "learnability",
+    "name": "Learnability",
+    "feature_number": 16,
+    "definition": "A user of one such system can learn another.",
+    "is_original_thirteen": false,
+    "source": "Hockett, C. F. (1960). The Origin of Speech. Scientific American 203(3), 88-96. Features 14-16 were added in Hockett & Altmann (1968).",
+    "assessment_count": 0,
+    "yes_count": 0
+  },
+  {
+    "hockett_feature_id": "prevarication",
+    "name": "Prevarication",
+    "feature_number": 14,
+    "definition": "Messages can be false, deceptive or meaningless.",
+    "is_original_thirteen": false,
+    "source": "Hockett, C. F. (1960). The Origin of Speech. Scientific American 203(3), 88-96. Features 14-16 were added in Hockett & Altmann (1968).",
+    "assessment_count": 0,
+    "yes_count": 0
+  },
+  {
+    "hockett_feature_id": "productivity",
+    "name": "Productivity",
+    "feature_number": 11,
+    "definition": "Messages never sent before can be produced and understood.",
+    "is_original_thirteen": true,
+    "source": "Hockett, C. F. (1960). The Origin of Speech. Scientific American 203(3), 88-96. Features 14-16 were added in Hockett & Altmann (1968).",
+    "assessment_count": 0,
+    "yes_count": 0
+  },
+  {
+    "hockett_feature_id": "rapid-fading",
+    "name": "Rapid Fading",
+    "feature_number": 3,
+    "definition": "The signal does not persist. Unlike a track, a spoor or a written record, it is gone once transmitted and will not wait for the hearer's convenience.",
+    "is_original_thirteen": true,
+    "source": "Hockett, C. F. (1960). The Origin of Speech. Scientific American 203(3), 88-96. Features 14-16 were added in Hockett & Altmann (1968).",
+    "assessment_count": 0,
+    "yes_count": 0
+  },
+  {
+    "hockett_feature_id": "reflexiveness",
+    "name": "Reflexiveness",
+    "feature_number": 15,
+    "definition": "The system can be used to communicate about itself.",
+    "is_original_thirteen": false,
+    "source": "Hockett, C. F. (1960). The Origin of Speech. Scientific American 203(3), 88-96. Features 14-16 were added in Hockett & Altmann (1968).",
+    "assessment_count": 0,
+    "yes_count": 0
+  },
+  {
+    "hockett_feature_id": "semanticity",
+    "name": "Semanticity",
+    "feature_number": 7,
+    "definition": "Signals carry fixed associations to things and situations in the world.",
+    "is_original_thirteen": true,
+    "source": "Hockett, C. F. (1960). The Origin of Speech. Scientific American 203(3), 88-96. Features 14-16 were added in Hockett & Altmann (1968).",
+    "assessment_count": 0,
+    "yes_count": 0
+  },
+  {
+    "hockett_feature_id": "specialization",
+    "name": "Specialization",
+    "feature_number": 6,
+    "definition": "The signal exists in order to communicate, rather than being a side effect of some other behaviour.",
+    "is_original_thirteen": true,
+    "source": "Hockett, C. F. (1960). The Origin of Speech. Scientific American 203(3), 88-96. Features 14-16 were added in Hockett & Altmann (1968).",
+    "assessment_count": 0,
+    "yes_count": 0
+  },
+  {
+    "hockett_feature_id": "total-feedback",
+    "name": "Total Feedback",
+    "feature_number": 5,
+    "definition": "The sender perceives everything relevant in their own signal.",
+    "is_original_thirteen": true,
+    "source": "Hockett, C. F. (1960). The Origin of Speech. Scientific American 203(3), 88-96. Features 14-16 were added in Hockett & Altmann (1968).",
+    "assessment_count": 0,
+    "yes_count": 0
+  },
+  {
+    "hockett_feature_id": "traditional-transmission",
+    "name": "Traditional Transmission",
+    "feature_number": 12,
+    "definition": "The system is learned from other users rather than inherited genetically.",
+    "is_original_thirteen": true,
+    "source": "Hockett, C. F. (1960). The Origin of Speech. Scientific American 203(3), 88-96. Features 14-16 were added in Hockett & Altmann (1968).",
+    "assessment_count": 0,
+    "yes_count": 0
+  },
+  {
+    "hockett_feature_id": "vocal-auditory-channel",
+    "name": "Vocal-Auditory Channel",
+    "feature_number": 1,
+    "definition": "Signals are made with the vocal tract and received by the auditory system.",
+    "is_original_thirteen": true,
+    "source": "Hockett, C. F. (1960). The Origin of Speech. Scientific American 203(3), 88-96. Features 14-16 were added in Hockett & Altmann (1968).",
+    "assessment_count": 0,
+    "yes_count": 0
+  }
+]

@@ -5,16 +5,16 @@
 | Metric | Value |
 |--------|-------|
 | Total Fields Tested | 5 |
-| Passed | 4 |
-| Failed | 1 |
-| Score | 80.0% |
-| Duration | 4s |
+| Passed | 5 |
+| Failed | 0 |
+| Score | 100.0% |
+| Duration | < 1s |
 
 ## Score by Field Class
 
 | Class | Passed | Tested | Score |
 |-------|--------|--------|-------|
-| Scalar (calculated) | 4 | 5 | 80.0% |
+| Scalar (calculated) | 5 | 5 | 100.0% |
 | Lookup (INDEX/MATCH) | — | 0 | n/a |
 | Aggregation (COUNTIFS/SUMIFS) | — | 0 | n/a |
 
@@ -22,9 +22,5 @@
 
 ### customers
 
-- Fields: 4/5 (80.0%)
+- Fields: 5/5 (100.0%)
 - Computed columns: is_approved
-
-| PK | Field | Expected | Actual |
-|-----|-------|----------|--------|
-| bob | is_approved | True | None |

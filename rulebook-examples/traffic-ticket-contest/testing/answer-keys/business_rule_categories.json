@@ -1,0 +1,167 @@
+[
+  {
+    "business_rule_category_id": "assistant",
+    "title": "AI Assistant & Cost",
+    "sort_order": 8,
+    "description": "Rules for assistant turns and their token/cost accounting.",
+    "created_at": "2026-06-06T12:00:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-06T12:00:00Z",
+    "modified_by": "admin-example",
+    "name": "assistant"
+  },
+  {
+    "business_rule_category_id": "audit",
+    "title": "Audit & Provenance",
+    "sort_order": 7,
+    "description": "Rules requiring an immutable trail and override justification.",
+    "created_at": "2026-06-06T12:00:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-06T12:00:00Z",
+    "modified_by": "admin-example",
+    "name": "audit"
+  },
+  {
+    "business_rule_category_id": "auth",
+    "title": "Identity & Auth",
+    "description": "Passwordless magic-link sign-in and per-request identity resolution to an AppUsers role.",
+    "sort_order": 12,
+    "created_at": "2026-06-07T00:00:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-07T00:00:00Z",
+    "modified_by": "admin-example",
+    "name": "auth"
+  },
+  {
+    "business_rule_category_id": "citation-lifecycle",
+    "title": "Citation Lifecycle",
+    "sort_order": 2,
+    "description": "Rules governing the Issued \u2192 Responded \u2192 InContest \u2192 Adjudicated \u2192 Closed track.",
+    "created_at": "2026-06-06T12:00:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-06T12:00:00Z",
+    "modified_by": "admin-example",
+    "name": "citation-lifecycle"
+  },
+  {
+    "business_rule_category_id": "contest",
+    "title": "Contest & Hearings",
+    "sort_order": 3,
+    "description": "Rules for requesting, scheduling, and resolving a hearing.",
+    "created_at": "2026-06-06T12:00:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-06T12:00:00Z",
+    "modified_by": "admin-example",
+    "name": "contest"
+  },
+  {
+    "business_rule_category_id": "glossary",
+    "title": "Glossary & Vocabulary",
+    "description": "The canonical domain vocabulary that features and rules are written against.",
+    "sort_order": 15,
+    "created_at": "2026-06-07T00:00:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-07T00:00:00Z",
+    "modified_by": "admin-example",
+    "name": "glossary"
+  },
+  {
+    "business_rule_category_id": "intake",
+    "title": "Intake & Deadlines",
+    "sort_order": 1,
+    "description": "How a citation enters the system and how its response deadline is derived.",
+    "created_at": "2026-06-06T12:00:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-06T12:00:00Z",
+    "modified_by": "admin-example",
+    "name": "intake"
+  },
+  {
+    "business_rule_category_id": "license",
+    "title": "License Points",
+    "sort_order": 5,
+    "description": "Rules rolling points up to warning and suspension thresholds.",
+    "created_at": "2026-06-06T12:00:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-06T12:00:00Z",
+    "modified_by": "admin-example",
+    "name": "license"
+  },
+  {
+    "business_rule_category_id": "licensing",
+    "title": "Packages & Licensing",
+    "description": "How packages, features, tables, and routes are gated by license/active flags.",
+    "sort_order": 13,
+    "created_at": "2026-06-07T00:00:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-07T00:00:00Z",
+    "modified_by": "admin-example",
+    "name": "licensing"
+  },
+  {
+    "business_rule_category_id": "navigation",
+    "title": "Navigation & Routing",
+    "description": "How the route tree, sidebar, and per-route access are derived from PlatformNaviation rows.",
+    "sort_order": 11,
+    "created_at": "2026-06-07T00:00:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-07T00:00:00Z",
+    "modified_by": "admin-example",
+    "name": "navigation"
+  },
+  {
+    "business_rule_category_id": "payment",
+    "title": "Payment & Penalties",
+    "sort_order": 4,
+    "description": "Rules for fines, late penalties, and collections.",
+    "created_at": "2026-06-06T12:00:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-06T12:00:00Z",
+    "modified_by": "admin-example",
+    "name": "payment"
+  },
+  {
+    "business_rule_category_id": "platform",
+    "title": "Platform & Build",
+    "description": "Self-description, the rulebook-first build pipeline, and the SSoT drift guard.",
+    "sort_order": 14,
+    "created_at": "2026-06-07T00:00:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-07T00:00:00Z",
+    "modified_by": "admin-example",
+    "name": "platform"
+  },
+  {
+    "business_rule_category_id": "rbac",
+    "title": "Access Control & RBAC",
+    "description": "Who may create/read/update/delete which table and field, and which rows each role may see.",
+    "sort_order": 10,
+    "created_at": "2026-06-07T00:00:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-07T00:00:00Z",
+    "modified_by": "admin-example",
+    "name": "rbac"
+  },
+  {
+    "business_rule_category_id": "rules-engine",
+    "title": "Rules Engine",
+    "description": "Multi-jurisdiction regulation as data: deadlines, fines, penalties, and thresholds are rows, not constants.",
+    "sort_order": 9,
+    "created_at": "2026-06-07T00:00:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-07T00:00:00Z",
+    "modified_by": "admin-example",
+    "name": "rules-engine"
+  },
+  {
+    "business_rule_category_id": "workqueue",
+    "title": "Work Queue & Urgency",
+    "sort_order": 6,
+    "description": "Rules that bucket and prioritize outstanding work.",
+    "created_at": "2026-06-06T12:00:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-06T12:00:00Z",
+    "modified_by": "admin-example",
+    "name": "workqueue"
+  }
+]

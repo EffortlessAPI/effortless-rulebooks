@@ -1,0 +1,57 @@
+[
+  {
+    "table_id": "t-family-b",
+    "name": "t-family-b",
+    "label": "Bride Family",
+    "seats": 8,
+    "open_seats": null,
+    "over_capacity": null,
+    "happiness": null,
+    "grade": null,
+    "side_skew": null
+  },
+  {
+    "table_id": "t-family-g",
+    "name": "t-family-g",
+    "label": "Groom Family",
+    "seats": 8,
+    "open_seats": null,
+    "over_capacity": null,
+    "happiness": null,
+    "grade": null,
+    "side_skew": null
+  },
+  {
+    "table_id": "t-friends",
+    "name": "t-friends",
+    "label": "College Friends",
+    "seats": 6,
+    "open_seats": null,
+    "over_capacity": null,
+    "happiness": null,
+    "grade": null,
+    "side_skew": null
+  },
+  {
+    "table_id": "t-head",
+    "name": "t-head",
+    "label": "Head Table",
+    "seats": 6,
+    "open_seats": null,
+    "over_capacity": null,
+    "happiness": null,
+    "grade": null,
+    "side_skew": null
+  },
+  {
+    "table_id": "t-misc",
+    "name": "t-misc",
+    "label": "Plus Ones",
+    "seats": 4,
+    "open_seats": null,
+    "over_capacity": null,
+    "happiness": null,
+    "grade": null,
+    "side_skew": null
+  }
+]

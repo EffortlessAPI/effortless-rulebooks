@@ -1,0 +1,106 @@
+{
+  "SSoTmeProjectId": "e50c8f52-7fc4-4ef9-9d5f-07322fd0d16a",
+  "Name": "a1-effortless-init-sample",
+  "ProjectSettings": [
+    {
+      "Name": "project-name",
+      "Value": "a1-effortless-init-sample"
+    }
+  ],
+  "ProjectTranspilers": [
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "compile-rulebook",
+      "RelativePath": "/effortless-rulebook",
+      "CommandLine": "compile-rulebook -i effortless-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.09.12.1638",
+      "LastUrl": "https://effortless-compile-rulebook-v2026-09-12-1638-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "effortless-rulebook-editor",
+      "RelativePath": "/effortless-rulebook",
+      "CommandLine": "effortless-rulebook-editor -i effortless-rulebook.json -p rulebookPath=effortless-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.09.10.1047",
+      "LastUrl": "https://effortless-effortless-rulebook-e-v2026-09-10-1047-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebook-to-go",
+      "RelativePath": "/go",
+      "CommandLine": "rulebook-to-go -i ../effortless-rulebook/effortless-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.09.13.0108",
+      "LastUrl": "https://effortless-rulebook-to-go-v2026-09-13-0108-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebook-to-postgres",
+      "RelativePath": "/postgres",
+      "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/effortless-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.09.12.2340",
+      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-09-12-2340-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebook-to-owl",
+      "RelativePath": "/owl",
+      "CommandLine": "rulebook-to-owl -i ../effortless-rulebook/effortless-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.07.08.0207",
+      "LastUrl": "https://effortless-rulebook-to-owl-v2026-07-08-0207-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebook-to-entity-framework",
+      "RelativePath": "/entity-framework",
+      "CommandLine": "rulebook-to-entity-framework -i ../effortless-rulebook/effortless-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.09.13.0144",
+      "LastUrl": "https://effortless-rulebook-to-entity-fr-v2026-09-13-0144-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebook-to-rulespeak",
+      "RelativePath": "/rulespeak",
+      "CommandLine": "rulebook-to-rulespeak -i ../effortless-rulebook/effortless-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.09.12.2353",
+      "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-09-12-2353-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebook-to-xlsx",
+      "RelativePath": "/xlsx",
+      "CommandLine": "rulebook-to-xlsx -i ../effortless-rulebook/effortless-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.09.12.2358",
+      "LastUrl": "https://effortless-rulebook-to-xlsx-v2026-09-12-2358-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebook-to-python",
+      "RelativePath": "/python",
+      "CommandLine": "rulebook-to-python -i ../effortless-rulebook/effortless-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.09.13.0308",
+      "LastUrl": "https://effortless-rulebook-to-python-v2026-09-13-0308-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebook-to-typescript",
+      "RelativePath": "/typescript",
+      "CommandLine": "rulebook-to-typescript -i ../effortless-rulebook/effortless-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.09.13.0311",
+      "LastUrl": "https://effortless-rulebook-to-typescrip-v2026-09-13-0311-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    }
+  ],
+  "ShowHidden": false,
+  "ShowAllFiles": false,
+  "CurrentPath": "/effortless-rulebook",
+  "SSoTmeProjectFiles": null
+}

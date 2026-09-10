@@ -1,0 +1,40 @@
+[
+  {
+    "state_machine_id": "diagnosis-lifecycle",
+    "title": "Diagnosis Lifecycle",
+    "description": "Walks each case from Intake through the four gates to a terminal Actionable / NotActionable verdict. Each patient branches at its single deciding gate. Current state is DERIVED (IndividualPredictions.LifecycleStateKey); the transition log is the witnessed history.",
+    "subject_table_name": "IndividualPredictions",
+    "subject_state_column": "LifecycleStateKey",
+    "created_by": "build-seed",
+    "modified_by": "build-seed",
+    "name": "diagnosis-lifecycle",
+    "relative_path": "/admin/state-machine/diagnosis-lifecycle",
+    "machine_states": null,
+    "state_transition_rules": null,
+    "state_transitions": null,
+    "state_count": 7,
+    "transition_rule_count": 9,
+    "created_at": null,
+    "modified_at": null,
+    "modified_by_model": null
+  },
+  {
+    "state_machine_id": "lupus-nephritis-progression",
+    "name": "lupus-nephritis-progression",
+    "relative_path": "/admin/state-machine/lupus-nephritis-progression",
+    "title": "Lupus-Nephritis Progression",
+    "description": "Disease-state simulator: a patient's lupus-nephritis course derived from raw serology trajectories. Presymptomatic -> SerologicActive -> EarlyNephritis -> RenalFlareRisk -> BiopsyIndicated (+ Quiescent). Current state is the derived Individuals.NephritisProgressionStateKey; never hand-set.",
+    "subject_table_name": "Individuals",
+    "subject_state_column": "NephritisProgressionStateKey",
+    "created_by": "v2-step3",
+    "created_at": "2026-06-20T00:00:00Z",
+    "modified_by": "v2-step3",
+    "modified_at": "2026-06-20T00:00:00Z",
+    "modified_by_model": "claude-opus-4-8",
+    "machine_states": null,
+    "state_transition_rules": null,
+    "state_transitions": null,
+    "state_count": 6,
+    "transition_rule_count": 5
+  }
+]

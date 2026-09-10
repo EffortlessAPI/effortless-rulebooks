@@ -1,0 +1,74 @@
+[
+  {
+    "tradition_id": "tradition-ai-fairness",
+    "name": "AI Fairness / Machine Learning",
+    "era": "2016\u2013present",
+    "core_concern": "Whether group-level fairness metrics are reliable when base rates differ across subgroups \u2014 Simpson's Paradox as a structural threat to audit validity",
+    "primary_venue": "FAccT; NeurIPS; Big Data journal; VLDB",
+    "key_claim": "Chouldechova (2017) impossibility theorem: calibration and equal error rates are simultaneously unachievable when prevalence differs across groups. Differing base rates ARE the paradox mechanism in disguise.",
+    "open_question": "Whether the FAccT community explicitly frames its impossibility results as Simpson's Paradox instances or treats base-rate divergence as a distinct phenomenon",
+    "verified_by_deep_research": true,
+    "illustrated_by_study": "phe-covid-2021",
+    "supporting_conclusion": "conc-06-policy-derivable"
+  },
+  {
+    "tradition_id": "tradition-bayesian",
+    "name": "Bayesian / Decision-Theoretic",
+    "era": "1981\u2013present",
+    "core_concern": "Whether Bayesian model-selection criteria (Bayes factors, posterior predictive) are themselves susceptible to Simpson-type reversals",
+    "primary_venue": "Journal of the Royal Statistical Society Series B; Bayesian Analysis",
+    "key_claim": "Lindley (1997): Bayes factor proponents can simultaneously conclude tall men > tall women AND short men > short women AND women > men overall \u2014 a Simpson reversal in posterior odds. The paradox lives inside Bayesian inference, not just frequentist aggregation.",
+    "open_question": "Whether prior specification can fully neutralise the reversal or whether the paradox is structurally unavoidable in hierarchical Bayesian models",
+    "verified_by_deep_research": true,
+    "illustrated_by_study": "sat-wainer-1986",
+    "supporting_conclusion": "conc-01-paradox-is-derived"
+  },
+  {
+    "tradition_id": "tradition-dag",
+    "name": "Causal Graphical / DAG Tradition",
+    "era": "1988\u2013present",
+    "core_concern": "Identifying the structural (graph) conditions under which stratification resolves or worsens the paradox",
+    "primary_venue": "JMLR; UAI; Artificial Intelligence; MIT Press books",
+    "key_claim": "The paradox is a confounding problem solvable via the back-door criterion; a DAG over observed variables determines which table (pooled or stratified) is the correct one",
+    "open_question": "Dong, Cai & Zhao (2024): confounding is not the universal source \u2014 inter-unit causation and accidental associations also produce the paradox, so DAG adjustment alone is insufficient",
+    "verified_by_deep_research": true,
+    "illustrated_by_study": "birth-weight-paradox",
+    "supporting_conclusion": "conc-09-causal-vs-geometric"
+  },
+  {
+    "tradition_id": "tradition-epidemiology",
+    "name": "Epidemiology / Observational Studies",
+    "era": "1980\u2013present",
+    "core_concern": "Noncollapsibility: when does controlling for a confounder change the measure of association, and when is that change meaningful?",
+    "primary_venue": "Epidemiology; American Journal of Epidemiology; Statistical Science",
+    "key_claim": "Noncollapsibility is not identical to confounding \u2014 some measures (OR, HR) are noncollapsible even without confounding. Greenland (2021): distinguishing the two prevents spurious \"paradox\" diagnoses.",
+    "open_question": "Which effect measures (RR, OR, RD) are collapsible under what conditions \u2014 an active debate in biostatistics",
+    "verified_by_deep_research": true,
+    "illustrated_by_study": "reintjes-2000",
+    "supporting_conclusion": "conc-05-real-data-generalizes"
+  },
+  {
+    "tradition_id": "tradition-historical",
+    "name": "Historical Statistical Origins",
+    "era": "1899\u20131972",
+    "core_concern": "Documenting that aggregate and partial associations can differ or reverse",
+    "primary_venue": "Biometrika; Journal of the Royal Statistical Society",
+    "key_claim": "The reversal is a well-defined mathematical property of weighted averages, not a logical paradox \u2014 formalised by Blyth (1972)",
+    "open_question": "Whether \"disappearing association\" (Pearson/Yule) and \"sign reversal\" (Cohen/Nagel) are the same phenomenon or two distinct effects",
+    "verified_by_deep_research": true,
+    "illustrated_by_study": "kidney-1986",
+    "supporting_conclusion": "conc-01-paradox-is-derived"
+  },
+  {
+    "tradition_id": "tradition-philosophy",
+    "name": "Philosophy of Science / Probabilistic Causality",
+    "era": "1956\u2013present",
+    "core_concern": "Whether probabilistic associations alone can ground causal claims \u2014 the paradox is the stress test",
+    "primary_venue": "Philosophy of Science; Nous; Cambridge studies in probability/induction",
+    "key_claim": "Cartwright (1979): causes must raise probabilities relative to ALL background contexts, not just the aggregate. Statistical accounts of causation fail without this constraint.",
+    "open_question": "Whether the probabilistic causality framework is ultimately reducible to a causal graph account (Pearl) or remains genuinely distinct",
+    "verified_by_deep_research": true,
+    "illustrated_by_study": "berkeley-1973",
+    "supporting_conclusion": "conc-09-causal-vs-geometric"
+  }
+]

@@ -1,0 +1,11 @@
+[
+  {
+    "erb_version_id": "erb-pko-1.0.0",
+    "base_id": "pko-native-procedural-knowledge",
+    "name": "1.0.0",
+    "message": "Initial PKO 2.0.0 aligned rulebook",
+    "notes": "Candidate proof of canonical PKO-as-ERB architecture.",
+    "commit_date": "2026-07-19T12:00:00-05:00",
+    "is_published": false
+  }
+]

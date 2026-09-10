@@ -109,7 +109,7 @@ def main() -> int:
 
     rb[CATALOG]["data"] = fresh
     with path.open("w") as fh:
-        json.dump(rb, fh, indent=2)
+        json.dump(rb, fh, indent=1, ensure_ascii=False)
         fh.write("\n")
 
     witnessed = sum(1 for r in fresh if r.get("InventedForQuestion"))

@@ -1,0 +1,57 @@
+[
+  {
+    "semantic_route_id": "rte-experimental-shortcut",
+    "display_name": "Experimental Shortcut",
+    "start_concept": "NumberFields",
+    "end_concept": "AsymptoticLowerBounds",
+    "is_full_spine": false,
+    "ends_at_theorem_anchor": false,
+    "description": "Coverage row: hypothetical bypass route, not yet classified.",
+    "name": "experimental-shortcut",
+    "all_steps_validated": true
+  },
+  {
+    "semantic_route_id": "rte-field-to-lattice-to-plane",
+    "display_name": "Field to Lattice to Plane",
+    "start_concept": "NumberFields",
+    "end_concept": "PlanarProjections",
+    "is_full_spine": false,
+    "ends_at_theorem_anchor": false,
+    "description": "NumberFields \u2192 FieldEmbeddings \u2192 MinkowskiEmbeddings \u2192 MinkowskiLattices \u2192 PlanarProjections.",
+    "name": "field-to-lattice-to-plane",
+    "all_steps_validated": true
+  },
+  {
+    "semantic_route_id": "rte-full-semantic-spine",
+    "display_name": "Full Semantic Spine",
+    "start_concept": "NumberFields",
+    "end_concept": "Theorems",
+    "is_full_spine": true,
+    "ends_at_theorem_anchor": true,
+    "description": "End-to-end inference chain: algebra \u2192 lattice \u2192 projection \u2192 planar geometry \u2192 growth \u2192 bound \u2192 theorem.",
+    "name": "full-semantic-spine",
+    "all_steps_validated": true
+  },
+  {
+    "semantic_route_id": "rte-geometry-to-graph",
+    "display_name": "Geometry to Graph",
+    "start_concept": "Points",
+    "end_concept": "UnitDistanceGraphs",
+    "is_full_spine": false,
+    "ends_at_theorem_anchor": false,
+    "description": "Points \u2192 PointSets \u2192 PointPairs \u2192 UnitDistanceGraphs.",
+    "name": "geometry-to-graph",
+    "all_steps_validated": true
+  },
+  {
+    "semantic_route_id": "rte-local-to-asymptotic",
+    "display_name": "Local to Asymptotic",
+    "start_concept": "ConstructionInstances",
+    "end_concept": "AsymptoticLowerBounds",
+    "is_full_spine": false,
+    "ends_at_theorem_anchor": true,
+    "description": "ConstructionInstances \u2192 GrowthSequences \u2192 AsymptoticLowerBounds.",
+    "name": "local-to-asymptotic",
+    "all_steps_validated": true
+  }
+]

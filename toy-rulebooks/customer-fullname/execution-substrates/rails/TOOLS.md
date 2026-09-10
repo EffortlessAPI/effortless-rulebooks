@@ -196,22 +196,22 @@ Each tool can be registered as a separate `effortless.json` transpiler:
 ```json
 {
   "Name": "rulebook-to-rails-models",
-  "CommandLine": "http://localhost:4242/rulebook-to-rails-models -i ../effortless-rulebook/rulebook.json",
+  "CommandLine": "http://localhost:4242/oss-rulebook-to-rails-models -i ../effortless-rulebook/rulebook.json",
   "RelativePath": "/rails"
 },
 {
   "Name": "rulebook-to-rails-migrations",
-  "CommandLine": "http://localhost:4242/rulebook-to-rails-migrations -i ../effortless-rulebook/rulebook.json -p pgdump=../postgres/schema.sql",
+  "CommandLine": "http://localhost:4242/oss-rulebook-to-rails-migrations -i ../effortless-rulebook/rulebook.json -p pgdump=../postgres/schema.sql",
   "RelativePath": "/rails"
 },
 {
   "Name": "rulebook-to-rails-views",
-  "CommandLine": "http://localhost:4242/rulebook-to-rails-views -i ../effortless-rulebook/rulebook.json",
+  "CommandLine": "http://localhost:4242/oss-rulebook-to-rails-views -i ../effortless-rulebook/rulebook.json",
   "RelativePath": "/rails"
 },
 {
   "Name": "rulebook-to-rails-seeds",
-  "CommandLine": "http://localhost:4242/rulebook-to-rails-seeds -i ../effortless-rulebook/rulebook.json",
+  "CommandLine": "http://localhost:4242/oss-rulebook-to-rails-seeds -i ../effortless-rulebook/rulebook.json",
   "RelativePath": "/rails"
 }
 ```

@@ -1,0 +1,102 @@
+[
+  {
+    "trust_boundary_id": "trust-analytic-prime-distribution",
+    "theorem_id": "analytic-prime-distribution",
+    "boundary_kind": "foundation-theorem",
+    "accepted_external_claims": "External foundation theorem; finite compiler interfaces are present but the universal theorem is not internalized.",
+    "kernel_or_substrate": "ERB rulebook + conformance harness + mathematical provider contract",
+    "can_claim_zero_imports": false,
+    "notes": "Zero imports is always relative to an explicitly declared logical and execution trust boundary.",
+    "name": "trust-analytic-prime-distribution"
+  },
+  {
+    "trust_boundary_id": "trust-bit-calculator-arithmetic",
+    "name": "trust-bit-calculator-arithmetic",
+    "theorem_id": "bit-calculator-4bit-arithmetic",
+    "boundary_kind": "internalized-foundation",
+    "accepted_external_claims": "None above the logic-gate kernel: only the AND/OR/XOR/NOT truth tables and netlist connection semantics are trusted.",
+    "kernel_or_substrate": "gate_truth_rows + netlist + Postgres/Python settling engines",
+    "can_claim_zero_imports": true,
+    "notes": "Zero imports relative to the declared logic-gate kernel. The child frontier is closed: every result reduces to truth-table lookups and wire propagation, verified exhaustively on the netlist and cross-checked across two substrates."
+  },
+  {
+    "trust_boundary_id": "trust-fermats-last-theorem",
+    "theorem_id": "fermats-last-theorem",
+    "boundary_kind": "application-frontier",
+    "accepted_external_claims": "Seven foundation provider theorems remain imported in v21.",
+    "kernel_or_substrate": "ERB rulebook + conformance harness + mathematical provider contract",
+    "can_claim_zero_imports": false,
+    "notes": "Zero imports is always relative to an explicitly declared logical and execution trust boundary.",
+    "name": "trust-fermats-last-theorem"
+  },
+  {
+    "trust_boundary_id": "trust-global-deformation-duality",
+    "theorem_id": "global-deformation-duality",
+    "boundary_kind": "foundation-theorem",
+    "accepted_external_claims": "External foundation theorem; finite compiler interfaces are present but the universal theorem is not internalized.",
+    "kernel_or_substrate": "ERB rulebook + conformance harness + mathematical provider contract",
+    "can_claim_zero_imports": false,
+    "notes": "Zero imports is always relative to an explicitly declared logical and execution trust boundary.",
+    "name": "trust-global-deformation-duality"
+  },
+  {
+    "trust_boundary_id": "trust-hilbert-specialization",
+    "theorem_id": "hilbert-specialization",
+    "boundary_kind": "foundation-theorem",
+    "accepted_external_claims": "External foundation theorem; finite compiler interfaces are present but the universal theorem is not internalized.",
+    "kernel_or_substrate": "ERB rulebook + conformance harness + mathematical provider contract",
+    "can_claim_zero_imports": false,
+    "notes": "Zero imports is always relative to an explicitly declared logical and execution trust boundary.",
+    "name": "trust-hilbert-specialization"
+  },
+  {
+    "trust_boundary_id": "trust-mazur-modular-curve-arithmetic",
+    "theorem_id": "mazur-modular-curve-arithmetic",
+    "boundary_kind": "foundation-theorem",
+    "accepted_external_claims": "External foundation theorem; finite compiler interfaces are present but the universal theorem is not internalized.",
+    "kernel_or_substrate": "ERB rulebook + conformance harness + mathematical provider contract",
+    "can_claim_zero_imports": false,
+    "notes": "Zero imports is always relative to an explicitly declared logical and execution trust boundary.",
+    "name": "trust-mazur-modular-curve-arithmetic"
+  },
+  {
+    "trust_boundary_id": "trust-modular-curve-cohomological-comparison",
+    "theorem_id": "modular-curve-cohomological-comparison",
+    "boundary_kind": "foundation-theorem",
+    "accepted_external_claims": "External foundation theorem; finite compiler interfaces are present but the universal theorem is not internalized.",
+    "kernel_or_substrate": "ERB rulebook + conformance harness + mathematical provider contract",
+    "can_claim_zero_imports": false,
+    "notes": "Zero imports is always relative to an explicitly declared logical and execution trust boundary.",
+    "name": "trust-modular-curve-cohomological-comparison"
+  },
+  {
+    "trust_boundary_id": "trust-natural-number-arithmetic",
+    "theorem_id": "natural-number-addition-2-plus-2-equals-4",
+    "boundary_kind": "internalized-foundation",
+    "accepted_external_claims": "None above the Peano kernel: only Zero, Successor, and the recursive operation definitions are trusted.",
+    "kernel_or_substrate": "Peano natural-number kernel + ERB rulebook + conformance harness",
+    "can_claim_zero_imports": true,
+    "notes": "Unlike the FLT frontier, this domain closes its child frontier entirely and therefore may claim zero imports above an explicitly declared kernel boundary.",
+    "name": "trust-natural-number-arithmetic"
+  },
+  {
+    "trust_boundary_id": "trust-solvable-artin-automorphy",
+    "theorem_id": "solvable-artin-automorphy",
+    "boundary_kind": "foundation-theorem",
+    "accepted_external_claims": "External foundation theorem; finite compiler interfaces are present but the universal theorem is not internalized.",
+    "kernel_or_substrate": "ERB rulebook + conformance harness + mathematical provider contract",
+    "can_claim_zero_imports": false,
+    "notes": "Zero imports is always relative to an explicitly declared logical and execution trust boundary.",
+    "name": "trust-solvable-artin-automorphy"
+  },
+  {
+    "trust_boundary_id": "trust-universal-level-lowering",
+    "theorem_id": "universal-level-lowering",
+    "boundary_kind": "foundation-theorem",
+    "accepted_external_claims": "External foundation theorem; finite compiler interfaces are present but the universal theorem is not internalized.",
+    "kernel_or_substrate": "ERB rulebook + conformance harness + mathematical provider contract",
+    "can_claim_zero_imports": false,
+    "notes": "Zero imports is always relative to an explicitly declared logical and execution trust boundary.",
+    "name": "trust-universal-level-lowering"
+  }
+]

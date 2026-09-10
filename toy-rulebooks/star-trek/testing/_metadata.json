@@ -1,0 +1,64 @@
+{
+  "series": {
+    "primary_key": "serie_id",
+    "computed_columns": [
+      "name",
+      "total_seasons",
+      "total_episodes",
+      "is_long_running",
+      "rating",
+      "is_good"
+    ],
+    "record_count": 10
+  },
+  "seasons": {
+    "primary_key": "season_id",
+    "computed_columns": [
+      "name",
+      "show_title",
+      "show_description",
+      "show_network",
+      "episode_count"
+    ],
+    "record_count": 44
+  },
+  "episodes": {
+    "primary_key": "episode_id",
+    "computed_columns": [
+      "name",
+      "season_number",
+      "season_title",
+      "season_description"
+    ],
+    "record_count": 893
+  },
+  "movies": {
+    "primary_key": "movie_id",
+    "computed_columns": [
+      "name",
+      "crew_count"
+    ],
+    "record_count": 4
+  },
+  "crew_assignments": {
+    "primary_key": "crew_assignment_id",
+    "computed_columns": [
+      "name",
+      "person_name",
+      "movie_title",
+      "crew_type_name"
+    ],
+    "record_count": 4
+  },
+  "ratings": {
+    "primary_key": "rating_id",
+    "computed_columns": [
+      "name",
+      "display_name",
+      "series_name",
+      "episode_name",
+      "episode_season_title"
+    ],
+    "record_count": 13
+  }
+}

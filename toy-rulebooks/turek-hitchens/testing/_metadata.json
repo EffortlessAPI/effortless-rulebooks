@@ -1,0 +1,86 @@
+{
+  "debaters": {
+    "primary_key": "label",
+    "computed_columns": [
+      "name",
+      "argument_count",
+      "claim_count",
+      "thinkers_cited"
+    ],
+    "record_count": 3
+  },
+  "worldviews": {
+    "primary_key": "label",
+    "computed_columns": [
+      "name",
+      "argument_count"
+    ],
+    "record_count": 8
+  },
+  "arguments": {
+    "primary_key": "label",
+    "computed_columns": [
+      "name",
+      "premise_count",
+      "evidence_count",
+      "claim_count",
+      "is_fully_developed",
+      "total_rebuttals",
+      "is_contested"
+    ],
+    "record_count": 13
+  },
+  "premises": {
+    "primary_key": "label",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 19
+  },
+  "evidence": {
+    "primary_key": "label",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 7
+  },
+  "concepts": {
+    "primary_key": "label",
+    "computed_columns": [
+      "name",
+      "claim_count"
+    ],
+    "record_count": 52
+  },
+  "claims": {
+    "primary_key": "label",
+    "computed_columns": [
+      "name",
+      "rebuttal_count",
+      "is_rebutted"
+    ],
+    "record_count": 17
+  },
+  "rebuttals": {
+    "primary_key": "label",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 11
+  },
+  "thinkers": {
+    "primary_key": "label",
+    "computed_columns": [
+      "name",
+      "quotation_count"
+    ],
+    "record_count": 35
+  },
+  "quotations": {
+    "primary_key": "label",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 9
+  }
+}

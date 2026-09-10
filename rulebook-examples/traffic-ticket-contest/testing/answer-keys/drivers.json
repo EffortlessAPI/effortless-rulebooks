@@ -1,0 +1,80 @@
+[
+  {
+    "driver_id": "d-d1234567",
+    "license_number": "D1234567",
+    "first_name": "Jane",
+    "last_name": "Doe",
+    "home_jurisdiction": "j-ca-la",
+    "is_mock_data": true,
+    "name": "d1234567",
+    "full_name": "Doe, Jane",
+    "license_status": "Valid"
+  },
+  {
+    "driver_id": "d-d1357924",
+    "license_number": "D1357924",
+    "first_name": "James",
+    "last_name": "Whitfield",
+    "home_jurisdiction": "j-tx-aus",
+    "is_mock_data": true,
+    "created_at": "2026-06-07T20:00:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-07T20:00:00Z",
+    "modified_by": "admin-example",
+    "name": "d1357924",
+    "full_name": "Whitfield, James",
+    "license_status": "Valid"
+  },
+  {
+    "driver_id": "d-d2468013",
+    "license_number": "D2468013",
+    "first_name": "Maria",
+    "last_name": "Gonzalez",
+    "home_jurisdiction": "j-ca-la",
+    "is_mock_data": true,
+    "created_at": "2026-06-07T20:00:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-07T20:00:00Z",
+    "modified_by": "admin-example",
+    "name": "d2468013",
+    "full_name": "Gonzalez, Maria",
+    "license_status": "Valid"
+  },
+  {
+    "driver_id": "d-d7654321",
+    "license_number": "D7654321",
+    "first_name": "Carlos",
+    "last_name": "Mendez",
+    "home_jurisdiction": "j-tx-aus",
+    "is_mock_data": true,
+    "name": "d7654321",
+    "full_name": "Mendez, Carlos",
+    "license_status": "Valid"
+  },
+  {
+    "driver_id": "d-n0099887",
+    "license_number": "N0099887",
+    "first_name": "Aisha",
+    "last_name": "Khan",
+    "home_jurisdiction": "j-ny-nyc",
+    "is_mock_data": true,
+    "name": "n0099887",
+    "full_name": "Khan, Aisha",
+    "license_status": "Valid"
+  },
+  {
+    "driver_id": "d-n5544332",
+    "license_number": "N5544332",
+    "first_name": "Aisha",
+    "last_name": "Rahman",
+    "home_jurisdiction": "j-ny-nyc",
+    "is_mock_data": true,
+    "created_at": "2026-06-07T20:00:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-07T20:00:00Z",
+    "modified_by": "admin-example",
+    "name": "n5544332",
+    "full_name": "Rahman, Aisha",
+    "license_status": "Valid"
+  }
+]

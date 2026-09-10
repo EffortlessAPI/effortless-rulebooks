@@ -6,10 +6,19 @@
     "max_wind_degrees": 360,
     "max_spring_torque_nm": 0.08,
     "escapement_base_hz": 4,
+    "wind_fraction": 0.0,
+    "stored_torque_nm": 0.0,
+    "remaining_minutes": 0.0,
     "wind_state": "Unwound",
     "is_armed": false,
     "has_rung": true,
-    "has_sparse_tick_record": false
+    "wind_duration_minutes": 60.0,
+    "expected_ticks_per_minute": 240,
+    "expected_total_ticks": 14400.0,
+    "ticks_elapsed_expected": 14400.0,
+    "tick_efficiency_percent": 0.0,
+    "has_sparse_tick_record": false,
+    "mechanical_phase": "rung"
   },
   {
     "timer_id": "Olive",
@@ -18,10 +27,19 @@
     "max_wind_degrees": 360,
     "max_spring_torque_nm": 0.08,
     "escapement_base_hz": 4,
+    "wind_fraction": 0.3333333333333333,
+    "stored_torque_nm": 0.026666666666666665,
+    "remaining_minutes": 20.0,
     "wind_state": "Partial",
-    "is_armed": false,
-    "has_rung": true,
-    "has_sparse_tick_record": false
+    "is_armed": true,
+    "has_rung": false,
+    "wind_duration_minutes": 60.0,
+    "expected_ticks_per_minute": 240,
+    "expected_total_ticks": 14400.0,
+    "ticks_elapsed_expected": 9600.0,
+    "tick_efficiency_percent": 0.0,
+    "has_sparse_tick_record": false,
+    "mechanical_phase": "mid-run"
   },
   {
     "timer_id": "Rufus",
@@ -30,10 +48,19 @@
     "max_wind_degrees": 360,
     "max_spring_torque_nm": 0.08,
     "escapement_base_hz": 4,
+    "wind_fraction": 1.0,
+    "stored_torque_nm": 0.08,
+    "remaining_minutes": 60.0,
     "wind_state": "Full",
-    "is_armed": false,
-    "has_rung": true,
-    "has_sparse_tick_record": false
+    "is_armed": true,
+    "has_rung": false,
+    "wind_duration_minutes": 60.0,
+    "expected_ticks_per_minute": 240,
+    "expected_total_ticks": 14400.0,
+    "ticks_elapsed_expected": 0.0,
+    "tick_efficiency_percent": 100,
+    "has_sparse_tick_record": false,
+    "mechanical_phase": "freshly-wound"
   },
   {
     "timer_id": "Twigs",
@@ -42,9 +69,18 @@
     "max_wind_degrees": 360,
     "max_spring_torque_nm": 0.08,
     "escapement_base_hz": 4,
+    "wind_fraction": 0.08333333333333333,
+    "stored_torque_nm": 0.006666666666666666,
+    "remaining_minutes": 5.0,
     "wind_state": "Partial",
-    "is_armed": false,
-    "has_rung": true,
-    "has_sparse_tick_record": false
+    "is_armed": true,
+    "has_rung": false,
+    "wind_duration_minutes": 60.0,
+    "expected_ticks_per_minute": 240,
+    "expected_total_ticks": 14400.0,
+    "ticks_elapsed_expected": 13200.0,
+    "tick_efficiency_percent": 0.0,
+    "has_sparse_tick_record": false,
+    "mechanical_phase": "nearly-done"
   }
 ]

@@ -164,6 +164,23 @@ span.input-static:hover{background:#fcfcfe}
 .input-glyph{font-size:12px;color:var(--muted)}
 .input-name{font-weight:700;color:var(--ink)}
 .input-table{font-size:11px;color:var(--muted);margin-left:auto}
+
+/* ── 6 Example Data (optional section) ─────────────────────────────────── */
+.sample-data{max-width:1040px;margin:32px auto 8px;padding:0 20px}
+.sample-title{font-size:20px;margin:0 0 6px}
+.sample-note{color:var(--muted);font-size:13px;margin:0 0 16px;max-width:70ch}
+.sample-entity{font-size:15px;margin:20px 0 8px;color:var(--raw)}
+.sample-scroll{overflow-x:auto}
+.sample-table{border-collapse:collapse;font-size:13px;background:var(--card);
+  border:1px solid var(--line);border-radius:6px}
+.sample-table th,.sample-table td{padding:6px 12px;border-bottom:1px solid var(--line);
+  text-align:left;vertical-align:top;white-space:nowrap}
+.sample-table thead th{background:#f5f5fa;font-weight:600;color:var(--ink)}
+.sample-table tbody tr:last-child td{border-bottom:none}
+.sample-table th.sample-derived{background:var(--calc-bg);color:var(--calc)}
+.sample-table td.sample-derived{color:var(--calc)}
+.sample-fx{margin-left:4px;opacity:.75}
+.sample-legend{color:var(--muted);font-size:12px;margin-top:12px}
 .input-en{display:block;margin-top:3px;font-size:13px;color:var(--muted)}
 .ref-pill{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;
   border:1px solid var(--line);border-radius:999px;padding:3px 10px;background:#fff;color:var(--ink)}
@@ -2889,7 +2906,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
         <span class="view-label">In RuleSpeak®</span>
-        <p class="view-body">A number field is considered a totally real if the <a class="ref" href="#en-f-numberfields-signaturecomplexembeddings">signature complex embeddings</a> is 0.</p>
+        <p class="view-body">A number field is considered totally-real if the <a class="ref" href="#en-f-numberfields-signaturecomplexembeddings">signature complex embeddings</a> is 0.</p>
       </div>
       <div class="view elem elem-english">
         <span class="view-label">In plain words</span>
@@ -6773,7 +6790,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
         <span class="view-label">In RuleSpeak®</span>
-        <p class="view-body">An asymptotic lower bound is considered to witnes a consistent if the <a class="ref" href="#en-f-asymptoticlowerbounds-witnessedbymaxdensityexponent">witnessed by max density exponent</a> is at least the <a class="ref" href="#en-f-asymptoticlowerbounds-exponent">exponent</a>.</p>
+        <p class="view-body">An asymptotic lower bound is considered to witnes consistent if the <a class="ref" href="#en-f-asymptoticlowerbounds-witnessedbymaxdensityexponent">witnessed by max density exponent</a> is at least the <a class="ref" href="#en-f-asymptoticlowerbounds-exponent">exponent</a>.</p>
       </div>
       <div class="view elem elem-english">
         <span class="view-label">In plain words</span>
@@ -7498,7 +7515,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
         <span class="view-label">In RuleSpeak®</span>
-        <div class="view-body"><p class="rt-headline">An asymptotic lower bound is considered an auditable via its pathway if all of the following:</p><ol class="rt-priority"><ul class="rt-group"><li><span class="rt-group-label">all of these hold:</span><ul class="rt-group"><li>the <a class="ref" href="#en-f-asymptoticlowerbounds-isalgebraictowerproof">algebraic tower proof</a> flag is set</li><li>the <a class="ref" href="#en-f-asymptoticlowerbounds-isalgebraicallyanchored">algebraically anchored</a> flag is set</li></ul></li><li><span class="rt-group-label">all of these hold:</span><ul class="rt-group"><li>the <a class="ref" href="#en-f-asymptoticlowerbounds-iscombinatorialproof">combinatorial proof</a> flag is set</li><li>the <a class="ref" href="#en-f-asymptoticlowerbounds-allobligationssatisfied">all obligations satisfied</a> flag is set</li><li>the <a class="ref" href="#en-f-asymptoticlowerbounds-witnessconsistent">witness consistent</a> flag is set</li></ul></li><li><span class="rt-group-label">all of these hold:</span><ul class="rt-group"><li>the <a class="ref" href="#en-f-asymptoticlowerbounds-proofpathway">proof pathway</a> is “witness-only”</li><li>the <a class="ref" href="#en-f-asymptoticlowerbounds-witnessconsistent">witness consistent</a> flag is set</li></ul></li></ul></ol></div>
+        <div class="view-body"><p class="rt-headline">An asymptotic lower bound is considered auditable-via-its-pathway if all of the following:</p><ol class="rt-priority"><ul class="rt-group"><li><span class="rt-group-label">all of these hold:</span><ul class="rt-group"><li>the <a class="ref" href="#en-f-asymptoticlowerbounds-isalgebraictowerproof">algebraic tower proof</a> flag is set</li><li>the <a class="ref" href="#en-f-asymptoticlowerbounds-isalgebraicallyanchored">algebraically anchored</a> flag is set</li></ul></li><li><span class="rt-group-label">all of these hold:</span><ul class="rt-group"><li>the <a class="ref" href="#en-f-asymptoticlowerbounds-iscombinatorialproof">combinatorial proof</a> flag is set</li><li>the <a class="ref" href="#en-f-asymptoticlowerbounds-allobligationssatisfied">all obligations satisfied</a> flag is set</li><li>the <a class="ref" href="#en-f-asymptoticlowerbounds-witnessconsistent">witness consistent</a> flag is set</li></ul></li><li><span class="rt-group-label">all of these hold:</span><ul class="rt-group"><li>the <a class="ref" href="#en-f-asymptoticlowerbounds-proofpathway">proof pathway</a> is “witness-only”</li><li>the <a class="ref" href="#en-f-asymptoticlowerbounds-witnessconsistent">witness consistent</a> flag is set</li></ul></li></ul></ol></div>
       </div>
       <div class="view elem elem-english">
         <span class="view-label">In plain words</span>
@@ -8629,7 +8646,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
         <span class="view-label">In RuleSpeak®</span>
-        <p class="view-body">A theorem's <a class="ref" href="#en-f-theorems-anchoredboundisauditableviaitspathway">anchored bound is auditable via its pathway</a> when the linked <a class="ref" href="#en-f-theorems-anchoredlowerbound">anchored lower bound</a> is an auditable via its pathway.</p>
+        <p class="view-body">A theorem's <a class="ref" href="#en-f-theorems-anchoredboundisauditableviaitspathway">anchored bound is auditable via its pathway</a> when the linked <a class="ref" href="#en-f-theorems-anchoredlowerbound">anchored lower bound</a> is auditable via its pathway.</p>
       </div>
       <div class="view elem elem-english">
         <span class="view-label">In plain words</span>
@@ -11483,7 +11500,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
         <span class="view-label">In RuleSpeak®</span>
-        <p class="view-body">A semantic bridge is considered an analogy if the <a class="ref" href="#en-f-semanticbridges-bridgekind">bridge kind</a> is “analogy”.</p>
+        <p class="view-body">A semantic bridge is considered analogy if the <a class="ref" href="#en-f-semanticbridges-bridgekind">bridge kind</a> is “analogy”.</p>
       </div>
       <div class="view elem elem-english">
         <span class="view-label">In plain words</span>
@@ -13167,7 +13184,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
         <span class="view-label">In RuleSpeak®</span>
-        <p class="view-body">A proof obligation is considered a necessary if the <a class="ref" href="#en-f-proofobligations-obligationkind">obligation kind</a> is “necessary”.</p>
+        <p class="view-body">A proof obligation is considered necessary if the <a class="ref" href="#en-f-proofobligations-obligationkind">obligation kind</a> is “necessary”.</p>
       </div>
       <div class="view elem elem-english">
         <span class="view-label">In plain words</span>
@@ -13600,7 +13617,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
         <span class="view-label">In RuleSpeak®</span>
-        <p class="view-body">A citation link is considered a dependency if the <a class="ref" href="#en-f-citationlinks-citationkind">citation kind</a> is “depends-on”.</p>
+        <p class="view-body">A citation link is considered dependency if the <a class="ref" href="#en-f-citationlinks-citationkind">citation kind</a> is “depends-on”.</p>
       </div>
       <div class="view elem elem-english">
         <span class="view-label">In plain words</span>
@@ -13639,7 +13656,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
         <span class="view-label">In RuleSpeak®</span>
-        <p class="view-body">A citation link is considered an improvement if the <a class="ref" href="#en-f-citationlinks-citationkind">citation kind</a> is “improves”.</p>
+        <p class="view-body">A citation link is considered improvement if the <a class="ref" href="#en-f-citationlinks-citationkind">citation kind</a> is “improves”.</p>
       </div>
       <div class="view elem elem-english">
         <span class="view-label">In plain words</span>

@@ -75,7 +75,7 @@ Register this transpiler in the project's `effortless.json`:
 
 ```bash
 cd rulebook-examples/customer-fullname/rails
-effortless -install http://localhost:4242/rulebook-to-rails \
+effortless -install http://localhost:4242/oss-rulebook-to-rails \
     -i ../effortless-rulebook/customer-fullname-rulebook.json
 ```
 

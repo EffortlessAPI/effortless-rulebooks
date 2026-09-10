@@ -1,0 +1,122 @@
+[
+  {
+    "axiom_id": "ax-both-verdicts",
+    "statement": "The same deterministic machine must land on either side and name the single deciding gate.",
+    "rationale": "An engine that only ever says \"actionable\" proves nothing.",
+    "category": "solve-by-inference",
+    "name": "The same deterministic machine must land on either side and name the single deciding gate.",
+    "relative_path": "/admin/axioms/ax-both-verdicts"
+  },
+  {
+    "axiom_id": "ax-every-choice-knob",
+    "statement": "Every choice the LLM makes is a literal, editable knob in the admin UI.",
+    "rationale": "The model's judgment is fully externalized; a wrong input is nudged, not re-prompted.",
+    "category": "knob",
+    "name": "Every choice the LLM makes is a literal, editable knob in the admin UI.",
+    "relative_path": "/admin/axioms/ax-every-choice-knob"
+  },
+  {
+    "axiom_id": "ax-formula-local-edit",
+    "statement": "Every DAG formula is inspectable and correctable in place, like a spreadsheet cell.",
+    "rationale": "Editing a value or formula body is local to its dependency subtree; only retyping/regraphing ripples.",
+    "category": "knob",
+    "name": "Every DAG formula is inspectable and correctable in place, like a spreadsheet cell.",
+    "relative_path": "/admin/axioms/ax-formula-local-edit"
+  },
+  {
+    "axiom_id": "ax-independent-witness",
+    "statement": "Extraction and derivation are verifiable independently (three-panel witness).",
+    "rationale": "Input case text -> extracted facts w/ provenance -> deterministic diagnosis. Defeats the laundering objection.",
+    "category": "witness",
+    "name": "Extraction and derivation are verifiable independently (three-panel witness).",
+    "relative_path": "/admin/axioms/ax-independent-witness"
+  },
+  {
+    "axiom_id": "ax-keystone-computed",
+    "statement": "IsClinicallyActionable is computed, never entered.",
+    "rationale": "No field a curator (human or LLM) can set to make the diagnosis come out right.",
+    "category": "solve-by-inference",
+    "name": "IsClinicallyActionable is computed, never entered.",
+    "relative_path": "/admin/axioms/ax-keystone-computed"
+  },
+  {
+    "axiom_id": "ax-line-in-dag",
+    "statement": "The trust boundary is a line in the DAG: fields with a formula are the model's; raw-input leaf fields are the LLM's (or a human's).",
+    "rationale": "Makes the boundary mechanically checkable rather than a vibe.",
+    "category": "trust-boundary",
+    "name": "The trust boundary is a line in the DAG: fields with a formula are the model's; raw-input leaf fields are the LLM's (or a human's).",
+    "relative_path": "/admin/axioms/ax-line-in-dag"
+  },
+  {
+    "axiom_id": "ax-llm-leaves-only",
+    "statement": "The LLM does exactly two things, both at the leaf layer: interpret intake facts, and produce synthetic-but-transparent test results.",
+    "rationale": "Intake clerk + lab \u2014 the un-alarming medical roles. It computes no higher-order inference.",
+    "category": "trust-boundary",
+    "name": "The LLM does exactly two things, both at the leaf layer: interpret intake facts, and produce synthetic-but-transparent test results.",
+    "relative_path": "/admin/axioms/ax-llm-leaves-only"
+  },
+  {
+    "axiom_id": "ax-llm-no-vote",
+    "statement": "The LLM never gets a vote on the conclusion.",
+    "rationale": "Demotes the model to intake-clerk + lab; the verdict is the deterministic DAG's, never the model's.",
+    "category": "trust-boundary",
+    "name": "The LLM never gets a vote on the conclusion.",
+    "relative_path": "/admin/axioms/ax-llm-no-vote"
+  },
+  {
+    "axiom_id": "ax-report-cell-simple",
+    "statement": "No single piece of report language is more complex than one spreadsheet cell: it references sibling values directly and does no joins or group-bys.",
+    "rationale": "CMCC/SDLAF discipline. A narrative fragment is a calculated field on a row; it reads other fields of that same row (and global phrases from __meta), never traverses or aggregates. Complex sentences are decomposed into constituent fragment fields, each one cell-simple.",
+    "category": "report-derivation",
+    "name": "No single piece of report language is more complex than one spreadsheet cell: it references sibling values directly and does no joins or group-bys.",
+    "relative_path": "/admin/axioms/ax-report-cell-simple"
+  },
+  {
+    "axiom_id": "ax-report-derived-not-prose",
+    "statement": "The diagnosis report is derived, never authored as prose; it is structured natural language assembled from the DAG.",
+    "rationale": "A prose writeup would be a second, unwitnessed surface where a hallucination could hide. The report must be a deterministic projection of facts already in the graph, the same way Postgres views are.",
+    "category": "report-derivation",
+    "name": "The diagnosis report is derived, never authored as prose; it is structured natural language assembled from the DAG.",
+    "relative_path": "/admin/axioms/ax-report-derived-not-prose"
+  },
+  {
+    "axiom_id": "ax-report-intermediate-translations",
+    "statement": "Complex language is built from intermediate translation fields: calculated text fragments composed from other predicates on the same row, then composed upward.",
+    "rationale": "The way to keep every piece cell-simple is to pull a complex sentence apart into its constituent fragments, each its own field, and let higher fragments reference lower ones. The report is the top of that composition, not a monolith.",
+    "category": "report-derivation",
+    "name": "Complex language is built from intermediate translation fields: calculated text fragments composed from other predicates on the same row, then composed upward.",
+    "relative_path": "/admin/axioms/ax-report-intermediate-translations"
+  },
+  {
+    "axiom_id": "ax-report-predicate-gated",
+    "statement": "A fragment's language only appears when its predicates hold for that row; irrelevant language is suppressed per case.",
+    "rationale": "Case-by-case, not a globally imposed template. The same field yields \"normal temperature\", \"light fever\", or \"severe fever\" depending on the row's own value; a fragment whose predicate is false renders empty and contributes nothing to that patient's report.",
+    "category": "report-derivation",
+    "name": "A fragment's language only appears when its predicates hold for that row; irrelevant language is suppressed per case.",
+    "relative_path": "/admin/axioms/ax-report-predicate-gated"
+  },
+  {
+    "axiom_id": "ax-report-reuse-global-phrases",
+    "statement": "Common, reusable language lives once in the __meta settings table and is referenced by fragments; it is not re-implemented per case.",
+    "rationale": "Literal global phrases (\"The patient presented with\u2026\") and shared banding vocabulary belong in __meta so they are authored and corrected in one place. Fragments reference them; the per-row logic stays contextual while the wording stays DRY.",
+    "category": "report-derivation",
+    "name": "Common, reusable language lives once in the __meta settings table and is referenced by fragments; it is not re-implemented per case.",
+    "relative_path": "/admin/axioms/ax-report-reuse-global-phrases"
+  },
+  {
+    "axiom_id": "ax-report-total-coverage",
+    "statement": "Every word the patient gave us, and every node linked to that patient in the DAG down to ground truth, is represented somewhere in that patient's report.",
+    "rationale": "Completeness is the whole point: nothing the patient said and no derived fact may silently vanish from the writeup. If a value mattered enough to enter the DAG, it earns a sentence (or a deliberate, predicate-suppressed absence).",
+    "category": "report-derivation",
+    "name": "Every word the patient gave us, and every node linked to that patient in the DAG down to ground truth, is represented somewhere in that patient's report.",
+    "relative_path": "/admin/axioms/ax-report-total-coverage"
+  },
+  {
+    "axiom_id": "ax-schema-rulespeak-report-derived",
+    "statement": "The schema may be expressed in RuleSpeak-style language, but the diagnosis report itself is derived (rendered), not declared.",
+    "rationale": "RuleSpeak documents the rules; it is not the patient-facing artifact. The report is a rendered projection of each patient's row values through the fragment fields \u2014 generated by a thin renderer that only concatenates already-derived, predicate-gated fragments in order.",
+    "category": "report-derivation",
+    "name": "The schema may be expressed in RuleSpeak-style language, but the diagnosis report itself is derived (rendered), not declared.",
+    "relative_path": "/admin/axioms/ax-schema-rulespeak-report-derived"
+  }
+]

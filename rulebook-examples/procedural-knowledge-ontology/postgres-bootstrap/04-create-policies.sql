@@ -89,6 +89,10 @@ ALTER TABLE access_denial_tests ENABLE ROW LEVEL SECURITY;
 ALTER TABLE app_users ENABLE ROW LEVEL SECURITY;
 ALTER TABLE principal_assignments ENABLE ROW LEVEL SECURITY;
 ALTER TABLE issued_tokens ENABLE ROW LEVEL SECURITY;
+ALTER TABLE process_mining_runs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE vocabularies ENABLE ROW LEVEL SECURITY;
+ALTER TABLE vocabulary_terms ENABLE ROW LEVEL SECURITY;
+ALTER TABLE knowledge_broker_links ENABLE ROW LEVEL SECURITY;
 
 -- TODO: Add specific RLS policies based on your security requirements
 -- Example:

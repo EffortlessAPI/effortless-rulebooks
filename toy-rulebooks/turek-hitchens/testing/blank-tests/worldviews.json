@@ -1,0 +1,56 @@
+[
+  {
+    "label": "Agnosticism",
+    "affirms_god": false,
+    "description": "Suspension of judgment; embodied by Jastrow, cited by Turek as a hostile witness for the Big Bang.",
+    "name": null
+  },
+  {
+    "label": "Anti-theism",
+    "affirms_god": false,
+    "championed_by": "christopher-hitchens",
+    "description": "Hitchens's stronger stance: relief that no celestial dictatorship exists, which he would oppose if it did.",
+    "name": null
+  },
+  {
+    "label": "Atheism",
+    "affirms_god": false,
+    "championed_by": "christopher-hitchens",
+    "description": "No advanced argument for God has survived rebuttal; not the dogmatic claim no God could exist.",
+    "name": null
+  },
+  {
+    "label": "Christianity",
+    "affirms_god": true,
+    "championed_by": "frank-turek",
+    "description": "The specific tradition Turek personally holds but brackets in favor of generic theism for the debate.",
+    "name": null
+  },
+  {
+    "label": "Deism",
+    "affirms_god": true,
+    "description": "A designer who set the cosmos in order but does not intervene or reveal itself; Hitchens treats it as separable from theism.",
+    "name": null
+  },
+  {
+    "label": "Humanism",
+    "affirms_god": false,
+    "championed_by": "christopher-hitchens",
+    "description": "Ethics grounded in innate solidarity, empathy, and conscience without divine sanction.",
+    "name": null
+  },
+  {
+    "label": "Materialism",
+    "affirms_god": false,
+    "championed_by": "christopher-hitchens",
+    "description": "Only matter exists; mind, reason, and morality reduce to physical processes. Closely tied to naturalism; Turek's main target.",
+    "name": null
+  },
+  {
+    "label": "Theism",
+    "affirms_god": true,
+    "championed_by": "frank-turek",
+    "description": "A personal God who created and intervenes in the universe, answers prayer, and grounds morality.",
+    "name": null
+  }
+]

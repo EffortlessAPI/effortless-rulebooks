@@ -1,0 +1,67 @@
+[
+  {
+    "name": "biz-cdd",
+    "constraint_key": "biz-cdd",
+    "entity": "Business",
+    "predicate": "MeetsCddRule",
+    "deontic": "MustBeTrue",
+    "severity": "hard",
+    "message": "Beneficial-ownership (CDD) collection is incomplete: no owner crosses the 25% threshold and no control person is designated.",
+    "rule_group": "BSA/AML (CDD)",
+    "source_citation": "FinCEN CDD Rule, 31 CFR 1010.230",
+    "rule_speak_override": null,
+    "is_active": true
+  },
+  {
+    "name": "loan-dscr",
+    "constraint_key": "loan-dscr",
+    "entity": "Loan",
+    "predicate": "DscrInBand",
+    "deontic": "MustBeTrue",
+    "severity": "override",
+    "message": "DSCR is below the 1.20 minimum; a credit-committee waiver is required to fund.",
+    "rule_group": "Credit Policy",
+    "source_citation": "Internal Credit Policy \u00a72.1 (DSCR floor)",
+    "rule_speak_override": null,
+    "is_active": true
+  },
+  {
+    "name": "loan-ltv",
+    "constraint_key": "loan-ltv",
+    "entity": "Loan",
+    "predicate": "LtvInBand",
+    "deontic": "MustBeTrue",
+    "severity": "override",
+    "message": "LTV exceeds the 0.80 ceiling; a credit-committee waiver is required to fund.",
+    "rule_group": "Credit Policy",
+    "source_citation": "Internal Credit Policy \u00a72.2 (LTV ceiling)",
+    "rule_speak_override": null,
+    "is_active": true
+  },
+  {
+    "name": "loan-sod",
+    "constraint_key": "loan-sod",
+    "entity": "Loan",
+    "predicate": "SegregationOfDutiesOk",
+    "deontic": "MustBeTrue",
+    "severity": "hard",
+    "message": "The same user originated and underwrote this loan \u2014 segregation of duties is violated.",
+    "rule_group": "Segregation of Duties",
+    "source_citation": "Internal Credit Policy \u00a74.2",
+    "rule_speak_override": "A loan must not be funded by the same user who originated it: the originating relationship manager and the underwriter must be different users.",
+    "is_active": true
+  },
+  {
+    "name": "loan-watchlist",
+    "constraint_key": "loan-watchlist",
+    "entity": "Loan",
+    "predicate": "OnWatchlist",
+    "deontic": "ShouldBeTrue",
+    "severity": "soft",
+    "message": "This loan is a classified asset or has a breached covenant but is not flagged on the watchlist.",
+    "rule_group": "Portfolio Monitoring",
+    "source_citation": "Internal Portfolio Risk Procedure \u00a76 (watchlist)",
+    "rule_speak_override": null,
+    "is_active": true
+  }
+]

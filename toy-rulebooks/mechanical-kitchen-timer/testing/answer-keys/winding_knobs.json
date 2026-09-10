@@ -6,7 +6,8 @@
     "scale_max": 60,
     "wind_direction": "clockwise",
     "shaft_diameter_mm": 4,
-    "pointer_fixed": true
+    "pointer_fixed": true,
+    "scale_reading": 0
   },
   {
     "winding_knob_id": "Olive's knob",
@@ -15,7 +16,8 @@
     "scale_max": 60,
     "wind_direction": "clockwise",
     "shaft_diameter_mm": 4,
-    "pointer_fixed": true
+    "pointer_fixed": true,
+    "scale_reading": 0
   },
   {
     "winding_knob_id": "Rufus's knob",
@@ -24,7 +26,8 @@
     "scale_max": 60,
     "wind_direction": "clockwise",
     "shaft_diameter_mm": 4,
-    "pointer_fixed": true
+    "pointer_fixed": true,
+    "scale_reading": 0
   },
   {
     "winding_knob_id": "Twigs's knob",
@@ -33,6 +36,7 @@
     "scale_max": 60,
     "wind_direction": "clockwise",
     "shaft_diameter_mm": 4,
-    "pointer_fixed": true
+    "pointer_fixed": true,
+    "scale_reading": 0
   }
 ]
