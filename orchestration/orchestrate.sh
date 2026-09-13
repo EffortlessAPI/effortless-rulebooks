@@ -337,8 +337,8 @@ with open(sys.argv[1]) as f:
     cfg = json.load(f)
 for t in cfg.get("ProjectTranspilers", []):
     cmd = t.get("CommandLine", "")
-    # For proxy transpilers, show the URL path; otherwise use Name
-    m = re.search(r'http://localhost:\d+(/\S*)', cmd)
+    # For repo-local tools on the CLI's host, show the route; otherwise use Name
+    m = re.search(r'http://127\.0\.0\.1:\d+(/[^\s/]+)', cmd)
     display = m.group(1).lstrip("/") if m else t["Name"]
     is_disabled = "true" if t.get("IsDisabled") else "false"
     print(f"{t['Name']}\t{display}\t{is_disabled}")
@@ -352,9 +352,14 @@ project_has_proxy_transpilers() {
     [ -n "$result" ]
 }
 
-# Run a single proxy transpiler by name.
-# Usage: run_proxy_transpiler <name>
-run_proxy_transpiler() {
+# Run exactly ONE registered step: its own CommandLine, from its own
+# RelativePath, which is precisely what `effortless build` does for each step it
+# walks. Never `effortless build -id` from the step's folder: -id is
+# -includeDisabled, and a folder build runs EVERY step registered there, so
+# picking one step used to rerun its siblings and every disabled step beside it
+# (an IsDisabled reverse-sync spoke ran on each pick in /postgres-bootstrap).
+# Usage: run_project_step <name>
+run_project_step() {
     local name="$1"
     local ej
     ej=$(get_active_effortless_json)
@@ -363,111 +368,46 @@ run_proxy_transpiler() {
         return 1
     fi
 
-    local domain_dir
-    domain_dir="$(dirname "$ej")"
+    python3 - "$ej" "$name" <<'PYEOF'
+import json, os, shlex, subprocess, sys
 
-    python3 - "$ej" "$name" "$domain_dir" <<'PYEOF'
-import json, sys, urllib.request, os, re, subprocess
-
-ej_path, name, domain_dir = sys.argv[1], sys.argv[2], sys.argv[3]
+ej_path, name = sys.argv[1], sys.argv[2]
 with open(ej_path) as f:
     cfg = json.load(f)
 
-transpiler = next((t for t in cfg.get("ProjectTranspilers", []) if t["Name"] == name), None)
-if not transpiler:
-    print(f"Transpiler '{name}' not found in ProjectTranspilers")
-    sys.exit(1)
+step = next((t for t in cfg.get("ProjectTranspilers", []) if t["Name"] == name), None)
+if not step:
+    sys.exit(f"Step '{name}' not found in ProjectTranspilers of {ej_path}")
 
-cmd = transpiler.get("CommandLine", "")
-rel_path = transpiler.get("RelativePath", "").lstrip("/")
-run_dir = os.path.join(domain_dir, rel_path) if rel_path else domain_dir
-
-# Proxy transpiler: POST to localhost
-if "localhost:" in cmd:
-    match = re.search(r'(http://localhost:\d+\S*)', cmd)
-    proxy_url = match.group(1) if match else None
-    if not proxy_url:
-        print(f"Could not parse proxy URL from: {cmd}")
-        sys.exit(1)
-    input_match = re.search(r'-i\s+(\S+)', cmd)
-    if not input_match:
-        print(f"ERROR: transpiler '{name}' is missing '-i <rulebook>' in CommandLine: {cmd!r}", file=sys.stderr)
-        print(f"Every proxy transpiler MUST pass -i pointing at the domain's <domain>-rulebook.json. Fix the CommandLine instead of guessing one.", file=sys.stderr)
-        sys.exit(1)
-    input_file = os.path.abspath(os.path.join(run_dir, input_match.group(1)))
-    if not os.path.exists(input_file):
-        print(f"ERROR: rulebook not found at {input_file} (resolved from -i {input_match.group(1)} in run_dir={run_dir}).", file=sys.stderr)
-        sys.exit(1)
-    if os.path.isdir(input_file):
-        print(f"ERROR: -i resolved to a directory, not a file: {input_file}.", file=sys.stderr)
-        sys.exit(1)
-    output_dir = os.path.abspath(run_dir)
-    payload = json.dumps({"inputFile": input_file, "outputDir": output_dir, "clean": False}).encode()
-    req = urllib.request.Request(proxy_url, data=payload,
-        headers={"Content-Type": "application/json", "X-Working-Dir": run_dir}, method="POST")
-    # The proxy ignores the body and the X-Working-Dir header — it reads the
-    # socket-owning process's actual cwd via lsof/ps and demands it be
-    # rulebook-examples/<domain>/<substrate>/. So we must chdir into run_dir
-    # before opening the connection, otherwise the guard fires with
-    # "CLI cwd is not under .../rulebook-examples".
-    os.makedirs(run_dir, exist_ok=True)
-    os.chdir(run_dir)
-    try:
-        with urllib.request.urlopen(req, timeout=120) as resp:
-            result = json.loads(resp.read())
-    except Exception as e:
-        print(f"ERROR calling proxy: {e}")
-        sys.exit(1)
-    output = result.get("output", "") or result.get("error", "")
-    if output:
-        print(output)
-    sys.exit(0 if result.get("success") else 1)
-
-# Standard transpiler: run via effortless build -id from RelativePath dir
-else:
-    os.makedirs(run_dir, exist_ok=True)
-    result = subprocess.run(["effortless", "build", "-id"], cwd=run_dir, text=True)
-    sys.exit(result.returncode)
+cmd = step["CommandLine"]
+run_dir = os.path.join(os.path.dirname(ej_path), step.get("RelativePath", "").strip("/"))
+os.makedirs(run_dir, exist_ok=True)
+print(f"CommandLine:> effortless {cmd}")
+print(f"  (in {run_dir})")
+sys.exit(subprocess.run(["effortless", *shlex.split(cmd)], cwd=run_dir).returncode)
 PYEOF
 }
 
-# Run all NON-DISABLED proxy transpilers for the active project. Transpilers
-# with IsDisabled=true in effortless.json are skipped here (printed as [SKIP]).
-# To run a disabled transpiler, pick it by number from the menu — that path
-# will prompt for confirmation.
+# BUILD: one `effortless build` at the project root. The CLI walks every step in
+# ProjectTranspilers order, skips IsDisabled steps, stops at the first failure,
+# and prints its own per-step summary. To run a disabled step, pick it by number
+# from the menu — that path prompts for confirmation.
 run_project_transpilers() {
-    local transpilers
-    transpilers=$(get_project_transpilers)
-    if [ -z "$transpilers" ]; then
-        echo -e "${YELLOW}No proxy transpilers configured for this project.${NC}"
-        return 0
+    local ej
+    ej=$(get_active_effortless_json)
+    if [ -z "$ej" ]; then
+        echo -e "${RED}No effortless.json for active domain${NC}"
+        return 1
     fi
 
     local domain
     domain=$(get_active_domain)
     echo ""
-    echo -e "${BOLD}${CYAN}Running transpilers for: ${WHITE}${domain}${NC}"
+    echo -e "${BOLD}${CYAN}Building: ${WHITE}${domain}${NC} ${DIM}(effortless build)${NC}"
     echo ""
 
-    local failed=0
-    while IFS=$'\t' read -r internal display is_disabled; do
-        if [ "$is_disabled" = "true" ]; then
-            echo -e "${DIM}⊘ ${display} [SKIP — IsDisabled=true]${NC}"
-            echo ""
-            continue
-        fi
-        echo -e "${CYAN}▶ ${BOLD}${display}${NC}"
-        if run_proxy_transpiler "$internal"; then
-            echo -e "  ${GREEN}✓ ${display} OK${NC}"
-        else
-            echo -e "  ${RED}✗ ${display} FAILED${NC}"
-            failed=$((failed + 1))
-        fi
-        echo ""
-    done <<< "$transpilers"
-
-    if [ $failed -gt 0 ]; then
-        echo -e "${RED}${BOLD}$failed transpiler(s) failed.${NC}"
+    if ! (cd "$(dirname "$ej")" && effortless build); then
+        echo -e "${RED}${BOLD}effortless build failed for ${domain}.${NC}"
         return 1
     fi
     echo -e "${GREEN}${BOLD}All transpilers complete.${NC}"
@@ -2105,7 +2045,7 @@ while true; do
                     echo ""
                     if proxy_is_running; then
                         echo -e "${CYAN}▶ ${BOLD}${SELECTED_DISPLAY}${NC} ${DIM}(#${USER_CHOICE})${NC}"
-                        if run_proxy_transpiler "$SELECTED_NAME"; then
+                        if run_project_step "$SELECTED_NAME"; then
                             echo -e "  ${GREEN}✓ ${SELECTED_DISPLAY} OK${NC}"
                             # BUILD = generate + test + regen report + open.
                             # No exceptions, no conditional skips. If the

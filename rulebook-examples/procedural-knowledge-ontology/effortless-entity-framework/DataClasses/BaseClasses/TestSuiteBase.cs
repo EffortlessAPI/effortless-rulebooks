@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -16,34 +17,39 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string TestSuiteId { get; set; }
 
         // Formula Name (rulebook: ={{Label}})
+        [NotMapped]
         public string? Name
         {
-            get => this.Label; set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Of(this.Label))); set { }
         }
 
         public string? Label { get; set; }
         // Formula TestCount (rulebook: =COUNTIFS(TestCases!{{Suite}}, {{TestSuiteId}}))
+        [NotMapped]
         public decimal? TestCount
         {
-            get => COUNTIFS(TestCases!this.Suite, this.TestSuiteId); set { }
+            get => F.AsDecimal(F.Memo(this, "TestCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<TestCase>(base.SoAContext, "TestCases", __c => __c.TestCases), __r => F.CritField(F.Of(__r.Suite), F.Of(this.TestSuiteId)))))); set { }
         }
 
         // Formula PassCount (rulebook: =COUNTIFS(TestCases!{{PassingSuiteKey}}, {{TestSuiteId}}))
+        [NotMapped]
         public decimal? PassCount
         {
-            get => COUNTIFS(TestCases!this.PassingSuiteKey, this.TestSuiteId); set { }
+            get => F.AsDecimal(F.Memo(this, "PassCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<TestCase>(base.SoAContext, "TestCases", __c => __c.TestCases), __r => F.CritField(F.Of(__r.PassingSuiteKey), F.Of(this.TestSuiteId)))))); set { }
         }
 
         // Formula BlockingFailCount (rulebook: =COUNTIFS(TestCases!{{NeedsAttentionSuiteKey}}, {{TestSuiteId}}))
+        [NotMapped]
         public decimal? BlockingFailCount
         {
-            get => COUNTIFS(TestCases!this.NeedsAttentionSuiteKey, this.TestSuiteId); set { }
+            get => F.AsDecimal(F.Memo(this, "BlockingFailCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<TestCase>(base.SoAContext, "TestCases", __c => __c.TestCases), __r => F.CritField(F.Of(__r.NeedsAttentionSuiteKey), F.Of(this.TestSuiteId)))))); set { }
         }
 
         // Formula IsGreen (rulebook: ={{BlockingFailCount}} = 0)
+        [NotMapped]
         public bool? IsGreen
         {
-            get => this.BlockingFailCount = 0; set { }
+            get => F.AsBool(F.Memo(this, "IsGreen", () => F.Eq(F.Of(this.BlockingFailCount), F.I(0)))); set { }
         }
 
         public string? SemanticTypeIri { get; set; }
@@ -58,7 +64,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_testCases == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -68,11 +74,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.TestCases.Where(x => x.Suite == this.TestSuiteId).ToList<TestCase>();
+                        var items = base.SoAContext.TestCases.Where(x => x.Suite == this.TestSuiteId).ToList<TestCase>();
                         _testCases = new ObservableCollection<TestCase>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _testCases.CollectionChanged += TestCases_CollectionChanged;

@@ -13,10 +13,7 @@ INSERT INTO hello_whos (hello_who_id, name)
 VALUES ('world', 'World') ON CONFLICT (hello_who_id) DO UPDATE SET name = EXCLUDED.name;
 
 INSERT INTO hello_whos (hello_who_id, name)
-VALUES ('bob', 'Bobby') ON CONFLICT (hello_who_id) DO UPDATE SET name = EXCLUDED.name;
-
-INSERT INTO hello_whos (hello_who_id, name)
-VALUES ('bob2', 'Robby') ON CONFLICT (hello_who_id) DO UPDATE SET name = EXCLUDED.name;
+VALUES ('bob', 'Bob') ON CONFLICT (hello_who_id) DO UPDATE SET name = EXCLUDED.name;
 
 INSERT INTO hello_whos (hello_who_id, name)
 VALUES ('everyone', 'Everyone') ON CONFLICT (hello_who_id) DO UPDATE SET name = EXCLUDED.name;

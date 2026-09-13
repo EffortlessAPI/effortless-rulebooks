@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -16,36 +17,41 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string StewardshipAssignmentId { get; set; }
 
         // Formula Name (rulebook: ={{ProcedureVersion}} & " / steward=" & {{StewardRole}})
+        [NotMapped]
         public string? Name
         {
-            get => this.ProcedureVersion + " / steward=" + this.StewardRole; set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.ProcedureVersion)), F.S(" / steward="), F.TextOr(F.Of(this.StewardRole))))); set { }
         }
 
-        public DateTime? ValidFrom { get; set; }
-        public DateTime? ValidTo { get; set; }
+        public DateTimeOffset? ValidFrom { get; set; }
+        public DateTimeOffset? ValidTo { get; set; }
         public int? ReviewCadenceDays { get; set; }
         // Formula CountOfReviewEvents (rulebook: =COUNTIFS(ReviewEvents!{{ProcedureVersion}}, StewardshipAssignments!{{ProcedureVersion}}))
+        [NotMapped]
         public int? CountOfReviewEvents
         {
-            get => this.ReviewEvents == null ? 0 : this.ReviewEvents.Count; set { }
+            get => F.AsInt(F.Memo(this, "CountOfReviewEvents", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<ReviewEvent>(base.SoAContext, "ReviewEvents", __c => __c.ReviewEvents), __r => F.CritField(F.Of(__r.ProcedureVersion), F.Of(this.ProcedureVersion))))))); set { }
         }
 
         // Formula HasEverBeenReviewed (rulebook: ={{CountOfReviewEvents}} > 0)
+        [NotMapped]
         public bool? HasEverBeenReviewed
         {
-            get => this.CountOfReviewEvents > 0; set { }
+            get => F.AsBool(F.Memo(this, "HasEverBeenReviewed", () => F.Cmp(F.Of(this.CountOfReviewEvents), ">", F.I(0)))); set { }
         }
 
         // Formula AsOfInstant (rulebook: =INDEX(EvaluationContexts!{{AsOfInstant}}, MATCH({{EvaluationContext}}, EvaluationContexts!{{EvaluationContextId}}, 0)))
-        public DateTime? AsOfInstant
+        [NotMapped]
+        public DateTimeOffset? AsOfInstant
         {
-            get => INDEX(EvaluationContexts!this.AsOfInstant, MATCH(this.EvaluationContext, EvaluationContexts!this.EvaluationContextId, 0)); set { }
+            get => F.AsDateTime(F.Memo(this, "AsOfInstant", () => F.Lookup<EvaluationContext>(this, "EvaluationContexts", "EvaluationContextId", __c => __c.EvaluationContexts, __r => F.Of(__r.EvaluationContextId), F.Of(this.EvaluationContext), __r => F.Of(__r.AsOfInstant), () => F.Of(new EvaluationContext().AsOfInstant)))); set { }
         }
 
         // Formula IsCurrentAssignment (rulebook: =AND({{ValidFrom}} <= {{AsOfInstant}}, OR({{ValidTo}} = "", {{ValidTo}} > {{AsOfInstant}})))
+        [NotMapped]
         public bool? IsCurrentAssignment
         {
-            get => AND(this.ValidFrom <= this.AsOfInstant, OR(this.ValidTo = "", this.ValidTo > this.AsOfInstant)); set { }
+            get => F.AsBool(F.Memo(this, "IsCurrentAssignment", () => F.And(F.Bool3(F.Cmp(F.Nullif(F.Of(this.ValidFrom)), "<=", F.Of(this.AsOfInstant))), F.Bool3(F.Or(F.Bool3(F.IsBlank(F.Of(this.ValidTo))), F.Bool3(F.Cmp(F.Nullif(F.Of(this.ValidTo)), ">", F.Of(this.AsOfInstant)))))))); set { }
         }
 
         public string? SemanticTypeIri { get; set; }
@@ -55,37 +61,46 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string? AuthorityRole { get; set; }
         public string? EvaluationContext { get; set; }
 
-        private ProcedureVersion _procedureVersion;
+        private ProcedureVersion _procedureVersionRef;
 
         [ForeignKey("ProcedureVersion")]
-        public virtual ProcedureVersion ProcedureVersion
+        public virtual ProcedureVersion ProcedureVersionRef
         {
             get
             {
-                if (_procedureVersion == null && !string.IsNullOrEmpty(ProcedureVersion))
+                if (_procedureVersionRef == null && !string.IsNullOrEmpty(ProcedureVersion))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access ProcedureVersion - no database context is set. ProcedureVersion: " + ProcedureVersion + ".");
+                            throw new InvalidOperationException("Cannot access ProcedureVersionRef - no database context is set. ProcedureVersion: " + ProcedureVersion + ".");
                         }
                         return null;
                     }
-                    _procedureVersion = Context.ProcedureVersions.Find(ProcedureVersion);
-                    if (_procedureVersion != null)
+                    _procedureVersionRef = base.SoAContext.ProcedureVersions.Find(ProcedureVersion);
+                    if (_procedureVersionRef != null)
                     {
-                        Context.Attach(_procedureVersion);
+                        base.SoAContext.Attach(_procedureVersionRef);
                     }
                 }
-                return _procedureVersion;
+                return _procedureVersionRef;
             }
             set
             {
-                if (_procedureVersion != value)
+                if (_procedureVersionRef != value)
                 {
-                    _procedureVersion = value;
-                    ProcedureVersion = _procedureVersion == null ? default : _procedureVersion.ProcedureVersionId;
+                    _procedureVersionRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_procedureVersionRef != null)
+                    {
+                        ProcedureVersion = _procedureVersionRef.ProcedureVersionId;
+                    }
                 }
             }
         }
@@ -99,7 +114,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_role == null && !string.IsNullOrEmpty(StewardRole))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -107,10 +122,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                         }
                         return null;
                     }
-                    _role = Context.Roles.Find(StewardRole);
+                    _role = base.SoAContext.Roles.Find(StewardRole);
                     if (_role != null)
                     {
-                        Context.Attach(_role);
+                        base.SoAContext.Attach(_role);
                     }
                 }
                 return _role;
@@ -120,77 +135,104 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                 if (_role != value)
                 {
                     _role = value;
-                    StewardRole = _role == null ? default : _role.RoleId;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_role != null)
+                    {
+                        StewardRole = _role.RoleId;
+                    }
                 }
             }
         }
 
-        private Role _role;
+        private Role _roleRef;
 
         [ForeignKey("AuthorityRole")]
-        public virtual Role Role
+        public virtual Role RoleRef
         {
             get
             {
-                if (_role == null && !string.IsNullOrEmpty(AuthorityRole))
+                if (_roleRef == null && !string.IsNullOrEmpty(AuthorityRole))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access Role - no database context is set. AuthorityRole: " + AuthorityRole + ".");
+                            throw new InvalidOperationException("Cannot access RoleRef - no database context is set. AuthorityRole: " + AuthorityRole + ".");
                         }
                         return null;
                     }
-                    _role = Context.Roles.Find(AuthorityRole);
-                    if (_role != null)
+                    _roleRef = base.SoAContext.Roles.Find(AuthorityRole);
+                    if (_roleRef != null)
                     {
-                        Context.Attach(_role);
+                        base.SoAContext.Attach(_roleRef);
                     }
                 }
-                return _role;
+                return _roleRef;
             }
             set
             {
-                if (_role != value)
+                if (_roleRef != value)
                 {
-                    _role = value;
-                    AuthorityRole = _role == null ? default : _role.RoleId;
+                    _roleRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_roleRef != null)
+                    {
+                        AuthorityRole = _roleRef.RoleId;
+                    }
                 }
             }
         }
 
-        private EvaluationContext _evaluationContext;
+        private EvaluationContext _evaluationContextRef;
 
         [ForeignKey("EvaluationContext")]
-        public virtual EvaluationContext EvaluationContext
+        public virtual EvaluationContext EvaluationContextRef
         {
             get
             {
-                if (_evaluationContext == null && !string.IsNullOrEmpty(EvaluationContext))
+                if (_evaluationContextRef == null && !string.IsNullOrEmpty(EvaluationContext))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access EvaluationContext - no database context is set. EvaluationContext: " + EvaluationContext + ".");
+                            throw new InvalidOperationException("Cannot access EvaluationContextRef - no database context is set. EvaluationContext: " + EvaluationContext + ".");
                         }
                         return null;
                     }
-                    _evaluationContext = Context.EvaluationContexts.Find(EvaluationContext);
-                    if (_evaluationContext != null)
+                    _evaluationContextRef = base.SoAContext.EvaluationContexts.Find(EvaluationContext);
+                    if (_evaluationContextRef != null)
                     {
-                        Context.Attach(_evaluationContext);
+                        base.SoAContext.Attach(_evaluationContextRef);
                     }
                 }
-                return _evaluationContext;
+                return _evaluationContextRef;
             }
             set
             {
-                if (_evaluationContext != value)
+                if (_evaluationContextRef != value)
                 {
-                    _evaluationContext = value;
-                    EvaluationContext = _evaluationContext == null ? default : _evaluationContext.EvaluationContextId;
+                    _evaluationContextRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_evaluationContextRef != null)
+                    {
+                        EvaluationContext = _evaluationContextRef.EvaluationContextId;
+                    }
                 }
             }
         }
@@ -198,10 +240,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         protected override void LazyLoadProperties()
         {
-            _ = this.ProcedureVersion;
+            _ = this.ProcedureVersionRef;
             _ = this.Role;
-            _ = this.Role;
-            _ = this.EvaluationContext;
+            _ = this.RoleRef;
+            _ = this.EvaluationContextRef;
         }
 
         public override string ToString()

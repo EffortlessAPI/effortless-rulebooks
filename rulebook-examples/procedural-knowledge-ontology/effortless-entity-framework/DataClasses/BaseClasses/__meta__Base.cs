@@ -6,17 +6,21 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
     [Table("__meta__")]
     public class __meta__Base : SoAEntityBase
     {
+        [Key]
         public string MetaKey { get; set; }
+
         // Formula Name (rulebook: ={{MetaKey}})
-        public string Name
+        [NotMapped]
+        public string? Name
         {
-            get => this.MetaKey; set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Of(this.MetaKey))); set { }
         }
 
         public string ValueType { get; set; }

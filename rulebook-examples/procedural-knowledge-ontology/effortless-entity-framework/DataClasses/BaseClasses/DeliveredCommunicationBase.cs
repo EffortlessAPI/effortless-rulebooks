@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -16,46 +17,52 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string DeliveredCommunicationId { get; set; }
 
         // Formula Name (rulebook: ={{Channel}} & " -> " & {{RecipientKey}} & " @ " & {{SentAt}})
+        [NotMapped]
         public string? Name
         {
-            get => this.Channel + " -> " + this.RecipientKey + " @ " + this.SentAt; set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.Channel)), F.S(" -> "), F.TextOr(F.Of(this.RecipientKey)), F.S(" @ "), F.TimestamptzText(F.Of(this.SentAt))))); set { }
         }
 
         public string? Channel { get; set; }
         public string? RecipientKey { get; set; }
-        public DateTime? SentAt { get; set; }
+        public DateTimeOffset? SentAt { get; set; }
         public string? RenderedContentHash { get; set; }
         public string? ApprovedContentHash { get; set; }
         public string? DeliveryStatus { get; set; }
         public string? SemanticTypeIri { get; set; }
         // Formula HasAuthorization (rulebook: ={{AuthorizingStepExecution}} <> "")
+        [NotMapped]
         public bool? HasAuthorization
         {
-            get => this.AuthorizingStepExecution <> ""; set { }
+            get => F.AsBool(F.Memo(this, "HasAuthorization", () => F.IsNotBlank(F.Of(this.AuthorizingStepExecution)))); set { }
         }
 
         // Formula ContentMatchesApproval (rulebook: ={{RenderedContentHash}} = {{ApprovedContentHash}})
+        [NotMapped]
         public bool? ContentMatchesApproval
         {
-            get => this.RenderedContentHash = this.ApprovedContentHash; set { }
+            get => F.AsBool(F.Memo(this, "ContentMatchesApproval", () => F.Eq(F.Nullif(F.Of(this.RenderedContentHash)), F.Nullif(F.Of(this.ApprovedContentHash))))); set { }
         }
 
         // Formula AuthorizedAt (rulebook: =INDEX(StepExecutions!{{EndedAt}}, MATCH({{AuthorizingStepExecution}}, StepExecutions!{{StepExecutionId}}, 0)))
-        public DateTime? AuthorizedAt
+        [NotMapped]
+        public DateTimeOffset? AuthorizedAt
         {
-            get => INDEX(StepExecutions!this.EndedAt, MATCH(this.AuthorizingStepExecution, StepExecutions!this.StepExecutionId, 0)); set { }
+            get => F.AsDateTime(F.Memo(this, "AuthorizedAt", () => F.Lookup<StepExecution>(this, "StepExecutions", "StepExecutionId", __c => __c.StepExecutions, __r => F.Of(__r.StepExecutionId), F.Of(this.AuthorizingStepExecution), __r => F.Of(__r.EndedAt), () => F.Of(new StepExecution().EndedAt)))); set { }
         }
 
         // Formula WasApprovedBeforeSending (rulebook: ={{AuthorizedAt}} <= {{SentAt}})
+        [NotMapped]
         public bool? WasApprovedBeforeSending
         {
-            get => this.AuthorizedAt <= this.SentAt; set { }
+            get => F.AsBool(F.Memo(this, "WasApprovedBeforeSending", () => F.Cmp(F.Of(this.AuthorizedAt), "<=", F.Nullif(F.Of(this.SentAt))))); set { }
         }
 
         // Formula IsDefensible (rulebook: =AND({{HasAuthorization}}, {{ContentMatchesApproval}}, {{WasApprovedBeforeSending}}))
+        [NotMapped]
         public bool? IsDefensible
         {
-            get => AND(this.HasAuthorization, this.ContentMatchesApproval, this.WasApprovedBeforeSending); set { }
+            get => F.AsBool(F.Memo(this, "IsDefensible", () => F.And(F.Bool3(F.Of(this.HasAuthorization)), F.Bool3(F.Of(this.ContentMatchesApproval)), F.Bool3(F.Of(this.WasApprovedBeforeSending))))); set { }
         }
 
 
@@ -64,37 +71,46 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string? AuthorizingStepExecution { get; set; }
         public string? MessageTemplate { get; set; }
 
-        private ProcedureExecution _procedureExecution;
+        private ProcedureExecution _procedureExecutionRef;
 
         [ForeignKey("ProcedureExecution")]
-        public virtual ProcedureExecution ProcedureExecution
+        public virtual ProcedureExecution ProcedureExecutionRef
         {
             get
             {
-                if (_procedureExecution == null && !string.IsNullOrEmpty(ProcedureExecution))
+                if (_procedureExecutionRef == null && !string.IsNullOrEmpty(ProcedureExecution))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access ProcedureExecution - no database context is set. ProcedureExecution: " + ProcedureExecution + ".");
+                            throw new InvalidOperationException("Cannot access ProcedureExecutionRef - no database context is set. ProcedureExecution: " + ProcedureExecution + ".");
                         }
                         return null;
                     }
-                    _procedureExecution = Context.ProcedureExecutions.Find(ProcedureExecution);
-                    if (_procedureExecution != null)
+                    _procedureExecutionRef = base.SoAContext.ProcedureExecutions.Find(ProcedureExecution);
+                    if (_procedureExecutionRef != null)
                     {
-                        Context.Attach(_procedureExecution);
+                        base.SoAContext.Attach(_procedureExecutionRef);
                     }
                 }
-                return _procedureExecution;
+                return _procedureExecutionRef;
             }
             set
             {
-                if (_procedureExecution != value)
+                if (_procedureExecutionRef != value)
                 {
-                    _procedureExecution = value;
-                    ProcedureExecution = _procedureExecution == null ? default : _procedureExecution.ProcedureExecutionId;
+                    _procedureExecutionRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_procedureExecutionRef != null)
+                    {
+                        ProcedureExecution = _procedureExecutionRef.ProcedureExecutionId;
+                    }
                 }
             }
         }
@@ -108,7 +124,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_stepExecution == null && !string.IsNullOrEmpty(SendingStepExecution))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -116,10 +132,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                         }
                         return null;
                     }
-                    _stepExecution = Context.StepExecutions.Find(SendingStepExecution);
+                    _stepExecution = base.SoAContext.StepExecutions.Find(SendingStepExecution);
                     if (_stepExecution != null)
                     {
-                        Context.Attach(_stepExecution);
+                        base.SoAContext.Attach(_stepExecution);
                     }
                 }
                 return _stepExecution;
@@ -129,77 +145,104 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                 if (_stepExecution != value)
                 {
                     _stepExecution = value;
-                    SendingStepExecution = _stepExecution == null ? default : _stepExecution.StepExecutionId;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_stepExecution != null)
+                    {
+                        SendingStepExecution = _stepExecution.StepExecutionId;
+                    }
                 }
             }
         }
 
-        private StepExecution _stepExecution;
+        private StepExecution _stepExecutionRef;
 
         [ForeignKey("AuthorizingStepExecution")]
-        public virtual StepExecution StepExecution
+        public virtual StepExecution StepExecutionRef
         {
             get
             {
-                if (_stepExecution == null && !string.IsNullOrEmpty(AuthorizingStepExecution))
+                if (_stepExecutionRef == null && !string.IsNullOrEmpty(AuthorizingStepExecution))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access StepExecution - no database context is set. AuthorizingStepExecution: " + AuthorizingStepExecution + ".");
+                            throw new InvalidOperationException("Cannot access StepExecutionRef - no database context is set. AuthorizingStepExecution: " + AuthorizingStepExecution + ".");
                         }
                         return null;
                     }
-                    _stepExecution = Context.StepExecutions.Find(AuthorizingStepExecution);
-                    if (_stepExecution != null)
+                    _stepExecutionRef = base.SoAContext.StepExecutions.Find(AuthorizingStepExecution);
+                    if (_stepExecutionRef != null)
                     {
-                        Context.Attach(_stepExecution);
+                        base.SoAContext.Attach(_stepExecutionRef);
                     }
                 }
-                return _stepExecution;
+                return _stepExecutionRef;
             }
             set
             {
-                if (_stepExecution != value)
+                if (_stepExecutionRef != value)
                 {
-                    _stepExecution = value;
-                    AuthorizingStepExecution = _stepExecution == null ? default : _stepExecution.StepExecutionId;
+                    _stepExecutionRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_stepExecutionRef != null)
+                    {
+                        AuthorizingStepExecution = _stepExecutionRef.StepExecutionId;
+                    }
                 }
             }
         }
 
-        private MessageTemplate _messageTemplate;
+        private MessageTemplate _messageTemplateRef;
 
         [ForeignKey("MessageTemplate")]
-        public virtual MessageTemplate MessageTemplate
+        public virtual MessageTemplate MessageTemplateRef
         {
             get
             {
-                if (_messageTemplate == null && !string.IsNullOrEmpty(MessageTemplate))
+                if (_messageTemplateRef == null && !string.IsNullOrEmpty(MessageTemplate))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access MessageTemplate - no database context is set. MessageTemplate: " + MessageTemplate + ".");
+                            throw new InvalidOperationException("Cannot access MessageTemplateRef - no database context is set. MessageTemplate: " + MessageTemplate + ".");
                         }
                         return null;
                     }
-                    _messageTemplate = Context.MessageTemplates.Find(MessageTemplate);
-                    if (_messageTemplate != null)
+                    _messageTemplateRef = base.SoAContext.MessageTemplates.Find(MessageTemplate);
+                    if (_messageTemplateRef != null)
                     {
-                        Context.Attach(_messageTemplate);
+                        base.SoAContext.Attach(_messageTemplateRef);
                     }
                 }
-                return _messageTemplate;
+                return _messageTemplateRef;
             }
             set
             {
-                if (_messageTemplate != value)
+                if (_messageTemplateRef != value)
                 {
-                    _messageTemplate = value;
-                    MessageTemplate = _messageTemplate == null ? default : _messageTemplate.MessageTemplateId;
+                    _messageTemplateRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_messageTemplateRef != null)
+                    {
+                        MessageTemplate = _messageTemplateRef.MessageTemplateId;
+                    }
                 }
             }
         }
@@ -207,10 +250,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         protected override void LazyLoadProperties()
         {
-            _ = this.ProcedureExecution;
+            _ = this.ProcedureExecutionRef;
             _ = this.StepExecution;
-            _ = this.StepExecution;
-            _ = this.MessageTemplate;
+            _ = this.StepExecutionRef;
+            _ = this.MessageTemplateRef;
         }
 
         public override string ToString()

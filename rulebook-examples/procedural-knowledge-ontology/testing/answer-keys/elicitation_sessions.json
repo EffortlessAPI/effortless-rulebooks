@@ -11,7 +11,7 @@
     "status": "Approved",
     "semantic_type_iri": "http://www.w3.org/ns/prov#Activity",
     "evaluation_context": "eval-current",
-    "name": "Shadowing / 2026-04-03 09:00:00-05",
+    "name": "Shadowing / 2026-04-03T09:00:00-05:00",
     "as_of_instant": "2026-07-19T13:00:00-05:00",
     "days_since_elicited": 107,
     "is_single_witness_method": true,
@@ -34,16 +34,16 @@
     "status": "Approved",
     "semantic_type_iri": "http://www.w3.org/ns/prov#Activity",
     "evaluation_context": "eval-current",
-    "name": "PractitionerInterview / 2026-05-12 13:00:00-05",
+    "name": "PractitionerInterview / 2026-05-12T13:00:00-05:00",
     "as_of_instant": "2026-07-19T13:00:00-05:00",
-    "days_since_elicited": 68,
+    "days_since_elicited": 67,
     "is_single_witness_method": true,
     "practitioner_is_still_engaged": true,
     "valid_fragments_produced": 1,
     "is_high_yield_session": false,
     "is_concentrated_single_witness": false,
     "is_stale_concentrated_witness": false,
-    "concentrated_session_version_key": ""
+    "concentrated_session_version_key": null
   },
   {
     "elicitation_session_id": "elicit-policy-workshop",
@@ -57,15 +57,15 @@
     "status": "Approved",
     "semantic_type_iri": "http://www.w3.org/ns/prov#Activity",
     "evaluation_context": "eval-current",
-    "name": "FacilitatedWorkshop / 2026-05-10 10:00:00-05",
+    "name": "FacilitatedWorkshop / 2026-05-10T10:00:00-05:00",
     "as_of_instant": "2026-07-19T13:00:00-05:00",
-    "days_since_elicited": 70,
+    "days_since_elicited": 69,
     "is_single_witness_method": false,
     "practitioner_is_still_engaged": true,
     "valid_fragments_produced": 1,
     "is_high_yield_session": false,
     "is_concentrated_single_witness": false,
     "is_stale_concentrated_witness": false,
-    "concentrated_session_version_key": ""
+    "concentrated_session_version_key": null
   }
 ]

@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -16,13 +17,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string EvaluationContextId { get; set; }
 
         // Formula Name (rulebook: ={{Label}} & " @ " & {{AsOfInstant}})
+        [NotMapped]
         public string? Name
         {
-            get => this.Label + " @ " + this.AsOfInstant; set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.Label)), F.S(" @ "), F.TimestamptzText(F.Of(this.AsOfInstant))))); set { }
         }
 
         public string? Label { get; set; }
-        public DateTime AsOfInstant { get; set; }
+        public DateTimeOffset AsOfInstant { get; set; }
         public bool? IsCurrent { get; set; }
         public string? Rationale { get; set; }
         public string? SemanticTypeIri { get; set; }
@@ -30,14 +32,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<RoleAssignment> _roleAssignments;
 
-        [InverseProperty("EvaluationContext")]
+        [InverseProperty("EvaluationContextRef")]
         public virtual ObservableCollection<RoleAssignment> RoleAssignments
         {
             get
             {
                 if (_roleAssignments == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -47,11 +49,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.RoleAssignments.Where(x => x.EvaluationContext == this.EvaluationContextId).ToList<RoleAssignment>();
+                        var items = base.SoAContext.RoleAssignments.Where(x => x.EvaluationContext == this.EvaluationContextId).ToList<RoleAssignment>();
                         _roleAssignments = new ObservableCollection<RoleAssignment>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _roleAssignments.CollectionChanged += RoleAssignments_CollectionChanged;
@@ -85,14 +87,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<ProcedureVersion> _procedureVersions;
 
-        [InverseProperty("EvaluationContext")]
+        [InverseProperty("EvaluationContextRef")]
         public virtual ObservableCollection<ProcedureVersion> ProcedureVersions
         {
             get
             {
                 if (_procedureVersions == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -102,11 +104,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.ProcedureVersions.Where(x => x.EvaluationContext == this.EvaluationContextId).ToList<ProcedureVersion>();
+                        var items = base.SoAContext.ProcedureVersions.Where(x => x.EvaluationContext == this.EvaluationContextId).ToList<ProcedureVersion>();
                         _procedureVersions = new ObservableCollection<ProcedureVersion>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _procedureVersions.CollectionChanged += ProcedureVersions_CollectionChanged;
@@ -140,14 +142,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<ElicitationSession> _elicitationSessions;
 
-        [InverseProperty("EvaluationContext")]
+        [InverseProperty("EvaluationContextRef")]
         public virtual ObservableCollection<ElicitationSession> ElicitationSessions
         {
             get
             {
                 if (_elicitationSessions == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -157,11 +159,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.ElicitationSessions.Where(x => x.EvaluationContext == this.EvaluationContextId).ToList<ElicitationSession>();
+                        var items = base.SoAContext.ElicitationSessions.Where(x => x.EvaluationContext == this.EvaluationContextId).ToList<ElicitationSession>();
                         _elicitationSessions = new ObservableCollection<ElicitationSession>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _elicitationSessions.CollectionChanged += ElicitationSessions_CollectionChanged;
@@ -195,14 +197,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<KnowledgeFragment> _knowledgeFragments;
 
-        [InverseProperty("EvaluationContext")]
+        [InverseProperty("EvaluationContextRef")]
         public virtual ObservableCollection<KnowledgeFragment> KnowledgeFragments
         {
             get
             {
                 if (_knowledgeFragments == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -212,11 +214,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.KnowledgeFragments.Where(x => x.EvaluationContext == this.EvaluationContextId).ToList<KnowledgeFragment>();
+                        var items = base.SoAContext.KnowledgeFragments.Where(x => x.EvaluationContext == this.EvaluationContextId).ToList<KnowledgeFragment>();
                         _knowledgeFragments = new ObservableCollection<KnowledgeFragment>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _knowledgeFragments.CollectionChanged += KnowledgeFragments_CollectionChanged;
@@ -250,14 +252,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<KnowledgeGap> _knowledgeGaps;
 
-        [InverseProperty("EvaluationContext")]
+        [InverseProperty("EvaluationContextRef")]
         public virtual ObservableCollection<KnowledgeGap> KnowledgeGaps
         {
             get
             {
                 if (_knowledgeGaps == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -267,11 +269,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.KnowledgeGaps.Where(x => x.EvaluationContext == this.EvaluationContextId).ToList<KnowledgeGap>();
+                        var items = base.SoAContext.KnowledgeGaps.Where(x => x.EvaluationContext == this.EvaluationContextId).ToList<KnowledgeGap>();
                         _knowledgeGaps = new ObservableCollection<KnowledgeGap>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _knowledgeGaps.CollectionChanged += KnowledgeGaps_CollectionChanged;
@@ -305,14 +307,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<StewardshipAssignment> _stewardshipAssignments;
 
-        [InverseProperty("EvaluationContext")]
+        [InverseProperty("EvaluationContextRef")]
         public virtual ObservableCollection<StewardshipAssignment> StewardshipAssignments
         {
             get
             {
                 if (_stewardshipAssignments == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -322,11 +324,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.StewardshipAssignments.Where(x => x.EvaluationContext == this.EvaluationContextId).ToList<StewardshipAssignment>();
+                        var items = base.SoAContext.StewardshipAssignments.Where(x => x.EvaluationContext == this.EvaluationContextId).ToList<StewardshipAssignment>();
                         _stewardshipAssignments = new ObservableCollection<StewardshipAssignment>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _stewardshipAssignments.CollectionChanged += StewardshipAssignments_CollectionChanged;
@@ -360,14 +362,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<ChangeRequest> _changeRequests;
 
-        [InverseProperty("EvaluationContext")]
+        [InverseProperty("EvaluationContextRef")]
         public virtual ObservableCollection<ChangeRequest> ChangeRequests
         {
             get
             {
                 if (_changeRequests == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -377,11 +379,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.ChangeRequests.Where(x => x.EvaluationContext == this.EvaluationContextId).ToList<ChangeRequest>();
+                        var items = base.SoAContext.ChangeRequests.Where(x => x.EvaluationContext == this.EvaluationContextId).ToList<ChangeRequest>();
                         _changeRequests = new ObservableCollection<ChangeRequest>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _changeRequests.CollectionChanged += ChangeRequests_CollectionChanged;
@@ -415,14 +417,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<ReviewEvent> _reviewEvents;
 
-        [InverseProperty("EvaluationContext")]
+        [InverseProperty("EvaluationContextRef")]
         public virtual ObservableCollection<ReviewEvent> ReviewEvents
         {
             get
             {
                 if (_reviewEvents == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -432,11 +434,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.ReviewEvents.Where(x => x.EvaluationContext == this.EvaluationContextId).ToList<ReviewEvent>();
+                        var items = base.SoAContext.ReviewEvents.Where(x => x.EvaluationContext == this.EvaluationContextId).ToList<ReviewEvent>();
                         _reviewEvents = new ObservableCollection<ReviewEvent>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _reviewEvents.CollectionChanged += ReviewEvents_CollectionChanged;
@@ -470,14 +472,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<OperationalBinding> _operationalBindings;
 
-        [InverseProperty("EvaluationContext")]
+        [InverseProperty("EvaluationContextRef")]
         public virtual ObservableCollection<OperationalBinding> OperationalBindings
         {
             get
             {
                 if (_operationalBindings == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -487,11 +489,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.OperationalBindings.Where(x => x.EvaluationContext == this.EvaluationContextId).ToList<OperationalBinding>();
+                        var items = base.SoAContext.OperationalBindings.Where(x => x.EvaluationContext == this.EvaluationContextId).ToList<OperationalBinding>();
                         _operationalBindings = new ObservableCollection<OperationalBinding>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _operationalBindings.CollectionChanged += OperationalBindings_CollectionChanged;
@@ -525,14 +527,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<MessageDelivery> _messageDeliveries;
 
-        [InverseProperty("EvaluationContext")]
+        [InverseProperty("EvaluationContextRef")]
         public virtual ObservableCollection<MessageDelivery> MessageDeliveries
         {
             get
             {
                 if (_messageDeliveries == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -542,11 +544,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.MessageDeliveries.Where(x => x.EvaluationContext == this.EvaluationContextId).ToList<MessageDelivery>();
+                        var items = base.SoAContext.MessageDeliveries.Where(x => x.EvaluationContext == this.EvaluationContextId).ToList<MessageDelivery>();
                         _messageDeliveries = new ObservableCollection<MessageDelivery>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _messageDeliveries.CollectionChanged += MessageDeliveries_CollectionChanged;
@@ -580,14 +582,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<SendIntent> _sendIntents;
 
-        [InverseProperty("EvaluationContext")]
+        [InverseProperty("EvaluationContextRef")]
         public virtual ObservableCollection<SendIntent> SendIntents
         {
             get
             {
                 if (_sendIntents == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -597,11 +599,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.SendIntents.Where(x => x.EvaluationContext == this.EvaluationContextId).ToList<SendIntent>();
+                        var items = base.SoAContext.SendIntents.Where(x => x.EvaluationContext == this.EvaluationContextId).ToList<SendIntent>();
                         _sendIntents = new ObservableCollection<SendIntent>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _sendIntents.CollectionChanged += SendIntents_CollectionChanged;
@@ -635,14 +637,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<AuthorityBoundary> _authorityBoundaries;
 
-        [InverseProperty("EvaluationContext")]
+        [InverseProperty("EvaluationContextRef")]
         public virtual ObservableCollection<AuthorityBoundary> AuthorityBoundaries
         {
             get
             {
                 if (_authorityBoundaries == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -652,11 +654,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.AuthorityBoundaries.Where(x => x.EvaluationContext == this.EvaluationContextId).ToList<AuthorityBoundary>();
+                        var items = base.SoAContext.AuthorityBoundaries.Where(x => x.EvaluationContext == this.EvaluationContextId).ToList<AuthorityBoundary>();
                         _authorityBoundaries = new ObservableCollection<AuthorityBoundary>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _authorityBoundaries.CollectionChanged += AuthorityBoundaries_CollectionChanged;
@@ -690,14 +692,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<ProcessMiningRun> _processMiningRuns;
 
-        [InverseProperty("EvaluationContext")]
+        [InverseProperty("EvaluationContextRef")]
         public virtual ObservableCollection<ProcessMiningRun> ProcessMiningRuns
         {
             get
             {
                 if (_processMiningRuns == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -707,11 +709,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.ProcessMiningRuns.Where(x => x.EvaluationContext == this.EvaluationContextId).ToList<ProcessMiningRun>();
+                        var items = base.SoAContext.ProcessMiningRuns.Where(x => x.EvaluationContext == this.EvaluationContextId).ToList<ProcessMiningRun>();
                         _processMiningRuns = new ObservableCollection<ProcessMiningRun>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _processMiningRuns.CollectionChanged += ProcessMiningRuns_CollectionChanged;
@@ -745,14 +747,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<KnowledgeBrokerLink> _knowledgeBrokerLinks;
 
-        [InverseProperty("EvaluationContext")]
+        [InverseProperty("EvaluationContextRef")]
         public virtual ObservableCollection<KnowledgeBrokerLink> KnowledgeBrokerLinks
         {
             get
             {
                 if (_knowledgeBrokerLinks == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -762,11 +764,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.KnowledgeBrokerLinks.Where(x => x.EvaluationContext == this.EvaluationContextId).ToList<KnowledgeBrokerLink>();
+                        var items = base.SoAContext.KnowledgeBrokerLinks.Where(x => x.EvaluationContext == this.EvaluationContextId).ToList<KnowledgeBrokerLink>();
                         _knowledgeBrokerLinks = new ObservableCollection<KnowledgeBrokerLink>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _knowledgeBrokerLinks.CollectionChanged += KnowledgeBrokerLinks_CollectionChanged;

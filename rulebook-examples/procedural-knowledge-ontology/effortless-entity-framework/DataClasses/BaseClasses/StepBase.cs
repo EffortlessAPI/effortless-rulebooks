@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -16,24 +17,27 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string StepId { get; set; }
 
         // Formula Name (rulebook: ={{StepNumber}} & ". " & {{Title}})
+        [NotMapped]
         public string? Name
         {
-            get => this.StepNumber + ". " + this.Title; set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.StepNumber)), F.S(". "), F.TextOr(F.Of(this.Title))))); set { }
         }
 
         public string? StepNumber { get; set; }
         public string? Title { get; set; }
         public string? StepKind { get; set; }
         // Formula AssignedRoleLabel (rulebook: =INDEX(Roles!{{Label}}, MATCH({{AssignedRole}}, Roles!{{RoleId}}, 0)))
+        [NotMapped]
         public string? AssignedRoleLabel
         {
-            get => INDEX(Roles!this.Label, MATCH(this.AssignedRole, Roles!this.RoleId, 0)); set { }
+            get => F.AsString(F.Memo(this, "AssignedRoleLabel", () => F.Lookup<Role>(this, "Roles", "RoleId", __c => __c.Roles, __r => F.Of(__r.RoleId), F.Of(this.AssignedRole), __r => F.Of(__r.Label), () => F.Of(new Role().Label)))); set { }
         }
 
         // Formula AssignedAgentKind (rulebook: =INDEX(Roles!{{CurrentAgentKind}}, MATCH({{AssignedRole}}, Roles!{{RoleId}}, 0)))
+        [NotMapped]
         public string? AssignedAgentKind
         {
-            get => INDEX(Roles!this.CurrentAgentKind, MATCH(this.AssignedRole, Roles!this.RoleId, 0)); set { }
+            get => F.AsString(F.Memo(this, "AssignedAgentKind", () => F.Lookup<Role>(this, "Roles", "RoleId", __c => __c.Roles, __r => F.Of(__r.RoleId), F.Of(this.AssignedRole), __r => F.Of(__r.CurrentAgentKind), () => F.Of(new Role().CurrentAgentKind)))); set { }
         }
 
         public string? Instruction { get; set; }
@@ -41,166 +45,193 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string? ExpertiseLevel { get; set; }
         public bool? RequiresHumanConfirmation { get; set; }
         // Formula BlockingRequirementCount (rulebook: =COUNTIFS(StepRequirements!{{BlockingStepKey}}, {{StepId}}))
+        [NotMapped]
         public decimal? BlockingRequirementCount
         {
-            get => COUNTIFS(StepRequirements!this.BlockingStepKey, this.StepId); set { }
+            get => F.AsDecimal(F.Memo(this, "BlockingRequirementCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<StepRequirement>(base.SoAContext, "StepRequirements", __c => __c.StepRequirements), __r => F.CritField(F.Of(__r.BlockingStepKey), F.Of(this.StepId)))))); set { }
         }
 
         // Formula StaleBindingCount (rulebook: =COUNTIFS(OperationalBindings!{{StaleBindingStepKey}}, {{StepId}}))
+        [NotMapped]
         public decimal? StaleBindingCount
         {
-            get => COUNTIFS(OperationalBindings!this.StaleBindingStepKey, this.StepId); set { }
+            get => F.AsDecimal(F.Memo(this, "StaleBindingCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<OperationalBinding>(base.SoAContext, "OperationalBindings", __c => __c.OperationalBindings), __r => F.CritField(F.Of(__r.StaleBindingStepKey), F.Of(this.StepId)))))); set { }
         }
 
         // Formula AuthoritativeStaleCount (rulebook: =COUNTIFS(OperationalBindings!{{AuthoritativeStaleStepKey}}, {{StepId}}))
+        [NotMapped]
         public decimal? AuthoritativeStaleCount
         {
-            get => COUNTIFS(OperationalBindings!this.AuthoritativeStaleStepKey, this.StepId); set { }
+            get => F.AsDecimal(F.Memo(this, "AuthoritativeStaleCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<OperationalBinding>(base.SoAContext, "OperationalBindings", __c => __c.OperationalBindings), __r => F.CritField(F.Of(__r.AuthoritativeStaleStepKey), F.Of(this.StepId)))))); set { }
         }
 
         // Formula AvailableExceptionCount (rulebook: =COUNTIFS(Exceptions!{{ActiveExceptionStepKey}}, {{StepId}}))
+        [NotMapped]
         public decimal? AvailableExceptionCount
         {
-            get => COUNTIFS(Exceptions!this.ActiveExceptionStepKey, this.StepId); set { }
+            get => F.AsDecimal(F.Memo(this, "AvailableExceptionCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<Exception>(base.SoAContext, "Exceptions", __c => __c.Exceptions), __r => F.CritField(F.Of(__r.ActiveExceptionStepKey), F.Of(this.StepId)))))); set { }
         }
 
         // Formula DeclaredVerificationCount (rulebook: =COUNTIFS(StepVerifications!{{Step}}, {{StepId}}))
+        [NotMapped]
         public decimal? DeclaredVerificationCount
         {
-            get => COUNTIFS(StepVerifications!this.Step, this.StepId); set { }
+            get => F.AsDecimal(F.Memo(this, "DeclaredVerificationCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<StepVerification>(base.SoAContext, "StepVerifications", __c => __c.StepVerifications), __r => F.CritField(F.Of(__r.Step), F.Of(this.StepId)))))); set { }
         }
 
         // Formula IsPreparationStep (rulebook: =OR({{AssignedRole}} = "finance-analyst", {{AssignedRole}} = "variance-review-agent"))
+        [NotMapped]
         public bool? IsPreparationStep
         {
-            get => OR(this.AssignedRole = "finance-analyst", this.AssignedRole = "variance-review-agent"); set { }
+            get => F.AsBool(F.Memo(this, "IsPreparationStep", () => F.Or(F.Bool3(F.Eq(F.Nullif(F.Of(this.AssignedRole)), F.S("finance-analyst"))), F.Bool3(F.Eq(F.Nullif(F.Of(this.AssignedRole)), F.S("variance-review-agent")))))); set { }
         }
 
         // Formula IsApprovalStep (rulebook: =OR({{AssignedRole}} = "controller", {{AssignedRole}} = "cfo"))
+        [NotMapped]
         public bool? IsApprovalStep
         {
-            get => OR(this.AssignedRole = "controller", this.AssignedRole = "cfo"); set { }
+            get => F.AsBool(F.Memo(this, "IsApprovalStep", () => F.Or(F.Bool3(F.Eq(F.Nullif(F.Of(this.AssignedRole)), F.S("controller"))), F.Bool3(F.Eq(F.Nullif(F.Of(this.AssignedRole)), F.S("cfo")))))); set { }
         }
 
         // Formula StaleAuthoritativeBindingCount (rulebook: =COUNTIFS(OperationalBindings!{{StepWhenStale}}, {{StepId}}))
+        [NotMapped]
         public decimal? StaleAuthoritativeBindingCount
         {
-            get => COUNTIFS(OperationalBindings!this.StepWhenStale, this.StepId); set { }
+            get => F.AsDecimal(F.Memo(this, "StaleAuthoritativeBindingCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<OperationalBinding>(base.SoAContext, "OperationalBindings", __c => __c.OperationalBindings), __r => F.CritField(F.Of(__r.StepWhenStale), F.Of(this.StepId)))))); set { }
         }
 
         // Formula InputsAreFresh (rulebook: ={{StaleAuthoritativeBindingCount}} = 0)
+        [NotMapped]
         public bool? InputsAreFresh
         {
-            get => this.StaleAuthoritativeBindingCount = 0; set { }
+            get => F.AsBool(F.Memo(this, "InputsAreFresh", () => F.Eq(F.Of(this.StaleAuthoritativeBindingCount), F.I(0)))); set { }
         }
 
         // Formula IsSoftwareAssigned (rulebook: =OR({{AssignedAgentKind}} = "AIAgent", {{AssignedAgentKind}} = "AutomatedPipeline"))
+        [NotMapped]
         public bool? IsSoftwareAssigned
         {
-            get => OR(this.AssignedAgentKind = "AIAgent", this.AssignedAgentKind = "AutomatedPipeline"); set { }
+            get => F.AsBool(F.Memo(this, "IsSoftwareAssigned", () => F.Or(F.Bool3(F.Eq(F.Of(this.AssignedAgentKind), F.S("AIAgent"))), F.Bool3(F.Eq(F.Of(this.AssignedAgentKind), F.S("AutomatedPipeline")))))); set { }
         }
 
         // Formula IsHumanApprovalGate (rulebook: =AND(NOT({{IsSoftwareAssigned}}), OR({{StepId}} = "policy-05", {{StepId}} = "close-06")))
+        [NotMapped]
         public bool? IsHumanApprovalGate
         {
-            get => AND(NOT(this.IsSoftwareAssigned), OR(this.StepId = "policy-05", this.StepId = "close-06")); set { }
+            get => F.AsBool(F.Memo(this, "IsHumanApprovalGate", () => F.And(F.Bool3(F.Not(F.Bool3(F.Of(this.IsSoftwareAssigned)))), F.Bool3(F.Or(F.Bool3(F.Eq(F.Nullif(F.Of(this.StepId)), F.S("policy-05"))), F.Bool3(F.Eq(F.Nullif(F.Of(this.StepId)), F.S("close-06")))))))); set { }
         }
 
         // Formula GateHeldByHuman (rulebook: =AND({{IsHumanApprovalGate}}, {{AssignedAgentKind}} = "Human"))
+        [NotMapped]
         public bool? GateHeldByHuman
         {
-            get => AND(this.IsHumanApprovalGate, this.AssignedAgentKind = "Human"); set { }
+            get => F.AsBool(F.Memo(this, "GateHeldByHuman", () => F.And(F.Bool3(F.Of(this.IsHumanApprovalGate)), F.Bool3(F.Eq(F.Of(this.AssignedAgentKind), F.S("Human")))))); set { }
         }
 
         // Formula BindingBoundaryCount (rulebook: =COUNTIFS(AuthorityBoundaries!{{StepWhenBinding}}, {{StepId}}))
+        [NotMapped]
         public decimal? BindingBoundaryCount
         {
-            get => COUNTIFS(AuthorityBoundaries!this.StepWhenBinding, this.StepId); set { }
+            get => F.AsDecimal(F.Memo(this, "BindingBoundaryCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<AuthorityBoundary>(base.SoAContext, "AuthorityBoundaries", __c => __c.AuthorityBoundaries), __r => F.CritField(F.Of(__r.StepWhenBinding), F.Of(this.StepId)))))); set { }
         }
 
         // Formula AssignedRoleIsUngoverned (rulebook: =INDEX(Roles!{{IsUngovernedNonHumanRole}}, MATCH({{AssignedRole}}, Roles!{{RoleId}}, 0)))
+        [NotMapped]
         public bool? AssignedRoleIsUngoverned
         {
-            get => INDEX(Roles!this.IsUngovernedNonHumanRole, MATCH(this.AssignedRole, Roles!this.RoleId, 0)); set { }
+            get => F.AsBool(F.Memo(this, "AssignedRoleIsUngoverned", () => F.Lookup<Role>(this, "Roles", "RoleId", __c => __c.Roles, __r => F.Of(__r.RoleId), F.Of(this.AssignedRole), __r => F.Of(__r.IsUngovernedNonHumanRole), () => F.Of(new Role().IsUngovernedNonHumanRole)))); set { }
         }
 
         // Formula UnusableBindingCount (rulebook: =COUNTIFS(OperationalBindings!{{StepWhenUnusable}}, {{StepId}}))
+        [NotMapped]
         public decimal? UnusableBindingCount
         {
-            get => COUNTIFS(OperationalBindings!this.StepWhenUnusable, this.StepId); set { }
+            get => F.AsDecimal(F.Memo(this, "UnusableBindingCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<OperationalBinding>(base.SoAContext, "OperationalBindings", __c => __c.OperationalBindings), __r => F.CritField(F.Of(__r.StepWhenUnusable), F.Of(this.StepId)))))); set { }
         }
 
         // Formula AllSourcesUsable (rulebook: ={{UnusableBindingCount}} = 0)
+        [NotMapped]
         public bool? AllSourcesUsable
         {
-            get => this.UnusableBindingCount = 0; set { }
+            get => F.AsBool(F.Memo(this, "AllSourcesUsable", () => F.Eq(F.Of(this.UnusableBindingCount), F.I(0)))); set { }
         }
 
         public string? ControlKind { get; set; }
         // Formula UnwarrantedBoundaryCount (rulebook: =COUNTIFS(AuthorityBoundaries!{{UnwarrantedBoundaryStepKey}}, {{StepId}}))
+        [NotMapped]
         public decimal? UnwarrantedBoundaryCount
         {
-            get => COUNTIFS(AuthorityBoundaries!this.UnwarrantedBoundaryStepKey, this.StepId); set { }
+            get => F.AsDecimal(F.Memo(this, "UnwarrantedBoundaryCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<AuthorityBoundary>(base.SoAContext, "AuthorityBoundaries", __c => __c.AuthorityBoundaries), __r => F.CritField(F.Of(__r.UnwarrantedBoundaryStepKey), F.Of(this.StepId)))))); set { }
         }
 
         // Formula IsGovernedByUnwarrantedBoundary (rulebook: ={{UnwarrantedBoundaryCount}} > 0)
+        [NotMapped]
         public bool? IsGovernedByUnwarrantedBoundary
         {
-            get => this.UnwarrantedBoundaryCount > 0; set { }
+            get => F.AsBool(F.Memo(this, "IsGovernedByUnwarrantedBoundary", () => F.Cmp(F.Of(this.UnwarrantedBoundaryCount), ">", F.I(0)))); set { }
         }
 
         // Formula SoftwareExecutionCount (rulebook: =COUNTIFS(StepExecutions!{{SoftwareExecutionStepKey}}, {{StepId}}))
+        [NotMapped]
         public decimal? SoftwareExecutionCount
         {
-            get => COUNTIFS(StepExecutions!this.SoftwareExecutionStepKey, this.StepId); set { }
+            get => F.AsDecimal(F.Memo(this, "SoftwareExecutionCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<StepExecution>(base.SoAContext, "StepExecutions", __c => __c.StepExecutions), __r => F.CritField(F.Of(__r.SoftwareExecutionStepKey), F.Of(this.StepId)))))); set { }
         }
 
         // Formula HasBeenApproachedBySoftware (rulebook: ={{SoftwareExecutionCount}} > 0)
+        [NotMapped]
         public bool? HasBeenApproachedBySoftware
         {
-            get => this.SoftwareExecutionCount > 0; set { }
+            get => F.AsBool(F.Memo(this, "HasBeenApproachedBySoftware", () => F.Cmp(F.Of(this.SoftwareExecutionCount), ">", F.I(0)))); set { }
         }
 
         // Formula IsUnexercisedHumanGate (rulebook: =AND({{IsHumanApprovalGate}}, NOT({{HasBeenApproachedBySoftware}})))
+        [NotMapped]
         public bool? IsUnexercisedHumanGate
         {
-            get => AND(this.IsHumanApprovalGate, NOT(this.HasBeenApproachedBySoftware)); set { }
+            get => F.AsBool(F.Memo(this, "IsUnexercisedHumanGate", () => F.And(F.Bool3(F.Of(this.IsHumanApprovalGate)), F.Bool3(F.Not(F.Bool3(F.Of(this.HasBeenApproachedBySoftware))))))); set { }
         }
 
         // Formula IsDemonstratedHumanGate (rulebook: =AND({{IsHumanApprovalGate}}, {{HasBeenApproachedBySoftware}}, {{GateHeldByHuman}}))
+        [NotMapped]
         public bool? IsDemonstratedHumanGate
         {
-            get => AND(this.IsHumanApprovalGate, this.HasBeenApproachedBySoftware, this.GateHeldByHuman); set { }
+            get => F.AsBool(F.Memo(this, "IsDemonstratedHumanGate", () => F.And(F.Bool3(F.Of(this.IsHumanApprovalGate)), F.Bool3(F.Of(this.HasBeenApproachedBySoftware)), F.Bool3(F.Of(this.GateHeldByHuman))))); set { }
         }
 
         // Formula UnexercisedGateVersionKey (rulebook: =IF({{IsUnexercisedHumanGate}}, {{ProcedureVersion}}, ""))
+        [NotMapped]
         public string? UnexercisedGateVersionKey
         {
-            get => IF(this.IsUnexercisedHumanGate, this.ProcedureVersion, ""); set { }
+            get => F.AsString(F.Memo(this, "UnexercisedGateVersionKey", () => (F.Truthy(F.Bool3(F.Of(this.IsUnexercisedHumanGate))) ? F.Of(this.ProcedureVersion) : F.S("")))); set { }
         }
 
         // Formula HasDeclaredControlKind (rulebook: ={{ControlKind}} <> "")
+        [NotMapped]
         public bool? HasDeclaredControlKind
         {
-            get => this.ControlKind <> ""; set { }
+            get => F.AsBool(F.Memo(this, "HasDeclaredControlKind", () => F.IsNotBlank(F.Of(this.ControlKind)))); set { }
         }
 
         // Formula UndeclaredControlVersionKey (rulebook: =IF({{HasDeclaredControlKind}}, "", {{ProcedureVersion}}))
+        [NotMapped]
         public string? UndeclaredControlVersionKey
         {
-            get => IF(this.HasDeclaredControlKind, "", this.ProcedureVersion); set { }
+            get => F.AsString(F.Memo(this, "UndeclaredControlVersionKey", () => (F.Truthy(F.Bool3(F.Of(this.HasDeclaredControlKind))) ? F.S("") : F.Of(this.ProcedureVersion)))); set { }
         }
 
         // Formula ApprovalStepIsSoftwareAssigned (rulebook: =AND({{ControlKind}} = "Approval", {{IsSoftwareAssigned}}))
+        [NotMapped]
         public bool? ApprovalStepIsSoftwareAssigned
         {
-            get => AND(this.ControlKind = "Approval", this.IsSoftwareAssigned); set { }
+            get => F.AsBool(F.Memo(this, "ApprovalStepIsSoftwareAssigned", () => F.And(F.Bool3(F.Eq(F.Nullif(F.Of(this.ControlKind)), F.S("Approval"))), F.Bool3(F.Of(this.IsSoftwareAssigned))))); set { }
         }
 
         // Formula UnwitnessedBlockingCount (rulebook: =COUNTIFS(StepRequirements!{{UnwitnessedStepKey}}, {{StepId}}))
+        [NotMapped]
         public decimal? UnwitnessedBlockingCount
         {
-            get => COUNTIFS(StepRequirements!this.UnwitnessedStepKey, this.StepId); set { }
+            get => F.AsDecimal(F.Memo(this, "UnwitnessedBlockingCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<StepRequirement>(base.SoAContext, "StepRequirements", __c => __c.StepRequirements), __r => F.CritField(F.Of(__r.UnwitnessedStepKey), F.Of(this.StepId)))))); set { }
         }
 
         public string? SemanticTypeIri { get; set; }
@@ -208,37 +239,46 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string? ProcedureVersion { get; set; }
         public string? AssignedRole { get; set; }
 
-        private ProcedureVersion _procedureVersion;
+        private ProcedureVersion _procedureVersionRef;
 
         [ForeignKey("ProcedureVersion")]
-        public virtual ProcedureVersion ProcedureVersion
+        public virtual ProcedureVersion ProcedureVersionRef
         {
             get
             {
-                if (_procedureVersion == null && !string.IsNullOrEmpty(ProcedureVersion))
+                if (_procedureVersionRef == null && !string.IsNullOrEmpty(ProcedureVersion))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access ProcedureVersion - no database context is set. ProcedureVersion: " + ProcedureVersion + ".");
+                            throw new InvalidOperationException("Cannot access ProcedureVersionRef - no database context is set. ProcedureVersion: " + ProcedureVersion + ".");
                         }
                         return null;
                     }
-                    _procedureVersion = Context.ProcedureVersions.Find(ProcedureVersion);
-                    if (_procedureVersion != null)
+                    _procedureVersionRef = base.SoAContext.ProcedureVersions.Find(ProcedureVersion);
+                    if (_procedureVersionRef != null)
                     {
-                        Context.Attach(_procedureVersion);
+                        base.SoAContext.Attach(_procedureVersionRef);
                     }
                 }
-                return _procedureVersion;
+                return _procedureVersionRef;
             }
             set
             {
-                if (_procedureVersion != value)
+                if (_procedureVersionRef != value)
                 {
-                    _procedureVersion = value;
-                    ProcedureVersion = _procedureVersion == null ? default : _procedureVersion.ProcedureVersionId;
+                    _procedureVersionRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_procedureVersionRef != null)
+                    {
+                        ProcedureVersion = _procedureVersionRef.ProcedureVersionId;
+                    }
                 }
             }
         }
@@ -252,7 +292,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_role == null && !string.IsNullOrEmpty(AssignedRole))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -260,10 +300,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                         }
                         return null;
                     }
-                    _role = Context.Roles.Find(AssignedRole);
+                    _role = base.SoAContext.Roles.Find(AssignedRole);
                     if (_role != null)
                     {
-                        Context.Attach(_role);
+                        base.SoAContext.Attach(_role);
                     }
                 }
                 return _role;
@@ -273,56 +313,65 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                 if (_role != value)
                 {
                     _role = value;
-                    AssignedRole = _role == null ? default : _role.RoleId;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_role != null)
+                    {
+                        AssignedRole = _role.RoleId;
+                    }
                 }
             }
         }
 
-        private ObservableCollection<StepTransition> _stepTransitions;
+        private ObservableCollection<StepTransition> _fromStepStepTransitions;
 
         [InverseProperty("Step")]
-        public virtual ObservableCollection<StepTransition> StepTransitions
+        public virtual ObservableCollection<StepTransition> FromStepStepTransitions
         {
             get
             {
-                if (_stepTransitions == null)
+                if (_fromStepStepTransitions == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access StepTransitions - no database context is set. StepId: " + this.StepId + ".");
+                            throw new InvalidOperationException("Cannot access FromStepStepTransitions - no database context is set. StepId: " + this.StepId + ".");
                         }
-                        _stepTransitions = new ObservableCollection<StepTransition>();
+                        _fromStepStepTransitions = new ObservableCollection<StepTransition>();
                     }
                     else
                     {
-                        var items = Context.StepTransitions.Where(x => x.FromStep == this.StepId).ToList<StepTransition>();
-                        _stepTransitions = new ObservableCollection<StepTransition>(items);
+                        var items = base.SoAContext.StepTransitions.Where(x => x.FromStep == this.StepId).ToList<StepTransition>();
+                        _fromStepStepTransitions = new ObservableCollection<StepTransition>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
-                    _stepTransitions.CollectionChanged += StepTransitions_CollectionChanged;
+                    _fromStepStepTransitions.CollectionChanged += FromStepStepTransitions_CollectionChanged;
                 }
-                return _stepTransitions;
+                return _fromStepStepTransitions;
             }
             private set
             {
-                if (_stepTransitions != null)
+                if (_fromStepStepTransitions != null)
                 {
-                    _stepTransitions.CollectionChanged -= StepTransitions_CollectionChanged;
+                    _fromStepStepTransitions.CollectionChanged -= FromStepStepTransitions_CollectionChanged;
                 }
-                _stepTransitions = value;
-                if (_stepTransitions != null)
+                _fromStepStepTransitions = value;
+                if (_fromStepStepTransitions != null)
                 {
-                    _stepTransitions.CollectionChanged += StepTransitions_CollectionChanged;
+                    _fromStepStepTransitions.CollectionChanged += FromStepStepTransitions_CollectionChanged;
                 }
             }
         }
 
-        private void StepTransitions_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void FromStepStepTransitions_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e?.NewItems != null)
             {
@@ -333,51 +382,51 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
-        private ObservableCollection<StepTransition> _stepTransitions;
+        private ObservableCollection<StepTransition> _toStepStepTransitions;
 
-        [InverseProperty("Step")]
-        public virtual ObservableCollection<StepTransition> StepTransitions
+        [InverseProperty("StepRef")]
+        public virtual ObservableCollection<StepTransition> ToStepStepTransitions
         {
             get
             {
-                if (_stepTransitions == null)
+                if (_toStepStepTransitions == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access StepTransitions - no database context is set. StepId: " + this.StepId + ".");
+                            throw new InvalidOperationException("Cannot access ToStepStepTransitions - no database context is set. StepId: " + this.StepId + ".");
                         }
-                        _stepTransitions = new ObservableCollection<StepTransition>();
+                        _toStepStepTransitions = new ObservableCollection<StepTransition>();
                     }
                     else
                     {
-                        var items = Context.StepTransitions.Where(x => x.ToStep == this.StepId).ToList<StepTransition>();
-                        _stepTransitions = new ObservableCollection<StepTransition>(items);
+                        var items = base.SoAContext.StepTransitions.Where(x => x.ToStep == this.StepId).ToList<StepTransition>();
+                        _toStepStepTransitions = new ObservableCollection<StepTransition>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
-                    _stepTransitions.CollectionChanged += StepTransitions_CollectionChanged;
+                    _toStepStepTransitions.CollectionChanged += ToStepStepTransitions_CollectionChanged;
                 }
-                return _stepTransitions;
+                return _toStepStepTransitions;
             }
             private set
             {
-                if (_stepTransitions != null)
+                if (_toStepStepTransitions != null)
                 {
-                    _stepTransitions.CollectionChanged -= StepTransitions_CollectionChanged;
+                    _toStepStepTransitions.CollectionChanged -= ToStepStepTransitions_CollectionChanged;
                 }
-                _stepTransitions = value;
-                if (_stepTransitions != null)
+                _toStepStepTransitions = value;
+                if (_toStepStepTransitions != null)
                 {
-                    _stepTransitions.CollectionChanged += StepTransitions_CollectionChanged;
+                    _toStepStepTransitions.CollectionChanged += ToStepStepTransitions_CollectionChanged;
                 }
             }
         }
 
-        private void StepTransitions_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void ToStepStepTransitions_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e?.NewItems != null)
             {
@@ -390,14 +439,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<StepAction> _stepActions;
 
-        [InverseProperty("Step")]
+        [InverseProperty("StepRef")]
         public virtual ObservableCollection<StepAction> StepActions
         {
             get
             {
                 if (_stepActions == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -407,11 +456,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.StepActions.Where(x => x.Step == this.StepId).ToList<StepAction>();
+                        var items = base.SoAContext.StepActions.Where(x => x.Step == this.StepId).ToList<StepAction>();
                         _stepActions = new ObservableCollection<StepAction>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _stepActions.CollectionChanged += StepActions_CollectionChanged;
@@ -445,14 +494,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<StepFunction> _stepFunctions;
 
-        [InverseProperty("Step")]
+        [InverseProperty("StepRef")]
         public virtual ObservableCollection<StepFunction> StepFunctions
         {
             get
             {
                 if (_stepFunctions == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -462,11 +511,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.StepFunctions.Where(x => x.Step == this.StepId).ToList<StepFunction>();
+                        var items = base.SoAContext.StepFunctions.Where(x => x.Step == this.StepId).ToList<StepFunction>();
                         _stepFunctions = new ObservableCollection<StepFunction>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _stepFunctions.CollectionChanged += StepFunctions_CollectionChanged;
@@ -500,14 +549,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<StepTool> _stepTools;
 
-        [InverseProperty("Step")]
+        [InverseProperty("StepRef")]
         public virtual ObservableCollection<StepTool> StepTools
         {
             get
             {
                 if (_stepTools == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -517,11 +566,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.StepTools.Where(x => x.Step == this.StepId).ToList<StepTool>();
+                        var items = base.SoAContext.StepTools.Where(x => x.Step == this.StepId).ToList<StepTool>();
                         _stepTools = new ObservableCollection<StepTool>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _stepTools.CollectionChanged += StepTools_CollectionChanged;
@@ -555,14 +604,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<StepRequirement> _stepRequirements;
 
-        [InverseProperty("Step")]
+        [InverseProperty("StepRef")]
         public virtual ObservableCollection<StepRequirement> StepRequirements
         {
             get
             {
                 if (_stepRequirements == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -572,11 +621,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.StepRequirements.Where(x => x.Step == this.StepId).ToList<StepRequirement>();
+                        var items = base.SoAContext.StepRequirements.Where(x => x.Step == this.StepId).ToList<StepRequirement>();
                         _stepRequirements = new ObservableCollection<StepRequirement>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _stepRequirements.CollectionChanged += StepRequirements_CollectionChanged;
@@ -610,14 +659,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<StepVerification> _stepVerifications;
 
-        [InverseProperty("Step")]
+        [InverseProperty("StepRef")]
         public virtual ObservableCollection<StepVerification> StepVerifications
         {
             get
             {
                 if (_stepVerifications == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -627,11 +676,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.StepVerifications.Where(x => x.Step == this.StepId).ToList<StepVerification>();
+                        var items = base.SoAContext.StepVerifications.Where(x => x.Step == this.StepId).ToList<StepVerification>();
                         _stepVerifications = new ObservableCollection<StepVerification>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _stepVerifications.CollectionChanged += StepVerifications_CollectionChanged;
@@ -665,14 +714,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<Rationale> _rationales;
 
-        [InverseProperty("Step")]
+        [InverseProperty("StepRef")]
         public virtual ObservableCollection<Rationale> Rationales
         {
             get
             {
                 if (_rationales == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -682,11 +731,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.Rationales.Where(x => x.Step == this.StepId).ToList<Rationale>();
+                        var items = base.SoAContext.Rationales.Where(x => x.Step == this.StepId).ToList<Rationale>();
                         _rationales = new ObservableCollection<Rationale>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _rationales.CollectionChanged += Rationales_CollectionChanged;
@@ -727,7 +776,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_exceptions == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -737,11 +786,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.Exceptions.Where(x => x.TriggerStep == this.StepId).ToList<Exception>();
+                        var items = base.SoAContext.Exceptions.Where(x => x.TriggerStep == this.StepId).ToList<Exception>();
                         _exceptions = new ObservableCollection<Exception>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _exceptions.CollectionChanged += Exceptions_CollectionChanged;
@@ -775,14 +824,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<KnowledgeFragment> _knowledgeFragments;
 
-        [InverseProperty("Step")]
+        [InverseProperty("StepRef")]
         public virtual ObservableCollection<KnowledgeFragment> KnowledgeFragments
         {
             get
             {
                 if (_knowledgeFragments == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -792,11 +841,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.KnowledgeFragments.Where(x => x.Step == this.StepId).ToList<KnowledgeFragment>();
+                        var items = base.SoAContext.KnowledgeFragments.Where(x => x.Step == this.StepId).ToList<KnowledgeFragment>();
                         _knowledgeFragments = new ObservableCollection<KnowledgeFragment>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _knowledgeFragments.CollectionChanged += KnowledgeFragments_CollectionChanged;
@@ -830,14 +879,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<KnowledgeGap> _knowledgeGaps;
 
-        [InverseProperty("Step")]
+        [InverseProperty("StepRef")]
         public virtual ObservableCollection<KnowledgeGap> KnowledgeGaps
         {
             get
             {
                 if (_knowledgeGaps == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -847,11 +896,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.KnowledgeGaps.Where(x => x.Step == this.StepId).ToList<KnowledgeGap>();
+                        var items = base.SoAContext.KnowledgeGaps.Where(x => x.Step == this.StepId).ToList<KnowledgeGap>();
                         _knowledgeGaps = new ObservableCollection<KnowledgeGap>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _knowledgeGaps.CollectionChanged += KnowledgeGaps_CollectionChanged;
@@ -885,14 +934,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<FAQ> _fAQs;
 
-        [InverseProperty("Step")]
+        [InverseProperty("StepRef")]
         public virtual ObservableCollection<FAQ> FAQs
         {
             get
             {
                 if (_fAQs == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -902,11 +951,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.FAQs.Where(x => x.Step == this.StepId).ToList<FAQ>();
+                        var items = base.SoAContext.FAQs.Where(x => x.Step == this.StepId).ToList<FAQ>();
                         _fAQs = new ObservableCollection<FAQ>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _fAQs.CollectionChanged += FAQs_CollectionChanged;
@@ -940,14 +989,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<Explanation> _explanations;
 
-        [InverseProperty("Step")]
+        [InverseProperty("StepRef")]
         public virtual ObservableCollection<Explanation> Explanations
         {
             get
             {
                 if (_explanations == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -957,11 +1006,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.Explanations.Where(x => x.Step == this.StepId).ToList<Explanation>();
+                        var items = base.SoAContext.Explanations.Where(x => x.Step == this.StepId).ToList<Explanation>();
                         _explanations = new ObservableCollection<Explanation>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _explanations.CollectionChanged += Explanations_CollectionChanged;
@@ -995,14 +1044,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<StepExecution> _stepExecutions;
 
-        [InverseProperty("Step")]
+        [InverseProperty("StepRef")]
         public virtual ObservableCollection<StepExecution> StepExecutions
         {
             get
             {
                 if (_stepExecutions == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -1012,11 +1061,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.StepExecutions.Where(x => x.Step == this.StepId).ToList<StepExecution>();
+                        var items = base.SoAContext.StepExecutions.Where(x => x.Step == this.StepId).ToList<StepExecution>();
                         _stepExecutions = new ObservableCollection<StepExecution>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _stepExecutions.CollectionChanged += StepExecutions_CollectionChanged;
@@ -1050,14 +1099,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<OperationalBinding> _operationalBindings;
 
-        [InverseProperty("Step")]
+        [InverseProperty("StepRef")]
         public virtual ObservableCollection<OperationalBinding> OperationalBindings
         {
             get
             {
                 if (_operationalBindings == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -1067,11 +1116,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.OperationalBindings.Where(x => x.Step == this.StepId).ToList<OperationalBinding>();
+                        var items = base.SoAContext.OperationalBindings.Where(x => x.Step == this.StepId).ToList<OperationalBinding>();
                         _operationalBindings = new ObservableCollection<OperationalBinding>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _operationalBindings.CollectionChanged += OperationalBindings_CollectionChanged;
@@ -1105,14 +1154,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<AuthorityBoundary> _authorityBoundaries;
 
-        [InverseProperty("Step")]
+        [InverseProperty("StepRef")]
         public virtual ObservableCollection<AuthorityBoundary> AuthorityBoundaries
         {
             get
             {
                 if (_authorityBoundaries == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -1122,11 +1171,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.AuthorityBoundaries.Where(x => x.Step == this.StepId).ToList<AuthorityBoundary>();
+                        var items = base.SoAContext.AuthorityBoundaries.Where(x => x.Step == this.StepId).ToList<AuthorityBoundary>();
                         _authorityBoundaries = new ObservableCollection<AuthorityBoundary>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _authorityBoundaries.CollectionChanged += AuthorityBoundaries_CollectionChanged;
@@ -1161,10 +1210,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         protected override void LazyLoadProperties()
         {
-            _ = this.ProcedureVersion;
+            _ = this.ProcedureVersionRef;
             _ = this.Role;
-            _ = this.StepTransitions;
-            _ = this.StepTransitions;
+            _ = this.FromStepStepTransitions;
+            _ = this.ToStepStepTransitions;
             _ = this.StepActions;
             _ = this.StepFunctions;
             _ = this.StepTools;

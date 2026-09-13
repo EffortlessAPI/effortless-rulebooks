@@ -93,6 +93,12 @@ ALTER TABLE process_mining_runs ENABLE ROW LEVEL SECURITY;
 ALTER TABLE vocabularies ENABLE ROW LEVEL SECURITY;
 ALTER TABLE vocabulary_terms ENABLE ROW LEVEL SECURITY;
 ALTER TABLE knowledge_broker_links ENABLE ROW LEVEL SECURITY;
+ALTER TABLE conformance_substrates ENABLE ROW LEVEL SECURITY;
+ALTER TABLE conformance_runs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE substrate_run_scores ENABLE ROW LEVEL SECURITY;
+ALTER TABLE table_conformance ENABLE ROW LEVEL SECURITY;
+ALTER TABLE field_disagreements ENABLE ROW LEVEL SECURITY;
+ALTER TABLE cell_disagreements ENABLE ROW LEVEL SECURITY;
 
 -- TODO: Add specific RLS policies based on your security requirements
 -- Example:

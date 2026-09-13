@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -16,24 +17,27 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string RoleQuestionId { get; set; }
 
         // Formula Name (rulebook: ={{AskingRole}} & ": " & LEFT({{QuestionText}}, 60))
+        [NotMapped]
         public string? Name
         {
-            get => this.AskingRole + ": " + LEFT(this.QuestionText, 60); set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.AskingRole)), F.S(": "), F.TextNotNull(F.Left(F.Of(this.QuestionText), F.I(60)))))); set { }
         }
 
         public string? QuestionText { get; set; }
         public string? WhyItMatters { get; set; }
         public bool? AnswerableBefore { get; set; }
         // Formula PredicateCount (rulebook: =COUNTIFS(RulebookFields!{{InventedForQuestion}}, {{RoleQuestionId}}))
+        [NotMapped]
         public decimal? PredicateCount
         {
-            get => COUNTIFS(RulebookFields!this.InventedForQuestion, this.RoleQuestionId); set { }
+            get => F.AsDecimal(F.Memo(this, "PredicateCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<RulebookField>(base.SoAContext, "RulebookFields", __c => __c.RulebookFields), __r => F.CritField(F.Of(__r.InventedForQuestion), F.Of(this.RoleQuestionId)))))); set { }
         }
 
         // Formula IsAnswered (rulebook: ={{PredicateCount}} > 0)
+        [NotMapped]
         public bool? IsAnswered
         {
-            get => this.PredicateCount > 0; set { }
+            get => F.AsBool(F.Memo(this, "IsAnswered", () => F.Cmp(F.Of(this.PredicateCount), ">", F.I(0)))); set { }
         }
 
         public string? WitnessedAnswer { get; set; }
@@ -51,7 +55,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_role == null && !string.IsNullOrEmpty(AskingRole))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -59,10 +63,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                         }
                         return null;
                     }
-                    _role = Context.Roles.Find(AskingRole);
+                    _role = base.SoAContext.Roles.Find(AskingRole);
                     if (_role != null)
                     {
-                        Context.Attach(_role);
+                        base.SoAContext.Attach(_role);
                     }
                 }
                 return _role;
@@ -72,42 +76,60 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                 if (_role != value)
                 {
                     _role = value;
-                    AskingRole = _role == null ? default : _role.RoleId;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_role != null)
+                    {
+                        AskingRole = _role.RoleId;
+                    }
                 }
             }
         }
 
-        private WitnessLoop _witnessLoop;
+        private WitnessLoop _witnessLoopRef;
 
         [ForeignKey("WitnessLoop")]
-        public virtual WitnessLoop WitnessLoop
+        public virtual WitnessLoop WitnessLoopRef
         {
             get
             {
-                if (_witnessLoop == null && !string.IsNullOrEmpty(WitnessLoop))
+                if (_witnessLoopRef == null && !string.IsNullOrEmpty(WitnessLoop))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access WitnessLoop - no database context is set. WitnessLoop: " + WitnessLoop + ".");
+                            throw new InvalidOperationException("Cannot access WitnessLoopRef - no database context is set. WitnessLoop: " + WitnessLoop + ".");
                         }
                         return null;
                     }
-                    _witnessLoop = Context.WitnessLoops.Find(WitnessLoop);
-                    if (_witnessLoop != null)
+                    _witnessLoopRef = base.SoAContext.WitnessLoops.Find(WitnessLoop);
+                    if (_witnessLoopRef != null)
                     {
-                        Context.Attach(_witnessLoop);
+                        base.SoAContext.Attach(_witnessLoopRef);
                     }
                 }
-                return _witnessLoop;
+                return _witnessLoopRef;
             }
             set
             {
-                if (_witnessLoop != value)
+                if (_witnessLoopRef != value)
                 {
-                    _witnessLoop = value;
-                    WitnessLoop = _witnessLoop == null ? default : _witnessLoop.WitnessLoopId;
+                    _witnessLoopRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_witnessLoopRef != null)
+                    {
+                        WitnessLoop = _witnessLoopRef.WitnessLoopId;
+                    }
                 }
             }
         }
@@ -121,7 +143,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_rulebookFields == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -131,11 +153,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.RulebookFields.Where(x => x.InventedForQuestion == this.RoleQuestionId).ToList<RulebookField>();
+                        var items = base.SoAContext.RulebookFields.Where(x => x.InventedForQuestion == this.RoleQuestionId).ToList<RulebookField>();
                         _rulebookFields = new ObservableCollection<RulebookField>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _rulebookFields.CollectionChanged += RulebookFields_CollectionChanged;
@@ -176,7 +198,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_testCases == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -186,11 +208,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.TestCases.Where(x => x.DefendsQuestion == this.RoleQuestionId).ToList<TestCase>();
+                        var items = base.SoAContext.TestCases.Where(x => x.DefendsQuestion == this.RoleQuestionId).ToList<TestCase>();
                         _testCases = new ObservableCollection<TestCase>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _testCases.CollectionChanged += TestCases_CollectionChanged;
@@ -231,7 +253,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_appRouteQuestions == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -241,11 +263,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.AppRouteQuestions.Where(x => x.Question == this.RoleQuestionId).ToList<AppRouteQuestion>();
+                        var items = base.SoAContext.AppRouteQuestions.Where(x => x.Question == this.RoleQuestionId).ToList<AppRouteQuestion>();
                         _appRouteQuestions = new ObservableCollection<AppRouteQuestion>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _appRouteQuestions.CollectionChanged += AppRouteQuestions_CollectionChanged;
@@ -281,7 +303,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         protected override void LazyLoadProperties()
         {
             _ = this.Role;
-            _ = this.WitnessLoop;
+            _ = this.WitnessLoopRef;
             _ = this.RulebookFields;
             _ = this.TestCases;
             _ = this.AppRouteQuestions;

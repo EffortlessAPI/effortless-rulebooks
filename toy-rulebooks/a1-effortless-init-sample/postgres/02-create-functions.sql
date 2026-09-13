@@ -24,16 +24,7 @@ SET check_function_bodies = off;
 
 CREATE OR REPLACE FUNCTION calc_hello_whos_introduction(p_hello_who_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CONCAT('Hi, ', (SELECT NULLIF(name, '') FROM hello_whos WHERE hello_who_id = p_hello_who_id), '.'))::text;
-$$ LANGUAGE sql STABLE;
-
--- calc_hello_whos_is_bob
--- Field: HelloWhos.IsBob
--- Type: calculated | DataType: boolean | Returns: BOOLEAN
-
-CREATE OR REPLACE FUNCTION calc_hello_whos_is_bob(p_hello_who_id TEXT)
-RETURNS BOOLEAN AS $$
-  SELECT (((SELECT NULLIF(name, '') FROM hello_whos WHERE hello_who_id = p_hello_who_id) = 'Bob' OR (SELECT NULLIF(name, '') FROM hello_whos WHERE hello_who_id = p_hello_who_id) = 'Bobby' OR (SELECT NULLIF(name, '') FROM hello_whos WHERE hello_who_id = p_hello_who_id) = 'Robert'))::boolean;
+  SELECT (CONCAT('Hello ', (SELECT NULLIF(name, '') FROM hello_whos WHERE hello_who_id = p_hello_who_id), '!!!'))::text;
 $$ LANGUAGE sql STABLE;
 
 -- ============================================================================

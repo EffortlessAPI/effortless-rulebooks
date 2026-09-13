@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -16,44 +17,50 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string AccessDenialTestId { get; set; }
 
         // Formula Name (rulebook: ={{Principal}} & " must not see " & {{ForbiddenRowId}})
+        [NotMapped]
         public string? Name
         {
-            get => this.Principal + " must not see " + this.ForbiddenRowId; set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.Principal)), F.S(" must not see "), F.TextOr(F.Of(this.ForbiddenRowId))))); set { }
         }
 
         public string? ForbiddenRowId { get; set; }
         public bool? ExpectedVisible { get; set; }
         public bool? ObservedVisible { get; set; }
-        public DateTime? LastRunAt { get; set; }
+        public DateTimeOffset? LastRunAt { get; set; }
         // Formula HasRun (rulebook: ={{LastRunAt}} <> "")
+        [NotMapped]
         public bool? HasRun
         {
-            get => this.LastRunAt <> ""; set { }
+            get => F.AsBool(F.Memo(this, "HasRun", () => F.IsNotBlank(F.Of(this.LastRunAt)))); set { }
         }
 
         // Formula IsPassing (rulebook: ={{ObservedVisible}} = {{ExpectedVisible}})
+        [NotMapped]
         public bool? IsPassing
         {
-            get => this.ObservedVisible = this.ExpectedVisible; set { }
+            get => F.AsBool(F.Memo(this, "IsPassing", () => F.Eq(F.Nullif(F.Of(this.ObservedVisible)), F.Nullif(F.Of(this.ExpectedVisible))))); set { }
         }
 
         // Formula IsLeak (rulebook: =AND(NOT({{ExpectedVisible}}), {{ObservedVisible}}))
+        [NotMapped]
         public bool? IsLeak
         {
-            get => AND(NOT(this.ExpectedVisible), this.ObservedVisible); set { }
+            get => F.AsBool(F.Memo(this, "IsLeak", () => F.And(F.Bool3(F.Not(F.IsTrueV(F.Of(this.ExpectedVisible)))), F.IsTrueV(F.Of(this.ObservedVisible))))); set { }
         }
 
         // Formula IsUnproven (rulebook: =NOT({{HasRun}}))
+        [NotMapped]
         public bool? IsUnproven
         {
-            get => NOT(this.HasRun); set { }
+            get => F.AsBool(F.Memo(this, "IsUnproven", () => F.Not(F.Bool3(F.Of(this.HasRun))))); set { }
         }
 
         public string? Rationale { get; set; }
         // Formula IsPositiveControl (rulebook: ={{ExpectedVisible}})
+        [NotMapped]
         public bool? IsPositiveControl
         {
-            get => this.ExpectedVisible; set { }
+            get => F.AsBool(F.Memo(this, "IsPositiveControl", () => F.Of(this.ExpectedVisible))); set { }
         }
 
         public string? ForbiddenTable { get; set; }
@@ -73,7 +80,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_accessPolicy == null && !string.IsNullOrEmpty(TargetPolicy))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -81,10 +88,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                         }
                         return null;
                     }
-                    _accessPolicy = Context.AccessPolicies.Find(TargetPolicy);
+                    _accessPolicy = base.SoAContext.AccessPolicies.Find(TargetPolicy);
                     if (_accessPolicy != null)
                     {
-                        Context.Attach(_accessPolicy);
+                        base.SoAContext.Attach(_accessPolicy);
                     }
                 }
                 return _accessPolicy;
@@ -94,7 +101,16 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                 if (_accessPolicy != value)
                 {
                     _accessPolicy = value;
-                    TargetPolicy = _accessPolicy == null ? default : _accessPolicy.AccessPolicyId;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_accessPolicy != null)
+                    {
+                        TargetPolicy = _accessPolicy.AccessPolicyId;
+                    }
                 }
             }
         }
@@ -108,7 +124,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_accessPrincipal == null && !string.IsNullOrEmpty(Principal))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -116,10 +132,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                         }
                         return null;
                     }
-                    _accessPrincipal = Context.AccessPrincipals.Find(Principal);
+                    _accessPrincipal = base.SoAContext.AccessPrincipals.Find(Principal);
                     if (_accessPrincipal != null)
                     {
-                        Context.Attach(_accessPrincipal);
+                        base.SoAContext.Attach(_accessPrincipal);
                     }
                 }
                 return _accessPrincipal;
@@ -129,7 +145,16 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                 if (_accessPrincipal != value)
                 {
                     _accessPrincipal = value;
-                    Principal = _accessPrincipal == null ? default : _accessPrincipal.AccessPrincipalId;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_accessPrincipal != null)
+                    {
+                        Principal = _accessPrincipal.AccessPrincipalId;
+                    }
                 }
             }
         }
@@ -143,7 +168,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_rulebookTable == null && !string.IsNullOrEmpty(TargetTable))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -151,10 +176,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                         }
                         return null;
                     }
-                    _rulebookTable = Context.RulebookTables.Find(TargetTable);
+                    _rulebookTable = base.SoAContext.RulebookTables.Find(TargetTable);
                     if (_rulebookTable != null)
                     {
-                        Context.Attach(_rulebookTable);
+                        base.SoAContext.Attach(_rulebookTable);
                     }
                 }
                 return _rulebookTable;
@@ -164,7 +189,16 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                 if (_rulebookTable != value)
                 {
                     _rulebookTable = value;
-                    TargetTable = _rulebookTable == null ? default : _rulebookTable.RulebookTableId;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_rulebookTable != null)
+                    {
+                        TargetTable = _rulebookTable.RulebookTableId;
+                    }
                 }
             }
         }

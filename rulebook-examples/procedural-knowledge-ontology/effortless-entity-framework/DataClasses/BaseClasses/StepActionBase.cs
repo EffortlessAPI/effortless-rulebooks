@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -16,81 +17,100 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string StepActionId { get; set; }
 
         // Formula Name (rulebook: ={{Step}} & " / " & {{Action}})
+        [NotMapped]
         public string? Name
         {
-            get => this.Step + " / " + this.Action; set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.Step)), F.S(" / "), F.TextOr(F.Of(this.Action))))); set { }
         }
 
 
         public string? Step { get; set; }
         public string? Action { get; set; }
 
-        private Step _step;
+        private Step _stepRef;
 
         [ForeignKey("Step")]
-        public virtual Step Step
+        public virtual Step StepRef
         {
             get
             {
-                if (_step == null && !string.IsNullOrEmpty(Step))
+                if (_stepRef == null && !string.IsNullOrEmpty(Step))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access Step - no database context is set. Step: " + Step + ".");
+                            throw new InvalidOperationException("Cannot access StepRef - no database context is set. Step: " + Step + ".");
                         }
                         return null;
                     }
-                    _step = Context.Steps.Find(Step);
-                    if (_step != null)
+                    _stepRef = base.SoAContext.Steps.Find(Step);
+                    if (_stepRef != null)
                     {
-                        Context.Attach(_step);
+                        base.SoAContext.Attach(_stepRef);
                     }
                 }
-                return _step;
+                return _stepRef;
             }
             set
             {
-                if (_step != value)
+                if (_stepRef != value)
                 {
-                    _step = value;
-                    Step = _step == null ? default : _step.StepId;
+                    _stepRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_stepRef != null)
+                    {
+                        Step = _stepRef.StepId;
+                    }
                 }
             }
         }
 
-        private Action _action;
+        private Action _actionRef;
 
         [ForeignKey("Action")]
-        public virtual Action Action
+        public virtual Action ActionRef
         {
             get
             {
-                if (_action == null && !string.IsNullOrEmpty(Action))
+                if (_actionRef == null && !string.IsNullOrEmpty(Action))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access Action - no database context is set. Action: " + Action + ".");
+                            throw new InvalidOperationException("Cannot access ActionRef - no database context is set. Action: " + Action + ".");
                         }
                         return null;
                     }
-                    _action = Context.Actions.Find(Action);
-                    if (_action != null)
+                    _actionRef = base.SoAContext.Actions.Find(Action);
+                    if (_actionRef != null)
                     {
-                        Context.Attach(_action);
+                        base.SoAContext.Attach(_actionRef);
                     }
                 }
-                return _action;
+                return _actionRef;
             }
             set
             {
-                if (_action != value)
+                if (_actionRef != value)
                 {
-                    _action = value;
-                    Action = _action == null ? default : _action.ActionId;
+                    _actionRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_actionRef != null)
+                    {
+                        Action = _actionRef.ActionId;
+                    }
                 }
             }
         }
@@ -98,8 +118,8 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         protected override void LazyLoadProperties()
         {
-            _ = this.Step;
-            _ = this.Action;
+            _ = this.StepRef;
+            _ = this.ActionRef;
         }
 
         public override string ToString()

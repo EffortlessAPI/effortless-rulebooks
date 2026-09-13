@@ -1,0 +1,113 @@
+=== Effortless OWL/SHACL Substrate Test Run ===
+
+======================================================================
+OWL Execution Substrate (effortless-owl) - SHACL Reasoning Test
+======================================================================
+
+Loading rulebook...
+Tables with computed columns: RulebookReleases, OntologyProfiles, EvaluationContexts, Organizations, Agents, Roles, RoleAssignments, CommunitiesOfPractice, Mentorships, ProcedureTypes, Procedures, ProcedureVersions, ProcedureVersionLinks, ProcedureStatusChanges, Steps, StepTransitions, Actions, Functions, Tools, StepActions, StepFunctions, StepTools, Requirements, StepRequirements, StepVerifications, Rationales, Exceptions, Resources, ProcedureResources, ElicitationSessions, KnowledgeFragments, KnowledgeGaps, FAQs, Explanations, ProcedureExecutions, StepExecutions, RequirementSatisfactions, Errors, IssueOccurrences, UserQuestions, UserFeedback, StewardshipAssignments, ChangeRequests, ReviewEvents, LearningActivities, OperationalBindings, CommunicationPolicies, MessageTemplates, SemanticMappings, WitnessLoops, RoleQuestions, RulebookFields, TestSuites, TestCases, ExceptionInvocations, VerificationOutcomes, ObservedTransitions, Recipients, MessageDeliveries, TemplateApprovals, SendIntents, AgentDecisionRecords, DeliveredCommunications, AuthorityBoundaries, BindingObservations, Attestations, AppRoleProfiles, AppNavGroups, AppRoutes, AppRouteQuestions, AppRouteReferences, RulebookTables, AccessPrincipals, AccessPolicies, FieldGrants, RoleSchemas, RoleSchemaViews, JwtClaimMappings, AccessDenialTests, AppUsers, PrincipalAssignments, IssuedTokens, ProcessMiningRuns, Vocabularies, VocabularyTerms, KnowledgeBrokerLinks, ConformanceSubstrates, ConformanceRuns, SubstrateRunScores, TableConformance, FieldDisagreements, CellDisagreements
+
+Loading ontology and data...
+   Loaded: /Users/eejai42/development/effortless-rulebooks/rulebook-examples/procedural-knowledge-ontology/effortless-owl/src/ontology.owl
+   Loaded: /Users/eejai42/development/effortless-rulebooks/rulebook-examples/procedural-knowledge-ontology/effortless-owl/src/individuals.ttl
+   Total triples: 89824
+
+Loading SHACL rules...
+   Loaded: /Users/eejai42/development/effortless-rulebooks/rulebook-examples/procedural-knowledge-ontology/effortless-owl/src/rules.shacl.ttl (1076 rules)
+
+Executing SHACL-AF rules in sh:order...
+   Completed 1076 rules across 15 sh:order levels
+   Final triple count: 149217
+
+Extracting computed values...
+   RulebookReleases: 1 records (1 computed fields)
+   OntologyProfiles: 11 records (1 computed fields)
+   EvaluationContexts: 1 records (1 computed fields)
+   Organizations: 4 records (1 computed fields)
+   Agents: 11 records (16 computed fields)
+   Roles: 12 records (17 computed fields)
+   RoleAssignments: 13 records (47 computed fields)
+   CommunitiesOfPractice: 2 records (1 computed fields)
+   Mentorships: 1 records (1 computed fields)
+   ProcedureTypes: 2 records (1 computed fields)
+   Procedures: 2 records (1 computed fields)
+   ProcedureVersions: 3 records (72 computed fields)
+   ProcedureVersionLinks: 1 records (2 computed fields)
+   ProcedureStatusChanges: 5 records (1 computed fields)
+   Steps: 17 records (30 computed fields)
+   StepTransitions: 19 records (15 computed fields)
+   Actions: 9 records (1 computed fields)
+   Functions: 8 records (1 computed fields)
+   Tools: 8 records (1 computed fields)
+   StepActions: 9 records (1 computed fields)
+   StepFunctions: 8 records (1 computed fields)
+   StepTools: 10 records (1 computed fields)
+   Requirements: 13 records (31 computed fields)
+   StepRequirements: 15 records (10 computed fields)
+   StepVerifications: 11 records (1 computed fields)
+   Rationales: 4 records (1 computed fields)
+   Exceptions: 4 records (2 computed fields)
+   Resources: 8 records (2 computed fields)
+   ProcedureResources: 8 records (2 computed fields)
+   ElicitationSessions: 3 records (10 computed fields)
+   KnowledgeFragments: 7 records (65 computed fields)
+   KnowledgeGaps: 8 records (16 computed fields)
+   FAQs: 3 records (1 computed fields)
+   Explanations: 2 records (1 computed fields)
+   ProcedureExecutions: 2 records (69 computed fields)
+   StepExecutions: 12 records (99 computed fields)
+   RequirementSatisfactions: 8 records (38 computed fields)
+   Errors: 2 records (1 computed fields)
+   IssueOccurrences: 2 records (3 computed fields)
+   UserQuestions: 2 records (1 computed fields)
+   UserFeedback: 2 records (1 computed fields)
+   StewardshipAssignments: 2 records (5 computed fields)
+   ChangeRequests: 2 records (32 computed fields)
+   ReviewEvents: 3 records (10 computed fields)
+   LearningActivities: 2 records (1 computed fields)
+   OperationalBindings: 5 records (11 computed fields)
+   CommunicationPolicies: 2 records (4 computed fields)
+   MessageTemplates: 2 records (16 computed fields)
+   SemanticMappings: 47 records (1 computed fields)
+   WitnessLoops: 3 records (3 computed fields)
+   RoleQuestions: 109 records (3 computed fields)
+   RulebookFields: 1879 records (5 computed fields)
+   TestSuites: 6 records (5 computed fields)
+   TestCases: 1794 records (7 computed fields)
+   ExceptionInvocations: 1 records (13 computed fields)
+   VerificationOutcomes: 4 records (18 computed fields)
+   ObservedTransitions: 10 records (1 computed fields)
+   Recipients: 5 records (6 computed fields)
+   MessageDeliveries: 6 records (74 computed fields)
+   TemplateApprovals: 2 records (6 computed fields)
+   SendIntents: 7 records (79 computed fields)
+   AgentDecisionRecords: 3 records (27 computed fields)
+   DeliveredCommunications: 1 records (6 computed fields)
+   AuthorityBoundaries: 3 records (21 computed fields)
+   AppRoleProfiles: 12 records (2 computed fields)
+   AppNavGroups: 23 records (2 computed fields)
+   AppRoutes: 149 records (7 computed fields)
+   AppRouteQuestions: 151 records (1 computed fields)
+   AppRouteReferences: 315 records (1 computed fields)
+   RulebookTables: 92 records (5 computed fields)
+   AccessPrincipals: 12 records (8 computed fields)
+   AccessPolicies: 202 records (7 computed fields)
+   FieldGrants: 3639 records (7 computed fields)
+   RoleSchemas: 12 records (4 computed fields)
+   RoleSchemaViews: 202 records (8 computed fields)
+   JwtClaimMappings: 4 records (2 computed fields)
+   AccessDenialTests: 17 records (6 computed fields)
+   AppUsers: 10 records (7 computed fields)
+   PrincipalAssignments: 12 records (5 computed fields)
+   ProcessMiningRuns: 4 records (10 computed fields)
+   Vocabularies: 2 records (4 computed fields)
+   VocabularyTerms: 12 records (5 computed fields)
+   KnowledgeBrokerLinks: 5 records (8 computed fields)
+
+Total: 9046 records extracted
+Output: /Users/eejai42/development/effortless-rulebooks/rulebook-examples/procedural-knowledge-ontology/testing/effortless-owl/test-answers/
+
+======================================================================
+SHACL reasoning complete!
+======================================================================
+

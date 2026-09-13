@@ -1,0 +1,22 @@
+[
+  {
+    "community_of_practice_id": "close-practice-guild",
+    "label": "Financial Close Community of Practice",
+    "purpose": "Share close exceptions, reconcile recurring failure modes, and mentor new preparers.",
+    "cadence": "Monthly and after every quarter close",
+    "semantic_type_iri": "urn:effortless:pko-extension#CommunityOfPractice",
+    "name": "Financial Close Community of Practice",
+    "organization": "acme-finance",
+    "steward_role": "controller"
+  },
+  {
+    "community_of_practice_id": "policy-stewards-circle",
+    "label": "Policy Stewardship Circle",
+    "purpose": "Review workforce-policy changes, employee feedback, and notification effectiveness.",
+    "cadence": "Biweekly",
+    "semantic_type_iri": "urn:effortless:pko-extension#CommunityOfPractice",
+    "name": "Policy Stewardship Circle",
+    "organization": "acme-people",
+    "steward_role": "process-steward"
+  }
+]

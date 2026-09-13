@@ -96,7 +96,6 @@ export interface HelloWhosRow {
   hello_who_id: string;
   name: string;
   introduction: string | null;
-  is_bob: boolean | null;
   _erb_errors?: Record<string, string>;
 }
 
@@ -104,26 +103,18 @@ const helloWhosFieldTypes: Record<string, FieldType> = {
   hello_who_id: "string",
   name: "string",
   introduction: "*string",
-  is_bob: "*bool",
 };
 
 /** Computes the Introduction calculated field.
- *  Formula: ="Hi, " & {{Name}} & "." */
+ *  Formula: ="Hello " & {{Name}} & "!!!" */
 export function calcHelloWhosIntroduction(tc: HelloWhosRow): string | null {
-  return toStringPtr(erbConcat(vS("Hi, "), erbTextOr(vStrPlain(tc.name)), vS(".")));
-}
-
-/** Computes the IsBob calculated field.
- *  Formula: =OR({{Name}}="Bob", {{Name}}="Bobby", {{Name}}="Robert") */
-export function calcHelloWhosIsBob(tc: HelloWhosRow): boolean | null {
-  return toBoolPtr(erbOr(erbBool3(erbEq(erbNullif(vStrPlain(tc.name)), vS("Bob"))), erbBool3(erbEq(erbNullif(vStrPlain(tc.name)), vS("Bobby"))), erbBool3(erbEq(erbNullif(vStrPlain(tc.name)), vS("Robert")))));
+  return toStringPtr(erbConcat(vS("Hello "), erbTextOr(vStrPlain(tc.name)), vS("!!!")));
 }
 
 /** Computes every calculated field of the row in dependency order. */
 export function computeHelloWhos(tc: HelloWhosRow): HelloWhosRow {
   // Level 1
   calcGuard(tc, helloWhosFieldTypes, "introduction", () => { tc.introduction = calcHelloWhosIntroduction(tc); });
-  calcGuard(tc, helloWhosFieldTypes, "is_bob", () => { tc.is_bob = calcHelloWhosIsBob(tc); });
   return tc;
 }
 
@@ -133,11 +124,11 @@ export function loadHelloWhosRows(file: string): HelloWhosRow[] {
 }
 
 /** Bounds the runner's passes over the dataset. */
-export const calculatedFieldCount = 2;
+export const calculatedFieldCount = 1;
 
 /** Every table, in rulebook order. */
 export const erbTables: TableSpec[] = [
-  { name: "HelloWhos", file: "hello_whos", rulebookRows: 4, fields: helloWhosFieldTypes,
+  { name: "HelloWhos", file: "hello_whos", rulebookRows: 3, fields: helloWhosFieldTypes,
     compute: (row: any) => computeHelloWhos(row as HelloWhosRow),
     lookups: [],
     aggregations: [] },

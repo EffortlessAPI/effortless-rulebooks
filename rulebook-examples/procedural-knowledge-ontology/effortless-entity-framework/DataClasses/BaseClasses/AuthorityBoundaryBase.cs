@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -16,134 +17,155 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string AuthorityBoundaryId { get; set; }
 
         // Formula Name (rulebook: ={{ForbiddenAgentKind}} & " may not " & {{ForbiddenDecisionKind}})
+        [NotMapped]
         public string? Name
         {
-            get => this.ForbiddenAgentKind + " may not " + this.ForbiddenDecisionKind; set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.ForbiddenAgentKind)), F.S(" may not "), F.TextOr(F.Of(this.ForbiddenDecisionKind))))); set { }
         }
 
         public string? ForbiddenAgentKind { get; set; }
         public string? ForbiddenDecisionKind { get; set; }
-        public DateTime? ValidFrom { get; set; }
-        public DateTime? ValidTo { get; set; }
+        public DateTimeOffset? ValidFrom { get; set; }
+        public DateTimeOffset? ValidTo { get; set; }
         public string? Status { get; set; }
         // Formula AsOfInstant (rulebook: =INDEX(EvaluationContexts!{{AsOfInstant}}, MATCH({{EvaluationContext}}, EvaluationContexts!{{EvaluationContextId}}, 0)))
-        public DateTime? AsOfInstant
+        [NotMapped]
+        public DateTimeOffset? AsOfInstant
         {
-            get => INDEX(EvaluationContexts!this.AsOfInstant, MATCH(this.EvaluationContext, EvaluationContexts!this.EvaluationContextId, 0)); set { }
+            get => F.AsDateTime(F.Memo(this, "AsOfInstant", () => F.Lookup<EvaluationContext>(this, "EvaluationContexts", "EvaluationContextId", __c => __c.EvaluationContexts, __r => F.Of(__r.EvaluationContextId), F.Of(this.EvaluationContext), __r => F.Of(__r.AsOfInstant), () => F.Of(new EvaluationContext().AsOfInstant)))); set { }
         }
 
         // Formula IsCurrentlyBinding (rulebook: =AND({{Status}} = "Approved", {{ValidFrom}} <= {{AsOfInstant}}, OR({{ValidTo}} = "", {{ValidTo}} > {{AsOfInstant}})))
+        [NotMapped]
         public bool? IsCurrentlyBinding
         {
-            get => AND(this.Status = "Approved", this.ValidFrom <= this.AsOfInstant, OR(this.ValidTo = "", this.ValidTo > this.AsOfInstant)); set { }
+            get => F.AsBool(F.Memo(this, "IsCurrentlyBinding", () => F.And(F.Bool3(F.Eq(F.Nullif(F.Of(this.Status)), F.S("Approved"))), F.Bool3(F.Cmp(F.Nullif(F.Of(this.ValidFrom)), "<=", F.Of(this.AsOfInstant))), F.Bool3(F.Or(F.Bool3(F.IsBlank(F.Of(this.ValidTo))), F.Bool3(F.Cmp(F.Nullif(F.Of(this.ValidTo)), ">", F.Of(this.AsOfInstant)))))))); set { }
         }
 
         // Formula RatifyingFragmentIsValid (rulebook: =INDEX(KnowledgeFragments!{{IsCurrentlyValid}}, MATCH({{RatifiedByKnowledgeFragment}}, KnowledgeFragments!{{KnowledgeFragmentId}}, 0)))
+        [NotMapped]
         public bool? RatifyingFragmentIsValid
         {
-            get => INDEX(KnowledgeFragments!this.IsCurrentlyValid, MATCH(this.RatifiedByKnowledgeFragment, KnowledgeFragments!this.KnowledgeFragmentId, 0)); set { }
+            get => F.AsBool(F.Memo(this, "RatifyingFragmentIsValid", () => F.Lookup<KnowledgeFragment>(this, "KnowledgeFragments", "KnowledgeFragmentId", __c => __c.KnowledgeFragments, __r => F.Of(__r.KnowledgeFragmentId), F.Of(this.RatifiedByKnowledgeFragment), __r => F.Of(__r.IsCurrentlyValid), () => F.Of(new KnowledgeFragment().IsCurrentlyValid)))); set { }
         }
 
         // Formula StepWhenBinding (rulebook: =IF({{IsCurrentlyBinding}}, {{Step}}, ""))
+        [NotMapped]
         public string? StepWhenBinding
         {
-            get => IF(this.IsCurrentlyBinding, this.Step, ""); set { }
+            get => F.AsString(F.Memo(this, "StepWhenBinding", () => (F.Truthy(F.Bool3(F.Of(this.IsCurrentlyBinding))) ? F.Of(this.Step) : F.S("")))); set { }
         }
 
         // Formula BoundaryMatchKey (rulebook: ={{Step}} & "|" & {{ForbiddenAgentKind}} & "|" & {{ForbiddenDecisionKind}})
+        [NotMapped]
         public string? BoundaryMatchKey
         {
-            get => this.Step + "|" + this.ForbiddenAgentKind + "|" + this.ForbiddenDecisionKind; set { }
+            get => F.AsString(F.Memo(this, "BoundaryMatchKey", () => F.Concat(F.TextOr(F.Of(this.Step)), F.S("|"), F.TextOr(F.Of(this.ForbiddenAgentKind)), F.S("|"), F.TextOr(F.Of(this.ForbiddenDecisionKind))))); set { }
         }
 
         // Formula ViolationCount (rulebook: =COUNTIFS(AgentDecisionRecords!{{BoundaryMatchKey}}, {{BoundaryMatchKey}}))
+        [NotMapped]
         public decimal? ViolationCount
         {
-            get => COUNTIFS(AgentDecisionRecords!this.BoundaryMatchKey, this.BoundaryMatchKey); set { }
+            get => F.AsDecimal(F.Memo(this, "ViolationCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<AgentDecisionRecord>(base.SoAContext, "AgentDecisionRecords", __c => __c.AgentDecisionRecords), __r => F.CritField(F.Of(__r.BoundaryMatchKey), F.Of(this.BoundaryMatchKey)))))); set { }
         }
 
         // Formula IsUntested (rulebook: =AND({{IsCurrentlyBinding}}, {{ViolationCount}} = 0))
+        [NotMapped]
         public bool? IsUntested
         {
-            get => AND(this.IsCurrentlyBinding, this.ViolationCount = 0); set { }
+            get => F.AsBool(F.Memo(this, "IsUntested", () => F.And(F.Bool3(F.Of(this.IsCurrentlyBinding)), F.Bool3(F.Eq(F.Of(this.ViolationCount), F.I(0)))))); set { }
         }
 
         // Formula HasRatifyingFragment (rulebook: ={{RatifiedByKnowledgeFragment}} <> "")
+        [NotMapped]
         public bool? HasRatifyingFragment
         {
-            get => this.RatifiedByKnowledgeFragment <> ""; set { }
+            get => F.AsBool(F.Memo(this, "HasRatifyingFragment", () => F.IsNotBlank(F.Of(this.RatifiedByKnowledgeFragment)))); set { }
         }
 
         // Formula IsUnwarranted (rulebook: =AND({{IsCurrentlyBinding}}, OR(NOT({{HasRatifyingFragment}}), NOT({{RatifyingFragmentIsValid}}))))
+        [NotMapped]
         public bool? IsUnwarranted
         {
-            get => AND(this.IsCurrentlyBinding, OR(NOT(this.HasRatifyingFragment), NOT(this.RatifyingFragmentIsValid))); set { }
+            get => F.AsBool(F.Memo(this, "IsUnwarranted", () => F.And(F.Bool3(F.Of(this.IsCurrentlyBinding)), F.Bool3(F.Or(F.Bool3(F.Not(F.Bool3(F.Of(this.HasRatifyingFragment)))), F.Bool3(F.Not(F.Bool3(F.Of(this.RatifyingFragmentIsValid))))))))); set { }
         }
 
         // Formula RatifyingFragmentIsOverdue (rulebook: =INDEX(KnowledgeFragments!{{IsOverdueForReview}}, MATCH({{RatifiedByKnowledgeFragment}}, KnowledgeFragments!{{KnowledgeFragmentId}}, 0)))
+        [NotMapped]
         public bool? RatifyingFragmentIsOverdue
         {
-            get => INDEX(KnowledgeFragments!this.IsOverdueForReview, MATCH(this.RatifiedByKnowledgeFragment, KnowledgeFragments!this.KnowledgeFragmentId, 0)); set { }
+            get => F.AsBool(F.Memo(this, "RatifyingFragmentIsOverdue", () => F.Lookup<KnowledgeFragment>(this, "KnowledgeFragments", "KnowledgeFragmentId", __c => __c.KnowledgeFragments, __r => F.Of(__r.KnowledgeFragmentId), F.Of(this.RatifiedByKnowledgeFragment), __r => F.Of(__r.IsOverdueForReview), () => F.Of(new KnowledgeFragment().IsOverdueForReview)))); set { }
         }
 
         // Formula RatifyingFragmentIsSingleWitness (rulebook: =INDEX(KnowledgeFragments!{{IsFromSingleWitness}}, MATCH({{RatifiedByKnowledgeFragment}}, KnowledgeFragments!{{KnowledgeFragmentId}}, 0)))
+        [NotMapped]
         public bool? RatifyingFragmentIsSingleWitness
         {
-            get => INDEX(KnowledgeFragments!this.IsFromSingleWitness, MATCH(this.RatifiedByKnowledgeFragment, KnowledgeFragments!this.KnowledgeFragmentId, 0)); set { }
+            get => F.AsBool(F.Memo(this, "RatifyingFragmentIsSingleWitness", () => F.Lookup<KnowledgeFragment>(this, "KnowledgeFragments", "KnowledgeFragmentId", __c => __c.KnowledgeFragments, __r => F.Of(__r.KnowledgeFragmentId), F.Of(this.RatifiedByKnowledgeFragment), __r => F.Of(__r.IsFromSingleWitness), () => F.Of(new KnowledgeFragment().IsFromSingleWitness)))); set { }
         }
 
         // Formula WarrantIsThin (rulebook: =AND({{IsCurrentlyBinding}}, OR({{RatifyingFragmentIsOverdue}}, {{RatifyingFragmentIsSingleWitness}})))
+        [NotMapped]
         public bool? WarrantIsThin
         {
-            get => AND(this.IsCurrentlyBinding, OR(this.RatifyingFragmentIsOverdue, this.RatifyingFragmentIsSingleWitness)); set { }
+            get => F.AsBool(F.Memo(this, "WarrantIsThin", () => F.And(F.Bool3(F.Of(this.IsCurrentlyBinding)), F.Bool3(F.Or(F.Bool3(F.Of(this.RatifyingFragmentIsOverdue)), F.Bool3(F.Of(this.RatifyingFragmentIsSingleWitness))))))); set { }
         }
 
         // Formula IsUnwarrantedAndUntested (rulebook: =AND({{IsUnwarranted}}, {{IsUntested}}))
+        [NotMapped]
         public bool? IsUnwarrantedAndUntested
         {
-            get => AND(this.IsUnwarranted, this.IsUntested); set { }
+            get => F.AsBool(F.Memo(this, "IsUnwarrantedAndUntested", () => F.And(F.Bool3(F.Of(this.IsUnwarranted)), F.Bool3(F.Of(this.IsUntested))))); set { }
         }
 
         // Formula UnwarrantedBoundaryStepKey (rulebook: =IF({{IsUnwarranted}}, {{Step}}, ""))
+        [NotMapped]
         public string? UnwarrantedBoundaryStepKey
         {
-            get => IF(this.IsUnwarranted, this.Step, ""); set { }
+            get => F.AsString(F.Memo(this, "UnwarrantedBoundaryStepKey", () => (F.Truthy(F.Bool3(F.Of(this.IsUnwarranted))) ? F.Of(this.Step) : F.S("")))); set { }
         }
 
         // Formula RatifyingFragmentKey (rulebook: =IF({{IsCurrentlyBinding}}, {{RatifiedByKnowledgeFragment}}, ""))
+        [NotMapped]
         public string? RatifyingFragmentKey
         {
-            get => IF(this.IsCurrentlyBinding, this.RatifiedByKnowledgeFragment, ""); set { }
+            get => F.AsString(F.Memo(this, "RatifyingFragmentKey", () => (F.Truthy(F.Bool3(F.Of(this.IsCurrentlyBinding))) ? F.Of(this.RatifiedByKnowledgeFragment) : F.S("")))); set { }
         }
 
         // Formula RatifyingFragmentStatus (rulebook: =INDEX(KnowledgeFragments!{{Status}}, MATCH({{RatifiedByKnowledgeFragment}}, KnowledgeFragments!{{KnowledgeFragmentId}}, 0)))
+        [NotMapped]
         public string? RatifyingFragmentStatus
         {
-            get => INDEX(KnowledgeFragments!this.Status, MATCH(this.RatifiedByKnowledgeFragment, KnowledgeFragments!this.KnowledgeFragmentId, 0)); set { }
+            get => F.AsString(F.Memo(this, "RatifyingFragmentStatus", () => F.Lookup<KnowledgeFragment>(this, "KnowledgeFragments", "KnowledgeFragmentId", __c => __c.KnowledgeFragments, __r => F.Of(__r.KnowledgeFragmentId), F.Of(this.RatifiedByKnowledgeFragment), __r => F.Of(__r.Status), () => F.Of(new KnowledgeFragment().Status)))); set { }
         }
 
         // Formula RatificationLapsed (rulebook: =AND({{HasRatifyingFragment}}, NOT({{RatifyingFragmentIsValid}})))
+        [NotMapped]
         public bool? RatificationLapsed
         {
-            get => AND(this.HasRatifyingFragment, NOT(this.RatifyingFragmentIsValid)); set { }
+            get => F.AsBool(F.Memo(this, "RatificationLapsed", () => F.And(F.Bool3(F.Of(this.HasRatifyingFragment)), F.Bool3(F.Not(F.Bool3(F.Of(this.RatifyingFragmentIsValid))))))); set { }
         }
 
         // Formula BindsDespiteLapsedRatification (rulebook: =AND({{IsCurrentlyBinding}}, {{RatificationLapsed}}))
+        [NotMapped]
         public bool? BindsDespiteLapsedRatification
         {
-            get => AND(this.IsCurrentlyBinding, this.RatificationLapsed); set { }
+            get => F.AsBool(F.Memo(this, "BindsDespiteLapsedRatification", () => F.And(F.Bool3(F.Of(this.IsCurrentlyBinding)), F.Bool3(F.Of(this.RatificationLapsed))))); set { }
         }
 
         // Formula IsUngroundedAndUntested (rulebook: =AND({{BindsDespiteLapsedRatification}}, {{IsUntested}}))
+        [NotMapped]
         public bool? IsUngroundedAndUntested
         {
-            get => AND(this.BindsDespiteLapsedRatification, this.IsUntested); set { }
+            get => F.AsBool(F.Memo(this, "IsUngroundedAndUntested", () => F.And(F.Bool3(F.Of(this.BindsDespiteLapsedRatification)), F.Bool3(F.Of(this.IsUntested))))); set { }
         }
 
         // Formula ConstrainedRoleAssignmentKey (rulebook: =IF({{BindsDespiteLapsedRatification}}, {{AuthorityRole}}, ""))
+        [NotMapped]
         public string? ConstrainedRoleAssignmentKey
         {
-            get => IF(this.BindsDespiteLapsedRatification, this.AuthorityRole, ""); set { }
+            get => F.AsString(F.Memo(this, "ConstrainedRoleAssignmentKey", () => (F.Truthy(F.Bool3(F.Of(this.BindsDespiteLapsedRatification))) ? F.Of(this.AuthorityRole) : F.S("")))); set { }
         }
 
         public string? SemanticTypeIri { get; set; }
@@ -154,37 +176,46 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string? AuthorityRole { get; set; }
         public string? EvaluationContext { get; set; }
 
-        private Step _step;
+        private Step _stepRef;
 
         [ForeignKey("Step")]
-        public virtual Step Step
+        public virtual Step StepRef
         {
             get
             {
-                if (_step == null && !string.IsNullOrEmpty(Step))
+                if (_stepRef == null && !string.IsNullOrEmpty(Step))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access Step - no database context is set. Step: " + Step + ".");
+                            throw new InvalidOperationException("Cannot access StepRef - no database context is set. Step: " + Step + ".");
                         }
                         return null;
                     }
-                    _step = Context.Steps.Find(Step);
-                    if (_step != null)
+                    _stepRef = base.SoAContext.Steps.Find(Step);
+                    if (_stepRef != null)
                     {
-                        Context.Attach(_step);
+                        base.SoAContext.Attach(_stepRef);
                     }
                 }
-                return _step;
+                return _stepRef;
             }
             set
             {
-                if (_step != value)
+                if (_stepRef != value)
                 {
-                    _step = value;
-                    Step = _step == null ? default : _step.StepId;
+                    _stepRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_stepRef != null)
+                    {
+                        Step = _stepRef.StepId;
+                    }
                 }
             }
         }
@@ -198,7 +229,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_knowledgeFragment == null && !string.IsNullOrEmpty(RatifiedByKnowledgeFragment))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -206,10 +237,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                         }
                         return null;
                     }
-                    _knowledgeFragment = Context.KnowledgeFragments.Find(RatifiedByKnowledgeFragment);
+                    _knowledgeFragment = base.SoAContext.KnowledgeFragments.Find(RatifiedByKnowledgeFragment);
                     if (_knowledgeFragment != null)
                     {
-                        Context.Attach(_knowledgeFragment);
+                        base.SoAContext.Attach(_knowledgeFragment);
                     }
                 }
                 return _knowledgeFragment;
@@ -219,7 +250,16 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                 if (_knowledgeFragment != value)
                 {
                     _knowledgeFragment = value;
-                    RatifiedByKnowledgeFragment = _knowledgeFragment == null ? default : _knowledgeFragment.KnowledgeFragmentId;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_knowledgeFragment != null)
+                    {
+                        RatifiedByKnowledgeFragment = _knowledgeFragment.KnowledgeFragmentId;
+                    }
                 }
             }
         }
@@ -233,7 +273,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_requirement == null && !string.IsNullOrEmpty(EnforcingRequirement))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -241,10 +281,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                         }
                         return null;
                     }
-                    _requirement = Context.Requirements.Find(EnforcingRequirement);
+                    _requirement = base.SoAContext.Requirements.Find(EnforcingRequirement);
                     if (_requirement != null)
                     {
-                        Context.Attach(_requirement);
+                        base.SoAContext.Attach(_requirement);
                     }
                 }
                 return _requirement;
@@ -254,7 +294,16 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                 if (_requirement != value)
                 {
                     _requirement = value;
-                    EnforcingRequirement = _requirement == null ? default : _requirement.RequirementId;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_requirement != null)
+                    {
+                        EnforcingRequirement = _requirement.RequirementId;
+                    }
                 }
             }
         }
@@ -268,7 +317,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_role == null && !string.IsNullOrEmpty(AuthorityRole))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -276,10 +325,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                         }
                         return null;
                     }
-                    _role = Context.Roles.Find(AuthorityRole);
+                    _role = base.SoAContext.Roles.Find(AuthorityRole);
                     if (_role != null)
                     {
-                        Context.Attach(_role);
+                        base.SoAContext.Attach(_role);
                     }
                 }
                 return _role;
@@ -289,42 +338,60 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                 if (_role != value)
                 {
                     _role = value;
-                    AuthorityRole = _role == null ? default : _role.RoleId;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_role != null)
+                    {
+                        AuthorityRole = _role.RoleId;
+                    }
                 }
             }
         }
 
-        private EvaluationContext _evaluationContext;
+        private EvaluationContext _evaluationContextRef;
 
         [ForeignKey("EvaluationContext")]
-        public virtual EvaluationContext EvaluationContext
+        public virtual EvaluationContext EvaluationContextRef
         {
             get
             {
-                if (_evaluationContext == null && !string.IsNullOrEmpty(EvaluationContext))
+                if (_evaluationContextRef == null && !string.IsNullOrEmpty(EvaluationContext))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access EvaluationContext - no database context is set. EvaluationContext: " + EvaluationContext + ".");
+                            throw new InvalidOperationException("Cannot access EvaluationContextRef - no database context is set. EvaluationContext: " + EvaluationContext + ".");
                         }
                         return null;
                     }
-                    _evaluationContext = Context.EvaluationContexts.Find(EvaluationContext);
-                    if (_evaluationContext != null)
+                    _evaluationContextRef = base.SoAContext.EvaluationContexts.Find(EvaluationContext);
+                    if (_evaluationContextRef != null)
                     {
-                        Context.Attach(_evaluationContext);
+                        base.SoAContext.Attach(_evaluationContextRef);
                     }
                 }
-                return _evaluationContext;
+                return _evaluationContextRef;
             }
             set
             {
-                if (_evaluationContext != value)
+                if (_evaluationContextRef != value)
                 {
-                    _evaluationContext = value;
-                    EvaluationContext = _evaluationContext == null ? default : _evaluationContext.EvaluationContextId;
+                    _evaluationContextRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_evaluationContextRef != null)
+                    {
+                        EvaluationContext = _evaluationContextRef.EvaluationContextId;
+                    }
                 }
             }
         }
@@ -332,11 +399,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         protected override void LazyLoadProperties()
         {
-            _ = this.Step;
+            _ = this.StepRef;
             _ = this.KnowledgeFragment;
             _ = this.Requirement;
             _ = this.Role;
-            _ = this.EvaluationContext;
+            _ = this.EvaluationContextRef;
         }
 
         public override string ToString()

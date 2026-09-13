@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -16,81 +17,100 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string StepToolId { get; set; }
 
         // Formula Name (rulebook: ={{Step}} & " / " & {{Tool}})
+        [NotMapped]
         public string? Name
         {
-            get => this.Step + " / " + this.Tool; set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.Step)), F.S(" / "), F.TextOr(F.Of(this.Tool))))); set { }
         }
 
 
         public string? Step { get; set; }
         public string? Tool { get; set; }
 
-        private Step _step;
+        private Step _stepRef;
 
         [ForeignKey("Step")]
-        public virtual Step Step
+        public virtual Step StepRef
         {
             get
             {
-                if (_step == null && !string.IsNullOrEmpty(Step))
+                if (_stepRef == null && !string.IsNullOrEmpty(Step))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access Step - no database context is set. Step: " + Step + ".");
+                            throw new InvalidOperationException("Cannot access StepRef - no database context is set. Step: " + Step + ".");
                         }
                         return null;
                     }
-                    _step = Context.Steps.Find(Step);
-                    if (_step != null)
+                    _stepRef = base.SoAContext.Steps.Find(Step);
+                    if (_stepRef != null)
                     {
-                        Context.Attach(_step);
+                        base.SoAContext.Attach(_stepRef);
                     }
                 }
-                return _step;
+                return _stepRef;
             }
             set
             {
-                if (_step != value)
+                if (_stepRef != value)
                 {
-                    _step = value;
-                    Step = _step == null ? default : _step.StepId;
+                    _stepRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_stepRef != null)
+                    {
+                        Step = _stepRef.StepId;
+                    }
                 }
             }
         }
 
-        private Tool _tool;
+        private Tool _toolRef;
 
         [ForeignKey("Tool")]
-        public virtual Tool Tool
+        public virtual Tool ToolRef
         {
             get
             {
-                if (_tool == null && !string.IsNullOrEmpty(Tool))
+                if (_toolRef == null && !string.IsNullOrEmpty(Tool))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access Tool - no database context is set. Tool: " + Tool + ".");
+                            throw new InvalidOperationException("Cannot access ToolRef - no database context is set. Tool: " + Tool + ".");
                         }
                         return null;
                     }
-                    _tool = Context.Tools.Find(Tool);
-                    if (_tool != null)
+                    _toolRef = base.SoAContext.Tools.Find(Tool);
+                    if (_toolRef != null)
                     {
-                        Context.Attach(_tool);
+                        base.SoAContext.Attach(_toolRef);
                     }
                 }
-                return _tool;
+                return _toolRef;
             }
             set
             {
-                if (_tool != value)
+                if (_toolRef != value)
                 {
-                    _tool = value;
-                    Tool = _tool == null ? default : _tool.ToolId;
+                    _toolRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_toolRef != null)
+                    {
+                        Tool = _toolRef.ToolId;
+                    }
                 }
             }
         }
@@ -98,8 +118,8 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         protected override void LazyLoadProperties()
         {
-            _ = this.Step;
-            _ = this.Tool;
+            _ = this.StepRef;
+            _ = this.ToolRef;
         }
 
         public override string ToString()

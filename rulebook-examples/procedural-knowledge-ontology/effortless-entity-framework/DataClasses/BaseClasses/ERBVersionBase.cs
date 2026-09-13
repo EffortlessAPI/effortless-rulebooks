@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -19,7 +20,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string? Name { get; set; }
         public string? Message { get; set; }
         public string? Notes { get; set; }
-        public DateTime? CommitDate { get; set; }
+        public DateTimeOffset? CommitDate { get; set; }
         public bool? IsPublished { get; set; }
 
 

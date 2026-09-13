@@ -68,8 +68,8 @@
     {
       "IsSSoTTranspiler": false,
       "Name": "oss-postgres-calculated-to-rulebook",
-      "RelativePath": "/postgres-bootstrap",
-      "CommandLine": "http://127.0.0.1:4242/oss-postgres-calculated-to-rulebook -i ../effortless-rulebook/customer-fullname-rulebook.json",
+      "RelativePath": "/effortless-rulebook",
+      "CommandLine": "http://127.0.0.1:4242/oss-postgres-calculated-to-rulebook -i customer-fullname-rulebook.json,../postgres-bootstrap/.pg-raw-data.json",
       "IsDisabled": true,
       "Description": "Pull calculated field values from Postgres (only needed if using Airtable)"
     },

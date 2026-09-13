@@ -1,0 +1,36 @@
+[
+  {
+    "template_approval_id": "tap-email-001",
+    "message_template": "tmpl-policy-email",
+    "decided_by_agent": "amina-yusuf",
+    "decided_in_role": "communications-manager",
+    "decision": "Approved",
+    "decided_at": "2026-07-17 16:00:00",
+    "approved_body_hash": "h-email-v1",
+    "notes": "Reviewed against comm-email-policy required content and retention.",
+    "semantic_type_iri": "urn:effortless:pko-extension#TemplateApproval",
+    "name": "tmpl-policy-email / Approved / 2026-07-17 16:00:00+00",
+    "is_approval_decision": true,
+    "template_policy": "comm-email-policy",
+    "required_approval_role": "communications-manager",
+    "is_decided_by_required_role": true,
+    "valid_approval_template_key": "tmpl-policy-email"
+  },
+  {
+    "template_approval_id": "tap-sms-001",
+    "message_template": "tmpl-policy-sms",
+    "decided_by_agent": "amina-yusuf",
+    "decided_in_role": "communications-manager",
+    "decision": "Approved",
+    "decided_at": "2026-07-19 15:00:00",
+    "approved_body_hash": "h-sms-v1",
+    "notes": "Approved against comm-sms-policy: 160-char limit, 3-segment cap, required STOP opt-out, 20:00-08:00 quiet window.",
+    "semantic_type_iri": "urn:effortless:pko-extension#TemplateApproval",
+    "name": "tmpl-policy-sms / Approved / 2026-07-19 15:00:00+00",
+    "is_approval_decision": true,
+    "template_policy": "comm-sms-policy",
+    "required_approval_role": "communications-manager",
+    "is_decided_by_required_role": true,
+    "valid_approval_template_key": "tmpl-policy-sms"
+  }
+]

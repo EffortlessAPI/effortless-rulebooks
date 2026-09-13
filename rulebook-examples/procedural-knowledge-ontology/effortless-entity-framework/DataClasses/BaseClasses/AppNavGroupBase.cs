@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -16,16 +17,18 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string AppNavGroupId { get; set; }
 
         // Formula Name (rulebook: ={{GroupLabel}})
+        [NotMapped]
         public string? Name
         {
-            get => this.GroupLabel; set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Of(this.GroupLabel))); set { }
         }
 
         public string? GroupLabel { get; set; }
         // Formula RouteCount (rulebook: =COUNTIFS(AppRoutes!{{NavGroup}}, {{AppNavGroupId}}))
+        [NotMapped]
         public decimal? RouteCount
         {
-            get => COUNTIFS(AppRoutes!this.NavGroup, this.AppNavGroupId); set { }
+            get => F.AsDecimal(F.Memo(this, "RouteCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<AppRoute>(base.SoAContext, "AppRoutes", __c => __c.AppRoutes), __r => F.CritField(F.Of(__r.NavGroup), F.Of(this.AppNavGroupId)))))); set { }
         }
 
         public string? SemanticTypeIri { get; set; }
@@ -40,7 +43,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_appRoutes == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -50,11 +53,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.AppRoutes.Where(x => x.NavGroup == this.AppNavGroupId).ToList<AppRoute>();
+                        var items = base.SoAContext.AppRoutes.Where(x => x.NavGroup == this.AppNavGroupId).ToList<AppRoute>();
                         _appRoutes = new ObservableCollection<AppRoute>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _appRoutes.CollectionChanged += AppRoutes_CollectionChanged;

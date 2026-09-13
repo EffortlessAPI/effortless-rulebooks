@@ -34,8 +34,13 @@ Input:  .pg-raw-data.json  — written by pull-from-postgres.sh (vw_* rows)
 Usage (direct):
   python3 inject-into-postgres-calculated-to-rulebook.py <rulebook_path> [<json_path>]
 
-Usage (via server.js / the local-tool shim — set ERB_RULEBOOK_PATH, cwd = postgres-bootstrap/):
-  python3 inject-into-postgres-calculated-to-rulebook.py
+Usage (via the CLI-hosted tool oss-postgres-calculated-to-rulebook):
+  orchestration/local_tool_shim.py sets ERB_RULEBOOK_PATH and
+  ERB_PG_RAW_DATA_PATH to the copies the CLI unpacked into its run directory,
+  and ERB_OUTPUT_DIR to the directory whose files become the step's output.
+  The updated rulebook is written THERE under its own file name — never over
+  the input copy, which the CLI discards — and the CLI applies it to the real
+  rulebook as an in-place upsert. Nothing is emitted when nothing changed.
 """
 
 import json
@@ -117,6 +122,10 @@ def main() -> None:
         json_path = Path(sys.argv[2]).resolve() if len(sys.argv) >= 3 else None
     elif "ERB_RULEBOOK_PATH" in os.environ:
         rulebook_path = Path(os.environ["ERB_RULEBOOK_PATH"]).resolve()
+        if "ERB_PG_RAW_DATA_PATH" in os.environ:
+            json_path = Path(os.environ["ERB_PG_RAW_DATA_PATH"]).resolve()
+            if not json_path.is_file():
+                die(f"ERB_PG_RAW_DATA_PATH={json_path} is not a file")
 
     if not rulebook_path:
         die("rulebook not found (provide as arg or set ERB_RULEBOOK_PATH)")
@@ -253,9 +262,16 @@ def main() -> None:
     for (row, field_name, new_val, _old, _t, _pk) in pending_updates:
         row[field_name] = new_val
 
-    tmp = rulebook_path.with_suffix(".json.tmp")
-    tmp.write_text(json.dumps(rulebook, indent=rulebook_indent, ensure_ascii=False) + "\n")
-    os.replace(tmp, rulebook_path)
+    # Under the CLI the input is a throwaway copy: the result must go to the
+    # output directory, under the rulebook's own name, to reach the real file.
+    target = (
+        Path(os.environ["ERB_OUTPUT_DIR"]) / rulebook_path.name
+        if "ERB_OUTPUT_DIR" in os.environ
+        else rulebook_path
+    )
+    tmp = target.with_suffix(".json.tmp")
+    tmp.write_text(json.dumps(rulebook, indent=rulebook_indent, ensure_ascii=False) + "\n", encoding="utf-8")
+    os.replace(tmp, target)
 
     log(f"updated {len(pending_updates)} field value(s) across {tables_touched} table(s)")
     for (_row, field_name, new_val, old_val, t, pk) in pending_updates:

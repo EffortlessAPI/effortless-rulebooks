@@ -65,6 +65,45 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion"
   },
   {
+    "role_question_id": "q-auditor-substrate-agreement",
+    "name": "knowledge-authority: This rulebook compiles into Postgres, Python, Go, TypeScript",
+    "asking_role": "knowledge-authority",
+    "witness_loop": null,
+    "question_text": "This rulebook compiles into Postgres, Python, Go, TypeScript, C#, a spreadsheet and an OWL reasoner. When I approve a rule, do all of them compute the same answer, and if not, which one is wrong about which field?",
+    "why_it_matters": "A procedure is only as authoritative as the systems that execute it. If the spreadsheet a controller opens disagrees with the database the close automation reads, the rule has two meanings, and nobody finds out until an audit does. Agreement has to be witnessed per cell, not assumed from a green build.",
+    "answerable_before": false,
+    "predicate_count": 47,
+    "is_answered": true,
+    "witnessed_answer": null,
+    "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion"
+  },
+  {
+    "role_question_id": "q-authority-controlled-vocabulary",
+    "name": "knowledge-authority: req-close-evidence and req-policy-retention both restate the",
+    "asking_role": "knowledge-authority",
+    "witness_loop": "loop-03",
+    "question_text": "req-close-evidence and req-policy-retention both restate the same 7-year retention obligation in their own free-text Statement — is there anything stopping one of them from quietly drifting from the other?",
+    "why_it_matters": "Thirteen Requirements each free-text their own Statement with no shared identifier between rows that mean the same thing, so a later edit to one can never be checked against the other, and a search or an AI grounding on 'evidence retention' cannot find both at once. There was no controlled term either Requirement could point at — exactly the organize-layer gap the source articles argue is where most process knowledge quietly becomes unfindable.",
+    "answerable_before": false,
+    "predicate_count": 22,
+    "is_answered": true,
+    "witnessed_answer": "Requirements.UsesControlledVocabulary=11/13; Vocabularies.HasOrphanTerms=1/2; VocabularyTerms.IsOrphanTerm=2/12; VocabularyTerms.IsWidelyAdoptedTerm=1/12",
+    "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion"
+  },
+  {
+    "role_question_id": "q-authority-knowledge-broker",
+    "name": "knowledge-authority: RoleAssignments says who is FORMALLY responsible for reconci",
+    "asking_role": "knowledge-authority",
+    "witness_loop": "loop-03",
+    "question_text": "RoleAssignments says who is FORMALLY responsible for reconciliation and segregation-of-duties questions — but Maria, Devon, and Elena all actually go to Priya Raman, and Amina goes to someone who no longer holds any role at all. Does the model know that?",
+    "why_it_matters": "CommunitiesOfPractice and Mentorships already record the FORMAL structures we teach people through. Nothing recorded the INFORMAL one — who people actually walk over and ask — which is exactly the knowledge-broker network the articles describe. A broker more relied on than any Role holder is invisible risk; one who has already left is a risk nobody is watching.",
+    "answerable_before": false,
+    "predicate_count": 20,
+    "is_answered": true,
+    "witnessed_answer": "Agents.HasAtRiskKnowledgeReliance=1/11; Agents.IsRecognizedBroker=1/11; KnowledgeBrokerLinks.BrokerIsStillEngaged=4/5; KnowledgeBrokerLinks.IsActiveReliance=4/5; KnowledgeBrokerLinks.IsAtRiskReliance=1/5",
+    "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion"
+  },
+  {
     "role_question_id": "q-authority-known-unknowns",
     "name": "knowledge-authority: What do we know that we do not know? gap-policy-delivery-rec",
     "asking_role": "knowledge-authority",
@@ -100,7 +139,7 @@
     "answerable_before": false,
     "predicate_count": 8,
     "is_answered": true,
-    "witnessed_answer": "Agents.IsStillEngaged=10/10; KnowledgeFragments.HasHumanSource=7/7; KnowledgeFragments.HasOrphanedProvenance=0/7; KnowledgeFragments.IsUndefendableTacitClaim=0/7; KnowledgeFragments.SourceAgentIsStillEngaged=7/7; RoleAssignments.HasDeparted=1/13",
+    "witnessed_answer": "Agents.IsStillEngaged=10/11; KnowledgeFragments.HasHumanSource=7/7; KnowledgeFragments.HasOrphanedProvenance=0/7; KnowledgeFragments.IsUndefendableTacitClaim=0/7; KnowledgeFragments.SourceAgentIsStillEngaged=7/7; RoleAssignments.HasDeparted=1/13",
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion"
   },
   {
@@ -230,7 +269,7 @@
     "answerable_before": false,
     "predicate_count": 8,
     "is_answered": true,
-    "witnessed_answer": "AgentDecisionRecords.WasOverridden=1/3; AgentDecisionRecords.WasReviewed=3/3; Agents.IsNonHuman=4/10",
+    "witnessed_answer": "AgentDecisionRecords.WasOverridden=1/3; AgentDecisionRecords.WasReviewed=3/3; Agents.IsNonHuman=4/11",
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion"
   },
   {
@@ -542,7 +581,7 @@
     "answerable_before": false,
     "predicate_count": 5,
     "is_answered": true,
-    "witnessed_answer": "Agents.IsOperatingOutsideBoundary=0/10; AuthorityBoundaries.IsUntested=3/3",
+    "witnessed_answer": "Agents.IsOperatingOutsideBoundary=0/11; AuthorityBoundaries.IsUntested=3/3",
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion"
   },
   {
@@ -660,6 +699,19 @@
     "predicate_count": 8,
     "is_answered": true,
     "witnessed_answer": "ReviewEvents.ExceedsPromisedCadence=1/3; ReviewEvents.PromiseAndBehaviorDisagree=0/3; StewardshipAssignments.HasEverBeenReviewed=2/2",
+    "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion"
+  },
+  {
+    "role_question_id": "q-steward-mining-drift",
+    "name": "process-steward: The event log from the ERP shows close-v1.1.0 running with 8",
+    "asking_role": "process-steward",
+    "witness_loop": "loop-03",
+    "question_text": "The event log from the ERP shows close-v1.1.0 running with 8 discovered variants and only 3 conforming — has anyone recorded that the live procedure and the live system actually disagree?",
+    "why_it_matters": "Every other witness in this model reasons from documents we wrote (StepTransitions, Requirements) or claims someone told us (KnowledgeFragments). None of them ever check what the system of record actually did. Process mining is a third, independent kind of evidence, and until now there was no table letting 'what we mined' contradict 'what we modeled' — a live version could drift from its own StepTransitions and nothing here would ever notice.",
+    "answerable_before": false,
+    "predicate_count": 22,
+    "is_answered": true,
+    "witnessed_answer": "ProcedureVersions.HasUnresolvedMiningDrift=1/3; ProcessMiningRuns.HasMajorDriftFromDocumentation=2/4; ProcessMiningRuns.IsConformant=2/4; ProcessMiningRuns.IsDriftOnLiveVersion=1/4; ProcessMiningRuns.IsStaleMiningEvidence=2/4; ProcessMiningRuns.ProcedureVersionIsLive=3/4",
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion"
   },
   {
@@ -1192,7 +1244,7 @@
     "answerable_before": false,
     "predicate_count": 8,
     "is_answered": true,
-    "witnessed_answer": "SendIntents.HasRetryAttempt=0/7; SendIntents.IsAbandonedDeferral=1/7; SendIntents.IsStaleDeferral=1/7; SendIntents.RetryWasCleared=0/7; SendIntents.WasDeferredOnTiming=1/7; SendIntents.WindowHasSinceReopened=1/7",
+    "witnessed_answer": "SendIntents.HasRetryAttempt=0/7; SendIntents.IsAbandonedDeferral=1/7; SendIntents.IsStaleDeferral=0/7; SendIntents.RetryWasCleared=0/7; SendIntents.WasDeferredOnTiming=1/7; SendIntents.WindowHasSinceReopened=1/7",
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion"
   },
   {

@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -16,68 +17,78 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string ElicitationSessionId { get; set; }
 
         // Formula Name (rulebook: ={{Method}} & " / " & {{StartedAt}})
+        [NotMapped]
         public string? Name
         {
-            get => this.Method + " / " + this.StartedAt; set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.Method)), F.S(" / "), F.TimestamptzText(F.Of(this.StartedAt))))); set { }
         }
 
         public string? Method { get; set; }
-        public DateTime? StartedAt { get; set; }
-        public DateTime? EndedAt { get; set; }
+        public DateTimeOffset? StartedAt { get; set; }
+        public DateTimeOffset? EndedAt { get; set; }
         public string? Summary { get; set; }
         public string? Status { get; set; }
         // Formula AsOfInstant (rulebook: =INDEX(EvaluationContexts!{{AsOfInstant}}, MATCH({{EvaluationContext}}, EvaluationContexts!{{EvaluationContextId}}, 0)))
-        public DateTime? AsOfInstant
+        [NotMapped]
+        public DateTimeOffset? AsOfInstant
         {
-            get => INDEX(EvaluationContexts!this.AsOfInstant, MATCH(this.EvaluationContext, EvaluationContexts!this.EvaluationContextId, 0)); set { }
+            get => F.AsDateTime(F.Memo(this, "AsOfInstant", () => F.Lookup<EvaluationContext>(this, "EvaluationContexts", "EvaluationContextId", __c => __c.EvaluationContexts, __r => F.Of(__r.EvaluationContextId), F.Of(this.EvaluationContext), __r => F.Of(__r.AsOfInstant), () => F.Of(new EvaluationContext().AsOfInstant)))); set { }
         }
 
         // Formula DaysSinceElicited (rulebook: =DATETIME_DIFF({{AsOfInstant}}, {{EndedAt}}, "days"))
+        [NotMapped]
         public int? DaysSinceElicited
         {
-            get => DATETIME_DIFF(this.AsOfInstant, this.EndedAt, "days"); set { }
+            get => F.AsInt(F.Memo(this, "DaysSinceElicited", () => F.Integer(F.DatetimeDiff(F.Of(this.AsOfInstant), F.Of(this.EndedAt), F.S("days"))))); set { }
         }
 
         // Formula IsSingleWitnessMethod (rulebook: =OR({{Method}} = "Shadowing", {{Method}} = "PractitionerInterview"))
+        [NotMapped]
         public bool? IsSingleWitnessMethod
         {
-            get => OR(this.Method = "Shadowing", this.Method = "PractitionerInterview"); set { }
+            get => F.AsBool(F.Memo(this, "IsSingleWitnessMethod", () => F.Or(F.Bool3(F.Eq(F.Nullif(F.Of(this.Method)), F.S("Shadowing"))), F.Bool3(F.Eq(F.Nullif(F.Of(this.Method)), F.S("PractitionerInterview")))))); set { }
         }
 
         // Formula PractitionerIsStillEngaged (rulebook: =INDEX(Agents!{{IsStillEngaged}}, MATCH({{PractitionerAgent}}, Agents!{{AgentId}}, 0)))
+        [NotMapped]
         public bool? PractitionerIsStillEngaged
         {
-            get => INDEX(Agents!this.IsStillEngaged, MATCH(this.PractitionerAgent, Agents!this.AgentId, 0)); set { }
+            get => F.AsBool(F.Memo(this, "PractitionerIsStillEngaged", () => F.Lookup<Agent>(this, "Agents", "AgentId", __c => __c.Agents, __r => F.Of(__r.AgentId), F.Of(this.PractitionerAgent), __r => F.Of(__r.IsStillEngaged), () => F.Of(new Agent().IsStillEngaged)))); set { }
         }
 
         // Formula ValidFragmentsProduced (rulebook: =COUNTIFS(KnowledgeFragments!{{ValidFragmentSessionKey}}, {{ElicitationSessionId}}))
+        [NotMapped]
         public decimal? ValidFragmentsProduced
         {
-            get => COUNTIFS(KnowledgeFragments!this.ValidFragmentSessionKey, this.ElicitationSessionId); set { }
+            get => F.AsDecimal(F.Memo(this, "ValidFragmentsProduced", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<KnowledgeFragment>(base.SoAContext, "KnowledgeFragments", __c => __c.KnowledgeFragments), __r => F.CritField(F.Of(__r.ValidFragmentSessionKey), F.Of(this.ElicitationSessionId)))))); set { }
         }
 
         // Formula IsHighYieldSession (rulebook: ={{ValidFragmentsProduced}} >= 3)
+        [NotMapped]
         public bool? IsHighYieldSession
         {
-            get => this.ValidFragmentsProduced >= 3; set { }
+            get => F.AsBool(F.Memo(this, "IsHighYieldSession", () => F.Cmp(F.Of(this.ValidFragmentsProduced), ">=", F.I(3)))); set { }
         }
 
         // Formula IsConcentratedSingleWitness (rulebook: =AND({{IsSingleWitnessMethod}}, {{IsHighYieldSession}}))
+        [NotMapped]
         public bool? IsConcentratedSingleWitness
         {
-            get => AND(this.IsSingleWitnessMethod, this.IsHighYieldSession); set { }
+            get => F.AsBool(F.Memo(this, "IsConcentratedSingleWitness", () => F.And(F.Bool3(F.Of(this.IsSingleWitnessMethod)), F.Bool3(F.Of(this.IsHighYieldSession))))); set { }
         }
 
         // Formula IsStaleConcentratedWitness (rulebook: =AND({{IsConcentratedSingleWitness}}, {{DaysSinceElicited}} > 180))
+        [NotMapped]
         public bool? IsStaleConcentratedWitness
         {
-            get => AND(this.IsConcentratedSingleWitness, this.DaysSinceElicited > 180); set { }
+            get => F.AsBool(F.Memo(this, "IsStaleConcentratedWitness", () => F.And(F.Bool3(F.Of(this.IsConcentratedSingleWitness)), F.Bool3(F.Cmp(F.Of(this.DaysSinceElicited), ">", F.I(180)))))); set { }
         }
 
         // Formula ConcentratedSessionVersionKey (rulebook: =IF({{IsConcentratedSingleWitness}}, {{ProcedureVersion}}, ""))
+        [NotMapped]
         public string? ConcentratedSessionVersionKey
         {
-            get => IF(this.IsConcentratedSingleWitness, this.ProcedureVersion, ""); set { }
+            get => F.AsString(F.Memo(this, "ConcentratedSessionVersionKey", () => (F.Truthy(F.Bool3(F.Of(this.IsConcentratedSingleWitness))) ? F.Of(this.ProcedureVersion) : F.S("")))); set { }
         }
 
         public string? SemanticTypeIri { get; set; }
@@ -87,37 +98,46 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string? FacilitatorAgent { get; set; }
         public string? EvaluationContext { get; set; }
 
-        private ProcedureVersion _procedureVersion;
+        private ProcedureVersion _procedureVersionRef;
 
         [ForeignKey("ProcedureVersion")]
-        public virtual ProcedureVersion ProcedureVersion
+        public virtual ProcedureVersion ProcedureVersionRef
         {
             get
             {
-                if (_procedureVersion == null && !string.IsNullOrEmpty(ProcedureVersion))
+                if (_procedureVersionRef == null && !string.IsNullOrEmpty(ProcedureVersion))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access ProcedureVersion - no database context is set. ProcedureVersion: " + ProcedureVersion + ".");
+                            throw new InvalidOperationException("Cannot access ProcedureVersionRef - no database context is set. ProcedureVersion: " + ProcedureVersion + ".");
                         }
                         return null;
                     }
-                    _procedureVersion = Context.ProcedureVersions.Find(ProcedureVersion);
-                    if (_procedureVersion != null)
+                    _procedureVersionRef = base.SoAContext.ProcedureVersions.Find(ProcedureVersion);
+                    if (_procedureVersionRef != null)
                     {
-                        Context.Attach(_procedureVersion);
+                        base.SoAContext.Attach(_procedureVersionRef);
                     }
                 }
-                return _procedureVersion;
+                return _procedureVersionRef;
             }
             set
             {
-                if (_procedureVersion != value)
+                if (_procedureVersionRef != value)
                 {
-                    _procedureVersion = value;
-                    ProcedureVersion = _procedureVersion == null ? default : _procedureVersion.ProcedureVersionId;
+                    _procedureVersionRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_procedureVersionRef != null)
+                    {
+                        ProcedureVersion = _procedureVersionRef.ProcedureVersionId;
+                    }
                 }
             }
         }
@@ -131,7 +151,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_agent == null && !string.IsNullOrEmpty(PractitionerAgent))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -139,10 +159,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                         }
                         return null;
                     }
-                    _agent = Context.Agents.Find(PractitionerAgent);
+                    _agent = base.SoAContext.Agents.Find(PractitionerAgent);
                     if (_agent != null)
                     {
-                        Context.Attach(_agent);
+                        base.SoAContext.Attach(_agent);
                     }
                 }
                 return _agent;
@@ -152,91 +172,118 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                 if (_agent != value)
                 {
                     _agent = value;
-                    PractitionerAgent = _agent == null ? default : _agent.AgentId;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_agent != null)
+                    {
+                        PractitionerAgent = _agent.AgentId;
+                    }
                 }
             }
         }
 
-        private Agent _agent;
+        private Agent _agentRef;
 
         [ForeignKey("FacilitatorAgent")]
-        public virtual Agent Agent
+        public virtual Agent AgentRef
         {
             get
             {
-                if (_agent == null && !string.IsNullOrEmpty(FacilitatorAgent))
+                if (_agentRef == null && !string.IsNullOrEmpty(FacilitatorAgent))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access Agent - no database context is set. FacilitatorAgent: " + FacilitatorAgent + ".");
+                            throw new InvalidOperationException("Cannot access AgentRef - no database context is set. FacilitatorAgent: " + FacilitatorAgent + ".");
                         }
                         return null;
                     }
-                    _agent = Context.Agents.Find(FacilitatorAgent);
-                    if (_agent != null)
+                    _agentRef = base.SoAContext.Agents.Find(FacilitatorAgent);
+                    if (_agentRef != null)
                     {
-                        Context.Attach(_agent);
+                        base.SoAContext.Attach(_agentRef);
                     }
                 }
-                return _agent;
+                return _agentRef;
             }
             set
             {
-                if (_agent != value)
+                if (_agentRef != value)
                 {
-                    _agent = value;
-                    FacilitatorAgent = _agent == null ? default : _agent.AgentId;
+                    _agentRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_agentRef != null)
+                    {
+                        FacilitatorAgent = _agentRef.AgentId;
+                    }
                 }
             }
         }
 
-        private EvaluationContext _evaluationContext;
+        private EvaluationContext _evaluationContextRef;
 
         [ForeignKey("EvaluationContext")]
-        public virtual EvaluationContext EvaluationContext
+        public virtual EvaluationContext EvaluationContextRef
         {
             get
             {
-                if (_evaluationContext == null && !string.IsNullOrEmpty(EvaluationContext))
+                if (_evaluationContextRef == null && !string.IsNullOrEmpty(EvaluationContext))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access EvaluationContext - no database context is set. EvaluationContext: " + EvaluationContext + ".");
+                            throw new InvalidOperationException("Cannot access EvaluationContextRef - no database context is set. EvaluationContext: " + EvaluationContext + ".");
                         }
                         return null;
                     }
-                    _evaluationContext = Context.EvaluationContexts.Find(EvaluationContext);
-                    if (_evaluationContext != null)
+                    _evaluationContextRef = base.SoAContext.EvaluationContexts.Find(EvaluationContext);
+                    if (_evaluationContextRef != null)
                     {
-                        Context.Attach(_evaluationContext);
+                        base.SoAContext.Attach(_evaluationContextRef);
                     }
                 }
-                return _evaluationContext;
+                return _evaluationContextRef;
             }
             set
             {
-                if (_evaluationContext != value)
+                if (_evaluationContextRef != value)
                 {
-                    _evaluationContext = value;
-                    EvaluationContext = _evaluationContext == null ? default : _evaluationContext.EvaluationContextId;
+                    _evaluationContextRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_evaluationContextRef != null)
+                    {
+                        EvaluationContext = _evaluationContextRef.EvaluationContextId;
+                    }
                 }
             }
         }
 
         private ObservableCollection<KnowledgeFragment> _knowledgeFragments;
 
-        [InverseProperty("ElicitationSession")]
+        [InverseProperty("ElicitationSessionRef")]
         public virtual ObservableCollection<KnowledgeFragment> KnowledgeFragments
         {
             get
             {
                 if (_knowledgeFragments == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -246,11 +293,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.KnowledgeFragments.Where(x => x.ElicitationSession == this.ElicitationSessionId).ToList<KnowledgeFragment>();
+                        var items = base.SoAContext.KnowledgeFragments.Where(x => x.ElicitationSession == this.ElicitationSessionId).ToList<KnowledgeFragment>();
                         _knowledgeFragments = new ObservableCollection<KnowledgeFragment>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _knowledgeFragments.CollectionChanged += KnowledgeFragments_CollectionChanged;
@@ -285,10 +332,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         protected override void LazyLoadProperties()
         {
-            _ = this.ProcedureVersion;
+            _ = this.ProcedureVersionRef;
             _ = this.Agent;
-            _ = this.Agent;
-            _ = this.EvaluationContext;
+            _ = this.AgentRef;
+            _ = this.EvaluationContextRef;
             _ = this.KnowledgeFragments;
         }
 

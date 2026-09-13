@@ -4,52 +4,14 @@
   "HelloWhos": {
     "Description": "The smallest complete rulebook: an id, a display name, and a rule that derives a greeting from it.",
     "schema": [
-      {
-        "name": "HelloWhoId",
-        "datatype": "string",
-        "type": "raw",
-        "description": "The unique identifier for the HelloWho entity.",
-        "nullable": false
-      },
-      {
-        "name": "Name",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": false
-      },
-      {
-        "name": "Introduction",
-        "datatype": "string",
-        "type": "calculated",
-        "nullable": false,
-        "formula": "=\"Hi, \" & {{Name}} & \".\""
-      },
-      {"name": "IsBob", "datatype": "boolean", "formula": "=OR({{Name}}=\"Bob\", {{Name}}=\"Bobby\", {{Name}}=\"Robert\")", "type": "calculated"}
+      { "name": "HelloWhoId", "datatype": "string", "type": "raw", "nullable": false },
+      { "name": "Name", "datatype": "string", "type": "raw", "nullable": false },
+      { "name": "Introduction", "datatype": "string", "type": "calculated", "nullable": false, "formula": "=\"Hello \" & {{Name}} & \"!!!\"" }
     ],
     "data": [
-      {
-        "HelloWhoId": "world",
-        "Name": "World",
-        "Introduction": "Hi, World.",
-        "IsBob": false
-      },
-      {
-        "HelloWhoId": "bob",
-        "Name": "Bobby",
-        "Introduction": "Hi, Bobby.",
-        "IsBob": true
-      },      {
-        "HelloWhoId": "bob2",
-        "Name": "Robby",
-        "Introduction": "Hi, Robby.",
-        "IsBob": false
-      },
-      {
-        "HelloWhoId": "everyone",
-        "Name": "Everyone",
-        "Introduction": "Hi, Everyone.",
-        "IsBob": false
-      }
+      { "HelloWhoId": "world", "Name": "World", "Introduction": "Hello World!!!" },
+      { "HelloWhoId": "bob", "Name": "Bob", "Introduction": "Hello Bob!!!" },
+      { "HelloWhoId": "everyone", "Name": "Everyone", "Introduction": "Hello Everyone!!!" }
     ]
   }
 }

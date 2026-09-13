@@ -14,6 +14,28 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
         /// </summary>
         public static bool ThrowErrorOnContextMissing { get; set; } = true;
 
+        private bool _freezeComputedValues;
+
+        /// <summary>
+        /// Declares the tracked rows a read-only snapshot. While true, each computed property is
+        /// evaluated once per row and each table's rows are read once, so reading every computed
+        /// value is linear in the data instead of re-deriving every dependency on every read.
+        /// Setting it (either way) discards the previous snapshot; change detection is off while
+        /// frozen, because nothing may change.
+        /// </summary>
+        public bool FreezeComputedValues
+        {
+            get => _freezeComputedValues;
+            set
+            {
+                _freezeComputedValues = value;
+                ComputedSnapshot = value ? new Formulas.EfFormulaFns.Snapshot() : null;
+                ChangeTracker.AutoDetectChangesEnabled = !value;
+            }
+        }
+
+        public Formulas.EfFormulaFns.Snapshot? ComputedSnapshot { get; private set; }
+
         public SoAEFContext(DbContextOptions<SoAEFContext> options)
             : base(options)
         {
@@ -114,16 +136,26 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
         public DbSet<AppUser> AppUsers { get; set; }
         public DbSet<PrincipalAssignment> PrincipalAssignments { get; set; }
         public DbSet<IssuedToken> IssuedTokens { get; set; }
+        public DbSet<ProcessMiningRun> ProcessMiningRuns { get; set; }
+        public DbSet<Vocabulary> Vocabularies { get; set; }
+        public DbSet<VocabularyTerm> VocabularyTerms { get; set; }
+        public DbSet<KnowledgeBrokerLink> KnowledgeBrokerLinks { get; set; }
+        public DbSet<ConformanceSubstrate> ConformanceSubstrates { get; set; }
+        public DbSet<ConformanceRun> ConformanceRuns { get; set; }
+        public DbSet<SubstrateRunScore> SubstrateRunScores { get; set; }
+        public DbSet<TableConformance> TableConformance { get; set; }
+        public DbSet<FieldDisagreement> FieldDisagreements { get; set; }
+        public DbSet<CellDisagreement> CellDisagreements { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Agent>()
-                .HasOne(e => e.Organization)
+                .HasOne(e => e.OrganizationRef)
                 .WithMany(f => f.Agents)
                 .HasForeignKey(f => f.Organization)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Role>()
-                .HasOne(e => e.Organization)
+                .HasOne(e => e.OrganizationRef)
                 .WithMany(f => f.Roles)
                 .HasForeignKey(f => f.Organization)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -133,17 +165,17 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasForeignKey(f => f.CurrentAgent)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<RoleAssignment>()
-                .HasOne(e => e.Role)
+                .HasOne(e => e.RoleRef)
                 .WithMany(f => f.RoleRoleAssignments)
                 .HasForeignKey(f => f.Role)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<RoleAssignment>()
-                .HasOne(e => e.Agent)
+                .HasOne(e => e.AgentRef)
                 .WithMany(f => f.RoleAssignments)
                 .HasForeignKey(f => f.Agent)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<RoleAssignment>()
-                .HasOne(e => e.EvaluationContext)
+                .HasOne(e => e.EvaluationContextRef)
                 .WithMany(f => f.RoleAssignments)
                 .HasForeignKey(f => f.EvaluationContext)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -153,7 +185,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasForeignKey(f => f.SupersedesAssignment)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<RoleAssignment>()
-                .HasOne(e => e.ApprovingAuthorityRole)
+                .HasOne(e => e.RoleRefRef)
                 .WithMany(f => f.ApprovingAuthorityRoleRoleAssignments)
                 .HasForeignKey(f => f.ApprovingAuthorityRole)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -163,7 +195,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasForeignKey(f => f.AuthorizingChangeRequest)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<CommunitiesOfPractice>()
-                .HasOne(e => e.Organization)
+                .HasOne(e => e.OrganizationRef)
                 .WithMany(f => f.CommunitiesOfPractice)
                 .HasForeignKey(f => f.Organization)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -183,12 +215,12 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasForeignKey(f => f.MentorAgent)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Mentorship>()
-                .HasOne(e => e.Agent)
+                .HasOne(e => e.AgentRef)
                 .WithMany(f => f.LearnerAgentMentorships)
                 .HasForeignKey(f => f.LearnerAgent)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Procedure>()
-                .HasOne(e => e.ProcedureType)
+                .HasOne(e => e.ProcedureTypeRef)
                 .WithMany(f => f.Procedures)
                 .HasForeignKey(f => f.ProcedureType)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -198,12 +230,12 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasForeignKey(f => f.OwnerOrganization)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Procedure>()
-                .HasOne(e => e.Organization)
+                .HasOne(e => e.OrganizationRef)
                 .WithMany(f => f.AdoptedByOrganizationProcedures)
                 .HasForeignKey(f => f.AdoptedByOrganization)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<ProcedureVersion>()
-                .HasOne(e => e.Procedure)
+                .HasOne(e => e.ProcedureRef)
                 .WithMany(f => f.ProcedureVersions)
                 .HasForeignKey(f => f.Procedure)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -213,12 +245,12 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasForeignKey(f => f.CreatedByAgent)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<ProcedureVersion>()
-                .HasOne(e => e.Agent)
+                .HasOne(e => e.AgentRef)
                 .WithMany(f => f.ModifiedByAgentProcedureVersions)
                 .HasForeignKey(f => f.ModifiedByAgent)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<ProcedureVersion>()
-                .HasOne(e => e.EvaluationContext)
+                .HasOne(e => e.EvaluationContextRef)
                 .WithMany(f => f.ProcedureVersions)
                 .HasForeignKey(f => f.EvaluationContext)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -228,12 +260,12 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasForeignKey(f => f.PreviousProcedureVersion)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<ProcedureVersionLink>()
-                .HasOne(e => e.ProcedureVersion)
+                .HasOne(e => e.ProcedureVersionRef)
                 .WithMany(f => f.NextProcedureVersionProcedureVersionLinks)
                 .HasForeignKey(f => f.NextProcedureVersion)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<ProcedureStatusChange>()
-                .HasOne(e => e.ProcedureVersion)
+                .HasOne(e => e.ProcedureVersionRef)
                 .WithMany(f => f.ProcedureStatusChanges)
                 .HasForeignKey(f => f.ProcedureVersion)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -243,7 +275,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasForeignKey(f => f.ChangedByAgent)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Step>()
-                .HasOne(e => e.ProcedureVersion)
+                .HasOne(e => e.ProcedureVersionRef)
                 .WithMany(f => f.Steps)
                 .HasForeignKey(f => f.ProcedureVersion)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -253,7 +285,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasForeignKey(f => f.AssignedRole)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<StepTransition>()
-                .HasOne(e => e.ProcedureVersion)
+                .HasOne(e => e.ProcedureVersionRef)
                 .WithMany(f => f.StepTransitions)
                 .HasForeignKey(f => f.ProcedureVersion)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -263,37 +295,37 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasForeignKey(f => f.FromStep)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<StepTransition>()
-                .HasOne(e => e.Step)
+                .HasOne(e => e.StepRef)
                 .WithMany(f => f.ToStepStepTransitions)
                 .HasForeignKey(f => f.ToStep)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<StepAction>()
-                .HasOne(e => e.Step)
+                .HasOne(e => e.StepRef)
                 .WithMany(f => f.StepActions)
                 .HasForeignKey(f => f.Step)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<StepAction>()
-                .HasOne(e => e.Action)
+                .HasOne(e => e.ActionRef)
                 .WithMany(f => f.StepActions)
                 .HasForeignKey(f => f.Action)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<StepFunction>()
-                .HasOne(e => e.Step)
+                .HasOne(e => e.StepRef)
                 .WithMany(f => f.StepFunctions)
                 .HasForeignKey(f => f.Step)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<StepFunction>()
-                .HasOne(e => e.Function)
+                .HasOne(e => e.FunctionRef)
                 .WithMany(f => f.StepFunctions)
                 .HasForeignKey(f => f.Function)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<StepTool>()
-                .HasOne(e => e.Step)
+                .HasOne(e => e.StepRef)
                 .WithMany(f => f.StepTools)
                 .HasForeignKey(f => f.Step)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<StepTool>()
-                .HasOne(e => e.Tool)
+                .HasOne(e => e.ToolRef)
                 .WithMany(f => f.StepTools)
                 .HasForeignKey(f => f.Tool)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -302,28 +334,33 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .WithMany(f => f.Requirements)
                 .HasForeignKey(f => f.AccountableRole)
                 .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Requirement>()
+                .HasOne(e => e.VocabularyTerm)
+                .WithMany(f => f.Requirements)
+                .HasForeignKey(f => f.ControlledTerm)
+                .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<StepRequirement>()
-                .HasOne(e => e.Step)
+                .HasOne(e => e.StepRef)
                 .WithMany(f => f.StepRequirements)
                 .HasForeignKey(f => f.Step)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<StepRequirement>()
-                .HasOne(e => e.Requirement)
+                .HasOne(e => e.RequirementRef)
                 .WithMany(f => f.StepRequirements)
                 .HasForeignKey(f => f.Requirement)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<StepVerification>()
-                .HasOne(e => e.Step)
+                .HasOne(e => e.StepRef)
                 .WithMany(f => f.StepVerifications)
                 .HasForeignKey(f => f.Step)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Rationale>()
-                .HasOne(e => e.ProcedureVersion)
+                .HasOne(e => e.ProcedureVersionRef)
                 .WithMany(f => f.Rationales)
                 .HasForeignKey(f => f.ProcedureVersion)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Rationale>()
-                .HasOne(e => e.Step)
+                .HasOne(e => e.StepRef)
                 .WithMany(f => f.Rationales)
                 .HasForeignKey(f => f.Step)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -333,7 +370,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasForeignKey(f => f.AuthorityRole)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Exception>()
-                .HasOne(e => e.ProcedureVersion)
+                .HasOne(e => e.ProcedureVersionRef)
                 .WithMany(f => f.Exceptions)
                 .HasForeignKey(f => f.ProcedureVersion)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -348,22 +385,22 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasForeignKey(f => f.ApprovalRole)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Exception>()
-                .HasOne(e => e.Role)
+                .HasOne(e => e.RoleRef)
                 .WithMany(f => f.FallbackRoleExceptions)
                 .HasForeignKey(f => f.FallbackRole)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<ProcedureResource>()
-                .HasOne(e => e.ProcedureVersion)
+                .HasOne(e => e.ProcedureVersionRef)
                 .WithMany(f => f.ProcedureResources)
                 .HasForeignKey(f => f.ProcedureVersion)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<ProcedureResource>()
-                .HasOne(e => e.Resource)
+                .HasOne(e => e.ResourceRef)
                 .WithMany(f => f.ProcedureResources)
                 .HasForeignKey(f => f.Resource)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<ElicitationSession>()
-                .HasOne(e => e.ProcedureVersion)
+                .HasOne(e => e.ProcedureVersionRef)
                 .WithMany(f => f.ElicitationSessions)
                 .HasForeignKey(f => f.ProcedureVersion)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -373,27 +410,27 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasForeignKey(f => f.PractitionerAgent)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<ElicitationSession>()
-                .HasOne(e => e.Agent)
+                .HasOne(e => e.AgentRef)
                 .WithMany(f => f.FacilitatorAgentElicitationSessions)
                 .HasForeignKey(f => f.FacilitatorAgent)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<ElicitationSession>()
-                .HasOne(e => e.EvaluationContext)
+                .HasOne(e => e.EvaluationContextRef)
                 .WithMany(f => f.ElicitationSessions)
                 .HasForeignKey(f => f.EvaluationContext)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<KnowledgeFragment>()
-                .HasOne(e => e.ProcedureVersion)
+                .HasOne(e => e.ProcedureVersionRef)
                 .WithMany(f => f.KnowledgeFragments)
                 .HasForeignKey(f => f.ProcedureVersion)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<KnowledgeFragment>()
-                .HasOne(e => e.Step)
+                .HasOne(e => e.StepRef)
                 .WithMany(f => f.KnowledgeFragments)
                 .HasForeignKey(f => f.Step)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<KnowledgeFragment>()
-                .HasOne(e => e.ElicitationSession)
+                .HasOne(e => e.ElicitationSessionRef)
                 .WithMany(f => f.KnowledgeFragments)
                 .HasForeignKey(f => f.ElicitationSession)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -408,17 +445,17 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasForeignKey(f => f.OwnerRole)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<KnowledgeFragment>()
-                .HasOne(e => e.EvaluationContext)
+                .HasOne(e => e.EvaluationContextRef)
                 .WithMany(f => f.KnowledgeFragments)
                 .HasForeignKey(f => f.EvaluationContext)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<KnowledgeGap>()
-                .HasOne(e => e.ProcedureVersion)
+                .HasOne(e => e.ProcedureVersionRef)
                 .WithMany(f => f.KnowledgeGaps)
                 .HasForeignKey(f => f.ProcedureVersion)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<KnowledgeGap>()
-                .HasOne(e => e.Step)
+                .HasOne(e => e.StepRef)
                 .WithMany(f => f.KnowledgeGaps)
                 .HasForeignKey(f => f.Step)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -428,32 +465,32 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasForeignKey(f => f.OwnerRole)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<KnowledgeGap>()
-                .HasOne(e => e.EvaluationContext)
+                .HasOne(e => e.EvaluationContextRef)
                 .WithMany(f => f.KnowledgeGaps)
                 .HasForeignKey(f => f.EvaluationContext)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<FAQ>()
-                .HasOne(e => e.ProcedureVersion)
+                .HasOne(e => e.ProcedureVersionRef)
                 .WithMany(f => f.FAQs)
                 .HasForeignKey(f => f.ProcedureVersion)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<FAQ>()
-                .HasOne(e => e.Step)
+                .HasOne(e => e.StepRef)
                 .WithMany(f => f.FAQs)
                 .HasForeignKey(f => f.Step)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Explanation>()
-                .HasOne(e => e.ProcedureVersion)
+                .HasOne(e => e.ProcedureVersionRef)
                 .WithMany(f => f.Explanations)
                 .HasForeignKey(f => f.ProcedureVersion)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Explanation>()
-                .HasOne(e => e.Step)
+                .HasOne(e => e.StepRef)
                 .WithMany(f => f.Explanations)
                 .HasForeignKey(f => f.Step)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<ProcedureExecution>()
-                .HasOne(e => e.ProcedureVersion)
+                .HasOne(e => e.ProcedureVersionRef)
                 .WithMany(f => f.ProcedureExecutions)
                 .HasForeignKey(f => f.ProcedureVersion)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -463,12 +500,12 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasForeignKey(f => f.ExecutedByAgent)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<StepExecution>()
-                .HasOne(e => e.ProcedureExecution)
+                .HasOne(e => e.ProcedureExecutionRef)
                 .WithMany(f => f.StepExecutions)
                 .HasForeignKey(f => f.ProcedureExecution)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<StepExecution>()
-                .HasOne(e => e.Step)
+                .HasOne(e => e.StepRef)
                 .WithMany(f => f.StepExecutions)
                 .HasForeignKey(f => f.Step)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -478,12 +515,12 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasForeignKey(f => f.ExecutedByAgent)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<RequirementSatisfaction>()
-                .HasOne(e => e.StepExecution)
+                .HasOne(e => e.StepExecutionRef)
                 .WithMany(f => f.RequirementSatisfactions)
                 .HasForeignKey(f => f.StepExecution)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<RequirementSatisfaction>()
-                .HasOne(e => e.Requirement)
+                .HasOne(e => e.RequirementRef)
                 .WithMany(f => f.RequirementSatisfactions)
                 .HasForeignKey(f => f.Requirement)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -493,12 +530,12 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasForeignKey(f => f.EvaluatedByAgent)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<IssueOccurrence>()
-                .HasOne(e => e.StepExecution)
+                .HasOne(e => e.StepExecutionRef)
                 .WithMany(f => f.IssueOccurrences)
                 .HasForeignKey(f => f.StepExecution)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<IssueOccurrence>()
-                .HasOne(e => e.Error)
+                .HasOne(e => e.ErrorRef)
                 .WithMany(f => f.IssueOccurrences)
                 .HasForeignKey(f => f.Error)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -508,7 +545,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasForeignKey(f => f.EncounteredByAgent)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<UserQuestion>()
-                .HasOne(e => e.StepExecution)
+                .HasOne(e => e.StepExecutionRef)
                 .WithMany(f => f.UserQuestions)
                 .HasForeignKey(f => f.StepExecution)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -528,7 +565,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasForeignKey(f => f.AddressedByResource)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<UserFeedback>()
-                .HasOne(e => e.ProcedureExecution)
+                .HasOne(e => e.ProcedureExecutionRef)
                 .WithMany(f => f.UserFeedback)
                 .HasForeignKey(f => f.ProcedureExecution)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -538,7 +575,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasForeignKey(f => f.ProvidedByAgent)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<StewardshipAssignment>()
-                .HasOne(e => e.ProcedureVersion)
+                .HasOne(e => e.ProcedureVersionRef)
                 .WithMany(f => f.StewardshipAssignments)
                 .HasForeignKey(f => f.ProcedureVersion)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -548,17 +585,17 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasForeignKey(f => f.StewardRole)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<StewardshipAssignment>()
-                .HasOne(e => e.Role)
+                .HasOne(e => e.RoleRef)
                 .WithMany(f => f.AuthorityRoleStewardshipAssignments)
                 .HasForeignKey(f => f.AuthorityRole)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<StewardshipAssignment>()
-                .HasOne(e => e.EvaluationContext)
+                .HasOne(e => e.EvaluationContextRef)
                 .WithMany(f => f.StewardshipAssignments)
                 .HasForeignKey(f => f.EvaluationContext)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<ChangeRequest>()
-                .HasOne(e => e.ProcedureVersion)
+                .HasOne(e => e.ProcedureVersionRef)
                 .WithMany(f => f.ChangeRequests)
                 .HasForeignKey(f => f.ProcedureVersion)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -573,12 +610,12 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasForeignKey(f => f.AuthorityRole)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<ChangeRequest>()
-                .HasOne(e => e.EvaluationContext)
+                .HasOne(e => e.EvaluationContextRef)
                 .WithMany(f => f.ChangeRequests)
                 .HasForeignKey(f => f.EvaluationContext)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<ReviewEvent>()
-                .HasOne(e => e.ProcedureVersion)
+                .HasOne(e => e.ProcedureVersionRef)
                 .WithMany(f => f.ReviewEvents)
                 .HasForeignKey(f => f.ProcedureVersion)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -593,7 +630,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasForeignKey(f => f.RelatedChangeRequest)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<ReviewEvent>()
-                .HasOne(e => e.EvaluationContext)
+                .HasOne(e => e.EvaluationContextRef)
                 .WithMany(f => f.ReviewEvents)
                 .HasForeignKey(f => f.EvaluationContext)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -603,7 +640,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasForeignKey(f => f.CommunityOfPractice)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<LearningActivity>()
-                .HasOne(e => e.ProcedureVersion)
+                .HasOne(e => e.ProcedureVersionRef)
                 .WithMany(f => f.LearningActivities)
                 .HasForeignKey(f => f.ProcedureVersion)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -618,27 +655,27 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasForeignKey(f => f.EvidenceResource)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<OperationalBinding>()
-                .HasOne(e => e.ProcedureVersion)
+                .HasOne(e => e.ProcedureVersionRef)
                 .WithMany(f => f.OperationalBindings)
                 .HasForeignKey(f => f.ProcedureVersion)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<OperationalBinding>()
-                .HasOne(e => e.Step)
+                .HasOne(e => e.StepRef)
                 .WithMany(f => f.OperationalBindings)
                 .HasForeignKey(f => f.Step)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<OperationalBinding>()
-                .HasOne(e => e.Resource)
+                .HasOne(e => e.ResourceRef)
                 .WithMany(f => f.OperationalBindings)
                 .HasForeignKey(f => f.Resource)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<OperationalBinding>()
-                .HasOne(e => e.EvaluationContext)
+                .HasOne(e => e.EvaluationContextRef)
                 .WithMany(f => f.OperationalBindings)
                 .HasForeignKey(f => f.EvaluationContext)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<CommunicationPolicy>()
-                .HasOne(e => e.ProcedureVersion)
+                .HasOne(e => e.ProcedureVersionRef)
                 .WithMany(f => f.CommunicationPolicies)
                 .HasForeignKey(f => f.ProcedureVersion)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -648,17 +685,17 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasForeignKey(f => f.ApprovalRole)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<MessageTemplate>()
-                .HasOne(e => e.CommunicationPolicy)
+                .HasOne(e => e.CommunicationPolicyRef)
                 .WithMany(f => f.MessageTemplates)
                 .HasForeignKey(f => f.CommunicationPolicy)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<MessageTemplate>()
-                .HasOne(e => e.Resource)
+                .HasOne(e => e.ResourceRef)
                 .WithMany(f => f.MessageTemplates)
                 .HasForeignKey(f => f.Resource)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<SemanticMapping>()
-                .HasOne(e => e.OntologyProfile)
+                .HasOne(e => e.OntologyProfileRef)
                 .WithMany(f => f.SemanticMappings)
                 .HasForeignKey(f => f.OntologyProfile)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -668,7 +705,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasForeignKey(f => f.AskingRole)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<RoleQuestion>()
-                .HasOne(e => e.WitnessLoop)
+                .HasOne(e => e.WitnessLoopRef)
                 .WithMany(f => f.RoleQuestions)
                 .HasForeignKey(f => f.WitnessLoop)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -688,12 +725,12 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasForeignKey(f => f.Suite)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<ExceptionInvocation>()
-                .HasOne(e => e.StepExecution)
+                .HasOne(e => e.StepExecutionRef)
                 .WithMany(f => f.ExceptionInvocations)
                 .HasForeignKey(f => f.StepExecution)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<ExceptionInvocation>()
-                .HasOne(e => e.Exception)
+                .HasOne(e => e.ExceptionRef)
                 .WithMany(f => f.ExceptionInvocations)
                 .HasForeignKey(f => f.Exception)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -703,17 +740,17 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasForeignKey(f => f.InvokedByAgent)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<ExceptionInvocation>()
-                .HasOne(e => e.Agent)
+                .HasOne(e => e.AgentRef)
                 .WithMany(f => f.ApprovedByAgentExceptionInvocations)
                 .HasForeignKey(f => f.ApprovedByAgent)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<VerificationOutcome>()
-                .HasOne(e => e.StepExecution)
+                .HasOne(e => e.StepExecutionRef)
                 .WithMany(f => f.VerificationOutcomes)
                 .HasForeignKey(f => f.StepExecution)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<VerificationOutcome>()
-                .HasOne(e => e.StepVerification)
+                .HasOne(e => e.StepVerificationRef)
                 .WithMany(f => f.VerificationOutcomes)
                 .HasForeignKey(f => f.StepVerification)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -723,12 +760,12 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasForeignKey(f => f.ObservedByAgent)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<ObservedTransition>()
-                .HasOne(e => e.ProcedureExecution)
+                .HasOne(e => e.ProcedureExecutionRef)
                 .WithMany(f => f.ObservedTransitions)
                 .HasForeignKey(f => f.ProcedureExecution)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<ObservedTransition>()
-                .HasOne(e => e.StepTransition)
+                .HasOne(e => e.StepTransitionRef)
                 .WithMany(f => f.ObservedTransitions)
                 .HasForeignKey(f => f.StepTransition)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -738,7 +775,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasForeignKey(f => f.ArrivingStepExecution)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Recipient>()
-                .HasOne(e => e.Organization)
+                .HasOne(e => e.OrganizationRef)
                 .WithMany(f => f.Recipients)
                 .HasForeignKey(f => f.Organization)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -748,22 +785,22 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasForeignKey(f => f.ConsentBinding)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<MessageDelivery>()
-                .HasOne(e => e.ProcedureExecution)
+                .HasOne(e => e.ProcedureExecutionRef)
                 .WithMany(f => f.MessageDeliveries)
                 .HasForeignKey(f => f.ProcedureExecution)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<MessageDelivery>()
-                .HasOne(e => e.StepExecution)
+                .HasOne(e => e.StepExecutionRef)
                 .WithMany(f => f.MessageDeliveries)
                 .HasForeignKey(f => f.StepExecution)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<MessageDelivery>()
-                .HasOne(e => e.Recipient)
+                .HasOne(e => e.RecipientRef)
                 .WithMany(f => f.MessageDeliveries)
                 .HasForeignKey(f => f.Recipient)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<MessageDelivery>()
-                .HasOne(e => e.MessageTemplate)
+                .HasOne(e => e.MessageTemplateRef)
                 .WithMany(f => f.MessageDeliveries)
                 .HasForeignKey(f => f.MessageTemplate)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -778,12 +815,12 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasForeignKey(f => f.InvokedException)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<MessageDelivery>()
-                .HasOne(e => e.EvaluationContext)
+                .HasOne(e => e.EvaluationContextRef)
                 .WithMany(f => f.MessageDeliveries)
                 .HasForeignKey(f => f.EvaluationContext)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<TemplateApproval>()
-                .HasOne(e => e.MessageTemplate)
+                .HasOne(e => e.MessageTemplateRef)
                 .WithMany(f => f.TemplateApprovals)
                 .HasForeignKey(f => f.MessageTemplate)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -798,22 +835,22 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasForeignKey(f => f.DecidedInRole)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<SendIntent>()
-                .HasOne(e => e.ProcedureExecution)
+                .HasOne(e => e.ProcedureExecutionRef)
                 .WithMany(f => f.SendIntents)
                 .HasForeignKey(f => f.ProcedureExecution)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<SendIntent>()
-                .HasOne(e => e.StepExecution)
+                .HasOne(e => e.StepExecutionRef)
                 .WithMany(f => f.SendIntents)
                 .HasForeignKey(f => f.StepExecution)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<SendIntent>()
-                .HasOne(e => e.Recipient)
+                .HasOne(e => e.RecipientRef)
                 .WithMany(f => f.SendIntents)
                 .HasForeignKey(f => f.Recipient)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<SendIntent>()
-                .HasOne(e => e.MessageTemplate)
+                .HasOne(e => e.MessageTemplateRef)
                 .WithMany(f => f.SendIntents)
                 .HasForeignKey(f => f.MessageTemplate)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -828,12 +865,12 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasForeignKey(f => f.RefusalNotifiedRole)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<SendIntent>()
-                .HasOne(e => e.EvaluationContext)
+                .HasOne(e => e.EvaluationContextRef)
                 .WithMany(f => f.SendIntents)
                 .HasForeignKey(f => f.EvaluationContext)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<AgentDecisionRecord>()
-                .HasOne(e => e.StepExecution)
+                .HasOne(e => e.StepExecutionRef)
                 .WithMany(f => f.AgentDecisionRecords)
                 .HasForeignKey(f => f.StepExecution)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -843,7 +880,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasForeignKey(f => f.DecidingAgent)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<AgentDecisionRecord>()
-                .HasOne(e => e.Agent)
+                .HasOne(e => e.AgentRef)
                 .WithMany(f => f.ReviewedByAgentAgentDecisionRecords)
                 .HasForeignKey(f => f.ReviewedByAgent)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -853,7 +890,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasForeignKey(f => f.UnderRoleAssignment)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<DeliveredCommunication>()
-                .HasOne(e => e.ProcedureExecution)
+                .HasOne(e => e.ProcedureExecutionRef)
                 .WithMany(f => f.DeliveredCommunications)
                 .HasForeignKey(f => f.ProcedureExecution)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -863,17 +900,17 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasForeignKey(f => f.SendingStepExecution)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<DeliveredCommunication>()
-                .HasOne(e => e.StepExecution)
+                .HasOne(e => e.StepExecutionRef)
                 .WithMany(f => f.AuthorizingStepExecutionDeliveredCommunications)
                 .HasForeignKey(f => f.AuthorizingStepExecution)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<DeliveredCommunication>()
-                .HasOne(e => e.MessageTemplate)
+                .HasOne(e => e.MessageTemplateRef)
                 .WithMany(f => f.DeliveredCommunications)
                 .HasForeignKey(f => f.MessageTemplate)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<AuthorityBoundary>()
-                .HasOne(e => e.Step)
+                .HasOne(e => e.StepRef)
                 .WithMany(f => f.AuthorityBoundaries)
                 .HasForeignKey(f => f.Step)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -893,22 +930,22 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasForeignKey(f => f.AuthorityRole)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<AuthorityBoundary>()
-                .HasOne(e => e.EvaluationContext)
+                .HasOne(e => e.EvaluationContextRef)
                 .WithMany(f => f.AuthorityBoundaries)
                 .HasForeignKey(f => f.EvaluationContext)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<BindingObservation>()
-                .HasOne(e => e.StepExecution)
+                .HasOne(e => e.StepExecutionRef)
                 .WithMany(f => f.BindingObservations)
                 .HasForeignKey(f => f.StepExecution)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<BindingObservation>()
-                .HasOne(e => e.OperationalBinding)
+                .HasOne(e => e.OperationalBindingRef)
                 .WithMany(f => f.BindingObservations)
                 .HasForeignKey(f => f.OperationalBinding)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Attestation>()
-                .HasOne(e => e.ProcedureExecution)
+                .HasOne(e => e.ProcedureExecutionRef)
                 .WithMany(f => f.Attestations)
                 .HasForeignKey(f => f.ProcedureExecution)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -918,7 +955,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasForeignKey(f => f.SignedByAgent)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<AppRoleProfile>()
-                .HasOne(e => e.Role)
+                .HasOne(e => e.RoleRef)
                 .WithMany(f => f.AppRoleProfiles)
                 .HasForeignKey(f => f.Role)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -948,7 +985,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasForeignKey(f => f.FromRoute)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<AppRouteReference>()
-                .HasOne(e => e.AppRoute)
+                .HasOne(e => e.AppRouteRef)
                 .WithMany(f => f.ToRouteAppRouteReferences)
                 .HasForeignKey(f => f.ToRoute)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -983,7 +1020,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasForeignKey(f => f.Principal)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<RoleSchemaView>()
-                .HasOne(e => e.RoleSchema)
+                .HasOne(e => e.RoleSchemaRef)
                 .WithMany(f => f.RoleSchemaViews)
                 .HasForeignKey(f => f.RoleSchema)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -1018,7 +1055,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasForeignKey(f => f.LinkedAgent)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<PrincipalAssignment>()
-                .HasOne(e => e.AppUser)
+                .HasOne(e => e.AppUserRef)
                 .WithMany(f => f.PrincipalAssignments)
                 .HasForeignKey(f => f.AppUser)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -1028,7 +1065,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasForeignKey(f => f.Principal)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<IssuedToken>()
-                .HasOne(e => e.AppUser)
+                .HasOne(e => e.AppUserRef)
                 .WithMany(f => f.IssuedTokens)
                 .HasForeignKey(f => f.AppUser)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -1036,6 +1073,96 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .HasOne(e => e.AccessPrincipal)
                 .WithMany(f => f.IssuedTokens)
                 .HasForeignKey(f => f.Principal)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<ProcessMiningRun>()
+                .HasOne(e => e.ProcedureVersionRef)
+                .WithMany(f => f.ProcessMiningRuns)
+                .HasForeignKey(f => f.ProcedureVersion)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<ProcessMiningRun>()
+                .HasOne(e => e.EvaluationContextRef)
+                .WithMany(f => f.ProcessMiningRuns)
+                .HasForeignKey(f => f.EvaluationContext)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Vocabulary>()
+                .HasOne(e => e.Role)
+                .WithMany(f => f.Vocabularies)
+                .HasForeignKey(f => f.GoverningRole)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<VocabularyTerm>()
+                .HasOne(e => e.VocabularyRef)
+                .WithMany(f => f.VocabularyTerms)
+                .HasForeignKey(f => f.Vocabulary)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<KnowledgeBrokerLink>()
+                .HasOne(e => e.Agent)
+                .WithMany(f => f.SeekerKnowledgeBrokerLinks)
+                .HasForeignKey(f => f.Seeker)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<KnowledgeBrokerLink>()
+                .HasOne(e => e.AgentRef)
+                .WithMany(f => f.BrokerKnowledgeBrokerLinks)
+                .HasForeignKey(f => f.Broker)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<KnowledgeBrokerLink>()
+                .HasOne(e => e.VocabularyTerm)
+                .WithMany(f => f.KnowledgeBrokerLinks)
+                .HasForeignKey(f => f.Topic)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<KnowledgeBrokerLink>()
+                .HasOne(e => e.EvaluationContextRef)
+                .WithMany(f => f.KnowledgeBrokerLinks)
+                .HasForeignKey(f => f.EvaluationContext)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<ConformanceRun>()
+                .HasOne(e => e.ConformanceSubstrate)
+                .WithMany(f => f.ConformanceRuns)
+                .HasForeignKey(f => f.AnswerKeyAuthor)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<SubstrateRunScore>()
+                .HasOne(e => e.ConformanceRun)
+                .WithMany(f => f.SubstrateRunScores)
+                .HasForeignKey(f => f.Run)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<SubstrateRunScore>()
+                .HasOne(e => e.ConformanceSubstrate)
+                .WithMany(f => f.SubstrateRunScores)
+                .HasForeignKey(f => f.Substrate)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<TableConformance>()
+                .HasOne(e => e.ConformanceRun)
+                .WithMany(f => f.TableConformance)
+                .HasForeignKey(f => f.Run)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<TableConformance>()
+                .HasOne(e => e.ConformanceSubstrate)
+                .WithMany(f => f.TableConformance)
+                .HasForeignKey(f => f.Substrate)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<TableConformance>()
+                .HasOne(e => e.RulebookTableRef)
+                .WithMany(f => f.TableConformance)
+                .HasForeignKey(f => f.RulebookTable)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<FieldDisagreement>()
+                .HasOne(e => e.ConformanceSubstrate)
+                .WithMany(f => f.FieldDisagreements)
+                .HasForeignKey(f => f.Substrate)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<FieldDisagreement>()
+                .HasOne(e => e.RulebookFieldRef)
+                .WithMany(f => f.FieldDisagreements)
+                .HasForeignKey(f => f.RulebookField)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<FieldDisagreement>()
+                .HasOne(e => e.TableConformanceRef)
+                .WithMany(f => f.FieldDisagreements)
+                .HasForeignKey(f => f.TableConformance)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<CellDisagreement>()
+                .HasOne(e => e.FieldDisagreementRef)
+                .WithMany(f => f.CellDisagreements)
+                .HasForeignKey(f => f.FieldDisagreement)
                 .OnDelete(DeleteBehavior.Restrict);
         }
 

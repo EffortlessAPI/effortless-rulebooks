@@ -32,14 +32,19 @@ assembly.
 
 ### The precise claim, not just the marketing one
 
-Most of what makes this run — joins, rollups, calculated fields — is **FO(Aggr)**: first-order
-logic with aggregation, the same expressivity plain SQL has had for 25+ years. Nobody should be
-impressed by that part on its own.
+Most of what makes this run — joins, rollups, calculated fields — is **first-order logic with
+aggregates** (FO + aggregation; the logic *L*<sub>aggr</sub> of Hella,
+Libkin, Nurmonen & Wong), which is roughly SQL without `WITH RECURSIVE` and the same expressivity
+plain SQL has had for 25+ years. Nobody should be impressed by that part on its own.
 
 The part worth checking is narrower and has a name. **Transitive closure (TC) is provably not
-expressible in FO(Aggr)** — Immerman, *"Languages that Capture Complexity Classes"* (SIAM J.
-Comput., 1987), and the descriptive-complexity results that followed. No formula, however large,
-computes reachability over a DAG of unbounded depth from inside that expressivity class. That is
+expressible in first-order logic with aggregates** — Hella, Libkin, Nurmonen & Wong, *"Logics with
+Aggregate Operators"* (J. ACM, 2001), and Libkin, *"Expressive Power of SQL"* (Theor. Comput. Sci.,
+2003), extending the classical result for plain first-order logic (Aho & Ullman, 1979). No
+aggregate query, however large, computes reachability over a DAG of unbounded depth. (Scope: the
+proof is by locality over unordered relational structures, i.e. queries that do not exploit an
+ordering of the keys. With a built-in order plus arithmetic, proving the same would separate
+uniform TC⁰ from NL, which is an open problem.) That is
 why `precedesStep` and `delegatesTo` closure in this rulebook are **never** calculated fields:
 they are a `WITH RECURSIVE` view in Postgres (`vw_step_precedence_closure`, `vw_roles_closure`),
 an `owl:TransitiveProperty` in OWL, and an explicit traversal in Python — three different,

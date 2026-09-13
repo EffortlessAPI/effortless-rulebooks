@@ -17,28 +17,20 @@ type HelloWho struct {
 	HelloWhoId string `json:"hello_who_id"`
 	Name string `json:"name"`
 	Introduction *string `json:"introduction"`
-	IsBob *bool `json:"is_bob"`
 	ErbErrors map[string]string `json:"_erb_errors,omitempty"`
 	erbAggregates map[string]Value
 }
 
 // CalcIntroduction computes the Introduction calculated field
-// Formula: ="Hi, " & {{Name}} & "."
+// Formula: ="Hello " & {{Name}} & "!!!"
 func (tc *HelloWho) CalcIntroduction() *string {
-	return toStringPtr(erbConcat(vS("Hi, "), erbTextOr(vStrPlain(tc.Name)), vS(".")))
-}
-
-// CalcIsBob computes the IsBob calculated field
-// Formula: =OR({{Name}}="Bob", {{Name}}="Bobby", {{Name}}="Robert")
-func (tc *HelloWho) CalcIsBob() *bool {
-	return toBoolPtr(erbOr(erbBool3(erbEq(erbNullif(vStrPlain(tc.Name)), vS("Bob"))), erbBool3(erbEq(erbNullif(vStrPlain(tc.Name)), vS("Bobby"))), erbBool3(erbEq(erbNullif(vStrPlain(tc.Name)), vS("Robert")))))
+	return toStringPtr(erbConcat(vS("Hello "), erbTextOr(vStrPlain(tc.Name)), vS("!!!")))
 }
 
 // erbComputeCalculations computes every calculated field of the row in dependency order.
 func (tc *HelloWho) erbComputeCalculations() {
 	// Level 1
 	calcGuard(tc, "introduction", func() { tc.Introduction = tc.CalcIntroduction() })
-	calcGuard(tc, "is_bob", func() { tc.IsBob = tc.CalcIsBob() })
 }
 
 // ComputeAll computes every calculated field from the row's current inputs.
@@ -55,8 +47,6 @@ func (tc *HelloWho) erbGet(field string) Value {
 		return vStrPlain(tc.Name)
 	case "introduction":
 		return vStr(tc.Introduction)
-	case "is_bob":
-		return vBool(tc.IsBob)
 	}
 	panic("HelloWhos has no field " + field)
 }
@@ -69,8 +59,6 @@ func (tc *HelloWho) erbSet(field string, v Value) {
 		tc.Name = strPlain(v)
 	case "introduction":
 		tc.Introduction = toStringPtr(v)
-	case "is_bob":
-		tc.IsBob = toBoolPtr(v)
 	default:
 		panic("HelloWhos has no field " + field)
 	}
@@ -79,7 +67,7 @@ func (tc *HelloWho) erbSet(field string, v Value) {
 func (tc *HelloWho) erbLoad(row map[string]any) {
 	for key, value := range row {
 		switch key {
-		case "hello_who_id", "name", "introduction", "is_bob":
+		case "hello_who_id", "name", "introduction":
 			tc.erbSet(key, fromJSON(value))
 		}
 	}
@@ -117,11 +105,11 @@ func LoadHelloWhoRecords(path string) ([]HelloWho, error) {
 }
 
 // calculatedFieldCount bounds the runner's passes over the dataset.
-const calculatedFieldCount = 2
+const calculatedFieldCount = 1
 
 // erbTables is every table, in rulebook order.
 var erbTables = []TableSpec{
-	{Name: "HelloWhos", File: "hello_whos", RulebookRows: 4, New: func() Record { return &HelloWho{} },
+	{Name: "HelloWhos", File: "hello_whos", RulebookRows: 3, New: func() Record { return &HelloWho{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{}},
 }

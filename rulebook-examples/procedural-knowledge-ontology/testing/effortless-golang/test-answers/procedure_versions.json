@@ -82,14 +82,10 @@
     "has_approved_change_request": false,
     "approved_change_request_count": 0,
     "unwatched_unowned_control_count": 9,
-    "mining_run_count": null,
-    "drifted_mining_run_count": null,
-    "has_unresolved_mining_drift": null,
-    "semantic_type_iri": "https://w3id.org/pko#Procedure",
-    "_erb_errors": {
-      "drifted_mining_run_count": "the rulebook holds 4 ProcessMiningRuns rows but blank-tests has no process_mining_runs.json — regenerate the test fixtures",
-      "mining_run_count": "the rulebook holds 4 ProcessMiningRuns rows but blank-tests has no process_mining_runs.json — regenerate the test fixtures"
-    }
+    "mining_run_count": 1,
+    "drifted_mining_run_count": 0,
+    "has_unresolved_mining_drift": false,
+    "semantic_type_iri": "https://w3id.org/pko#Procedure"
   },
   {
     "procedure_version_id": "close-v1.1.0",
@@ -174,14 +170,10 @@
     "has_approved_change_request": true,
     "approved_change_request_count": 1,
     "unwatched_unowned_control_count": 9,
-    "mining_run_count": null,
-    "drifted_mining_run_count": null,
-    "has_unresolved_mining_drift": null,
-    "semantic_type_iri": "https://w3id.org/pko#Procedure",
-    "_erb_errors": {
-      "drifted_mining_run_count": "the rulebook holds 4 ProcessMiningRuns rows but blank-tests has no process_mining_runs.json — regenerate the test fixtures",
-      "mining_run_count": "the rulebook holds 4 ProcessMiningRuns rows but blank-tests has no process_mining_runs.json — regenerate the test fixtures"
-    }
+    "mining_run_count": 2,
+    "drifted_mining_run_count": 1,
+    "has_unresolved_mining_drift": true,
+    "semantic_type_iri": "https://w3id.org/pko#Procedure"
   },
   {
     "procedure_version_id": "policy-v1.0.0",
@@ -266,13 +258,9 @@
     "has_approved_change_request": false,
     "approved_change_request_count": 0,
     "unwatched_unowned_control_count": 9,
-    "mining_run_count": null,
-    "drifted_mining_run_count": null,
-    "has_unresolved_mining_drift": null,
-    "semantic_type_iri": "https://w3id.org/pko#Procedure",
-    "_erb_errors": {
-      "drifted_mining_run_count": "the rulebook holds 4 ProcessMiningRuns rows but blank-tests has no process_mining_runs.json — regenerate the test fixtures",
-      "mining_run_count": "the rulebook holds 4 ProcessMiningRuns rows but blank-tests has no process_mining_runs.json — regenerate the test fixtures"
-    }
+    "mining_run_count": 1,
+    "drifted_mining_run_count": 0,
+    "has_unresolved_mining_drift": false,
+    "semantic_type_iri": "https://w3id.org/pko#Procedure"
   }
 ]

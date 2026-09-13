@@ -1,0 +1,112 @@
+[
+  {
+    "ontology_profile_id": "pko-core-2.0.0",
+    "label": "PKO Core",
+    "version": "2.0.0",
+    "version_iri": "https://w3id.org/pko/2.0.0",
+    "namespace_iri": "https://w3id.org/pko#",
+    "license": "CC BY 4.0",
+    "scope": "Core procedural knowledge: procedures, steps, executions, transitions, requirements, issues, feedback, and agents.",
+    "name": "PKO Core 2.0.0"
+  },
+  {
+    "ontology_profile_id": "pko-industry-2.0.0",
+    "label": "PKO Industry",
+    "version": "2.0.0",
+    "version_iri": "https://w3id.org/pko/industry/2.0.0",
+    "namespace_iri": "https://w3id.org/pko/industry#",
+    "license": "CC BY 4.0",
+    "scope": "Industry extension for machines, sites, departments, PPE, locks, energy sources, and tools.",
+    "name": "PKO Industry 2.0.0"
+  },
+  {
+    "ontology_profile_id": "p-plan",
+    "label": "P-Plan",
+    "version": "1",
+    "version_iri": "http://purl.org/net/p-plan",
+    "namespace_iri": "http://purl.org/net/p-plan#",
+    "license": "External",
+    "scope": "Plan, Step, MultiStep, and plan/execution alignment.",
+    "name": "P-Plan 1"
+  },
+  {
+    "ontology_profile_id": "prov-o",
+    "label": "PROV-O",
+    "version": "2013",
+    "version_iri": "https://www.w3.org/TR/prov-o/",
+    "namespace_iri": "http://www.w3.org/ns/prov#",
+    "license": "W3C",
+    "scope": "Agents, activities, entities, attribution, provenance, and execution time.",
+    "name": "PROV-O 2013"
+  },
+  {
+    "ontology_profile_id": "dcat-3",
+    "label": "DCAT",
+    "version": "3",
+    "version_iri": "https://www.w3.org/TR/vocab-dcat-3/",
+    "namespace_iri": "http://www.w3.org/ns/dcat#",
+    "license": "W3C",
+    "scope": "Resources and versioned catalog assets.",
+    "name": "DCAT 3"
+  },
+  {
+    "ontology_profile_id": "dcterms",
+    "label": "DCMI Terms",
+    "version": "current",
+    "version_iri": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/",
+    "namespace_iri": "http://purl.org/dc/terms/",
+    "license": "DCMI",
+    "scope": "Titles, descriptions, identifiers, dates, references, and lifecycle metadata.",
+    "name": "DCMI Terms current"
+  },
+  {
+    "ontology_profile_id": "owl-time",
+    "label": "OWL-Time",
+    "version": "2017",
+    "version_iri": "https://www.w3.org/TR/owl-time/",
+    "namespace_iri": "http://www.w3.org/2006/time#",
+    "license": "W3C",
+    "scope": "Durations and time intervals.",
+    "name": "OWL-Time 2017"
+  },
+  {
+    "ontology_profile_id": "pro",
+    "label": "Publishing Roles Ontology",
+    "version": "current",
+    "version_iri": "http://www.sparontologies.net/ontologies/pro",
+    "namespace_iri": "http://purl.org/spar/pro/",
+    "license": "CC BY",
+    "scope": "Roles and roles held during a period of time.",
+    "name": "Publishing Roles Ontology current"
+  },
+  {
+    "ontology_profile_id": "m4ing",
+    "label": "Metadata4Ing",
+    "version": "current",
+    "version_iri": "https://nfdi4ing.pages.rwth-aachen.de/metadata4ing/",
+    "namespace_iri": "http://w3id.org/nfdi4ing/metadata4ing#",
+    "license": "External",
+    "scope": "Tools and engineering-resource metadata.",
+    "name": "Metadata4Ing current"
+  },
+  {
+    "ontology_profile_id": "odrl",
+    "label": "ODRL",
+    "version": "2.2",
+    "version_iri": "https://www.w3.org/TR/odrl-model/",
+    "namespace_iri": "http://www.w3.org/ns/odrl/2/",
+    "license": "W3C",
+    "scope": "Policies, rules, assignee roles, duties, permissions, and prohibitions.",
+    "name": "ODRL 2.2"
+  },
+  {
+    "ontology_profile_id": "erb-pko-extension-1.0.0",
+    "label": "ERB-PKO Enterprise Extension",
+    "version": "1.0.0",
+    "version_iri": "urn:effortless:pko-extension:1.0.0",
+    "namespace_iri": "urn:effortless:pko-extension#",
+    "license": "Apache-2.0",
+    "scope": "Explicit extension for elicitation, tacit knowledge, governance, learning, operational bindings, and communication-channel policy.",
+    "name": "ERB-PKO Enterprise Extension 1.0.0"
+  }
+]

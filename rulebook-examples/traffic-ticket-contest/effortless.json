@@ -33,8 +33,8 @@
     {
       "IsSSoTTranspiler": false,
       "Name": "oss-postgres-calculated-to-rulebook",
-      "RelativePath": "/postgres-bootstrap",
-      "CommandLine": "http://127.0.0.1:4242/oss-postgres-calculated-to-rulebook -i ../effortless-rulebook/traffic-ticket-contest-rulebook.json",
+      "RelativePath": "/effortless-rulebook",
+      "CommandLine": "http://127.0.0.1:4242/oss-postgres-calculated-to-rulebook -i traffic-ticket-contest-rulebook.json,../postgres-bootstrap/.pg-raw-data.json",
       "IsDisabled": true,
       "Description": "Reverse spoke: refresh rulebook derived-field display copies from Postgres views after the destructive rebuild (raws verified, never written). DISABLED for now — it was failing on missing .pg-raw-data.json and mutating/auto-committing the rulebook during builds."
     },

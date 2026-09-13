@@ -1,6 +1,6 @@
 // ERB SDK (GENERATED - DO NOT EDIT)
 // ===================================
-// Generated from: effortless-rulebook/procedural-knowledge-ontology-rulebook.json
+// Generated from: effortless-rulebook/pko-native-procedural-knowledge-rulebook-rulebook.json
 //
 // One struct per table, a Calc<Field>() method per calculated field, and the
 // table registry main.go runs. Formulas compute through erb_runtime.go.
@@ -12760,6 +12760,8 @@ type RulebookField struct {
 	InventedForQuestion *string `json:"invented_for_question"` // The role question that motivated this field's existence. Null for fields that predate the witness-loop exercise.
 	IsDerived *bool `json:"is_derived"` // TRUE when this field is computed rather than stored.
 	IsWitness *bool `json:"is_witness"` // TRUE when this field exists because a role asked a question. These are the fields the witness loops added.
+	DisagreeingSubstrateCount *float64 `json:"disagreeing_substrate_count"` // How many substrates computed this field differently from the answer key in the latest conformance run. 0 means every substrate agreed.
+	IsSubstrateContested *bool `json:"is_substrate_contested"` // True when at least one substrate disagrees about this field's values.
 	SemanticTypeIri *string `json:"semantic_type_iri"` // Extension class IRI.
 	ErbErrors map[string]string `json:"_erb_errors,omitempty"`
 	erbAggregates map[string]Value
@@ -12786,12 +12788,20 @@ func (tc *RulebookField) CalcIsWitness() *bool {
 	return toBoolPtr(erbIsNotBlank(vStr(tc.InventedForQuestion)))
 }
 
+// CalcIsSubstrateContested computes the IsSubstrateContested calculated field
+// True when at least one substrate disagrees about this field's values.
+// Formula: ={{DisagreeingSubstrateCount}} > 0
+func (tc *RulebookField) CalcIsSubstrateContested() *bool {
+	return toBoolPtr(erbCmp(vNum(tc.DisagreeingSubstrateCount), ">", vI(0)))
+}
+
 // erbComputeCalculations computes every calculated field of the row in dependency order.
 func (tc *RulebookField) erbComputeCalculations() {
 	// Level 1
 	calcGuard(tc, "name", func() { tc.Name = tc.CalcName() })
 	calcGuard(tc, "is_derived", func() { tc.IsDerived = tc.CalcIsDerived() })
 	calcGuard(tc, "is_witness", func() { tc.IsWitness = tc.CalcIsWitness() })
+	calcGuard(tc, "is_substrate_contested", func() { tc.IsSubstrateContested = tc.CalcIsSubstrateContested() })
 }
 
 // ComputeAll computes every calculated field from the row's current inputs.
@@ -12822,6 +12832,10 @@ func (tc *RulebookField) erbGet(field string) Value {
 		return vBool(tc.IsDerived)
 	case "is_witness":
 		return vBool(tc.IsWitness)
+	case "disagreeing_substrate_count":
+		return vNum(tc.DisagreeingSubstrateCount)
+	case "is_substrate_contested":
+		return vBool(tc.IsSubstrateContested)
 	case "semantic_type_iri":
 		return vStr(tc.SemanticTypeIri)
 	}
@@ -12850,6 +12864,10 @@ func (tc *RulebookField) erbSet(field string, v Value) {
 		tc.IsDerived = toBoolPtr(v)
 	case "is_witness":
 		tc.IsWitness = toBoolPtr(v)
+	case "disagreeing_substrate_count":
+		tc.DisagreeingSubstrateCount = toFloatPtr(v)
+	case "is_substrate_contested":
+		tc.IsSubstrateContested = toBoolPtr(v)
 	case "semantic_type_iri":
 		tc.SemanticTypeIri = toStringPtr(v)
 	default:
@@ -12860,7 +12878,7 @@ func (tc *RulebookField) erbSet(field string, v Value) {
 func (tc *RulebookField) erbLoad(row map[string]any) {
 	for key, value := range row {
 		switch key {
-		case "rulebook_field_id", "name", "target_table", "field_name", "field_type", "datatype", "formula", "invented_for_question", "is_derived", "is_witness", "semantic_type_iri":
+		case "rulebook_field_id", "name", "target_table", "field_name", "field_type", "datatype", "formula", "invented_for_question", "is_derived", "is_witness", "disagreeing_substrate_count", "is_substrate_contested", "semantic_type_iri":
 			tc.erbSet(key, fromJSON(value))
 		}
 	}
@@ -18716,6 +18734,7 @@ type RulebookTable struct {
 	FieldCount *float64 `json:"field_count"` // Number of catalogued fields on this table.
 	PolicyCount *float64 `json:"policy_count"` // Number of access policies targeting this table.
 	IsUnsecured *bool `json:"is_unsecured"` // True when RLS is enabled but no policy targets the table, so every principal sees zero rows. A fail-closed table nobody has granted access to.
+	DisagreeingSubstrateCount *float64 `json:"disagreeing_substrate_count"` // How many substrates got at least one cell of this table wrong in the latest conformance run.
 	SemanticTypeIri *string `json:"semantic_type_iri"` // Semantic type IRI.
 	ErbErrors map[string]string `json:"_erb_errors,omitempty"`
 	erbAggregates map[string]Value
@@ -18770,6 +18789,8 @@ func (tc *RulebookTable) erbGet(field string) Value {
 		return vNum(tc.PolicyCount)
 	case "is_unsecured":
 		return vBool(tc.IsUnsecured)
+	case "disagreeing_substrate_count":
+		return vNum(tc.DisagreeingSubstrateCount)
 	case "semantic_type_iri":
 		return vStr(tc.SemanticTypeIri)
 	}
@@ -18798,6 +18819,8 @@ func (tc *RulebookTable) erbSet(field string, v Value) {
 		tc.PolicyCount = toFloatPtr(v)
 	case "is_unsecured":
 		tc.IsUnsecured = toBoolPtr(v)
+	case "disagreeing_substrate_count":
+		tc.DisagreeingSubstrateCount = toFloatPtr(v)
 	case "semantic_type_iri":
 		tc.SemanticTypeIri = toStringPtr(v)
 	default:
@@ -18808,7 +18831,7 @@ func (tc *RulebookTable) erbSet(field string, v Value) {
 func (tc *RulebookTable) erbLoad(row map[string]any) {
 	for key, value := range row {
 		switch key {
-		case "rulebook_table_id", "table_name", "name", "physical_table", "physical_view", "subject_area", "is_extension", "field_count", "policy_count", "is_unsecured", "semantic_type_iri":
+		case "rulebook_table_id", "table_name", "name", "physical_table", "physical_view", "subject_area", "is_extension", "field_count", "policy_count", "is_unsecured", "disagreeing_substrate_count", "semantic_type_iri":
 			tc.erbSet(key, fromJSON(value))
 		}
 	}
@@ -21261,8 +21284,1229 @@ func LoadKnowledgeBrokerLinkRecords(path string) ([]KnowledgeBrokerLink, error) 
 	return rows, nil
 }
 
+// =============================================================================
+// CONFORMANCESUBSTRATES TABLE
+// Every tool that compiles this rulebook into something that computes. One is the answer-key author (compile-rulebook bakes derived values into the rulebook's own rows); the rest are graded substrates that re-derive those values natively and are scored cell by cell against them.
+// =============================================================================
+
+// ConformanceSubstrate represents a row in the ConformanceSubstrates table
+type ConformanceSubstrate struct {
+	ConformanceSubstrateId string `json:"conformance_substrate_id"` // Substrate name as the conformance harness knows it, e.g. 'effortless-python'.
+	Name *string `json:"name"` // Human-readable calculated display alias.
+	Label *string `json:"label"` // Short human label, e.g. 'Python'.
+	Transpiler *string `json:"transpiler"` // The effortless.json tool that produces this substrate, e.g. 'rulebook-to-python'.
+	OutputFolder *string `json:"output_folder"` // Project folder the tool writes into, e.g. '/effortless-python'.
+	Engine *string `json:"engine"` // What actually evaluates the formulas: a database, a language runtime, a spreadsheet engine or a reasoner.
+	HowItComputes *string `json:"how_it_computes"` // One paragraph a curious reader can follow: what the tool emits and how the harness makes it produce answers.
+	Role *string `json:"role"` // 'answer-key' for the tool whose stored values every other substrate is graded against; 'graded' for everything else.
+	SortOrder *float64 `json:"sort_order"` // Display order.
+	IsGraded *bool `json:"is_graded"` // True for substrates the harness scores.
+	RunCount *float64 `json:"run_count"` // How many recorded conformance runs graded this substrate.
+	LatestCellsTested *float64 `json:"latest_cells_tested"` // Cells graded in the latest run: every (record x derived field) pair in the answer keys.
+	LatestCellsPassed *float64 `json:"latest_cells_passed"` // Cells this substrate computed identically to the answer key in the latest run.
+	LatestHarnessErrors *float64 `json:"latest_harness_errors"` // 1 when the latest run could not execute this substrate at all.
+	LatestCellsFailed *float64 `json:"latest_cells_failed"` // Cells this substrate got wrong, or did not produce, in the latest run.
+	LatestScore *float64 `json:"latest_score"` // Percent of cells agreeing with the answer key in the latest run.
+	DisagreeingFieldCount *float64 `json:"disagreeing_field_count"` // Derived fields on which this substrate got at least one cell wrong in the latest run.
+	DisagreeingTableCount *float64 `json:"disagreeing_table_count"` // Tables on which this substrate got at least one cell wrong in the latest run.
+	IsFullyConformant *bool `json:"is_fully_conformant"` // True when the latest run graded this substrate, it ran, and every cell agreed. A substrate never graded is not conformant.
+	SemanticTypeIri *string `json:"semantic_type_iri"` // Semantic type IRI.
+	ErbErrors map[string]string `json:"_erb_errors,omitempty"`
+	erbAggregates map[string]Value
+}
+
+// CalcName computes the Name calculated field
+// Human-readable calculated display alias.
+// Formula: ={{Label}}
+func (tc *ConformanceSubstrate) CalcName() *string {
+	return toStringPtr(vStr(tc.Label))
+}
+
+// CalcIsGraded computes the IsGraded calculated field
+// True for substrates the harness scores.
+// Formula: ={{Role}} = "graded"
+func (tc *ConformanceSubstrate) CalcIsGraded() *bool {
+	return toBoolPtr(erbEq(erbNullif(vStr(tc.Role)), vS("graded")))
+}
+
+// CalcLatestCellsFailed computes the LatestCellsFailed calculated field
+// Cells this substrate got wrong, or did not produce, in the latest run.
+// Formula: ={{LatestCellsTested}} - {{LatestCellsPassed}}
+func (tc *ConformanceSubstrate) CalcLatestCellsFailed() *float64 {
+	return toFloatPtr(erbSub(vNum(tc.LatestCellsTested), vNum(tc.LatestCellsPassed)))
+}
+
+// CalcLatestScore computes the LatestScore calculated field
+// Percent of cells agreeing with the answer key in the latest run.
+// Formula: =IF({{LatestCellsTested}} = 0, 0, ROUND(100 * {{LatestCellsPassed}} / {{LatestCellsTested}}, 2))
+func (tc *ConformanceSubstrate) CalcLatestScore() *float64 {
+	return toFloatPtr(erbIf(erbBool3(erbEq(vNum(tc.LatestCellsTested), vI(0))), func() Value { return vI(0) }, func() Value { return erbRound(erbDiv(erbMul(vI(100), vNum(tc.LatestCellsPassed)), vNum(tc.LatestCellsTested)), vI(2)) }))
+}
+
+// CalcIsFullyConformant computes the IsFullyConformant calculated field
+// True when the latest run graded this substrate, it ran, and every cell agreed. A substrate never graded is not conformant.
+// Formula: =AND({{LatestCellsTested}} > 0, {{LatestCellsFailed}} = 0, {{LatestHarnessErrors}} = 0)
+func (tc *ConformanceSubstrate) CalcIsFullyConformant() *bool {
+	return toBoolPtr(erbAnd(erbBool3(erbCmp(vNum(tc.LatestCellsTested), ">", vI(0))), erbBool3(erbEq(vNum(tc.LatestCellsFailed), vI(0))), erbBool3(erbEq(vNum(tc.LatestHarnessErrors), vI(0)))))
+}
+
+// erbComputeCalculations computes every calculated field of the row in dependency order.
+func (tc *ConformanceSubstrate) erbComputeCalculations() {
+	// Level 1
+	calcGuard(tc, "name", func() { tc.Name = tc.CalcName() })
+	calcGuard(tc, "is_graded", func() { tc.IsGraded = tc.CalcIsGraded() })
+	calcGuard(tc, "latest_cells_failed", func() { tc.LatestCellsFailed = tc.CalcLatestCellsFailed() })
+	calcGuard(tc, "latest_score", func() { tc.LatestScore = tc.CalcLatestScore() })
+	// Level 2
+	calcGuard(tc, "is_fully_conformant", func() { tc.IsFullyConformant = tc.CalcIsFullyConformant() })
+}
+
+// ComputeAll computes every calculated field from the row's current inputs.
+func (tc *ConformanceSubstrate) ComputeAll() *ConformanceSubstrate {
+	tc.erbComputeCalculations()
+	return tc
+}
+
+func (tc *ConformanceSubstrate) erbGet(field string) Value {
+	switch field {
+	case "conformance_substrate_id":
+		return vStrPlain(tc.ConformanceSubstrateId)
+	case "name":
+		return vStr(tc.Name)
+	case "label":
+		return vStr(tc.Label)
+	case "transpiler":
+		return vStr(tc.Transpiler)
+	case "output_folder":
+		return vStr(tc.OutputFolder)
+	case "engine":
+		return vStr(tc.Engine)
+	case "how_it_computes":
+		return vStr(tc.HowItComputes)
+	case "role":
+		return vStr(tc.Role)
+	case "sort_order":
+		return vNum(tc.SortOrder)
+	case "is_graded":
+		return vBool(tc.IsGraded)
+	case "run_count":
+		return vNum(tc.RunCount)
+	case "latest_cells_tested":
+		return vNum(tc.LatestCellsTested)
+	case "latest_cells_passed":
+		return vNum(tc.LatestCellsPassed)
+	case "latest_harness_errors":
+		return vNum(tc.LatestHarnessErrors)
+	case "latest_cells_failed":
+		return vNum(tc.LatestCellsFailed)
+	case "latest_score":
+		return vNum(tc.LatestScore)
+	case "disagreeing_field_count":
+		return vNum(tc.DisagreeingFieldCount)
+	case "disagreeing_table_count":
+		return vNum(tc.DisagreeingTableCount)
+	case "is_fully_conformant":
+		return vBool(tc.IsFullyConformant)
+	case "semantic_type_iri":
+		return vStr(tc.SemanticTypeIri)
+	}
+	panic("ConformanceSubstrates has no field " + field)
+}
+
+func (tc *ConformanceSubstrate) erbSet(field string, v Value) {
+	switch field {
+	case "conformance_substrate_id":
+		tc.ConformanceSubstrateId = strPlain(v)
+	case "name":
+		tc.Name = toStringPtr(v)
+	case "label":
+		tc.Label = toStringPtr(v)
+	case "transpiler":
+		tc.Transpiler = toStringPtr(v)
+	case "output_folder":
+		tc.OutputFolder = toStringPtr(v)
+	case "engine":
+		tc.Engine = toStringPtr(v)
+	case "how_it_computes":
+		tc.HowItComputes = toStringPtr(v)
+	case "role":
+		tc.Role = toStringPtr(v)
+	case "sort_order":
+		tc.SortOrder = toFloatPtr(v)
+	case "is_graded":
+		tc.IsGraded = toBoolPtr(v)
+	case "run_count":
+		tc.RunCount = toFloatPtr(v)
+	case "latest_cells_tested":
+		tc.LatestCellsTested = toFloatPtr(v)
+	case "latest_cells_passed":
+		tc.LatestCellsPassed = toFloatPtr(v)
+	case "latest_harness_errors":
+		tc.LatestHarnessErrors = toFloatPtr(v)
+	case "latest_cells_failed":
+		tc.LatestCellsFailed = toFloatPtr(v)
+	case "latest_score":
+		tc.LatestScore = toFloatPtr(v)
+	case "disagreeing_field_count":
+		tc.DisagreeingFieldCount = toFloatPtr(v)
+	case "disagreeing_table_count":
+		tc.DisagreeingTableCount = toFloatPtr(v)
+	case "is_fully_conformant":
+		tc.IsFullyConformant = toBoolPtr(v)
+	case "semantic_type_iri":
+		tc.SemanticTypeIri = toStringPtr(v)
+	default:
+		panic("ConformanceSubstrates has no field " + field)
+	}
+}
+
+func (tc *ConformanceSubstrate) erbLoad(row map[string]any) {
+	for key, value := range row {
+		switch key {
+		case "conformance_substrate_id", "name", "label", "transpiler", "output_folder", "engine", "how_it_computes", "role", "sort_order", "is_graded", "run_count", "latest_cells_tested", "latest_cells_passed", "latest_harness_errors", "latest_cells_failed", "latest_score", "disagreeing_field_count", "disagreeing_table_count", "is_fully_conformant", "semantic_type_iri":
+			tc.erbSet(key, fromJSON(value))
+		}
+	}
+}
+
+func (tc *ConformanceSubstrate) erbErrors() map[string]string {
+	if tc.ErbErrors == nil {
+		tc.ErbErrors = map[string]string{}
+	}
+	return tc.ErbErrors
+}
+
+func (tc *ConformanceSubstrate) erbResetErrors() { tc.ErbErrors = nil }
+
+func (tc *ConformanceSubstrate) erbAggregate(name string) Value { return tc.erbAggregates[name] }
+
+func (tc *ConformanceSubstrate) erbSetAggregate(name string, v Value) {
+	if tc.erbAggregates == nil {
+		tc.erbAggregates = map[string]Value{}
+	}
+	tc.erbAggregates[name] = v
+}
+
+// LoadConformanceSubstrateRecords reads ConformanceSubstrates rows from a JSON array file.
+func LoadConformanceSubstrateRecords(path string) ([]ConformanceSubstrate, error) {
+	records, err := loadRecords(path, func() Record { return &ConformanceSubstrate{} })
+	if err != nil {
+		return nil, err
+	}
+	rows := make([]ConformanceSubstrate, len(records))
+	for i, r := range records {
+		rows[i] = *r.(*ConformanceSubstrate)
+	}
+	return rows, nil
+}
+
+// =============================================================================
+// CONFORMANCERUNS TABLE
+// One execution of the conformance harness over every graded substrate. Kept as history; exactly one run is marked IsLatest, and the per-table, per-field and per-cell detail tables describe that run.
+// =============================================================================
+
+// ConformanceRun represents a row in the ConformanceRuns table
+type ConformanceRun struct {
+	ConformanceRunId string `json:"conformance_run_id"` // Stored logical identifier, e.g. 'run-20260913-171500'.
+	Name *string `json:"name"` // Human-readable calculated display alias.
+	RanOn *string `json:"ran_on"` // When the harness graded the substrates.
+	RulebookCommit *string `json:"rulebook_commit"` // git HEAD of the repository when the run was recorded; the rulebook may also carry uncommitted edits, noted in Notes.
+	AnswerKeyAuthor *string `json:"answer_key_author"` // The substrate whose stored values were the answer keys for this run.
+	IsLatest *bool `json:"is_latest"` // True for the most recent recorded run only. The recorder moves it.
+	Notes *string `json:"notes"` // Anything a reader needs to interpret the run.
+	SubstrateCount *float64 `json:"substrate_count"` // Substrates graded in this run.
+	PerfectSubstrateCount *float64 `json:"perfect_substrate_count"` // Substrates that ran and agreed on every cell.
+	CellsTested *float64 `json:"cells_tested"` // Cells graded across all substrates.
+	CellsPassed *float64 `json:"cells_passed"` // Cells that agreed across all substrates.
+	CellsFailed *float64 `json:"cells_failed"` // Cells that disagreed across all substrates.
+	OverallScore *float64 `json:"overall_score"` // Percent of all graded cells, across all substrates, that agreed.
+	ImperfectSubstrateCount *float64 `json:"imperfect_substrate_count"` // Substrates with at least one disagreeing cell or a harness error.
+	IsFullyConformant *bool `json:"is_fully_conformant"` // True when every substrate graded in this run agreed on every cell: the 100% bar.
+	SemanticTypeIri *string `json:"semantic_type_iri"` // Semantic type IRI.
+	ErbErrors map[string]string `json:"_erb_errors,omitempty"`
+	erbAggregates map[string]Value
+}
+
+// CalcName computes the Name calculated field
+// Human-readable calculated display alias.
+// Formula: ={{ConformanceRunId}}
+func (tc *ConformanceRun) CalcName() *string {
+	return toStringPtr(vStrPlain(tc.ConformanceRunId))
+}
+
+// CalcCellsFailed computes the CellsFailed calculated field
+// Cells that disagreed across all substrates.
+// Formula: ={{CellsTested}} - {{CellsPassed}}
+func (tc *ConformanceRun) CalcCellsFailed() *float64 {
+	return toFloatPtr(erbSub(vNum(tc.CellsTested), vNum(tc.CellsPassed)))
+}
+
+// CalcOverallScore computes the OverallScore calculated field
+// Percent of all graded cells, across all substrates, that agreed.
+// Formula: =IF({{CellsTested}} = 0, 0, ROUND(100 * {{CellsPassed}} / {{CellsTested}}, 2))
+func (tc *ConformanceRun) CalcOverallScore() *float64 {
+	return toFloatPtr(erbIf(erbBool3(erbEq(vNum(tc.CellsTested), vI(0))), func() Value { return vI(0) }, func() Value { return erbRound(erbDiv(erbMul(vI(100), vNum(tc.CellsPassed)), vNum(tc.CellsTested)), vI(2)) }))
+}
+
+// CalcImperfectSubstrateCount computes the ImperfectSubstrateCount calculated field
+// Substrates with at least one disagreeing cell or a harness error.
+// Formula: ={{SubstrateCount}} - {{PerfectSubstrateCount}}
+func (tc *ConformanceRun) CalcImperfectSubstrateCount() *float64 {
+	return toFloatPtr(erbSub(vNum(tc.SubstrateCount), vNum(tc.PerfectSubstrateCount)))
+}
+
+// CalcIsFullyConformant computes the IsFullyConformant calculated field
+// True when every substrate graded in this run agreed on every cell: the 100% bar.
+// Formula: =AND({{SubstrateCount}} > 0, {{ImperfectSubstrateCount}} = 0)
+func (tc *ConformanceRun) CalcIsFullyConformant() *bool {
+	return toBoolPtr(erbAnd(erbBool3(erbCmp(vNum(tc.SubstrateCount), ">", vI(0))), erbBool3(erbEq(vNum(tc.ImperfectSubstrateCount), vI(0)))))
+}
+
+// erbComputeCalculations computes every calculated field of the row in dependency order.
+func (tc *ConformanceRun) erbComputeCalculations() {
+	// Level 1
+	calcGuard(tc, "name", func() { tc.Name = tc.CalcName() })
+	calcGuard(tc, "cells_failed", func() { tc.CellsFailed = tc.CalcCellsFailed() })
+	calcGuard(tc, "overall_score", func() { tc.OverallScore = tc.CalcOverallScore() })
+	calcGuard(tc, "imperfect_substrate_count", func() { tc.ImperfectSubstrateCount = tc.CalcImperfectSubstrateCount() })
+	// Level 2
+	calcGuard(tc, "is_fully_conformant", func() { tc.IsFullyConformant = tc.CalcIsFullyConformant() })
+}
+
+// ComputeAll computes every calculated field from the row's current inputs.
+func (tc *ConformanceRun) ComputeAll() *ConformanceRun {
+	tc.erbComputeCalculations()
+	return tc
+}
+
+func (tc *ConformanceRun) erbGet(field string) Value {
+	switch field {
+	case "conformance_run_id":
+		return vStrPlain(tc.ConformanceRunId)
+	case "name":
+		return vStr(tc.Name)
+	case "ran_on":
+		return vStr(tc.RanOn)
+	case "rulebook_commit":
+		return vStr(tc.RulebookCommit)
+	case "answer_key_author":
+		return vStr(tc.AnswerKeyAuthor)
+	case "is_latest":
+		return vBool(tc.IsLatest)
+	case "notes":
+		return vStr(tc.Notes)
+	case "substrate_count":
+		return vNum(tc.SubstrateCount)
+	case "perfect_substrate_count":
+		return vNum(tc.PerfectSubstrateCount)
+	case "cells_tested":
+		return vNum(tc.CellsTested)
+	case "cells_passed":
+		return vNum(tc.CellsPassed)
+	case "cells_failed":
+		return vNum(tc.CellsFailed)
+	case "overall_score":
+		return vNum(tc.OverallScore)
+	case "imperfect_substrate_count":
+		return vNum(tc.ImperfectSubstrateCount)
+	case "is_fully_conformant":
+		return vBool(tc.IsFullyConformant)
+	case "semantic_type_iri":
+		return vStr(tc.SemanticTypeIri)
+	}
+	panic("ConformanceRuns has no field " + field)
+}
+
+func (tc *ConformanceRun) erbSet(field string, v Value) {
+	switch field {
+	case "conformance_run_id":
+		tc.ConformanceRunId = strPlain(v)
+	case "name":
+		tc.Name = toStringPtr(v)
+	case "ran_on":
+		tc.RanOn = toStringPtr(v)
+	case "rulebook_commit":
+		tc.RulebookCommit = toStringPtr(v)
+	case "answer_key_author":
+		tc.AnswerKeyAuthor = toStringPtr(v)
+	case "is_latest":
+		tc.IsLatest = toBoolPtr(v)
+	case "notes":
+		tc.Notes = toStringPtr(v)
+	case "substrate_count":
+		tc.SubstrateCount = toFloatPtr(v)
+	case "perfect_substrate_count":
+		tc.PerfectSubstrateCount = toFloatPtr(v)
+	case "cells_tested":
+		tc.CellsTested = toFloatPtr(v)
+	case "cells_passed":
+		tc.CellsPassed = toFloatPtr(v)
+	case "cells_failed":
+		tc.CellsFailed = toFloatPtr(v)
+	case "overall_score":
+		tc.OverallScore = toFloatPtr(v)
+	case "imperfect_substrate_count":
+		tc.ImperfectSubstrateCount = toFloatPtr(v)
+	case "is_fully_conformant":
+		tc.IsFullyConformant = toBoolPtr(v)
+	case "semantic_type_iri":
+		tc.SemanticTypeIri = toStringPtr(v)
+	default:
+		panic("ConformanceRuns has no field " + field)
+	}
+}
+
+func (tc *ConformanceRun) erbLoad(row map[string]any) {
+	for key, value := range row {
+		switch key {
+		case "conformance_run_id", "name", "ran_on", "rulebook_commit", "answer_key_author", "is_latest", "notes", "substrate_count", "perfect_substrate_count", "cells_tested", "cells_passed", "cells_failed", "overall_score", "imperfect_substrate_count", "is_fully_conformant", "semantic_type_iri":
+			tc.erbSet(key, fromJSON(value))
+		}
+	}
+}
+
+func (tc *ConformanceRun) erbErrors() map[string]string {
+	if tc.ErbErrors == nil {
+		tc.ErbErrors = map[string]string{}
+	}
+	return tc.ErbErrors
+}
+
+func (tc *ConformanceRun) erbResetErrors() { tc.ErbErrors = nil }
+
+func (tc *ConformanceRun) erbAggregate(name string) Value { return tc.erbAggregates[name] }
+
+func (tc *ConformanceRun) erbSetAggregate(name string, v Value) {
+	if tc.erbAggregates == nil {
+		tc.erbAggregates = map[string]Value{}
+	}
+	tc.erbAggregates[name] = v
+}
+
+// LoadConformanceRunRecords reads ConformanceRuns rows from a JSON array file.
+func LoadConformanceRunRecords(path string) ([]ConformanceRun, error) {
+	records, err := loadRecords(path, func() Record { return &ConformanceRun{} })
+	if err != nil {
+		return nil, err
+	}
+	rows := make([]ConformanceRun, len(records))
+	for i, r := range records {
+		rows[i] = *r.(*ConformanceRun)
+	}
+	return rows, nil
+}
+
+// =============================================================================
+// SUBSTRATERUNSCORES TABLE
+// One substrate's grade in one conformance run, split by field class so a substrate that does scalar math natively but not cross-table joins reads as exactly that.
+// =============================================================================
+
+// SubstrateRunScore represents a row in the SubstrateRunScores table
+type SubstrateRunScore struct {
+	SubstrateRunScoreId string `json:"substrate_run_score_id"` // Stored logical identifier: '<run>|<substrate>'.
+	Name *string `json:"name"` // Human-readable calculated display alias.
+	Run *string `json:"run"` // The run that produced this grade.
+	Substrate *string `json:"substrate"` // The substrate graded.
+	HarnessError *string `json:"harness_error"` // Why the substrate could not be run, verbatim from the harness. Blank when it ran.
+	DurationSeconds *float64 `json:"duration_seconds"` // Wall-clock seconds to produce answers.
+	CellsTested *float64 `json:"cells_tested"` // Every (record x derived field) pair in the answer keys.
+	CellsPassed *float64 `json:"cells_passed"` // Cells matching the answer key.
+	CalculatedTested *float64 `json:"calculated_tested"` // Cells of calculated (same-row formula) fields.
+	CalculatedPassed *float64 `json:"calculated_passed"` // Calculated cells that matched.
+	LookupTested *float64 `json:"lookup_tested"` // Cells of lookup (cross-table INDEX/MATCH) fields.
+	LookupPassed *float64 `json:"lookup_passed"` // Lookup cells that matched.
+	AggregationTested *float64 `json:"aggregation_tested"` // Cells of aggregation (COUNTIFS/SUMIFS rollup) fields.
+	AggregationPassed *float64 `json:"aggregation_passed"` // Aggregation cells that matched.
+	CellsFailed *float64 `json:"cells_failed"` // Cells that did not match.
+	Score *float64 `json:"score"` // Percent of cells matching.
+	CalculatedScore *float64 `json:"calculated_score"` // Percent of calculated cells matching.
+	LookupScore *float64 `json:"lookup_score"` // Percent of lookup cells matching.
+	AggregationScore *float64 `json:"aggregation_score"` // Percent of aggregation cells matching.
+	IsPerfect *bool `json:"is_perfect"` // True when the substrate ran and matched every cell.
+	PerfectRunKey *string `json:"perfect_run_key"` // The run id when this grade is perfect, else blank; lets the run count its perfect substrates with a single-criterion COUNTIFS.
+	IsInLatestRun *bool `json:"is_in_latest_run"` // Whether this grade belongs to the latest run.
+	LatestCellsTested *float64 `json:"latest_cells_tested"` // CellsTested when in the latest run, else 0.
+	LatestCellsPassed *float64 `json:"latest_cells_passed"` // CellsPassed when in the latest run, else 0.
+	LatestErrorFlag *float64 `json:"latest_error_flag"` // 1 when this is the latest run and the harness could not run the substrate.
+	SubstrateLabel *string `json:"substrate_label"` // The substrate's short label.
+	SemanticTypeIri *string `json:"semantic_type_iri"` // Semantic type IRI.
+	ErbErrors map[string]string `json:"_erb_errors,omitempty"`
+	erbAggregates map[string]Value
+}
+
+// CalcName computes the Name calculated field
+// Human-readable calculated display alias.
+// Formula: =CONCAT({{Run}}, " / ", {{Substrate}})
+func (tc *SubstrateRunScore) CalcName() *string {
+	return toStringPtr(erbConcat(erbTextOr(vStr(tc.Run)), vS(" / "), erbTextOr(vStr(tc.Substrate))))
+}
+
+// CalcCellsFailed computes the CellsFailed calculated field
+// Cells that did not match.
+// Formula: ={{CellsTested}} - {{CellsPassed}}
+func (tc *SubstrateRunScore) CalcCellsFailed() *float64 {
+	return toFloatPtr(erbSub(vNum(tc.CellsTested), vNum(tc.CellsPassed)))
+}
+
+// CalcScore computes the Score calculated field
+// Percent of cells matching.
+// Formula: =IF({{CellsTested}} = 0, 0, ROUND(100 * {{CellsPassed}} / {{CellsTested}}, 2))
+func (tc *SubstrateRunScore) CalcScore() *float64 {
+	return toFloatPtr(erbIf(erbBool3(erbEq(erbNullif(vNum(tc.CellsTested)), vI(0))), func() Value { return vI(0) }, func() Value { return erbRound(erbDiv(erbMul(vI(100), vNum(tc.CellsPassed)), vNum(tc.CellsTested)), vI(2)) }))
+}
+
+// CalcCalculatedScore computes the CalculatedScore calculated field
+// Percent of calculated cells matching.
+// Formula: =IF({{CalculatedTested}} = 0, 0, ROUND(100 * {{CalculatedPassed}} / {{CalculatedTested}}, 2))
+func (tc *SubstrateRunScore) CalcCalculatedScore() *float64 {
+	return toFloatPtr(erbIf(erbBool3(erbEq(erbNullif(vNum(tc.CalculatedTested)), vI(0))), func() Value { return vI(0) }, func() Value { return erbRound(erbDiv(erbMul(vI(100), vNum(tc.CalculatedPassed)), vNum(tc.CalculatedTested)), vI(2)) }))
+}
+
+// CalcLookupScore computes the LookupScore calculated field
+// Percent of lookup cells matching.
+// Formula: =IF({{LookupTested}} = 0, 0, ROUND(100 * {{LookupPassed}} / {{LookupTested}}, 2))
+func (tc *SubstrateRunScore) CalcLookupScore() *float64 {
+	return toFloatPtr(erbIf(erbBool3(erbEq(erbNullif(vNum(tc.LookupTested)), vI(0))), func() Value { return vI(0) }, func() Value { return erbRound(erbDiv(erbMul(vI(100), vNum(tc.LookupPassed)), vNum(tc.LookupTested)), vI(2)) }))
+}
+
+// CalcAggregationScore computes the AggregationScore calculated field
+// Percent of aggregation cells matching.
+// Formula: =IF({{AggregationTested}} = 0, 0, ROUND(100 * {{AggregationPassed}} / {{AggregationTested}}, 2))
+func (tc *SubstrateRunScore) CalcAggregationScore() *float64 {
+	return toFloatPtr(erbIf(erbBool3(erbEq(erbNullif(vNum(tc.AggregationTested)), vI(0))), func() Value { return vI(0) }, func() Value { return erbRound(erbDiv(erbMul(vI(100), vNum(tc.AggregationPassed)), vNum(tc.AggregationTested)), vI(2)) }))
+}
+
+// CalcIsPerfect computes the IsPerfect calculated field
+// True when the substrate ran and matched every cell.
+// Formula: =AND({{HarnessError}} = "", {{CellsTested}} > 0, {{CellsFailed}} = 0)
+func (tc *SubstrateRunScore) CalcIsPerfect() *bool {
+	return toBoolPtr(erbAnd(erbBool3(erbIsBlank(vStr(tc.HarnessError))), erbBool3(erbCmp(erbNullif(vNum(tc.CellsTested)), ">", vI(0))), erbBool3(erbEq(vNum(tc.CellsFailed), vI(0)))))
+}
+
+// CalcPerfectRunKey computes the PerfectRunKey calculated field
+// The run id when this grade is perfect, else blank; lets the run count its perfect substrates with a single-criterion COUNTIFS.
+// Formula: =IF({{IsPerfect}}, {{Run}}, "")
+func (tc *SubstrateRunScore) CalcPerfectRunKey() *string {
+	return toStringPtr(erbIf(erbBool3(vBool(tc.IsPerfect)), func() Value { return vStr(tc.Run) }, func() Value { return vS("") }))
+}
+
+// CalcLatestCellsTested computes the LatestCellsTested calculated field
+// CellsTested when in the latest run, else 0.
+// Formula: =IF({{IsInLatestRun}}, {{CellsTested}}, 0)
+func (tc *SubstrateRunScore) CalcLatestCellsTested() *float64 {
+	return toFloatPtr(erbIf(erbBool3(vBool(tc.IsInLatestRun)), func() Value { return vNum(tc.CellsTested) }, func() Value { return vI(0) }))
+}
+
+// CalcLatestCellsPassed computes the LatestCellsPassed calculated field
+// CellsPassed when in the latest run, else 0.
+// Formula: =IF({{IsInLatestRun}}, {{CellsPassed}}, 0)
+func (tc *SubstrateRunScore) CalcLatestCellsPassed() *float64 {
+	return toFloatPtr(erbIf(erbBool3(vBool(tc.IsInLatestRun)), func() Value { return vNum(tc.CellsPassed) }, func() Value { return vI(0) }))
+}
+
+// CalcLatestErrorFlag computes the LatestErrorFlag calculated field
+// 1 when this is the latest run and the harness could not run the substrate.
+// Formula: =IF(AND({{IsInLatestRun}}, {{HarnessError}} <> ""), 1, 0)
+func (tc *SubstrateRunScore) CalcLatestErrorFlag() *float64 {
+	return toFloatPtr(erbIf(erbBool3(erbAnd(erbBool3(vBool(tc.IsInLatestRun)), erbBool3(erbIsNotBlank(vStr(tc.HarnessError))))), func() Value { return vI(1) }, func() Value { return vI(0) }))
+}
+
+// erbComputeCalculations computes every calculated field of the row in dependency order.
+func (tc *SubstrateRunScore) erbComputeCalculations() {
+	// Level 1
+	calcGuard(tc, "name", func() { tc.Name = tc.CalcName() })
+	calcGuard(tc, "cells_failed", func() { tc.CellsFailed = tc.CalcCellsFailed() })
+	calcGuard(tc, "score", func() { tc.Score = tc.CalcScore() })
+	calcGuard(tc, "calculated_score", func() { tc.CalculatedScore = tc.CalcCalculatedScore() })
+	calcGuard(tc, "lookup_score", func() { tc.LookupScore = tc.CalcLookupScore() })
+	calcGuard(tc, "aggregation_score", func() { tc.AggregationScore = tc.CalcAggregationScore() })
+	calcGuard(tc, "latest_cells_tested", func() { tc.LatestCellsTested = tc.CalcLatestCellsTested() })
+	calcGuard(tc, "latest_cells_passed", func() { tc.LatestCellsPassed = tc.CalcLatestCellsPassed() })
+	calcGuard(tc, "latest_error_flag", func() { tc.LatestErrorFlag = tc.CalcLatestErrorFlag() })
+	// Level 2
+	calcGuard(tc, "is_perfect", func() { tc.IsPerfect = tc.CalcIsPerfect() })
+	// Level 3
+	calcGuard(tc, "perfect_run_key", func() { tc.PerfectRunKey = tc.CalcPerfectRunKey() })
+}
+
+// ComputeAll computes every calculated field from the row's current inputs.
+func (tc *SubstrateRunScore) ComputeAll() *SubstrateRunScore {
+	tc.erbComputeCalculations()
+	return tc
+}
+
+func (tc *SubstrateRunScore) erbGet(field string) Value {
+	switch field {
+	case "substrate_run_score_id":
+		return vStrPlain(tc.SubstrateRunScoreId)
+	case "name":
+		return vStr(tc.Name)
+	case "run":
+		return vStr(tc.Run)
+	case "substrate":
+		return vStr(tc.Substrate)
+	case "harness_error":
+		return vStr(tc.HarnessError)
+	case "duration_seconds":
+		return vNum(tc.DurationSeconds)
+	case "cells_tested":
+		return vNum(tc.CellsTested)
+	case "cells_passed":
+		return vNum(tc.CellsPassed)
+	case "calculated_tested":
+		return vNum(tc.CalculatedTested)
+	case "calculated_passed":
+		return vNum(tc.CalculatedPassed)
+	case "lookup_tested":
+		return vNum(tc.LookupTested)
+	case "lookup_passed":
+		return vNum(tc.LookupPassed)
+	case "aggregation_tested":
+		return vNum(tc.AggregationTested)
+	case "aggregation_passed":
+		return vNum(tc.AggregationPassed)
+	case "cells_failed":
+		return vNum(tc.CellsFailed)
+	case "score":
+		return vNum(tc.Score)
+	case "calculated_score":
+		return vNum(tc.CalculatedScore)
+	case "lookup_score":
+		return vNum(tc.LookupScore)
+	case "aggregation_score":
+		return vNum(tc.AggregationScore)
+	case "is_perfect":
+		return vBool(tc.IsPerfect)
+	case "perfect_run_key":
+		return vStr(tc.PerfectRunKey)
+	case "is_in_latest_run":
+		return vBool(tc.IsInLatestRun)
+	case "latest_cells_tested":
+		return vNum(tc.LatestCellsTested)
+	case "latest_cells_passed":
+		return vNum(tc.LatestCellsPassed)
+	case "latest_error_flag":
+		return vNum(tc.LatestErrorFlag)
+	case "substrate_label":
+		return vStr(tc.SubstrateLabel)
+	case "semantic_type_iri":
+		return vStr(tc.SemanticTypeIri)
+	}
+	panic("SubstrateRunScores has no field " + field)
+}
+
+func (tc *SubstrateRunScore) erbSet(field string, v Value) {
+	switch field {
+	case "substrate_run_score_id":
+		tc.SubstrateRunScoreId = strPlain(v)
+	case "name":
+		tc.Name = toStringPtr(v)
+	case "run":
+		tc.Run = toStringPtr(v)
+	case "substrate":
+		tc.Substrate = toStringPtr(v)
+	case "harness_error":
+		tc.HarnessError = toStringPtr(v)
+	case "duration_seconds":
+		tc.DurationSeconds = toFloatPtr(v)
+	case "cells_tested":
+		tc.CellsTested = toFloatPtr(v)
+	case "cells_passed":
+		tc.CellsPassed = toFloatPtr(v)
+	case "calculated_tested":
+		tc.CalculatedTested = toFloatPtr(v)
+	case "calculated_passed":
+		tc.CalculatedPassed = toFloatPtr(v)
+	case "lookup_tested":
+		tc.LookupTested = toFloatPtr(v)
+	case "lookup_passed":
+		tc.LookupPassed = toFloatPtr(v)
+	case "aggregation_tested":
+		tc.AggregationTested = toFloatPtr(v)
+	case "aggregation_passed":
+		tc.AggregationPassed = toFloatPtr(v)
+	case "cells_failed":
+		tc.CellsFailed = toFloatPtr(v)
+	case "score":
+		tc.Score = toFloatPtr(v)
+	case "calculated_score":
+		tc.CalculatedScore = toFloatPtr(v)
+	case "lookup_score":
+		tc.LookupScore = toFloatPtr(v)
+	case "aggregation_score":
+		tc.AggregationScore = toFloatPtr(v)
+	case "is_perfect":
+		tc.IsPerfect = toBoolPtr(v)
+	case "perfect_run_key":
+		tc.PerfectRunKey = toStringPtr(v)
+	case "is_in_latest_run":
+		tc.IsInLatestRun = toBoolPtr(v)
+	case "latest_cells_tested":
+		tc.LatestCellsTested = toFloatPtr(v)
+	case "latest_cells_passed":
+		tc.LatestCellsPassed = toFloatPtr(v)
+	case "latest_error_flag":
+		tc.LatestErrorFlag = toFloatPtr(v)
+	case "substrate_label":
+		tc.SubstrateLabel = toStringPtr(v)
+	case "semantic_type_iri":
+		tc.SemanticTypeIri = toStringPtr(v)
+	default:
+		panic("SubstrateRunScores has no field " + field)
+	}
+}
+
+func (tc *SubstrateRunScore) erbLoad(row map[string]any) {
+	for key, value := range row {
+		switch key {
+		case "substrate_run_score_id", "name", "run", "substrate", "harness_error", "duration_seconds", "cells_tested", "cells_passed", "calculated_tested", "calculated_passed", "lookup_tested", "lookup_passed", "aggregation_tested", "aggregation_passed", "cells_failed", "score", "calculated_score", "lookup_score", "aggregation_score", "is_perfect", "perfect_run_key", "is_in_latest_run", "latest_cells_tested", "latest_cells_passed", "latest_error_flag", "substrate_label", "semantic_type_iri":
+			tc.erbSet(key, fromJSON(value))
+		}
+	}
+}
+
+func (tc *SubstrateRunScore) erbErrors() map[string]string {
+	if tc.ErbErrors == nil {
+		tc.ErbErrors = map[string]string{}
+	}
+	return tc.ErbErrors
+}
+
+func (tc *SubstrateRunScore) erbResetErrors() { tc.ErbErrors = nil }
+
+func (tc *SubstrateRunScore) erbAggregate(name string) Value { return tc.erbAggregates[name] }
+
+func (tc *SubstrateRunScore) erbSetAggregate(name string, v Value) {
+	if tc.erbAggregates == nil {
+		tc.erbAggregates = map[string]Value{}
+	}
+	tc.erbAggregates[name] = v
+}
+
+// LoadSubstrateRunScoreRecords reads SubstrateRunScores rows from a JSON array file.
+func LoadSubstrateRunScoreRecords(path string) ([]SubstrateRunScore, error) {
+	records, err := loadRecords(path, func() Record { return &SubstrateRunScore{} })
+	if err != nil {
+		return nil, err
+	}
+	rows := make([]SubstrateRunScore, len(records))
+	for i, r := range records {
+		rows[i] = *r.(*SubstrateRunScore)
+	}
+	return rows, nil
+}
+
+// =============================================================================
+// TABLECONFORMANCE TABLE
+// Latest run only: how one substrate did on one table. The grid of these rows is the substrate-by-table heatmap.
+// =============================================================================
+
+// TableConformance represents a row in the TableConformance table
+type TableConformance struct {
+	TableConformanceId string `json:"table_conformance_id"` // Stored logical identifier: '<substrate>|<Table>'.
+	Name *string `json:"name"` // Human-readable calculated display alias.
+	Run *string `json:"run"` // The run this row describes.
+	Substrate *string `json:"substrate"` // The substrate graded.
+	RulebookTable *string `json:"rulebook_table"` // The table graded.
+	RecordCount *float64 `json:"record_count"` // Rows in the answer key for this table.
+	DerivedFieldCount *float64 `json:"derived_field_count"` // Derived fields graded on this table.
+	CellsTested *float64 `json:"cells_tested"` // RecordCount x DerivedFieldCount.
+	CellsPassed *float64 `json:"cells_passed"` // Cells matching the answer key.
+	IsMissingAnswerFile *bool `json:"is_missing_answer_file"` // True when the substrate produced no answers for this table at all; every cell then counts as failed.
+	CellsFailed *float64 `json:"cells_failed"` // Cells that did not match.
+	Score *float64 `json:"score"` // Percent of cells matching.
+	IsPerfect *bool `json:"is_perfect"` // True when every cell matched.
+	ImperfectSubstrateKey *string `json:"imperfect_substrate_key"` // The substrate id when this table is imperfect, else blank.
+	ImperfectTableKey *string `json:"imperfect_table_key"` // The table id when this table is imperfect, else blank.
+	DisagreeingFieldCount *float64 `json:"disagreeing_field_count"` // Fields on this table the substrate got at least one cell wrong.
+	SubstrateLabel *string `json:"substrate_label"` // The substrate's short label.
+	SubjectArea *string `json:"subject_area"` // The table's subject area.
+	SemanticTypeIri *string `json:"semantic_type_iri"` // Semantic type IRI.
+	ErbErrors map[string]string `json:"_erb_errors,omitempty"`
+	erbAggregates map[string]Value
+}
+
+// CalcName computes the Name calculated field
+// Human-readable calculated display alias.
+// Formula: =CONCAT({{Substrate}}, " / ", {{RulebookTable}})
+func (tc *TableConformance) CalcName() *string {
+	return toStringPtr(erbConcat(erbTextOr(vStr(tc.Substrate)), vS(" / "), erbTextOr(vStr(tc.RulebookTable))))
+}
+
+// CalcCellsFailed computes the CellsFailed calculated field
+// Cells that did not match.
+// Formula: ={{CellsTested}} - {{CellsPassed}}
+func (tc *TableConformance) CalcCellsFailed() *float64 {
+	return toFloatPtr(erbSub(vNum(tc.CellsTested), vNum(tc.CellsPassed)))
+}
+
+// CalcScore computes the Score calculated field
+// Percent of cells matching.
+// Formula: =IF({{CellsTested}} = 0, 0, ROUND(100 * {{CellsPassed}} / {{CellsTested}}, 2))
+func (tc *TableConformance) CalcScore() *float64 {
+	return toFloatPtr(erbIf(erbBool3(erbEq(erbNullif(vNum(tc.CellsTested)), vI(0))), func() Value { return vI(0) }, func() Value { return erbRound(erbDiv(erbMul(vI(100), vNum(tc.CellsPassed)), vNum(tc.CellsTested)), vI(2)) }))
+}
+
+// CalcIsPerfect computes the IsPerfect calculated field
+// True when every cell matched.
+// Formula: ={{CellsFailed}} = 0
+func (tc *TableConformance) CalcIsPerfect() *bool {
+	return toBoolPtr(erbEq(vNum(tc.CellsFailed), vI(0)))
+}
+
+// CalcImperfectSubstrateKey computes the ImperfectSubstrateKey calculated field
+// The substrate id when this table is imperfect, else blank.
+// Formula: =IF({{IsPerfect}}, "", {{Substrate}})
+func (tc *TableConformance) CalcImperfectSubstrateKey() *string {
+	return toStringPtr(erbIf(erbBool3(vBool(tc.IsPerfect)), func() Value { return vS("") }, func() Value { return vStr(tc.Substrate) }))
+}
+
+// CalcImperfectTableKey computes the ImperfectTableKey calculated field
+// The table id when this table is imperfect, else blank.
+// Formula: =IF({{IsPerfect}}, "", {{RulebookTable}})
+func (tc *TableConformance) CalcImperfectTableKey() *string {
+	return toStringPtr(erbIf(erbBool3(vBool(tc.IsPerfect)), func() Value { return vS("") }, func() Value { return vStr(tc.RulebookTable) }))
+}
+
+// erbComputeCalculations computes every calculated field of the row in dependency order.
+func (tc *TableConformance) erbComputeCalculations() {
+	// Level 1
+	calcGuard(tc, "name", func() { tc.Name = tc.CalcName() })
+	calcGuard(tc, "cells_failed", func() { tc.CellsFailed = tc.CalcCellsFailed() })
+	calcGuard(tc, "score", func() { tc.Score = tc.CalcScore() })
+	// Level 2
+	calcGuard(tc, "is_perfect", func() { tc.IsPerfect = tc.CalcIsPerfect() })
+	// Level 3
+	calcGuard(tc, "imperfect_substrate_key", func() { tc.ImperfectSubstrateKey = tc.CalcImperfectSubstrateKey() })
+	calcGuard(tc, "imperfect_table_key", func() { tc.ImperfectTableKey = tc.CalcImperfectTableKey() })
+}
+
+// ComputeAll computes every calculated field from the row's current inputs.
+func (tc *TableConformance) ComputeAll() *TableConformance {
+	tc.erbComputeCalculations()
+	return tc
+}
+
+func (tc *TableConformance) erbGet(field string) Value {
+	switch field {
+	case "table_conformance_id":
+		return vStrPlain(tc.TableConformanceId)
+	case "name":
+		return vStr(tc.Name)
+	case "run":
+		return vStr(tc.Run)
+	case "substrate":
+		return vStr(tc.Substrate)
+	case "rulebook_table":
+		return vStr(tc.RulebookTable)
+	case "record_count":
+		return vNum(tc.RecordCount)
+	case "derived_field_count":
+		return vNum(tc.DerivedFieldCount)
+	case "cells_tested":
+		return vNum(tc.CellsTested)
+	case "cells_passed":
+		return vNum(tc.CellsPassed)
+	case "is_missing_answer_file":
+		return vBool(tc.IsMissingAnswerFile)
+	case "cells_failed":
+		return vNum(tc.CellsFailed)
+	case "score":
+		return vNum(tc.Score)
+	case "is_perfect":
+		return vBool(tc.IsPerfect)
+	case "imperfect_substrate_key":
+		return vStr(tc.ImperfectSubstrateKey)
+	case "imperfect_table_key":
+		return vStr(tc.ImperfectTableKey)
+	case "disagreeing_field_count":
+		return vNum(tc.DisagreeingFieldCount)
+	case "substrate_label":
+		return vStr(tc.SubstrateLabel)
+	case "subject_area":
+		return vStr(tc.SubjectArea)
+	case "semantic_type_iri":
+		return vStr(tc.SemanticTypeIri)
+	}
+	panic("TableConformance has no field " + field)
+}
+
+func (tc *TableConformance) erbSet(field string, v Value) {
+	switch field {
+	case "table_conformance_id":
+		tc.TableConformanceId = strPlain(v)
+	case "name":
+		tc.Name = toStringPtr(v)
+	case "run":
+		tc.Run = toStringPtr(v)
+	case "substrate":
+		tc.Substrate = toStringPtr(v)
+	case "rulebook_table":
+		tc.RulebookTable = toStringPtr(v)
+	case "record_count":
+		tc.RecordCount = toFloatPtr(v)
+	case "derived_field_count":
+		tc.DerivedFieldCount = toFloatPtr(v)
+	case "cells_tested":
+		tc.CellsTested = toFloatPtr(v)
+	case "cells_passed":
+		tc.CellsPassed = toFloatPtr(v)
+	case "is_missing_answer_file":
+		tc.IsMissingAnswerFile = toBoolPtr(v)
+	case "cells_failed":
+		tc.CellsFailed = toFloatPtr(v)
+	case "score":
+		tc.Score = toFloatPtr(v)
+	case "is_perfect":
+		tc.IsPerfect = toBoolPtr(v)
+	case "imperfect_substrate_key":
+		tc.ImperfectSubstrateKey = toStringPtr(v)
+	case "imperfect_table_key":
+		tc.ImperfectTableKey = toStringPtr(v)
+	case "disagreeing_field_count":
+		tc.DisagreeingFieldCount = toFloatPtr(v)
+	case "substrate_label":
+		tc.SubstrateLabel = toStringPtr(v)
+	case "subject_area":
+		tc.SubjectArea = toStringPtr(v)
+	case "semantic_type_iri":
+		tc.SemanticTypeIri = toStringPtr(v)
+	default:
+		panic("TableConformance has no field " + field)
+	}
+}
+
+func (tc *TableConformance) erbLoad(row map[string]any) {
+	for key, value := range row {
+		switch key {
+		case "table_conformance_id", "name", "run", "substrate", "rulebook_table", "record_count", "derived_field_count", "cells_tested", "cells_passed", "is_missing_answer_file", "cells_failed", "score", "is_perfect", "imperfect_substrate_key", "imperfect_table_key", "disagreeing_field_count", "substrate_label", "subject_area", "semantic_type_iri":
+			tc.erbSet(key, fromJSON(value))
+		}
+	}
+}
+
+func (tc *TableConformance) erbErrors() map[string]string {
+	if tc.ErbErrors == nil {
+		tc.ErbErrors = map[string]string{}
+	}
+	return tc.ErbErrors
+}
+
+func (tc *TableConformance) erbResetErrors() { tc.ErbErrors = nil }
+
+func (tc *TableConformance) erbAggregate(name string) Value { return tc.erbAggregates[name] }
+
+func (tc *TableConformance) erbSetAggregate(name string, v Value) {
+	if tc.erbAggregates == nil {
+		tc.erbAggregates = map[string]Value{}
+	}
+	tc.erbAggregates[name] = v
+}
+
+// LoadTableConformanceRecords reads TableConformance rows from a JSON array file.
+func LoadTableConformanceRecords(path string) ([]TableConformance, error) {
+	records, err := loadRecords(path, func() Record { return &TableConformance{} })
+	if err != nil {
+		return nil, err
+	}
+	rows := make([]TableConformance, len(records))
+	for i, r := range records {
+		rows[i] = *r.(*TableConformance)
+	}
+	return rows, nil
+}
+
+// =============================================================================
+// FIELDDISAGREEMENTS TABLE
+// Latest run only: a derived field on which one substrate got at least one cell wrong. A field with no row here agreed everywhere. CellsFailed is the true count; CellDisagreements holds a sample of the cells.
+// =============================================================================
+
+// FieldDisagreement represents a row in the FieldDisagreements table
+type FieldDisagreement struct {
+	FieldDisagreementId string `json:"field_disagreement_id"` // Stored logical identifier: '<substrate>|<Table>.<Field>'.
+	Name *string `json:"name"` // Human-readable calculated display alias.
+	Substrate *string `json:"substrate"` // The substrate that disagreed.
+	RulebookField *string `json:"rulebook_field"` // The field it disagreed on.
+	TableConformance *string `json:"table_conformance"` // The substrate-by-table row this field belongs to.
+	FieldClass *string `json:"field_class"` // calculated, lookup or aggregation.
+	CellsFailed *float64 `json:"cells_failed"` // Every cell of this field the substrate got wrong, not just the sampled ones.
+	DominantReason *string `json:"dominant_reason"` // The harness's most frequent reason: 'wrong/null value', 'missing record' or 'missing entity file'.
+	SampledCellCount *float64 `json:"sampled_cell_count"` // Failing cells recorded as CellDisagreements rows.
+	IsFullySampled *bool `json:"is_fully_sampled"` // True when every failing cell is recorded, not just a sample.
+	Formula *string `json:"formula"` // The formula every substrate was asked to compute, shown as evidence.
+	SubstrateLabel *string `json:"substrate_label"` // The substrate's short label.
+	SemanticTypeIri *string `json:"semantic_type_iri"` // Semantic type IRI.
+	ErbErrors map[string]string `json:"_erb_errors,omitempty"`
+	erbAggregates map[string]Value
+}
+
+// CalcName computes the Name calculated field
+// Human-readable calculated display alias.
+// Formula: =CONCAT({{Substrate}}, " / ", {{RulebookField}})
+func (tc *FieldDisagreement) CalcName() *string {
+	return toStringPtr(erbConcat(erbTextOr(vStr(tc.Substrate)), vS(" / "), erbTextOr(vStr(tc.RulebookField))))
+}
+
+// CalcIsFullySampled computes the IsFullySampled calculated field
+// True when every failing cell is recorded, not just a sample.
+// Formula: ={{SampledCellCount}} = {{CellsFailed}}
+func (tc *FieldDisagreement) CalcIsFullySampled() *bool {
+	return toBoolPtr(erbEq(vNum(tc.SampledCellCount), erbNullif(vNum(tc.CellsFailed))))
+}
+
+// erbComputeCalculations computes every calculated field of the row in dependency order.
+func (tc *FieldDisagreement) erbComputeCalculations() {
+	// Level 1
+	calcGuard(tc, "name", func() { tc.Name = tc.CalcName() })
+	calcGuard(tc, "is_fully_sampled", func() { tc.IsFullySampled = tc.CalcIsFullySampled() })
+}
+
+// ComputeAll computes every calculated field from the row's current inputs.
+func (tc *FieldDisagreement) ComputeAll() *FieldDisagreement {
+	tc.erbComputeCalculations()
+	return tc
+}
+
+func (tc *FieldDisagreement) erbGet(field string) Value {
+	switch field {
+	case "field_disagreement_id":
+		return vStrPlain(tc.FieldDisagreementId)
+	case "name":
+		return vStr(tc.Name)
+	case "substrate":
+		return vStr(tc.Substrate)
+	case "rulebook_field":
+		return vStr(tc.RulebookField)
+	case "table_conformance":
+		return vStr(tc.TableConformance)
+	case "field_class":
+		return vStr(tc.FieldClass)
+	case "cells_failed":
+		return vNum(tc.CellsFailed)
+	case "dominant_reason":
+		return vStr(tc.DominantReason)
+	case "sampled_cell_count":
+		return vNum(tc.SampledCellCount)
+	case "is_fully_sampled":
+		return vBool(tc.IsFullySampled)
+	case "formula":
+		return vStr(tc.Formula)
+	case "substrate_label":
+		return vStr(tc.SubstrateLabel)
+	case "semantic_type_iri":
+		return vStr(tc.SemanticTypeIri)
+	}
+	panic("FieldDisagreements has no field " + field)
+}
+
+func (tc *FieldDisagreement) erbSet(field string, v Value) {
+	switch field {
+	case "field_disagreement_id":
+		tc.FieldDisagreementId = strPlain(v)
+	case "name":
+		tc.Name = toStringPtr(v)
+	case "substrate":
+		tc.Substrate = toStringPtr(v)
+	case "rulebook_field":
+		tc.RulebookField = toStringPtr(v)
+	case "table_conformance":
+		tc.TableConformance = toStringPtr(v)
+	case "field_class":
+		tc.FieldClass = toStringPtr(v)
+	case "cells_failed":
+		tc.CellsFailed = toFloatPtr(v)
+	case "dominant_reason":
+		tc.DominantReason = toStringPtr(v)
+	case "sampled_cell_count":
+		tc.SampledCellCount = toFloatPtr(v)
+	case "is_fully_sampled":
+		tc.IsFullySampled = toBoolPtr(v)
+	case "formula":
+		tc.Formula = toStringPtr(v)
+	case "substrate_label":
+		tc.SubstrateLabel = toStringPtr(v)
+	case "semantic_type_iri":
+		tc.SemanticTypeIri = toStringPtr(v)
+	default:
+		panic("FieldDisagreements has no field " + field)
+	}
+}
+
+func (tc *FieldDisagreement) erbLoad(row map[string]any) {
+	for key, value := range row {
+		switch key {
+		case "field_disagreement_id", "name", "substrate", "rulebook_field", "table_conformance", "field_class", "cells_failed", "dominant_reason", "sampled_cell_count", "is_fully_sampled", "formula", "substrate_label", "semantic_type_iri":
+			tc.erbSet(key, fromJSON(value))
+		}
+	}
+}
+
+func (tc *FieldDisagreement) erbErrors() map[string]string {
+	if tc.ErbErrors == nil {
+		tc.ErbErrors = map[string]string{}
+	}
+	return tc.ErbErrors
+}
+
+func (tc *FieldDisagreement) erbResetErrors() { tc.ErbErrors = nil }
+
+func (tc *FieldDisagreement) erbAggregate(name string) Value { return tc.erbAggregates[name] }
+
+func (tc *FieldDisagreement) erbSetAggregate(name string, v Value) {
+	if tc.erbAggregates == nil {
+		tc.erbAggregates = map[string]Value{}
+	}
+	tc.erbAggregates[name] = v
+}
+
+// LoadFieldDisagreementRecords reads FieldDisagreements rows from a JSON array file.
+func LoadFieldDisagreementRecords(path string) ([]FieldDisagreement, error) {
+	records, err := loadRecords(path, func() Record { return &FieldDisagreement{} })
+	if err != nil {
+		return nil, err
+	}
+	rows := make([]FieldDisagreement, len(records))
+	for i, r := range records {
+		rows[i] = *r.(*FieldDisagreement)
+	}
+	return rows, nil
+}
+
+// =============================================================================
+// CELLDISAGREEMENTS TABLE
+// Latest run only: one cell a substrate computed differently from the answer key, with both values verbatim. Sampled per field; see FieldDisagreements.IsFullySampled.
+// =============================================================================
+
+// CellDisagreement represents a row in the CellDisagreements table
+type CellDisagreement struct {
+	CellDisagreementId string `json:"cell_disagreement_id"` // Stored logical identifier: '<substrate>|<Table>.<Field>|<record id>'.
+	Name *string `json:"name"` // Human-readable calculated display alias.
+	FieldDisagreement *string `json:"field_disagreement"` // The substrate-by-field disagreement this cell belongs to.
+	RecordId *string `json:"record_id"` // Primary key of the row whose cell disagreed.
+	ExpectedValue *string `json:"expected_value"` // The answer key's value, JSON-encoded so null, '', false and 0 stay distinguishable.
+	ActualValue *string `json:"actual_value"` // The substrate's value, JSON-encoded the same way.
+	Reason *string `json:"reason"` // The harness's reason: 'wrong/null value', 'missing record' or 'missing entity file'.
+	Substrate *string `json:"substrate"` // The substrate that produced ActualValue.
+	RulebookField *string `json:"rulebook_field"` // The field.
+	SemanticTypeIri *string `json:"semantic_type_iri"` // Semantic type IRI.
+	ErbErrors map[string]string `json:"_erb_errors,omitempty"`
+	erbAggregates map[string]Value
+}
+
+// CalcName computes the Name calculated field
+// Human-readable calculated display alias.
+// Formula: =CONCAT({{FieldDisagreement}}, " @ ", {{RecordId}})
+func (tc *CellDisagreement) CalcName() *string {
+	return toStringPtr(erbConcat(erbTextOr(vStr(tc.FieldDisagreement)), vS(" @ "), erbTextOr(vStr(tc.RecordId))))
+}
+
+// erbComputeCalculations computes every calculated field of the row in dependency order.
+func (tc *CellDisagreement) erbComputeCalculations() {
+	// Level 1
+	calcGuard(tc, "name", func() { tc.Name = tc.CalcName() })
+}
+
+// ComputeAll computes every calculated field from the row's current inputs.
+func (tc *CellDisagreement) ComputeAll() *CellDisagreement {
+	tc.erbComputeCalculations()
+	return tc
+}
+
+func (tc *CellDisagreement) erbGet(field string) Value {
+	switch field {
+	case "cell_disagreement_id":
+		return vStrPlain(tc.CellDisagreementId)
+	case "name":
+		return vStr(tc.Name)
+	case "field_disagreement":
+		return vStr(tc.FieldDisagreement)
+	case "record_id":
+		return vStr(tc.RecordId)
+	case "expected_value":
+		return vStr(tc.ExpectedValue)
+	case "actual_value":
+		return vStr(tc.ActualValue)
+	case "reason":
+		return vStr(tc.Reason)
+	case "substrate":
+		return vStr(tc.Substrate)
+	case "rulebook_field":
+		return vStr(tc.RulebookField)
+	case "semantic_type_iri":
+		return vStr(tc.SemanticTypeIri)
+	}
+	panic("CellDisagreements has no field " + field)
+}
+
+func (tc *CellDisagreement) erbSet(field string, v Value) {
+	switch field {
+	case "cell_disagreement_id":
+		tc.CellDisagreementId = strPlain(v)
+	case "name":
+		tc.Name = toStringPtr(v)
+	case "field_disagreement":
+		tc.FieldDisagreement = toStringPtr(v)
+	case "record_id":
+		tc.RecordId = toStringPtr(v)
+	case "expected_value":
+		tc.ExpectedValue = toStringPtr(v)
+	case "actual_value":
+		tc.ActualValue = toStringPtr(v)
+	case "reason":
+		tc.Reason = toStringPtr(v)
+	case "substrate":
+		tc.Substrate = toStringPtr(v)
+	case "rulebook_field":
+		tc.RulebookField = toStringPtr(v)
+	case "semantic_type_iri":
+		tc.SemanticTypeIri = toStringPtr(v)
+	default:
+		panic("CellDisagreements has no field " + field)
+	}
+}
+
+func (tc *CellDisagreement) erbLoad(row map[string]any) {
+	for key, value := range row {
+		switch key {
+		case "cell_disagreement_id", "name", "field_disagreement", "record_id", "expected_value", "actual_value", "reason", "substrate", "rulebook_field", "semantic_type_iri":
+			tc.erbSet(key, fromJSON(value))
+		}
+	}
+}
+
+func (tc *CellDisagreement) erbErrors() map[string]string {
+	if tc.ErbErrors == nil {
+		tc.ErbErrors = map[string]string{}
+	}
+	return tc.ErbErrors
+}
+
+func (tc *CellDisagreement) erbResetErrors() { tc.ErbErrors = nil }
+
+func (tc *CellDisagreement) erbAggregate(name string) Value { return tc.erbAggregates[name] }
+
+func (tc *CellDisagreement) erbSetAggregate(name string, v Value) {
+	if tc.erbAggregates == nil {
+		tc.erbAggregates = map[string]Value{}
+	}
+	tc.erbAggregates[name] = v
+}
+
+// LoadCellDisagreementRecords reads CellDisagreements rows from a JSON array file.
+func LoadCellDisagreementRecords(path string) ([]CellDisagreement, error) {
+	records, err := loadRecords(path, func() Record { return &CellDisagreement{} })
+	if err != nil {
+		return nil, err
+	}
+	rows := make([]CellDisagreement, len(records))
+	for i, r := range records {
+		rows[i] = *r.(*CellDisagreement)
+	}
+	return rows, nil
+}
+
 // calculatedFieldCount bounds the runner's passes over the dataset.
-const calculatedFieldCount = 705
+const calculatedFieldCount = 736
 
 // erbTables is every table, in rulebook order.
 var erbTables = []TableSpec{
@@ -21629,20 +22873,21 @@ var erbTables = []TableSpec{
 			{Field: "drifted_send_count", Op: "COUNTIFS", Table: "message_deliveries", Criteria: []Criterion{{Range: "drifted_send_template_key", Kind: "field", Field: "message_template_id"}}},
 			{Field: "unanswered_delivery_count", Op: "COUNTIFS", Table: "message_deliveries", Criteria: []Criterion{{Range: "unanswered_template_key", Kind: "field", Field: "message_template_id"}}},
 			{Field: "transmitted_delivery_count", Op: "COUNTIFS", Table: "message_deliveries", Criteria: []Criterion{{Range: "transmitted_template_key", Kind: "field", Field: "message_template_id"}}},}},
-	{Name: "SemanticMappings", File: "semantic_mappings", RulebookRows: 41, New: func() Record { return &SemanticMapping{} },
+	{Name: "SemanticMappings", File: "semantic_mappings", RulebookRows: 47, New: func() Record { return &SemanticMapping{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{}},
 	{Name: "WitnessLoops", File: "witness_loops", RulebookRows: 3, New: func() Record { return &WitnessLoop{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
 			{Field: "question_count", Op: "COUNTIFS", Table: "role_questions", Criteria: []Criterion{{Range: "witness_loop", Kind: "field", Field: "witness_loop_id"}}},}},
-	{Name: "RoleQuestions", File: "role_questions", RulebookRows: 108, New: func() Record { return &RoleQuestion{} },
+	{Name: "RoleQuestions", File: "role_questions", RulebookRows: 109, New: func() Record { return &RoleQuestion{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
 			{Field: "predicate_count", Op: "COUNTIFS", Table: "rulebook_fields", Criteria: []Criterion{{Range: "invented_for_question", Kind: "field", Field: "role_question_id"}}},}},
-	{Name: "RulebookFields", File: "rulebook_fields", RulebookRows: 1771, New: func() Record { return &RulebookField{} },
+	{Name: "RulebookFields", File: "rulebook_fields", RulebookRows: 1879, New: func() Record { return &RulebookField{} },
 		Lookups: []LookupSpec{},
-		Aggregations: []AggregateSpec{}},
+		Aggregations: []AggregateSpec{
+			{Field: "disagreeing_substrate_count", Op: "COUNTIFS", Table: "field_disagreements", Criteria: []Criterion{{Range: "rulebook_field", Kind: "field", Field: "rulebook_field_id"}}},}},
 	{Name: "TestSuites", File: "test_suites", RulebookRows: 6, New: func() Record { return &TestSuite{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
@@ -21785,11 +23030,12 @@ var erbTables = []TableSpec{
 	{Name: "AppRouteReferences", File: "app_route_references", RulebookRows: 315, New: func() Record { return &AppRouteReference{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{}},
-	{Name: "RulebookTables", File: "rulebook_tables", RulebookRows: 86, New: func() Record { return &RulebookTable{} },
+	{Name: "RulebookTables", File: "rulebook_tables", RulebookRows: 92, New: func() Record { return &RulebookTable{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
 			{Field: "field_count", Op: "COUNTIFS", Table: "rulebook_fields", Criteria: []Criterion{{Range: "target_table", Kind: "field", Field: "rulebook_table_id"}}},
-			{Field: "policy_count", Op: "COUNTIFS", Table: "access_policies", Criteria: []Criterion{{Range: "target_table", Kind: "field", Field: "rulebook_table_id"}}},}},
+			{Field: "policy_count", Op: "COUNTIFS", Table: "access_policies", Criteria: []Criterion{{Range: "target_table", Kind: "field", Field: "rulebook_table_id"}}},
+			{Field: "disagreeing_substrate_count", Op: "COUNTIFS", Table: "table_conformance", Criteria: []Criterion{{Range: "imperfect_table_key", Kind: "field", Field: "rulebook_table_id"}}},}},
 	{Name: "AccessPrincipals", File: "access_principals", RulebookRows: 12, New: func() Record { return &AccessPrincipal{} },
 		Lookups: []LookupSpec{
 			{Field: "organization_scope", Target: "roles", Return: "organization", Key: "domain_role", Match: "role_id"},
@@ -21860,6 +23106,44 @@ var erbTables = []TableSpec{
 		Lookups: []LookupSpec{
 			{Field: "as_of_instant", Target: "evaluation_contexts", Return: "as_of_instant", Key: "evaluation_context", Match: "evaluation_context_id"},
 			{Field: "broker_is_still_engaged", Target: "agents", Return: "is_still_engaged", Key: "broker", Match: "agent_id"},},
+		Aggregations: []AggregateSpec{}},
+	{Name: "ConformanceSubstrates", File: "conformance_substrates", RulebookRows: 8, New: func() Record { return &ConformanceSubstrate{} },
+		Lookups: []LookupSpec{},
+		Aggregations: []AggregateSpec{
+			{Field: "run_count", Op: "COUNTIFS", Table: "substrate_run_scores", Criteria: []Criterion{{Range: "substrate", Kind: "field", Field: "conformance_substrate_id"}}},
+			{Field: "latest_cells_tested", Op: "SUM", Table: "substrate_run_scores", Target: "latest_cells_tested", Criteria: []Criterion{{Range: "substrate", Kind: "field", Field: "conformance_substrate_id"}}},
+			{Field: "latest_cells_passed", Op: "SUM", Table: "substrate_run_scores", Target: "latest_cells_passed", Criteria: []Criterion{{Range: "substrate", Kind: "field", Field: "conformance_substrate_id"}}},
+			{Field: "latest_harness_errors", Op: "SUM", Table: "substrate_run_scores", Target: "latest_error_flag", Criteria: []Criterion{{Range: "substrate", Kind: "field", Field: "conformance_substrate_id"}}},
+			{Field: "disagreeing_field_count", Op: "COUNTIFS", Table: "field_disagreements", Criteria: []Criterion{{Range: "substrate", Kind: "field", Field: "conformance_substrate_id"}}},
+			{Field: "disagreeing_table_count", Op: "COUNTIFS", Table: "table_conformance", Criteria: []Criterion{{Range: "imperfect_substrate_key", Kind: "field", Field: "conformance_substrate_id"}}},}},
+	{Name: "ConformanceRuns", File: "conformance_runs", RulebookRows: 1, New: func() Record { return &ConformanceRun{} },
+		Lookups: []LookupSpec{},
+		Aggregations: []AggregateSpec{
+			{Field: "substrate_count", Op: "COUNTIFS", Table: "substrate_run_scores", Criteria: []Criterion{{Range: "run", Kind: "field", Field: "conformance_run_id"}}},
+			{Field: "perfect_substrate_count", Op: "COUNTIFS", Table: "substrate_run_scores", Criteria: []Criterion{{Range: "perfect_run_key", Kind: "field", Field: "conformance_run_id"}}},
+			{Field: "cells_tested", Op: "SUM", Table: "substrate_run_scores", Target: "cells_tested", Criteria: []Criterion{{Range: "run", Kind: "field", Field: "conformance_run_id"}}},
+			{Field: "cells_passed", Op: "SUM", Table: "substrate_run_scores", Target: "cells_passed", Criteria: []Criterion{{Range: "run", Kind: "field", Field: "conformance_run_id"}}},}},
+	{Name: "SubstrateRunScores", File: "substrate_run_scores", RulebookRows: 7, New: func() Record { return &SubstrateRunScore{} },
+		Lookups: []LookupSpec{
+			{Field: "is_in_latest_run", Target: "conformance_runs", Return: "is_latest", Key: "run", Match: "conformance_run_id"},
+			{Field: "substrate_label", Target: "conformance_substrates", Return: "label", Key: "substrate", Match: "conformance_substrate_id"},},
+		Aggregations: []AggregateSpec{}},
+	{Name: "TableConformance", File: "table_conformance", RulebookRows: 581, New: func() Record { return &TableConformance{} },
+		Lookups: []LookupSpec{
+			{Field: "substrate_label", Target: "conformance_substrates", Return: "label", Key: "substrate", Match: "conformance_substrate_id"},
+			{Field: "subject_area", Target: "rulebook_tables", Return: "subject_area", Key: "rulebook_table", Match: "rulebook_table_id"},},
+		Aggregations: []AggregateSpec{
+			{Field: "disagreeing_field_count", Op: "COUNTIFS", Table: "field_disagreements", Criteria: []Criterion{{Range: "table_conformance", Kind: "field", Field: "table_conformance_id"}}},}},
+	{Name: "FieldDisagreements", File: "field_disagreements", RulebookRows: 400, New: func() Record { return &FieldDisagreement{} },
+		Lookups: []LookupSpec{
+			{Field: "formula", Target: "rulebook_fields", Return: "formula", Key: "rulebook_field", Match: "rulebook_field_id"},
+			{Field: "substrate_label", Target: "conformance_substrates", Return: "label", Key: "substrate", Match: "conformance_substrate_id"},},
+		Aggregations: []AggregateSpec{
+			{Field: "sampled_cell_count", Op: "COUNTIFS", Table: "cell_disagreements", Criteria: []Criterion{{Range: "field_disagreement", Kind: "field", Field: "field_disagreement_id"}}},}},
+	{Name: "CellDisagreements", File: "cell_disagreements", RulebookRows: 1725, New: func() Record { return &CellDisagreement{} },
+		Lookups: []LookupSpec{
+			{Field: "substrate", Target: "field_disagreements", Return: "substrate", Key: "field_disagreement", Match: "field_disagreement_id"},
+			{Field: "rulebook_field", Target: "field_disagreements", Return: "rulebook_field", Key: "field_disagreement", Match: "field_disagreement_id"},},
 		Aggregations: []AggregateSpec{}},
 }
 

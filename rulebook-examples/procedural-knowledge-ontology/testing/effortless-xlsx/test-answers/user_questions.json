@@ -1,0 +1,26 @@
+[
+  {
+    "user_question_id": "q-close-fx",
+    "step_execution": "se-close04",
+    "asked_by_agent": "devon-okafor",
+    "asked_at": "2026-07-01 18:10:00",
+    "question_text": "Why did the FX variance appear only after the cutover?",
+    "resolved_by_faq": "faq-close-workpapers",
+    "addressed_by_resource": "res-close-sop-pdf",
+    "status": "Answered",
+    "semantic_type_iri": "https://w3id.org/pko#UserQuestionOccurrence",
+    "name": "Why did the FX variance appear only after the cutover?"
+  },
+  {
+    "user_question_id": "q-policy-ai",
+    "step_execution": "se-policy03",
+    "asked_by_agent": "elena-garcia",
+    "asked_at": "2026-07-18 18:20:00",
+    "question_text": "Can the drafting AI add a new legal exception if it seems reasonable?",
+    "resolved_by_faq": "faq-policy-ai",
+    "addressed_by_resource": "res-policy-source",
+    "status": "Answered",
+    "semantic_type_iri": "https://w3id.org/pko#UserQuestionOccurrence",
+    "name": "Can the drafting AI add a new legal exception if it seems reasonable?"
+  }
+]

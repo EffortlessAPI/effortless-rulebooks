@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -16,443 +17,515 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string ProcedureVersionId { get; set; }
 
         // Formula Name (rulebook: ={{Title}})
+        [NotMapped]
         public string? Name
         {
-            get => this.Title; set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Of(this.Title))); set { }
         }
 
         public string? VersionNumber { get; set; }
         public string? Title { get; set; }
         public string? Status { get; set; }
-        public DateTime? IssuedAt { get; set; }
-        public DateTime? ModifiedAt { get; set; }
+        public DateTimeOffset? IssuedAt { get; set; }
+        public DateTimeOffset? ModifiedAt { get; set; }
         public string? NewVersionMotivation { get; set; }
         public string? ChangelogDescription { get; set; }
         public bool? IsCurrent { get; set; }
         // Formula CountOfSteps (rulebook: =COUNTIFS(Steps!{{ProcedureVersion}}, ProcedureVersions!{{ProcedureVersionId}}))
+        [NotMapped]
         public int? CountOfSteps
         {
-            get => this.Steps == null ? 0 : this.Steps.Count; set { }
+            get => F.AsInt(F.Memo(this, "CountOfSteps", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<Step>(base.SoAContext, "Steps", __c => __c.Steps), __r => F.CritField(F.Of(__r.ProcedureVersion), F.Of(this.ProcedureVersionId))))))); set { }
         }
 
         // Formula CountOfOpenKnowledgeGaps (rulebook: =COUNTIFS(KnowledgeGaps!{{ProcedureVersion}}, ProcedureVersions!{{ProcedureVersionId}}, KnowledgeGaps!{{Status}}, "Open"))
+        [NotMapped]
         public int? CountOfOpenKnowledgeGaps
         {
-            get => COUNTIFS(KnowledgeGaps!this.ProcedureVersion, ProcedureVersions!this.ProcedureVersionId, KnowledgeGaps!this.Status, "Open"); set { }
+            get => F.AsInt(F.Memo(this, "CountOfOpenKnowledgeGaps", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<KnowledgeGap>(base.SoAContext, "KnowledgeGaps", __c => __c.KnowledgeGaps), __r => F.CritField(F.Of(__r.ProcedureVersion), F.Of(this.ProcedureVersionId)) && F.CritLiteral(F.Of(__r.Status), F.S("Open"))))))); set { }
         }
 
         // Formula IsReadyForExecution (rulebook: =AND({{Status}} = "Approved", {{CountOfSteps}} > 0, {{CountOfOpenKnowledgeGaps}} = 0))
+        [NotMapped]
         public bool? IsReadyForExecution
         {
-            get => AND(this.Status = "Approved", this.CountOfSteps > 0, this.CountOfOpenKnowledgeGaps = 0); set { }
+            get => F.AsBool(F.Memo(this, "IsReadyForExecution", () => F.And(F.Bool3(F.Eq(F.Nullif(F.Of(this.Status)), F.S("Approved"))), F.Bool3(F.Cmp(F.Of(this.CountOfSteps), ">", F.I(0))), F.Bool3(F.Eq(F.Of(this.CountOfOpenKnowledgeGaps), F.I(0)))))); set { }
         }
 
         // Formula SpecifiedStepCount (rulebook: =COUNTIFS(Steps!{{ProcedureVersion}}, {{ProcedureVersionId}}))
+        [NotMapped]
         public decimal? SpecifiedStepCount
         {
-            get => COUNTIFS(Steps!this.ProcedureVersion, this.ProcedureVersionId); set { }
+            get => F.AsDecimal(F.Memo(this, "SpecifiedStepCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<Step>(base.SoAContext, "Steps", __c => __c.Steps), __r => F.CritField(F.Of(__r.ProcedureVersion), F.Of(this.ProcedureVersionId)))))); set { }
         }
 
         // Formula OverdueReviewCount (rulebook: =COUNTIFS(ReviewEvents!{{OverdueVersionKey}}, {{ProcedureVersionId}}))
+        [NotMapped]
         public decimal? OverdueReviewCount
         {
-            get => COUNTIFS(ReviewEvents!this.OverdueVersionKey, this.ProcedureVersionId); set { }
+            get => F.AsDecimal(F.Memo(this, "OverdueReviewCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<ReviewEvent>(base.SoAContext, "ReviewEvents", __c => __c.ReviewEvents), __r => F.CritField(F.Of(__r.OverdueVersionKey), F.Of(this.ProcedureVersionId)))))); set { }
         }
 
         // Formula OpenChangeRequestCount (rulebook: =COUNTIFS(ChangeRequests!{{OpenChangeVersionKey}}, {{ProcedureVersionId}}))
+        [NotMapped]
         public decimal? OpenChangeRequestCount
         {
-            get => COUNTIFS(ChangeRequests!this.OpenChangeVersionKey, this.ProcedureVersionId); set { }
+            get => F.AsDecimal(F.Memo(this, "OpenChangeRequestCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<ChangeRequest>(base.SoAContext, "ChangeRequests", __c => __c.ChangeRequests), __r => F.CritField(F.Of(__r.OpenChangeVersionKey), F.Of(this.ProcedureVersionId)))))); set { }
         }
 
         // Formula OpenHighSeverityGapCount (rulebook: =COUNTIFS(KnowledgeGaps!{{OpenGapVersionKey}}, {{ProcedureVersionId}}))
+        [NotMapped]
         public decimal? OpenHighSeverityGapCount
         {
-            get => COUNTIFS(KnowledgeGaps!this.OpenGapVersionKey, this.ProcedureVersionId); set { }
+            get => F.AsDecimal(F.Memo(this, "OpenHighSeverityGapCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<KnowledgeGap>(base.SoAContext, "KnowledgeGaps", __c => __c.KnowledgeGaps), __r => F.CritField(F.Of(__r.OpenGapVersionKey), F.Of(this.ProcedureVersionId)))))); set { }
         }
 
         // Formula IsFitToExecute (rulebook: =AND({{Status}} = "Approved", {{OverdueReviewCount}} = 0, {{OpenChangeRequestCount}} = 0, {{OpenHighSeverityGapCount}} = 0))
+        [NotMapped]
         public bool? IsFitToExecute
         {
-            get => AND(this.Status = "Approved", this.OverdueReviewCount = 0, this.OpenChangeRequestCount = 0, this.OpenHighSeverityGapCount = 0); set { }
+            get => F.AsBool(F.Memo(this, "IsFitToExecute", () => F.And(F.Bool3(F.Eq(F.Nullif(F.Of(this.Status)), F.S("Approved"))), F.Bool3(F.Eq(F.Of(this.OverdueReviewCount), F.I(0))), F.Bool3(F.Eq(F.Of(this.OpenChangeRequestCount), F.I(0))), F.Bool3(F.Eq(F.Of(this.OpenHighSeverityGapCount), F.I(0)))))); set { }
         }
 
         // Formula StewardReviewCadenceDays (rulebook: =SUMIFS(StewardshipAssignments!{{ReviewCadenceDays}}, StewardshipAssignments!{{ProcedureVersion}}, {{ProcedureVersionId}}))
+        [NotMapped]
         public decimal? StewardReviewCadenceDays
         {
-            get => SUMIFS(StewardshipAssignments!this.ReviewCadenceDays, StewardshipAssignments!this.ProcedureVersion, this.ProcedureVersionId); set { }
+            get => F.AsDecimal(F.Memo(this, "StewardReviewCadenceDays", () => (base.SoAContext == null ? F.Null : F.SumIfs(F.Rows<StewardshipAssignment>(base.SoAContext, "StewardshipAssignments", __c => __c.StewardshipAssignments), __r => F.CritField(F.Of(__r.ProcedureVersion), F.Of(this.ProcedureVersionId)), __r => F.Of(__r.ReviewCadenceDays), null)))); set { }
         }
 
         // Formula CountOfStewardshipAssignments (rulebook: =COUNTIFS(StewardshipAssignments!{{ProcedureVersion}}, ProcedureVersions!{{ProcedureVersionId}}))
+        [NotMapped]
         public int? CountOfStewardshipAssignments
         {
-            get => this.StewardshipAssignments == null ? 0 : this.StewardshipAssignments.Count; set { }
+            get => F.AsInt(F.Memo(this, "CountOfStewardshipAssignments", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<StewardshipAssignment>(base.SoAContext, "StewardshipAssignments", __c => __c.StewardshipAssignments), __r => F.CritField(F.Of(__r.ProcedureVersion), F.Of(this.ProcedureVersionId))))))); set { }
         }
 
         // Formula HasAnySteward (rulebook: ={{CountOfStewardshipAssignments}} > 0)
+        [NotMapped]
         public bool? HasAnySteward
         {
-            get => this.CountOfStewardshipAssignments > 0; set { }
+            get => F.AsBool(F.Memo(this, "HasAnySteward", () => F.Cmp(F.Of(this.CountOfStewardshipAssignments), ">", F.I(0)))); set { }
         }
 
         // Formula IsLive (rulebook: =OR({{Status}} = "Approved", {{Status}} = "Published"))
+        [NotMapped]
         public bool? IsLive
         {
-            get => OR(this.Status = "Approved", this.Status = "Published"); set { }
+            get => F.AsBool(F.Memo(this, "IsLive", () => F.Or(F.Bool3(F.Eq(F.Nullif(F.Of(this.Status)), F.S("Approved"))), F.Bool3(F.Eq(F.Nullif(F.Of(this.Status)), F.S("Published")))))); set { }
         }
 
         // Formula IsUnstewarded (rulebook: =NOT({{HasAnySteward}}))
+        [NotMapped]
         public bool? IsUnstewarded
         {
-            get => NOT(this.HasAnySteward); set { }
+            get => F.AsBool(F.Memo(this, "IsUnstewarded", () => F.Not(F.Bool3(F.Of(this.HasAnySteward))))); set { }
         }
 
         // Formula IsLiveAndUnstewarded (rulebook: =AND({{IsLive}}, {{IsUnstewarded}}))
+        [NotMapped]
         public bool? IsLiveAndUnstewarded
         {
-            get => AND(this.IsLive, this.IsUnstewarded); set { }
+            get => F.AsBool(F.Memo(this, "IsLiveAndUnstewarded", () => F.And(F.Bool3(F.Of(this.IsLive)), F.Bool3(F.Of(this.IsUnstewarded))))); set { }
         }
 
         // Formula CountOfOpenBlockingGaps (rulebook: =COUNTIFS(KnowledgeGaps!{{IsOpenAndBlocking}}, TRUE))
+        [NotMapped]
         public int? CountOfOpenBlockingGaps
         {
-            get => COUNTIFS(KnowledgeGaps!this.IsOpenAndBlocking, TRUE); set { }
+            get => F.AsInt(F.Memo(this, "CountOfOpenBlockingGaps", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<KnowledgeGap>(base.SoAContext, "KnowledgeGaps", __c => __c.KnowledgeGaps), __r => F.CritLiteral(F.Of(__r.IsOpenAndBlocking), F.B(true))))))); set { }
         }
 
         // Formula HasOpenBlockingGap (rulebook: ={{CountOfOpenBlockingGaps}} > 0)
+        [NotMapped]
         public bool? HasOpenBlockingGap
         {
-            get => this.CountOfOpenBlockingGaps > 0; set { }
+            get => F.AsBool(F.Memo(this, "HasOpenBlockingGap", () => F.Cmp(F.Of(this.CountOfOpenBlockingGaps), ">", F.I(0)))); set { }
         }
 
         // Formula IsLiveWithBlockingGap (rulebook: =AND({{IsLive}}, {{HasOpenBlockingGap}}))
+        [NotMapped]
         public bool? IsLiveWithBlockingGap
         {
-            get => AND(this.IsLive, this.HasOpenBlockingGap); set { }
+            get => F.AsBool(F.Memo(this, "IsLiveWithBlockingGap", () => F.And(F.Bool3(F.Of(this.IsLive)), F.Bool3(F.Of(this.HasOpenBlockingGap))))); set { }
         }
 
         // Formula ShouldNotBeExecutable (rulebook: =AND({{IsReadyForExecution}}, {{HasOpenBlockingGap}}))
+        [NotMapped]
         public bool? ShouldNotBeExecutable
         {
-            get => AND(this.IsReadyForExecution, this.HasOpenBlockingGap); set { }
+            get => F.AsBool(F.Memo(this, "ShouldNotBeExecutable", () => F.And(F.Bool3(F.Of(this.IsReadyForExecution)), F.Bool3(F.Of(this.HasOpenBlockingGap))))); set { }
         }
 
         // Formula CountOfUnapprovedRelianceFragments (rulebook: =COUNTIFS(KnowledgeFragments!{{IsUnapprovedButReliedOn}}, TRUE))
+        [NotMapped]
         public int? CountOfUnapprovedRelianceFragments
         {
-            get => COUNTIFS(KnowledgeFragments!this.IsUnapprovedButReliedOn, TRUE); set { }
+            get => F.AsInt(F.Memo(this, "CountOfUnapprovedRelianceFragments", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<KnowledgeFragment>(base.SoAContext, "KnowledgeFragments", __c => __c.KnowledgeFragments), __r => F.CritLiteral(F.Of(__r.IsUnapprovedButReliedOn), F.B(true))))))); set { }
         }
 
         // Formula RunsOnUnapprovedKnowledge (rulebook: ={{CountOfUnapprovedRelianceFragments}} > 0)
+        [NotMapped]
         public bool? RunsOnUnapprovedKnowledge
         {
-            get => this.CountOfUnapprovedRelianceFragments > 0; set { }
+            get => F.AsBool(F.Memo(this, "RunsOnUnapprovedKnowledge", () => F.Cmp(F.Of(this.CountOfUnapprovedRelianceFragments), ">", F.I(0)))); set { }
         }
 
         // Formula CountOfOverdueGaps (rulebook: =COUNTIFS(KnowledgeGaps!{{IsOverdueGap}}, TRUE))
+        [NotMapped]
         public int? CountOfOverdueGaps
         {
-            get => COUNTIFS(KnowledgeGaps!this.IsOverdueGap, TRUE); set { }
+            get => F.AsInt(F.Memo(this, "CountOfOverdueGaps", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<KnowledgeGap>(base.SoAContext, "KnowledgeGaps", __c => __c.KnowledgeGaps), __r => F.CritLiteral(F.Of(__r.IsOverdueGap), F.B(true))))))); set { }
         }
 
         // Formula CountOfChangeRequests (rulebook: =COUNTIFS(ChangeRequests!{{ProcedureVersion}}, ProcedureVersions!{{ProcedureVersionId}}))
+        [NotMapped]
         public int? CountOfChangeRequests
         {
-            get => this.ChangeRequests == null ? 0 : this.ChangeRequests.Count; set { }
+            get => F.AsInt(F.Memo(this, "CountOfChangeRequests", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<ChangeRequest>(base.SoAContext, "ChangeRequests", __c => __c.ChangeRequests), __r => F.CritField(F.Of(__r.ProcedureVersion), F.Of(this.ProcedureVersionId))))))); set { }
         }
 
         // Formula CountOfReviewEvents (rulebook: =COUNTIFS(ReviewEvents!{{ProcedureVersion}}, ProcedureVersions!{{ProcedureVersionId}}))
+        [NotMapped]
         public int? CountOfReviewEvents
         {
-            get => this.ReviewEvents == null ? 0 : this.ReviewEvents.Count; set { }
+            get => F.AsInt(F.Memo(this, "CountOfReviewEvents", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<ReviewEvent>(base.SoAContext, "ReviewEvents", __c => __c.ReviewEvents), __r => F.CritField(F.Of(__r.ProcedureVersion), F.Of(this.ProcedureVersionId))))))); set { }
         }
 
         // Formula HasGovernanceRecord (rulebook: =OR({{CountOfChangeRequests}} > 0, {{CountOfReviewEvents}} > 0))
+        [NotMapped]
         public bool? HasGovernanceRecord
         {
-            get => OR(this.CountOfChangeRequests > 0, this.CountOfReviewEvents > 0); set { }
+            get => F.AsBool(F.Memo(this, "HasGovernanceRecord", () => F.Or(F.Bool3(F.Cmp(F.Of(this.CountOfChangeRequests), ">", F.I(0))), F.Bool3(F.Cmp(F.Of(this.CountOfReviewEvents), ">", F.I(0)))))); set { }
         }
 
         // Formula AsOfInstant (rulebook: =INDEX(EvaluationContexts!{{AsOfInstant}}, MATCH({{EvaluationContext}}, EvaluationContexts!{{EvaluationContextId}}, 0)))
-        public DateTime? AsOfInstant
+        [NotMapped]
+        public DateTimeOffset? AsOfInstant
         {
-            get => INDEX(EvaluationContexts!this.AsOfInstant, MATCH(this.EvaluationContext, EvaluationContexts!this.EvaluationContextId, 0)); set { }
+            get => F.AsDateTime(F.Memo(this, "AsOfInstant", () => F.Lookup<EvaluationContext>(this, "EvaluationContexts", "EvaluationContextId", __c => __c.EvaluationContexts, __r => F.Of(__r.EvaluationContextId), F.Of(this.EvaluationContext), __r => F.Of(__r.AsOfInstant), () => F.Of(new EvaluationContext().AsOfInstant)))); set { }
         }
 
         // Formula DaysSinceModified (rulebook: =DATETIME_DIFF({{AsOfInstant}}, {{ModifiedAt}}, "days"))
+        [NotMapped]
         public int? DaysSinceModified
         {
-            get => DATETIME_DIFF(this.AsOfInstant, this.ModifiedAt, "days"); set { }
+            get => F.AsInt(F.Memo(this, "DaysSinceModified", () => F.Integer(F.DatetimeDiff(F.Of(this.AsOfInstant), F.Of(this.ModifiedAt), F.S("days"))))); set { }
         }
 
         // Formula DaysSinceLastReview (rulebook: =DATETIME_DIFF({{AsOfInstant}}, MAXIFS(ReviewEvents!{{ReviewedAt}}, ReviewEvents!{{ProcedureVersion}}, ProcedureVersions!{{ProcedureVersionId}}), "days"))
+        [NotMapped]
         public int? DaysSinceLastReview
         {
-            get => DATETIME_DIFF(this.AsOfInstant, MAXIFS(ReviewEvents!this.ReviewedAt, ReviewEvents!this.ProcedureVersion, ProcedureVersions!this.ProcedureVersionId), "days"); set { }
+            get => F.AsInt(F.Memo(this, "DaysSinceLastReview", () => F.Integer(F.DatetimeDiff(F.Of(this.AsOfInstant), (base.SoAContext == null ? F.Null : F.ExtremeIfs(true, F.Rows<ReviewEvent>(base.SoAContext, "ReviewEvents", __c => __c.ReviewEvents), __r => F.CritField(F.Of(__r.ProcedureVersion), F.Of(this.ProcedureVersionId)), __r => F.Of(__r.ReviewedAt))), F.S("days"))))); set { }
         }
 
         // Formula WasModifiedSinceLastReview (rulebook: ={{DaysSinceModified}} < {{DaysSinceLastReview}})
+        [NotMapped]
         public bool? WasModifiedSinceLastReview
         {
-            get => this.DaysSinceModified < this.DaysSinceLastReview; set { }
+            get => F.AsBool(F.Memo(this, "WasModifiedSinceLastReview", () => F.Cmp(F.Of(this.DaysSinceModified), "<", F.Of(this.DaysSinceLastReview)))); set { }
         }
 
         // Formula ModifierIsAuthority (rulebook: =INDEX(Agents!{{AgentKind}}, MATCH({{ModifiedByAgent}}, Agents!{{AgentId}}, 0)))
+        [NotMapped]
         public string? ModifierIsAuthority
         {
-            get => INDEX(Agents!this.AgentKind, MATCH(this.ModifiedByAgent, Agents!this.AgentId, 0)); set { }
+            get => F.AsString(F.Memo(this, "ModifierIsAuthority", () => F.Lookup<Agent>(this, "Agents", "AgentId", __c => __c.Agents, __r => F.Of(__r.AgentId), F.Of(this.ModifiedByAgent), __r => F.Of(__r.AgentKind), () => F.Of(new Agent().AgentKind)))); set { }
         }
 
         // Formula HasUnwitnessedChange (rulebook: =AND({{IsLive}}, {{WasModifiedSinceLastReview}}))
+        [NotMapped]
         public bool? HasUnwitnessedChange
         {
-            get => AND(this.IsLive, this.WasModifiedSinceLastReview); set { }
+            get => F.AsBool(F.Memo(this, "HasUnwitnessedChange", () => F.And(F.Bool3(F.Of(this.IsLive)), F.Bool3(F.Of(this.WasModifiedSinceLastReview))))); set { }
         }
 
         // Formula CountOfStaleFragments (rulebook: =COUNTIFS(KnowledgeFragments!{{ExceedsOwningCadence}}, TRUE))
+        [NotMapped]
         public int? CountOfStaleFragments
         {
-            get => COUNTIFS(KnowledgeFragments!this.ExceedsOwningCadence, TRUE); set { }
+            get => F.AsInt(F.Memo(this, "CountOfStaleFragments", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<KnowledgeFragment>(base.SoAContext, "KnowledgeFragments", __c => __c.KnowledgeFragments), __r => F.CritLiteral(F.Of(__r.ExceedsOwningCadence), F.B(true))))))); set { }
         }
 
         // Formula KnowledgeIsStalerThanCadence (rulebook: ={{CountOfStaleFragments}} > 0)
+        [NotMapped]
         public bool? KnowledgeIsStalerThanCadence
         {
-            get => this.CountOfStaleFragments > 0; set { }
+            get => F.AsBool(F.Memo(this, "KnowledgeIsStalerThanCadence", () => F.Cmp(F.Of(this.CountOfStaleFragments), ">", F.I(0)))); set { }
         }
 
         // Formula CompoundFragileFragmentCount (rulebook: =COUNTIFS(KnowledgeFragments!{{CompoundFragileVersionKey}}, {{ProcedureVersionId}}))
+        [NotMapped]
         public decimal? CompoundFragileFragmentCount
         {
-            get => COUNTIFS(KnowledgeFragments!this.CompoundFragileVersionKey, this.ProcedureVersionId); set { }
+            get => F.AsDecimal(F.Memo(this, "CompoundFragileFragmentCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<KnowledgeFragment>(base.SoAContext, "KnowledgeFragments", __c => __c.KnowledgeFragments), __r => F.CritField(F.Of(__r.CompoundFragileVersionKey), F.Of(this.ProcedureVersionId)))))); set { }
         }
 
         // Formula RestsOnCompoundFragileKnowledge (rulebook: =AND({{IsLive}}, {{CompoundFragileFragmentCount}} > 0))
+        [NotMapped]
         public bool? RestsOnCompoundFragileKnowledge
         {
-            get => AND(this.IsLive, this.CompoundFragileFragmentCount > 0); set { }
+            get => F.AsBool(F.Memo(this, "RestsOnCompoundFragileKnowledge", () => F.And(F.Bool3(F.Of(this.IsLive)), F.Bool3(F.Cmp(F.Of(this.CompoundFragileFragmentCount), ">", F.I(0)))))); set { }
         }
 
         // Formula ConcentratedWitnessSessionCount (rulebook: =COUNTIFS(ElicitationSessions!{{ConcentratedSessionVersionKey}}, {{ProcedureVersionId}}))
+        [NotMapped]
         public decimal? ConcentratedWitnessSessionCount
         {
-            get => COUNTIFS(ElicitationSessions!this.ConcentratedSessionVersionKey, this.ProcedureVersionId); set { }
+            get => F.AsDecimal(F.Memo(this, "ConcentratedWitnessSessionCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<ElicitationSession>(base.SoAContext, "ElicitationSessions", __c => __c.ElicitationSessions), __r => F.CritField(F.Of(__r.ConcentratedSessionVersionKey), F.Of(this.ProcedureVersionId)))))); set { }
         }
 
         // Formula KnowledgeBaseIsConcentrated (rulebook: =AND({{IsLive}}, {{ConcentratedWitnessSessionCount}} > 0))
+        [NotMapped]
         public bool? KnowledgeBaseIsConcentrated
         {
-            get => AND(this.IsLive, this.ConcentratedWitnessSessionCount > 0); set { }
+            get => F.AsBool(F.Memo(this, "KnowledgeBaseIsConcentrated", () => F.And(F.Bool3(F.Of(this.IsLive)), F.Bool3(F.Cmp(F.Of(this.ConcentratedWitnessSessionCount), ">", F.I(0)))))); set { }
         }
 
         // Formula MachineConsumedUnapprovedCount (rulebook: =COUNTIFS(KnowledgeFragments!{{MachineConsumedUnapprovedVersionKey}}, {{ProcedureVersionId}}))
+        [NotMapped]
         public decimal? MachineConsumedUnapprovedCount
         {
-            get => COUNTIFS(KnowledgeFragments!this.MachineConsumedUnapprovedVersionKey, this.ProcedureVersionId); set { }
+            get => F.AsDecimal(F.Memo(this, "MachineConsumedUnapprovedCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<KnowledgeFragment>(base.SoAContext, "KnowledgeFragments", __c => __c.KnowledgeFragments), __r => F.CritField(F.Of(__r.MachineConsumedUnapprovedVersionKey), F.Of(this.ProcedureVersionId)))))); set { }
         }
 
         // Formula FeedsUnapprovedKnowledgeToMachines (rulebook: =AND({{IsLive}}, {{MachineConsumedUnapprovedCount}} > 0))
+        [NotMapped]
         public bool? FeedsUnapprovedKnowledgeToMachines
         {
-            get => AND(this.IsLive, this.MachineConsumedUnapprovedCount > 0); set { }
+            get => F.AsBool(F.Memo(this, "FeedsUnapprovedKnowledgeToMachines", () => F.And(F.Bool3(F.Of(this.IsLive)), F.Bool3(F.Cmp(F.Of(this.MachineConsumedUnapprovedCount), ">", F.I(0)))))); set { }
         }
 
         // Formula GenuinelyOverdueFragmentCount (rulebook: =COUNTIFS(KnowledgeFragments!{{GenuinelyOverdueVersionKey}}, {{ProcedureVersionId}}))
+        [NotMapped]
         public decimal? GenuinelyOverdueFragmentCount
         {
-            get => COUNTIFS(KnowledgeFragments!this.GenuinelyOverdueVersionKey, this.ProcedureVersionId); set { }
+            get => F.AsDecimal(F.Memo(this, "GenuinelyOverdueFragmentCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<KnowledgeFragment>(base.SoAContext, "KnowledgeFragments", __c => __c.KnowledgeFragments), __r => F.CritField(F.Of(__r.GenuinelyOverdueVersionKey), F.Of(this.ProcedureVersionId)))))); set { }
         }
 
         // Formula AwaitedDecisionCount (rulebook: =COUNTIFS(ChangeRequests!{{BacklogVersionKey}}, {{ProcedureVersionId}}))
+        [NotMapped]
         public decimal? AwaitedDecisionCount
         {
-            get => COUNTIFS(ChangeRequests!this.BacklogVersionKey, this.ProcedureVersionId); set { }
+            get => F.AsDecimal(F.Memo(this, "AwaitedDecisionCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<ChangeRequest>(base.SoAContext, "ChangeRequests", __c => __c.ChangeRequests), __r => F.CritField(F.Of(__r.BacklogVersionKey), F.Of(this.ProcedureVersionId)))))); set { }
         }
 
         // Formula ScopedOpenBlockingGapCount (rulebook: =COUNTIFS(KnowledgeGaps!{{OpenBlockingGapVersionKey}}, {{ProcedureVersionId}}))
+        [NotMapped]
         public decimal? ScopedOpenBlockingGapCount
         {
-            get => COUNTIFS(KnowledgeGaps!this.OpenBlockingGapVersionKey, this.ProcedureVersionId); set { }
+            get => F.AsDecimal(F.Memo(this, "ScopedOpenBlockingGapCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<KnowledgeGap>(base.SoAContext, "KnowledgeGaps", __c => __c.KnowledgeGaps), __r => F.CritField(F.Of(__r.OpenBlockingGapVersionKey), F.Of(this.ProcedureVersionId)))))); set { }
         }
 
         // Formula IsBlockedOnPendingDecision (rulebook: =AND({{AwaitedDecisionCount}} > 0, {{ScopedOpenBlockingGapCount}} > 0))
+        [NotMapped]
         public bool? IsBlockedOnPendingDecision
         {
-            get => AND(this.AwaitedDecisionCount > 0, this.ScopedOpenBlockingGapCount > 0); set { }
+            get => F.AsBool(F.Memo(this, "IsBlockedOnPendingDecision", () => F.And(F.Bool3(F.Cmp(F.Of(this.AwaitedDecisionCount), ">", F.I(0))), F.Bool3(F.Cmp(F.Of(this.ScopedOpenBlockingGapCount), ">", F.I(0)))))); set { }
         }
 
         // Formula UnexercisedHumanGateCount (rulebook: =COUNTIFS(Steps!{{UnexercisedGateVersionKey}}, {{ProcedureVersionId}}))
+        [NotMapped]
         public decimal? UnexercisedHumanGateCount
         {
-            get => COUNTIFS(Steps!this.UnexercisedGateVersionKey, this.ProcedureVersionId); set { }
+            get => F.AsDecimal(F.Memo(this, "UnexercisedHumanGateCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<Step>(base.SoAContext, "Steps", __c => __c.Steps), __r => F.CritField(F.Of(__r.UnexercisedGateVersionKey), F.Of(this.ProcedureVersionId)))))); set { }
         }
 
         // Formula AiBoundaryIsUnevidenced (rulebook: =AND({{IsLive}}, {{UnexercisedHumanGateCount}} > 0))
+        [NotMapped]
         public bool? AiBoundaryIsUnevidenced
         {
-            get => AND(this.IsLive, this.UnexercisedHumanGateCount > 0); set { }
+            get => F.AsBool(F.Memo(this, "AiBoundaryIsUnevidenced", () => F.And(F.Bool3(F.Of(this.IsLive)), F.Bool3(F.Cmp(F.Of(this.UnexercisedHumanGateCount), ">", F.I(0)))))); set { }
         }
 
         // Formula LoadBearingUnapprovedCount (rulebook: =COUNTIFS(KnowledgeFragments!{{UnapprovedLoadBearingVersionKey}}, {{ProcedureVersionId}}))
+        [NotMapped]
         public decimal? LoadBearingUnapprovedCount
         {
-            get => COUNTIFS(KnowledgeFragments!this.UnapprovedLoadBearingVersionKey, this.ProcedureVersionId); set { }
+            get => F.AsDecimal(F.Memo(this, "LoadBearingUnapprovedCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<KnowledgeFragment>(base.SoAContext, "KnowledgeFragments", __c => __c.KnowledgeFragments), __r => F.CritField(F.Of(__r.UnapprovedLoadBearingVersionKey), F.Of(this.ProcedureVersionId)))))); set { }
         }
 
         // Formula UnlandedDecisionCount (rulebook: =COUNTIFS(ChangeRequests!{{UnlandedVersionKey}}, {{ProcedureVersionId}}))
+        [NotMapped]
         public decimal? UnlandedDecisionCount
         {
-            get => COUNTIFS(ChangeRequests!this.UnlandedVersionKey, this.ProcedureVersionId); set { }
+            get => F.AsDecimal(F.Memo(this, "UnlandedDecisionCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<ChangeRequest>(base.SoAContext, "ChangeRequests", __c => __c.ChangeRequests), __r => F.CritField(F.Of(__r.UnlandedVersionKey), F.Of(this.ProcedureVersionId)))))); set { }
         }
 
         // Formula UnrehearsedControlEntryCount (rulebook: =COUNTIFS(StepTransitions!{{UnrehearsedControlVersionKey}}, {{ProcedureVersionId}}))
+        [NotMapped]
         public decimal? UnrehearsedControlEntryCount
         {
-            get => COUNTIFS(StepTransitions!this.UnrehearsedControlVersionKey, this.ProcedureVersionId); set { }
+            get => F.AsDecimal(F.Memo(this, "UnrehearsedControlEntryCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<StepTransition>(base.SoAContext, "StepTransitions", __c => __c.StepTransitions), __r => F.CritField(F.Of(__r.UnrehearsedControlVersionKey), F.Of(this.ProcedureVersionId)))))); set { }
         }
 
         // Formula HasUnrehearsedControlEntry (rulebook: ={{UnrehearsedControlEntryCount}} > 0)
+        [NotMapped]
         public bool? HasUnrehearsedControlEntry
         {
-            get => this.UnrehearsedControlEntryCount > 0; set { }
+            get => F.AsBool(F.Memo(this, "HasUnrehearsedControlEntry", () => F.Cmp(F.Of(this.UnrehearsedControlEntryCount), ">", F.I(0)))); set { }
         }
 
         // Formula IsLiveWithUnrehearsedControl (rulebook: =AND({{IsLive}}, {{HasUnrehearsedControlEntry}}))
+        [NotMapped]
         public bool? IsLiveWithUnrehearsedControl
         {
-            get => AND(this.IsLive, this.HasUnrehearsedControlEntry); set { }
+            get => F.AsBool(F.Memo(this, "IsLiveWithUnrehearsedControl", () => F.And(F.Bool3(F.Of(this.IsLive)), F.Bool3(F.Of(this.HasUnrehearsedControlEntry))))); set { }
         }
 
         // Formula CadenceBreachCount (rulebook: =COUNTIFS(ReviewEvents!{{CadenceBreachVersionKey}}, {{ProcedureVersionId}}))
+        [NotMapped]
         public decimal? CadenceBreachCount
         {
-            get => COUNTIFS(ReviewEvents!this.CadenceBreachVersionKey, this.ProcedureVersionId); set { }
+            get => F.AsDecimal(F.Memo(this, "CadenceBreachCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<ReviewEvent>(base.SoAContext, "ReviewEvents", __c => __c.ReviewEvents), __r => F.CritField(F.Of(__r.CadenceBreachVersionKey), F.Of(this.ProcedureVersionId)))))); set { }
         }
 
         // Formula IsInCadenceBreach (rulebook: ={{CadenceBreachCount}} > 0)
+        [NotMapped]
         public bool? IsInCadenceBreach
         {
-            get => this.CadenceBreachCount > 0; set { }
+            get => F.AsBool(F.Memo(this, "IsInCadenceBreach", () => F.Cmp(F.Of(this.CadenceBreachCount), ">", F.I(0)))); set { }
         }
 
         // Formula HasDecisionInFlight (rulebook: ={{OpenChangeRequestCount}} > 0)
+        [NotMapped]
         public bool? HasDecisionInFlight
         {
-            get => this.OpenChangeRequestCount > 0; set { }
+            get => F.AsBool(F.Memo(this, "HasDecisionInFlight", () => F.Cmp(F.Of(this.OpenChangeRequestCount), ">", F.I(0)))); set { }
         }
 
         // Formula IsUnremediatedCadenceBreach (rulebook: =AND({{IsInCadenceBreach}}, NOT({{HasDecisionInFlight}})))
+        [NotMapped]
         public bool? IsUnremediatedCadenceBreach
         {
-            get => AND(this.IsInCadenceBreach, NOT(this.HasDecisionInFlight)); set { }
+            get => F.AsBool(F.Memo(this, "IsUnremediatedCadenceBreach", () => F.And(F.Bool3(F.Of(this.IsInCadenceBreach)), F.Bool3(F.Not(F.Bool3(F.Of(this.HasDecisionInFlight))))))); set { }
         }
 
         // Formula IsManagedCadenceBreach (rulebook: =AND({{IsInCadenceBreach}}, {{HasDecisionInFlight}}))
+        [NotMapped]
         public bool? IsManagedCadenceBreach
         {
-            get => AND(this.IsInCadenceBreach, this.HasDecisionInFlight); set { }
+            get => F.AsBool(F.Memo(this, "IsManagedCadenceBreach", () => F.And(F.Bool3(F.Of(this.IsInCadenceBreach)), F.Bool3(F.Of(this.HasDecisionInFlight))))); set { }
         }
 
         // Formula GovernanceIsSilent (rulebook: =AND({{IsLive}}, NOT({{HasGovernanceRecord}})))
+        [NotMapped]
         public bool? GovernanceIsSilent
         {
-            get => AND(this.IsLive, NOT(this.HasGovernanceRecord)); set { }
+            get => F.AsBool(F.Memo(this, "GovernanceIsSilent", () => F.And(F.Bool3(F.Of(this.IsLive)), F.Bool3(F.Not(F.Bool3(F.Of(this.HasGovernanceRecord))))))); set { }
         }
 
         // Formula ValidFragmentCount (rulebook: =COUNTIFS(KnowledgeFragments!{{ValidFragmentVersionKey}}, {{ProcedureVersionId}}))
+        [NotMapped]
         public decimal? ValidFragmentCount
         {
-            get => COUNTIFS(KnowledgeFragments!this.ValidFragmentVersionKey, this.ProcedureVersionId); set { }
+            get => F.AsDecimal(F.Memo(this, "ValidFragmentCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<KnowledgeFragment>(base.SoAContext, "KnowledgeFragments", __c => __c.KnowledgeFragments), __r => F.CritField(F.Of(__r.ValidFragmentVersionKey), F.Of(this.ProcedureVersionId)))))); set { }
         }
 
         // Formula StillOwnsValidKnowledge (rulebook: ={{ValidFragmentCount}} > 0)
+        [NotMapped]
         public bool? StillOwnsValidKnowledge
         {
-            get => this.ValidFragmentCount > 0; set { }
+            get => F.AsBool(F.Memo(this, "StillOwnsValidKnowledge", () => F.Cmp(F.Of(this.ValidFragmentCount), ">", F.I(0)))); set { }
         }
 
         // Formula IncomingSupersessionCount (rulebook: =COUNTIFS(ProcedureVersionLinks!{{SupersededVersionKey}}, {{ProcedureVersionId}}))
+        [NotMapped]
         public decimal? IncomingSupersessionCount
         {
-            get => COUNTIFS(ProcedureVersionLinks!this.SupersededVersionKey, this.ProcedureVersionId); set { }
+            get => F.AsDecimal(F.Memo(this, "IncomingSupersessionCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<ProcedureVersionLink>(base.SoAContext, "ProcedureVersionLinks", __c => __c.ProcedureVersionLinks), __r => F.CritField(F.Of(__r.SupersededVersionKey), F.Of(this.ProcedureVersionId)))))); set { }
         }
 
         // Formula IsStillReferenced (rulebook: ={{IncomingSupersessionCount}} > 0)
+        [NotMapped]
         public bool? IsStillReferenced
         {
-            get => this.IncomingSupersessionCount > 0; set { }
+            get => F.AsBool(F.Memo(this, "IsStillReferenced", () => F.Cmp(F.Of(this.IncomingSupersessionCount), ">", F.I(0)))); set { }
         }
 
         // Formula IsLoadBearingOrphan (rulebook: =AND({{IsUnstewarded}}, OR({{StillOwnsValidKnowledge}}, {{IsStillReferenced}})))
+        [NotMapped]
         public bool? IsLoadBearingOrphan
         {
-            get => AND(this.IsUnstewarded, OR(this.StillOwnsValidKnowledge, this.IsStillReferenced)); set { }
+            get => F.AsBool(F.Memo(this, "IsLoadBearingOrphan", () => F.And(F.Bool3(F.Of(this.IsUnstewarded)), F.Bool3(F.Or(F.Bool3(F.Of(this.StillOwnsValidKnowledge)), F.Bool3(F.Of(this.IsStillReferenced))))))); set { }
         }
 
         // Formula IsCleanlyRetired (rulebook: =AND({{IsUnstewarded}}, NOT({{StillOwnsValidKnowledge}}), NOT({{IsStillReferenced}})))
+        [NotMapped]
         public bool? IsCleanlyRetired
         {
-            get => AND(this.IsUnstewarded, NOT(this.StillOwnsValidKnowledge), NOT(this.IsStillReferenced)); set { }
+            get => F.AsBool(F.Memo(this, "IsCleanlyRetired", () => F.And(F.Bool3(F.Of(this.IsUnstewarded)), F.Bool3(F.Not(F.Bool3(F.Of(this.StillOwnsValidKnowledge)))), F.Bool3(F.Not(F.Bool3(F.Of(this.IsStillReferenced))))))); set { }
         }
 
         // Formula StalledImplementationCount (rulebook: =COUNTIFS(ChangeRequests!{{StalledImplementationVersionKey}}, {{ProcedureVersionId}}))
+        [NotMapped]
         public decimal? StalledImplementationCount
         {
-            get => COUNTIFS(ChangeRequests!this.StalledImplementationVersionKey, this.ProcedureVersionId); set { }
+            get => F.AsDecimal(F.Memo(this, "StalledImplementationCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<ChangeRequest>(base.SoAContext, "ChangeRequests", __c => __c.ChangeRequests), __r => F.CritField(F.Of(__r.StalledImplementationVersionKey), F.Of(this.ProcedureVersionId)))))); set { }
         }
 
         // Formula IsHeldUnfitByLandedDecisions (rulebook: =AND(NOT({{IsFitToExecute}}), {{StalledImplementationCount}} > 0))
+        [NotMapped]
         public bool? IsHeldUnfitByLandedDecisions
         {
-            get => AND(NOT(this.IsFitToExecute), this.StalledImplementationCount > 0); set { }
+            get => F.AsBool(F.Memo(this, "IsHeldUnfitByLandedDecisions", () => F.And(F.Bool3(F.Not(F.Bool3(F.Of(this.IsFitToExecute)))), F.Bool3(F.Cmp(F.Of(this.StalledImplementationCount), ">", F.I(0)))))); set { }
         }
 
         // Formula UndeclaredControlKindCount (rulebook: =COUNTIFS(Steps!{{UndeclaredControlVersionKey}}, {{ProcedureVersionId}}))
+        [NotMapped]
         public decimal? UndeclaredControlKindCount
         {
-            get => COUNTIFS(Steps!this.UndeclaredControlVersionKey, this.ProcedureVersionId); set { }
+            get => F.AsDecimal(F.Memo(this, "UndeclaredControlKindCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<Step>(base.SoAContext, "Steps", __c => __c.Steps), __r => F.CritField(F.Of(__r.UndeclaredControlVersionKey), F.Of(this.ProcedureVersionId)))))); set { }
         }
 
         // Formula ControlTaxonomyIsIncomplete (rulebook: ={{UndeclaredControlKindCount}} > 0)
+        [NotMapped]
         public bool? ControlTaxonomyIsIncomplete
         {
-            get => this.UndeclaredControlKindCount > 0; set { }
+            get => F.AsBool(F.Memo(this, "ControlTaxonomyIsIncomplete", () => F.Cmp(F.Of(this.UndeclaredControlKindCount), ">", F.I(0)))); set { }
         }
 
         // Formula HasApprovedChangeRequest (rulebook: ={{ApprovedChangeRequestCount}} > 0)
+        [NotMapped]
         public bool? HasApprovedChangeRequest
         {
-            get => this.ApprovedChangeRequestCount > 0; set { }
+            get => F.AsBool(F.Memo(this, "HasApprovedChangeRequest", () => F.Cmp(F.Of(this.ApprovedChangeRequestCount), ">", F.I(0)))); set { }
         }
 
         // Formula ApprovedChangeRequestCount (rulebook: =COUNTIFS(ChangeRequests!{{ApprovedVersionKey}}, {{ProcedureVersionId}}))
+        [NotMapped]
         public decimal? ApprovedChangeRequestCount
         {
-            get => COUNTIFS(ChangeRequests!this.ApprovedVersionKey, this.ProcedureVersionId); set { }
+            get => F.AsDecimal(F.Memo(this, "ApprovedChangeRequestCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<ChangeRequest>(base.SoAContext, "ChangeRequests", __c => __c.ChangeRequests), __r => F.CritField(F.Of(__r.ApprovedVersionKey), F.Of(this.ProcedureVersionId)))))); set { }
         }
 
         // Formula UnwatchedUnownedControlCount (rulebook: =COUNTIFS(Requirements!{{UnwatchedUnownedFlag}}, "unwatched-unowned"))
+        [NotMapped]
         public decimal? UnwatchedUnownedControlCount
         {
-            get => COUNTIFS(Requirements!this.UnwatchedUnownedFlag, "unwatched-unowned"); set { }
+            get => F.AsDecimal(F.Memo(this, "UnwatchedUnownedControlCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<Requirement>(base.SoAContext, "Requirements", __c => __c.Requirements), __r => F.CritLiteral(F.Of(__r.UnwatchedUnownedFlag), F.S("unwatched-unowned")))))); set { }
         }
 
         // Formula MiningRunCount (rulebook: =COUNTIFS(ProcessMiningRuns!{{ProcedureVersion}}, {{ProcedureVersionId}}))
+        [NotMapped]
         public decimal? MiningRunCount
         {
-            get => COUNTIFS(ProcessMiningRuns!this.ProcedureVersion, this.ProcedureVersionId); set { }
+            get => F.AsDecimal(F.Memo(this, "MiningRunCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<ProcessMiningRun>(base.SoAContext, "ProcessMiningRuns", __c => __c.ProcessMiningRuns), __r => F.CritField(F.Of(__r.ProcedureVersion), F.Of(this.ProcedureVersionId)))))); set { }
         }
 
         // Formula DriftedMiningRunCount (rulebook: =COUNTIFS(ProcessMiningRuns!{{DriftedMiningRunKey}}, {{ProcedureVersionId}}))
+        [NotMapped]
         public decimal? DriftedMiningRunCount
         {
-            get => COUNTIFS(ProcessMiningRuns!this.DriftedMiningRunKey, this.ProcedureVersionId); set { }
+            get => F.AsDecimal(F.Memo(this, "DriftedMiningRunCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<ProcessMiningRun>(base.SoAContext, "ProcessMiningRuns", __c => __c.ProcessMiningRuns), __r => F.CritField(F.Of(__r.DriftedMiningRunKey), F.Of(this.ProcedureVersionId)))))); set { }
         }
 
         // Formula HasUnresolvedMiningDrift (rulebook: ={{DriftedMiningRunCount}} > 0)
+        [NotMapped]
         public bool? HasUnresolvedMiningDrift
         {
-            get => this.DriftedMiningRunCount > 0; set { }
+            get => F.AsBool(F.Memo(this, "HasUnresolvedMiningDrift", () => F.Cmp(F.Of(this.DriftedMiningRunCount), ">", F.I(0)))); set { }
         }
 
         public string? SemanticTypeIri { get; set; }
@@ -462,37 +535,46 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string? ModifiedByAgent { get; set; }
         public string? EvaluationContext { get; set; }
 
-        private Procedure _procedure;
+        private Procedure _procedureRef;
 
         [ForeignKey("Procedure")]
-        public virtual Procedure Procedure
+        public virtual Procedure ProcedureRef
         {
             get
             {
-                if (_procedure == null && !string.IsNullOrEmpty(Procedure))
+                if (_procedureRef == null && !string.IsNullOrEmpty(Procedure))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access Procedure - no database context is set. Procedure: " + Procedure + ".");
+                            throw new InvalidOperationException("Cannot access ProcedureRef - no database context is set. Procedure: " + Procedure + ".");
                         }
                         return null;
                     }
-                    _procedure = Context.Procedures.Find(Procedure);
-                    if (_procedure != null)
+                    _procedureRef = base.SoAContext.Procedures.Find(Procedure);
+                    if (_procedureRef != null)
                     {
-                        Context.Attach(_procedure);
+                        base.SoAContext.Attach(_procedureRef);
                     }
                 }
-                return _procedure;
+                return _procedureRef;
             }
             set
             {
-                if (_procedure != value)
+                if (_procedureRef != value)
                 {
-                    _procedure = value;
-                    Procedure = _procedure == null ? default : _procedure.ProcedureId;
+                    _procedureRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_procedureRef != null)
+                    {
+                        Procedure = _procedureRef.ProcedureId;
+                    }
                 }
             }
         }
@@ -506,7 +588,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_agent == null && !string.IsNullOrEmpty(CreatedByAgent))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -514,10 +596,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                         }
                         return null;
                     }
-                    _agent = Context.Agents.Find(CreatedByAgent);
+                    _agent = base.SoAContext.Agents.Find(CreatedByAgent);
                     if (_agent != null)
                     {
-                        Context.Attach(_agent);
+                        base.SoAContext.Attach(_agent);
                     }
                 }
                 return _agent;
@@ -527,126 +609,153 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                 if (_agent != value)
                 {
                     _agent = value;
-                    CreatedByAgent = _agent == null ? default : _agent.AgentId;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_agent != null)
+                    {
+                        CreatedByAgent = _agent.AgentId;
+                    }
                 }
             }
         }
 
-        private Agent _agent;
+        private Agent _agentRef;
 
         [ForeignKey("ModifiedByAgent")]
-        public virtual Agent Agent
+        public virtual Agent AgentRef
         {
             get
             {
-                if (_agent == null && !string.IsNullOrEmpty(ModifiedByAgent))
+                if (_agentRef == null && !string.IsNullOrEmpty(ModifiedByAgent))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access Agent - no database context is set. ModifiedByAgent: " + ModifiedByAgent + ".");
+                            throw new InvalidOperationException("Cannot access AgentRef - no database context is set. ModifiedByAgent: " + ModifiedByAgent + ".");
                         }
                         return null;
                     }
-                    _agent = Context.Agents.Find(ModifiedByAgent);
-                    if (_agent != null)
+                    _agentRef = base.SoAContext.Agents.Find(ModifiedByAgent);
+                    if (_agentRef != null)
                     {
-                        Context.Attach(_agent);
+                        base.SoAContext.Attach(_agentRef);
                     }
                 }
-                return _agent;
+                return _agentRef;
             }
             set
             {
-                if (_agent != value)
+                if (_agentRef != value)
                 {
-                    _agent = value;
-                    ModifiedByAgent = _agent == null ? default : _agent.AgentId;
+                    _agentRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_agentRef != null)
+                    {
+                        ModifiedByAgent = _agentRef.AgentId;
+                    }
                 }
             }
         }
 
-        private EvaluationContext _evaluationContext;
+        private EvaluationContext _evaluationContextRef;
 
         [ForeignKey("EvaluationContext")]
-        public virtual EvaluationContext EvaluationContext
+        public virtual EvaluationContext EvaluationContextRef
         {
             get
             {
-                if (_evaluationContext == null && !string.IsNullOrEmpty(EvaluationContext))
+                if (_evaluationContextRef == null && !string.IsNullOrEmpty(EvaluationContext))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access EvaluationContext - no database context is set. EvaluationContext: " + EvaluationContext + ".");
+                            throw new InvalidOperationException("Cannot access EvaluationContextRef - no database context is set. EvaluationContext: " + EvaluationContext + ".");
                         }
                         return null;
                     }
-                    _evaluationContext = Context.EvaluationContexts.Find(EvaluationContext);
-                    if (_evaluationContext != null)
+                    _evaluationContextRef = base.SoAContext.EvaluationContexts.Find(EvaluationContext);
+                    if (_evaluationContextRef != null)
                     {
-                        Context.Attach(_evaluationContext);
+                        base.SoAContext.Attach(_evaluationContextRef);
                     }
                 }
-                return _evaluationContext;
+                return _evaluationContextRef;
             }
             set
             {
-                if (_evaluationContext != value)
+                if (_evaluationContextRef != value)
                 {
-                    _evaluationContext = value;
-                    EvaluationContext = _evaluationContext == null ? default : _evaluationContext.EvaluationContextId;
+                    _evaluationContextRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_evaluationContextRef != null)
+                    {
+                        EvaluationContext = _evaluationContextRef.EvaluationContextId;
+                    }
                 }
             }
         }
 
-        private ObservableCollection<ProcedureVersionLink> _procedureVersionLinks;
+        private ObservableCollection<ProcedureVersionLink> _previousProcedureVersionProcedureVersionLinks;
 
         [InverseProperty("ProcedureVersion")]
-        public virtual ObservableCollection<ProcedureVersionLink> ProcedureVersionLinks
+        public virtual ObservableCollection<ProcedureVersionLink> PreviousProcedureVersionProcedureVersionLinks
         {
             get
             {
-                if (_procedureVersionLinks == null)
+                if (_previousProcedureVersionProcedureVersionLinks == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access ProcedureVersionLinks - no database context is set. ProcedureVersionId: " + this.ProcedureVersionId + ".");
+                            throw new InvalidOperationException("Cannot access PreviousProcedureVersionProcedureVersionLinks - no database context is set. ProcedureVersionId: " + this.ProcedureVersionId + ".");
                         }
-                        _procedureVersionLinks = new ObservableCollection<ProcedureVersionLink>();
+                        _previousProcedureVersionProcedureVersionLinks = new ObservableCollection<ProcedureVersionLink>();
                     }
                     else
                     {
-                        var items = Context.ProcedureVersionLinks.Where(x => x.PreviousProcedureVersion == this.ProcedureVersionId).ToList<ProcedureVersionLink>();
-                        _procedureVersionLinks = new ObservableCollection<ProcedureVersionLink>(items);
+                        var items = base.SoAContext.ProcedureVersionLinks.Where(x => x.PreviousProcedureVersion == this.ProcedureVersionId).ToList<ProcedureVersionLink>();
+                        _previousProcedureVersionProcedureVersionLinks = new ObservableCollection<ProcedureVersionLink>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
-                    _procedureVersionLinks.CollectionChanged += ProcedureVersionLinks_CollectionChanged;
+                    _previousProcedureVersionProcedureVersionLinks.CollectionChanged += PreviousProcedureVersionProcedureVersionLinks_CollectionChanged;
                 }
-                return _procedureVersionLinks;
+                return _previousProcedureVersionProcedureVersionLinks;
             }
             private set
             {
-                if (_procedureVersionLinks != null)
+                if (_previousProcedureVersionProcedureVersionLinks != null)
                 {
-                    _procedureVersionLinks.CollectionChanged -= ProcedureVersionLinks_CollectionChanged;
+                    _previousProcedureVersionProcedureVersionLinks.CollectionChanged -= PreviousProcedureVersionProcedureVersionLinks_CollectionChanged;
                 }
-                _procedureVersionLinks = value;
-                if (_procedureVersionLinks != null)
+                _previousProcedureVersionProcedureVersionLinks = value;
+                if (_previousProcedureVersionProcedureVersionLinks != null)
                 {
-                    _procedureVersionLinks.CollectionChanged += ProcedureVersionLinks_CollectionChanged;
+                    _previousProcedureVersionProcedureVersionLinks.CollectionChanged += PreviousProcedureVersionProcedureVersionLinks_CollectionChanged;
                 }
             }
         }
 
-        private void ProcedureVersionLinks_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void PreviousProcedureVersionProcedureVersionLinks_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e?.NewItems != null)
             {
@@ -657,51 +766,51 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
-        private ObservableCollection<ProcedureVersionLink> _procedureVersionLinks;
+        private ObservableCollection<ProcedureVersionLink> _nextProcedureVersionProcedureVersionLinks;
 
-        [InverseProperty("ProcedureVersion")]
-        public virtual ObservableCollection<ProcedureVersionLink> ProcedureVersionLinks
+        [InverseProperty("ProcedureVersionRef")]
+        public virtual ObservableCollection<ProcedureVersionLink> NextProcedureVersionProcedureVersionLinks
         {
             get
             {
-                if (_procedureVersionLinks == null)
+                if (_nextProcedureVersionProcedureVersionLinks == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access ProcedureVersionLinks - no database context is set. ProcedureVersionId: " + this.ProcedureVersionId + ".");
+                            throw new InvalidOperationException("Cannot access NextProcedureVersionProcedureVersionLinks - no database context is set. ProcedureVersionId: " + this.ProcedureVersionId + ".");
                         }
-                        _procedureVersionLinks = new ObservableCollection<ProcedureVersionLink>();
+                        _nextProcedureVersionProcedureVersionLinks = new ObservableCollection<ProcedureVersionLink>();
                     }
                     else
                     {
-                        var items = Context.ProcedureVersionLinks.Where(x => x.NextProcedureVersion == this.ProcedureVersionId).ToList<ProcedureVersionLink>();
-                        _procedureVersionLinks = new ObservableCollection<ProcedureVersionLink>(items);
+                        var items = base.SoAContext.ProcedureVersionLinks.Where(x => x.NextProcedureVersion == this.ProcedureVersionId).ToList<ProcedureVersionLink>();
+                        _nextProcedureVersionProcedureVersionLinks = new ObservableCollection<ProcedureVersionLink>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
-                    _procedureVersionLinks.CollectionChanged += ProcedureVersionLinks_CollectionChanged;
+                    _nextProcedureVersionProcedureVersionLinks.CollectionChanged += NextProcedureVersionProcedureVersionLinks_CollectionChanged;
                 }
-                return _procedureVersionLinks;
+                return _nextProcedureVersionProcedureVersionLinks;
             }
             private set
             {
-                if (_procedureVersionLinks != null)
+                if (_nextProcedureVersionProcedureVersionLinks != null)
                 {
-                    _procedureVersionLinks.CollectionChanged -= ProcedureVersionLinks_CollectionChanged;
+                    _nextProcedureVersionProcedureVersionLinks.CollectionChanged -= NextProcedureVersionProcedureVersionLinks_CollectionChanged;
                 }
-                _procedureVersionLinks = value;
-                if (_procedureVersionLinks != null)
+                _nextProcedureVersionProcedureVersionLinks = value;
+                if (_nextProcedureVersionProcedureVersionLinks != null)
                 {
-                    _procedureVersionLinks.CollectionChanged += ProcedureVersionLinks_CollectionChanged;
+                    _nextProcedureVersionProcedureVersionLinks.CollectionChanged += NextProcedureVersionProcedureVersionLinks_CollectionChanged;
                 }
             }
         }
 
-        private void ProcedureVersionLinks_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void NextProcedureVersionProcedureVersionLinks_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e?.NewItems != null)
             {
@@ -714,14 +823,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<ProcedureStatusChange> _procedureStatusChanges;
 
-        [InverseProperty("ProcedureVersion")]
+        [InverseProperty("ProcedureVersionRef")]
         public virtual ObservableCollection<ProcedureStatusChange> ProcedureStatusChanges
         {
             get
             {
                 if (_procedureStatusChanges == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -731,11 +840,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.ProcedureStatusChanges.Where(x => x.ProcedureVersion == this.ProcedureVersionId).ToList<ProcedureStatusChange>();
+                        var items = base.SoAContext.ProcedureStatusChanges.Where(x => x.ProcedureVersion == this.ProcedureVersionId).ToList<ProcedureStatusChange>();
                         _procedureStatusChanges = new ObservableCollection<ProcedureStatusChange>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _procedureStatusChanges.CollectionChanged += ProcedureStatusChanges_CollectionChanged;
@@ -769,14 +878,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<Step> _steps;
 
-        [InverseProperty("ProcedureVersion")]
+        [InverseProperty("ProcedureVersionRef")]
         public virtual ObservableCollection<Step> Steps
         {
             get
             {
                 if (_steps == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -786,11 +895,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.Steps.Where(x => x.ProcedureVersion == this.ProcedureVersionId).ToList<Step>();
+                        var items = base.SoAContext.Steps.Where(x => x.ProcedureVersion == this.ProcedureVersionId).ToList<Step>();
                         _steps = new ObservableCollection<Step>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _steps.CollectionChanged += Steps_CollectionChanged;
@@ -824,14 +933,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<StepTransition> _stepTransitions;
 
-        [InverseProperty("ProcedureVersion")]
+        [InverseProperty("ProcedureVersionRef")]
         public virtual ObservableCollection<StepTransition> StepTransitions
         {
             get
             {
                 if (_stepTransitions == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -841,11 +950,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.StepTransitions.Where(x => x.ProcedureVersion == this.ProcedureVersionId).ToList<StepTransition>();
+                        var items = base.SoAContext.StepTransitions.Where(x => x.ProcedureVersion == this.ProcedureVersionId).ToList<StepTransition>();
                         _stepTransitions = new ObservableCollection<StepTransition>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _stepTransitions.CollectionChanged += StepTransitions_CollectionChanged;
@@ -879,14 +988,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<Rationale> _rationales;
 
-        [InverseProperty("ProcedureVersion")]
+        [InverseProperty("ProcedureVersionRef")]
         public virtual ObservableCollection<Rationale> Rationales
         {
             get
             {
                 if (_rationales == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -896,11 +1005,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.Rationales.Where(x => x.ProcedureVersion == this.ProcedureVersionId).ToList<Rationale>();
+                        var items = base.SoAContext.Rationales.Where(x => x.ProcedureVersion == this.ProcedureVersionId).ToList<Rationale>();
                         _rationales = new ObservableCollection<Rationale>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _rationales.CollectionChanged += Rationales_CollectionChanged;
@@ -934,14 +1043,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<Exception> _exceptions;
 
-        [InverseProperty("ProcedureVersion")]
+        [InverseProperty("ProcedureVersionRef")]
         public virtual ObservableCollection<Exception> Exceptions
         {
             get
             {
                 if (_exceptions == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -951,11 +1060,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.Exceptions.Where(x => x.ProcedureVersion == this.ProcedureVersionId).ToList<Exception>();
+                        var items = base.SoAContext.Exceptions.Where(x => x.ProcedureVersion == this.ProcedureVersionId).ToList<Exception>();
                         _exceptions = new ObservableCollection<Exception>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _exceptions.CollectionChanged += Exceptions_CollectionChanged;
@@ -989,14 +1098,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<ProcedureResource> _procedureResources;
 
-        [InverseProperty("ProcedureVersion")]
+        [InverseProperty("ProcedureVersionRef")]
         public virtual ObservableCollection<ProcedureResource> ProcedureResources
         {
             get
             {
                 if (_procedureResources == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -1006,11 +1115,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.ProcedureResources.Where(x => x.ProcedureVersion == this.ProcedureVersionId).ToList<ProcedureResource>();
+                        var items = base.SoAContext.ProcedureResources.Where(x => x.ProcedureVersion == this.ProcedureVersionId).ToList<ProcedureResource>();
                         _procedureResources = new ObservableCollection<ProcedureResource>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _procedureResources.CollectionChanged += ProcedureResources_CollectionChanged;
@@ -1044,14 +1153,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<ElicitationSession> _elicitationSessions;
 
-        [InverseProperty("ProcedureVersion")]
+        [InverseProperty("ProcedureVersionRef")]
         public virtual ObservableCollection<ElicitationSession> ElicitationSessions
         {
             get
             {
                 if (_elicitationSessions == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -1061,11 +1170,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.ElicitationSessions.Where(x => x.ProcedureVersion == this.ProcedureVersionId).ToList<ElicitationSession>();
+                        var items = base.SoAContext.ElicitationSessions.Where(x => x.ProcedureVersion == this.ProcedureVersionId).ToList<ElicitationSession>();
                         _elicitationSessions = new ObservableCollection<ElicitationSession>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _elicitationSessions.CollectionChanged += ElicitationSessions_CollectionChanged;
@@ -1099,14 +1208,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<KnowledgeFragment> _knowledgeFragments;
 
-        [InverseProperty("ProcedureVersion")]
+        [InverseProperty("ProcedureVersionRef")]
         public virtual ObservableCollection<KnowledgeFragment> KnowledgeFragments
         {
             get
             {
                 if (_knowledgeFragments == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -1116,11 +1225,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.KnowledgeFragments.Where(x => x.ProcedureVersion == this.ProcedureVersionId).ToList<KnowledgeFragment>();
+                        var items = base.SoAContext.KnowledgeFragments.Where(x => x.ProcedureVersion == this.ProcedureVersionId).ToList<KnowledgeFragment>();
                         _knowledgeFragments = new ObservableCollection<KnowledgeFragment>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _knowledgeFragments.CollectionChanged += KnowledgeFragments_CollectionChanged;
@@ -1154,14 +1263,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<KnowledgeGap> _knowledgeGaps;
 
-        [InverseProperty("ProcedureVersion")]
+        [InverseProperty("ProcedureVersionRef")]
         public virtual ObservableCollection<KnowledgeGap> KnowledgeGaps
         {
             get
             {
                 if (_knowledgeGaps == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -1171,11 +1280,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.KnowledgeGaps.Where(x => x.ProcedureVersion == this.ProcedureVersionId).ToList<KnowledgeGap>();
+                        var items = base.SoAContext.KnowledgeGaps.Where(x => x.ProcedureVersion == this.ProcedureVersionId).ToList<KnowledgeGap>();
                         _knowledgeGaps = new ObservableCollection<KnowledgeGap>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _knowledgeGaps.CollectionChanged += KnowledgeGaps_CollectionChanged;
@@ -1209,14 +1318,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<FAQ> _fAQs;
 
-        [InverseProperty("ProcedureVersion")]
+        [InverseProperty("ProcedureVersionRef")]
         public virtual ObservableCollection<FAQ> FAQs
         {
             get
             {
                 if (_fAQs == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -1226,11 +1335,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.FAQs.Where(x => x.ProcedureVersion == this.ProcedureVersionId).ToList<FAQ>();
+                        var items = base.SoAContext.FAQs.Where(x => x.ProcedureVersion == this.ProcedureVersionId).ToList<FAQ>();
                         _fAQs = new ObservableCollection<FAQ>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _fAQs.CollectionChanged += FAQs_CollectionChanged;
@@ -1264,14 +1373,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<Explanation> _explanations;
 
-        [InverseProperty("ProcedureVersion")]
+        [InverseProperty("ProcedureVersionRef")]
         public virtual ObservableCollection<Explanation> Explanations
         {
             get
             {
                 if (_explanations == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -1281,11 +1390,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.Explanations.Where(x => x.ProcedureVersion == this.ProcedureVersionId).ToList<Explanation>();
+                        var items = base.SoAContext.Explanations.Where(x => x.ProcedureVersion == this.ProcedureVersionId).ToList<Explanation>();
                         _explanations = new ObservableCollection<Explanation>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _explanations.CollectionChanged += Explanations_CollectionChanged;
@@ -1319,14 +1428,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<ProcedureExecution> _procedureExecutions;
 
-        [InverseProperty("ProcedureVersion")]
+        [InverseProperty("ProcedureVersionRef")]
         public virtual ObservableCollection<ProcedureExecution> ProcedureExecutions
         {
             get
             {
                 if (_procedureExecutions == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -1336,11 +1445,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.ProcedureExecutions.Where(x => x.ProcedureVersion == this.ProcedureVersionId).ToList<ProcedureExecution>();
+                        var items = base.SoAContext.ProcedureExecutions.Where(x => x.ProcedureVersion == this.ProcedureVersionId).ToList<ProcedureExecution>();
                         _procedureExecutions = new ObservableCollection<ProcedureExecution>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _procedureExecutions.CollectionChanged += ProcedureExecutions_CollectionChanged;
@@ -1374,14 +1483,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<StewardshipAssignment> _stewardshipAssignments;
 
-        [InverseProperty("ProcedureVersion")]
+        [InverseProperty("ProcedureVersionRef")]
         public virtual ObservableCollection<StewardshipAssignment> StewardshipAssignments
         {
             get
             {
                 if (_stewardshipAssignments == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -1391,11 +1500,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.StewardshipAssignments.Where(x => x.ProcedureVersion == this.ProcedureVersionId).ToList<StewardshipAssignment>();
+                        var items = base.SoAContext.StewardshipAssignments.Where(x => x.ProcedureVersion == this.ProcedureVersionId).ToList<StewardshipAssignment>();
                         _stewardshipAssignments = new ObservableCollection<StewardshipAssignment>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _stewardshipAssignments.CollectionChanged += StewardshipAssignments_CollectionChanged;
@@ -1429,14 +1538,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<ChangeRequest> _changeRequests;
 
-        [InverseProperty("ProcedureVersion")]
+        [InverseProperty("ProcedureVersionRef")]
         public virtual ObservableCollection<ChangeRequest> ChangeRequests
         {
             get
             {
                 if (_changeRequests == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -1446,11 +1555,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.ChangeRequests.Where(x => x.ProcedureVersion == this.ProcedureVersionId).ToList<ChangeRequest>();
+                        var items = base.SoAContext.ChangeRequests.Where(x => x.ProcedureVersion == this.ProcedureVersionId).ToList<ChangeRequest>();
                         _changeRequests = new ObservableCollection<ChangeRequest>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _changeRequests.CollectionChanged += ChangeRequests_CollectionChanged;
@@ -1484,14 +1593,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<ReviewEvent> _reviewEvents;
 
-        [InverseProperty("ProcedureVersion")]
+        [InverseProperty("ProcedureVersionRef")]
         public virtual ObservableCollection<ReviewEvent> ReviewEvents
         {
             get
             {
                 if (_reviewEvents == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -1501,11 +1610,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.ReviewEvents.Where(x => x.ProcedureVersion == this.ProcedureVersionId).ToList<ReviewEvent>();
+                        var items = base.SoAContext.ReviewEvents.Where(x => x.ProcedureVersion == this.ProcedureVersionId).ToList<ReviewEvent>();
                         _reviewEvents = new ObservableCollection<ReviewEvent>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _reviewEvents.CollectionChanged += ReviewEvents_CollectionChanged;
@@ -1539,14 +1648,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<LearningActivity> _learningActivities;
 
-        [InverseProperty("ProcedureVersion")]
+        [InverseProperty("ProcedureVersionRef")]
         public virtual ObservableCollection<LearningActivity> LearningActivities
         {
             get
             {
                 if (_learningActivities == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -1556,11 +1665,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.LearningActivities.Where(x => x.ProcedureVersion == this.ProcedureVersionId).ToList<LearningActivity>();
+                        var items = base.SoAContext.LearningActivities.Where(x => x.ProcedureVersion == this.ProcedureVersionId).ToList<LearningActivity>();
                         _learningActivities = new ObservableCollection<LearningActivity>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _learningActivities.CollectionChanged += LearningActivities_CollectionChanged;
@@ -1594,14 +1703,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<OperationalBinding> _operationalBindings;
 
-        [InverseProperty("ProcedureVersion")]
+        [InverseProperty("ProcedureVersionRef")]
         public virtual ObservableCollection<OperationalBinding> OperationalBindings
         {
             get
             {
                 if (_operationalBindings == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -1611,11 +1720,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.OperationalBindings.Where(x => x.ProcedureVersion == this.ProcedureVersionId).ToList<OperationalBinding>();
+                        var items = base.SoAContext.OperationalBindings.Where(x => x.ProcedureVersion == this.ProcedureVersionId).ToList<OperationalBinding>();
                         _operationalBindings = new ObservableCollection<OperationalBinding>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _operationalBindings.CollectionChanged += OperationalBindings_CollectionChanged;
@@ -1649,14 +1758,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<CommunicationPolicy> _communicationPolicies;
 
-        [InverseProperty("ProcedureVersion")]
+        [InverseProperty("ProcedureVersionRef")]
         public virtual ObservableCollection<CommunicationPolicy> CommunicationPolicies
         {
             get
             {
                 if (_communicationPolicies == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -1666,11 +1775,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.CommunicationPolicies.Where(x => x.ProcedureVersion == this.ProcedureVersionId).ToList<CommunicationPolicy>();
+                        var items = base.SoAContext.CommunicationPolicies.Where(x => x.ProcedureVersion == this.ProcedureVersionId).ToList<CommunicationPolicy>();
                         _communicationPolicies = new ObservableCollection<CommunicationPolicy>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _communicationPolicies.CollectionChanged += CommunicationPolicies_CollectionChanged;
@@ -1704,14 +1813,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<ProcessMiningRun> _processMiningRuns;
 
-        [InverseProperty("ProcedureVersion")]
+        [InverseProperty("ProcedureVersionRef")]
         public virtual ObservableCollection<ProcessMiningRun> ProcessMiningRuns
         {
             get
             {
                 if (_processMiningRuns == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -1721,11 +1830,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.ProcessMiningRuns.Where(x => x.ProcedureVersion == this.ProcedureVersionId).ToList<ProcessMiningRun>();
+                        var items = base.SoAContext.ProcessMiningRuns.Where(x => x.ProcedureVersion == this.ProcedureVersionId).ToList<ProcessMiningRun>();
                         _processMiningRuns = new ObservableCollection<ProcessMiningRun>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _processMiningRuns.CollectionChanged += ProcessMiningRuns_CollectionChanged;
@@ -1760,12 +1869,12 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         protected override void LazyLoadProperties()
         {
-            _ = this.Procedure;
+            _ = this.ProcedureRef;
             _ = this.Agent;
-            _ = this.Agent;
-            _ = this.EvaluationContext;
-            _ = this.ProcedureVersionLinks;
-            _ = this.ProcedureVersionLinks;
+            _ = this.AgentRef;
+            _ = this.EvaluationContextRef;
+            _ = this.PreviousProcedureVersionProcedureVersionLinks;
+            _ = this.NextProcedureVersionProcedureVersionLinks;
             _ = this.ProcedureStatusChanges;
             _ = this.Steps;
             _ = this.StepTransitions;

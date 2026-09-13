@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -16,9 +17,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string TestCaseId { get; set; }
 
         // Formula Name (rulebook: ={{TestKind}} & ": " & {{Subject}})
+        [NotMapped]
         public string? Name
         {
-            get => this.TestKind + ": " + this.Subject; set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.TestKind)), F.S(": "), F.TextOr(F.Of(this.Subject))))); set { }
         }
 
         public string? TestKind { get; set; }
@@ -28,42 +30,48 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string? Assertion { get; set; }
         public string? Severity { get; set; }
         // Formula IsBlocking (rulebook: ={{Severity}} = "blocking")
+        [NotMapped]
         public bool? IsBlocking
         {
-            get => this.Severity = "blocking"; set { }
+            get => F.AsBool(F.Memo(this, "IsBlocking", () => F.Eq(F.Nullif(F.Of(this.Severity)), F.S("blocking")))); set { }
         }
 
         public string? LastOutcome { get; set; }
         public string? LastDetail { get; set; }
-        public DateTime? LastRunAt { get; set; }
+        public DateTimeOffset? LastRunAt { get; set; }
         // Formula IsPassing (rulebook: ={{LastOutcome}} = "PASS")
+        [NotMapped]
         public bool? IsPassing
         {
-            get => this.LastOutcome = "PASS"; set { }
+            get => F.AsBool(F.Memo(this, "IsPassing", () => F.Eq(F.Nullif(F.Of(this.LastOutcome)), F.S("PASS")))); set { }
         }
 
         // Formula IsFailing (rulebook: ={{LastOutcome}} = "FAIL")
+        [NotMapped]
         public bool? IsFailing
         {
-            get => this.LastOutcome = "FAIL"; set { }
+            get => F.AsBool(F.Memo(this, "IsFailing", () => F.Eq(F.Nullif(F.Of(this.LastOutcome)), F.S("FAIL")))); set { }
         }
 
         // Formula NeedsAttention (rulebook: =AND({{IsFailing}}, {{IsBlocking}}))
+        [NotMapped]
         public bool? NeedsAttention
         {
-            get => AND(this.IsFailing, this.IsBlocking); set { }
+            get => F.AsBool(F.Memo(this, "NeedsAttention", () => F.And(F.Bool3(F.Of(this.IsFailing)), F.Bool3(F.Of(this.IsBlocking))))); set { }
         }
 
         // Formula PassingSuiteKey (rulebook: =IF({{IsPassing}}, {{Suite}}, ""))
+        [NotMapped]
         public string? PassingSuiteKey
         {
-            get => IF(this.IsPassing, this.Suite, ""); set { }
+            get => F.AsString(F.Memo(this, "PassingSuiteKey", () => (F.Truthy(F.Bool3(F.Of(this.IsPassing))) ? F.Of(this.Suite) : F.S("")))); set { }
         }
 
         // Formula NeedsAttentionSuiteKey (rulebook: =IF({{NeedsAttention}}, {{Suite}}, ""))
+        [NotMapped]
         public string? NeedsAttentionSuiteKey
         {
-            get => IF(this.NeedsAttention, this.Suite, ""); set { }
+            get => F.AsString(F.Memo(this, "NeedsAttentionSuiteKey", () => (F.Truthy(F.Bool3(F.Of(this.NeedsAttention))) ? F.Of(this.Suite) : F.S("")))); set { }
         }
 
         public string? SemanticTypeIri { get; set; }
@@ -80,7 +88,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_roleQuestion == null && !string.IsNullOrEmpty(DefendsQuestion))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -88,10 +96,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                         }
                         return null;
                     }
-                    _roleQuestion = Context.RoleQuestions.Find(DefendsQuestion);
+                    _roleQuestion = base.SoAContext.RoleQuestions.Find(DefendsQuestion);
                     if (_roleQuestion != null)
                     {
-                        Context.Attach(_roleQuestion);
+                        base.SoAContext.Attach(_roleQuestion);
                     }
                 }
                 return _roleQuestion;
@@ -101,7 +109,16 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                 if (_roleQuestion != value)
                 {
                     _roleQuestion = value;
-                    DefendsQuestion = _roleQuestion == null ? default : _roleQuestion.RoleQuestionId;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_roleQuestion != null)
+                    {
+                        DefendsQuestion = _roleQuestion.RoleQuestionId;
+                    }
                 }
             }
         }
@@ -115,7 +132,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_testSuite == null && !string.IsNullOrEmpty(Suite))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -123,10 +140,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                         }
                         return null;
                     }
-                    _testSuite = Context.TestSuites.Find(Suite);
+                    _testSuite = base.SoAContext.TestSuites.Find(Suite);
                     if (_testSuite != null)
                     {
-                        Context.Attach(_testSuite);
+                        base.SoAContext.Attach(_testSuite);
                     }
                 }
                 return _testSuite;
@@ -136,7 +153,16 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                 if (_testSuite != value)
                 {
                     _testSuite = value;
-                    Suite = _testSuite == null ? default : _testSuite.TestSuiteId;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_testSuite != null)
+                    {
+                        Suite = _testSuite.TestSuiteId;
+                    }
                 }
             }
         }

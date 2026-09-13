@@ -1301,8 +1301,11 @@ def generate_substrate_report(substrate_name: str, results: dict, rulebook: dict
 
     # Check run metadata for error banner
     run_metadata = load_run_metadata(substrate_name)
-    last_run = run_metadata.get("last_run", {})
-    last_success = run_metadata.get("last_successful_run", {})
+    # load_run_metadata stores an explicit None for a substrate with no prior
+    # run, so .get(key, {}) returned None and the first never-graded substrate
+    # crashed the whole harness before any later substrate was graded.
+    last_run = run_metadata.get("last_run") or {}
+    last_success = run_metadata.get("last_successful_run") or {}
 
     lines = [
         f"# Test Results: {substrate_name}",
@@ -2109,6 +2112,16 @@ def main():
     # Step 3: Run and grade each substrate
     all_grades = run_and_grade_all_substrates(all_answer_keys, rulebook)
     print(flush=True)
+
+    # Persist the grades exactly as graded — every failing cell with its
+    # expected and actual value. The markdown reports are for reading; this is
+    # for anything that records the run as data (a project's own conformance
+    # tables), so nothing downstream ever has to re-grade to learn which cell
+    # disagreed. Gitignored like _substrate_results.json.
+    grades_path = os.path.join(TESTING_DIR, "_conformance_grades.json")
+    with open(grades_path, "w", encoding="utf-8") as f:
+        json.dump(all_grades, f, indent=1, default=str, ensure_ascii=False)
+    print(f"Grades written to {grades_path}", flush=True)
 
     # Step 4: Generate summary report
     print("\n" * 3, flush=True)

@@ -21,12 +21,8 @@ import erb_runtime as _erb
 # Level 1
 
 def calc_hello_whos_introduction(name):
-    """Formula: ="Hi, " & {{Name}} & "." """
-    return ('Hi, ' + str(name or "") + '.')
-
-def calc_hello_whos_is_bob(name):
-    """Formula: =OR({{Name}}="Bob", {{Name}}="Bobby", {{Name}}="Robert")"""
-    return _erb.erb_or(_erb.erb_bool3(_erb.erb_eq(_erb.erb_nullif(name), 'Bob')), _erb.erb_bool3(_erb.erb_eq(_erb.erb_nullif(name), 'Bobby')), _erb.erb_bool3(_erb.erb_eq(_erb.erb_nullif(name), 'Robert')))
+    """Formula: ="Hello " & {{Name}} & "!!!" """
+    return ('Hello ' + str(name or "") + '!!!')
 
 
 def compute_hello_whos_fields(record: dict) -> dict:
@@ -43,11 +39,6 @@ def compute_hello_whos_fields(record: dict) -> dict:
     except Exception as _field_exc:
         result['introduction'] = None
         result.setdefault('_erb_errors', {})['introduction'] = str(_field_exc)
-    try:
-        result['is_bob'] = calc_hello_whos_is_bob(result.get('name'))
-    except Exception as _field_exc:
-        result['is_bob'] = None
-        result.setdefault('_erb_errors', {})['is_bob'] = str(_field_exc)
 
     # Convert empty strings to None for string fields
     for key in ['introduction']:
@@ -85,14 +76,14 @@ _ERB_COMPUTE_BY_NAME = {
 
 
 # calculated_field_count bounds the runner's passes over the dataset.
-CALCULATED_FIELD_COUNT = 2
+CALCULATED_FIELD_COUNT = 1
 
 # ERB_TABLES is every table, in rulebook order.
 ERB_TABLES = [
-    {'name': 'HelloWhos', 'file': 'hello_whos', 'rulebook_rows': 4,
+    {'name': 'HelloWhos', 'file': 'hello_whos', 'rulebook_rows': 3,
      'compute': compute_hello_whos_fields,
-     'fields': ['hello_who_id', 'name', 'introduction', 'is_bob'],
-     'calculated': {'is_bob', 'introduction'},
+     'fields': ['hello_who_id', 'name', 'introduction'],
+     'calculated': {'introduction'},
      'lookups': [],
      'aggregations': []},
 ]

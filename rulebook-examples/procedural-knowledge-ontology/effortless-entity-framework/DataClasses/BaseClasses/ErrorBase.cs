@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -16,9 +17,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string ErrorId { get; set; }
 
         // Formula Name (rulebook: ={{ErrorCode}} & " - " & {{Label}})
+        [NotMapped]
         public string? Name
         {
-            get => this.ErrorCode + " - " + this.Label; set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.ErrorCode)), F.S(" - "), F.TextOr(F.Of(this.Label))))); set { }
         }
 
         public string? Label { get; set; }
@@ -29,14 +31,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<IssueOccurrence> _issueOccurrences;
 
-        [InverseProperty("Error")]
+        [InverseProperty("ErrorRef")]
         public virtual ObservableCollection<IssueOccurrence> IssueOccurrences
         {
             get
             {
                 if (_issueOccurrences == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -46,11 +48,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.IssueOccurrences.Where(x => x.Error == this.ErrorId).ToList<IssueOccurrence>();
+                        var items = base.SoAContext.IssueOccurrences.Where(x => x.Error == this.ErrorId).ToList<IssueOccurrence>();
                         _issueOccurrences = new ObservableCollection<IssueOccurrence>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _issueOccurrences.CollectionChanged += IssueOccurrences_CollectionChanged;

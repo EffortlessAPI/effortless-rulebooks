@@ -286,7 +286,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
 <nav class="toc">
   <h2 class="toc-title">Entities</h2>
   <ul class="toc-list">
-    <li><a href="#en-t-hellowhos">Hello Who</a> <span class="toc-meta">2 rules · 0 links</span></li>
+    <li><a href="#en-t-hellowhos">Hello Who</a> <span class="toc-meta">1 rules · 0 links</span></li>
   </ul>
 </nav>
 <section class="entity" id="en-t-hellowhos" data-entity="Hello Who">
@@ -302,10 +302,9 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">string</span>
     </div>
     <details class="prov prov-consumers elem elem-consumers" open>
-      <summary>Consumers <span class="count">2 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#en-f-hellowhos-introduction">ƒ Introduction <span class="ref-pill-tbl">Hello Who</span></a>
-        <a class="ref-pill tone-calc" href="#en-f-hellowhos-isbob">ƒ Is Bob <span class="ref-pill-tbl">Hello Who</span></a>
       </div>
     </details>
     </article>
@@ -321,15 +320,15 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
         <span class="view-label">In RuleSpeak®</span>
-        <p class="view-body">A hello who's <a class="ref" href="#en-f-hellowhos-introduction">introduction</a> is computed as “Hi, ”, followed by the <a class="ref" href="#en-f-hellowhos-name">name</a>, followed by a period.</p>
+        <p class="view-body">A hello who's <a class="ref" href="#en-f-hellowhos-introduction">introduction</a> is computed as “Hello ”, followed by the <a class="ref" href="#en-f-hellowhos-name">name</a>, followed by “!!!”.</p>
       </div>
       <div class="view elem elem-english">
         <span class="view-label">In plain words</span>
-        <p class="view-body">(&quot;Hi, &quot; joined with <a class="ref" href="#en-f-hellowhos-name">name</a>) joined with &quot;.&quot;.</p>
+        <p class="view-body">(&quot;Hello &quot; joined with <a class="ref" href="#en-f-hellowhos-name">name</a>) joined with &quot;!!!&quot;.</p>
       </div>
       <div class="view elem elem-formula">
         <span class="view-label">As a formula</span>
-        <div class="view-body fx"><span class="fx-eq">= </span>&quot;Hi, &quot; &amp; <a class="fx-chip" href="#en-f-hellowhos-name">Name</a> &amp; &quot;.&quot;</div>
+        <div class="view-body fx"><span class="fx-eq">= </span>&quot;Hello &quot; &amp; <a class="fx-chip" href="#en-f-hellowhos-name">Name</a> &amp; &quot;!!!&quot;</div>
       </div>
     </div>
     <details class="prov prov-inputs elem elem-inputs" open>
@@ -348,45 +347,34 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
     </details>
     </article>
-  <article class="field tone-calc" id="en-f-hellowhos-isbob" data-entity="Hello Who" data-field="Is Bob">
-    <div class="field-head">
-      <span class="field-glyph" title="Calculated">ƒ</span>
-      <span class="field-name">Is Bob</span>
-      <span class="pill pill-type">Calculated</span>
-      <span class="pill pill-depth">1 hop from ground truth</span>
-      <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-2</span>
-    </div>
-    <div class="narr-views">
-      <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
-        <div class="view-body"><p class="rt-headline">A hello who is considered a bob if all of the following:</p><ol class="rt-priority"><ul class="rt-group"><li>the <a class="ref" href="#en-f-hellowhos-name">name</a> is “Bob”</li><li>the <a class="ref" href="#en-f-hellowhos-name">name</a> is “Bobby”</li><li>the <a class="ref" href="#en-f-hellowhos-name">name</a> is “Robert”</li></ul></ol></div>
-      </div>
-      <div class="view elem elem-english">
-        <span class="view-label">In plain words</span>
-        <p class="view-body"><a class="ref" href="#en-f-hellowhos-name">Name</a> is &quot;Bob&quot;, <a class="ref" href="#en-f-hellowhos-name">name</a> is &quot;Bobby&quot;, or <a class="ref" href="#en-f-hellowhos-name">name</a> is &quot;Robert&quot;.</p>
-      </div>
-      <div class="view elem elem-formula">
-        <span class="view-label">As a formula</span>
-        <div class="view-body fx"><span class="fx-eq">= </span>OR(<a class="fx-chip" href="#en-f-hellowhos-name">Name</a>=&quot;Bob&quot;, <a class="fx-chip" href="#en-f-hellowhos-name">Name</a>=&quot;Bobby&quot;, <a class="fx-chip" href="#en-f-hellowhos-name">Name</a>=&quot;Robert&quot;)</div>
-      </div>
-    </div>
-    <details class="prov prov-inputs elem elem-inputs" open>
-      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
-      <div class="prov-grid">
-        <a class="input tone-raw" href="#en-f-hellowhos-name">
-          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Name</span><span class="input-table">Hello Who</span></span>
-          <span class="input-en muted">Ground truth · string</span>
-        </a>
-      </div>
-    </details>
-    <details class="prov prov-leaves elem elem-inputs">
-      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
-      <div class="prov-pills">
-        <a class="ref-pill tone-raw" href="#en-f-hellowhos-name">● Name <span class="ref-pill-tbl">Hello Who</span></a>
-      </div>
-    </details>
-    </article>
+</section>
+<section class="sample-data">
+  <h2 class="sample-title">6 Example Data</h2>
+  <p class="sample-note">The rulebook's own example rows. Values in derived columns are not stored — they are computed from the rules above by the same formula engine the rulebook generates, so if a formula changes these values change with it.</p>
+  <h3 class="sample-entity">Hello Who</h3>
+  <div class="sample-scroll">
+  <table class="sample-table">
+    <thead><tr>
+      <th>Name</th>
+      <th class="sample-derived">Introduction<span class="sample-fx">ƒ</span></th>
+    </tr></thead>
+    <tbody>
+      <tr>
+        <td>World</td>
+        <td class="sample-derived">Hello World!!!</td>
+      </tr>
+      <tr>
+        <td>Bob</td>
+        <td class="sample-derived">Hello Bob!!!</td>
+      </tr>
+      <tr>
+        <td>Everyone</td>
+        <td class="sample-derived">Hello Everyone!!!</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="sample-legend">ƒ marks a computed column.</p>
 </section>
 <footer class="doc-footer">
   <p>Rendered from the rulebook by the shared <b>RuleSpeak®</b> engine (<code>rulebook-rulespeak-core</code>). The same engine narrates the React Explainer DAG, so every narration mode reads identically across both.</p>

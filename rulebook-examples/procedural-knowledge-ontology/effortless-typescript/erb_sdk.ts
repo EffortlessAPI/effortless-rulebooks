@@ -8088,6 +8088,10 @@ export interface RulebookFieldsRow {
   is_derived: boolean | null;
   /** TRUE when this field exists because a role asked a question. These are the fields the witness loops added. */
   is_witness: boolean | null;
+  /** How many substrates computed this field differently from the answer key in the latest conformance run. 0 means every substrate agreed. */
+  disagreeing_substrate_count: number | null;
+  /** True when at least one substrate disagrees about this field's values. */
+  is_substrate_contested: boolean | null;
   /** Extension class IRI. */
   semantic_type_iri: string | null;
   _erb_errors?: Record<string, string>;
@@ -8104,6 +8108,8 @@ const rulebookFieldsFieldTypes: Record<string, FieldType> = {
   invented_for_question: "*string",
   is_derived: "*bool",
   is_witness: "*bool",
+  disagreeing_substrate_count: "*float64",
+  is_substrate_contested: "*bool",
   semantic_type_iri: "*string",
 };
 
@@ -8128,12 +8134,20 @@ export function calcRulebookFieldsIsWitness(tc: RulebookFieldsRow): boolean | nu
   return toBoolPtr(erbIsNotBlank(vStr(tc.invented_for_question)));
 }
 
+/** Computes the IsSubstrateContested calculated field.
+ *  True when at least one substrate disagrees about this field's values.
+ *  Formula: ={{DisagreeingSubstrateCount}} > 0 */
+export function calcRulebookFieldsIsSubstrateContested(tc: RulebookFieldsRow): boolean | null {
+  return toBoolPtr(erbCmp(vNum(tc.disagreeing_substrate_count), ">", vI(0)));
+}
+
 /** Computes every calculated field of the row in dependency order. */
 export function computeRulebookFields(tc: RulebookFieldsRow): RulebookFieldsRow {
   // Level 1
   calcGuard(tc, rulebookFieldsFieldTypes, "name", () => { tc.name = calcRulebookFieldsName(tc); });
   calcGuard(tc, rulebookFieldsFieldTypes, "is_derived", () => { tc.is_derived = calcRulebookFieldsIsDerived(tc); });
   calcGuard(tc, rulebookFieldsFieldTypes, "is_witness", () => { tc.is_witness = calcRulebookFieldsIsWitness(tc); });
+  calcGuard(tc, rulebookFieldsFieldTypes, "is_substrate_contested", () => { tc.is_substrate_contested = calcRulebookFieldsIsSubstrateContested(tc); });
   return tc;
 }
 
@@ -11881,6 +11895,8 @@ export interface RulebookTablesRow {
   policy_count: number | null;
   /** True when RLS is enabled but no policy targets the table, so every principal sees zero rows. A fail-closed table nobody has granted access to. */
   is_unsecured: boolean | null;
+  /** How many substrates got at least one cell of this table wrong in the latest conformance run. */
+  disagreeing_substrate_count: number | null;
   /** Semantic type IRI. */
   semantic_type_iri: string | null;
   _erb_errors?: Record<string, string>;
@@ -11897,6 +11913,7 @@ const rulebookTablesFieldTypes: Record<string, FieldType> = {
   field_count: "*float64",
   policy_count: "*float64",
   is_unsecured: "*bool",
+  disagreeing_substrate_count: "*float64",
   semantic_type_iri: "*string",
 };
 
@@ -13259,8 +13276,713 @@ export function loadKnowledgeBrokerLinksRows(file: string): KnowledgeBrokerLinks
   return loadRows(file, { fields: knowledgeBrokerLinksFieldTypes }) as unknown as KnowledgeBrokerLinksRow[];
 }
 
+// =============================================================================
+// CONFORMANCESUBSTRATES TABLE
+// Every tool that compiles this rulebook into something that computes. One is the answer-key author (compile-rulebook bakes derived values into the rulebook's own rows); the rest are graded substrates that re-derive those values natively and are scored cell by cell against them.
+// =============================================================================
+
+/** A row in the ConformanceSubstrates table. */
+export interface ConformanceSubstratesRow {
+  /** Substrate name as the conformance harness knows it, e.g. 'effortless-python'. */
+  conformance_substrate_id: string;
+  /** Human-readable calculated display alias. */
+  name: string | null;
+  /** Short human label, e.g. 'Python'. */
+  label: string | null;
+  /** The effortless.json tool that produces this substrate, e.g. 'rulebook-to-python'. */
+  transpiler: string | null;
+  /** Project folder the tool writes into, e.g. '/effortless-python'. */
+  output_folder: string | null;
+  /** What actually evaluates the formulas: a database, a language runtime, a spreadsheet engine or a reasoner. */
+  engine: string | null;
+  /** One paragraph a curious reader can follow: what the tool emits and how the harness makes it produce answers. */
+  how_it_computes: string | null;
+  /** 'answer-key' for the tool whose stored values every other substrate is graded against; 'graded' for everything else. */
+  role: string | null;
+  /** Display order. */
+  sort_order: number | null;
+  /** True for substrates the harness scores. */
+  is_graded: boolean | null;
+  /** How many recorded conformance runs graded this substrate. */
+  run_count: number | null;
+  /** Cells graded in the latest run: every (record x derived field) pair in the answer keys. */
+  latest_cells_tested: number | null;
+  /** Cells this substrate computed identically to the answer key in the latest run. */
+  latest_cells_passed: number | null;
+  /** 1 when the latest run could not execute this substrate at all. */
+  latest_harness_errors: number | null;
+  /** Cells this substrate got wrong, or did not produce, in the latest run. */
+  latest_cells_failed: number | null;
+  /** Percent of cells agreeing with the answer key in the latest run. */
+  latest_score: number | null;
+  /** Derived fields on which this substrate got at least one cell wrong in the latest run. */
+  disagreeing_field_count: number | null;
+  /** Tables on which this substrate got at least one cell wrong in the latest run. */
+  disagreeing_table_count: number | null;
+  /** True when the latest run graded this substrate, it ran, and every cell agreed. A substrate never graded is not conformant. */
+  is_fully_conformant: boolean | null;
+  /** Semantic type IRI. */
+  semantic_type_iri: string | null;
+  _erb_errors?: Record<string, string>;
+}
+
+const conformanceSubstratesFieldTypes: Record<string, FieldType> = {
+  conformance_substrate_id: "string",
+  name: "*string",
+  label: "*string",
+  transpiler: "*string",
+  output_folder: "*string",
+  engine: "*string",
+  how_it_computes: "*string",
+  role: "*string",
+  sort_order: "*float64",
+  is_graded: "*bool",
+  run_count: "*float64",
+  latest_cells_tested: "*float64",
+  latest_cells_passed: "*float64",
+  latest_harness_errors: "*float64",
+  latest_cells_failed: "*float64",
+  latest_score: "*float64",
+  disagreeing_field_count: "*float64",
+  disagreeing_table_count: "*float64",
+  is_fully_conformant: "*bool",
+  semantic_type_iri: "*string",
+};
+
+/** Computes the Name calculated field.
+ *  Human-readable calculated display alias.
+ *  Formula: ={{Label}} */
+export function calcConformanceSubstratesName(tc: ConformanceSubstratesRow): string | null {
+  return toStringPtr(vStr(tc.label));
+}
+
+/** Computes the IsGraded calculated field.
+ *  True for substrates the harness scores.
+ *  Formula: ={{Role}} = "graded" */
+export function calcConformanceSubstratesIsGraded(tc: ConformanceSubstratesRow): boolean | null {
+  return toBoolPtr(erbEq(erbNullif(vStr(tc.role)), vS("graded")));
+}
+
+/** Computes the LatestCellsFailed calculated field.
+ *  Cells this substrate got wrong, or did not produce, in the latest run.
+ *  Formula: ={{LatestCellsTested}} - {{LatestCellsPassed}} */
+export function calcConformanceSubstratesLatestCellsFailed(tc: ConformanceSubstratesRow): number | null {
+  return toFloatPtr(erbSub(vNum(tc.latest_cells_tested), vNum(tc.latest_cells_passed)));
+}
+
+/** Computes the LatestScore calculated field.
+ *  Percent of cells agreeing with the answer key in the latest run.
+ *  Formula: =IF({{LatestCellsTested}} = 0, 0, ROUND(100 * {{LatestCellsPassed}} / {{LatestCellsTested}}, 2)) */
+export function calcConformanceSubstratesLatestScore(tc: ConformanceSubstratesRow): number | null {
+  return toFloatPtr(erbIf(erbBool3(erbEq(vNum(tc.latest_cells_tested), vI(0))), () => vI(0), () => erbRound(erbDiv(erbMul(vI(100), vNum(tc.latest_cells_passed)), vNum(tc.latest_cells_tested)), vI(2))));
+}
+
+/** Computes the IsFullyConformant calculated field.
+ *  True when the latest run graded this substrate, it ran, and every cell agreed. A substrate never graded is not conformant.
+ *  Formula: =AND({{LatestCellsTested}} > 0, {{LatestCellsFailed}} = 0, {{LatestHarnessErrors}} = 0) */
+export function calcConformanceSubstratesIsFullyConformant(tc: ConformanceSubstratesRow): boolean | null {
+  return toBoolPtr(erbAnd(erbBool3(erbCmp(vNum(tc.latest_cells_tested), ">", vI(0))), erbBool3(erbEq(vNum(tc.latest_cells_failed), vI(0))), erbBool3(erbEq(vNum(tc.latest_harness_errors), vI(0)))));
+}
+
+/** Computes every calculated field of the row in dependency order. */
+export function computeConformanceSubstrates(tc: ConformanceSubstratesRow): ConformanceSubstratesRow {
+  // Level 1
+  calcGuard(tc, conformanceSubstratesFieldTypes, "name", () => { tc.name = calcConformanceSubstratesName(tc); });
+  calcGuard(tc, conformanceSubstratesFieldTypes, "is_graded", () => { tc.is_graded = calcConformanceSubstratesIsGraded(tc); });
+  calcGuard(tc, conformanceSubstratesFieldTypes, "latest_cells_failed", () => { tc.latest_cells_failed = calcConformanceSubstratesLatestCellsFailed(tc); });
+  calcGuard(tc, conformanceSubstratesFieldTypes, "latest_score", () => { tc.latest_score = calcConformanceSubstratesLatestScore(tc); });
+  // Level 2
+  calcGuard(tc, conformanceSubstratesFieldTypes, "is_fully_conformant", () => { tc.is_fully_conformant = calcConformanceSubstratesIsFullyConformant(tc); });
+  return tc;
+}
+
+/** Reads ConformanceSubstrates rows from a JSON array file. */
+export function loadConformanceSubstratesRows(file: string): ConformanceSubstratesRow[] {
+  return loadRows(file, { fields: conformanceSubstratesFieldTypes }) as unknown as ConformanceSubstratesRow[];
+}
+
+// =============================================================================
+// CONFORMANCERUNS TABLE
+// One execution of the conformance harness over every graded substrate. Kept as history; exactly one run is marked IsLatest, and the per-table, per-field and per-cell detail tables describe that run.
+// =============================================================================
+
+/** A row in the ConformanceRuns table. */
+export interface ConformanceRunsRow {
+  /** Stored logical identifier, e.g. 'run-20260913-171500'. */
+  conformance_run_id: string;
+  /** Human-readable calculated display alias. */
+  name: string | null;
+  /** When the harness graded the substrates. */
+  ran_on: string | null;
+  /** git HEAD of the repository when the run was recorded; the rulebook may also carry uncommitted edits, noted in Notes. */
+  rulebook_commit: string | null;
+  /** The substrate whose stored values were the answer keys for this run. */
+  answer_key_author: string | null;
+  /** True for the most recent recorded run only. The recorder moves it. */
+  is_latest: boolean | null;
+  /** Anything a reader needs to interpret the run. */
+  notes: string | null;
+  /** Substrates graded in this run. */
+  substrate_count: number | null;
+  /** Substrates that ran and agreed on every cell. */
+  perfect_substrate_count: number | null;
+  /** Cells graded across all substrates. */
+  cells_tested: number | null;
+  /** Cells that agreed across all substrates. */
+  cells_passed: number | null;
+  /** Cells that disagreed across all substrates. */
+  cells_failed: number | null;
+  /** Percent of all graded cells, across all substrates, that agreed. */
+  overall_score: number | null;
+  /** Substrates with at least one disagreeing cell or a harness error. */
+  imperfect_substrate_count: number | null;
+  /** True when every substrate graded in this run agreed on every cell: the 100% bar. */
+  is_fully_conformant: boolean | null;
+  /** Semantic type IRI. */
+  semantic_type_iri: string | null;
+  _erb_errors?: Record<string, string>;
+}
+
+const conformanceRunsFieldTypes: Record<string, FieldType> = {
+  conformance_run_id: "string",
+  name: "*string",
+  ran_on: "*string",
+  rulebook_commit: "*string",
+  answer_key_author: "*string",
+  is_latest: "*bool",
+  notes: "*string",
+  substrate_count: "*float64",
+  perfect_substrate_count: "*float64",
+  cells_tested: "*float64",
+  cells_passed: "*float64",
+  cells_failed: "*float64",
+  overall_score: "*float64",
+  imperfect_substrate_count: "*float64",
+  is_fully_conformant: "*bool",
+  semantic_type_iri: "*string",
+};
+
+/** Computes the Name calculated field.
+ *  Human-readable calculated display alias.
+ *  Formula: ={{ConformanceRunId}} */
+export function calcConformanceRunsName(tc: ConformanceRunsRow): string | null {
+  return toStringPtr(vStrPlain(tc.conformance_run_id));
+}
+
+/** Computes the CellsFailed calculated field.
+ *  Cells that disagreed across all substrates.
+ *  Formula: ={{CellsTested}} - {{CellsPassed}} */
+export function calcConformanceRunsCellsFailed(tc: ConformanceRunsRow): number | null {
+  return toFloatPtr(erbSub(vNum(tc.cells_tested), vNum(tc.cells_passed)));
+}
+
+/** Computes the OverallScore calculated field.
+ *  Percent of all graded cells, across all substrates, that agreed.
+ *  Formula: =IF({{CellsTested}} = 0, 0, ROUND(100 * {{CellsPassed}} / {{CellsTested}}, 2)) */
+export function calcConformanceRunsOverallScore(tc: ConformanceRunsRow): number | null {
+  return toFloatPtr(erbIf(erbBool3(erbEq(vNum(tc.cells_tested), vI(0))), () => vI(0), () => erbRound(erbDiv(erbMul(vI(100), vNum(tc.cells_passed)), vNum(tc.cells_tested)), vI(2))));
+}
+
+/** Computes the ImperfectSubstrateCount calculated field.
+ *  Substrates with at least one disagreeing cell or a harness error.
+ *  Formula: ={{SubstrateCount}} - {{PerfectSubstrateCount}} */
+export function calcConformanceRunsImperfectSubstrateCount(tc: ConformanceRunsRow): number | null {
+  return toFloatPtr(erbSub(vNum(tc.substrate_count), vNum(tc.perfect_substrate_count)));
+}
+
+/** Computes the IsFullyConformant calculated field.
+ *  True when every substrate graded in this run agreed on every cell: the 100% bar.
+ *  Formula: =AND({{SubstrateCount}} > 0, {{ImperfectSubstrateCount}} = 0) */
+export function calcConformanceRunsIsFullyConformant(tc: ConformanceRunsRow): boolean | null {
+  return toBoolPtr(erbAnd(erbBool3(erbCmp(vNum(tc.substrate_count), ">", vI(0))), erbBool3(erbEq(vNum(tc.imperfect_substrate_count), vI(0)))));
+}
+
+/** Computes every calculated field of the row in dependency order. */
+export function computeConformanceRuns(tc: ConformanceRunsRow): ConformanceRunsRow {
+  // Level 1
+  calcGuard(tc, conformanceRunsFieldTypes, "name", () => { tc.name = calcConformanceRunsName(tc); });
+  calcGuard(tc, conformanceRunsFieldTypes, "cells_failed", () => { tc.cells_failed = calcConformanceRunsCellsFailed(tc); });
+  calcGuard(tc, conformanceRunsFieldTypes, "overall_score", () => { tc.overall_score = calcConformanceRunsOverallScore(tc); });
+  calcGuard(tc, conformanceRunsFieldTypes, "imperfect_substrate_count", () => { tc.imperfect_substrate_count = calcConformanceRunsImperfectSubstrateCount(tc); });
+  // Level 2
+  calcGuard(tc, conformanceRunsFieldTypes, "is_fully_conformant", () => { tc.is_fully_conformant = calcConformanceRunsIsFullyConformant(tc); });
+  return tc;
+}
+
+/** Reads ConformanceRuns rows from a JSON array file. */
+export function loadConformanceRunsRows(file: string): ConformanceRunsRow[] {
+  return loadRows(file, { fields: conformanceRunsFieldTypes }) as unknown as ConformanceRunsRow[];
+}
+
+// =============================================================================
+// SUBSTRATERUNSCORES TABLE
+// One substrate's grade in one conformance run, split by field class so a substrate that does scalar math natively but not cross-table joins reads as exactly that.
+// =============================================================================
+
+/** A row in the SubstrateRunScores table. */
+export interface SubstrateRunScoresRow {
+  /** Stored logical identifier: '<run>|<substrate>'. */
+  substrate_run_score_id: string;
+  /** Human-readable calculated display alias. */
+  name: string | null;
+  /** The run that produced this grade. */
+  run: string | null;
+  /** The substrate graded. */
+  substrate: string | null;
+  /** Why the substrate could not be run, verbatim from the harness. Blank when it ran. */
+  harness_error: string | null;
+  /** Wall-clock seconds to produce answers. */
+  duration_seconds: number | null;
+  /** Every (record x derived field) pair in the answer keys. */
+  cells_tested: number | null;
+  /** Cells matching the answer key. */
+  cells_passed: number | null;
+  /** Cells of calculated (same-row formula) fields. */
+  calculated_tested: number | null;
+  /** Calculated cells that matched. */
+  calculated_passed: number | null;
+  /** Cells of lookup (cross-table INDEX/MATCH) fields. */
+  lookup_tested: number | null;
+  /** Lookup cells that matched. */
+  lookup_passed: number | null;
+  /** Cells of aggregation (COUNTIFS/SUMIFS rollup) fields. */
+  aggregation_tested: number | null;
+  /** Aggregation cells that matched. */
+  aggregation_passed: number | null;
+  /** Cells that did not match. */
+  cells_failed: number | null;
+  /** Percent of cells matching. */
+  score: number | null;
+  /** Percent of calculated cells matching. */
+  calculated_score: number | null;
+  /** Percent of lookup cells matching. */
+  lookup_score: number | null;
+  /** Percent of aggregation cells matching. */
+  aggregation_score: number | null;
+  /** True when the substrate ran and matched every cell. */
+  is_perfect: boolean | null;
+  /** The run id when this grade is perfect, else blank; lets the run count its perfect substrates with a single-criterion COUNTIFS. */
+  perfect_run_key: string | null;
+  /** Whether this grade belongs to the latest run. */
+  is_in_latest_run: boolean | null;
+  /** CellsTested when in the latest run, else 0. */
+  latest_cells_tested: number | null;
+  /** CellsPassed when in the latest run, else 0. */
+  latest_cells_passed: number | null;
+  /** 1 when this is the latest run and the harness could not run the substrate. */
+  latest_error_flag: number | null;
+  /** The substrate's short label. */
+  substrate_label: string | null;
+  /** Semantic type IRI. */
+  semantic_type_iri: string | null;
+  _erb_errors?: Record<string, string>;
+}
+
+const substrateRunScoresFieldTypes: Record<string, FieldType> = {
+  substrate_run_score_id: "string",
+  name: "*string",
+  run: "*string",
+  substrate: "*string",
+  harness_error: "*string",
+  duration_seconds: "*float64",
+  cells_tested: "*float64",
+  cells_passed: "*float64",
+  calculated_tested: "*float64",
+  calculated_passed: "*float64",
+  lookup_tested: "*float64",
+  lookup_passed: "*float64",
+  aggregation_tested: "*float64",
+  aggregation_passed: "*float64",
+  cells_failed: "*float64",
+  score: "*float64",
+  calculated_score: "*float64",
+  lookup_score: "*float64",
+  aggregation_score: "*float64",
+  is_perfect: "*bool",
+  perfect_run_key: "*string",
+  is_in_latest_run: "*bool",
+  latest_cells_tested: "*float64",
+  latest_cells_passed: "*float64",
+  latest_error_flag: "*float64",
+  substrate_label: "*string",
+  semantic_type_iri: "*string",
+};
+
+/** Computes the Name calculated field.
+ *  Human-readable calculated display alias.
+ *  Formula: =CONCAT({{Run}}, " / ", {{Substrate}}) */
+export function calcSubstrateRunScoresName(tc: SubstrateRunScoresRow): string | null {
+  return toStringPtr(erbConcat(erbTextOr(vStr(tc.run)), vS(" / "), erbTextOr(vStr(tc.substrate))));
+}
+
+/** Computes the CellsFailed calculated field.
+ *  Cells that did not match.
+ *  Formula: ={{CellsTested}} - {{CellsPassed}} */
+export function calcSubstrateRunScoresCellsFailed(tc: SubstrateRunScoresRow): number | null {
+  return toFloatPtr(erbSub(vNum(tc.cells_tested), vNum(tc.cells_passed)));
+}
+
+/** Computes the Score calculated field.
+ *  Percent of cells matching.
+ *  Formula: =IF({{CellsTested}} = 0, 0, ROUND(100 * {{CellsPassed}} / {{CellsTested}}, 2)) */
+export function calcSubstrateRunScoresScore(tc: SubstrateRunScoresRow): number | null {
+  return toFloatPtr(erbIf(erbBool3(erbEq(erbNullif(vNum(tc.cells_tested)), vI(0))), () => vI(0), () => erbRound(erbDiv(erbMul(vI(100), vNum(tc.cells_passed)), vNum(tc.cells_tested)), vI(2))));
+}
+
+/** Computes the CalculatedScore calculated field.
+ *  Percent of calculated cells matching.
+ *  Formula: =IF({{CalculatedTested}} = 0, 0, ROUND(100 * {{CalculatedPassed}} / {{CalculatedTested}}, 2)) */
+export function calcSubstrateRunScoresCalculatedScore(tc: SubstrateRunScoresRow): number | null {
+  return toFloatPtr(erbIf(erbBool3(erbEq(erbNullif(vNum(tc.calculated_tested)), vI(0))), () => vI(0), () => erbRound(erbDiv(erbMul(vI(100), vNum(tc.calculated_passed)), vNum(tc.calculated_tested)), vI(2))));
+}
+
+/** Computes the LookupScore calculated field.
+ *  Percent of lookup cells matching.
+ *  Formula: =IF({{LookupTested}} = 0, 0, ROUND(100 * {{LookupPassed}} / {{LookupTested}}, 2)) */
+export function calcSubstrateRunScoresLookupScore(tc: SubstrateRunScoresRow): number | null {
+  return toFloatPtr(erbIf(erbBool3(erbEq(erbNullif(vNum(tc.lookup_tested)), vI(0))), () => vI(0), () => erbRound(erbDiv(erbMul(vI(100), vNum(tc.lookup_passed)), vNum(tc.lookup_tested)), vI(2))));
+}
+
+/** Computes the AggregationScore calculated field.
+ *  Percent of aggregation cells matching.
+ *  Formula: =IF({{AggregationTested}} = 0, 0, ROUND(100 * {{AggregationPassed}} / {{AggregationTested}}, 2)) */
+export function calcSubstrateRunScoresAggregationScore(tc: SubstrateRunScoresRow): number | null {
+  return toFloatPtr(erbIf(erbBool3(erbEq(erbNullif(vNum(tc.aggregation_tested)), vI(0))), () => vI(0), () => erbRound(erbDiv(erbMul(vI(100), vNum(tc.aggregation_passed)), vNum(tc.aggregation_tested)), vI(2))));
+}
+
+/** Computes the IsPerfect calculated field.
+ *  True when the substrate ran and matched every cell.
+ *  Formula: =AND({{HarnessError}} = "", {{CellsTested}} > 0, {{CellsFailed}} = 0) */
+export function calcSubstrateRunScoresIsPerfect(tc: SubstrateRunScoresRow): boolean | null {
+  return toBoolPtr(erbAnd(erbBool3(erbIsBlank(vStr(tc.harness_error))), erbBool3(erbCmp(erbNullif(vNum(tc.cells_tested)), ">", vI(0))), erbBool3(erbEq(vNum(tc.cells_failed), vI(0)))));
+}
+
+/** Computes the PerfectRunKey calculated field.
+ *  The run id when this grade is perfect, else blank; lets the run count its perfect substrates with a single-criterion COUNTIFS.
+ *  Formula: =IF({{IsPerfect}}, {{Run}}, "") */
+export function calcSubstrateRunScoresPerfectRunKey(tc: SubstrateRunScoresRow): string | null {
+  return toStringPtr(erbIf(erbBool3(vBool(tc.is_perfect)), () => vStr(tc.run), () => vS("")));
+}
+
+/** Computes the LatestCellsTested calculated field.
+ *  CellsTested when in the latest run, else 0.
+ *  Formula: =IF({{IsInLatestRun}}, {{CellsTested}}, 0) */
+export function calcSubstrateRunScoresLatestCellsTested(tc: SubstrateRunScoresRow): number | null {
+  return toFloatPtr(erbIf(erbBool3(vBool(tc.is_in_latest_run)), () => vNum(tc.cells_tested), () => vI(0)));
+}
+
+/** Computes the LatestCellsPassed calculated field.
+ *  CellsPassed when in the latest run, else 0.
+ *  Formula: =IF({{IsInLatestRun}}, {{CellsPassed}}, 0) */
+export function calcSubstrateRunScoresLatestCellsPassed(tc: SubstrateRunScoresRow): number | null {
+  return toFloatPtr(erbIf(erbBool3(vBool(tc.is_in_latest_run)), () => vNum(tc.cells_passed), () => vI(0)));
+}
+
+/** Computes the LatestErrorFlag calculated field.
+ *  1 when this is the latest run and the harness could not run the substrate.
+ *  Formula: =IF(AND({{IsInLatestRun}}, {{HarnessError}} <> ""), 1, 0) */
+export function calcSubstrateRunScoresLatestErrorFlag(tc: SubstrateRunScoresRow): number | null {
+  return toFloatPtr(erbIf(erbBool3(erbAnd(erbBool3(vBool(tc.is_in_latest_run)), erbBool3(erbIsNotBlank(vStr(tc.harness_error))))), () => vI(1), () => vI(0)));
+}
+
+/** Computes every calculated field of the row in dependency order. */
+export function computeSubstrateRunScores(tc: SubstrateRunScoresRow): SubstrateRunScoresRow {
+  // Level 1
+  calcGuard(tc, substrateRunScoresFieldTypes, "name", () => { tc.name = calcSubstrateRunScoresName(tc); });
+  calcGuard(tc, substrateRunScoresFieldTypes, "cells_failed", () => { tc.cells_failed = calcSubstrateRunScoresCellsFailed(tc); });
+  calcGuard(tc, substrateRunScoresFieldTypes, "score", () => { tc.score = calcSubstrateRunScoresScore(tc); });
+  calcGuard(tc, substrateRunScoresFieldTypes, "calculated_score", () => { tc.calculated_score = calcSubstrateRunScoresCalculatedScore(tc); });
+  calcGuard(tc, substrateRunScoresFieldTypes, "lookup_score", () => { tc.lookup_score = calcSubstrateRunScoresLookupScore(tc); });
+  calcGuard(tc, substrateRunScoresFieldTypes, "aggregation_score", () => { tc.aggregation_score = calcSubstrateRunScoresAggregationScore(tc); });
+  calcGuard(tc, substrateRunScoresFieldTypes, "latest_cells_tested", () => { tc.latest_cells_tested = calcSubstrateRunScoresLatestCellsTested(tc); });
+  calcGuard(tc, substrateRunScoresFieldTypes, "latest_cells_passed", () => { tc.latest_cells_passed = calcSubstrateRunScoresLatestCellsPassed(tc); });
+  calcGuard(tc, substrateRunScoresFieldTypes, "latest_error_flag", () => { tc.latest_error_flag = calcSubstrateRunScoresLatestErrorFlag(tc); });
+  // Level 2
+  calcGuard(tc, substrateRunScoresFieldTypes, "is_perfect", () => { tc.is_perfect = calcSubstrateRunScoresIsPerfect(tc); });
+  // Level 3
+  calcGuard(tc, substrateRunScoresFieldTypes, "perfect_run_key", () => { tc.perfect_run_key = calcSubstrateRunScoresPerfectRunKey(tc); });
+  return tc;
+}
+
+/** Reads SubstrateRunScores rows from a JSON array file. */
+export function loadSubstrateRunScoresRows(file: string): SubstrateRunScoresRow[] {
+  return loadRows(file, { fields: substrateRunScoresFieldTypes }) as unknown as SubstrateRunScoresRow[];
+}
+
+// =============================================================================
+// TABLECONFORMANCE TABLE
+// Latest run only: how one substrate did on one table. The grid of these rows is the substrate-by-table heatmap.
+// =============================================================================
+
+/** A row in the TableConformance table. */
+export interface TableConformanceRow {
+  /** Stored logical identifier: '<substrate>|<Table>'. */
+  table_conformance_id: string;
+  /** Human-readable calculated display alias. */
+  name: string | null;
+  /** The run this row describes. */
+  run: string | null;
+  /** The substrate graded. */
+  substrate: string | null;
+  /** The table graded. */
+  rulebook_table: string | null;
+  /** Rows in the answer key for this table. */
+  record_count: number | null;
+  /** Derived fields graded on this table. */
+  derived_field_count: number | null;
+  /** RecordCount x DerivedFieldCount. */
+  cells_tested: number | null;
+  /** Cells matching the answer key. */
+  cells_passed: number | null;
+  /** True when the substrate produced no answers for this table at all; every cell then counts as failed. */
+  is_missing_answer_file: boolean | null;
+  /** Cells that did not match. */
+  cells_failed: number | null;
+  /** Percent of cells matching. */
+  score: number | null;
+  /** True when every cell matched. */
+  is_perfect: boolean | null;
+  /** The substrate id when this table is imperfect, else blank. */
+  imperfect_substrate_key: string | null;
+  /** The table id when this table is imperfect, else blank. */
+  imperfect_table_key: string | null;
+  /** Fields on this table the substrate got at least one cell wrong. */
+  disagreeing_field_count: number | null;
+  /** The substrate's short label. */
+  substrate_label: string | null;
+  /** The table's subject area. */
+  subject_area: string | null;
+  /** Semantic type IRI. */
+  semantic_type_iri: string | null;
+  _erb_errors?: Record<string, string>;
+}
+
+const tableConformanceFieldTypes: Record<string, FieldType> = {
+  table_conformance_id: "string",
+  name: "*string",
+  run: "*string",
+  substrate: "*string",
+  rulebook_table: "*string",
+  record_count: "*float64",
+  derived_field_count: "*float64",
+  cells_tested: "*float64",
+  cells_passed: "*float64",
+  is_missing_answer_file: "*bool",
+  cells_failed: "*float64",
+  score: "*float64",
+  is_perfect: "*bool",
+  imperfect_substrate_key: "*string",
+  imperfect_table_key: "*string",
+  disagreeing_field_count: "*float64",
+  substrate_label: "*string",
+  subject_area: "*string",
+  semantic_type_iri: "*string",
+};
+
+/** Computes the Name calculated field.
+ *  Human-readable calculated display alias.
+ *  Formula: =CONCAT({{Substrate}}, " / ", {{RulebookTable}}) */
+export function calcTableConformanceName(tc: TableConformanceRow): string | null {
+  return toStringPtr(erbConcat(erbTextOr(vStr(tc.substrate)), vS(" / "), erbTextOr(vStr(tc.rulebook_table))));
+}
+
+/** Computes the CellsFailed calculated field.
+ *  Cells that did not match.
+ *  Formula: ={{CellsTested}} - {{CellsPassed}} */
+export function calcTableConformanceCellsFailed(tc: TableConformanceRow): number | null {
+  return toFloatPtr(erbSub(vNum(tc.cells_tested), vNum(tc.cells_passed)));
+}
+
+/** Computes the Score calculated field.
+ *  Percent of cells matching.
+ *  Formula: =IF({{CellsTested}} = 0, 0, ROUND(100 * {{CellsPassed}} / {{CellsTested}}, 2)) */
+export function calcTableConformanceScore(tc: TableConformanceRow): number | null {
+  return toFloatPtr(erbIf(erbBool3(erbEq(erbNullif(vNum(tc.cells_tested)), vI(0))), () => vI(0), () => erbRound(erbDiv(erbMul(vI(100), vNum(tc.cells_passed)), vNum(tc.cells_tested)), vI(2))));
+}
+
+/** Computes the IsPerfect calculated field.
+ *  True when every cell matched.
+ *  Formula: ={{CellsFailed}} = 0 */
+export function calcTableConformanceIsPerfect(tc: TableConformanceRow): boolean | null {
+  return toBoolPtr(erbEq(vNum(tc.cells_failed), vI(0)));
+}
+
+/** Computes the ImperfectSubstrateKey calculated field.
+ *  The substrate id when this table is imperfect, else blank.
+ *  Formula: =IF({{IsPerfect}}, "", {{Substrate}}) */
+export function calcTableConformanceImperfectSubstrateKey(tc: TableConformanceRow): string | null {
+  return toStringPtr(erbIf(erbBool3(vBool(tc.is_perfect)), () => vS(""), () => vStr(tc.substrate)));
+}
+
+/** Computes the ImperfectTableKey calculated field.
+ *  The table id when this table is imperfect, else blank.
+ *  Formula: =IF({{IsPerfect}}, "", {{RulebookTable}}) */
+export function calcTableConformanceImperfectTableKey(tc: TableConformanceRow): string | null {
+  return toStringPtr(erbIf(erbBool3(vBool(tc.is_perfect)), () => vS(""), () => vStr(tc.rulebook_table)));
+}
+
+/** Computes every calculated field of the row in dependency order. */
+export function computeTableConformance(tc: TableConformanceRow): TableConformanceRow {
+  // Level 1
+  calcGuard(tc, tableConformanceFieldTypes, "name", () => { tc.name = calcTableConformanceName(tc); });
+  calcGuard(tc, tableConformanceFieldTypes, "cells_failed", () => { tc.cells_failed = calcTableConformanceCellsFailed(tc); });
+  calcGuard(tc, tableConformanceFieldTypes, "score", () => { tc.score = calcTableConformanceScore(tc); });
+  // Level 2
+  calcGuard(tc, tableConformanceFieldTypes, "is_perfect", () => { tc.is_perfect = calcTableConformanceIsPerfect(tc); });
+  // Level 3
+  calcGuard(tc, tableConformanceFieldTypes, "imperfect_substrate_key", () => { tc.imperfect_substrate_key = calcTableConformanceImperfectSubstrateKey(tc); });
+  calcGuard(tc, tableConformanceFieldTypes, "imperfect_table_key", () => { tc.imperfect_table_key = calcTableConformanceImperfectTableKey(tc); });
+  return tc;
+}
+
+/** Reads TableConformance rows from a JSON array file. */
+export function loadTableConformanceRows(file: string): TableConformanceRow[] {
+  return loadRows(file, { fields: tableConformanceFieldTypes }) as unknown as TableConformanceRow[];
+}
+
+// =============================================================================
+// FIELDDISAGREEMENTS TABLE
+// Latest run only: a derived field on which one substrate got at least one cell wrong. A field with no row here agreed everywhere. CellsFailed is the true count; CellDisagreements holds a sample of the cells.
+// =============================================================================
+
+/** A row in the FieldDisagreements table. */
+export interface FieldDisagreementsRow {
+  /** Stored logical identifier: '<substrate>|<Table>.<Field>'. */
+  field_disagreement_id: string;
+  /** Human-readable calculated display alias. */
+  name: string | null;
+  /** The substrate that disagreed. */
+  substrate: string | null;
+  /** The field it disagreed on. */
+  rulebook_field: string | null;
+  /** The substrate-by-table row this field belongs to. */
+  table_conformance: string | null;
+  /** calculated, lookup or aggregation. */
+  field_class: string | null;
+  /** Every cell of this field the substrate got wrong, not just the sampled ones. */
+  cells_failed: number | null;
+  /** The harness's most frequent reason: 'wrong/null value', 'missing record' or 'missing entity file'. */
+  dominant_reason: string | null;
+  /** Failing cells recorded as CellDisagreements rows. */
+  sampled_cell_count: number | null;
+  /** True when every failing cell is recorded, not just a sample. */
+  is_fully_sampled: boolean | null;
+  /** The formula every substrate was asked to compute, shown as evidence. */
+  formula: string | null;
+  /** The substrate's short label. */
+  substrate_label: string | null;
+  /** Semantic type IRI. */
+  semantic_type_iri: string | null;
+  _erb_errors?: Record<string, string>;
+}
+
+const fieldDisagreementsFieldTypes: Record<string, FieldType> = {
+  field_disagreement_id: "string",
+  name: "*string",
+  substrate: "*string",
+  rulebook_field: "*string",
+  table_conformance: "*string",
+  field_class: "*string",
+  cells_failed: "*float64",
+  dominant_reason: "*string",
+  sampled_cell_count: "*float64",
+  is_fully_sampled: "*bool",
+  formula: "*string",
+  substrate_label: "*string",
+  semantic_type_iri: "*string",
+};
+
+/** Computes the Name calculated field.
+ *  Human-readable calculated display alias.
+ *  Formula: =CONCAT({{Substrate}}, " / ", {{RulebookField}}) */
+export function calcFieldDisagreementsName(tc: FieldDisagreementsRow): string | null {
+  return toStringPtr(erbConcat(erbTextOr(vStr(tc.substrate)), vS(" / "), erbTextOr(vStr(tc.rulebook_field))));
+}
+
+/** Computes the IsFullySampled calculated field.
+ *  True when every failing cell is recorded, not just a sample.
+ *  Formula: ={{SampledCellCount}} = {{CellsFailed}} */
+export function calcFieldDisagreementsIsFullySampled(tc: FieldDisagreementsRow): boolean | null {
+  return toBoolPtr(erbEq(vNum(tc.sampled_cell_count), erbNullif(vNum(tc.cells_failed))));
+}
+
+/** Computes every calculated field of the row in dependency order. */
+export function computeFieldDisagreements(tc: FieldDisagreementsRow): FieldDisagreementsRow {
+  // Level 1
+  calcGuard(tc, fieldDisagreementsFieldTypes, "name", () => { tc.name = calcFieldDisagreementsName(tc); });
+  calcGuard(tc, fieldDisagreementsFieldTypes, "is_fully_sampled", () => { tc.is_fully_sampled = calcFieldDisagreementsIsFullySampled(tc); });
+  return tc;
+}
+
+/** Reads FieldDisagreements rows from a JSON array file. */
+export function loadFieldDisagreementsRows(file: string): FieldDisagreementsRow[] {
+  return loadRows(file, { fields: fieldDisagreementsFieldTypes }) as unknown as FieldDisagreementsRow[];
+}
+
+// =============================================================================
+// CELLDISAGREEMENTS TABLE
+// Latest run only: one cell a substrate computed differently from the answer key, with both values verbatim. Sampled per field; see FieldDisagreements.IsFullySampled.
+// =============================================================================
+
+/** A row in the CellDisagreements table. */
+export interface CellDisagreementsRow {
+  /** Stored logical identifier: '<substrate>|<Table>.<Field>|<record id>'. */
+  cell_disagreement_id: string;
+  /** Human-readable calculated display alias. */
+  name: string | null;
+  /** The substrate-by-field disagreement this cell belongs to. */
+  field_disagreement: string | null;
+  /** Primary key of the row whose cell disagreed. */
+  record_id: string | null;
+  /** The answer key's value, JSON-encoded so null, '', false and 0 stay distinguishable. */
+  expected_value: string | null;
+  /** The substrate's value, JSON-encoded the same way. */
+  actual_value: string | null;
+  /** The harness's reason: 'wrong/null value', 'missing record' or 'missing entity file'. */
+  reason: string | null;
+  /** The substrate that produced ActualValue. */
+  substrate: string | null;
+  /** The field. */
+  rulebook_field: string | null;
+  /** Semantic type IRI. */
+  semantic_type_iri: string | null;
+  _erb_errors?: Record<string, string>;
+}
+
+const cellDisagreementsFieldTypes: Record<string, FieldType> = {
+  cell_disagreement_id: "string",
+  name: "*string",
+  field_disagreement: "*string",
+  record_id: "*string",
+  expected_value: "*string",
+  actual_value: "*string",
+  reason: "*string",
+  substrate: "*string",
+  rulebook_field: "*string",
+  semantic_type_iri: "*string",
+};
+
+/** Computes the Name calculated field.
+ *  Human-readable calculated display alias.
+ *  Formula: =CONCAT({{FieldDisagreement}}, " @ ", {{RecordId}}) */
+export function calcCellDisagreementsName(tc: CellDisagreementsRow): string | null {
+  return toStringPtr(erbConcat(erbTextOr(vStr(tc.field_disagreement)), vS(" @ "), erbTextOr(vStr(tc.record_id))));
+}
+
+/** Computes every calculated field of the row in dependency order. */
+export function computeCellDisagreements(tc: CellDisagreementsRow): CellDisagreementsRow {
+  // Level 1
+  calcGuard(tc, cellDisagreementsFieldTypes, "name", () => { tc.name = calcCellDisagreementsName(tc); });
+  return tc;
+}
+
+/** Reads CellDisagreements rows from a JSON array file. */
+export function loadCellDisagreementsRows(file: string): CellDisagreementsRow[] {
+  return loadRows(file, { fields: cellDisagreementsFieldTypes }) as unknown as CellDisagreementsRow[];
+}
+
 /** Bounds the runner's passes over the dataset. */
-export const calculatedFieldCount = 705;
+export const calculatedFieldCount = 736;
 
 /** Every table, in rulebook order. */
 export const erbTables: TableSpec[] = [
@@ -13675,7 +14397,7 @@ export const erbTables: TableSpec[] = [
       { field: "drifted_send_count", op: "COUNTIFS", table: "message_deliveries", criteria: [{ range: "drifted_send_template_key", kind: "field", field: "message_template_id" }] },
       { field: "unanswered_delivery_count", op: "COUNTIFS", table: "message_deliveries", criteria: [{ range: "unanswered_template_key", kind: "field", field: "message_template_id" }] },
       { field: "transmitted_delivery_count", op: "COUNTIFS", table: "message_deliveries", criteria: [{ range: "transmitted_template_key", kind: "field", field: "message_template_id" }] },] },
-  { name: "SemanticMappings", file: "semantic_mappings", rulebookRows: 41, fields: semanticMappingsFieldTypes,
+  { name: "SemanticMappings", file: "semantic_mappings", rulebookRows: 47, fields: semanticMappingsFieldTypes,
     compute: (row: any) => computeSemanticMappings(row as SemanticMappingsRow),
     lookups: [],
     aggregations: [] },
@@ -13684,15 +14406,16 @@ export const erbTables: TableSpec[] = [
     lookups: [],
     aggregations: [
       { field: "question_count", op: "COUNTIFS", table: "role_questions", criteria: [{ range: "witness_loop", kind: "field", field: "witness_loop_id" }] },] },
-  { name: "RoleQuestions", file: "role_questions", rulebookRows: 108, fields: roleQuestionsFieldTypes,
+  { name: "RoleQuestions", file: "role_questions", rulebookRows: 109, fields: roleQuestionsFieldTypes,
     compute: (row: any) => computeRoleQuestions(row as RoleQuestionsRow),
     lookups: [],
     aggregations: [
       { field: "predicate_count", op: "COUNTIFS", table: "rulebook_fields", criteria: [{ range: "invented_for_question", kind: "field", field: "role_question_id" }] },] },
-  { name: "RulebookFields", file: "rulebook_fields", rulebookRows: 1771, fields: rulebookFieldsFieldTypes,
+  { name: "RulebookFields", file: "rulebook_fields", rulebookRows: 1879, fields: rulebookFieldsFieldTypes,
     compute: (row: any) => computeRulebookFields(row as RulebookFieldsRow),
     lookups: [],
-    aggregations: [] },
+    aggregations: [
+      { field: "disagreeing_substrate_count", op: "COUNTIFS", table: "field_disagreements", criteria: [{ range: "rulebook_field", kind: "field", field: "rulebook_field_id" }] },] },
   { name: "TestSuites", file: "test_suites", rulebookRows: 6, fields: testSuitesFieldTypes,
     compute: (row: any) => computeTestSuites(row as TestSuitesRow),
     lookups: [],
@@ -13857,12 +14580,13 @@ export const erbTables: TableSpec[] = [
     compute: (row: any) => computeAppRouteReferences(row as AppRouteReferencesRow),
     lookups: [],
     aggregations: [] },
-  { name: "RulebookTables", file: "rulebook_tables", rulebookRows: 86, fields: rulebookTablesFieldTypes,
+  { name: "RulebookTables", file: "rulebook_tables", rulebookRows: 92, fields: rulebookTablesFieldTypes,
     compute: (row: any) => computeRulebookTables(row as RulebookTablesRow),
     lookups: [],
     aggregations: [
       { field: "field_count", op: "COUNTIFS", table: "rulebook_fields", criteria: [{ range: "target_table", kind: "field", field: "rulebook_table_id" }] },
-      { field: "policy_count", op: "COUNTIFS", table: "access_policies", criteria: [{ range: "target_table", kind: "field", field: "rulebook_table_id" }] },] },
+      { field: "policy_count", op: "COUNTIFS", table: "access_policies", criteria: [{ range: "target_table", kind: "field", field: "rulebook_table_id" }] },
+      { field: "disagreeing_substrate_count", op: "COUNTIFS", table: "table_conformance", criteria: [{ range: "imperfect_table_key", kind: "field", field: "rulebook_table_id" }] },] },
   { name: "AccessPrincipals", file: "access_principals", rulebookRows: 12, fields: accessPrincipalsFieldTypes,
     compute: (row: any) => computeAccessPrincipals(row as AccessPrincipalsRow),
     lookups: [
@@ -13947,6 +14671,50 @@ export const erbTables: TableSpec[] = [
     lookups: [
       { field: "as_of_instant", target: "evaluation_contexts", ret: "as_of_instant", key: "evaluation_context", match: "evaluation_context_id" },
       { field: "broker_is_still_engaged", target: "agents", ret: "is_still_engaged", key: "broker", match: "agent_id" },],
+    aggregations: [] },
+  { name: "ConformanceSubstrates", file: "conformance_substrates", rulebookRows: 8, fields: conformanceSubstratesFieldTypes,
+    compute: (row: any) => computeConformanceSubstrates(row as ConformanceSubstratesRow),
+    lookups: [],
+    aggregations: [
+      { field: "run_count", op: "COUNTIFS", table: "substrate_run_scores", criteria: [{ range: "substrate", kind: "field", field: "conformance_substrate_id" }] },
+      { field: "latest_cells_tested", op: "SUM", table: "substrate_run_scores", target: "latest_cells_tested", criteria: [{ range: "substrate", kind: "field", field: "conformance_substrate_id" }] },
+      { field: "latest_cells_passed", op: "SUM", table: "substrate_run_scores", target: "latest_cells_passed", criteria: [{ range: "substrate", kind: "field", field: "conformance_substrate_id" }] },
+      { field: "latest_harness_errors", op: "SUM", table: "substrate_run_scores", target: "latest_error_flag", criteria: [{ range: "substrate", kind: "field", field: "conformance_substrate_id" }] },
+      { field: "disagreeing_field_count", op: "COUNTIFS", table: "field_disagreements", criteria: [{ range: "substrate", kind: "field", field: "conformance_substrate_id" }] },
+      { field: "disagreeing_table_count", op: "COUNTIFS", table: "table_conformance", criteria: [{ range: "imperfect_substrate_key", kind: "field", field: "conformance_substrate_id" }] },] },
+  { name: "ConformanceRuns", file: "conformance_runs", rulebookRows: 1, fields: conformanceRunsFieldTypes,
+    compute: (row: any) => computeConformanceRuns(row as ConformanceRunsRow),
+    lookups: [],
+    aggregations: [
+      { field: "substrate_count", op: "COUNTIFS", table: "substrate_run_scores", criteria: [{ range: "run", kind: "field", field: "conformance_run_id" }] },
+      { field: "perfect_substrate_count", op: "COUNTIFS", table: "substrate_run_scores", criteria: [{ range: "perfect_run_key", kind: "field", field: "conformance_run_id" }] },
+      { field: "cells_tested", op: "SUM", table: "substrate_run_scores", target: "cells_tested", criteria: [{ range: "run", kind: "field", field: "conformance_run_id" }] },
+      { field: "cells_passed", op: "SUM", table: "substrate_run_scores", target: "cells_passed", criteria: [{ range: "run", kind: "field", field: "conformance_run_id" }] },] },
+  { name: "SubstrateRunScores", file: "substrate_run_scores", rulebookRows: 7, fields: substrateRunScoresFieldTypes,
+    compute: (row: any) => computeSubstrateRunScores(row as SubstrateRunScoresRow),
+    lookups: [
+      { field: "is_in_latest_run", target: "conformance_runs", ret: "is_latest", key: "run", match: "conformance_run_id" },
+      { field: "substrate_label", target: "conformance_substrates", ret: "label", key: "substrate", match: "conformance_substrate_id" },],
+    aggregations: [] },
+  { name: "TableConformance", file: "table_conformance", rulebookRows: 581, fields: tableConformanceFieldTypes,
+    compute: (row: any) => computeTableConformance(row as TableConformanceRow),
+    lookups: [
+      { field: "substrate_label", target: "conformance_substrates", ret: "label", key: "substrate", match: "conformance_substrate_id" },
+      { field: "subject_area", target: "rulebook_tables", ret: "subject_area", key: "rulebook_table", match: "rulebook_table_id" },],
+    aggregations: [
+      { field: "disagreeing_field_count", op: "COUNTIFS", table: "field_disagreements", criteria: [{ range: "table_conformance", kind: "field", field: "table_conformance_id" }] },] },
+  { name: "FieldDisagreements", file: "field_disagreements", rulebookRows: 400, fields: fieldDisagreementsFieldTypes,
+    compute: (row: any) => computeFieldDisagreements(row as FieldDisagreementsRow),
+    lookups: [
+      { field: "formula", target: "rulebook_fields", ret: "formula", key: "rulebook_field", match: "rulebook_field_id" },
+      { field: "substrate_label", target: "conformance_substrates", ret: "label", key: "substrate", match: "conformance_substrate_id" },],
+    aggregations: [
+      { field: "sampled_cell_count", op: "COUNTIFS", table: "cell_disagreements", criteria: [{ range: "field_disagreement", kind: "field", field: "field_disagreement_id" }] },] },
+  { name: "CellDisagreements", file: "cell_disagreements", rulebookRows: 1725, fields: cellDisagreementsFieldTypes,
+    compute: (row: any) => computeCellDisagreements(row as CellDisagreementsRow),
+    lookups: [
+      { field: "substrate", target: "field_disagreements", ret: "substrate", key: "field_disagreement", match: "field_disagreement_id" },
+      { field: "rulebook_field", target: "field_disagreements", ret: "rulebook_field", key: "field_disagreement", match: "field_disagreement_id" },],
     aggregations: [] },
 ];
 

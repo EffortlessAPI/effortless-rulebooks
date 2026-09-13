@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -16,108 +17,125 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string RoleId { get; set; }
 
         // Formula Name (rulebook: ={{Label}})
+        [NotMapped]
         public string? Name
         {
-            get => this.Label; set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Of(this.Label))); set { }
         }
 
         public string? Label { get; set; }
         // Formula CurrentAgentKind (rulebook: =INDEX(Agents!{{AgentKind}}, MATCH({{CurrentAgent}}, Agents!{{AgentId}}, 0)))
+        [NotMapped]
         public string? CurrentAgentKind
         {
-            get => INDEX(Agents!this.AgentKind, MATCH(this.CurrentAgent, Agents!this.AgentId, 0)); set { }
+            get => F.AsString(F.Memo(this, "CurrentAgentKind", () => F.Lookup<Agent>(this, "Agents", "AgentId", __c => __c.Agents, __r => F.Of(__r.AgentId), F.Of(this.CurrentAgent), __r => F.Of(__r.AgentKind), () => F.Of(new Agent().AgentKind)))); set { }
         }
 
         public string? Responsibility { get; set; }
         // Formula ActiveAssignmentCount (rulebook: =COUNTIFS(RoleAssignments!{{Role}}, {{RoleId}}))
+        [NotMapped]
         public decimal? ActiveAssignmentCount
         {
-            get => COUNTIFS(RoleAssignments!this.Role, this.RoleId); set { }
+            get => F.AsDecimal(F.Memo(this, "ActiveAssignmentCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<RoleAssignment>(base.SoAContext, "RoleAssignments", __c => __c.RoleAssignments), __r => F.CritField(F.Of(__r.Role), F.Of(this.RoleId)))))); set { }
         }
 
         // Formula CurrentlyCoveredAssignmentCount (rulebook: =COUNTIFS(RoleAssignments!{{RoleWhenCovering}}, {{RoleId}}))
+        [NotMapped]
         public decimal? CurrentlyCoveredAssignmentCount
         {
-            get => COUNTIFS(RoleAssignments!this.RoleWhenCovering, this.RoleId); set { }
+            get => F.AsDecimal(F.Memo(this, "CurrentlyCoveredAssignmentCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<RoleAssignment>(base.SoAContext, "RoleAssignments", __c => __c.RoleAssignments), __r => F.CritField(F.Of(__r.RoleWhenCovering), F.Of(this.RoleId)))))); set { }
         }
 
         // Formula HasNoCurrentHolder (rulebook: ={{CurrentlyCoveredAssignmentCount}} = 0)
+        [NotMapped]
         public bool? HasNoCurrentHolder
         {
-            get => this.CurrentlyCoveredAssignmentCount = 0; set { }
+            get => F.AsBool(F.Memo(this, "HasNoCurrentHolder", () => F.Eq(F.Of(this.CurrentlyCoveredAssignmentCount), F.I(0)))); set { }
         }
 
         // Formula CountOfAwaitedDecisions (rulebook: =COUNTIFS(ChangeRequests!{{AuthorityRole}}, Roles!{{RoleId}}))
+        [NotMapped]
         public int? CountOfAwaitedDecisions
         {
-            get => this.ChangeRequests == null ? 0 : this.ChangeRequests.Count; set { }
+            get => F.AsInt(F.Memo(this, "CountOfAwaitedDecisions", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<ChangeRequest>(base.SoAContext, "ChangeRequests", __c => __c.ChangeRequests), __r => F.CritField(F.Of(__r.AuthorityRole), F.Of(this.RoleId))))))); set { }
         }
 
         public string? CurrentAssignment { get; set; }
         // Formula CurrentAssignmentValidFrom (rulebook: =INDEX(RoleAssignments!{{ValidFrom}}, MATCH({{CurrentAssignment}}, RoleAssignments!{{RoleAssignmentId}}, 0)))
-        public DateTime? CurrentAssignmentValidFrom
+        [NotMapped]
+        public DateTimeOffset? CurrentAssignmentValidFrom
         {
-            get => INDEX(RoleAssignments!this.ValidFrom, MATCH(this.CurrentAssignment, RoleAssignments!this.RoleAssignmentId, 0)); set { }
+            get => F.AsDateTime(F.Memo(this, "CurrentAssignmentValidFrom", () => F.Lookup<RoleAssignment>(this, "RoleAssignments", "RoleAssignmentId", __c => __c.RoleAssignments, __r => F.Of(__r.RoleAssignmentId), F.Of(this.CurrentAssignment), __r => F.Of(__r.ValidFrom), () => F.Of(new RoleAssignment().ValidFrom)))); set { }
         }
 
         // Formula IsNonHumanHeld (rulebook: =NOT({{CurrentAgentKind}} = "Human"))
+        [NotMapped]
         public bool? IsNonHumanHeld
         {
-            get => NOT(this.CurrentAgentKind = "Human"); set { }
+            get => F.AsBool(F.Memo(this, "IsNonHumanHeld", () => F.Not(F.Bool3(F.Eq(F.Of(this.CurrentAgentKind), F.S("Human")))))); set { }
         }
 
         // Formula IsUngovernedNonHumanRole (rulebook: =AND({{IsNonHumanHeld}}, {{HasNoCurrentHolder}}))
+        [NotMapped]
         public bool? IsUngovernedNonHumanRole
         {
-            get => AND(this.IsNonHumanHeld, this.HasNoCurrentHolder); set { }
+            get => F.AsBool(F.Memo(this, "IsUngovernedNonHumanRole", () => F.And(F.Bool3(F.Of(this.IsNonHumanHeld)), F.Bool3(F.Of(this.HasNoCurrentHolder))))); set { }
         }
 
         // Formula DepartedAssignmentCount (rulebook: =COUNTIFS(RoleAssignments!{{DepartedRoleKey}}, {{RoleId}}))
+        [NotMapped]
         public decimal? DepartedAssignmentCount
         {
-            get => COUNTIFS(RoleAssignments!this.DepartedRoleKey, this.RoleId); set { }
+            get => F.AsDecimal(F.Memo(this, "DepartedAssignmentCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<RoleAssignment>(base.SoAContext, "RoleAssignments", __c => __c.RoleAssignments), __r => F.CritField(F.Of(__r.DepartedRoleKey), F.Of(this.RoleId)))))); set { }
         }
 
         // Formula HasLostAHolder (rulebook: ={{DepartedAssignmentCount}} > 0)
+        [NotMapped]
         public bool? HasLostAHolder
         {
-            get => this.DepartedAssignmentCount > 0; set { }
+            get => F.AsBool(F.Memo(this, "HasLostAHolder", () => F.Cmp(F.Of(this.DepartedAssignmentCount), ">", F.I(0)))); set { }
         }
 
         // Formula IsVacatedRole (rulebook: =AND({{HasLostAHolder}}, {{HasNoCurrentHolder}}))
+        [NotMapped]
         public bool? IsVacatedRole
         {
-            get => AND(this.HasLostAHolder, this.HasNoCurrentHolder); set { }
+            get => F.AsBool(F.Memo(this, "IsVacatedRole", () => F.And(F.Bool3(F.Of(this.HasLostAHolder)), F.Bool3(F.Of(this.HasNoCurrentHolder))))); set { }
         }
 
         // Formula UngroundedBoundaryCount (rulebook: =COUNTIFS(AuthorityBoundaries!{{ConstrainedRoleAssignmentKey}}, {{RoleId}}))
+        [NotMapped]
         public decimal? UngroundedBoundaryCount
         {
-            get => COUNTIFS(AuthorityBoundaries!this.ConstrainedRoleAssignmentKey, this.RoleId); set { }
+            get => F.AsDecimal(F.Memo(this, "UngroundedBoundaryCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<AuthorityBoundary>(base.SoAContext, "AuthorityBoundaries", __c => __c.AuthorityBoundaries), __r => F.CritField(F.Of(__r.ConstrainedRoleAssignmentKey), F.Of(this.RoleId)))))); set { }
         }
 
         // Formula IsGovernedByLapsedAuthority (rulebook: =({{UngroundedBoundaryCount}} > 0))
+        [NotMapped]
         public bool? IsGovernedByLapsedAuthority
         {
-            get => (this.UngroundedBoundaryCount > 0); set { }
+            get => F.AsBool(F.Memo(this, "IsGovernedByLapsedAuthority", () => F.Cmp(F.Of(this.UngroundedBoundaryCount), ">", F.I(0)))); set { }
         }
 
         // Formula UnescalatedRefusalCount (rulebook: =COUNTIFS(SendIntents!{{UnescalatedRefusalRoleKey}}, {{RoleId}}))
+        [NotMapped]
         public decimal? UnescalatedRefusalCount
         {
-            get => COUNTIFS(SendIntents!this.UnescalatedRefusalRoleKey, this.RoleId); set { }
+            get => F.AsDecimal(F.Memo(this, "UnescalatedRefusalCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<SendIntent>(base.SoAContext, "SendIntents", __c => __c.SendIntents), __r => F.CritField(F.Of(__r.UnescalatedRefusalRoleKey), F.Of(this.RoleId)))))); set { }
         }
 
         // Formula UnauthorizedEnforcementAssignmentCount (rulebook: =COUNTIFS(RoleAssignments!{{UnauthorizedEnforcementRoleKey}}, {{RoleId}}))
+        [NotMapped]
         public decimal? UnauthorizedEnforcementAssignmentCount
         {
-            get => COUNTIFS(RoleAssignments!this.UnauthorizedEnforcementRoleKey, this.RoleId); set { }
+            get => F.AsDecimal(F.Memo(this, "UnauthorizedEnforcementAssignmentCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<RoleAssignment>(base.SoAContext, "RoleAssignments", __c => __c.RoleAssignments), __r => F.CritField(F.Of(__r.UnauthorizedEnforcementRoleKey), F.Of(this.RoleId)))))); set { }
         }
 
         // Formula IsUngovernedEnforcementRole (rulebook: =({{UnauthorizedEnforcementAssignmentCount}} > 0))
+        [NotMapped]
         public bool? IsUngovernedEnforcementRole
         {
-            get => (this.UnauthorizedEnforcementAssignmentCount > 0); set { }
+            get => F.AsBool(F.Memo(this, "IsUngovernedEnforcementRole", () => F.Cmp(F.Of(this.UnauthorizedEnforcementAssignmentCount), ">", F.I(0)))); set { }
         }
 
         public string? SemanticTypeIri { get; set; }
@@ -125,37 +143,46 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string? Organization { get; set; }
         public string? CurrentAgent { get; set; }
 
-        private Organization _organization;
+        private Organization _organizationRef;
 
         [ForeignKey("Organization")]
-        public virtual Organization Organization
+        public virtual Organization OrganizationRef
         {
             get
             {
-                if (_organization == null && !string.IsNullOrEmpty(Organization))
+                if (_organizationRef == null && !string.IsNullOrEmpty(Organization))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access Organization - no database context is set. Organization: " + Organization + ".");
+                            throw new InvalidOperationException("Cannot access OrganizationRef - no database context is set. Organization: " + Organization + ".");
                         }
                         return null;
                     }
-                    _organization = Context.Organizations.Find(Organization);
-                    if (_organization != null)
+                    _organizationRef = base.SoAContext.Organizations.Find(Organization);
+                    if (_organizationRef != null)
                     {
-                        Context.Attach(_organization);
+                        base.SoAContext.Attach(_organizationRef);
                     }
                 }
-                return _organization;
+                return _organizationRef;
             }
             set
             {
-                if (_organization != value)
+                if (_organizationRef != value)
                 {
-                    _organization = value;
-                    Organization = _organization == null ? default : _organization.OrganizationId;
+                    _organizationRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_organizationRef != null)
+                    {
+                        Organization = _organizationRef.OrganizationId;
+                    }
                 }
             }
         }
@@ -169,7 +196,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_agent == null && !string.IsNullOrEmpty(CurrentAgent))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -177,10 +204,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                         }
                         return null;
                     }
-                    _agent = Context.Agents.Find(CurrentAgent);
+                    _agent = base.SoAContext.Agents.Find(CurrentAgent);
                     if (_agent != null)
                     {
-                        Context.Attach(_agent);
+                        base.SoAContext.Attach(_agent);
                     }
                 }
                 return _agent;
@@ -190,56 +217,65 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                 if (_agent != value)
                 {
                     _agent = value;
-                    CurrentAgent = _agent == null ? default : _agent.AgentId;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_agent != null)
+                    {
+                        CurrentAgent = _agent.AgentId;
+                    }
                 }
             }
         }
 
-        private ObservableCollection<RoleAssignment> _roleAssignments;
+        private ObservableCollection<RoleAssignment> _roleRoleAssignments;
 
-        [InverseProperty("Role")]
-        public virtual ObservableCollection<RoleAssignment> RoleAssignments
+        [InverseProperty("RoleRef")]
+        public virtual ObservableCollection<RoleAssignment> RoleRoleAssignments
         {
             get
             {
-                if (_roleAssignments == null)
+                if (_roleRoleAssignments == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access RoleAssignments - no database context is set. RoleId: " + this.RoleId + ".");
+                            throw new InvalidOperationException("Cannot access RoleRoleAssignments - no database context is set. RoleId: " + this.RoleId + ".");
                         }
-                        _roleAssignments = new ObservableCollection<RoleAssignment>();
+                        _roleRoleAssignments = new ObservableCollection<RoleAssignment>();
                     }
                     else
                     {
-                        var items = Context.RoleAssignments.Where(x => x.Role == this.RoleId).ToList<RoleAssignment>();
-                        _roleAssignments = new ObservableCollection<RoleAssignment>(items);
+                        var items = base.SoAContext.RoleAssignments.Where(x => x.Role == this.RoleId).ToList<RoleAssignment>();
+                        _roleRoleAssignments = new ObservableCollection<RoleAssignment>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
-                    _roleAssignments.CollectionChanged += RoleAssignments_CollectionChanged;
+                    _roleRoleAssignments.CollectionChanged += RoleRoleAssignments_CollectionChanged;
                 }
-                return _roleAssignments;
+                return _roleRoleAssignments;
             }
             private set
             {
-                if (_roleAssignments != null)
+                if (_roleRoleAssignments != null)
                 {
-                    _roleAssignments.CollectionChanged -= RoleAssignments_CollectionChanged;
+                    _roleRoleAssignments.CollectionChanged -= RoleRoleAssignments_CollectionChanged;
                 }
-                _roleAssignments = value;
-                if (_roleAssignments != null)
+                _roleRoleAssignments = value;
+                if (_roleRoleAssignments != null)
                 {
-                    _roleAssignments.CollectionChanged += RoleAssignments_CollectionChanged;
+                    _roleRoleAssignments.CollectionChanged += RoleRoleAssignments_CollectionChanged;
                 }
             }
         }
 
-        private void RoleAssignments_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void RoleRoleAssignments_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e?.NewItems != null)
             {
@@ -250,51 +286,51 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
-        private ObservableCollection<RoleAssignment> _roleAssignments;
+        private ObservableCollection<RoleAssignment> _approvingAuthorityRoleRoleAssignments;
 
-        [InverseProperty("ApprovingAuthorityRole")]
-        public virtual ObservableCollection<RoleAssignment> RoleAssignments
+        [InverseProperty("RoleRefRef")]
+        public virtual ObservableCollection<RoleAssignment> ApprovingAuthorityRoleRoleAssignments
         {
             get
             {
-                if (_roleAssignments == null)
+                if (_approvingAuthorityRoleRoleAssignments == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access RoleAssignments - no database context is set. RoleId: " + this.RoleId + ".");
+                            throw new InvalidOperationException("Cannot access ApprovingAuthorityRoleRoleAssignments - no database context is set. RoleId: " + this.RoleId + ".");
                         }
-                        _roleAssignments = new ObservableCollection<RoleAssignment>();
+                        _approvingAuthorityRoleRoleAssignments = new ObservableCollection<RoleAssignment>();
                     }
                     else
                     {
-                        var items = Context.RoleAssignments.Where(x => x.ApprovingAuthorityRole == this.RoleId).ToList<RoleAssignment>();
-                        _roleAssignments = new ObservableCollection<RoleAssignment>(items);
+                        var items = base.SoAContext.RoleAssignments.Where(x => x.ApprovingAuthorityRole == this.RoleId).ToList<RoleAssignment>();
+                        _approvingAuthorityRoleRoleAssignments = new ObservableCollection<RoleAssignment>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
-                    _roleAssignments.CollectionChanged += RoleAssignments_CollectionChanged;
+                    _approvingAuthorityRoleRoleAssignments.CollectionChanged += ApprovingAuthorityRoleRoleAssignments_CollectionChanged;
                 }
-                return _roleAssignments;
+                return _approvingAuthorityRoleRoleAssignments;
             }
             private set
             {
-                if (_roleAssignments != null)
+                if (_approvingAuthorityRoleRoleAssignments != null)
                 {
-                    _roleAssignments.CollectionChanged -= RoleAssignments_CollectionChanged;
+                    _approvingAuthorityRoleRoleAssignments.CollectionChanged -= ApprovingAuthorityRoleRoleAssignments_CollectionChanged;
                 }
-                _roleAssignments = value;
-                if (_roleAssignments != null)
+                _approvingAuthorityRoleRoleAssignments = value;
+                if (_approvingAuthorityRoleRoleAssignments != null)
                 {
-                    _roleAssignments.CollectionChanged += RoleAssignments_CollectionChanged;
+                    _approvingAuthorityRoleRoleAssignments.CollectionChanged += ApprovingAuthorityRoleRoleAssignments_CollectionChanged;
                 }
             }
         }
 
-        private void RoleAssignments_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void ApprovingAuthorityRoleRoleAssignments_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e?.NewItems != null)
             {
@@ -314,7 +350,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_communitiesOfPractice == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -324,11 +360,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.CommunitiesOfPractice.Where(x => x.StewardRole == this.RoleId).ToList<CommunitiesOfPractice>();
+                        var items = base.SoAContext.CommunitiesOfPractice.Where(x => x.StewardRole == this.RoleId).ToList<CommunitiesOfPractice>();
                         _communitiesOfPractice = new ObservableCollection<CommunitiesOfPractice>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _communitiesOfPractice.CollectionChanged += CommunitiesOfPractice_CollectionChanged;
@@ -369,7 +405,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_steps == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -379,11 +415,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.Steps.Where(x => x.AssignedRole == this.RoleId).ToList<Step>();
+                        var items = base.SoAContext.Steps.Where(x => x.AssignedRole == this.RoleId).ToList<Step>();
                         _steps = new ObservableCollection<Step>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _steps.CollectionChanged += Steps_CollectionChanged;
@@ -424,7 +460,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_requirements == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -434,11 +470,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.Requirements.Where(x => x.AccountableRole == this.RoleId).ToList<Requirement>();
+                        var items = base.SoAContext.Requirements.Where(x => x.AccountableRole == this.RoleId).ToList<Requirement>();
                         _requirements = new ObservableCollection<Requirement>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _requirements.CollectionChanged += Requirements_CollectionChanged;
@@ -479,7 +515,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_rationales == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -489,11 +525,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.Rationales.Where(x => x.AuthorityRole == this.RoleId).ToList<Rationale>();
+                        var items = base.SoAContext.Rationales.Where(x => x.AuthorityRole == this.RoleId).ToList<Rationale>();
                         _rationales = new ObservableCollection<Rationale>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _rationales.CollectionChanged += Rationales_CollectionChanged;
@@ -525,51 +561,51 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
-        private ObservableCollection<Exception> _exceptions;
+        private ObservableCollection<Exception> _approvalRoleExceptions;
 
         [InverseProperty("Role")]
-        public virtual ObservableCollection<Exception> Exceptions
+        public virtual ObservableCollection<Exception> ApprovalRoleExceptions
         {
             get
             {
-                if (_exceptions == null)
+                if (_approvalRoleExceptions == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access Exceptions - no database context is set. RoleId: " + this.RoleId + ".");
+                            throw new InvalidOperationException("Cannot access ApprovalRoleExceptions - no database context is set. RoleId: " + this.RoleId + ".");
                         }
-                        _exceptions = new ObservableCollection<Exception>();
+                        _approvalRoleExceptions = new ObservableCollection<Exception>();
                     }
                     else
                     {
-                        var items = Context.Exceptions.Where(x => x.ApprovalRole == this.RoleId).ToList<Exception>();
-                        _exceptions = new ObservableCollection<Exception>(items);
+                        var items = base.SoAContext.Exceptions.Where(x => x.ApprovalRole == this.RoleId).ToList<Exception>();
+                        _approvalRoleExceptions = new ObservableCollection<Exception>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
-                    _exceptions.CollectionChanged += Exceptions_CollectionChanged;
+                    _approvalRoleExceptions.CollectionChanged += ApprovalRoleExceptions_CollectionChanged;
                 }
-                return _exceptions;
+                return _approvalRoleExceptions;
             }
             private set
             {
-                if (_exceptions != null)
+                if (_approvalRoleExceptions != null)
                 {
-                    _exceptions.CollectionChanged -= Exceptions_CollectionChanged;
+                    _approvalRoleExceptions.CollectionChanged -= ApprovalRoleExceptions_CollectionChanged;
                 }
-                _exceptions = value;
-                if (_exceptions != null)
+                _approvalRoleExceptions = value;
+                if (_approvalRoleExceptions != null)
                 {
-                    _exceptions.CollectionChanged += Exceptions_CollectionChanged;
+                    _approvalRoleExceptions.CollectionChanged += ApprovalRoleExceptions_CollectionChanged;
                 }
             }
         }
 
-        private void Exceptions_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void ApprovalRoleExceptions_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e?.NewItems != null)
             {
@@ -580,51 +616,51 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
-        private ObservableCollection<Exception> _exceptions;
+        private ObservableCollection<Exception> _fallbackRoleExceptions;
 
-        [InverseProperty("Role")]
-        public virtual ObservableCollection<Exception> Exceptions
+        [InverseProperty("RoleRef")]
+        public virtual ObservableCollection<Exception> FallbackRoleExceptions
         {
             get
             {
-                if (_exceptions == null)
+                if (_fallbackRoleExceptions == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access Exceptions - no database context is set. RoleId: " + this.RoleId + ".");
+                            throw new InvalidOperationException("Cannot access FallbackRoleExceptions - no database context is set. RoleId: " + this.RoleId + ".");
                         }
-                        _exceptions = new ObservableCollection<Exception>();
+                        _fallbackRoleExceptions = new ObservableCollection<Exception>();
                     }
                     else
                     {
-                        var items = Context.Exceptions.Where(x => x.FallbackRole == this.RoleId).ToList<Exception>();
-                        _exceptions = new ObservableCollection<Exception>(items);
+                        var items = base.SoAContext.Exceptions.Where(x => x.FallbackRole == this.RoleId).ToList<Exception>();
+                        _fallbackRoleExceptions = new ObservableCollection<Exception>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
-                    _exceptions.CollectionChanged += Exceptions_CollectionChanged;
+                    _fallbackRoleExceptions.CollectionChanged += FallbackRoleExceptions_CollectionChanged;
                 }
-                return _exceptions;
+                return _fallbackRoleExceptions;
             }
             private set
             {
-                if (_exceptions != null)
+                if (_fallbackRoleExceptions != null)
                 {
-                    _exceptions.CollectionChanged -= Exceptions_CollectionChanged;
+                    _fallbackRoleExceptions.CollectionChanged -= FallbackRoleExceptions_CollectionChanged;
                 }
-                _exceptions = value;
-                if (_exceptions != null)
+                _fallbackRoleExceptions = value;
+                if (_fallbackRoleExceptions != null)
                 {
-                    _exceptions.CollectionChanged += Exceptions_CollectionChanged;
+                    _fallbackRoleExceptions.CollectionChanged += FallbackRoleExceptions_CollectionChanged;
                 }
             }
         }
 
-        private void Exceptions_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void FallbackRoleExceptions_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e?.NewItems != null)
             {
@@ -644,7 +680,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_knowledgeFragments == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -654,11 +690,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.KnowledgeFragments.Where(x => x.OwnerRole == this.RoleId).ToList<KnowledgeFragment>();
+                        var items = base.SoAContext.KnowledgeFragments.Where(x => x.OwnerRole == this.RoleId).ToList<KnowledgeFragment>();
                         _knowledgeFragments = new ObservableCollection<KnowledgeFragment>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _knowledgeFragments.CollectionChanged += KnowledgeFragments_CollectionChanged;
@@ -699,7 +735,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_knowledgeGaps == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -709,11 +745,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.KnowledgeGaps.Where(x => x.OwnerRole == this.RoleId).ToList<KnowledgeGap>();
+                        var items = base.SoAContext.KnowledgeGaps.Where(x => x.OwnerRole == this.RoleId).ToList<KnowledgeGap>();
                         _knowledgeGaps = new ObservableCollection<KnowledgeGap>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _knowledgeGaps.CollectionChanged += KnowledgeGaps_CollectionChanged;
@@ -745,51 +781,51 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
-        private ObservableCollection<StewardshipAssignment> _stewardshipAssignments;
+        private ObservableCollection<StewardshipAssignment> _stewardRoleStewardshipAssignments;
 
         [InverseProperty("Role")]
-        public virtual ObservableCollection<StewardshipAssignment> StewardshipAssignments
+        public virtual ObservableCollection<StewardshipAssignment> StewardRoleStewardshipAssignments
         {
             get
             {
-                if (_stewardshipAssignments == null)
+                if (_stewardRoleStewardshipAssignments == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access StewardshipAssignments - no database context is set. RoleId: " + this.RoleId + ".");
+                            throw new InvalidOperationException("Cannot access StewardRoleStewardshipAssignments - no database context is set. RoleId: " + this.RoleId + ".");
                         }
-                        _stewardshipAssignments = new ObservableCollection<StewardshipAssignment>();
+                        _stewardRoleStewardshipAssignments = new ObservableCollection<StewardshipAssignment>();
                     }
                     else
                     {
-                        var items = Context.StewardshipAssignments.Where(x => x.StewardRole == this.RoleId).ToList<StewardshipAssignment>();
-                        _stewardshipAssignments = new ObservableCollection<StewardshipAssignment>(items);
+                        var items = base.SoAContext.StewardshipAssignments.Where(x => x.StewardRole == this.RoleId).ToList<StewardshipAssignment>();
+                        _stewardRoleStewardshipAssignments = new ObservableCollection<StewardshipAssignment>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
-                    _stewardshipAssignments.CollectionChanged += StewardshipAssignments_CollectionChanged;
+                    _stewardRoleStewardshipAssignments.CollectionChanged += StewardRoleStewardshipAssignments_CollectionChanged;
                 }
-                return _stewardshipAssignments;
+                return _stewardRoleStewardshipAssignments;
             }
             private set
             {
-                if (_stewardshipAssignments != null)
+                if (_stewardRoleStewardshipAssignments != null)
                 {
-                    _stewardshipAssignments.CollectionChanged -= StewardshipAssignments_CollectionChanged;
+                    _stewardRoleStewardshipAssignments.CollectionChanged -= StewardRoleStewardshipAssignments_CollectionChanged;
                 }
-                _stewardshipAssignments = value;
-                if (_stewardshipAssignments != null)
+                _stewardRoleStewardshipAssignments = value;
+                if (_stewardRoleStewardshipAssignments != null)
                 {
-                    _stewardshipAssignments.CollectionChanged += StewardshipAssignments_CollectionChanged;
+                    _stewardRoleStewardshipAssignments.CollectionChanged += StewardRoleStewardshipAssignments_CollectionChanged;
                 }
             }
         }
 
-        private void StewardshipAssignments_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void StewardRoleStewardshipAssignments_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e?.NewItems != null)
             {
@@ -800,51 +836,51 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
-        private ObservableCollection<StewardshipAssignment> _stewardshipAssignments;
+        private ObservableCollection<StewardshipAssignment> _authorityRoleStewardshipAssignments;
 
-        [InverseProperty("Role")]
-        public virtual ObservableCollection<StewardshipAssignment> StewardshipAssignments
+        [InverseProperty("RoleRef")]
+        public virtual ObservableCollection<StewardshipAssignment> AuthorityRoleStewardshipAssignments
         {
             get
             {
-                if (_stewardshipAssignments == null)
+                if (_authorityRoleStewardshipAssignments == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access StewardshipAssignments - no database context is set. RoleId: " + this.RoleId + ".");
+                            throw new InvalidOperationException("Cannot access AuthorityRoleStewardshipAssignments - no database context is set. RoleId: " + this.RoleId + ".");
                         }
-                        _stewardshipAssignments = new ObservableCollection<StewardshipAssignment>();
+                        _authorityRoleStewardshipAssignments = new ObservableCollection<StewardshipAssignment>();
                     }
                     else
                     {
-                        var items = Context.StewardshipAssignments.Where(x => x.AuthorityRole == this.RoleId).ToList<StewardshipAssignment>();
-                        _stewardshipAssignments = new ObservableCollection<StewardshipAssignment>(items);
+                        var items = base.SoAContext.StewardshipAssignments.Where(x => x.AuthorityRole == this.RoleId).ToList<StewardshipAssignment>();
+                        _authorityRoleStewardshipAssignments = new ObservableCollection<StewardshipAssignment>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
-                    _stewardshipAssignments.CollectionChanged += StewardshipAssignments_CollectionChanged;
+                    _authorityRoleStewardshipAssignments.CollectionChanged += AuthorityRoleStewardshipAssignments_CollectionChanged;
                 }
-                return _stewardshipAssignments;
+                return _authorityRoleStewardshipAssignments;
             }
             private set
             {
-                if (_stewardshipAssignments != null)
+                if (_authorityRoleStewardshipAssignments != null)
                 {
-                    _stewardshipAssignments.CollectionChanged -= StewardshipAssignments_CollectionChanged;
+                    _authorityRoleStewardshipAssignments.CollectionChanged -= AuthorityRoleStewardshipAssignments_CollectionChanged;
                 }
-                _stewardshipAssignments = value;
-                if (_stewardshipAssignments != null)
+                _authorityRoleStewardshipAssignments = value;
+                if (_authorityRoleStewardshipAssignments != null)
                 {
-                    _stewardshipAssignments.CollectionChanged += StewardshipAssignments_CollectionChanged;
+                    _authorityRoleStewardshipAssignments.CollectionChanged += AuthorityRoleStewardshipAssignments_CollectionChanged;
                 }
             }
         }
 
-        private void StewardshipAssignments_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void AuthorityRoleStewardshipAssignments_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e?.NewItems != null)
             {
@@ -864,7 +900,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_changeRequests == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -874,11 +910,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.ChangeRequests.Where(x => x.AuthorityRole == this.RoleId).ToList<ChangeRequest>();
+                        var items = base.SoAContext.ChangeRequests.Where(x => x.AuthorityRole == this.RoleId).ToList<ChangeRequest>();
                         _changeRequests = new ObservableCollection<ChangeRequest>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _changeRequests.CollectionChanged += ChangeRequests_CollectionChanged;
@@ -919,7 +955,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_communicationPolicies == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -929,11 +965,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.CommunicationPolicies.Where(x => x.ApprovalRole == this.RoleId).ToList<CommunicationPolicy>();
+                        var items = base.SoAContext.CommunicationPolicies.Where(x => x.ApprovalRole == this.RoleId).ToList<CommunicationPolicy>();
                         _communicationPolicies = new ObservableCollection<CommunicationPolicy>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _communicationPolicies.CollectionChanged += CommunicationPolicies_CollectionChanged;
@@ -974,7 +1010,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_roleQuestions == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -984,11 +1020,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.RoleQuestions.Where(x => x.AskingRole == this.RoleId).ToList<RoleQuestion>();
+                        var items = base.SoAContext.RoleQuestions.Where(x => x.AskingRole == this.RoleId).ToList<RoleQuestion>();
                         _roleQuestions = new ObservableCollection<RoleQuestion>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _roleQuestions.CollectionChanged += RoleQuestions_CollectionChanged;
@@ -1029,7 +1065,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_templateApprovals == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -1039,11 +1075,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.TemplateApprovals.Where(x => x.DecidedInRole == this.RoleId).ToList<TemplateApproval>();
+                        var items = base.SoAContext.TemplateApprovals.Where(x => x.DecidedInRole == this.RoleId).ToList<TemplateApproval>();
                         _templateApprovals = new ObservableCollection<TemplateApproval>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _templateApprovals.CollectionChanged += TemplateApprovals_CollectionChanged;
@@ -1084,7 +1120,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_sendIntents == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -1094,11 +1130,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.SendIntents.Where(x => x.RefusalNotifiedRole == this.RoleId).ToList<SendIntent>();
+                        var items = base.SoAContext.SendIntents.Where(x => x.RefusalNotifiedRole == this.RoleId).ToList<SendIntent>();
                         _sendIntents = new ObservableCollection<SendIntent>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _sendIntents.CollectionChanged += SendIntents_CollectionChanged;
@@ -1139,7 +1175,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_authorityBoundaries == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -1149,11 +1185,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.AuthorityBoundaries.Where(x => x.AuthorityRole == this.RoleId).ToList<AuthorityBoundary>();
+                        var items = base.SoAContext.AuthorityBoundaries.Where(x => x.AuthorityRole == this.RoleId).ToList<AuthorityBoundary>();
                         _authorityBoundaries = new ObservableCollection<AuthorityBoundary>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _authorityBoundaries.CollectionChanged += AuthorityBoundaries_CollectionChanged;
@@ -1187,14 +1223,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<AppRoleProfile> _appRoleProfiles;
 
-        [InverseProperty("Role")]
+        [InverseProperty("RoleRef")]
         public virtual ObservableCollection<AppRoleProfile> AppRoleProfiles
         {
             get
             {
                 if (_appRoleProfiles == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -1204,11 +1240,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.AppRoleProfiles.Where(x => x.Role == this.RoleId).ToList<AppRoleProfile>();
+                        var items = base.SoAContext.AppRoleProfiles.Where(x => x.Role == this.RoleId).ToList<AppRoleProfile>();
                         _appRoleProfiles = new ObservableCollection<AppRoleProfile>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _appRoleProfiles.CollectionChanged += AppRoleProfiles_CollectionChanged;
@@ -1249,7 +1285,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_appRoutes == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -1259,11 +1295,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.AppRoutes.Where(x => x.OwningRole == this.RoleId).ToList<AppRoute>();
+                        var items = base.SoAContext.AppRoutes.Where(x => x.OwningRole == this.RoleId).ToList<AppRoute>();
                         _appRoutes = new ObservableCollection<AppRoute>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _appRoutes.CollectionChanged += AppRoutes_CollectionChanged;
@@ -1304,7 +1340,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_accessPrincipals == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -1314,11 +1350,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.AccessPrincipals.Where(x => x.DomainRole == this.RoleId).ToList<AccessPrincipal>();
+                        var items = base.SoAContext.AccessPrincipals.Where(x => x.DomainRole == this.RoleId).ToList<AccessPrincipal>();
                         _accessPrincipals = new ObservableCollection<AccessPrincipal>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _accessPrincipals.CollectionChanged += AccessPrincipals_CollectionChanged;
@@ -1359,7 +1395,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_vocabularies == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -1369,11 +1405,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.Vocabularies.Where(x => x.GoverningRole == this.RoleId).ToList<Vocabulary>();
+                        var items = base.SoAContext.Vocabularies.Where(x => x.GoverningRole == this.RoleId).ToList<Vocabulary>();
                         _vocabularies = new ObservableCollection<Vocabulary>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _vocabularies.CollectionChanged += Vocabularies_CollectionChanged;
@@ -1408,20 +1444,20 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         protected override void LazyLoadProperties()
         {
-            _ = this.Organization;
+            _ = this.OrganizationRef;
             _ = this.Agent;
-            _ = this.RoleAssignments;
-            _ = this.RoleAssignments;
+            _ = this.RoleRoleAssignments;
+            _ = this.ApprovingAuthorityRoleRoleAssignments;
             _ = this.CommunitiesOfPractice;
             _ = this.Steps;
             _ = this.Requirements;
             _ = this.Rationales;
-            _ = this.Exceptions;
-            _ = this.Exceptions;
+            _ = this.ApprovalRoleExceptions;
+            _ = this.FallbackRoleExceptions;
             _ = this.KnowledgeFragments;
             _ = this.KnowledgeGaps;
-            _ = this.StewardshipAssignments;
-            _ = this.StewardshipAssignments;
+            _ = this.StewardRoleStewardshipAssignments;
+            _ = this.AuthorityRoleStewardshipAssignments;
             _ = this.ChangeRequests;
             _ = this.CommunicationPolicies;
             _ = this.RoleQuestions;

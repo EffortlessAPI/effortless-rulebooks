@@ -4,15 +4,15 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
 {
     public abstract class SoAEntityBase
     {
-        public SoAEFContext? Context { get; set; }
+        public SoAEFContext? SoAContext { get; set; }
 
         public void SetContext(SoAEFContext context)
         {
-            if (Context != null && Context != context)
+            if (SoAContext != null && SoAContext != context)
             {
                 throw new InvalidOperationException("Cannot change the context of an entity once it has been set.");
             }
-            Context = context;
+            SoAContext = context;
             this.LazyLoadProperties();
         }
 

@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -16,9 +17,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string AgentId { get; set; }
 
         // Formula Name (rulebook: ={{DisplayName}})
+        [NotMapped]
         public string? Name
         {
-            get => this.DisplayName; set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Of(this.DisplayName))); set { }
         }
 
         public string? DisplayName { get; set; }
@@ -26,130 +28,154 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string? ContactAddress { get; set; }
         public string? VersionOrEmploymentKey { get; set; }
         // Formula CountOfCurrentRoleAssignments (rulebook: =COUNTIFS(RoleAssignments!{{CurrentAgentKey}}, {{AgentId}}))
+        [NotMapped]
         public int? CountOfCurrentRoleAssignments
         {
-            get => COUNTIFS(RoleAssignments!this.CurrentAgentKey, this.AgentId); set { }
+            get => F.AsInt(F.Memo(this, "CountOfCurrentRoleAssignments", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<RoleAssignment>(base.SoAContext, "RoleAssignments", __c => __c.RoleAssignments), __r => F.CritField(F.Of(__r.CurrentAgentKey), F.Of(this.AgentId))))))); set { }
         }
 
         // Formula IsStillEngaged (rulebook: ={{CountOfCurrentRoleAssignments}} > 0)
+        [NotMapped]
         public bool? IsStillEngaged
         {
-            get => this.CountOfCurrentRoleAssignments > 0; set { }
+            get => F.AsBool(F.Memo(this, "IsStillEngaged", () => F.Cmp(F.Of(this.CountOfCurrentRoleAssignments), ">", F.I(0)))); set { }
         }
 
         // Formula DecisionCount (rulebook: =COUNTIFS(AgentDecisionRecords!{{DecidingAgent}}, {{AgentId}}))
+        [NotMapped]
         public decimal? DecisionCount
         {
-            get => COUNTIFS(AgentDecisionRecords!this.DecidingAgent, this.AgentId); set { }
+            get => F.AsDecimal(F.Memo(this, "DecisionCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<AgentDecisionRecord>(base.SoAContext, "AgentDecisionRecords", __c => __c.AgentDecisionRecords), __r => F.CritField(F.Of(__r.DecidingAgent), F.Of(this.AgentId)))))); set { }
         }
 
         // Formula OverriddenDecisionCount (rulebook: =COUNTIFS(AgentDecisionRecords!{{DecidingAgentWhenOverridden}}, {{AgentId}}))
+        [NotMapped]
         public decimal? OverriddenDecisionCount
         {
-            get => COUNTIFS(AgentDecisionRecords!this.DecidingAgentWhenOverridden, this.AgentId); set { }
+            get => F.AsDecimal(F.Memo(this, "OverriddenDecisionCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<AgentDecisionRecord>(base.SoAContext, "AgentDecisionRecords", __c => __c.AgentDecisionRecords), __r => F.CritField(F.Of(__r.DecidingAgentWhenOverridden), F.Of(this.AgentId)))))); set { }
         }
 
         // Formula OverrideRatePercent (rulebook: =IF({{DecisionCount}} = 0, 0, ({{OverriddenDecisionCount}} * 100) / {{DecisionCount}}))
+        [NotMapped]
         public decimal? OverrideRatePercent
         {
-            get => IF(this.DecisionCount = 0, 0, (this.OverriddenDecisionCount * 100) / this.DecisionCount); set { }
+            get => F.AsDecimal(F.Memo(this, "OverrideRatePercent", () => (F.Truthy(F.Bool3(F.Eq(F.Of(this.DecisionCount), F.I(0)))) ? F.I(0) : F.Div(F.Mul(F.Of(this.OverriddenDecisionCount), F.I(100)), F.Of(this.DecisionCount))))); set { }
         }
 
         // Formula IsNonHuman (rulebook: =NOT({{AgentKind}} = "Human"))
+        [NotMapped]
         public bool? IsNonHuman
         {
-            get => NOT(this.AgentKind = "Human"); set { }
+            get => F.AsBool(F.Memo(this, "IsNonHuman", () => F.Not(F.Bool3(F.Eq(F.Nullif(F.Of(this.AgentKind)), F.S("Human")))))); set { }
         }
 
         // Formula BoundaryViolationCount (rulebook: =COUNTIFS(AgentDecisionRecords!{{AgentWhenBoundaryViolated}}, {{AgentId}}))
+        [NotMapped]
         public decimal? BoundaryViolationCount
         {
-            get => COUNTIFS(AgentDecisionRecords!this.AgentWhenBoundaryViolated, this.AgentId); set { }
+            get => F.AsDecimal(F.Memo(this, "BoundaryViolationCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<AgentDecisionRecord>(base.SoAContext, "AgentDecisionRecords", __c => __c.AgentDecisionRecords), __r => F.CritField(F.Of(__r.AgentWhenBoundaryViolated), F.Of(this.AgentId)))))); set { }
         }
 
         // Formula IsOperatingOutsideBoundary (rulebook: ={{BoundaryViolationCount}} > 0)
+        [NotMapped]
         public bool? IsOperatingOutsideBoundary
         {
-            get => this.BoundaryViolationCount > 0; set { }
+            get => F.AsBool(F.Memo(this, "IsOperatingOutsideBoundary", () => F.Cmp(F.Of(this.BoundaryViolationCount), ">", F.I(0)))); set { }
         }
 
         // Formula DraftDecisionCount (rulebook: =COUNTIFS(AgentDecisionRecords!{{AgentWhenDraft}}, {{AgentId}}))
+        [NotMapped]
         public decimal? DraftDecisionCount
         {
-            get => COUNTIFS(AgentDecisionRecords!this.AgentWhenDraft, this.AgentId); set { }
+            get => F.AsDecimal(F.Memo(this, "DraftDecisionCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<AgentDecisionRecord>(base.SoAContext, "AgentDecisionRecords", __c => __c.AgentDecisionRecords), __r => F.CritField(F.Of(__r.AgentWhenDraft), F.Of(this.AgentId)))))); set { }
         }
 
         // Formula OverriddenDraftCount (rulebook: =COUNTIFS(AgentDecisionRecords!{{AgentWhenDraftOverridden}}, {{AgentId}}))
+        [NotMapped]
         public decimal? OverriddenDraftCount
         {
-            get => COUNTIFS(AgentDecisionRecords!this.AgentWhenDraftOverridden, this.AgentId); set { }
+            get => F.AsDecimal(F.Memo(this, "OverriddenDraftCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<AgentDecisionRecord>(base.SoAContext, "AgentDecisionRecords", __c => __c.AgentDecisionRecords), __r => F.CritField(F.Of(__r.AgentWhenDraftOverridden), F.Of(this.AgentId)))))); set { }
         }
 
         // Formula DraftRewriteRatePercent (rulebook: =IF({{DraftDecisionCount}} = 0, 0, ({{OverriddenDraftCount}} * 100) / {{DraftDecisionCount}}))
+        [NotMapped]
         public decimal? DraftRewriteRatePercent
         {
-            get => IF(this.DraftDecisionCount = 0, 0, (this.OverriddenDraftCount * 100) / this.DraftDecisionCount); set { }
+            get => F.AsDecimal(F.Memo(this, "DraftRewriteRatePercent", () => (F.Truthy(F.Bool3(F.Eq(F.Of(this.DraftDecisionCount), F.I(0)))) ? F.I(0) : F.Div(F.Mul(F.Of(this.OverriddenDraftCount), F.I(100)), F.Of(this.DraftDecisionCount))))); set { }
         }
 
         // Formula TimesNamedAsBroker (rulebook: =COUNTIFS(KnowledgeBrokerLinks!{{ActiveRelianceBrokerKey}}, {{AgentId}}))
+        [NotMapped]
         public decimal? TimesNamedAsBroker
         {
-            get => COUNTIFS(KnowledgeBrokerLinks!this.ActiveRelianceBrokerKey, this.AgentId); set { }
+            get => F.AsDecimal(F.Memo(this, "TimesNamedAsBroker", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<KnowledgeBrokerLink>(base.SoAContext, "KnowledgeBrokerLinks", __c => __c.KnowledgeBrokerLinks), __r => F.CritField(F.Of(__r.ActiveRelianceBrokerKey), F.Of(this.AgentId)))))); set { }
         }
 
         // Formula IsRecognizedBroker (rulebook: ={{TimesNamedAsBroker}} >= 3)
+        [NotMapped]
         public bool? IsRecognizedBroker
         {
-            get => this.TimesNamedAsBroker >= 3; set { }
+            get => F.AsBool(F.Memo(this, "IsRecognizedBroker", () => F.Cmp(F.Of(this.TimesNamedAsBroker), ">=", F.I(3)))); set { }
         }
 
         // Formula AtRiskRelianceCount (rulebook: =COUNTIFS(KnowledgeBrokerLinks!{{AtRiskBrokerKey}}, {{AgentId}}))
+        [NotMapped]
         public decimal? AtRiskRelianceCount
         {
-            get => COUNTIFS(KnowledgeBrokerLinks!this.AtRiskBrokerKey, this.AgentId); set { }
+            get => F.AsDecimal(F.Memo(this, "AtRiskRelianceCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<KnowledgeBrokerLink>(base.SoAContext, "KnowledgeBrokerLinks", __c => __c.KnowledgeBrokerLinks), __r => F.CritField(F.Of(__r.AtRiskBrokerKey), F.Of(this.AgentId)))))); set { }
         }
 
         // Formula HasAtRiskKnowledgeReliance (rulebook: ={{AtRiskRelianceCount}} > 0)
+        [NotMapped]
         public bool? HasAtRiskKnowledgeReliance
         {
-            get => this.AtRiskRelianceCount > 0; set { }
+            get => F.AsBool(F.Memo(this, "HasAtRiskKnowledgeReliance", () => F.Cmp(F.Of(this.AtRiskRelianceCount), ">", F.I(0)))); set { }
         }
 
         public string? SemanticTypeIri { get; set; }
 
         public string? Organization { get; set; }
 
-        private Organization _organization;
+        private Organization _organizationRef;
 
         [ForeignKey("Organization")]
-        public virtual Organization Organization
+        public virtual Organization OrganizationRef
         {
             get
             {
-                if (_organization == null && !string.IsNullOrEmpty(Organization))
+                if (_organizationRef == null && !string.IsNullOrEmpty(Organization))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access Organization - no database context is set. Organization: " + Organization + ".");
+                            throw new InvalidOperationException("Cannot access OrganizationRef - no database context is set. Organization: " + Organization + ".");
                         }
                         return null;
                     }
-                    _organization = Context.Organizations.Find(Organization);
-                    if (_organization != null)
+                    _organizationRef = base.SoAContext.Organizations.Find(Organization);
+                    if (_organizationRef != null)
                     {
-                        Context.Attach(_organization);
+                        base.SoAContext.Attach(_organizationRef);
                     }
                 }
-                return _organization;
+                return _organizationRef;
             }
             set
             {
-                if (_organization != value)
+                if (_organizationRef != value)
                 {
-                    _organization = value;
-                    Organization = _organization == null ? default : _organization.OrganizationId;
+                    _organizationRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_organizationRef != null)
+                    {
+                        Organization = _organizationRef.OrganizationId;
+                    }
                 }
             }
         }
@@ -163,7 +189,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_roles == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -173,11 +199,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.Roles.Where(x => x.CurrentAgent == this.AgentId).ToList<Role>();
+                        var items = base.SoAContext.Roles.Where(x => x.CurrentAgent == this.AgentId).ToList<Role>();
                         _roles = new ObservableCollection<Role>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _roles.CollectionChanged += Roles_CollectionChanged;
@@ -211,14 +237,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<RoleAssignment> _roleAssignments;
 
-        [InverseProperty("Agent")]
+        [InverseProperty("AgentRef")]
         public virtual ObservableCollection<RoleAssignment> RoleAssignments
         {
             get
             {
                 if (_roleAssignments == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -228,11 +254,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.RoleAssignments.Where(x => x.Agent == this.AgentId).ToList<RoleAssignment>();
+                        var items = base.SoAContext.RoleAssignments.Where(x => x.Agent == this.AgentId).ToList<RoleAssignment>();
                         _roleAssignments = new ObservableCollection<RoleAssignment>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _roleAssignments.CollectionChanged += RoleAssignments_CollectionChanged;
@@ -264,51 +290,51 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
-        private ObservableCollection<Mentorship> _mentorships;
+        private ObservableCollection<Mentorship> _mentorAgentMentorships;
 
         [InverseProperty("Agent")]
-        public virtual ObservableCollection<Mentorship> Mentorships
+        public virtual ObservableCollection<Mentorship> MentorAgentMentorships
         {
             get
             {
-                if (_mentorships == null)
+                if (_mentorAgentMentorships == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access Mentorships - no database context is set. AgentId: " + this.AgentId + ".");
+                            throw new InvalidOperationException("Cannot access MentorAgentMentorships - no database context is set. AgentId: " + this.AgentId + ".");
                         }
-                        _mentorships = new ObservableCollection<Mentorship>();
+                        _mentorAgentMentorships = new ObservableCollection<Mentorship>();
                     }
                     else
                     {
-                        var items = Context.Mentorships.Where(x => x.MentorAgent == this.AgentId).ToList<Mentorship>();
-                        _mentorships = new ObservableCollection<Mentorship>(items);
+                        var items = base.SoAContext.Mentorships.Where(x => x.MentorAgent == this.AgentId).ToList<Mentorship>();
+                        _mentorAgentMentorships = new ObservableCollection<Mentorship>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
-                    _mentorships.CollectionChanged += Mentorships_CollectionChanged;
+                    _mentorAgentMentorships.CollectionChanged += MentorAgentMentorships_CollectionChanged;
                 }
-                return _mentorships;
+                return _mentorAgentMentorships;
             }
             private set
             {
-                if (_mentorships != null)
+                if (_mentorAgentMentorships != null)
                 {
-                    _mentorships.CollectionChanged -= Mentorships_CollectionChanged;
+                    _mentorAgentMentorships.CollectionChanged -= MentorAgentMentorships_CollectionChanged;
                 }
-                _mentorships = value;
-                if (_mentorships != null)
+                _mentorAgentMentorships = value;
+                if (_mentorAgentMentorships != null)
                 {
-                    _mentorships.CollectionChanged += Mentorships_CollectionChanged;
+                    _mentorAgentMentorships.CollectionChanged += MentorAgentMentorships_CollectionChanged;
                 }
             }
         }
 
-        private void Mentorships_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void MentorAgentMentorships_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e?.NewItems != null)
             {
@@ -319,51 +345,51 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
-        private ObservableCollection<Mentorship> _mentorships;
+        private ObservableCollection<Mentorship> _learnerAgentMentorships;
 
-        [InverseProperty("Agent")]
-        public virtual ObservableCollection<Mentorship> Mentorships
+        [InverseProperty("AgentRef")]
+        public virtual ObservableCollection<Mentorship> LearnerAgentMentorships
         {
             get
             {
-                if (_mentorships == null)
+                if (_learnerAgentMentorships == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access Mentorships - no database context is set. AgentId: " + this.AgentId + ".");
+                            throw new InvalidOperationException("Cannot access LearnerAgentMentorships - no database context is set. AgentId: " + this.AgentId + ".");
                         }
-                        _mentorships = new ObservableCollection<Mentorship>();
+                        _learnerAgentMentorships = new ObservableCollection<Mentorship>();
                     }
                     else
                     {
-                        var items = Context.Mentorships.Where(x => x.LearnerAgent == this.AgentId).ToList<Mentorship>();
-                        _mentorships = new ObservableCollection<Mentorship>(items);
+                        var items = base.SoAContext.Mentorships.Where(x => x.LearnerAgent == this.AgentId).ToList<Mentorship>();
+                        _learnerAgentMentorships = new ObservableCollection<Mentorship>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
-                    _mentorships.CollectionChanged += Mentorships_CollectionChanged;
+                    _learnerAgentMentorships.CollectionChanged += LearnerAgentMentorships_CollectionChanged;
                 }
-                return _mentorships;
+                return _learnerAgentMentorships;
             }
             private set
             {
-                if (_mentorships != null)
+                if (_learnerAgentMentorships != null)
                 {
-                    _mentorships.CollectionChanged -= Mentorships_CollectionChanged;
+                    _learnerAgentMentorships.CollectionChanged -= LearnerAgentMentorships_CollectionChanged;
                 }
-                _mentorships = value;
-                if (_mentorships != null)
+                _learnerAgentMentorships = value;
+                if (_learnerAgentMentorships != null)
                 {
-                    _mentorships.CollectionChanged += Mentorships_CollectionChanged;
+                    _learnerAgentMentorships.CollectionChanged += LearnerAgentMentorships_CollectionChanged;
                 }
             }
         }
 
-        private void Mentorships_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void LearnerAgentMentorships_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e?.NewItems != null)
             {
@@ -374,51 +400,51 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
-        private ObservableCollection<ProcedureVersion> _procedureVersions;
+        private ObservableCollection<ProcedureVersion> _createdByAgentProcedureVersions;
 
         [InverseProperty("Agent")]
-        public virtual ObservableCollection<ProcedureVersion> ProcedureVersions
+        public virtual ObservableCollection<ProcedureVersion> CreatedByAgentProcedureVersions
         {
             get
             {
-                if (_procedureVersions == null)
+                if (_createdByAgentProcedureVersions == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access ProcedureVersions - no database context is set. AgentId: " + this.AgentId + ".");
+                            throw new InvalidOperationException("Cannot access CreatedByAgentProcedureVersions - no database context is set. AgentId: " + this.AgentId + ".");
                         }
-                        _procedureVersions = new ObservableCollection<ProcedureVersion>();
+                        _createdByAgentProcedureVersions = new ObservableCollection<ProcedureVersion>();
                     }
                     else
                     {
-                        var items = Context.ProcedureVersions.Where(x => x.CreatedByAgent == this.AgentId).ToList<ProcedureVersion>();
-                        _procedureVersions = new ObservableCollection<ProcedureVersion>(items);
+                        var items = base.SoAContext.ProcedureVersions.Where(x => x.CreatedByAgent == this.AgentId).ToList<ProcedureVersion>();
+                        _createdByAgentProcedureVersions = new ObservableCollection<ProcedureVersion>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
-                    _procedureVersions.CollectionChanged += ProcedureVersions_CollectionChanged;
+                    _createdByAgentProcedureVersions.CollectionChanged += CreatedByAgentProcedureVersions_CollectionChanged;
                 }
-                return _procedureVersions;
+                return _createdByAgentProcedureVersions;
             }
             private set
             {
-                if (_procedureVersions != null)
+                if (_createdByAgentProcedureVersions != null)
                 {
-                    _procedureVersions.CollectionChanged -= ProcedureVersions_CollectionChanged;
+                    _createdByAgentProcedureVersions.CollectionChanged -= CreatedByAgentProcedureVersions_CollectionChanged;
                 }
-                _procedureVersions = value;
-                if (_procedureVersions != null)
+                _createdByAgentProcedureVersions = value;
+                if (_createdByAgentProcedureVersions != null)
                 {
-                    _procedureVersions.CollectionChanged += ProcedureVersions_CollectionChanged;
+                    _createdByAgentProcedureVersions.CollectionChanged += CreatedByAgentProcedureVersions_CollectionChanged;
                 }
             }
         }
 
-        private void ProcedureVersions_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void CreatedByAgentProcedureVersions_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e?.NewItems != null)
             {
@@ -429,51 +455,51 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
-        private ObservableCollection<ProcedureVersion> _procedureVersions;
+        private ObservableCollection<ProcedureVersion> _modifiedByAgentProcedureVersions;
 
-        [InverseProperty("Agent")]
-        public virtual ObservableCollection<ProcedureVersion> ProcedureVersions
+        [InverseProperty("AgentRef")]
+        public virtual ObservableCollection<ProcedureVersion> ModifiedByAgentProcedureVersions
         {
             get
             {
-                if (_procedureVersions == null)
+                if (_modifiedByAgentProcedureVersions == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access ProcedureVersions - no database context is set. AgentId: " + this.AgentId + ".");
+                            throw new InvalidOperationException("Cannot access ModifiedByAgentProcedureVersions - no database context is set. AgentId: " + this.AgentId + ".");
                         }
-                        _procedureVersions = new ObservableCollection<ProcedureVersion>();
+                        _modifiedByAgentProcedureVersions = new ObservableCollection<ProcedureVersion>();
                     }
                     else
                     {
-                        var items = Context.ProcedureVersions.Where(x => x.ModifiedByAgent == this.AgentId).ToList<ProcedureVersion>();
-                        _procedureVersions = new ObservableCollection<ProcedureVersion>(items);
+                        var items = base.SoAContext.ProcedureVersions.Where(x => x.ModifiedByAgent == this.AgentId).ToList<ProcedureVersion>();
+                        _modifiedByAgentProcedureVersions = new ObservableCollection<ProcedureVersion>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
-                    _procedureVersions.CollectionChanged += ProcedureVersions_CollectionChanged;
+                    _modifiedByAgentProcedureVersions.CollectionChanged += ModifiedByAgentProcedureVersions_CollectionChanged;
                 }
-                return _procedureVersions;
+                return _modifiedByAgentProcedureVersions;
             }
             private set
             {
-                if (_procedureVersions != null)
+                if (_modifiedByAgentProcedureVersions != null)
                 {
-                    _procedureVersions.CollectionChanged -= ProcedureVersions_CollectionChanged;
+                    _modifiedByAgentProcedureVersions.CollectionChanged -= ModifiedByAgentProcedureVersions_CollectionChanged;
                 }
-                _procedureVersions = value;
-                if (_procedureVersions != null)
+                _modifiedByAgentProcedureVersions = value;
+                if (_modifiedByAgentProcedureVersions != null)
                 {
-                    _procedureVersions.CollectionChanged += ProcedureVersions_CollectionChanged;
+                    _modifiedByAgentProcedureVersions.CollectionChanged += ModifiedByAgentProcedureVersions_CollectionChanged;
                 }
             }
         }
 
-        private void ProcedureVersions_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void ModifiedByAgentProcedureVersions_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e?.NewItems != null)
             {
@@ -493,7 +519,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_procedureStatusChanges == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -503,11 +529,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.ProcedureStatusChanges.Where(x => x.ChangedByAgent == this.AgentId).ToList<ProcedureStatusChange>();
+                        var items = base.SoAContext.ProcedureStatusChanges.Where(x => x.ChangedByAgent == this.AgentId).ToList<ProcedureStatusChange>();
                         _procedureStatusChanges = new ObservableCollection<ProcedureStatusChange>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _procedureStatusChanges.CollectionChanged += ProcedureStatusChanges_CollectionChanged;
@@ -539,51 +565,51 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
-        private ObservableCollection<ElicitationSession> _elicitationSessions;
+        private ObservableCollection<ElicitationSession> _practitionerAgentElicitationSessions;
 
         [InverseProperty("Agent")]
-        public virtual ObservableCollection<ElicitationSession> ElicitationSessions
+        public virtual ObservableCollection<ElicitationSession> PractitionerAgentElicitationSessions
         {
             get
             {
-                if (_elicitationSessions == null)
+                if (_practitionerAgentElicitationSessions == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access ElicitationSessions - no database context is set. AgentId: " + this.AgentId + ".");
+                            throw new InvalidOperationException("Cannot access PractitionerAgentElicitationSessions - no database context is set. AgentId: " + this.AgentId + ".");
                         }
-                        _elicitationSessions = new ObservableCollection<ElicitationSession>();
+                        _practitionerAgentElicitationSessions = new ObservableCollection<ElicitationSession>();
                     }
                     else
                     {
-                        var items = Context.ElicitationSessions.Where(x => x.PractitionerAgent == this.AgentId).ToList<ElicitationSession>();
-                        _elicitationSessions = new ObservableCollection<ElicitationSession>(items);
+                        var items = base.SoAContext.ElicitationSessions.Where(x => x.PractitionerAgent == this.AgentId).ToList<ElicitationSession>();
+                        _practitionerAgentElicitationSessions = new ObservableCollection<ElicitationSession>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
-                    _elicitationSessions.CollectionChanged += ElicitationSessions_CollectionChanged;
+                    _practitionerAgentElicitationSessions.CollectionChanged += PractitionerAgentElicitationSessions_CollectionChanged;
                 }
-                return _elicitationSessions;
+                return _practitionerAgentElicitationSessions;
             }
             private set
             {
-                if (_elicitationSessions != null)
+                if (_practitionerAgentElicitationSessions != null)
                 {
-                    _elicitationSessions.CollectionChanged -= ElicitationSessions_CollectionChanged;
+                    _practitionerAgentElicitationSessions.CollectionChanged -= PractitionerAgentElicitationSessions_CollectionChanged;
                 }
-                _elicitationSessions = value;
-                if (_elicitationSessions != null)
+                _practitionerAgentElicitationSessions = value;
+                if (_practitionerAgentElicitationSessions != null)
                 {
-                    _elicitationSessions.CollectionChanged += ElicitationSessions_CollectionChanged;
+                    _practitionerAgentElicitationSessions.CollectionChanged += PractitionerAgentElicitationSessions_CollectionChanged;
                 }
             }
         }
 
-        private void ElicitationSessions_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void PractitionerAgentElicitationSessions_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e?.NewItems != null)
             {
@@ -594,51 +620,51 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
-        private ObservableCollection<ElicitationSession> _elicitationSessions;
+        private ObservableCollection<ElicitationSession> _facilitatorAgentElicitationSessions;
 
-        [InverseProperty("Agent")]
-        public virtual ObservableCollection<ElicitationSession> ElicitationSessions
+        [InverseProperty("AgentRef")]
+        public virtual ObservableCollection<ElicitationSession> FacilitatorAgentElicitationSessions
         {
             get
             {
-                if (_elicitationSessions == null)
+                if (_facilitatorAgentElicitationSessions == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access ElicitationSessions - no database context is set. AgentId: " + this.AgentId + ".");
+                            throw new InvalidOperationException("Cannot access FacilitatorAgentElicitationSessions - no database context is set. AgentId: " + this.AgentId + ".");
                         }
-                        _elicitationSessions = new ObservableCollection<ElicitationSession>();
+                        _facilitatorAgentElicitationSessions = new ObservableCollection<ElicitationSession>();
                     }
                     else
                     {
-                        var items = Context.ElicitationSessions.Where(x => x.FacilitatorAgent == this.AgentId).ToList<ElicitationSession>();
-                        _elicitationSessions = new ObservableCollection<ElicitationSession>(items);
+                        var items = base.SoAContext.ElicitationSessions.Where(x => x.FacilitatorAgent == this.AgentId).ToList<ElicitationSession>();
+                        _facilitatorAgentElicitationSessions = new ObservableCollection<ElicitationSession>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
-                    _elicitationSessions.CollectionChanged += ElicitationSessions_CollectionChanged;
+                    _facilitatorAgentElicitationSessions.CollectionChanged += FacilitatorAgentElicitationSessions_CollectionChanged;
                 }
-                return _elicitationSessions;
+                return _facilitatorAgentElicitationSessions;
             }
             private set
             {
-                if (_elicitationSessions != null)
+                if (_facilitatorAgentElicitationSessions != null)
                 {
-                    _elicitationSessions.CollectionChanged -= ElicitationSessions_CollectionChanged;
+                    _facilitatorAgentElicitationSessions.CollectionChanged -= FacilitatorAgentElicitationSessions_CollectionChanged;
                 }
-                _elicitationSessions = value;
-                if (_elicitationSessions != null)
+                _facilitatorAgentElicitationSessions = value;
+                if (_facilitatorAgentElicitationSessions != null)
                 {
-                    _elicitationSessions.CollectionChanged += ElicitationSessions_CollectionChanged;
+                    _facilitatorAgentElicitationSessions.CollectionChanged += FacilitatorAgentElicitationSessions_CollectionChanged;
                 }
             }
         }
 
-        private void ElicitationSessions_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void FacilitatorAgentElicitationSessions_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e?.NewItems != null)
             {
@@ -658,7 +684,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_knowledgeFragments == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -668,11 +694,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.KnowledgeFragments.Where(x => x.SourceAgent == this.AgentId).ToList<KnowledgeFragment>();
+                        var items = base.SoAContext.KnowledgeFragments.Where(x => x.SourceAgent == this.AgentId).ToList<KnowledgeFragment>();
                         _knowledgeFragments = new ObservableCollection<KnowledgeFragment>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _knowledgeFragments.CollectionChanged += KnowledgeFragments_CollectionChanged;
@@ -713,7 +739,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_procedureExecutions == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -723,11 +749,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.ProcedureExecutions.Where(x => x.ExecutedByAgent == this.AgentId).ToList<ProcedureExecution>();
+                        var items = base.SoAContext.ProcedureExecutions.Where(x => x.ExecutedByAgent == this.AgentId).ToList<ProcedureExecution>();
                         _procedureExecutions = new ObservableCollection<ProcedureExecution>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _procedureExecutions.CollectionChanged += ProcedureExecutions_CollectionChanged;
@@ -768,7 +794,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_stepExecutions == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -778,11 +804,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.StepExecutions.Where(x => x.ExecutedByAgent == this.AgentId).ToList<StepExecution>();
+                        var items = base.SoAContext.StepExecutions.Where(x => x.ExecutedByAgent == this.AgentId).ToList<StepExecution>();
                         _stepExecutions = new ObservableCollection<StepExecution>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _stepExecutions.CollectionChanged += StepExecutions_CollectionChanged;
@@ -823,7 +849,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_requirementSatisfactions == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -833,11 +859,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.RequirementSatisfactions.Where(x => x.EvaluatedByAgent == this.AgentId).ToList<RequirementSatisfaction>();
+                        var items = base.SoAContext.RequirementSatisfactions.Where(x => x.EvaluatedByAgent == this.AgentId).ToList<RequirementSatisfaction>();
                         _requirementSatisfactions = new ObservableCollection<RequirementSatisfaction>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _requirementSatisfactions.CollectionChanged += RequirementSatisfactions_CollectionChanged;
@@ -878,7 +904,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_issueOccurrences == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -888,11 +914,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.IssueOccurrences.Where(x => x.EncounteredByAgent == this.AgentId).ToList<IssueOccurrence>();
+                        var items = base.SoAContext.IssueOccurrences.Where(x => x.EncounteredByAgent == this.AgentId).ToList<IssueOccurrence>();
                         _issueOccurrences = new ObservableCollection<IssueOccurrence>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _issueOccurrences.CollectionChanged += IssueOccurrences_CollectionChanged;
@@ -933,7 +959,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_userQuestions == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -943,11 +969,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.UserQuestions.Where(x => x.AskedByAgent == this.AgentId).ToList<UserQuestion>();
+                        var items = base.SoAContext.UserQuestions.Where(x => x.AskedByAgent == this.AgentId).ToList<UserQuestion>();
                         _userQuestions = new ObservableCollection<UserQuestion>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _userQuestions.CollectionChanged += UserQuestions_CollectionChanged;
@@ -988,7 +1014,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_userFeedback == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -998,11 +1024,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.UserFeedback.Where(x => x.ProvidedByAgent == this.AgentId).ToList<UserFeedback>();
+                        var items = base.SoAContext.UserFeedback.Where(x => x.ProvidedByAgent == this.AgentId).ToList<UserFeedback>();
                         _userFeedback = new ObservableCollection<UserFeedback>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _userFeedback.CollectionChanged += UserFeedback_CollectionChanged;
@@ -1043,7 +1069,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_changeRequests == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -1053,11 +1079,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.ChangeRequests.Where(x => x.RequestedByAgent == this.AgentId).ToList<ChangeRequest>();
+                        var items = base.SoAContext.ChangeRequests.Where(x => x.RequestedByAgent == this.AgentId).ToList<ChangeRequest>();
                         _changeRequests = new ObservableCollection<ChangeRequest>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _changeRequests.CollectionChanged += ChangeRequests_CollectionChanged;
@@ -1098,7 +1124,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_reviewEvents == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -1108,11 +1134,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.ReviewEvents.Where(x => x.ReviewedByAgent == this.AgentId).ToList<ReviewEvent>();
+                        var items = base.SoAContext.ReviewEvents.Where(x => x.ReviewedByAgent == this.AgentId).ToList<ReviewEvent>();
                         _reviewEvents = new ObservableCollection<ReviewEvent>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _reviewEvents.CollectionChanged += ReviewEvents_CollectionChanged;
@@ -1153,7 +1179,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_learningActivities == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -1163,11 +1189,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.LearningActivities.Where(x => x.FacilitatorAgent == this.AgentId).ToList<LearningActivity>();
+                        var items = base.SoAContext.LearningActivities.Where(x => x.FacilitatorAgent == this.AgentId).ToList<LearningActivity>();
                         _learningActivities = new ObservableCollection<LearningActivity>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _learningActivities.CollectionChanged += LearningActivities_CollectionChanged;
@@ -1199,51 +1225,51 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
-        private ObservableCollection<ExceptionInvocation> _exceptionInvocations;
+        private ObservableCollection<ExceptionInvocation> _invokedByAgentExceptionInvocations;
 
         [InverseProperty("Agent")]
-        public virtual ObservableCollection<ExceptionInvocation> ExceptionInvocations
+        public virtual ObservableCollection<ExceptionInvocation> InvokedByAgentExceptionInvocations
         {
             get
             {
-                if (_exceptionInvocations == null)
+                if (_invokedByAgentExceptionInvocations == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access ExceptionInvocations - no database context is set. AgentId: " + this.AgentId + ".");
+                            throw new InvalidOperationException("Cannot access InvokedByAgentExceptionInvocations - no database context is set. AgentId: " + this.AgentId + ".");
                         }
-                        _exceptionInvocations = new ObservableCollection<ExceptionInvocation>();
+                        _invokedByAgentExceptionInvocations = new ObservableCollection<ExceptionInvocation>();
                     }
                     else
                     {
-                        var items = Context.ExceptionInvocations.Where(x => x.InvokedByAgent == this.AgentId).ToList<ExceptionInvocation>();
-                        _exceptionInvocations = new ObservableCollection<ExceptionInvocation>(items);
+                        var items = base.SoAContext.ExceptionInvocations.Where(x => x.InvokedByAgent == this.AgentId).ToList<ExceptionInvocation>();
+                        _invokedByAgentExceptionInvocations = new ObservableCollection<ExceptionInvocation>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
-                    _exceptionInvocations.CollectionChanged += ExceptionInvocations_CollectionChanged;
+                    _invokedByAgentExceptionInvocations.CollectionChanged += InvokedByAgentExceptionInvocations_CollectionChanged;
                 }
-                return _exceptionInvocations;
+                return _invokedByAgentExceptionInvocations;
             }
             private set
             {
-                if (_exceptionInvocations != null)
+                if (_invokedByAgentExceptionInvocations != null)
                 {
-                    _exceptionInvocations.CollectionChanged -= ExceptionInvocations_CollectionChanged;
+                    _invokedByAgentExceptionInvocations.CollectionChanged -= InvokedByAgentExceptionInvocations_CollectionChanged;
                 }
-                _exceptionInvocations = value;
-                if (_exceptionInvocations != null)
+                _invokedByAgentExceptionInvocations = value;
+                if (_invokedByAgentExceptionInvocations != null)
                 {
-                    _exceptionInvocations.CollectionChanged += ExceptionInvocations_CollectionChanged;
+                    _invokedByAgentExceptionInvocations.CollectionChanged += InvokedByAgentExceptionInvocations_CollectionChanged;
                 }
             }
         }
 
-        private void ExceptionInvocations_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void InvokedByAgentExceptionInvocations_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e?.NewItems != null)
             {
@@ -1254,51 +1280,51 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
-        private ObservableCollection<ExceptionInvocation> _exceptionInvocations;
+        private ObservableCollection<ExceptionInvocation> _approvedByAgentExceptionInvocations;
 
-        [InverseProperty("Agent")]
-        public virtual ObservableCollection<ExceptionInvocation> ExceptionInvocations
+        [InverseProperty("AgentRef")]
+        public virtual ObservableCollection<ExceptionInvocation> ApprovedByAgentExceptionInvocations
         {
             get
             {
-                if (_exceptionInvocations == null)
+                if (_approvedByAgentExceptionInvocations == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access ExceptionInvocations - no database context is set. AgentId: " + this.AgentId + ".");
+                            throw new InvalidOperationException("Cannot access ApprovedByAgentExceptionInvocations - no database context is set. AgentId: " + this.AgentId + ".");
                         }
-                        _exceptionInvocations = new ObservableCollection<ExceptionInvocation>();
+                        _approvedByAgentExceptionInvocations = new ObservableCollection<ExceptionInvocation>();
                     }
                     else
                     {
-                        var items = Context.ExceptionInvocations.Where(x => x.ApprovedByAgent == this.AgentId).ToList<ExceptionInvocation>();
-                        _exceptionInvocations = new ObservableCollection<ExceptionInvocation>(items);
+                        var items = base.SoAContext.ExceptionInvocations.Where(x => x.ApprovedByAgent == this.AgentId).ToList<ExceptionInvocation>();
+                        _approvedByAgentExceptionInvocations = new ObservableCollection<ExceptionInvocation>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
-                    _exceptionInvocations.CollectionChanged += ExceptionInvocations_CollectionChanged;
+                    _approvedByAgentExceptionInvocations.CollectionChanged += ApprovedByAgentExceptionInvocations_CollectionChanged;
                 }
-                return _exceptionInvocations;
+                return _approvedByAgentExceptionInvocations;
             }
             private set
             {
-                if (_exceptionInvocations != null)
+                if (_approvedByAgentExceptionInvocations != null)
                 {
-                    _exceptionInvocations.CollectionChanged -= ExceptionInvocations_CollectionChanged;
+                    _approvedByAgentExceptionInvocations.CollectionChanged -= ApprovedByAgentExceptionInvocations_CollectionChanged;
                 }
-                _exceptionInvocations = value;
-                if (_exceptionInvocations != null)
+                _approvedByAgentExceptionInvocations = value;
+                if (_approvedByAgentExceptionInvocations != null)
                 {
-                    _exceptionInvocations.CollectionChanged += ExceptionInvocations_CollectionChanged;
+                    _approvedByAgentExceptionInvocations.CollectionChanged += ApprovedByAgentExceptionInvocations_CollectionChanged;
                 }
             }
         }
 
-        private void ExceptionInvocations_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void ApprovedByAgentExceptionInvocations_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e?.NewItems != null)
             {
@@ -1318,7 +1344,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_verificationOutcomes == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -1328,11 +1354,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.VerificationOutcomes.Where(x => x.ObservedByAgent == this.AgentId).ToList<VerificationOutcome>();
+                        var items = base.SoAContext.VerificationOutcomes.Where(x => x.ObservedByAgent == this.AgentId).ToList<VerificationOutcome>();
                         _verificationOutcomes = new ObservableCollection<VerificationOutcome>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _verificationOutcomes.CollectionChanged += VerificationOutcomes_CollectionChanged;
@@ -1373,7 +1399,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_messageDeliveries == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -1383,11 +1409,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.MessageDeliveries.Where(x => x.SentByAgent == this.AgentId).ToList<MessageDelivery>();
+                        var items = base.SoAContext.MessageDeliveries.Where(x => x.SentByAgent == this.AgentId).ToList<MessageDelivery>();
                         _messageDeliveries = new ObservableCollection<MessageDelivery>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _messageDeliveries.CollectionChanged += MessageDeliveries_CollectionChanged;
@@ -1428,7 +1454,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_templateApprovals == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -1438,11 +1464,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.TemplateApprovals.Where(x => x.DecidedByAgent == this.AgentId).ToList<TemplateApproval>();
+                        var items = base.SoAContext.TemplateApprovals.Where(x => x.DecidedByAgent == this.AgentId).ToList<TemplateApproval>();
                         _templateApprovals = new ObservableCollection<TemplateApproval>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _templateApprovals.CollectionChanged += TemplateApprovals_CollectionChanged;
@@ -1474,51 +1500,51 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
-        private ObservableCollection<AgentDecisionRecord> _agentDecisionRecords;
+        private ObservableCollection<AgentDecisionRecord> _decidingAgentAgentDecisionRecords;
 
         [InverseProperty("Agent")]
-        public virtual ObservableCollection<AgentDecisionRecord> AgentDecisionRecords
+        public virtual ObservableCollection<AgentDecisionRecord> DecidingAgentAgentDecisionRecords
         {
             get
             {
-                if (_agentDecisionRecords == null)
+                if (_decidingAgentAgentDecisionRecords == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access AgentDecisionRecords - no database context is set. AgentId: " + this.AgentId + ".");
+                            throw new InvalidOperationException("Cannot access DecidingAgentAgentDecisionRecords - no database context is set. AgentId: " + this.AgentId + ".");
                         }
-                        _agentDecisionRecords = new ObservableCollection<AgentDecisionRecord>();
+                        _decidingAgentAgentDecisionRecords = new ObservableCollection<AgentDecisionRecord>();
                     }
                     else
                     {
-                        var items = Context.AgentDecisionRecords.Where(x => x.DecidingAgent == this.AgentId).ToList<AgentDecisionRecord>();
-                        _agentDecisionRecords = new ObservableCollection<AgentDecisionRecord>(items);
+                        var items = base.SoAContext.AgentDecisionRecords.Where(x => x.DecidingAgent == this.AgentId).ToList<AgentDecisionRecord>();
+                        _decidingAgentAgentDecisionRecords = new ObservableCollection<AgentDecisionRecord>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
-                    _agentDecisionRecords.CollectionChanged += AgentDecisionRecords_CollectionChanged;
+                    _decidingAgentAgentDecisionRecords.CollectionChanged += DecidingAgentAgentDecisionRecords_CollectionChanged;
                 }
-                return _agentDecisionRecords;
+                return _decidingAgentAgentDecisionRecords;
             }
             private set
             {
-                if (_agentDecisionRecords != null)
+                if (_decidingAgentAgentDecisionRecords != null)
                 {
-                    _agentDecisionRecords.CollectionChanged -= AgentDecisionRecords_CollectionChanged;
+                    _decidingAgentAgentDecisionRecords.CollectionChanged -= DecidingAgentAgentDecisionRecords_CollectionChanged;
                 }
-                _agentDecisionRecords = value;
-                if (_agentDecisionRecords != null)
+                _decidingAgentAgentDecisionRecords = value;
+                if (_decidingAgentAgentDecisionRecords != null)
                 {
-                    _agentDecisionRecords.CollectionChanged += AgentDecisionRecords_CollectionChanged;
+                    _decidingAgentAgentDecisionRecords.CollectionChanged += DecidingAgentAgentDecisionRecords_CollectionChanged;
                 }
             }
         }
 
-        private void AgentDecisionRecords_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void DecidingAgentAgentDecisionRecords_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e?.NewItems != null)
             {
@@ -1529,51 +1555,51 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
-        private ObservableCollection<AgentDecisionRecord> _agentDecisionRecords;
+        private ObservableCollection<AgentDecisionRecord> _reviewedByAgentAgentDecisionRecords;
 
-        [InverseProperty("Agent")]
-        public virtual ObservableCollection<AgentDecisionRecord> AgentDecisionRecords
+        [InverseProperty("AgentRef")]
+        public virtual ObservableCollection<AgentDecisionRecord> ReviewedByAgentAgentDecisionRecords
         {
             get
             {
-                if (_agentDecisionRecords == null)
+                if (_reviewedByAgentAgentDecisionRecords == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access AgentDecisionRecords - no database context is set. AgentId: " + this.AgentId + ".");
+                            throw new InvalidOperationException("Cannot access ReviewedByAgentAgentDecisionRecords - no database context is set. AgentId: " + this.AgentId + ".");
                         }
-                        _agentDecisionRecords = new ObservableCollection<AgentDecisionRecord>();
+                        _reviewedByAgentAgentDecisionRecords = new ObservableCollection<AgentDecisionRecord>();
                     }
                     else
                     {
-                        var items = Context.AgentDecisionRecords.Where(x => x.ReviewedByAgent == this.AgentId).ToList<AgentDecisionRecord>();
-                        _agentDecisionRecords = new ObservableCollection<AgentDecisionRecord>(items);
+                        var items = base.SoAContext.AgentDecisionRecords.Where(x => x.ReviewedByAgent == this.AgentId).ToList<AgentDecisionRecord>();
+                        _reviewedByAgentAgentDecisionRecords = new ObservableCollection<AgentDecisionRecord>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
-                    _agentDecisionRecords.CollectionChanged += AgentDecisionRecords_CollectionChanged;
+                    _reviewedByAgentAgentDecisionRecords.CollectionChanged += ReviewedByAgentAgentDecisionRecords_CollectionChanged;
                 }
-                return _agentDecisionRecords;
+                return _reviewedByAgentAgentDecisionRecords;
             }
             private set
             {
-                if (_agentDecisionRecords != null)
+                if (_reviewedByAgentAgentDecisionRecords != null)
                 {
-                    _agentDecisionRecords.CollectionChanged -= AgentDecisionRecords_CollectionChanged;
+                    _reviewedByAgentAgentDecisionRecords.CollectionChanged -= ReviewedByAgentAgentDecisionRecords_CollectionChanged;
                 }
-                _agentDecisionRecords = value;
-                if (_agentDecisionRecords != null)
+                _reviewedByAgentAgentDecisionRecords = value;
+                if (_reviewedByAgentAgentDecisionRecords != null)
                 {
-                    _agentDecisionRecords.CollectionChanged += AgentDecisionRecords_CollectionChanged;
+                    _reviewedByAgentAgentDecisionRecords.CollectionChanged += ReviewedByAgentAgentDecisionRecords_CollectionChanged;
                 }
             }
         }
 
-        private void AgentDecisionRecords_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void ReviewedByAgentAgentDecisionRecords_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e?.NewItems != null)
             {
@@ -1593,7 +1619,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_attestations == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -1603,11 +1629,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.Attestations.Where(x => x.SignedByAgent == this.AgentId).ToList<Attestation>();
+                        var items = base.SoAContext.Attestations.Where(x => x.SignedByAgent == this.AgentId).ToList<Attestation>();
                         _attestations = new ObservableCollection<Attestation>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _attestations.CollectionChanged += Attestations_CollectionChanged;
@@ -1648,7 +1674,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_appUsers == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -1658,11 +1684,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.AppUsers.Where(x => x.LinkedAgent == this.AgentId).ToList<AppUser>();
+                        var items = base.SoAContext.AppUsers.Where(x => x.LinkedAgent == this.AgentId).ToList<AppUser>();
                         _appUsers = new ObservableCollection<AppUser>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _appUsers.CollectionChanged += AppUsers_CollectionChanged;
@@ -1694,51 +1720,51 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
-        private ObservableCollection<KnowledgeBrokerLink> _knowledgeBrokerLinks;
+        private ObservableCollection<KnowledgeBrokerLink> _seekerKnowledgeBrokerLinks;
 
         [InverseProperty("Agent")]
-        public virtual ObservableCollection<KnowledgeBrokerLink> KnowledgeBrokerLinks
+        public virtual ObservableCollection<KnowledgeBrokerLink> SeekerKnowledgeBrokerLinks
         {
             get
             {
-                if (_knowledgeBrokerLinks == null)
+                if (_seekerKnowledgeBrokerLinks == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access KnowledgeBrokerLinks - no database context is set. AgentId: " + this.AgentId + ".");
+                            throw new InvalidOperationException("Cannot access SeekerKnowledgeBrokerLinks - no database context is set. AgentId: " + this.AgentId + ".");
                         }
-                        _knowledgeBrokerLinks = new ObservableCollection<KnowledgeBrokerLink>();
+                        _seekerKnowledgeBrokerLinks = new ObservableCollection<KnowledgeBrokerLink>();
                     }
                     else
                     {
-                        var items = Context.KnowledgeBrokerLinks.Where(x => x.Seeker == this.AgentId).ToList<KnowledgeBrokerLink>();
-                        _knowledgeBrokerLinks = new ObservableCollection<KnowledgeBrokerLink>(items);
+                        var items = base.SoAContext.KnowledgeBrokerLinks.Where(x => x.Seeker == this.AgentId).ToList<KnowledgeBrokerLink>();
+                        _seekerKnowledgeBrokerLinks = new ObservableCollection<KnowledgeBrokerLink>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
-                    _knowledgeBrokerLinks.CollectionChanged += KnowledgeBrokerLinks_CollectionChanged;
+                    _seekerKnowledgeBrokerLinks.CollectionChanged += SeekerKnowledgeBrokerLinks_CollectionChanged;
                 }
-                return _knowledgeBrokerLinks;
+                return _seekerKnowledgeBrokerLinks;
             }
             private set
             {
-                if (_knowledgeBrokerLinks != null)
+                if (_seekerKnowledgeBrokerLinks != null)
                 {
-                    _knowledgeBrokerLinks.CollectionChanged -= KnowledgeBrokerLinks_CollectionChanged;
+                    _seekerKnowledgeBrokerLinks.CollectionChanged -= SeekerKnowledgeBrokerLinks_CollectionChanged;
                 }
-                _knowledgeBrokerLinks = value;
-                if (_knowledgeBrokerLinks != null)
+                _seekerKnowledgeBrokerLinks = value;
+                if (_seekerKnowledgeBrokerLinks != null)
                 {
-                    _knowledgeBrokerLinks.CollectionChanged += KnowledgeBrokerLinks_CollectionChanged;
+                    _seekerKnowledgeBrokerLinks.CollectionChanged += SeekerKnowledgeBrokerLinks_CollectionChanged;
                 }
             }
         }
 
-        private void KnowledgeBrokerLinks_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void SeekerKnowledgeBrokerLinks_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e?.NewItems != null)
             {
@@ -1749,51 +1775,51 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
-        private ObservableCollection<KnowledgeBrokerLink> _knowledgeBrokerLinks;
+        private ObservableCollection<KnowledgeBrokerLink> _brokerKnowledgeBrokerLinks;
 
-        [InverseProperty("Agent")]
-        public virtual ObservableCollection<KnowledgeBrokerLink> KnowledgeBrokerLinks
+        [InverseProperty("AgentRef")]
+        public virtual ObservableCollection<KnowledgeBrokerLink> BrokerKnowledgeBrokerLinks
         {
             get
             {
-                if (_knowledgeBrokerLinks == null)
+                if (_brokerKnowledgeBrokerLinks == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access KnowledgeBrokerLinks - no database context is set. AgentId: " + this.AgentId + ".");
+                            throw new InvalidOperationException("Cannot access BrokerKnowledgeBrokerLinks - no database context is set. AgentId: " + this.AgentId + ".");
                         }
-                        _knowledgeBrokerLinks = new ObservableCollection<KnowledgeBrokerLink>();
+                        _brokerKnowledgeBrokerLinks = new ObservableCollection<KnowledgeBrokerLink>();
                     }
                     else
                     {
-                        var items = Context.KnowledgeBrokerLinks.Where(x => x.Broker == this.AgentId).ToList<KnowledgeBrokerLink>();
-                        _knowledgeBrokerLinks = new ObservableCollection<KnowledgeBrokerLink>(items);
+                        var items = base.SoAContext.KnowledgeBrokerLinks.Where(x => x.Broker == this.AgentId).ToList<KnowledgeBrokerLink>();
+                        _brokerKnowledgeBrokerLinks = new ObservableCollection<KnowledgeBrokerLink>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
-                    _knowledgeBrokerLinks.CollectionChanged += KnowledgeBrokerLinks_CollectionChanged;
+                    _brokerKnowledgeBrokerLinks.CollectionChanged += BrokerKnowledgeBrokerLinks_CollectionChanged;
                 }
-                return _knowledgeBrokerLinks;
+                return _brokerKnowledgeBrokerLinks;
             }
             private set
             {
-                if (_knowledgeBrokerLinks != null)
+                if (_brokerKnowledgeBrokerLinks != null)
                 {
-                    _knowledgeBrokerLinks.CollectionChanged -= KnowledgeBrokerLinks_CollectionChanged;
+                    _brokerKnowledgeBrokerLinks.CollectionChanged -= BrokerKnowledgeBrokerLinks_CollectionChanged;
                 }
-                _knowledgeBrokerLinks = value;
-                if (_knowledgeBrokerLinks != null)
+                _brokerKnowledgeBrokerLinks = value;
+                if (_brokerKnowledgeBrokerLinks != null)
                 {
-                    _knowledgeBrokerLinks.CollectionChanged += KnowledgeBrokerLinks_CollectionChanged;
+                    _brokerKnowledgeBrokerLinks.CollectionChanged += BrokerKnowledgeBrokerLinks_CollectionChanged;
                 }
             }
         }
 
-        private void KnowledgeBrokerLinks_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void BrokerKnowledgeBrokerLinks_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e?.NewItems != null)
             {
@@ -1807,16 +1833,16 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         protected override void LazyLoadProperties()
         {
-            _ = this.Organization;
+            _ = this.OrganizationRef;
             _ = this.Roles;
             _ = this.RoleAssignments;
-            _ = this.Mentorships;
-            _ = this.Mentorships;
-            _ = this.ProcedureVersions;
-            _ = this.ProcedureVersions;
+            _ = this.MentorAgentMentorships;
+            _ = this.LearnerAgentMentorships;
+            _ = this.CreatedByAgentProcedureVersions;
+            _ = this.ModifiedByAgentProcedureVersions;
             _ = this.ProcedureStatusChanges;
-            _ = this.ElicitationSessions;
-            _ = this.ElicitationSessions;
+            _ = this.PractitionerAgentElicitationSessions;
+            _ = this.FacilitatorAgentElicitationSessions;
             _ = this.KnowledgeFragments;
             _ = this.ProcedureExecutions;
             _ = this.StepExecutions;
@@ -1827,17 +1853,17 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             _ = this.ChangeRequests;
             _ = this.ReviewEvents;
             _ = this.LearningActivities;
-            _ = this.ExceptionInvocations;
-            _ = this.ExceptionInvocations;
+            _ = this.InvokedByAgentExceptionInvocations;
+            _ = this.ApprovedByAgentExceptionInvocations;
             _ = this.VerificationOutcomes;
             _ = this.MessageDeliveries;
             _ = this.TemplateApprovals;
-            _ = this.AgentDecisionRecords;
-            _ = this.AgentDecisionRecords;
+            _ = this.DecidingAgentAgentDecisionRecords;
+            _ = this.ReviewedByAgentAgentDecisionRecords;
             _ = this.Attestations;
             _ = this.AppUsers;
-            _ = this.KnowledgeBrokerLinks;
-            _ = this.KnowledgeBrokerLinks;
+            _ = this.SeekerKnowledgeBrokerLinks;
+            _ = this.BrokerKnowledgeBrokerLinks;
         }
 
         public override string ToString()

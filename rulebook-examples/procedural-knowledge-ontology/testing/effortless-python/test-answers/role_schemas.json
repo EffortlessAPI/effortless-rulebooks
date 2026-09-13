@@ -84,7 +84,7 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema",
     "name": "pko_knowledge_authority",
     "search_path": "pko_knowledge_authority",
-    "view_count": 70,
+    "view_count": 74,
     "is_empty_schema": false
   },
   {
@@ -117,7 +117,7 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema",
     "name": "pko_process_steward",
     "search_path": "pko_process_steward",
-    "view_count": 70,
+    "view_count": 74,
     "is_empty_schema": false
   },
   {

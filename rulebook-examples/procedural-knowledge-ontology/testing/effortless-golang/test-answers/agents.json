@@ -18,15 +18,11 @@
     "draft_decision_count": 0,
     "overridden_draft_count": 0,
     "draft_rewrite_rate_percent": 0,
-    "times_named_as_broker": null,
-    "is_recognized_broker": null,
-    "at_risk_reliance_count": null,
-    "has_at_risk_knowledge_reliance": null,
-    "semantic_type_iri": "prov:Agent",
-    "_erb_errors": {
-      "at_risk_reliance_count": "the rulebook holds 5 KnowledgeBrokerLinks rows but blank-tests has no knowledge_broker_links.json — regenerate the test fixtures",
-      "times_named_as_broker": "the rulebook holds 5 KnowledgeBrokerLinks rows but blank-tests has no knowledge_broker_links.json — regenerate the test fixtures"
-    }
+    "times_named_as_broker": 0,
+    "is_recognized_broker": false,
+    "at_risk_reliance_count": 0,
+    "has_at_risk_knowledge_reliance": false,
+    "semantic_type_iri": "prov:Agent"
   },
   {
     "agent_id": "close-pipeline",
@@ -47,15 +43,11 @@
     "draft_decision_count": 0,
     "overridden_draft_count": 0,
     "draft_rewrite_rate_percent": 0,
-    "times_named_as_broker": null,
-    "is_recognized_broker": null,
-    "at_risk_reliance_count": null,
-    "has_at_risk_knowledge_reliance": null,
-    "semantic_type_iri": "prov:SoftwareAgent",
-    "_erb_errors": {
-      "at_risk_reliance_count": "the rulebook holds 5 KnowledgeBrokerLinks rows but blank-tests has no knowledge_broker_links.json — regenerate the test fixtures",
-      "times_named_as_broker": "the rulebook holds 5 KnowledgeBrokerLinks rows but blank-tests has no knowledge_broker_links.json — regenerate the test fixtures"
-    }
+    "times_named_as_broker": 0,
+    "is_recognized_broker": false,
+    "at_risk_reliance_count": 0,
+    "has_at_risk_knowledge_reliance": false,
+    "semantic_type_iri": "prov:SoftwareAgent"
   },
   {
     "agent_id": "devon-okafor",
@@ -76,15 +68,11 @@
     "draft_decision_count": 0,
     "overridden_draft_count": 0,
     "draft_rewrite_rate_percent": 0,
-    "times_named_as_broker": null,
-    "is_recognized_broker": null,
-    "at_risk_reliance_count": null,
-    "has_at_risk_knowledge_reliance": null,
-    "semantic_type_iri": "prov:Agent",
-    "_erb_errors": {
-      "at_risk_reliance_count": "the rulebook holds 5 KnowledgeBrokerLinks rows but blank-tests has no knowledge_broker_links.json — regenerate the test fixtures",
-      "times_named_as_broker": "the rulebook holds 5 KnowledgeBrokerLinks rows but blank-tests has no knowledge_broker_links.json — regenerate the test fixtures"
-    }
+    "times_named_as_broker": 0,
+    "is_recognized_broker": false,
+    "at_risk_reliance_count": 0,
+    "has_at_risk_knowledge_reliance": false,
+    "semantic_type_iri": "prov:Agent"
   },
   {
     "agent_id": "elena-garcia",
@@ -105,15 +93,36 @@
     "draft_decision_count": 0,
     "overridden_draft_count": 0,
     "draft_rewrite_rate_percent": 0,
-    "times_named_as_broker": null,
-    "is_recognized_broker": null,
-    "at_risk_reliance_count": null,
-    "has_at_risk_knowledge_reliance": null,
-    "semantic_type_iri": "prov:Agent",
-    "_erb_errors": {
-      "at_risk_reliance_count": "the rulebook holds 5 KnowledgeBrokerLinks rows but blank-tests has no knowledge_broker_links.json — regenerate the test fixtures",
-      "times_named_as_broker": "the rulebook holds 5 KnowledgeBrokerLinks rows but blank-tests has no knowledge_broker_links.json — regenerate the test fixtures"
-    }
+    "times_named_as_broker": 0,
+    "is_recognized_broker": false,
+    "at_risk_reliance_count": 0,
+    "has_at_risk_knowledge_reliance": false,
+    "semantic_type_iri": "prov:Agent"
+  },
+  {
+    "agent_id": "jordan-park",
+    "name": "Jordan Park",
+    "display_name": "Jordan Park",
+    "agent_kind": "Human",
+    "organization": "acme-finance",
+    "contact_address": "",
+    "version_or_employment_key": "",
+    "count_of_current_role_assignments": 0,
+    "is_still_engaged": false,
+    "decision_count": 0,
+    "overridden_decision_count": 0,
+    "override_rate_percent": 0,
+    "is_non_human": false,
+    "boundary_violation_count": 0,
+    "is_operating_outside_boundary": false,
+    "draft_decision_count": 0,
+    "overridden_draft_count": 0,
+    "draft_rewrite_rate_percent": 0,
+    "times_named_as_broker": 1,
+    "is_recognized_broker": false,
+    "at_risk_reliance_count": 1,
+    "has_at_risk_knowledge_reliance": true,
+    "semantic_type_iri": "prov:Agent"
   },
   {
     "agent_id": "maria-chen",
@@ -134,15 +143,11 @@
     "draft_decision_count": 0,
     "overridden_draft_count": 0,
     "draft_rewrite_rate_percent": 0,
-    "times_named_as_broker": null,
-    "is_recognized_broker": null,
-    "at_risk_reliance_count": null,
-    "has_at_risk_knowledge_reliance": null,
-    "semantic_type_iri": "prov:Agent",
-    "_erb_errors": {
-      "at_risk_reliance_count": "the rulebook holds 5 KnowledgeBrokerLinks rows but blank-tests has no knowledge_broker_links.json — regenerate the test fixtures",
-      "times_named_as_broker": "the rulebook holds 5 KnowledgeBrokerLinks rows but blank-tests has no knowledge_broker_links.json — regenerate the test fixtures"
-    }
+    "times_named_as_broker": 0,
+    "is_recognized_broker": false,
+    "at_risk_reliance_count": 0,
+    "has_at_risk_knowledge_reliance": false,
+    "semantic_type_iri": "prov:Agent"
   },
   {
     "agent_id": "noah-williams",
@@ -163,15 +168,11 @@
     "draft_decision_count": 0,
     "overridden_draft_count": 0,
     "draft_rewrite_rate_percent": 0,
-    "times_named_as_broker": null,
-    "is_recognized_broker": null,
-    "at_risk_reliance_count": null,
-    "has_at_risk_knowledge_reliance": null,
-    "semantic_type_iri": "prov:Agent",
-    "_erb_errors": {
-      "at_risk_reliance_count": "the rulebook holds 5 KnowledgeBrokerLinks rows but blank-tests has no knowledge_broker_links.json — regenerate the test fixtures",
-      "times_named_as_broker": "the rulebook holds 5 KnowledgeBrokerLinks rows but blank-tests has no knowledge_broker_links.json — regenerate the test fixtures"
-    }
+    "times_named_as_broker": 0,
+    "is_recognized_broker": false,
+    "at_risk_reliance_count": 0,
+    "has_at_risk_knowledge_reliance": false,
+    "semantic_type_iri": "prov:Agent"
   },
   {
     "agent_id": "notification-pipeline",
@@ -192,15 +193,11 @@
     "draft_decision_count": 0,
     "overridden_draft_count": 0,
     "draft_rewrite_rate_percent": 0,
-    "times_named_as_broker": null,
-    "is_recognized_broker": null,
-    "at_risk_reliance_count": null,
-    "has_at_risk_knowledge_reliance": null,
-    "semantic_type_iri": "prov:SoftwareAgent",
-    "_erb_errors": {
-      "at_risk_reliance_count": "the rulebook holds 5 KnowledgeBrokerLinks rows but blank-tests has no knowledge_broker_links.json — regenerate the test fixtures",
-      "times_named_as_broker": "the rulebook holds 5 KnowledgeBrokerLinks rows but blank-tests has no knowledge_broker_links.json — regenerate the test fixtures"
-    }
+    "times_named_as_broker": 0,
+    "is_recognized_broker": false,
+    "at_risk_reliance_count": 0,
+    "has_at_risk_knowledge_reliance": false,
+    "semantic_type_iri": "prov:SoftwareAgent"
   },
   {
     "agent_id": "policy-drafting-ai",
@@ -221,15 +218,11 @@
     "draft_decision_count": 0,
     "overridden_draft_count": 0,
     "draft_rewrite_rate_percent": 0,
-    "times_named_as_broker": null,
-    "is_recognized_broker": null,
-    "at_risk_reliance_count": null,
-    "has_at_risk_knowledge_reliance": null,
-    "semantic_type_iri": "prov:SoftwareAgent",
-    "_erb_errors": {
-      "at_risk_reliance_count": "the rulebook holds 5 KnowledgeBrokerLinks rows but blank-tests has no knowledge_broker_links.json — regenerate the test fixtures",
-      "times_named_as_broker": "the rulebook holds 5 KnowledgeBrokerLinks rows but blank-tests has no knowledge_broker_links.json — regenerate the test fixtures"
-    }
+    "times_named_as_broker": 0,
+    "is_recognized_broker": false,
+    "at_risk_reliance_count": 0,
+    "has_at_risk_knowledge_reliance": false,
+    "semantic_type_iri": "prov:SoftwareAgent"
   },
   {
     "agent_id": "priya-raman",
@@ -250,15 +243,11 @@
     "draft_decision_count": 0,
     "overridden_draft_count": 0,
     "draft_rewrite_rate_percent": 0,
-    "times_named_as_broker": null,
-    "is_recognized_broker": null,
-    "at_risk_reliance_count": null,
-    "has_at_risk_knowledge_reliance": null,
-    "semantic_type_iri": "prov:Agent",
-    "_erb_errors": {
-      "at_risk_reliance_count": "the rulebook holds 5 KnowledgeBrokerLinks rows but blank-tests has no knowledge_broker_links.json — regenerate the test fixtures",
-      "times_named_as_broker": "the rulebook holds 5 KnowledgeBrokerLinks rows but blank-tests has no knowledge_broker_links.json — regenerate the test fixtures"
-    }
+    "times_named_as_broker": 3,
+    "is_recognized_broker": true,
+    "at_risk_reliance_count": 0,
+    "has_at_risk_knowledge_reliance": false,
+    "semantic_type_iri": "prov:Agent"
   },
   {
     "agent_id": "variance-ai",
@@ -279,14 +268,10 @@
     "draft_decision_count": 0,
     "overridden_draft_count": 0,
     "draft_rewrite_rate_percent": 0,
-    "times_named_as_broker": null,
-    "is_recognized_broker": null,
-    "at_risk_reliance_count": null,
-    "has_at_risk_knowledge_reliance": null,
-    "semantic_type_iri": "prov:SoftwareAgent",
-    "_erb_errors": {
-      "at_risk_reliance_count": "the rulebook holds 5 KnowledgeBrokerLinks rows but blank-tests has no knowledge_broker_links.json — regenerate the test fixtures",
-      "times_named_as_broker": "the rulebook holds 5 KnowledgeBrokerLinks rows but blank-tests has no knowledge_broker_links.json — regenerate the test fixtures"
-    }
+    "times_named_as_broker": 0,
+    "is_recognized_broker": false,
+    "at_risk_reliance_count": 0,
+    "has_at_risk_knowledge_reliance": false,
+    "semantic_type_iri": "prov:SoftwareAgent"
   }
 ]

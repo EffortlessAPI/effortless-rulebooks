@@ -179,7 +179,15 @@ THIS_VAR = re.compile(r'\$this\b')
 
 
 def load_sparql_rules(shacl_graph: Graph) -> list:
-    """Every sh:SPARQLRule as (order, label, target_class, construct), sorted by sh:order."""
+    """Every sh:SPARQLRule as (order, label, target_class, construct), sorted by sh:order.
+
+    The open-source injector gives every rule an sh:order (its depth in the
+    formula DAG). rulebook-to-owl gives none, which SHACL-AF allows: a spec
+    engine iterates to a fixed point, and this runner executes each rule once.
+    Unordered rules are therefore sequenced by dependency_orders() from what
+    each rule itself reads and constructs. A rule set that is partly ordered
+    is refused, since there is no sound way to merge the two schemes.
+    """
     rules = []
     for shape, target in shacl_graph.subject_objects(SH.targetClass):
         for rule in shacl_graph.objects(shape, SH.rule):
@@ -188,10 +196,68 @@ def load_sparql_rules(shacl_graph: Graph) -> list:
                 continue
             order = shacl_graph.value(rule, SH.order)
             label = shacl_graph.value(rule, RDFS.label)
-            rules.append((int(order.toPython()) if order is not None else 0,
+            rules.append((int(order.toPython()) if order is not None else None,
                           str(label), str(target), str(construct)))
+    unordered = [r for r in rules if r[0] is None]
+    if unordered and len(unordered) != len(rules):
+        raise RuntimeError(
+            f"{len(unordered)} of {len(rules)} SHACL rules carry no sh:order; "
+            f"a partly ordered rule set cannot be sequenced.")
+    if unordered:
+        orders = dependency_orders(rules)
+        rules = [(orders[r[1]], r[1], r[2], r[3]) for r in rules]
     rules.sort(key=lambda r: (r[0], r[1]))
     return rules
+
+
+_CONSTRUCTED = re.compile(r'CONSTRUCT\s*\{\s*\$this\s+effortless-ntwf:(\w+)\s')
+_NTWF_TERM = re.compile(r'effortless-ntwf:([A-Za-z_]\w*)')
+
+
+def dependency_orders(rules: list) -> dict:
+    """Depth of each rule in the graph of what it reads and what other rules construct.
+
+    Rule R depends on rule P when R's WHERE reads the predicate P constructs AND
+    that predicate is on P's class from R's point of view: P targets R's own
+    class (a same-row read of $this), or R names P's class (a joined or counted
+    node is always typed, e.g. `?j1 a effortless-ntwf:RulebookFields`). The class
+    check matters: dozens of classes construct a predicate called `name`. A
+    dependency cycle is a real defect in the rules and raises.
+    """
+    produced = {}
+    by_label = {}
+    for _, label, target, construct in rules:
+        m = _CONSTRUCTED.search(construct)
+        if not m:
+            raise RuntimeError(f"cannot read the constructed predicate of SHACL rule {label}")
+        cls = re.split(r'[#/]', target)[-1]
+        produced.setdefault(m.group(1), []).append((cls, label))
+        by_label[label] = (cls, construct)
+
+    deps = {}
+    for label, (cls, construct) in by_label.items():
+        where = construct[construct.find('WHERE'):]
+        terms = set(_NTWF_TERM.findall(where))
+        deps[label] = {p_label for pred in terms for p_cls, p_label in produced.get(pred, ())
+                       if p_label != label and (p_cls == cls or p_cls in terms)}
+
+    depth, visiting = {}, []
+
+    def visit(label):
+        if label in depth:
+            return depth[label]
+        if label in visiting:
+            cycle = visiting[visiting.index(label):] + [label]
+            raise RuntimeError("SHACL rules form a dependency cycle: " + " -> ".join(cycle))
+        visiting.append(label)
+        depth[label] = 1 + max((visit(d) for d in deps[label]), default=-1)
+        visiting.pop()
+        return depth[label]
+
+    sys.setrecursionlimit(max(sys.getrecursionlimit(), 10 * len(rules)))
+    for label in by_label:
+        visit(label)
+    return depth
 
 
 def run_shacl_reasoning(store: "pyoxigraph.Store", rules: list) -> int:
@@ -318,7 +384,7 @@ def extract_entity_results(
 # MAIN
 # =============================================================================
 
-def _get_testing_paths():
+def _get_testing_paths(substrate_name: str):
     """Resolve blank-tests and test-answers dirs. ERB_TESTING_DIR is required.
 
     There is no implicit per-substrate testing dir — running with no env var
@@ -332,27 +398,30 @@ def _get_testing_paths():
             "orchestrator with ERB_TESTING_DIR pointing at the active domain's "
             "testing/ directory."
         )
-    substrate_name = Path(script_dir).name
     return Path(erb_testing) / "blank-tests", Path(erb_testing) / substrate_name / "test-answers"
 
 
-def main():
+def main(src_dir: Path, substrate_name: str, missing_hint: str):
+    """Reason over the TBox/ABox/SHACL triple in src_dir and write answers for
+    substrate_name. The oss `owl` substrate passes its own injector's src/;
+    `effortless-owl` passes the domain's rulebook-to-owl output. Both share
+    this runner because both mint the same effortless-ntwf: IRIs."""
     print("=" * 70)
-    print("OWL Execution Substrate - SHACL Reasoning Test")
+    print(f"OWL Execution Substrate ({substrate_name}) - SHACL Reasoning Test")
     print("=" * 70)
     print()
 
     # Check required files exist. inject-into-owl.py writes the TBox/ABox/SHACL
     # source artifacts under src/ (test-answers.json/test-results.md stay at the
     # substrate root); read from the same place they're written.
-    ontology_path = script_dir / "src" / "ontology.owl"
-    individuals_path = script_dir / "src" / "individuals.ttl"
-    rules_path = script_dir / "src" / "rules.shacl.ttl"
+    ontology_path = src_dir / "ontology.owl"
+    individuals_path = src_dir / "individuals.ttl"
+    rules_path = src_dir / "rules.shacl.ttl"
 
     for path in [ontology_path, individuals_path, rules_path]:
         if not path.exists():
             print(f"ERROR: Required file not found: {path}")
-            print("Run: python inject-into-owl.py first")
+            print(missing_hint)
             sys.exit(1)
 
     # Load rulebook to get schema info
@@ -412,7 +481,7 @@ def main():
     # Extract results and save to test-answers/
     print("\nExtracting computed values...")
 
-    _, test_answers_dir = _get_testing_paths()
+    _, test_answers_dir = _get_testing_paths(substrate_name)
     test_answers_dir.mkdir(parents=True, exist_ok=True)
 
     total_records = 0
@@ -447,4 +516,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    main(script_dir / "src", "owl", "Run: python inject-into-owl.py first")

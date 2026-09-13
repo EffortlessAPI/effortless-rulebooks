@@ -1,47 +1,55 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+  <!--
+    Compiles the active project's rulebook-to-entity-framework output (DataClasses/ +
+    SqlOnAir/DotNet/Lib/DataExtensions.cs) together with Program.cs, and runs the real
+    generated SoAEFContext against a throwaway SQLite database. Mirrors the tool's own
+    conformance harness (Versioned-Stable-SSoTme-Tools/tools/effortless/
+    rulebook-to-entity-framework/conformance/EfConformanceHarness.csproj).
+  -->
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <RootNamespace>EffortlessEntityFrameworkRunner</RootNamespace>
     <AssemblyName>EffortlessEntityFrameworkRunner</AssemblyName>
-    <NoWarn>$(NoWarn);CS8600;CS8601;CS8602;CS8603;CS8604;CS8618;CS8625;CS0108;CS0114</NoWarn>
-    <!-- LicensedRoot defaults to the legacy global tools dir; the test runner
-         overrides it via the EF_TOOL_DIR env var to point at the active domain's
-         registered rulebooktoentityframework output (<domain>/effortless-entity-framework). -->
-    <LicensedRoot Condition="'$(EF_TOOL_DIR)' != ''">$(EF_TOOL_DIR)/DataClasses</LicensedRoot>
-    <LicensedRoot Condition="'$(LicensedRoot)' == ''">../../licensed-effortless-tools/entity-framework-dotnet/DataClasses</LicensedRoot>
-    <LicensedLibRoot Condition="'$(EF_TOOL_DIR)' != ''">$(EF_TOOL_DIR)/SqlOnAir/DotNet/Lib</LicensedLibRoot>
-    <LicensedLibRoot Condition="'$(LicensedLibRoot)' == ''">../../licensed-effortless-tools/entity-framework-dotnet/SqlOnAir/DotNet/Lib</LicensedLibRoot>
-    <PatchedRoot>obj/Patched/DataClasses</PatchedRoot>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <NoWarn>$(NoWarn);CS0108;CS0114;CS0169;CS0649;CS8600;CS8601;CS8602;CS8603;CS8604;CS8618;CS8622;CS8625;CS8632</NoWarn>
+    <!-- take-test.sh always passes -p:EF_TOOL_DIR=<project>/effortless-entity-framework. -->
+    <GeneratedSrc>$(EF_TOOL_DIR)</GeneratedSrc>
   </PropertyGroup>
 
+  <Target Name="RequireGeneratedSrc" BeforeTargets="CollectPackageReferences;BeforeBuild">
+    <Error Condition="'$(EF_TOOL_DIR)' == ''" Text="EF_TOOL_DIR is not set; pass -p:EF_TOOL_DIR=&lt;project&gt;/effortless-entity-framework" />
+    <Error Condition="!Exists('$(GeneratedSrc)/DataClasses/SoAEFContext.cs')" Text="No generated SoAEFContext.cs under $(GeneratedSrc)/DataClasses" />
+    <Error Condition="!Exists('$(GeneratedSrc)/SqlOnAir/DotNet/Lib/DataExtensions.cs')" Text="No generated DataExtensions.cs under $(GeneratedSrc)/SqlOnAir/DotNet/Lib" />
+    <!-- The tool writes DataClasses/SoAEntityBase.cs with overwrite-Never, so a project first
+         built by an older tool version keeps a base class whose context member is `Context`
+         while every current getter reads `SoAContext` (hundreds of CS0117 errors). -->
+    <Error Condition="Exists('$(GeneratedSrc)/DataClasses/SoAEntityBase.cs') And !$([System.IO.File]::ReadAllText('$(GeneratedSrc)/DataClasses/SoAEntityBase.cs').Contains('SoAContext'))"
+           Text="$(GeneratedSrc)/DataClasses/SoAEntityBase.cs is stale: it predates the current rulebook-to-entity-framework (no SoAContext member) and the tool never overwrites it. Delete that file and re-run effortless build in the project." />
+  </Target>
+
   <ItemGroup>
-    <Compile Include="$(LicensedRoot)/SoAEntityBase.cs" />
-    <Compile Include="$(LicensedLibRoot)/DataExtensions.cs" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.6" />
+    <!-- The generated SoAEFContext.OnConfiguring calls UseSqlServer inside an
+         `if (!IsConfigured)` branch the runner never takes (it passes SQLite options),
+         but the call must still compile. -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.6" />
   </ItemGroup>
 
-  <!-- Compat.cs provides an in-memory SoAEFContext stub; the generated
-       SoAEFContext.cs pulls in Microsoft.EntityFrameworkCore which we don't
-       reference. The patcher copies *every* .cs under DataClasses, so we
-       have to delete the patched copy of SoAEFContext.cs before glob-Compile
-       picks it up. -->
-  <Target Name="ExcludeGeneratedContext" AfterTargets="PatchLicensedSources" BeforeTargets="BeforeCompile;CoreCompile">
-    <Delete Files="$(MSBuildProjectDirectory)/$(PatchedRoot)/SoAEFContext.cs" />
-  </Target>
+  <!-- Formulas call DataExtensions helpers by bare name (SUBSTITUTE, LEFT, ...). -->
+  <ItemGroup>
+    <Using Include="SqlOnAir.DotNet.Lib.DataExtensions" Static="true" />
+  </ItemGroup>
 
-  <Target Name="PatchLicensedSources" BeforeTargets="BeforeCompile;CoreCompile">
-    <!-- Patch a copy of the licensed dataclasses before compile to fix
-         `... : null; set { }` bool getters. patch-sources.sh preserves the
-         BaseClasses/ subdirectory structure inside $(PatchedRoot). -->
-    <Exec Command="bash &quot;$(MSBuildProjectDirectory)/patch-sources.sh&quot; &quot;$(LicensedRoot)&quot; &quot;$(MSBuildProjectDirectory)/$(PatchedRoot)&quot;" />
-    <ItemGroup>
-      <!-- Glob the patched output so adding/removing entities in the
-           rulebook works automatically — no per-entity wiring here. -->
-      <Compile Include="$(PatchedRoot)/*.cs" Exclude="$(PatchedRoot)/SoAEntityBase.cs" />
-      <Compile Include="$(PatchedRoot)/BaseClasses/*.cs" />
-    </ItemGroup>
-  </Target>
+  <!-- The generated model, globbed so adding/removing rulebook tables needs no wiring here.
+       Sync*/Database* helpers are skipped: they target SQL Server/Airtable and compute nothing. -->
+  <ItemGroup>
+    <Compile Include="$(GeneratedSrc)/DataClasses/**/*.cs" />
+    <Compile Include="$(GeneratedSrc)/SqlOnAir/DotNet/Lib/DataExtensions.cs" />
+  </ItemGroup>
 
 </Project>

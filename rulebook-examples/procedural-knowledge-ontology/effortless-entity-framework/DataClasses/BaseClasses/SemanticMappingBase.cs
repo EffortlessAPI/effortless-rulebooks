@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -16,9 +17,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string SemanticMappingId { get; set; }
 
         // Formula Name (rulebook: ={{SourcePath}} & " -> " & {{TargetIri}})
+        [NotMapped]
         public string? Name
         {
-            get => this.SourcePath + " -> " + this.TargetIri; set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.SourcePath)), F.S(" -> "), F.TextOr(F.Of(this.TargetIri))))); set { }
         }
 
         public string? SourcePath { get; set; }
@@ -29,37 +31,46 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         public string? OntologyProfile { get; set; }
 
-        private OntologyProfile _ontologyProfile;
+        private OntologyProfile _ontologyProfileRef;
 
         [ForeignKey("OntologyProfile")]
-        public virtual OntologyProfile OntologyProfile
+        public virtual OntologyProfile OntologyProfileRef
         {
             get
             {
-                if (_ontologyProfile == null && !string.IsNullOrEmpty(OntologyProfile))
+                if (_ontologyProfileRef == null && !string.IsNullOrEmpty(OntologyProfile))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access OntologyProfile - no database context is set. OntologyProfile: " + OntologyProfile + ".");
+                            throw new InvalidOperationException("Cannot access OntologyProfileRef - no database context is set. OntologyProfile: " + OntologyProfile + ".");
                         }
                         return null;
                     }
-                    _ontologyProfile = Context.OntologyProfiles.Find(OntologyProfile);
-                    if (_ontologyProfile != null)
+                    _ontologyProfileRef = base.SoAContext.OntologyProfiles.Find(OntologyProfile);
+                    if (_ontologyProfileRef != null)
                     {
-                        Context.Attach(_ontologyProfile);
+                        base.SoAContext.Attach(_ontologyProfileRef);
                     }
                 }
-                return _ontologyProfile;
+                return _ontologyProfileRef;
             }
             set
             {
-                if (_ontologyProfile != value)
+                if (_ontologyProfileRef != value)
                 {
-                    _ontologyProfile = value;
-                    OntologyProfile = _ontologyProfile == null ? default : _ontologyProfile.OntologyProfileId;
+                    _ontologyProfileRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_ontologyProfileRef != null)
+                    {
+                        OntologyProfile = _ontologyProfileRef.OntologyProfileId;
+                    }
                 }
             }
         }
@@ -67,7 +78,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         protected override void LazyLoadProperties()
         {
-            _ = this.OntologyProfile;
+            _ = this.OntologyProfileRef;
         }
 
         public override string ToString()

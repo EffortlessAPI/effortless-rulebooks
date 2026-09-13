@@ -1,0 +1,62 @@
+[
+  {
+    "step_tool_id": "st-close01",
+    "name": "close-01 / erp-ledger",
+    "step": "close-01",
+    "tool": "erp-ledger"
+  },
+  {
+    "step_tool_id": "st-close02",
+    "name": "close-02 / erp-ledger",
+    "step": "close-02",
+    "tool": "erp-ledger"
+  },
+  {
+    "step_tool_id": "st-close03",
+    "name": "close-03 / close-workpaper",
+    "step": "close-03",
+    "tool": "close-workpaper"
+  },
+  {
+    "step_tool_id": "st-close04a",
+    "name": "close-04 / variance-model",
+    "step": "close-04",
+    "tool": "variance-model"
+  },
+  {
+    "step_tool_id": "st-close04b",
+    "name": "close-04 / close-workpaper",
+    "step": "close-04",
+    "tool": "close-workpaper"
+  },
+  {
+    "step_tool_id": "st-policy02",
+    "name": "policy-02 / knowledge-capture-form",
+    "step": "policy-02",
+    "tool": "knowledge-capture-form"
+  },
+  {
+    "step_tool_id": "st-policy03",
+    "name": "policy-03 / policy-registry",
+    "step": "policy-03",
+    "tool": "policy-registry"
+  },
+  {
+    "step_tool_id": "st-policy07a",
+    "name": "policy-07 / consent-registry",
+    "step": "policy-07",
+    "tool": "consent-registry"
+  },
+  {
+    "step_tool_id": "st-policy07b",
+    "name": "policy-07 / email-gateway",
+    "step": "policy-07",
+    "tool": "email-gateway"
+  },
+  {
+    "step_tool_id": "st-policy07c",
+    "name": "policy-07 / sms-gateway",
+    "step": "policy-07",
+    "tool": "sms-gateway"
+  }
+]

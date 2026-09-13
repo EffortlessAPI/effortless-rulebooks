@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -16,9 +17,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string ProcedureTypeId { get; set; }
 
         // Formula Name (rulebook: ={{Label}})
+        [NotMapped]
         public string? Name
         {
-            get => this.Label; set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Of(this.Label))); set { }
         }
 
         public string? Label { get; set; }
@@ -28,14 +30,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<Procedure> _procedures;
 
-        [InverseProperty("ProcedureType")]
+        [InverseProperty("ProcedureTypeRef")]
         public virtual ObservableCollection<Procedure> Procedures
         {
             get
             {
                 if (_procedures == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -45,11 +47,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.Procedures.Where(x => x.ProcedureType == this.ProcedureTypeId).ToList<Procedure>();
+                        var items = base.SoAContext.Procedures.Where(x => x.ProcedureType == this.ProcedureTypeId).ToList<Procedure>();
                         _procedures = new ObservableCollection<Procedure>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _procedures.CollectionChanged += Procedures_CollectionChanged;

@@ -1101,6 +1101,8 @@ _A canonical Effortless Rulebook profile aligned to the Procedural Knowledge Ont
 | Invented for Question | A defined attribute. | _The role question that motivated this field's existence. Null for fields that predate the witness-loop exercise._ |
 | Is Derived | True when at least one of the following holds: the field type is “calculated”; the field type is “lookup”; or the field type is “aggregation”. | _TRUE when this field is computed rather than stored._ |
 | Is Witness | True when the invented for question has a value. | _TRUE when this field exists because a role asked a question. These are the fields the witness loops added._ |
+| Disagreeing Substrate Count | The number of field disagreements related to the rulebook field. | _How many substrates computed this field differently from the answer key in the latest conformance run. 0 means every substrate agreed._ |
+| Is Substrate Contested | True when the disagreeing substrate count is greater than 0. | _True when at least one substrate disagrees about this field's values._ |
 | Semantic Type Iri | A defined attribute. | _Extension class IRI._ |
 | **Test Suite** | Groups of conformance checks. Rollups here are computed from TestCases, so the board's headline is itself a derived field. | — |
 | Name | The same as its label. | _Human-readable calculated display alias for the TestSuites row._ |
@@ -1591,6 +1593,7 @@ _A canonical Effortless Rulebook profile aligned to the Procedural Knowledge Ont
 | Field Count | The number of rulebook fields related to the rulebook table. | _Number of catalogued fields on this table._ |
 | Policy Count | The number of access policies related to the rulebook table. | _Number of access policies targeting this table._ |
 | Is Unsecured | True when the policy count is 0. | _True when RLS is enabled but no policy targets the table, so every principal sees zero rows. A fail-closed table nobody has granted access to._ |
+| Disagreeing Substrate Count | The number of table conformance related to the rulebook table. | _How many substrates got at least one cell of this table wrong in the latest conformance run._ |
 | Semantic Type Iri | A defined attribute. | _Semantic type IRI._ |
 | **Access Principal** | Security principals -- the identities policies attach to. A principal is the console persona a person logs in as; it maps many-to-one onto a domain Role, so 'who may see this row' is expressed once against the domain vocabulary while the UI keeps its own persona names. Each principal owns exactly one Postgres role and one Postgres schema. | — |
 | Name | The same as its label. | _Human-readable calculated display alias._ |
@@ -1777,6 +1780,111 @@ _A canonical Effortless Rulebook profile aligned to the Procedural Knowledge Ont
 | Active Reliance Broker Key | Determined by priority: the broker if the active reliance flag is set; in all other cases, an empty string. | _Composite-key echo: the broker this link names when the reliance is active, else blank._ |
 | At Risk Broker Key | Determined by priority: the broker if the at risk reliance flag is set; in all other cases, an empty string. | _Composite-key echo: the broker this link names when the reliance is at risk, else blank._ |
 | Semantic Type Iri | A defined attribute. | _Extension class IRI._ |
+| **Conformance Substrate** | Every tool that compiles this rulebook into something that computes. One is the answer-key author (compile-rulebook bakes derived values into the rulebook's own rows); the rest are graded substrates that re-derive those values natively and are scored cell by cell against them. | — |
+| Name | The same as its label. | _Human-readable calculated display alias._ |
+| Label | A defined attribute. | _Short human label, e.g. 'Python'._ |
+| Transpiler | A defined attribute. | _The effortless.json tool that produces this substrate, e.g. 'rulebook-to-python'._ |
+| Output Folder | A defined attribute. | _Project folder the tool writes into, e.g. '/effortless-python'._ |
+| Engine | A defined attribute. | _What actually evaluates the formulas: a database, a language runtime, a spreadsheet engine or a reasoner._ |
+| How It Computes | A defined attribute. | _One paragraph a curious reader can follow: what the tool emits and how the harness makes it produce answers._ |
+| Role | A defined attribute. | _'answer-key' for the tool whose stored values every other substrate is graded against; 'graded' for everything else._ |
+| Sort Order | A defined attribute. | _Display order._ |
+| Is Graded | True when the role is “graded”. | _True for substrates the harness scores._ |
+| Run Count | The number of substrate run scores related to the conformance substrate. | _How many recorded conformance runs graded this substrate._ |
+| Latest Cells Tested | The total latest cells tested across the substrate run scores related to the conformance substrate. | _Cells graded in the latest run: every (record x derived field) pair in the answer keys._ |
+| Latest Cells Passed | The total latest cells passed across the substrate run scores related to the conformance substrate. | _Cells this substrate computed identically to the answer key in the latest run._ |
+| Latest Harness Errors | The total latest error flag across the substrate run scores related to the conformance substrate. | _1 when the latest run could not execute this substrate at all._ |
+| Latest Cells Failed | Computed as the latest cells tested minus the latest cells passed. | _Cells this substrate got wrong, or did not produce, in the latest run._ |
+| Latest Score | Determined by priority: 0 if the latest cells tested is 0; in all other cases, 100 times the latest cells passed divided by the latest cells tested rounded to 2 decimal place(s). | _Percent of cells agreeing with the answer key in the latest run._ |
+| Disagreeing Field Count | The number of field disagreements related to the conformance substrate. | _Derived fields on which this substrate got at least one cell wrong in the latest run._ |
+| Disagreeing Table Count | The number of table conformance related to the conformance substrate. | _Tables on which this substrate got at least one cell wrong in the latest run._ |
+| Is Fully Conformant | True when all of the following hold: the latest cells tested is greater than 0; the latest cells failed is 0; and the latest harness errors is 0. | _True when the latest run graded this substrate, it ran, and every cell agreed. A substrate never graded is not conformant._ |
+| Semantic Type Iri | A defined attribute. | _Semantic type IRI._ |
+| **Conformance Run** | One execution of the conformance harness over every graded substrate. Kept as history; exactly one run is marked IsLatest, and the per-table, per-field and per-cell detail tables describe that run. | — |
+| Name | The same as its conformance run ID. | _Human-readable calculated display alias._ |
+| Ran on | A defined attribute. | _When the harness graded the substrates._ |
+| Rulebook Commit | A defined attribute. | _git HEAD of the repository when the run was recorded; the rulebook may also carry uncommitted edits, noted in Notes._ |
+| Answer Key Author | A defined attribute. | _The substrate whose stored values were the answer keys for this run._ |
+| Is Latest | True when an empty string. | _True for the most recent recorded run only. The recorder moves it._ |
+| Notes | A defined attribute. | _Anything a reader needs to interpret the run._ |
+| Substrate Count | The number of substrate run scores related to the conformance run. | _Substrates graded in this run._ |
+| Perfect Substrate Count | The number of substrate run scores related to the conformance run. | _Substrates that ran and agreed on every cell._ |
+| Cells Tested | The total cells tested across the substrate run scores related to the conformance run. | _Cells graded across all substrates._ |
+| Cells Passed | The total cells passed across the substrate run scores related to the conformance run. | _Cells that agreed across all substrates._ |
+| Cells Failed | Computed as the cells tested minus the cells passed. | _Cells that disagreed across all substrates._ |
+| Overall Score | Determined by priority: 0 if the cells tested is 0; in all other cases, 100 times the cells passed divided by the cells tested rounded to 2 decimal place(s). | _Percent of all graded cells, across all substrates, that agreed._ |
+| Imperfect Substrate Count | Computed as the substrate count minus the perfect substrate count. | _Substrates with at least one disagreeing cell or a harness error._ |
+| Is Fully Conformant | True when all of the following hold: the substrate count is greater than 0 and the imperfect substrate count is 0. | _True when every substrate graded in this run agreed on every cell: the 100% bar._ |
+| Semantic Type Iri | A defined attribute. | _Semantic type IRI._ |
+| **Substrate Run Score** | One substrate's grade in one conformance run, split by field class so a substrate that does scalar math natively but not cross-table joins reads as exactly that. | — |
+| Name | Computed as the run, followed by “ / ”, followed by the substrate. | _Human-readable calculated display alias._ |
+| Run | A defined attribute. | _The run that produced this grade._ |
+| Substrate | A defined attribute. | _The substrate graded._ |
+| Harness Error | A defined attribute. | _Why the substrate could not be run, verbatim from the harness. Blank when it ran._ |
+| Duration Seconds | A defined attribute. | _Wall-clock seconds to produce answers._ |
+| Cells Tested | A defined attribute. | _Every (record x derived field) pair in the answer keys._ |
+| Cells Passed | A defined attribute. | _Cells matching the answer key._ |
+| Calculated Tested | A defined attribute. | _Cells of calculated (same-row formula) fields._ |
+| Calculated Passed | A defined attribute. | _Calculated cells that matched._ |
+| Lookup Tested | A defined attribute. | _Cells of lookup (cross-table INDEX/MATCH) fields._ |
+| Lookup Passed | A defined attribute. | _Lookup cells that matched._ |
+| Aggregation Tested | A defined attribute. | _Cells of aggregation (COUNTIFS/SUMIFS rollup) fields._ |
+| Aggregation Passed | A defined attribute. | _Aggregation cells that matched._ |
+| Cells Failed | Computed as the cells tested minus the cells passed. | _Cells that did not match._ |
+| Score | Determined by priority: 0 if the cells tested is 0; in all other cases, 100 times the cells passed divided by the cells tested rounded to 2 decimal place(s). | _Percent of cells matching._ |
+| Calculated Score | Determined by priority: 0 if the calculated tested is 0; in all other cases, 100 times the calculated passed divided by the calculated tested rounded to 2 decimal place(s). | _Percent of calculated cells matching._ |
+| Lookup Score | Determined by priority: 0 if the lookup tested is 0; in all other cases, 100 times the lookup passed divided by the lookup tested rounded to 2 decimal place(s). | _Percent of lookup cells matching._ |
+| Aggregation Score | Determined by priority: 0 if the aggregation tested is 0; in all other cases, 100 times the aggregation passed divided by the aggregation tested rounded to 2 decimal place(s). | _Percent of aggregation cells matching._ |
+| Is Perfect | True when all of the following hold: the harness error is blank; the cells tested is greater than 0; and the cells failed is 0. | _True when the substrate ran and matched every cell._ |
+| Perfect Run Key | Determined by priority: the run if the perfect flag is set; in all other cases, an empty string. | _The run id when this grade is perfect, else blank; lets the run count its perfect substrates with a single-criterion COUNTIFS._ |
+| Is in Latest Run | True when the linked run is a latest. | _Whether this grade belongs to the latest run._ |
+| Latest Cells Tested | Determined by priority: the cells tested if the in latest run flag is set; in all other cases, 0. | _CellsTested when in the latest run, else 0._ |
+| Latest Cells Passed | Determined by priority: the cells passed if the in latest run flag is set; in all other cases, 0. | _CellsPassed when in the latest run, else 0._ |
+| Latest Error Flag | Determined by priority: 1 if all of the following hold: the in latest run flag is set and the harness error has a value; in all other cases, 0. | _1 when this is the latest run and the harness could not run the substrate._ |
+| Substrate Label | Taken from the linked substrate. | _The substrate's short label._ |
+| Semantic Type Iri | A defined attribute. | _Semantic type IRI._ |
+| **Table Conformance** | Latest run only: how one substrate did on one table. The grid of these rows is the substrate-by-table heatmap. | — |
+| Name | Computed as the substrate, followed by “ / ”, followed by the rulebook table. | _Human-readable calculated display alias._ |
+| Run | A defined attribute. | _The run this row describes._ |
+| Substrate | A defined attribute. | _The substrate graded._ |
+| Rulebook Table | A defined attribute. | _The table graded._ |
+| Record Count | A defined attribute. | _Rows in the answer key for this table._ |
+| Derived Field Count | A defined attribute. | _Derived fields graded on this table._ |
+| Cells Tested | A defined attribute. | _RecordCount x DerivedFieldCount._ |
+| Cells Passed | A defined attribute. | _Cells matching the answer key._ |
+| Is Missing Answer File | True when an empty string. | _True when the substrate produced no answers for this table at all; every cell then counts as failed._ |
+| Cells Failed | Computed as the cells tested minus the cells passed. | _Cells that did not match._ |
+| Score | Determined by priority: 0 if the cells tested is 0; in all other cases, 100 times the cells passed divided by the cells tested rounded to 2 decimal place(s). | _Percent of cells matching._ |
+| Is Perfect | True when the cells failed is 0. | _True when every cell matched._ |
+| Imperfect Substrate Key | Determined by priority: an empty string if the perfect flag is set; in all other cases, the substrate. | _The substrate id when this table is imperfect, else blank._ |
+| Imperfect Table Key | Determined by priority: an empty string if the perfect flag is set; in all other cases, the rulebook table. | _The table id when this table is imperfect, else blank._ |
+| Disagreeing Field Count | The number of field disagreements related to the table conformance. | _Fields on this table the substrate got at least one cell wrong._ |
+| Substrate Label | Taken from the linked substrate. | _The substrate's short label._ |
+| Subject Area | Taken from the linked rulebook table. | _The table's subject area._ |
+| Semantic Type Iri | A defined attribute. | _Semantic type IRI._ |
+| **Field Disagreement** | Latest run only: a derived field on which one substrate got at least one cell wrong. A field with no row here agreed everywhere. CellsFailed is the true count; CellDisagreements holds a sample of the cells. | — |
+| Name | Computed as the substrate, followed by “ / ”, followed by the rulebook field. | _Human-readable calculated display alias._ |
+| Substrate | A defined attribute. | _The substrate that disagreed._ |
+| Rulebook Field | A defined attribute. | _The field it disagreed on._ |
+| Table Conformance | A defined attribute. | _The substrate-by-table row this field belongs to._ |
+| Field Class | A defined attribute. | _calculated, lookup or aggregation._ |
+| Cells Failed | A defined attribute. | _Every cell of this field the substrate got wrong, not just the sampled ones._ |
+| Dominant Reason | A defined attribute. | _The harness's most frequent reason: 'wrong/null value', 'missing record' or 'missing entity file'._ |
+| Sampled Cell Count | The number of cell disagreements related to the field disagreement. | _Failing cells recorded as CellDisagreements rows._ |
+| Is Fully Sampled | True when the sampled cell count is the cells failed. | _True when every failing cell is recorded, not just a sample._ |
+| Formula | Taken from the linked rulebook field. | _The formula every substrate was asked to compute, shown as evidence._ |
+| Substrate Label | Taken from the linked substrate. | _The substrate's short label._ |
+| Semantic Type Iri | A defined attribute. | _Semantic type IRI._ |
+| **Cell Disagreement** | Latest run only: one cell a substrate computed differently from the answer key, with both values verbatim. Sampled per field; see FieldDisagreements.IsFullySampled. | — |
+| Name | Computed as the field disagreement, followed by “ @ ”, followed by the record ID. | _Human-readable calculated display alias._ |
+| Field Disagreement | A defined attribute. | _The substrate-by-field disagreement this cell belongs to._ |
+| Record ID | A defined attribute. | _Primary key of the row whose cell disagreed._ |
+| Expected Value | A defined attribute. | _The answer key's value, JSON-encoded so null, '', false and 0 stay distinguishable._ |
+| Actual Value | A defined attribute. | _The substrate's value, JSON-encoded the same way._ |
+| Reason | A defined attribute. | _The harness's reason: 'wrong/null value', 'missing record' or 'missing entity file'._ |
+| Substrate | Taken from the linked field disagreement. | _The substrate that produced ActualValue._ |
+| Rulebook Field | Taken from the linked field disagreement. | _The field._ |
+| Semantic Type Iri | A defined attribute. | _Semantic type IRI._ |
 
 ## 2 Fact Types
 
@@ -1959,6 +2067,15 @@ _A canonical Effortless Rulebook profile aligned to the Procedural Knowledge Ont
 - a **knowledge broker link** may reference one **agent**
 - a **knowledge broker link** may reference one **vocabulary term**
 - a **knowledge broker link** may reference one **evaluation context**
+- a **conformance run** may reference one **conformance substrate**
+- a **substrate run score** may reference one **conformance run**
+- a **substrate run score** may reference one **conformance substrate**
+- a **table conformance** may reference one **conformance run**
+- a **table conformance** may reference one **conformance substrate**
+- a **table conformance** may reference one **rulebook table**
+- a **field disagreement** may reference one **conformance substrate**
+- a **field disagreement** may reference one **rulebook field**
+- a **cell disagreement** may reference one **field disagreement**
 
 ## 3 Operative Rules
 
@@ -2644,381 +2761,434 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-655 Name** | A rulebook field's name is computed as the target table, followed by a period, followed by the field name. |
 | **DR-656 Is Derived** | A rulebook field is considered derived if at least one of the following holds: the field type is “calculated”; the field type is “lookup”; or the field type is “aggregation”. |
 | **DR-657 Is Witness** | A rulebook field is considered a witness if the invented for question has a value. |
-| **DR-658 Name** | A test suite's name is the same as its label. |
-| **DR-659 Test Count** | A test suite's test count is the number of test cases related to the test suite. |
-| **DR-660 Pass Count** | A test suite's pass count is the number of test cases related to the test suite. |
-| **DR-661 Blocking Fail Count** | A test suite's blocking fail count is the number of test cases related to the test suite. |
-| **DR-662 Is Green** | A test suite is considered a green if the blocking fail count is 0. |
-| **DR-663 Name** | A test cas's name is computed as the test kind, followed by “: ”, followed by the subject. |
-| **DR-664 Is Blocking** | A test cas is considered blocking if the severity is “blocking”. |
-| **DR-665 Is Passing** | A test cas is considered passing if the last outcome is “PASS”. |
-| **DR-666 Is Failing** | A test cas is considered failing if the last outcome is “FAIL”. |
-| **DR-667 Needs Attention** | A test cas is considered to need an attention if all of the following hold: the failing flag is set and the blocking flag is set. |
-| **DR-668 Passing Suite Key** | The test cas's passing suite key is determined by the following priority:<br>1. the suite, if the passing flag is set;<br>2. in all other cases, an empty string. |
-| **DR-669 Needs Attention Suite Key** | The test cas's needs attention suite key is determined by the following priority:<br>1. the suite, if the needs attention flag is set;<br>2. in all other cases, an empty string. |
-| **DR-670 Name** | An exception invocation's name is computed as the step execution, followed by “ / ”, followed by the exception. |
-| **DR-671 Expected Handling** | An exception invocation's expected handling — taken from the linked exception. |
-| **DR-672 Required Approval Role** | An exception invocation's required approval role — taken from the linked exception. |
-| **DR-673 Required Approval Role Holder** | An exception invocation's required approval role holder is the current agent of the exception invocation's required approval role. |
-| **DR-674 Approval Role Matches** | An exception invocation is flagged approval role matches if the approved by agent is the required approval role holder. |
-| **DR-675 Is Approved** | An exception invocation is considered approved if the approved by agent has a value. |
-| **DR-676 Is Improperly Approved** | An exception invocation is considered improperly-approved if at least one of the following holds: the approved flag is not set or the approval role matches flag is not set. |
-| **DR-677 Invoker Agent Kind** | An exception invocation's invoker agent kind — taken from the linked invoked by agent. |
-| **DR-678 Invoker Also Prepared Key** | An exception invocation's invoker also prepared key is computed as the parent procedure execution, followed by “|”, followed by the approved by agent. |
-| **DR-679 Parent Procedure Execution** | An exception invocation's parent procedure execution — taken from the linked step execution. |
-| **DR-680 Approver Prepared Count** | An exception invocation's approver prepared count is the number of step executions related to the exception invocation. |
-| **DR-681 Delegated to Preparer** | An exception invocation is flagged delegated to preparer if the approver prepared count is greater than 0. |
-| **DR-682 Is Ungoverned Invocation** | An exception invocation is considered an ungoverned invocation if at least one of the following holds: the improperly approved flag is set or the delegated to preparer flag is set. |
-| **DR-683 Name** | A verification outcome's name is computed as the step execution, followed by “ / ”, followed by the step verification. |
-| **DR-684 Expected Signal Value** | A verification outcome's expected signal value — taken from the linked step verification. |
-| **DR-685 Signal Identifier** | A verification outcome's signal identifier — taken from the linked step verification. |
-| **DR-686 Signal Matches Expected** | A verification outcome is flagged signal matches expected if the observed signal value is the expected signal value. |
-| **DR-687 Has Evidence** | A verification outcome is considered to have an evidence if the evidence uri has a value. |
-| **DR-688 Is Unbacked Observation** | A verification outcome is considered an unbacked observation if all of the following hold: the signal matches expected flag is set and the evidence flag is not set. |
-| **DR-689 Is Self Witnessed** | A verification outcome is considered self-witnessed if the observed by agent is the step executor agent. |
-| **DR-690 Step Executor Agent** | A verification outcome's step executor agent is the executed by agent of the verification outcome's step execution. |
-| **DR-691 Self Witnessed Step Key** | The verification outcome's self witnessed step key is determined by the following priority:<br>1. the step execution, if the self witnessed flag is set;<br>2. in all other cases, an empty string. |
-| **DR-692 Unbacked Step Key** | The verification outcome's unbacked step key is determined by the following priority:<br>1. the step execution, if the unbacked observation flag is set;<br>2. in all other cases, an empty string. |
-| **DR-693 Is Self Witnessed and Unbacked** | A verification outcome is considered self-witnessed-and-unbacked if all of the following hold: the self witnessed flag is set and the evidence flag is not set. |
-| **DR-694 Is Uncorroborated Pass** | A verification outcome is considered an uncorroborated pass if all of the following hold: the signal matches expected flag is set and the self witnessed and unbacked flag is set. |
-| **DR-695 Uncorroborated Pass Step Key** | The verification outcome's uncorroborated pass step key is determined by the following priority:<br>1. the step execution, if the uncorroborated pass flag is set;<br>2. in all other cases, an empty string. |
-| **DR-696 Observer is Non Human** | A verification outcome's observer is non human when the linked observed by agent is a non human. |
-| **DR-697 Observer is Independent of Executor** | A verification outcome is flagged observer is independent of executor if the self witnessed flag is not set. |
-| **DR-698 Is Independent Human Observation** | A verification outcome is considered an independent human observation if all of the following hold: the observer is non human flag is not set; the self witnessed flag is not set; and the evidence flag is set. |
-| **DR-699 Independent Observation Execution Key** | The verification outcome's independent observation execution key is determined by the following priority:<br>1. the parent procedure execution of outcome, if the independent human observation flag is set;<br>2. in all other cases, an empty string. |
-| **DR-700 Parent Procedure Execution of Outcome** | A verification outcome's parent procedure execution of outcome — taken from the linked step execution. |
-| **DR-701 Name** | An observed transition's name is computed as the step transition, followed by “ @ ”, followed by the observed at. |
-| **DR-702 Name** | A recipient's name is the same as its display name. |
-| **DR-703 Has Sms Consent** | A recipient is considered to have sms consent if the sms consent status is “Granted”. |
-| **DR-704 Is Email Reachable** | A recipient is considered email-reachable if the email address has a value. |
-| **DR-705 Is Sms Reachable** | A recipient is considered sms-reachable if the mobile number has a value. |
-| **DR-706 Is Unreachable** | A recipient is considered unreachable if all of the following hold: the email reachable flag is not set and the sms reachable flag is not set. |
-| **DR-707 Is Communicationally Stranded** | A recipient is considered communicationally-stranded if all of the following hold: the sms reachable flag is not set and the email reachable flag is not set. |
-| **DR-708 Name** | A message delivery's name is computed as the recipient, followed by “ / ”, followed by the message template, followed by “ / ”, followed by the sent at. |
-| **DR-709 Policy Channel** | A message delivery's policy channel is the communication policy of the message delivery's message template. |
-| **DR-710 Channel Name** | A message delivery's channel name — taken from the linked policy channel. |
-| **DR-711 Policy Requires Consent** | A message delivery's policy requires consent is true when the message delivery's policy channel is consent required. |
-| **DR-712 Recipient Has Sms Consent** | A message delivery's recipient has sms consent when the linked recipient has sms consent. |
-| **DR-713 Was Actually Transmitted** | A message delivery is considered to have been actually transmitted if at least one of the following holds: the delivery status is “Sent” or at least one of the following holds: the delivery status is “Delivered” or the delivery status is “Bounced”. |
-| **DR-714 Is Consent Violation** | A message delivery is considered a consent violation if all of the following hold: the was actually transmitted flag is set and all of the following hold: the policy requires consent flag is set and the recipient has sms consent flag is not set. |
-| **DR-715 Consent Violation Policy Key** | The message delivery's consent violation policy key is determined by the following priority:<br>1. the policy channel, if the consent violation flag is set;<br>2. in all other cases, an empty string. |
-| **DR-716 Policy Quiet Hours Start Hour** | A message delivery's policy quiet hours start hour — taken from the linked policy channel. |
-| **DR-717 Policy Quiet Hours End Hour** | A message delivery's policy quiet hours end hour — taken from the linked policy channel. |
-| **DR-718 Policy Has Quiet Hours** | A message delivery is flagged policy has quiet hours if the policy quiet hours start hour is not the policy quiet hours end hour. |
-| **DR-719 Quiet Window Wraps Midnight** | A message delivery is flagged quiet window wraps midnight if the policy quiet hours start hour is greater than the policy quiet hours end hour. |
-| **DR-720 Is Inside Quiet Window** | A message delivery is considered an inside quiet window if the OR of the sent at local hour is at least the policy quiet hours start hour and the sent at local hour is less than the policy quiet hours end hour if the quiet window wraps midnight flag is set, in all other cases the AND of the sent at local hour is at least the policy quiet hours start hour and the sent at local hour is less than the policy quiet hours end hour. |
-| **DR-721 Is Quiet Hours Violation** | A message delivery is considered a quiet hours violation if all of the following hold: the was actually transmitted flag is set and all of the following hold: the policy has quiet hours flag is set and the inside quiet window flag is set. |
-| **DR-722 Quiet Hours Violation Policy Key** | The message delivery's quiet hours violation policy key is determined by the following priority:<br>1. the policy channel, if the quiet hours violation flag is set;<br>2. in all other cases, an empty string. |
-| **DR-723 Recipient is Unreachable** | A message delivery's recipient is unreachable when the linked recipient is unreachable. |
-| **DR-724 Is Acknowledged** | A message delivery is considered acknowledged if the acknowledged at has a value. |
-| **DR-725 Invoked Exception Condition** | A message delivery's invoked exception condition — taken from the linked invoked exception. |
-| **DR-726 Has Unreachable Exception Invoked** | A message delivery is considered to have unreachable exception invoked if the invoked exception is “exc-unreachable”. |
-| **DR-727 Is Fabricated Acknowledgement** | A message delivery is considered fabricated-acknowledgement if all of the following hold: the recipient is unreachable flag is set and the acknowledged flag is set. |
-| **DR-728 Is Unhandled Unreachable** | A message delivery is considered unhandled-unreachable if all of the following hold: the recipient is unreachable flag is set and the unreachable exception invoked flag is not set. |
-| **DR-729 Unreachable Failure Key** | The message delivery's unreachable failure key is determined by the following priority:<br>1. the procedure execution, if at least one of the following holds: the fabricated acknowledgement flag is set or the unhandled unreachable flag is set;<br>2. in all other cases, an empty string. |
-| **DR-730 Policy Retention Days** | A message delivery's policy retention days — taken from the linked policy channel. |
-| **DR-731 As of Instant** | A message delivery's as of instant — taken from the linked evaluation context. |
-| **DR-732 Age Days** | A message delivery's age days is computed as the number of days from the sent at to the as of instant. |
-| **DR-733 Is Within Retention Window** | A message delivery is considered a within retention window if the age days is at most the policy retention days. |
-| **DR-734 Has Rendered Body** | A message delivery is considered to have rendered body if the rendered body has a value. |
-| **DR-735 Is Evidence Required** | A message delivery is considered evidence-required if all of the following hold: the was actually transmitted flag is set and the within retention window flag is set. |
-| **DR-736 Is Retention Breach** | A message delivery is considered a retention breach if all of the following hold: the evidence required flag is set and the rendered body flag is not set. |
-| **DR-737 Retention Breach Execution Key** | The message delivery's retention breach execution key is determined by the following priority:<br>1. the procedure execution, if the retention breach flag is set;<br>2. in all other cases, an empty string. |
-| **DR-738 Sending Step Execution Step** | A message delivery's sending step execution step — taken from the linked step execution. |
-| **DR-739 Execution Has Cleared Legal Review** | A message delivery's execution has cleared legal review when the linked procedure execution has a cleared legal review. |
-| **DR-740 Is Unreviewed Send** | A message delivery is considered an unreviewed send if all of the following hold: the was actually transmitted flag is set and the execution has cleared legal review flag is not set. |
-| **DR-741 Rendered Body Length** | A message delivery's rendered body length is computed as the length of the rendered body. |
-| **DR-742 Policy Max Message Length At Send** | A message delivery's policy max message length at send — taken from the linked policy channel. |
-| **DR-743 Segment Count** | The message delivery's segment count is determined by the following priority:<br>1. 0, if the rendered body length is 0;<br>2. 1, if the rendered body length is at most the policy max message length at send;<br>3. in all other cases, the rendered body length divided by the policy max message length at send rounded up to 0 decimal place(s). |
-| **DR-744 Policy Max Segments At Send** | A message delivery's policy max segments at send — taken from the linked policy channel. |
-| **DR-745 Is Over Segment Limit** | A message delivery is considered an over segment limit if all of the following hold: the was actually transmitted flag is set and the segment count is greater than the policy max segments at send. |
-| **DR-746 Template Has Valid Approval** | A message delivery's template has valid approval when the linked message template has a valid approval. |
-| **DR-747 Is Unapproved Send** | A message delivery is considered an unapproved send if all of the following hold: the was actually transmitted flag is set and the template has valid approval flag is not set. |
-| **DR-748 Policy Required Opt Out Phrase** | A message delivery's policy required opt out phrase — taken from the linked policy channel. |
-| **DR-749 Policy Requires Opt Out** | A message delivery is flagged policy requires opt out if the policy required opt out phrase has a value. |
-| **DR-750 Opt Out Phrase Position** | A message delivery's opt out phrase position is computed as the position of the policy required opt out phrase within the rendered body. |
-| **DR-751 Has Opt Out Phrase** | A message delivery is considered to have an opt out phrase if the opt out phrase position is greater than 0. |
-| **DR-752 Is Opt Out in First Segment** | A message delivery is considered an opt out in first segment if all of the following hold: the opt out phrase flag is set and the opt out phrase position is at most the policy max message length at send. |
-| **DR-753 Is Missing Required Opt Out** | A message delivery is considered a missing required opt out if all of the following hold: the was actually transmitted flag is set and all of the following hold: the policy requires opt out flag is set and the opt out phrase flag is not set. |
-| **DR-754 Is Opt Out At Risk of Truncation** | A message delivery is considered an opt out at risk of truncation if all of the following hold: the was actually transmitted flag is set and all of the following hold: the policy requires opt out flag is set and all of the following hold: the opt out phrase flag is set and the opt out in first segment flag is not set. |
-| **DR-755 Is Failed Delivery** | A message delivery is considered failed-delivery if at least one of the following holds: the delivery status is “Failed” or the delivery status is “Bounced”. |
-| **DR-756 Is Suppressed** | A message delivery is considered suppressed if the delivery status is “Suppressed”. |
-| **DR-757 Is Triaged** | A message delivery is considered triaged if the invoked exception has a value. |
-| **DR-758 Is Abandoned Failure** | A message delivery is considered an abandoned failure if all of the following hold: the failed delivery flag is set and the triaged flag is not set. |
-| **DR-759 Abandoned Failure Execution Key** | The message delivery's abandoned failure execution key is determined by the following priority:<br>1. the procedure execution, if the abandoned failure flag is set;<br>2. in all other cases, an empty string. |
-| **DR-760 Reached Execution Key** | The message delivery's reached execution key is determined by the following priority:<br>1. the procedure execution, if the delivery status is “Delivered”;<br>2. in all other cases, an empty string. |
-| **DR-761 Template Was Sendable** | A message delivery's template was sendable is true when the message delivery's message template is a sendable under approval. |
-| **DR-762 Is Drifted Send** | A message delivery is considered a drifted send if all of the following hold: the was actually transmitted flag is set and the template was sendable flag is not set. |
-| **DR-763 Drifted Send Template Key** | The message delivery's drifted send template key is determined by the following priority:<br>1. the message template, if the drifted send flag is set;<br>2. in all other cases, an empty string. |
-| **DR-764 Was Sent Outside Business Hours** | A message delivery is considered to have been sent outside business hours if at least one of the following holds: the sent at local hour is less than 8 or the sent at local hour is greater than 18. |
-| **DR-765 Was Delivered and Unanswered** | A message delivery is considered to have been delivered and unanswered if all of the following hold: the was actually transmitted flag is set and the acknowledged flag is not set. |
-| **DR-766 Is Poorly Timed Unanswered** | A message delivery is considered poorly-timed-unanswered if all of the following hold: the was delivered and unanswered flag is set and the was sent outside business hours flag is set. |
-| **DR-767 Is Well Timed Unanswered** | A message delivery is considered well-timed-unanswered if all of the following hold: the was delivered and unanswered flag is set and the was sent outside business hours flag is not set. |
-| **DR-768 Unanswered Template Key** | The message delivery's unanswered template key is determined by the following priority:<br>1. the message template, if the was delivered and unanswered flag is set;<br>2. in all other cases, an empty string. |
-| **DR-769 Transmitted Template Key** | The message delivery's transmitted template key is determined by the following priority:<br>1. the message template, if the was actually transmitted flag is set;<br>2. in all other cases, an empty string. |
-| **DR-770 Approval Preceded Send** | A message delivery is flagged approval preceded send if all of the following hold: the approval decided at send has a value and the sent at is greater than the approval decided at send. |
-| **DR-771 Has Frozen Approval Evidence** | A message delivery is considered to have a frozen approval evidence if all of the following hold: the approving agent at send has a value and the approval decided at send has a value. |
-| **DR-772 Provenance is Live Derived** | A message delivery is flagged provenance is live derived if the frozen approval evidence flag is not set. |
-| **DR-773 Current Last Approval At** | A message delivery's current last approval at — taken from the linked message template. |
-| **DR-774 Template Reapproved Since Send** | A message delivery is flagged template reapproved since send if all of the following hold: the current last approval at has a value and the current last approval at is greater than the sent at. |
-| **DR-775 Is Unprovable Approval Claim** | A message delivery is considered an unprovable approval claim if all of the following hold: the provenance is live derived flag is set and all of the following hold: the template reapproved since send flag is set and the template has valid approval flag is set. |
-| **DR-776 Has Sent Reminder** | A message delivery is considered to have a sent reminder if the reminder count is greater than 0. |
-| **DR-777 Acknowledgement is Outstanding** | A message delivery is flagged acknowledgement is outstanding if all of the following hold: the was actually transmitted flag is set and all of the following hold: the evidence required flag is set and the acknowledged flag is not set. |
-| **DR-778 Outstanding Age Days** | The message delivery's outstanding age days is determined by the following priority:<br>1. the number of days from the sent at to the as of instant, if the acknowledgement is outstanding flag is set;<br>2. in all other cases, 0. |
-| **DR-779 Is Unchased Acknowledgement** | A message delivery is considered unchased-acknowledgement if all of the following hold: the acknowledgement is outstanding flag is set and all of the following hold: the outstanding age days is greater than 7 and the sent reminder flag is not set. |
-| **DR-780 Is Exhausted Follow Up** | A message delivery is considered an exhausted follow up if all of the following hold: the acknowledgement is outstanding flag is set and the reminder count is at least 3. |
-| **DR-781 Needs Human Escalation** | A message delivery is considered to need a human escalation if all of the following hold: the exhausted follow up flag is set and the unreachable exception invoked flag is not set. |
-| **DR-782 Name** | A template approval's name is computed as the message template, followed by “ / ”, followed by the decision, followed by “ / ”, followed by the decided at. |
-| **DR-783 Is Approval Decision** | A template approval is considered an approval decision if the decision is “Approved”. |
-| **DR-784 Template Policy** | A template approval's template policy is the communication policy of the template approval's message template. |
-| **DR-785 Required Approval Role** | A template approval's required approval role — taken from the linked template policy. |
-| **DR-786 Is Decided by Required Role** | A template approval is considered a decided by required role if the decided in role is the required approval role. |
-| **DR-787 Valid Approval Template Key** | The template approval's valid approval template key is determined by the following priority:<br>1. the message template, if all of the following hold: the approval decision flag is set and the decided by required role flag is set;<br>2. in all other cases, an empty string. |
-| **DR-788 Name** | A send intent's name is computed as the recipient, followed by “ / ”, followed by the message template, followed by “ / intent”. |
-| **DR-789 Intent Policy** | A send intent's intent policy is the communication policy of the send intent's message template. |
-| **DR-790 Intent Channel** | A send intent's intent channel — taken from the linked intent policy. |
-| **DR-791 Policy is Active** | A send intent's policy is active is true when the send intent's intent policy is an active policy. |
-| **DR-792 Intent Requires Consent** | A send intent's intent requires consent is true when the send intent's intent policy is consent required. |
-| **DR-793 Recipient Has Channel Consent** | A send intent's recipient has channel consent is true when the send intent's recipient has sms consent. |
-| **DR-794 Consent Gate Passed** | A send intent is flagged consent gate passed if at least one of the following holds: the intent requires consent flag is not set or the recipient has channel consent flag is set. |
-| **DR-795 Recipient is Sms Reachable** | A send intent's recipient is sms reachable when the linked recipient is sms reachable. |
-| **DR-796 Recipient is Email Reachable** | A send intent's recipient is email reachable when the linked recipient is email reachable. |
-| **DR-797 Reachability Gate Passed** | A send intent is flagged reachability gate passed if the recipient is sms reachable if the intent channel is “SMS”, in all other cases the recipient is email reachable. |
-| **DR-798 Permission Gate Passed** | A send intent is flagged permission gate passed if all of the following hold: the policy is active flag is set and all of the following hold: the consent gate passed flag is set and the reachability gate passed flag is set. |
-| **DR-799 Intent Quiet Start Hour** | A send intent's intent quiet start hour is the quiet hours start hour of the send intent's intent policy. |
-| **DR-800 Intent Quiet End Hour** | A send intent's intent quiet end hour is the quiet hours end hour of the send intent's intent policy. |
-| **DR-801 Intent Policy Has Quiet Hours** | A send intent is flagged intent policy has quiet hours if the intent quiet start hour is not the intent quiet end hour. |
-| **DR-802 Intent Quiet Window Wraps** | A send intent is flagged intent quiet window wraps if the intent quiet start hour is greater than the intent quiet end hour. |
-| **DR-803 Intent is Inside Quiet Window** | A send intent is flagged intent is inside quiet window if the OR of the proposed send at local hour is at least the intent quiet start hour and the proposed send at local hour is less than the intent quiet end hour if the intent quiet window wraps flag is set, in all other cases the AND of the proposed send at local hour is at least the intent quiet start hour and the proposed send at local hour is less than the intent quiet end hour. |
-| **DR-804 Timing Gate Passed** | A send intent is flagged timing gate passed if at least one of the following holds: the intent policy has quiet hours flag is not set or the intent is inside quiet window flag is not set. |
-| **DR-805 Hours Until Window Opens** | The send intent's hours until window opens is determined by the following priority:<br>1. 0, if the timing gate passed flag is set;<br>2. the intent quiet end hour minus the proposed send at local hour, if the proposed send at local hour is less than the intent quiet end hour;<br>3. in all other cases, 24 minus the proposed send at local hour plus the intent quiet end hour. |
-| **DR-806 Intent Max Message Length** | A send intent's intent max message length — taken from the linked intent policy. |
-| **DR-807 Intent Max Segments** | A send intent's intent max segments — taken from the linked intent policy. |
-| **DR-808 Length Gate Passed** | A send intent is flagged length gate passed if all of the following hold: the proposed body length is greater than 0 and the proposed segment count is at most the intent max segments. |
-| **DR-809 Intent Required Opt Out Phrase** | A send intent's intent required opt out phrase — taken from the linked intent policy. |
-| **DR-810 Opt Out Gate Passed** | A send intent is flagged opt out gate passed if at least one of the following holds: the intent required opt out phrase is blank or all of the following hold: the proposed opt out position is greater than 0 and the proposed opt out position is at most the intent max message length. |
-| **DR-811 Content Gate Passed** | A send intent is flagged content gate passed if all of the following hold: the length gate passed flag is set and the opt out gate passed flag is set. |
-| **DR-812 Template is Sendable** | A send intent's template is sendable is true when the send intent's message template is a sendable under approval. |
-| **DR-813 Execution Has Legal Clearance** | A send intent's execution has legal clearance is true when the send intent's procedure execution has a cleared legal review. |
-| **DR-814 Intent Approval Role** | A send intent's intent approval role — taken from the linked intent policy. |
-| **DR-815 Approval Role Agent Kind** | A send intent's approval role agent kind is the current agent kind of the send intent's intent approval role. |
-| **DR-816 Approval is Human** | A send intent is flagged approval is human if the approval role agent kind is “Human”. |
-| **DR-817 Authorization Gate Passed** | A send intent is flagged authorization gate passed if all of the following hold: the template is sendable flag is set and all of the following hold: the execution has legal clearance flag is set and the approval is human flag is set. |
-| **DR-818 Is Cleared to Send** | A send intent is considered a cleared to send if all of the following hold: the permission gate passed flag is set and all of the following hold: the timing gate passed flag is set and all of the following hold: the content gate passed flag is set and the authorization gate passed flag is set. |
-| **DR-819 Blocking Gate Name** | The send intent's blocking gate name is determined by the following priority:<br>1. an empty string, if the cleared to send flag is set;<br>2. “Permission”, if the permission gate passed flag is not set;<br>3. “Timing”, if the timing gate passed flag is not set;<br>4. “Content”, if the content gate passed flag is not set;<br>5. in all other cases, “Authorization”. |
-| **DR-820 Has Resulting Delivery** | A send intent is considered to have resulting delivery if the resulting delivery has a value. |
-| **DR-821 Resulting Delivery Was Transmitted** | A send intent's resulting delivery was transmitted is true when the send intent's resulting delivery was actually transmitted. |
-| **DR-822 Is Overridden Refusal** | A send intent is considered overridden-refusal if all of the following hold: the cleared to send flag is not set and all of the following hold: the resulting delivery flag is set and the resulting delivery was transmitted flag is set. |
-| **DR-823 Is Silently Dropped** | A send intent is considered silently-dropped if all of the following hold: the cleared to send flag is not set and the resulting delivery flag is not set. |
-| **DR-824 Resulting Delivery Exception** | A send intent's resulting delivery exception is the invoked exception of the send intent's resulting delivery. |
-| **DR-825 Refusal Cited an Exception** | A send intent is flagged refusal cited an exception if the resulting delivery exception has a value. |
-| **DR-826 Is Properly Handled Refusal** | A send intent is considered properly-handled-refusal if all of the following hold: the cleared to send flag is not set and all of the following hold: the resulting delivery flag is set and all of the following hold: the resulting delivery was transmitted flag is not set and the refusal cited an exception flag is set. |
-| **DR-827 Refusal Failure Execution Key** | The send intent's refusal failure execution key is determined by the following priority:<br>1. the procedure execution, if at least one of the following holds: the overridden refusal flag is set or the silently dropped flag is set;<br>2. in all other cases, an empty string. |
-| **DR-828 Intent Execution Key** | A send intent's intent execution key is the same as its procedure execution. |
-| **DR-829 Delivered Intent Execution Key** | The send intent's delivered intent execution key is determined by the following priority:<br>1. the procedure execution, if all of the following hold: the resulting delivery flag is set and the resulting delivery was transmitted flag is set;<br>2. in all other cases, an empty string. |
-| **DR-830 Dropped Intent Execution Key** | The send intent's dropped intent execution key is determined by the following priority:<br>1. the procedure execution, if the silently dropped flag is set;<br>2. in all other cases, an empty string. |
-| **DR-831 My Approval Was in Force** | A send intent is flagged my approval was in force only if the send intent is flagged template is sendable. |
-| **DR-832 Refused on Approved Content** | A send intent is flagged refused on approved content if all of the following hold: the my approval was in force flag is set and the content gate passed flag is not set. |
-| **DR-833 Refused on Opt Out Only** | A send intent is flagged refused on opt out only if all of the following hold: the opt out gate passed flag is not set and the length gate passed flag is set. |
-| **DR-834 Refusal Was on My Rules** | A send intent is flagged refusal was on my rules if all of the following hold: the cleared to send flag is not set and at least one of the following holds: the content gate passed flag is not set or the timing gate passed flag is not set. |
-| **DR-835 Refusal Was Outside My Control** | A send intent is flagged refusal was outside my control if all of the following hold: the cleared to send flag is not set and at least one of the following holds: the permission gate passed flag is not set or the authorization gate passed flag is not set. |
-| **DR-836 Is Unreported Refusal on My Rules** | A send intent is considered an unreported refusal on my rules if all of the following hold: the refusal was on my rules flag is set and the approver was notified flag is not set. |
-| **DR-837 Is Approval Overridden Silently** | A send intent is considered an approval overridden silently if all of the following hold: the refused on approved content flag is set and the approver was notified flag is not set. |
-| **DR-838 Has Alternate Channel Attempt** | A send intent is considered to have an alternate channel attempt if the alternate channel intent has a value. |
-| **DR-839 Alternate Attempt Was Cleared** | A send intent's alternate attempt was cleared is true when the send intent's alternate channel intent is a cleared to send. |
-| **DR-840 Is Refused With No Alternative** | A send intent is considered refused-with-no-alternative if all of the following hold: the cleared to send flag is not set and the alternate channel attempt flag is not set. |
-| **DR-841 Exception Prescribed an Alternative** | A send intent is flagged exception prescribed an alternative if all of the following hold: the refusal cited an exception flag is set and the resulting delivery exception has a value. |
-| **DR-842 Prescribed Handling Was Performed** | A send intent is flagged prescribed handling was performed if all of the following hold: the exception prescribed an alternative flag is set and all of the following hold: the alternate channel attempt flag is set and the alternate attempt was cleared flag is set. |
-| **DR-843 Is Suppression Without Remedy** | A send intent is considered suppression-without-remedy if all of the following hold: the exception prescribed an alternative flag is set and the prescribed handling was performed flag is not set. |
-| **DR-844 Has Durable Refusal Record** | A send intent is considered to have a durable refusal record if the refusal recorded at has a value. |
-| **DR-845 Refusal Was Escalated** | A send intent is flagged refusal was escalated if the refusal notified role has a value. |
-| **DR-846 Is Unrecorded Refusal** | A send intent is considered unrecorded-refusal if all of the following hold: the silently dropped flag is set and all of the following hold: the durable refusal record flag is not set and the refusal cited an exception flag is not set. |
-| **DR-847 Is Unescalated Refusal** | A send intent is considered unescalated-refusal if all of the following hold: the cleared to send flag is not set and the refusal was escalated flag is not set. |
-| **DR-848 Unescalated Refusal Role Key** | The send intent's unescalated refusal role key is determined by the following priority:<br>1. the refusal notified role, if the unrecorded refusal flag is set;<br>2. in all other cases, an empty string. |
-| **DR-849 Unrecorded Refusal Execution Key** | The send intent's unrecorded refusal execution key is determined by the following priority:<br>1. the procedure execution, if the unrecorded refusal flag is set;<br>2. in all other cases, an empty string. |
-| **DR-850 Was Deferred on Timing** | A send intent is considered to have been deferred on timing if all of the following hold: the timing gate passed flag is not set and all of the following hold: the permission gate passed flag is set and the content gate passed flag is set. |
-| **DR-851 As of Instant** | A send intent's as of instant — taken from the linked evaluation context. |
-| **DR-852 Window Has Since Reopened** | A send intent is flagged window has since reopened if all of the following hold: the hours until window opens is greater than 0 and the number of hours from the evaluated at to the as of instant is greater than the hours until window opens. |
-| **DR-853 Has Retry Attempt** | A send intent is considered to have a retry attempt if the retry intent has a value. |
-| **DR-854 Retry Was Cleared** | A send intent's retry was cleared is true when the send intent's retry intent is a cleared to send. |
-| **DR-855 Is Abandoned Deferral** | A send intent is considered abandoned-deferral if all of the following hold: the was deferred on timing flag is set and all of the following hold: the window has since reopened flag is set and the retry attempt flag is not set. |
-| **DR-856 Deferral Age Hours** | A send intent's deferral age hours is computed as the number of hours from the evaluated at to the as of instant. |
-| **DR-857 Is Stale Deferral** | A send intent is considered stale-deferral if all of the following hold: the was deferred on timing flag is set and the deferral age hours is greater than 24. |
-| **DR-858 Enforced by Unauthorized Agent** | A send intent's enforced by unauthorized agent is true when the send intent's evaluating role assignment is an unauthorized enforcement agent. |
-| **DR-859 Consent Input Was Resolvable** | A send intent is flagged consent input was resolvable if the recipient consent status raw has a value. |
-| **DR-860 Recipient Consent Status Raw** | A send intent's recipient consent status raw is the sms consent status of the send intent's recipient. |
-| **DR-861 Policy Input Was Resolvable** | A send intent is flagged policy input was resolvable if the intent policy has a value. |
-| **DR-862 All Gate Inputs Resolved** | A send intent is flagged all gate inputs resolved if all of the following hold: the consent input was resolvable flag is set and the policy input was resolvable flag is set. |
-| **DR-863 Is Unevaluable Refusal** | A send intent is considered unevaluable-refusal if all of the following hold: the cleared to send flag is not set and the all gate inputs resolved flag is not set. |
-| **DR-864 Is Self Witnessed Decision** | A send intent is considered a self witnessed decision if the gate result was independently confirmed flag is not set. |
-| **DR-865 Is Independently Confirmed** | A send intent is considered independently-confirmed if all of the following hold: the resulting delivery flag is set and the resulting delivery was transmitted flag is set. |
-| **DR-866 Independently Confirmed Execution Key** | The send intent's independently confirmed execution key is determined by the following priority:<br>1. the procedure execution, if the independently confirmed flag is set;<br>2. in all other cases, an empty string. |
-| **DR-867 Name** | An agent decision record's name is computed as the deciding agent, followed by “: ”, followed by the first 60 character(s) of the decision summary. |
-| **DR-868 Was Overridden** | An agent decision record is considered to have been overridden if at least one of the following holds: the human disposition is “Corrected” or the human disposition is “Reversed”. |
-| **DR-869 Was Reviewed** | An agent decision record is considered to have been reviewed if all of the following hold: the human disposition has a value and the human disposition is not “NotReviewed”. |
-| **DR-870 Deciding Agent Kind** | An agent decision record's deciding agent kind — taken from the linked deciding agent. |
-| **DR-871 Deciding Agent When Overridden** | The agent decision record's deciding agent when overridden is determined by the following priority:<br>1. the deciding agent, if the was overridden flag is set;<br>2. in all other cases, an empty string. |
-| **DR-872 Role Assignment When Scored** | The agent decision record's role assignment when scored is determined by the following priority:<br>1. the under role assignment, if the under role assignment has a value;<br>2. in all other cases, an empty string. |
-| **DR-873 Role Assignment When Overridden** | The agent decision record's role assignment when overridden is determined by the following priority:<br>1. the under role assignment, if the was overridden flag is set;<br>2. in all other cases, an empty string. |
-| **DR-874 Step of Decision** | An agent decision record's step of decision — taken from the linked step execution. |
-| **DR-875 Boundary Match Key** | An agent decision record's boundary match key is computed as the step of decision, followed by “|”, followed by the deciding agent kind, followed by “|”, followed by the decision kind. |
-| **DR-876 Matching Boundary Count** | An agent decision record's matching boundary count is the number of authority boundaries related to the agent decision record. |
-| **DR-877 Violated Authority Boundary** | An agent decision record is flagged violated authority boundary if the matching boundary count is greater than 0. |
-| **DR-878 Reviewer Agent Kind** | An agent decision record's reviewer agent kind — taken from the linked reviewed by agent. |
-| **DR-879 Has Human Confirmation** | An agent decision record is considered to have a human confirmation if all of the following hold: the reviewer agent kind is “Human”; the human disposition has a value; and the human disposition is not “NotReviewed”. |
-| **DR-880 Needs Human Confirmation** | An agent decision record is considered to need a human confirmation if all of the following hold: it is not the case that the deciding agent kind is “Human” and at least one of the following holds: the materiality band is “Material” or the materiality band is “Escalated”. |
-| **DR-881 Is Unconfirmed Non Human Decision** | An agent decision record is considered an unconfirmed non human decision if all of the following hold: the needs human confirmation flag is set and the human confirmation flag is not set. |
-| **DR-882 Step Execution When Unconfirmed** | The agent decision record's step execution when unconfirmed is determined by the following priority:<br>1. the step execution, if the unconfirmed non human decision flag is set;<br>2. in all other cases, an empty string. |
-| **DR-883 Agent When Boundary Violated** | The agent decision record's agent when boundary violated is determined by the following priority:<br>1. the deciding agent, if the violated authority boundary flag is set;<br>2. in all other cases, an empty string. |
-| **DR-884 Review Latency Minutes** | The agent decision record's review latency minutes is determined by the following priority:<br>1. 0, if the reviewed at is blank;<br>2. in all other cases, the number of minutes from the decided at to the reviewed at. |
-| **DR-885 Is Draft Kind** | An agent decision record is considered a draft kind if at least one of the following holds: the decision kind is “Draft” or the decision kind is “Commitment”. |
-| **DR-886 Agent When Draft Overridden** | The agent decision record's agent when draft overridden is determined by the following priority:<br>1. the deciding agent, if all of the following hold: the draft kind flag is set and the was overridden flag is set;<br>2. in all other cases, an empty string. |
-| **DR-887 Agent When Draft** | The agent decision record's agent when draft is determined by the following priority:<br>1. the deciding agent, if the draft kind flag is set;<br>2. in all other cases, an empty string. |
-| **DR-888 Is Error Correction** | An agent decision record is considered an error correction if all of the following hold: the was overridden flag is set and the override reason kind is “ErrorCorrection”. |
-| **DR-889 Is Reserved Judgment Override** | An agent decision record is considered a reserved judgment override if all of the following hold: the was overridden flag is set and the override reason kind is “JudgmentReserved”. |
-| **DR-890 Override Reason is Recorded** | An agent decision record is flagged override reason is recorded if all of the following hold: the was overridden flag is set and the override reason kind has a value. |
-| **DR-891 Is Unexplained Override** | An agent decision record is considered an unexplained override if all of the following hold: the was overridden flag is set and the override reason is recorded flag is not set. |
-| **DR-892 Error Correction Role Assignment Key** | The agent decision record's error correction role assignment key is determined by the following priority:<br>1. the under role assignment, if the error correction flag is set;<br>2. in all other cases, an empty string. |
-| **DR-893 Boundary Violation Role Assignment Key** | The agent decision record's boundary violation role assignment key is determined by the following priority:<br>1. the under role assignment, if the violated authority boundary flag is set;<br>2. in all other cases, an empty string. |
-| **DR-894 Name** | A delivered communication's name is computed as the channel, followed by “ -> ”, followed by the recipient key, followed by “ @ ”, followed by the sent at. |
-| **DR-895 Has Authorization** | A delivered communication is considered to have an authorization if the authorizing step execution has a value. |
-| **DR-896 Content Matches Approval** | A delivered communication is flagged content matches approval if the rendered content hash is the approved content hash. |
-| **DR-897 Authorized At** | A delivered communication's authorized at is the ended at of the delivered communication's authorizing step execution. |
-| **DR-898 Was Approved Before Sending** | A delivered communication is considered to have been approved before sending if the authorized at is at most the sent at. |
-| **DR-899 Is Defensible** | A delivered communication is considered defensible if all of the following hold: the authorization flag is set; the content matches approval flag is set; and the was approved before sending flag is set. |
-| **DR-900 Name** | An authority boundary's name is computed as the forbidden agent kind, followed by “ may not ”, followed by the forbidden decision kind. |
-| **DR-901 As of Instant** | An authority boundary's as of instant — taken from the linked evaluation context. |
-| **DR-902 Is Currently Binding** | An authority boundary is considered currently-binding if all of the following hold: the status is “Approved”; the valid from is at most the as of instant; and at least one of the following holds: the valid to is blank or the valid to is greater than the as of instant. |
-| **DR-903 Ratifying Fragment is Valid** | An authority boundary's ratifying fragment is valid is true when the authority boundary's ratified by knowledge fragment is currently valid. |
-| **DR-904 Step When Binding** | The authority boundary's step when binding is determined by the following priority:<br>1. the step, if the currently binding flag is set;<br>2. in all other cases, an empty string. |
-| **DR-905 Boundary Match Key** | An authority boundary's boundary match key is computed as the step, followed by “|”, followed by the forbidden agent kind, followed by “|”, followed by the forbidden decision kind. |
-| **DR-906 Violation Count** | An authority boundary's violation count is the number of agent decision records related to the authority boundary. |
-| **DR-907 Is Untested** | An authority boundary is considered untested if all of the following hold: the currently binding flag is set and the violation count is 0. |
-| **DR-908 Has Ratifying Fragment** | An authority boundary is considered to have ratifying fragment if the ratified by knowledge fragment has a value. |
-| **DR-909 Is Unwarranted** | An authority boundary is considered unwarranted if all of the following hold: the currently binding flag is set and at least one of the following holds: the ratifying fragment flag is not set or the ratifying fragment is valid flag is not set. |
-| **DR-910 Ratifying Fragment is Overdue** | An authority boundary's ratifying fragment is overdue is true when the authority boundary's ratified by knowledge fragment is an overdue for review. |
-| **DR-911 Ratifying Fragment is Single Witness** | An authority boundary's ratifying fragment is single witness is true when the authority boundary's ratified by knowledge fragment is a from single witness. |
-| **DR-912 Warrant is Thin** | An authority boundary is flagged warrant is thin if all of the following hold: the currently binding flag is set and at least one of the following holds: the ratifying fragment is overdue flag is set or the ratifying fragment is single witness flag is set. |
-| **DR-913 Is Unwarranted and Untested** | An authority boundary is considered unwarranted-and-untested if all of the following hold: the unwarranted flag is set and the untested flag is set. |
-| **DR-914 Unwarranted Boundary Step Key** | The authority boundary's unwarranted boundary step key is determined by the following priority:<br>1. the step, if the unwarranted flag is set;<br>2. in all other cases, an empty string. |
-| **DR-915 Ratifying Fragment Key** | The authority boundary's ratifying fragment key is determined by the following priority:<br>1. the ratified by knowledge fragment, if the currently binding flag is set;<br>2. in all other cases, an empty string. |
-| **DR-916 Ratifying Fragment Status** | An authority boundary's ratifying fragment status — taken from the linked ratified by knowledge fragment. |
-| **DR-917 Ratification Lapsed** | An authority boundary is flagged ratification lapsed if all of the following hold: the ratifying fragment flag is set and the ratifying fragment is valid flag is not set. |
-| **DR-918 Binds Despite Lapsed Ratification** | An authority boundary is considered to bind a despite lapsed ratification if all of the following hold: the currently binding flag is set and the ratification lapsed flag is set. |
-| **DR-919 Is Ungrounded and Untested** | An authority boundary is considered ungrounded-and-untested if all of the following hold: the binds despite lapsed ratification flag is set and the untested flag is set. |
-| **DR-920 Constrained Role Assignment Key** | The authority boundary's constrained role assignment key is determined by the following priority:<br>1. the authority role, if the binds despite lapsed ratification flag is set;<br>2. in all other cases, an empty string. |
-| **DR-921 Name** | A binding observation's name is computed as the step execution, followed by “ / ”, followed by the binding observation ID. |
-| **DR-922 Sla Minutes At Run** | A binding observation's sla minutes at run is the freshness sla minutes of the binding observation's operational binding. |
-| **DR-923 Age At Run Minutes** | A binding observation's age at run minutes is computed as the number of minutes from the observed source timestamp to the read at. |
-| **DR-924 Was Stale At Run** | A binding observation is considered to have been stale at run if all of the following hold: the authoritative binding flag is set and the age at run minutes is greater than the sla minutes at run. |
-| **DR-925 Is Authoritative Binding** | A binding observation's is authoritative binding when the linked operational binding is authoritative. |
-| **DR-926 Stale At Run Step Key** | The binding observation's stale at run step key is determined by the following priority:<br>1. the step execution, if the was stale at run flag is set;<br>2. in all other cases, an empty string. |
-| **DR-927 Name** | An attestation's name is computed as the procedure execution, followed by “ / ”, followed by the attestation ID. |
-| **DR-928 Version is Fit Now** | An attestation's version is fit now is true when the attestation's procedure execution is a fit. |
-| **DR-929 Fitness Verdict Has Drifted** | An attestation is considered to fitnes verdict has drifted if it is not the case that the version was fit at signing is the version is fit now. |
-| **DR-930 Assurance Grade Now** | An attestation's assurance grade now — taken from the linked procedure execution. |
-| **DR-931 Assurance Grade Has Drifted** | An attestation is flagged assurance grade has drifted if it is not the case that the assurance grade at signing is the assurance grade now. |
-| **DR-932 Would Not Survive Restatement** | An attestation is flagged would not survive restatement if at least one of the following holds: the fitness verdict has drifted flag is set or the assurance grade has drifted flag is set. |
-| **DR-933 Name** | An app role profile's name is computed as the display label, followed by “ (”, followed by the role kind, followed by “)”. |
-| **DR-934 Route Count** | An app role profile's route count is the number of app routes related to the app role profile. |
-| **DR-935 Name** | An app nav group's name is the same as its group label. |
-| **DR-936 Route Count** | An app nav group's route count is the number of app routes related to the app nav group. |
-| **DR-937 Name** | An app route's name is computed as the route name, followed by “ — ”, followed by the route path. |
-| **DR-938 Is in Nav** | An app route is considered in-nav if the nav group has a value. |
-| **DR-939 Is Shared** | An app route is considered shared if all of the following hold: the owning role is blank and the surface is “domain”. |
-| **DR-940 Is Maintainer** | An app route is considered a maintainer if the surface is “maintainer”. |
-| **DR-941 Question Count** | An app route's question count is the number of app route questions related to the app route. |
-| **DR-942 Reference Count** | An app route's reference count is the number of app route references related to the app route. |
-| **DR-943 Answers No Question** | An app route is considered to answer no question if all of the following hold: the question count is 0; the is shared is false; the is maintainer is false; and the route kind is not “index”. |
-| **DR-944 Name** | An app route question's name is computed as the route, followed by “ answers ”, followed by the question. |
-| **DR-945 Name** | An app route reference's name is computed as the from route, followed by “ -> ”, followed by the to route. |
-| **DR-946 Name** | A rulebook table's name is the same as its table name. |
-| **DR-947 Field Count** | A rulebook table's field count is the number of rulebook fields related to the rulebook table. |
-| **DR-948 Policy Count** | A rulebook table's policy count is the number of access policies related to the rulebook table. |
-| **DR-949 Is Unsecured** | A rulebook table is considered unsecured if the policy count is 0. |
-| **DR-950 Name** | An access principal's name is the same as its label. |
-| **DR-951 Organization Scope** | An access principal's organization scope — taken from the linked domain role. |
-| **DR-952 Role Label** | An access principal's role label — taken from the linked domain role. |
-| **DR-953 Policy Count** | An access principal's policy count is the number of access policies related to the access principal. |
-| **DR-954 Grant Count** | An access principal's grant count is the number of field grants related to the access principal. |
-| **DR-955 Visible Table Count** | An access principal's visible table count is the number of role schema views related to the access principal. |
-| **DR-956 Has No Access** | An access principal is considered to have no access if the policy count is 0. |
-| **DR-957 Is Over Privileged** | An access principal is considered over-privileged if all of the following hold: the administrator flag is not set and the visible table count is at least 74. |
-| **DR-958 Name** | An access policy's name is computed as the principal, followed by a space, followed by the command, followed by a space, followed by the target table. |
-| **DR-959 Is Write Command** | An access policy is considered a write command if at least one of the following holds: the command is “INSERT”; the command is “UPDATE”; the command is “DELETE”; or the command is “ALL”. |
-| **DR-960 Is Unrestricted** | An access policy is considered unrestricted if the row predicate is blank. |
-| **DR-961 Principal is Admin** | An access policy's principal is admin is true when the access policy's principal is an administrator. |
-| **DR-962 Is Unrestricted Non Admin Grant** | An access policy is considered unrestricted-non-admin-grant if all of the following hold: the unrestricted flag is set and the principal is admin flag is not set. |
-| **DR-963 Is Unwitnessed Write** | An access policy is considered an unwitnessed write if all of the following hold: the write command flag is set and the denial test count is 0. |
-| **DR-964 Denial Test Count** | An access policy's denial test count is the number of access denial tests related to the access policy. |
-| **DR-965 Name** | A field grant's name is computed as the principal, followed by “ -> ”, followed by the target field. |
-| **DR-966 Field Table** | A field grant's field table is the target table of the field grant's target field. |
-| **DR-967 Field Name** | A field grant's field name — taken from the linked target field. |
-| **DR-968 Field is Derived** | A field grant's field is derived when the linked target field is derived. |
-| **DR-969 Is Writable Derived Field** | A field grant is considered a writable derived field if all of the following hold: the can write flag is set and the field is derived flag is set. |
-| **DR-970 Is Masked** | A field grant is considered masked if all of the following hold: the mask strategy is not “plain” and the mask strategy has a value. |
-| **DR-971 Grant Key When Readable** | The field grant's grant key when readable is determined by the following priority:<br>1. the principal, followed by “|”, followed by the field table, if the can read flag is set;<br>2. in all other cases, an empty string. |
-| **DR-972 Name** | A role schema's name is the same as its schema name. |
-| **DR-973 Search Path** | A role schema's search path is the same as its schema name. |
-| **DR-974 View Count** | A role schema's view count is the number of role schema views related to the role schema. |
-| **DR-975 Is Empty Schema** | A role schema is considered an empty schema if the view count is 0. |
-| **DR-976 Name** | A role schema view's name is computed as the schema name, followed by a period, followed by the view name. |
-| **DR-977 Schema Name** | A role schema view's schema name — taken from the linked role schema. |
-| **DR-978 Source View** | A role schema view's source view is the physical view of the role schema view's target table. |
-| **DR-979 Grant Key** | A role schema view's grant key is computed as the principal, followed by “|”, followed by the target table. |
-| **DR-980 Column Count** | A role schema view's column count is the number of field grants related to the role schema view. |
-| **DR-981 Table Field Count** | A role schema view's table field count — taken from the linked target table. |
-| **DR-982 Is Full Width** | A role schema view is considered a full width if all of the following hold: the column count is greater than 0 and the column count is at least the table field count. |
-| **DR-983 Is Degenerate View** | A role schema view is considered a degenerate view if the column count is 0. |
-| **DR-984 Name** | A jwt claim mapping's name is computed as the claim name, followed by “ -> ”, followed by the SQL accessor. |
-| **DR-985 Usage Count** | A jwt claim mapping's usage count is the number of access policies related to the jwt claim mapping. |
-| **DR-986 Name** | An access denial test's name is computed as the principal, followed by “ must not see ”, followed by the forbidden row ID. |
-| **DR-987 Has Run** | An access denial test is considered to have a run if the last run at has a value. |
-| **DR-988 Is Passing** | An access denial test is considered passing if the observed visible is the expected visible. |
-| **DR-989 Is Leak** | An access denial test is considered a leak if all of the following hold: the expected visible flag is not set and the observed visible flag is set. |
-| **DR-990 Is Unproven** | An access denial test is considered an unproven if the run flag is not set. |
-| **DR-991 Is Positive Control** | An access denial test is considered a positive control only if the access denial test is flagged expected visible. |
-| **DR-992 Name** | An app user's name is the same as its display name. |
-| **DR-993 Agent Kind** | An app user's agent kind — taken from the linked linked agent. |
-| **DR-994 Organization** | An app user's organization — taken from the linked linked agent. |
-| **DR-995 Assignment Count** | An app user's assignment count is the number of principal assignments related to the app user. |
-| **DR-996 Has No Principal** | An app user is considered to have no principal if the assignment count is 0. |
-| **DR-997 Holds Multiple Principals** | An app user is considered to hold a multiple principals if the assignment count is greater than 1. |
-| **DR-998 Is Non Human Sign in** | An app user is considered a non human sign in if at least one of the following holds: the agent kind is “AIAgent” or the agent kind is “AutomatedPipeline”. |
-| **DR-999 Name** | A principal assignment's name is computed as the app user, followed by “ as ”, followed by the principal. |
-| **DR-1000 Principal is Admin** | A principal assignment's principal is admin is true when the principal assignment's principal is an administrator. |
-| **DR-1001 User Organization** | A principal assignment's user organization — taken from the linked app user. |
-| **DR-1002 Principal Organization** | A principal assignment's principal organization is the organization scope of the principal assignment's principal. |
-| **DR-1003 Is Cross Organization Grant** | A principal assignment is considered cross-organization-grant if all of the following hold: the user organization has a value; the principal organization has a value; and the user organization is not the principal organization. |
-| **DR-1004 Name** | An issued token's name is computed as the app user, followed by “ as ”, followed by the principal, followed by “ @ ”, followed by the issued at. |
-| **DR-1005 Is Dev Minted** | An issued token is considered dev-minted if the issuer is “dev-mint”. |
-| **DR-1006 Name** | A process mining run's name is computed as the event log source, followed by “ / ”, followed by the mined at. |
-| **DR-1007 As of Instant** | A process mining run's as of instant — taken from the linked evaluation context. |
-| **DR-1008 Conformance Rate** | The process mining run's conformance rate is determined by the following priority:<br>1. 0, if the discovered variant count is 0;<br>2. in all other cases, the conforming variant count divided by the discovered variant count. |
-| **DR-1009 Is Conformant** | A process mining run is considered conformant if the conformance rate is at least 0.8. |
-| **DR-1010 Has Major Drift From Documentation** | A process mining run is considered to have a major drift from documentation if the conformance rate is less than 0.5. |
-| **DR-1011 Days Since Mined** | A process mining run's days since mined is computed as the number of days from the mined at to the as of instant. |
-| **DR-1012 Is Stale Mining Evidence** | A process mining run is considered a stale mining evidence if the days since mined is greater than 180. |
-| **DR-1013 Procedure Version is Live** | A process mining run's procedure version is live when the linked procedure version is live. |
-| **DR-1014 Is Drift on Live Version** | A process mining run is considered a drift on live version if all of the following hold: the major drift from documentation flag is set and the procedure version is live flag is set. |
-| **DR-1015 Drifted Mining Run Key** | The process mining run's drifted mining run key is determined by the following priority:<br>1. the procedure version, if the drift on live version flag is set;<br>2. in all other cases, an empty string. |
-| **DR-1016 Name** | A vocabulary's name is the same as its title. |
-| **DR-1017 Term Count** | A vocabulary's term count is the number of vocabulary terms related to the vocabulary. |
-| **DR-1018 Orphan Term Count** | A vocabulary's orphan term count is the number of vocabulary terms related to the vocabulary. |
-| **DR-1019 Has Orphan Terms** | A vocabulary is considered to have an orphan terms if the orphan term count is greater than 0. |
-| **DR-1020 Name** | A vocabulary term's name is the same as its pref label. |
-| **DR-1021 Usage Count** | A vocabulary term's usage count is the number of requirements related to the vocabulary term. |
-| **DR-1022 Is Orphan Term** | A vocabulary term is considered an orphan term if the usage count is 0. |
-| **DR-1023 Is Widely Adopted Term** | A vocabulary term is considered a widely adopted term if the usage count is at least 2. |
-| **DR-1024 Orphan Term Vocabulary Key** | The vocabulary term's orphan term vocabulary key is determined by the following priority:<br>1. the vocabulary, if the orphan term flag is set;<br>2. in all other cases, an empty string. |
-| **DR-1025 Name** | A knowledge broker link's name is computed as the seeker, followed by “ -> ”, followed by the broker. |
-| **DR-1026 As of Instant** | A knowledge broker link's as of instant — taken from the linked evaluation context. |
-| **DR-1027 Days Since Consulted** | A knowledge broker link's days since consulted is computed as the number of days from the last consulted at to the as of instant. |
-| **DR-1028 Is Active Reliance** | A knowledge broker link is considered an active reliance if all of the following hold: it is not the case that the frequency is “Rarely” and the days since consulted is at most 180. |
-| **DR-1029 Broker is Still Engaged** | A knowledge broker link's broker is still engaged when the linked broker is still engaged. |
-| **DR-1030 Is At Risk Reliance** | A knowledge broker link is considered at-risk-reliance if all of the following hold: the active reliance flag is set and the broker is still engaged flag is not set. |
-| **DR-1031 Active Reliance Broker Key** | The knowledge broker link's active reliance broker key is determined by the following priority:<br>1. the broker, if the active reliance flag is set;<br>2. in all other cases, an empty string. |
-| **DR-1032 At Risk Broker Key** | The knowledge broker link's at risk broker key is determined by the following priority:<br>1. the broker, if the at risk reliance flag is set;<br>2. in all other cases, an empty string. |
+| **DR-658 Disagreeing Substrate Count** | A rulebook field's disagreeing substrate count is the number of field disagreements related to the rulebook field. |
+| **DR-659 Is Substrate Contested** | A rulebook field is considered substrate-contested if the disagreeing substrate count is greater than 0. |
+| **DR-660 Name** | A test suite's name is the same as its label. |
+| **DR-661 Test Count** | A test suite's test count is the number of test cases related to the test suite. |
+| **DR-662 Pass Count** | A test suite's pass count is the number of test cases related to the test suite. |
+| **DR-663 Blocking Fail Count** | A test suite's blocking fail count is the number of test cases related to the test suite. |
+| **DR-664 Is Green** | A test suite is considered a green if the blocking fail count is 0. |
+| **DR-665 Name** | A test cas's name is computed as the test kind, followed by “: ”, followed by the subject. |
+| **DR-666 Is Blocking** | A test cas is considered blocking if the severity is “blocking”. |
+| **DR-667 Is Passing** | A test cas is considered passing if the last outcome is “PASS”. |
+| **DR-668 Is Failing** | A test cas is considered failing if the last outcome is “FAIL”. |
+| **DR-669 Needs Attention** | A test cas is considered to need an attention if all of the following hold: the failing flag is set and the blocking flag is set. |
+| **DR-670 Passing Suite Key** | The test cas's passing suite key is determined by the following priority:<br>1. the suite, if the passing flag is set;<br>2. in all other cases, an empty string. |
+| **DR-671 Needs Attention Suite Key** | The test cas's needs attention suite key is determined by the following priority:<br>1. the suite, if the needs attention flag is set;<br>2. in all other cases, an empty string. |
+| **DR-672 Name** | An exception invocation's name is computed as the step execution, followed by “ / ”, followed by the exception. |
+| **DR-673 Expected Handling** | An exception invocation's expected handling — taken from the linked exception. |
+| **DR-674 Required Approval Role** | An exception invocation's required approval role — taken from the linked exception. |
+| **DR-675 Required Approval Role Holder** | An exception invocation's required approval role holder is the current agent of the exception invocation's required approval role. |
+| **DR-676 Approval Role Matches** | An exception invocation is flagged approval role matches if the approved by agent is the required approval role holder. |
+| **DR-677 Is Approved** | An exception invocation is considered approved if the approved by agent has a value. |
+| **DR-678 Is Improperly Approved** | An exception invocation is considered improperly-approved if at least one of the following holds: the approved flag is not set or the approval role matches flag is not set. |
+| **DR-679 Invoker Agent Kind** | An exception invocation's invoker agent kind — taken from the linked invoked by agent. |
+| **DR-680 Invoker Also Prepared Key** | An exception invocation's invoker also prepared key is computed as the parent procedure execution, followed by “|”, followed by the approved by agent. |
+| **DR-681 Parent Procedure Execution** | An exception invocation's parent procedure execution — taken from the linked step execution. |
+| **DR-682 Approver Prepared Count** | An exception invocation's approver prepared count is the number of step executions related to the exception invocation. |
+| **DR-683 Delegated to Preparer** | An exception invocation is flagged delegated to preparer if the approver prepared count is greater than 0. |
+| **DR-684 Is Ungoverned Invocation** | An exception invocation is considered an ungoverned invocation if at least one of the following holds: the improperly approved flag is set or the delegated to preparer flag is set. |
+| **DR-685 Name** | A verification outcome's name is computed as the step execution, followed by “ / ”, followed by the step verification. |
+| **DR-686 Expected Signal Value** | A verification outcome's expected signal value — taken from the linked step verification. |
+| **DR-687 Signal Identifier** | A verification outcome's signal identifier — taken from the linked step verification. |
+| **DR-688 Signal Matches Expected** | A verification outcome is flagged signal matches expected if the observed signal value is the expected signal value. |
+| **DR-689 Has Evidence** | A verification outcome is considered to have an evidence if the evidence uri has a value. |
+| **DR-690 Is Unbacked Observation** | A verification outcome is considered an unbacked observation if all of the following hold: the signal matches expected flag is set and the evidence flag is not set. |
+| **DR-691 Is Self Witnessed** | A verification outcome is considered self-witnessed if the observed by agent is the step executor agent. |
+| **DR-692 Step Executor Agent** | A verification outcome's step executor agent is the executed by agent of the verification outcome's step execution. |
+| **DR-693 Self Witnessed Step Key** | The verification outcome's self witnessed step key is determined by the following priority:<br>1. the step execution, if the self witnessed flag is set;<br>2. in all other cases, an empty string. |
+| **DR-694 Unbacked Step Key** | The verification outcome's unbacked step key is determined by the following priority:<br>1. the step execution, if the unbacked observation flag is set;<br>2. in all other cases, an empty string. |
+| **DR-695 Is Self Witnessed and Unbacked** | A verification outcome is considered self-witnessed-and-unbacked if all of the following hold: the self witnessed flag is set and the evidence flag is not set. |
+| **DR-696 Is Uncorroborated Pass** | A verification outcome is considered an uncorroborated pass if all of the following hold: the signal matches expected flag is set and the self witnessed and unbacked flag is set. |
+| **DR-697 Uncorroborated Pass Step Key** | The verification outcome's uncorroborated pass step key is determined by the following priority:<br>1. the step execution, if the uncorroborated pass flag is set;<br>2. in all other cases, an empty string. |
+| **DR-698 Observer is Non Human** | A verification outcome's observer is non human when the linked observed by agent is a non human. |
+| **DR-699 Observer is Independent of Executor** | A verification outcome is flagged observer is independent of executor if the self witnessed flag is not set. |
+| **DR-700 Is Independent Human Observation** | A verification outcome is considered an independent human observation if all of the following hold: the observer is non human flag is not set; the self witnessed flag is not set; and the evidence flag is set. |
+| **DR-701 Independent Observation Execution Key** | The verification outcome's independent observation execution key is determined by the following priority:<br>1. the parent procedure execution of outcome, if the independent human observation flag is set;<br>2. in all other cases, an empty string. |
+| **DR-702 Parent Procedure Execution of Outcome** | A verification outcome's parent procedure execution of outcome — taken from the linked step execution. |
+| **DR-703 Name** | An observed transition's name is computed as the step transition, followed by “ @ ”, followed by the observed at. |
+| **DR-704 Name** | A recipient's name is the same as its display name. |
+| **DR-705 Has Sms Consent** | A recipient is considered to have sms consent if the sms consent status is “Granted”. |
+| **DR-706 Is Email Reachable** | A recipient is considered email-reachable if the email address has a value. |
+| **DR-707 Is Sms Reachable** | A recipient is considered sms-reachable if the mobile number has a value. |
+| **DR-708 Is Unreachable** | A recipient is considered unreachable if all of the following hold: the email reachable flag is not set and the sms reachable flag is not set. |
+| **DR-709 Is Communicationally Stranded** | A recipient is considered communicationally-stranded if all of the following hold: the sms reachable flag is not set and the email reachable flag is not set. |
+| **DR-710 Name** | A message delivery's name is computed as the recipient, followed by “ / ”, followed by the message template, followed by “ / ”, followed by the sent at. |
+| **DR-711 Policy Channel** | A message delivery's policy channel is the communication policy of the message delivery's message template. |
+| **DR-712 Channel Name** | A message delivery's channel name — taken from the linked policy channel. |
+| **DR-713 Policy Requires Consent** | A message delivery's policy requires consent is true when the message delivery's policy channel is consent required. |
+| **DR-714 Recipient Has Sms Consent** | A message delivery's recipient has sms consent when the linked recipient has sms consent. |
+| **DR-715 Was Actually Transmitted** | A message delivery is considered to have been actually transmitted if at least one of the following holds: the delivery status is “Sent” or at least one of the following holds: the delivery status is “Delivered” or the delivery status is “Bounced”. |
+| **DR-716 Is Consent Violation** | A message delivery is considered a consent violation if all of the following hold: the was actually transmitted flag is set and all of the following hold: the policy requires consent flag is set and the recipient has sms consent flag is not set. |
+| **DR-717 Consent Violation Policy Key** | The message delivery's consent violation policy key is determined by the following priority:<br>1. the policy channel, if the consent violation flag is set;<br>2. in all other cases, an empty string. |
+| **DR-718 Policy Quiet Hours Start Hour** | A message delivery's policy quiet hours start hour — taken from the linked policy channel. |
+| **DR-719 Policy Quiet Hours End Hour** | A message delivery's policy quiet hours end hour — taken from the linked policy channel. |
+| **DR-720 Policy Has Quiet Hours** | A message delivery is flagged policy has quiet hours if the policy quiet hours start hour is not the policy quiet hours end hour. |
+| **DR-721 Quiet Window Wraps Midnight** | A message delivery is flagged quiet window wraps midnight if the policy quiet hours start hour is greater than the policy quiet hours end hour. |
+| **DR-722 Is Inside Quiet Window** | A message delivery is considered an inside quiet window if the OR of the sent at local hour is at least the policy quiet hours start hour and the sent at local hour is less than the policy quiet hours end hour if the quiet window wraps midnight flag is set, in all other cases the AND of the sent at local hour is at least the policy quiet hours start hour and the sent at local hour is less than the policy quiet hours end hour. |
+| **DR-723 Is Quiet Hours Violation** | A message delivery is considered a quiet hours violation if all of the following hold: the was actually transmitted flag is set and all of the following hold: the policy has quiet hours flag is set and the inside quiet window flag is set. |
+| **DR-724 Quiet Hours Violation Policy Key** | The message delivery's quiet hours violation policy key is determined by the following priority:<br>1. the policy channel, if the quiet hours violation flag is set;<br>2. in all other cases, an empty string. |
+| **DR-725 Recipient is Unreachable** | A message delivery's recipient is unreachable when the linked recipient is unreachable. |
+| **DR-726 Is Acknowledged** | A message delivery is considered acknowledged if the acknowledged at has a value. |
+| **DR-727 Invoked Exception Condition** | A message delivery's invoked exception condition — taken from the linked invoked exception. |
+| **DR-728 Has Unreachable Exception Invoked** | A message delivery is considered to have unreachable exception invoked if the invoked exception is “exc-unreachable”. |
+| **DR-729 Is Fabricated Acknowledgement** | A message delivery is considered fabricated-acknowledgement if all of the following hold: the recipient is unreachable flag is set and the acknowledged flag is set. |
+| **DR-730 Is Unhandled Unreachable** | A message delivery is considered unhandled-unreachable if all of the following hold: the recipient is unreachable flag is set and the unreachable exception invoked flag is not set. |
+| **DR-731 Unreachable Failure Key** | The message delivery's unreachable failure key is determined by the following priority:<br>1. the procedure execution, if at least one of the following holds: the fabricated acknowledgement flag is set or the unhandled unreachable flag is set;<br>2. in all other cases, an empty string. |
+| **DR-732 Policy Retention Days** | A message delivery's policy retention days — taken from the linked policy channel. |
+| **DR-733 As of Instant** | A message delivery's as of instant — taken from the linked evaluation context. |
+| **DR-734 Age Days** | A message delivery's age days is computed as the number of days from the sent at to the as of instant. |
+| **DR-735 Is Within Retention Window** | A message delivery is considered a within retention window if the age days is at most the policy retention days. |
+| **DR-736 Has Rendered Body** | A message delivery is considered to have rendered body if the rendered body has a value. |
+| **DR-737 Is Evidence Required** | A message delivery is considered evidence-required if all of the following hold: the was actually transmitted flag is set and the within retention window flag is set. |
+| **DR-738 Is Retention Breach** | A message delivery is considered a retention breach if all of the following hold: the evidence required flag is set and the rendered body flag is not set. |
+| **DR-739 Retention Breach Execution Key** | The message delivery's retention breach execution key is determined by the following priority:<br>1. the procedure execution, if the retention breach flag is set;<br>2. in all other cases, an empty string. |
+| **DR-740 Sending Step Execution Step** | A message delivery's sending step execution step — taken from the linked step execution. |
+| **DR-741 Execution Has Cleared Legal Review** | A message delivery's execution has cleared legal review when the linked procedure execution has a cleared legal review. |
+| **DR-742 Is Unreviewed Send** | A message delivery is considered an unreviewed send if all of the following hold: the was actually transmitted flag is set and the execution has cleared legal review flag is not set. |
+| **DR-743 Rendered Body Length** | A message delivery's rendered body length is computed as the length of the rendered body. |
+| **DR-744 Policy Max Message Length At Send** | A message delivery's policy max message length at send — taken from the linked policy channel. |
+| **DR-745 Segment Count** | The message delivery's segment count is determined by the following priority:<br>1. 0, if the rendered body length is 0;<br>2. 1, if the rendered body length is at most the policy max message length at send;<br>3. in all other cases, the rendered body length divided by the policy max message length at send rounded up to 0 decimal place(s). |
+| **DR-746 Policy Max Segments At Send** | A message delivery's policy max segments at send — taken from the linked policy channel. |
+| **DR-747 Is Over Segment Limit** | A message delivery is considered an over segment limit if all of the following hold: the was actually transmitted flag is set and the segment count is greater than the policy max segments at send. |
+| **DR-748 Template Has Valid Approval** | A message delivery's template has valid approval when the linked message template has a valid approval. |
+| **DR-749 Is Unapproved Send** | A message delivery is considered an unapproved send if all of the following hold: the was actually transmitted flag is set and the template has valid approval flag is not set. |
+| **DR-750 Policy Required Opt Out Phrase** | A message delivery's policy required opt out phrase — taken from the linked policy channel. |
+| **DR-751 Policy Requires Opt Out** | A message delivery is flagged policy requires opt out if the policy required opt out phrase has a value. |
+| **DR-752 Opt Out Phrase Position** | A message delivery's opt out phrase position is computed as the position of the policy required opt out phrase within the rendered body. |
+| **DR-753 Has Opt Out Phrase** | A message delivery is considered to have an opt out phrase if the opt out phrase position is greater than 0. |
+| **DR-754 Is Opt Out in First Segment** | A message delivery is considered an opt out in first segment if all of the following hold: the opt out phrase flag is set and the opt out phrase position is at most the policy max message length at send. |
+| **DR-755 Is Missing Required Opt Out** | A message delivery is considered a missing required opt out if all of the following hold: the was actually transmitted flag is set and all of the following hold: the policy requires opt out flag is set and the opt out phrase flag is not set. |
+| **DR-756 Is Opt Out At Risk of Truncation** | A message delivery is considered an opt out at risk of truncation if all of the following hold: the was actually transmitted flag is set and all of the following hold: the policy requires opt out flag is set and all of the following hold: the opt out phrase flag is set and the opt out in first segment flag is not set. |
+| **DR-757 Is Failed Delivery** | A message delivery is considered failed-delivery if at least one of the following holds: the delivery status is “Failed” or the delivery status is “Bounced”. |
+| **DR-758 Is Suppressed** | A message delivery is considered suppressed if the delivery status is “Suppressed”. |
+| **DR-759 Is Triaged** | A message delivery is considered triaged if the invoked exception has a value. |
+| **DR-760 Is Abandoned Failure** | A message delivery is considered an abandoned failure if all of the following hold: the failed delivery flag is set and the triaged flag is not set. |
+| **DR-761 Abandoned Failure Execution Key** | The message delivery's abandoned failure execution key is determined by the following priority:<br>1. the procedure execution, if the abandoned failure flag is set;<br>2. in all other cases, an empty string. |
+| **DR-762 Reached Execution Key** | The message delivery's reached execution key is determined by the following priority:<br>1. the procedure execution, if the delivery status is “Delivered”;<br>2. in all other cases, an empty string. |
+| **DR-763 Template Was Sendable** | A message delivery's template was sendable is true when the message delivery's message template is a sendable under approval. |
+| **DR-764 Is Drifted Send** | A message delivery is considered a drifted send if all of the following hold: the was actually transmitted flag is set and the template was sendable flag is not set. |
+| **DR-765 Drifted Send Template Key** | The message delivery's drifted send template key is determined by the following priority:<br>1. the message template, if the drifted send flag is set;<br>2. in all other cases, an empty string. |
+| **DR-766 Was Sent Outside Business Hours** | A message delivery is considered to have been sent outside business hours if at least one of the following holds: the sent at local hour is less than 8 or the sent at local hour is greater than 18. |
+| **DR-767 Was Delivered and Unanswered** | A message delivery is considered to have been delivered and unanswered if all of the following hold: the was actually transmitted flag is set and the acknowledged flag is not set. |
+| **DR-768 Is Poorly Timed Unanswered** | A message delivery is considered poorly-timed-unanswered if all of the following hold: the was delivered and unanswered flag is set and the was sent outside business hours flag is set. |
+| **DR-769 Is Well Timed Unanswered** | A message delivery is considered well-timed-unanswered if all of the following hold: the was delivered and unanswered flag is set and the was sent outside business hours flag is not set. |
+| **DR-770 Unanswered Template Key** | The message delivery's unanswered template key is determined by the following priority:<br>1. the message template, if the was delivered and unanswered flag is set;<br>2. in all other cases, an empty string. |
+| **DR-771 Transmitted Template Key** | The message delivery's transmitted template key is determined by the following priority:<br>1. the message template, if the was actually transmitted flag is set;<br>2. in all other cases, an empty string. |
+| **DR-772 Approval Preceded Send** | A message delivery is flagged approval preceded send if all of the following hold: the approval decided at send has a value and the sent at is greater than the approval decided at send. |
+| **DR-773 Has Frozen Approval Evidence** | A message delivery is considered to have a frozen approval evidence if all of the following hold: the approving agent at send has a value and the approval decided at send has a value. |
+| **DR-774 Provenance is Live Derived** | A message delivery is flagged provenance is live derived if the frozen approval evidence flag is not set. |
+| **DR-775 Current Last Approval At** | A message delivery's current last approval at — taken from the linked message template. |
+| **DR-776 Template Reapproved Since Send** | A message delivery is flagged template reapproved since send if all of the following hold: the current last approval at has a value and the current last approval at is greater than the sent at. |
+| **DR-777 Is Unprovable Approval Claim** | A message delivery is considered an unprovable approval claim if all of the following hold: the provenance is live derived flag is set and all of the following hold: the template reapproved since send flag is set and the template has valid approval flag is set. |
+| **DR-778 Has Sent Reminder** | A message delivery is considered to have a sent reminder if the reminder count is greater than 0. |
+| **DR-779 Acknowledgement is Outstanding** | A message delivery is flagged acknowledgement is outstanding if all of the following hold: the was actually transmitted flag is set and all of the following hold: the evidence required flag is set and the acknowledged flag is not set. |
+| **DR-780 Outstanding Age Days** | The message delivery's outstanding age days is determined by the following priority:<br>1. the number of days from the sent at to the as of instant, if the acknowledgement is outstanding flag is set;<br>2. in all other cases, 0. |
+| **DR-781 Is Unchased Acknowledgement** | A message delivery is considered unchased-acknowledgement if all of the following hold: the acknowledgement is outstanding flag is set and all of the following hold: the outstanding age days is greater than 7 and the sent reminder flag is not set. |
+| **DR-782 Is Exhausted Follow Up** | A message delivery is considered an exhausted follow up if all of the following hold: the acknowledgement is outstanding flag is set and the reminder count is at least 3. |
+| **DR-783 Needs Human Escalation** | A message delivery is considered to need a human escalation if all of the following hold: the exhausted follow up flag is set and the unreachable exception invoked flag is not set. |
+| **DR-784 Name** | A template approval's name is computed as the message template, followed by “ / ”, followed by the decision, followed by “ / ”, followed by the decided at. |
+| **DR-785 Is Approval Decision** | A template approval is considered an approval decision if the decision is “Approved”. |
+| **DR-786 Template Policy** | A template approval's template policy is the communication policy of the template approval's message template. |
+| **DR-787 Required Approval Role** | A template approval's required approval role — taken from the linked template policy. |
+| **DR-788 Is Decided by Required Role** | A template approval is considered a decided by required role if the decided in role is the required approval role. |
+| **DR-789 Valid Approval Template Key** | The template approval's valid approval template key is determined by the following priority:<br>1. the message template, if all of the following hold: the approval decision flag is set and the decided by required role flag is set;<br>2. in all other cases, an empty string. |
+| **DR-790 Name** | A send intent's name is computed as the recipient, followed by “ / ”, followed by the message template, followed by “ / intent”. |
+| **DR-791 Intent Policy** | A send intent's intent policy is the communication policy of the send intent's message template. |
+| **DR-792 Intent Channel** | A send intent's intent channel — taken from the linked intent policy. |
+| **DR-793 Policy is Active** | A send intent's policy is active is true when the send intent's intent policy is an active policy. |
+| **DR-794 Intent Requires Consent** | A send intent's intent requires consent is true when the send intent's intent policy is consent required. |
+| **DR-795 Recipient Has Channel Consent** | A send intent's recipient has channel consent is true when the send intent's recipient has sms consent. |
+| **DR-796 Consent Gate Passed** | A send intent is flagged consent gate passed if at least one of the following holds: the intent requires consent flag is not set or the recipient has channel consent flag is set. |
+| **DR-797 Recipient is Sms Reachable** | A send intent's recipient is sms reachable when the linked recipient is sms reachable. |
+| **DR-798 Recipient is Email Reachable** | A send intent's recipient is email reachable when the linked recipient is email reachable. |
+| **DR-799 Reachability Gate Passed** | A send intent is flagged reachability gate passed if the recipient is sms reachable if the intent channel is “SMS”, in all other cases the recipient is email reachable. |
+| **DR-800 Permission Gate Passed** | A send intent is flagged permission gate passed if all of the following hold: the policy is active flag is set and all of the following hold: the consent gate passed flag is set and the reachability gate passed flag is set. |
+| **DR-801 Intent Quiet Start Hour** | A send intent's intent quiet start hour is the quiet hours start hour of the send intent's intent policy. |
+| **DR-802 Intent Quiet End Hour** | A send intent's intent quiet end hour is the quiet hours end hour of the send intent's intent policy. |
+| **DR-803 Intent Policy Has Quiet Hours** | A send intent is flagged intent policy has quiet hours if the intent quiet start hour is not the intent quiet end hour. |
+| **DR-804 Intent Quiet Window Wraps** | A send intent is flagged intent quiet window wraps if the intent quiet start hour is greater than the intent quiet end hour. |
+| **DR-805 Intent is Inside Quiet Window** | A send intent is flagged intent is inside quiet window if the OR of the proposed send at local hour is at least the intent quiet start hour and the proposed send at local hour is less than the intent quiet end hour if the intent quiet window wraps flag is set, in all other cases the AND of the proposed send at local hour is at least the intent quiet start hour and the proposed send at local hour is less than the intent quiet end hour. |
+| **DR-806 Timing Gate Passed** | A send intent is flagged timing gate passed if at least one of the following holds: the intent policy has quiet hours flag is not set or the intent is inside quiet window flag is not set. |
+| **DR-807 Hours Until Window Opens** | The send intent's hours until window opens is determined by the following priority:<br>1. 0, if the timing gate passed flag is set;<br>2. the intent quiet end hour minus the proposed send at local hour, if the proposed send at local hour is less than the intent quiet end hour;<br>3. in all other cases, 24 minus the proposed send at local hour plus the intent quiet end hour. |
+| **DR-808 Intent Max Message Length** | A send intent's intent max message length — taken from the linked intent policy. |
+| **DR-809 Intent Max Segments** | A send intent's intent max segments — taken from the linked intent policy. |
+| **DR-810 Length Gate Passed** | A send intent is flagged length gate passed if all of the following hold: the proposed body length is greater than 0 and the proposed segment count is at most the intent max segments. |
+| **DR-811 Intent Required Opt Out Phrase** | A send intent's intent required opt out phrase — taken from the linked intent policy. |
+| **DR-812 Opt Out Gate Passed** | A send intent is flagged opt out gate passed if at least one of the following holds: the intent required opt out phrase is blank or all of the following hold: the proposed opt out position is greater than 0 and the proposed opt out position is at most the intent max message length. |
+| **DR-813 Content Gate Passed** | A send intent is flagged content gate passed if all of the following hold: the length gate passed flag is set and the opt out gate passed flag is set. |
+| **DR-814 Template is Sendable** | A send intent's template is sendable is true when the send intent's message template is a sendable under approval. |
+| **DR-815 Execution Has Legal Clearance** | A send intent's execution has legal clearance is true when the send intent's procedure execution has a cleared legal review. |
+| **DR-816 Intent Approval Role** | A send intent's intent approval role — taken from the linked intent policy. |
+| **DR-817 Approval Role Agent Kind** | A send intent's approval role agent kind is the current agent kind of the send intent's intent approval role. |
+| **DR-818 Approval is Human** | A send intent is flagged approval is human if the approval role agent kind is “Human”. |
+| **DR-819 Authorization Gate Passed** | A send intent is flagged authorization gate passed if all of the following hold: the template is sendable flag is set and all of the following hold: the execution has legal clearance flag is set and the approval is human flag is set. |
+| **DR-820 Is Cleared to Send** | A send intent is considered a cleared to send if all of the following hold: the permission gate passed flag is set and all of the following hold: the timing gate passed flag is set and all of the following hold: the content gate passed flag is set and the authorization gate passed flag is set. |
+| **DR-821 Blocking Gate Name** | The send intent's blocking gate name is determined by the following priority:<br>1. an empty string, if the cleared to send flag is set;<br>2. “Permission”, if the permission gate passed flag is not set;<br>3. “Timing”, if the timing gate passed flag is not set;<br>4. “Content”, if the content gate passed flag is not set;<br>5. in all other cases, “Authorization”. |
+| **DR-822 Has Resulting Delivery** | A send intent is considered to have resulting delivery if the resulting delivery has a value. |
+| **DR-823 Resulting Delivery Was Transmitted** | A send intent's resulting delivery was transmitted is true when the send intent's resulting delivery was actually transmitted. |
+| **DR-824 Is Overridden Refusal** | A send intent is considered overridden-refusal if all of the following hold: the cleared to send flag is not set and all of the following hold: the resulting delivery flag is set and the resulting delivery was transmitted flag is set. |
+| **DR-825 Is Silently Dropped** | A send intent is considered silently-dropped if all of the following hold: the cleared to send flag is not set and the resulting delivery flag is not set. |
+| **DR-826 Resulting Delivery Exception** | A send intent's resulting delivery exception is the invoked exception of the send intent's resulting delivery. |
+| **DR-827 Refusal Cited an Exception** | A send intent is flagged refusal cited an exception if the resulting delivery exception has a value. |
+| **DR-828 Is Properly Handled Refusal** | A send intent is considered properly-handled-refusal if all of the following hold: the cleared to send flag is not set and all of the following hold: the resulting delivery flag is set and all of the following hold: the resulting delivery was transmitted flag is not set and the refusal cited an exception flag is set. |
+| **DR-829 Refusal Failure Execution Key** | The send intent's refusal failure execution key is determined by the following priority:<br>1. the procedure execution, if at least one of the following holds: the overridden refusal flag is set or the silently dropped flag is set;<br>2. in all other cases, an empty string. |
+| **DR-830 Intent Execution Key** | A send intent's intent execution key is the same as its procedure execution. |
+| **DR-831 Delivered Intent Execution Key** | The send intent's delivered intent execution key is determined by the following priority:<br>1. the procedure execution, if all of the following hold: the resulting delivery flag is set and the resulting delivery was transmitted flag is set;<br>2. in all other cases, an empty string. |
+| **DR-832 Dropped Intent Execution Key** | The send intent's dropped intent execution key is determined by the following priority:<br>1. the procedure execution, if the silently dropped flag is set;<br>2. in all other cases, an empty string. |
+| **DR-833 My Approval Was in Force** | A send intent is flagged my approval was in force only if the send intent is flagged template is sendable. |
+| **DR-834 Refused on Approved Content** | A send intent is flagged refused on approved content if all of the following hold: the my approval was in force flag is set and the content gate passed flag is not set. |
+| **DR-835 Refused on Opt Out Only** | A send intent is flagged refused on opt out only if all of the following hold: the opt out gate passed flag is not set and the length gate passed flag is set. |
+| **DR-836 Refusal Was on My Rules** | A send intent is flagged refusal was on my rules if all of the following hold: the cleared to send flag is not set and at least one of the following holds: the content gate passed flag is not set or the timing gate passed flag is not set. |
+| **DR-837 Refusal Was Outside My Control** | A send intent is flagged refusal was outside my control if all of the following hold: the cleared to send flag is not set and at least one of the following holds: the permission gate passed flag is not set or the authorization gate passed flag is not set. |
+| **DR-838 Is Unreported Refusal on My Rules** | A send intent is considered an unreported refusal on my rules if all of the following hold: the refusal was on my rules flag is set and the approver was notified flag is not set. |
+| **DR-839 Is Approval Overridden Silently** | A send intent is considered an approval overridden silently if all of the following hold: the refused on approved content flag is set and the approver was notified flag is not set. |
+| **DR-840 Has Alternate Channel Attempt** | A send intent is considered to have an alternate channel attempt if the alternate channel intent has a value. |
+| **DR-841 Alternate Attempt Was Cleared** | A send intent's alternate attempt was cleared is true when the send intent's alternate channel intent is a cleared to send. |
+| **DR-842 Is Refused With No Alternative** | A send intent is considered refused-with-no-alternative if all of the following hold: the cleared to send flag is not set and the alternate channel attempt flag is not set. |
+| **DR-843 Exception Prescribed an Alternative** | A send intent is flagged exception prescribed an alternative if all of the following hold: the refusal cited an exception flag is set and the resulting delivery exception has a value. |
+| **DR-844 Prescribed Handling Was Performed** | A send intent is flagged prescribed handling was performed if all of the following hold: the exception prescribed an alternative flag is set and all of the following hold: the alternate channel attempt flag is set and the alternate attempt was cleared flag is set. |
+| **DR-845 Is Suppression Without Remedy** | A send intent is considered suppression-without-remedy if all of the following hold: the exception prescribed an alternative flag is set and the prescribed handling was performed flag is not set. |
+| **DR-846 Has Durable Refusal Record** | A send intent is considered to have a durable refusal record if the refusal recorded at has a value. |
+| **DR-847 Refusal Was Escalated** | A send intent is flagged refusal was escalated if the refusal notified role has a value. |
+| **DR-848 Is Unrecorded Refusal** | A send intent is considered unrecorded-refusal if all of the following hold: the silently dropped flag is set and all of the following hold: the durable refusal record flag is not set and the refusal cited an exception flag is not set. |
+| **DR-849 Is Unescalated Refusal** | A send intent is considered unescalated-refusal if all of the following hold: the cleared to send flag is not set and the refusal was escalated flag is not set. |
+| **DR-850 Unescalated Refusal Role Key** | The send intent's unescalated refusal role key is determined by the following priority:<br>1. the refusal notified role, if the unrecorded refusal flag is set;<br>2. in all other cases, an empty string. |
+| **DR-851 Unrecorded Refusal Execution Key** | The send intent's unrecorded refusal execution key is determined by the following priority:<br>1. the procedure execution, if the unrecorded refusal flag is set;<br>2. in all other cases, an empty string. |
+| **DR-852 Was Deferred on Timing** | A send intent is considered to have been deferred on timing if all of the following hold: the timing gate passed flag is not set and all of the following hold: the permission gate passed flag is set and the content gate passed flag is set. |
+| **DR-853 As of Instant** | A send intent's as of instant — taken from the linked evaluation context. |
+| **DR-854 Window Has Since Reopened** | A send intent is flagged window has since reopened if all of the following hold: the hours until window opens is greater than 0 and the number of hours from the evaluated at to the as of instant is greater than the hours until window opens. |
+| **DR-855 Has Retry Attempt** | A send intent is considered to have a retry attempt if the retry intent has a value. |
+| **DR-856 Retry Was Cleared** | A send intent's retry was cleared is true when the send intent's retry intent is a cleared to send. |
+| **DR-857 Is Abandoned Deferral** | A send intent is considered abandoned-deferral if all of the following hold: the was deferred on timing flag is set and all of the following hold: the window has since reopened flag is set and the retry attempt flag is not set. |
+| **DR-858 Deferral Age Hours** | A send intent's deferral age hours is computed as the number of hours from the evaluated at to the as of instant. |
+| **DR-859 Is Stale Deferral** | A send intent is considered stale-deferral if all of the following hold: the was deferred on timing flag is set and the deferral age hours is greater than 24. |
+| **DR-860 Enforced by Unauthorized Agent** | A send intent's enforced by unauthorized agent is true when the send intent's evaluating role assignment is an unauthorized enforcement agent. |
+| **DR-861 Consent Input Was Resolvable** | A send intent is flagged consent input was resolvable if the recipient consent status raw has a value. |
+| **DR-862 Recipient Consent Status Raw** | A send intent's recipient consent status raw is the sms consent status of the send intent's recipient. |
+| **DR-863 Policy Input Was Resolvable** | A send intent is flagged policy input was resolvable if the intent policy has a value. |
+| **DR-864 All Gate Inputs Resolved** | A send intent is flagged all gate inputs resolved if all of the following hold: the consent input was resolvable flag is set and the policy input was resolvable flag is set. |
+| **DR-865 Is Unevaluable Refusal** | A send intent is considered unevaluable-refusal if all of the following hold: the cleared to send flag is not set and the all gate inputs resolved flag is not set. |
+| **DR-866 Is Self Witnessed Decision** | A send intent is considered a self witnessed decision if the gate result was independently confirmed flag is not set. |
+| **DR-867 Is Independently Confirmed** | A send intent is considered independently-confirmed if all of the following hold: the resulting delivery flag is set and the resulting delivery was transmitted flag is set. |
+| **DR-868 Independently Confirmed Execution Key** | The send intent's independently confirmed execution key is determined by the following priority:<br>1. the procedure execution, if the independently confirmed flag is set;<br>2. in all other cases, an empty string. |
+| **DR-869 Name** | An agent decision record's name is computed as the deciding agent, followed by “: ”, followed by the first 60 character(s) of the decision summary. |
+| **DR-870 Was Overridden** | An agent decision record is considered to have been overridden if at least one of the following holds: the human disposition is “Corrected” or the human disposition is “Reversed”. |
+| **DR-871 Was Reviewed** | An agent decision record is considered to have been reviewed if all of the following hold: the human disposition has a value and the human disposition is not “NotReviewed”. |
+| **DR-872 Deciding Agent Kind** | An agent decision record's deciding agent kind — taken from the linked deciding agent. |
+| **DR-873 Deciding Agent When Overridden** | The agent decision record's deciding agent when overridden is determined by the following priority:<br>1. the deciding agent, if the was overridden flag is set;<br>2. in all other cases, an empty string. |
+| **DR-874 Role Assignment When Scored** | The agent decision record's role assignment when scored is determined by the following priority:<br>1. the under role assignment, if the under role assignment has a value;<br>2. in all other cases, an empty string. |
+| **DR-875 Role Assignment When Overridden** | The agent decision record's role assignment when overridden is determined by the following priority:<br>1. the under role assignment, if the was overridden flag is set;<br>2. in all other cases, an empty string. |
+| **DR-876 Step of Decision** | An agent decision record's step of decision — taken from the linked step execution. |
+| **DR-877 Boundary Match Key** | An agent decision record's boundary match key is computed as the step of decision, followed by “|”, followed by the deciding agent kind, followed by “|”, followed by the decision kind. |
+| **DR-878 Matching Boundary Count** | An agent decision record's matching boundary count is the number of authority boundaries related to the agent decision record. |
+| **DR-879 Violated Authority Boundary** | An agent decision record is flagged violated authority boundary if the matching boundary count is greater than 0. |
+| **DR-880 Reviewer Agent Kind** | An agent decision record's reviewer agent kind — taken from the linked reviewed by agent. |
+| **DR-881 Has Human Confirmation** | An agent decision record is considered to have a human confirmation if all of the following hold: the reviewer agent kind is “Human”; the human disposition has a value; and the human disposition is not “NotReviewed”. |
+| **DR-882 Needs Human Confirmation** | An agent decision record is considered to need a human confirmation if all of the following hold: it is not the case that the deciding agent kind is “Human” and at least one of the following holds: the materiality band is “Material” or the materiality band is “Escalated”. |
+| **DR-883 Is Unconfirmed Non Human Decision** | An agent decision record is considered an unconfirmed non human decision if all of the following hold: the needs human confirmation flag is set and the human confirmation flag is not set. |
+| **DR-884 Step Execution When Unconfirmed** | The agent decision record's step execution when unconfirmed is determined by the following priority:<br>1. the step execution, if the unconfirmed non human decision flag is set;<br>2. in all other cases, an empty string. |
+| **DR-885 Agent When Boundary Violated** | The agent decision record's agent when boundary violated is determined by the following priority:<br>1. the deciding agent, if the violated authority boundary flag is set;<br>2. in all other cases, an empty string. |
+| **DR-886 Review Latency Minutes** | The agent decision record's review latency minutes is determined by the following priority:<br>1. 0, if the reviewed at is blank;<br>2. in all other cases, the number of minutes from the decided at to the reviewed at. |
+| **DR-887 Is Draft Kind** | An agent decision record is considered a draft kind if at least one of the following holds: the decision kind is “Draft” or the decision kind is “Commitment”. |
+| **DR-888 Agent When Draft Overridden** | The agent decision record's agent when draft overridden is determined by the following priority:<br>1. the deciding agent, if all of the following hold: the draft kind flag is set and the was overridden flag is set;<br>2. in all other cases, an empty string. |
+| **DR-889 Agent When Draft** | The agent decision record's agent when draft is determined by the following priority:<br>1. the deciding agent, if the draft kind flag is set;<br>2. in all other cases, an empty string. |
+| **DR-890 Is Error Correction** | An agent decision record is considered an error correction if all of the following hold: the was overridden flag is set and the override reason kind is “ErrorCorrection”. |
+| **DR-891 Is Reserved Judgment Override** | An agent decision record is considered a reserved judgment override if all of the following hold: the was overridden flag is set and the override reason kind is “JudgmentReserved”. |
+| **DR-892 Override Reason is Recorded** | An agent decision record is flagged override reason is recorded if all of the following hold: the was overridden flag is set and the override reason kind has a value. |
+| **DR-893 Is Unexplained Override** | An agent decision record is considered an unexplained override if all of the following hold: the was overridden flag is set and the override reason is recorded flag is not set. |
+| **DR-894 Error Correction Role Assignment Key** | The agent decision record's error correction role assignment key is determined by the following priority:<br>1. the under role assignment, if the error correction flag is set;<br>2. in all other cases, an empty string. |
+| **DR-895 Boundary Violation Role Assignment Key** | The agent decision record's boundary violation role assignment key is determined by the following priority:<br>1. the under role assignment, if the violated authority boundary flag is set;<br>2. in all other cases, an empty string. |
+| **DR-896 Name** | A delivered communication's name is computed as the channel, followed by “ -> ”, followed by the recipient key, followed by “ @ ”, followed by the sent at. |
+| **DR-897 Has Authorization** | A delivered communication is considered to have an authorization if the authorizing step execution has a value. |
+| **DR-898 Content Matches Approval** | A delivered communication is flagged content matches approval if the rendered content hash is the approved content hash. |
+| **DR-899 Authorized At** | A delivered communication's authorized at is the ended at of the delivered communication's authorizing step execution. |
+| **DR-900 Was Approved Before Sending** | A delivered communication is considered to have been approved before sending if the authorized at is at most the sent at. |
+| **DR-901 Is Defensible** | A delivered communication is considered defensible if all of the following hold: the authorization flag is set; the content matches approval flag is set; and the was approved before sending flag is set. |
+| **DR-902 Name** | An authority boundary's name is computed as the forbidden agent kind, followed by “ may not ”, followed by the forbidden decision kind. |
+| **DR-903 As of Instant** | An authority boundary's as of instant — taken from the linked evaluation context. |
+| **DR-904 Is Currently Binding** | An authority boundary is considered currently-binding if all of the following hold: the status is “Approved”; the valid from is at most the as of instant; and at least one of the following holds: the valid to is blank or the valid to is greater than the as of instant. |
+| **DR-905 Ratifying Fragment is Valid** | An authority boundary's ratifying fragment is valid is true when the authority boundary's ratified by knowledge fragment is currently valid. |
+| **DR-906 Step When Binding** | The authority boundary's step when binding is determined by the following priority:<br>1. the step, if the currently binding flag is set;<br>2. in all other cases, an empty string. |
+| **DR-907 Boundary Match Key** | An authority boundary's boundary match key is computed as the step, followed by “|”, followed by the forbidden agent kind, followed by “|”, followed by the forbidden decision kind. |
+| **DR-908 Violation Count** | An authority boundary's violation count is the number of agent decision records related to the authority boundary. |
+| **DR-909 Is Untested** | An authority boundary is considered untested if all of the following hold: the currently binding flag is set and the violation count is 0. |
+| **DR-910 Has Ratifying Fragment** | An authority boundary is considered to have ratifying fragment if the ratified by knowledge fragment has a value. |
+| **DR-911 Is Unwarranted** | An authority boundary is considered unwarranted if all of the following hold: the currently binding flag is set and at least one of the following holds: the ratifying fragment flag is not set or the ratifying fragment is valid flag is not set. |
+| **DR-912 Ratifying Fragment is Overdue** | An authority boundary's ratifying fragment is overdue is true when the authority boundary's ratified by knowledge fragment is an overdue for review. |
+| **DR-913 Ratifying Fragment is Single Witness** | An authority boundary's ratifying fragment is single witness is true when the authority boundary's ratified by knowledge fragment is a from single witness. |
+| **DR-914 Warrant is Thin** | An authority boundary is flagged warrant is thin if all of the following hold: the currently binding flag is set and at least one of the following holds: the ratifying fragment is overdue flag is set or the ratifying fragment is single witness flag is set. |
+| **DR-915 Is Unwarranted and Untested** | An authority boundary is considered unwarranted-and-untested if all of the following hold: the unwarranted flag is set and the untested flag is set. |
+| **DR-916 Unwarranted Boundary Step Key** | The authority boundary's unwarranted boundary step key is determined by the following priority:<br>1. the step, if the unwarranted flag is set;<br>2. in all other cases, an empty string. |
+| **DR-917 Ratifying Fragment Key** | The authority boundary's ratifying fragment key is determined by the following priority:<br>1. the ratified by knowledge fragment, if the currently binding flag is set;<br>2. in all other cases, an empty string. |
+| **DR-918 Ratifying Fragment Status** | An authority boundary's ratifying fragment status — taken from the linked ratified by knowledge fragment. |
+| **DR-919 Ratification Lapsed** | An authority boundary is flagged ratification lapsed if all of the following hold: the ratifying fragment flag is set and the ratifying fragment is valid flag is not set. |
+| **DR-920 Binds Despite Lapsed Ratification** | An authority boundary is considered to bind a despite lapsed ratification if all of the following hold: the currently binding flag is set and the ratification lapsed flag is set. |
+| **DR-921 Is Ungrounded and Untested** | An authority boundary is considered ungrounded-and-untested if all of the following hold: the binds despite lapsed ratification flag is set and the untested flag is set. |
+| **DR-922 Constrained Role Assignment Key** | The authority boundary's constrained role assignment key is determined by the following priority:<br>1. the authority role, if the binds despite lapsed ratification flag is set;<br>2. in all other cases, an empty string. |
+| **DR-923 Name** | A binding observation's name is computed as the step execution, followed by “ / ”, followed by the binding observation ID. |
+| **DR-924 Sla Minutes At Run** | A binding observation's sla minutes at run is the freshness sla minutes of the binding observation's operational binding. |
+| **DR-925 Age At Run Minutes** | A binding observation's age at run minutes is computed as the number of minutes from the observed source timestamp to the read at. |
+| **DR-926 Was Stale At Run** | A binding observation is considered to have been stale at run if all of the following hold: the authoritative binding flag is set and the age at run minutes is greater than the sla minutes at run. |
+| **DR-927 Is Authoritative Binding** | A binding observation's is authoritative binding when the linked operational binding is authoritative. |
+| **DR-928 Stale At Run Step Key** | The binding observation's stale at run step key is determined by the following priority:<br>1. the step execution, if the was stale at run flag is set;<br>2. in all other cases, an empty string. |
+| **DR-929 Name** | An attestation's name is computed as the procedure execution, followed by “ / ”, followed by the attestation ID. |
+| **DR-930 Version is Fit Now** | An attestation's version is fit now is true when the attestation's procedure execution is a fit. |
+| **DR-931 Fitness Verdict Has Drifted** | An attestation is considered to fitnes verdict has drifted if it is not the case that the version was fit at signing is the version is fit now. |
+| **DR-932 Assurance Grade Now** | An attestation's assurance grade now — taken from the linked procedure execution. |
+| **DR-933 Assurance Grade Has Drifted** | An attestation is flagged assurance grade has drifted if it is not the case that the assurance grade at signing is the assurance grade now. |
+| **DR-934 Would Not Survive Restatement** | An attestation is flagged would not survive restatement if at least one of the following holds: the fitness verdict has drifted flag is set or the assurance grade has drifted flag is set. |
+| **DR-935 Name** | An app role profile's name is computed as the display label, followed by “ (”, followed by the role kind, followed by “)”. |
+| **DR-936 Route Count** | An app role profile's route count is the number of app routes related to the app role profile. |
+| **DR-937 Name** | An app nav group's name is the same as its group label. |
+| **DR-938 Route Count** | An app nav group's route count is the number of app routes related to the app nav group. |
+| **DR-939 Name** | An app route's name is computed as the route name, followed by “ — ”, followed by the route path. |
+| **DR-940 Is in Nav** | An app route is considered in-nav if the nav group has a value. |
+| **DR-941 Is Shared** | An app route is considered shared if all of the following hold: the owning role is blank and the surface is “domain”. |
+| **DR-942 Is Maintainer** | An app route is considered a maintainer if the surface is “maintainer”. |
+| **DR-943 Question Count** | An app route's question count is the number of app route questions related to the app route. |
+| **DR-944 Reference Count** | An app route's reference count is the number of app route references related to the app route. |
+| **DR-945 Answers No Question** | An app route is considered to answer no question if all of the following hold: the question count is 0; the is shared is false; the is maintainer is false; and the route kind is not “index”. |
+| **DR-946 Name** | An app route question's name is computed as the route, followed by “ answers ”, followed by the question. |
+| **DR-947 Name** | An app route reference's name is computed as the from route, followed by “ -> ”, followed by the to route. |
+| **DR-948 Name** | A rulebook table's name is the same as its table name. |
+| **DR-949 Field Count** | A rulebook table's field count is the number of rulebook fields related to the rulebook table. |
+| **DR-950 Policy Count** | A rulebook table's policy count is the number of access policies related to the rulebook table. |
+| **DR-951 Is Unsecured** | A rulebook table is considered unsecured if the policy count is 0. |
+| **DR-952 Disagreeing Substrate Count** | A rulebook table's disagreeing substrate count is the number of table conformance related to the rulebook table. |
+| **DR-953 Name** | An access principal's name is the same as its label. |
+| **DR-954 Organization Scope** | An access principal's organization scope — taken from the linked domain role. |
+| **DR-955 Role Label** | An access principal's role label — taken from the linked domain role. |
+| **DR-956 Policy Count** | An access principal's policy count is the number of access policies related to the access principal. |
+| **DR-957 Grant Count** | An access principal's grant count is the number of field grants related to the access principal. |
+| **DR-958 Visible Table Count** | An access principal's visible table count is the number of role schema views related to the access principal. |
+| **DR-959 Has No Access** | An access principal is considered to have no access if the policy count is 0. |
+| **DR-960 Is Over Privileged** | An access principal is considered over-privileged if all of the following hold: the administrator flag is not set and the visible table count is at least 74. |
+| **DR-961 Name** | An access policy's name is computed as the principal, followed by a space, followed by the command, followed by a space, followed by the target table. |
+| **DR-962 Is Write Command** | An access policy is considered a write command if at least one of the following holds: the command is “INSERT”; the command is “UPDATE”; the command is “DELETE”; or the command is “ALL”. |
+| **DR-963 Is Unrestricted** | An access policy is considered unrestricted if the row predicate is blank. |
+| **DR-964 Principal is Admin** | An access policy's principal is admin is true when the access policy's principal is an administrator. |
+| **DR-965 Is Unrestricted Non Admin Grant** | An access policy is considered unrestricted-non-admin-grant if all of the following hold: the unrestricted flag is set and the principal is admin flag is not set. |
+| **DR-966 Is Unwitnessed Write** | An access policy is considered an unwitnessed write if all of the following hold: the write command flag is set and the denial test count is 0. |
+| **DR-967 Denial Test Count** | An access policy's denial test count is the number of access denial tests related to the access policy. |
+| **DR-968 Name** | A field grant's name is computed as the principal, followed by “ -> ”, followed by the target field. |
+| **DR-969 Field Table** | A field grant's field table is the target table of the field grant's target field. |
+| **DR-970 Field Name** | A field grant's field name — taken from the linked target field. |
+| **DR-971 Field is Derived** | A field grant's field is derived when the linked target field is derived. |
+| **DR-972 Is Writable Derived Field** | A field grant is considered a writable derived field if all of the following hold: the can write flag is set and the field is derived flag is set. |
+| **DR-973 Is Masked** | A field grant is considered masked if all of the following hold: the mask strategy is not “plain” and the mask strategy has a value. |
+| **DR-974 Grant Key When Readable** | The field grant's grant key when readable is determined by the following priority:<br>1. the principal, followed by “|”, followed by the field table, if the can read flag is set;<br>2. in all other cases, an empty string. |
+| **DR-975 Name** | A role schema's name is the same as its schema name. |
+| **DR-976 Search Path** | A role schema's search path is the same as its schema name. |
+| **DR-977 View Count** | A role schema's view count is the number of role schema views related to the role schema. |
+| **DR-978 Is Empty Schema** | A role schema is considered an empty schema if the view count is 0. |
+| **DR-979 Name** | A role schema view's name is computed as the schema name, followed by a period, followed by the view name. |
+| **DR-980 Schema Name** | A role schema view's schema name — taken from the linked role schema. |
+| **DR-981 Source View** | A role schema view's source view is the physical view of the role schema view's target table. |
+| **DR-982 Grant Key** | A role schema view's grant key is computed as the principal, followed by “|”, followed by the target table. |
+| **DR-983 Column Count** | A role schema view's column count is the number of field grants related to the role schema view. |
+| **DR-984 Table Field Count** | A role schema view's table field count — taken from the linked target table. |
+| **DR-985 Is Full Width** | A role schema view is considered a full width if all of the following hold: the column count is greater than 0 and the column count is at least the table field count. |
+| **DR-986 Is Degenerate View** | A role schema view is considered a degenerate view if the column count is 0. |
+| **DR-987 Name** | A jwt claim mapping's name is computed as the claim name, followed by “ -> ”, followed by the SQL accessor. |
+| **DR-988 Usage Count** | A jwt claim mapping's usage count is the number of access policies related to the jwt claim mapping. |
+| **DR-989 Name** | An access denial test's name is computed as the principal, followed by “ must not see ”, followed by the forbidden row ID. |
+| **DR-990 Has Run** | An access denial test is considered to have a run if the last run at has a value. |
+| **DR-991 Is Passing** | An access denial test is considered passing if the observed visible is the expected visible. |
+| **DR-992 Is Leak** | An access denial test is considered a leak if all of the following hold: the expected visible flag is not set and the observed visible flag is set. |
+| **DR-993 Is Unproven** | An access denial test is considered an unproven if the run flag is not set. |
+| **DR-994 Is Positive Control** | An access denial test is considered a positive control only if the access denial test is flagged expected visible. |
+| **DR-995 Name** | An app user's name is the same as its display name. |
+| **DR-996 Agent Kind** | An app user's agent kind — taken from the linked linked agent. |
+| **DR-997 Organization** | An app user's organization — taken from the linked linked agent. |
+| **DR-998 Assignment Count** | An app user's assignment count is the number of principal assignments related to the app user. |
+| **DR-999 Has No Principal** | An app user is considered to have no principal if the assignment count is 0. |
+| **DR-1000 Holds Multiple Principals** | An app user is considered to hold a multiple principals if the assignment count is greater than 1. |
+| **DR-1001 Is Non Human Sign in** | An app user is considered a non human sign in if at least one of the following holds: the agent kind is “AIAgent” or the agent kind is “AutomatedPipeline”. |
+| **DR-1002 Name** | A principal assignment's name is computed as the app user, followed by “ as ”, followed by the principal. |
+| **DR-1003 Principal is Admin** | A principal assignment's principal is admin is true when the principal assignment's principal is an administrator. |
+| **DR-1004 User Organization** | A principal assignment's user organization — taken from the linked app user. |
+| **DR-1005 Principal Organization** | A principal assignment's principal organization is the organization scope of the principal assignment's principal. |
+| **DR-1006 Is Cross Organization Grant** | A principal assignment is considered cross-organization-grant if all of the following hold: the user organization has a value; the principal organization has a value; and the user organization is not the principal organization. |
+| **DR-1007 Name** | An issued token's name is computed as the app user, followed by “ as ”, followed by the principal, followed by “ @ ”, followed by the issued at. |
+| **DR-1008 Is Dev Minted** | An issued token is considered dev-minted if the issuer is “dev-mint”. |
+| **DR-1009 Name** | A process mining run's name is computed as the event log source, followed by “ / ”, followed by the mined at. |
+| **DR-1010 As of Instant** | A process mining run's as of instant — taken from the linked evaluation context. |
+| **DR-1011 Conformance Rate** | The process mining run's conformance rate is determined by the following priority:<br>1. 0, if the discovered variant count is 0;<br>2. in all other cases, the conforming variant count divided by the discovered variant count. |
+| **DR-1012 Is Conformant** | A process mining run is considered conformant if the conformance rate is at least 0.8. |
+| **DR-1013 Has Major Drift From Documentation** | A process mining run is considered to have a major drift from documentation if the conformance rate is less than 0.5. |
+| **DR-1014 Days Since Mined** | A process mining run's days since mined is computed as the number of days from the mined at to the as of instant. |
+| **DR-1015 Is Stale Mining Evidence** | A process mining run is considered a stale mining evidence if the days since mined is greater than 180. |
+| **DR-1016 Procedure Version is Live** | A process mining run's procedure version is live when the linked procedure version is live. |
+| **DR-1017 Is Drift on Live Version** | A process mining run is considered a drift on live version if all of the following hold: the major drift from documentation flag is set and the procedure version is live flag is set. |
+| **DR-1018 Drifted Mining Run Key** | The process mining run's drifted mining run key is determined by the following priority:<br>1. the procedure version, if the drift on live version flag is set;<br>2. in all other cases, an empty string. |
+| **DR-1019 Name** | A vocabulary's name is the same as its title. |
+| **DR-1020 Term Count** | A vocabulary's term count is the number of vocabulary terms related to the vocabulary. |
+| **DR-1021 Orphan Term Count** | A vocabulary's orphan term count is the number of vocabulary terms related to the vocabulary. |
+| **DR-1022 Has Orphan Terms** | A vocabulary is considered to have an orphan terms if the orphan term count is greater than 0. |
+| **DR-1023 Name** | A vocabulary term's name is the same as its pref label. |
+| **DR-1024 Usage Count** | A vocabulary term's usage count is the number of requirements related to the vocabulary term. |
+| **DR-1025 Is Orphan Term** | A vocabulary term is considered an orphan term if the usage count is 0. |
+| **DR-1026 Is Widely Adopted Term** | A vocabulary term is considered a widely adopted term if the usage count is at least 2. |
+| **DR-1027 Orphan Term Vocabulary Key** | The vocabulary term's orphan term vocabulary key is determined by the following priority:<br>1. the vocabulary, if the orphan term flag is set;<br>2. in all other cases, an empty string. |
+| **DR-1028 Name** | A knowledge broker link's name is computed as the seeker, followed by “ -> ”, followed by the broker. |
+| **DR-1029 As of Instant** | A knowledge broker link's as of instant — taken from the linked evaluation context. |
+| **DR-1030 Days Since Consulted** | A knowledge broker link's days since consulted is computed as the number of days from the last consulted at to the as of instant. |
+| **DR-1031 Is Active Reliance** | A knowledge broker link is considered an active reliance if all of the following hold: it is not the case that the frequency is “Rarely” and the days since consulted is at most 180. |
+| **DR-1032 Broker is Still Engaged** | A knowledge broker link's broker is still engaged when the linked broker is still engaged. |
+| **DR-1033 Is At Risk Reliance** | A knowledge broker link is considered at-risk-reliance if all of the following hold: the active reliance flag is set and the broker is still engaged flag is not set. |
+| **DR-1034 Active Reliance Broker Key** | The knowledge broker link's active reliance broker key is determined by the following priority:<br>1. the broker, if the active reliance flag is set;<br>2. in all other cases, an empty string. |
+| **DR-1035 At Risk Broker Key** | The knowledge broker link's at risk broker key is determined by the following priority:<br>1. the broker, if the at risk reliance flag is set;<br>2. in all other cases, an empty string. |
+| **DR-1036 Name** | A conformance substrate's name is the same as its label. |
+| **DR-1037 Is Graded** | A conformance substrate is considered graded if the role is “graded”. |
+| **DR-1038 Run Count** | A conformance substrate's run count is the number of substrate run scores related to the conformance substrate. |
+| **DR-1039 Latest Cells Tested** | A conformance substrate's latest cells tested is the total latest cells tested across the substrate run scores related to the conformance substrate. |
+| **DR-1040 Latest Cells Passed** | A conformance substrate's latest cells passed is the total latest cells passed across the substrate run scores related to the conformance substrate. |
+| **DR-1041 Latest Harness Errors** | A conformance substrate's latest harness errors is the total latest error flag across the substrate run scores related to the conformance substrate. |
+| **DR-1042 Latest Cells Failed** | A conformance substrate's latest cells failed is computed as the latest cells tested minus the latest cells passed. |
+| **DR-1043 Latest Score** | The conformance substrate's latest score is determined by the following priority:<br>1. 0, if the latest cells tested is 0;<br>2. in all other cases, 100 times the latest cells passed divided by the latest cells tested rounded to 2 decimal place(s). |
+| **DR-1044 Disagreeing Field Count** | A conformance substrate's disagreeing field count is the number of field disagreements related to the conformance substrate. |
+| **DR-1045 Disagreeing Table Count** | A conformance substrate's disagreeing table count is the number of table conformance related to the conformance substrate. |
+| **DR-1046 Is Fully Conformant** | A conformance substrate is considered fully-conformant if all of the following hold: the latest cells tested is greater than 0; the latest cells failed is 0; and the latest harness errors is 0. |
+| **DR-1047 Name** | A conformance run's name is the same as its conformance run ID. |
+| **DR-1048 Substrate Count** | A conformance run's substrate count is the number of substrate run scores related to the conformance run. |
+| **DR-1049 Perfect Substrate Count** | A conformance run's perfect substrate count is the number of substrate run scores related to the conformance run. |
+| **DR-1050 Cells Tested** | A conformance run's cells tested is the total cells tested across the substrate run scores related to the conformance run. |
+| **DR-1051 Cells Passed** | A conformance run's cells passed is the total cells passed across the substrate run scores related to the conformance run. |
+| **DR-1052 Cells Failed** | A conformance run's cells failed is computed as the cells tested minus the cells passed. |
+| **DR-1053 Overall Score** | The conformance run's overall score is determined by the following priority:<br>1. 0, if the cells tested is 0;<br>2. in all other cases, 100 times the cells passed divided by the cells tested rounded to 2 decimal place(s). |
+| **DR-1054 Imperfect Substrate Count** | A conformance run's imperfect substrate count is computed as the substrate count minus the perfect substrate count. |
+| **DR-1055 Is Fully Conformant** | A conformance run is considered fully-conformant if all of the following hold: the substrate count is greater than 0 and the imperfect substrate count is 0. |
+| **DR-1056 Name** | A substrate run score's name is computed as the run, followed by “ / ”, followed by the substrate. |
+| **DR-1057 Cells Failed** | A substrate run score's cells failed is computed as the cells tested minus the cells passed. |
+| **DR-1058 Score** | The substrate run score's score is determined by the following priority:<br>1. 0, if the cells tested is 0;<br>2. in all other cases, 100 times the cells passed divided by the cells tested rounded to 2 decimal place(s). |
+| **DR-1059 Calculated Score** | The substrate run score's calculated score is determined by the following priority:<br>1. 0, if the calculated tested is 0;<br>2. in all other cases, 100 times the calculated passed divided by the calculated tested rounded to 2 decimal place(s). |
+| **DR-1060 Lookup Score** | The substrate run score's lookup score is determined by the following priority:<br>1. 0, if the lookup tested is 0;<br>2. in all other cases, 100 times the lookup passed divided by the lookup tested rounded to 2 decimal place(s). |
+| **DR-1061 Aggregation Score** | The substrate run score's aggregation score is determined by the following priority:<br>1. 0, if the aggregation tested is 0;<br>2. in all other cases, 100 times the aggregation passed divided by the aggregation tested rounded to 2 decimal place(s). |
+| **DR-1062 Is Perfect** | A substrate run score is considered a perfect if all of the following hold: the harness error is blank; the cells tested is greater than 0; and the cells failed is 0. |
+| **DR-1063 Perfect Run Key** | The substrate run score's perfect run key is determined by the following priority:<br>1. the run, if the perfect flag is set;<br>2. in all other cases, an empty string. |
+| **DR-1064 Is in Latest Run** | A substrate run score's is in latest run when the linked run is a latest. |
+| **DR-1065 Latest Cells Tested** | The substrate run score's latest cells tested is determined by the following priority:<br>1. the cells tested, if the in latest run flag is set;<br>2. in all other cases, 0. |
+| **DR-1066 Latest Cells Passed** | The substrate run score's latest cells passed is determined by the following priority:<br>1. the cells passed, if the in latest run flag is set;<br>2. in all other cases, 0. |
+| **DR-1067 Latest Error Flag** | The substrate run score's latest error flag is determined by the following priority:<br>1. 1, if all of the following hold: the in latest run flag is set and the harness error has a value;<br>2. in all other cases, 0. |
+| **DR-1068 Substrate Label** | A substrate run score's substrate label — taken from the linked substrate. |
+| **DR-1069 Name** | A table conformance's name is computed as the substrate, followed by “ / ”, followed by the rulebook table. |
+| **DR-1070 Cells Failed** | A table conformance's cells failed is computed as the cells tested minus the cells passed. |
+| **DR-1071 Score** | The table conformance's score is determined by the following priority:<br>1. 0, if the cells tested is 0;<br>2. in all other cases, 100 times the cells passed divided by the cells tested rounded to 2 decimal place(s). |
+| **DR-1072 Is Perfect** | A table conformance is considered a perfect if the cells failed is 0. |
+| **DR-1073 Imperfect Substrate Key** | The table conformance's imperfect substrate key is determined by the following priority:<br>1. an empty string, if the perfect flag is set;<br>2. in all other cases, the substrate. |
+| **DR-1074 Imperfect Table Key** | The table conformance's imperfect table key is determined by the following priority:<br>1. an empty string, if the perfect flag is set;<br>2. in all other cases, the rulebook table. |
+| **DR-1075 Disagreeing Field Count** | A table conformance's disagreeing field count is the number of field disagreements related to the table conformance. |
+| **DR-1076 Substrate Label** | A table conformance's substrate label — taken from the linked substrate. |
+| **DR-1077 Subject Area** | A table conformance's subject area — taken from the linked rulebook table. |
+| **DR-1078 Name** | A field disagreement's name is computed as the substrate, followed by “ / ”, followed by the rulebook field. |
+| **DR-1079 Sampled Cell Count** | A field disagreement's sampled cell count is the number of cell disagreements related to the field disagreement. |
+| **DR-1080 Is Fully Sampled** | A field disagreement is considered fully-sampled if the sampled cell count is the cells failed. |
+| **DR-1081 Formula** | A field disagreement's formula — taken from the linked rulebook field. |
+| **DR-1082 Substrate Label** | A field disagreement's substrate label — taken from the linked substrate. |
+| **DR-1083 Name** | A cell disagreement's name is computed as the field disagreement, followed by “ @ ”, followed by the record ID. |
+| **DR-1084 Substrate** | A cell disagreement's substrate — taken from the linked field disagreement. |
+| **DR-1085 Rulebook Field** | A cell disagreement's rulebook field — taken from the linked field disagreement. |
 
 ## 5 Traceability to Schema
 
@@ -3684,6 +3854,8 @@ the same logic the rulebook stores, written for a business reader._
 | **RulebookFields.Name** | formula | `TargetTable & "." & FieldName` |
 | **RulebookFields.IsDerived** | formula | `Or(FieldType = "calculated", FieldType = "lookup", FieldType = "aggregation")` |
 | **RulebookFields.IsWitness** | formula | `InventedForQuestion <> ""` |
+| **RulebookFields.DisagreeingSubstrateCount** | rollup | `Count(FieldDisagreements via RulebookField)` |
+| **RulebookFields.IsSubstrateContested** | formula | `DisagreeingSubstrateCount > 0` |
 | **TestSuites.Name** | formula | `Label` |
 | **TestSuites.TestCount** | rollup | `Count(TestCases via Suite)` |
 | **TestSuites.PassCount** | rollup | `Count(TestCases via PassingSuiteKey)` |
@@ -3976,6 +4148,7 @@ the same logic the rulebook stores, written for a business reader._
 | **RulebookTables.FieldCount** | rollup | `Count(RulebookFields via TargetTable)` |
 | **RulebookTables.PolicyCount** | rollup | `Count(AccessPolicies via TargetTable)` |
 | **RulebookTables.IsUnsecured** | formula | `PolicyCount = 0` |
+| **RulebookTables.DisagreeingSubstrateCount** | rollup | `Count(TableConformance via ImperfectTableKey)` |
 | **AccessPrincipals.Name** | formula | `Label` |
 | **AccessPrincipals.OrganizationScope** | lookup | `Lookup(Roles.Organization via DomainRole)` |
 | **AccessPrincipals.RoleLabel** | lookup | `Lookup(Roles.Label via DomainRole)` |
@@ -4059,6 +4232,752 @@ the same logic the rulebook stores, written for a business reader._
 | **KnowledgeBrokerLinks.IsAtRiskReliance** | formula | `And(IsActiveReliance, Not(BrokerIsStillEngaged))` |
 | **KnowledgeBrokerLinks.ActiveRelianceBrokerKey** | formula | `If(IsActiveReliance, Broker, "")` |
 | **KnowledgeBrokerLinks.AtRiskBrokerKey** | formula | `If(IsAtRiskReliance, Broker, "")` |
+| **ConformanceSubstrates.Name** | formula | `Label` |
+| **ConformanceSubstrates.IsGraded** | formula | `Role = "graded"` |
+| **ConformanceSubstrates.RunCount** | rollup | `Count(SubstrateRunScores via Substrate)` |
+| **ConformanceSubstrates.LatestCellsTested** | rollup | `Sum(SubstrateRunScores.LatestCellsTested via Substrate)` |
+| **ConformanceSubstrates.LatestCellsPassed** | rollup | `Sum(SubstrateRunScores.LatestCellsPassed via Substrate)` |
+| **ConformanceSubstrates.LatestHarnessErrors** | rollup | `Sum(SubstrateRunScores.LatestErrorFlag via Substrate)` |
+| **ConformanceSubstrates.LatestCellsFailed** | formula | `LatestCellsTested - LatestCellsPassed` |
+| **ConformanceSubstrates.LatestScore** | formula | `If(LatestCellsTested = 0, 0, Round(100 * LatestCellsPassed / LatestCellsTested, 2))` |
+| **ConformanceSubstrates.DisagreeingFieldCount** | rollup | `Count(FieldDisagreements via Substrate)` |
+| **ConformanceSubstrates.DisagreeingTableCount** | rollup | `Count(TableConformance via ImperfectSubstrateKey)` |
+| **ConformanceSubstrates.IsFullyConformant** | formula | `And(LatestCellsTested > 0, LatestCellsFailed = 0, LatestHarnessErrors = 0)` |
+| **ConformanceRuns.Name** | formula | `ConformanceRunId` |
+| **ConformanceRuns.SubstrateCount** | rollup | `Count(SubstrateRunScores via Run)` |
+| **ConformanceRuns.PerfectSubstrateCount** | rollup | `Count(SubstrateRunScores via PerfectRunKey)` |
+| **ConformanceRuns.CellsTested** | rollup | `Sum(SubstrateRunScores.CellsTested via Run)` |
+| **ConformanceRuns.CellsPassed** | rollup | `Sum(SubstrateRunScores.CellsPassed via Run)` |
+| **ConformanceRuns.CellsFailed** | formula | `CellsTested - CellsPassed` |
+| **ConformanceRuns.OverallScore** | formula | `If(CellsTested = 0, 0, Round(100 * CellsPassed / CellsTested, 2))` |
+| **ConformanceRuns.ImperfectSubstrateCount** | formula | `SubstrateCount - PerfectSubstrateCount` |
+| **ConformanceRuns.IsFullyConformant** | formula | `And(SubstrateCount > 0, ImperfectSubstrateCount = 0)` |
+| **SubstrateRunScores.Name** | formula | `Concat(Run, " / ", Substrate)` |
+| **SubstrateRunScores.CellsFailed** | formula | `CellsTested - CellsPassed` |
+| **SubstrateRunScores.Score** | formula | `If(CellsTested = 0, 0, Round(100 * CellsPassed / CellsTested, 2))` |
+| **SubstrateRunScores.CalculatedScore** | formula | `If(CalculatedTested = 0, 0, Round(100 * CalculatedPassed / CalculatedTested, 2))` |
+| **SubstrateRunScores.LookupScore** | formula | `If(LookupTested = 0, 0, Round(100 * LookupPassed / LookupTested, 2))` |
+| **SubstrateRunScores.AggregationScore** | formula | `If(AggregationTested = 0, 0, Round(100 * AggregationPassed / AggregationTested, 2))` |
+| **SubstrateRunScores.IsPerfect** | formula | `And(HarnessError = "", CellsTested > 0, CellsFailed = 0)` |
+| **SubstrateRunScores.PerfectRunKey** | formula | `If(IsPerfect, Run, "")` |
+| **SubstrateRunScores.IsInLatestRun** | lookup | `Lookup(ConformanceRuns.IsLatest via Run)` |
+| **SubstrateRunScores.LatestCellsTested** | formula | `If(IsInLatestRun, CellsTested, 0)` |
+| **SubstrateRunScores.LatestCellsPassed** | formula | `If(IsInLatestRun, CellsPassed, 0)` |
+| **SubstrateRunScores.LatestErrorFlag** | formula | `If(And(IsInLatestRun, HarnessError <> ""), 1, 0)` |
+| **SubstrateRunScores.SubstrateLabel** | lookup | `Lookup(ConformanceSubstrates.Label via Substrate)` |
+| **TableConformance.Name** | formula | `Concat(Substrate, " / ", RulebookTable)` |
+| **TableConformance.CellsFailed** | formula | `CellsTested - CellsPassed` |
+| **TableConformance.Score** | formula | `If(CellsTested = 0, 0, Round(100 * CellsPassed / CellsTested, 2))` |
+| **TableConformance.IsPerfect** | formula | `CellsFailed = 0` |
+| **TableConformance.ImperfectSubstrateKey** | formula | `If(IsPerfect, "", Substrate)` |
+| **TableConformance.ImperfectTableKey** | formula | `If(IsPerfect, "", RulebookTable)` |
+| **TableConformance.DisagreeingFieldCount** | rollup | `Count(FieldDisagreements via TableConformance)` |
+| **TableConformance.SubstrateLabel** | lookup | `Lookup(ConformanceSubstrates.Label via Substrate)` |
+| **TableConformance.SubjectArea** | lookup | `Lookup(RulebookTables.SubjectArea via RulebookTable)` |
+| **FieldDisagreements.Name** | formula | `Concat(Substrate, " / ", RulebookField)` |
+| **FieldDisagreements.SampledCellCount** | rollup | `Count(CellDisagreements via FieldDisagreement)` |
+| **FieldDisagreements.IsFullySampled** | formula | `SampledCellCount = CellsFailed` |
+| **FieldDisagreements.Formula** | lookup | `Lookup(RulebookFields.Formula via RulebookField)` |
+| **FieldDisagreements.SubstrateLabel** | lookup | `Lookup(ConformanceSubstrates.Label via Substrate)` |
+| **CellDisagreements.Name** | formula | `Concat(FieldDisagreement, " @ ", RecordId)` |
+| **CellDisagreements.Substrate** | lookup | `Lookup(FieldDisagreements.Substrate via FieldDisagreement)` |
+| **CellDisagreements.RulebookField** | lookup | `Lookup(FieldDisagreements.RulebookField via FieldDisagreement)` |
+
+## 6 Example Data
+
+_The rulebook's own example rows. Values in **derived** columns are not stored —
+they are computed from the rules above by the same formula engine the rulebook
+generates, so if a formula changes these values change with it._
+
+### Rulebook Releas
+
+| Name ƒ | Rulebook Version | Profile Version | Profile Schema Path | Pko Core Version Iri | Pko Industry Version Iri | Issued At | Status | Changelog | Is Current |
+|---|---|---|---|---|---|---|---|---|---|
+| 1.0.0 / PKO https://w3id.org/pko/2.0.0 | 1.0.0 | 1.0.0 | schemas/pko-erb-profile-1.0.0.schema.json | https://w3id.org/pko/2.0.0 | https://w3id.org/pko/industry/2.0.0 | 2026-07-19T12:00:00-05:00 | Candidate | Initial executable PKO-native canonical rulebook and projection-tool proof. | true |
+
+### Ontology Profile
+
+| Name ƒ | Label | Version | Version Iri | Namespace Iri | License | Scope |
+|---|---|---|---|---|---|---|
+| PKO Core 2.0.0 | PKO Core | 2.0.0 | https://w3id.org/pko/2.0.0 | https://w3id.org/pko# | CC BY 4.0 | Core procedural knowledge: procedures, steps, executions, transitions, requirements, issues, feedback, and agents. |
+| PKO Industry 2.0.0 | PKO Industry | 2.0.0 | https://w3id.org/pko/industry/2.0.0 | https://w3id.org/pko/industry# | CC BY 4.0 | Industry extension for machines, sites, departments, PPE, locks, energy sources, and tools. |
+| P-Plan 1 | P-Plan | 1 | http://purl.org/net/p-plan | http://purl.org/net/p-plan# | External | Plan, Step, MultiStep, and plan/execution alignment. |
+
+### Evaluation Context
+
+| Name ƒ | Label | As of Instant | Is Current | Rationale | Semantic Type Iri |
+|---|---|---|---|---|---|
+| Post-close evaluation @ 2026-07-19 13:00:00-05 | Post-close evaluation | 2026-07-19T13:00:00-05:00 | true | Shortly after the Q3 close execution and the policy notification run, so both procedure families have completed executions to witness against. Fixed as data so freshness and overdue answers are reproducible. | urn:effortless:pko-extension#EvaluationContext |
+
+### Organization
+
+| Name ƒ | Display Name | Organization Type | External Identifier | Semantic Type Iri |
+|---|---|---|---|---|
+| ACME Corporation | ACME Corporation | Company | org-001 | http://www.w3.org/ns/prov#Organization |
+| ACME Finance | ACME Finance | Department | dept-fin | https://w3id.org/pko/industry#Department |
+| ACME People Operations | ACME People Operations | Department | dept-people | https://w3id.org/pko/industry#Department |
+
+### Agent
+
+| Name ƒ | Display Name | Agent Kind | Contact Address | Version or Employment Key | Count of Current Role Assignments ƒ | Is Still Engaged ƒ | Decision Count ƒ | Overridden Decision Count ƒ | Override Rate Percent ƒ | Is Non Human ƒ | Boundary Violation Count ƒ | Is Operating Outside Boundary ƒ | Draft Decision Count ƒ | Overridden Draft Count ƒ | Draft Rewrite Rate Percent ƒ | Times Named As Broker ƒ | Is Recognized Broker ƒ | At Risk Reliance Count ƒ | Has At Risk Knowledge Reliance ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Maria Chen | Maria Chen | Human | maria.chen@example.com | finance-analyst-2026 | 1 | true | 0 | 0 | 0 | false | 0 | false | 0 | 0 | 0 | 0 | false | 0 | false | prov:Agent |
+| Devon Okafor | Devon Okafor | Human | devon.okafor@example.com | controller-2026 | 1 | true | 0 | 0 | 0 | false | 0 | false | 0 | 0 | 0 | 0 | false | 0 | false | prov:Agent |
+| Priya Raman | Priya Raman | Human | priya.raman@example.com | cfo-2026 | 2 | true | 0 | 0 | 0 | false | 0 | false | 0 | 0 | 0 | 3 | true | 0 | false | prov:Agent |
+
+### Role
+
+| Name ƒ | Label | Current Agent Kind ƒ | Responsibility | Active Assignment Count ƒ | Currently Covered Assignment Count ƒ | Has No Current Holder ƒ | Count of Awaited Decisions ƒ | Current Assignment | Current Assignment Valid From ƒ | Is Non Human Held ƒ | Is Ungoverned Non Human Role ƒ | Departed Assignment Count ƒ | Has Lost a Holder ƒ | Is Vacated Role ƒ | Ungrounded Boundary Count ƒ | Is Governed by Lapsed Authority ƒ | Unescalated Refusal Count ƒ | Unauthorized Enforcement Assignment Count ƒ | Is Ungoverned Enforcement Role ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Finance Analyst | Finance Analyst | Human | Preparer of reconciliations and variance evidence. | 1 | 1 | false | 0 | ra-finance-2026 | 2026-01-01T00:00:00-06:00 | false | false | 0 | false | false | 0 | false | 0 | 0 | false | http://purl.org/spar/pro/Role |
+| Corporate Controller | Corporate Controller | Human | Owner of close controls and first approval authority. | 1 | 1 | false | 0 | ra-controller-2026 | 2026-01-01T00:00:00-06:00 | false | false | 0 | false | false | 0 | false | 0 | 0 | false | http://purl.org/spar/pro/Role |
+| Chief Financial Officer | Chief Financial Officer | Human | Final authority for the financial close. | 1 | 1 | false | 0 | ra-cfo-2026 | 2026-01-01T00:00:00-06:00 | false | false | 0 | false | false | 0 | false | 0 | 0 | false | http://purl.org/spar/pro/Role |
+
+### Role Assignment
+
+| Name ƒ | Valid From | Valid to | Reason | Status | As of Instant ƒ | Is Current ƒ | Current Agent Key ƒ | Is Currently Valid ƒ | Agent Role Key ƒ | Has Departed ƒ | Covers Now ƒ | Role When Covering ƒ | Agent Kind ƒ | Is Non Human Assignment ƒ | Predecessor Agent Kind ƒ | Is Human to Non Human Handover ƒ | Is Unauthorized Non Human Assignment ƒ | Was Authorized by Change Request ƒ | Decision Count ƒ | Overridden Decision Count ƒ | Override Rate Percent ƒ | Predecessor Override Rate Percent ƒ | Quality Regressed Vs Predecessor ƒ | Departed Role Key ƒ | Minimum Decisions for Comparison | Predecessor Decision Count ƒ | Has Sufficient Sample ƒ | Predecessor Has Sufficient Sample ƒ | Comparison is Evidentially Sound ƒ | Single Override Swing Percent ƒ | Quality Verdict is Unsupported ƒ | Is Unmeasured Automation Handover ƒ | Error Correction Count ƒ | Error Rate Percent ƒ | Authorization Decided At | Authorization Reviewed At | Authorization Review Cadence Days | Has Dated Authorization ƒ | Days Since Authorization Review ƒ | Authorization is Overdue for Review ƒ | Is Standing Unreviewed Automation ƒ | Is Unconditioned Automation Handover ƒ | Max Tolerable Error Rate Percent | Exceeds Tolerable Error Rate ƒ | Boundary Violation Count for Assignment ƒ | Has Any Boundary Violation ƒ | Has Ungrounded Governing Boundary ƒ | Suspension Condition Met ƒ | Is Operating Under Met Suspension Condition ƒ | Has Declared Suspension Condition ƒ | Has Approving Authority ƒ | Has Authorizing Change Request ƒ | Is Enforcement Role | Is Unauthorized Enforcement Agent ƒ | Governance Evidence Count ƒ | Unauthorized Enforcement Role Key ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| finance-analyst @ 2026-01-01 00:00:00-06 | 2026-01-01T00:00:00-06:00 | — | Assigned for fiscal 2026 | Active | 2026-07-19T13:00:00-05:00 | true | maria-chen | true | maria-chen\|finance-analyst | false | true | finance-analyst | Human | false | — | false | false | false | 0 | 0 | 0 | — | false | — | — | — | — | — | — | 0 | — | false | 0 | 0 | — | — | — | false | 199 | — | false | false | — | — | 0 | false | false | — | false | — | false | false | — | false | 0 | — | http://purl.org/spar/pro/RoleInTime |
+| controller @ 2026-01-01 00:00:00-06 | 2026-01-01T00:00:00-06:00 | — | Controller appointment | Active | 2026-07-19T13:00:00-05:00 | true | devon-okafor | true | devon-okafor\|controller | false | true | controller | Human | false | — | false | false | false | 0 | 0 | 0 | — | false | — | — | — | — | — | — | 0 | — | false | 0 | 0 | — | — | — | false | 199 | — | false | false | — | — | 0 | false | false | — | false | — | false | false | — | false | 0 | — | http://purl.org/spar/pro/RoleInTime |
+| cfo @ 2026-01-01 00:00:00-06 | 2026-01-01T00:00:00-06:00 | — | CFO appointment | Active | 2026-07-19T13:00:00-05:00 | true | priya-raman | true | priya-raman\|cfo | false | true | cfo | Human | false | — | false | false | false | 0 | 0 | 0 | — | false | — | — | — | — | — | — | 0 | — | false | 0 | 0 | — | — | — | false | 199 | — | false | false | — | — | 0 | false | false | — | false | — | false | false | — | false | 0 | — | http://purl.org/spar/pro/RoleInTime |
+
+### Community of Practice
+
+| Name ƒ | Label | Purpose | Cadence | Semantic Type Iri |
+|---|---|---|---|---|
+| Financial Close Community of Practice | Financial Close Community of Practice | Share close exceptions, reconcile recurring failure modes, and mentor new preparers. | Monthly and after every quarter close | urn:effortless:pko-extension#CommunityOfPractice |
+| Policy Stewardship Circle | Policy Stewardship Circle | Review workforce-policy changes, employee feedback, and notification effectiveness. | Biweekly | urn:effortless:pko-extension#CommunityOfPractice |
+
+### Mentorship
+
+| Name ƒ | Valid From | Valid to | Learning Objective | Evidence of Completion | Semantic Type Iri |
+|---|---|---|---|---|---|
+| devon-okafor -> maria-chen | 2026-01-15T00:00:00-06:00 | 2026-09-30T23:59:59-05:00 | Independently diagnose material variances and produce an auditable controller-ready explanation. | Three consecutive reconciliations accepted without rework. | urn:effortless:pko-extension#Mentorship |
+
+### Procedure Type
+
+| Name ƒ | Label | Definition | Semantic Type Iri |
+|---|---|---|---|
+| Financial Standard Operating Procedure | Financial Standard Operating Procedure | A controlled procedure for financial operations, approvals, evidence, and auditability. | https://w3id.org/pko#ProcedureType |
+| Employee Communication Policy Procedure | Employee Communication Policy Procedure | A controlled procedure that creates, approves, and distributes workforce policy communications. | https://w3id.org/pko#ProcedureType |
+
+### Procedure
+
+| Name ƒ | Title | Purpose | Target | Is Template | Current Version Key | Semantic Type Iri |
+|---|---|---|---|---|---|---|
+| Quarter-End Financial Close | Quarter-End Financial Close | Close the general ledger accurately, produce evidence, and obtain independent approval. | Corporate general ledger and reporting package | false | close-v1.1.0 | https://w3id.org/pko#Procedure |
+| Workforce Policy Change and Employee Notification | Workforce Policy Change and Employee Notification | Turn an approved workforce policy change into governed, channel-appropriate employee communications and acknowledgements. | All affected employees and workforce-policy records | false | policy-v1.0.0 | https://w3id.org/pko#Procedure |
+
+### Procedure Version
+
+| Name ƒ | Version Number | Title | Status | Issued At | Modified At | New Version Motivation | Changelog Description | Is Current | Count of Steps ƒ | Count of Open Knowledge Gaps ƒ | Is Ready for Execution ƒ | Specified Step Count ƒ | Overdue Review Count ƒ | Open Change Request Count ƒ | Open High Severity Gap Count ƒ | Is Fit to Execute ƒ | Steward Review Cadence Days ƒ | Count of Stewardship Assignments ƒ | Has Any Steward ƒ | Is Live ƒ | Is Unstewarded ƒ | Is Live and Unstewarded ƒ | Count of Open Blocking Gaps ƒ | Has Open Blocking Gap ƒ | Is Live With Blocking Gap ƒ | Should Not Be Executable ƒ | Count of Unapproved Reliance Fragments ƒ | Runs on Unapproved Knowledge ƒ | Count of Overdue Gaps ƒ | Count of Change Requests ƒ | Count of Review Events ƒ | Has Governance Record ƒ | As of Instant ƒ | Days Since Modified ƒ | Days Since Last Review ƒ | Was Modified Since Last Review ƒ | Modifier is Authority ƒ | Has Unwitnessed Change ƒ | Count of Stale Fragments ƒ | Knowledge is Staler Than Cadence ƒ | Compound Fragile Fragment Count ƒ | Rests on Compound Fragile Knowledge ƒ | Concentrated Witness Session Count ƒ | Knowledge Base is Concentrated ƒ | Machine Consumed Unapproved Count ƒ | Feeds Unapproved Knowledge to Machines ƒ | Genuinely Overdue Fragment Count ƒ | Awaited Decision Count ƒ | Scoped Open Blocking Gap Count ƒ | Is Blocked on Pending Decision ƒ | Unexercised Human Gate Count ƒ | Ai Boundary is Unevidenced ƒ | Load Bearing Unapproved Count ƒ | Unlanded Decision Count ƒ | Unrehearsed Control Entry Count ƒ | Has Unrehearsed Control Entry ƒ | Is Live With Unrehearsed Control ƒ | Cadence Breach Count ƒ | Is in Cadence Breach ƒ | Has Decision in Flight ƒ | Is Unremediated Cadence Breach ƒ | Is Managed Cadence Breach ƒ | Governance is Silent ƒ | Valid Fragment Count ƒ | Still Owns Valid Knowledge ƒ | Incoming Supersession Count ƒ | Is Still Referenced ƒ | Is Load Bearing Orphan ƒ | Is Cleanly Retired ƒ | Stalled Implementation Count ƒ | Is Held Unfit by Landed Decisions ƒ | Undeclared Control Kind Count ƒ | Control Taxonomy is Incomplete ƒ | Has Approved Change Request ƒ | Approved Change Request Count ƒ | Unwatched Unowned Control Count ƒ | Mining Run Count ƒ | Drifted Mining Run Count ƒ | Has Unresolved Mining Drift ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Quarter-End Financial Close v1.0.0 | 1.0.0 | Quarter-End Financial Close v1.0.0 | Archived | 2025-10-01T09:00:00-05:00 | 2026-03-31T17:00:00-05:00 | Initial governed close procedure. | Baseline eight-step close. | false | 0 | 0 | false | 0 | 0 | 0 | 0 | false | 0 | 0 | false | false | true | false | 0 | false | false | false | 1 | true | 0 | 0 | 0 | false | 2026-07-19T13:00:00-05:00 | 110 | — | — | Human | false | 7 | true | 0 | false | 0 | false | 0 | false | 0 | 0 | 0 | false | 0 | false | 0 | 0 | 0 | false | false | 0 | false | false | false | false | false | 0 | false | 1 | true | true | false | 0 | false | 0 | false | false | 0 | 9 | 1 | 0 | false | https://w3id.org/pko#Procedure |
+| Quarter-End Financial Close v1.1.0 | 1.1.0 | Quarter-End Financial Close v1.1.0 | Approved | 2026-04-15T09:00:00-05:00 | 2026-07-02T15:00:00-05:00 | Capture FX timestamp failure mode and AI-assisted variance triage. | Adds explicit feed-timestamp check, knowledge fragment, and variance-triage verification. | true | 8 | 0 | true | 8 | 1 | 0 | 0 | false | 90.0 | 1 | true | true | false | false | 0 | false | false | false | 1 | true | 0 | 1 | 2 | true | 2026-07-19T13:00:00-05:00 | 17 | 17 | false | Human | false | 7 | true | 1 | true | 1 | true | 0 | false | 0 | 0 | 0 | false | 1 | true | 0 | 0 | 1 | true | true | 1 | true | false | true | false | false | 4 | true | 0 | false | false | false | 0 | false | 0 | false | true | 1 | 9 | 2 | 1 | true | https://w3id.org/pko#Procedure |
+| Workforce Policy Change and Employee Notification v1.0.0 | 1.0.0 | Workforce Policy Change and Employee Notification v1.0.0 | Approved | 2026-06-01T09:00:00-05:00 | 2026-07-18T16:30:00-05:00 | Initial governed policy-notification procedure. | Adds legal review, human approval, email/SMS channel controls, acknowledgements, and feedback review. | true | 9 | 1 | false | 9 | 0 | 1 | 0 | false | 60.0 | 1 | true | true | false | false | 0 | false | false | false | 1 | true | 0 | 1 | 1 | true | 2026-07-19T13:00:00-05:00 | 1 | 1 | false | Human | false | 7 | true | 0 | false | 0 | false | 1 | true | 0 | 1 | 0 | false | 1 | true | 0 | 0 | 2 | true | true | 0 | false | true | false | false | false | 2 | true | 0 | false | false | false | 0 | false | 0 | false | false | 0 | 9 | 1 | 0 | false | https://w3id.org/pko#Procedure |
+
+### Procedure Version Link
+
+| Name ƒ | Relation Iri | Change Summary | Superseded Version Key ƒ |
+|---|---|---|---|
+| close-v1.0.0 -> close-v1.1.0 | https://w3id.org/pko#nextVersion | Added timestamp control, AI variance triage, and explicit knowledge capture. | close-v1.0.0 |
+
+### Procedure Status Change
+
+| Name ƒ | From Status | To Status | Changed At | Motivation | Semantic Type Iri |
+|---|---|---|---|---|---|
+| close-v1.1.0: Draft -> Validation | Draft | Validation | 2026-04-08T10:00:00-05:00 | Ready for control and ontology validation. | https://w3id.org/pko#ChangeOfStatus |
+| close-v1.1.0: Validation -> Approval | Validation | Approval | 2026-04-12T14:00:00-05:00 | All requirements and test cases passed. | https://w3id.org/pko#ChangeOfStatus |
+| close-v1.1.0: Approval -> Approved | Approval | Approved | 2026-04-15T09:00:00-05:00 | Final authority approved release. | https://w3id.org/pko#ChangeOfStatus |
+
+### Step
+
+| Name ƒ | Step Number | Title | Step Kind | Assigned Role Label ƒ | Assigned Agent Kind ƒ | Instruction | Expected Duration Minutes | Expertise Level | Requires Human Confirmation | Blocking Requirement Count ƒ | Stale Binding Count ƒ | Authoritative Stale Count ƒ | Available Exception Count ƒ | Declared Verification Count ƒ | Is Preparation Step ƒ | Is Approval Step ƒ | Stale Authoritative Binding Count ƒ | Inputs are Fresh ƒ | Is Software Assigned ƒ | Is Human Approval Gate ƒ | Gate Held by Human ƒ | Binding Boundary Count ƒ | Assigned Role is Ungoverned ƒ | Unusable Binding Count ƒ | All Sources Usable ƒ | Control Kind | Unwarranted Boundary Count ƒ | Is Governed by Unwarranted Boundary ƒ | Software Execution Count ƒ | Has Been Approached by Software ƒ | Is Unexercised Human Gate ƒ | Is Demonstrated Human Gate ƒ | Unexercised Gate Version Key ƒ | Has Declared Control Kind ƒ | Undeclared Control Version Key ƒ | Approval Step is Software Assigned ƒ | Unwitnessed Blocking Count ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 01. Freeze transaction entry | 01 | Freeze transaction entry | Atomic | Close Automation Operator | AutomatedPipeline | Lock subledgers and prevent late postings. | 5 | Senior | false | 1 | 0 | 0 | 0 | 1 | false | false | 0 | true | true | false | false | 0 | false | 0 | true | Extraction | 0 | false | 1 | true | false | false | — | true | — | false | 0 | http://purl.org/net/p-plan#Step |
+| 02. Extract trial balance and feed timestamps | 02 | Extract trial balance and feed timestamps | Atomic | Close Automation Operator | AutomatedPipeline | Extract the trial balance and source-system timestamps. | 10 | Senior | false | 0 | 1 | 1 | 1 | 1 | false | false | 1 | false | true | false | false | 0 | false | 1 | false | Extraction | 0 | false | 1 | true | false | false | — | true | — | false | 0 | http://purl.org/net/p-plan#Step |
+| 03. Reconcile material accounts | 03 | Reconcile material accounts | MultiStep | Finance Analyst | Human | Reconcile material accounts and attach evidence. | 120 | Senior | false | 2 | 0 | 0 | 0 | 1 | true | false | 0 | true | false | false | false | 0 | false | 0 | true | Preparation | 0 | false | 0 | false | false | false | — | true | — | false | 0 | http://purl.org/net/p-plan#MultiStep |
+
+### Step Transition
+
+| Name ƒ | Transition Kind | Condition | Priority | Is Recovery Path ƒ | Count of From Step Executions ƒ | Count of to Step Executions ƒ | Has Reachable Origin ƒ | Has Reachable Target ƒ | Is Never Exercised ƒ | Is Untested Recovery Path ƒ | Count of Observed Traversals ƒ | Has Been Traversed ƒ | Is Unwalked Recovery Path ƒ | Target Blocking Requirement Count ƒ | Target Carries Blocking Control ƒ | Is Unrehearsed Control Entry ƒ | Unrehearsed Control Version Key ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| close-01 -> close-02 | Next | Default sequence | 1 | false | 1 | 1 | true | true | false | false | 1 | true | false | 0 | false | false | — | https://w3id.org/pko#Transition |
+| close-02 -> close-03 | Next | Default sequence | 1 | false | 1 | 1 | true | true | false | false | 1 | true | false | 2 | true | false | — | https://w3id.org/pko#Transition |
+| close-03 -> close-04 | Next | Default sequence | 1 | false | 1 | 1 | true | true | false | false | 1 | true | false | 0 | false | false | — | https://w3id.org/pko#Transition |
+
+### Action
+
+| Name ƒ | Label | Definition | Semantic Type Iri |
+|---|---|---|---|
+| Freeze ledgers | Freeze ledgers | Prevent late transaction entry after the close cutoff. | https://w3id.org/pko#Action |
+| Reconcile account | Reconcile account | Compare balances, source records, and supporting evidence. | https://w3id.org/pko#Action |
+| Investigate variance | Investigate variance | Apply documented checks and situated judgment to explain a material variance. | https://w3id.org/pko#Action |
+
+### Function
+
+| Name ƒ | Label | Definition | Implementation Key | Semantic Type Iri |
+|---|---|---|---|---|
+| Extract trial balance | Extract trial balance | Deterministically extract balances and source timestamps. | extract-trial-balance-impl | https://w3id.org/pko#Function |
+| Classify variance | Classify variance | Rank and classify variances using the approved AI model. | classify-variance-impl | https://w3id.org/pko#Function |
+| Post close entries | Post close entries | Post only approved journal entries. | post-close-entries-impl | https://w3id.org/pko#Function |
+
+### Tool
+
+| Name ƒ | Label | Purpose | Semantic Type Iri |
+|---|---|---|---|
+| ERP General Ledger | ERP General Ledger | Financial system of record | http://w3id.org/nfdi4ing/metadata4ing#Tool |
+| Close Workpaper Workbook | Close Workpaper Workbook | Controlled reconciliation workbook | http://w3id.org/nfdi4ing/metadata4ing#Tool |
+| Variance AI Console | Variance AI Console | Approved AI variance-triage interface | http://w3id.org/nfdi4ing/metadata4ing#Tool |
+
+### Step Action
+
+| Name ƒ |
+|---|
+| close-01 / freeze-ledgers |
+| close-03 / reconcile-account |
+| close-04 / investigate-variance |
+
+### Step Function
+
+| Name ƒ |
+|---|
+| close-02 / extract-trial-balance |
+| close-04 / classify-variance |
+| close-07 / post-close-entries |
+
+### Step Tool
+
+| Name ƒ |
+|---|
+| close-01 / erp-ledger |
+| close-02 / erp-ledger |
+| close-03 / close-workpaper |
+
+### Requirement
+
+| Name ƒ | Label | Requirement Type | Statement | Rationale | Is Blocking | Satisfaction Record Count ƒ | Step Binding Count ƒ | Is Bound to Any Step ƒ | Has Ever Been Evaluated ƒ | Negative Outcome Count ƒ | Is Inoperative Control ƒ | Is Decorative Control ƒ | Has Computed Witness | Witness Field Name | Has Ever Produced Negative ƒ | Is Unfalsified Control ƒ | Claims a Witness Field ƒ | Named Witness Field Exists ƒ | Derived Has Computed Witness ƒ | Witness Claim is Unverified ƒ | Is Unwitnessed Blocking Control ƒ | Witness Fire Count ƒ | Witness Has Never Fired ƒ | Evaluation Sample Size ƒ | Has Meaningful Sample ƒ | Minimum Sample for Assurance | Is Untested Witness ƒ | Is Evidenced Holding Control ƒ | Control Assurance State ƒ | Unexercised Binding Count ƒ | Witness is Partially Scoped ƒ | Accountable Agent ƒ | Has Named Owner ƒ | Is Orphaned Blocking Control ƒ | Is Unwatched and Unowned ƒ | Attestation Exposure Note ƒ | Unwatched Unowned Flag ƒ | Uses Controlled Vocabulary ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Close cutoff enforced | Close cutoff enforced | Control | No ledger entry may be posted after cutoff without controller-approved reopening. | SOX control design | true | 1 | 1 | true | true | 0 | false | false | true | VerificationOutcomes.SignalMatchesExpected | false | true | true | true | true | false | false | 0 | true | 1 | — | — | — | — | Untested | 1 | true | — | false | true | false | Witnessed but unowned: no named accountability. | — | true | https://w3id.org/pko#Requirement |
+| Reconciled balance integrity | Reconciled balance integrity | Verification | Every material account must reconcile or carry an approved exception. | Financial reporting accuracy | true | 1 | 1 | true | true | 0 | false | false | true | VerificationOutcomes.IsUnbackedObservation | false | true | true | true | true | false | false | 0 | true | 1 | — | — | — | — | Untested | 1 | true | — | false | true | false | Witnessed but unowned: no named accountability. | — | true | https://w3id.org/pko#Requirement |
+| Preparer/approver separation | Preparer/approver separation | Governance | The preparer may not be the final approver. | Segregation of duties | true | 1 | 1 | true | true | 0 | false | false | true | StepExecutions.ViolatesSeparationOfDuties | false | true | true | true | true | false | false | 0 | true | 1 | — | — | — | — | Untested | 1 | true | — | false | true | false | Witnessed but unowned: no named accountability. | — | true | https://w3id.org/pko#Requirement |
+
+### Step Requirement
+
+| Name ƒ | Requirement is Blocking ƒ | Blocking Step Key ƒ | Step When Blocking ƒ | Requirement Lacks Witness ƒ | Unwitnessed Step Key ƒ | Satisfaction Count for Binding ƒ | Binding Was Ever Exercised ƒ | Is Unexercised Blocking Binding ƒ | Unexercised Binding Requirement Key ƒ |
+|---|---|---|---|---|---|---|---|---|---|
+| close-01 / req-close-cutoff | true | close-01 | close-01 | false | — | 0 | false | true | req-close-cutoff |
+| close-03 / req-close-balance | true | close-03 | close-03 | false | — | 0 | false | true | req-close-balance |
+| close-03 / req-close-evidence | true | close-03 | close-03 | false | — | 0 | false | true | req-close-evidence |
+
+### Step Verification
+
+| Name ƒ | Verification Kind | Signal Identifier | Expected Signal Value | Instruction | Semantic Type Iri |
+|---|---|---|---|---|---|
+| close-01 / SignalVerification | SignalVerification | ledger-lock-state | LOCKED | The ERP reports the close period locked. | https://w3id.org/pko#SignalVerification |
+| close-02 / SignalVerification | SignalVerification | max-feed-age-minutes | 15 | All source feeds are no more than 15 minutes old. | https://w3id.org/pko#SignalVerification |
+| close-03 / SignalVerification | SignalVerification | unexplained-material-variance | 0 | No unexplained material variance remains. | https://w3id.org/pko#SignalVerification |
+
+### Rationale
+
+| Name ƒ | Title | Statement | Status | Semantic Type Iri |
+|---|---|---|---|---|
+| Why the preparer cannot approve | Why the preparer cannot approve | Independent review prevents self-certification and makes accountability legible. | Approved | urn:effortless:pko-extension#Rationale |
+| Why AI ranks but does not close variances | Why AI ranks but does not close variances | The model accelerates triage; materiality, anomaly context, and acceptance remain human judgments. | Approved | urn:effortless:pko-extension#Rationale |
+| Why AI may draft but not approve | Why AI may draft but not approve | Drafting is reversible assistance; legal and organizational commitments require human authority. | Approved | urn:effortless:pko-extension#Rationale |
+
+### Exception
+
+| Name ƒ | Condition | Handling | Status | Active Exception Step Key ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|
+| CFO unavailable during close | CFO unavailable during close | Delegate approval to the formally designated Acting CFO; never to the preparer. | Active | close-06 | urn:effortless:pko-extension#Exception |
+| ERP source unavailable | ERP source unavailable | Use a digitally signed, timestamped snapshot and open a blocking incident; do not silently substitute a spreadsheet. | Active | close-02 | urn:effortless:pko-extension#Exception |
+| Recipient lacks SMS consent | Recipient lacks SMS consent | Suppress SMS and send approved email only. | Active | policy-07 | urn:effortless:pko-extension#Exception |
+
+### Resource
+
+| Name ƒ | Title | Resource Kind | External Uri | Created At | Modified At | Description | Approval Status | Is Approved Source ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|---|
+| Quarter-End Close SOP PDF | Quarter-End Close SOP PDF | Document | doc://finance/close-sop-v1.0 | 2025-10-01T09:00:00-05:00 | 2026-04-01T09:00:00-05:00 | Controlled source document from which the initial procedure was extracted. | — | — | http://www.w3.org/ns/dcat#Resource |
+| ERP Ledger API | ERP Ledger API | API | api://erp/general-ledger/v3 | 2026-01-01T00:00:00-06:00 | 2026-07-19T08:00:00-05:00 | Live operational ledger and timestamp source. | — | — | http://www.w3.org/ns/dcat#Resource |
+| Close Control Checklist | Close Control Checklist | Checklist | doc://finance/close-checklist-v1.1 | 2026-04-15T09:00:00-05:00 | 2026-07-02T15:00:00-05:00 | Approved close evidence checklist. | — | — | http://www.w3.org/ns/dcat#Resource |
+
+### Procedure Resource
+
+| Name ƒ | Relation | Relation Iri ƒ |
+|---|---|---|
+| close-v1.1.0 / res-close-sop-pdf | wasExtractedFrom | https://w3id.org/pko#wasExtractedFrom |
+| close-v1.1.0 / res-erp-api | references | http://purl.org/dc/terms/references |
+| close-v1.1.0 / res-close-checklist | references | http://purl.org/dc/terms/references |
+
+### Elicitation Session
+
+| Name ƒ | Method | Started At | Ended At | Summary | Status | As of Instant ƒ | Days Since Elicited ƒ | Is Single Witness Method ƒ | Practitioner is Still Engaged ƒ | Valid Fragments Produced ƒ | Is High Yield Session ƒ | Is Concentrated Single Witness ƒ | Is Stale Concentrated Witness ƒ | Concentrated Session Version Key ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Shadowing / 2026-04-03 09:00:00-05 | Shadowing | 2026-04-03T09:00:00-05:00 | 2026-04-03T12:00:00-05:00 | Observed actual variance investigation and captured timestamp-related failure mode. | Approved | 2026-07-19T13:00:00-05:00 | 107 | true | true | 3 | true | true | false | close-v1.1.0 | http://www.w3.org/ns/prov#Activity |
+| FacilitatedWorkshop / 2026-05-10 10:00:00-05 | FacilitatedWorkshop | 2026-05-10T10:00:00-05:00 | 2026-05-10T14:00:00-05:00 | Mapped policy drafting, legal review, channel constraints, and acknowledgement exceptions. | Approved | 2026-07-19T13:00:00-05:00 | 70 | false | true | 1 | false | false | false | — | http://www.w3.org/ns/prov#Activity |
+| PractitionerInterview / 2026-05-12 13:00:00-05 | PractitionerInterview | 2026-05-12T13:00:00-05:00 | 2026-05-12T14:30:00-05:00 | Captured legal rationale and the boundary between AI drafting and human commitment. | Approved | 2026-07-19T13:00:00-05:00 | 68 | true | true | 1 | false | false | false | — | http://www.w3.org/ns/prov#Activity |
+
+### Knowledge Fragment
+
+| Name ƒ | Knowledge Form | Statement | Confidence | Valid From | Valid to | Status | As of Instant ƒ | Is Currently Valid ƒ | Source Agent is Still Engaged ƒ | Source Agent Kind ƒ | Has Human Source ƒ | Has Orphaned Provenance ƒ | Is Undefendable Tacit Claim ƒ | Is Approved ƒ | Is Within Validity Window ƒ | Is Relied Upon ƒ | Step Procedure Version Status ƒ | Is Attached to Live Version ƒ | Is Unapproved But Relied on ƒ | Evidence Age Days ƒ | Has Recorded Elicitation ƒ | Is From Single Witness ƒ | Evidence Expiry Days ƒ | Evidence Has Expired ƒ | Owner Agent ƒ | Is Awaiting Approval ƒ | Owner is Me ƒ | Is My Unfinished Approval ƒ | Is Invoked by an Exception ƒ | Has Operational Reliance ƒ | Is Unapproved and Operationally Live ƒ | Age Days ƒ | Is Low Confidence ƒ | Owning Version Cadence Days ƒ | Exceeds Owning Cadence ƒ | Is Aging Low Confidence Claim ƒ | Owner Role Agent Kind ƒ | Is Human Owned ƒ | Is Ai Validated by Ai ƒ | Review Cadence Days ƒ | Is Overdue for Review ƒ | Predates Current Role Holder ƒ | Owner Role Assignment Valid From ƒ | Last Reviewed At | Fragility Signal Count ƒ | Is Compound Fragile ƒ | Is Single Point of Failure ƒ | Is Expiring Single Point of Failure ƒ | Compound Fragile Version Key ƒ | Valid Fragment Session Key ƒ | Consuming Step is Software Assigned ƒ | Consuming Step Agent Kind ƒ | Is Unapproved and Machine Consumed ƒ | Is Unapproved and Human Consumed ƒ | Machine Consumed Unapproved Version Key ƒ | Has Review Record ƒ | Days Since Actual Review ƒ | Is Unreviewed Since Authoring ƒ | Is Genuinely Overdue ƒ | Review Recency is Inferred ƒ | Inference Disagrees With Record ƒ | Genuinely Overdue Version Key ƒ | Ratified Boundary Count ƒ | Reliance Surface Count ƒ | Days Awaiting My Approval ƒ | Is High Blast Radius Unapproved ƒ | Is Long Unapproved ƒ | Unapproved Load Bearing Version Key ƒ | Owner Role is Vacated ƒ | Is Orphaned by Role ƒ | Valid Fragment Version Key ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Tacit: When FX variance spikes near a daylight-saving cutover, comp | Tacit | When FX variance spikes near a daylight-saving cutover, compare each feed's source timestamp before investigating economics. | High | 2026-04-03T12:00:00-05:00 | — | Approved | 2026-07-19T13:00:00-05:00 | true | true | Human | true | false | false | true | true | true | close-v1.1.0 | true | false | 107 | true | true | 180 | false | devon-okafor | false | false | false | 0 | false | false | 107 | false | 90.0 | true | false | Human | true | false | 90.0 | true | false | 2026-01-01T00:00:00-06:00 | 2026-07-02T16:00:00-05:00 | 2 | false | false | false | — | elicit-close-shadow | true | AIAgent | false | false | — | true | 17 | false | false | false | true | — | 0 | 0 | 0 | false | false | — | false | false | close-v1.1.0 | urn:effortless:pko-extension#KnowledgeFragment |
+| Implicit: The controller normally reviews the ten largest unexplained  | Implicit | The controller normally reviews the ten largest unexplained variances even when each is below the individual materiality threshold. | Medium | 2026-04-03T12:00:00-05:00 | — | Approved | 2026-07-19T13:00:00-05:00 | true | true | Human | true | false | false | true | true | true | close-v1.1.0 | true | false | 107 | true | true | 180 | false | devon-okafor | false | false | false | 0 | false | false | 107 | true | 90.0 | true | true | Human | true | false | 90.0 | true | false | 2026-01-01T00:00:00-06:00 | 2026-07-02T16:00:00-05:00 | 3 | true | false | false | close-v1.1.0 | elicit-close-shadow | true | AIAgent | false | false | — | true | 17 | false | false | false | true | — | 0 | 0 | 0 | false | false | — | false | false | close-v1.1.0 | urn:effortless:pko-extension#KnowledgeFragment |
+| Explicit: Close evidence is retained for seven years and must remain l | Explicit | Close evidence is retained for seven years and must remain linked to the execution that produced it. | High | 2026-04-15T09:00:00-05:00 | — | Approved | 2026-07-19T13:00:00-05:00 | true | true | Human | true | false | false | true | true | true | close-v1.1.0 | true | false | — | false | — | 365 | false | devon-okafor | false | false | false | 0 | false | false | 95 | false | 90.0 | true | false | Human | true | false | 90.0 | true | false | 2026-01-01T00:00:00-06:00 | — | 1 | false | false | false | — | — | false | Human | false | false | — | false | 0 | true | false | true | false | — | 0 | 0 | 0 | false | false | — | false | false | close-v1.1.0 | urn:effortless:pko-extension#KnowledgeFragment |
+
+### Knowledge Gap
+
+| Name ƒ | Statement | Severity | Blocking Kind | Status | Identified At | Resolution Plan | Is Open ƒ | Open Gap Version Key ƒ | Is Blocking ƒ | Is Open and Blocking ƒ | As of Instant ƒ | Days Open ƒ | Tolerance Days ƒ | Is Overdue Gap ƒ | Owner Agent ƒ | Owner is Still Engaged ƒ | Has Resolution Plan ƒ | Is Abandoned Unknown ƒ | Open Blocking Gap Version Key ƒ | Owner Role is Vacated ƒ | Is Ownerless Open Gap ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| High: No validated fallback exists for simultaneous ERP and signed | No validated fallback exists for simultaneous ERP and signed-snapshot repository outage. | High | Blocking | Resolved | 2026-06-20T09:00:00-05:00 | Resolved by adding offline signed export escrow. | false | — | true | false | 2026-07-19T13:00:00-05:00 | 0 | 30 | false | devon-okafor | true | true | false | — | false | false | urn:effortless:pko-extension#KnowledgeGap |
+| Medium: SMS provider delivery receipts are not always final for port | SMS provider delivery receipts are not always final for ported numbers. | Medium | NonBlocking | Open | 2026-07-18T16:00:00-05:00 | Pilot secondary delivery-status reconciliation. | true | — | false | false | 2026-07-19T13:00:00-05:00 | 1 | 90 | false | amina-yusuf | true | true | false | — | false | false | urn:effortless:pko-extension#KnowledgeGap |
+| High: req-close-separation stated the preparer may not be the fina | req-close-separation stated the preparer may not be the final approver, but nothing evaluated it. The control existed only as prose in a Requirements row, so a violation would have been invisible. | High | Blocking | Resolved | 2026-07-19T17:30:00-05:00 | Resolved by StepExecutions.ViolatesSeparationOfDuties, which counts preparation steps in the same procedure execution performed by the agent now approving. Verified by staging a breach (maria-chen approving se-close05 after preparing se-close03): the witness read TRUE. The staged breach was reverted; the control now reads FALSE because separation genuinely holds, not because nothing is checking. | false | — | true | false | 2026-07-19T13:00:00-05:00 | 0 | 30 | false | devon-okafor | true | true | false | — | false | false | urn:effortless:pko-extension#KnowledgeGap |
+
+### FA Q
+
+| Name ƒ | Category | Target Kind | Question | Answer | Semantic Type Iri |
+|---|---|---|---|---|---|
+| Where are close workpapers stored? | Storage | Procedure | Where are close workpapers stored? | In the controlled close evidence repository linked from the execution record; email attachments are not the system of record. | https://w3id.org/pko#FrequentlyAskedQuestion |
+| Can the drafting AI approve a workforce policy? | Authority | Procedure | Can the drafting AI approve a workforce policy? | No. It may draft from approved sources, but a human policy owner and legal reviewer must approve the commitments. | https://w3id.org/pko#FrequentlyAskedQuestion |
+| What happens when an employee opts out of SMS? | Consent | Step | What happens when an employee opts out of SMS? | The pipeline suppresses SMS and continues through the approved email channel. | https://w3id.org/pko#FrequentlyAskedQuestion |
+
+### Explanation
+
+| Name ƒ | Title | Description | Semantic Type Iri |
+|---|---|---|---|
+| Variance escalation explanation | Variance escalation explanation | Explains the derived path from source timestamps, materiality, recurrence, and anomaly classification to the escalation decision. | https://w3id.org/pko#Explanation |
+| Channel eligibility explanation | Channel eligibility explanation | Explains why each recipient received email, SMS, both, or an exception task based on consent and channel policy. | https://w3id.org/pko#Explanation |
+
+### Procedure Execution
+
+| Name ƒ | Execution Status | Started At | Ended At | Context | Operational Record Uri | Expected Step Count ƒ | Completed Step Count ƒ | Control Breach Count ƒ | Late Step Count ƒ | Is Structurally Complete ƒ | Diverged From Specification ƒ | All Blocking Controls Evaluated ƒ | Unevaluated Blocking Total ƒ | Separation of Duties Held ƒ | Separation Violation Count ƒ | Is Attestation Ready ƒ | Attestation Blocker Summary ƒ | Executed Version is Fit ƒ | Signed Against Unfit Version ƒ | Asserted Only Control Count ƒ | Assurance is Mostly Asserted ƒ | Unreachable Handling Failure Count ƒ | Retention Breach Count ƒ | Cleared Legal Review Count ƒ | Has Cleared Legal Review ƒ | Abandoned Failure Count ƒ | Delivered Count ƒ | Total Delivery Attempt Count ƒ | Has Abandoned Failures ƒ | Mishandled Refusal Count ƒ | Unclean Step Count ƒ | Ran Clean ƒ | Count of Approval Executions ƒ | Has Human Approval ƒ | Count of Delivery Executions ƒ | Has Delivered ƒ | Delivered Without Approval ƒ | Invalid Approval Count ƒ | Approval Chain is Complete ƒ | Vacuously Clean Step Count ƒ | Preparation Step Count ƒ | Approval Step Count ƒ | Separation Was Testable ƒ | Separation Held Under Test ƒ | Separation is Vacuously Green ƒ | Separation Assurance Note ƒ | Ungoverned Divergence Count ƒ | Divergence Was Fully Governed ƒ | Computedly Witnessed Control Count ƒ | Evaluated Control Count ƒ | Computed Assurance Ratio ƒ | Interested Party Assertion Count ƒ | Assurance Grade ƒ | Attestation Would Be Weakly Based ƒ | Independent Human Observation Count ƒ | Has Any Independent Observation ƒ | Self Attested Approval Count ƒ | Assurance Chain is Circular ƒ | Latest Attestation Instant ƒ | Has Been Attested ƒ | Attestation Count ƒ | Post Attestation Score Count ƒ | Basis Changed After Signature ƒ | Requires Re Attestation ƒ | Intended Recipient Count ƒ | Reached Recipient Count ƒ | Silently Dropped Count ƒ | Delivery Yield Percent ƒ | Campaign Silently Lost Audience ƒ | Unrecorded Refusal Count ƒ | Has Unrecorded Refusals ƒ | Independently Confirmed Intent Count ƒ | Send Decisions are Entirely Self Witnessed ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| close-v1.1.0 / Quarter ended 2026-06-30 | Completed | 2026-06-30T17:00:00-05:00 | 2026-07-02T16:45:00-05:00 | Quarter ended 2026-06-30 | execution://finance/close/2026-q2 | 8 | 8 | 2 | 5 | true | true | true | 0 | true | 0 | false | Control breach recorded on one or more steps. | false | true | 1 | true | 0 | 0 | 0 | false | 0 | 0 | 0 | false | 0 | 5 | false | 1 | true | 0 | false | false | 0 | true | 1 | 2 | 2 | true | true | false | Held under test. | 0 | true | 5 | 6 | 0.8333333333333334 | 1 | Weak: at least one control rests on an interested-party assertion. | false | 1 | true | 2 | false | — | false | 0 | 0 | false | false | 0 | 0 | 0 | 0 | false | 0 | false | 0 | false | https://w3id.org/pko#ProcedureExecution |
+| policy-v1.0.0 / Remote-work policy revision HR-4821 | InProgress | 2026-07-18T09:00:00-05:00 | — | Remote-work policy revision HR-4821 | execution://people/policy/HR-4821 | 9 | 4 | 2 | 2 | false | true | true | 0 | true | 0 | false | Incomplete: specified steps did not all complete. | false | false | 2 | true | 0 | 0 | 1 | true | 0 | 4 | 6 | false | 4 | 2 | false | 1 | true | 0 | false | false | 0 | true | 1 | 0 | 0 | false | false | true | Not tested: this run had no preparation/approval pair. | 2 | false | 0 | 2 | 0.0 | 2 | Weak: at least one control rests on an interested-party assertion. | false | 0 | false | 0 | false | — | false | 0 | 0 | false | false | 7 | 2 | 4 | 28.571428571428573 | true | 4 | true | 2 | false | https://w3id.org/pko#ProcedureExecution |
+
+### Step Execution
+
+| Name ƒ | Execution Status | Started At | Ended At | Verification Result | Deviation | Actual Duration Minutes ƒ | Expected Duration Minutes ƒ | Is Late ƒ | Blocking Unmet Count ƒ | Blocking Unmet Count Safe ƒ | Proceeded Past Blocking Control ƒ | Expected Blocking Count ƒ | Evaluated Blocking Count ƒ | Unevaluated Blocking Count ƒ | Has Unevaluated Blocking Control ƒ | Stale Authoritative Source Count ƒ | Ran on Stale Authoritative Source ƒ | Has Deviation Note ƒ | Is Late and Unexplained ƒ | Available Exception Count for Step ƒ | Had Uninvoked Exception Available ƒ | Expected Verification Count ƒ | Performed Verification Count ƒ | Skipped Verification Count ƒ | Has Skipped Verification ƒ | Claims Pass Without Evidence ƒ | Step is Preparation ƒ | Step is Approval ƒ | Preparer Agent Key ƒ | Approver Agent Key ƒ | Prepared by This Agent Count ƒ | Violates Separation of Duties ƒ | Required Role for Step ƒ | Executor Role Key ƒ | Executor Authority Count ƒ | Executor Held Required Role ƒ | Is Unauthorized Approval ƒ | Completed Execution Key ƒ | Control Breach Execution Key ƒ | Late Execution Key ƒ | Executor Agent Kind ƒ | Executor is Human ƒ | Step Requires Human Confirmation ƒ | Non Human Ran Human Step ƒ | Non Human Approval ƒ | Unevaluated Blocking Execution Key ƒ | Separation Violation Execution Key ƒ | Self Witnessed Verification Count ƒ | Unbacked Verification Count ƒ | Approval Rests on Self Attestation ƒ | Exception Invocation Count ƒ | Ran Under Exception ƒ | Is Completed ƒ | Is Verification Passed ƒ | Is Legal Review Step ƒ | Cleared Legal Review Key ƒ | Assigned Role ƒ | Role Current Agent ƒ | Executor is Designated Agent ƒ | Inputs Were Fresh At Run ƒ | Ran on Stale Inputs ƒ | Unresolved Issue Count ƒ | Has Deviation ƒ | Is Clean ƒ | Procedure Execution When Unclean ƒ | Evaluated Requirement Count ƒ | Required Blocking Count ƒ | Has Unevaluated Blocking Requirement ƒ | Executing Agent Kind ƒ | Was Executed by Software ƒ | Step is Software Assigned ƒ | Software Did Human Work ƒ | Is Approval Execution ƒ | Is Verified ƒ | Unconfirmed Non Human Decision Count ƒ | Requires Human Confirmation ƒ | Human Confirmation Missing ƒ | Drafted From Unusable Source ƒ | Inputs Were Usable ƒ | Software Execution Step Key ƒ | Step Control Kind ƒ | Unfalsified Clearance Count ƒ | All Clearances are Unfalsified ƒ | Stale At Run Count ƒ | Was Stale When I Ran It ƒ | Staleness Answer is Tense Dependent ƒ | Has Any Declared Check ƒ | Performed Check Count ƒ | Declared Check Count ƒ | Is Unchecked by Design ƒ | Is Vacuously Clean ƒ | Is Substantively Clean ƒ | Vacuously Clean Execution Key ƒ | Uncorroborated Pass Count ƒ | Evidence Position is Weak ƒ | Preparation Execution Key ƒ | Approval Execution Key ƒ | Has Governing Instrument ƒ | Has Approved Change Coverage ƒ | Version of Step ƒ | Is Ungoverned Divergence ƒ | Ungoverned Divergence Execution Key ƒ | Self Attested Approval Execution Key ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| exec-close-2026-q2 / close-01 | Completed | 2026-06-30T17:00:00-05:00 | 2026-06-30T17:04:00-05:00 | PASS | — | 4 | 5 | false | 0 | 0 | false | 1 | 1 | 0 | false | 0 | false | false | false | 0 | false | 1 | 1 | 0 | false | false | false | false | — | — | 10 | false | close-automation | close-pipeline\|close-automation | 1 | true | false | exec-close-2026-q2 | — | — | AutomatedPipeline | false | false | false | false | — | — | 0 | 0 | false | 0 | false | true | true | false | — | close-automation | close-pipeline | true | true | false | 0 | false | true | — | 1 | 1 | false | AutomatedPipeline | true | true | false | false | true | 0 | false | false | false | true | close-01 | Extraction | 1 | true | 0 | false | false | true | 2 | 2 | false | false | true | — | 0 | false | — | — | true | true | close-v1.1.0 | false | — | — | https://w3id.org/pko#StepExecution |
+| exec-close-2026-q2 / close-02 | Completed | 2026-06-30T17:04:00-05:00 | 2026-06-30T17:18:00-05:00 | WARN | One source feed was 17 minutes old; controller approved rerun. | 14 | 10 | true | 0 | 0 | false | 0 | 0 | 0 | false | 1 | true | true | false | 1 | false | 1 | 1 | 0 | false | false | false | false | — | — | 10 | false | close-automation | close-pipeline\|close-automation | 1 | true | false | exec-close-2026-q2 | — | exec-close-2026-q2 | AutomatedPipeline | false | false | false | false | — | — | 1 | 0 | false | 1 | true | true | false | false | — | close-automation | close-pipeline | true | false | true | 0 | true | false | exec-close-2026-q2 | 0 | 0 | false | AutomatedPipeline | true | true | false | false | true | 0 | false | false | true | false | close-02 | Extraction | 0 | false | 0 | false | true | true | 1 | 1 | false | false | false | — | 0 | false | — | — | true | true | close-v1.1.0 | false | — | — | https://w3id.org/pko#StepExecution |
+| exec-close-2026-q2 / close-03 | Completed | 2026-06-30T17:18:00-05:00 | 2026-07-01T12:15:00-05:00 | PASS | — | 1137 | 120 | true | 1 | 1 | true | 2 | 2 | 0 | false | 0 | false | false | true | 0 | false | 1 | 1 | 0 | false | false | true | false | exec-close-2026-q2\|maria-chen | — | 10 | false | finance-analyst | maria-chen\|finance-analyst | 1 | true | false | exec-close-2026-q2 | exec-close-2026-q2 | exec-close-2026-q2 | Human | true | false | false | false | — | — | 1 | 1 | false | 0 | false | true | true | false | — | finance-analyst | maria-chen | true | true | false | 0 | false | false | exec-close-2026-q2 | 2 | 2 | false | Human | false | false | false | false | true | 0 | false | false | false | true | — | Preparation | 1 | false | 0 | false | false | true | 3 | 3 | false | false | false | — | 1 | true | exec-close-2026-q2 | — | true | true | close-v1.1.0 | false | — | — | https://w3id.org/pko#StepExecution |
+
+### Requirement Satisfaction
+
+| Name ƒ | Satisfaction Level | Evidence | Evaluated At | Requirement is Blocking ƒ | Is Fully Satisfied ƒ | Is Blocking and Unmet ƒ | Blocking Unmet Step Key ƒ | Blocking Satisfaction Step Key ƒ | Negative Outcome Requirement Key ƒ | Evaluator Agent Kind ƒ | Non Human Evaluated Human Control ƒ | Requirement Has Computed Witness ƒ | Is Asserted Only ƒ | Asserted Only Execution Key ƒ | Parent Procedure Execution ƒ | Step Execution When Scored ƒ | Is Human Evaluated ƒ | Requirement is Approval Type ƒ | Is Invalid Approval ƒ | Procedure Execution of Satisfaction ƒ | Run When Invalid Approval ƒ | Requirement is Unfalsified ƒ | Is Clearance by Unfalsified Control ƒ | Unfalsified Clearance Step Key ƒ | Spec Step of Execution ƒ | Binding Key ƒ | Scored Step Executor Agent ƒ | Evaluator is Step Executor ƒ | Run Owner Agent ƒ | Evaluator Owns the Run ƒ | Is Interested Party Assertion ƒ | Has Written Evidence ƒ | Is Bare Assertion ƒ | Interested Assertion Execution Key ƒ | Is Computedly Witnessed ƒ | Computed Witness Execution Key ƒ | Step Executor Agent ƒ | Was Scored After Attestation ƒ | Attestation Instant for Run ƒ | Post Attestation Score Execution Key ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| req-close-cutoff / Satisfied | Satisfied | ERP lock event verified. | 2026-07-19T10:00:00-05:00 | true | true | false | — | se-close01 | — | Human | false | true | false | — | exec-close-2026-q2 | se-close01 | true | Control | false | exec-close-2026-q2 | — | true | true | se-close01 | close-01 | — | close-pipeline | false | devon-okafor | true | false | true | false | — | true | exec-close-2026-q2 | close-pipeline | — | — | — | https://w3id.org/pko#RequirementSatisfaction |
+| req-close-balance / Satisfied | Satisfied | No unexplained material balance remained. | 2026-07-19T10:00:00-05:00 | true | true | false | — | se-close03 | — | Human | false | true | false | — | exec-close-2026-q2 | se-close03 | true | Verification | false | exec-close-2026-q2 | — | true | true | se-close03 | close-03 | — | maria-chen | false | devon-okafor | true | false | true | false | — | true | exec-close-2026-q2 | maria-chen | — | — | — | https://w3id.org/pko#RequirementSatisfaction |
+| req-close-separation / Satisfied | Satisfied | Preparer and reviewer were different agents. | 2026-07-19T10:00:00-05:00 | true | true | false | — | se-close05 | — | Human | false | true | false | — | exec-close-2026-q2 | se-close05 | true | Governance | false | exec-close-2026-q2 | — | true | true | se-close05 | close-05 | — | devon-okafor | false | devon-okafor | false | false | true | false | — | true | exec-close-2026-q2 | devon-okafor | — | — | — | https://w3id.org/pko#RequirementSatisfaction |
+
+### Error
+
+| Name ƒ | Label | Error Code | Error Cause | Semantic Type Iri |
+|---|---|---|---|---|
+| FEED-STALE - Source feed timestamp too old | Source feed timestamp too old | FEED-STALE | Source integration lag or daylight-saving timestamp normalization issue. | https://w3id.org/pko#Error |
+| SMS-429 - SMS provider throttled requests | SMS provider throttled requests | SMS-429 | Provider rate limit or temporary carrier congestion. | https://w3id.org/pko#Error |
+
+### Issue Occurrence
+
+| Name ƒ | Occurred At | Issue Cause | Issue Solution | Status | Is Unresolved ƒ | Step Execution When Unresolved ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|
+| err-feed-stale @ 2026-06-30 17:12:00-05 | 2026-06-30T17:12:00-05:00 | One feed was 17 minutes old. | Reran extraction after source timestamp normalized; added explicit timestamp knowledge fragment. | Resolved | false | — | https://w3id.org/pko#IssueOccurrence |
+| err-sms-throttle @ 2026-07-19 09:30:00-05 | 2026-07-19T09:30:00-05:00 | Synthetic channel test observed provider throttling. | Queue with exponential backoff and preserve recipient-local quiet-hours constraint. | Monitoring | true | se-policy04 | https://w3id.org/pko#IssueOccurrence |
+
+### User Question
+
+| Name ƒ | Asked At | Question Text | Status | Semantic Type Iri |
+|---|---|---|---|---|
+| Why did the FX variance appear only after the cutover? | 2026-07-01T13:10:00-05:00 | Why did the FX variance appear only after the cutover? | Answered | https://w3id.org/pko#UserQuestionOccurrence |
+| Can the drafting AI add a new legal exception if it seems reasonable? | 2026-07-18T13:20:00-05:00 | Can the drafting AI add a new legal exception if it seems reasonable? | Answered | https://w3id.org/pko#UserQuestionOccurrence |
+
+### User Feedback
+
+| Name ƒ | Provided At | Feedback Text | Disposition | Change Request Key | Semantic Type Iri |
+|---|---|---|---|---|---|
+| Accepted: The feed timestamp check should be a required precondition,  | 2026-07-02T16:30:00-05:00 | The feed timestamp check should be a required precondition, not a troubleshooting note. | Accepted | cr-close-timestamp | https://w3id.org/pko#UserFeedbackOccurrence |
+| UnderReview: Add a secondary path for employees whose carrier reports a d | 2026-07-19T10:30:00-05:00 | Add a secondary path for employees whose carrier reports a delayed delivery receipt. | UnderReview | cr-policy-delivery | https://w3id.org/pko#UserFeedbackOccurrence |
+
+### Stewardship Assignment
+
+| Name ƒ | Valid From | Valid to | Review Cadence Days | Count of Review Events ƒ | Has Ever Been Reviewed ƒ | As of Instant ƒ | Is Current Assignment ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|
+| close-v1.1.0 / steward=process-steward | 2026-04-15T09:00:00-05:00 | — | 90 | 2 | true | 2026-07-19T13:00:00-05:00 | true | urn:effortless:pko-extension#StewardshipAssignment |
+| policy-v1.0.0 / steward=process-steward | 2026-06-01T09:00:00-05:00 | — | 60 | 1 | true | 2026-07-19T13:00:00-05:00 | true | urn:effortless:pko-extension#StewardshipAssignment |
+
+### Change Request
+
+| Name ƒ | Title | Change Kind | Status | Requested At | Decided At | Impact Assessment | Is Open ƒ | Open Change Version Key ƒ | Is Decided ƒ | As of Instant ƒ | Days Pending ƒ | Is Still Pending ƒ | Is Stalled ƒ | Authority Agent ƒ | Requester is Authority ƒ | Awaits Authority Decision ƒ | Authority Role Label ƒ | Touches Live Version ƒ | Is Live Decision Backlog ƒ | Blocks an Open Gap ƒ | Implemented At | Backlog Version Key ƒ | Is My Pending Decision ƒ | Is My Blocking Backlog ƒ | Is My Overdue Backlog ƒ | Is Implemented ƒ | Is My Decided Request ƒ | Is My Decided But Unlanded ƒ | Decision Latency Days ƒ | Implementation Latency Days ƒ | Delay is Downstream of Me ƒ | Unlanded Version Key ƒ | Is Approved Not Implemented ƒ | Days Since Approval ƒ | Is Stalled Implementation ƒ | Stalled Implementation Version Key ƒ | Approved Version Key ƒ | Is Approved Decision ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Add source timestamp as blocking verification | Add source timestamp as blocking verification | Defect | Approved | 2026-07-02T16:30:00-05:00 | 2026-07-03T11:00:00-05:00 | Adds requirement and verification; no breaking class change. | false | — | true | 2026-07-19T13:00:00-05:00 | 1 | false | false | priya-raman | false | false | Procedural Knowledge Authority | true | false | false | 2026-07-03T15:00:00-05:00 | — | false | false | false | true | false | false | 1 | 0 | false | — | false | 16 | false | — | close-v1.1.0 | true | urn:effortless:pko-extension#ChangeRequest |
+| Add secondary delivery receipt reconciliation | Add secondary delivery receipt reconciliation | Enhancement | UnderReview | 2026-07-19T10:30:00-05:00 | — | May add a step or fallback transition and operational binding. | true | policy-v1.0.0 | false | 2026-07-19T13:00:00-05:00 | 0 | true | false | elena-garcia | false | true | People Policy Owner | true | true | true | — | policy-v1.0.0 | true | true | false | false | false | false | 0 | 0 | false | — | false | 0 | false | — | — | false | urn:effortless:pko-extension#ChangeRequest |
+
+### Review Event
+
+| Name ƒ | Review Kind | Reviewed At | Outcome | Next Review Due | As of Instant ƒ | Is Overdue ƒ | Overdue Version Key ƒ | Promised Cadence Days ƒ | Days Since Reviewed ƒ | Exceeds Promised Cadence ƒ | Cadence Drift Days ƒ | Promise and Behavior Disagree ƒ | Cadence Breach Version Key ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| close-v1.1.0 / QuarterlySemanticReview | QuarterlySemanticReview | 2026-03-20T16:00:00-05:00 | Passed | 2026-06-18T16:00:00-05:00 | 2026-07-19T13:00:00-05:00 | true | close-v1.1.0 | 90.0 | 121 | true | 31 | false | close-v1.1.0 | https://w3id.org/pko#ReviewEvent |
+| close-v1.1.0 / QuarterlySemanticReview | QuarterlySemanticReview | 2026-07-02T16:00:00-05:00 | PassedWithChange | 2026-09-30T16:00:00-05:00 | 2026-07-19T13:00:00-05:00 | false | — | 90.0 | 17 | false | -73 | false | — | http://www.w3.org/ns/prov#Activity |
+| policy-v1.0.0 / PreLaunchReview | PreLaunchReview | 2026-07-18T16:00:00-05:00 | Passed | 2026-09-16T16:00:00-05:00 | 2026-07-19T13:00:00-05:00 | false | — | 60.0 | 1 | false | -59 | false | — | http://www.w3.org/ns/prov#Activity |
+
+### Learning Activity
+
+| Name ƒ | Activity Kind | Occurred At | Outcome | Semantic Type Iri |
+|---|---|---|---|---|
+| Retrospective / 2026-07-02 15:30:00-05 | Retrospective | 2026-07-02T15:30:00-05:00 | Captured feed timestamp failure mode and updated the rulebook. | http://www.w3.org/ns/prov#Activity |
+| TabletopExercise / 2026-07-15 13:00:00-05 | TabletopExercise | 2026-07-15T13:00:00-05:00 | Tested consent, quiet-hours, and unreachable-recipient exceptions. | http://www.w3.org/ns/prov#Activity |
+
+### Operational Binding
+
+| Name ƒ | Access Mode | Record or Schema Key | Last Observed At | Freshness Sla Minutes | Is Authoritative | As of Instant ƒ | Age Minutes ƒ | Is Fresh ƒ | Stale Binding Step Key ƒ | Authoritative Stale Step Key ƒ | Is Stale and Authoritative ƒ | Step When Stale ƒ | Resource is Approved ƒ | Is Usable for Drafting ƒ | Step When Unusable ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| close-02 / GeneralLedger.TrialBalance | Read | GeneralLedger.TrialBalance | 2026-07-19T12:43:00-05:00 | 15 | true | 2026-07-19T13:00:00-05:00 | 17 | false | close-02 | close-02 | true | close-02 | — | false | close-02 | urn:effortless:pko-extension#OperationalBinding |
+| policy-01 / HR.ChangeTicket | ReadWrite | HR.ChangeTicket | 2026-07-19T11:50:00-05:00 | 30 | true | 2026-07-19T13:00:00-05:00 | 70 | false | policy-01 | policy-01 | true | policy-01 | — | false | policy-01 | urn:effortless:pko-extension#OperationalBinding |
+| policy-07 / HR.CommunicationConsent | Read | HR.CommunicationConsent | 2026-07-19T11:45:00-05:00 | 15 | true | 2026-07-19T13:00:00-05:00 | 75 | false | policy-07 | policy-07 | true | policy-07 | — | false | policy-07 | urn:effortless:pko-extension#OperationalBinding |
+
+### Communication Policy
+
+| Name ƒ | Channel | Audience Rule | Consent Required | Quiet Hours Start | Quiet Hours End | Max Message Length | Max Segments | Retention Days | Required Content | Authority Statement | Status | Consent Violation Count ƒ | Quiet Hours Start Hour | Quiet Hours End Hour | Quiet Hours Violation Count ƒ | Required Opt Out Phrase | Is Active Policy ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Email policy / policy-v1.0.0 | Email | All affected employees with a valid corporate email | false | 00:00 | 00:00 | 100000 | 1 | 2555 | Full policy context, effective date, action required, alternate contact | Email is the complete official notification record. | Active | 0 | 0 | 0 | 0 | — | true | http://www.w3.org/ns/odrl/2/Policy |
+| SMS policy / policy-v1.0.0 | SMS | Affected employees with active SMS consent | true | 20:00 | 08:00 | 160 | 3 | 2555 | Short notice, secure link, approved opt-out text | SMS is a supplemental notice; the linked email/policy is authoritative. | Active | 0 | 20 | 8 | 1 | Reply STOP to opt out | true | http://www.w3.org/ns/odrl/2/Policy |
+
+### Message Template
+
+| Name ƒ | Subject Template | Body Template | Locale | Status | Policy Max Message Length ƒ | Policy Max Segments ƒ | Body Template Length ƒ | Is Template Over Length ƒ | Valid Approval Count ƒ | Has Valid Approval ƒ | Is Claiming Unbacked Approval ƒ | Current Body Hash | Last Approved Body Hash ƒ | Last Valid Approval | Has Body Drifted ƒ | Is Sendable Under Approval ƒ | Drifted Send Count ƒ | Unanswered Delivery Count ƒ | Transmitted Delivery Count ƒ | Template Draws No Response ƒ | Last Approval At ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| comm-email-policy / en-US | Remote-work policy update effective {{EffectiveDate}} | A workforce policy affecting your work has changed. Review the complete policy at {{PolicyUrl}}. Required action: {{RequiredAction}}. Questions: {{ContactAddress}}. | en-US | Approved | 100000 | 1 | 164 | false | 1 | true | false | h-email-v1 | h-email-v1 | tap-email-001 | false | true | 0 | 1 | 2 | false | 2026-07-17T11:00:00-05:00 | http://www.w3.org/ns/dcat#Resource |
+| comm-sms-policy / en-US | — | ACME policy update effective {{EffectiveDate}}. Review: {{ShortUrl}}. Reply STOP to opt out of SMS; email notices continue. | en-US | Approved | 160 | 3 | 123 | false | 1 | true | false | h-sms-v1 | h-sms-v1 | tap-sms-001 | false | true | 0 | 2 | 2 | true | 2026-07-19T10:00:00-05:00 | http://www.w3.org/ns/dcat#Resource |
+
+### Semantic Mapping
+
+| Name ƒ | Source Path | Mapping Kind | Target Iri | Mapping Relation | Notes |
+|---|---|---|---|---|---|
+| Procedures -> https://w3id.org/pko#Procedure | Procedures | class | https://w3id.org/pko#Procedure | exact | Abstract procedure. |
+| ProcedureVersions -> https://w3id.org/pko#Procedure | ProcedureVersions | class | https://w3id.org/pko#Procedure | exact | Versioned procedure resources. |
+| ProcedureVersions.VersionNumber -> https://w3id.org/pko#versionNumber | ProcedureVersions.VersionNumber | datatypeProperty | https://w3id.org/pko#versionNumber | exact | PKO version number. |
+
+### Witness Loop
+
+| Name ƒ | Loop Number | Title | Premise | Started At | Completed At | Question Count ƒ | Is Complete ƒ | Fields After | Derived After | Witnessed After | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| Loop 1: The founding questions | 1 | The founding questions | The model specified obligations precisely and witnessed their breach almost nowhere. Requirements, verifications, exceptions, and communication policies were all stated with real precision, and in each case the execution-side counterpart that would catch a violation was missing. Loop 1 asks each of the twelve named roles what it actually needs to know, and invents the atomic predicates required to answer. | 2026-07-19T17:00:00-05:00 | 2026-07-19T19:30:00-05:00 | 60 | true | 1096 | 559 | 462 | urn:effortless:pko-extension#WitnessLoop |
+| Loop 2: Questions only loop 1 made askable | 2 | Questions only loop 1 made askable | Loop 1 established WHAT can go wrong: a blocking control unmet, a verification skipped, a send refused, a claim whose source has left. Loop 2 asks the questions that only exist once those columns do — about the QUALITY of the assurance rather than its presence. Three examples that had no expressible form before loop 1 ran: only 4 of 13 requirements have any computed witness at all, so which controls are still trusted purely on assertion; verification_outcomes.is_self_witnessed reads 3/4, so how much of the evidence is the executor vouching for themselves; and send_intents.is_silently_dropped reads 4/7, a failure mode that could not be named until IsClearedToSend existed to refuse a send in the first place. Every loop-2 question records, in its own provenance, the loop-1 predicates that made it possible. | 2026-07-19T19:45:00-05:00 | 2026-07-19T20:30:00-05:00 | 45 | true | 1479 | 906 | 836 | urn:effortless:pko-extension#WitnessLoop |
+| Loop 3: Loop 3: the three gaps the source articles named and the model didn't have | 3 | Loop 3: the three gaps the source articles named and the model didn't have | Comparing this rulebook against the four "Intentional Arrangement" Process Knowledge Management articles surfaced three concepts the essays argue for at length that had no table: process mining as an elicitation channel, controlled vocabulary/taxonomy, and the informal knowledge-broker network. Unlike loops 1-2, this loop is not a full 12-role sweep — it is exactly these three named gaps, each owned by the role that would actually ask the question. | — | — | 3 | false | 1771 | 1033 | 900 | urn:effortless:pko-extension#WitnessLoop |
+
+### Role Question
+
+| Name ƒ | Question Text | Why It Matters | Answerable Before | Predicate Count ƒ | Is Answered ƒ | Witnessed Answer | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|
+| finance-analyst: On the steps I personally executed, did any of them close ou | On the steps I personally executed, did any of them close out while a BLOCKING requirement was still not fully satisfied? | I executed se-close03 (Reconcile material accounts), which carries TWO blocking requirements via sr-c03a (req-close-balance) and sr-c03b (req-close-evidence). Today the model records SatisfactionLevel as free text and nothing compares it against IsBlocking. If I close a step with a PartiallySatisfied blocking control — exactly the shape sat-policy-legal is in right now — the package moves on and nobody is told. I want that to be a computed red flag on my own row before it becomes an audit finding on my name. | false | 7 | true | RequirementSatisfactions.IsBlockingAndUnmet=1/8; RequirementSatisfactions.IsFullySatisfied=7/8; RequirementSatisfactions.RequirementIsBlocking=8/8; StepExecutions.ProceededPastBlockingControl=1/12 | urn:effortless:pko-extension#RoleQuestion |
+| finance-analyst: Which blocking requirements were attached to a step I ran bu | Which blocking requirements were attached to a step I ran but never got a satisfaction record at all — not satisfied, not unsatisfied, just never assessed? | This is the failure mode that scares me more than a recorded 'Unsatisfied'. sr-c03b binds req-close-evidence to close-03. I ran close-03 as se-close03. There is no RequirementSatisfactions row for that pairing. The model shows green because absence reads as silence, not as a gap. An unevaluated blocking control is indistinguishable from a passed one, and that is the exact thing SOX testing is designed to catch. | false | 8 | true | StepExecutions.HasUnevaluatedBlockingControl=0/12; StepRequirements.RequirementIsBlocking=15/15 | urn:effortless:pko-extension#RoleQuestion |
+| finance-analyst: When I attested my reconciliation, was the underlying ledger | When I attested my reconciliation, was the underlying ledger data actually fresh — or was I certifying against a source that had already gone stale under its own SLA? | OperationalBindings.IsFresh already exists and works, but it is evaluated against NOW() and lives on a table nothing in the execution story reads. My step execution has no idea whether the resources it depended on were inside their freshness SLA. se-close02 already recorded a 17-minute feed against a 15-minute SLA and it took a human writing prose into a Deviation field to surface it. I want that connected structurally, because next time the prose might not get written. | false | 6 | true | StepExecutions.RanOnStaleAuthoritativeSource=2/12 | urn:effortless:pko-extension#RoleQuestion |
+
+### Rulebook Field
+
+| Name ƒ | Target Table | Field Name | Field Type | Datatype | Formula | Is Derived ƒ | Is Witness ƒ | Disagreeing Substrate Count ƒ | Is Substrate Contested ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|---|---|
+| RulebookReleases.RulebookReleaseId | RulebookReleases | RulebookReleaseId | raw | string | — | false | false | 0 | false | urn:effortless:pko-extension#RulebookField |
+| RulebookReleases.Name | RulebookReleases | Name | calculated | string | ={{RulebookVersion}} & " / PKO " & {{PkoCoreVersionIri}} | true | false | 1 | true | urn:effortless:pko-extension#RulebookField |
+| RulebookReleases.RulebookVersion | RulebookReleases | RulebookVersion | raw | string | — | false | false | 0 | false | urn:effortless:pko-extension#RulebookField |
+
+### Test Suite
+
+| Name ƒ | Label | Test Count ƒ | Pass Count ƒ | Blocking Fail Count ƒ | Is Green ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|
+| Model structure | Model structure | 69 | 69 | 0 | true | urn:effortless:pko-extension#TestSuite |
+| Substrate translation | Substrate translation | 993 | 991 | 0 | true | urn:effortless:pko-extension#TestSuite |
+| Referential integrity | Referential integrity | 160 | 160 | 0 | true | urn:effortless:pko-extension#TestSuite |
+
+### Test Cas
+
+| Name ƒ | Test Kind | Subject | Target Table | Target Field | Assertion | Severity | Is Blocking ƒ | Last Outcome | Last Detail | Last Run At | Is Passing ƒ | Is Failing ƒ | Needs Attention ƒ | Passing Suite Key ƒ | Needs Attention Suite Key ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| structural: RulebookReleases | structural | RulebookReleases | RulebookReleases | — | Primary key first and non-nullable, and a calculated Name display alias exists. | blocking | true | PASS | 11 fields | 2026-07-20T03:06:49+00:00 | true | false | false | suite-structure | — | urn:effortless:pko-extension#TestCase |
+| structural: OntologyProfiles | structural | OntologyProfiles | OntologyProfiles | — | Primary key first and non-nullable, and a calculated Name display alias exists. | blocking | true | PASS | 8 fields | 2026-07-20T03:06:49+00:00 | true | false | false | suite-structure | — | urn:effortless:pko-extension#TestCase |
+| structural: EvaluationContexts | structural | EvaluationContexts | EvaluationContexts | — | Primary key first and non-nullable, and a calculated Name display alias exists. | blocking | true | PASS | 7 fields | 2026-07-20T03:06:49+00:00 | true | false | false | suite-structure | — | urn:effortless:pko-extension#TestCase |
+
+### ERB Version
+
+| Base ID | Name | Message | Notes | Commit Date | Is Published |
+|---|---|---|---|---|---|
+| pko-native-procedural-knowledge | 1.0.0 | Initial PKO 2.0.0 aligned rulebook | Candidate proof of canonical PKO-as-ERB architecture. | 2026-07-19T12:00:00-05:00 | false |
+
+### Exception Invocation
+
+| Name ƒ | Invoked At | Handling Applied | Expected Handling ƒ | Required Approval Role ƒ | Required Approval Role Holder ƒ | Approval Role Matches ƒ | Is Approved ƒ | Is Improperly Approved ƒ | Invoker Agent Kind ƒ | Invoker Also Prepared Key ƒ | Parent Procedure Execution ƒ | Approver Prepared Count ƒ | Delegated to Preparer ƒ | Is Ungoverned Invocation ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| se-close02 / exc-ledger-outage | 2026-07-19T09:24:00-05:00 | Used the digitally signed 09:07 trial-balance snapshot and opened blocking incident issue-close-feed. No spreadsheet substitution. | Use a digitally signed, timestamped snapshot and open a blocking incident; do not silently substitute a spreadsheet. | controller | devon-okafor | true | true | false | AutomatedPipeline | exec-close-2026-q2\|devon-okafor | exec-close-2026-q2 | 0 | false | false | urn:effortless:pko-extension#ExceptionInvocation |
+
+### Verification Outcome
+
+| Name ƒ | Observed Signal Value | Observed At | Evidence Uri | Expected Signal Value ƒ | Signal Identifier ƒ | Signal Matches Expected ƒ | Has Evidence ƒ | Is Unbacked Observation ƒ | Is Self Witnessed ƒ | Step Executor Agent ƒ | Self Witnessed Step Key ƒ | Unbacked Step Key ƒ | Is Self Witnessed and Unbacked ƒ | Is Uncorroborated Pass ƒ | Uncorroborated Pass Step Key ƒ | Observer is Non Human ƒ | Observer is Independent of Executor ƒ | Is Independent Human Observation ƒ | Independent Observation Execution Key ƒ | Parent Procedure Execution of Outcome ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| se-close01 / verify-close-cutoff | LOCKED | 2026-07-19T09:05:00-05:00 | evidence://erp/close/2026-q2/ledger-lock.json | LOCKED | ledger-lock-state | true | true | false | false | close-pipeline | — | — | false | false | — | false | true | true | exec-close-2026-q2 | exec-close-2026-q2 | urn:effortless:pko-extension#VerificationOutcome |
+| se-close02 / verify-feed-time | 17 | 2026-07-19T09:22:00-05:00 | evidence://erp/close/2026-q2/feed-age.json | 15 | max-feed-age-minutes | false | true | false | true | close-pipeline | se-close02 | — | false | false | — | true | false | false | — | exec-close-2026-q2 | urn:effortless:pko-extension#VerificationOutcome |
+| se-close03 / verify-reconciliation | 0 | 2026-07-19T11:40:00-05:00 | — | 0 | unexplained-material-variance | true | false | true | true | maria-chen | se-close03 | se-close03 | true | true | se-close03 | false | false | false | — | exec-close-2026-q2 | urn:effortless:pko-extension#VerificationOutcome |
+
+### Observed Transition
+
+| Name ƒ | Observed At | Trigger Reason | Semantic Type Iri |
+|---|---|---|---|
+| close-01-to-close-02 @ 2026-06-30 17:04:00-05 | 2026-06-30T17:04:00-05:00 | Default sequence | urn:effortless:pko-extension#ObservedTransition |
+| close-02-to-close-03 @ 2026-06-30 17:18:00-05 | 2026-06-30T17:18:00-05:00 | Default sequence | urn:effortless:pko-extension#ObservedTransition |
+| close-03-to-close-04 @ 2026-07-01 12:15:00-05 | 2026-07-01T12:15:00-05:00 | Default sequence | urn:effortless:pko-extension#ObservedTransition |
+
+### Recipient
+
+| Name ƒ | Display Name | Email Address | Mobile Number | Sms Consent Status | Sms Consent At | Has Sms Consent ƒ | Is Email Reachable ƒ | Is Sms Reachable ƒ | Is Unreachable ƒ | Is Communicationally Stranded ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| Jordan Ellis | Jordan Ellis | jordan.ellis@example.com | +15551000001 | Granted | 2026-05-02T10:00:00-05:00 | true | true | true | false | false | urn:effortless:pko-extension#Recipient |
+| Sam Rivera | Sam Rivera | sam.rivera@example.com | +15551000002 | Granted | 2026-05-04T14:30:00-05:00 | true | true | true | false | false | urn:effortless:pko-extension#Recipient |
+| Alex Kim | Alex Kim | alex.kim@example.com | +15551000003 | Granted | 2026-07-19T09:15:00-05:00 | true | true | true | false | false | urn:effortless:pko-extension#Recipient |
+
+### Message Delivery
+
+| Name ƒ | Rendered Body | Sent At | Sent At Local Hour | Delivery Status | Suppression Reason | Acknowledged At | Policy Channel ƒ | Channel Name ƒ | Policy Requires Consent ƒ | Recipient Has Sms Consent ƒ | Was Actually Transmitted ƒ | Is Consent Violation ƒ | Consent Violation Policy Key ƒ | Policy Quiet Hours Start Hour ƒ | Policy Quiet Hours End Hour ƒ | Policy Has Quiet Hours ƒ | Quiet Window Wraps Midnight ƒ | Is Inside Quiet Window ƒ | Is Quiet Hours Violation ƒ | Quiet Hours Violation Policy Key ƒ | Recipient is Unreachable ƒ | Is Acknowledged ƒ | Invoked Exception Condition ƒ | Has Unreachable Exception Invoked ƒ | Is Fabricated Acknowledgement ƒ | Is Unhandled Unreachable ƒ | Unreachable Failure Key ƒ | Policy Retention Days ƒ | As of Instant ƒ | Age Days ƒ | Is Within Retention Window ƒ | Has Rendered Body ƒ | Is Evidence Required ƒ | Is Retention Breach ƒ | Retention Breach Execution Key ƒ | Sending Step Execution Step ƒ | Execution Has Cleared Legal Review ƒ | Is Unreviewed Send ƒ | Rendered Body Length ƒ | Policy Max Message Length At Send ƒ | Segment Count ƒ | Policy Max Segments At Send ƒ | Is Over Segment Limit ƒ | Template Has Valid Approval ƒ | Is Unapproved Send ƒ | Policy Required Opt Out Phrase ƒ | Policy Requires Opt Out ƒ | Opt Out Phrase Position ƒ | Has Opt Out Phrase ƒ | Is Opt Out in First Segment ƒ | Is Missing Required Opt Out ƒ | Is Opt Out At Risk of Truncation ƒ | Is Failed Delivery ƒ | Is Suppressed ƒ | Is Triaged ƒ | Is Abandoned Failure ƒ | Abandoned Failure Execution Key ƒ | Reached Execution Key ƒ | Template Was Sendable ƒ | Is Drifted Send ƒ | Drifted Send Template Key ƒ | Was Sent Outside Business Hours ƒ | Was Delivered and Unanswered ƒ | Is Poorly Timed Unanswered ƒ | Is Well Timed Unanswered ƒ | Unanswered Template Key ƒ | Transmitted Template Key ƒ | Approving Agent At Send | Approving Role At Send | Approval Decided At Send | Approval Preceded Send ƒ | Has Frozen Approval Evidence ƒ | Provenance is Live Derived ƒ | Current Last Approval At ƒ | Template Reapproved Since Send ƒ | Is Unprovable Approval Claim ƒ | Reminder Sent At | Reminder Count | Has Sent Reminder ƒ | Acknowledgement is Outstanding ƒ | Outstanding Age Days ƒ | Is Unchased Acknowledgement ƒ | Is Exhausted Follow Up ƒ | Needs Human Escalation ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| rec-001 / tmpl-policy-email / 2026-07-18 14:05:00-05 | Policy HR-4821 update. Review the notice and acknowledge: https://example.com/hr4821 Reply STOP to opt out. | 2026-07-18T14:05:00-05:00 | 14 | Delivered | — | 2026-07-18T15:20:00-05:00 | comm-email-policy | Email | false | true | true | false | — | 0 | 0 | false | false | false | false | — | false | true | — | — | false | false | — | 2555 | 2026-07-19T13:00:00-05:00 | 1 | true | true | true | false | — | policy-04 | true | false | 107 | 100000 | 1 | 1 | false | true | false | — | false | — | — | — | false | false | false | false | false | false | — | exec-policy-hr4821 | true | false | — | false | false | false | false | — | tmpl-policy-email | — | — | — | false | false | true | 2026-07-17T11:00:00-05:00 | false | false | — | — | — | false | 0 | false | false | false | urn:effortless:pko-extension#MessageDelivery |
+| rec-002 / tmpl-policy-email / 2026-07-18 14:05:00-05 | Policy HR-4821 update. Review the notice and acknowledge: https://example.com/hr4821 Reply STOP to opt out. | 2026-07-18T14:05:00-05:00 | 14 | Delivered | — | — | comm-email-policy | Email | false | true | true | false | — | 0 | 0 | false | false | false | false | — | false | false | — | — | false | false | — | 2555 | 2026-07-19T13:00:00-05:00 | 1 | true | true | true | false | — | policy-04 | true | false | 107 | 100000 | 1 | 1 | false | true | false | — | false | — | — | — | false | false | false | false | false | false | — | exec-policy-hr4821 | true | false | — | false | true | false | true | tmpl-policy-email | tmpl-policy-email | — | — | — | false | false | true | 2026-07-17T11:00:00-05:00 | false | false | — | — | — | true | 1 | false | — | — | urn:effortless:pko-extension#MessageDelivery |
+| rec-003 / tmpl-policy-sms / 2026-07-18 14:06:00-05 | Policy HR-4821 update. Review the notice and acknowledge: https://example.com/hr4821 Reply STOP to opt out. | 2026-07-18T14:06:00-05:00 | 14 | Delivered | RETROACTIVE FINDING: transmitted to a recipient with no SMS consent. Should have been suppressed under exc-no-sms-consent and sent by approved email only. Retained as evidence; recipient re-consented on 2026-07-19 and a corrected email was sent. | — | comm-sms-policy | SMS | true | true | true | false | — | 20 | 8 | true | true | false | false | — | false | false | Recipient lacks SMS consent | false | false | false | — | 2555 | 2026-07-19T13:00:00-05:00 | 1 | true | true | true | false | — | policy-04 | true | false | 107 | 160 | 1 | 3 | false | true | false | Reply STOP to opt out | true | 86 | true | true | false | false | false | false | true | false | — | exec-policy-hr4821 | true | false | — | false | true | false | true | tmpl-policy-sms | tmpl-policy-sms | — | — | — | false | false | true | 2026-07-19T10:00:00-05:00 | true | true | — | — | — | true | 1 | false | — | — | urn:effortless:pko-extension#MessageDelivery |
+
+### Template Approval
+
+| Name ƒ | Decision | Decided At | Approved Body Hash | Notes | Is Approval Decision ƒ | Template Policy ƒ | Required Approval Role ƒ | Is Decided by Required Role ƒ | Valid Approval Template Key ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|---|---|
+| tmpl-policy-email / Approved / 2026-07-17 11:00:00-05 | Approved | 2026-07-17T11:00:00-05:00 | h-email-v1 | Reviewed against comm-email-policy required content and retention. | true | comm-email-policy | communications-manager | true | tmpl-policy-email | urn:effortless:pko-extension#TemplateApproval |
+| tmpl-policy-sms / Approved / 2026-07-19 10:00:00-05 | Approved | 2026-07-19T10:00:00-05:00 | h-sms-v1 | Approved against comm-sms-policy: 160-char limit, 3-segment cap, required STOP opt-out, 20:00-08:00 quiet window. | true | comm-sms-policy | communications-manager | true | tmpl-policy-sms | urn:effortless:pko-extension#TemplateApproval |
+
+### Send Intent
+
+| Name ƒ | Proposed Body | Proposed Send At Local Hour | Evaluated At | Intent Policy ƒ | Intent Channel ƒ | Policy is Active ƒ | Intent Requires Consent ƒ | Recipient Has Channel Consent ƒ | Consent Gate Passed ƒ | Recipient is Sms Reachable ƒ | Recipient is Email Reachable ƒ | Reachability Gate Passed ƒ | Permission Gate Passed ƒ | Intent Quiet Start Hour ƒ | Intent Quiet End Hour ƒ | Intent Policy Has Quiet Hours ƒ | Intent Quiet Window Wraps ƒ | Intent is Inside Quiet Window ƒ | Timing Gate Passed ƒ | Hours Until Window Opens ƒ | Intent Max Message Length ƒ | Intent Max Segments ƒ | Proposed Body Length | Proposed Segment Count | Length Gate Passed ƒ | Intent Required Opt Out Phrase ƒ | Proposed Opt Out Position | Opt Out Gate Passed ƒ | Content Gate Passed ƒ | Template is Sendable ƒ | Execution Has Legal Clearance ƒ | Intent Approval Role ƒ | Approval Role Agent Kind ƒ | Approval is Human ƒ | Authorization Gate Passed ƒ | Is Cleared to Send ƒ | Blocking Gate Name ƒ | Has Resulting Delivery ƒ | Resulting Delivery Was Transmitted ƒ | Is Overridden Refusal ƒ | Is Silently Dropped ƒ | Resulting Delivery Exception ƒ | Refusal Cited an Exception ƒ | Is Properly Handled Refusal ƒ | Refusal Failure Execution Key ƒ | Intent Execution Key ƒ | Delivered Intent Execution Key ƒ | Dropped Intent Execution Key ƒ | My Approval Was in Force ƒ | Refused on Approved Content ƒ | Refused on Opt Out Only ƒ | Refusal Was on My Rules ƒ | Refusal Was Outside My Control ƒ | Approver Was Notified | Is Unreported Refusal on My Rules ƒ | Is Approval Overridden Silently ƒ | Alternate Channel Intent | Has Alternate Channel Attempt ƒ | Alternate Attempt Was Cleared ƒ | Is Refused With No Alternative ƒ | Exception Prescribed an Alternative ƒ | Prescribed Handling Was Performed ƒ | Is Suppression Without Remedy ƒ | Refusal Recorded At | Has Durable Refusal Record ƒ | Refusal Was Escalated ƒ | Is Unrecorded Refusal ƒ | Is Unescalated Refusal ƒ | Unescalated Refusal Role Key ƒ | Unrecorded Refusal Execution Key ƒ | Retry Intent | Was Deferred on Timing ƒ | As of Instant ƒ | Window Has Since Reopened ƒ | Has Retry Attempt ƒ | Retry Was Cleared ƒ | Is Abandoned Deferral ƒ | Deferral Age Hours ƒ | Is Stale Deferral ƒ | Evaluating Role Assignment | Enforced by Unauthorized Agent ƒ | Consent Input Was Resolvable ƒ | Recipient Consent Status Raw ƒ | Policy Input Was Resolvable ƒ | All Gate Inputs Resolved ƒ | Is Unevaluable Refusal ƒ | Gate Result Was Independently Confirmed | Is Self Witnessed Decision ƒ | Is Independently Confirmed ƒ | Independently Confirmed Execution Key ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| rec-001 / tmpl-policy-sms / intent | Policy HR-4821 update. Review and acknowledge: https://example.com/hr4821 Reply STOP to opt out | 14 | 2026-07-18T14:04:00-05:00 | comm-sms-policy | SMS | true | true | true | true | true | true | true | true | 20 | 8 | true | true | false | true | 0 | 160 | 3 | 95 | 1 | true | Reply STOP to opt out | 75 | true | true | true | true | communications-manager | Human | true | true | true | — | true | true | false | false | — | false | false | — | exec-policy-hr4821 | exec-policy-hr4821 | — | true | false | false | false | false | — | false | false | — | false | — | false | false | false | false | — | false | false | false | false | — | — | — | false | 2026-07-19T13:00:00-05:00 | false | false | — | false | 23 | false | — | false | true | Granted | true | true | false | — | true | true | exec-policy-hr4821 | urn:effortless:pko-extension#SendIntent |
+| rec-003 / tmpl-policy-sms / intent | Policy HR-4821 update. Review and acknowledge: https://example.com/hr4821 Reply STOP to opt out | 14 | 2026-07-18T14:04:00-05:00 | comm-sms-policy | SMS | true | true | true | true | true | true | true | true | 20 | 8 | true | true | false | true | 0 | 160 | 3 | 95 | 1 | true | Reply STOP to opt out | 75 | true | true | true | true | communications-manager | Human | true | true | true | — | false | — | false | false | — | false | false | — | exec-policy-hr4821 | — | — | true | false | false | false | false | — | false | false | — | false | — | false | false | false | false | — | false | false | false | false | — | — | — | false | 2026-07-19T13:00:00-05:00 | false | false | — | false | 23 | false | — | false | true | Granted | true | true | false | — | true | false | — | urn:effortless:pko-extension#SendIntent |
+| rec-001 / tmpl-policy-sms / intent | Policy HR-4821 update. Review and acknowledge: https://example.com/hr4821 Reply STOP to opt out | 21 | 2026-07-18T14:04:00-05:00 | comm-sms-policy | SMS | true | true | true | true | true | true | true | true | 20 | 8 | true | true | true | false | 11 | 160 | 3 | 95 | 1 | true | Reply STOP to opt out | 75 | true | true | true | true | communications-manager | Human | true | true | false | Timing | false | — | false | true | — | false | false | exec-policy-hr4821 | exec-policy-hr4821 | — | exec-policy-hr4821 | true | false | false | true | false | — | true | false | — | false | — | true | false | false | false | — | false | false | true | true | — | exec-policy-hr4821 | — | true | 2026-07-19T13:00:00-05:00 | true | false | — | true | 23 | false | — | false | true | Granted | true | true | false | — | true | false | — | urn:effortless:pko-extension#SendIntent |
+
+### Agent Decision Record
+
+| Name ƒ | Decision Kind | Decision Summary | Decided At | Materiality Band | Human Disposition | Reviewed At | Was Overridden ƒ | Was Reviewed ƒ | Deciding Agent Kind ƒ | Deciding Agent When Overridden ƒ | Role Assignment When Scored ƒ | Role Assignment When Overridden ƒ | Step of Decision ƒ | Boundary Match Key ƒ | Matching Boundary Count ƒ | Violated Authority Boundary ƒ | Reviewer Agent Kind ƒ | Has Human Confirmation ƒ | Needs Human Confirmation ƒ | Is Unconfirmed Non Human Decision ƒ | Step Execution When Unconfirmed ƒ | Agent When Boundary Violated ƒ | Review Latency Minutes ƒ | Is Draft Kind ƒ | Agent When Draft Overridden ƒ | Agent When Draft ƒ | Override Reason Kind | Is Error Correction ƒ | Is Reserved Judgment Override ƒ | Override Reason is Recorded ƒ | Is Unexplained Override ƒ | Error Correction Role Assignment Key ƒ | Boundary Violation Role Assignment Key ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| close-pipeline: Posted approved close entries and published the package. | Posting | Posted approved close entries and published the package. | 2026-07-02T09:30:00-05:00 | Material | Accepted | 2026-07-02T10:00:00-05:00 | false | true | AutomatedPipeline | — | — | — | close-07 | close-07\|AutomatedPipeline\|Posting | 0 | false | Human | true | true | false | — | — | 30.0 | false | — | — | — | false | false | false | false | — | — | urn:effortless:pko-extension#AgentDecisionRecord |
+| close-pipeline: Accepted a trial-balance extract in which one feed was 17 mi | Posting | Accepted a trial-balance extract in which one feed was 17 minutes old. | 2026-06-30T17:12:00-05:00 | Material | Corrected | 2026-06-30T17:16:00-05:00 | true | true | AutomatedPipeline | close-pipeline | — | — | close-02 | close-02\|AutomatedPipeline\|Posting | 0 | false | Human | true | true | false | — | — | 4.0 | false | — | — | — | — | — | false | true | — | — | urn:effortless:pko-extension#AgentDecisionRecord |
+| close-pipeline: Locked subledgers at cutoff. | Posting | Locked subledgers at cutoff. | 2026-06-30T17:02:00-05:00 | Material | Accepted | 2026-06-30T17:20:00-05:00 | false | true | AutomatedPipeline | — | — | — | close-01 | close-01\|AutomatedPipeline\|Posting | 0 | false | Human | true | true | false | — | — | 18.0 | false | — | — | — | false | false | false | false | — | — | urn:effortless:pko-extension#AgentDecisionRecord |
+
+### Delivered Communication
+
+| Name ƒ | Channel | Recipient Key | Sent At | Rendered Content Hash | Approved Content Hash | Delivery Status | Semantic Type Iri | Has Authorization ƒ | Content Matches Approval ƒ | Authorized At ƒ | Was Approved Before Sending ƒ | Is Defensible ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Email -> emp-anon-0001 @  | Email | emp-anon-0001 | — | — | — | NotYetSent | urn:effortless:pko-extension#DeliveredCommunication | false | — | — | — | false |
+
+### Authority Boundary
+
+| Name ƒ | Forbidden Agent Kind | Forbidden Decision Kind | Valid From | Valid to | Status | As of Instant ƒ | Is Currently Binding ƒ | Ratifying Fragment is Valid ƒ | Step When Binding ƒ | Boundary Match Key ƒ | Violation Count ƒ | Is Untested ƒ | Has Ratifying Fragment ƒ | Is Unwarranted ƒ | Ratifying Fragment is Overdue ƒ | Ratifying Fragment is Single Witness ƒ | Warrant is Thin ƒ | Is Unwarranted and Untested ƒ | Unwarranted Boundary Step Key ƒ | Ratifying Fragment Key ƒ | Ratifying Fragment Status ƒ | Ratification Lapsed ƒ | Binds Despite Lapsed Ratification ƒ | Is Ungrounded and Untested ƒ | Constrained Role Assignment Key ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| AIAgent may not Suppression | AIAgent | Suppression | 2026-04-01T00:00:00-05:00 | — | Approved | 2026-07-19T13:00:00-05:00 | true | true | close-04 | close-04\|AIAgent\|Suppression | 0 | true | true | false | true | true | true | false | — | kf-close-judgment | Approved | false | false | false | — | urn:effortless:pko-extension#AuthorityBoundary |
+| AIAgent may not Approval | AIAgent | Approval | 2026-04-15T09:00:00-05:00 | — | Approved | 2026-07-19T13:00:00-05:00 | true | — | close-06 | close-06\|AIAgent\|Approval | 0 | true | false | true | — | — | — | true | close-06 | — | — | false | false | false | — | urn:effortless:pko-extension#AuthorityBoundary |
+| AIAgent may not Commitment | AIAgent | Commitment | 2026-05-12T14:30:00-05:00 | — | Approved | 2026-07-19T13:00:00-05:00 | true | true | policy-03 | policy-03\|AIAgent\|Commitment | 0 | true | true | false | true | true | true | false | — | kf-policy-ai-boundary | Approved | false | false | false | — | urn:effortless:pko-extension#AuthorityBoundary |
+
+### App Role Profile
+
+| Name ƒ | Display Label | Role Kind | Accent Color | Icon Mark | Icon Png Base64 | Pitch | Sort Order | Route Count ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|---|
+| Chief Financial Officer (human) | Chief Financial Officer | human | #1d4ed8 | crown | iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAASmElEQVR42u1de4ycV3X/nXO/bx77fs6u7bWd0AQTr0lqhXhJAK2TNInyIKiEsaooSeNHEggkQYWAArV3t9AWEEW0qFQhVkhICXStClWqWgItiUuTOJRSQRNDwAk4chN7195dz+zO7Mzce07/+Hbt9XvXnn157pFWluXxft/c87u/87vnnHsv4M2bN2/eKtRo/p6rfvRPHBY9HwFAQA+hGwwA2AkB+sQ7+2TWw0h3EgZaCalBxY60zDYoaFa/TDcYO/vsCf+U7jcr3qqqO2wGFS5PFe1zk9R6FyOx4fi+XRvyJxsrAMCODYJZoM3yD3663xyD3O5ng3a37+0qtA7AZYLSpRC3BErtCjePUWihmAJgEDQLE+4h0F4Q/5zYvcj1TS+/9c+35o4d2/ICgco649Grk45PvfeJSyHmTtXSzRB5Ozhmjn5hgJk9409VRCJQnXQJAVoEQG+QCf8d0O8MLE38CDs2uClAcAsHAFNeKPWeb12nqg9D7DWgmAEcjDEI47UuTNRqGKshY0IysSRNfGPvfyI4W1Rni2pLOS0VsijmDxtrSwQwAAGIf8Gqf33g8Ot/j919RfQoow96rhqByjXr267cvkYRfkmJblRxMExI1LTaqrp2DuM1xCYkIoaqAlCoeh14rCMIIIr+BCBiYYt5yY8ekFxmv7G2RMwxKNzLSvqpg8/f/a/lYAMqx6xvvfKbvQA9ooqYYUh1fYdWNy7lIEySqkJFIhTr1CeS9/oJWmBKdCcCEYPYQFwJucx+GR3aqyVbMMwxAPLdfCnzsex/PXDoXEBA5+L8lssfXcLx+DdB4Q3q8qhpXOFqGpebIExCxUaOJ+/scwKFRmBgE0CcRS6zXzIHX4PAMEF/o1LYOLjrnufR/WyAnVfb2QfAxIOa3/XoFSaW/CdVXWKYbOOSTpOobqajjvdOLy8WdAIIIWwph6G3XrGF3OGATcyKK95/8KUtj50NCMyMZ/6/3OIi5yeeEXGtyeoG29KxNgjj1aSudIS+vJVdKUY4EAc2AarrlzFU3HjuoOEgeWty6U1v5p6/7adI9xvs3qHlB0CPMr6+Rpou/7t1QTz5jLhiY3Vdu2tadmlAEy/mHT9XQFBABcm6NjYmQC7zlpiw6gPJpTe9mfvBnTMCAU1f7fdpquuxlJrwFyqSqq5NucYlnUbF4jh1520OwwIHMYwO79Xh/a8Kh9XG2sz1Qy995IfTFYbTy8akOwkAlIOnVCmVrG60TUvXTDjfi7z5ZAOxRdQ0XUD1qYvIlXJqTPKpVNdjbZHze/jcQ8AEklLv3t5DJrmZSW1Lx9rg6JrFO3++QaBiEa9qJlvISqlUqAX0stzmtd9GqpPOFArMdOJ+81XbVxEF31EpUkvHpRzGqgnq8/gLq6qvSFQ3c/7wmxYcu7jqN8nf5n5w1/+cSQ+cgSJ6I5QI/Y0KwtrG5ZqoaiF11jt/wekBAQcxNLStYrF5ITJfqL32yeaoMKc0cwCk+w36+qT5qu1Xg8PrmeFqGpcbkZJX+wuUBdSVkKhp4XhVnSjF2xOjxQcAUqR38MwBsPoVBQAW2ioiqKlfhiBMAuJz+AvdaptWGnV5BfPHarofbYlKyCdngVMAQBl9fdL4nic6AXofM7S6scOIWD/7FzoLiEWiuoXiyQYBxZurSrE/BKDofs5MHwDdzzEABE42gsMgWdPi/OxfPOUDIkJ1/RKoWFXntgA9jPXPyfQBsPNqh9U9McDdAnWoqlvCquJ132LJDYhFoqbZmMBAiX6/5b3LLkJfn6DnxLzAiQCIPqQtTW+7QMEXGmM0jNew+mXf4soQmjhi8VohjsWMhFcBAJ5bPw0ATHzIiFxFHIuF8VphE4Pv3llsYQCIJxsVqlCV9QCA1KCeGQCp9RotK+UKQBFL1CqRb+NfdD2Gqgjj1Rx1X+FSXP5oiP60nBkAq3t1AkSroEAQqyEf/xfhakAFJkwSE0FVLmgy40kQ6fHLweA47iD0QjueqUsWoEsABZvQT/9FGgfYGBCzQk0CUrUMQAY9vRQ1k56KAYg0g7qkqixnZkz29XkKWIxCMEYmTCjBJIPAdAAAdnfSGZeBFJQU4NKxXYreFjMbEKg0w2KQ+il/XmGA6OwbQrydt+YB4AHgzQPAmweANw8Abx4A3jwAUFmbbCq9wYkr2fnWKUpWKzrJXZEAMAYYyTpcv64WH/+jFgxlHYypTBgElTjzS1bRXG/wJ7c3Y1lriGd2jeIXe/KoSTKceAY4v2c/A9kxwafuaMWy1hCqwOfvSyEMqOKcX3EAMAxkxgRda6pw29X1cAKIAqtWxnHHjQ0YGXUIjAfAeUv9ToBYjNC7JQVjog4Hpqjb/cF0M1ZfGMfYuKKSTrDjypn9hJFRhwfSzXjHyjicixw9uQysSjB6N7dBRCuqBYIrh/odujqrsPn9jXACMB9V/cyAc8C6ziQ23tKI4WzlhAKuJOrvuyeFwEQn8R2fAGKeCAUbmnHJhXGM5SsjFHAlUP/hsROp/xRnMB0JBfNwcrsHQNm/HAOjeYd3/l4Cm9/fCDmO+k/2eesU6zqTSF9bj6GMQ3CeJ4h4vs7EnJM8vEYbmj57d+qII8/0TMMEUeChDS1Y0R4iX5RZf0/m+dOdPF+ibLwQ5eFnK84GBhjOOmy8pRFdnUk4h2k9iygCTXO9wdaNKYwXBDxLAJgE1lheMF9Ew/ORhm2qM9i6qRVVCUZ+XMqeh2cGxsYVl1wYx4Mbmieof2YAdU5x3boafOia+olVQfnf0Qkwmhc8kG7Guy5JYiwvcy48eT5U+XhBcfsNDXhyWwdaGgJkxxyMKS/1iyh6N7ehKsFndXgpT4SCT9/Zio62EONlDAWGCYWiwjnFF+5vw8fSzZUVAoiB4YzDJRfE8b0vrURXZxWGM1FFjspI/etmQP2nCgVNdVEoyJcpFASGMJp3aGkwePrPluND19RDpMI0wORAiAIt9QZPbOvAXTc1YnDYghhnPdDMQG5c8Y4Lzo76TxcKPnj1uYeCICAMjlisXZXEP/7lSlx2ceKIDqJKXAbyRJKGCejdksKff7gN2ZygZPWsdAEBKJQEn7i9BVUJPrLaODe2ii42+fiGZjTVGxTtzEMBUwTEgSGLO29swOOfXYaWBgMnUTio6DzA5PcXAe68sQF/+8mlqEoyMmMOQUAzYpThrMOHrqnHH1xRA+cUhsvzfqLAslSIT93RiuyYzOj3GgaKVjGWFzzyx634/H2RLhFFWd7vvEgEER1NwlzfVYNvbevAmrclcOiwnRblEgHjRUFHW4hP39kK0dMnfM4uFAAbrq3HdV01GBmVaYnWwBCyOUFNkvG1TyzFRz7YFMV7BZh8JvCkA2adYtXKOL7V04HrrqjBcNYeU7U71SzNFwRbN6bQVGcm71You3BVBbZtSqGhlqNeQjr9dzk86vC2ZTE8/qcduL6rBva4CqQHwKnEoQC1VYxvPLIMd9/ciJGsi2YNn/zzQxPUf9268lH/SUOBAB1TQsGpagrMwFDGomtNEv1/vgKrL4zDOl2QaWVeqDl81Uggbt2Uwhc/2o6SUxRLx4rDSepf0T471H+yZtLJUHD9u2uQGT1WD0w+eiTrcPfNjXhy23LUVTNEsGBrCryQy7hmIluWvrYeT/ctR201IztFHBomjOYFn7y9NaL+ObiqaPL3f+auFJKJo32ExgAlF4m9L360Hds2p8ATuYSFXFbmxdDM4ZzisosT6P/8CqxdlcTAkEUiFnX43NBVg5uvqo2WVGZu2Mk5xcolIT56WzNGsg6JOCMzGom9J7d1IH1tlNzBIth4woujjz+aacvbQmz/zDKkr63DvkGLxhqDrZtScy6smCOdsvnWRlx1aRVe31fEZRcn8MTWDlz5zqqj7Wbw+wLKygST4vCvHlyC9qYQK9pDdKTCiYTK3IYn1SiuP3JXK9qbQ3zu3hSqkwznsKg2mQSLrcFj8sDSh+9oARD9fT4SKpNx/Z0XJfCVh9qPJLOM8TuD5kSETd5NOd8xVvXInY6LsocwWMztXn6Hse8J9OYB4M0DwJsHgDcPAG8eAN48ALwtjjyAKI50x1AFn9I03zfxBfN11XF1givqIIYzJbTmayyCuU6bGiaMjSvu/cL/Lbq8+extlARe3VtAIk5zfjlbMC/n81nFj38+5i8jmWKJOCPgCgDAJAhqqzz/n6yoVDki0N9Ed0IkqKxVgL+H+oS2c6qkVUAyQZ4BpljR6rxMimCuHe8kcv6WW5uOdNVShcf+WEh4+pkR7NlXRCI2t0JwXhmgygPgCAAMV6AGcBM/lQ4AJxUoAieZYPKnwi/7hi8GefMA8OYB4M0DwFtFiMDJ3Pd85L99DWABACAWEuIhwfplIOIxmremmNMAoPzHZU+e2lW0iqefGYFhXxHGxKEW+w9ahMEsZgHJ6LQBoDYkkARndcTmNErBIsBr+4re+VMsDGgWDo46mmnRSX9OAwAU8lAJrmlEVeqcLaoJYqRlhmY85ktBU90kWv6mC5ESxBUIkJITHgEArE7raVYBpOjpoUMvfDpLoN+qEsQWNXpFnTURWOk/orMDK3VWxVlSsTkbDu0BAPRBT78M3N1JEYDoDQCwpZwSkQ/Wi0xYEBGcLaiIgogO1BakgJPcknsiAAZaJwCAn4IIxULGj+ciFJZEjFJhVAECEb28b9cn8tjQz8eL+xMBsH69AIAlfQFScsV8xoizC+doS2/TtsL4SHSapfKPp07u0wNgIkYE1cO/hMp+sSWyxZz6pOHiOkZFnEUxnzEQK47df06d3GdIBZMi3W8O/PDhMSL6kYKRHx1wzMan7RZL/GeDQm5EXKlIqu71Q3Vj/wuA0Ecyo1qAI3oCEM1lDrC4UmXv4Vpk8T+XfUvAAYjp2/j+QwV095jpF4N2bHBQpUOxvf8Btb+ypSLlMvuFTeBZYKGzvzEojh/WfHbQQG0BZJ8CAOyEzKwauGEHY2efBfiLbGKUHdqr4qxngQVeWCAyyB56Q0Ahkbh/GHzhvteQ7jdA3wwBsCMt6OnhwYbsd1UKr9pSkSMWCD0LLNTYPzn7RwcAuKIz+AsAdHz2b5oagBS7Ownff6gA1gfZhHT44GtqS3n4bb0LN6k8MvBrB04YiP3yoRe2vIp0P59M/E2/HzHdb7Bjg2vt2t4Pk0jH4nHbuvzyQMX6ds4FM/kFHMRxeOA3khl6g4n5deeCtUM37hlFX6+errJ75g3au/uBHnDwWt2/BaC0LeaboKLJujZSrwkWjPPzowM6vP9V4SBU53K3DP1ky2tY/xxh5+nL+tO5TFWBXmR23TPkpHA7mxCZod9hdOh3ykHM64F5d34Mhfwwht582XK8LhBb+OTQT+7fhe6e4HTUP7OewD4SpPvN0Ev3vSSucB8HSR7a/ysZHd6rHMbhK0Xzo/g5iKOQH8HgGz+z4GSopdHHDv7k3q+iuyeIVnDl3pPQ/WyAnVfblq7t93CQ+IaUcq4+dRHVNl3IUAcV8SFhjo4UYRMiPzqgh9582RInQpXxxwZf3HQvepSjdP70OrpmdkjL3icF3c8Guedv+2ly6U1vclj1gfHRASoVsi5R3cwmiEHVLYD9Luep4zVK9BAxMoN7ZHj/L4nDOqOSj5yf7jf4eqfOpJ3v7Lw0QTGtV37jBkLsmwJaEjDbhra3m0RNVHFSsSjL1Z3e8ZHj2YCYURzP6MjAr10hlwmYAwuVhwd2bfzqTGf+uW9Lm1geNq/92lKTrH0cFN4gLo94st7WNq00ieoWIiKIcwDkyGFInhmm5/DJqh5xNOOL44c1O/SG5LMHDDgJgvu1SmHT4K57no+cT3o2YuzcvDEBAgBoufLxTQz+nFK4VF0e8WSDq65vp0RNCxkTJxCgqoDKxMLBHxFygiuIQGAQEUCAOItCbkRymbc0PzpoQCEAVwQFX7KF3JeH//u+wzMRfLO0MVVpcrnYduXXU4Lq+0H6YcC0qVgEJkCYqHXxqgYNY7UUxBJMbMDGd4VOPSZOxUKcVWcLWiqMaWF8WEv5jLG2SJFUcwUifpq09JUDL255eeI/M0CyMHYmT2GDVNdjbQiTt0Lc3eJK64hjE93HAmYCkUEQJsQvHqecnOKKJM6S6GQIIEAtwLwbZHaI2O8eenHjr46OdVrKsXejzLNQCekdPAkEAGh/71OrFdqlou9T0TWq9iKo1JGJz81Nj4uEAlQtSGkYTPsJ/Esw/ZgNP7+/Lf6zI+OZ7jfY8YqeqrK3gM4mOAIEOV6YrOz+XkNh/OASjde2w45iEV9bVCazABIguGw8XLFnb2owO3UCzZbj5/Bwih5GNxipTj0ZILydIpwOvEJzMWbzwL9KQC8h3elFIE7SgxG5xE8Sb968efM22/b/ZwK0wBwFVp8AAAAASUVORK5CYII= | Decide whether the attestation can be signed, and what the green actually rests on. | 1 | 12 | urn:effortless:pko-extension#AppRoleProfile |
+| Corporate Controller (human) | Corporate Controller | human | #0f766e | shield | iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAX6klEQVR42u1de3RV5ZX/7e875577DoQkCj4KVRTxjYptLQ1aK2MVlNqLKFpArQXbsZ1q62o7nci4prWO4xrtWogC4ltIVBCq9VFbUqUyiqiAUasCIi9BSW7u+57zfXv+uA8TwiMJCcm9nL0Wi5XF4d6ss3/7+dv7+wBXXHHFFVcOUaFD7Hv7u/DB/kJ5UJRdVycASAwdKjBtGtDYyK6u9yB1dQI1NQLV1RKjRxOamkrYEuvqBJYvF2hsdDr8WyQiK0wzDDPBsJ1D2xuYBsMOUNS202hoSO3pXQEAGhp0b3iInn/5kYhs98vW1hrBI2uOI8ZoZn2qVuoUaD0YRIeDXUeQ0wKBgBgJ+ggkPmHCOxL6tdaQsw73/ym513fbrwBQVydw660MIgaAwOTLTiHw1VrzRcTqOJaGBBjg3JcKIVzFtw3+zNCcfzkgkFYAaBMZ8mXW4omEwl/R0KDaAEH1HwC0+YUCkyd+h4h+wUqdx0JKYoaQEqbPp0yfj02fl0hIMiwPufb/pRKU7bB2HHYyGXZSKWRTKalsm5gAyuFiDZG4O6bEo2hoyKKuTmDWLD5Qb3CgABD5X4ADkyaeBIE7ALqQtYYUAlY47PgGDhCGz0fCMIgAcN4LsOv+d4sC1O5vrRRUJqNT0ahON7dIx7aJDAlirNOsf5lctOTPPeENqEes/vJLbgWJX7FmjyDS/qoq9g+qFIbHQ8wM1hrt4j25VeBe4kD7vEAQiAS0Ukg1N+vEzs/ZyWYlSQkCFlI6+pPYkpe/OBAQ0IEo3z9x3GBh+RewkONg2whUVyt/1SBpeDzQWgNau8ruCVAQQUhZBEJs23YwkQDoQ9LZ6fH6ZStQW2vsseLqcQDkv8g38eKzpGU9o1kPllI6A446SlrhEGmlXMX3MhCcbBbRTZ86mXjcEKbhwHFuiDcsndsdEMguW/5zzynfxIvPEpbnBVaq2hsMOpXDhhqG10vsOK6L78VSEQBYawgp4ausFACrTGtMwmNOsEYM35p97sVViEQkmpq45wFQVycwe7b2RS4aLUzrBe04AwOVA9XAoUMNELlWf5CBAGZ4KyqEkALp5hZNHs8lnhHDt2YbFncJBNSVbD8weXwNsVyjNdf4Bw5QFUcfJVlpVyl9GBaEaSKxYydHN2/WwrIk25kLEg3LXupsYig66fpz7QktH9GgGm8o5Aw4+mhX+f3AG2jbRqCmmsJDBpPKZJiE8Uhg8vjD8soXBx4C8kgKTppQx4Z5rSRyKr86LOf284mJK30LAlYKnlCInHRa21k7JBinZr8/+THU1ND+QoHsTNwPRSYcz0I+wUpR5dChwvB6yY35/S8vsEIhkWlucbSQw72fbd6QbVj81v7yAdFJkvoeZjaD1dVshYLESrnK72+iNYRpIjxkiOBsVrOQt4euvnQQ6uv1vnI9sU/XP2uWDkyacC5L4wIhSAWqBkntWn6/DgVWRVhYwaBmIQ/Xaf5XEDEiEdF1AIwcyQBATL9lreEfVAXp8eTKPVf6dSs5UF0t2bYZhJ8Er7i4Kk8hU1cAIDBrlg5MHn8iE42RJNg/qNK1/lLwAlrDCofICgY1hBwEx5gIgFFbKzsPgNpaAQCs5HQWwrAqwspwrb+kWsa+yoFgrZlJX4c6CIwdqzsPgMZGhUjEA/DFxBq+gQOES9+WmBcIhaSUEgw6LfT+pcdi1iydn83cDwByD3FI2ENBGCaFwYbPlwOA6/5Lp0NoGDD9Pg0hPdD8DQDA8uWdAED+IaXFNyCkx/D7tJAS5Ta/J4WAIAIRQZbbeBoziAieQIABhiaMBQDU1PD+AZB/iOCcBQCmz8tU6PqVkeKjqRTimQwyto1diQQYgCFEcSKnHGYMTa9XEDPAOAXXX2/mewLtxNhb+cfA8QSG4fNRqcd/IoIkgq01mpMJmNLAeccdjylnno2BvgDq31qFZ5vWYmcijpDlhdcwoAtDmqWaBzBDWBYJElDsDK1MbPLtImrNl4O8NwAQbr2Vj2xq8u2i7GAwIIQsWZMQRBBESDsOWjIZDPT7MeWMs/G900bhW8cMLz53zlePwQ1jxqL+rVV4Zs3b2LDrC3hNAwGPBTCguDSrHyEESAiGIG/W8R4BoBV1dZQfJt2LByDi1sgFPmjrKGEakFZurq+UEkApBJgZSTuLjO3g6IGV+Gntebjk5NNwTFV1uzFsylvL8TWH4bfjLsLMc2rx4vtNWPD6P/DOlk8hSCDg8UAKAa01SsYn5BJBkqapHaV8rHEkgPfQ1ET7DgEAyDQZNtml5uYFEZTWiKZSkELg5MFHYOror+OCE0aiKhBELrnVxWdlAdRE0MxgZlQFg7jyzNGInH4G/vbhB3j49dewYsPHaE0mEbQsmFJ+OcNfSr0BIfeoT2MfDBCVmptPZDMIWV58+7gRmPHNWpwz7FhIQe0Uv7eMXxAVY6dmhiklLhgxEheMGIn3PtuG+StX4Ll312JnPAbLMOH3eEoLCMzUNQD0dzdPAiAgmc0iZWfxlcpBmDzqLEwb/XWccPjg4nNK65y1d7LUKySMDEDn/+8Jhw3GnZd8Hzed+x0sXP0Gnln7Dpq2b4UkgaBlgfKepxTFKMUyjpnRmklBacZJg4dg/Emn4gdnfQ1VwWAxvnPeqrtb41P+uwAUw8PgcAX+bez5+PGYc7FkzVt4/M3XsWrTJ0g7NsJeH0whoPLPugDo9TJuBC47dRTGn3gKPIbRIb5TD4eZtuHBIyUmnX4mJp1+Jl75+EM89fbqki0jjXIo47rq5g8UiG3Dw5hjhmPMMcMxs0TLSKPUyzghxEFv5e4pPJRqGWmURRnXx16qlMtIo1zKuP4ChFIrI/scACnb7tEyrr8krPstI7dthRQCfo/n0AQAAdBgDK+u6ZUyrj8c+tCZMvLdbVv71AsYfWUljlIIe31Yct1MVPj8vVrG9bfw0LaMvHzB/Wj8+EOEvd4+aSYZfXkgnpHn5pXW7SwGZXwKSCE8OErBkBIew+jTxpHo61MROa94OoTGzQpgJ/T9UTnuUV2HuLgA6I7XKuVpIRcAB+6+2zatXAAcIlKw+G3RFky8+06s+XQTpBBwlAK7ADg0AMDMuOGRBVjy+ms477//C4+89iqM/Mh8qYYEFwCdEEcpGELgjuf/hCVvrER1dQ3Sto1r5t+HWxqeyJFS+TrfBUCZidIahpRYtXEDblu6GOFgCFnbhiklgl4v7nj2GYy763as3fxpsYvpAqCMDnAWRGhJJjFt3r2wlZOjqvMhQTOjZsBAvPzmG3h2zVsgotwBmS4Aysf6iQg3Pv4Q3t3yKYJeX7vM35ASO1qjmHjOt3DLhROgmSGldAFQNnFfSsx/ZTkeeaURlaEwHKXaLV2kMhkMq6rGnKnXluzerAuAPR63k4v7TVu34Jb6xxEKBDrW/MzIKoUHrp2BmlC4SFu7ACiDuM8A4pk0pj9wH6KpFIz8FE9b198Sj+GXF16MscefACd/PL7rAcok7kshMOuZp/H6hx+gwu9vZ/1SCESTSZx34sm4bWIk93wJE1miHK9d6W4pVij5lr69Gv/7wnMYGK6A3SbuExFsx0GFz4f5068vMnrkAqB/dOqKwyTdaMrovOVv/HwnfvTQPHhMs8NnCCLE0yncM2UqhlZV5+J+ic8wlAUAnHwClshkcN38Oah/Y2Vx6qgrcd9RCtcuuB87Wlvh9XjatXcNKdHc2oofnz8OU752TknHfZTDbuCXylcwhMT6nTswff4c/H3dWvz53XU4+6vH4iuDqnKDmftRVMH13/7cUvx13RoMqhjQzvVLIRBPpXD28OPwh8gVJR/3y8oDGELi5ffexZjf/yde/fCfqK6qxmfRFlx1/2wks9niLN7+lL/8g/fwH4ufxIBQuEPczz0jMHfaD3PbPiUe90seAIVWbCKTwey/vYQL77odLckEKvx+pLMZDAgE8Or7Tbhp0aP75O0LJM7n8Rimz58DQ4gOB2FIIdAaj+N/Jl+Nk488qmxcf0kDoDBvv2rjevx43hwELC88hlFs3dpKYVBFBea89ALuXf4XGFLuMR/Q+ed/vvBRbNy5Az7LatfLN6TErlgrrh5Tixljv11kBeGOhKHPdwc1M7513Aj8fMJEtCQSHeK8ozUqQiHcvPAxvLFhPQwp23kCJ+/65yz/Cx55de+t3qHVNbhr8lU5YqgMp5ZFqd97f+ekKTh35IloScRzwxltMnvKAyUy+27sjMUg8j9rrWEIgVUbN+CmhY8hHAh2CBPMDEdrLLh2BqqCoWK4cAHQj2bsC8ndA9Ovx+EVA5DOZtspSWsNv2Vh864vcMV9f8xt53JuQzeZzWDa/DlwtCpuI7d1/dF4DLdNjORavUqV7c6C6C+zdt09Bk0zY2hVNR770U+QzV9bR7uxehWBAF5euwb/vrgBUkhIIfCLhifw7uY9U7y74jGMH3UWfvnd8cUqodfGzHAI7wUQEQIe64BAUBjMHHv8CbhnylS0xGMdOHlHKQwIhXDHs8/gmbfexOLVqzD7pecxMBhsH/eJkM5mcXjFANx95Q96+Hr1PVcgpjgEN4M4vz69Mx7DU++shsjv13e7FyAlHK0w89zzcfU3a7ErGoVpGB1KR6/HwoyH5+OGRx5AwOfv8J1EhKxt476p12FYVXWnmkjd7VwaQmDt1i1YvXkTApbVZ0OlfeoBTCHws6fr8fiq1yGFgDqAEzQk5cLBPVdOxVnHDkdLvGNSaBoG4pkM4plMB4rXlBLNrVH8bNx3MeG0Ub0W9wvKX/3pJlzx0DzsSiZg7JaDHBIAKJRVQcvCjU8vxG/+tKRY3nXnZRSSwgF+Px68dgaqQiFkbLtdUsjMkPkjZdp+R4HiHT38eNRd8r0iJdxbyl+0ehUumTcbsUwaPtPTpyPloq/pWwCo9Acw+9Xl+PWyxZD5cNCdl1LIB0YOOQL3T/shUtnMnomfNp9doHhDXi8WXPMjBC1vr1C8dr6JtGj1Ktz41EKYQsAjJXQfHyAl+gOHr7RGTTCMe1c04lfLFhePdO8OCApdvwmnjcIt353QIRTsaXc/kcngj1dNx8ghR/QKxau0hiklFq1+Azc+tRBByyp6O7cP0IbVqwmGcN8//o6blzyJRL6m75YnkBKO1vjdZZdjwqgzsSsW2yMITCnRHIth6je/hSlf+0aPx/3CgIoUAvNXrsDPnq5H0LIOOOkt20aQozWqgyE8sHIFJj84F63pdLdeFgG5gxiYseDaGTjxiCORSKfbgUAKgVg6jROPPAp3Tb6qx+N+8Rg7Ivx62WL8fHF98VjZ/rRGJvrjOHZNKITXNn6MKQ/PK4Kgq5u4hRddGQjgoetmgsFIZTIwDQOmNGArBUHAQ9fNxEB/oEfjvm5j+b9ethj3rmjE4eGKDvmHC4B9JExVgSBWblyPKQ/PQyydLpaJXU0KldY4Y+gwLJp5Iwb4A/iipRlfxKJIZTO4b+p1OGPosB6N+wWrl0LgV3nl1wTD/XaLuN9OBNlKYVAgiP/7ZAMue2AO7r7scpxw2OAuu+rCCZ2Xnn4mRh09FIvfWoVEJoNxJ52CM74yrGipPan81nQatyx9Gg1vr0J1MARHK7gjYd0EwUB/AGu2bsZl8+9D/fQf4qTBRxTr6a5wBkprHD2oCj89/186KKynlT/l4Xl45eOPcFg43Om5RDcE7CMnqPD50ZpO4fIFc7F22xYY+Xq/OzMEjlZwlILmntvkKWwFFZS/cuN6DC4B5ZcMHewoBb/Hg2g6hckL5mLN1s35/r/u8nl9hpAwpIQg0aOLJNF0qqj8QYEgsiWg/JKaB1Baw+/xIJZJ47L5c/Dk26tznqAP17EL84Hrtm3BRXP+iDc2fYJKf6DdUCncsfCeBYHXNJF1HNzQ8DiU1rh81JnFTd6DrXxDCKzdtgWTF8zFrmQCFV5fv074ymIvoNBWDQmBG59aCAC4fNSZvUbg7I/OnfzgXETTKYS93pJTfulOBecz7qBl4adPL+wROrm7dG40nYLf4+nTUHRIzgQWdgGDlrdH6OTu0rl+j6ekzwsUpb4NDPQcndwdOrfUD4s0ymElXDEX6WQG8PvxE3u00dOezl3U7xg9dz28h+nkUqJzXQD0Ap1cSnSuC4BeoJNLic51AdDDdHKp0bkuADpJJ7/32bb9gqAtozez/nHMfe2Vfk/nugDoAp28btuW3OTwHkCwO537xJuvY9AelkYPHQBQeXi8ztDJpUznovMzctxpALBtEzjfIyiDleh90cmlTud2oawxOgsAMjNemwgtzBo6a3M5nIezNzpZ5hm9UqVz92HxYKWglSIw21pQCwBg5EjeFwAYdXX0xdKlMSbawAC0crhwNm45gMBrmrCVwsz6R7Fk7dv4YMd2TFpwPz76fGeeztXldOYxa8chgJMey/kIADBrFu+7FdzURPkUYBMDcDIZ9obDZVMCFdq6AcvCzUuehM80EUunUVGidO5e3D1ICKhsljUzAfgslPRkosy0e0jvGAJ27Mg9wXIVQLCTKZTj/T+GyG0HxzMZ+EyzrCy/eD1vJsNMAIHWbW5oSGHSJJHflN8HAMaO1QCgpfoHtFJOMim1UmWRDO7e6qU2a+XlKNl4ggECCK+0M+59AiAfI8JG6j1i3q4ch5xMhkFUFnlAx6truRwvKYZWCk4yKaGU1oJfbWvc+6sCGJGI/OzRlxIg8VdNhHS0VQnhnixfSvE/G09ox7aJgPWpluxaAIRZs3TXOoFMDxIzp5ubRTmGAZTxLeWp5mbNOaN9DM8/n0Ftrex8J7ChQYGZEiN3/R1ave/YNqWaWzTlL0l0pR9bv5Swk0lOR6OSWGekoEcAAI2Numut4EmTBGY1OgLiD2QYlNi5k9n1AiVh/fGdn2uWkkjzotZFSz5GJCIBdBEADQ0adXUiFksvhHI+cLJZkWpu0cL1Av3c+lOcjraAWGcJ/DsAtHv3r7M5AKOpifD88xkmdSMZBsW2b2OVzQJuQtgvM38AaN26VUEaEqzvjDUs/QCRiNhT8leQfa/TNDUxIhFp1y/5yDrhuBO1ECc5iaTjr6wUrhfoX9YvDAOxbdt1sqVZEmO9ZWauTn1vio3Zs/nA5gHyoUAgNYOY16fjcRnbtk0Lw3BDQT9SfjrayvEdO7SQUgmoKbsee761TbvjgAZCGABaG17cJUhdKQ0D8R07kdixk4VpuiDo67hvGMgmEmj55BOHvJYBx7k5Vr9sJWprjX25/s6FgII0NjIiEZmtX/yp5/jhW8kyJ6Sbm7WQBlnhELnVQd9Zvp1I4IuP1zswDRO2PTfRsPQ3qK010NjodOZjOr9S29TEqK01sn9+cZVnxPCt8HguSTc3ayKCJxSiImXsAuGgSM7tR7l5w8ac8h01N1G/5HrU1Qk89FCnma2u7VR/8olGba2Rfe7FVdaI4VvJY12SbomSk04rKxQU0jTBBVbNBUKvlXpEhNi27Tq6eTOR15Kw1dxE/eLrEYnIfNLHvQOA3UBgnDB8pZDGt+1sNpxpbnGk6SHD5yMSIucNXI/QI0oHAJISQko4qTS3bNqkUi0tkgxDQeubEosW/wZ1daKryj+w4/AjEYmGBuWbMGGI9MkHWMpxbGdhBYJOoLpaWuEQUZ6VKiaKLhi6pHQQgYTInWecTHJi5+c61dIi2TBA4H+Ssq+J1y9bgbo6kWdxubtX7xwQCAAgNPnSa7Sm2yDFELZtWMGg8g0cQFY4TMI0iEBfbta4lcNemzmU/wMAWilk43Gdam7hdDQqWQgQOAsh7/A40TubG/4S7UrC1/MAKH4GAyAOTJxYAw9uYGAGER3GWkMaBkyfT3kCfjZ8PjI8HkFCQBiG6w7aGr3S0FqxzmbZSWc4m0hwNpmUjm0ThABpzkDQ49B8V6J+8ToAyFu+7onLtw5c2niDwOTxh5HwTGCtp7HSoyGFgdxsSu6CZyEgPR4NcDecVnlavnYcUkoRF045IQJpBQjZBOYGErQw/sTT77d51xo98PZ62goJkYgoAAEAglMiI0nz2cx6DLM+iRUfC9ZhGIZ0Q0GbPn6uemomwnYI8R6AV6Q0V7RmeXXxfUYiEiNH8oFafW8CYHcgdEBpxdSpA1Q6Opil53A4jqt8ADAMaK1iHiv4UTSZjLU1oN5S/MGTujqB2lojz0m7cb+z4fQgvbO+UAihro4K+weuoD3x1gkCxxVXXHHFFVd6QP4fEHLAgjwxL/4AAAAASUVORK5CYII= | Prove the close controls worked — not merely that nothing failed. | 2 | 10 | urn:effortless:pko-extension#AppRoleProfile |
+| Finance Analyst (human) | Finance Analyst | human | #0891b2 | ledger | iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAPV0lEQVR42u1dbXBc1Xl+3vece++uZEkrY0sWhgQHbMACAiXQGTpumnZIJpOZZvpj/SMZ2gaKMR9J00nJDFC6WhgzCRNKWxLKx7RpSmipdvqvM5lMJ2ko0CQzTCcBLBuCAdvI+EuyrV1Ju/fe8779sStbYINlWyuttOed0cgeS957z/uc5/167rmAN2/evHlrU6PF+1z1q3+yK3Q5AoBQKBAAbvxdUCyKd/gprFBgjAwSNm4njIwoSiVpNiioqTcDMIrF9KR/y+cNLv5MN6YPKOIMtbXTw6oimyHUwioe/cb0yWs1bIASmgWG+V/8fN5geFhApA0g2HA83EDK1wPySRV3lTo3AOY1cG4Ro1CrmALEAFAma98EYTeUfi2kP0/j5DU8VZx6HxhKm+cVCDSvO35oSGccH3xt21UsuEkk/QJEN8AGpn6/CgLAzJ7yZ5mInPAqEeBSgGgPGfMTIvxb7b1f/RSlkju+yWb+3BIAqCPTAUB057YblfRuOPf7aqwhEbAxCDo7ne3s0iCbJbIh2SginweecLhLYpU4URdPa1KpIJksG5ckpMyACIjoFVX8XXIo+SFKxRiFAqM4pADp4gFg1q4PthauYBM+rITPqzgwMTK5lWl2dR+bTAdxEBARQVUB1fp3b7MwQAARqOEScQlcrSbVI4elevigSeOEKAgAkddA+Gb83b/60XywAZ1TrG98cHB7cYjY3KOqIQPS0b9Gs30DbKMMqQhUBJjtcIKP/adMB/R9rEDMIGZImqI6dkgm949qWqsZshYEfa52rHIXnvnW2GwGXhgAzHzglnsHwjD7fXDwOdSq6Bw433X0rzUmiiDOASInYpq3swcFEdja40Co7N0Nx8ys+huXVr+SPvngSygU7CkrrtOYOQvat3j8Lmdvvf86G3X+twquNoQ0t/5y6ug/n0GAOnfC8d7555wfAI01JULY3UPRylXkysfStDa9moPMH/M1m/bLI8WXUShYPP+8NI8BGjvf3nr/dRxFP1bnejPdubR73XrLQQBNU+/wBWAEYgaIUBnd7Sr79jKFWaK4tqX25NDTZxoOzBklfI/fJfa2e6/nMPtjSZLejvNWu9z6yy0AoIFQbwvDCFBBZuUqZmNRGzsolMl80V79O/vcv9z1MvLDBiMlnUcGKDBQVNxyT1+Y6XhFRfqyK1e5nk9sMOrc8TjlbeHZgIMQk/vf1Yndu4SirKHa1GdrTz74X3Nlgrl1Y/KDBABhmH1GQX2Z7lyau/hS875Y721R2ECSGJ0DF1DXhetIalVVEz6DW+7przu/wOceAhpICrcOFTSMbjGEtHfDoJ2doXpbXBCocwh7cuQmK5ImcZdl+0n3hd99Fn0j9aHSWTNAQbnu/AcuhTH3UVyT3Cc2GK43JLzzWwkEIuhet95Y5hRheGNwgG5CqeTqw6SzDgFDje/y96oIOtcMaNjTSz7bRysOE8BBiK6LLmat1YSIv4U7HzoPw3kBlM4cAPlhg2JRotuLn4ENPssE19G/1ojzzm/dUJAgyq3kaEWXaBCsCST5KogUwyU+cwBs3K71MK/3qwg6+tbARNGJ7p63lpwsA0DHwFqDuKYE3IUthVXYvPlDWYA/NPYXixLc8cAgiDcZIu1YPWDE1/pLgAVSRD29FK3oErXBeZG1fwRAURgyZ8AAQwwArPoVNdZGuZXOZDJ+9y8VFmBGZlU/4JyquD9rqLPkTBpBhHwhCFbiFTL20t4Nl0vY1cM++Vs6+lJ1grHtv1KXJAkZuTL+XvENQBkgOQ0DKAPQsC+6CGTWGWs0yHSwiqf/pdUhDBB0dAqsDUnNDfXQPsSnDwGNHyJNb4A1oe3oFAqC98+qvbW+zJAIQXePNsQ3vwcAGBw8yYn2pF9u/JCKXAc2CDq7tK7kWRgNB7VHor4AJKAIsp1cd5xehS1PBsjn09MDYPv2mWu8FKow2SwthHzLUF0iGLvlnWgGTGAiuGauaaMzaKMMGWa4OL0I0b4siCbq5eAJHeEHAKCEISgmJrI6jQECwDakZtO/IcKxOAGD0N8ZgZdhrqGqICKMTceYTBLkoqDJjKAgY0DMCuZMmNLaGJhAYYhQhH44AxAp/uKRLGTiQg4YNszUGaBJTmEiHK0luPHjfdhy5cfxW/052GWabCqAXUcn8cOde/HsjncRNthAmyUcsZZMGEnqXJbgLgCwAyOD9NEhAACqsYIoaXbUMg3nb7nqIjy8abAt8rNr+3O4tj+HT/X34us/exVZQwukK+TkzFrBqtRs2p+I6zv/4U2DcKpwqtAG5Jbrl6gidoIvX3YBvvmp9ThSS2CZFmJYRGcvCGlaNky48+p1xxfHUF0Vv5y/mAjWMEQVNw9+DGtXZFFzsmjVDy/Wg9CxEwx0ZnD16h5Qw/ntYjOLfl42xFWrujGdukVLfHmx9Y3t3ltcbNz7JzTb3DwAPAC8eQB48wDw5gHgzQPAmweANw8AeEFF21yrxRI92nQx++dzcbxlWhLtbbuUdhMBGJuO8cLoGKZTVz9YqUWvlkC4tj+HS3Kd0BaWui0pBnCqeGF0DAenY0SGW/akMQLgVPDi6DhWZyP0RNYzwLwsqiimU0HEXB+vtjDDhkSIRTGVOPREtmWfpOelOD1bCsmVYmmcneHLQF8Gwr/koI1LwSWVBHJDMuZUEXDrxwKZuU4PgPmrra/tz+HF0TEkTlqYCxSiwJWrunFeNqyXgeQBMC+0f0muE30dESpx2rIPkCgUATNWZUP4RlATmKA7tOgOl9ylewDMFxPo7NagtugFLhHBq12yVQC1cElAvgz05gHgzQNgmTRW1CeB7akHWEpzfa8HaPO5vtcDtPlc3+sB0N5zfa8HaPO5vi8DvXk9gC8FvR4A7TrX93qANp/rez1Am8/1vR7Am9cDtPNc3+sB/NHlvg/gzQPAm9cD+GvyegB/DoDXA/hzALwewJ8D4PUA8HoBrwfwegFfBnrzegBfCno9ALxewOsBvF7A6wG8XsDrAbx5PYDXC3g9gNcL+D6ANw8ADwDfQGnn+1/0N4e20ytj8SEv0W47ACiAgBmHp2K8fWwKogpRbbtdP5U47Do6iZB50e5/0RjAMDCZpPjByB4wEZwo2gEDCiBxAibCj945gJ3jFWStWbRQYD+Cn5t6TakocpkAz+zYi2v7c/jSZRcAwLJnAiZCaBi/PnQM9740ghWhWZh7Zta5AyAOCWbaNn3QrfVQ8PWfvYq95Wn8ycYLsaYzs6wBUElS/OdbBzD0850YrybosE0GAFG9YSGJnSsACLo/AXUeVZFul8QaBAE1Q36lAAwBxjC2/fJ1fH/7HlyxqmtZJ4ZvHZvCG0cq6LSmuc4ngjoHSWICJHEcHAUAbMzrRwCAFIUCo1gs09ahtwX4mCSJ1mU4zdE6zVzNymyIiTjBT/YcWtYMEDKjNwogaHbiS1CXqqQpwbmpNNP1JgCgCP1oBhgcoQaC9gCAq04r0cqmJylOFJYIPWGwrAEgULhmx3xVEDPSpKaiSiA6AN5TO1Xz+mQAbN9Ija35MohuSicrC9at0IbYw9s87H9mpFOTjdWk1/Doo9PI5w1K5E5TBg4JAIiR/4VzLpksG3HJ8j0ladnWm4q4XFbUVVQv1OP/Rjp9H6ARI9LMih1Q2Z+mCblqVcHs+7ZLSDotziGdLBs4JyLy4uzNfRoGIMXwsMEjd08S0U+VGNWjY46Zfed+iex8MgZx+ZikSUwQeSuNxl8FQCiSzK0TWJqBgvwzRLR6+BBLmgLsw8DSIABC9fAhUTYA07N47LEaCgUz91ZwabODKtX68T8QtzNNEqqOHxIyFvBJWkv3mckYJJWyVo+OGRJXYxc/0wjtcmazgM0lRrGYAvg22YAm33tXNU19MtjiCCBiTO4fFTWWIPLvtae27UJ+2ADFMwRAKS8oFDgJxp6jtPZ6GsdcHT8obD0LtHLsT6bKWj0yBhKJAX4IAH2w+zfHaSApRgYJjz1WA/RrZAMq792trlYF2AuJWlUoWd79ttMgMqruO/ETf/068sN8quRv7rLG/LBBabMLby8Oqw3yUZRJey+70qqk7XGK0hLZ/RwEKO99W8rvjTIzvxUbdw1WooLikAKkZ68HaISCOJatJO6tamXCVEbfEQ4iHwpayPnVI2Na2bdX2FgnUv0yHitOHGdynJMghBQYAv6xOC5J/CU2FpV9ezH53l7lIPQgWOy4by3i8gSO7Xo9pY4uC5f8ZfrEQ7/ApwsWxaJgXhRBRRLkh0361IO/pDS+jaMsT7yzSyb3v6scehAs5s5PKmUc2flaqkEUoDr1dPxE8W9RKFg8X0zn8t+YOX/gSElRKFj3yAMv26s37UMm88Xa2EEhYoQ9OZq5KF8mNt/xIDpO+0d/syPVMAwQx0/H/1DY0hjnC5r2bEuhYFEspsFtQ7dyFD3lqlVke1e67nXrjQlCSJos71dstECpBwCV0T1SGd1D1LGCUJuuOz8/bFDKy+ni/tkxwIw9/7zg0wUr/1F82V5zwy/IBn+QxnF39fDB1EQR2Y4VRIYBFSzL89UXY8ej3uFja5FOVvTYrjfc9PghQzZwkPgb8eOF+1AoMB6/U8/E+ef2dFujPMzefPf5rqP7n8DB5zSuIlrRnXYMrDVRTy8RMcS5OhgAzwxz7efqibUiY0BESCplndw/KtXxw0aDCKzyhkvSm9MnCy81aF/PZlp3bt5ogAAAgjseuJlAD6qx5yOuIurqdplV/RTleomDkIgIqgqVBjOo+DbC+w5BpLrDiUBUn7yKc4jLE1I9fECrR8aNGgtSidWYh5Pase/gqW8fmwnJi/d8q+qMhEw7txb6YhPeQZCtyqYfLoUxFkFHpwu7e9RmV5CJIq7TWUB+vDxLwJmmUOfUJTVNpyY1Lpc1mSybNIkJbEDO1WD4XzVN/iZ5ovhaIx87o4SvuQ84z2KDzlu29adZ/KGq/qk6dz2stTOxjInAzDBhJN7zJ9wgaUwuTUlV69uCCHApwGYETCVSPBd/976ds9Za5kOgMc8krIR8iWeAAADhV7dtJKLfVtFNULlCU3cJVLoRhMb3D2aZOIBwBET7QbyDQC+I4ZfS9y75v+PrmR822Lhdz3XXN/+IA1XC5hKfEqV//mgujMsDlInWoFr1jgcAm4GTpJyuWvsmBjvL2LzZncSu8+z4hTvjolBgAIyRQZ0v2lr2ls8bbNxIGBlRlEpNXbNFyMOVUBgijAz6GgAf0OGVhmdKI79JvHnz5s1bs+3/AYvqtJfmNHICAAAAAElFTkSuQmCC | Check my own steps before somebody else does. | 3 | 11 | urn:effortless:pko-extension#AppRoleProfile |
+
+### App Nav Group
+
+| Name ƒ | Group Label | Route Count ƒ | Semantic Type Iri |
+|---|---|---|---|
+| Attestation | Attestation | 4 | urn:effortless:pko-extension#AppNavGroup |
+| Assurance | Assurance | 5 | urn:effortless:pko-extension#AppNavGroup |
+| Authority | Authority | 4 | urn:effortless:pko-extension#AppNavGroup |
+
+### App Route
+
+| Name ƒ | Route Path | Route Name | Surface | Nav Order | Route Kind | Purpose | Layout Hints | Is in Nav ƒ | Is Shared ƒ | Is Maintainer ƒ | Question Count ƒ | Reference Count ƒ | Answers No Question ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Can I Sign? — /cfo/attestation | /cfo/attestation | Can I Sign? | domain | 1 | dashboard | The one screen I open first. A single verdict for the close I am being asked to attest to, and if the answer is no, the named blocker. | Hero verdict card (green/red) with the IsAttestationReady column and, beneath it, a blocker list. Right rail: assurance grade summary. Nothing below the fold that is not a blocker. | true | false | false | 2 | 3 | false | urn:effortless:pko-extension#AppRoute |
+| Blockers — /cfo/attestation/blockers | /cfo/attestation/blockers | Blockers | domain | 2 | workspace | Every reason I cannot sign yet, each one traced to the row that produced it. | Ordered list, most severe first. Each row: the blocking condition, the entity it fires on, and a link into that entity's detail route. Empty state must say 'no blockers' explicitly, never render blank. | true | false | false | 2 | 2 | false | urn:effortless:pko-extension#AppRoute |
+| Assurance Grade — /cfo/assurance/grade | /cfo/assurance/grade | Assurance Grade | domain | 1 | workspace | When the verdict reads TRUE, what proportion of the controls behind that TRUE were actually demonstrated to work — versus asserted by an interested party, versus never exercised at all. | Three-band stacked bar: demonstrated / asserted / never-exercised. Below it, the per-control table that produced the bands. The headline number is the grade, not the verdict. | true | false | false | 2 | 2 | false | urn:effortless:pko-extension#AppRoute |
+
+### App Route Question
+
+| Name ƒ | Semantic Type Iri |
+|---|---|
+| cfo-home answers q-cfo-can-i-sign | urn:effortless:pko-extension#AppRouteQuestion |
+| cfo-home answers q-cfo-approving-on-unfit-version | urn:effortless:pko-extension#AppRouteQuestion |
+| cfo-blockers answers q-cfo-can-i-sign | urn:effortless:pko-extension#AppRouteQuestion |
+
+### App Route Reference
+
+| Name ƒ | Semantic Type Iri |
+|---|---|
+| cfo-home -> cfo-blockers | urn:effortless:pko-extension#AppRouteReference |
+| cfo-home -> cfo-assurance-grade | urn:effortless:pko-extension#AppRouteReference |
+| cfo-home -> cfo-signature-dependencies | urn:effortless:pko-extension#AppRouteReference |
+
+### Rulebook Table
+
+| Table Name | Name ƒ | Physical Table | Physical View | Subject Area | Is Extension | Field Count ƒ | Policy Count ƒ | Is Unsecured ƒ | Disagreeing Substrate Count ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|---|---|
+| AccessDenialTests | AccessDenialTests | — | — | access-control | true | 18 | 0 | true | 1 | urn:effortless:pko-extension#RulebookTable |
+| AccessPolicies | AccessPolicies | — | — | access-control | true | 16 | 0 | true | 0 | urn:effortless:pko-extension#RulebookTable |
+| AccessPrincipals | AccessPrincipals | — | — | access-control | true | 15 | 0 | true | 1 | urn:effortless:pko-extension#RulebookTable |
+
+### Access Principal
+
+| Name ƒ | Label | Pg Role Name | Schema Name | Is Administrator | Organization Scope ƒ | Role Label ƒ | Policy Count ƒ | Grant Count ƒ | Visible Table Count ƒ | Has No Access ƒ | Is Over Privileged ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Finance Analyst | Finance Analyst | pko_finance_analyst | pko_finance_analyst | false | acme-finance | Finance Analyst | 7 | 51 | 7 | false | false | urn:effortless:pko-extension#AccessPrincipal |
+| Corporate Controller | Corporate Controller | pko_controller | pko_controller | false | acme-finance | Corporate Controller | 8 | 69 | 8 | false | false | urn:effortless:pko-extension#AccessPrincipal |
+| Chief Financial Officer | Chief Financial Officer | pko_cfo | pko_cfo | false | acme-finance | Chief Financial Officer | 5 | 37 | 5 | false | false | urn:effortless:pko-extension#AccessPrincipal |
+
+### Access Policy
+
+| Name ƒ | Command | Row Predicate | Check Predicate | Rationale | References Inference | Is Write Command ƒ | Is Unrestricted ƒ | Principal is Admin ƒ | Is Unrestricted Non Admin Grant ƒ | Is Unwitnessed Write ƒ | Denial Test Count ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| principal-finance-analyst SELECT Steps | SELECT | — | — | Preparer of reconciliations and variance evidence. Needs the steps assigned to them, what they recorded, and the requirements they must satisfy. Not governance, not comms. | false | false | true | false | true | false | 0 | urn:effortless:pko-extension#AccessPolicy |
+| principal-finance-analyst SELECT StepExecutions | SELECT | — | — | Preparer of reconciliations and variance evidence. Needs the steps assigned to them, what they recorded, and the requirements they must satisfy. Not governance, not comms. | false | false | true | false | true | false | 0 | urn:effortless:pko-extension#AccessPolicy |
+| principal-finance-analyst SELECT ProcedureExecutions | SELECT | — | — | Preparer of reconciliations and variance evidence. Needs the steps assigned to them, what they recorded, and the requirements they must satisfy. Not governance, not comms. | false | false | true | false | true | false | 0 | urn:effortless:pko-extension#AccessPolicy |
+
+### Field Grant
+
+| Name ƒ | Can Read | Can Write | Mask Strategy | Field Table ƒ | Field Name ƒ | Field is Derived ƒ | Is Writable Derived Field ƒ | Is Masked ƒ | Grant Key When Readable ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|---|---|
+| principal-finance-analyst -> Steps.StepId | true | false | plain | Steps | StepId | false | false | false | principal-finance-analyst\|Steps | urn:effortless:pko-extension#FieldGrant |
+| principal-finance-analyst -> Steps.StepNumber | true | false | plain | Steps | StepNumber | false | false | false | principal-finance-analyst\|Steps | urn:effortless:pko-extension#FieldGrant |
+| principal-finance-analyst -> Steps.Title | true | false | plain | Steps | Title | false | false | false | principal-finance-analyst\|Steps | urn:effortless:pko-extension#FieldGrant |
+
+### Role Schema
+
+| Name ƒ | Schema Name | Search Path ƒ | Is Sealed | View Count ƒ | Is Empty Schema ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|
+| pko_finance_analyst | pko_finance_analyst | pko_finance_analyst | true | 7 | false | urn:effortless:pko-extension#RoleSchema |
+| pko_controller | pko_controller | pko_controller | true | 8 | false | urn:effortless:pko-extension#RoleSchema |
+| pko_cfo | pko_cfo | pko_cfo | true | 5 | false | urn:effortless:pko-extension#RoleSchema |
+
+### Role Schema View
+
+| Name ƒ | View Name | Schema Name ƒ | Source View ƒ | Grant Key ƒ | Column Count ƒ | Table Field Count ƒ | Is Full Width ƒ | Is Degenerate View ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|---|
+| pko_finance_analyst.steps | steps | pko_finance_analyst | vw_steps | principal-finance-analyst\|Steps | 12 | 42 | false | false | urn:effortless:pko-extension#RoleSchemaView |
+| pko_finance_analyst.step_executions | step_executions | pko_finance_analyst | vw_step_executions | principal-finance-analyst\|StepExecutions | 10 | 109 | false | false | urn:effortless:pko-extension#RoleSchemaView |
+| pko_finance_analyst.procedure_executions | procedure_executions | pko_finance_analyst | vw_procedure_executions | principal-finance-analyst\|ProcedureExecutions | 6 | 78 | false | false | urn:effortless:pko-extension#RoleSchemaView |
+
+### Jwt Claim Mapping
+
+| Name ƒ | Claim Name | SQL Accessor | Is Reserved Claim | Maps to Principal | Description2 | Usage Count ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|
+| email -> app.jwt_email() | email | app.jwt_email() | true | true | Verified email address. Magic-links asserts only that the bearer controls this mailbox; everything else about the caller is resolved from it inside this database. | 0 | urn:effortless:pko-extension#JwtClaimMapping |
+| tenant_id -> app.jwt_tenant_id() | tenant_id | app.jwt_tenant_id() | true | false | Magic-links tenant the token was minted for. Pinned so a token from another tenant cannot authenticate here. | 0 | urn:effortless:pko-extension#JwtClaimMapping |
+| principal -> app.jwt_principal() | principal | app.jwt_principal() | false | true | AccessPrincipals row the caller acts as, resolved from the verified email via vw_agents. Not trusted from the token itself. | 0 | urn:effortless:pko-extension#JwtClaimMapping |
+
+### Access Denial Test
+
+| Name ƒ | Forbidden Row ID | Expected Visible | Observed Visible | Last Run At | Has Run ƒ | Is Passing ƒ | Is Leak ƒ | Is Unproven ƒ | Rationale | Is Positive Control ƒ | Forbidden Table | Forbidden Column | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| principal-finance-analyst must not see close-v1.0.0 | close-v1.0.0 | false | false | 2026-09-13T18:36:06+00:00 | true | true | false | false | close-v1.0.0 is superseded (is_current=false). Only current versions are visible to an operating role; version history is for stewards. | false | — | — | urn:effortless:pko-extension#AccessDenialTest |
+| principal-finance-analyst must not see close-v1.1.0 | close-v1.1.0 | true | true | 2026-09-13T18:36:06+00:00 | true | true | false | false | Positive control. close-v1.1.0 is the current version and must remain visible. | true | — | — | urn:effortless:pko-extension#AccessDenialTest |
+| principal-controller must not see cr-close-timestamp | cr-close-timestamp | false | false | 2026-09-13T18:36:06+00:00 | true | true | false | false | cr-close-timestamp is decided (is_open=false). The inference-backed predicate must exclude it, proving a policy can cut on a derived field rather than a stored column. | false | — | — | urn:effortless:pko-extension#AccessDenialTest |
+
+### App User
+
+| Name ƒ | Email Address | Display Name | Is Enabled | Agent Kind ƒ | Organization ƒ | Assignment Count ƒ | Has No Principal ƒ | Holds Multiple Principals ƒ | Is Non Human Sign in ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Amina Yusuf | amina.yusuf@example.com | Amina Yusuf | true | Human | acme-people | 1 | false | false | false | urn:effortless:pko-extension#AppUser |
+| Close Pipeline | close-pipeline@pipelines.internal | Close Pipeline | true | AutomatedPipeline | acme-finance | 1 | false | false | true | urn:effortless:pko-extension#AppUser |
+| Devon Okafor | devon.okafor@example.com | Devon Okafor | true | Human | acme-finance | 1 | false | false | false | urn:effortless:pko-extension#AppUser |
+
+### Principal Assignment
+
+| Name ƒ | Is Default | Granted Rationale | Principal is Admin ƒ | User Organization ƒ | Principal Organization ƒ | Is Cross Organization Grant ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|
+| user-amina-yusuf as principal-communications-manager | true | amina-yusuf currently holds the communications-manager role in the domain model, so may act as its principal. | false | acme-people | acme-people | false | urn:effortless:pko-extension#PrincipalAssignment |
+| user-close-pipeline as principal-close-automation | true | close-pipeline currently holds the close-automation role in the domain model, so may act as its principal. | false | acme-finance | acme-finance | false | urn:effortless:pko-extension#PrincipalAssignment |
+| user-devon-okafor as principal-controller | true | devon-okafor currently holds the controller role in the domain model, so may act as its principal. | false | acme-finance | acme-finance | false | urn:effortless:pko-extension#PrincipalAssignment |
+
+### Process Mining Run
+
+| Name ƒ | Event Log Source | Mined At | Discovered Variant Count | Conforming Variant Count | Deviation Description | As of Instant ƒ | Conformance Rate ƒ | Is Conformant ƒ | Has Major Drift From Documentation ƒ | Days Since Mined ƒ | Is Stale Mining Evidence ƒ | Procedure Version is Live ƒ | Is Drift on Live Version ƒ | Drifted Mining Run Key ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| ERP General Ledger Audit Log / 2026-07-15 09:00:00-05 | ERP General Ledger Audit Log | 2026-07-15T09:00:00-05:00 | 6 | 5 | One variant closes a day early with no recorded controller approval; otherwise matches the documented path. | 2026-07-19T13:00:00-05:00 | 0.8333333333333334 | true | false | 4 | false | true | false | — | urn:effortless:pko-extension#ProcessMiningRun |
+| ERP General Ledger Audit Log / 2026-07-17 09:00:00-05 | ERP General Ledger Audit Log | 2026-07-17T09:00:00-05:00 | 8 | 3 | Ledger entries posted after the documented cutoff step with no recorded reopening approval — a path StepTransitions never modeled. | 2026-07-19T13:00:00-05:00 | 0.375 | false | true | 2 | false | true | true | close-v1.1.0 | urn:effortless:pko-extension#ProcessMiningRun |
+| Notification Pipeline Delivery Log / 2026-01-10 09:00:00-05 | Notification Pipeline Delivery Log | 2026-01-10T09:00:00-05:00 | 4 | 4 | — | 2026-07-19T13:00:00-05:00 | 1.0 | true | false | 190 | true | true | false | — | urn:effortless:pko-extension#ProcessMiningRun |
+
+### Vocabulary
+
+| Name ƒ | Title | Scheme Uri | Term Count ƒ | Orphan Term Count ƒ | Has Orphan Terms ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|
+| Close Control Categories | Close Control Categories | urn:effortless:pko-extension:vocab#close-controls | 5 | 0 | false | urn:effortless:pko-extension#Vocabulary |
+| Policy Compliance Domains | Policy Compliance Domains | urn:effortless:pko-extension:vocab#policy-domains | 7 | 2 | true | urn:effortless:pko-extension#Vocabulary |
+
+### Vocabulary Term
+
+| Name ƒ | Pref Label | Alt Labels | Definition | Usage Count ƒ | Is Orphan Term ƒ | Is Widely Adopted Term ƒ | Orphan Term Vocabulary Key ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|
+| Cutoff Control | Cutoff Control | posting cutoff, period cutoff | A control preventing ledger entries after the period close boundary without an approved reopening. | 1 | false | false | — | urn:effortless:pko-extension#VocabularyTerm |
+| Reconciliation Control | Reconciliation Control | account reconciliation, balance control | A control requiring a material account to reconcile or carry an approved exception. | 1 | false | false | — | urn:effortless:pko-extension#VocabularyTerm |
+| Segregation of Duties | Segregation of Duties | SoD, maker-checker | A control requiring the preparer and the final approver of an action to be different agents. | 1 | false | false | — | urn:effortless:pko-extension#VocabularyTerm |
+
+### Knowledge Broker Link
+
+| Name ƒ | Frequency | Last Consulted At | As of Instant ƒ | Days Since Consulted ƒ | Is Active Reliance ƒ | Broker is Still Engaged ƒ | Is At Risk Reliance ƒ | Active Reliance Broker Key ƒ | At Risk Broker Key ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|---|---|
+| maria-chen -> priya-raman | Often | 2026-07-10T09:00:00-05:00 | 2026-07-19T13:00:00-05:00 | 9 | true | true | false | priya-raman | — | urn:effortless:pko-extension#KnowledgeBrokerLink |
+| devon-okafor -> priya-raman | Sometimes | 2026-06-20T09:00:00-05:00 | 2026-07-19T13:00:00-05:00 | 29 | true | true | false | priya-raman | — | urn:effortless:pko-extension#KnowledgeBrokerLink |
+| elena-garcia -> priya-raman | Often | 2026-07-05T09:00:00-05:00 | 2026-07-19T13:00:00-05:00 | 14 | true | true | false | priya-raman | — | urn:effortless:pko-extension#KnowledgeBrokerLink |
+
+### Conformance Substrate
+
+| Name ƒ | Label | Transpiler | Output Folder | Engine | How It Computes | Role | Sort Order | Is Graded ƒ | Run Count ƒ | Latest Cells Tested ƒ | Latest Cells Passed ƒ | Latest Harness Errors ƒ | Latest Cells Failed ƒ | Latest Score ƒ | Disagreeing Field Count ƒ | Disagreeing Table Count ƒ | Is Fully Conformant ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| compile-rulebook | compile-rulebook | compile-rulebook | /effortless-rulebook | Python formula engine (shared with rulebook-to-python) | Runs first in the build and rewrites the rulebook in place: every calculated, lookup and aggregation value is computed across all tables to a fixed point and upserted into the rows. Those stored values become the answer keys. It is not graded against itself; when another substrate disagrees, either side can be the one that is wrong. | answer-key | 0 | false | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | false | urn:effortless:pko-extension#ConformanceSubstrate |
+| PostgreSQL | PostgreSQL | rulebook-to-postgres | /postgres-bootstrap | PostgreSQL views and calc_* SQL functions | rulebook-to-postgres emits a table, a set of calc_* functions and a vw_<entity> view per table. The database is reset from the rulebook, and the harness reads SELECT * from every view. | graded | 1 | true | 1 | 59878.0 | 59763.0 | 0.0 | 115.0 | 99.81 | 32 | 18 | false | urn:effortless:pko-extension#ConformanceSubstrate |
+| Python | Python | rulebook-to-python | /effortless-python | CPython | rulebook-to-python emits an SDK with one computed property per derived field. The harness loads the blank test rows (raw fields only) and asks the SDK for every derived value. | graded | 2 | true | 1 | 59878.0 | 59764.0 | 0.0 | 114.0 | 99.81 | 31 | 17 | false | urn:effortless:pko-extension#ConformanceSubstrate |
+
+### Conformance Run
+
+| Name ƒ | Ran on | Rulebook Commit | Is Latest | Notes | Substrate Count ƒ | Perfect Substrate Count ƒ | Cells Tested ƒ | Cells Passed ƒ | Cells Failed ƒ | Overall Score ƒ | Imperfect Substrate Count ƒ | Is Fully Conformant ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| run-20260913-165336 | 2026-09-13T16:53:36-05:00 | 4960f638 | true | First recorded run: all a1 tools installed; EF runner rebuilt for EF Core output; OWL rules dependency-ordered. | 7 | 0 | 419146.0 | 412274.0 | 6872.0 | 98.36 | 7 | false | urn:effortless:pko-extension#ConformanceRun |
+
+### Substrate Run Score
+
+| Name ƒ | Harness Error | Duration Seconds | Cells Tested | Cells Passed | Calculated Tested | Calculated Passed | Lookup Tested | Lookup Passed | Aggregation Tested | Aggregation Passed | Cells Failed ƒ | Score ƒ | Calculated Score ƒ | Lookup Score ƒ | Aggregation Score ƒ | Is Perfect ƒ | Perfect Run Key ƒ | Is in Latest Run ƒ | Latest Cells Tested ƒ | Latest Cells Passed ƒ | Latest Error Flag ƒ | Substrate Label ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| run-20260913-165336 / effortless-postgres | — | 24.1 | 59878 | 59763 | 42928 | 42816 | 12929 | 12926 | 4021 | 4021 | 115 | 99.81 | 99.74 | 99.98 | 100.0 | false | — | true | 59878 | 59763 | 0 | PostgreSQL | urn:effortless:pko-extension#SubstrateRunScore |
+| run-20260913-165336 / effortless-xlsx | — | 1.3 | 59878 | 53868 | 42928 | 40792 | 12929 | 9334 | 4021 | 3742 | 6010 | 89.96 | 95.02 | 72.19 | 93.06 | false | — | true | 59878 | 53868 | 0 | Excel | urn:effortless:pko-extension#SubstrateRunScore |
+| run-20260913-165336 / effortless-entity-framework | — | 5.8 | 59878 | 59764 | 42928 | 42817 | 12929 | 12926 | 4021 | 4021 | 114 | 99.81 | 99.74 | 99.98 | 100.0 | false | — | true | 59878 | 59764 | 0 | C# / Entity Framework | urn:effortless:pko-extension#SubstrateRunScore |
+
+### Table Conformance
+
+| Name ƒ | Record Count | Derived Field Count | Cells Tested | Cells Passed | Is Missing Answer File | Cells Failed ƒ | Score ƒ | Is Perfect ƒ | Imperfect Substrate Key ƒ | Imperfect Table Key ƒ | Disagreeing Field Count ƒ | Substrate Label ƒ | Subject Area ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| effortless-postgres / RulebookReleases | 1 | 1 | 1 | 1 | false | 0 | 100.0 | true | — | — | 0 | PostgreSQL | meta | urn:effortless:pko-extension#TableConformance |
+| effortless-postgres / OntologyProfiles | 11 | 1 | 11 | 11 | false | 0 | 100.0 | true | — | — | 0 | PostgreSQL | domain | urn:effortless:pko-extension#TableConformance |
+| effortless-postgres / EvaluationContexts | 1 | 1 | 1 | 0 | false | 1 | 0.0 | false | effortless-postgres | EvaluationContexts | 1 | PostgreSQL | meta | urn:effortless:pko-extension#TableConformance |
+
+### Field Disagreement
+
+| Name ƒ | Field Class | Cells Failed | Dominant Reason | Sampled Cell Count ƒ | Is Fully Sampled ƒ | Formula ƒ | Substrate Label ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|
+| effortless-postgres / EvaluationContexts.Name | calculated | 1 | wrong/null value | 1 | true | ={{Label}} & " @ " & {{AsOfInstant}} | PostgreSQL | urn:effortless:pko-extension#FieldDisagreement |
+| effortless-postgres / RoleAssignments.Name | calculated | 13 | wrong/null value | 13 | true | ={{Role}} & " @ " & {{ValidFrom}} | PostgreSQL | urn:effortless:pko-extension#FieldDisagreement |
+| effortless-postgres / RoleAssignments.QualityVerdictIsUnsupported | calculated | 13 | wrong/null value | 13 | true | =AND(NOT({{ComparisonIsEvidentiallySound}}), NOT({{QualityRegressedVsPredecessor}})) | PostgreSQL | urn:effortless:pko-extension#FieldDisagreement |
+
+### Cell Disagreement
+
+| Name ƒ | Record ID | Expected Value | Actual Value | Reason | Substrate ƒ | Rulebook Field ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|
+| effortless-postgres\|EvaluationContexts.Name @ eval-current | eval-current | "Post-close evaluation @ 2026-07-19T13:00:00-05:00" | "Post-close evaluation @ 2026-07-19 13:00:00-05" | wrong/null value | effortless-postgres | EvaluationContexts.Name | urn:effortless:pko-extension#CellDisagreement |
+| effortless-postgres\|RoleAssignments.Name @ ra-authority-2026 | ra-authority-2026 | "knowledge-authority @ 2026-01-01T00:00:00-06:00" | "knowledge-authority @ 2026-01-01 00:00:00-06" | wrong/null value | effortless-postgres | RoleAssignments.Name | urn:effortless:pko-extension#CellDisagreement |
+| effortless-postgres\|RoleAssignments.Name @ ra-cfo-2026 | ra-cfo-2026 | "cfo @ 2026-01-01T00:00:00-06:00" | "cfo @ 2026-01-01 00:00:00-06" | wrong/null value | effortless-postgres | RoleAssignments.Name | urn:effortless:pko-extension#CellDisagreement |
+
+_ƒ marks a computed column._
 
 ---
 

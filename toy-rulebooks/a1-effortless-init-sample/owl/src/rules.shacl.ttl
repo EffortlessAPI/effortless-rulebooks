@@ -21,27 +21,9 @@ effortless-ntwf:HelloWhosShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:HelloWhos .
     OPTIONAL { $this effortless-ntwf:name ?name . }
-                BIND(CONCAT("Hi, ", IF(isIRI(?name), REPLACE(STR(?name), "^.*[#/]", ""), STR(?name)), ".") AS ?_result)
-            }
-        """ ;
-    ] ;
-    sh:rule [
-        a sh:SPARQLRule ;
-        rdfs:label "rule_HelloWhos_IsBob" ;
-        sh:prefixes effortless-ntwf: ;
-        sh:construct """
-            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
-            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
-            CONSTRUCT {
-                $this effortless-ntwf:isBob ?_result .
-            }
-            WHERE {
-    $this a effortless-ntwf:HelloWhos .
-    OPTIONAL { $this effortless-ntwf:name ?name . }
-                BIND(((REPLACE(COALESCE(STR(?name), ""), "^.*#", "") = "Bob") || (REPLACE(COALESCE(STR(?name), ""), "^.*#", "") = "Bobby") || (REPLACE(COALESCE(STR(?name), ""), "^.*#", "") = "Robert")) AS ?_result)
+                BIND(CONCAT("Hello ", IF(isIRI(?name), REPLACE(STR(?name), "^.*[#/]", ""), STR(?name)), "!!!") AS ?_result)
             }
         """ ;
     ] .
 
-# Generated 2 SHACL rules
+# Generated 1 SHACL rules

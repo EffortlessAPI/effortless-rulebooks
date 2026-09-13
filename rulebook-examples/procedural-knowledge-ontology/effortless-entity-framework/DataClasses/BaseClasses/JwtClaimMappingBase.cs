@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -16,9 +17,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string JwtClaimMappingId { get; set; }
 
         // Formula Name (rulebook: ={{ClaimName}} & " -> " & {{SqlAccessor}})
+        [NotMapped]
         public string? Name
         {
-            get => this.ClaimName + " -> " + this.SqlAccessor; set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.ClaimName)), F.S(" -> "), F.TextOr(F.Of(this.SqlAccessor))))); set { }
         }
 
         public string? ClaimName { get; set; }
@@ -27,9 +29,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public bool? MapsToPrincipal { get; set; }
         public string? Description2 { get; set; }
         // Formula UsageCount (rulebook: =COUNTIFS(AccessPolicies!{{RowPredicate}}, {{SqlAccessor}}))
+        [NotMapped]
         public decimal? UsageCount
         {
-            get => COUNTIFS(AccessPolicies!this.RowPredicate, this.SqlAccessor); set { }
+            get => F.AsDecimal(F.Memo(this, "UsageCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<AccessPolicy>(base.SoAContext, "AccessPolicies", __c => __c.AccessPolicies), __r => F.CritField(F.Of(__r.RowPredicate), F.Of(this.SqlAccessor)))))); set { }
         }
 
         public string? SemanticTypeIri { get; set; }

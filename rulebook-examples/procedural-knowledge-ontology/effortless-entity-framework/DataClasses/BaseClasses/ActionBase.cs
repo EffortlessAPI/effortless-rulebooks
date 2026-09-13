@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -16,9 +17,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string ActionId { get; set; }
 
         // Formula Name (rulebook: ={{Label}})
+        [NotMapped]
         public string? Name
         {
-            get => this.Label; set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Of(this.Label))); set { }
         }
 
         public string? Label { get; set; }
@@ -28,14 +30,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<StepAction> _stepActions;
 
-        [InverseProperty("Action")]
+        [InverseProperty("ActionRef")]
         public virtual ObservableCollection<StepAction> StepActions
         {
             get
             {
                 if (_stepActions == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -45,11 +47,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.StepActions.Where(x => x.Action == this.ActionId).ToList<StepAction>();
+                        var items = base.SoAContext.StepActions.Where(x => x.Action == this.ActionId).ToList<StepAction>();
                         _stepActions = new ObservableCollection<StepAction>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _stepActions.CollectionChanged += StepActions_CollectionChanged;

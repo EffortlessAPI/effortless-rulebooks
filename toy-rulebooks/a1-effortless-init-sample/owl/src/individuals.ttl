@@ -11,11 +11,7 @@ effortless-ntwf:world a effortless-ntwf:HelloWhos ;
 
 effortless-ntwf:bob a effortless-ntwf:HelloWhos ;
     effortless-ntwf:helloWhoId "bob" ;
-    effortless-ntwf:name "Bobby" .
-
-effortless-ntwf:bob2 a effortless-ntwf:HelloWhos ;
-    effortless-ntwf:helloWhoId "bob2" ;
-    effortless-ntwf:name "Robby" .
+    effortless-ntwf:name "Bob" .
 
 effortless-ntwf:everyone a effortless-ntwf:HelloWhos ;
     effortless-ntwf:helloWhoId "everyone" ;

@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -16,74 +17,85 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string OperationalBindingId { get; set; }
 
         // Formula Name (rulebook: ={{Step}} & " / " & {{RecordOrSchemaKey}})
+        [NotMapped]
         public string? Name
         {
-            get => this.Step + " / " + this.RecordOrSchemaKey; set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.Step)), F.S(" / "), F.TextOr(F.Of(this.RecordOrSchemaKey))))); set { }
         }
 
         public string? AccessMode { get; set; }
         public string? RecordOrSchemaKey { get; set; }
-        public DateTime? LastObservedAt { get; set; }
+        public DateTimeOffset? LastObservedAt { get; set; }
         public int? FreshnessSlaMinutes { get; set; }
         public bool? IsAuthoritative { get; set; }
         // Formula AsOfInstant (rulebook: =INDEX(EvaluationContexts!{{AsOfInstant}}, MATCH({{EvaluationContext}}, EvaluationContexts!{{EvaluationContextId}}, 0)))
-        public DateTime? AsOfInstant
+        [NotMapped]
+        public DateTimeOffset? AsOfInstant
         {
-            get => INDEX(EvaluationContexts!this.AsOfInstant, MATCH(this.EvaluationContext, EvaluationContexts!this.EvaluationContextId, 0)); set { }
+            get => F.AsDateTime(F.Memo(this, "AsOfInstant", () => F.Lookup<EvaluationContext>(this, "EvaluationContexts", "EvaluationContextId", __c => __c.EvaluationContexts, __r => F.Of(__r.EvaluationContextId), F.Of(this.EvaluationContext), __r => F.Of(__r.AsOfInstant), () => F.Of(new EvaluationContext().AsOfInstant)))); set { }
         }
 
         // Formula AgeMinutes (rulebook: =DATETIME_DIFF({{AsOfInstant}}, {{LastObservedAt}}, "minutes"))
+        [NotMapped]
         public int? AgeMinutes
         {
-            get => DATETIME_DIFF(this.AsOfInstant, this.LastObservedAt, "minutes"); set { }
+            get => F.AsInt(F.Memo(this, "AgeMinutes", () => F.Integer(F.DatetimeDiff(F.Of(this.AsOfInstant), F.Of(this.LastObservedAt), F.S("minutes"))))); set { }
         }
 
         // Formula IsFresh (rulebook: ={{AgeMinutes}} <= {{FreshnessSlaMinutes}})
+        [NotMapped]
         public bool? IsFresh
         {
-            get => this.AgeMinutes <= this.FreshnessSlaMinutes; set { }
+            get => F.AsBool(F.Memo(this, "IsFresh", () => F.Cmp(F.Of(this.AgeMinutes), "<=", F.Nullif(F.Of(this.FreshnessSlaMinutes))))); set { }
         }
 
         // Formula StaleBindingStepKey (rulebook: =IF(NOT({{IsFresh}}), {{Step}}, ""))
+        [NotMapped]
         public string? StaleBindingStepKey
         {
-            get => IF(NOT(this.IsFresh), this.Step, ""); set { }
+            get => F.AsString(F.Memo(this, "StaleBindingStepKey", () => (F.Truthy(F.Bool3(F.Not(F.Bool3(F.Of(this.IsFresh))))) ? F.Of(this.Step) : F.S("")))); set { }
         }
 
         // Formula AuthoritativeStaleStepKey (rulebook: =IF(AND(NOT({{IsFresh}}), {{IsAuthoritative}}), {{Step}}, ""))
+        [NotMapped]
         public string? AuthoritativeStaleStepKey
         {
-            get => IF(AND(NOT(this.IsFresh), this.IsAuthoritative), this.Step, ""); set { }
+            get => F.AsString(F.Memo(this, "AuthoritativeStaleStepKey", () => (F.Truthy(F.Bool3(F.And(F.Bool3(F.Not(F.Bool3(F.Of(this.IsFresh)))), F.IsTrueV(F.Of(this.IsAuthoritative))))) ? F.Of(this.Step) : F.S("")))); set { }
         }
 
         // Formula IsStaleAndAuthoritative (rulebook: =AND({{IsAuthoritative}}, NOT({{IsFresh}})))
+        [NotMapped]
         public bool? IsStaleAndAuthoritative
         {
-            get => AND(this.IsAuthoritative, NOT(this.IsFresh)); set { }
+            get => F.AsBool(F.Memo(this, "IsStaleAndAuthoritative", () => F.And(F.IsTrueV(F.Of(this.IsAuthoritative)), F.Bool3(F.Not(F.Bool3(F.Of(this.IsFresh))))))); set { }
         }
 
         // Formula StepWhenStale (rulebook: =IF({{IsStaleAndAuthoritative}}, {{Step}}, ""))
+        [NotMapped]
         public string? StepWhenStale
         {
-            get => IF(this.IsStaleAndAuthoritative, this.Step, ""); set { }
+            get => F.AsString(F.Memo(this, "StepWhenStale", () => (F.Truthy(F.Bool3(F.Of(this.IsStaleAndAuthoritative))) ? F.Of(this.Step) : F.S("")))); set { }
         }
 
         // Formula ResourceIsApproved (rulebook: =INDEX(Resources!{{IsApprovedSource}}, MATCH({{Resource}}, Resources!{{ResourceId}}, 0)))
+        [NotMapped]
         public bool? ResourceIsApproved
         {
-            get => INDEX(Resources!this.IsApprovedSource, MATCH(this.Resource, Resources!this.ResourceId, 0)); set { }
+            get => F.AsBool(F.Memo(this, "ResourceIsApproved", () => F.Lookup<Resource>(this, "Resources", "ResourceId", __c => __c.Resources, __r => F.Of(__r.ResourceId), F.Of(this.Resource), __r => F.Of(__r.IsApprovedSource), () => F.Of(new Resource().IsApprovedSource)))); set { }
         }
 
         // Formula IsUsableForDrafting (rulebook: =AND({{ResourceIsApproved}}, {{IsFresh}}))
+        [NotMapped]
         public bool? IsUsableForDrafting
         {
-            get => AND(this.ResourceIsApproved, this.IsFresh); set { }
+            get => F.AsBool(F.Memo(this, "IsUsableForDrafting", () => F.And(F.Bool3(F.Of(this.ResourceIsApproved)), F.Bool3(F.Of(this.IsFresh))))); set { }
         }
 
         // Formula StepWhenUnusable (rulebook: =IF({{IsUsableForDrafting}}, "", {{Step}}))
+        [NotMapped]
         public string? StepWhenUnusable
         {
-            get => IF(this.IsUsableForDrafting, "", this.Step); set { }
+            get => F.AsString(F.Memo(this, "StepWhenUnusable", () => (F.Truthy(F.Bool3(F.Of(this.IsUsableForDrafting))) ? F.S("") : F.Of(this.Step)))); set { }
         }
 
         public string? SemanticTypeIri { get; set; }
@@ -93,142 +105,178 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string? Resource { get; set; }
         public string? EvaluationContext { get; set; }
 
-        private ProcedureVersion _procedureVersion;
+        private ProcedureVersion _procedureVersionRef;
 
         [ForeignKey("ProcedureVersion")]
-        public virtual ProcedureVersion ProcedureVersion
+        public virtual ProcedureVersion ProcedureVersionRef
         {
             get
             {
-                if (_procedureVersion == null && !string.IsNullOrEmpty(ProcedureVersion))
+                if (_procedureVersionRef == null && !string.IsNullOrEmpty(ProcedureVersion))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access ProcedureVersion - no database context is set. ProcedureVersion: " + ProcedureVersion + ".");
+                            throw new InvalidOperationException("Cannot access ProcedureVersionRef - no database context is set. ProcedureVersion: " + ProcedureVersion + ".");
                         }
                         return null;
                     }
-                    _procedureVersion = Context.ProcedureVersions.Find(ProcedureVersion);
-                    if (_procedureVersion != null)
+                    _procedureVersionRef = base.SoAContext.ProcedureVersions.Find(ProcedureVersion);
+                    if (_procedureVersionRef != null)
                     {
-                        Context.Attach(_procedureVersion);
+                        base.SoAContext.Attach(_procedureVersionRef);
                     }
                 }
-                return _procedureVersion;
+                return _procedureVersionRef;
             }
             set
             {
-                if (_procedureVersion != value)
+                if (_procedureVersionRef != value)
                 {
-                    _procedureVersion = value;
-                    ProcedureVersion = _procedureVersion == null ? default : _procedureVersion.ProcedureVersionId;
+                    _procedureVersionRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_procedureVersionRef != null)
+                    {
+                        ProcedureVersion = _procedureVersionRef.ProcedureVersionId;
+                    }
                 }
             }
         }
 
-        private Step _step;
+        private Step _stepRef;
 
         [ForeignKey("Step")]
-        public virtual Step Step
+        public virtual Step StepRef
         {
             get
             {
-                if (_step == null && !string.IsNullOrEmpty(Step))
+                if (_stepRef == null && !string.IsNullOrEmpty(Step))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access Step - no database context is set. Step: " + Step + ".");
+                            throw new InvalidOperationException("Cannot access StepRef - no database context is set. Step: " + Step + ".");
                         }
                         return null;
                     }
-                    _step = Context.Steps.Find(Step);
-                    if (_step != null)
+                    _stepRef = base.SoAContext.Steps.Find(Step);
+                    if (_stepRef != null)
                     {
-                        Context.Attach(_step);
+                        base.SoAContext.Attach(_stepRef);
                     }
                 }
-                return _step;
+                return _stepRef;
             }
             set
             {
-                if (_step != value)
+                if (_stepRef != value)
                 {
-                    _step = value;
-                    Step = _step == null ? default : _step.StepId;
+                    _stepRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_stepRef != null)
+                    {
+                        Step = _stepRef.StepId;
+                    }
                 }
             }
         }
 
-        private Resource _resource;
+        private Resource _resourceRef;
 
         [ForeignKey("Resource")]
-        public virtual Resource Resource
+        public virtual Resource ResourceRef
         {
             get
             {
-                if (_resource == null && !string.IsNullOrEmpty(Resource))
+                if (_resourceRef == null && !string.IsNullOrEmpty(Resource))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access Resource - no database context is set. Resource: " + Resource + ".");
+                            throw new InvalidOperationException("Cannot access ResourceRef - no database context is set. Resource: " + Resource + ".");
                         }
                         return null;
                     }
-                    _resource = Context.Resources.Find(Resource);
-                    if (_resource != null)
+                    _resourceRef = base.SoAContext.Resources.Find(Resource);
+                    if (_resourceRef != null)
                     {
-                        Context.Attach(_resource);
+                        base.SoAContext.Attach(_resourceRef);
                     }
                 }
-                return _resource;
+                return _resourceRef;
             }
             set
             {
-                if (_resource != value)
+                if (_resourceRef != value)
                 {
-                    _resource = value;
-                    Resource = _resource == null ? default : _resource.ResourceId;
+                    _resourceRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_resourceRef != null)
+                    {
+                        Resource = _resourceRef.ResourceId;
+                    }
                 }
             }
         }
 
-        private EvaluationContext _evaluationContext;
+        private EvaluationContext _evaluationContextRef;
 
         [ForeignKey("EvaluationContext")]
-        public virtual EvaluationContext EvaluationContext
+        public virtual EvaluationContext EvaluationContextRef
         {
             get
             {
-                if (_evaluationContext == null && !string.IsNullOrEmpty(EvaluationContext))
+                if (_evaluationContextRef == null && !string.IsNullOrEmpty(EvaluationContext))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access EvaluationContext - no database context is set. EvaluationContext: " + EvaluationContext + ".");
+                            throw new InvalidOperationException("Cannot access EvaluationContextRef - no database context is set. EvaluationContext: " + EvaluationContext + ".");
                         }
                         return null;
                     }
-                    _evaluationContext = Context.EvaluationContexts.Find(EvaluationContext);
-                    if (_evaluationContext != null)
+                    _evaluationContextRef = base.SoAContext.EvaluationContexts.Find(EvaluationContext);
+                    if (_evaluationContextRef != null)
                     {
-                        Context.Attach(_evaluationContext);
+                        base.SoAContext.Attach(_evaluationContextRef);
                     }
                 }
-                return _evaluationContext;
+                return _evaluationContextRef;
             }
             set
             {
-                if (_evaluationContext != value)
+                if (_evaluationContextRef != value)
                 {
-                    _evaluationContext = value;
-                    EvaluationContext = _evaluationContext == null ? default : _evaluationContext.EvaluationContextId;
+                    _evaluationContextRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_evaluationContextRef != null)
+                    {
+                        EvaluationContext = _evaluationContextRef.EvaluationContextId;
+                    }
                 }
             }
         }
@@ -242,7 +290,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_recipients == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -252,11 +300,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.Recipients.Where(x => x.ConsentBinding == this.OperationalBindingId).ToList<Recipient>();
+                        var items = base.SoAContext.Recipients.Where(x => x.ConsentBinding == this.OperationalBindingId).ToList<Recipient>();
                         _recipients = new ObservableCollection<Recipient>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _recipients.CollectionChanged += Recipients_CollectionChanged;
@@ -290,14 +338,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<BindingObservation> _bindingObservations;
 
-        [InverseProperty("OperationalBinding")]
+        [InverseProperty("OperationalBindingRef")]
         public virtual ObservableCollection<BindingObservation> BindingObservations
         {
             get
             {
                 if (_bindingObservations == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -307,11 +355,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.BindingObservations.Where(x => x.OperationalBinding == this.OperationalBindingId).ToList<BindingObservation>();
+                        var items = base.SoAContext.BindingObservations.Where(x => x.OperationalBinding == this.OperationalBindingId).ToList<BindingObservation>();
                         _bindingObservations = new ObservableCollection<BindingObservation>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _bindingObservations.CollectionChanged += BindingObservations_CollectionChanged;
@@ -346,10 +394,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         protected override void LazyLoadProperties()
         {
-            _ = this.ProcedureVersion;
-            _ = this.Step;
-            _ = this.Resource;
-            _ = this.EvaluationContext;
+            _ = this.ProcedureVersionRef;
+            _ = this.StepRef;
+            _ = this.ResourceRef;
+            _ = this.EvaluationContextRef;
             _ = this.Recipients;
             _ = this.BindingObservations;
         }

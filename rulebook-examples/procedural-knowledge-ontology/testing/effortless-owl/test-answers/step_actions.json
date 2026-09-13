@@ -1,0 +1,56 @@
+[
+  {
+    "step_action_id": "sa-close01",
+    "name": "close-01 / freeze-ledgers",
+    "step": "close-01",
+    "action": "freeze-ledgers"
+  },
+  {
+    "step_action_id": "sa-close03",
+    "name": "close-03 / reconcile-account",
+    "step": "close-03",
+    "action": "reconcile-account"
+  },
+  {
+    "step_action_id": "sa-close04",
+    "name": "close-04 / investigate-variance",
+    "step": "close-04",
+    "action": "investigate-variance"
+  },
+  {
+    "step_action_id": "sa-close05",
+    "name": "close-05 / review-close-package",
+    "step": "close-05",
+    "action": "review-close-package"
+  },
+  {
+    "step_action_id": "sa-close06",
+    "name": "close-06 / approve-close",
+    "step": "close-06",
+    "action": "approve-close"
+  },
+  {
+    "step_action_id": "sa-policy02",
+    "name": "policy-02 / interview-practitioner",
+    "step": "policy-02",
+    "action": "interview-practitioner"
+  },
+  {
+    "step_action_id": "sa-policy04",
+    "name": "policy-04 / review-policy",
+    "step": "policy-04",
+    "action": "review-policy"
+  },
+  {
+    "step_action_id": "sa-policy05",
+    "name": "policy-05 / approve-policy",
+    "step": "policy-05",
+    "action": "approve-policy"
+  },
+  {
+    "step_action_id": "sa-policy09",
+    "name": "policy-09 / review-feedback",
+    "step": "policy-09",
+    "action": "review-feedback"
+  }
+]

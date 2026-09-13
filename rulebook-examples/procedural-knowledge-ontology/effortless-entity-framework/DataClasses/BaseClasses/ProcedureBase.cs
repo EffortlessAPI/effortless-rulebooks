@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -16,9 +17,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string ProcedureId { get; set; }
 
         // Formula Name (rulebook: ={{Title}})
+        [NotMapped]
         public string? Name
         {
-            get => this.Title; set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Of(this.Title))); set { }
         }
 
         public string? Title { get; set; }
@@ -32,37 +34,46 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string? OwnerOrganization { get; set; }
         public string? AdoptedByOrganization { get; set; }
 
-        private ProcedureType _procedureType;
+        private ProcedureType _procedureTypeRef;
 
         [ForeignKey("ProcedureType")]
-        public virtual ProcedureType ProcedureType
+        public virtual ProcedureType ProcedureTypeRef
         {
             get
             {
-                if (_procedureType == null && !string.IsNullOrEmpty(ProcedureType))
+                if (_procedureTypeRef == null && !string.IsNullOrEmpty(ProcedureType))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access ProcedureType - no database context is set. ProcedureType: " + ProcedureType + ".");
+                            throw new InvalidOperationException("Cannot access ProcedureTypeRef - no database context is set. ProcedureType: " + ProcedureType + ".");
                         }
                         return null;
                     }
-                    _procedureType = Context.ProcedureTypes.Find(ProcedureType);
-                    if (_procedureType != null)
+                    _procedureTypeRef = base.SoAContext.ProcedureTypes.Find(ProcedureType);
+                    if (_procedureTypeRef != null)
                     {
-                        Context.Attach(_procedureType);
+                        base.SoAContext.Attach(_procedureTypeRef);
                     }
                 }
-                return _procedureType;
+                return _procedureTypeRef;
             }
             set
             {
-                if (_procedureType != value)
+                if (_procedureTypeRef != value)
                 {
-                    _procedureType = value;
-                    ProcedureType = _procedureType == null ? default : _procedureType.ProcedureTypeId;
+                    _procedureTypeRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_procedureTypeRef != null)
+                    {
+                        ProcedureType = _procedureTypeRef.ProcedureTypeId;
+                    }
                 }
             }
         }
@@ -76,7 +87,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_organization == null && !string.IsNullOrEmpty(OwnerOrganization))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -84,10 +95,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                         }
                         return null;
                     }
-                    _organization = Context.Organizations.Find(OwnerOrganization);
+                    _organization = base.SoAContext.Organizations.Find(OwnerOrganization);
                     if (_organization != null)
                     {
-                        Context.Attach(_organization);
+                        base.SoAContext.Attach(_organization);
                     }
                 }
                 return _organization;
@@ -97,56 +108,74 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                 if (_organization != value)
                 {
                     _organization = value;
-                    OwnerOrganization = _organization == null ? default : _organization.OrganizationId;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_organization != null)
+                    {
+                        OwnerOrganization = _organization.OrganizationId;
+                    }
                 }
             }
         }
 
-        private Organization _organization;
+        private Organization _organizationRef;
 
         [ForeignKey("AdoptedByOrganization")]
-        public virtual Organization Organization
+        public virtual Organization OrganizationRef
         {
             get
             {
-                if (_organization == null && !string.IsNullOrEmpty(AdoptedByOrganization))
+                if (_organizationRef == null && !string.IsNullOrEmpty(AdoptedByOrganization))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access Organization - no database context is set. AdoptedByOrganization: " + AdoptedByOrganization + ".");
+                            throw new InvalidOperationException("Cannot access OrganizationRef - no database context is set. AdoptedByOrganization: " + AdoptedByOrganization + ".");
                         }
                         return null;
                     }
-                    _organization = Context.Organizations.Find(AdoptedByOrganization);
-                    if (_organization != null)
+                    _organizationRef = base.SoAContext.Organizations.Find(AdoptedByOrganization);
+                    if (_organizationRef != null)
                     {
-                        Context.Attach(_organization);
+                        base.SoAContext.Attach(_organizationRef);
                     }
                 }
-                return _organization;
+                return _organizationRef;
             }
             set
             {
-                if (_organization != value)
+                if (_organizationRef != value)
                 {
-                    _organization = value;
-                    AdoptedByOrganization = _organization == null ? default : _organization.OrganizationId;
+                    _organizationRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_organizationRef != null)
+                    {
+                        AdoptedByOrganization = _organizationRef.OrganizationId;
+                    }
                 }
             }
         }
 
         private ObservableCollection<ProcedureVersion> _procedureVersions;
 
-        [InverseProperty("Procedure")]
+        [InverseProperty("ProcedureRef")]
         public virtual ObservableCollection<ProcedureVersion> ProcedureVersions
         {
             get
             {
                 if (_procedureVersions == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -156,11 +185,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.ProcedureVersions.Where(x => x.Procedure == this.ProcedureId).ToList<ProcedureVersion>();
+                        var items = base.SoAContext.ProcedureVersions.Where(x => x.Procedure == this.ProcedureId).ToList<ProcedureVersion>();
                         _procedureVersions = new ObservableCollection<ProcedureVersion>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _procedureVersions.CollectionChanged += ProcedureVersions_CollectionChanged;
@@ -195,9 +224,9 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         protected override void LazyLoadProperties()
         {
-            _ = this.ProcedureType;
+            _ = this.ProcedureTypeRef;
             _ = this.Organization;
-            _ = this.Organization;
+            _ = this.OrganizationRef;
             _ = this.ProcedureVersions;
         }
 

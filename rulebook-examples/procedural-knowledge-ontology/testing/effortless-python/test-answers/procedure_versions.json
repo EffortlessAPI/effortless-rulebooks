@@ -83,11 +83,9 @@
     "unwatched_unowned_control_count": 9,
     "days_since_last_review": null,
     "was_modified_since_last_review": null,
-    "has_unresolved_mining_drift": null,
-    "_erb_errors": {
-      "mining_run_count": "the rulebook holds 4 ProcessMiningRuns rows but blank-tests has no process_mining_runs.json \u2014 regenerate the test fixtures",
-      "drifted_mining_run_count": "the rulebook holds 4 ProcessMiningRuns rows but blank-tests has no process_mining_runs.json \u2014 regenerate the test fixtures"
-    }
+    "mining_run_count": 1,
+    "drifted_mining_run_count": 0,
+    "has_unresolved_mining_drift": false
   },
   {
     "procedure_version_id": "close-v1.1.0",
@@ -173,11 +171,9 @@
     "has_approved_change_request": true,
     "approved_change_request_count": 1,
     "unwatched_unowned_control_count": 9,
-    "has_unresolved_mining_drift": null,
-    "_erb_errors": {
-      "mining_run_count": "the rulebook holds 4 ProcessMiningRuns rows but blank-tests has no process_mining_runs.json \u2014 regenerate the test fixtures",
-      "drifted_mining_run_count": "the rulebook holds 4 ProcessMiningRuns rows but blank-tests has no process_mining_runs.json \u2014 regenerate the test fixtures"
-    }
+    "mining_run_count": 2,
+    "drifted_mining_run_count": 1,
+    "has_unresolved_mining_drift": true
   },
   {
     "procedure_version_id": "policy-v1.0.0",
@@ -263,10 +259,8 @@
     "has_approved_change_request": false,
     "approved_change_request_count": 0,
     "unwatched_unowned_control_count": 9,
-    "has_unresolved_mining_drift": null,
-    "_erb_errors": {
-      "mining_run_count": "the rulebook holds 4 ProcessMiningRuns rows but blank-tests has no process_mining_runs.json \u2014 regenerate the test fixtures",
-      "drifted_mining_run_count": "the rulebook holds 4 ProcessMiningRuns rows but blank-tests has no process_mining_runs.json \u2014 regenerate the test fixtures"
-    }
+    "mining_run_count": 1,
+    "drifted_mining_run_count": 0,
+    "has_unresolved_mining_drift": false
   }
 ]

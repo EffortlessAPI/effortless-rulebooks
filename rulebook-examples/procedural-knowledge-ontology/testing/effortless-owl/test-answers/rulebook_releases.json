@@ -1,0 +1,14 @@
+[
+  {
+    "rulebook_release_id": "erb-pko-1.0.0",
+    "rulebook_version": "1.0.0",
+    "profile_version": "1.0.0",
+    "profile_schema_path": "schemas/pko-erb-profile-1.0.0.schema.json",
+    "pko_core_version_iri": "https://w3id.org/pko/2.0.0",
+    "pko_industry_version_iri": "https://w3id.org/pko/industry/2.0.0",
+    "issued_at": "2026-07-19T12:00:00-05:00",
+    "status": "Candidate",
+    "changelog": "Initial executable PKO-native canonical rulebook and projection-tool proof.",
+    "is_current": true
+  }
+]

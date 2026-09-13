@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -16,9 +17,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string CommunicationPolicyId { get; set; }
 
         // Formula Name (rulebook: ={{Channel}} & " policy / " & {{ProcedureVersion}})
+        [NotMapped]
         public string? Name
         {
-            get => this.Channel + " policy / " + this.ProcedureVersion; set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.Channel)), F.S(" policy / "), F.TextOr(F.Of(this.ProcedureVersion))))); set { }
         }
 
         public string? Channel { get; set; }
@@ -33,24 +35,27 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string? AuthorityStatement { get; set; }
         public string? Status { get; set; }
         // Formula ConsentViolationCount (rulebook: =COUNTIFS(MessageDeliveries!{{PolicyChannel}}, {{CommunicationPolicyId}}, MessageDeliveries!{{IsConsentViolation}}, TRUE))
+        [NotMapped]
         public decimal? ConsentViolationCount
         {
-            get => COUNTIFS(MessageDeliveries!this.PolicyChannel, this.CommunicationPolicyId, MessageDeliveries!this.IsConsentViolation, TRUE); set { }
+            get => F.AsDecimal(F.Memo(this, "ConsentViolationCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<MessageDelivery>(base.SoAContext, "MessageDeliveries", __c => __c.MessageDeliveries), __r => F.CritField(F.Of(__r.PolicyChannel), F.Of(this.CommunicationPolicyId)) && F.CritLiteral(F.Of(__r.IsConsentViolation), F.B(true)))))); set { }
         }
 
         public int? QuietHoursStartHour { get; set; }
         public int? QuietHoursEndHour { get; set; }
         // Formula QuietHoursViolationCount (rulebook: =COUNTIFS(MessageDeliveries!{{QuietHoursViolationPolicyKey}}, {{CommunicationPolicyId}}))
+        [NotMapped]
         public decimal? QuietHoursViolationCount
         {
-            get => COUNTIFS(MessageDeliveries!this.QuietHoursViolationPolicyKey, this.CommunicationPolicyId); set { }
+            get => F.AsDecimal(F.Memo(this, "QuietHoursViolationCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<MessageDelivery>(base.SoAContext, "MessageDeliveries", __c => __c.MessageDeliveries), __r => F.CritField(F.Of(__r.QuietHoursViolationPolicyKey), F.Of(this.CommunicationPolicyId)))))); set { }
         }
 
         public string? RequiredOptOutPhrase { get; set; }
         // Formula IsActivePolicy (rulebook: ={{Status}} = "Active")
+        [NotMapped]
         public bool? IsActivePolicy
         {
-            get => this.Status = "Active"; set { }
+            get => F.AsBool(F.Memo(this, "IsActivePolicy", () => F.Eq(F.Nullif(F.Of(this.Status)), F.S("Active")))); set { }
         }
 
         public string? SemanticTypeIri { get; set; }
@@ -58,37 +63,46 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string? ProcedureVersion { get; set; }
         public string? ApprovalRole { get; set; }
 
-        private ProcedureVersion _procedureVersion;
+        private ProcedureVersion _procedureVersionRef;
 
         [ForeignKey("ProcedureVersion")]
-        public virtual ProcedureVersion ProcedureVersion
+        public virtual ProcedureVersion ProcedureVersionRef
         {
             get
             {
-                if (_procedureVersion == null && !string.IsNullOrEmpty(ProcedureVersion))
+                if (_procedureVersionRef == null && !string.IsNullOrEmpty(ProcedureVersion))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access ProcedureVersion - no database context is set. ProcedureVersion: " + ProcedureVersion + ".");
+                            throw new InvalidOperationException("Cannot access ProcedureVersionRef - no database context is set. ProcedureVersion: " + ProcedureVersion + ".");
                         }
                         return null;
                     }
-                    _procedureVersion = Context.ProcedureVersions.Find(ProcedureVersion);
-                    if (_procedureVersion != null)
+                    _procedureVersionRef = base.SoAContext.ProcedureVersions.Find(ProcedureVersion);
+                    if (_procedureVersionRef != null)
                     {
-                        Context.Attach(_procedureVersion);
+                        base.SoAContext.Attach(_procedureVersionRef);
                     }
                 }
-                return _procedureVersion;
+                return _procedureVersionRef;
             }
             set
             {
-                if (_procedureVersion != value)
+                if (_procedureVersionRef != value)
                 {
-                    _procedureVersion = value;
-                    ProcedureVersion = _procedureVersion == null ? default : _procedureVersion.ProcedureVersionId;
+                    _procedureVersionRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_procedureVersionRef != null)
+                    {
+                        ProcedureVersion = _procedureVersionRef.ProcedureVersionId;
+                    }
                 }
             }
         }
@@ -102,7 +116,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_role == null && !string.IsNullOrEmpty(ApprovalRole))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -110,10 +124,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                         }
                         return null;
                     }
-                    _role = Context.Roles.Find(ApprovalRole);
+                    _role = base.SoAContext.Roles.Find(ApprovalRole);
                     if (_role != null)
                     {
-                        Context.Attach(_role);
+                        base.SoAContext.Attach(_role);
                     }
                 }
                 return _role;
@@ -123,21 +137,30 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                 if (_role != value)
                 {
                     _role = value;
-                    ApprovalRole = _role == null ? default : _role.RoleId;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_role != null)
+                    {
+                        ApprovalRole = _role.RoleId;
+                    }
                 }
             }
         }
 
         private ObservableCollection<MessageTemplate> _messageTemplates;
 
-        [InverseProperty("CommunicationPolicy")]
+        [InverseProperty("CommunicationPolicyRef")]
         public virtual ObservableCollection<MessageTemplate> MessageTemplates
         {
             get
             {
                 if (_messageTemplates == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -147,11 +170,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.MessageTemplates.Where(x => x.CommunicationPolicy == this.CommunicationPolicyId).ToList<MessageTemplate>();
+                        var items = base.SoAContext.MessageTemplates.Where(x => x.CommunicationPolicy == this.CommunicationPolicyId).ToList<MessageTemplate>();
                         _messageTemplates = new ObservableCollection<MessageTemplate>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _messageTemplates.CollectionChanged += MessageTemplates_CollectionChanged;
@@ -186,7 +209,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         protected override void LazyLoadProperties()
         {
-            _ = this.ProcedureVersion;
+            _ = this.ProcedureVersionRef;
             _ = this.Role;
             _ = this.MessageTemplates;
         }

@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -16,9 +17,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string ToolId { get; set; }
 
         // Formula Name (rulebook: ={{Label}})
+        [NotMapped]
         public string? Name
         {
-            get => this.Label; set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Of(this.Label))); set { }
         }
 
         public string? Label { get; set; }
@@ -28,14 +30,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<StepTool> _stepTools;
 
-        [InverseProperty("Tool")]
+        [InverseProperty("ToolRef")]
         public virtual ObservableCollection<StepTool> StepTools
         {
             get
             {
                 if (_stepTools == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -45,11 +47,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.StepTools.Where(x => x.Tool == this.ToolId).ToList<StepTool>();
+                        var items = base.SoAContext.StepTools.Where(x => x.Tool == this.ToolId).ToList<StepTool>();
                         _stepTools = new ObservableCollection<StepTool>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _stepTools.CollectionChanged += StepTools_CollectionChanged;

@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -16,25 +17,28 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string IssueOccurrenceId { get; set; }
 
         // Formula Name (rulebook: ={{Error}} & " @ " & {{OccurredAt}})
+        [NotMapped]
         public string? Name
         {
-            get => this.Error + " @ " + this.OccurredAt; set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.Error)), F.S(" @ "), F.TimestamptzText(F.Of(this.OccurredAt))))); set { }
         }
 
-        public DateTime? OccurredAt { get; set; }
+        public DateTimeOffset? OccurredAt { get; set; }
         public string? IssueCause { get; set; }
         public string? IssueSolution { get; set; }
         public string? Status { get; set; }
         // Formula IsUnresolved (rulebook: =OR({{Status}} = "Open", {{Status}} = "Investigating", {{Status}} = "Monitoring"))
+        [NotMapped]
         public bool? IsUnresolved
         {
-            get => OR(this.Status = "Open", this.Status = "Investigating", this.Status = "Monitoring"); set { }
+            get => F.AsBool(F.Memo(this, "IsUnresolved", () => F.Or(F.Bool3(F.Eq(F.Nullif(F.Of(this.Status)), F.S("Open"))), F.Bool3(F.Eq(F.Nullif(F.Of(this.Status)), F.S("Investigating"))), F.Bool3(F.Eq(F.Nullif(F.Of(this.Status)), F.S("Monitoring")))))); set { }
         }
 
         // Formula StepExecutionWhenUnresolved (rulebook: =IF({{IsUnresolved}}, {{StepExecution}}, ""))
+        [NotMapped]
         public string? StepExecutionWhenUnresolved
         {
-            get => IF(this.IsUnresolved, this.StepExecution, ""); set { }
+            get => F.AsString(F.Memo(this, "StepExecutionWhenUnresolved", () => (F.Truthy(F.Bool3(F.Of(this.IsUnresolved))) ? F.Of(this.StepExecution) : F.S("")))); set { }
         }
 
         public string? SemanticTypeIri { get; set; }
@@ -43,72 +47,90 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string? Error { get; set; }
         public string? EncounteredByAgent { get; set; }
 
-        private StepExecution _stepExecution;
+        private StepExecution _stepExecutionRef;
 
         [ForeignKey("StepExecution")]
-        public virtual StepExecution StepExecution
+        public virtual StepExecution StepExecutionRef
         {
             get
             {
-                if (_stepExecution == null && !string.IsNullOrEmpty(StepExecution))
+                if (_stepExecutionRef == null && !string.IsNullOrEmpty(StepExecution))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access StepExecution - no database context is set. StepExecution: " + StepExecution + ".");
+                            throw new InvalidOperationException("Cannot access StepExecutionRef - no database context is set. StepExecution: " + StepExecution + ".");
                         }
                         return null;
                     }
-                    _stepExecution = Context.StepExecutions.Find(StepExecution);
-                    if (_stepExecution != null)
+                    _stepExecutionRef = base.SoAContext.StepExecutions.Find(StepExecution);
+                    if (_stepExecutionRef != null)
                     {
-                        Context.Attach(_stepExecution);
+                        base.SoAContext.Attach(_stepExecutionRef);
                     }
                 }
-                return _stepExecution;
+                return _stepExecutionRef;
             }
             set
             {
-                if (_stepExecution != value)
+                if (_stepExecutionRef != value)
                 {
-                    _stepExecution = value;
-                    StepExecution = _stepExecution == null ? default : _stepExecution.StepExecutionId;
+                    _stepExecutionRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_stepExecutionRef != null)
+                    {
+                        StepExecution = _stepExecutionRef.StepExecutionId;
+                    }
                 }
             }
         }
 
-        private Error _error;
+        private Error _errorRef;
 
         [ForeignKey("Error")]
-        public virtual Error Error
+        public virtual Error ErrorRef
         {
             get
             {
-                if (_error == null && !string.IsNullOrEmpty(Error))
+                if (_errorRef == null && !string.IsNullOrEmpty(Error))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access Error - no database context is set. Error: " + Error + ".");
+                            throw new InvalidOperationException("Cannot access ErrorRef - no database context is set. Error: " + Error + ".");
                         }
                         return null;
                     }
-                    _error = Context.Errors.Find(Error);
-                    if (_error != null)
+                    _errorRef = base.SoAContext.Errors.Find(Error);
+                    if (_errorRef != null)
                     {
-                        Context.Attach(_error);
+                        base.SoAContext.Attach(_errorRef);
                     }
                 }
-                return _error;
+                return _errorRef;
             }
             set
             {
-                if (_error != value)
+                if (_errorRef != value)
                 {
-                    _error = value;
-                    Error = _error == null ? default : _error.ErrorId;
+                    _errorRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_errorRef != null)
+                    {
+                        Error = _errorRef.ErrorId;
+                    }
                 }
             }
         }
@@ -122,7 +144,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_agent == null && !string.IsNullOrEmpty(EncounteredByAgent))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -130,10 +152,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                         }
                         return null;
                     }
-                    _agent = Context.Agents.Find(EncounteredByAgent);
+                    _agent = base.SoAContext.Agents.Find(EncounteredByAgent);
                     if (_agent != null)
                     {
-                        Context.Attach(_agent);
+                        base.SoAContext.Attach(_agent);
                     }
                 }
                 return _agent;
@@ -143,7 +165,16 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                 if (_agent != value)
                 {
                     _agent = value;
-                    EncounteredByAgent = _agent == null ? default : _agent.AgentId;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_agent != null)
+                    {
+                        EncounteredByAgent = _agent.AgentId;
+                    }
                 }
             }
         }
@@ -151,8 +182,8 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         protected override void LazyLoadProperties()
         {
-            _ = this.StepExecution;
-            _ = this.Error;
+            _ = this.StepExecutionRef;
+            _ = this.ErrorRef;
             _ = this.Agent;
         }
 

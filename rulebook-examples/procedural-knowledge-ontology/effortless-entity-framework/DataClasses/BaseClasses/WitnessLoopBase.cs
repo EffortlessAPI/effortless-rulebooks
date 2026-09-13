@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -16,26 +17,29 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string WitnessLoopId { get; set; }
 
         // Formula Name (rulebook: ="Loop " & {{LoopNumber}} & ": " & {{Title}})
+        [NotMapped]
         public string? Name
         {
-            get => "Loop " + this.LoopNumber + ": " + this.Title; set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.S("Loop "), F.TextOr(F.Of(this.LoopNumber)), F.S(": "), F.TextOr(F.Of(this.Title))))); set { }
         }
 
         public decimal LoopNumber { get; set; }
         public string? Title { get; set; }
         public string? Premise { get; set; }
-        public DateTime? StartedAt { get; set; }
-        public DateTime? CompletedAt { get; set; }
+        public DateTimeOffset? StartedAt { get; set; }
+        public DateTimeOffset? CompletedAt { get; set; }
         // Formula QuestionCount (rulebook: =COUNTIFS(RoleQuestions!{{WitnessLoop}}, {{WitnessLoopId}}))
+        [NotMapped]
         public decimal? QuestionCount
         {
-            get => COUNTIFS(RoleQuestions!this.WitnessLoop, this.WitnessLoopId); set { }
+            get => F.AsDecimal(F.Memo(this, "QuestionCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<RoleQuestion>(base.SoAContext, "RoleQuestions", __c => __c.RoleQuestions), __r => F.CritField(F.Of(__r.WitnessLoop), F.Of(this.WitnessLoopId)))))); set { }
         }
 
         // Formula IsComplete (rulebook: ={{CompletedAt}} <> "")
+        [NotMapped]
         public bool? IsComplete
         {
-            get => this.CompletedAt <> ""; set { }
+            get => F.AsBool(F.Memo(this, "IsComplete", () => F.IsNotBlank(F.Of(this.CompletedAt)))); set { }
         }
 
         public decimal? FieldsAfter { get; set; }
@@ -46,14 +50,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<RoleQuestion> _roleQuestions;
 
-        [InverseProperty("WitnessLoop")]
+        [InverseProperty("WitnessLoopRef")]
         public virtual ObservableCollection<RoleQuestion> RoleQuestions
         {
             get
             {
                 if (_roleQuestions == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -63,11 +67,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.RoleQuestions.Where(x => x.WitnessLoop == this.WitnessLoopId).ToList<RoleQuestion>();
+                        var items = base.SoAContext.RoleQuestions.Where(x => x.WitnessLoop == this.WitnessLoopId).ToList<RoleQuestion>();
                         _roleQuestions = new ObservableCollection<RoleQuestion>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _roleQuestions.CollectionChanged += RoleQuestions_CollectionChanged;

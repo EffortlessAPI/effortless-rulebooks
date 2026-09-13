@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -16,9 +17,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string AppRouteQuestionId { get; set; }
 
         // Formula Name (rulebook: ={{Route}} & " answers " & {{Question}})
+        [NotMapped]
         public string? Name
         {
-            get => this.Route + " answers " + this.Question; set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.Route)), F.S(" answers "), F.TextOr(F.Of(this.Question))))); set { }
         }
 
         public string? SemanticTypeIri { get; set; }
@@ -35,7 +37,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_appRoute == null && !string.IsNullOrEmpty(Route))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -43,10 +45,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                         }
                         return null;
                     }
-                    _appRoute = Context.AppRoutes.Find(Route);
+                    _appRoute = base.SoAContext.AppRoutes.Find(Route);
                     if (_appRoute != null)
                     {
-                        Context.Attach(_appRoute);
+                        base.SoAContext.Attach(_appRoute);
                     }
                 }
                 return _appRoute;
@@ -56,7 +58,16 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                 if (_appRoute != value)
                 {
                     _appRoute = value;
-                    Route = _appRoute == null ? default : _appRoute.AppRouteId;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_appRoute != null)
+                    {
+                        Route = _appRoute.AppRouteId;
+                    }
                 }
             }
         }
@@ -70,7 +81,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_roleQuestion == null && !string.IsNullOrEmpty(Question))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -78,10 +89,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                         }
                         return null;
                     }
-                    _roleQuestion = Context.RoleQuestions.Find(Question);
+                    _roleQuestion = base.SoAContext.RoleQuestions.Find(Question);
                     if (_roleQuestion != null)
                     {
-                        Context.Attach(_roleQuestion);
+                        base.SoAContext.Attach(_roleQuestion);
                     }
                 }
                 return _roleQuestion;
@@ -91,7 +102,16 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                 if (_roleQuestion != value)
                 {
                     _roleQuestion = value;
-                    Question = _roleQuestion == null ? default : _roleQuestion.RoleQuestionId;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_roleQuestion != null)
+                    {
+                        Question = _roleQuestion.RoleQuestionId;
+                    }
                 }
             }
         }

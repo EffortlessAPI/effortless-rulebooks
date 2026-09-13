@@ -28,5 +28,18 @@
     "name": "Loop 2: Questions only loop 1 made askable",
     "question_count": 45,
     "is_complete": true
+  },
+  {
+    "witness_loop_id": "loop-03",
+    "loop_number": 3,
+    "title": "Loop 3: the three gaps the source articles named and the model didn't have",
+    "premise": "Comparing this rulebook against the four \"Intentional Arrangement\" Process Knowledge Management articles surfaced three concepts the essays argue for at length that had no table: process mining as an elicitation channel, controlled vocabulary/taxonomy, and the informal knowledge-broker network. Unlike loops 1-2, this loop is not a full 12-role sweep \u2014 it is exactly these three named gaps, each owned by the role that would actually ask the question.",
+    "semantic_type_iri": "urn:effortless:pko-extension#WitnessLoop",
+    "fields_after": 1771,
+    "witnessed_after": 900,
+    "derived_after": 1033,
+    "name": "Loop 3: Loop 3: the three gaps the source articles named and the model didn't have",
+    "question_count": 3,
+    "is_complete": false
   }
 ]

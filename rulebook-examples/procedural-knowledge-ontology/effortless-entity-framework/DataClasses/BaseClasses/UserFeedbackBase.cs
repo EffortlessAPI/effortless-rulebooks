@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -16,12 +17,13 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string UserFeedbackId { get; set; }
 
         // Formula Name (rulebook: ={{Disposition}} & ": " & LEFT({{FeedbackText}}, 60))
+        [NotMapped]
         public string? Name
         {
-            get => this.Disposition + ": " + LEFT(this.FeedbackText, 60); set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.Disposition)), F.S(": "), F.TextNotNull(F.Left(F.Of(this.FeedbackText), F.I(60)))))); set { }
         }
 
-        public DateTime? ProvidedAt { get; set; }
+        public DateTimeOffset? ProvidedAt { get; set; }
         public string? FeedbackText { get; set; }
         public string? Disposition { get; set; }
         public string? ChangeRequestKey { get; set; }
@@ -30,37 +32,46 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string? ProcedureExecution { get; set; }
         public string? ProvidedByAgent { get; set; }
 
-        private ProcedureExecution _procedureExecution;
+        private ProcedureExecution _procedureExecutionRef;
 
         [ForeignKey("ProcedureExecution")]
-        public virtual ProcedureExecution ProcedureExecution
+        public virtual ProcedureExecution ProcedureExecutionRef
         {
             get
             {
-                if (_procedureExecution == null && !string.IsNullOrEmpty(ProcedureExecution))
+                if (_procedureExecutionRef == null && !string.IsNullOrEmpty(ProcedureExecution))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access ProcedureExecution - no database context is set. ProcedureExecution: " + ProcedureExecution + ".");
+                            throw new InvalidOperationException("Cannot access ProcedureExecutionRef - no database context is set. ProcedureExecution: " + ProcedureExecution + ".");
                         }
                         return null;
                     }
-                    _procedureExecution = Context.ProcedureExecutions.Find(ProcedureExecution);
-                    if (_procedureExecution != null)
+                    _procedureExecutionRef = base.SoAContext.ProcedureExecutions.Find(ProcedureExecution);
+                    if (_procedureExecutionRef != null)
                     {
-                        Context.Attach(_procedureExecution);
+                        base.SoAContext.Attach(_procedureExecutionRef);
                     }
                 }
-                return _procedureExecution;
+                return _procedureExecutionRef;
             }
             set
             {
-                if (_procedureExecution != value)
+                if (_procedureExecutionRef != value)
                 {
-                    _procedureExecution = value;
-                    ProcedureExecution = _procedureExecution == null ? default : _procedureExecution.ProcedureExecutionId;
+                    _procedureExecutionRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_procedureExecutionRef != null)
+                    {
+                        ProcedureExecution = _procedureExecutionRef.ProcedureExecutionId;
+                    }
                 }
             }
         }
@@ -74,7 +85,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_agent == null && !string.IsNullOrEmpty(ProvidedByAgent))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -82,10 +93,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                         }
                         return null;
                     }
-                    _agent = Context.Agents.Find(ProvidedByAgent);
+                    _agent = base.SoAContext.Agents.Find(ProvidedByAgent);
                     if (_agent != null)
                     {
-                        Context.Attach(_agent);
+                        base.SoAContext.Attach(_agent);
                     }
                 }
                 return _agent;
@@ -95,7 +106,16 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                 if (_agent != value)
                 {
                     _agent = value;
-                    ProvidedByAgent = _agent == null ? default : _agent.AgentId;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_agent != null)
+                    {
+                        ProvidedByAgent = _agent.AgentId;
+                    }
                 }
             }
         }
@@ -103,7 +123,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         protected override void LazyLoadProperties()
         {
-            _ = this.ProcedureExecution;
+            _ = this.ProcedureExecutionRef;
             _ = this.Agent;
         }
 

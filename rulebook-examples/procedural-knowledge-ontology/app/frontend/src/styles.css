@@ -650,3 +650,28 @@ td.formula{font-family:var(--data);font-size:11.5px;color:var(--muted);
 .ac-log-line.ok{color:var(--pass)}
 .ac-log-line.bad{color:var(--fail);font-weight:600}
 .ac-log-line.warn{color:var(--warn)}
+
+/* ---------- conformance ---------- */
+.ctable-wrap{overflow-x:auto}
+.ctable td{vertical-align:top}
+.csub{font-size:12px;color:var(--muted);margin-top:2px}
+.chow{margin-top:6px;font-size:12.5px;color:var(--muted);max-width:52ch}
+.chow summary{cursor:pointer;color:var(--spec)}
+.chow p{margin:6px 0 0;line-height:1.5}
+.cbar{margin-top:6px}
+.cpct{font-size:12.5px;margin-top:5px}
+.cexplain .prose{margin:0 0 10px}
+.cgrid td,.cgrid th{white-space:nowrap}
+.cg{font:600 12px/1 var(--data);border:0;border-radius:4px;padding:6px 8px;min-width:44px;cursor:pointer}
+.cg.ok{background:var(--pass-wash);color:var(--pass)}
+.cg.near{background:var(--warn-wash);color:var(--warn)}
+.cg.bad,.cg.miss{background:var(--fail-wash);color:var(--fail)}
+.cg.miss{outline:1px dashed var(--fail)}
+.cg:hover{outline:2px solid var(--spec)}
+.cdetail-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.cformula{white-space:pre-wrap;word-break:break-word;background:var(--paper);border:1px solid var(--rule-soft);
+  border-left:3px solid var(--k-calc);border-radius:5px;padding:10px 12px;font-size:12.5px;margin:0 0 12px}
+.cverdicts{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.ccells td{font-size:12.5px;max-width:28ch;overflow-wrap:anywhere}
+.ccells td.cwrong{background:var(--fail-wash);color:var(--fail)}
+.ccells td.cright{color:var(--pass);text-align:center}

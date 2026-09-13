@@ -24,19 +24,26 @@ There is no upstream to "restore from." The JSON is the upstream.
 
 This folder is a **self-contained Effortless Rulebook (ERB) project**. The rulebook is the single source of truth. All other artifacts (Postgres, Python, Go, substrates) are mechanically derived from it.
 
-## Closure is not a formula — it's the FO(Aggr) boundary, not a modeling choice
+## Closure is not a formula — it's the boundary of first-order logic with aggregates, not a modeling choice
 
 **This is the project's central theoretical claim, not a footnote — lead with it, not with the
 SDLAF machinery around it.** The rulebook's declarative core — Schema, Data, Lookups,
-Aggregations, Formulas (SDLAF), no recursion — is exactly **FO(Aggr)**: first-order logic with
-aggregation over a finite relational structure, the same expressivity SQL without `WITH RECURSIVE`
-has had for 25+ years. Most of what this project demonstrates (role lookups, rollups, derived
-booleans) is *that* class, and nobody should find it impressive on its own.
+Aggregations, Formulas (SDLAF), no recursion — is exactly **first-order logic with aggregates**
+over a finite relational structure (FO + aggregation; the
+logic *L*<sub>aggr</sub> of Hella, Libkin, Nurmonen & Wong), the same expressivity SQL without
+`WITH RECURSIVE` has had for 25+ years. "FO(Aggr)" is not one standard name; spell the class out in
+anything outward-facing. Most of what this project demonstrates (role lookups,
+rollups, derived booleans) is *that* class, and nobody should find it impressive on its own.
 
-**Transitive closure (TC) is provably not expressible in FO(Aggr)** — Immerman, "Languages that
-Capture Complexity Classes" (SIAM J. Comput., 1987), and the descriptive-complexity results built
-on it. No formula, however large, computes reachability over a DAG of unbounded depth from inside
-SDLAF's expressivity class. That is exactly why `precedesStep` / `delegatesTo` closure is **never**
+**Transitive closure (TC) is provably not expressible in first-order logic with aggregates** —
+Hella, Libkin, Nurmonen & Wong, "Logics with Aggregate Operators" (J. ACM, 2001), and Libkin,
+"Expressive Power of SQL" (Theor. Comput. Sci., 2003), extending the classical result for plain
+first-order logic (Aho & Ullman, 1979). Do not cite Immerman 1987 for this: it shows FO *plus* a
+TC operator captures NL, not that aggregates cannot express TC. No formula, however large, computes
+reachability over a DAG of unbounded depth from inside SDLAF's expressivity class. **State the
+scope when making the claim:** the proof is by locality over unordered relational structures
+(queries that do not exploit an ordering of the keys). With a built-in order plus arithmetic,
+proving it would separate uniform TC⁰ from NL, which is open. That is exactly why `precedesStep` / `delegatesTo` closure is **never**
 a calculated field here: it is handed to a distinct, substrate-native mechanism per target —
 
 - Postgres: a `WITH RECURSIVE` view (`vw_step_precedence_closure`, `vw_roles_closure`), emitted by
@@ -124,11 +131,12 @@ Arrangement* series — as **one curated worked example**, the *Production Deplo
 - **SKOS controlled vocabularies**: workflow status + agent capability schemes.
 - **Aggregations & boolean derivations**: `COUNTIFS` rollups, including conditional counts over
   *derived* child fields (e.g. counting steps where the calculated `IsExecutedByAI` is true).
-- **Transitive closure crosses the FO(Aggr) boundary, not a formula**: `ntwf:precedesStep` and
+- **Transitive closure crosses the boundary of first-order logic with aggregates, not a formula**: `ntwf:precedesStep` and
   `ntwf:delegatesTo` are materialized by the `rulebook-to-postgres` `closure` field type as
   `WITH RECURSIVE` views (`vw_step_precedence_closure`, `vw_roles_closure`) — asserted edges +
   inferred reachability, each row tagged `is_inferred` / `hop_distance`. Transitive closure is
-  provably outside FO(Aggr) (Immerman 1987); see "Closure is not a formula" above. This is what
+  provably outside first-order logic with aggregates (Hella–Libkin–Nurmonen–Wong 2001; Libkin
+  2003), over unordered structures; see "Closure is not a formula" above. This is what
   makes the article's headline inference fire.
 - **Load-bearing lookups**: `INDEX/MATCH` lookups resolve the role→agent indirection and the
   gate→role→approver chain that the competency questions depend on. The project is **not** lookup-free

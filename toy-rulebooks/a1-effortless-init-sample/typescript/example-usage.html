@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HelloWhos · erb_sdk.ts</title>
+<!-- No Node, no build step. Serve this folder and open the page:
+       python3 -m http.server 8765   ->   http://127.0.0.1:8765/example-usage.html
+     The page fetches erb_sdk.ts + erb_runtime.ts and strips their types in the browser with Sucrase. -->
+
+<!-- erb_runtime imports node:fs / node:path for its file-based test runner; the browser never calls it. -->
+<script type="importmap">
+{ "imports": { "node:fs": "data:text/javascript,export{}", "node:path": "data:text/javascript,export{}" } }
+</script>
+
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 24px;
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    color: #f5f3ff;
+    background: radial-gradient(1200px 600px at 10% 0%, #7c3aed 0%, transparent 60%),
+                radial-gradient(900px 600px at 100% 100%, #db2777 0%, transparent 55%),
+                #0f0a1f;
+  }
+  .card {
+    width: min(560px, 100%); padding: 40px;
+    background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12);
+    border-radius: 24px; backdrop-filter: blur(16px);
+    box-shadow: 0 30px 80px rgba(0,0,0,.45);
+  }
+  .eyebrow { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: #c4b5fd; margin: 0 0 12px; }
+  #intro {
+    margin: 0 0 32px; font-size: clamp(40px, 9vw, 72px); font-weight: 800; line-height: 1.05;
+    letter-spacing: -.02em; overflow-wrap: anywhere;
+    background: linear-gradient(90deg, #fde68a, #f472b6 50%, #a78bfa);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    transition: transform .15s ease;
+  }
+  #intro.bump { transform: scale(1.03); }
+  label { display: block; font-size: 13px; color: #ddd6fe; margin-bottom: 8px; }
+  input {
+    width: 100%; padding: 14px 16px; font: inherit; font-size: 18px; color: #fff;
+    background: rgba(0,0,0,.35); border: 1px solid rgba(255,255,255,.18); border-radius: 12px; outline: none;
+  }
+  input:focus { border-color: #f472b6; box-shadow: 0 0 0 4px rgba(244,114,182,.25); }
+  code {
+    display: block; margin-top: 24px; padding: 12px 14px; border-radius: 10px;
+    background: rgba(0,0,0,.35); color: #c4b5fd; font-size: 13px; overflow-x: auto; white-space: pre;
+  }
+  .error { color: #fecaca; background: rgba(220,38,38,.2); border: 1px solid rgba(248,113,113,.5); padding: 14px; border-radius: 12px; line-height: 1.5; }
+  .error code { margin-top: 8px; color: #fecaca; }
+</style>
+</head>
+<body>
+  <main class="card">
+    <p class="eyebrow">erb_sdk.ts · computeHelloWhos()</p>
+    <h1 id="intro">…</h1>
+    <label for="name">Name</label>
+    <input id="name" value="World" autocomplete="off" autofocus>
+    <code id="call"></code>
+  </main>
+
+<script type="module">
+  const intro = document.getElementById("intro");
+  const name = document.getElementById("name");
+  const call = document.getElementById("call");
+
+  try {
+    const { transform } = await import("https://esm.sh/sucrase@3.35.0");
+
+    // Compile a .ts file in the browser and return a blob: URL the browser can import.
+    const compile = async (file, rewrite = (js) => js) => {
+      const res = await fetch(file, { cache: "no-store" }); // always the SDK as it is on disk now
+      if (!res.ok) throw new Error(`GET ${file} -> ${res.status}`);
+      const js = transform(await res.text(), { transforms: ["typescript"] }).code;
+      return URL.createObjectURL(new Blob([rewrite(js)], { type: "text/javascript" }));
+    };
+
+    const runtimeUrl = await compile("./erb_runtime.ts");
+    const sdkUrl = await compile("./erb_sdk.ts", (js) => js.replaceAll('"./erb_runtime.js"', `"${runtimeUrl}"`));
+    const { computeHelloWhos } = await import(sdkUrl);
+
+    const render = () => {
+      const row = computeHelloWhos({ hello_who_id: "demo", name: name.value, introduction: null });
+      intro.textContent = row.introduction;
+      call.textContent = `computeHelloWhos({ name: ${JSON.stringify(name.value)} })\n  .introduction  →  ${JSON.stringify(row.introduction)}`;
+      intro.classList.remove("bump"); void intro.offsetWidth; intro.classList.add("bump");
+    };
+    name.addEventListener("input", render);
+    render();
+  } catch (err) {
+    const why = location.protocol === "file:"
+      ? "This page was opened as a file. Browsers refuse to fetch or import from file://, so serve the folder instead:"
+      : "Could not fetch and compile erb_sdk.ts (Sucrase loads from esm.sh, so this needs a network connection):";
+    document.querySelector(".card").innerHTML =
+      `<div class="error"><strong>The TypeScript SDK did not load.</strong><br>${why}
+       <code>cd typescript\npython3 -m http.server 8765\nopen http://127.0.0.1:8765/example-usage.html</code>
+       <br><small>${String(err)}</small></div>`;
+    throw err;
+  }
+</script>
+</body>
+</html>

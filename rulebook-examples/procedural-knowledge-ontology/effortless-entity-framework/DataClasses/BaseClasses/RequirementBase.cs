@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -16,9 +17,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string RequirementId { get; set; }
 
         // Formula Name (rulebook: ={{Label}})
+        [NotMapped]
         public string? Name
         {
-            get => this.Label; set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Of(this.Label))); set { }
         }
 
         public string? Label { get; set; }
@@ -27,186 +29,216 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string? Rationale { get; set; }
         public bool? IsBlocking { get; set; }
         // Formula SatisfactionRecordCount (rulebook: =COUNTIFS(RequirementSatisfactions!{{Requirement}}, {{RequirementId}}))
+        [NotMapped]
         public decimal? SatisfactionRecordCount
         {
-            get => COUNTIFS(RequirementSatisfactions!this.Requirement, this.RequirementId); set { }
+            get => F.AsDecimal(F.Memo(this, "SatisfactionRecordCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<RequirementSatisfaction>(base.SoAContext, "RequirementSatisfactions", __c => __c.RequirementSatisfactions), __r => F.CritField(F.Of(__r.Requirement), F.Of(this.RequirementId)))))); set { }
         }
 
         // Formula StepBindingCount (rulebook: =COUNTIFS(StepRequirements!{{Requirement}}, {{RequirementId}}))
+        [NotMapped]
         public decimal? StepBindingCount
         {
-            get => COUNTIFS(StepRequirements!this.Requirement, this.RequirementId); set { }
+            get => F.AsDecimal(F.Memo(this, "StepBindingCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<StepRequirement>(base.SoAContext, "StepRequirements", __c => __c.StepRequirements), __r => F.CritField(F.Of(__r.Requirement), F.Of(this.RequirementId)))))); set { }
         }
 
         // Formula IsBoundToAnyStep (rulebook: ={{StepBindingCount}} > 0)
+        [NotMapped]
         public bool? IsBoundToAnyStep
         {
-            get => this.StepBindingCount > 0; set { }
+            get => F.AsBool(F.Memo(this, "IsBoundToAnyStep", () => F.Cmp(F.Of(this.StepBindingCount), ">", F.I(0)))); set { }
         }
 
         // Formula HasEverBeenEvaluated (rulebook: ={{SatisfactionRecordCount}} > 0)
+        [NotMapped]
         public bool? HasEverBeenEvaluated
         {
-            get => this.SatisfactionRecordCount > 0; set { }
+            get => F.AsBool(F.Memo(this, "HasEverBeenEvaluated", () => F.Cmp(F.Of(this.SatisfactionRecordCount), ">", F.I(0)))); set { }
         }
 
         // Formula NegativeOutcomeCount (rulebook: =COUNTIFS(RequirementSatisfactions!{{NegativeOutcomeRequirementKey}}, {{RequirementId}}))
+        [NotMapped]
         public decimal? NegativeOutcomeCount
         {
-            get => COUNTIFS(RequirementSatisfactions!this.NegativeOutcomeRequirementKey, this.RequirementId); set { }
+            get => F.AsDecimal(F.Memo(this, "NegativeOutcomeCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<RequirementSatisfaction>(base.SoAContext, "RequirementSatisfactions", __c => __c.RequirementSatisfactions), __r => F.CritField(F.Of(__r.NegativeOutcomeRequirementKey), F.Of(this.RequirementId)))))); set { }
         }
 
         // Formula IsInoperativeControl (rulebook: =AND({{IsBlocking}}, {{IsBoundToAnyStep}}, NOT({{HasEverBeenEvaluated}})))
+        [NotMapped]
         public bool? IsInoperativeControl
         {
-            get => AND(this.IsBlocking, this.IsBoundToAnyStep, NOT(this.HasEverBeenEvaluated)); set { }
+            get => F.AsBool(F.Memo(this, "IsInoperativeControl", () => F.And(F.IsTrueV(F.Of(this.IsBlocking)), F.Bool3(F.Of(this.IsBoundToAnyStep)), F.Bool3(F.Not(F.Bool3(F.Of(this.HasEverBeenEvaluated))))))); set { }
         }
 
         // Formula IsDecorativeControl (rulebook: =AND({{IsBlocking}}, NOT({{IsBoundToAnyStep}})))
+        [NotMapped]
         public bool? IsDecorativeControl
         {
-            get => AND(this.IsBlocking, NOT(this.IsBoundToAnyStep)); set { }
+            get => F.AsBool(F.Memo(this, "IsDecorativeControl", () => F.And(F.IsTrueV(F.Of(this.IsBlocking)), F.Bool3(F.Not(F.Bool3(F.Of(this.IsBoundToAnyStep))))))); set { }
         }
 
         public bool? HasComputedWitness { get; set; }
         public string? WitnessFieldName { get; set; }
         // Formula HasEverProducedNegative (rulebook: ={{NegativeOutcomeCount}} > 0)
+        [NotMapped]
         public bool? HasEverProducedNegative
         {
-            get => this.NegativeOutcomeCount > 0; set { }
+            get => F.AsBool(F.Memo(this, "HasEverProducedNegative", () => F.Cmp(F.Of(this.NegativeOutcomeCount), ">", F.I(0)))); set { }
         }
 
         // Formula IsUnfalsifiedControl (rulebook: =AND({{IsBlocking}}, {{HasEverBeenEvaluated}}, NOT({{HasEverProducedNegative}})))
+        [NotMapped]
         public bool? IsUnfalsifiedControl
         {
-            get => AND(this.IsBlocking, this.HasEverBeenEvaluated, NOT(this.HasEverProducedNegative)); set { }
+            get => F.AsBool(F.Memo(this, "IsUnfalsifiedControl", () => F.And(F.IsTrueV(F.Of(this.IsBlocking)), F.Bool3(F.Of(this.HasEverBeenEvaluated)), F.Bool3(F.Not(F.Bool3(F.Of(this.HasEverProducedNegative))))))); set { }
         }
 
         // Formula ClaimsAWitnessField (rulebook: ={{WitnessFieldName}} <> "")
+        [NotMapped]
         public bool? ClaimsAWitnessField
         {
-            get => this.WitnessFieldName <> ""; set { }
+            get => F.AsBool(F.Memo(this, "ClaimsAWitnessField", () => F.IsNotBlank(F.Of(this.WitnessFieldName)))); set { }
         }
 
         // Formula NamedWitnessFieldExists (rulebook: =INDEX(RulebookFields!{{IsDerived}}, MATCH({{WitnessFieldName}}, RulebookFields!{{RulebookFieldId}}, 0)))
+        [NotMapped]
         public bool? NamedWitnessFieldExists
         {
-            get => INDEX(RulebookFields!this.IsDerived, MATCH(this.WitnessFieldName, RulebookFields!this.RulebookFieldId, 0)); set { }
+            get => F.AsBool(F.Memo(this, "NamedWitnessFieldExists", () => F.Lookup<RulebookField>(this, "RulebookFields", "RulebookFieldId", __c => __c.RulebookFields, __r => F.Of(__r.RulebookFieldId), F.Of(this.WitnessFieldName), __r => F.Of(__r.IsDerived), () => F.Of(new RulebookField().IsDerived)))); set { }
         }
 
         // Formula DerivedHasComputedWitness (rulebook: =AND({{ClaimsAWitnessField}}, {{NamedWitnessFieldExists}}))
+        [NotMapped]
         public bool? DerivedHasComputedWitness
         {
-            get => AND(this.ClaimsAWitnessField, this.NamedWitnessFieldExists); set { }
+            get => F.AsBool(F.Memo(this, "DerivedHasComputedWitness", () => F.And(F.Bool3(F.Of(this.ClaimsAWitnessField)), F.Bool3(F.Of(this.NamedWitnessFieldExists))))); set { }
         }
 
         // Formula WitnessClaimIsUnverified (rulebook: =NOT({{HasComputedWitness}} = {{DerivedHasComputedWitness}}))
+        [NotMapped]
         public bool? WitnessClaimIsUnverified
         {
-            get => NOT(this.HasComputedWitness = this.DerivedHasComputedWitness); set { }
+            get => F.AsBool(F.Memo(this, "WitnessClaimIsUnverified", () => F.Not(F.Bool3(F.Eq(F.Nullif(F.Of(this.HasComputedWitness)), F.Of(this.DerivedHasComputedWitness)))))); set { }
         }
 
         // Formula IsUnwitnessedBlockingControl (rulebook: =AND({{IsBlocking}}, NOT({{DerivedHasComputedWitness}})))
+        [NotMapped]
         public bool? IsUnwitnessedBlockingControl
         {
-            get => AND(this.IsBlocking, NOT(this.DerivedHasComputedWitness)); set { }
+            get => F.AsBool(F.Memo(this, "IsUnwitnessedBlockingControl", () => F.And(F.IsTrueV(F.Of(this.IsBlocking)), F.Bool3(F.Not(F.Bool3(F.Of(this.DerivedHasComputedWitness))))))); set { }
         }
 
         // Formula WitnessFireCount (rulebook: ={{NegativeOutcomeCount}})
+        [NotMapped]
         public decimal? WitnessFireCount
         {
-            get => this.NegativeOutcomeCount; set { }
+            get => F.AsDecimal(F.Memo(this, "WitnessFireCount", () => F.Of(this.NegativeOutcomeCount))); set { }
         }
 
         // Formula WitnessHasNeverFired (rulebook: =AND({{HasComputedWitness}}, {{WitnessFireCount}} = 0))
+        [NotMapped]
         public bool? WitnessHasNeverFired
         {
-            get => AND(this.HasComputedWitness, this.WitnessFireCount = 0); set { }
+            get => F.AsBool(F.Memo(this, "WitnessHasNeverFired", () => F.And(F.IsTrueV(F.Of(this.HasComputedWitness)), F.Bool3(F.Eq(F.Of(this.WitnessFireCount), F.I(0)))))); set { }
         }
 
         // Formula EvaluationSampleSize (rulebook: ={{SatisfactionRecordCount}})
+        [NotMapped]
         public decimal? EvaluationSampleSize
         {
-            get => this.SatisfactionRecordCount; set { }
+            get => F.AsDecimal(F.Memo(this, "EvaluationSampleSize", () => F.Of(this.SatisfactionRecordCount))); set { }
         }
 
         // Formula HasMeaningfulSample (rulebook: ={{EvaluationSampleSize}} >= {{MinimumSampleForAssurance}})
+        [NotMapped]
         public bool? HasMeaningfulSample
         {
-            get => this.EvaluationSampleSize >= this.MinimumSampleForAssurance; set { }
+            get => F.AsBool(F.Memo(this, "HasMeaningfulSample", () => F.Cmp(F.Of(this.EvaluationSampleSize), ">=", F.Nullif(F.Of(this.MinimumSampleForAssurance))))); set { }
         }
 
         public int? MinimumSampleForAssurance { get; set; }
         // Formula IsUntestedWitness (rulebook: =AND({{WitnessHasNeverFired}}, NOT({{HasMeaningfulSample}})))
+        [NotMapped]
         public bool? IsUntestedWitness
         {
-            get => AND(this.WitnessHasNeverFired, NOT(this.HasMeaningfulSample)); set { }
+            get => F.AsBool(F.Memo(this, "IsUntestedWitness", () => F.And(F.Bool3(F.Of(this.WitnessHasNeverFired)), F.Bool3(F.Not(F.Bool3(F.Of(this.HasMeaningfulSample))))))); set { }
         }
 
         // Formula IsEvidencedHoldingControl (rulebook: =AND({{WitnessHasNeverFired}}, {{HasMeaningfulSample}}))
+        [NotMapped]
         public bool? IsEvidencedHoldingControl
         {
-            get => AND(this.WitnessHasNeverFired, this.HasMeaningfulSample); set { }
+            get => F.AsBool(F.Memo(this, "IsEvidencedHoldingControl", () => F.And(F.Bool3(F.Of(this.WitnessHasNeverFired)), F.Bool3(F.Of(this.HasMeaningfulSample))))); set { }
         }
 
         // Formula ControlAssuranceState (rulebook: =IF(NOT({{IsBoundToAnyStep}}), "Decorative", IF(NOT({{HasEverBeenEvaluated}}), "Inoperative", IF(NOT({{HasComputedWitness}}), "Asserted", IF({{WitnessFireCount}} > 0, "Demonstrated", IF({{HasMeaningfulSample}}, "Holding", "Untested"))))))
+        [NotMapped]
         public string? ControlAssuranceState
         {
-            get => IF(NOT(this.IsBoundToAnyStep), "Decorative", IF(NOT(this.HasEverBeenEvaluated), "Inoperative", IF(NOT(this.HasComputedWitness), "Asserted", IF(this.WitnessFireCount > 0, "Demonstrated", IF(this.HasMeaningfulSample, "Holding", "Untested"))))); set { }
+            get => F.AsString(F.Memo(this, "ControlAssuranceState", () => (F.Truthy(F.Bool3(F.Not(F.Bool3(F.Of(this.IsBoundToAnyStep))))) ? F.S("Decorative") : (F.Truthy(F.Bool3(F.Not(F.Bool3(F.Of(this.HasEverBeenEvaluated))))) ? F.S("Inoperative") : (F.Truthy(F.Bool3(F.Not(F.IsTrueV(F.Of(this.HasComputedWitness))))) ? F.S("Asserted") : (F.Truthy(F.Bool3(F.Cmp(F.Of(this.WitnessFireCount), ">", F.I(0)))) ? F.S("Demonstrated") : (F.Truthy(F.Bool3(F.Of(this.HasMeaningfulSample))) ? F.S("Holding") : F.S("Untested")))))))); set { }
         }
 
         // Formula UnexercisedBindingCount (rulebook: =COUNTIFS(StepRequirements!{{UnexercisedBindingRequirementKey}}, {{RequirementId}}))
+        [NotMapped]
         public decimal? UnexercisedBindingCount
         {
-            get => COUNTIFS(StepRequirements!this.UnexercisedBindingRequirementKey, this.RequirementId); set { }
+            get => F.AsDecimal(F.Memo(this, "UnexercisedBindingCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<StepRequirement>(base.SoAContext, "StepRequirements", __c => __c.StepRequirements), __r => F.CritField(F.Of(__r.UnexercisedBindingRequirementKey), F.Of(this.RequirementId)))))); set { }
         }
 
         // Formula WitnessIsPartiallyScoped (rulebook: =AND({{HasComputedWitness}}, {{UnexercisedBindingCount}} > 0))
+        [NotMapped]
         public bool? WitnessIsPartiallyScoped
         {
-            get => AND(this.HasComputedWitness, this.UnexercisedBindingCount > 0); set { }
+            get => F.AsBool(F.Memo(this, "WitnessIsPartiallyScoped", () => F.And(F.IsTrueV(F.Of(this.HasComputedWitness)), F.Bool3(F.Cmp(F.Of(this.UnexercisedBindingCount), ">", F.I(0)))))); set { }
         }
 
         // Formula AccountableAgent (rulebook: =INDEX(Roles!{{CurrentAgent}}, MATCH({{AccountableRole}}, Roles!{{RoleId}}, 0)))
+        [NotMapped]
         public string? AccountableAgent
         {
-            get => INDEX(Roles!this.CurrentAgent, MATCH(this.AccountableRole, Roles!this.RoleId, 0)); set { }
+            get => F.AsString(F.Memo(this, "AccountableAgent", () => F.Lookup<Role>(this, "Roles", "RoleId", __c => __c.Roles, __r => F.Of(__r.RoleId), F.Of(this.AccountableRole), __r => F.Of(__r.CurrentAgent), () => F.Of(new Role().CurrentAgent)))); set { }
         }
 
         // Formula HasNamedOwner (rulebook: ={{AccountableRole}} <> "")
+        [NotMapped]
         public bool? HasNamedOwner
         {
-            get => this.AccountableRole <> ""; set { }
+            get => F.AsBool(F.Memo(this, "HasNamedOwner", () => F.IsNotBlank(F.Of(this.AccountableRole)))); set { }
         }
 
         // Formula IsOrphanedBlockingControl (rulebook: =AND({{IsBlocking}}, NOT({{HasNamedOwner}})))
+        [NotMapped]
         public bool? IsOrphanedBlockingControl
         {
-            get => AND(this.IsBlocking, NOT(this.HasNamedOwner)); set { }
+            get => F.AsBool(F.Memo(this, "IsOrphanedBlockingControl", () => F.And(F.IsTrueV(F.Of(this.IsBlocking)), F.Bool3(F.Not(F.Bool3(F.Of(this.HasNamedOwner))))))); set { }
         }
 
         // Formula IsUnwatchedAndUnowned (rulebook: =AND({{IsBlocking}}, NOT({{HasComputedWitness}}), NOT({{HasNamedOwner}})))
+        [NotMapped]
         public bool? IsUnwatchedAndUnowned
         {
-            get => AND(this.IsBlocking, NOT(this.HasComputedWitness), NOT(this.HasNamedOwner)); set { }
+            get => F.AsBool(F.Memo(this, "IsUnwatchedAndUnowned", () => F.And(F.IsTrueV(F.Of(this.IsBlocking)), F.Bool3(F.Not(F.IsTrueV(F.Of(this.HasComputedWitness)))), F.Bool3(F.Not(F.Bool3(F.Of(this.HasNamedOwner))))))); set { }
         }
 
         // Formula AttestationExposureNote (rulebook: =IF(NOT({{IsBlocking}}), "", IF({{IsUnwatchedAndUnowned}}, "Unwatched and unowned: exposure defaults to the signatory.", IF({{IsOrphanedBlockingControl}}, "Witnessed but unowned: no named accountability.", IF(NOT({{HasComputedWitness}}), "Owned but unwitnessed: rests on human judgement.", "")))))
+        [NotMapped]
         public string? AttestationExposureNote
         {
-            get => IF(NOT(this.IsBlocking), "", IF(this.IsUnwatchedAndUnowned, "Unwatched and unowned: exposure defaults to the signatory.", IF(this.IsOrphanedBlockingControl, "Witnessed but unowned: no named accountability.", IF(NOT(this.HasComputedWitness), "Owned but unwitnessed: rests on human judgement.", "")))); set { }
+            get => F.AsString(F.Memo(this, "AttestationExposureNote", () => (F.Truthy(F.Bool3(F.Not(F.IsTrueV(F.Of(this.IsBlocking))))) ? F.S("") : (F.Truthy(F.Bool3(F.Of(this.IsUnwatchedAndUnowned))) ? F.S("Unwatched and unowned: exposure defaults to the signatory.") : (F.Truthy(F.Bool3(F.Of(this.IsOrphanedBlockingControl))) ? F.S("Witnessed but unowned: no named accountability.") : (F.Truthy(F.Bool3(F.Not(F.IsTrueV(F.Of(this.HasComputedWitness))))) ? F.S("Owned but unwitnessed: rests on human judgement.") : F.S(""))))))); set { }
         }
 
         // Formula UnwatchedUnownedFlag (rulebook: =IF({{IsUnwatchedAndUnowned}}, "unwatched-unowned", ""))
+        [NotMapped]
         public string? UnwatchedUnownedFlag
         {
-            get => IF(this.IsUnwatchedAndUnowned, "unwatched-unowned", ""); set { }
+            get => F.AsString(F.Memo(this, "UnwatchedUnownedFlag", () => (F.Truthy(F.Bool3(F.Of(this.IsUnwatchedAndUnowned))) ? F.S("unwatched-unowned") : F.S("")))); set { }
         }
 
         // Formula UsesControlledVocabulary (rulebook: ={{ControlledTerm}} <> "")
+        [NotMapped]
         public bool? UsesControlledVocabulary
         {
-            get => this.ControlledTerm <> ""; set { }
+            get => F.AsBool(F.Memo(this, "UsesControlledVocabulary", () => F.IsNotBlank(F.Of(this.ControlledTerm)))); set { }
         }
 
         public string? SemanticTypeIri { get; set; }
@@ -223,7 +255,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_role == null && !string.IsNullOrEmpty(AccountableRole))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -231,10 +263,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                         }
                         return null;
                     }
-                    _role = Context.Roles.Find(AccountableRole);
+                    _role = base.SoAContext.Roles.Find(AccountableRole);
                     if (_role != null)
                     {
-                        Context.Attach(_role);
+                        base.SoAContext.Attach(_role);
                     }
                 }
                 return _role;
@@ -244,7 +276,16 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                 if (_role != value)
                 {
                     _role = value;
-                    AccountableRole = _role == null ? default : _role.RoleId;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_role != null)
+                    {
+                        AccountableRole = _role.RoleId;
+                    }
                 }
             }
         }
@@ -258,7 +299,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_vocabularyTerm == null && !string.IsNullOrEmpty(ControlledTerm))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -266,10 +307,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                         }
                         return null;
                     }
-                    _vocabularyTerm = Context.VocabularyTerms.Find(ControlledTerm);
+                    _vocabularyTerm = base.SoAContext.VocabularyTerms.Find(ControlledTerm);
                     if (_vocabularyTerm != null)
                     {
-                        Context.Attach(_vocabularyTerm);
+                        base.SoAContext.Attach(_vocabularyTerm);
                     }
                 }
                 return _vocabularyTerm;
@@ -279,21 +320,30 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                 if (_vocabularyTerm != value)
                 {
                     _vocabularyTerm = value;
-                    ControlledTerm = _vocabularyTerm == null ? default : _vocabularyTerm.VocabularyTermId;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_vocabularyTerm != null)
+                    {
+                        ControlledTerm = _vocabularyTerm.VocabularyTermId;
+                    }
                 }
             }
         }
 
         private ObservableCollection<StepRequirement> _stepRequirements;
 
-        [InverseProperty("Requirement")]
+        [InverseProperty("RequirementRef")]
         public virtual ObservableCollection<StepRequirement> StepRequirements
         {
             get
             {
                 if (_stepRequirements == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -303,11 +353,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.StepRequirements.Where(x => x.Requirement == this.RequirementId).ToList<StepRequirement>();
+                        var items = base.SoAContext.StepRequirements.Where(x => x.Requirement == this.RequirementId).ToList<StepRequirement>();
                         _stepRequirements = new ObservableCollection<StepRequirement>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _stepRequirements.CollectionChanged += StepRequirements_CollectionChanged;
@@ -341,14 +391,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<RequirementSatisfaction> _requirementSatisfactions;
 
-        [InverseProperty("Requirement")]
+        [InverseProperty("RequirementRef")]
         public virtual ObservableCollection<RequirementSatisfaction> RequirementSatisfactions
         {
             get
             {
                 if (_requirementSatisfactions == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -358,11 +408,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.RequirementSatisfactions.Where(x => x.Requirement == this.RequirementId).ToList<RequirementSatisfaction>();
+                        var items = base.SoAContext.RequirementSatisfactions.Where(x => x.Requirement == this.RequirementId).ToList<RequirementSatisfaction>();
                         _requirementSatisfactions = new ObservableCollection<RequirementSatisfaction>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _requirementSatisfactions.CollectionChanged += RequirementSatisfactions_CollectionChanged;
@@ -403,7 +453,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_authorityBoundaries == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -413,11 +463,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.AuthorityBoundaries.Where(x => x.EnforcingRequirement == this.RequirementId).ToList<AuthorityBoundary>();
+                        var items = base.SoAContext.AuthorityBoundaries.Where(x => x.EnforcingRequirement == this.RequirementId).ToList<AuthorityBoundary>();
                         _authorityBoundaries = new ObservableCollection<AuthorityBoundary>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _authorityBoundaries.CollectionChanged += AuthorityBoundaries_CollectionChanged;

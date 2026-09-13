@@ -1,0 +1,134 @@
+[
+  {
+    "role_schema_id": "schema-finance-analyst",
+    "schema_name": "pko_finance_analyst",
+    "is_sealed": true,
+    "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema",
+    "name": "pko_finance_analyst",
+    "principal": "principal-finance-analyst",
+    "search_path": "pko_finance_analyst",
+    "view_count": 7,
+    "is_empty_schema": false
+  },
+  {
+    "role_schema_id": "schema-controller",
+    "schema_name": "pko_controller",
+    "is_sealed": true,
+    "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema",
+    "name": "pko_controller",
+    "principal": "principal-controller",
+    "search_path": "pko_controller",
+    "view_count": 8,
+    "is_empty_schema": false
+  },
+  {
+    "role_schema_id": "schema-cfo",
+    "schema_name": "pko_cfo",
+    "is_sealed": true,
+    "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema",
+    "name": "pko_cfo",
+    "principal": "principal-cfo",
+    "search_path": "pko_cfo",
+    "view_count": 5,
+    "is_empty_schema": false
+  },
+  {
+    "role_schema_id": "schema-hr-policy-owner",
+    "schema_name": "pko_hr_policy_owner",
+    "is_sealed": true,
+    "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema",
+    "name": "pko_hr_policy_owner",
+    "principal": "principal-hr-policy-owner",
+    "search_path": "pko_hr_policy_owner",
+    "view_count": 6,
+    "is_empty_schema": false
+  },
+  {
+    "role_schema_id": "schema-employment-counsel",
+    "schema_name": "pko_employment_counsel",
+    "is_sealed": true,
+    "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema",
+    "name": "pko_employment_counsel",
+    "principal": "principal-employment-counsel",
+    "search_path": "pko_employment_counsel",
+    "view_count": 5,
+    "is_empty_schema": false
+  },
+  {
+    "role_schema_id": "schema-communications-manager",
+    "schema_name": "pko_communications_manager",
+    "is_sealed": true,
+    "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema",
+    "name": "pko_communications_manager",
+    "principal": "principal-communications-manager",
+    "search_path": "pko_communications_manager",
+    "view_count": 6,
+    "is_empty_schema": false
+  },
+  {
+    "role_schema_id": "schema-close-automation",
+    "schema_name": "pko_close_automation",
+    "is_sealed": true,
+    "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema",
+    "name": "pko_close_automation",
+    "principal": "principal-close-automation",
+    "search_path": "pko_close_automation",
+    "view_count": 3,
+    "is_empty_schema": false
+  },
+  {
+    "role_schema_id": "schema-variance-review-agent",
+    "schema_name": "pko_variance_review_agent",
+    "is_sealed": true,
+    "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema",
+    "name": "pko_variance_review_agent",
+    "principal": "principal-variance-review-agent",
+    "search_path": "pko_variance_review_agent",
+    "view_count": 5,
+    "is_empty_schema": false
+  },
+  {
+    "role_schema_id": "schema-policy-drafting-agent",
+    "schema_name": "pko_policy_drafting_agent",
+    "is_sealed": true,
+    "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema",
+    "name": "pko_policy_drafting_agent",
+    "principal": "principal-policy-drafting-agent",
+    "search_path": "pko_policy_drafting_agent",
+    "view_count": 4,
+    "is_empty_schema": false
+  },
+  {
+    "role_schema_id": "schema-notification-publisher",
+    "schema_name": "pko_notification_publisher",
+    "is_sealed": true,
+    "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema",
+    "name": "pko_notification_publisher",
+    "principal": "principal-notification-publisher",
+    "search_path": "pko_notification_publisher",
+    "view_count": 5,
+    "is_empty_schema": false
+  },
+  {
+    "role_schema_id": "schema-process-steward",
+    "schema_name": "pko_process_steward",
+    "is_sealed": true,
+    "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema",
+    "name": "pko_process_steward",
+    "principal": "principal-process-steward",
+    "search_path": "pko_process_steward",
+    "view_count": 74,
+    "is_empty_schema": false
+  },
+  {
+    "role_schema_id": "schema-knowledge-authority",
+    "schema_name": "pko_knowledge_authority",
+    "is_sealed": true,
+    "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema",
+    "name": "pko_knowledge_authority",
+    "principal": "principal-knowledge-authority",
+    "search_path": "pko_knowledge_authority",
+    "view_count": 74,
+    "is_empty_schema": false
+  }
+]

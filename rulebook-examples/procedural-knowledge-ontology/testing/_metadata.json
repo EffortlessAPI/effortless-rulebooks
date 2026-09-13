@@ -41,9 +41,13 @@
       "is_operating_outside_boundary",
       "draft_decision_count",
       "overridden_draft_count",
-      "draft_rewrite_rate_percent"
+      "draft_rewrite_rate_percent",
+      "times_named_as_broker",
+      "is_recognized_broker",
+      "at_risk_reliance_count",
+      "has_at_risk_knowledge_reliance"
     ],
-    "record_count": 10
+    "record_count": 11
   },
   "roles": {
     "primary_key": "role_id",
@@ -220,7 +224,10 @@
       "control_taxonomy_is_incomplete",
       "has_approved_change_request",
       "approved_change_request_count",
-      "unwatched_unowned_control_count"
+      "unwatched_unowned_control_count",
+      "mining_run_count",
+      "drifted_mining_run_count",
+      "has_unresolved_mining_drift"
     ],
     "record_count": 3
   },
@@ -370,7 +377,8 @@
       "is_orphaned_blocking_control",
       "is_unwatched_and_unowned",
       "attestation_exposure_note",
-      "unwatched_unowned_flag"
+      "unwatched_unowned_flag",
+      "uses_controlled_vocabulary"
     ],
     "record_count": 13
   },
@@ -931,7 +939,7 @@
     "computed_columns": [
       "name"
     ],
-    "record_count": 37
+    "record_count": 47
   },
   "witness_loops": {
     "primary_key": "witness_loop_id",
@@ -940,7 +948,7 @@
       "question_count",
       "is_complete"
     ],
-    "record_count": 2
+    "record_count": 3
   },
   "role_questions": {
     "primary_key": "role_question_id",
@@ -949,16 +957,18 @@
       "predicate_count",
       "is_answered"
     ],
-    "record_count": 105
+    "record_count": 109
   },
   "rulebook_fields": {
     "primary_key": "rulebook_field_id",
     "computed_columns": [
       "name",
       "is_derived",
-      "is_witness"
+      "is_witness",
+      "disagreeing_substrate_count",
+      "is_substrate_contested"
     ],
-    "record_count": 1707
+    "record_count": 1879
   },
   "test_suites": {
     "primary_key": "test_suite_id",
@@ -1344,9 +1354,10 @@
       "name",
       "field_count",
       "policy_count",
-      "is_unsecured"
+      "is_unsecured",
+      "disagreeing_substrate_count"
     ],
-    "record_count": 82
+    "record_count": 92
   },
   "access_principals": {
     "primary_key": "access_principal_id",
@@ -1373,7 +1384,7 @@
       "is_unwitnessed_write",
       "denial_test_count"
     ],
-    "record_count": 194
+    "record_count": 202
   },
   "field_grants": {
     "primary_key": "field_grant_id",
@@ -1386,7 +1397,7 @@
       "is_masked",
       "grant_key_when_readable"
     ],
-    "record_count": 3511
+    "record_count": 3639
   },
   "role_schemas": {
     "primary_key": "role_schema_id",
@@ -1410,7 +1421,7 @@
       "is_full_width",
       "is_degenerate_view"
     ],
-    "record_count": 194
+    "record_count": 202
   },
   "jwt_claim_mappings": {
     "primary_key": "jwt_claim_mapping_id",
@@ -1455,5 +1466,56 @@
       "is_cross_organization_grant"
     ],
     "record_count": 12
+  },
+  "process_mining_runs": {
+    "primary_key": "process_mining_run_id",
+    "computed_columns": [
+      "name",
+      "as_of_instant",
+      "conformance_rate",
+      "is_conformant",
+      "has_major_drift_from_documentation",
+      "days_since_mined",
+      "is_stale_mining_evidence",
+      "procedure_version_is_live",
+      "is_drift_on_live_version",
+      "drifted_mining_run_key"
+    ],
+    "record_count": 4
+  },
+  "vocabularies": {
+    "primary_key": "vocabulary_id",
+    "computed_columns": [
+      "name",
+      "term_count",
+      "orphan_term_count",
+      "has_orphan_terms"
+    ],
+    "record_count": 2
+  },
+  "vocabulary_terms": {
+    "primary_key": "vocabulary_term_id",
+    "computed_columns": [
+      "name",
+      "usage_count",
+      "is_orphan_term",
+      "is_widely_adopted_term",
+      "orphan_term_vocabulary_key"
+    ],
+    "record_count": 12
+  },
+  "knowledge_broker_links": {
+    "primary_key": "knowledge_broker_link_id",
+    "computed_columns": [
+      "name",
+      "as_of_instant",
+      "days_since_consulted",
+      "is_active_reliance",
+      "broker_is_still_engaged",
+      "is_at_risk_reliance",
+      "active_reliance_broker_key",
+      "at_risk_broker_key"
+    ],
+    "record_count": 5
   }
 }

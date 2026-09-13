@@ -29,6 +29,10 @@ import {
   EXPLORE_TABS, loadExplore, exploreCount, wireExplore, wireCells,
   viewInferences, viewTables, viewRecord,
 } from "./explore.js";
+import {
+  CONFORMANCE_TABS, loadConformance, conformanceCount, wireConformance,
+  viewConformanceBoard, viewConformanceGrid, viewConformanceFields,
+} from "./conformance.js";
 
 const $ = (id) => document.getElementById(id);
 const esc = (s) =>
@@ -148,6 +152,12 @@ const ROLES = {
     label: "Explorer",
     tabs: ["inferences", "tables", "record"],
   },
+  // The same rulebook, compiled into seven substrates. Does each one compute
+  // the same value for every derived cell? Read from vw_conformance_*.
+  conformance: {
+    label: "Conformance",
+    tabs: Object.keys(CONFORMANCE_TABS),
+  },
   // Administrators only. The button is not rendered for anyone else, and the
   // API refuses the calls regardless -- the UI hiding it is a courtesy, not
   // the control.
@@ -171,6 +181,7 @@ const TABS = {
   comms: "Communications",
   ...ADMIN_TABS,
   ...EXPLORE_TABS,
+  ...CONFORMANCE_TABS,
   ...Object.fromEntries(ACCESS_TABS.map((t) => [t.id, t.label])),
 };
 
@@ -195,6 +206,7 @@ function tabCount(t) {
     case "evidence": return (T.requirement_satisfactions || []).length;
     case "board": case "witnesses": case "loops": return adminCount(t);
     case "inferences": case "tables": return exploreCount(t);
+    case "c-board": case "c-grid": case "c-fields": return conformanceCount(t);
     case "ac-principals": return accessCounts().principals ?? null;
     case "ac-policies": return accessCounts().policies ?? null;
     case "ac-witnesses": return accessCounts().denials ?? null;
@@ -869,6 +881,7 @@ const VIEWS = {
   comms: viewComms,
   board: viewBoard, witnesses: viewWitnesses, loops: viewLoops, trace: viewTrace,
   inferences: viewInferences, tables: viewTables, record: viewRecord,
+  "c-board": viewConformanceBoard, "c-grid": viewConformanceGrid, "c-fields": viewConformanceFields,
 };
 
 // Navigate to a tab that may belong to a DIFFERENT role than the current one.
@@ -888,8 +901,9 @@ function goTo(next) {
     // The destination role may not have fetched its data yet.
     const needsExplore = owner === "explorer" && exploreCount("inferences") == null;
     const needsAdmin = owner === "admin" && adminCount("board") == null;
-    if (needsExplore || needsAdmin) {
-      return (needsExplore ? loadExplore() : loadAdmin()).then(render);
+    const needsConformance = owner === "conformance" && conformanceCount("c-board") == null;
+    if (needsExplore || needsAdmin || needsConformance) {
+      return (needsExplore ? loadExplore() : needsAdmin ? loadAdmin() : loadConformance()).then(render);
     }
   } else {
     tab = next;
@@ -926,7 +940,7 @@ function renderIdentityBar() {
 // admin/explorer/access screens read the catalog rather than domain tables, so
 // they are always available to whoever can reach them.
 const SELF_FEEDING = new Set([
-  ...Object.keys(ADMIN_TABS), ...Object.keys(EXPLORE_TABS),
+  ...Object.keys(ADMIN_TABS), ...Object.keys(EXPLORE_TABS), ...Object.keys(CONFORMANCE_TABS),
   ...ACCESS_TABS.map((t) => t.id),
 ]);
 
@@ -994,6 +1008,9 @@ function render() {
   if (EXPLORE_TABS[tab]) {
     wireExplore(tab, goTo);
   }
+  if (CONFORMANCE_TABS[tab]) {
+    wireConformance(tab, goTo, render, wireCells);
+  }
   // The inference popover is available on every screen, not just the explorer:
   // any curated view can mark a value with data-cell and get the full
   // formula-and-inputs read on click.
@@ -1018,6 +1035,14 @@ document.addEventListener("click", (e) => {
       return loadAccessModel().then(render).catch((err) => {
         $("view").innerHTML = `<div class="card" style="padding:24px">
           <h2 style="color:var(--fail);font-size:17px;margin-bottom:8px">Could not load the access model</h2>
+          <p class="prose">${esc(err.message)}</p></div>`;
+      });
+    }
+    if (role === "conformance" && conformanceCount("c-board") == null) {
+      $("view").innerHTML = `<div class="card" style="padding:24px">Loading conformance results…</div>`;
+      return loadConformance().then(render).catch((err) => {
+        $("view").innerHTML = `<div class="card" style="padding:24px">
+          <h2 style="color:var(--fail);font-size:17px;margin-bottom:8px">Could not load conformance results</h2>
           <p class="prose">${esc(err.message)}</p></div>`;
       });
     }

@@ -15,9 +15,9 @@
     "is_overdue": true,
     "overdue_version_key": "close-v1.1.0",
     "promised_cadence_days": 90,
-    "days_since_reviewed": 121,
+    "days_since_reviewed": 120,
     "exceeds_promised_cadence": true,
-    "cadence_drift_days": 31,
+    "cadence_drift_days": 30.0,
     "promise_and_behavior_disagree": false,
     "cadence_breach_version_key": "close-v1.1.0"
   },
@@ -35,13 +35,13 @@
     "name": "close-v1.1.0 / QuarterlySemanticReview",
     "as_of_instant": "2026-07-19T13:00:00-05:00",
     "is_overdue": false,
-    "overdue_version_key": "",
+    "overdue_version_key": null,
     "promised_cadence_days": 90,
-    "days_since_reviewed": 17,
+    "days_since_reviewed": 16,
     "exceeds_promised_cadence": false,
-    "cadence_drift_days": -73,
+    "cadence_drift_days": -74.0,
     "promise_and_behavior_disagree": false,
-    "cadence_breach_version_key": ""
+    "cadence_breach_version_key": null
   },
   {
     "review_event_id": "review-policy-prelaunch",
@@ -57,12 +57,12 @@
     "name": "policy-v1.0.0 / PreLaunchReview",
     "as_of_instant": "2026-07-19T13:00:00-05:00",
     "is_overdue": false,
-    "overdue_version_key": "",
+    "overdue_version_key": null,
     "promised_cadence_days": 60,
-    "days_since_reviewed": 1,
+    "days_since_reviewed": 0,
     "exceeds_promised_cadence": false,
-    "cadence_drift_days": -59,
+    "cadence_drift_days": -60.0,
     "promise_and_behavior_disagree": false,
-    "cadence_breach_version_key": ""
+    "cadence_breach_version_key": null
   }
 ]

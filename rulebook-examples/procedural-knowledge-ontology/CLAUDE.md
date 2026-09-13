@@ -187,6 +187,30 @@ the transpiler emits `SELECT (TargetTable)::text` — a function that fails at
 call time while the build stays green. Seventeen fields were silently corrupted
 this way. `check_rulebook_integrity.py` now catches it.
 
+## Conformance — every installed tool, graded cell by cell
+
+This project registers the same tool set as `toy-rulebooks/a1-effortless-init-sample`: `compile-rulebook`, `rulebook-to-postgres`, `-python`, `-go`, `-typescript`, `-entity-framework`, `-xlsx`, commercial `rulebook-to-owl`, `rulebook-to-rulespeak`, and the editor. Seven of them produce something that computes, and the repo's conformance harness grades each one against the same answer keys.
+
+**The answer keys are compile-rulebook's output.** It runs first in the build and rewrites the rulebook in place, baking every derived value into the rows. The harness reads those stored values as the key. So a disagreement means "this substrate and compile-rulebook differ", not "this substrate is wrong". When Postgres, Python, Go and TypeScript all disagree with the key identically, the key is the suspect.
+
+The results are rulebook data, not a log: `ConformanceSubstrates`, `ConformanceRuns`, `SubstrateRunScores` (history), and `TableConformance`, `FieldDisagreements`, `CellDisagreements` (latest run only; cells sampled 20 per field, with `IsFullySampled` saying so). `RulebookFields.DisagreeingSubstrateCount` puts cross-substrate agreement on every field. The Procedure Register's **Conformance** role reads all of it from `vw_*`.
+
+To rerun, from this directory, in order (builds are sequential):
+
+```bash
+effortless build && bash init-db.sh                                   # regenerate every substrate; load the real DB
+python3 ../../scripts/run-conformance.py procedural-knowledge-ontology --skip-build
+python3 tools/record_conformance.py --notes "why this run"             # transcribe testing/_conformance_grades.json
+effortless build && bash init-db.sh                                   # compute the scores; the app reads them
+```
+
+Traps, all verified:
+
+- **The build's own `init-db` step loads a database named `demo`, not `erb_procedural_knowledge_ontology`.** The generated `postgres-bootstrap/reset-rulebook-db.sh` defaults `DATABASE_URL` to `.../demo`. Always follow `effortless build` with `bash init-db.sh`, or the Postgres substrate grades a stale database.
+- **`record_conformance.py` only transcribes.** Every pass and fail is the harness's decision; never compare values in the recorder or the app.
+- **The detail tables are replaced on each recording; runs and scores accumulate.** Exactly one `ConformanceRuns` row has `IsLatest`.
+- **Re-run `tools/reconcile_field_catalog.py` after changing the conformance schema** (as after any schema change). The recorder refuses a field that is missing from `RulebookFields`.
+
 ## Three categories of semantic mapping — keep them distinct
 
 Every table's semantics are recorded as data in the `SemanticMappings` table. When editing, preserve the distinction:

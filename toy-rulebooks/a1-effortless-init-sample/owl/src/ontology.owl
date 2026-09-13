@@ -28,9 +28,3 @@ effortless-ntwf:introduction a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
     rdfs:label "Introduction" .
     # calculated: calculated
-
-effortless-ntwf:isBob a owl:DatatypeProperty ;
-    rdfs:domain effortless-ntwf:HelloWhos ;
-    rdfs:range xsd:boolean ;
-    rdfs:label "IsBob" .
-    # calculated: calculated

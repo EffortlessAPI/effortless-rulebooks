@@ -1,0 +1,7 @@
+Timing is on.
+ count | count | count | count | count | count | count | count | count | count | count | count | count | count | count | count | count | count | count | count | count | count | count | count | count | count | count | count | count | count | count | count | count | count | count | count | count | count | count | count | count | count | count | count | count | count | count | count | count | count | count | count | count | count | count | count | count | count 
+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------
+     7 |     6 |     6 |     6 |     6 |     7 |     6 |     6 |     6 |     6 |     1 |     6 |     7 |     5 |     5 |     7 |     7 |     7 |     7 |     3 |     2 |     2 |     0 |     4 |     0 |     0 |     7 |     2 |     2 |     3 |     1 |     0 |     3 |     2 |     0 |     0 |     4 |     0 |     0 |     0 |     0 |     0 |     4 |     4 |     1 |     1 |     0 |     0 |     1 |     0 |     0 |     7 |     7 |     7 |     0 |     0 |     7 |     2
+(1 row)
+
+Time: 39.207 ms

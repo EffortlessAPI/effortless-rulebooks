@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -16,81 +17,100 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string StepFunctionId { get; set; }
 
         // Formula Name (rulebook: ={{Step}} & " / " & {{Function}})
+        [NotMapped]
         public string? Name
         {
-            get => this.Step + " / " + this.Function; set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.Step)), F.S(" / "), F.TextOr(F.Of(this.Function))))); set { }
         }
 
 
         public string? Step { get; set; }
         public string? Function { get; set; }
 
-        private Step _step;
+        private Step _stepRef;
 
         [ForeignKey("Step")]
-        public virtual Step Step
+        public virtual Step StepRef
         {
             get
             {
-                if (_step == null && !string.IsNullOrEmpty(Step))
+                if (_stepRef == null && !string.IsNullOrEmpty(Step))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access Step - no database context is set. Step: " + Step + ".");
+                            throw new InvalidOperationException("Cannot access StepRef - no database context is set. Step: " + Step + ".");
                         }
                         return null;
                     }
-                    _step = Context.Steps.Find(Step);
-                    if (_step != null)
+                    _stepRef = base.SoAContext.Steps.Find(Step);
+                    if (_stepRef != null)
                     {
-                        Context.Attach(_step);
+                        base.SoAContext.Attach(_stepRef);
                     }
                 }
-                return _step;
+                return _stepRef;
             }
             set
             {
-                if (_step != value)
+                if (_stepRef != value)
                 {
-                    _step = value;
-                    Step = _step == null ? default : _step.StepId;
+                    _stepRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_stepRef != null)
+                    {
+                        Step = _stepRef.StepId;
+                    }
                 }
             }
         }
 
-        private Function _function;
+        private Function _functionRef;
 
         [ForeignKey("Function")]
-        public virtual Function Function
+        public virtual Function FunctionRef
         {
             get
             {
-                if (_function == null && !string.IsNullOrEmpty(Function))
+                if (_functionRef == null && !string.IsNullOrEmpty(Function))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access Function - no database context is set. Function: " + Function + ".");
+                            throw new InvalidOperationException("Cannot access FunctionRef - no database context is set. Function: " + Function + ".");
                         }
                         return null;
                     }
-                    _function = Context.Functions.Find(Function);
-                    if (_function != null)
+                    _functionRef = base.SoAContext.Functions.Find(Function);
+                    if (_functionRef != null)
                     {
-                        Context.Attach(_function);
+                        base.SoAContext.Attach(_functionRef);
                     }
                 }
-                return _function;
+                return _functionRef;
             }
             set
             {
-                if (_function != value)
+                if (_functionRef != value)
                 {
-                    _function = value;
-                    Function = _function == null ? default : _function.FunctionId;
+                    _functionRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_functionRef != null)
+                    {
+                        Function = _functionRef.FunctionId;
+                    }
                 }
             }
         }
@@ -98,8 +118,8 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         protected override void LazyLoadProperties()
         {
-            _ = this.Step;
-            _ = this.Function;
+            _ = this.StepRef;
+            _ = this.FunctionRef;
         }
 
         public override string ToString()

@@ -10,6 +10,7 @@
     "field_count": 18,
     "policy_count": 0,
     "is_unsecured": true,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -23,6 +24,7 @@
     "field_count": 16,
     "policy_count": 0,
     "is_unsecured": true,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -36,6 +38,7 @@
     "field_count": 15,
     "policy_count": 0,
     "is_unsecured": true,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -49,6 +52,7 @@
     "field_count": 5,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -62,6 +66,7 @@
     "field_count": 40,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -72,9 +77,10 @@
     "physical_view": "vw_agents",
     "subject_area": "org",
     "is_extension": false,
-    "field_count": 19,
+    "field_count": 23,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -88,6 +94,7 @@
     "field_count": 5,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -101,6 +108,7 @@
     "field_count": 12,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -114,6 +122,7 @@
     "field_count": 5,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -127,6 +136,7 @@
     "field_count": 5,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -140,6 +150,7 @@
     "field_count": 18,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -153,6 +164,7 @@
     "field_count": 12,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -166,6 +178,7 @@
     "field_count": 33,
     "policy_count": 4,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -179,6 +192,21 @@
     "field_count": 11,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
+    "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
+  },
+  {
+    "rulebook_table_id": "CellDisagreements",
+    "table_name": "CellDisagreements",
+    "name": "CellDisagreements",
+    "physical_table": "cell_disagreements",
+    "physical_view": "vw_cell_disagreements",
+    "subject_area": "meta",
+    "is_extension": true,
+    "field_count": 10,
+    "policy_count": 0,
+    "is_unsecured": true,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -192,6 +220,7 @@
     "field_count": 45,
     "policy_count": 6,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -205,6 +234,7 @@
     "field_count": 22,
     "policy_count": 6,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -218,6 +248,35 @@
     "field_count": 8,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
+    "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
+  },
+  {
+    "rulebook_table_id": "ConformanceRuns",
+    "table_name": "ConformanceRuns",
+    "name": "ConformanceRuns",
+    "physical_table": "conformance_runs",
+    "physical_view": "vw_conformance_runs",
+    "subject_area": "meta",
+    "is_extension": true,
+    "field_count": 16,
+    "policy_count": 0,
+    "is_unsecured": true,
+    "disagreeing_substrate_count": 0,
+    "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
+  },
+  {
+    "rulebook_table_id": "ConformanceSubstrates",
+    "table_name": "ConformanceSubstrates",
+    "name": "ConformanceSubstrates",
+    "physical_table": "conformance_substrates",
+    "physical_view": "vw_conformance_substrates",
+    "subject_area": "meta",
+    "is_extension": true,
+    "field_count": 20,
+    "policy_count": 0,
+    "is_unsecured": true,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -231,6 +290,7 @@
     "field_count": 18,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -244,6 +304,7 @@
     "field_count": 6,
     "policy_count": 0,
     "is_unsecured": true,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -257,6 +318,7 @@
     "field_count": 7,
     "policy_count": 0,
     "is_unsecured": true,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -270,6 +332,7 @@
     "field_count": 21,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -283,6 +346,7 @@
     "field_count": 6,
     "policy_count": 4,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -296,6 +360,7 @@
     "field_count": 7,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -309,6 +374,7 @@
     "field_count": 21,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -322,6 +388,7 @@
     "field_count": 11,
     "policy_count": 5,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -335,6 +402,7 @@
     "field_count": 7,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -348,6 +416,21 @@
     "field_count": 9,
     "policy_count": 0,
     "is_unsecured": true,
+    "disagreeing_substrate_count": 0,
+    "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
+  },
+  {
+    "rulebook_table_id": "FieldDisagreements",
+    "table_name": "FieldDisagreements",
+    "name": "FieldDisagreements",
+    "physical_table": "field_disagreements",
+    "physical_view": "vw_field_disagreements",
+    "subject_area": "meta",
+    "is_extension": true,
+    "field_count": 13,
+    "policy_count": 0,
+    "is_unsecured": true,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -361,6 +444,7 @@
     "field_count": 14,
     "policy_count": 0,
     "is_unsecured": true,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -374,6 +458,7 @@
     "field_count": 6,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -387,6 +472,7 @@
     "field_count": 12,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -400,6 +486,21 @@
     "field_count": 9,
     "policy_count": 0,
     "is_unsecured": true,
+    "disagreeing_substrate_count": 0,
+    "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
+  },
+  {
+    "rulebook_table_id": "KnowledgeBrokerLinks",
+    "table_name": "KnowledgeBrokerLinks",
+    "name": "KnowledgeBrokerLinks",
+    "physical_table": "knowledge_broker_links",
+    "physical_view": "vw_knowledge_broker_links",
+    "subject_area": "knowledge",
+    "is_extension": true,
+    "field_count": 16,
+    "policy_count": 2,
+    "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -413,6 +514,7 @@
     "field_count": 80,
     "policy_count": 6,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -426,6 +528,7 @@
     "field_count": 28,
     "policy_count": 4,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -439,6 +542,7 @@
     "field_count": 10,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -452,6 +556,7 @@
     "field_count": 10,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -465,6 +570,7 @@
     "field_count": 94,
     "policy_count": 4,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -478,6 +584,7 @@
     "field_count": 26,
     "policy_count": 5,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -491,6 +598,7 @@
     "field_count": 8,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -504,6 +612,7 @@
     "field_count": 8,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -517,6 +626,7 @@
     "field_count": 22,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -530,6 +640,7 @@
     "field_count": 6,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -543,6 +654,7 @@
     "field_count": 78,
     "policy_count": 5,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -556,6 +668,7 @@
     "field_count": 6,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -569,6 +682,7 @@
     "field_count": 9,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -582,6 +696,7 @@
     "field_count": 5,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -595,6 +710,7 @@
     "field_count": 7,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -605,9 +721,10 @@
     "physical_view": "vw_procedure_versions",
     "subject_area": "specification",
     "is_extension": false,
-    "field_count": 83,
+    "field_count": 86,
     "policy_count": 4,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -621,6 +738,21 @@
     "field_count": 11,
     "policy_count": 4,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
+    "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
+  },
+  {
+    "rulebook_table_id": "ProcessMiningRuns",
+    "table_name": "ProcessMiningRuns",
+    "name": "ProcessMiningRuns",
+    "physical_table": "process_mining_runs",
+    "physical_view": "vw_process_mining_runs",
+    "subject_area": "knowledge",
+    "is_extension": true,
+    "field_count": 19,
+    "policy_count": 2,
+    "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -634,6 +766,7 @@
     "field_count": 9,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -647,6 +780,7 @@
     "field_count": 15,
     "policy_count": 4,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -660,6 +794,7 @@
     "field_count": 46,
     "policy_count": 4,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -670,9 +805,10 @@
     "physical_view": "vw_requirements",
     "subject_area": "governance",
     "is_extension": false,
-    "field_count": 41,
+    "field_count": 43,
     "policy_count": 5,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -686,6 +822,7 @@
     "field_count": 11,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -699,6 +836,7 @@
     "field_count": 20,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -712,6 +850,7 @@
     "field_count": 65,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -725,6 +864,7 @@
     "field_count": 11,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -738,6 +878,7 @@
     "field_count": 14,
     "policy_count": 0,
     "is_unsecured": true,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -751,6 +892,7 @@
     "field_count": 9,
     "policy_count": 0,
     "is_unsecured": true,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -764,6 +906,7 @@
     "field_count": 24,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -774,9 +917,10 @@
     "physical_view": "vw_rulebook_fields",
     "subject_area": "access-control",
     "is_extension": true,
-    "field_count": 11,
+    "field_count": 13,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -790,6 +934,7 @@
     "field_count": 11,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -800,9 +945,10 @@
     "physical_view": null,
     "subject_area": "meta",
     "is_extension": true,
-    "field_count": 11,
+    "field_count": 12,
     "policy_count": 0,
     "is_unsecured": true,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -816,6 +962,7 @@
     "field_count": 8,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -829,6 +976,7 @@
     "field_count": 100,
     "policy_count": 4,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -842,6 +990,7 @@
     "field_count": 4,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -855,6 +1004,7 @@
     "field_count": 109,
     "policy_count": 6,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -868,6 +1018,7 @@
     "field_count": 4,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -881,6 +1032,7 @@
     "field_count": 13,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -894,6 +1046,7 @@
     "field_count": 4,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -907,6 +1060,7 @@
     "field_count": 23,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -920,6 +1074,7 @@
     "field_count": 8,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -933,6 +1088,7 @@
     "field_count": 42,
     "policy_count": 10,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -946,6 +1102,35 @@
     "field_count": 14,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
+    "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
+  },
+  {
+    "rulebook_table_id": "SubstrateRunScores",
+    "table_name": "SubstrateRunScores",
+    "name": "SubstrateRunScores",
+    "physical_table": "substrate_run_scores",
+    "physical_view": "vw_substrate_run_scores",
+    "subject_area": "meta",
+    "is_extension": true,
+    "field_count": 27,
+    "policy_count": 0,
+    "is_unsecured": true,
+    "disagreeing_substrate_count": 0,
+    "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
+  },
+  {
+    "rulebook_table_id": "TableConformance",
+    "table_name": "TableConformance",
+    "name": "TableConformance",
+    "physical_table": "table_conformance",
+    "physical_view": "vw_table_conformance",
+    "subject_area": "meta",
+    "is_extension": true,
+    "field_count": 19,
+    "policy_count": 0,
+    "is_unsecured": true,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -959,6 +1144,7 @@
     "field_count": 15,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -972,6 +1158,7 @@
     "field_count": 20,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -985,6 +1172,7 @@
     "field_count": 8,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -998,6 +1186,7 @@
     "field_count": 5,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -1011,6 +1200,7 @@
     "field_count": 9,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -1024,6 +1214,7 @@
     "field_count": 10,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -1037,6 +1228,35 @@
     "field_count": 26,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
+    "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
+  },
+  {
+    "rulebook_table_id": "Vocabularies",
+    "table_name": "Vocabularies",
+    "name": "Vocabularies",
+    "physical_table": "vocabularies",
+    "physical_view": "vw_vocabularies",
+    "subject_area": "knowledge",
+    "is_extension": true,
+    "field_count": 9,
+    "policy_count": 2,
+    "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
+    "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
+  },
+  {
+    "rulebook_table_id": "VocabularyTerms",
+    "table_name": "VocabularyTerms",
+    "name": "VocabularyTerms",
+    "physical_table": "vocabulary_terms",
+    "physical_view": "vw_vocabulary_terms",
+    "subject_area": "knowledge",
+    "is_extension": true,
+    "field_count": 11,
+    "policy_count": 2,
+    "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -1050,6 +1270,7 @@
     "field_count": 13,
     "policy_count": 2,
     "is_unsecured": false,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   },
   {
@@ -1063,6 +1284,7 @@
     "field_count": 5,
     "policy_count": 0,
     "is_unsecured": true,
+    "disagreeing_substrate_count": 0,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable"
   }
 ]

@@ -1,0 +1,30 @@
+[
+  {
+    "issue_occurrence_id": "issue-close-feed",
+    "step_execution": "se-close02",
+    "error": "err-feed-stale",
+    "encountered_by_agent": "close-pipeline",
+    "occurred_at": "2026-06-30 22:12:00",
+    "issue_cause": "One feed was 17 minutes old.",
+    "issue_solution": "Reran extraction after source timestamp normalized; added explicit timestamp knowledge fragment.",
+    "status": "Resolved",
+    "semantic_type_iri": "https://w3id.org/pko#IssueOccurrence",
+    "name": "err-feed-stale @ 2026-06-30 22:12:00+00",
+    "is_unresolved": false,
+    "step_execution_when_unresolved": null
+  },
+  {
+    "issue_occurrence_id": "issue-policy-sms",
+    "step_execution": "se-policy04",
+    "error": "err-sms-throttle",
+    "encountered_by_agent": "notification-pipeline",
+    "occurred_at": "2026-07-19 14:30:00",
+    "issue_cause": "Synthetic channel test observed provider throttling.",
+    "issue_solution": "Queue with exponential backoff and preserve recipient-local quiet-hours constraint.",
+    "status": "Monitoring",
+    "semantic_type_iri": "https://w3id.org/pko#IssueOccurrence",
+    "name": "err-sms-throttle @ 2026-07-19 14:30:00+00",
+    "is_unresolved": true,
+    "step_execution_when_unresolved": "se-policy04"
+  }
+]

@@ -40,8 +40,8 @@
     {
       "IsSSoTTranspiler": false,
       "Name": "oss-postgres-calculated-to-rulebook",
-      "RelativePath": "/postgres-bootstrap",
-      "CommandLine": "http://127.0.0.1:4242/oss-postgres-calculated-to-rulebook -i ../effortless-rulebook/tiling-the-plane-rulebook.json",
+      "RelativePath": "/effortless-rulebook",
+      "CommandLine": "http://127.0.0.1:4242/oss-postgres-calculated-to-rulebook -i tiling-the-plane-rulebook.json,../postgres-bootstrap/.pg-raw-data.json",
       "IsDisabled": true,
       "Description": "Reverse spoke: refresh rulebook derived-field display copies from Postgres views after the destructive rebuild (raws verified, never written). [DISABLED: requires postgres-bootstrap/pull-from-postgres.sh to produce .pg-raw-data.json; not wired in this project. The rulebook JSON is authoritative, so the display-copy refresh is optional.]"
     },

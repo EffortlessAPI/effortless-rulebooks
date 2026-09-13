@@ -1,0 +1,102 @@
+[
+  {
+    "observed_transition_id": "obs-close-01-02-q2",
+    "name": "close-01-to-close-02 @ 2026-06-30 17:04:00-05",
+    "procedure_execution": "exec-close-2026-q2",
+    "step_transition": "close-01-to-close-02",
+    "arriving_step_execution": "se-close02",
+    "observed_at": "2026-06-30 17:04:00-05:00",
+    "trigger_reason": "Default sequence",
+    "semantic_type_iri": "urn:effortless:pko-extension#ObservedTransition"
+  },
+  {
+    "observed_transition_id": "obs-close-02-03-q2",
+    "name": "close-02-to-close-03 @ 2026-06-30 17:18:00-05",
+    "procedure_execution": "exec-close-2026-q2",
+    "step_transition": "close-02-to-close-03",
+    "arriving_step_execution": "se-close03",
+    "observed_at": "2026-06-30 17:18:00-05:00",
+    "trigger_reason": "Default sequence",
+    "semantic_type_iri": "urn:effortless:pko-extension#ObservedTransition"
+  },
+  {
+    "observed_transition_id": "obs-close-03-04-q2",
+    "name": "close-03-to-close-04 @ 2026-07-01 12:15:00-05",
+    "procedure_execution": "exec-close-2026-q2",
+    "step_transition": "close-03-to-close-04",
+    "arriving_step_execution": "se-close04",
+    "observed_at": "2026-07-01 12:15:00-05:00",
+    "trigger_reason": "Default sequence",
+    "semantic_type_iri": "urn:effortless:pko-extension#ObservedTransition"
+  },
+  {
+    "observed_transition_id": "obs-close-04-05-q2",
+    "name": "close-04-to-close-05 @ 2026-07-01 15:05:00-05",
+    "procedure_execution": "exec-close-2026-q2",
+    "step_transition": "close-04-to-close-05",
+    "arriving_step_execution": "se-close05",
+    "observed_at": "2026-07-01 15:05:00-05:00",
+    "trigger_reason": "Default sequence",
+    "semantic_type_iri": "urn:effortless:pko-extension#ObservedTransition"
+  },
+  {
+    "observed_transition_id": "obs-close-05-06-q2",
+    "name": "close-05-to-close-06 @ 2026-07-02 09:00:00-05",
+    "procedure_execution": "exec-close-2026-q2",
+    "step_transition": "close-05-to-close-06",
+    "arriving_step_execution": "se-close06",
+    "observed_at": "2026-07-02 09:00:00-05:00",
+    "trigger_reason": "Default sequence",
+    "semantic_type_iri": "urn:effortless:pko-extension#ObservedTransition"
+  },
+  {
+    "observed_transition_id": "obs-close-06-07-q2",
+    "name": "close-06-to-close-07 @ 2026-07-02 09:22:00-05",
+    "procedure_execution": "exec-close-2026-q2",
+    "step_transition": "close-06-to-close-07",
+    "arriving_step_execution": "se-close07",
+    "observed_at": "2026-07-02 09:22:00-05:00",
+    "trigger_reason": "Default sequence",
+    "semantic_type_iri": "urn:effortless:pko-extension#ObservedTransition"
+  },
+  {
+    "observed_transition_id": "obs-close-07-08-q2",
+    "name": "close-07-to-close-08 @ 2026-07-02 14:00:00-05",
+    "procedure_execution": "exec-close-2026-q2",
+    "step_transition": "close-07-to-close-08",
+    "arriving_step_execution": "se-close08",
+    "observed_at": "2026-07-02 14:00:00-05:00",
+    "trigger_reason": "Default sequence",
+    "semantic_type_iri": "urn:effortless:pko-extension#ObservedTransition"
+  },
+  {
+    "observed_transition_id": "obs-policy-01-02-hr4821",
+    "name": "policy-01-to-policy-02 @ 2026-07-18 09:30:00-05",
+    "procedure_execution": "exec-policy-hr4821",
+    "step_transition": "policy-01-to-policy-02",
+    "arriving_step_execution": "se-policy02",
+    "observed_at": "2026-07-18 09:30:00-05:00",
+    "trigger_reason": "Default sequence",
+    "semantic_type_iri": "urn:effortless:pko-extension#ObservedTransition"
+  },
+  {
+    "observed_transition_id": "obs-policy-02-03-hr4821",
+    "name": "policy-02-to-policy-03 @ 2026-07-18 13:00:00-05",
+    "procedure_execution": "exec-policy-hr4821",
+    "step_transition": "policy-02-to-policy-03",
+    "arriving_step_execution": "se-policy03",
+    "observed_at": "2026-07-18 13:00:00-05:00",
+    "trigger_reason": "Default sequence",
+    "semantic_type_iri": "urn:effortless:pko-extension#ObservedTransition"
+  },
+  {
+    "observed_transition_id": "obs-policy-03-04-hr4821",
+    "name": "policy-03-to-policy-04 @ 2026-07-19 09:00:00-05",
+    "procedure_execution": "exec-policy-hr4821",
+    "step_transition": "policy-03-to-policy-04",
+    "arriving_step_execution": "se-policy04",
+    "observed_at": "2026-07-19 09:00:00-05:00",
+    "trigger_reason": "Default sequence",
+    "semantic_type_iri": "urn:effortless:pko-extension#ObservedTransition"
+  }
+]

@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -16,9 +17,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string AccessPrincipalId { get; set; }
 
         // Formula Name (rulebook: ={{Label}})
+        [NotMapped]
         public string? Name
         {
-            get => this.Label; set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Of(this.Label))); set { }
         }
 
         public string? Label { get; set; }
@@ -26,45 +28,52 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string? SchemaName { get; set; }
         public bool? IsAdministrator { get; set; }
         // Formula OrganizationScope (rulebook: =INDEX(Roles!{{Organization}}, MATCH({{DomainRole}}, Roles!{{RoleId}}, 0)))
+        [NotMapped]
         public string? OrganizationScope
         {
-            get => INDEX(Roles!this.Organization, MATCH(this.DomainRole, Roles!this.RoleId, 0)); set { }
+            get => F.AsString(F.Memo(this, "OrganizationScope", () => F.Lookup<Role>(this, "Roles", "RoleId", __c => __c.Roles, __r => F.Of(__r.RoleId), F.Of(this.DomainRole), __r => F.Of(__r.Organization), () => F.Of(new Role().Organization)))); set { }
         }
 
         // Formula RoleLabel (rulebook: =INDEX(Roles!{{Label}}, MATCH({{DomainRole}}, Roles!{{RoleId}}, 0)))
+        [NotMapped]
         public string? RoleLabel
         {
-            get => INDEX(Roles!this.Label, MATCH(this.DomainRole, Roles!this.RoleId, 0)); set { }
+            get => F.AsString(F.Memo(this, "RoleLabel", () => F.Lookup<Role>(this, "Roles", "RoleId", __c => __c.Roles, __r => F.Of(__r.RoleId), F.Of(this.DomainRole), __r => F.Of(__r.Label), () => F.Of(new Role().Label)))); set { }
         }
 
         // Formula PolicyCount (rulebook: =COUNTIFS(AccessPolicies!{{Principal}}, {{AccessPrincipalId}}))
+        [NotMapped]
         public decimal? PolicyCount
         {
-            get => COUNTIFS(AccessPolicies!this.Principal, this.AccessPrincipalId); set { }
+            get => F.AsDecimal(F.Memo(this, "PolicyCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<AccessPolicy>(base.SoAContext, "AccessPolicies", __c => __c.AccessPolicies), __r => F.CritField(F.Of(__r.Principal), F.Of(this.AccessPrincipalId)))))); set { }
         }
 
         // Formula GrantCount (rulebook: =COUNTIFS(FieldGrants!{{Principal}}, {{AccessPrincipalId}}))
+        [NotMapped]
         public decimal? GrantCount
         {
-            get => COUNTIFS(FieldGrants!this.Principal, this.AccessPrincipalId); set { }
+            get => F.AsDecimal(F.Memo(this, "GrantCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<FieldGrant>(base.SoAContext, "FieldGrants", __c => __c.FieldGrants), __r => F.CritField(F.Of(__r.Principal), F.Of(this.AccessPrincipalId)))))); set { }
         }
 
         // Formula VisibleTableCount (rulebook: =COUNTIFS(RoleSchemaViews!{{Principal}}, {{AccessPrincipalId}}))
+        [NotMapped]
         public decimal? VisibleTableCount
         {
-            get => COUNTIFS(RoleSchemaViews!this.Principal, this.AccessPrincipalId); set { }
+            get => F.AsDecimal(F.Memo(this, "VisibleTableCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<RoleSchemaView>(base.SoAContext, "RoleSchemaViews", __c => __c.RoleSchemaViews), __r => F.CritField(F.Of(__r.Principal), F.Of(this.AccessPrincipalId)))))); set { }
         }
 
         // Formula HasNoAccess (rulebook: ={{PolicyCount}} = 0)
+        [NotMapped]
         public bool? HasNoAccess
         {
-            get => this.PolicyCount = 0; set { }
+            get => F.AsBool(F.Memo(this, "HasNoAccess", () => F.Eq(F.Of(this.PolicyCount), F.I(0)))); set { }
         }
 
         // Formula IsOverPrivileged (rulebook: =AND(NOT({{IsAdministrator}}), {{VisibleTableCount}} >= 74))
+        [NotMapped]
         public bool? IsOverPrivileged
         {
-            get => AND(NOT(this.IsAdministrator), this.VisibleTableCount >= 74); set { }
+            get => F.AsBool(F.Memo(this, "IsOverPrivileged", () => F.And(F.Bool3(F.Not(F.IsTrueV(F.Of(this.IsAdministrator)))), F.Bool3(F.Cmp(F.Of(this.VisibleTableCount), ">=", F.I(74)))))); set { }
         }
 
         public string? SemanticTypeIri { get; set; }
@@ -80,7 +89,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_role == null && !string.IsNullOrEmpty(DomainRole))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -88,10 +97,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                         }
                         return null;
                     }
-                    _role = Context.Roles.Find(DomainRole);
+                    _role = base.SoAContext.Roles.Find(DomainRole);
                     if (_role != null)
                     {
-                        Context.Attach(_role);
+                        base.SoAContext.Attach(_role);
                     }
                 }
                 return _role;
@@ -101,7 +110,16 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                 if (_role != value)
                 {
                     _role = value;
-                    DomainRole = _role == null ? default : _role.RoleId;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_role != null)
+                    {
+                        DomainRole = _role.RoleId;
+                    }
                 }
             }
         }
@@ -115,7 +133,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_accessPolicies == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -125,11 +143,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.AccessPolicies.Where(x => x.Principal == this.AccessPrincipalId).ToList<AccessPolicy>();
+                        var items = base.SoAContext.AccessPolicies.Where(x => x.Principal == this.AccessPrincipalId).ToList<AccessPolicy>();
                         _accessPolicies = new ObservableCollection<AccessPolicy>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _accessPolicies.CollectionChanged += AccessPolicies_CollectionChanged;
@@ -170,7 +188,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_fieldGrants == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -180,11 +198,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.FieldGrants.Where(x => x.Principal == this.AccessPrincipalId).ToList<FieldGrant>();
+                        var items = base.SoAContext.FieldGrants.Where(x => x.Principal == this.AccessPrincipalId).ToList<FieldGrant>();
                         _fieldGrants = new ObservableCollection<FieldGrant>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _fieldGrants.CollectionChanged += FieldGrants_CollectionChanged;
@@ -225,7 +243,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_roleSchemas == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -235,11 +253,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.RoleSchemas.Where(x => x.Principal == this.AccessPrincipalId).ToList<RoleSchema>();
+                        var items = base.SoAContext.RoleSchemas.Where(x => x.Principal == this.AccessPrincipalId).ToList<RoleSchema>();
                         _roleSchemas = new ObservableCollection<RoleSchema>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _roleSchemas.CollectionChanged += RoleSchemas_CollectionChanged;
@@ -280,7 +298,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_roleSchemaViews == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -290,11 +308,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.RoleSchemaViews.Where(x => x.Principal == this.AccessPrincipalId).ToList<RoleSchemaView>();
+                        var items = base.SoAContext.RoleSchemaViews.Where(x => x.Principal == this.AccessPrincipalId).ToList<RoleSchemaView>();
                         _roleSchemaViews = new ObservableCollection<RoleSchemaView>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _roleSchemaViews.CollectionChanged += RoleSchemaViews_CollectionChanged;
@@ -335,7 +353,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_accessDenialTests == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -345,11 +363,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.AccessDenialTests.Where(x => x.Principal == this.AccessPrincipalId).ToList<AccessDenialTest>();
+                        var items = base.SoAContext.AccessDenialTests.Where(x => x.Principal == this.AccessPrincipalId).ToList<AccessDenialTest>();
                         _accessDenialTests = new ObservableCollection<AccessDenialTest>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _accessDenialTests.CollectionChanged += AccessDenialTests_CollectionChanged;
@@ -390,7 +408,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_principalAssignments == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -400,11 +418,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.PrincipalAssignments.Where(x => x.Principal == this.AccessPrincipalId).ToList<PrincipalAssignment>();
+                        var items = base.SoAContext.PrincipalAssignments.Where(x => x.Principal == this.AccessPrincipalId).ToList<PrincipalAssignment>();
                         _principalAssignments = new ObservableCollection<PrincipalAssignment>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _principalAssignments.CollectionChanged += PrincipalAssignments_CollectionChanged;
@@ -445,7 +463,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_issuedTokens == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -455,11 +473,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.IssuedTokens.Where(x => x.Principal == this.AccessPrincipalId).ToList<IssuedToken>();
+                        var items = base.SoAContext.IssuedTokens.Where(x => x.Principal == this.AccessPrincipalId).ToList<IssuedToken>();
                         _issuedTokens = new ObservableCollection<IssuedToken>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _issuedTokens.CollectionChanged += IssuedTokens_CollectionChanged;

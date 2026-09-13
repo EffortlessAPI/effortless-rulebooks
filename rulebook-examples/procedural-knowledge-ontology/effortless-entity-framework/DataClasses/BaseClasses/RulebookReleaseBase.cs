@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -16,9 +17,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string RulebookReleaseId { get; set; }
 
         // Formula Name (rulebook: ={{RulebookVersion}} & " / PKO " & {{PkoCoreVersionIri}})
+        [NotMapped]
         public string? Name
         {
-            get => this.RulebookVersion + " / PKO " + this.PkoCoreVersionIri; set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.RulebookVersion)), F.S(" / PKO "), F.TextOr(F.Of(this.PkoCoreVersionIri))))); set { }
         }
 
         public string? RulebookVersion { get; set; }
@@ -26,7 +28,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string? ProfileSchemaPath { get; set; }
         public string? PkoCoreVersionIri { get; set; }
         public string? PkoIndustryVersionIri { get; set; }
-        public DateTime? IssuedAt { get; set; }
+        public DateTimeOffset? IssuedAt { get; set; }
         public string? Status { get; set; }
         public string? Changelog { get; set; }
         public bool? IsCurrent { get; set; }

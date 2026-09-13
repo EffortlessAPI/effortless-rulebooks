@@ -47,6 +47,7 @@ admin-portal/.proxy.log
 **/.proxy.log
 **/.applied-manifest.json
 **/_substrate_results.json
+**/_conformance_grades.json
 **/.build-manifest.json
 rulebook-examples/legacy-runner/postgres/.applied-manifest.json
 rulebook-examples/legacy-runner/postgres/.build-manifest.json

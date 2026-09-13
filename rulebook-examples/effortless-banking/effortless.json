@@ -44,8 +44,8 @@
     {
       "IsSSoTTranspiler": false,
       "Name": "oss-postgres-calculated-to-rulebook",
-      "RelativePath": "/postgres-bootstrap",
-      "CommandLine": "http://127.0.0.1:4242/oss-postgres-calculated-to-rulebook -i ../effortless-rulebook/effortless-banking-rulebook.json -i .pg-dump.sql",
+      "RelativePath": "/effortless-rulebook",
+      "CommandLine": "http://127.0.0.1:4242/oss-postgres-calculated-to-rulebook -i effortless-banking-rulebook.json,../postgres-bootstrap/.pg-raw-data.json",
       "IsDisabled": true,
       "Description": "Pure function: sync rulebook data[] from pg_dump. Both files passed as zipped payload to the local transpiler host."
     },

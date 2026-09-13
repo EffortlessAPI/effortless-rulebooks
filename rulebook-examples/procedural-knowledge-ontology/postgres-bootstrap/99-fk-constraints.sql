@@ -765,4 +765,44 @@ ALTER TABLE knowledge_broker_links DROP CONSTRAINT IF EXISTS fk_knowledge_broker
 ALTER TABLE knowledge_broker_links ADD CONSTRAINT fk_knowledge_broker_links_evaluation_context
   FOREIGN KEY (evaluation_context) REFERENCES evaluation_contexts (evaluation_context_id);
 
--- 203 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
+-- ConformanceRuns
+ALTER TABLE conformance_runs DROP CONSTRAINT IF EXISTS fk_conformance_runs_answer_key_author;
+ALTER TABLE conformance_runs ADD CONSTRAINT fk_conformance_runs_answer_key_author
+  FOREIGN KEY (answer_key_author) REFERENCES conformance_substrates (conformance_substrate_id);
+
+-- SubstrateRunScores
+ALTER TABLE substrate_run_scores DROP CONSTRAINT IF EXISTS fk_substrate_run_scores_run;
+ALTER TABLE substrate_run_scores ADD CONSTRAINT fk_substrate_run_scores_run
+  FOREIGN KEY (run) REFERENCES conformance_runs (conformance_run_id);
+ALTER TABLE substrate_run_scores DROP CONSTRAINT IF EXISTS fk_substrate_run_scores_substrate;
+ALTER TABLE substrate_run_scores ADD CONSTRAINT fk_substrate_run_scores_substrate
+  FOREIGN KEY (substrate) REFERENCES conformance_substrates (conformance_substrate_id);
+
+-- TableConformance
+ALTER TABLE table_conformance DROP CONSTRAINT IF EXISTS fk_table_conformance_run;
+ALTER TABLE table_conformance ADD CONSTRAINT fk_table_conformance_run
+  FOREIGN KEY (run) REFERENCES conformance_runs (conformance_run_id);
+ALTER TABLE table_conformance DROP CONSTRAINT IF EXISTS fk_table_conformance_substrate;
+ALTER TABLE table_conformance ADD CONSTRAINT fk_table_conformance_substrate
+  FOREIGN KEY (substrate) REFERENCES conformance_substrates (conformance_substrate_id);
+ALTER TABLE table_conformance DROP CONSTRAINT IF EXISTS fk_table_conformance_rulebook_table;
+ALTER TABLE table_conformance ADD CONSTRAINT fk_table_conformance_rulebook_table
+  FOREIGN KEY (rulebook_table) REFERENCES rulebook_tables (rulebook_table_id);
+
+-- FieldDisagreements
+ALTER TABLE field_disagreements DROP CONSTRAINT IF EXISTS fk_field_disagreements_substrate;
+ALTER TABLE field_disagreements ADD CONSTRAINT fk_field_disagreements_substrate
+  FOREIGN KEY (substrate) REFERENCES conformance_substrates (conformance_substrate_id);
+ALTER TABLE field_disagreements DROP CONSTRAINT IF EXISTS fk_field_disagreements_rulebook_field;
+ALTER TABLE field_disagreements ADD CONSTRAINT fk_field_disagreements_rulebook_field
+  FOREIGN KEY (rulebook_field) REFERENCES rulebook_fields (rulebook_field_id);
+ALTER TABLE field_disagreements DROP CONSTRAINT IF EXISTS fk_field_disagreements_table_conformance;
+ALTER TABLE field_disagreements ADD CONSTRAINT fk_field_disagreements_table_conformance
+  FOREIGN KEY (table_conformance) REFERENCES table_conformance (table_conformance_id);
+
+-- CellDisagreements
+ALTER TABLE cell_disagreements DROP CONSTRAINT IF EXISTS fk_cell_disagreements_field_disagreement;
+ALTER TABLE cell_disagreements ADD CONSTRAINT fk_cell_disagreements_field_disagreement
+  FOREIGN KEY (field_disagreement) REFERENCES field_disagreements (field_disagreement_id);
+
+-- 213 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).

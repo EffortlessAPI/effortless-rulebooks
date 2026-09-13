@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -16,9 +17,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string OntologyProfileId { get; set; }
 
         // Formula Name (rulebook: ={{Label}} & " " & {{Version}})
+        [NotMapped]
         public string? Name
         {
-            get => this.Label + " " + this.Version; set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.Label)), F.S(" "), F.TextOr(F.Of(this.Version))))); set { }
         }
 
         public string? Label { get; set; }
@@ -31,14 +33,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<SemanticMapping> _semanticMappings;
 
-        [InverseProperty("OntologyProfile")]
+        [InverseProperty("OntologyProfileRef")]
         public virtual ObservableCollection<SemanticMapping> SemanticMappings
         {
             get
             {
                 if (_semanticMappings == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -48,11 +50,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.SemanticMappings.Where(x => x.OntologyProfile == this.OntologyProfileId).ToList<SemanticMapping>();
+                        var items = base.SoAContext.SemanticMappings.Where(x => x.OntologyProfile == this.OntologyProfileId).ToList<SemanticMapping>();
                         _semanticMappings = new ObservableCollection<SemanticMapping>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _semanticMappings.CollectionChanged += SemanticMappings_CollectionChanged;

@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -16,9 +17,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string CommunityOfPracticeId { get; set; }
 
         // Formula Name (rulebook: ={{Label}})
+        [NotMapped]
         public string? Name
         {
-            get => this.Label; set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Of(this.Label))); set { }
         }
 
         public string? Label { get; set; }
@@ -29,37 +31,46 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string? Organization { get; set; }
         public string? StewardRole { get; set; }
 
-        private Organization _organization;
+        private Organization _organizationRef;
 
         [ForeignKey("Organization")]
-        public virtual Organization Organization
+        public virtual Organization OrganizationRef
         {
             get
             {
-                if (_organization == null && !string.IsNullOrEmpty(Organization))
+                if (_organizationRef == null && !string.IsNullOrEmpty(Organization))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access Organization - no database context is set. Organization: " + Organization + ".");
+                            throw new InvalidOperationException("Cannot access OrganizationRef - no database context is set. Organization: " + Organization + ".");
                         }
                         return null;
                     }
-                    _organization = Context.Organizations.Find(Organization);
-                    if (_organization != null)
+                    _organizationRef = base.SoAContext.Organizations.Find(Organization);
+                    if (_organizationRef != null)
                     {
-                        Context.Attach(_organization);
+                        base.SoAContext.Attach(_organizationRef);
                     }
                 }
-                return _organization;
+                return _organizationRef;
             }
             set
             {
-                if (_organization != value)
+                if (_organizationRef != value)
                 {
-                    _organization = value;
-                    Organization = _organization == null ? default : _organization.OrganizationId;
+                    _organizationRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_organizationRef != null)
+                    {
+                        Organization = _organizationRef.OrganizationId;
+                    }
                 }
             }
         }
@@ -73,7 +84,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_role == null && !string.IsNullOrEmpty(StewardRole))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -81,10 +92,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                         }
                         return null;
                     }
-                    _role = Context.Roles.Find(StewardRole);
+                    _role = base.SoAContext.Roles.Find(StewardRole);
                     if (_role != null)
                     {
-                        Context.Attach(_role);
+                        base.SoAContext.Attach(_role);
                     }
                 }
                 return _role;
@@ -94,7 +105,16 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                 if (_role != value)
                 {
                     _role = value;
-                    StewardRole = _role == null ? default : _role.RoleId;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_role != null)
+                    {
+                        StewardRole = _role.RoleId;
+                    }
                 }
             }
         }
@@ -108,7 +128,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_mentorships == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -118,11 +138,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.Mentorships.Where(x => x.CommunityOfPractice == this.CommunityOfPracticeId).ToList<Mentorship>();
+                        var items = base.SoAContext.Mentorships.Where(x => x.CommunityOfPractice == this.CommunityOfPracticeId).ToList<Mentorship>();
                         _mentorships = new ObservableCollection<Mentorship>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _mentorships.CollectionChanged += Mentorships_CollectionChanged;
@@ -163,7 +183,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_learningActivities == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -173,11 +193,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.LearningActivities.Where(x => x.CommunityOfPractice == this.CommunityOfPracticeId).ToList<LearningActivity>();
+                        var items = base.SoAContext.LearningActivities.Where(x => x.CommunityOfPractice == this.CommunityOfPracticeId).ToList<LearningActivity>();
                         _learningActivities = new ObservableCollection<LearningActivity>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _learningActivities.CollectionChanged += LearningActivities_CollectionChanged;
@@ -212,7 +232,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         protected override void LazyLoadProperties()
         {
-            _ = this.Organization;
+            _ = this.OrganizationRef;
             _ = this.Role;
             _ = this.Mentorships;
             _ = this.LearningActivities;

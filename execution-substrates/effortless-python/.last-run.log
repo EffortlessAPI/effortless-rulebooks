@@ -1,33 +1,91 @@
 === Effortless Python Substrate Test Run ===
 
 effortless-python: Starting test...
-  Program: /Users/eejai42/development/effortless-rulebooks/rulebook-examples/talismans-special-solutions/effortless-python
+  Program: /Users/eejai42/development/effortless-rulebooks/rulebook-examples/procedural-knowledge-ontology/effortless-python
 effortless-python: Running...
-  -> vw_roles_closure: 3 pairs
-  -> vw_step_precedence_closure: 10 pairs
-  -> vw_workflow_artifacts_closure: 10 pairs
-Python substrate: dataset settled after 3 passes
-  -> agent_capability_concepts: 6 records
-  -> ai_agents: 2 records
-  -> approval_gates: 1 records
-  -> artifact_type_concepts: 3 records
-  -> automated_pipelines: 1 records
-  -> change_log: 2 records
-  -> competency_questions: 8 records
-  -> conformance_tests: 72 records
-  -> datasets: 1 records
-  -> departments: 2 records
-  -> governance_roles: 2 records
-  -> human_agents: 5 records
-  -> role_assignments: 6 records
-  -> roles: 7 records
-  -> scenario_cq_effects: 12 records
-  -> scenarios: 12 records
-  -> step_precedence: 4 records
-  -> vocabulary_reconciliations: 2 records
-  -> workflow_artifacts: 5 records
-  -> workflow_status_concepts: 4 records
-  -> workflow_steps: 5 records
-  -> workflows: 1 records
-Python substrate: wrote 163 records across 22 tables to /Users/eejai42/development/effortless-rulebooks/rulebook-examples/talismans-special-solutions/testing/effortless-python/test-answers
+Python substrate: dataset settled after 4 passes
+  -> access_denial_tests: 17 records
+  -> access_policies: 202 records
+  -> access_principals: 12 records
+  -> actions: 9 records
+  -> agent_decision_records: 3 records
+  -> agents: 11 records
+  -> app_nav_groups: 23 records
+  -> app_role_profiles: 12 records
+  -> app_route_questions: 151 records
+  -> app_route_references: 315 records
+  -> app_routes: 149 records
+  -> app_users: 10 records
+  -> authority_boundaries: 3 records
+  -> change_requests: 2 records
+  -> communication_policies: 2 records
+  -> communities_of_practice: 2 records
+  -> delivered_communications: 1 records
+  -> elicitation_sessions: 3 records
+  -> errors: 2 records
+  -> evaluation_contexts: 1 records
+  -> exception_invocations: 1 records
+  -> exceptions: 4 records
+  -> explanations: 2 records
+  -> fa_qs: 3 records
+  -> field_grants: 3639 records
+  -> functions: 8 records
+  -> issue_occurrences: 2 records
+  -> jwt_claim_mappings: 4 records
+  -> knowledge_broker_links: 5 records
+  -> knowledge_fragments: 7 records
+  -> knowledge_gaps: 8 records
+  -> learning_activities: 2 records
+  -> mentorships: 1 records
+  -> message_deliveries: 6 records
+  -> message_templates: 2 records
+  -> observed_transitions: 10 records
+  -> ontology_profiles: 11 records
+  -> operational_bindings: 5 records
+  -> organizations: 4 records
+  -> principal_assignments: 12 records
+  -> procedure_executions: 2 records
+  -> procedure_resources: 8 records
+  -> procedure_status_changes: 5 records
+  -> procedure_types: 2 records
+  -> procedure_version_links: 1 records
+  -> procedure_versions: 3 records
+  -> procedures: 2 records
+  -> process_mining_runs: 4 records
+  -> rationales: 4 records
+  -> recipients: 5 records
+  -> requirement_satisfactions: 8 records
+  -> requirements: 13 records
+  -> resources: 8 records
+  -> review_events: 3 records
+  -> role_assignments: 13 records
+  -> role_questions: 109 records
+  -> role_schema_views: 202 records
+  -> role_schemas: 12 records
+  -> roles: 12 records
+  -> rulebook_fields: 1879 records
+  -> rulebook_releases: 1 records
+  -> rulebook_tables: 92 records
+  -> semantic_mappings: 47 records
+  -> send_intents: 7 records
+  -> step_actions: 9 records
+  -> step_executions: 12 records
+  -> step_functions: 8 records
+  -> step_requirements: 15 records
+  -> step_tools: 10 records
+  -> step_transitions: 19 records
+  -> step_verifications: 11 records
+  -> steps: 17 records
+  -> stewardship_assignments: 2 records
+  -> template_approvals: 2 records
+  -> test_cases: 1794 records
+  -> test_suites: 6 records
+  -> tools: 8 records
+  -> user_feedback: 2 records
+  -> user_questions: 2 records
+  -> verification_outcomes: 4 records
+  -> vocabularies: 2 records
+  -> vocabulary_terms: 12 records
+  -> witness_loops: 3 records
+Python substrate: wrote 9046 records across 83 tables to /Users/eejai42/development/effortless-rulebooks/rulebook-examples/procedural-knowledge-ontology/testing/effortless-python/test-answers
 

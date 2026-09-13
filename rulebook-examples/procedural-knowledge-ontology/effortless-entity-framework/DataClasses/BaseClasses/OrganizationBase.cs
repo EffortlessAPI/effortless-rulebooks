@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -16,9 +17,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string OrganizationId { get; set; }
 
         // Formula Name (rulebook: ={{DisplayName}})
+        [NotMapped]
         public string? Name
         {
-            get => this.DisplayName; set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Of(this.DisplayName))); set { }
         }
 
         public string? DisplayName { get; set; }
@@ -29,14 +31,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<Agent> _agents;
 
-        [InverseProperty("Organization")]
+        [InverseProperty("OrganizationRef")]
         public virtual ObservableCollection<Agent> Agents
         {
             get
             {
                 if (_agents == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -46,11 +48,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.Agents.Where(x => x.Organization == this.OrganizationId).ToList<Agent>();
+                        var items = base.SoAContext.Agents.Where(x => x.Organization == this.OrganizationId).ToList<Agent>();
                         _agents = new ObservableCollection<Agent>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _agents.CollectionChanged += Agents_CollectionChanged;
@@ -84,14 +86,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<Role> _roles;
 
-        [InverseProperty("Organization")]
+        [InverseProperty("OrganizationRef")]
         public virtual ObservableCollection<Role> Roles
         {
             get
             {
                 if (_roles == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -101,11 +103,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.Roles.Where(x => x.Organization == this.OrganizationId).ToList<Role>();
+                        var items = base.SoAContext.Roles.Where(x => x.Organization == this.OrganizationId).ToList<Role>();
                         _roles = new ObservableCollection<Role>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _roles.CollectionChanged += Roles_CollectionChanged;
@@ -139,14 +141,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<CommunitiesOfPractice> _communitiesOfPractice;
 
-        [InverseProperty("Organization")]
+        [InverseProperty("OrganizationRef")]
         public virtual ObservableCollection<CommunitiesOfPractice> CommunitiesOfPractice
         {
             get
             {
                 if (_communitiesOfPractice == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -156,11 +158,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.CommunitiesOfPractice.Where(x => x.Organization == this.OrganizationId).ToList<CommunitiesOfPractice>();
+                        var items = base.SoAContext.CommunitiesOfPractice.Where(x => x.Organization == this.OrganizationId).ToList<CommunitiesOfPractice>();
                         _communitiesOfPractice = new ObservableCollection<CommunitiesOfPractice>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _communitiesOfPractice.CollectionChanged += CommunitiesOfPractice_CollectionChanged;
@@ -192,51 +194,51 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
-        private ObservableCollection<Procedure> _procedures;
+        private ObservableCollection<Procedure> _ownerOrganizationProcedures;
 
         [InverseProperty("Organization")]
-        public virtual ObservableCollection<Procedure> Procedures
+        public virtual ObservableCollection<Procedure> OwnerOrganizationProcedures
         {
             get
             {
-                if (_procedures == null)
+                if (_ownerOrganizationProcedures == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access Procedures - no database context is set. OrganizationId: " + this.OrganizationId + ".");
+                            throw new InvalidOperationException("Cannot access OwnerOrganizationProcedures - no database context is set. OrganizationId: " + this.OrganizationId + ".");
                         }
-                        _procedures = new ObservableCollection<Procedure>();
+                        _ownerOrganizationProcedures = new ObservableCollection<Procedure>();
                     }
                     else
                     {
-                        var items = Context.Procedures.Where(x => x.OwnerOrganization == this.OrganizationId).ToList<Procedure>();
-                        _procedures = new ObservableCollection<Procedure>(items);
+                        var items = base.SoAContext.Procedures.Where(x => x.OwnerOrganization == this.OrganizationId).ToList<Procedure>();
+                        _ownerOrganizationProcedures = new ObservableCollection<Procedure>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
-                    _procedures.CollectionChanged += Procedures_CollectionChanged;
+                    _ownerOrganizationProcedures.CollectionChanged += OwnerOrganizationProcedures_CollectionChanged;
                 }
-                return _procedures;
+                return _ownerOrganizationProcedures;
             }
             private set
             {
-                if (_procedures != null)
+                if (_ownerOrganizationProcedures != null)
                 {
-                    _procedures.CollectionChanged -= Procedures_CollectionChanged;
+                    _ownerOrganizationProcedures.CollectionChanged -= OwnerOrganizationProcedures_CollectionChanged;
                 }
-                _procedures = value;
-                if (_procedures != null)
+                _ownerOrganizationProcedures = value;
+                if (_ownerOrganizationProcedures != null)
                 {
-                    _procedures.CollectionChanged += Procedures_CollectionChanged;
+                    _ownerOrganizationProcedures.CollectionChanged += OwnerOrganizationProcedures_CollectionChanged;
                 }
             }
         }
 
-        private void Procedures_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void OwnerOrganizationProcedures_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e?.NewItems != null)
             {
@@ -247,51 +249,51 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
-        private ObservableCollection<Procedure> _procedures;
+        private ObservableCollection<Procedure> _adoptedByOrganizationProcedures;
 
-        [InverseProperty("Organization")]
-        public virtual ObservableCollection<Procedure> Procedures
+        [InverseProperty("OrganizationRef")]
+        public virtual ObservableCollection<Procedure> AdoptedByOrganizationProcedures
         {
             get
             {
-                if (_procedures == null)
+                if (_adoptedByOrganizationProcedures == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access Procedures - no database context is set. OrganizationId: " + this.OrganizationId + ".");
+                            throw new InvalidOperationException("Cannot access AdoptedByOrganizationProcedures - no database context is set. OrganizationId: " + this.OrganizationId + ".");
                         }
-                        _procedures = new ObservableCollection<Procedure>();
+                        _adoptedByOrganizationProcedures = new ObservableCollection<Procedure>();
                     }
                     else
                     {
-                        var items = Context.Procedures.Where(x => x.AdoptedByOrganization == this.OrganizationId).ToList<Procedure>();
-                        _procedures = new ObservableCollection<Procedure>(items);
+                        var items = base.SoAContext.Procedures.Where(x => x.AdoptedByOrganization == this.OrganizationId).ToList<Procedure>();
+                        _adoptedByOrganizationProcedures = new ObservableCollection<Procedure>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
-                    _procedures.CollectionChanged += Procedures_CollectionChanged;
+                    _adoptedByOrganizationProcedures.CollectionChanged += AdoptedByOrganizationProcedures_CollectionChanged;
                 }
-                return _procedures;
+                return _adoptedByOrganizationProcedures;
             }
             private set
             {
-                if (_procedures != null)
+                if (_adoptedByOrganizationProcedures != null)
                 {
-                    _procedures.CollectionChanged -= Procedures_CollectionChanged;
+                    _adoptedByOrganizationProcedures.CollectionChanged -= AdoptedByOrganizationProcedures_CollectionChanged;
                 }
-                _procedures = value;
-                if (_procedures != null)
+                _adoptedByOrganizationProcedures = value;
+                if (_adoptedByOrganizationProcedures != null)
                 {
-                    _procedures.CollectionChanged += Procedures_CollectionChanged;
+                    _adoptedByOrganizationProcedures.CollectionChanged += AdoptedByOrganizationProcedures_CollectionChanged;
                 }
             }
         }
 
-        private void Procedures_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void AdoptedByOrganizationProcedures_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e?.NewItems != null)
             {
@@ -304,14 +306,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<Recipient> _recipients;
 
-        [InverseProperty("Organization")]
+        [InverseProperty("OrganizationRef")]
         public virtual ObservableCollection<Recipient> Recipients
         {
             get
             {
                 if (_recipients == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -321,11 +323,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.Recipients.Where(x => x.Organization == this.OrganizationId).ToList<Recipient>();
+                        var items = base.SoAContext.Recipients.Where(x => x.Organization == this.OrganizationId).ToList<Recipient>();
                         _recipients = new ObservableCollection<Recipient>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _recipients.CollectionChanged += Recipients_CollectionChanged;
@@ -363,8 +365,8 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             _ = this.Agents;
             _ = this.Roles;
             _ = this.CommunitiesOfPractice;
-            _ = this.Procedures;
-            _ = this.Procedures;
+            _ = this.OwnerOrganizationProcedures;
+            _ = this.AdoptedByOrganizationProcedures;
             _ = this.Recipients;
         }
 

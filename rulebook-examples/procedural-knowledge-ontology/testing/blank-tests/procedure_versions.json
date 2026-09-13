@@ -82,7 +82,10 @@
     "approved_change_request_count": null,
     "unwatched_unowned_control_count": null,
     "days_since_last_review": null,
-    "was_modified_since_last_review": null
+    "was_modified_since_last_review": null,
+    "mining_run_count": null,
+    "drifted_mining_run_count": null,
+    "has_unresolved_mining_drift": null
   },
   {
     "procedure_version_id": "close-v1.1.0",
@@ -167,7 +170,10 @@
     "control_taxonomy_is_incomplete": null,
     "has_approved_change_request": null,
     "approved_change_request_count": null,
-    "unwatched_unowned_control_count": null
+    "unwatched_unowned_control_count": null,
+    "mining_run_count": null,
+    "drifted_mining_run_count": null,
+    "has_unresolved_mining_drift": null
   },
   {
     "procedure_version_id": "policy-v1.0.0",
@@ -252,6 +258,9 @@
     "control_taxonomy_is_incomplete": null,
     "has_approved_change_request": null,
     "approved_change_request_count": null,
-    "unwatched_unowned_control_count": null
+    "unwatched_unowned_control_count": null,
+    "mining_run_count": null,
+    "drifted_mining_run_count": null,
+    "has_unresolved_mining_drift": null
   }
 ]

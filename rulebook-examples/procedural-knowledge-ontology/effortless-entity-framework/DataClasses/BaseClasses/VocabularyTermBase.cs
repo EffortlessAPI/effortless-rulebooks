@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -16,73 +17,87 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string VocabularyTermId { get; set; }
 
         // Formula Name (rulebook: ={{PrefLabel}})
+        [NotMapped]
         public string? Name
         {
-            get => this.PrefLabel; set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Of(this.PrefLabel))); set { }
         }
 
         public string? PrefLabel { get; set; }
         public string? AltLabels { get; set; }
         public string? Definition { get; set; }
         // Formula UsageCount (rulebook: =COUNTIFS(Requirements!{{ControlledTerm}}, {{VocabularyTermId}}))
+        [NotMapped]
         public decimal? UsageCount
         {
-            get => COUNTIFS(Requirements!this.ControlledTerm, this.VocabularyTermId); set { }
+            get => F.AsDecimal(F.Memo(this, "UsageCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<Requirement>(base.SoAContext, "Requirements", __c => __c.Requirements), __r => F.CritField(F.Of(__r.ControlledTerm), F.Of(this.VocabularyTermId)))))); set { }
         }
 
         // Formula IsOrphanTerm (rulebook: ={{UsageCount}} = 0)
+        [NotMapped]
         public bool? IsOrphanTerm
         {
-            get => this.UsageCount = 0; set { }
+            get => F.AsBool(F.Memo(this, "IsOrphanTerm", () => F.Eq(F.Of(this.UsageCount), F.I(0)))); set { }
         }
 
         // Formula IsWidelyAdoptedTerm (rulebook: ={{UsageCount}} >= 2)
+        [NotMapped]
         public bool? IsWidelyAdoptedTerm
         {
-            get => this.UsageCount >= 2; set { }
+            get => F.AsBool(F.Memo(this, "IsWidelyAdoptedTerm", () => F.Cmp(F.Of(this.UsageCount), ">=", F.I(2)))); set { }
         }
 
         // Formula OrphanTermVocabularyKey (rulebook: =IF({{IsOrphanTerm}}, {{Vocabulary}}, ""))
+        [NotMapped]
         public string? OrphanTermVocabularyKey
         {
-            get => IF(this.IsOrphanTerm, this.Vocabulary, ""); set { }
+            get => F.AsString(F.Memo(this, "OrphanTermVocabularyKey", () => (F.Truthy(F.Bool3(F.Of(this.IsOrphanTerm))) ? F.Of(this.Vocabulary) : F.S("")))); set { }
         }
 
         public string? SemanticTypeIri { get; set; }
 
         public string? Vocabulary { get; set; }
 
-        private Vocabulary _vocabulary;
+        private Vocabulary _vocabularyRef;
 
         [ForeignKey("Vocabulary")]
-        public virtual Vocabulary Vocabulary
+        public virtual Vocabulary VocabularyRef
         {
             get
             {
-                if (_vocabulary == null && !string.IsNullOrEmpty(Vocabulary))
+                if (_vocabularyRef == null && !string.IsNullOrEmpty(Vocabulary))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access Vocabulary - no database context is set. Vocabulary: " + Vocabulary + ".");
+                            throw new InvalidOperationException("Cannot access VocabularyRef - no database context is set. Vocabulary: " + Vocabulary + ".");
                         }
                         return null;
                     }
-                    _vocabulary = Context.Vocabularies.Find(Vocabulary);
-                    if (_vocabulary != null)
+                    _vocabularyRef = base.SoAContext.Vocabularies.Find(Vocabulary);
+                    if (_vocabularyRef != null)
                     {
-                        Context.Attach(_vocabulary);
+                        base.SoAContext.Attach(_vocabularyRef);
                     }
                 }
-                return _vocabulary;
+                return _vocabularyRef;
             }
             set
             {
-                if (_vocabulary != value)
+                if (_vocabularyRef != value)
                 {
-                    _vocabulary = value;
-                    Vocabulary = _vocabulary == null ? default : _vocabulary.VocabularyId;
+                    _vocabularyRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_vocabularyRef != null)
+                    {
+                        Vocabulary = _vocabularyRef.VocabularyId;
+                    }
                 }
             }
         }
@@ -96,7 +111,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_requirements == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -106,11 +121,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.Requirements.Where(x => x.ControlledTerm == this.VocabularyTermId).ToList<Requirement>();
+                        var items = base.SoAContext.Requirements.Where(x => x.ControlledTerm == this.VocabularyTermId).ToList<Requirement>();
                         _requirements = new ObservableCollection<Requirement>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _requirements.CollectionChanged += Requirements_CollectionChanged;
@@ -151,7 +166,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_knowledgeBrokerLinks == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -161,11 +176,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.KnowledgeBrokerLinks.Where(x => x.Topic == this.VocabularyTermId).ToList<KnowledgeBrokerLink>();
+                        var items = base.SoAContext.KnowledgeBrokerLinks.Where(x => x.Topic == this.VocabularyTermId).ToList<KnowledgeBrokerLink>();
                         _knowledgeBrokerLinks = new ObservableCollection<KnowledgeBrokerLink>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _knowledgeBrokerLinks.CollectionChanged += KnowledgeBrokerLinks_CollectionChanged;
@@ -200,7 +215,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         protected override void LazyLoadProperties()
         {
-            _ = this.Vocabulary;
+            _ = this.VocabularyRef;
             _ = this.Requirements;
             _ = this.KnowledgeBrokerLinks;
         }

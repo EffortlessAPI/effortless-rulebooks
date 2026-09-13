@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -16,422 +17,491 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string ProcedureExecutionId { get; set; }
 
         // Formula Name (rulebook: ={{ProcedureVersion}} & " / " & {{Context}})
+        [NotMapped]
         public string? Name
         {
-            get => this.ProcedureVersion + " / " + this.Context; set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.ProcedureVersion)), F.S(" / "), F.TextOr(F.Of(this.Context))))); set { }
         }
 
         public string? ExecutionStatus { get; set; }
-        public DateTime? StartedAt { get; set; }
-        public DateTime? EndedAt { get; set; }
+        public DateTimeOffset? StartedAt { get; set; }
+        public DateTimeOffset? EndedAt { get; set; }
         public string? Context { get; set; }
         public string? OperationalRecordUri { get; set; }
         // Formula ExpectedStepCount (rulebook: =INDEX(ProcedureVersions!{{SpecifiedStepCount}}, MATCH({{ProcedureVersion}}, ProcedureVersions!{{ProcedureVersionId}}, 0)))
+        [NotMapped]
         public decimal? ExpectedStepCount
         {
-            get => INDEX(ProcedureVersions!this.SpecifiedStepCount, MATCH(this.ProcedureVersion, ProcedureVersions!this.ProcedureVersionId, 0)); set { }
+            get => F.AsDecimal(F.Memo(this, "ExpectedStepCount", () => F.Lookup<ProcedureVersion>(this, "ProcedureVersions", "ProcedureVersionId", __c => __c.ProcedureVersions, __r => F.Of(__r.ProcedureVersionId), F.Of(this.ProcedureVersion), __r => F.Of(__r.SpecifiedStepCount), () => F.Of(new ProcedureVersion().SpecifiedStepCount)))); set { }
         }
 
         // Formula CompletedStepCount (rulebook: =COUNTIFS(StepExecutions!{{CompletedExecutionKey}}, {{ProcedureExecutionId}}))
+        [NotMapped]
         public decimal? CompletedStepCount
         {
-            get => COUNTIFS(StepExecutions!this.CompletedExecutionKey, this.ProcedureExecutionId); set { }
+            get => F.AsDecimal(F.Memo(this, "CompletedStepCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<StepExecution>(base.SoAContext, "StepExecutions", __c => __c.StepExecutions), __r => F.CritField(F.Of(__r.CompletedExecutionKey), F.Of(this.ProcedureExecutionId)))))); set { }
         }
 
         // Formula ControlBreachCount (rulebook: =COUNTIFS(StepExecutions!{{ControlBreachExecutionKey}}, {{ProcedureExecutionId}}))
+        [NotMapped]
         public decimal? ControlBreachCount
         {
-            get => COUNTIFS(StepExecutions!this.ControlBreachExecutionKey, this.ProcedureExecutionId); set { }
+            get => F.AsDecimal(F.Memo(this, "ControlBreachCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<StepExecution>(base.SoAContext, "StepExecutions", __c => __c.StepExecutions), __r => F.CritField(F.Of(__r.ControlBreachExecutionKey), F.Of(this.ProcedureExecutionId)))))); set { }
         }
 
         // Formula LateStepCount (rulebook: =COUNTIFS(StepExecutions!{{LateExecutionKey}}, {{ProcedureExecutionId}}))
+        [NotMapped]
         public decimal? LateStepCount
         {
-            get => COUNTIFS(StepExecutions!this.LateExecutionKey, this.ProcedureExecutionId); set { }
+            get => F.AsDecimal(F.Memo(this, "LateStepCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<StepExecution>(base.SoAContext, "StepExecutions", __c => __c.StepExecutions), __r => F.CritField(F.Of(__r.LateExecutionKey), F.Of(this.ProcedureExecutionId)))))); set { }
         }
 
         // Formula IsStructurallyComplete (rulebook: ={{CompletedStepCount}} >= {{ExpectedStepCount}})
+        [NotMapped]
         public bool? IsStructurallyComplete
         {
-            get => this.CompletedStepCount >= this.ExpectedStepCount; set { }
+            get => F.AsBool(F.Memo(this, "IsStructurallyComplete", () => F.Cmp(F.Of(this.CompletedStepCount), ">=", F.Of(this.ExpectedStepCount)))); set { }
         }
 
         // Formula DivergedFromSpecification (rulebook: =OR(NOT({{IsStructurallyComplete}}), {{ControlBreachCount}} > 0))
+        [NotMapped]
         public bool? DivergedFromSpecification
         {
-            get => OR(NOT(this.IsStructurallyComplete), this.ControlBreachCount > 0); set { }
+            get => F.AsBool(F.Memo(this, "DivergedFromSpecification", () => F.Or(F.Bool3(F.Not(F.Bool3(F.Of(this.IsStructurallyComplete)))), F.Bool3(F.Cmp(F.Of(this.ControlBreachCount), ">", F.I(0)))))); set { }
         }
 
         // Formula AllBlockingControlsEvaluated (rulebook: ={{UnevaluatedBlockingTotal}} = 0)
+        [NotMapped]
         public bool? AllBlockingControlsEvaluated
         {
-            get => this.UnevaluatedBlockingTotal = 0; set { }
+            get => F.AsBool(F.Memo(this, "AllBlockingControlsEvaluated", () => F.Eq(F.Of(this.UnevaluatedBlockingTotal), F.I(0)))); set { }
         }
 
         // Formula UnevaluatedBlockingTotal (rulebook: =COUNTIFS(StepExecutions!{{UnevaluatedBlockingExecutionKey}}, {{ProcedureExecutionId}}))
+        [NotMapped]
         public decimal? UnevaluatedBlockingTotal
         {
-            get => COUNTIFS(StepExecutions!this.UnevaluatedBlockingExecutionKey, this.ProcedureExecutionId); set { }
+            get => F.AsDecimal(F.Memo(this, "UnevaluatedBlockingTotal", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<StepExecution>(base.SoAContext, "StepExecutions", __c => __c.StepExecutions), __r => F.CritField(F.Of(__r.UnevaluatedBlockingExecutionKey), F.Of(this.ProcedureExecutionId)))))); set { }
         }
 
         // Formula SeparationOfDutiesHeld (rulebook: ={{SeparationViolationCount}} = 0)
+        [NotMapped]
         public bool? SeparationOfDutiesHeld
         {
-            get => this.SeparationViolationCount = 0; set { }
+            get => F.AsBool(F.Memo(this, "SeparationOfDutiesHeld", () => F.Eq(F.Of(this.SeparationViolationCount), F.I(0)))); set { }
         }
 
         // Formula SeparationViolationCount (rulebook: =COUNTIFS(StepExecutions!{{SeparationViolationExecutionKey}}, {{ProcedureExecutionId}}))
+        [NotMapped]
         public decimal? SeparationViolationCount
         {
-            get => COUNTIFS(StepExecutions!this.SeparationViolationExecutionKey, this.ProcedureExecutionId); set { }
+            get => F.AsDecimal(F.Memo(this, "SeparationViolationCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<StepExecution>(base.SoAContext, "StepExecutions", __c => __c.StepExecutions), __r => F.CritField(F.Of(__r.SeparationViolationExecutionKey), F.Of(this.ProcedureExecutionId)))))); set { }
         }
 
         // Formula IsAttestationReady (rulebook: =AND({{IsStructurallyComplete}}, NOT({{DivergedFromSpecification}}), {{AllBlockingControlsEvaluated}}, {{SeparationOfDutiesHeld}}))
+        [NotMapped]
         public bool? IsAttestationReady
         {
-            get => AND(this.IsStructurallyComplete, NOT(this.DivergedFromSpecification), this.AllBlockingControlsEvaluated, this.SeparationOfDutiesHeld); set { }
+            get => F.AsBool(F.Memo(this, "IsAttestationReady", () => F.And(F.Bool3(F.Of(this.IsStructurallyComplete)), F.Bool3(F.Not(F.Bool3(F.Of(this.DivergedFromSpecification)))), F.Bool3(F.Of(this.AllBlockingControlsEvaluated)), F.Bool3(F.Of(this.SeparationOfDutiesHeld))))); set { }
         }
 
         // Formula AttestationBlockerSummary (rulebook: =IF({{IsAttestationReady}}, "", IF(NOT({{IsStructurallyComplete}}), "Incomplete: specified steps did not all complete.", IF({{SeparationViolationCount}} > 0, "Segregation of duties violated.", IF({{UnevaluatedBlockingTotal}} > 0, "Blocking controls were never evaluated.", "Control breach recorded on one or more steps.")))))
+        [NotMapped]
         public string? AttestationBlockerSummary
         {
-            get => IF(this.IsAttestationReady, "", IF(NOT(this.IsStructurallyComplete), "Incomplete: specified steps did not all complete.", IF(this.SeparationViolationCount > 0, "Segregation of duties violated.", IF(this.UnevaluatedBlockingTotal > 0, "Blocking controls were never evaluated.", "Control breach recorded on one or more steps.")))); set { }
+            get => F.AsString(F.Memo(this, "AttestationBlockerSummary", () => (F.Truthy(F.Bool3(F.Of(this.IsAttestationReady))) ? F.S("") : (F.Truthy(F.Bool3(F.Not(F.Bool3(F.Of(this.IsStructurallyComplete))))) ? F.S("Incomplete: specified steps did not all complete.") : (F.Truthy(F.Bool3(F.Cmp(F.Of(this.SeparationViolationCount), ">", F.I(0)))) ? F.S("Segregation of duties violated.") : (F.Truthy(F.Bool3(F.Cmp(F.Of(this.UnevaluatedBlockingTotal), ">", F.I(0)))) ? F.S("Blocking controls were never evaluated.") : F.S("Control breach recorded on one or more steps."))))))); set { }
         }
 
         // Formula ExecutedVersionIsFit (rulebook: =INDEX(ProcedureVersions!{{IsFitToExecute}}, MATCH({{ProcedureVersion}}, ProcedureVersions!{{ProcedureVersionId}}, 0)))
+        [NotMapped]
         public bool? ExecutedVersionIsFit
         {
-            get => INDEX(ProcedureVersions!this.IsFitToExecute, MATCH(this.ProcedureVersion, ProcedureVersions!this.ProcedureVersionId, 0)); set { }
+            get => F.AsBool(F.Memo(this, "ExecutedVersionIsFit", () => F.Lookup<ProcedureVersion>(this, "ProcedureVersions", "ProcedureVersionId", __c => __c.ProcedureVersions, __r => F.Of(__r.ProcedureVersionId), F.Of(this.ProcedureVersion), __r => F.Of(__r.IsFitToExecute), () => F.Of(new ProcedureVersion().IsFitToExecute)))); set { }
         }
 
         // Formula SignedAgainstUnfitVersion (rulebook: =AND({{ExecutionStatus}} = "Completed", NOT({{ExecutedVersionIsFit}})))
+        [NotMapped]
         public bool? SignedAgainstUnfitVersion
         {
-            get => AND(this.ExecutionStatus = "Completed", NOT(this.ExecutedVersionIsFit)); set { }
+            get => F.AsBool(F.Memo(this, "SignedAgainstUnfitVersion", () => F.And(F.Bool3(F.Eq(F.Nullif(F.Of(this.ExecutionStatus)), F.S("Completed"))), F.Bool3(F.Not(F.Bool3(F.Of(this.ExecutedVersionIsFit))))))); set { }
         }
 
         // Formula AssertedOnlyControlCount (rulebook: =COUNTIFS(RequirementSatisfactions!{{AssertedOnlyExecutionKey}}, {{ProcedureExecutionId}}))
+        [NotMapped]
         public decimal? AssertedOnlyControlCount
         {
-            get => COUNTIFS(RequirementSatisfactions!this.AssertedOnlyExecutionKey, this.ProcedureExecutionId); set { }
+            get => F.AsDecimal(F.Memo(this, "AssertedOnlyControlCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<RequirementSatisfaction>(base.SoAContext, "RequirementSatisfactions", __c => __c.RequirementSatisfactions), __r => F.CritField(F.Of(__r.AssertedOnlyExecutionKey), F.Of(this.ProcedureExecutionId)))))); set { }
         }
 
         // Formula AssuranceIsMostlyAsserted (rulebook: ={{AssertedOnlyControlCount}} > 0)
+        [NotMapped]
         public bool? AssuranceIsMostlyAsserted
         {
-            get => this.AssertedOnlyControlCount > 0; set { }
+            get => F.AsBool(F.Memo(this, "AssuranceIsMostlyAsserted", () => F.Cmp(F.Of(this.AssertedOnlyControlCount), ">", F.I(0)))); set { }
         }
 
         // Formula UnreachableHandlingFailureCount (rulebook: =COUNTIFS(MessageDeliveries!{{UnreachableFailureKey}}, {{ProcedureExecutionId}}))
+        [NotMapped]
         public decimal? UnreachableHandlingFailureCount
         {
-            get => COUNTIFS(MessageDeliveries!this.UnreachableFailureKey, this.ProcedureExecutionId); set { }
+            get => F.AsDecimal(F.Memo(this, "UnreachableHandlingFailureCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<MessageDelivery>(base.SoAContext, "MessageDeliveries", __c => __c.MessageDeliveries), __r => F.CritField(F.Of(__r.UnreachableFailureKey), F.Of(this.ProcedureExecutionId)))))); set { }
         }
 
         // Formula RetentionBreachCount (rulebook: =COUNTIFS(MessageDeliveries!{{RetentionBreachExecutionKey}}, {{ProcedureExecutionId}}))
+        [NotMapped]
         public decimal? RetentionBreachCount
         {
-            get => COUNTIFS(MessageDeliveries!this.RetentionBreachExecutionKey, this.ProcedureExecutionId); set { }
+            get => F.AsDecimal(F.Memo(this, "RetentionBreachCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<MessageDelivery>(base.SoAContext, "MessageDeliveries", __c => __c.MessageDeliveries), __r => F.CritField(F.Of(__r.RetentionBreachExecutionKey), F.Of(this.ProcedureExecutionId)))))); set { }
         }
 
         // Formula ClearedLegalReviewCount (rulebook: =COUNTIFS(StepExecutions!{{ClearedLegalReviewKey}}, {{ProcedureExecutionId}}))
+        [NotMapped]
         public decimal? ClearedLegalReviewCount
         {
-            get => COUNTIFS(StepExecutions!this.ClearedLegalReviewKey, this.ProcedureExecutionId); set { }
+            get => F.AsDecimal(F.Memo(this, "ClearedLegalReviewCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<StepExecution>(base.SoAContext, "StepExecutions", __c => __c.StepExecutions), __r => F.CritField(F.Of(__r.ClearedLegalReviewKey), F.Of(this.ProcedureExecutionId)))))); set { }
         }
 
         // Formula HasClearedLegalReview (rulebook: ={{ClearedLegalReviewCount}} > 0)
+        [NotMapped]
         public bool? HasClearedLegalReview
         {
-            get => this.ClearedLegalReviewCount > 0; set { }
+            get => F.AsBool(F.Memo(this, "HasClearedLegalReview", () => F.Cmp(F.Of(this.ClearedLegalReviewCount), ">", F.I(0)))); set { }
         }
 
         // Formula AbandonedFailureCount (rulebook: =COUNTIFS(MessageDeliveries!{{AbandonedFailureExecutionKey}}, {{ProcedureExecutionId}}))
+        [NotMapped]
         public decimal? AbandonedFailureCount
         {
-            get => COUNTIFS(MessageDeliveries!this.AbandonedFailureExecutionKey, this.ProcedureExecutionId); set { }
+            get => F.AsDecimal(F.Memo(this, "AbandonedFailureCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<MessageDelivery>(base.SoAContext, "MessageDeliveries", __c => __c.MessageDeliveries), __r => F.CritField(F.Of(__r.AbandonedFailureExecutionKey), F.Of(this.ProcedureExecutionId)))))); set { }
         }
 
         // Formula DeliveredCount (rulebook: =COUNTIFS(MessageDeliveries!{{ReachedExecutionKey}}, {{ProcedureExecutionId}}))
+        [NotMapped]
         public decimal? DeliveredCount
         {
-            get => COUNTIFS(MessageDeliveries!this.ReachedExecutionKey, this.ProcedureExecutionId); set { }
+            get => F.AsDecimal(F.Memo(this, "DeliveredCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<MessageDelivery>(base.SoAContext, "MessageDeliveries", __c => __c.MessageDeliveries), __r => F.CritField(F.Of(__r.ReachedExecutionKey), F.Of(this.ProcedureExecutionId)))))); set { }
         }
 
         // Formula TotalDeliveryAttemptCount (rulebook: =COUNTIFS(MessageDeliveries!{{ProcedureExecution}}, {{ProcedureExecutionId}}))
+        [NotMapped]
         public decimal? TotalDeliveryAttemptCount
         {
-            get => COUNTIFS(MessageDeliveries!this.ProcedureExecution, this.ProcedureExecutionId); set { }
+            get => F.AsDecimal(F.Memo(this, "TotalDeliveryAttemptCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<MessageDelivery>(base.SoAContext, "MessageDeliveries", __c => __c.MessageDeliveries), __r => F.CritField(F.Of(__r.ProcedureExecution), F.Of(this.ProcedureExecutionId)))))); set { }
         }
 
         // Formula HasAbandonedFailures (rulebook: ={{AbandonedFailureCount}} > 0)
+        [NotMapped]
         public bool? HasAbandonedFailures
         {
-            get => this.AbandonedFailureCount > 0; set { }
+            get => F.AsBool(F.Memo(this, "HasAbandonedFailures", () => F.Cmp(F.Of(this.AbandonedFailureCount), ">", F.I(0)))); set { }
         }
 
         // Formula MishandledRefusalCount (rulebook: =COUNTIFS(SendIntents!{{RefusalFailureExecutionKey}}, {{ProcedureExecutionId}}))
+        [NotMapped]
         public decimal? MishandledRefusalCount
         {
-            get => COUNTIFS(SendIntents!this.RefusalFailureExecutionKey, this.ProcedureExecutionId); set { }
+            get => F.AsDecimal(F.Memo(this, "MishandledRefusalCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<SendIntent>(base.SoAContext, "SendIntents", __c => __c.SendIntents), __r => F.CritField(F.Of(__r.RefusalFailureExecutionKey), F.Of(this.ProcedureExecutionId)))))); set { }
         }
 
         // Formula UncleanStepCount (rulebook: =COUNTIFS(StepExecutions!{{ProcedureExecutionWhenUnclean}}, {{ProcedureExecutionId}}))
+        [NotMapped]
         public decimal? UncleanStepCount
         {
-            get => COUNTIFS(StepExecutions!this.ProcedureExecutionWhenUnclean, this.ProcedureExecutionId); set { }
+            get => F.AsDecimal(F.Memo(this, "UncleanStepCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<StepExecution>(base.SoAContext, "StepExecutions", __c => __c.StepExecutions), __r => F.CritField(F.Of(__r.ProcedureExecutionWhenUnclean), F.Of(this.ProcedureExecutionId)))))); set { }
         }
 
         // Formula RanClean (rulebook: ={{UncleanStepCount}} = 0)
+        [NotMapped]
         public bool? RanClean
         {
-            get => this.UncleanStepCount = 0; set { }
+            get => F.AsBool(F.Memo(this, "RanClean", () => F.Eq(F.Of(this.UncleanStepCount), F.I(0)))); set { }
         }
 
         // Formula CountOfApprovalExecutions (rulebook: =COUNTIFS(StepExecutions!{{IsApprovalExecution}}, TRUE))
+        [NotMapped]
         public int? CountOfApprovalExecutions
         {
-            get => COUNTIFS(StepExecutions!this.IsApprovalExecution, TRUE); set { }
+            get => F.AsInt(F.Memo(this, "CountOfApprovalExecutions", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<StepExecution>(base.SoAContext, "StepExecutions", __c => __c.StepExecutions), __r => F.CritLiteral(F.Of(__r.IsApprovalExecution), F.B(true))))))); set { }
         }
 
         // Formula HasHumanApproval (rulebook: ={{CountOfApprovalExecutions}} > 0)
+        [NotMapped]
         public bool? HasHumanApproval
         {
-            get => this.CountOfApprovalExecutions > 0; set { }
+            get => F.AsBool(F.Memo(this, "HasHumanApproval", () => F.Cmp(F.Of(this.CountOfApprovalExecutions), ">", F.I(0)))); set { }
         }
 
         // Formula CountOfDeliveryExecutions (rulebook: =COUNTIFS(StepExecutions!{{Step}}, "policy-07"))
+        [NotMapped]
         public int? CountOfDeliveryExecutions
         {
-            get => COUNTIFS(StepExecutions!this.Step, "policy-07"); set { }
+            get => F.AsInt(F.Memo(this, "CountOfDeliveryExecutions", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<StepExecution>(base.SoAContext, "StepExecutions", __c => __c.StepExecutions), __r => F.CritLiteral(F.Of(__r.Step), F.S("policy-07"))))))); set { }
         }
 
         // Formula HasDelivered (rulebook: ={{CountOfDeliveryExecutions}} > 0)
+        [NotMapped]
         public bool? HasDelivered
         {
-            get => this.CountOfDeliveryExecutions > 0; set { }
+            get => F.AsBool(F.Memo(this, "HasDelivered", () => F.Cmp(F.Of(this.CountOfDeliveryExecutions), ">", F.I(0)))); set { }
         }
 
         // Formula DeliveredWithoutApproval (rulebook: =AND({{HasDelivered}}, NOT({{HasHumanApproval}})))
+        [NotMapped]
         public bool? DeliveredWithoutApproval
         {
-            get => AND(this.HasDelivered, NOT(this.HasHumanApproval)); set { }
+            get => F.AsBool(F.Memo(this, "DeliveredWithoutApproval", () => F.And(F.Bool3(F.Of(this.HasDelivered)), F.Bool3(F.Not(F.Bool3(F.Of(this.HasHumanApproval))))))); set { }
         }
 
         // Formula InvalidApprovalCount (rulebook: =COUNTIFS(RequirementSatisfactions!{{RunWhenInvalidApproval}}, {{ProcedureExecutionId}}))
+        [NotMapped]
         public decimal? InvalidApprovalCount
         {
-            get => COUNTIFS(RequirementSatisfactions!this.RunWhenInvalidApproval, this.ProcedureExecutionId); set { }
+            get => F.AsDecimal(F.Memo(this, "InvalidApprovalCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<RequirementSatisfaction>(base.SoAContext, "RequirementSatisfactions", __c => __c.RequirementSatisfactions), __r => F.CritField(F.Of(__r.RunWhenInvalidApproval), F.Of(this.ProcedureExecutionId)))))); set { }
         }
 
         // Formula ApprovalChainIsComplete (rulebook: ={{InvalidApprovalCount}} = 0)
+        [NotMapped]
         public bool? ApprovalChainIsComplete
         {
-            get => this.InvalidApprovalCount = 0; set { }
+            get => F.AsBool(F.Memo(this, "ApprovalChainIsComplete", () => F.Eq(F.Of(this.InvalidApprovalCount), F.I(0)))); set { }
         }
 
         // Formula VacuouslyCleanStepCount (rulebook: =COUNTIFS(StepExecutions!{{VacuouslyCleanExecutionKey}}, {{ProcedureExecutionId}}))
+        [NotMapped]
         public decimal? VacuouslyCleanStepCount
         {
-            get => COUNTIFS(StepExecutions!this.VacuouslyCleanExecutionKey, this.ProcedureExecutionId); set { }
+            get => F.AsDecimal(F.Memo(this, "VacuouslyCleanStepCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<StepExecution>(base.SoAContext, "StepExecutions", __c => __c.StepExecutions), __r => F.CritField(F.Of(__r.VacuouslyCleanExecutionKey), F.Of(this.ProcedureExecutionId)))))); set { }
         }
 
         // Formula PreparationStepCount (rulebook: =COUNTIFS(StepExecutions!{{PreparationExecutionKey}}, {{ProcedureExecutionId}}))
+        [NotMapped]
         public decimal? PreparationStepCount
         {
-            get => COUNTIFS(StepExecutions!this.PreparationExecutionKey, this.ProcedureExecutionId); set { }
+            get => F.AsDecimal(F.Memo(this, "PreparationStepCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<StepExecution>(base.SoAContext, "StepExecutions", __c => __c.StepExecutions), __r => F.CritField(F.Of(__r.PreparationExecutionKey), F.Of(this.ProcedureExecutionId)))))); set { }
         }
 
         // Formula ApprovalStepCount (rulebook: =COUNTIFS(StepExecutions!{{ApprovalExecutionKey}}, {{ProcedureExecutionId}}))
+        [NotMapped]
         public decimal? ApprovalStepCount
         {
-            get => COUNTIFS(StepExecutions!this.ApprovalExecutionKey, this.ProcedureExecutionId); set { }
+            get => F.AsDecimal(F.Memo(this, "ApprovalStepCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<StepExecution>(base.SoAContext, "StepExecutions", __c => __c.StepExecutions), __r => F.CritField(F.Of(__r.ApprovalExecutionKey), F.Of(this.ProcedureExecutionId)))))); set { }
         }
 
         // Formula SeparationWasTestable (rulebook: =AND({{PreparationStepCount}} > 0, {{ApprovalStepCount}} > 0))
+        [NotMapped]
         public bool? SeparationWasTestable
         {
-            get => AND(this.PreparationStepCount > 0, this.ApprovalStepCount > 0); set { }
+            get => F.AsBool(F.Memo(this, "SeparationWasTestable", () => F.And(F.Bool3(F.Cmp(F.Of(this.PreparationStepCount), ">", F.I(0))), F.Bool3(F.Cmp(F.Of(this.ApprovalStepCount), ">", F.I(0)))))); set { }
         }
 
         // Formula SeparationHeldUnderTest (rulebook: =AND({{SeparationWasTestable}}, {{SeparationOfDutiesHeld}}))
+        [NotMapped]
         public bool? SeparationHeldUnderTest
         {
-            get => AND(this.SeparationWasTestable, this.SeparationOfDutiesHeld); set { }
+            get => F.AsBool(F.Memo(this, "SeparationHeldUnderTest", () => F.And(F.Bool3(F.Of(this.SeparationWasTestable)), F.Bool3(F.Of(this.SeparationOfDutiesHeld))))); set { }
         }
 
         // Formula SeparationIsVacuouslyGreen (rulebook: =AND({{SeparationOfDutiesHeld}}, NOT({{SeparationWasTestable}})))
+        [NotMapped]
         public bool? SeparationIsVacuouslyGreen
         {
-            get => AND(this.SeparationOfDutiesHeld, NOT(this.SeparationWasTestable)); set { }
+            get => F.AsBool(F.Memo(this, "SeparationIsVacuouslyGreen", () => F.And(F.Bool3(F.Of(this.SeparationOfDutiesHeld)), F.Bool3(F.Not(F.Bool3(F.Of(this.SeparationWasTestable))))))); set { }
         }
 
         // Formula SeparationAssuranceNote (rulebook: =IF({{SeparationViolationCount}} > 0, "Violated: same agent prepared and approved.", IF({{SeparationIsVacuouslyGreen}}, "Not tested: this run had no preparation/approval pair.", "Held under test.")))
+        [NotMapped]
         public string? SeparationAssuranceNote
         {
-            get => IF(this.SeparationViolationCount > 0, "Violated: same agent prepared and approved.", IF(this.SeparationIsVacuouslyGreen, "Not tested: this run had no preparation/approval pair.", "Held under test.")); set { }
+            get => F.AsString(F.Memo(this, "SeparationAssuranceNote", () => (F.Truthy(F.Bool3(F.Cmp(F.Of(this.SeparationViolationCount), ">", F.I(0)))) ? F.S("Violated: same agent prepared and approved.") : (F.Truthy(F.Bool3(F.Of(this.SeparationIsVacuouslyGreen))) ? F.S("Not tested: this run had no preparation/approval pair.") : F.S("Held under test."))))); set { }
         }
 
         // Formula UngovernedDivergenceCount (rulebook: =COUNTIFS(StepExecutions!{{UngovernedDivergenceExecutionKey}}, {{ProcedureExecutionId}}))
+        [NotMapped]
         public decimal? UngovernedDivergenceCount
         {
-            get => COUNTIFS(StepExecutions!this.UngovernedDivergenceExecutionKey, this.ProcedureExecutionId); set { }
+            get => F.AsDecimal(F.Memo(this, "UngovernedDivergenceCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<StepExecution>(base.SoAContext, "StepExecutions", __c => __c.StepExecutions), __r => F.CritField(F.Of(__r.UngovernedDivergenceExecutionKey), F.Of(this.ProcedureExecutionId)))))); set { }
         }
 
         // Formula DivergenceWasFullyGoverned (rulebook: =AND({{DivergedFromSpecification}}, {{UngovernedDivergenceCount}} = 0))
+        [NotMapped]
         public bool? DivergenceWasFullyGoverned
         {
-            get => AND(this.DivergedFromSpecification, this.UngovernedDivergenceCount = 0); set { }
+            get => F.AsBool(F.Memo(this, "DivergenceWasFullyGoverned", () => F.And(F.Bool3(F.Of(this.DivergedFromSpecification)), F.Bool3(F.Eq(F.Of(this.UngovernedDivergenceCount), F.I(0)))))); set { }
         }
 
         // Formula ComputedlyWitnessedControlCount (rulebook: =COUNTIFS(RequirementSatisfactions!{{ComputedWitnessExecutionKey}}, {{ProcedureExecutionId}}))
+        [NotMapped]
         public decimal? ComputedlyWitnessedControlCount
         {
-            get => COUNTIFS(RequirementSatisfactions!this.ComputedWitnessExecutionKey, this.ProcedureExecutionId); set { }
+            get => F.AsDecimal(F.Memo(this, "ComputedlyWitnessedControlCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<RequirementSatisfaction>(base.SoAContext, "RequirementSatisfactions", __c => __c.RequirementSatisfactions), __r => F.CritField(F.Of(__r.ComputedWitnessExecutionKey), F.Of(this.ProcedureExecutionId)))))); set { }
         }
 
         // Formula EvaluatedControlCount (rulebook: ={{ComputedlyWitnessedControlCount}} + {{AssertedOnlyControlCount}})
+        [NotMapped]
         public decimal? EvaluatedControlCount
         {
-            get => this.ComputedlyWitnessedControlCount + this.AssertedOnlyControlCount; set { }
+            get => F.AsDecimal(F.Memo(this, "EvaluatedControlCount", () => F.Add(F.Of(this.ComputedlyWitnessedControlCount), F.Of(this.AssertedOnlyControlCount)))); set { }
         }
 
         // Formula ComputedAssuranceRatio (rulebook: =IF({{EvaluatedControlCount}} = 0, 0, {{ComputedlyWitnessedControlCount}} / {{EvaluatedControlCount}}))
+        [NotMapped]
         public decimal? ComputedAssuranceRatio
         {
-            get => IF(this.EvaluatedControlCount = 0, 0, this.ComputedlyWitnessedControlCount / this.EvaluatedControlCount); set { }
+            get => F.AsDecimal(F.Memo(this, "ComputedAssuranceRatio", () => (F.Truthy(F.Bool3(F.Eq(F.Of(this.EvaluatedControlCount), F.I(0)))) ? F.I(0) : F.Div(F.Of(this.ComputedlyWitnessedControlCount), F.Of(this.EvaluatedControlCount))))); set { }
         }
 
         // Formula InterestedPartyAssertionCount (rulebook: =COUNTIFS(RequirementSatisfactions!{{InterestedAssertionExecutionKey}}, {{ProcedureExecutionId}}))
+        [NotMapped]
         public decimal? InterestedPartyAssertionCount
         {
-            get => COUNTIFS(RequirementSatisfactions!this.InterestedAssertionExecutionKey, this.ProcedureExecutionId); set { }
+            get => F.AsDecimal(F.Memo(this, "InterestedPartyAssertionCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<RequirementSatisfaction>(base.SoAContext, "RequirementSatisfactions", __c => __c.RequirementSatisfactions), __r => F.CritField(F.Of(__r.InterestedAssertionExecutionKey), F.Of(this.ProcedureExecutionId)))))); set { }
         }
 
         // Formula AssuranceGrade (rulebook: =IF({{EvaluatedControlCount}} = 0, "None: no blocking control was evaluated.", IF({{InterestedPartyAssertionCount}} > 0, "Weak: at least one control rests on an interested-party assertion.", IF({{ComputedAssuranceRatio}} < 0.5, "Thin: most controls rest on human assertion.", IF({{ComputedAssuranceRatio}} < 1, "Mixed: computed and asserted controls.", "Computed: every evaluated control has a witness.")))))
+        [NotMapped]
         public string? AssuranceGrade
         {
-            get => IF(this.EvaluatedControlCount = 0, "None: no blocking control was evaluated.", IF(this.InterestedPartyAssertionCount > 0, "Weak: at least one control rests on an interested-party assertion.", IF(this.ComputedAssuranceRatio < 0.5, "Thin: most controls rest on human assertion.", IF(this.ComputedAssuranceRatio < 1, "Mixed: computed and asserted controls.", "Computed: every evaluated control has a witness.")))); set { }
+            get => F.AsString(F.Memo(this, "AssuranceGrade", () => (F.Truthy(F.Bool3(F.Eq(F.Of(this.EvaluatedControlCount), F.I(0)))) ? F.S("None: no blocking control was evaluated.") : (F.Truthy(F.Bool3(F.Cmp(F.Of(this.InterestedPartyAssertionCount), ">", F.I(0)))) ? F.S("Weak: at least one control rests on an interested-party assertion.") : (F.Truthy(F.Bool3(F.Cmp(F.Of(this.ComputedAssuranceRatio), "<", F.D(0.5)))) ? F.S("Thin: most controls rest on human assertion.") : (F.Truthy(F.Bool3(F.Cmp(F.Of(this.ComputedAssuranceRatio), "<", F.I(1)))) ? F.S("Mixed: computed and asserted controls.") : F.S("Computed: every evaluated control has a witness."))))))); set { }
         }
 
         // Formula AttestationWouldBeWeaklyBased (rulebook: =AND({{IsAttestationReady}}, OR({{InterestedPartyAssertionCount}} > 0, {{ComputedAssuranceRatio}} < 0.5)))
+        [NotMapped]
         public bool? AttestationWouldBeWeaklyBased
         {
-            get => AND(this.IsAttestationReady, OR(this.InterestedPartyAssertionCount > 0, this.ComputedAssuranceRatio < 0.5)); set { }
+            get => F.AsBool(F.Memo(this, "AttestationWouldBeWeaklyBased", () => F.And(F.Bool3(F.Of(this.IsAttestationReady)), F.Bool3(F.Or(F.Bool3(F.Cmp(F.Of(this.InterestedPartyAssertionCount), ">", F.I(0))), F.Bool3(F.Cmp(F.Of(this.ComputedAssuranceRatio), "<", F.D(0.5)))))))); set { }
         }
 
         // Formula IndependentHumanObservationCount (rulebook: =COUNTIFS(VerificationOutcomes!{{IndependentObservationExecutionKey}}, {{ProcedureExecutionId}}))
+        [NotMapped]
         public decimal? IndependentHumanObservationCount
         {
-            get => COUNTIFS(VerificationOutcomes!this.IndependentObservationExecutionKey, this.ProcedureExecutionId); set { }
+            get => F.AsDecimal(F.Memo(this, "IndependentHumanObservationCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<VerificationOutcome>(base.SoAContext, "VerificationOutcomes", __c => __c.VerificationOutcomes), __r => F.CritField(F.Of(__r.IndependentObservationExecutionKey), F.Of(this.ProcedureExecutionId)))))); set { }
         }
 
         // Formula HasAnyIndependentObservation (rulebook: ={{IndependentHumanObservationCount}} > 0)
+        [NotMapped]
         public bool? HasAnyIndependentObservation
         {
-            get => this.IndependentHumanObservationCount > 0; set { }
+            get => F.AsBool(F.Memo(this, "HasAnyIndependentObservation", () => F.Cmp(F.Of(this.IndependentHumanObservationCount), ">", F.I(0)))); set { }
         }
 
         // Formula SelfAttestedApprovalCount (rulebook: =COUNTIFS(StepExecutions!{{SelfAttestedApprovalExecutionKey}}, {{ProcedureExecutionId}}))
+        [NotMapped]
         public decimal? SelfAttestedApprovalCount
         {
-            get => COUNTIFS(StepExecutions!this.SelfAttestedApprovalExecutionKey, this.ProcedureExecutionId); set { }
+            get => F.AsDecimal(F.Memo(this, "SelfAttestedApprovalCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<StepExecution>(base.SoAContext, "StepExecutions", __c => __c.StepExecutions), __r => F.CritField(F.Of(__r.SelfAttestedApprovalExecutionKey), F.Of(this.ProcedureExecutionId)))))); set { }
         }
 
         // Formula AssuranceChainIsCircular (rulebook: =AND({{SelfAttestedApprovalCount}} > 0, NOT({{HasAnyIndependentObservation}})))
+        [NotMapped]
         public bool? AssuranceChainIsCircular
         {
-            get => AND(this.SelfAttestedApprovalCount > 0, NOT(this.HasAnyIndependentObservation)); set { }
+            get => F.AsBool(F.Memo(this, "AssuranceChainIsCircular", () => F.And(F.Bool3(F.Cmp(F.Of(this.SelfAttestedApprovalCount), ">", F.I(0))), F.Bool3(F.Not(F.Bool3(F.Of(this.HasAnyIndependentObservation))))))); set { }
         }
 
         // Formula LatestAttestationInstant (rulebook: =MAXIFS(Attestations!{{SignedAt}}, Attestations!{{ProcedureExecution}}, {{ProcedureExecutionId}}))
-        public DateTime? LatestAttestationInstant
+        [NotMapped]
+        public DateTimeOffset? LatestAttestationInstant
         {
-            get => MAXIFS(Attestations!this.SignedAt, Attestations!this.ProcedureExecution, this.ProcedureExecutionId); set { }
+            get => F.AsDateTime(F.Memo(this, "LatestAttestationInstant", () => (base.SoAContext == null ? F.Null : F.ExtremeIfs(true, F.Rows<Attestation>(base.SoAContext, "Attestations", __c => __c.Attestations), __r => F.CritField(F.Of(__r.ProcedureExecution), F.Of(this.ProcedureExecutionId)), __r => F.Of(__r.SignedAt))))); set { }
         }
 
         // Formula HasBeenAttested (rulebook: ={{AttestationCount}} > 0)
+        [NotMapped]
         public bool? HasBeenAttested
         {
-            get => this.AttestationCount > 0; set { }
+            get => F.AsBool(F.Memo(this, "HasBeenAttested", () => F.Cmp(F.Of(this.AttestationCount), ">", F.I(0)))); set { }
         }
 
         // Formula AttestationCount (rulebook: =COUNTIFS(Attestations!{{ProcedureExecution}}, {{ProcedureExecutionId}}))
+        [NotMapped]
         public decimal? AttestationCount
         {
-            get => COUNTIFS(Attestations!this.ProcedureExecution, this.ProcedureExecutionId); set { }
+            get => F.AsDecimal(F.Memo(this, "AttestationCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<Attestation>(base.SoAContext, "Attestations", __c => __c.Attestations), __r => F.CritField(F.Of(__r.ProcedureExecution), F.Of(this.ProcedureExecutionId)))))); set { }
         }
 
         // Formula PostAttestationScoreCount (rulebook: =COUNTIFS(RequirementSatisfactions!{{PostAttestationScoreExecutionKey}}, {{ProcedureExecutionId}}))
+        [NotMapped]
         public decimal? PostAttestationScoreCount
         {
-            get => COUNTIFS(RequirementSatisfactions!this.PostAttestationScoreExecutionKey, this.ProcedureExecutionId); set { }
+            get => F.AsDecimal(F.Memo(this, "PostAttestationScoreCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<RequirementSatisfaction>(base.SoAContext, "RequirementSatisfactions", __c => __c.RequirementSatisfactions), __r => F.CritField(F.Of(__r.PostAttestationScoreExecutionKey), F.Of(this.ProcedureExecutionId)))))); set { }
         }
 
         // Formula BasisChangedAfterSignature (rulebook: =AND({{HasBeenAttested}}, {{PostAttestationScoreCount}} > 0))
+        [NotMapped]
         public bool? BasisChangedAfterSignature
         {
-            get => AND(this.HasBeenAttested, this.PostAttestationScoreCount > 0); set { }
+            get => F.AsBool(F.Memo(this, "BasisChangedAfterSignature", () => F.And(F.Bool3(F.Of(this.HasBeenAttested)), F.Bool3(F.Cmp(F.Of(this.PostAttestationScoreCount), ">", F.I(0)))))); set { }
         }
 
         // Formula RequiresReAttestation (rulebook: =AND({{BasisChangedAfterSignature}}, NOT({{IsAttestationReady}})))
+        [NotMapped]
         public bool? RequiresReAttestation
         {
-            get => AND(this.BasisChangedAfterSignature, NOT(this.IsAttestationReady)); set { }
+            get => F.AsBool(F.Memo(this, "RequiresReAttestation", () => F.And(F.Bool3(F.Of(this.BasisChangedAfterSignature)), F.Bool3(F.Not(F.Bool3(F.Of(this.IsAttestationReady))))))); set { }
         }
 
         // Formula IntendedRecipientCount (rulebook: =COUNTIFS(SendIntents!{{IntentExecutionKey}}, {{ProcedureExecutionId}}))
+        [NotMapped]
         public decimal? IntendedRecipientCount
         {
-            get => COUNTIFS(SendIntents!this.IntentExecutionKey, this.ProcedureExecutionId); set { }
+            get => F.AsDecimal(F.Memo(this, "IntendedRecipientCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<SendIntent>(base.SoAContext, "SendIntents", __c => __c.SendIntents), __r => F.CritField(F.Of(__r.IntentExecutionKey), F.Of(this.ProcedureExecutionId)))))); set { }
         }
 
         // Formula ReachedRecipientCount (rulebook: =COUNTIFS(SendIntents!{{DeliveredIntentExecutionKey}}, {{ProcedureExecutionId}}))
+        [NotMapped]
         public decimal? ReachedRecipientCount
         {
-            get => COUNTIFS(SendIntents!this.DeliveredIntentExecutionKey, this.ProcedureExecutionId); set { }
+            get => F.AsDecimal(F.Memo(this, "ReachedRecipientCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<SendIntent>(base.SoAContext, "SendIntents", __c => __c.SendIntents), __r => F.CritField(F.Of(__r.DeliveredIntentExecutionKey), F.Of(this.ProcedureExecutionId)))))); set { }
         }
 
         // Formula SilentlyDroppedCount (rulebook: =COUNTIFS(SendIntents!{{DroppedIntentExecutionKey}}, {{ProcedureExecutionId}}))
+        [NotMapped]
         public decimal? SilentlyDroppedCount
         {
-            get => COUNTIFS(SendIntents!this.DroppedIntentExecutionKey, this.ProcedureExecutionId); set { }
+            get => F.AsDecimal(F.Memo(this, "SilentlyDroppedCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<SendIntent>(base.SoAContext, "SendIntents", __c => __c.SendIntents), __r => F.CritField(F.Of(__r.DroppedIntentExecutionKey), F.Of(this.ProcedureExecutionId)))))); set { }
         }
 
         // Formula DeliveryYieldPercent (rulebook: =IF({{IntendedRecipientCount}} > 0, {{ReachedRecipientCount}} * 100 / {{IntendedRecipientCount}}, 0))
+        [NotMapped]
         public decimal? DeliveryYieldPercent
         {
-            get => IF(this.IntendedRecipientCount > 0, this.ReachedRecipientCount * 100 / this.IntendedRecipientCount, 0); set { }
+            get => F.AsDecimal(F.Memo(this, "DeliveryYieldPercent", () => (F.Truthy(F.Bool3(F.Cmp(F.Of(this.IntendedRecipientCount), ">", F.I(0)))) ? F.Div(F.Mul(F.Of(this.ReachedRecipientCount), F.I(100)), F.Of(this.IntendedRecipientCount)) : F.I(0)))); set { }
         }
 
         // Formula CampaignSilentlyLostAudience (rulebook: =({{SilentlyDroppedCount}} > 0))
+        [NotMapped]
         public bool? CampaignSilentlyLostAudience
         {
-            get => (this.SilentlyDroppedCount > 0); set { }
+            get => F.AsBool(F.Memo(this, "CampaignSilentlyLostAudience", () => F.Cmp(F.Of(this.SilentlyDroppedCount), ">", F.I(0)))); set { }
         }
 
         // Formula UnrecordedRefusalCount (rulebook: =COUNTIFS(SendIntents!{{UnrecordedRefusalExecutionKey}}, {{ProcedureExecutionId}}))
+        [NotMapped]
         public decimal? UnrecordedRefusalCount
         {
-            get => COUNTIFS(SendIntents!this.UnrecordedRefusalExecutionKey, this.ProcedureExecutionId); set { }
+            get => F.AsDecimal(F.Memo(this, "UnrecordedRefusalCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<SendIntent>(base.SoAContext, "SendIntents", __c => __c.SendIntents), __r => F.CritField(F.Of(__r.UnrecordedRefusalExecutionKey), F.Of(this.ProcedureExecutionId)))))); set { }
         }
 
         // Formula HasUnrecordedRefusals (rulebook: =({{UnrecordedRefusalCount}} > 0))
+        [NotMapped]
         public bool? HasUnrecordedRefusals
         {
-            get => (this.UnrecordedRefusalCount > 0); set { }
+            get => F.AsBool(F.Memo(this, "HasUnrecordedRefusals", () => F.Cmp(F.Of(this.UnrecordedRefusalCount), ">", F.I(0)))); set { }
         }
 
         // Formula IndependentlyConfirmedIntentCount (rulebook: =COUNTIFS(SendIntents!{{IndependentlyConfirmedExecutionKey}}, {{ProcedureExecutionId}}))
+        [NotMapped]
         public decimal? IndependentlyConfirmedIntentCount
         {
-            get => COUNTIFS(SendIntents!this.IndependentlyConfirmedExecutionKey, this.ProcedureExecutionId); set { }
+            get => F.AsDecimal(F.Memo(this, "IndependentlyConfirmedIntentCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<SendIntent>(base.SoAContext, "SendIntents", __c => __c.SendIntents), __r => F.CritField(F.Of(__r.IndependentlyConfirmedExecutionKey), F.Of(this.ProcedureExecutionId)))))); set { }
         }
 
         // Formula SendDecisionsAreEntirelySelfWitnessed (rulebook: =AND({{IntendedRecipientCount}} > 0, {{IndependentlyConfirmedIntentCount}} = 0))
+        [NotMapped]
         public bool? SendDecisionsAreEntirelySelfWitnessed
         {
-            get => AND(this.IntendedRecipientCount > 0, this.IndependentlyConfirmedIntentCount = 0); set { }
+            get => F.AsBool(F.Memo(this, "SendDecisionsAreEntirelySelfWitnessed", () => F.And(F.Bool3(F.Cmp(F.Of(this.IntendedRecipientCount), ">", F.I(0))), F.Bool3(F.Eq(F.Of(this.IndependentlyConfirmedIntentCount), F.I(0)))))); set { }
         }
 
         public string? SemanticTypeIri { get; set; }
@@ -439,37 +509,46 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string? ProcedureVersion { get; set; }
         public string? ExecutedByAgent { get; set; }
 
-        private ProcedureVersion _procedureVersion;
+        private ProcedureVersion _procedureVersionRef;
 
         [ForeignKey("ProcedureVersion")]
-        public virtual ProcedureVersion ProcedureVersion
+        public virtual ProcedureVersion ProcedureVersionRef
         {
             get
             {
-                if (_procedureVersion == null && !string.IsNullOrEmpty(ProcedureVersion))
+                if (_procedureVersionRef == null && !string.IsNullOrEmpty(ProcedureVersion))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access ProcedureVersion - no database context is set. ProcedureVersion: " + ProcedureVersion + ".");
+                            throw new InvalidOperationException("Cannot access ProcedureVersionRef - no database context is set. ProcedureVersion: " + ProcedureVersion + ".");
                         }
                         return null;
                     }
-                    _procedureVersion = Context.ProcedureVersions.Find(ProcedureVersion);
-                    if (_procedureVersion != null)
+                    _procedureVersionRef = base.SoAContext.ProcedureVersions.Find(ProcedureVersion);
+                    if (_procedureVersionRef != null)
                     {
-                        Context.Attach(_procedureVersion);
+                        base.SoAContext.Attach(_procedureVersionRef);
                     }
                 }
-                return _procedureVersion;
+                return _procedureVersionRef;
             }
             set
             {
-                if (_procedureVersion != value)
+                if (_procedureVersionRef != value)
                 {
-                    _procedureVersion = value;
-                    ProcedureVersion = _procedureVersion == null ? default : _procedureVersion.ProcedureVersionId;
+                    _procedureVersionRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_procedureVersionRef != null)
+                    {
+                        ProcedureVersion = _procedureVersionRef.ProcedureVersionId;
+                    }
                 }
             }
         }
@@ -483,7 +562,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_agent == null && !string.IsNullOrEmpty(ExecutedByAgent))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -491,10 +570,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                         }
                         return null;
                     }
-                    _agent = Context.Agents.Find(ExecutedByAgent);
+                    _agent = base.SoAContext.Agents.Find(ExecutedByAgent);
                     if (_agent != null)
                     {
-                        Context.Attach(_agent);
+                        base.SoAContext.Attach(_agent);
                     }
                 }
                 return _agent;
@@ -504,21 +583,30 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                 if (_agent != value)
                 {
                     _agent = value;
-                    ExecutedByAgent = _agent == null ? default : _agent.AgentId;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_agent != null)
+                    {
+                        ExecutedByAgent = _agent.AgentId;
+                    }
                 }
             }
         }
 
         private ObservableCollection<StepExecution> _stepExecutions;
 
-        [InverseProperty("ProcedureExecution")]
+        [InverseProperty("ProcedureExecutionRef")]
         public virtual ObservableCollection<StepExecution> StepExecutions
         {
             get
             {
                 if (_stepExecutions == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -528,11 +616,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.StepExecutions.Where(x => x.ProcedureExecution == this.ProcedureExecutionId).ToList<StepExecution>();
+                        var items = base.SoAContext.StepExecutions.Where(x => x.ProcedureExecution == this.ProcedureExecutionId).ToList<StepExecution>();
                         _stepExecutions = new ObservableCollection<StepExecution>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _stepExecutions.CollectionChanged += StepExecutions_CollectionChanged;
@@ -566,14 +654,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<UserFeedback> _userFeedback;
 
-        [InverseProperty("ProcedureExecution")]
+        [InverseProperty("ProcedureExecutionRef")]
         public virtual ObservableCollection<UserFeedback> UserFeedback
         {
             get
             {
                 if (_userFeedback == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -583,11 +671,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.UserFeedback.Where(x => x.ProcedureExecution == this.ProcedureExecutionId).ToList<UserFeedback>();
+                        var items = base.SoAContext.UserFeedback.Where(x => x.ProcedureExecution == this.ProcedureExecutionId).ToList<UserFeedback>();
                         _userFeedback = new ObservableCollection<UserFeedback>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _userFeedback.CollectionChanged += UserFeedback_CollectionChanged;
@@ -621,14 +709,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<ObservedTransition> _observedTransitions;
 
-        [InverseProperty("ProcedureExecution")]
+        [InverseProperty("ProcedureExecutionRef")]
         public virtual ObservableCollection<ObservedTransition> ObservedTransitions
         {
             get
             {
                 if (_observedTransitions == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -638,11 +726,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.ObservedTransitions.Where(x => x.ProcedureExecution == this.ProcedureExecutionId).ToList<ObservedTransition>();
+                        var items = base.SoAContext.ObservedTransitions.Where(x => x.ProcedureExecution == this.ProcedureExecutionId).ToList<ObservedTransition>();
                         _observedTransitions = new ObservableCollection<ObservedTransition>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _observedTransitions.CollectionChanged += ObservedTransitions_CollectionChanged;
@@ -676,14 +764,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<MessageDelivery> _messageDeliveries;
 
-        [InverseProperty("ProcedureExecution")]
+        [InverseProperty("ProcedureExecutionRef")]
         public virtual ObservableCollection<MessageDelivery> MessageDeliveries
         {
             get
             {
                 if (_messageDeliveries == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -693,11 +781,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.MessageDeliveries.Where(x => x.ProcedureExecution == this.ProcedureExecutionId).ToList<MessageDelivery>();
+                        var items = base.SoAContext.MessageDeliveries.Where(x => x.ProcedureExecution == this.ProcedureExecutionId).ToList<MessageDelivery>();
                         _messageDeliveries = new ObservableCollection<MessageDelivery>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _messageDeliveries.CollectionChanged += MessageDeliveries_CollectionChanged;
@@ -731,14 +819,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<SendIntent> _sendIntents;
 
-        [InverseProperty("ProcedureExecution")]
+        [InverseProperty("ProcedureExecutionRef")]
         public virtual ObservableCollection<SendIntent> SendIntents
         {
             get
             {
                 if (_sendIntents == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -748,11 +836,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.SendIntents.Where(x => x.ProcedureExecution == this.ProcedureExecutionId).ToList<SendIntent>();
+                        var items = base.SoAContext.SendIntents.Where(x => x.ProcedureExecution == this.ProcedureExecutionId).ToList<SendIntent>();
                         _sendIntents = new ObservableCollection<SendIntent>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _sendIntents.CollectionChanged += SendIntents_CollectionChanged;
@@ -786,14 +874,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<DeliveredCommunication> _deliveredCommunications;
 
-        [InverseProperty("ProcedureExecution")]
+        [InverseProperty("ProcedureExecutionRef")]
         public virtual ObservableCollection<DeliveredCommunication> DeliveredCommunications
         {
             get
             {
                 if (_deliveredCommunications == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -803,11 +891,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.DeliveredCommunications.Where(x => x.ProcedureExecution == this.ProcedureExecutionId).ToList<DeliveredCommunication>();
+                        var items = base.SoAContext.DeliveredCommunications.Where(x => x.ProcedureExecution == this.ProcedureExecutionId).ToList<DeliveredCommunication>();
                         _deliveredCommunications = new ObservableCollection<DeliveredCommunication>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _deliveredCommunications.CollectionChanged += DeliveredCommunications_CollectionChanged;
@@ -841,14 +929,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<Attestation> _attestations;
 
-        [InverseProperty("ProcedureExecution")]
+        [InverseProperty("ProcedureExecutionRef")]
         public virtual ObservableCollection<Attestation> Attestations
         {
             get
             {
                 if (_attestations == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -858,11 +946,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.Attestations.Where(x => x.ProcedureExecution == this.ProcedureExecutionId).ToList<Attestation>();
+                        var items = base.SoAContext.Attestations.Where(x => x.ProcedureExecution == this.ProcedureExecutionId).ToList<Attestation>();
                         _attestations = new ObservableCollection<Attestation>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _attestations.CollectionChanged += Attestations_CollectionChanged;
@@ -897,7 +985,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         protected override void LazyLoadProperties()
         {
-            _ = this.ProcedureVersion;
+            _ = this.ProcedureVersionRef;
             _ = this.Agent;
             _ = this.StepExecutions;
             _ = this.UserFeedback;

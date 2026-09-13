@@ -8225,6 +8225,26 @@ RETURNS BOOLEAN AS $$
   SELECT ((SELECT NULLIF(invented_for_question, '') FROM rulebook_fields WHERE rulebook_field_id = p_rulebook_field_id) IS NOT NULL)::boolean;
 $$ LANGUAGE sql STABLE;
 
+-- calc_rulebook_fields_disagreeing_substrate_count
+-- Field: RulebookFields.DisagreeingSubstrateCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_rulebook_fields_disagreeing_substrate_count(p_rulebook_field_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM field_disagreements WHERE rulebook_field = (SELECT NULLIF(rulebook_field_id, '') FROM rulebook_fields WHERE rulebook_field_id = p_rulebook_field_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_rulebook_fields_is_substrate_contested
+-- Field: RulebookFields.IsSubstrateContested
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_rulebook_fields_is_substrate_contested(p_rulebook_field_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_rulebook_fields_disagreeing_substrate_count(p_rulebook_field_id))::NUMERIC > 0)::boolean;
+$$ LANGUAGE sql STABLE;
+
 -- calc_test_suites_name
 -- Field: TestSuites.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -11904,6 +11924,16 @@ RETURNS BOOLEAN AS $$
   SELECT ((calc_rulebook_tables_policy_count(p_rulebook_table_id))::NUMERIC = 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
+-- calc_rulebook_tables_disagreeing_substrate_count
+-- Field: RulebookTables.DisagreeingSubstrateCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_rulebook_tables_disagreeing_substrate_count(p_rulebook_table_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM table_conformance WHERE calc_table_conformance_imperfect_table_key(table_conformance_id) = (SELECT NULLIF(rulebook_table_id, '') FROM rulebook_tables WHERE rulebook_table_id = p_rulebook_table_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
 -- calc_access_principals_organization_scope
 -- Field: AccessPrincipals.OrganizationScope
 -- Type: lookup | DataType: string | Returns: TEXT
@@ -12993,6 +13023,721 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_knowledge_broker_links_at_risk_broker_key(p_knowledge_broker_link_id TEXT)
 RETURNS TEXT AS $$
   SELECT (CASE WHEN calc_knowledge_broker_links_is_at_risk_reliance(p_knowledge_broker_link_id) THEN ((SELECT NULLIF(broker, '') FROM knowledge_broker_links WHERE knowledge_broker_link_id = p_knowledge_broker_link_id))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_conformance_substrates_name
+-- Field: ConformanceSubstrates.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_conformance_substrates_name(p_conformance_substrate_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(label, '') FROM conformance_substrates WHERE conformance_substrate_id = p_conformance_substrate_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_conformance_substrates_is_graded
+-- Field: ConformanceSubstrates.IsGraded
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_conformance_substrates_is_graded(p_conformance_substrate_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((SELECT NULLIF(role, '') FROM conformance_substrates WHERE conformance_substrate_id = p_conformance_substrate_id) = 'graded')::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_conformance_substrates_run_count
+-- Field: ConformanceSubstrates.RunCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_conformance_substrates_run_count(p_conformance_substrate_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM substrate_run_scores WHERE substrate = (SELECT NULLIF(conformance_substrate_id, '') FROM conformance_substrates WHERE conformance_substrate_id = p_conformance_substrate_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_conformance_substrates_latest_cells_tested
+-- Field: ConformanceSubstrates.LatestCellsTested
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_conformance_substrates_latest_cells_tested(p_conformance_substrate_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COALESCE(SUM((calc_substrate_run_scores_latest_cells_tested(substrate_run_score_id))::numeric), 0) FROM substrate_run_scores WHERE substrate = p_conformance_substrate_id))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_conformance_substrates_latest_cells_passed
+-- Field: ConformanceSubstrates.LatestCellsPassed
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_conformance_substrates_latest_cells_passed(p_conformance_substrate_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COALESCE(SUM((calc_substrate_run_scores_latest_cells_passed(substrate_run_score_id))::numeric), 0) FROM substrate_run_scores WHERE substrate = p_conformance_substrate_id))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_conformance_substrates_latest_harness_errors
+-- Field: ConformanceSubstrates.LatestHarnessErrors
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_conformance_substrates_latest_harness_errors(p_conformance_substrate_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COALESCE(SUM((calc_substrate_run_scores_latest_error_flag(substrate_run_score_id))::numeric), 0) FROM substrate_run_scores WHERE substrate = p_conformance_substrate_id))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_conformance_substrates_latest_cells_failed
+-- Field: ConformanceSubstrates.LatestCellsFailed
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_conformance_substrates_latest_cells_failed(p_conformance_substrate_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_conformance_substrates_latest_cells_tested(p_conformance_substrate_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_conformance_substrates_latest_cells_passed(p_conformance_substrate_id)) AS v) __safe_numeric), 0)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_conformance_substrates_latest_score
+-- Field: ConformanceSubstrates.LatestScore
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_conformance_substrates_latest_score(p_conformance_substrate_id TEXT)
+RETURNS NUMERIC AS $$
+  WITH __erb_dedup_v1 AS (SELECT calc_conformance_substrates_latest_cells_tested(p_conformance_substrate_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_conformance_substrates_latest_cells_passed(p_conformance_substrate_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::NUMERIC, (2)::INTEGER))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_conformance_substrates_disagreeing_field_count
+-- Field: ConformanceSubstrates.DisagreeingFieldCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_conformance_substrates_disagreeing_field_count(p_conformance_substrate_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM field_disagreements WHERE substrate = (SELECT NULLIF(conformance_substrate_id, '') FROM conformance_substrates WHERE conformance_substrate_id = p_conformance_substrate_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_conformance_substrates_disagreeing_table_count
+-- Field: ConformanceSubstrates.DisagreeingTableCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_conformance_substrates_disagreeing_table_count(p_conformance_substrate_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM table_conformance WHERE calc_table_conformance_imperfect_substrate_key(table_conformance_id) = (SELECT NULLIF(conformance_substrate_id, '') FROM conformance_substrates WHERE conformance_substrate_id = p_conformance_substrate_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_conformance_substrates_is_fully_conformant
+-- Field: ConformanceSubstrates.IsFullyConformant
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_conformance_substrates_is_fully_conformant(p_conformance_substrate_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((calc_conformance_substrates_latest_cells_tested(p_conformance_substrate_id))::NUMERIC > 0 AND (calc_conformance_substrates_latest_cells_failed(p_conformance_substrate_id))::NUMERIC = 0 AND (calc_conformance_substrates_latest_harness_errors(p_conformance_substrate_id))::NUMERIC = 0));
+$$ LANGUAGE sql STABLE;
+
+-- get_conformance_substrates_label
+-- Helper function: Get Label from ConformanceSubstrates by ConformanceSubstrateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_conformance_substrates_label(p_conformance_substrate_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT label FROM conformance_substrates WHERE conformance_substrate_id = p_conformance_substrate_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_conformance_substrates_transpiler
+-- Helper function: Get Transpiler from ConformanceSubstrates by ConformanceSubstrateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_conformance_substrates_transpiler(p_conformance_substrate_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT transpiler FROM conformance_substrates WHERE conformance_substrate_id = p_conformance_substrate_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_conformance_substrates_output_folder
+-- Helper function: Get OutputFolder from ConformanceSubstrates by ConformanceSubstrateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_conformance_substrates_output_folder(p_conformance_substrate_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT output_folder FROM conformance_substrates WHERE conformance_substrate_id = p_conformance_substrate_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_conformance_substrates_engine
+-- Helper function: Get Engine from ConformanceSubstrates by ConformanceSubstrateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_conformance_substrates_engine(p_conformance_substrate_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT engine FROM conformance_substrates WHERE conformance_substrate_id = p_conformance_substrate_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_conformance_substrates_how_it_computes
+-- Helper function: Get HowItComputes from ConformanceSubstrates by ConformanceSubstrateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_conformance_substrates_how_it_computes(p_conformance_substrate_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT how_it_computes FROM conformance_substrates WHERE conformance_substrate_id = p_conformance_substrate_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_conformance_substrates_role
+-- Helper function: Get Role from ConformanceSubstrates by ConformanceSubstrateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_conformance_substrates_role(p_conformance_substrate_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT role FROM conformance_substrates WHERE conformance_substrate_id = p_conformance_substrate_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_conformance_substrates_sort_order
+-- Helper function: Get SortOrder from ConformanceSubstrates by ConformanceSubstrateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_conformance_substrates_sort_order(p_conformance_substrate_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT sort_order FROM conformance_substrates WHERE conformance_substrate_id = p_conformance_substrate_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_conformance_substrates_semantic_type_iri
+-- Helper function: Get SemanticTypeIri from ConformanceSubstrates by ConformanceSubstrateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_conformance_substrates_semantic_type_iri(p_conformance_substrate_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT semantic_type_iri FROM conformance_substrates WHERE conformance_substrate_id = p_conformance_substrate_id);
+$$ LANGUAGE sql STABLE;
+
+-- calc_conformance_runs_name
+-- Field: ConformanceRuns.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_conformance_runs_name(p_conformance_run_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(conformance_run_id, '') FROM conformance_runs WHERE conformance_run_id = p_conformance_run_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_conformance_runs_substrate_count
+-- Field: ConformanceRuns.SubstrateCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_conformance_runs_substrate_count(p_conformance_run_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM substrate_run_scores WHERE run = (SELECT NULLIF(conformance_run_id, '') FROM conformance_runs WHERE conformance_run_id = p_conformance_run_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_conformance_runs_perfect_substrate_count
+-- Field: ConformanceRuns.PerfectSubstrateCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_conformance_runs_perfect_substrate_count(p_conformance_run_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM substrate_run_scores WHERE calc_substrate_run_scores_perfect_run_key(substrate_run_score_id) = (SELECT NULLIF(conformance_run_id, '') FROM conformance_runs WHERE conformance_run_id = p_conformance_run_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_conformance_runs_cells_tested
+-- Field: ConformanceRuns.CellsTested
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_conformance_runs_cells_tested(p_conformance_run_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COALESCE(SUM((cells_tested)::numeric), 0) FROM substrate_run_scores WHERE run = p_conformance_run_id))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_conformance_runs_cells_passed
+-- Field: ConformanceRuns.CellsPassed
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_conformance_runs_cells_passed(p_conformance_run_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COALESCE(SUM((cells_passed)::numeric), 0) FROM substrate_run_scores WHERE run = p_conformance_run_id))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_conformance_runs_cells_failed
+-- Field: ConformanceRuns.CellsFailed
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_conformance_runs_cells_failed(p_conformance_run_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_conformance_runs_cells_tested(p_conformance_run_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_conformance_runs_cells_passed(p_conformance_run_id)) AS v) __safe_numeric), 0)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_conformance_runs_overall_score
+-- Field: ConformanceRuns.OverallScore
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_conformance_runs_overall_score(p_conformance_run_id TEXT)
+RETURNS NUMERIC AS $$
+  WITH __erb_dedup_v1 AS (SELECT calc_conformance_runs_cells_tested(p_conformance_run_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_conformance_runs_cells_passed(p_conformance_run_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::NUMERIC, (2)::INTEGER))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_conformance_runs_imperfect_substrate_count
+-- Field: ConformanceRuns.ImperfectSubstrateCount
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_conformance_runs_imperfect_substrate_count(p_conformance_run_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_conformance_runs_substrate_count(p_conformance_run_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_conformance_runs_perfect_substrate_count(p_conformance_run_id)) AS v) __safe_numeric), 0)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_conformance_runs_is_fully_conformant
+-- Field: ConformanceRuns.IsFullyConformant
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_conformance_runs_is_fully_conformant(p_conformance_run_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((calc_conformance_runs_substrate_count(p_conformance_run_id))::NUMERIC > 0 AND (calc_conformance_runs_imperfect_substrate_count(p_conformance_run_id))::NUMERIC = 0));
+$$ LANGUAGE sql STABLE;
+
+-- calc_substrate_run_scores_is_in_latest_run
+-- Field: SubstrateRunScores.IsInLatestRun
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: IsLatest from related ConformanceRuns
+
+
+CREATE OR REPLACE FUNCTION calc_substrate_run_scores_is_in_latest_run(p_substrate_run_score_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT is_latest::boolean FROM conformance_runs WHERE conformance_run_id = (SELECT run FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_substrate_run_scores_substrate_label
+-- Field: SubstrateRunScores.SubstrateLabel
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Label from related ConformanceSubstrates
+
+
+CREATE OR REPLACE FUNCTION calc_substrate_run_scores_substrate_label(p_substrate_run_score_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT label::text FROM conformance_substrates WHERE conformance_substrate_id = (SELECT substrate FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id));
+$$ LANGUAGE sql STABLE;
+
+-- get_conformance_runs_ran_on
+-- Helper function: Get RanOn from ConformanceRuns by ConformanceRunId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_conformance_runs_ran_on(p_conformance_run_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT ran_on FROM conformance_runs WHERE conformance_run_id = p_conformance_run_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_conformance_runs_rulebook_commit
+-- Helper function: Get RulebookCommit from ConformanceRuns by ConformanceRunId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_conformance_runs_rulebook_commit(p_conformance_run_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT rulebook_commit FROM conformance_runs WHERE conformance_run_id = p_conformance_run_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_conformance_runs_is_latest
+-- Helper function: Get IsLatest from ConformanceRuns by ConformanceRunId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_conformance_runs_is_latest(p_conformance_run_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT is_latest FROM conformance_runs WHERE conformance_run_id = p_conformance_run_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_conformance_runs_notes
+-- Helper function: Get Notes from ConformanceRuns by ConformanceRunId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_conformance_runs_notes(p_conformance_run_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT notes FROM conformance_runs WHERE conformance_run_id = p_conformance_run_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_conformance_runs_semantic_type_iri
+-- Helper function: Get SemanticTypeIri from ConformanceRuns by ConformanceRunId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_conformance_runs_semantic_type_iri(p_conformance_run_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT semantic_type_iri FROM conformance_runs WHERE conformance_run_id = p_conformance_run_id);
+$$ LANGUAGE sql STABLE;
+
+-- calc_substrate_run_scores_name
+-- Field: SubstrateRunScores.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_substrate_run_scores_name(p_substrate_run_score_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT((SELECT NULLIF(run, '') FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id), ' / ', (SELECT NULLIF(substrate, '') FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_substrate_run_scores_cells_failed
+-- Field: SubstrateRunScores.CellsFailed
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_substrate_run_scores_cells_failed(p_substrate_run_score_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT cells_tested FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT cells_passed FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id)) AS v) __safe_numeric), 0)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_substrate_run_scores_score
+-- Field: SubstrateRunScores.Score
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_substrate_run_scores_score(p_substrate_run_score_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN ((SELECT cells_tested FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id))::NUMERIC = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT cells_passed FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT cells_tested FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::NUMERIC, (2)::INTEGER))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_substrate_run_scores_calculated_score
+-- Field: SubstrateRunScores.CalculatedScore
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_substrate_run_scores_calculated_score(p_substrate_run_score_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN ((SELECT calculated_tested FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id))::NUMERIC = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT calculated_passed FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT calculated_tested FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::NUMERIC, (2)::INTEGER))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_substrate_run_scores_lookup_score
+-- Field: SubstrateRunScores.LookupScore
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_substrate_run_scores_lookup_score(p_substrate_run_score_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN ((SELECT lookup_tested FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id))::NUMERIC = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT lookup_passed FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT lookup_tested FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::NUMERIC, (2)::INTEGER))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_substrate_run_scores_aggregation_score
+-- Field: SubstrateRunScores.AggregationScore
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_substrate_run_scores_aggregation_score(p_substrate_run_score_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN ((SELECT aggregation_tested FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id))::NUMERIC = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT aggregation_passed FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT aggregation_tested FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::NUMERIC, (2)::INTEGER))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_substrate_run_scores_is_perfect
+-- Field: SubstrateRunScores.IsPerfect
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_substrate_run_scores_is_perfect(p_substrate_run_score_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((SELECT NULLIF(harness_error, '') FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id) IS NULL AND ((SELECT cells_tested FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id))::NUMERIC > 0 AND (calc_substrate_run_scores_cells_failed(p_substrate_run_score_id))::NUMERIC = 0));
+$$ LANGUAGE sql STABLE;
+
+-- calc_substrate_run_scores_perfect_run_key
+-- Field: SubstrateRunScores.PerfectRunKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_substrate_run_scores_perfect_run_key(p_substrate_run_score_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_substrate_run_scores_is_perfect(p_substrate_run_score_id) THEN ((SELECT NULLIF(run, '') FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id))::text ELSE ('')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_substrate_run_scores_latest_cells_tested
+-- Field: SubstrateRunScores.LatestCellsTested
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_substrate_run_scores_latest_cells_tested(p_substrate_run_score_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN calc_substrate_run_scores_is_in_latest_run(p_substrate_run_score_id) THEN ((SELECT cells_tested FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id))::text ELSE (0)::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_substrate_run_scores_latest_cells_passed
+-- Field: SubstrateRunScores.LatestCellsPassed
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_substrate_run_scores_latest_cells_passed(p_substrate_run_score_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN calc_substrate_run_scores_is_in_latest_run(p_substrate_run_score_id) THEN ((SELECT cells_passed FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id))::text ELSE (0)::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_substrate_run_scores_latest_error_flag
+-- Field: SubstrateRunScores.LatestErrorFlag
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_substrate_run_scores_latest_error_flag(p_substrate_run_score_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN (calc_substrate_run_scores_is_in_latest_run(p_substrate_run_score_id) AND (SELECT NULLIF(harness_error, '') FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id) IS NOT NULL) THEN (1)::text ELSE (0)::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_table_conformance_substrate_label
+-- Field: TableConformance.SubstrateLabel
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Label from related ConformanceSubstrates
+
+
+CREATE OR REPLACE FUNCTION calc_table_conformance_substrate_label(p_table_conformance_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT label::text FROM conformance_substrates WHERE conformance_substrate_id = (SELECT substrate FROM table_conformance WHERE table_conformance_id = p_table_conformance_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_table_conformance_subject_area
+-- Field: TableConformance.SubjectArea
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: SubjectArea from related RulebookTables
+
+
+CREATE OR REPLACE FUNCTION calc_table_conformance_subject_area(p_table_conformance_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT subject_area::text FROM rulebook_tables WHERE rulebook_table_id = (SELECT rulebook_table FROM table_conformance WHERE table_conformance_id = p_table_conformance_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_table_conformance_name
+-- Field: TableConformance.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_table_conformance_name(p_table_conformance_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT((SELECT NULLIF(substrate, '') FROM table_conformance WHERE table_conformance_id = p_table_conformance_id), ' / ', (SELECT NULLIF(rulebook_table, '') FROM table_conformance WHERE table_conformance_id = p_table_conformance_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_table_conformance_cells_failed
+-- Field: TableConformance.CellsFailed
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_table_conformance_cells_failed(p_table_conformance_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT cells_tested FROM table_conformance WHERE table_conformance_id = p_table_conformance_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT cells_passed FROM table_conformance WHERE table_conformance_id = p_table_conformance_id)) AS v) __safe_numeric), 0)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_table_conformance_score
+-- Field: TableConformance.Score
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_table_conformance_score(p_table_conformance_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN ((SELECT cells_tested FROM table_conformance WHERE table_conformance_id = p_table_conformance_id))::NUMERIC = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT cells_passed FROM table_conformance WHERE table_conformance_id = p_table_conformance_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT cells_tested FROM table_conformance WHERE table_conformance_id = p_table_conformance_id)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::NUMERIC, (2)::INTEGER))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_table_conformance_is_perfect
+-- Field: TableConformance.IsPerfect
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_table_conformance_is_perfect(p_table_conformance_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_table_conformance_cells_failed(p_table_conformance_id))::NUMERIC = 0)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_table_conformance_imperfect_substrate_key
+-- Field: TableConformance.ImperfectSubstrateKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_table_conformance_imperfect_substrate_key(p_table_conformance_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_table_conformance_is_perfect(p_table_conformance_id) THEN ('')::text ELSE ((SELECT NULLIF(substrate, '') FROM table_conformance WHERE table_conformance_id = p_table_conformance_id))::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_table_conformance_imperfect_table_key
+-- Field: TableConformance.ImperfectTableKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_table_conformance_imperfect_table_key(p_table_conformance_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_table_conformance_is_perfect(p_table_conformance_id) THEN ('')::text ELSE ((SELECT NULLIF(rulebook_table, '') FROM table_conformance WHERE table_conformance_id = p_table_conformance_id))::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_table_conformance_disagreeing_field_count
+-- Field: TableConformance.DisagreeingFieldCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_table_conformance_disagreeing_field_count(p_table_conformance_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM field_disagreements WHERE table_conformance = (SELECT NULLIF(table_conformance_id, '') FROM table_conformance WHERE table_conformance_id = p_table_conformance_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_field_disagreements_formula
+-- Field: FieldDisagreements.Formula
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Formula from related RulebookFields
+
+
+CREATE OR REPLACE FUNCTION calc_field_disagreements_formula(p_field_disagreement_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT formula::text FROM rulebook_fields WHERE rulebook_field_id = (SELECT rulebook_field FROM field_disagreements WHERE field_disagreement_id = p_field_disagreement_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_field_disagreements_substrate_label
+-- Field: FieldDisagreements.SubstrateLabel
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Label from related ConformanceSubstrates
+
+
+CREATE OR REPLACE FUNCTION calc_field_disagreements_substrate_label(p_field_disagreement_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT label::text FROM conformance_substrates WHERE conformance_substrate_id = (SELECT substrate FROM field_disagreements WHERE field_disagreement_id = p_field_disagreement_id));
+$$ LANGUAGE sql STABLE;
+
+-- get_table_conformance_record_count
+-- Helper function: Get RecordCount from TableConformance by TableConformanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_table_conformance_record_count(p_table_conformance_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT record_count FROM table_conformance WHERE table_conformance_id = p_table_conformance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_table_conformance_derived_field_count
+-- Helper function: Get DerivedFieldCount from TableConformance by TableConformanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_table_conformance_derived_field_count(p_table_conformance_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT derived_field_count FROM table_conformance WHERE table_conformance_id = p_table_conformance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_table_conformance_cells_tested
+-- Helper function: Get CellsTested from TableConformance by TableConformanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_table_conformance_cells_tested(p_table_conformance_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT cells_tested FROM table_conformance WHERE table_conformance_id = p_table_conformance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_table_conformance_cells_passed
+-- Helper function: Get CellsPassed from TableConformance by TableConformanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_table_conformance_cells_passed(p_table_conformance_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT cells_passed FROM table_conformance WHERE table_conformance_id = p_table_conformance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_table_conformance_is_missing_answer_file
+-- Helper function: Get IsMissingAnswerFile from TableConformance by TableConformanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_table_conformance_is_missing_answer_file(p_table_conformance_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT is_missing_answer_file FROM table_conformance WHERE table_conformance_id = p_table_conformance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_table_conformance_semantic_type_iri
+-- Helper function: Get SemanticTypeIri from TableConformance by TableConformanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_table_conformance_semantic_type_iri(p_table_conformance_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT semantic_type_iri FROM table_conformance WHERE table_conformance_id = p_table_conformance_id);
+$$ LANGUAGE sql STABLE;
+
+-- calc_field_disagreements_name
+-- Field: FieldDisagreements.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_field_disagreements_name(p_field_disagreement_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT((SELECT NULLIF(substrate, '') FROM field_disagreements WHERE field_disagreement_id = p_field_disagreement_id), ' / ', (SELECT NULLIF(rulebook_field, '') FROM field_disagreements WHERE field_disagreement_id = p_field_disagreement_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_field_disagreements_sampled_cell_count
+-- Field: FieldDisagreements.SampledCellCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_field_disagreements_sampled_cell_count(p_field_disagreement_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM cell_disagreements WHERE field_disagreement = (SELECT NULLIF(field_disagreement_id, '') FROM field_disagreements WHERE field_disagreement_id = p_field_disagreement_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_field_disagreements_is_fully_sampled
+-- Field: FieldDisagreements.IsFullySampled
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_field_disagreements_is_fully_sampled(p_field_disagreement_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (calc_field_disagreements_sampled_cell_count(p_field_disagreement_id) = (SELECT cells_failed FROM field_disagreements WHERE field_disagreement_id = p_field_disagreement_id))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_cell_disagreements_substrate
+-- Field: CellDisagreements.Substrate
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Substrate from related FieldDisagreements
+
+
+CREATE OR REPLACE FUNCTION calc_cell_disagreements_substrate(p_cell_disagreement_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT substrate::text FROM field_disagreements WHERE field_disagreement_id = (SELECT field_disagreement FROM cell_disagreements WHERE cell_disagreement_id = p_cell_disagreement_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_cell_disagreements_rulebook_field
+-- Field: CellDisagreements.RulebookField
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: RulebookField from related FieldDisagreements
+
+
+CREATE OR REPLACE FUNCTION calc_cell_disagreements_rulebook_field(p_cell_disagreement_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT rulebook_field::text FROM field_disagreements WHERE field_disagreement_id = (SELECT field_disagreement FROM cell_disagreements WHERE cell_disagreement_id = p_cell_disagreement_id));
+$$ LANGUAGE sql STABLE;
+
+-- get_field_disagreements_field_class
+-- Helper function: Get FieldClass from FieldDisagreements by FieldDisagreementId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_field_disagreements_field_class(p_field_disagreement_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT field_class FROM field_disagreements WHERE field_disagreement_id = p_field_disagreement_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_field_disagreements_cells_failed
+-- Helper function: Get CellsFailed from FieldDisagreements by FieldDisagreementId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_field_disagreements_cells_failed(p_field_disagreement_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT cells_failed FROM field_disagreements WHERE field_disagreement_id = p_field_disagreement_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_field_disagreements_dominant_reason
+-- Helper function: Get DominantReason from FieldDisagreements by FieldDisagreementId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_field_disagreements_dominant_reason(p_field_disagreement_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT dominant_reason FROM field_disagreements WHERE field_disagreement_id = p_field_disagreement_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_field_disagreements_semantic_type_iri
+-- Helper function: Get SemanticTypeIri from FieldDisagreements by FieldDisagreementId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_field_disagreements_semantic_type_iri(p_field_disagreement_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT semantic_type_iri FROM field_disagreements WHERE field_disagreement_id = p_field_disagreement_id);
+$$ LANGUAGE sql STABLE;
+
+-- calc_cell_disagreements_name
+-- Field: CellDisagreements.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_cell_disagreements_name(p_cell_disagreement_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT((SELECT NULLIF(field_disagreement, '') FROM cell_disagreements WHERE cell_disagreement_id = p_cell_disagreement_id), ' @ ', (SELECT NULLIF(record_id, '') FROM cell_disagreements WHERE cell_disagreement_id = p_cell_disagreement_id)))::text;
 $$ LANGUAGE sql STABLE;
 
 -- ============================================================================

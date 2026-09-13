@@ -1,0 +1,24 @@
+[
+  {
+    "vocabulary_id": "voc-close-controls",
+    "title": "Close Control Categories",
+    "scheme_uri": "urn:effortless:pko-extension:vocab#close-controls",
+    "governing_role": "knowledge-authority",
+    "semantic_type_iri": "urn:effortless:pko-extension#Vocabulary",
+    "name": null,
+    "term_count": null,
+    "orphan_term_count": null,
+    "has_orphan_terms": null
+  },
+  {
+    "vocabulary_id": "voc-policy-domains",
+    "title": "Policy Compliance Domains",
+    "scheme_uri": "urn:effortless:pko-extension:vocab#policy-domains",
+    "governing_role": "knowledge-authority",
+    "semantic_type_iri": "urn:effortless:pko-extension#Vocabulary",
+    "name": null,
+    "term_count": null,
+    "orphan_term_count": null,
+    "has_orphan_terms": null
+  }
+]

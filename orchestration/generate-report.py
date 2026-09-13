@@ -97,6 +97,7 @@ EFFORTLESS_SUBSTRATES = {
     "effortless-python",
     "effortless-golang",
     "effortless-typescript",
+    "effortless-owl",
 }
 
 # Stable per-substrate color palette. Each substrate keeps the same color
@@ -122,6 +123,7 @@ SUBSTRATE_COLORS = {
     "effortless-python":           "#FFD343",  # python yellow, against the open-source blue
     "effortless-golang":           "#007D9C",  # deeper gopher, against the open-source cyan
     "effortless-typescript":       "#3178C6",  # typescript blue
+    "effortless-owl":              "#4A148C",  # deeper purple, against the open-source owl
 }
 
 

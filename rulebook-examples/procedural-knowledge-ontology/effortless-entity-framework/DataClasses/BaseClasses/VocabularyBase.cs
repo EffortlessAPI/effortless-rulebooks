@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -16,29 +17,33 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string VocabularyId { get; set; }
 
         // Formula Name (rulebook: ={{Title}})
+        [NotMapped]
         public string? Name
         {
-            get => this.Title; set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Of(this.Title))); set { }
         }
 
         public string? Title { get; set; }
         public string? SchemeUri { get; set; }
         // Formula TermCount (rulebook: =COUNTIFS(VocabularyTerms!{{Vocabulary}}, {{VocabularyId}}))
+        [NotMapped]
         public decimal? TermCount
         {
-            get => COUNTIFS(VocabularyTerms!this.Vocabulary, this.VocabularyId); set { }
+            get => F.AsDecimal(F.Memo(this, "TermCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<VocabularyTerm>(base.SoAContext, "VocabularyTerms", __c => __c.VocabularyTerms), __r => F.CritField(F.Of(__r.Vocabulary), F.Of(this.VocabularyId)))))); set { }
         }
 
         // Formula OrphanTermCount (rulebook: =COUNTIFS(VocabularyTerms!{{OrphanTermVocabularyKey}}, {{VocabularyId}}))
+        [NotMapped]
         public decimal? OrphanTermCount
         {
-            get => COUNTIFS(VocabularyTerms!this.OrphanTermVocabularyKey, this.VocabularyId); set { }
+            get => F.AsDecimal(F.Memo(this, "OrphanTermCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<VocabularyTerm>(base.SoAContext, "VocabularyTerms", __c => __c.VocabularyTerms), __r => F.CritField(F.Of(__r.OrphanTermVocabularyKey), F.Of(this.VocabularyId)))))); set { }
         }
 
         // Formula HasOrphanTerms (rulebook: ={{OrphanTermCount}} > 0)
+        [NotMapped]
         public bool? HasOrphanTerms
         {
-            get => this.OrphanTermCount > 0; set { }
+            get => F.AsBool(F.Memo(this, "HasOrphanTerms", () => F.Cmp(F.Of(this.OrphanTermCount), ">", F.I(0)))); set { }
         }
 
         public string? SemanticTypeIri { get; set; }
@@ -54,7 +59,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_role == null && !string.IsNullOrEmpty(GoverningRole))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -62,10 +67,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                         }
                         return null;
                     }
-                    _role = Context.Roles.Find(GoverningRole);
+                    _role = base.SoAContext.Roles.Find(GoverningRole);
                     if (_role != null)
                     {
-                        Context.Attach(_role);
+                        base.SoAContext.Attach(_role);
                     }
                 }
                 return _role;
@@ -75,21 +80,30 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                 if (_role != value)
                 {
                     _role = value;
-                    GoverningRole = _role == null ? default : _role.RoleId;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_role != null)
+                    {
+                        GoverningRole = _role.RoleId;
+                    }
                 }
             }
         }
 
         private ObservableCollection<VocabularyTerm> _vocabularyTerms;
 
-        [InverseProperty("Vocabulary")]
+        [InverseProperty("VocabularyRef")]
         public virtual ObservableCollection<VocabularyTerm> VocabularyTerms
         {
             get
             {
                 if (_vocabularyTerms == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -99,11 +113,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.VocabularyTerms.Where(x => x.Vocabulary == this.VocabularyId).ToList<VocabularyTerm>();
+                        var items = base.SoAContext.VocabularyTerms.Where(x => x.Vocabulary == this.VocabularyId).ToList<VocabularyTerm>();
                         _vocabularyTerms = new ObservableCollection<VocabularyTerm>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _vocabularyTerms.CollectionChanged += VocabularyTerms_CollectionChanged;

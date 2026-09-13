@@ -47,8 +47,8 @@
     {
       "IsSSoTTranspiler": false,
       "Name": "oss-postgres-calculated-to-rulebook",
-      "RelativePath": "/postgres-bootstrap",
-      "CommandLine": "http://127.0.0.1:4242/oss-postgres-calculated-to-rulebook -i ../effortless-rulebook/talismans-special-solutions-rulebook.json",
+      "RelativePath": "/effortless-rulebook",
+      "CommandLine": "http://127.0.0.1:4242/oss-postgres-calculated-to-rulebook -i talismans-special-solutions-rulebook.json,../postgres-bootstrap/.pg-raw-data.json",
       "IsDisabled": true,
       "_IsDisabledNote": "INTENTIONALLY DISABLED guardrail. This reverse spoke refreshes derived-field DISPLAY copies in the rulebook from Postgres views. It is kept off because an earlier run wrote stale step DATA back into the sacred rulebook from a prod-built DB and overwrote a curated re-curation of the workflow steps. Keep IsDisabled:true until the spoke is verified to write derived/display fields ONLY (never raw step data) AND the DB has been rebuilt cleanly from a closure-enabled tool. The shipped model is the 5-step Production Deployment Workflow (see README).",
       "Description": "Reverse spoke: refresh rulebook derived-field display copies from Postgres views after the destructive rebuild (raws verified, never written)."

@@ -13,8 +13,7 @@ _A starter rulebook. Replace the HelloWhos entity with your own._
 |------|-------------|-------------------|
 | **Hello Who** | The smallest complete rulebook: an id, a display name, and a rule that derives a greeting from it. | — |
 | Name | A defined attribute. | — |
-| Introduction | Computed as “Hi, ”, followed by the name, followed by a period. | — |
-| Is Bob | True when at least one of the following holds: the name is “Bob”; the name is “Bobby”; or the name is “Robert”. | — |
+| Introduction | Computed as “Hello ”, followed by the name, followed by “!!!”. | — |
 
 ## 3 Operative Rules
 
@@ -37,8 +36,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 
 | ID | Declarative rule |
 |----|------------------|
-| **DR-1 Introduction** | A hello who's introduction is computed as “Hi, ”, followed by the name, followed by a period. |
-| **DR-2 Is Bob** | A hello who is considered a bob if at least one of the following holds: the name is “Bob”; the name is “Bobby”; or the name is “Robert”. |
+| **DR-1 Introduction** | A hello who's introduction is computed as “Hello ”, followed by the name, followed by “!!!”. |
 
 ## 5 Traceability to Schema
 
@@ -47,8 +45,23 @@ the same logic the rulebook stores, written for a business reader._
 
 | Schema element | Kind | Expression |
 |----------------|------|------------|
-| **HelloWhos.Introduction** | formula | `"Hi, " & Name & "."` |
-| **HelloWhos.IsBob** | formula | `Or(Name = "Bob", Name = "Bobby", Name = "Robert")` |
+| **HelloWhos.Introduction** | formula | `"Hello " & Name & "!!!"` |
+
+## 6 Example Data
+
+_The rulebook's own example rows. Values in **derived** columns are not stored —
+they are computed from the rules above by the same formula engine the rulebook
+generates, so if a formula changes these values change with it._
+
+### Hello Who
+
+| Name | Introduction ƒ |
+|---|---|
+| World | Hello World!!! |
+| Bob | Hello Bob!!! |
+| Everyone | Hello Everyone!!! |
+
+_ƒ marks a computed column._
 
 ---
 

@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -16,489 +17,568 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string SendIntentId { get; set; }
 
         // Formula Name (rulebook: ={{Recipient}} & " / " & {{MessageTemplate}} & " / intent")
+        [NotMapped]
         public string? Name
         {
-            get => this.Recipient + " / " + this.MessageTemplate + " / intent"; set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.Recipient)), F.S(" / "), F.TextOr(F.Of(this.MessageTemplate)), F.S(" / intent")))); set { }
         }
 
         public string? ProposedBody { get; set; }
         public int? ProposedSendAtLocalHour { get; set; }
-        public DateTime? EvaluatedAt { get; set; }
+        public DateTimeOffset? EvaluatedAt { get; set; }
         // Formula IntentPolicy (rulebook: =INDEX(MessageTemplates!{{CommunicationPolicy}}, MATCH({{MessageTemplate}}, MessageTemplates!{{MessageTemplateId}}, 0)))
+        [NotMapped]
         public string? IntentPolicy
         {
-            get => INDEX(MessageTemplates!this.CommunicationPolicy, MATCH(this.MessageTemplate, MessageTemplates!this.MessageTemplateId, 0)); set { }
+            get => F.AsString(F.Memo(this, "IntentPolicy", () => F.Lookup<MessageTemplate>(this, "MessageTemplates", "MessageTemplateId", __c => __c.MessageTemplates, __r => F.Of(__r.MessageTemplateId), F.Of(this.MessageTemplate), __r => F.Of(__r.CommunicationPolicy), () => F.Of(new MessageTemplate().CommunicationPolicy)))); set { }
         }
 
         // Formula IntentChannel (rulebook: =INDEX(CommunicationPolicies!{{Channel}}, MATCH({{IntentPolicy}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0)))
+        [NotMapped]
         public string? IntentChannel
         {
-            get => INDEX(CommunicationPolicies!this.Channel, MATCH(this.IntentPolicy, CommunicationPolicies!this.CommunicationPolicyId, 0)); set { }
+            get => F.AsString(F.Memo(this, "IntentChannel", () => F.Lookup<CommunicationPolicy>(this, "CommunicationPolicies", "CommunicationPolicyId", __c => __c.CommunicationPolicies, __r => F.Of(__r.CommunicationPolicyId), F.Of(this.IntentPolicy), __r => F.Of(__r.Channel), () => F.Of(new CommunicationPolicy().Channel)))); set { }
         }
 
         // Formula PolicyIsActive (rulebook: =INDEX(CommunicationPolicies!{{IsActivePolicy}}, MATCH({{IntentPolicy}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0)))
+        [NotMapped]
         public bool? PolicyIsActive
         {
-            get => INDEX(CommunicationPolicies!this.IsActivePolicy, MATCH(this.IntentPolicy, CommunicationPolicies!this.CommunicationPolicyId, 0)); set { }
+            get => F.AsBool(F.Memo(this, "PolicyIsActive", () => F.Lookup<CommunicationPolicy>(this, "CommunicationPolicies", "CommunicationPolicyId", __c => __c.CommunicationPolicies, __r => F.Of(__r.CommunicationPolicyId), F.Of(this.IntentPolicy), __r => F.Of(__r.IsActivePolicy), () => F.Of(new CommunicationPolicy().IsActivePolicy)))); set { }
         }
 
         // Formula IntentRequiresConsent (rulebook: =INDEX(CommunicationPolicies!{{ConsentRequired}}, MATCH({{IntentPolicy}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0)))
+        [NotMapped]
         public bool? IntentRequiresConsent
         {
-            get => INDEX(CommunicationPolicies!this.ConsentRequired, MATCH(this.IntentPolicy, CommunicationPolicies!this.CommunicationPolicyId, 0)); set { }
+            get => F.AsBool(F.Memo(this, "IntentRequiresConsent", () => F.Lookup<CommunicationPolicy>(this, "CommunicationPolicies", "CommunicationPolicyId", __c => __c.CommunicationPolicies, __r => F.Of(__r.CommunicationPolicyId), F.Of(this.IntentPolicy), __r => F.Of(__r.ConsentRequired), () => F.Of(new CommunicationPolicy().ConsentRequired)))); set { }
         }
 
         // Formula RecipientHasChannelConsent (rulebook: =INDEX(Recipients!{{HasSmsConsent}}, MATCH({{Recipient}}, Recipients!{{RecipientId}}, 0)))
+        [NotMapped]
         public bool? RecipientHasChannelConsent
         {
-            get => INDEX(Recipients!this.HasSmsConsent, MATCH(this.Recipient, Recipients!this.RecipientId, 0)); set { }
+            get => F.AsBool(F.Memo(this, "RecipientHasChannelConsent", () => F.Lookup<Recipient>(this, "Recipients", "RecipientId", __c => __c.Recipients, __r => F.Of(__r.RecipientId), F.Of(this.Recipient), __r => F.Of(__r.HasSmsConsent), () => F.Of(new Recipient().HasSmsConsent)))); set { }
         }
 
         // Formula ConsentGatePassed (rulebook: =OR(NOT({{IntentRequiresConsent}}), {{RecipientHasChannelConsent}}))
+        [NotMapped]
         public bool? ConsentGatePassed
         {
-            get => OR(NOT(this.IntentRequiresConsent), this.RecipientHasChannelConsent); set { }
+            get => F.AsBool(F.Memo(this, "ConsentGatePassed", () => F.Or(F.Bool3(F.Not(F.Bool3(F.Of(this.IntentRequiresConsent)))), F.Bool3(F.Of(this.RecipientHasChannelConsent))))); set { }
         }
 
         // Formula RecipientIsSmsReachable (rulebook: =INDEX(Recipients!{{IsSmsReachable}}, MATCH({{Recipient}}, Recipients!{{RecipientId}}, 0)))
+        [NotMapped]
         public bool? RecipientIsSmsReachable
         {
-            get => INDEX(Recipients!this.IsSmsReachable, MATCH(this.Recipient, Recipients!this.RecipientId, 0)); set { }
+            get => F.AsBool(F.Memo(this, "RecipientIsSmsReachable", () => F.Lookup<Recipient>(this, "Recipients", "RecipientId", __c => __c.Recipients, __r => F.Of(__r.RecipientId), F.Of(this.Recipient), __r => F.Of(__r.IsSmsReachable), () => F.Of(new Recipient().IsSmsReachable)))); set { }
         }
 
         // Formula RecipientIsEmailReachable (rulebook: =INDEX(Recipients!{{IsEmailReachable}}, MATCH({{Recipient}}, Recipients!{{RecipientId}}, 0)))
+        [NotMapped]
         public bool? RecipientIsEmailReachable
         {
-            get => INDEX(Recipients!this.IsEmailReachable, MATCH(this.Recipient, Recipients!this.RecipientId, 0)); set { }
+            get => F.AsBool(F.Memo(this, "RecipientIsEmailReachable", () => F.Lookup<Recipient>(this, "Recipients", "RecipientId", __c => __c.Recipients, __r => F.Of(__r.RecipientId), F.Of(this.Recipient), __r => F.Of(__r.IsEmailReachable), () => F.Of(new Recipient().IsEmailReachable)))); set { }
         }
 
         // Formula ReachabilityGatePassed (rulebook: =IF({{IntentChannel}} = "SMS", {{RecipientIsSmsReachable}}, {{RecipientIsEmailReachable}}))
+        [NotMapped]
         public bool? ReachabilityGatePassed
         {
-            get => IF(this.IntentChannel = "SMS", this.RecipientIsSmsReachable, this.RecipientIsEmailReachable); set { }
+            get => F.AsBool(F.Memo(this, "ReachabilityGatePassed", () => (F.Truthy(F.Bool3(F.Eq(F.Of(this.IntentChannel), F.S("SMS")))) ? F.Of(this.RecipientIsSmsReachable) : F.Of(this.RecipientIsEmailReachable)))); set { }
         }
 
         // Formula PermissionGatePassed (rulebook: =AND({{PolicyIsActive}}, AND({{ConsentGatePassed}}, {{ReachabilityGatePassed}})))
+        [NotMapped]
         public bool? PermissionGatePassed
         {
-            get => AND(this.PolicyIsActive, AND(this.ConsentGatePassed, this.ReachabilityGatePassed)); set { }
+            get => F.AsBool(F.Memo(this, "PermissionGatePassed", () => F.And(F.Bool3(F.Of(this.PolicyIsActive)), F.Bool3(F.And(F.Bool3(F.Of(this.ConsentGatePassed)), F.Bool3(F.Of(this.ReachabilityGatePassed))))))); set { }
         }
 
         // Formula IntentQuietStartHour (rulebook: =INDEX(CommunicationPolicies!{{QuietHoursStartHour}}, MATCH({{IntentPolicy}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0)))
+        [NotMapped]
         public int? IntentQuietStartHour
         {
-            get => INDEX(CommunicationPolicies!this.QuietHoursStartHour, MATCH(this.IntentPolicy, CommunicationPolicies!this.CommunicationPolicyId, 0)); set { }
+            get => F.AsInt(F.Memo(this, "IntentQuietStartHour", () => F.Integer(F.Lookup<CommunicationPolicy>(this, "CommunicationPolicies", "CommunicationPolicyId", __c => __c.CommunicationPolicies, __r => F.Of(__r.CommunicationPolicyId), F.Of(this.IntentPolicy), __r => F.Of(__r.QuietHoursStartHour), () => F.Of(new CommunicationPolicy().QuietHoursStartHour))))); set { }
         }
 
         // Formula IntentQuietEndHour (rulebook: =INDEX(CommunicationPolicies!{{QuietHoursEndHour}}, MATCH({{IntentPolicy}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0)))
+        [NotMapped]
         public int? IntentQuietEndHour
         {
-            get => INDEX(CommunicationPolicies!this.QuietHoursEndHour, MATCH(this.IntentPolicy, CommunicationPolicies!this.CommunicationPolicyId, 0)); set { }
+            get => F.AsInt(F.Memo(this, "IntentQuietEndHour", () => F.Integer(F.Lookup<CommunicationPolicy>(this, "CommunicationPolicies", "CommunicationPolicyId", __c => __c.CommunicationPolicies, __r => F.Of(__r.CommunicationPolicyId), F.Of(this.IntentPolicy), __r => F.Of(__r.QuietHoursEndHour), () => F.Of(new CommunicationPolicy().QuietHoursEndHour))))); set { }
         }
 
         // Formula IntentPolicyHasQuietHours (rulebook: ={{IntentQuietStartHour}} <> {{IntentQuietEndHour}})
+        [NotMapped]
         public bool? IntentPolicyHasQuietHours
         {
-            get => this.IntentQuietStartHour <> this.IntentQuietEndHour; set { }
+            get => F.AsBool(F.Memo(this, "IntentPolicyHasQuietHours", () => F.Ne(F.Of(this.IntentQuietStartHour), F.Of(this.IntentQuietEndHour)))); set { }
         }
 
         // Formula IntentQuietWindowWraps (rulebook: ={{IntentQuietStartHour}} > {{IntentQuietEndHour}})
+        [NotMapped]
         public bool? IntentQuietWindowWraps
         {
-            get => this.IntentQuietStartHour > this.IntentQuietEndHour; set { }
+            get => F.AsBool(F.Memo(this, "IntentQuietWindowWraps", () => F.Cmp(F.Of(this.IntentQuietStartHour), ">", F.Of(this.IntentQuietEndHour)))); set { }
         }
 
         // Formula IntentIsInsideQuietWindow (rulebook: =IF({{IntentQuietWindowWraps}}, OR({{ProposedSendAtLocalHour}} >= {{IntentQuietStartHour}}, {{ProposedSendAtLocalHour}} < {{IntentQuietEndHour}}), AND({{ProposedSendAtLocalHour}} >= {{IntentQuietStartHour}}, {{ProposedSendAtLocalHour}} < {{IntentQuietEndHour}})))
+        [NotMapped]
         public bool? IntentIsInsideQuietWindow
         {
-            get => IF(this.IntentQuietWindowWraps, OR(this.ProposedSendAtLocalHour >= this.IntentQuietStartHour, this.ProposedSendAtLocalHour < this.IntentQuietEndHour), AND(this.ProposedSendAtLocalHour >= this.IntentQuietStartHour, this.ProposedSendAtLocalHour < this.IntentQuietEndHour)); set { }
+            get => F.AsBool(F.Memo(this, "IntentIsInsideQuietWindow", () => (F.Truthy(F.Bool3(F.Of(this.IntentQuietWindowWraps))) ? F.Or(F.Bool3(F.Cmp(F.Nullif(F.Of(this.ProposedSendAtLocalHour)), ">=", F.Of(this.IntentQuietStartHour))), F.Bool3(F.Cmp(F.Nullif(F.Of(this.ProposedSendAtLocalHour)), "<", F.Of(this.IntentQuietEndHour)))) : F.And(F.Bool3(F.Cmp(F.Nullif(F.Of(this.ProposedSendAtLocalHour)), ">=", F.Of(this.IntentQuietStartHour))), F.Bool3(F.Cmp(F.Nullif(F.Of(this.ProposedSendAtLocalHour)), "<", F.Of(this.IntentQuietEndHour))))))); set { }
         }
 
         // Formula TimingGatePassed (rulebook: =OR(NOT({{IntentPolicyHasQuietHours}}), NOT({{IntentIsInsideQuietWindow}})))
+        [NotMapped]
         public bool? TimingGatePassed
         {
-            get => OR(NOT(this.IntentPolicyHasQuietHours), NOT(this.IntentIsInsideQuietWindow)); set { }
+            get => F.AsBool(F.Memo(this, "TimingGatePassed", () => F.Or(F.Bool3(F.Not(F.Bool3(F.Of(this.IntentPolicyHasQuietHours)))), F.Bool3(F.Not(F.Bool3(F.Of(this.IntentIsInsideQuietWindow))))))); set { }
         }
 
         // Formula HoursUntilWindowOpens (rulebook: =IF({{TimingGatePassed}}, 0, IF({{ProposedSendAtLocalHour}} < {{IntentQuietEndHour}}, {{IntentQuietEndHour}} - {{ProposedSendAtLocalHour}}, 24 - {{ProposedSendAtLocalHour}} + {{IntentQuietEndHour}})))
+        [NotMapped]
         public int? HoursUntilWindowOpens
         {
-            get => IF(this.TimingGatePassed, 0, IF(this.ProposedSendAtLocalHour < this.IntentQuietEndHour, this.IntentQuietEndHour - this.ProposedSendAtLocalHour, 24 - this.ProposedSendAtLocalHour + this.IntentQuietEndHour)); set { }
+            get => F.AsInt(F.Memo(this, "HoursUntilWindowOpens", () => F.Integer((F.Truthy(F.Bool3(F.Of(this.TimingGatePassed))) ? F.I(0) : (F.Truthy(F.Bool3(F.Cmp(F.Nullif(F.Of(this.ProposedSendAtLocalHour)), "<", F.Of(this.IntentQuietEndHour)))) ? F.Sub(F.Of(this.IntentQuietEndHour), F.Of(this.ProposedSendAtLocalHour)) : F.Add(F.Sub(F.I(24), F.Of(this.ProposedSendAtLocalHour)), F.Of(this.IntentQuietEndHour))))))); set { }
         }
 
         // Formula IntentMaxMessageLength (rulebook: =INDEX(CommunicationPolicies!{{MaxMessageLength}}, MATCH({{IntentPolicy}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0)))
+        [NotMapped]
         public int? IntentMaxMessageLength
         {
-            get => INDEX(CommunicationPolicies!this.MaxMessageLength, MATCH(this.IntentPolicy, CommunicationPolicies!this.CommunicationPolicyId, 0)); set { }
+            get => F.AsInt(F.Memo(this, "IntentMaxMessageLength", () => F.Integer(F.Lookup<CommunicationPolicy>(this, "CommunicationPolicies", "CommunicationPolicyId", __c => __c.CommunicationPolicies, __r => F.Of(__r.CommunicationPolicyId), F.Of(this.IntentPolicy), __r => F.Of(__r.MaxMessageLength), () => F.Of(new CommunicationPolicy().MaxMessageLength))))); set { }
         }
 
         // Formula IntentMaxSegments (rulebook: =INDEX(CommunicationPolicies!{{MaxSegments}}, MATCH({{IntentPolicy}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0)))
+        [NotMapped]
         public int? IntentMaxSegments
         {
-            get => INDEX(CommunicationPolicies!this.MaxSegments, MATCH(this.IntentPolicy, CommunicationPolicies!this.CommunicationPolicyId, 0)); set { }
+            get => F.AsInt(F.Memo(this, "IntentMaxSegments", () => F.Integer(F.Lookup<CommunicationPolicy>(this, "CommunicationPolicies", "CommunicationPolicyId", __c => __c.CommunicationPolicies, __r => F.Of(__r.CommunicationPolicyId), F.Of(this.IntentPolicy), __r => F.Of(__r.MaxSegments), () => F.Of(new CommunicationPolicy().MaxSegments))))); set { }
         }
 
         public int? ProposedBodyLength { get; set; }
         public int? ProposedSegmentCount { get; set; }
         // Formula LengthGatePassed (rulebook: =AND({{ProposedBodyLength}} > 0, {{ProposedSegmentCount}} <= {{IntentMaxSegments}}))
+        [NotMapped]
         public bool? LengthGatePassed
         {
-            get => AND(this.ProposedBodyLength > 0, this.ProposedSegmentCount <= this.IntentMaxSegments); set { }
+            get => F.AsBool(F.Memo(this, "LengthGatePassed", () => F.And(F.Bool3(F.Cmp(F.Nullif(F.Of(this.ProposedBodyLength)), ">", F.I(0))), F.Bool3(F.Cmp(F.Nullif(F.Of(this.ProposedSegmentCount)), "<=", F.Of(this.IntentMaxSegments)))))); set { }
         }
 
         // Formula IntentRequiredOptOutPhrase (rulebook: =INDEX(CommunicationPolicies!{{RequiredOptOutPhrase}}, MATCH({{IntentPolicy}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0)))
+        [NotMapped]
         public string? IntentRequiredOptOutPhrase
         {
-            get => INDEX(CommunicationPolicies!this.RequiredOptOutPhrase, MATCH(this.IntentPolicy, CommunicationPolicies!this.CommunicationPolicyId, 0)); set { }
+            get => F.AsString(F.Memo(this, "IntentRequiredOptOutPhrase", () => F.Lookup<CommunicationPolicy>(this, "CommunicationPolicies", "CommunicationPolicyId", __c => __c.CommunicationPolicies, __r => F.Of(__r.CommunicationPolicyId), F.Of(this.IntentPolicy), __r => F.Of(__r.RequiredOptOutPhrase), () => F.Of(new CommunicationPolicy().RequiredOptOutPhrase)))); set { }
         }
 
         public int? ProposedOptOutPosition { get; set; }
         // Formula OptOutGatePassed (rulebook: =OR({{IntentRequiredOptOutPhrase}} = "", AND({{ProposedOptOutPosition}} > 0, {{ProposedOptOutPosition}} <= {{IntentMaxMessageLength}})))
+        [NotMapped]
         public bool? OptOutGatePassed
         {
-            get => OR(this.IntentRequiredOptOutPhrase = "", AND(this.ProposedOptOutPosition > 0, this.ProposedOptOutPosition <= this.IntentMaxMessageLength)); set { }
+            get => F.AsBool(F.Memo(this, "OptOutGatePassed", () => F.Or(F.Bool3(F.IsBlank(F.Of(this.IntentRequiredOptOutPhrase))), F.Bool3(F.And(F.Bool3(F.Cmp(F.Nullif(F.Of(this.ProposedOptOutPosition)), ">", F.I(0))), F.Bool3(F.Cmp(F.Nullif(F.Of(this.ProposedOptOutPosition)), "<=", F.Of(this.IntentMaxMessageLength)))))))); set { }
         }
 
         // Formula ContentGatePassed (rulebook: =AND({{LengthGatePassed}}, {{OptOutGatePassed}}))
+        [NotMapped]
         public bool? ContentGatePassed
         {
-            get => AND(this.LengthGatePassed, this.OptOutGatePassed); set { }
+            get => F.AsBool(F.Memo(this, "ContentGatePassed", () => F.And(F.Bool3(F.Of(this.LengthGatePassed)), F.Bool3(F.Of(this.OptOutGatePassed))))); set { }
         }
 
         // Formula TemplateIsSendable (rulebook: =INDEX(MessageTemplates!{{IsSendableUnderApproval}}, MATCH({{MessageTemplate}}, MessageTemplates!{{MessageTemplateId}}, 0)))
+        [NotMapped]
         public bool? TemplateIsSendable
         {
-            get => INDEX(MessageTemplates!this.IsSendableUnderApproval, MATCH(this.MessageTemplate, MessageTemplates!this.MessageTemplateId, 0)); set { }
+            get => F.AsBool(F.Memo(this, "TemplateIsSendable", () => F.Lookup<MessageTemplate>(this, "MessageTemplates", "MessageTemplateId", __c => __c.MessageTemplates, __r => F.Of(__r.MessageTemplateId), F.Of(this.MessageTemplate), __r => F.Of(__r.IsSendableUnderApproval), () => F.Of(new MessageTemplate().IsSendableUnderApproval)))); set { }
         }
 
         // Formula ExecutionHasLegalClearance (rulebook: =INDEX(ProcedureExecutions!{{HasClearedLegalReview}}, MATCH({{ProcedureExecution}}, ProcedureExecutions!{{ProcedureExecutionId}}, 0)))
+        [NotMapped]
         public bool? ExecutionHasLegalClearance
         {
-            get => INDEX(ProcedureExecutions!this.HasClearedLegalReview, MATCH(this.ProcedureExecution, ProcedureExecutions!this.ProcedureExecutionId, 0)); set { }
+            get => F.AsBool(F.Memo(this, "ExecutionHasLegalClearance", () => F.Lookup<ProcedureExecution>(this, "ProcedureExecutions", "ProcedureExecutionId", __c => __c.ProcedureExecutions, __r => F.Of(__r.ProcedureExecutionId), F.Of(this.ProcedureExecution), __r => F.Of(__r.HasClearedLegalReview), () => F.Of(new ProcedureExecution().HasClearedLegalReview)))); set { }
         }
 
         // Formula IntentApprovalRole (rulebook: =INDEX(CommunicationPolicies!{{ApprovalRole}}, MATCH({{IntentPolicy}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0)))
+        [NotMapped]
         public string? IntentApprovalRole
         {
-            get => INDEX(CommunicationPolicies!this.ApprovalRole, MATCH(this.IntentPolicy, CommunicationPolicies!this.CommunicationPolicyId, 0)); set { }
+            get => F.AsString(F.Memo(this, "IntentApprovalRole", () => F.Lookup<CommunicationPolicy>(this, "CommunicationPolicies", "CommunicationPolicyId", __c => __c.CommunicationPolicies, __r => F.Of(__r.CommunicationPolicyId), F.Of(this.IntentPolicy), __r => F.Of(__r.ApprovalRole), () => F.Of(new CommunicationPolicy().ApprovalRole)))); set { }
         }
 
         // Formula ApprovalRoleAgentKind (rulebook: =INDEX(Roles!{{CurrentAgentKind}}, MATCH({{IntentApprovalRole}}, Roles!{{RoleId}}, 0)))
+        [NotMapped]
         public string? ApprovalRoleAgentKind
         {
-            get => INDEX(Roles!this.CurrentAgentKind, MATCH(this.IntentApprovalRole, Roles!this.RoleId, 0)); set { }
+            get => F.AsString(F.Memo(this, "ApprovalRoleAgentKind", () => F.Lookup<Role>(this, "Roles", "RoleId", __c => __c.Roles, __r => F.Of(__r.RoleId), F.Of(this.IntentApprovalRole), __r => F.Of(__r.CurrentAgentKind), () => F.Of(new Role().CurrentAgentKind)))); set { }
         }
 
         // Formula ApprovalIsHuman (rulebook: ={{ApprovalRoleAgentKind}} = "Human")
+        [NotMapped]
         public bool? ApprovalIsHuman
         {
-            get => this.ApprovalRoleAgentKind = "Human"; set { }
+            get => F.AsBool(F.Memo(this, "ApprovalIsHuman", () => F.Eq(F.Of(this.ApprovalRoleAgentKind), F.S("Human")))); set { }
         }
 
         // Formula AuthorizationGatePassed (rulebook: =AND({{TemplateIsSendable}}, AND({{ExecutionHasLegalClearance}}, {{ApprovalIsHuman}})))
+        [NotMapped]
         public bool? AuthorizationGatePassed
         {
-            get => AND(this.TemplateIsSendable, AND(this.ExecutionHasLegalClearance, this.ApprovalIsHuman)); set { }
+            get => F.AsBool(F.Memo(this, "AuthorizationGatePassed", () => F.And(F.Bool3(F.Of(this.TemplateIsSendable)), F.Bool3(F.And(F.Bool3(F.Of(this.ExecutionHasLegalClearance)), F.Bool3(F.Of(this.ApprovalIsHuman))))))); set { }
         }
 
         // Formula IsClearedToSend (rulebook: =AND({{PermissionGatePassed}}, AND({{TimingGatePassed}}, AND({{ContentGatePassed}}, {{AuthorizationGatePassed}}))))
+        [NotMapped]
         public bool? IsClearedToSend
         {
-            get => AND(this.PermissionGatePassed, AND(this.TimingGatePassed, AND(this.ContentGatePassed, this.AuthorizationGatePassed))); set { }
+            get => F.AsBool(F.Memo(this, "IsClearedToSend", () => F.And(F.Bool3(F.Of(this.PermissionGatePassed)), F.Bool3(F.And(F.Bool3(F.Of(this.TimingGatePassed)), F.Bool3(F.And(F.Bool3(F.Of(this.ContentGatePassed)), F.Bool3(F.Of(this.AuthorizationGatePassed))))))))); set { }
         }
 
         // Formula BlockingGateName (rulebook: =IF({{IsClearedToSend}}, "", IF(NOT({{PermissionGatePassed}}), "Permission", IF(NOT({{TimingGatePassed}}), "Timing", IF(NOT({{ContentGatePassed}}), "Content", "Authorization")))))
+        [NotMapped]
         public string? BlockingGateName
         {
-            get => IF(this.IsClearedToSend, "", IF(NOT(this.PermissionGatePassed), "Permission", IF(NOT(this.TimingGatePassed), "Timing", IF(NOT(this.ContentGatePassed), "Content", "Authorization")))); set { }
+            get => F.AsString(F.Memo(this, "BlockingGateName", () => (F.Truthy(F.Bool3(F.Of(this.IsClearedToSend))) ? F.S("") : (F.Truthy(F.Bool3(F.Not(F.Bool3(F.Of(this.PermissionGatePassed))))) ? F.S("Permission") : (F.Truthy(F.Bool3(F.Not(F.Bool3(F.Of(this.TimingGatePassed))))) ? F.S("Timing") : (F.Truthy(F.Bool3(F.Not(F.Bool3(F.Of(this.ContentGatePassed))))) ? F.S("Content") : F.S("Authorization"))))))); set { }
         }
 
         // Formula HasResultingDelivery (rulebook: ={{ResultingDelivery}} <> "")
+        [NotMapped]
         public bool? HasResultingDelivery
         {
-            get => this.ResultingDelivery <> ""; set { }
+            get => F.AsBool(F.Memo(this, "HasResultingDelivery", () => F.IsNotBlank(F.Of(this.ResultingDelivery)))); set { }
         }
 
         // Formula ResultingDeliveryWasTransmitted (rulebook: =INDEX(MessageDeliveries!{{WasActuallyTransmitted}}, MATCH({{ResultingDelivery}}, MessageDeliveries!{{MessageDeliveryId}}, 0)))
+        [NotMapped]
         public bool? ResultingDeliveryWasTransmitted
         {
-            get => INDEX(MessageDeliveries!this.WasActuallyTransmitted, MATCH(this.ResultingDelivery, MessageDeliveries!this.MessageDeliveryId, 0)); set { }
+            get => F.AsBool(F.Memo(this, "ResultingDeliveryWasTransmitted", () => F.Lookup<MessageDelivery>(this, "MessageDeliveries", "MessageDeliveryId", __c => __c.MessageDeliveries, __r => F.Of(__r.MessageDeliveryId), F.Of(this.ResultingDelivery), __r => F.Of(__r.WasActuallyTransmitted), () => F.Of(new MessageDelivery().WasActuallyTransmitted)))); set { }
         }
 
         // Formula IsOverriddenRefusal (rulebook: =AND(NOT({{IsClearedToSend}}), AND({{HasResultingDelivery}}, {{ResultingDeliveryWasTransmitted}})))
+        [NotMapped]
         public bool? IsOverriddenRefusal
         {
-            get => AND(NOT(this.IsClearedToSend), AND(this.HasResultingDelivery, this.ResultingDeliveryWasTransmitted)); set { }
+            get => F.AsBool(F.Memo(this, "IsOverriddenRefusal", () => F.And(F.Bool3(F.Not(F.Bool3(F.Of(this.IsClearedToSend)))), F.Bool3(F.And(F.Bool3(F.Of(this.HasResultingDelivery)), F.Bool3(F.Of(this.ResultingDeliveryWasTransmitted))))))); set { }
         }
 
         // Formula IsSilentlyDropped (rulebook: =AND(NOT({{IsClearedToSend}}), NOT({{HasResultingDelivery}})))
+        [NotMapped]
         public bool? IsSilentlyDropped
         {
-            get => AND(NOT(this.IsClearedToSend), NOT(this.HasResultingDelivery)); set { }
+            get => F.AsBool(F.Memo(this, "IsSilentlyDropped", () => F.And(F.Bool3(F.Not(F.Bool3(F.Of(this.IsClearedToSend)))), F.Bool3(F.Not(F.Bool3(F.Of(this.HasResultingDelivery))))))); set { }
         }
 
         // Formula ResultingDeliveryException (rulebook: =INDEX(MessageDeliveries!{{InvokedException}}, MATCH({{ResultingDelivery}}, MessageDeliveries!{{MessageDeliveryId}}, 0)))
+        [NotMapped]
         public string? ResultingDeliveryException
         {
-            get => INDEX(MessageDeliveries!this.InvokedException, MATCH(this.ResultingDelivery, MessageDeliveries!this.MessageDeliveryId, 0)); set { }
+            get => F.AsString(F.Memo(this, "ResultingDeliveryException", () => F.Lookup<MessageDelivery>(this, "MessageDeliveries", "MessageDeliveryId", __c => __c.MessageDeliveries, __r => F.Of(__r.MessageDeliveryId), F.Of(this.ResultingDelivery), __r => F.Of(__r.InvokedException), () => F.Of(new MessageDelivery().InvokedException)))); set { }
         }
 
         // Formula RefusalCitedAnException (rulebook: ={{ResultingDeliveryException}} <> "")
+        [NotMapped]
         public bool? RefusalCitedAnException
         {
-            get => this.ResultingDeliveryException <> ""; set { }
+            get => F.AsBool(F.Memo(this, "RefusalCitedAnException", () => F.IsNotBlank(F.Of(this.ResultingDeliveryException)))); set { }
         }
 
         // Formula IsProperlyHandledRefusal (rulebook: =AND(NOT({{IsClearedToSend}}), AND({{HasResultingDelivery}}, AND(NOT({{ResultingDeliveryWasTransmitted}}), {{RefusalCitedAnException}}))))
+        [NotMapped]
         public bool? IsProperlyHandledRefusal
         {
-            get => AND(NOT(this.IsClearedToSend), AND(this.HasResultingDelivery, AND(NOT(this.ResultingDeliveryWasTransmitted), this.RefusalCitedAnException))); set { }
+            get => F.AsBool(F.Memo(this, "IsProperlyHandledRefusal", () => F.And(F.Bool3(F.Not(F.Bool3(F.Of(this.IsClearedToSend)))), F.Bool3(F.And(F.Bool3(F.Of(this.HasResultingDelivery)), F.Bool3(F.And(F.Bool3(F.Not(F.Bool3(F.Of(this.ResultingDeliveryWasTransmitted)))), F.Bool3(F.Of(this.RefusalCitedAnException))))))))); set { }
         }
 
         // Formula RefusalFailureExecutionKey (rulebook: =IF(OR({{IsOverriddenRefusal}}, {{IsSilentlyDropped}}), {{ProcedureExecution}}, ""))
+        [NotMapped]
         public string? RefusalFailureExecutionKey
         {
-            get => IF(OR(this.IsOverriddenRefusal, this.IsSilentlyDropped), this.ProcedureExecution, ""); set { }
+            get => F.AsString(F.Memo(this, "RefusalFailureExecutionKey", () => (F.Truthy(F.Bool3(F.Or(F.Bool3(F.Of(this.IsOverriddenRefusal)), F.Bool3(F.Of(this.IsSilentlyDropped))))) ? F.Of(this.ProcedureExecution) : F.S("")))); set { }
         }
 
         // Formula IntentExecutionKey (rulebook: ={{ProcedureExecution}})
+        [NotMapped]
         public string? IntentExecutionKey
         {
-            get => this.ProcedureExecution; set { }
+            get => F.AsString(F.Memo(this, "IntentExecutionKey", () => F.Of(this.ProcedureExecution))); set { }
         }
 
         // Formula DeliveredIntentExecutionKey (rulebook: =IF(AND({{HasResultingDelivery}}, {{ResultingDeliveryWasTransmitted}}), {{ProcedureExecution}}, ""))
+        [NotMapped]
         public string? DeliveredIntentExecutionKey
         {
-            get => IF(AND(this.HasResultingDelivery, this.ResultingDeliveryWasTransmitted), this.ProcedureExecution, ""); set { }
+            get => F.AsString(F.Memo(this, "DeliveredIntentExecutionKey", () => (F.Truthy(F.Bool3(F.And(F.Bool3(F.Of(this.HasResultingDelivery)), F.Bool3(F.Of(this.ResultingDeliveryWasTransmitted))))) ? F.Of(this.ProcedureExecution) : F.S("")))); set { }
         }
 
         // Formula DroppedIntentExecutionKey (rulebook: =IF({{IsSilentlyDropped}}, {{ProcedureExecution}}, ""))
+        [NotMapped]
         public string? DroppedIntentExecutionKey
         {
-            get => IF(this.IsSilentlyDropped, this.ProcedureExecution, ""); set { }
+            get => F.AsString(F.Memo(this, "DroppedIntentExecutionKey", () => (F.Truthy(F.Bool3(F.Of(this.IsSilentlyDropped))) ? F.Of(this.ProcedureExecution) : F.S("")))); set { }
         }
 
         // Formula MyApprovalWasInForce (rulebook: ={{TemplateIsSendable}})
+        [NotMapped]
         public bool? MyApprovalWasInForce
         {
-            get => this.TemplateIsSendable; set { }
+            get => F.AsBool(F.Memo(this, "MyApprovalWasInForce", () => F.Of(this.TemplateIsSendable))); set { }
         }
 
         // Formula RefusedOnApprovedContent (rulebook: =AND({{MyApprovalWasInForce}}, NOT({{ContentGatePassed}})))
+        [NotMapped]
         public bool? RefusedOnApprovedContent
         {
-            get => AND(this.MyApprovalWasInForce, NOT(this.ContentGatePassed)); set { }
+            get => F.AsBool(F.Memo(this, "RefusedOnApprovedContent", () => F.And(F.Bool3(F.Of(this.MyApprovalWasInForce)), F.Bool3(F.Not(F.Bool3(F.Of(this.ContentGatePassed))))))); set { }
         }
 
         // Formula RefusedOnOptOutOnly (rulebook: =AND(NOT({{OptOutGatePassed}}), {{LengthGatePassed}}))
+        [NotMapped]
         public bool? RefusedOnOptOutOnly
         {
-            get => AND(NOT(this.OptOutGatePassed), this.LengthGatePassed); set { }
+            get => F.AsBool(F.Memo(this, "RefusedOnOptOutOnly", () => F.And(F.Bool3(F.Not(F.Bool3(F.Of(this.OptOutGatePassed)))), F.Bool3(F.Of(this.LengthGatePassed))))); set { }
         }
 
         // Formula RefusalWasOnMyRules (rulebook: =AND(NOT({{IsClearedToSend}}), OR(NOT({{ContentGatePassed}}), NOT({{TimingGatePassed}}))))
+        [NotMapped]
         public bool? RefusalWasOnMyRules
         {
-            get => AND(NOT(this.IsClearedToSend), OR(NOT(this.ContentGatePassed), NOT(this.TimingGatePassed))); set { }
+            get => F.AsBool(F.Memo(this, "RefusalWasOnMyRules", () => F.And(F.Bool3(F.Not(F.Bool3(F.Of(this.IsClearedToSend)))), F.Bool3(F.Or(F.Bool3(F.Not(F.Bool3(F.Of(this.ContentGatePassed)))), F.Bool3(F.Not(F.Bool3(F.Of(this.TimingGatePassed))))))))); set { }
         }
 
         // Formula RefusalWasOutsideMyControl (rulebook: =AND(NOT({{IsClearedToSend}}), OR(NOT({{PermissionGatePassed}}), NOT({{AuthorizationGatePassed}}))))
+        [NotMapped]
         public bool? RefusalWasOutsideMyControl
         {
-            get => AND(NOT(this.IsClearedToSend), OR(NOT(this.PermissionGatePassed), NOT(this.AuthorizationGatePassed))); set { }
+            get => F.AsBool(F.Memo(this, "RefusalWasOutsideMyControl", () => F.And(F.Bool3(F.Not(F.Bool3(F.Of(this.IsClearedToSend)))), F.Bool3(F.Or(F.Bool3(F.Not(F.Bool3(F.Of(this.PermissionGatePassed)))), F.Bool3(F.Not(F.Bool3(F.Of(this.AuthorizationGatePassed))))))))); set { }
         }
 
         public bool? ApproverWasNotified { get; set; }
         // Formula IsUnreportedRefusalOnMyRules (rulebook: =AND({{RefusalWasOnMyRules}}, NOT({{ApproverWasNotified}})))
+        [NotMapped]
         public bool? IsUnreportedRefusalOnMyRules
         {
-            get => AND(this.RefusalWasOnMyRules, NOT(this.ApproverWasNotified)); set { }
+            get => F.AsBool(F.Memo(this, "IsUnreportedRefusalOnMyRules", () => F.And(F.Bool3(F.Of(this.RefusalWasOnMyRules)), F.Bool3(F.Not(F.IsTrueV(F.Of(this.ApproverWasNotified))))))); set { }
         }
 
         // Formula IsApprovalOverriddenSilently (rulebook: =AND({{RefusedOnApprovedContent}}, NOT({{ApproverWasNotified}})))
+        [NotMapped]
         public bool? IsApprovalOverriddenSilently
         {
-            get => AND(this.RefusedOnApprovedContent, NOT(this.ApproverWasNotified)); set { }
+            get => F.AsBool(F.Memo(this, "IsApprovalOverriddenSilently", () => F.And(F.Bool3(F.Of(this.RefusedOnApprovedContent)), F.Bool3(F.Not(F.IsTrueV(F.Of(this.ApproverWasNotified))))))); set { }
         }
 
         public string? AlternateChannelIntent { get; set; }
         // Formula HasAlternateChannelAttempt (rulebook: ={{AlternateChannelIntent}} <> "")
+        [NotMapped]
         public bool? HasAlternateChannelAttempt
         {
-            get => this.AlternateChannelIntent <> ""; set { }
+            get => F.AsBool(F.Memo(this, "HasAlternateChannelAttempt", () => F.IsNotBlank(F.Of(this.AlternateChannelIntent)))); set { }
         }
 
         // Formula AlternateAttemptWasCleared (rulebook: =INDEX(SendIntents!{{IsClearedToSend}}, MATCH({{AlternateChannelIntent}}, SendIntents!{{SendIntentId}}, 0)))
+        [NotMapped]
         public bool? AlternateAttemptWasCleared
         {
-            get => INDEX(SendIntents!this.IsClearedToSend, MATCH(this.AlternateChannelIntent, SendIntents!this.SendIntentId, 0)); set { }
+            get => F.AsBool(F.Memo(this, "AlternateAttemptWasCleared", () => F.Lookup<SendIntent>(this, "SendIntents", "SendIntentId", __c => __c.SendIntents, __r => F.Of(__r.SendIntentId), F.Of(this.AlternateChannelIntent), __r => F.Of(__r.IsClearedToSend), () => F.Of(new SendIntent().IsClearedToSend)))); set { }
         }
 
         // Formula IsRefusedWithNoAlternative (rulebook: =AND(NOT({{IsClearedToSend}}), NOT({{HasAlternateChannelAttempt}})))
+        [NotMapped]
         public bool? IsRefusedWithNoAlternative
         {
-            get => AND(NOT(this.IsClearedToSend), NOT(this.HasAlternateChannelAttempt)); set { }
+            get => F.AsBool(F.Memo(this, "IsRefusedWithNoAlternative", () => F.And(F.Bool3(F.Not(F.Bool3(F.Of(this.IsClearedToSend)))), F.Bool3(F.Not(F.Bool3(F.Of(this.HasAlternateChannelAttempt))))))); set { }
         }
 
         // Formula ExceptionPrescribedAnAlternative (rulebook: =AND({{RefusalCitedAnException}}, {{ResultingDeliveryException}} <> ""))
+        [NotMapped]
         public bool? ExceptionPrescribedAnAlternative
         {
-            get => AND(this.RefusalCitedAnException, this.ResultingDeliveryException <> ""); set { }
+            get => F.AsBool(F.Memo(this, "ExceptionPrescribedAnAlternative", () => F.And(F.Bool3(F.Of(this.RefusalCitedAnException)), F.Bool3(F.IsNotBlank(F.Of(this.ResultingDeliveryException)))))); set { }
         }
 
         // Formula PrescribedHandlingWasPerformed (rulebook: =AND({{ExceptionPrescribedAnAlternative}}, AND({{HasAlternateChannelAttempt}}, {{AlternateAttemptWasCleared}})))
+        [NotMapped]
         public bool? PrescribedHandlingWasPerformed
         {
-            get => AND(this.ExceptionPrescribedAnAlternative, AND(this.HasAlternateChannelAttempt, this.AlternateAttemptWasCleared)); set { }
+            get => F.AsBool(F.Memo(this, "PrescribedHandlingWasPerformed", () => F.And(F.Bool3(F.Of(this.ExceptionPrescribedAnAlternative)), F.Bool3(F.And(F.Bool3(F.Of(this.HasAlternateChannelAttempt)), F.Bool3(F.Of(this.AlternateAttemptWasCleared))))))); set { }
         }
 
         // Formula IsSuppressionWithoutRemedy (rulebook: =AND({{ExceptionPrescribedAnAlternative}}, NOT({{PrescribedHandlingWasPerformed}})))
+        [NotMapped]
         public bool? IsSuppressionWithoutRemedy
         {
-            get => AND(this.ExceptionPrescribedAnAlternative, NOT(this.PrescribedHandlingWasPerformed)); set { }
+            get => F.AsBool(F.Memo(this, "IsSuppressionWithoutRemedy", () => F.And(F.Bool3(F.Of(this.ExceptionPrescribedAnAlternative)), F.Bool3(F.Not(F.Bool3(F.Of(this.PrescribedHandlingWasPerformed))))))); set { }
         }
 
-        public DateTime? RefusalRecordedAt { get; set; }
+        public DateTimeOffset? RefusalRecordedAt { get; set; }
         // Formula HasDurableRefusalRecord (rulebook: ={{RefusalRecordedAt}} <> "")
+        [NotMapped]
         public bool? HasDurableRefusalRecord
         {
-            get => this.RefusalRecordedAt <> ""; set { }
+            get => F.AsBool(F.Memo(this, "HasDurableRefusalRecord", () => F.IsNotBlank(F.Of(this.RefusalRecordedAt)))); set { }
         }
 
         // Formula RefusalWasEscalated (rulebook: ={{RefusalNotifiedRole}} <> "")
+        [NotMapped]
         public bool? RefusalWasEscalated
         {
-            get => this.RefusalNotifiedRole <> ""; set { }
+            get => F.AsBool(F.Memo(this, "RefusalWasEscalated", () => F.IsNotBlank(F.Of(this.RefusalNotifiedRole)))); set { }
         }
 
         // Formula IsUnrecordedRefusal (rulebook: =AND({{IsSilentlyDropped}}, AND(NOT({{HasDurableRefusalRecord}}), NOT({{RefusalCitedAnException}}))))
+        [NotMapped]
         public bool? IsUnrecordedRefusal
         {
-            get => AND(this.IsSilentlyDropped, AND(NOT(this.HasDurableRefusalRecord), NOT(this.RefusalCitedAnException))); set { }
+            get => F.AsBool(F.Memo(this, "IsUnrecordedRefusal", () => F.And(F.Bool3(F.Of(this.IsSilentlyDropped)), F.Bool3(F.And(F.Bool3(F.Not(F.Bool3(F.Of(this.HasDurableRefusalRecord)))), F.Bool3(F.Not(F.Bool3(F.Of(this.RefusalCitedAnException))))))))); set { }
         }
 
         // Formula IsUnescalatedRefusal (rulebook: =AND(NOT({{IsClearedToSend}}), NOT({{RefusalWasEscalated}})))
+        [NotMapped]
         public bool? IsUnescalatedRefusal
         {
-            get => AND(NOT(this.IsClearedToSend), NOT(this.RefusalWasEscalated)); set { }
+            get => F.AsBool(F.Memo(this, "IsUnescalatedRefusal", () => F.And(F.Bool3(F.Not(F.Bool3(F.Of(this.IsClearedToSend)))), F.Bool3(F.Not(F.Bool3(F.Of(this.RefusalWasEscalated))))))); set { }
         }
 
         // Formula UnescalatedRefusalRoleKey (rulebook: =IF({{IsUnrecordedRefusal}}, {{RefusalNotifiedRole}}, ""))
+        [NotMapped]
         public string? UnescalatedRefusalRoleKey
         {
-            get => IF(this.IsUnrecordedRefusal, this.RefusalNotifiedRole, ""); set { }
+            get => F.AsString(F.Memo(this, "UnescalatedRefusalRoleKey", () => (F.Truthy(F.Bool3(F.Of(this.IsUnrecordedRefusal))) ? F.Of(this.RefusalNotifiedRole) : F.S("")))); set { }
         }
 
         // Formula UnrecordedRefusalExecutionKey (rulebook: =IF({{IsUnrecordedRefusal}}, {{ProcedureExecution}}, ""))
+        [NotMapped]
         public string? UnrecordedRefusalExecutionKey
         {
-            get => IF(this.IsUnrecordedRefusal, this.ProcedureExecution, ""); set { }
+            get => F.AsString(F.Memo(this, "UnrecordedRefusalExecutionKey", () => (F.Truthy(F.Bool3(F.Of(this.IsUnrecordedRefusal))) ? F.Of(this.ProcedureExecution) : F.S("")))); set { }
         }
 
         public string? RetryIntent { get; set; }
         // Formula WasDeferredOnTiming (rulebook: =AND(NOT({{TimingGatePassed}}), AND({{PermissionGatePassed}}, {{ContentGatePassed}})))
+        [NotMapped]
         public bool? WasDeferredOnTiming
         {
-            get => AND(NOT(this.TimingGatePassed), AND(this.PermissionGatePassed, this.ContentGatePassed)); set { }
+            get => F.AsBool(F.Memo(this, "WasDeferredOnTiming", () => F.And(F.Bool3(F.Not(F.Bool3(F.Of(this.TimingGatePassed)))), F.Bool3(F.And(F.Bool3(F.Of(this.PermissionGatePassed)), F.Bool3(F.Of(this.ContentGatePassed))))))); set { }
         }
 
         // Formula AsOfInstant (rulebook: =INDEX(EvaluationContexts!{{AsOfInstant}}, MATCH({{EvaluationContext}}, EvaluationContexts!{{EvaluationContextId}}, 0)))
-        public DateTime? AsOfInstant
+        [NotMapped]
+        public DateTimeOffset? AsOfInstant
         {
-            get => INDEX(EvaluationContexts!this.AsOfInstant, MATCH(this.EvaluationContext, EvaluationContexts!this.EvaluationContextId, 0)); set { }
+            get => F.AsDateTime(F.Memo(this, "AsOfInstant", () => F.Lookup<EvaluationContext>(this, "EvaluationContexts", "EvaluationContextId", __c => __c.EvaluationContexts, __r => F.Of(__r.EvaluationContextId), F.Of(this.EvaluationContext), __r => F.Of(__r.AsOfInstant), () => F.Of(new EvaluationContext().AsOfInstant)))); set { }
         }
 
         // Formula WindowHasSinceReopened (rulebook: =AND({{HoursUntilWindowOpens}} > 0, DATETIME_DIFF({{AsOfInstant}}, {{EvaluatedAt}}, "hours") > {{HoursUntilWindowOpens}}))
+        [NotMapped]
         public bool? WindowHasSinceReopened
         {
-            get => AND(this.HoursUntilWindowOpens > 0, DATETIME_DIFF(this.AsOfInstant, this.EvaluatedAt, "hours") > this.HoursUntilWindowOpens); set { }
+            get => F.AsBool(F.Memo(this, "WindowHasSinceReopened", () => F.And(F.Bool3(F.Cmp(F.Of(this.HoursUntilWindowOpens), ">", F.I(0))), F.Bool3(F.Cmp(F.DatetimeDiff(F.Of(this.AsOfInstant), F.Of(this.EvaluatedAt), F.S("hours")), ">", F.Of(this.HoursUntilWindowOpens)))))); set { }
         }
 
         // Formula HasRetryAttempt (rulebook: ={{RetryIntent}} <> "")
+        [NotMapped]
         public bool? HasRetryAttempt
         {
-            get => this.RetryIntent <> ""; set { }
+            get => F.AsBool(F.Memo(this, "HasRetryAttempt", () => F.IsNotBlank(F.Of(this.RetryIntent)))); set { }
         }
 
         // Formula RetryWasCleared (rulebook: =INDEX(SendIntents!{{IsClearedToSend}}, MATCH({{RetryIntent}}, SendIntents!{{SendIntentId}}, 0)))
+        [NotMapped]
         public bool? RetryWasCleared
         {
-            get => INDEX(SendIntents!this.IsClearedToSend, MATCH(this.RetryIntent, SendIntents!this.SendIntentId, 0)); set { }
+            get => F.AsBool(F.Memo(this, "RetryWasCleared", () => F.Lookup<SendIntent>(this, "SendIntents", "SendIntentId", __c => __c.SendIntents, __r => F.Of(__r.SendIntentId), F.Of(this.RetryIntent), __r => F.Of(__r.IsClearedToSend), () => F.Of(new SendIntent().IsClearedToSend)))); set { }
         }
 
         // Formula IsAbandonedDeferral (rulebook: =AND({{WasDeferredOnTiming}}, AND({{WindowHasSinceReopened}}, NOT({{HasRetryAttempt}}))))
+        [NotMapped]
         public bool? IsAbandonedDeferral
         {
-            get => AND(this.WasDeferredOnTiming, AND(this.WindowHasSinceReopened, NOT(this.HasRetryAttempt))); set { }
+            get => F.AsBool(F.Memo(this, "IsAbandonedDeferral", () => F.And(F.Bool3(F.Of(this.WasDeferredOnTiming)), F.Bool3(F.And(F.Bool3(F.Of(this.WindowHasSinceReopened)), F.Bool3(F.Not(F.Bool3(F.Of(this.HasRetryAttempt))))))))); set { }
         }
 
         // Formula DeferralAgeHours (rulebook: =DATETIME_DIFF({{AsOfInstant}}, {{EvaluatedAt}}, "hours"))
+        [NotMapped]
         public int? DeferralAgeHours
         {
-            get => DATETIME_DIFF(this.AsOfInstant, this.EvaluatedAt, "hours"); set { }
+            get => F.AsInt(F.Memo(this, "DeferralAgeHours", () => F.Integer(F.DatetimeDiff(F.Of(this.AsOfInstant), F.Of(this.EvaluatedAt), F.S("hours"))))); set { }
         }
 
         // Formula IsStaleDeferral (rulebook: =AND({{WasDeferredOnTiming}}, {{DeferralAgeHours}} > 24))
+        [NotMapped]
         public bool? IsStaleDeferral
         {
-            get => AND(this.WasDeferredOnTiming, this.DeferralAgeHours > 24); set { }
+            get => F.AsBool(F.Memo(this, "IsStaleDeferral", () => F.And(F.Bool3(F.Of(this.WasDeferredOnTiming)), F.Bool3(F.Cmp(F.Of(this.DeferralAgeHours), ">", F.I(24)))))); set { }
         }
 
         public string? EvaluatingRoleAssignment { get; set; }
         // Formula EnforcedByUnauthorizedAgent (rulebook: =INDEX(RoleAssignments!{{IsUnauthorizedEnforcementAgent}}, MATCH({{EvaluatingRoleAssignment}}, RoleAssignments!{{RoleAssignmentId}}, 0)))
+        [NotMapped]
         public bool? EnforcedByUnauthorizedAgent
         {
-            get => INDEX(RoleAssignments!this.IsUnauthorizedEnforcementAgent, MATCH(this.EvaluatingRoleAssignment, RoleAssignments!this.RoleAssignmentId, 0)); set { }
+            get => F.AsBool(F.Memo(this, "EnforcedByUnauthorizedAgent", () => F.Lookup<RoleAssignment>(this, "RoleAssignments", "RoleAssignmentId", __c => __c.RoleAssignments, __r => F.Of(__r.RoleAssignmentId), F.Of(this.EvaluatingRoleAssignment), __r => F.Of(__r.IsUnauthorizedEnforcementAgent), () => F.Of(new RoleAssignment().IsUnauthorizedEnforcementAgent)))); set { }
         }
 
         // Formula ConsentInputWasResolvable (rulebook: ={{RecipientConsentStatusRaw}} <> "")
+        [NotMapped]
         public bool? ConsentInputWasResolvable
         {
-            get => this.RecipientConsentStatusRaw <> ""; set { }
+            get => F.AsBool(F.Memo(this, "ConsentInputWasResolvable", () => F.IsNotBlank(F.Of(this.RecipientConsentStatusRaw)))); set { }
         }
 
         // Formula RecipientConsentStatusRaw (rulebook: =INDEX(Recipients!{{SmsConsentStatus}}, MATCH({{Recipient}}, Recipients!{{RecipientId}}, 0)))
+        [NotMapped]
         public string? RecipientConsentStatusRaw
         {
-            get => INDEX(Recipients!this.SmsConsentStatus, MATCH(this.Recipient, Recipients!this.RecipientId, 0)); set { }
+            get => F.AsString(F.Memo(this, "RecipientConsentStatusRaw", () => F.Lookup<Recipient>(this, "Recipients", "RecipientId", __c => __c.Recipients, __r => F.Of(__r.RecipientId), F.Of(this.Recipient), __r => F.Of(__r.SmsConsentStatus), () => F.Of(new Recipient().SmsConsentStatus)))); set { }
         }
 
         // Formula PolicyInputWasResolvable (rulebook: ={{IntentPolicy}} <> "")
+        [NotMapped]
         public bool? PolicyInputWasResolvable
         {
-            get => this.IntentPolicy <> ""; set { }
+            get => F.AsBool(F.Memo(this, "PolicyInputWasResolvable", () => F.IsNotBlank(F.Of(this.IntentPolicy)))); set { }
         }
 
         // Formula AllGateInputsResolved (rulebook: =AND({{ConsentInputWasResolvable}}, {{PolicyInputWasResolvable}}))
+        [NotMapped]
         public bool? AllGateInputsResolved
         {
-            get => AND(this.ConsentInputWasResolvable, this.PolicyInputWasResolvable); set { }
+            get => F.AsBool(F.Memo(this, "AllGateInputsResolved", () => F.And(F.Bool3(F.Of(this.ConsentInputWasResolvable)), F.Bool3(F.Of(this.PolicyInputWasResolvable))))); set { }
         }
 
         // Formula IsUnevaluableRefusal (rulebook: =AND(NOT({{IsClearedToSend}}), NOT({{AllGateInputsResolved}})))
+        [NotMapped]
         public bool? IsUnevaluableRefusal
         {
-            get => AND(NOT(this.IsClearedToSend), NOT(this.AllGateInputsResolved)); set { }
+            get => F.AsBool(F.Memo(this, "IsUnevaluableRefusal", () => F.And(F.Bool3(F.Not(F.Bool3(F.Of(this.IsClearedToSend)))), F.Bool3(F.Not(F.Bool3(F.Of(this.AllGateInputsResolved))))))); set { }
         }
 
         public bool? GateResultWasIndependentlyConfirmed { get; set; }
         // Formula IsSelfWitnessedDecision (rulebook: =NOT({{GateResultWasIndependentlyConfirmed}}))
+        [NotMapped]
         public bool? IsSelfWitnessedDecision
         {
-            get => NOT(this.GateResultWasIndependentlyConfirmed); set { }
+            get => F.AsBool(F.Memo(this, "IsSelfWitnessedDecision", () => F.Not(F.IsTrueV(F.Of(this.GateResultWasIndependentlyConfirmed))))); set { }
         }
 
         // Formula IsIndependentlyConfirmed (rulebook: =AND({{HasResultingDelivery}}, {{ResultingDeliveryWasTransmitted}}))
+        [NotMapped]
         public bool? IsIndependentlyConfirmed
         {
-            get => AND(this.HasResultingDelivery, this.ResultingDeliveryWasTransmitted); set { }
+            get => F.AsBool(F.Memo(this, "IsIndependentlyConfirmed", () => F.And(F.Bool3(F.Of(this.HasResultingDelivery)), F.Bool3(F.Of(this.ResultingDeliveryWasTransmitted))))); set { }
         }
 
         // Formula IndependentlyConfirmedExecutionKey (rulebook: =IF({{IsIndependentlyConfirmed}}, {{ProcedureExecution}}, ""))
+        [NotMapped]
         public string? IndependentlyConfirmedExecutionKey
         {
-            get => IF(this.IsIndependentlyConfirmed, this.ProcedureExecution, ""); set { }
+            get => F.AsString(F.Memo(this, "IndependentlyConfirmedExecutionKey", () => (F.Truthy(F.Bool3(F.Of(this.IsIndependentlyConfirmed))) ? F.Of(this.ProcedureExecution) : F.S("")))); set { }
         }
 
         public string? SemanticTypeIri { get; set; }
@@ -511,142 +591,178 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string? RefusalNotifiedRole { get; set; }
         public string? EvaluationContext { get; set; }
 
-        private ProcedureExecution _procedureExecution;
+        private ProcedureExecution _procedureExecutionRef;
 
         [ForeignKey("ProcedureExecution")]
-        public virtual ProcedureExecution ProcedureExecution
+        public virtual ProcedureExecution ProcedureExecutionRef
         {
             get
             {
-                if (_procedureExecution == null && !string.IsNullOrEmpty(ProcedureExecution))
+                if (_procedureExecutionRef == null && !string.IsNullOrEmpty(ProcedureExecution))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access ProcedureExecution - no database context is set. ProcedureExecution: " + ProcedureExecution + ".");
+                            throw new InvalidOperationException("Cannot access ProcedureExecutionRef - no database context is set. ProcedureExecution: " + ProcedureExecution + ".");
                         }
                         return null;
                     }
-                    _procedureExecution = Context.ProcedureExecutions.Find(ProcedureExecution);
-                    if (_procedureExecution != null)
+                    _procedureExecutionRef = base.SoAContext.ProcedureExecutions.Find(ProcedureExecution);
+                    if (_procedureExecutionRef != null)
                     {
-                        Context.Attach(_procedureExecution);
+                        base.SoAContext.Attach(_procedureExecutionRef);
                     }
                 }
-                return _procedureExecution;
+                return _procedureExecutionRef;
             }
             set
             {
-                if (_procedureExecution != value)
+                if (_procedureExecutionRef != value)
                 {
-                    _procedureExecution = value;
-                    ProcedureExecution = _procedureExecution == null ? default : _procedureExecution.ProcedureExecutionId;
+                    _procedureExecutionRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_procedureExecutionRef != null)
+                    {
+                        ProcedureExecution = _procedureExecutionRef.ProcedureExecutionId;
+                    }
                 }
             }
         }
 
-        private StepExecution _stepExecution;
+        private StepExecution _stepExecutionRef;
 
         [ForeignKey("StepExecution")]
-        public virtual StepExecution StepExecution
+        public virtual StepExecution StepExecutionRef
         {
             get
             {
-                if (_stepExecution == null && !string.IsNullOrEmpty(StepExecution))
+                if (_stepExecutionRef == null && !string.IsNullOrEmpty(StepExecution))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access StepExecution - no database context is set. StepExecution: " + StepExecution + ".");
+                            throw new InvalidOperationException("Cannot access StepExecutionRef - no database context is set. StepExecution: " + StepExecution + ".");
                         }
                         return null;
                     }
-                    _stepExecution = Context.StepExecutions.Find(StepExecution);
-                    if (_stepExecution != null)
+                    _stepExecutionRef = base.SoAContext.StepExecutions.Find(StepExecution);
+                    if (_stepExecutionRef != null)
                     {
-                        Context.Attach(_stepExecution);
+                        base.SoAContext.Attach(_stepExecutionRef);
                     }
                 }
-                return _stepExecution;
+                return _stepExecutionRef;
             }
             set
             {
-                if (_stepExecution != value)
+                if (_stepExecutionRef != value)
                 {
-                    _stepExecution = value;
-                    StepExecution = _stepExecution == null ? default : _stepExecution.StepExecutionId;
+                    _stepExecutionRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_stepExecutionRef != null)
+                    {
+                        StepExecution = _stepExecutionRef.StepExecutionId;
+                    }
                 }
             }
         }
 
-        private Recipient _recipient;
+        private Recipient _recipientRef;
 
         [ForeignKey("Recipient")]
-        public virtual Recipient Recipient
+        public virtual Recipient RecipientRef
         {
             get
             {
-                if (_recipient == null && !string.IsNullOrEmpty(Recipient))
+                if (_recipientRef == null && !string.IsNullOrEmpty(Recipient))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access Recipient - no database context is set. Recipient: " + Recipient + ".");
+                            throw new InvalidOperationException("Cannot access RecipientRef - no database context is set. Recipient: " + Recipient + ".");
                         }
                         return null;
                     }
-                    _recipient = Context.Recipients.Find(Recipient);
-                    if (_recipient != null)
+                    _recipientRef = base.SoAContext.Recipients.Find(Recipient);
+                    if (_recipientRef != null)
                     {
-                        Context.Attach(_recipient);
+                        base.SoAContext.Attach(_recipientRef);
                     }
                 }
-                return _recipient;
+                return _recipientRef;
             }
             set
             {
-                if (_recipient != value)
+                if (_recipientRef != value)
                 {
-                    _recipient = value;
-                    Recipient = _recipient == null ? default : _recipient.RecipientId;
+                    _recipientRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_recipientRef != null)
+                    {
+                        Recipient = _recipientRef.RecipientId;
+                    }
                 }
             }
         }
 
-        private MessageTemplate _messageTemplate;
+        private MessageTemplate _messageTemplateRef;
 
         [ForeignKey("MessageTemplate")]
-        public virtual MessageTemplate MessageTemplate
+        public virtual MessageTemplate MessageTemplateRef
         {
             get
             {
-                if (_messageTemplate == null && !string.IsNullOrEmpty(MessageTemplate))
+                if (_messageTemplateRef == null && !string.IsNullOrEmpty(MessageTemplate))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access MessageTemplate - no database context is set. MessageTemplate: " + MessageTemplate + ".");
+                            throw new InvalidOperationException("Cannot access MessageTemplateRef - no database context is set. MessageTemplate: " + MessageTemplate + ".");
                         }
                         return null;
                     }
-                    _messageTemplate = Context.MessageTemplates.Find(MessageTemplate);
-                    if (_messageTemplate != null)
+                    _messageTemplateRef = base.SoAContext.MessageTemplates.Find(MessageTemplate);
+                    if (_messageTemplateRef != null)
                     {
-                        Context.Attach(_messageTemplate);
+                        base.SoAContext.Attach(_messageTemplateRef);
                     }
                 }
-                return _messageTemplate;
+                return _messageTemplateRef;
             }
             set
             {
-                if (_messageTemplate != value)
+                if (_messageTemplateRef != value)
                 {
-                    _messageTemplate = value;
-                    MessageTemplate = _messageTemplate == null ? default : _messageTemplate.MessageTemplateId;
+                    _messageTemplateRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_messageTemplateRef != null)
+                    {
+                        MessageTemplate = _messageTemplateRef.MessageTemplateId;
+                    }
                 }
             }
         }
@@ -660,7 +776,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_messageDelivery == null && !string.IsNullOrEmpty(ResultingDelivery))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -668,10 +784,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                         }
                         return null;
                     }
-                    _messageDelivery = Context.MessageDeliveries.Find(ResultingDelivery);
+                    _messageDelivery = base.SoAContext.MessageDeliveries.Find(ResultingDelivery);
                     if (_messageDelivery != null)
                     {
-                        Context.Attach(_messageDelivery);
+                        base.SoAContext.Attach(_messageDelivery);
                     }
                 }
                 return _messageDelivery;
@@ -681,7 +797,16 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                 if (_messageDelivery != value)
                 {
                     _messageDelivery = value;
-                    ResultingDelivery = _messageDelivery == null ? default : _messageDelivery.MessageDeliveryId;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_messageDelivery != null)
+                    {
+                        ResultingDelivery = _messageDelivery.MessageDeliveryId;
+                    }
                 }
             }
         }
@@ -695,7 +820,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_role == null && !string.IsNullOrEmpty(RefusalNotifiedRole))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -703,10 +828,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                         }
                         return null;
                     }
-                    _role = Context.Roles.Find(RefusalNotifiedRole);
+                    _role = base.SoAContext.Roles.Find(RefusalNotifiedRole);
                     if (_role != null)
                     {
-                        Context.Attach(_role);
+                        base.SoAContext.Attach(_role);
                     }
                 }
                 return _role;
@@ -716,42 +841,60 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                 if (_role != value)
                 {
                     _role = value;
-                    RefusalNotifiedRole = _role == null ? default : _role.RoleId;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_role != null)
+                    {
+                        RefusalNotifiedRole = _role.RoleId;
+                    }
                 }
             }
         }
 
-        private EvaluationContext _evaluationContext;
+        private EvaluationContext _evaluationContextRef;
 
         [ForeignKey("EvaluationContext")]
-        public virtual EvaluationContext EvaluationContext
+        public virtual EvaluationContext EvaluationContextRef
         {
             get
             {
-                if (_evaluationContext == null && !string.IsNullOrEmpty(EvaluationContext))
+                if (_evaluationContextRef == null && !string.IsNullOrEmpty(EvaluationContext))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access EvaluationContext - no database context is set. EvaluationContext: " + EvaluationContext + ".");
+                            throw new InvalidOperationException("Cannot access EvaluationContextRef - no database context is set. EvaluationContext: " + EvaluationContext + ".");
                         }
                         return null;
                     }
-                    _evaluationContext = Context.EvaluationContexts.Find(EvaluationContext);
-                    if (_evaluationContext != null)
+                    _evaluationContextRef = base.SoAContext.EvaluationContexts.Find(EvaluationContext);
+                    if (_evaluationContextRef != null)
                     {
-                        Context.Attach(_evaluationContext);
+                        base.SoAContext.Attach(_evaluationContextRef);
                     }
                 }
-                return _evaluationContext;
+                return _evaluationContextRef;
             }
             set
             {
-                if (_evaluationContext != value)
+                if (_evaluationContextRef != value)
                 {
-                    _evaluationContext = value;
-                    EvaluationContext = _evaluationContext == null ? default : _evaluationContext.EvaluationContextId;
+                    _evaluationContextRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_evaluationContextRef != null)
+                    {
+                        EvaluationContext = _evaluationContextRef.EvaluationContextId;
+                    }
                 }
             }
         }
@@ -759,13 +902,13 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         protected override void LazyLoadProperties()
         {
-            _ = this.ProcedureExecution;
-            _ = this.StepExecution;
-            _ = this.Recipient;
-            _ = this.MessageTemplate;
+            _ = this.ProcedureExecutionRef;
+            _ = this.StepExecutionRef;
+            _ = this.RecipientRef;
+            _ = this.MessageTemplateRef;
             _ = this.MessageDelivery;
             _ = this.Role;
-            _ = this.EvaluationContext;
+            _ = this.EvaluationContextRef;
         }
 
         public override string ToString()

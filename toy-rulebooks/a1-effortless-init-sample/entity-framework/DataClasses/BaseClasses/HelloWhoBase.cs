@@ -17,18 +17,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string HelloWhoId { get; set; }
 
         public string Name { get; set; }
-        // Formula Introduction (rulebook: ="Hi, " & {{Name}} & ".")
+        // Formula Introduction (rulebook: ="Hello " & {{Name}} & "!!!")
         [NotMapped]
         public string? Introduction
         {
-            get => F.AsString(F.Memo(this, "Introduction", () => F.Concat(F.S("Hi, "), F.TextOr(F.Of(this.Name)), F.S(".")))); set { }
-        }
-
-        // Formula IsBob (rulebook: =OR({{Name}}="Bob", {{Name}}="Bobby", {{Name}}="Robert"))
-        [NotMapped]
-        public bool? IsBob
-        {
-            get => F.AsBool(F.Memo(this, "IsBob", () => F.Or(F.Bool3(F.Eq(F.Nullif(F.Of(this.Name)), F.S("Bob"))), F.Bool3(F.Eq(F.Nullif(F.Of(this.Name)), F.S("Bobby"))), F.Bool3(F.Eq(F.Nullif(F.Of(this.Name)), F.S("Robert")))))); set { }
+            get => F.AsString(F.Memo(this, "Introduction", () => F.Concat(F.S("Hello "), F.TextOr(F.Of(this.Name)), F.S("!!!")))); set { }
         }
 
 

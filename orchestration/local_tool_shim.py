@@ -67,9 +67,12 @@ def _require_dir(var: str) -> Path:
     return path
 
 
-def _rulebook_from(input_dir: Path) -> Path:
+def _rulebook_from(input_dir: Path, extra_names: set) -> Path:
     """The one rulebook the build step sent. Anything else is a hard error."""
-    candidates = sorted(p for p in input_dir.rglob("*.json") if p.is_file())
+    candidates = sorted(
+        p for p in input_dir.rglob("*.json")
+        if p.is_file() and p.name not in extra_names
+    )
     if len(candidates) != 1:
         raise SystemExit(
             f"Expected exactly one input file in EFFORTLESS_INPUT_DIR={input_dir}, "
@@ -79,20 +82,39 @@ def _rulebook_from(input_dir: Path) -> Path:
     return candidates[0]
 
 
-def run_injector(relative_script: str) -> None:
-    """Run one execution-substrate injector under the CLI's script contract."""
+def run_injector(relative_script: str, extra_inputs: dict | None = None) -> None:
+    """Run one execution-substrate injector under the CLI's script contract.
+
+    ``extra_inputs`` maps an environment variable to the file name of an input
+    the injector needs besides the rulebook (``{"ERB_PG_RAW_DATA_PATH":
+    ".pg-raw-data.json"}``). The build step sends each one with ``-i``; the CLI
+    flattens every input to its bare file name in EFFORTLESS_INPUT_DIR, and a
+    pattern that matched nothing arrives as no file at all, so a missing one is
+    a hard error naming it.
+    """
     _assert_oss_prefixed()
     injector = (SUBSTRATES / relative_script).resolve()
     if not injector.is_file():
         raise SystemExit(f"Injector not found: {injector}")
 
+    extra_inputs = extra_inputs or {}
     input_dir = _require_dir("EFFORTLESS_INPUT_DIR")
     output_dir = _require_dir("EFFORTLESS_OUTPUT_DIR")
-    rulebook = _rulebook_from(input_dir)
+    rulebook = _rulebook_from(input_dir, set(extra_inputs.values()))
 
     env = os.environ.copy()
     env["ERB_RULEBOOK_PATH"] = str(rulebook)
     env["ERB_OUTPUT_DIR"] = str(output_dir)
+    for var, file_name in extra_inputs.items():
+        path = input_dir / file_name
+        if not path.is_file():
+            raise SystemExit(
+                f"Required input '{file_name}' was not sent to "
+                f"{os.environ.get('EFFORTLESS_TOOL_NAME', 'this tool')}. The build "
+                f"step must name it with -i (comma-separated after the rulebook), "
+                f"and the file must exist where that path points."
+            )
+        env[var] = str(path)
 
     result = subprocess.run(
         [sys.executable, str(injector)],

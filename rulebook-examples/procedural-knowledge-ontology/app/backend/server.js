@@ -253,16 +253,43 @@ app.get("/api/admin/witnesses", h(async (_req, res) => {
     FROM information_schema.columns c
     WHERE c.table_schema = 'public' AND c.table_name LIKE 'vw\\_%'
       AND c.data_type = 'boolean'
+      -- vw_role_schema_views.{is_full_width,is_degenerate_view} depend on
+      -- ColumnCount = COUNTIFS(FieldGrants!GrantKeyWhenReadable, GrantKey),
+      -- and FieldGrants.GrantKeyWhenReadable itself does a per-row
+      -- INDEX/MATCH into RulebookFields (1771 rows) to resolve FieldTable.
+      -- That's ~202 RoleSchemaViews x ~3639 FieldGrants x a 1771-row MATCH
+      -- scan on every read of this view -- measured at 28s alone, dwarfing
+      -- every other one of the other 56 views combined (all under 0.5s).
+      -- These also aren't procedural-knowledge witnesses, just access-control
+      -- bookkeeping, so excluding them is correct as well as fast.
+      AND c.table_name <> 'vw_role_schema_views'
     ORDER BY 1, 2`);
 
-  // One pass over the substrate: count true/false per witness column.
-  const parts = cols.map(({ table_name, column_name }) =>
-    `SELECT '${table_name}' AS view, '${column_name}' AS col,
-            count(*) FILTER (WHERE "${column_name}")::int AS t,
-            count(*) FILTER (WHERE NOT "${column_name}")::int AS f,
-            count(*)::int AS total
-     FROM ${table_name}`);
-  const { rows } = await pool.query(parts.join(" UNION ALL "));
+  // One query PER VIEW, not per column: 537 boolean columns live on only 57
+  // views, so the naive one-query-per-column UNION ALL scanned (and, for the
+  // wide views, re-ran every calc_* function down the DAG for) the same view
+  // up to 58 times over — 62s observed. Every column on a view is counted in
+  // a single pass over that view's rows instead, and the 57 per-view queries
+  // run concurrently against the pool.
+  const byTable = new Map();
+  for (const { table_name, column_name } of cols) {
+    if (!byTable.has(table_name)) byTable.set(table_name, []);
+    byTable.get(table_name).push(column_name);
+  }
+  const perTable = await Promise.all(
+    [...byTable.entries()].map(async ([table_name, columns]) => {
+      const select = columns
+        .map((c) => `count(*) FILTER (WHERE "${c}")::int AS "${c}__t", ` +
+                     `count(*) FILTER (WHERE NOT "${c}")::int AS "${c}__f"`)
+        .join(", ");
+      const { rows: [row] } = await pool.query(
+        `SELECT ${select}, count(*)::int AS total FROM ${table_name}`);
+      return columns.map((col) => ({
+        view: table_name, col, t: row[`${col}__t`], f: row[`${col}__f`], total: row.total,
+      }));
+    })
+  );
+  const rows = perTable.flat();
 
   // Attach provenance: which question invented this field, if any.
   const { rows: prov } = await pool.query(`
@@ -897,6 +924,60 @@ app.post("/api/admin/access/edits", requireAuth, requireAdmin, h(async (req, res
 app.post("/api/admin/access/rebuild", requireAuth, requireAdmin, (req, res) => {
   rebuildStream(res);
 });
+
+// --- conformance: do all substrates compute the same answers? ---------------
+// Every score, count and flag below is a column on a vw_ view, computed from
+// the rows tools/record_conformance.py transcribed out of the harness. The
+// harness decided every pass and fail; this server only reads.
+
+app.get("/api/conformance", h(async (_req, res) => {
+  const [runs, substrates, scores] = await Promise.all([
+    readView("vw_conformance_runs", { orderBy: "ran_on DESC" }),
+    readView("vw_conformance_substrates", { orderBy: "sort_order" }),
+    readView("vw_substrate_run_scores", { where: "is_in_latest_run", orderBy: "substrate" }),
+  ]);
+  res.json({ latest: runs.find((r) => r.is_latest) ?? null, runs, substrates, scores });
+}));
+
+app.get("/api/conformance/grid", h(async (_req, res) => {
+  const [cells, tables] = await Promise.all([
+    readView("vw_table_conformance"),
+    readView("vw_rulebook_tables", { orderBy: "disagreeing_substrate_count DESC, rulebook_table_id" }),
+  ]);
+  res.json({ cells, tables });
+}));
+
+app.get("/api/conformance/fields", h(async (req, res) => {
+  const { substrate, table, q } = req.query;
+  const where = [];
+  const params = [];
+  if (substrate) { params.push(substrate); where.push(`substrate = $${params.length}`); }
+  if (table) { params.push(`${table}.%`); where.push(`rulebook_field LIKE $${params.length}`); }
+  if (q) { params.push(`%${String(q).toLowerCase()}%`); where.push(`lower(rulebook_field) LIKE $${params.length}`); }
+  res.json(await readView("vw_field_disagreements", {
+    where: where.length ? where.join(" AND ") : undefined,
+    params,
+    orderBy: "cells_failed DESC, rulebook_field, substrate",
+  }));
+}));
+
+// One field across every substrate: which disagreed, how often, and sampled
+// cells with the answer key's value beside each substrate's.
+app.get("/api/conformance/field/:fieldId", h(async (req, res) => {
+  const fieldId = String(req.params.fieldId);
+  const [field] = await readView("vw_rulebook_fields", { where: "rulebook_field_id = $1", params: [fieldId] });
+  if (!field) return res.status(404).json({ error: `No field '${fieldId}' in vw_rulebook_fields.` });
+  const [disagreements, cells, substrates] = await Promise.all([
+    readView("vw_field_disagreements", { where: "rulebook_field = $1", params: [fieldId], orderBy: "substrate" }),
+    readView("vw_cell_disagreements", { where: "rulebook_field = $1", params: [fieldId], orderBy: "record_id, substrate" }),
+    readView("vw_conformance_substrates", { where: "is_graded", orderBy: "sort_order" }),
+  ]);
+  // data-cell addresses for the inference popover need the real view column,
+  // resolved at boot against information_schema, not the snake() candidate.
+  const view = `vw_${snake(field.target_table)}`;
+  const hit = [...CAT_BY_COL.entries()].find(([, f]) => f.rulebook_field_id === fieldId);
+  res.json({ field, view, column: hit ? hit[0].slice(view.length + 1) : null, disagreements, cells, substrates });
+}));
 
 // --- static frontend (prod mode) -------------------------------------------
 const dist = path.join(__dirname, "../frontend/dist");

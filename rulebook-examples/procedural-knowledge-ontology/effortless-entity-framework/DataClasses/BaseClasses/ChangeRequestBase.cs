@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -16,202 +17,234 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string ChangeRequestId { get; set; }
 
         // Formula Name (rulebook: ={{Title}})
+        [NotMapped]
         public string? Name
         {
-            get => this.Title; set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Of(this.Title))); set { }
         }
 
         public string? Title { get; set; }
         public string? ChangeKind { get; set; }
         public string? Status { get; set; }
-        public DateTime? RequestedAt { get; set; }
-        public DateTime? DecidedAt { get; set; }
+        public DateTimeOffset? RequestedAt { get; set; }
+        public DateTimeOffset? DecidedAt { get; set; }
         public string? ImpactAssessment { get; set; }
         // Formula IsOpen (rulebook: =AND(OR({{Status}} = "Draft", {{Status}} = "UnderReview", {{Status}} = "Approved"), {{ImplementedAt}} = ""))
+        [NotMapped]
         public bool? IsOpen
         {
-            get => AND(OR(this.Status = "Draft", this.Status = "UnderReview", this.Status = "Approved"), this.ImplementedAt = ""); set { }
+            get => F.AsBool(F.Memo(this, "IsOpen", () => F.And(F.Bool3(F.Or(F.Bool3(F.Eq(F.Nullif(F.Of(this.Status)), F.S("Draft"))), F.Bool3(F.Eq(F.Nullif(F.Of(this.Status)), F.S("UnderReview"))), F.Bool3(F.Eq(F.Nullif(F.Of(this.Status)), F.S("Approved"))))), F.Bool3(F.IsBlank(F.Of(this.ImplementedAt)))))); set { }
         }
 
         // Formula OpenChangeVersionKey (rulebook: =IF({{IsOpen}}, {{ProcedureVersion}}, ""))
+        [NotMapped]
         public string? OpenChangeVersionKey
         {
-            get => IF(this.IsOpen, this.ProcedureVersion, ""); set { }
+            get => F.AsString(F.Memo(this, "OpenChangeVersionKey", () => (F.Truthy(F.Bool3(F.Of(this.IsOpen))) ? F.Of(this.ProcedureVersion) : F.S("")))); set { }
         }
 
         // Formula IsDecided (rulebook: ={{DecidedAt}} <> "")
+        [NotMapped]
         public bool? IsDecided
         {
-            get => this.DecidedAt <> ""; set { }
+            get => F.AsBool(F.Memo(this, "IsDecided", () => F.IsNotBlank(F.Of(this.DecidedAt)))); set { }
         }
 
         // Formula AsOfInstant (rulebook: =INDEX(EvaluationContexts!{{AsOfInstant}}, MATCH({{EvaluationContext}}, EvaluationContexts!{{EvaluationContextId}}, 0)))
-        public DateTime? AsOfInstant
+        [NotMapped]
+        public DateTimeOffset? AsOfInstant
         {
-            get => INDEX(EvaluationContexts!this.AsOfInstant, MATCH(this.EvaluationContext, EvaluationContexts!this.EvaluationContextId, 0)); set { }
+            get => F.AsDateTime(F.Memo(this, "AsOfInstant", () => F.Lookup<EvaluationContext>(this, "EvaluationContexts", "EvaluationContextId", __c => __c.EvaluationContexts, __r => F.Of(__r.EvaluationContextId), F.Of(this.EvaluationContext), __r => F.Of(__r.AsOfInstant), () => F.Of(new EvaluationContext().AsOfInstant)))); set { }
         }
 
         // Formula DaysPending (rulebook: =IF({{IsDecided}}, DATETIME_DIFF({{DecidedAt}}, {{RequestedAt}}, "days"), DATETIME_DIFF({{AsOfInstant}}, {{RequestedAt}}, "days")))
+        [NotMapped]
         public int? DaysPending
         {
-            get => IF(this.IsDecided, DATETIME_DIFF(this.DecidedAt, this.RequestedAt, "days"), DATETIME_DIFF(this.AsOfInstant, this.RequestedAt, "days")); set { }
+            get => F.AsInt(F.Memo(this, "DaysPending", () => F.Integer((F.Truthy(F.Bool3(F.Of(this.IsDecided))) ? F.DatetimeDiff(F.Of(this.DecidedAt), F.Of(this.RequestedAt), F.S("days")) : F.DatetimeDiff(F.Of(this.AsOfInstant), F.Of(this.RequestedAt), F.S("days")))))); set { }
         }
 
         // Formula IsStillPending (rulebook: =AND({{IsOpen}}, NOT({{IsDecided}})))
+        [NotMapped]
         public bool? IsStillPending
         {
-            get => AND(this.IsOpen, NOT(this.IsDecided)); set { }
+            get => F.AsBool(F.Memo(this, "IsStillPending", () => F.And(F.Bool3(F.Of(this.IsOpen)), F.Bool3(F.Not(F.Bool3(F.Of(this.IsDecided))))))); set { }
         }
 
         // Formula IsStalled (rulebook: =AND({{IsStillPending}}, {{DaysPending}} > 14))
+        [NotMapped]
         public bool? IsStalled
         {
-            get => AND(this.IsStillPending, this.DaysPending > 14); set { }
+            get => F.AsBool(F.Memo(this, "IsStalled", () => F.And(F.Bool3(F.Of(this.IsStillPending)), F.Bool3(F.Cmp(F.Of(this.DaysPending), ">", F.I(14)))))); set { }
         }
 
         // Formula AuthorityAgent (rulebook: =INDEX(Roles!{{CurrentAgent}}, MATCH({{AuthorityRole}}, Roles!{{RoleId}}, 0)))
+        [NotMapped]
         public string? AuthorityAgent
         {
-            get => INDEX(Roles!this.CurrentAgent, MATCH(this.AuthorityRole, Roles!this.RoleId, 0)); set { }
+            get => F.AsString(F.Memo(this, "AuthorityAgent", () => F.Lookup<Role>(this, "Roles", "RoleId", __c => __c.Roles, __r => F.Of(__r.RoleId), F.Of(this.AuthorityRole), __r => F.Of(__r.CurrentAgent), () => F.Of(new Role().CurrentAgent)))); set { }
         }
 
         // Formula RequesterIsAuthority (rulebook: ={{RequestedByAgent}} = {{AuthorityAgent}})
+        [NotMapped]
         public bool? RequesterIsAuthority
         {
-            get => this.RequestedByAgent = this.AuthorityAgent; set { }
+            get => F.AsBool(F.Memo(this, "RequesterIsAuthority", () => F.Eq(F.Nullif(F.Of(this.RequestedByAgent)), F.Of(this.AuthorityAgent)))); set { }
         }
 
         // Formula AwaitsAuthorityDecision (rulebook: =AND({{Status}} = "UnderReview", NOT({{IsDecided}})))
+        [NotMapped]
         public bool? AwaitsAuthorityDecision
         {
-            get => AND(this.Status = "UnderReview", NOT(this.IsDecided)); set { }
+            get => F.AsBool(F.Memo(this, "AwaitsAuthorityDecision", () => F.And(F.Bool3(F.Eq(F.Nullif(F.Of(this.Status)), F.S("UnderReview"))), F.Bool3(F.Not(F.Bool3(F.Of(this.IsDecided))))))); set { }
         }
 
         // Formula AuthorityRoleLabel (rulebook: =INDEX(Roles!{{Label}}, MATCH({{AuthorityRole}}, Roles!{{RoleId}}, 0)))
+        [NotMapped]
         public string? AuthorityRoleLabel
         {
-            get => INDEX(Roles!this.Label, MATCH(this.AuthorityRole, Roles!this.RoleId, 0)); set { }
+            get => F.AsString(F.Memo(this, "AuthorityRoleLabel", () => F.Lookup<Role>(this, "Roles", "RoleId", __c => __c.Roles, __r => F.Of(__r.RoleId), F.Of(this.AuthorityRole), __r => F.Of(__r.Label), () => F.Of(new Role().Label)))); set { }
         }
 
         // Formula TouchesLiveVersion (rulebook: =INDEX(ProcedureVersions!{{IsLive}}, MATCH({{ProcedureVersion}}, ProcedureVersions!{{ProcedureVersionId}}, 0)))
+        [NotMapped]
         public bool? TouchesLiveVersion
         {
-            get => INDEX(ProcedureVersions!this.IsLive, MATCH(this.ProcedureVersion, ProcedureVersions!this.ProcedureVersionId, 0)); set { }
+            get => F.AsBool(F.Memo(this, "TouchesLiveVersion", () => F.Lookup<ProcedureVersion>(this, "ProcedureVersions", "ProcedureVersionId", __c => __c.ProcedureVersions, __r => F.Of(__r.ProcedureVersionId), F.Of(this.ProcedureVersion), __r => F.Of(__r.IsLive), () => F.Of(new ProcedureVersion().IsLive)))); set { }
         }
 
         // Formula IsLiveDecisionBacklog (rulebook: =AND({{AwaitsAuthorityDecision}}, {{TouchesLiveVersion}}))
+        [NotMapped]
         public bool? IsLiveDecisionBacklog
         {
-            get => AND(this.AwaitsAuthorityDecision, this.TouchesLiveVersion); set { }
+            get => F.AsBool(F.Memo(this, "IsLiveDecisionBacklog", () => F.And(F.Bool3(F.Of(this.AwaitsAuthorityDecision)), F.Bool3(F.Of(this.TouchesLiveVersion))))); set { }
         }
 
         // Formula BlocksAnOpenGap (rulebook: =AND({{IsLiveDecisionBacklog}}, {{ChangeKind}} = "Enhancement"))
+        [NotMapped]
         public bool? BlocksAnOpenGap
         {
-            get => AND(this.IsLiveDecisionBacklog, this.ChangeKind = "Enhancement"); set { }
+            get => F.AsBool(F.Memo(this, "BlocksAnOpenGap", () => F.And(F.Bool3(F.Of(this.IsLiveDecisionBacklog)), F.Bool3(F.Eq(F.Nullif(F.Of(this.ChangeKind)), F.S("Enhancement")))))); set { }
         }
 
-        public DateTime? ImplementedAt { get; set; }
+        public DateTimeOffset? ImplementedAt { get; set; }
         // Formula BacklogVersionKey (rulebook: =IF({{IsLiveDecisionBacklog}}, {{ProcedureVersion}}, ""))
+        [NotMapped]
         public string? BacklogVersionKey
         {
-            get => IF(this.IsLiveDecisionBacklog, this.ProcedureVersion, ""); set { }
+            get => F.AsString(F.Memo(this, "BacklogVersionKey", () => (F.Truthy(F.Bool3(F.Of(this.IsLiveDecisionBacklog))) ? F.Of(this.ProcedureVersion) : F.S("")))); set { }
         }
 
         // Formula IsMyPendingDecision (rulebook: =AND({{AuthorityRole}} = "hr-policy-owner", {{AwaitsAuthorityDecision}}))
+        [NotMapped]
         public bool? IsMyPendingDecision
         {
-            get => AND(this.AuthorityRole = "hr-policy-owner", this.AwaitsAuthorityDecision); set { }
+            get => F.AsBool(F.Memo(this, "IsMyPendingDecision", () => F.And(F.Bool3(F.Eq(F.Nullif(F.Of(this.AuthorityRole)), F.S("hr-policy-owner"))), F.Bool3(F.Of(this.AwaitsAuthorityDecision))))); set { }
         }
 
         // Formula IsMyBlockingBacklog (rulebook: =AND({{IsMyPendingDecision}}, {{BlocksAnOpenGap}}))
+        [NotMapped]
         public bool? IsMyBlockingBacklog
         {
-            get => AND(this.IsMyPendingDecision, this.BlocksAnOpenGap); set { }
+            get => F.AsBool(F.Memo(this, "IsMyBlockingBacklog", () => F.And(F.Bool3(F.Of(this.IsMyPendingDecision)), F.Bool3(F.Of(this.BlocksAnOpenGap))))); set { }
         }
 
         // Formula IsMyOverdueBacklog (rulebook: =AND({{IsMyBlockingBacklog}}, {{DaysPending}} > 14))
+        [NotMapped]
         public bool? IsMyOverdueBacklog
         {
-            get => AND(this.IsMyBlockingBacklog, this.DaysPending > 14); set { }
+            get => F.AsBool(F.Memo(this, "IsMyOverdueBacklog", () => F.And(F.Bool3(F.Of(this.IsMyBlockingBacklog)), F.Bool3(F.Cmp(F.Of(this.DaysPending), ">", F.I(14)))))); set { }
         }
 
         // Formula IsImplemented (rulebook: ={{ImplementedAt}} <> "")
+        [NotMapped]
         public bool? IsImplemented
         {
-            get => this.ImplementedAt <> ""; set { }
+            get => F.AsBool(F.Memo(this, "IsImplemented", () => F.IsNotBlank(F.Of(this.ImplementedAt)))); set { }
         }
 
         // Formula IsMyDecidedRequest (rulebook: =AND({{AuthorityRole}} = "hr-policy-owner", {{IsDecided}}))
+        [NotMapped]
         public bool? IsMyDecidedRequest
         {
-            get => AND(this.AuthorityRole = "hr-policy-owner", this.IsDecided); set { }
+            get => F.AsBool(F.Memo(this, "IsMyDecidedRequest", () => F.And(F.Bool3(F.Eq(F.Nullif(F.Of(this.AuthorityRole)), F.S("hr-policy-owner"))), F.Bool3(F.Of(this.IsDecided))))); set { }
         }
 
         // Formula IsMyDecidedButUnlanded (rulebook: =AND({{IsMyDecidedRequest}}, NOT({{IsImplemented}})))
+        [NotMapped]
         public bool? IsMyDecidedButUnlanded
         {
-            get => AND(this.IsMyDecidedRequest, NOT(this.IsImplemented)); set { }
+            get => F.AsBool(F.Memo(this, "IsMyDecidedButUnlanded", () => F.And(F.Bool3(F.Of(this.IsMyDecidedRequest)), F.Bool3(F.Not(F.Bool3(F.Of(this.IsImplemented))))))); set { }
         }
 
         // Formula DecisionLatencyDays (rulebook: =IF({{IsDecided}}, DATETIME_DIFF({{DecidedAt}}, {{RequestedAt}}, "days"), 0))
+        [NotMapped]
         public int? DecisionLatencyDays
         {
-            get => IF(this.IsDecided, DATETIME_DIFF(this.DecidedAt, this.RequestedAt, "days"), 0); set { }
+            get => F.AsInt(F.Memo(this, "DecisionLatencyDays", () => F.Integer((F.Truthy(F.Bool3(F.Of(this.IsDecided))) ? F.DatetimeDiff(F.Of(this.DecidedAt), F.Of(this.RequestedAt), F.S("days")) : F.I(0))))); set { }
         }
 
         // Formula ImplementationLatencyDays (rulebook: =IF({{IsImplemented}}, DATETIME_DIFF({{ImplementedAt}}, {{DecidedAt}}, "days"), 0))
+        [NotMapped]
         public int? ImplementationLatencyDays
         {
-            get => IF(this.IsImplemented, DATETIME_DIFF(this.ImplementedAt, this.DecidedAt, "days"), 0); set { }
+            get => F.AsInt(F.Memo(this, "ImplementationLatencyDays", () => F.Integer((F.Truthy(F.Bool3(F.Of(this.IsImplemented))) ? F.DatetimeDiff(F.Of(this.ImplementedAt), F.Of(this.DecidedAt), F.S("days")) : F.I(0))))); set { }
         }
 
         // Formula DelayIsDownstreamOfMe (rulebook: =AND({{IsMyDecidedButUnlanded}}, {{DecisionLatencyDays}} <= 14))
+        [NotMapped]
         public bool? DelayIsDownstreamOfMe
         {
-            get => AND(this.IsMyDecidedButUnlanded, this.DecisionLatencyDays <= 14); set { }
+            get => F.AsBool(F.Memo(this, "DelayIsDownstreamOfMe", () => F.And(F.Bool3(F.Of(this.IsMyDecidedButUnlanded)), F.Bool3(F.Cmp(F.Of(this.DecisionLatencyDays), "<=", F.I(14)))))); set { }
         }
 
         // Formula UnlandedVersionKey (rulebook: =IF({{IsMyDecidedButUnlanded}}, {{ProcedureVersion}}, ""))
+        [NotMapped]
         public string? UnlandedVersionKey
         {
-            get => IF(this.IsMyDecidedButUnlanded, this.ProcedureVersion, ""); set { }
+            get => F.AsString(F.Memo(this, "UnlandedVersionKey", () => (F.Truthy(F.Bool3(F.Of(this.IsMyDecidedButUnlanded))) ? F.Of(this.ProcedureVersion) : F.S("")))); set { }
         }
 
         // Formula IsApprovedNotImplemented (rulebook: =AND({{Status}} = "Approved", NOT({{IsImplemented}})))
+        [NotMapped]
         public bool? IsApprovedNotImplemented
         {
-            get => AND(this.Status = "Approved", NOT(this.IsImplemented)); set { }
+            get => F.AsBool(F.Memo(this, "IsApprovedNotImplemented", () => F.And(F.Bool3(F.Eq(F.Nullif(F.Of(this.Status)), F.S("Approved"))), F.Bool3(F.Not(F.Bool3(F.Of(this.IsImplemented))))))); set { }
         }
 
         // Formula DaysSinceApproval (rulebook: =IF({{IsDecided}}, DATETIME_DIFF({{AsOfInstant}}, {{DecidedAt}}, "days"), 0))
+        [NotMapped]
         public int? DaysSinceApproval
         {
-            get => IF(this.IsDecided, DATETIME_DIFF(this.AsOfInstant, this.DecidedAt, "days"), 0); set { }
+            get => F.AsInt(F.Memo(this, "DaysSinceApproval", () => F.Integer((F.Truthy(F.Bool3(F.Of(this.IsDecided))) ? F.DatetimeDiff(F.Of(this.AsOfInstant), F.Of(this.DecidedAt), F.S("days")) : F.I(0))))); set { }
         }
 
         // Formula IsStalledImplementation (rulebook: =AND({{IsApprovedNotImplemented}}, {{DaysSinceApproval}} > 14))
+        [NotMapped]
         public bool? IsStalledImplementation
         {
-            get => AND(this.IsApprovedNotImplemented, this.DaysSinceApproval > 14); set { }
+            get => F.AsBool(F.Memo(this, "IsStalledImplementation", () => F.And(F.Bool3(F.Of(this.IsApprovedNotImplemented)), F.Bool3(F.Cmp(F.Of(this.DaysSinceApproval), ">", F.I(14)))))); set { }
         }
 
         // Formula StalledImplementationVersionKey (rulebook: =IF({{IsStalledImplementation}}, {{ProcedureVersion}}, ""))
+        [NotMapped]
         public string? StalledImplementationVersionKey
         {
-            get => IF(this.IsStalledImplementation, this.ProcedureVersion, ""); set { }
+            get => F.AsString(F.Memo(this, "StalledImplementationVersionKey", () => (F.Truthy(F.Bool3(F.Of(this.IsStalledImplementation))) ? F.Of(this.ProcedureVersion) : F.S("")))); set { }
         }
 
         // Formula ApprovedVersionKey (rulebook: =IF({{IsApprovedDecision}}, {{ProcedureVersion}}, ""))
+        [NotMapped]
         public string? ApprovedVersionKey
         {
-            get => IF(this.IsApprovedDecision, this.ProcedureVersion, ""); set { }
+            get => F.AsString(F.Memo(this, "ApprovedVersionKey", () => (F.Truthy(F.Bool3(F.Of(this.IsApprovedDecision))) ? F.Of(this.ProcedureVersion) : F.S("")))); set { }
         }
 
         // Formula IsApprovedDecision (rulebook: ={{Status}} = "Approved")
+        [NotMapped]
         public bool? IsApprovedDecision
         {
-            get => this.Status = "Approved"; set { }
+            get => F.AsBool(F.Memo(this, "IsApprovedDecision", () => F.Eq(F.Nullif(F.Of(this.Status)), F.S("Approved")))); set { }
         }
 
         public string? SemanticTypeIri { get; set; }
@@ -221,37 +254,46 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string? AuthorityRole { get; set; }
         public string? EvaluationContext { get; set; }
 
-        private ProcedureVersion _procedureVersion;
+        private ProcedureVersion _procedureVersionRef;
 
         [ForeignKey("ProcedureVersion")]
-        public virtual ProcedureVersion ProcedureVersion
+        public virtual ProcedureVersion ProcedureVersionRef
         {
             get
             {
-                if (_procedureVersion == null && !string.IsNullOrEmpty(ProcedureVersion))
+                if (_procedureVersionRef == null && !string.IsNullOrEmpty(ProcedureVersion))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access ProcedureVersion - no database context is set. ProcedureVersion: " + ProcedureVersion + ".");
+                            throw new InvalidOperationException("Cannot access ProcedureVersionRef - no database context is set. ProcedureVersion: " + ProcedureVersion + ".");
                         }
                         return null;
                     }
-                    _procedureVersion = Context.ProcedureVersions.Find(ProcedureVersion);
-                    if (_procedureVersion != null)
+                    _procedureVersionRef = base.SoAContext.ProcedureVersions.Find(ProcedureVersion);
+                    if (_procedureVersionRef != null)
                     {
-                        Context.Attach(_procedureVersion);
+                        base.SoAContext.Attach(_procedureVersionRef);
                     }
                 }
-                return _procedureVersion;
+                return _procedureVersionRef;
             }
             set
             {
-                if (_procedureVersion != value)
+                if (_procedureVersionRef != value)
                 {
-                    _procedureVersion = value;
-                    ProcedureVersion = _procedureVersion == null ? default : _procedureVersion.ProcedureVersionId;
+                    _procedureVersionRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_procedureVersionRef != null)
+                    {
+                        ProcedureVersion = _procedureVersionRef.ProcedureVersionId;
+                    }
                 }
             }
         }
@@ -265,7 +307,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_agent == null && !string.IsNullOrEmpty(RequestedByAgent))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -273,10 +315,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                         }
                         return null;
                     }
-                    _agent = Context.Agents.Find(RequestedByAgent);
+                    _agent = base.SoAContext.Agents.Find(RequestedByAgent);
                     if (_agent != null)
                     {
-                        Context.Attach(_agent);
+                        base.SoAContext.Attach(_agent);
                     }
                 }
                 return _agent;
@@ -286,7 +328,16 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                 if (_agent != value)
                 {
                     _agent = value;
-                    RequestedByAgent = _agent == null ? default : _agent.AgentId;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_agent != null)
+                    {
+                        RequestedByAgent = _agent.AgentId;
+                    }
                 }
             }
         }
@@ -300,7 +351,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_role == null && !string.IsNullOrEmpty(AuthorityRole))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -308,10 +359,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                         }
                         return null;
                     }
-                    _role = Context.Roles.Find(AuthorityRole);
+                    _role = base.SoAContext.Roles.Find(AuthorityRole);
                     if (_role != null)
                     {
-                        Context.Attach(_role);
+                        base.SoAContext.Attach(_role);
                     }
                 }
                 return _role;
@@ -321,42 +372,60 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                 if (_role != value)
                 {
                     _role = value;
-                    AuthorityRole = _role == null ? default : _role.RoleId;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_role != null)
+                    {
+                        AuthorityRole = _role.RoleId;
+                    }
                 }
             }
         }
 
-        private EvaluationContext _evaluationContext;
+        private EvaluationContext _evaluationContextRef;
 
         [ForeignKey("EvaluationContext")]
-        public virtual EvaluationContext EvaluationContext
+        public virtual EvaluationContext EvaluationContextRef
         {
             get
             {
-                if (_evaluationContext == null && !string.IsNullOrEmpty(EvaluationContext))
+                if (_evaluationContextRef == null && !string.IsNullOrEmpty(EvaluationContext))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access EvaluationContext - no database context is set. EvaluationContext: " + EvaluationContext + ".");
+                            throw new InvalidOperationException("Cannot access EvaluationContextRef - no database context is set. EvaluationContext: " + EvaluationContext + ".");
                         }
                         return null;
                     }
-                    _evaluationContext = Context.EvaluationContexts.Find(EvaluationContext);
-                    if (_evaluationContext != null)
+                    _evaluationContextRef = base.SoAContext.EvaluationContexts.Find(EvaluationContext);
+                    if (_evaluationContextRef != null)
                     {
-                        Context.Attach(_evaluationContext);
+                        base.SoAContext.Attach(_evaluationContextRef);
                     }
                 }
-                return _evaluationContext;
+                return _evaluationContextRef;
             }
             set
             {
-                if (_evaluationContext != value)
+                if (_evaluationContextRef != value)
                 {
-                    _evaluationContext = value;
-                    EvaluationContext = _evaluationContext == null ? default : _evaluationContext.EvaluationContextId;
+                    _evaluationContextRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_evaluationContextRef != null)
+                    {
+                        EvaluationContext = _evaluationContextRef.EvaluationContextId;
+                    }
                 }
             }
         }
@@ -370,7 +439,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_roleAssignments == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -380,11 +449,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.RoleAssignments.Where(x => x.AuthorizingChangeRequest == this.ChangeRequestId).ToList<RoleAssignment>();
+                        var items = base.SoAContext.RoleAssignments.Where(x => x.AuthorizingChangeRequest == this.ChangeRequestId).ToList<RoleAssignment>();
                         _roleAssignments = new ObservableCollection<RoleAssignment>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _roleAssignments.CollectionChanged += RoleAssignments_CollectionChanged;
@@ -425,7 +494,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_reviewEvents == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -435,11 +504,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.ReviewEvents.Where(x => x.RelatedChangeRequest == this.ChangeRequestId).ToList<ReviewEvent>();
+                        var items = base.SoAContext.ReviewEvents.Where(x => x.RelatedChangeRequest == this.ChangeRequestId).ToList<ReviewEvent>();
                         _reviewEvents = new ObservableCollection<ReviewEvent>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _reviewEvents.CollectionChanged += ReviewEvents_CollectionChanged;
@@ -474,10 +543,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         protected override void LazyLoadProperties()
         {
-            _ = this.ProcedureVersion;
+            _ = this.ProcedureVersionRef;
             _ = this.Agent;
             _ = this.Role;
-            _ = this.EvaluationContext;
+            _ = this.EvaluationContextRef;
             _ = this.RoleAssignments;
             _ = this.ReviewEvents;
         }

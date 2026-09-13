@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -16,96 +17,111 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string StepTransitionId { get; set; }
 
         // Formula Name (rulebook: ={{FromStep}} & " -> " & {{ToStep}})
+        [NotMapped]
         public string? Name
         {
-            get => this.FromStep + " -> " + this.ToStep; set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.FromStep)), F.S(" -> "), F.TextOr(F.Of(this.ToStep))))); set { }
         }
 
         public string? TransitionKind { get; set; }
         public string? Condition { get; set; }
         public int? Priority { get; set; }
         // Formula IsRecoveryPath (rulebook: =OR({{TransitionKind}} = "Fallback", {{TransitionKind}} = "Alternative"))
+        [NotMapped]
         public bool? IsRecoveryPath
         {
-            get => OR(this.TransitionKind = "Fallback", this.TransitionKind = "Alternative"); set { }
+            get => F.AsBool(F.Memo(this, "IsRecoveryPath", () => F.Or(F.Bool3(F.Eq(F.Nullif(F.Of(this.TransitionKind)), F.S("Fallback"))), F.Bool3(F.Eq(F.Nullif(F.Of(this.TransitionKind)), F.S("Alternative")))))); set { }
         }
 
         // Formula CountOfFromStepExecutions (rulebook: =COUNTIFS(StepExecutions!{{Step}}, StepTransitions!{{FromStep}}))
+        [NotMapped]
         public int? CountOfFromStepExecutions
         {
-            get => this.StepExecutions == null ? 0 : this.StepExecutions.Count; set { }
+            get => F.AsInt(F.Memo(this, "CountOfFromStepExecutions", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<StepExecution>(base.SoAContext, "StepExecutions", __c => __c.StepExecutions), __r => F.CritField(F.Of(__r.Step), F.Of(this.FromStep))))))); set { }
         }
 
         // Formula CountOfToStepExecutions (rulebook: =COUNTIFS(StepExecutions!{{Step}}, StepTransitions!{{ToStep}}))
+        [NotMapped]
         public int? CountOfToStepExecutions
         {
-            get => this.StepExecutions == null ? 0 : this.StepExecutions.Count; set { }
+            get => F.AsInt(F.Memo(this, "CountOfToStepExecutions", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<StepExecution>(base.SoAContext, "StepExecutions", __c => __c.StepExecutions), __r => F.CritField(F.Of(__r.Step), F.Of(this.ToStep))))))); set { }
         }
 
         // Formula HasReachableOrigin (rulebook: ={{CountOfFromStepExecutions}} > 0)
+        [NotMapped]
         public bool? HasReachableOrigin
         {
-            get => this.CountOfFromStepExecutions > 0; set { }
+            get => F.AsBool(F.Memo(this, "HasReachableOrigin", () => F.Cmp(F.Of(this.CountOfFromStepExecutions), ">", F.I(0)))); set { }
         }
 
         // Formula HasReachableTarget (rulebook: ={{CountOfToStepExecutions}} > 0)
+        [NotMapped]
         public bool? HasReachableTarget
         {
-            get => this.CountOfToStepExecutions > 0; set { }
+            get => F.AsBool(F.Memo(this, "HasReachableTarget", () => F.Cmp(F.Of(this.CountOfToStepExecutions), ">", F.I(0)))); set { }
         }
 
         // Formula IsNeverExercised (rulebook: =NOT(AND({{HasReachableOrigin}}, {{HasReachableTarget}})))
+        [NotMapped]
         public bool? IsNeverExercised
         {
-            get => NOT(AND(this.HasReachableOrigin, this.HasReachableTarget)); set { }
+            get => F.AsBool(F.Memo(this, "IsNeverExercised", () => F.Not(F.Bool3(F.And(F.Bool3(F.Of(this.HasReachableOrigin)), F.Bool3(F.Of(this.HasReachableTarget))))))); set { }
         }
 
         // Formula IsUntestedRecoveryPath (rulebook: =AND({{IsRecoveryPath}}, {{IsNeverExercised}}))
+        [NotMapped]
         public bool? IsUntestedRecoveryPath
         {
-            get => AND(this.IsRecoveryPath, this.IsNeverExercised); set { }
+            get => F.AsBool(F.Memo(this, "IsUntestedRecoveryPath", () => F.And(F.Bool3(F.Of(this.IsRecoveryPath)), F.Bool3(F.Of(this.IsNeverExercised))))); set { }
         }
 
         // Formula CountOfObservedTraversals (rulebook: =COUNTIFS(ObservedTransitions!{{StepTransition}}, StepTransitions!{{StepTransitionId}}))
+        [NotMapped]
         public int? CountOfObservedTraversals
         {
-            get => this.ObservedTransitions == null ? 0 : this.ObservedTransitions.Count; set { }
+            get => F.AsInt(F.Memo(this, "CountOfObservedTraversals", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<ObservedTransition>(base.SoAContext, "ObservedTransitions", __c => __c.ObservedTransitions), __r => F.CritField(F.Of(__r.StepTransition), F.Of(this.StepTransitionId))))))); set { }
         }
 
         // Formula HasBeenTraversed (rulebook: ={{CountOfObservedTraversals}} > 0)
+        [NotMapped]
         public bool? HasBeenTraversed
         {
-            get => this.CountOfObservedTraversals > 0; set { }
+            get => F.AsBool(F.Memo(this, "HasBeenTraversed", () => F.Cmp(F.Of(this.CountOfObservedTraversals), ">", F.I(0)))); set { }
         }
 
         // Formula IsUnwalkedRecoveryPath (rulebook: =AND({{IsRecoveryPath}}, NOT({{HasBeenTraversed}})))
+        [NotMapped]
         public bool? IsUnwalkedRecoveryPath
         {
-            get => AND(this.IsRecoveryPath, NOT(this.HasBeenTraversed)); set { }
+            get => F.AsBool(F.Memo(this, "IsUnwalkedRecoveryPath", () => F.And(F.Bool3(F.Of(this.IsRecoveryPath)), F.Bool3(F.Not(F.Bool3(F.Of(this.HasBeenTraversed))))))); set { }
         }
 
         // Formula TargetBlockingRequirementCount (rulebook: =INDEX(Steps!{{BlockingRequirementCount}}, MATCH({{ToStep}}, Steps!{{StepId}}, 0)))
+        [NotMapped]
         public decimal? TargetBlockingRequirementCount
         {
-            get => INDEX(Steps!this.BlockingRequirementCount, MATCH(this.ToStep, Steps!this.StepId, 0)); set { }
+            get => F.AsDecimal(F.Memo(this, "TargetBlockingRequirementCount", () => F.Lookup<Step>(this, "Steps", "StepId", __c => __c.Steps, __r => F.Of(__r.StepId), F.Of(this.ToStep), __r => F.Of(__r.BlockingRequirementCount), () => F.Of(new Step().BlockingRequirementCount)))); set { }
         }
 
         // Formula TargetCarriesBlockingControl (rulebook: ={{TargetBlockingRequirementCount}} > 0)
+        [NotMapped]
         public bool? TargetCarriesBlockingControl
         {
-            get => this.TargetBlockingRequirementCount > 0; set { }
+            get => F.AsBool(F.Memo(this, "TargetCarriesBlockingControl", () => F.Cmp(F.Of(this.TargetBlockingRequirementCount), ">", F.I(0)))); set { }
         }
 
         // Formula IsUnrehearsedControlEntry (rulebook: =AND({{IsUnwalkedRecoveryPath}}, {{TargetCarriesBlockingControl}}))
+        [NotMapped]
         public bool? IsUnrehearsedControlEntry
         {
-            get => AND(this.IsUnwalkedRecoveryPath, this.TargetCarriesBlockingControl); set { }
+            get => F.AsBool(F.Memo(this, "IsUnrehearsedControlEntry", () => F.And(F.Bool3(F.Of(this.IsUnwalkedRecoveryPath)), F.Bool3(F.Of(this.TargetCarriesBlockingControl))))); set { }
         }
 
         // Formula UnrehearsedControlVersionKey (rulebook: =IF({{IsUnrehearsedControlEntry}}, {{ProcedureVersion}}, ""))
+        [NotMapped]
         public string? UnrehearsedControlVersionKey
         {
-            get => IF(this.IsUnrehearsedControlEntry, this.ProcedureVersion, ""); set { }
+            get => F.AsString(F.Memo(this, "UnrehearsedControlVersionKey", () => (F.Truthy(F.Bool3(F.Of(this.IsUnrehearsedControlEntry))) ? F.Of(this.ProcedureVersion) : F.S("")))); set { }
         }
 
         public string? SemanticTypeIri { get; set; }
@@ -114,37 +130,46 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string? FromStep { get; set; }
         public string? ToStep { get; set; }
 
-        private ProcedureVersion _procedureVersion;
+        private ProcedureVersion _procedureVersionRef;
 
         [ForeignKey("ProcedureVersion")]
-        public virtual ProcedureVersion ProcedureVersion
+        public virtual ProcedureVersion ProcedureVersionRef
         {
             get
             {
-                if (_procedureVersion == null && !string.IsNullOrEmpty(ProcedureVersion))
+                if (_procedureVersionRef == null && !string.IsNullOrEmpty(ProcedureVersion))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access ProcedureVersion - no database context is set. ProcedureVersion: " + ProcedureVersion + ".");
+                            throw new InvalidOperationException("Cannot access ProcedureVersionRef - no database context is set. ProcedureVersion: " + ProcedureVersion + ".");
                         }
                         return null;
                     }
-                    _procedureVersion = Context.ProcedureVersions.Find(ProcedureVersion);
-                    if (_procedureVersion != null)
+                    _procedureVersionRef = base.SoAContext.ProcedureVersions.Find(ProcedureVersion);
+                    if (_procedureVersionRef != null)
                     {
-                        Context.Attach(_procedureVersion);
+                        base.SoAContext.Attach(_procedureVersionRef);
                     }
                 }
-                return _procedureVersion;
+                return _procedureVersionRef;
             }
             set
             {
-                if (_procedureVersion != value)
+                if (_procedureVersionRef != value)
                 {
-                    _procedureVersion = value;
-                    ProcedureVersion = _procedureVersion == null ? default : _procedureVersion.ProcedureVersionId;
+                    _procedureVersionRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_procedureVersionRef != null)
+                    {
+                        ProcedureVersion = _procedureVersionRef.ProcedureVersionId;
+                    }
                 }
             }
         }
@@ -158,7 +183,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_step == null && !string.IsNullOrEmpty(FromStep))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -166,10 +191,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                         }
                         return null;
                     }
-                    _step = Context.Steps.Find(FromStep);
+                    _step = base.SoAContext.Steps.Find(FromStep);
                     if (_step != null)
                     {
-                        Context.Attach(_step);
+                        base.SoAContext.Attach(_step);
                     }
                 }
                 return _step;
@@ -179,56 +204,74 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                 if (_step != value)
                 {
                     _step = value;
-                    FromStep = _step == null ? default : _step.StepId;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_step != null)
+                    {
+                        FromStep = _step.StepId;
+                    }
                 }
             }
         }
 
-        private Step _step;
+        private Step _stepRef;
 
         [ForeignKey("ToStep")]
-        public virtual Step Step
+        public virtual Step StepRef
         {
             get
             {
-                if (_step == null && !string.IsNullOrEmpty(ToStep))
+                if (_stepRef == null && !string.IsNullOrEmpty(ToStep))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access Step - no database context is set. ToStep: " + ToStep + ".");
+                            throw new InvalidOperationException("Cannot access StepRef - no database context is set. ToStep: " + ToStep + ".");
                         }
                         return null;
                     }
-                    _step = Context.Steps.Find(ToStep);
-                    if (_step != null)
+                    _stepRef = base.SoAContext.Steps.Find(ToStep);
+                    if (_stepRef != null)
                     {
-                        Context.Attach(_step);
+                        base.SoAContext.Attach(_stepRef);
                     }
                 }
-                return _step;
+                return _stepRef;
             }
             set
             {
-                if (_step != value)
+                if (_stepRef != value)
                 {
-                    _step = value;
-                    ToStep = _step == null ? default : _step.StepId;
+                    _stepRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_stepRef != null)
+                    {
+                        ToStep = _stepRef.StepId;
+                    }
                 }
             }
         }
 
         private ObservableCollection<ObservedTransition> _observedTransitions;
 
-        [InverseProperty("StepTransition")]
+        [InverseProperty("StepTransitionRef")]
         public virtual ObservableCollection<ObservedTransition> ObservedTransitions
         {
             get
             {
                 if (_observedTransitions == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -238,11 +281,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.ObservedTransitions.Where(x => x.StepTransition == this.StepTransitionId).ToList<ObservedTransition>();
+                        var items = base.SoAContext.ObservedTransitions.Where(x => x.StepTransition == this.StepTransitionId).ToList<ObservedTransition>();
                         _observedTransitions = new ObservableCollection<ObservedTransition>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _observedTransitions.CollectionChanged += ObservedTransitions_CollectionChanged;
@@ -277,9 +320,9 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         protected override void LazyLoadProperties()
         {
-            _ = this.ProcedureVersion;
+            _ = this.ProcedureVersionRef;
             _ = this.Step;
-            _ = this.Step;
+            _ = this.StepRef;
             _ = this.ObservedTransitions;
         }
 

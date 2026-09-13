@@ -34,11 +34,13 @@
     "is_orphaned_blocking_control": true,
     "is_unwatched_and_unowned": false,
     "attestation_exposure_note": "Witnessed but unowned: no named accountability.",
-    "unwatched_unowned_flag": "",
+    "unwatched_unowned_flag": null,
     "has_meaningful_sample": false,
-    "is_untested_witness": false,
+    "is_untested_witness": true,
     "is_evidenced_holding_control": false,
-    "accountable_agent": null
+    "accountable_agent": null,
+    "controlled_term": "vt-reconciliation",
+    "uses_controlled_vocabulary": true
   },
   {
     "requirement_id": "req-close-cutoff",
@@ -75,11 +77,13 @@
     "is_orphaned_blocking_control": true,
     "is_unwatched_and_unowned": false,
     "attestation_exposure_note": "Witnessed but unowned: no named accountability.",
-    "unwatched_unowned_flag": "",
+    "unwatched_unowned_flag": null,
     "has_meaningful_sample": false,
-    "is_untested_witness": false,
+    "is_untested_witness": true,
     "is_evidenced_holding_control": false,
-    "accountable_agent": null
+    "accountable_agent": null,
+    "controlled_term": "vt-cutoff",
+    "uses_controlled_vocabulary": true
   },
   {
     "requirement_id": "req-close-evidence",
@@ -118,9 +122,11 @@
     "is_orphaned_blocking_control": true,
     "is_unwatched_and_unowned": false,
     "attestation_exposure_note": "Witnessed but unowned: no named accountability.",
-    "unwatched_unowned_flag": "",
+    "unwatched_unowned_flag": null,
     "has_meaningful_sample": false,
-    "accountable_agent": null
+    "accountable_agent": null,
+    "controlled_term": "vt-evidence-retention",
+    "uses_controlled_vocabulary": true
   },
   {
     "requirement_id": "req-close-human-approval",
@@ -161,7 +167,9 @@
     "unwatched_unowned_flag": "unwatched-unowned",
     "named_witness_field_exists": false,
     "has_meaningful_sample": false,
-    "accountable_agent": null
+    "accountable_agent": null,
+    "controlled_term": "vt-human-approval-gate",
+    "uses_controlled_vocabulary": true
   },
   {
     "requirement_id": "req-close-separation",
@@ -198,11 +206,13 @@
     "is_orphaned_blocking_control": true,
     "is_unwatched_and_unowned": false,
     "attestation_exposure_note": "Witnessed but unowned: no named accountability.",
-    "unwatched_unowned_flag": "",
+    "unwatched_unowned_flag": null,
     "has_meaningful_sample": false,
-    "is_untested_witness": false,
+    "is_untested_witness": true,
     "is_evidenced_holding_control": false,
-    "accountable_agent": null
+    "accountable_agent": null,
+    "controlled_term": "vt-segregation",
+    "uses_controlled_vocabulary": true
   },
   {
     "requirement_id": "req-policy-accessibility",
@@ -243,7 +253,9 @@
     "unwatched_unowned_flag": "unwatched-unowned",
     "named_witness_field_exists": false,
     "has_meaningful_sample": false,
-    "accountable_agent": null
+    "accountable_agent": null,
+    "controlled_term": "vt-accessibility",
+    "uses_controlled_vocabulary": true
   },
   {
     "requirement_id": "req-policy-consent",
@@ -284,7 +296,9 @@
     "unwatched_unowned_flag": "unwatched-unowned",
     "named_witness_field_exists": false,
     "has_meaningful_sample": false,
-    "accountable_agent": null
+    "accountable_agent": null,
+    "controlled_term": "vt-consent",
+    "uses_controlled_vocabulary": true
   },
   {
     "requirement_id": "req-policy-human-approval",
@@ -325,7 +339,8 @@
     "unwatched_unowned_flag": "unwatched-unowned",
     "named_witness_field_exists": false,
     "has_meaningful_sample": false,
-    "accountable_agent": null
+    "accountable_agent": null,
+    "uses_controlled_vocabulary": false
   },
   {
     "requirement_id": "req-policy-legal",
@@ -366,7 +381,9 @@
     "unwatched_unowned_flag": "unwatched-unowned",
     "named_witness_field_exists": false,
     "has_meaningful_sample": false,
-    "accountable_agent": null
+    "accountable_agent": null,
+    "controlled_term": "vt-legal-review",
+    "uses_controlled_vocabulary": true
   },
   {
     "requirement_id": "req-policy-optout",
@@ -407,7 +424,9 @@
     "unwatched_unowned_flag": "unwatched-unowned",
     "named_witness_field_exists": false,
     "has_meaningful_sample": false,
-    "accountable_agent": null
+    "accountable_agent": null,
+    "controlled_term": "vt-optout",
+    "uses_controlled_vocabulary": true
   },
   {
     "requirement_id": "req-policy-quiet-hours",
@@ -448,7 +467,9 @@
     "unwatched_unowned_flag": "unwatched-unowned",
     "named_witness_field_exists": false,
     "has_meaningful_sample": false,
-    "accountable_agent": null
+    "accountable_agent": null,
+    "controlled_term": "vt-quiet-hours",
+    "uses_controlled_vocabulary": true
   },
   {
     "requirement_id": "req-policy-retention",
@@ -489,7 +510,9 @@
     "unwatched_unowned_flag": "unwatched-unowned",
     "named_witness_field_exists": false,
     "has_meaningful_sample": false,
-    "accountable_agent": null
+    "accountable_agent": null,
+    "controlled_term": "vt-evidence-retention",
+    "uses_controlled_vocabulary": true
   },
   {
     "requirement_id": "req-policy-source",
@@ -530,6 +553,7 @@
     "unwatched_unowned_flag": "unwatched-unowned",
     "named_witness_field_exists": false,
     "has_meaningful_sample": false,
-    "accountable_agent": null
+    "accountable_agent": null,
+    "uses_controlled_vocabulary": false
   }
 ]

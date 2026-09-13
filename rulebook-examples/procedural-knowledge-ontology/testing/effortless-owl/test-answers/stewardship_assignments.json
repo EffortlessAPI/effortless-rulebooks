@@ -1,0 +1,34 @@
+[
+  {
+    "stewardship_assignment_id": "stew-close",
+    "valid_from": "2026-04-15 09:00:00-05:00",
+    "valid_to": null,
+    "review_cadence_days": 90,
+    "semantic_type_iri": "urn:effortless:pko-extension#StewardshipAssignment",
+    "name": "close-v1.1.0 / steward=process-steward",
+    "procedure_version": "close-v1.1.0",
+    "steward_role": "process-steward",
+    "authority_role": "knowledge-authority",
+    "count_of_review_events": 2,
+    "has_ever_been_reviewed": true,
+    "evaluation_context": "eval-current",
+    "as_of_instant": "2026-07-19 13:00:00-05:00",
+    "is_current_assignment": true
+  },
+  {
+    "stewardship_assignment_id": "stew-policy",
+    "valid_from": "2026-06-01 09:00:00-05:00",
+    "valid_to": null,
+    "review_cadence_days": 60,
+    "semantic_type_iri": "urn:effortless:pko-extension#StewardshipAssignment",
+    "name": "policy-v1.0.0 / steward=process-steward",
+    "procedure_version": "policy-v1.0.0",
+    "steward_role": "process-steward",
+    "authority_role": "hr-policy-owner",
+    "count_of_review_events": 1,
+    "has_ever_been_reviewed": true,
+    "evaluation_context": "eval-current",
+    "as_of_instant": "2026-07-19 13:00:00-05:00",
+    "is_current_assignment": true
+  }
+]

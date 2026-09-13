@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -16,13 +17,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string MentorshipId { get; set; }
 
         // Formula Name (rulebook: ={{MentorAgent}} & " -> " & {{LearnerAgent}})
+        [NotMapped]
         public string? Name
         {
-            get => this.MentorAgent + " -> " + this.LearnerAgent; set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.MentorAgent)), F.S(" -> "), F.TextOr(F.Of(this.LearnerAgent))))); set { }
         }
 
-        public DateTime? ValidFrom { get; set; }
-        public DateTime? ValidTo { get; set; }
+        public DateTimeOffset? ValidFrom { get; set; }
+        public DateTimeOffset? ValidTo { get; set; }
         public string? LearningObjective { get; set; }
         public string? EvidenceOfCompletion { get; set; }
         public string? SemanticTypeIri { get; set; }
@@ -40,7 +42,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_communitiesOfPractice == null && !string.IsNullOrEmpty(CommunityOfPractice))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -48,10 +50,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                         }
                         return null;
                     }
-                    _communitiesOfPractice = Context.CommunitiesOfPractice.Find(CommunityOfPractice);
+                    _communitiesOfPractice = base.SoAContext.CommunitiesOfPractice.Find(CommunityOfPractice);
                     if (_communitiesOfPractice != null)
                     {
-                        Context.Attach(_communitiesOfPractice);
+                        base.SoAContext.Attach(_communitiesOfPractice);
                     }
                 }
                 return _communitiesOfPractice;
@@ -61,7 +63,16 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                 if (_communitiesOfPractice != value)
                 {
                     _communitiesOfPractice = value;
-                    CommunityOfPractice = _communitiesOfPractice == null ? default : _communitiesOfPractice.CommunityOfPracticeId;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_communitiesOfPractice != null)
+                    {
+                        CommunityOfPractice = _communitiesOfPractice.CommunityOfPracticeId;
+                    }
                 }
             }
         }
@@ -75,7 +86,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_agent == null && !string.IsNullOrEmpty(MentorAgent))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -83,10 +94,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                         }
                         return null;
                     }
-                    _agent = Context.Agents.Find(MentorAgent);
+                    _agent = base.SoAContext.Agents.Find(MentorAgent);
                     if (_agent != null)
                     {
-                        Context.Attach(_agent);
+                        base.SoAContext.Attach(_agent);
                     }
                 }
                 return _agent;
@@ -96,42 +107,60 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                 if (_agent != value)
                 {
                     _agent = value;
-                    MentorAgent = _agent == null ? default : _agent.AgentId;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_agent != null)
+                    {
+                        MentorAgent = _agent.AgentId;
+                    }
                 }
             }
         }
 
-        private Agent _agent;
+        private Agent _agentRef;
 
         [ForeignKey("LearnerAgent")]
-        public virtual Agent Agent
+        public virtual Agent AgentRef
         {
             get
             {
-                if (_agent == null && !string.IsNullOrEmpty(LearnerAgent))
+                if (_agentRef == null && !string.IsNullOrEmpty(LearnerAgent))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access Agent - no database context is set. LearnerAgent: " + LearnerAgent + ".");
+                            throw new InvalidOperationException("Cannot access AgentRef - no database context is set. LearnerAgent: " + LearnerAgent + ".");
                         }
                         return null;
                     }
-                    _agent = Context.Agents.Find(LearnerAgent);
-                    if (_agent != null)
+                    _agentRef = base.SoAContext.Agents.Find(LearnerAgent);
+                    if (_agentRef != null)
                     {
-                        Context.Attach(_agent);
+                        base.SoAContext.Attach(_agentRef);
                     }
                 }
-                return _agent;
+                return _agentRef;
             }
             set
             {
-                if (_agent != value)
+                if (_agentRef != value)
                 {
-                    _agent = value;
-                    LearnerAgent = _agent == null ? default : _agent.AgentId;
+                    _agentRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_agentRef != null)
+                    {
+                        LearnerAgent = _agentRef.AgentId;
+                    }
                 }
             }
         }
@@ -141,7 +170,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         {
             _ = this.CommunitiesOfPractice;
             _ = this.Agent;
-            _ = this.Agent;
+            _ = this.AgentRef;
         }
 
         public override string ToString()

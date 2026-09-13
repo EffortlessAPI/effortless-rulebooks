@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -16,12 +17,13 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string ObservedTransitionId { get; set; }
 
         // Formula Name (rulebook: ={{StepTransition}} & " @ " & {{ObservedAt}})
+        [NotMapped]
         public string? Name
         {
-            get => this.StepTransition + " @ " + this.ObservedAt; set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.StepTransition)), F.S(" @ "), F.TimestamptzText(F.Of(this.ObservedAt))))); set { }
         }
 
-        public DateTime? ObservedAt { get; set; }
+        public DateTimeOffset? ObservedAt { get; set; }
         public string? TriggerReason { get; set; }
         public string? SemanticTypeIri { get; set; }
 
@@ -29,72 +31,90 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string StepTransition { get; set; }
         public string? ArrivingStepExecution { get; set; }
 
-        private ProcedureExecution _procedureExecution;
+        private ProcedureExecution _procedureExecutionRef;
 
         [ForeignKey("ProcedureExecution")]
-        public virtual ProcedureExecution ProcedureExecution
+        public virtual ProcedureExecution ProcedureExecutionRef
         {
             get
             {
-                if (_procedureExecution == null && !string.IsNullOrEmpty(ProcedureExecution))
+                if (_procedureExecutionRef == null && !string.IsNullOrEmpty(ProcedureExecution))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access ProcedureExecution - no database context is set. ProcedureExecution: " + ProcedureExecution + ".");
+                            throw new InvalidOperationException("Cannot access ProcedureExecutionRef - no database context is set. ProcedureExecution: " + ProcedureExecution + ".");
                         }
                         return null;
                     }
-                    _procedureExecution = Context.ProcedureExecutions.Find(ProcedureExecution);
-                    if (_procedureExecution != null)
+                    _procedureExecutionRef = base.SoAContext.ProcedureExecutions.Find(ProcedureExecution);
+                    if (_procedureExecutionRef != null)
                     {
-                        Context.Attach(_procedureExecution);
+                        base.SoAContext.Attach(_procedureExecutionRef);
                     }
                 }
-                return _procedureExecution;
+                return _procedureExecutionRef;
             }
             set
             {
-                if (_procedureExecution != value)
+                if (_procedureExecutionRef != value)
                 {
-                    _procedureExecution = value;
-                    ProcedureExecution = _procedureExecution == null ? default : _procedureExecution.ProcedureExecutionId;
+                    _procedureExecutionRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_procedureExecutionRef != null)
+                    {
+                        ProcedureExecution = _procedureExecutionRef.ProcedureExecutionId;
+                    }
                 }
             }
         }
 
-        private StepTransition _stepTransition;
+        private StepTransition _stepTransitionRef;
 
         [ForeignKey("StepTransition")]
-        public virtual StepTransition StepTransition
+        public virtual StepTransition StepTransitionRef
         {
             get
             {
-                if (_stepTransition == null && !string.IsNullOrEmpty(StepTransition))
+                if (_stepTransitionRef == null && !string.IsNullOrEmpty(StepTransition))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access StepTransition - no database context is set. StepTransition: " + StepTransition + ".");
+                            throw new InvalidOperationException("Cannot access StepTransitionRef - no database context is set. StepTransition: " + StepTransition + ".");
                         }
                         return null;
                     }
-                    _stepTransition = Context.StepTransitions.Find(StepTransition);
-                    if (_stepTransition != null)
+                    _stepTransitionRef = base.SoAContext.StepTransitions.Find(StepTransition);
+                    if (_stepTransitionRef != null)
                     {
-                        Context.Attach(_stepTransition);
+                        base.SoAContext.Attach(_stepTransitionRef);
                     }
                 }
-                return _stepTransition;
+                return _stepTransitionRef;
             }
             set
             {
-                if (_stepTransition != value)
+                if (_stepTransitionRef != value)
                 {
-                    _stepTransition = value;
-                    StepTransition = _stepTransition == null ? default : _stepTransition.StepTransitionId;
+                    _stepTransitionRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_stepTransitionRef != null)
+                    {
+                        StepTransition = _stepTransitionRef.StepTransitionId;
+                    }
                 }
             }
         }
@@ -108,7 +128,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_stepExecution == null && !string.IsNullOrEmpty(ArrivingStepExecution))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -116,10 +136,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                         }
                         return null;
                     }
-                    _stepExecution = Context.StepExecutions.Find(ArrivingStepExecution);
+                    _stepExecution = base.SoAContext.StepExecutions.Find(ArrivingStepExecution);
                     if (_stepExecution != null)
                     {
-                        Context.Attach(_stepExecution);
+                        base.SoAContext.Attach(_stepExecution);
                     }
                 }
                 return _stepExecution;
@@ -129,7 +149,16 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                 if (_stepExecution != value)
                 {
                     _stepExecution = value;
-                    ArrivingStepExecution = _stepExecution == null ? default : _stepExecution.StepExecutionId;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_stepExecution != null)
+                    {
+                        ArrivingStepExecution = _stepExecution.StepExecutionId;
+                    }
                 }
             }
         }
@@ -137,8 +166,8 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         protected override void LazyLoadProperties()
         {
-            _ = this.ProcedureExecution;
-            _ = this.StepTransition;
+            _ = this.ProcedureExecutionRef;
+            _ = this.StepTransitionRef;
             _ = this.StepExecution;
         }
 

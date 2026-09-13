@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -16,22 +17,24 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string ResourceId { get; set; }
 
         // Formula Name (rulebook: ={{Title}})
+        [NotMapped]
         public string? Name
         {
-            get => this.Title; set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Of(this.Title))); set { }
         }
 
         public string? Title { get; set; }
         public string? ResourceKind { get; set; }
         public string? ExternalUri { get; set; }
-        public DateTime? CreatedAt { get; set; }
-        public DateTime? ModifiedAt { get; set; }
+        public DateTimeOffset? CreatedAt { get; set; }
+        public DateTimeOffset? ModifiedAt { get; set; }
         public string? Description { get; set; }
         public string? ApprovalStatus { get; set; }
         // Formula IsApprovedSource (rulebook: ={{ApprovalStatus}} = "Approved")
+        [NotMapped]
         public bool? IsApprovedSource
         {
-            get => this.ApprovalStatus = "Approved"; set { }
+            get => F.AsBool(F.Memo(this, "IsApprovedSource", () => F.Eq(F.Nullif(F.Of(this.ApprovalStatus)), F.S("Approved")))); set { }
         }
 
         public string? SemanticTypeIri { get; set; }
@@ -39,14 +42,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<ProcedureResource> _procedureResources;
 
-        [InverseProperty("Resource")]
+        [InverseProperty("ResourceRef")]
         public virtual ObservableCollection<ProcedureResource> ProcedureResources
         {
             get
             {
                 if (_procedureResources == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -56,11 +59,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.ProcedureResources.Where(x => x.Resource == this.ResourceId).ToList<ProcedureResource>();
+                        var items = base.SoAContext.ProcedureResources.Where(x => x.Resource == this.ResourceId).ToList<ProcedureResource>();
                         _procedureResources = new ObservableCollection<ProcedureResource>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _procedureResources.CollectionChanged += ProcedureResources_CollectionChanged;
@@ -101,7 +104,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_userQuestions == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -111,11 +114,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.UserQuestions.Where(x => x.AddressedByResource == this.ResourceId).ToList<UserQuestion>();
+                        var items = base.SoAContext.UserQuestions.Where(x => x.AddressedByResource == this.ResourceId).ToList<UserQuestion>();
                         _userQuestions = new ObservableCollection<UserQuestion>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _userQuestions.CollectionChanged += UserQuestions_CollectionChanged;
@@ -156,7 +159,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_learningActivities == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -166,11 +169,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.LearningActivities.Where(x => x.EvidenceResource == this.ResourceId).ToList<LearningActivity>();
+                        var items = base.SoAContext.LearningActivities.Where(x => x.EvidenceResource == this.ResourceId).ToList<LearningActivity>();
                         _learningActivities = new ObservableCollection<LearningActivity>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _learningActivities.CollectionChanged += LearningActivities_CollectionChanged;
@@ -204,14 +207,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<OperationalBinding> _operationalBindings;
 
-        [InverseProperty("Resource")]
+        [InverseProperty("ResourceRef")]
         public virtual ObservableCollection<OperationalBinding> OperationalBindings
         {
             get
             {
                 if (_operationalBindings == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -221,11 +224,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.OperationalBindings.Where(x => x.Resource == this.ResourceId).ToList<OperationalBinding>();
+                        var items = base.SoAContext.OperationalBindings.Where(x => x.Resource == this.ResourceId).ToList<OperationalBinding>();
                         _operationalBindings = new ObservableCollection<OperationalBinding>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _operationalBindings.CollectionChanged += OperationalBindings_CollectionChanged;
@@ -259,14 +262,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<MessageTemplate> _messageTemplates;
 
-        [InverseProperty("Resource")]
+        [InverseProperty("ResourceRef")]
         public virtual ObservableCollection<MessageTemplate> MessageTemplates
         {
             get
             {
                 if (_messageTemplates == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -276,11 +279,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.MessageTemplates.Where(x => x.Resource == this.ResourceId).ToList<MessageTemplate>();
+                        var items = base.SoAContext.MessageTemplates.Where(x => x.Resource == this.ResourceId).ToList<MessageTemplate>();
                         _messageTemplates = new ObservableCollection<MessageTemplate>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _messageTemplates.CollectionChanged += MessageTemplates_CollectionChanged;

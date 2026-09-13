@@ -18,7 +18,11 @@
     "is_operating_outside_boundary": null,
     "draft_decision_count": null,
     "overridden_draft_count": null,
-    "draft_rewrite_rate_percent": null
+    "draft_rewrite_rate_percent": null,
+    "times_named_as_broker": null,
+    "is_recognized_broker": null,
+    "at_risk_reliance_count": null,
+    "has_at_risk_knowledge_reliance": null
   },
   {
     "agent_id": "close-pipeline",
@@ -39,7 +43,11 @@
     "is_operating_outside_boundary": null,
     "draft_decision_count": null,
     "overridden_draft_count": null,
-    "draft_rewrite_rate_percent": null
+    "draft_rewrite_rate_percent": null,
+    "times_named_as_broker": null,
+    "is_recognized_broker": null,
+    "at_risk_reliance_count": null,
+    "has_at_risk_knowledge_reliance": null
   },
   {
     "agent_id": "devon-okafor",
@@ -60,7 +68,11 @@
     "is_operating_outside_boundary": null,
     "draft_decision_count": null,
     "overridden_draft_count": null,
-    "draft_rewrite_rate_percent": null
+    "draft_rewrite_rate_percent": null,
+    "times_named_as_broker": null,
+    "is_recognized_broker": null,
+    "at_risk_reliance_count": null,
+    "has_at_risk_knowledge_reliance": null
   },
   {
     "agent_id": "elena-garcia",
@@ -81,7 +93,36 @@
     "is_operating_outside_boundary": null,
     "draft_decision_count": null,
     "overridden_draft_count": null,
-    "draft_rewrite_rate_percent": null
+    "draft_rewrite_rate_percent": null,
+    "times_named_as_broker": null,
+    "is_recognized_broker": null,
+    "at_risk_reliance_count": null,
+    "has_at_risk_knowledge_reliance": null
+  },
+  {
+    "agent_id": "jordan-park",
+    "display_name": "Jordan Park",
+    "agent_kind": "Human",
+    "organization": "acme-finance",
+    "contact_address": "",
+    "version_or_employment_key": "",
+    "semantic_type_iri": "prov:Agent",
+    "name": null,
+    "count_of_current_role_assignments": null,
+    "is_still_engaged": null,
+    "decision_count": null,
+    "overridden_decision_count": null,
+    "override_rate_percent": null,
+    "is_non_human": null,
+    "boundary_violation_count": null,
+    "is_operating_outside_boundary": null,
+    "draft_decision_count": null,
+    "overridden_draft_count": null,
+    "draft_rewrite_rate_percent": null,
+    "times_named_as_broker": null,
+    "is_recognized_broker": null,
+    "at_risk_reliance_count": null,
+    "has_at_risk_knowledge_reliance": null
   },
   {
     "agent_id": "maria-chen",
@@ -102,7 +143,11 @@
     "is_operating_outside_boundary": null,
     "draft_decision_count": null,
     "overridden_draft_count": null,
-    "draft_rewrite_rate_percent": null
+    "draft_rewrite_rate_percent": null,
+    "times_named_as_broker": null,
+    "is_recognized_broker": null,
+    "at_risk_reliance_count": null,
+    "has_at_risk_knowledge_reliance": null
   },
   {
     "agent_id": "noah-williams",
@@ -123,7 +168,11 @@
     "is_operating_outside_boundary": null,
     "draft_decision_count": null,
     "overridden_draft_count": null,
-    "draft_rewrite_rate_percent": null
+    "draft_rewrite_rate_percent": null,
+    "times_named_as_broker": null,
+    "is_recognized_broker": null,
+    "at_risk_reliance_count": null,
+    "has_at_risk_knowledge_reliance": null
   },
   {
     "agent_id": "notification-pipeline",
@@ -144,7 +193,11 @@
     "is_operating_outside_boundary": null,
     "draft_decision_count": null,
     "overridden_draft_count": null,
-    "draft_rewrite_rate_percent": null
+    "draft_rewrite_rate_percent": null,
+    "times_named_as_broker": null,
+    "is_recognized_broker": null,
+    "at_risk_reliance_count": null,
+    "has_at_risk_knowledge_reliance": null
   },
   {
     "agent_id": "policy-drafting-ai",
@@ -165,7 +218,11 @@
     "is_operating_outside_boundary": null,
     "draft_decision_count": null,
     "overridden_draft_count": null,
-    "draft_rewrite_rate_percent": null
+    "draft_rewrite_rate_percent": null,
+    "times_named_as_broker": null,
+    "is_recognized_broker": null,
+    "at_risk_reliance_count": null,
+    "has_at_risk_knowledge_reliance": null
   },
   {
     "agent_id": "priya-raman",
@@ -186,7 +243,11 @@
     "is_operating_outside_boundary": null,
     "draft_decision_count": null,
     "overridden_draft_count": null,
-    "draft_rewrite_rate_percent": null
+    "draft_rewrite_rate_percent": null,
+    "times_named_as_broker": null,
+    "is_recognized_broker": null,
+    "at_risk_reliance_count": null,
+    "has_at_risk_knowledge_reliance": null
   },
   {
     "agent_id": "variance-ai",
@@ -207,6 +268,10 @@
     "is_operating_outside_boundary": null,
     "draft_decision_count": null,
     "overridden_draft_count": null,
-    "draft_rewrite_rate_percent": null
+    "draft_rewrite_rate_percent": null,
+    "times_named_as_broker": null,
+    "is_recognized_broker": null,
+    "at_risk_reliance_count": null,
+    "has_at_risk_knowledge_reliance": null
   }
 ]

@@ -2,38 +2,32 @@
 
 ## Configuration
 
-- **Rulebook:** `/Users/eejai42/development/effortless-rulebooks/toy-rulebooks/acme-llc/effortless-rulebook/acme-llc-rulebook.json`
-- **Substrates Tested:** 13
-- **Computed Columns Tested:** 2
+- **Rulebook:** `/Users/eejai42/development/effortless-rulebooks/rulebook-examples/procedural-knowledge-ontology/effortless-rulebook/procedural-knowledge-ontology-rulebook.json`
+- **Substrates Tested:** 7
+- **Computed Columns Tested:** 902
 
 ## Summary by Substrate
 
 | Substrate | Passed | Failed | Total | Score | Duration | Status |
 |-----------|--------|--------|-------|-------|----------|--------|
-| binary | 6 | 0 | 6 | 100.0% | < 1s | PASS |
-| csv | 6 | 0 | 6 | 100.0% | < 1s | PASS |
-| effortless-xlsx | 6 | 0 | 6 | 100.0% | < 1s | PASS |
-| explain-dag | 6 | 0 | 6 | 100.0% | < 1s | PASS |
-| uml | 6 | 0 | 6 | 100.0% | < 1s | PASS |
-| cobol | 6 | 0 | 6 | 100.0% | < 1s | PASS |
-| effortless-postgres | 6 | 0 | 6 | 100.0% | < 1s | PASS |
-| xlsx | 6 | 0 | 6 | 100.0% | < 1s | PASS |
-| english | 6 | 0 | 6 | 100.0% | 4s | PASS |
-| effortless-entity-framework | 0 | 6 | 6 | 0.0% | < 1s | ERROR: Script failed:  |
-| golang | 0 | 6 | 6 | 0.0% | < 1s | ERROR: Script failed:  |
-| owl | 0 | 6 | 6 | 0.0% | 16s | FAIL |
-| python | 0 | 6 | 6 | 0.0% | < 1s | FAIL |
+| effortless-entity-framework | 59764 | 114 | 59878 | 99.8% | 6s | FAIL |
+| effortless-golang | 59764 | 114 | 59878 | 99.8% | 3s | FAIL |
+| effortless-python | 59764 | 114 | 59878 | 99.8% | < 1s | FAIL |
+| effortless-typescript | 59764 | 114 | 59878 | 99.8% | 2s | FAIL |
+| effortless-postgres | 59763 | 115 | 59878 | 99.8% | 24s | FAIL |
+| effortless-owl | 59587 | 291 | 59878 | 99.5% | 1m 20s | FAIL |
+| effortless-xlsx | 53868 | 6010 | 59878 | 90.0% | 1s | FAIL |
 
 ## Overall Statistics
 
 | Metric | Value |
 |--------|-------|
-| Total Substrates | 13 |
-| Total Fields Tested | 78 |
-| Total Passed | 54 |
-| Total Failed | 24 |
-| Overall Score | 69.2% |
-| Total Duration | 23s |
+| Total Substrates | 7 |
+| Total Fields Tested | 419146 |
+| Total Passed | 412274 |
+| Total Failed | 6872 |
+| Overall Score | 98.4% |
+| Total Duration | 1m 57s |
 
 ---
 

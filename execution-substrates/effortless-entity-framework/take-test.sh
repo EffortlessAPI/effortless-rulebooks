@@ -4,10 +4,10 @@ set -o pipefail
 
 # take-test.sh for effortless-entity-framework execution substrate
 #
-# Builds the C# runner (which compiles the Effortless-generated EF
-# DataClasses straight from licensed-effortless-tools/) and runs it. The
-# runner uses reflection to populate every dataclass from blank-tests JSON,
-# lets the FormulaXxx properties evaluate, and writes test-answers JSON.
+# Builds the C# runner (which compiles the project's generated EF DataClasses,
+# SoAEFContext included) and runs it. The runner seeds the blank-tests raw facts
+# into the real EF context over a throwaway SQLite file, reads every computed
+# property, and writes test-answers JSON.
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
@@ -27,12 +27,8 @@ mkdir -p "$SCRIPT_DIR/test-answers"
         exit 1
     fi
 
-    # EF_TOOL_DIR is propagated to MSBuild via -p so the csproj can resolve
-    # LicensedRoot to the active domain's generated DataClasses. Always
-    # clear obj/Patched first so the previous domain's patched copies don't
-    # leak into this build (a leftover BaseClass file referencing a now-
-    # removed entity would fail compilation).
-    rm -rf obj/Patched
+    # EF_TOOL_DIR is propagated to MSBuild via -p so the csproj compiles the active
+    # domain's generated DataClasses (including the real SoAEFContext) into the runner.
     # The orchestrator runs this script directly (not via inject-substrate.sh), so
     # the tool dir is derived from the active project when not handed in. Without
     # it the csproj fell back to a global legacy path that no longer exists.
@@ -40,7 +36,7 @@ mkdir -p "$SCRIPT_DIR/test-answers"
         : "${ERB_DOMAIN_DIR:?ERB_DOMAIN_DIR must be set to the active project directory}"
         EF_TOOL_DIR="$ERB_DOMAIN_DIR/effortless-entity-framework"
     fi
-    if [ ! -f "$EF_TOOL_DIR/DataClasses/SoAEntityBase.cs" ]; then
+    if [ ! -f "$EF_TOOL_DIR/DataClasses/SoAEFContext.cs" ]; then
         echo "FATAL: no rulebook-to-entity-framework output at $EF_TOOL_DIR (run effortless build)" >&2
         exit 1
     fi

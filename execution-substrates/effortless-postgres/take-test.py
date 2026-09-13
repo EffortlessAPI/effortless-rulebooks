@@ -60,7 +60,7 @@ TEST_ANSWERS_DIR = TESTING_DIR / SCRIPT_DIR.name / "test-answers"
 
 # Add orchestration to path for shared utilities
 sys.path.insert(0, str(PROJECT_ROOT / "orchestration"))
-from shared import load_rulebook, to_snake_case, discover_primary_key, get_default_database_url
+from shared import load_rulebook, to_snake_case, discover_primary_key, discover_entities, get_default_database_url
 
 
 def get_db_connection_string():
@@ -88,9 +88,25 @@ def discover_views(conn) -> list:
     return views
 
 
-def view_to_entity_name(view_name: str) -> str:
-    """Convert view name to entity name: vw_products -> products"""
-    return view_name.replace('vw_', '')
+def view_to_entity_name(view_name: str, rulebook: dict) -> str:
+    """Resolve a view to the answer-key entity name the grader expects.
+
+    rulebook-to-postgres and orchestration.shared.to_snake_case disagree on
+    acronym runs: `FAQs` is `vw_faqs` in Postgres but `fa_qs` in the answer
+    keys. Stripping `vw_` alone wrote faqs.json, which the grader never reads
+    (every FAQs cell scored as a missing file) and which discover_primary_key
+    rejects outright. Match on the name with underscores removed, and fail
+    loudly on a miss or an ambiguity rather than guess.
+    """
+    bare = view_name[len('vw_'):]
+    matches = [to_snake_case(e) for e in discover_entities(rulebook)
+               if to_snake_case(e).replace('_', '') == bare.replace('_', '')]
+    if len(matches) != 1:
+        raise RuntimeError(
+            f"{view_name} resolves to {len(matches)} rulebook entities {matches!r}; "
+            f"expected exactly one."
+        )
+    return matches[0]
 
 
 def query_view(conn, view_name: str, pk: str = None) -> list:
@@ -140,7 +156,7 @@ def main():
 
     total_records = 0
     for view in views:
-        entity = view_to_entity_name(view)
+        entity = view_to_entity_name(view, rulebook)
         pk = discover_primary_key(rulebook, entity)
 
         records = query_view(conn, view, pk)

@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -16,43 +17,49 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string TemplateApprovalId { get; set; }
 
         // Formula Name (rulebook: ={{MessageTemplate}} & " / " & {{Decision}} & " / " & {{DecidedAt}})
+        [NotMapped]
         public string? Name
         {
-            get => this.MessageTemplate + " / " + this.Decision + " / " + this.DecidedAt; set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.MessageTemplate)), F.S(" / "), F.TextOr(F.Of(this.Decision)), F.S(" / "), F.TimestamptzText(F.Of(this.DecidedAt))))); set { }
         }
 
         public string? Decision { get; set; }
-        public DateTime? DecidedAt { get; set; }
+        public DateTimeOffset? DecidedAt { get; set; }
         public string? ApprovedBodyHash { get; set; }
         public string? Notes { get; set; }
         // Formula IsApprovalDecision (rulebook: ={{Decision}} = "Approved")
+        [NotMapped]
         public bool? IsApprovalDecision
         {
-            get => this.Decision = "Approved"; set { }
+            get => F.AsBool(F.Memo(this, "IsApprovalDecision", () => F.Eq(F.Nullif(F.Of(this.Decision)), F.S("Approved")))); set { }
         }
 
         // Formula TemplatePolicy (rulebook: =INDEX(MessageTemplates!{{CommunicationPolicy}}, MATCH({{MessageTemplate}}, MessageTemplates!{{MessageTemplateId}}, 0)))
+        [NotMapped]
         public string? TemplatePolicy
         {
-            get => INDEX(MessageTemplates!this.CommunicationPolicy, MATCH(this.MessageTemplate, MessageTemplates!this.MessageTemplateId, 0)); set { }
+            get => F.AsString(F.Memo(this, "TemplatePolicy", () => F.Lookup<MessageTemplate>(this, "MessageTemplates", "MessageTemplateId", __c => __c.MessageTemplates, __r => F.Of(__r.MessageTemplateId), F.Of(this.MessageTemplate), __r => F.Of(__r.CommunicationPolicy), () => F.Of(new MessageTemplate().CommunicationPolicy)))); set { }
         }
 
         // Formula RequiredApprovalRole (rulebook: =INDEX(CommunicationPolicies!{{ApprovalRole}}, MATCH({{TemplatePolicy}}, CommunicationPolicies!{{CommunicationPolicyId}}, 0)))
+        [NotMapped]
         public string? RequiredApprovalRole
         {
-            get => INDEX(CommunicationPolicies!this.ApprovalRole, MATCH(this.TemplatePolicy, CommunicationPolicies!this.CommunicationPolicyId, 0)); set { }
+            get => F.AsString(F.Memo(this, "RequiredApprovalRole", () => F.Lookup<CommunicationPolicy>(this, "CommunicationPolicies", "CommunicationPolicyId", __c => __c.CommunicationPolicies, __r => F.Of(__r.CommunicationPolicyId), F.Of(this.TemplatePolicy), __r => F.Of(__r.ApprovalRole), () => F.Of(new CommunicationPolicy().ApprovalRole)))); set { }
         }
 
         // Formula IsDecidedByRequiredRole (rulebook: ={{DecidedInRole}} = {{RequiredApprovalRole}})
+        [NotMapped]
         public bool? IsDecidedByRequiredRole
         {
-            get => this.DecidedInRole = this.RequiredApprovalRole; set { }
+            get => F.AsBool(F.Memo(this, "IsDecidedByRequiredRole", () => F.Eq(F.Nullif(F.Of(this.DecidedInRole)), F.Of(this.RequiredApprovalRole)))); set { }
         }
 
         // Formula ValidApprovalTemplateKey (rulebook: =IF(AND({{IsApprovalDecision}}, {{IsDecidedByRequiredRole}}), {{MessageTemplate}}, ""))
+        [NotMapped]
         public string? ValidApprovalTemplateKey
         {
-            get => IF(AND(this.IsApprovalDecision, this.IsDecidedByRequiredRole), this.MessageTemplate, ""); set { }
+            get => F.AsString(F.Memo(this, "ValidApprovalTemplateKey", () => (F.Truthy(F.Bool3(F.And(F.Bool3(F.Of(this.IsApprovalDecision)), F.Bool3(F.Of(this.IsDecidedByRequiredRole))))) ? F.Of(this.MessageTemplate) : F.S("")))); set { }
         }
 
         public string? SemanticTypeIri { get; set; }
@@ -61,37 +68,46 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string? DecidedByAgent { get; set; }
         public string? DecidedInRole { get; set; }
 
-        private MessageTemplate _messageTemplate;
+        private MessageTemplate _messageTemplateRef;
 
         [ForeignKey("MessageTemplate")]
-        public virtual MessageTemplate MessageTemplate
+        public virtual MessageTemplate MessageTemplateRef
         {
             get
             {
-                if (_messageTemplate == null && !string.IsNullOrEmpty(MessageTemplate))
+                if (_messageTemplateRef == null && !string.IsNullOrEmpty(MessageTemplate))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access MessageTemplate - no database context is set. MessageTemplate: " + MessageTemplate + ".");
+                            throw new InvalidOperationException("Cannot access MessageTemplateRef - no database context is set. MessageTemplate: " + MessageTemplate + ".");
                         }
                         return null;
                     }
-                    _messageTemplate = Context.MessageTemplates.Find(MessageTemplate);
-                    if (_messageTemplate != null)
+                    _messageTemplateRef = base.SoAContext.MessageTemplates.Find(MessageTemplate);
+                    if (_messageTemplateRef != null)
                     {
-                        Context.Attach(_messageTemplate);
+                        base.SoAContext.Attach(_messageTemplateRef);
                     }
                 }
-                return _messageTemplate;
+                return _messageTemplateRef;
             }
             set
             {
-                if (_messageTemplate != value)
+                if (_messageTemplateRef != value)
                 {
-                    _messageTemplate = value;
-                    MessageTemplate = _messageTemplate == null ? default : _messageTemplate.MessageTemplateId;
+                    _messageTemplateRef = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_messageTemplateRef != null)
+                    {
+                        MessageTemplate = _messageTemplateRef.MessageTemplateId;
+                    }
                 }
             }
         }
@@ -105,7 +121,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_agent == null && !string.IsNullOrEmpty(DecidedByAgent))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -113,10 +129,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                         }
                         return null;
                     }
-                    _agent = Context.Agents.Find(DecidedByAgent);
+                    _agent = base.SoAContext.Agents.Find(DecidedByAgent);
                     if (_agent != null)
                     {
-                        Context.Attach(_agent);
+                        base.SoAContext.Attach(_agent);
                     }
                 }
                 return _agent;
@@ -126,7 +142,16 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                 if (_agent != value)
                 {
                     _agent = value;
-                    DecidedByAgent = _agent == null ? default : _agent.AgentId;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_agent != null)
+                    {
+                        DecidedByAgent = _agent.AgentId;
+                    }
                 }
             }
         }
@@ -140,7 +165,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_role == null && !string.IsNullOrEmpty(DecidedInRole))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -148,10 +173,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                         }
                         return null;
                     }
-                    _role = Context.Roles.Find(DecidedInRole);
+                    _role = base.SoAContext.Roles.Find(DecidedInRole);
                     if (_role != null)
                     {
-                        Context.Attach(_role);
+                        base.SoAContext.Attach(_role);
                     }
                 }
                 return _role;
@@ -161,7 +186,16 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                 if (_role != value)
                 {
                     _role = value;
-                    DecidedInRole = _role == null ? default : _role.RoleId;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_role != null)
+                    {
+                        DecidedInRole = _role.RoleId;
+                    }
                 }
             }
         }
@@ -169,7 +203,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         protected override void LazyLoadProperties()
         {
-            _ = this.MessageTemplate;
+            _ = this.MessageTemplateRef;
             _ = this.Agent;
             _ = this.Role;
         }

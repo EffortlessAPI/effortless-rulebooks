@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -16,9 +17,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string AppRouteId { get; set; }
 
         // Formula Name (rulebook: ={{RouteName}} & " — " & {{RoutePath}})
+        [NotMapped]
         public string? Name
         {
-            get => this.RouteName + " — " + this.RoutePath; set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.RouteName)), F.S(" — "), F.TextOr(F.Of(this.RoutePath))))); set { }
         }
 
         public string RoutePath { get; set; }
@@ -29,39 +31,45 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string? Purpose { get; set; }
         public string? LayoutHints { get; set; }
         // Formula IsInNav (rulebook: ={{NavGroup}} <> "")
+        [NotMapped]
         public bool? IsInNav
         {
-            get => this.NavGroup <> ""; set { }
+            get => F.AsBool(F.Memo(this, "IsInNav", () => F.IsNotBlank(F.Of(this.NavGroup)))); set { }
         }
 
         // Formula IsShared (rulebook: =AND({{OwningRole}} = "", {{Surface}} = "domain"))
+        [NotMapped]
         public bool? IsShared
         {
-            get => AND(this.OwningRole = "", this.Surface = "domain"); set { }
+            get => F.AsBool(F.Memo(this, "IsShared", () => F.And(F.Bool3(F.IsBlank(F.Of(this.OwningRole))), F.Bool3(F.Eq(F.Nullif(F.Of(this.Surface)), F.S("domain")))))); set { }
         }
 
         // Formula IsMaintainer (rulebook: ={{Surface}} = "maintainer")
+        [NotMapped]
         public bool? IsMaintainer
         {
-            get => this.Surface = "maintainer"; set { }
+            get => F.AsBool(F.Memo(this, "IsMaintainer", () => F.Eq(F.Nullif(F.Of(this.Surface)), F.S("maintainer")))); set { }
         }
 
         // Formula QuestionCount (rulebook: =COUNTIFS(AppRouteQuestions!{{Route}}, {{AppRouteId}}))
+        [NotMapped]
         public decimal? QuestionCount
         {
-            get => COUNTIFS(AppRouteQuestions!this.Route, this.AppRouteId); set { }
+            get => F.AsDecimal(F.Memo(this, "QuestionCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<AppRouteQuestion>(base.SoAContext, "AppRouteQuestions", __c => __c.AppRouteQuestions), __r => F.CritField(F.Of(__r.Route), F.Of(this.AppRouteId)))))); set { }
         }
 
         // Formula ReferenceCount (rulebook: =COUNTIFS(AppRouteReferences!{{FromRoute}}, {{AppRouteId}}))
+        [NotMapped]
         public decimal? ReferenceCount
         {
-            get => COUNTIFS(AppRouteReferences!this.FromRoute, this.AppRouteId); set { }
+            get => F.AsDecimal(F.Memo(this, "ReferenceCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<AppRouteReference>(base.SoAContext, "AppRouteReferences", __c => __c.AppRouteReferences), __r => F.CritField(F.Of(__r.FromRoute), F.Of(this.AppRouteId)))))); set { }
         }
 
         // Formula AnswersNoQuestion (rulebook: =AND({{QuestionCount}} = 0, {{IsShared}} = FALSE, {{IsMaintainer}} = FALSE, {{RouteKind}} <> "index"))
+        [NotMapped]
         public bool? AnswersNoQuestion
         {
-            get => AND(this.QuestionCount = 0, this.IsShared = FALSE, this.IsMaintainer = FALSE, this.RouteKind <> "index"); set { }
+            get => F.AsBool(F.Memo(this, "AnswersNoQuestion", () => F.And(F.Bool3(F.Eq(F.Of(this.QuestionCount), F.I(0))), F.Bool3(F.Eq(F.Of(this.IsShared), F.B(false))), F.Bool3(F.Eq(F.Of(this.IsMaintainer), F.B(false))), F.Bool3(F.Ne(F.Nullif(F.Of(this.RouteKind)), F.S("index")))))); set { }
         }
 
         public string? SemanticTypeIri { get; set; }
@@ -78,7 +86,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_role == null && !string.IsNullOrEmpty(OwningRole))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -86,10 +94,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                         }
                         return null;
                     }
-                    _role = Context.Roles.Find(OwningRole);
+                    _role = base.SoAContext.Roles.Find(OwningRole);
                     if (_role != null)
                     {
-                        Context.Attach(_role);
+                        base.SoAContext.Attach(_role);
                     }
                 }
                 return _role;
@@ -99,7 +107,16 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                 if (_role != value)
                 {
                     _role = value;
-                    OwningRole = _role == null ? default : _role.RoleId;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_role != null)
+                    {
+                        OwningRole = _role.RoleId;
+                    }
                 }
             }
         }
@@ -113,7 +130,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_appNavGroup == null && !string.IsNullOrEmpty(NavGroup))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -121,10 +138,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                         }
                         return null;
                     }
-                    _appNavGroup = Context.AppNavGroups.Find(NavGroup);
+                    _appNavGroup = base.SoAContext.AppNavGroups.Find(NavGroup);
                     if (_appNavGroup != null)
                     {
-                        Context.Attach(_appNavGroup);
+                        base.SoAContext.Attach(_appNavGroup);
                     }
                 }
                 return _appNavGroup;
@@ -134,7 +151,16 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                 if (_appNavGroup != value)
                 {
                     _appNavGroup = value;
-                    NavGroup = _appNavGroup == null ? default : _appNavGroup.AppNavGroupId;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_appNavGroup != null)
+                    {
+                        NavGroup = _appNavGroup.AppNavGroupId;
+                    }
                 }
             }
         }
@@ -148,7 +174,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_appRouteQuestions == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -158,11 +184,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.AppRouteQuestions.Where(x => x.Route == this.AppRouteId).ToList<AppRouteQuestion>();
+                        var items = base.SoAContext.AppRouteQuestions.Where(x => x.Route == this.AppRouteId).ToList<AppRouteQuestion>();
                         _appRouteQuestions = new ObservableCollection<AppRouteQuestion>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _appRouteQuestions.CollectionChanged += AppRouteQuestions_CollectionChanged;
@@ -194,51 +220,51 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
-        private ObservableCollection<AppRouteReference> _appRouteReferences;
+        private ObservableCollection<AppRouteReference> _fromRouteAppRouteReferences;
 
         [InverseProperty("AppRoute")]
-        public virtual ObservableCollection<AppRouteReference> AppRouteReferences
+        public virtual ObservableCollection<AppRouteReference> FromRouteAppRouteReferences
         {
             get
             {
-                if (_appRouteReferences == null)
+                if (_fromRouteAppRouteReferences == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access AppRouteReferences - no database context is set. AppRouteId: " + this.AppRouteId + ".");
+                            throw new InvalidOperationException("Cannot access FromRouteAppRouteReferences - no database context is set. AppRouteId: " + this.AppRouteId + ".");
                         }
-                        _appRouteReferences = new ObservableCollection<AppRouteReference>();
+                        _fromRouteAppRouteReferences = new ObservableCollection<AppRouteReference>();
                     }
                     else
                     {
-                        var items = Context.AppRouteReferences.Where(x => x.FromRoute == this.AppRouteId).ToList<AppRouteReference>();
-                        _appRouteReferences = new ObservableCollection<AppRouteReference>(items);
+                        var items = base.SoAContext.AppRouteReferences.Where(x => x.FromRoute == this.AppRouteId).ToList<AppRouteReference>();
+                        _fromRouteAppRouteReferences = new ObservableCollection<AppRouteReference>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
-                    _appRouteReferences.CollectionChanged += AppRouteReferences_CollectionChanged;
+                    _fromRouteAppRouteReferences.CollectionChanged += FromRouteAppRouteReferences_CollectionChanged;
                 }
-                return _appRouteReferences;
+                return _fromRouteAppRouteReferences;
             }
             private set
             {
-                if (_appRouteReferences != null)
+                if (_fromRouteAppRouteReferences != null)
                 {
-                    _appRouteReferences.CollectionChanged -= AppRouteReferences_CollectionChanged;
+                    _fromRouteAppRouteReferences.CollectionChanged -= FromRouteAppRouteReferences_CollectionChanged;
                 }
-                _appRouteReferences = value;
-                if (_appRouteReferences != null)
+                _fromRouteAppRouteReferences = value;
+                if (_fromRouteAppRouteReferences != null)
                 {
-                    _appRouteReferences.CollectionChanged += AppRouteReferences_CollectionChanged;
+                    _fromRouteAppRouteReferences.CollectionChanged += FromRouteAppRouteReferences_CollectionChanged;
                 }
             }
         }
 
-        private void AppRouteReferences_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void FromRouteAppRouteReferences_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e?.NewItems != null)
             {
@@ -249,51 +275,51 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
-        private ObservableCollection<AppRouteReference> _appRouteReferences;
+        private ObservableCollection<AppRouteReference> _toRouteAppRouteReferences;
 
-        [InverseProperty("AppRoute")]
-        public virtual ObservableCollection<AppRouteReference> AppRouteReferences
+        [InverseProperty("AppRouteRef")]
+        public virtual ObservableCollection<AppRouteReference> ToRouteAppRouteReferences
         {
             get
             {
-                if (_appRouteReferences == null)
+                if (_toRouteAppRouteReferences == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
-                            throw new InvalidOperationException("Cannot access AppRouteReferences - no database context is set. AppRouteId: " + this.AppRouteId + ".");
+                            throw new InvalidOperationException("Cannot access ToRouteAppRouteReferences - no database context is set. AppRouteId: " + this.AppRouteId + ".");
                         }
-                        _appRouteReferences = new ObservableCollection<AppRouteReference>();
+                        _toRouteAppRouteReferences = new ObservableCollection<AppRouteReference>();
                     }
                     else
                     {
-                        var items = Context.AppRouteReferences.Where(x => x.ToRoute == this.AppRouteId).ToList<AppRouteReference>();
-                        _appRouteReferences = new ObservableCollection<AppRouteReference>(items);
+                        var items = base.SoAContext.AppRouteReferences.Where(x => x.ToRoute == this.AppRouteId).ToList<AppRouteReference>();
+                        _toRouteAppRouteReferences = new ObservableCollection<AppRouteReference>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
-                    _appRouteReferences.CollectionChanged += AppRouteReferences_CollectionChanged;
+                    _toRouteAppRouteReferences.CollectionChanged += ToRouteAppRouteReferences_CollectionChanged;
                 }
-                return _appRouteReferences;
+                return _toRouteAppRouteReferences;
             }
             private set
             {
-                if (_appRouteReferences != null)
+                if (_toRouteAppRouteReferences != null)
                 {
-                    _appRouteReferences.CollectionChanged -= AppRouteReferences_CollectionChanged;
+                    _toRouteAppRouteReferences.CollectionChanged -= ToRouteAppRouteReferences_CollectionChanged;
                 }
-                _appRouteReferences = value;
-                if (_appRouteReferences != null)
+                _toRouteAppRouteReferences = value;
+                if (_toRouteAppRouteReferences != null)
                 {
-                    _appRouteReferences.CollectionChanged += AppRouteReferences_CollectionChanged;
+                    _toRouteAppRouteReferences.CollectionChanged += ToRouteAppRouteReferences_CollectionChanged;
                 }
             }
         }
 
-        private void AppRouteReferences_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void ToRouteAppRouteReferences_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e?.NewItems != null)
             {
@@ -310,8 +336,8 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             _ = this.Role;
             _ = this.AppNavGroup;
             _ = this.AppRouteQuestions;
-            _ = this.AppRouteReferences;
-            _ = this.AppRouteReferences;
+            _ = this.FromRouteAppRouteReferences;
+            _ = this.ToRouteAppRouteReferences;
         }
 
         public override string ToString()

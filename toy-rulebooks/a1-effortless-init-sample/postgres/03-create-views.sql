@@ -21,7 +21,6 @@ CREATE VIEW vw_hello_whos WITH (security_invoker = ON) AS
 SELECT
   t.hello_who_id,
   t.name,
-  calc_hello_whos_introduction(t.hello_who_id) AS introduction,
-  calc_hello_whos_is_bob(t.hello_who_id) AS is_bob
+  calc_hello_whos_introduction(t.hello_who_id) AS introduction
 FROM hello_whos t;
 

@@ -8075,6 +8075,18 @@
         "Domain": "domain-acme-llc",
         "RanOn": "2026-09-12T20:45:24",
         "RawResultsJson": "{\"english\": {\"last_run\": {\"status\": \"success\", \"duration_seconds\": 4.0, \"exit_code\": 0, \"score\": 100.0}, \"last_successful_run\": {\"duration_seconds\": 4.0, \"status\": \"success\", \"test_results\": {\"total_fields_tested\": 6, \"fields_passed\": 6, \"fields_failed\": 0, \"score\": 100.0}}}, \"python\": {\"last_run\": {\"status\": \"success\", \"duration_seconds\": 0.0, \"exit_code\": 0, \"score\": 0.0}, \"last_successful_run\": {\"duration_seconds\": 0.21721386909484863, \"status\": \"success\", \"test_results\": {\"total_fields_tested\": 6, \"fields_passed\": 6, \"fields_failed\": 0, \"score\": 100.0}}}, \"golang\": {\"last_run\": {\"status\": \"success\", \"duration_seconds\": 0.7153401374816895, \"exit_code\": 0, \"score\": 100.0}, \"last_successful_run\": {\"duration_seconds\": 0.7153401374816895, \"status\": \"success\", \"test_results\": {\"total_fields_tested\": 6, \"fields_passed\": 6, \"fields_failed\": 0, \"score\": 100.0}}}, \"owl\": {\"last_run\": {\"status\": \"success\", \"duration_seconds\": 16.0, \"exit_code\": 0, \"score\": 0.0}, \"last_successful_run\": {\"duration_seconds\": 0.4644899368286133, \"status\": \"success\", \"test_results\": {\"total_fields_tested\": 6, \"fields_passed\": 6, \"fields_failed\": 0, \"score\": 100.0}}}, \"uml\": {\"last_run\": {\"status\": \"success\", \"duration_seconds\": 0.0, \"exit_code\": 0, \"score\": 100.0}, \"last_successful_run\": {\"duration_seconds\": 0.0, \"status\": \"success\", \"test_results\": {\"total_fields_tested\": 6, \"fields_passed\": 6, \"fields_failed\": 0, \"score\": 100.0}}}, \"xlsx\": {\"last_run\": {\"status\": \"success\", \"duration_seconds\": 1.0, \"exit_code\": 0, \"score\": 100.0}, \"last_successful_run\": {\"duration_seconds\": 1.0, \"status\": \"success\", \"test_results\": {\"total_fields_tested\": 6, \"fields_passed\": 6, \"fields_failed\": 0, \"score\": 100.0}}}, \"binary\": {\"last_run\": {\"status\": \"success\", \"duration_seconds\": 0.0, \"exit_code\": 0, \"score\": 100.0}, \"last_successful_run\": {\"duration_seconds\": 0.0, \"status\": \"success\", \"test_results\": {\"total_fields_tested\": 6, \"fields_passed\": 6, \"fields_failed\": 0, \"score\": 100.0}}}, \"cobol\": {\"last_run\": {\"status\": \"success\", \"duration_seconds\": 0.0, \"exit_code\": 0, \"score\": 100.0}, \"last_successful_run\": {\"duration_seconds\": 0.0, \"status\": \"success\", \"test_results\": {\"total_fields_tested\": 6, \"fields_passed\": 6, \"fields_failed\": 0, \"score\": 100.0}}}, \"csv\": {\"last_run\": {\"status\": \"success\", \"duration_seconds\": 0.0, \"exit_code\": 0, \"score\": 100.0}, \"last_successful_run\": {\"duration_seconds\": 0.0, \"status\": \"success\", \"test_results\": {\"total_fields_tested\": 6, \"fields_passed\": 6, \"fields_failed\": 0, \"score\": 100.0}}}, \"explain-dag\": {\"last_run\": {\"status\": \"success\", \"duration_seconds\": 0.0, \"exit_code\": 0, \"score\": 100.0}, \"last_successful_run\": {\"duration_seconds\": 0.0, \"status\": \"success\", \"test_results\": {\"total_fields_tested\": 6, \"fields_passed\": 6, \"fields_failed\": 0, \"score\": 100.0}}}, \"effortless-entity-framework\": {\"last_run\": {\"status\": \"success\", \"duration_seconds\": 5.063300132751465, \"exit_code\": 0, \"score\": 100.0}, \"last_successful_run\": {\"duration_seconds\": 5.063300132751465, \"status\": \"success\", \"test_results\": {\"total_fields_tested\": 6, \"fields_passed\": 6, \"fields_failed\": 0, \"score\": 100.0}}}, \"effortless-postgres\": {\"last_run\": {\"status\": \"success\", \"duration_seconds\": 0.0, \"exit_code\": 0, \"score\": 100.0}, \"last_successful_run\": {\"duration_seconds\": 0.0, \"status\": \"success\", \"test_results\": {\"total_fields_tested\": 6, \"fields_passed\": 6, \"fields_failed\": 0, \"score\": 100.0}}}, \"effortless-xlsx\": {\"last_run\": {\"status\": \"success\", \"duration_seconds\": 0.0, \"exit_code\": 0, \"score\": 100.0}, \"last_successful_run\": {\"duration_seconds\": 0.0, \"status\": \"success\", \"test_results\": {\"total_fields_tested\": 6, \"fields_passed\": 6, \"fields_failed\": 0, \"score\": 100.0}}}}"
+      },
+      {
+        "ConformanceRunId": "run-procedural-knowledge-ontology-20260913-163819",
+        "Domain": "domain-procedural-knowledge-ontology",
+        "RanOn": "2026-09-13T16:38:19",
+        "RawResultsJson": "{\"effortless-python\": {\"last_run\": {\"status\": \"success\", \"duration_seconds\": 1.0, \"exit_code\": 0, \"score\": 99.7952255213666}, \"last_successful_run\": {\"duration_seconds\": 1.0, \"status\": \"success\", \"test_results\": {\"total_fields_tested\": 54267, \"fields_passed\": 54267, \"fields_failed\": 0, \"score\": 100.0}}}, \"effortless-golang\": {\"last_run\": {\"status\": \"success\", \"duration_seconds\": 3.0, \"exit_code\": 0, \"score\": 99.7952255213666}, \"last_successful_run\": {\"duration_seconds\": 2.0, \"status\": \"success\", \"test_results\": {\"total_fields_tested\": 54267, \"fields_passed\": 54267, \"fields_failed\": 0, \"score\": 100.0}}}, \"effortless-typescript\": {\"last_run\": {\"status\": \"success\", \"duration_seconds\": 2.0, \"exit_code\": 0, \"score\": 99.7952255213666}, \"last_successful_run\": {\"duration_seconds\": 3.0, \"status\": \"success\", \"test_results\": {\"total_fields_tested\": 54267, \"fields_passed\": 54267, \"fields_failed\": 0, \"score\": 100.0}}}, \"effortless-postgres\": {\"last_run\": {\"status\": \"success\", \"duration_seconds\": 47.0, \"exit_code\": 0, \"score\": 99.79342925401016}, \"last_successful_run\": null}, \"effortless-xlsx\": {\"last_run\": {\"status\": \"success\", \"duration_seconds\": 2.0, \"exit_code\": 0, \"score\": 89.21521079197427}, \"last_successful_run\": null}, \"effortless-owl\": {\"last_run\": {\"status\": \"success\", \"duration_seconds\": 77.0, \"exit_code\": 0, \"score\": 91.81620592408974}, \"last_successful_run\": null}}"
+      },
+      {
+        "ConformanceRunId": "run-procedural-knowledge-ontology-20260913-165351",
+        "Domain": "domain-procedural-knowledge-ontology",
+        "RanOn": "2026-09-13T16:53:51",
+        "RawResultsJson": "{\"effortless-python\": {\"last_run\": {\"status\": \"success\", \"duration_seconds\": 0.0, \"exit_code\": 0, \"score\": 99.8096128795217}, \"last_successful_run\": {\"duration_seconds\": 1.0, \"status\": \"success\", \"test_results\": {\"total_fields_tested\": 54267, \"fields_passed\": 54267, \"fields_failed\": 0, \"score\": 100.0}}}, \"effortless-golang\": {\"last_run\": {\"status\": \"success\", \"duration_seconds\": 3.0, \"exit_code\": 0, \"score\": 99.8096128795217}, \"last_successful_run\": {\"duration_seconds\": 2.0, \"status\": \"success\", \"test_results\": {\"total_fields_tested\": 54267, \"fields_passed\": 54267, \"fields_failed\": 0, \"score\": 100.0}}}, \"effortless-typescript\": {\"last_run\": {\"status\": \"success\", \"duration_seconds\": 1.0, \"exit_code\": 0, \"score\": 99.8096128795217}, \"last_successful_run\": {\"duration_seconds\": 3.0, \"status\": \"success\", \"test_results\": {\"total_fields_tested\": 54267, \"fields_passed\": 54267, \"fields_failed\": 0, \"score\": 100.0}}}, \"effortless-postgres\": {\"last_run\": {\"status\": \"success\", \"duration_seconds\": 24.0, \"exit_code\": 0, \"score\": 99.80794281706136}, \"last_successful_run\": null}, \"effortless-xlsx\": {\"last_run\": {\"status\": \"success\", \"duration_seconds\": 1.0, \"exit_code\": 0, \"score\": 89.96292461338054}, \"last_successful_run\": null}, \"effortless-owl\": {\"last_run\": {\"status\": \"success\", \"duration_seconds\": 79.0, \"exit_code\": 0, \"score\": 99.51401182404221}, \"last_successful_run\": null}, \"effortless-entity-framework\": {\"last_run\": {\"status\": \"success\", \"duration_seconds\": 6.0, \"exit_code\": 0, \"score\": 99.8096128795217}, \"last_successful_run\": null}}"
       }
     ]
   },
@@ -10303,6 +10315,149 @@
         "FieldsTested": 6,
         "FieldsPassed": 6,
         "FieldsFailed": 0,
+        "DurationSeconds": 1.0
+      },
+      {
+        "ConformanceResultId": "run-procedural-knowledge-ontology-20260913-163819:effortless-golang",
+        "Run": "run-procedural-knowledge-ontology-20260913-163819",
+        "SubstrateName": "effortless-golang",
+        "Status": "success",
+        "Score": 100.0,
+        "FieldsTested": 54267,
+        "FieldsPassed": 54267,
+        "FieldsFailed": 0,
+        "DurationSeconds": 2.0
+      },
+      {
+        "ConformanceResultId": "run-procedural-knowledge-ontology-20260913-163819:effortless-owl",
+        "Run": "run-procedural-knowledge-ontology-20260913-163819",
+        "SubstrateName": "effortless-owl",
+        "Status": "success",
+        "Score": 91.81620592408974,
+        "FieldsTested": null,
+        "FieldsPassed": null,
+        "FieldsFailed": null,
+        "DurationSeconds": 77.0
+      },
+      {
+        "ConformanceResultId": "run-procedural-knowledge-ontology-20260913-163819:effortless-postgres",
+        "Run": "run-procedural-knowledge-ontology-20260913-163819",
+        "SubstrateName": "effortless-postgres",
+        "Status": "success",
+        "Score": 99.79342925401016,
+        "FieldsTested": null,
+        "FieldsPassed": null,
+        "FieldsFailed": null,
+        "DurationSeconds": 47.0
+      },
+      {
+        "ConformanceResultId": "run-procedural-knowledge-ontology-20260913-163819:effortless-python",
+        "Run": "run-procedural-knowledge-ontology-20260913-163819",
+        "SubstrateName": "effortless-python",
+        "Status": "success",
+        "Score": 100.0,
+        "FieldsTested": 54267,
+        "FieldsPassed": 54267,
+        "FieldsFailed": 0,
+        "DurationSeconds": 1.0
+      },
+      {
+        "ConformanceResultId": "run-procedural-knowledge-ontology-20260913-163819:effortless-typescript",
+        "Run": "run-procedural-knowledge-ontology-20260913-163819",
+        "SubstrateName": "effortless-typescript",
+        "Status": "success",
+        "Score": 100.0,
+        "FieldsTested": 54267,
+        "FieldsPassed": 54267,
+        "FieldsFailed": 0,
+        "DurationSeconds": 3.0
+      },
+      {
+        "ConformanceResultId": "run-procedural-knowledge-ontology-20260913-163819:effortless-xlsx",
+        "Run": "run-procedural-knowledge-ontology-20260913-163819",
+        "SubstrateName": "effortless-xlsx",
+        "Status": "success",
+        "Score": 89.21521079197427,
+        "FieldsTested": null,
+        "FieldsPassed": null,
+        "FieldsFailed": null,
+        "DurationSeconds": 2.0
+      },
+      {
+        "ConformanceResultId": "run-procedural-knowledge-ontology-20260913-165351:effortless-entity-framework",
+        "Run": "run-procedural-knowledge-ontology-20260913-165351",
+        "SubstrateName": "effortless-entity-framework",
+        "Status": "success",
+        "Score": 99.8096128795217,
+        "FieldsTested": null,
+        "FieldsPassed": null,
+        "FieldsFailed": null,
+        "DurationSeconds": 6.0
+      },
+      {
+        "ConformanceResultId": "run-procedural-knowledge-ontology-20260913-165351:effortless-golang",
+        "Run": "run-procedural-knowledge-ontology-20260913-165351",
+        "SubstrateName": "effortless-golang",
+        "Status": "success",
+        "Score": 100.0,
+        "FieldsTested": 54267,
+        "FieldsPassed": 54267,
+        "FieldsFailed": 0,
+        "DurationSeconds": 2.0
+      },
+      {
+        "ConformanceResultId": "run-procedural-knowledge-ontology-20260913-165351:effortless-owl",
+        "Run": "run-procedural-knowledge-ontology-20260913-165351",
+        "SubstrateName": "effortless-owl",
+        "Status": "success",
+        "Score": 99.51401182404221,
+        "FieldsTested": null,
+        "FieldsPassed": null,
+        "FieldsFailed": null,
+        "DurationSeconds": 79.0
+      },
+      {
+        "ConformanceResultId": "run-procedural-knowledge-ontology-20260913-165351:effortless-postgres",
+        "Run": "run-procedural-knowledge-ontology-20260913-165351",
+        "SubstrateName": "effortless-postgres",
+        "Status": "success",
+        "Score": 99.80794281706136,
+        "FieldsTested": null,
+        "FieldsPassed": null,
+        "FieldsFailed": null,
+        "DurationSeconds": 24.0
+      },
+      {
+        "ConformanceResultId": "run-procedural-knowledge-ontology-20260913-165351:effortless-python",
+        "Run": "run-procedural-knowledge-ontology-20260913-165351",
+        "SubstrateName": "effortless-python",
+        "Status": "success",
+        "Score": 100.0,
+        "FieldsTested": 54267,
+        "FieldsPassed": 54267,
+        "FieldsFailed": 0,
+        "DurationSeconds": 1.0
+      },
+      {
+        "ConformanceResultId": "run-procedural-knowledge-ontology-20260913-165351:effortless-typescript",
+        "Run": "run-procedural-knowledge-ontology-20260913-165351",
+        "SubstrateName": "effortless-typescript",
+        "Status": "success",
+        "Score": 100.0,
+        "FieldsTested": 54267,
+        "FieldsPassed": 54267,
+        "FieldsFailed": 0,
+        "DurationSeconds": 3.0
+      },
+      {
+        "ConformanceResultId": "run-procedural-knowledge-ontology-20260913-165351:effortless-xlsx",
+        "Run": "run-procedural-knowledge-ontology-20260913-165351",
+        "SubstrateName": "effortless-xlsx",
+        "Status": "success",
+        "Score": 89.96292461338054,
+        "FieldsTested": null,
+        "FieldsPassed": null,
+        "FieldsFailed": null,
         "DurationSeconds": 1.0
       }
     ]
@@ -31408,6 +31563,30 @@
         "SourceDoctrine": "rulebook-to-postgres synthesizes <Table>Id = Slug(Name) for a table with no <Entity>Id and a calculated Name, and rewrites every referencing FK to that slug so FK == PK. Joins stay consistent, but any formula that renders the FK or compares it to the target's own text field silently computes against the slug; the build is green and the answers are wrong.",
         "IsScannerDerived": false,
         "Project": "erb-001"
+      },
+      {
+        "ConsistencyRuleId": "cr-26",
+        "RuleCode": "substrate-grades-registered-tool",
+        "Severity": "major",
+        "Scope": "platform",
+        "Statement": "A conformance substrate grades the output of the tool the project actually registers, at the path the project's effortless.json writes it, and the harness can reach every entity that tool emits.",
+        "CheckMechanism": "For each licensed substrate, trace take-test back to its input: it must read $ERB_DOMAIN_DIR/<RelativePath>, not a copy the substrate regenerated with its own injector. Run the harness on a project whose table names contain acronym runs (FAQs, ERBVersions) and confirm every substrate resolves every entity.",
+        "FixPlaybook": "Give each licensed tool an effortless-<tech> substrate that reads the domain's output (effortless-owl reuses owl/take-test.py). Resolve names through the rulebook's entity list, never by string surgery on a view name, and raise on a miss.",
+        "SourceDoctrine": "A green score for a tool nobody graded is worse than no score: it is evidence of the wrong thing.",
+        "IsScannerDerived": false,
+        "Project": "erb-001"
+      },
+      {
+        "ConsistencyRuleId": "cr-27",
+        "RuleCode": "tool-output-conformance",
+        "Severity": "major",
+        "Scope": "platform",
+        "Statement": "Every registered tool computes the same value as the answer key for every graded derived cell. Each disagreement is traced to a named root cause in a specific tool, or in the answer key itself.",
+        "CheckMechanism": "Run scripts/run-conformance.py on the project, then read testing/_conformance_grades.json (or the project's FieldDisagreements rows). Group failing cells by field, and compare substrates with each other, not just with the key: cells that several independent engines all fail identically point at the key.",
+        "FixPlaybook": "Fix the tool that disagrees, in its source under Versioned-Stable-SSoTme-Tools, running locally first and publishing via publish-tool.sh. Never change the answer key or the grader to make a score go green.",
+        "SourceDoctrine": "A green build is not evidence that a formula ran; only a witnessed per-cell agreement across substrates is.",
+        "IsScannerDerived": false,
+        "Project": "erb-001"
       }
     ]
   },
@@ -36765,6 +36944,70 @@
         "Rule": "cr-25",
         "Domain": "domain-customer-crm",
         "Detail": "Users, Customers, Orders, Payments, JetModels, FlightControlSystems and OrderLines (45 rows) take the synthesized slug PK path; same exposure as ross-style-business-rules.",
+        "Status": "open",
+        "DetectedOn": "2026-09-13"
+      },
+      {
+        "ConsistencyFindingId": "cr-23-02",
+        "Rule": "cr-23",
+        "Domain": "domain-procedural-knowledge-ontology",
+        "Detail": "A second instance: orchestration/test-orchestrator.py generate_substrate_report() read run_metadata.get('last_run', {}) and .get('last_successful_run', {}). load_run_metadata stores an explicit None for a substrate that has never recorded a run, so the first never-graded substrate crashed the whole harness before any later substrate was graded. It is why procedural-knowledge-ontology had only ever reported python/golang/typescript: effortless-postgres, owl and entity-framework were never reached. Fixed 2026-09-13 in 864ccf14 with 'or {}'.",
+        "Status": "open",
+        "DetectedOn": "2026-09-13"
+      },
+      {
+        "ConsistencyFindingId": "cr-26-01",
+        "Rule": "cr-26",
+        "Domain": "domain-procedural-knowledge-ontology",
+        "Detail": "The open-source owl substrate re-injects with its own execution-substrates/owl/inject-into-owl.py and reads execution-substrates/owl/src; it never reads a project's owl/ transpiler output. Swapping a project from oss-rulebook-to-owl to the commercial rulebook-to-owl would have changed nothing that was scored. Fixed 2026-09-13 (864ccf14): new effortless-owl substrate reading $ERB_DOMAIN_DIR/effortless-owl/src. The same commit sequences rule sets that carry no sh:order (rulebook-to-owl emits none) by their own read/construct dependencies, since the runner executes each rule once.",
+        "Status": "open",
+        "DetectedOn": "2026-09-13"
+      },
+      {
+        "ConsistencyFindingId": "cr-26-02",
+        "Rule": "cr-26",
+        "Domain": "domain-procedural-knowledge-ontology",
+        "Detail": "effortless-postgres/take-test.py mapped vw_faqs to entity 'faqs' by stripping vw_, but the harness names the FAQs answer key fa_qs, so discover_primary_key raised and the substrate produced nothing. Fixed 2026-09-13 (864ccf14): resolve views against the rulebook's entities ignoring underscores, raising on a miss or ambiguity.",
+        "Status": "open",
+        "DetectedOn": "2026-09-13"
+      },
+      {
+        "ConsistencyFindingId": "cr-20-03",
+        "Rule": "cr-20",
+        "Domain": "domain-procedural-knowledge-ontology",
+        "Detail": "The build's own init-db step ('-exec ./reset-rulebook-db.sh') loads postgresql://postgres@localhost:5432/demo, not erb_procedural_knowledge_ontology: the generated reset-rulebook-db.sh sets DEFAULT_CONN to .../demo and the step passes no DATABASE_URL. On 2026-09-13 it failed there ('cannot change return type of existing function get_role_assignments_valid_from') while the build still exited 0. All 8 rulebook-examples/*/postgres-bootstrap/reset-rulebook-db.sh carry the same demo default. A plain 'effortless build' therefore never refreshes the project's real database, and the effortless-postgres substrate grades whatever the last manual init left. The corpus runner is unaffected (it passes DATABASE_URL). Workaround: follow every build with the project's own 'bash init-db.sh'.",
+        "Status": "open",
+        "DetectedOn": "2026-09-13"
+      },
+      {
+        "ConsistencyFindingId": "cr-23-03",
+        "Rule": "cr-23",
+        "Domain": "domain-procedural-knowledge-ontology",
+        "Detail": "The cr-23 fix playbook itself misreports. scripts/run-conformance.py build_rows() scores from last_successful_run whenever it is present, and the harness only rewrites that record on a 100% score, so a substrate that once scored 100 keeps reporting 100 after it regresses. On 2026-09-13 run-procedural-knowledge-ontology-20260913-165351 recorded effortless-python/golang/typescript as passed (substrates_passed=3) from a stale 54,267-cell run, while the same run graded all three at 59,764/59,878 (99.81%). The per-run truth is in testing/_conformance_grades.json and PKO's own SubstrateRunScores rows. Open: ConformanceResults should score from the run that just happened, and record a transient infra error as an error rather than substituting an older success.",
+        "Status": "open",
+        "DetectedOn": "2026-09-13"
+      },
+      {
+        "ConsistencyFindingId": "cr-27-01",
+        "Rule": "cr-27",
+        "Domain": "domain-procedural-knowledge-ontology",
+        "Detail": "rulebook-to-xlsx hard-codes every cross-sheet range to rows 2:999, e.g. =_xlfn.IFNA(INDEX(RulebookFields!C2:C999, MATCH(D2,RulebookFields!A2:A999, 0)), \"\"). On a table with more rows (RulebookFields 1,879; TestCases 1,794; FieldGrants 1,346) every lookup or aggregation past row 999 silently reads blank or 0, and everything derived from it cascades. PKO effortless-xlsx: 89.96% (lookup class 72.19%), 162 fields on 35 tables; 5,899 of its failing cells are beyond what Python/Go/TS/EF/Postgres fail.",
+        "Status": "open",
+        "DetectedOn": "2026-09-13"
+      },
+      {
+        "ConsistencyFindingId": "cr-27-02",
+        "Rule": "cr-27",
+        "Domain": "domain-procedural-knowledge-ontology",
+        "Detail": "compile-rulebook (the answer-key author) disagrees with Postgres, Python, Go, TypeScript and EF, which agree with each other on every one of the same 114 cells (31 fields): timestamps concatenated into text render ISO (2026-01-01T00:00:00-06:00) where the others render Postgres text (2026-01-01 00:00:00-06); DATETIME_DIFF day and hour counts come out one short; its vendored Python engine lacks ROUNDUP ('Unknown function: ROUNDUP', so MessageDeliveries.SegmentCount is null); and some fields hold a boolean where a number belongs (MessageDeliveries.OptOutPhrasePosition True vs 86). Separately, the published workload (200m CPU / 256Mi) times out ('Timed out waiting for cook') on the 7.8 MB PKO rulebook, which compiles in 24 s and 216 MB peak locally.",
+        "Status": "open",
+        "DetectedOn": "2026-09-13"
+      },
+      {
+        "ConsistencyFindingId": "cr-27-03",
+        "Rule": "cr-27",
+        "Domain": "domain-procedural-knowledge-ontology",
+        "Detail": "rulebook-to-owl (v2026.07.08.0207, the latest) emits no sh:order on any of its 1,023 SHACL-AF rules. The runner now sequences them by dependency (864ccf14), taking PKO effortless-owl from 91.82% to 99.51%. The remaining 82 fields are translation gaps: COUNTIFS keyed on another table's field (StepTransitions.CountOfFromStepExecutions reads 0 for all 14 rows), DATETIME_DIFF returning null (StepExecutions.ActualDurationMinutes), and CONCAT or IF over FK values returning null (AccessDenialTests.Name). OWL agrees with compile-rulebook on ISO timestamp rendering where the other five substrates do not.",
         "Status": "open",
         "DetectedOn": "2026-09-13"
       }
@@ -63927,7 +64170,7 @@
         "Route": "POST /oss-postgres-calculated-to-rulebook",
         "SubstrateId": null,
         "InjectorScript": "execution-substrates/postgres-calculated-to-rulebook/inject-into-postgres-calculated-to-rulebook.py",
-        "Description": "Reverse spoke: refresh calculated/lookup/aggregation field values in the rulebook from the vw_* views. Registered but disabled in every project's build pipeline since 2026-09-09 (it rewrites raw datetimes with the building machine's timezone); its load-bearing use calls the injector directly from regenerate-answer-keys.sh.",
+        "Description": "Reverse spoke: refresh calculated/lookup/aggregation field values in the rulebook from the vw_* views. Registered but disabled in every project's build pipeline since 2026-09-09 (it rewrites raw datetimes with the building machine's timezone); its load-bearing use calls the injector directly from regenerate-answer-keys.sh. When run as a step it is registered at RelativePath /effortless-rulebook with `-i <slug>-rulebook.json,../postgres-bootstrap/.pg-raw-data.json` and emits the updated rulebook under its own name, so the CLI applies it as an in-place upsert that no clean ever deletes; registered anywhere else, its output lands beside the step instead of reaching the rulebook.",
         "HttpMethod": "POST",
         "RoutePath": "/oss-postgres-calculated-to-rulebook",
         "HasSubstrate": false,

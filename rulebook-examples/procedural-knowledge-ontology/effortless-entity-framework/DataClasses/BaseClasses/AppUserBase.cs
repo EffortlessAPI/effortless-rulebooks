@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -16,48 +17,55 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string AppUserId { get; set; }
 
         // Formula Name (rulebook: ={{DisplayName}})
+        [NotMapped]
         public string? Name
         {
-            get => this.DisplayName; set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Of(this.DisplayName))); set { }
         }
 
         public string? EmailAddress { get; set; }
         public string? DisplayName { get; set; }
         public bool? IsEnabled { get; set; }
         // Formula AgentKind (rulebook: =INDEX(Agents!{{AgentKind}}, MATCH({{LinkedAgent}}, Agents!{{AgentId}}, 0)))
+        [NotMapped]
         public string? AgentKind
         {
-            get => INDEX(Agents!this.AgentKind, MATCH(this.LinkedAgent, Agents!this.AgentId, 0)); set { }
+            get => F.AsString(F.Memo(this, "AgentKind", () => F.Lookup<Agent>(this, "Agents", "AgentId", __c => __c.Agents, __r => F.Of(__r.AgentId), F.Of(this.LinkedAgent), __r => F.Of(__r.AgentKind), () => F.Of(new Agent().AgentKind)))); set { }
         }
 
         // Formula Organization (rulebook: =INDEX(Agents!{{Organization}}, MATCH({{LinkedAgent}}, Agents!{{AgentId}}, 0)))
+        [NotMapped]
         public string? Organization
         {
-            get => INDEX(Agents!this.Organization, MATCH(this.LinkedAgent, Agents!this.AgentId, 0)); set { }
+            get => F.AsString(F.Memo(this, "Organization", () => F.Lookup<Agent>(this, "Agents", "AgentId", __c => __c.Agents, __r => F.Of(__r.AgentId), F.Of(this.LinkedAgent), __r => F.Of(__r.Organization), () => F.Of(new Agent().Organization)))); set { }
         }
 
         // Formula AssignmentCount (rulebook: =COUNTIFS(PrincipalAssignments!{{AppUser}}, {{AppUserId}}))
+        [NotMapped]
         public decimal? AssignmentCount
         {
-            get => COUNTIFS(PrincipalAssignments!this.AppUser, this.AppUserId); set { }
+            get => F.AsDecimal(F.Memo(this, "AssignmentCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<PrincipalAssignment>(base.SoAContext, "PrincipalAssignments", __c => __c.PrincipalAssignments), __r => F.CritField(F.Of(__r.AppUser), F.Of(this.AppUserId)))))); set { }
         }
 
         // Formula HasNoPrincipal (rulebook: ={{AssignmentCount}} = 0)
+        [NotMapped]
         public bool? HasNoPrincipal
         {
-            get => this.AssignmentCount = 0; set { }
+            get => F.AsBool(F.Memo(this, "HasNoPrincipal", () => F.Eq(F.Of(this.AssignmentCount), F.I(0)))); set { }
         }
 
         // Formula HoldsMultiplePrincipals (rulebook: ={{AssignmentCount}} > 1)
+        [NotMapped]
         public bool? HoldsMultiplePrincipals
         {
-            get => this.AssignmentCount > 1; set { }
+            get => F.AsBool(F.Memo(this, "HoldsMultiplePrincipals", () => F.Cmp(F.Of(this.AssignmentCount), ">", F.I(1)))); set { }
         }
 
         // Formula IsNonHumanSignIn (rulebook: =OR({{AgentKind}} = "AIAgent", {{AgentKind}} = "AutomatedPipeline"))
+        [NotMapped]
         public bool? IsNonHumanSignIn
         {
-            get => OR(this.AgentKind = "AIAgent", this.AgentKind = "AutomatedPipeline"); set { }
+            get => F.AsBool(F.Memo(this, "IsNonHumanSignIn", () => F.Or(F.Bool3(F.Eq(F.Of(this.AgentKind), F.S("AIAgent"))), F.Bool3(F.Eq(F.Of(this.AgentKind), F.S("AutomatedPipeline")))))); set { }
         }
 
         public string? SemanticTypeIri { get; set; }
@@ -73,7 +81,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             {
                 if (_agent == null && !string.IsNullOrEmpty(LinkedAgent))
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -81,10 +89,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                         }
                         return null;
                     }
-                    _agent = Context.Agents.Find(LinkedAgent);
+                    _agent = base.SoAContext.Agents.Find(LinkedAgent);
                     if (_agent != null)
                     {
-                        Context.Attach(_agent);
+                        base.SoAContext.Attach(_agent);
                     }
                 }
                 return _agent;
@@ -94,21 +102,30 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                 if (_agent != value)
                 {
                     _agent = value;
-                    LinkedAgent = _agent == null ? default : _agent.AgentId;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_agent != null)
+                    {
+                        LinkedAgent = _agent.AgentId;
+                    }
                 }
             }
         }
 
         private ObservableCollection<PrincipalAssignment> _principalAssignments;
 
-        [InverseProperty("AppUser")]
+        [InverseProperty("AppUserRef")]
         public virtual ObservableCollection<PrincipalAssignment> PrincipalAssignments
         {
             get
             {
                 if (_principalAssignments == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -118,11 +135,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.PrincipalAssignments.Where(x => x.AppUser == this.AppUserId).ToList<PrincipalAssignment>();
+                        var items = base.SoAContext.PrincipalAssignments.Where(x => x.AppUser == this.AppUserId).ToList<PrincipalAssignment>();
                         _principalAssignments = new ObservableCollection<PrincipalAssignment>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _principalAssignments.CollectionChanged += PrincipalAssignments_CollectionChanged;
@@ -156,14 +173,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         private ObservableCollection<IssuedToken> _issuedTokens;
 
-        [InverseProperty("AppUser")]
+        [InverseProperty("AppUserRef")]
         public virtual ObservableCollection<IssuedToken> IssuedTokens
         {
             get
             {
                 if (_issuedTokens == null)
                 {
-                    if (Context == null)
+                    if (base.SoAContext == null)
                     {
                         if (SoAEFContext.ThrowErrorOnContextMissing)
                         {
@@ -173,11 +190,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     }
                     else
                     {
-                        var items = Context.IssuedTokens.Where(x => x.AppUser == this.AppUserId).ToList<IssuedToken>();
+                        var items = base.SoAContext.IssuedTokens.Where(x => x.AppUser == this.AppUserId).ToList<IssuedToken>();
                         _issuedTokens = new ObservableCollection<IssuedToken>(items);
                         if (items.Any())
                         {
-                            Context.AttachRange(items);
+                            base.SoAContext.AttachRange(items);
                         }
                     }
                     _issuedTokens.CollectionChanged += IssuedTokens_CollectionChanged;

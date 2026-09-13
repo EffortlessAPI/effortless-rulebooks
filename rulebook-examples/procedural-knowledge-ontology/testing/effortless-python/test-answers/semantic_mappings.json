@@ -70,6 +70,16 @@
     "name": "AppRoutes -> urn:effortless:pko-extension#AppRoute"
   },
   {
+    "semantic_mapping_id": "map-cell-disagreements",
+    "source_path": "CellDisagreements",
+    "mapping_kind": "class",
+    "target_iri": "urn:effortless:pko-extension#CellDisagreement",
+    "mapping_relation": "extension",
+    "ontology_profile": "erb-pko-extension-1.0.0",
+    "notes": "Latest-run sampled failing cells. Not part of PKO 2.0.0.",
+    "name": "CellDisagreements -> urn:effortless:pko-extension#CellDisagreement"
+  },
+  {
     "semantic_mapping_id": "map-communication-policy",
     "source_path": "CommunicationPolicies",
     "mapping_kind": "class",
@@ -78,6 +88,26 @@
     "ontology_profile": "odrl",
     "notes": "Channel policy.",
     "name": "CommunicationPolicies -> http://www.w3.org/ns/odrl/2/Policy"
+  },
+  {
+    "semantic_mapping_id": "map-conformance-runs",
+    "source_path": "ConformanceRuns",
+    "mapping_kind": "class",
+    "target_iri": "urn:effortless:pko-extension#ConformanceRun",
+    "mapping_relation": "extension",
+    "ontology_profile": "erb-pko-extension-1.0.0",
+    "notes": "Conformance harness executions. Not part of PKO 2.0.0.",
+    "name": "ConformanceRuns -> urn:effortless:pko-extension#ConformanceRun"
+  },
+  {
+    "semantic_mapping_id": "map-conformance-substrates",
+    "source_path": "ConformanceSubstrates",
+    "mapping_kind": "class",
+    "target_iri": "urn:effortless:pko-extension#ConformanceSubstrate",
+    "mapping_relation": "extension",
+    "ontology_profile": "erb-pko-extension-1.0.0",
+    "notes": "Substrates the conformance harness grades, and the answer-key author. Not part of PKO 2.0.0.",
+    "name": "ConformanceSubstrates -> urn:effortless:pko-extension#ConformanceSubstrate"
   },
   {
     "semantic_mapping_id": "map-elicitation",
@@ -130,6 +160,16 @@
     "name": "UserFeedback -> https://w3id.org/pko#UserFeedbackOccurrence"
   },
   {
+    "semantic_mapping_id": "map-field-disagreements",
+    "source_path": "FieldDisagreements",
+    "mapping_kind": "class",
+    "target_iri": "urn:effortless:pko-extension#FieldDisagreement",
+    "mapping_relation": "extension",
+    "ontology_profile": "erb-pko-extension-1.0.0",
+    "notes": "Latest-run fields a substrate got wrong. Not part of PKO 2.0.0.",
+    "name": "FieldDisagreements -> urn:effortless:pko-extension#FieldDisagreement"
+  },
+  {
     "semantic_mapping_id": "map-from-step",
     "source_path": "StepTransitions.FromStep",
     "mapping_kind": "objectProperty",
@@ -168,6 +208,16 @@
     "ontology_profile": "pko-core-2.0.0",
     "notes": "Issue occurrence.",
     "name": "IssueOccurrences -> https://w3id.org/pko#IssueOccurrence"
+  },
+  {
+    "semantic_mapping_id": "map-knowledge-broker-links",
+    "source_path": "KnowledgeBrokerLinks",
+    "mapping_kind": "class",
+    "target_iri": "urn:effortless:pko-extension#KnowledgeBrokerLink",
+    "mapping_relation": "extension",
+    "ontology_profile": "erb-pko-extension-1.0.0",
+    "notes": "An informal expertise-network edge \u2014 not part of PKO 2.0.0.",
+    "name": "KnowledgeBrokerLinks -> urn:effortless:pko-extension#KnowledgeBrokerLink"
   },
   {
     "semantic_mapping_id": "map-knowledge-fragments",
@@ -238,6 +288,16 @@
     "ontology_profile": "pko-core-2.0.0",
     "notes": "Abstract procedure.",
     "name": "Procedures -> https://w3id.org/pko#Procedure"
+  },
+  {
+    "semantic_mapping_id": "map-process-mining-runs",
+    "source_path": "ProcessMiningRuns",
+    "mapping_kind": "class",
+    "target_iri": "urn:effortless:pko-extension#ProcessMiningRun",
+    "mapping_relation": "extension",
+    "ontology_profile": "erb-pko-extension-1.0.0",
+    "notes": "Process-mining conformance evidence \u2014 not part of PKO 2.0.0.",
+    "name": "ProcessMiningRuns -> urn:effortless:pko-extension#ProcessMiningRun"
   },
   {
     "semantic_mapping_id": "map-questions",
@@ -330,6 +390,26 @@
     "name": "Steps -> http://purl.org/net/p-plan#Step"
   },
   {
+    "semantic_mapping_id": "map-substrate-run-scores",
+    "source_path": "SubstrateRunScores",
+    "mapping_kind": "class",
+    "target_iri": "urn:effortless:pko-extension#SubstrateRunScore",
+    "mapping_relation": "extension",
+    "ontology_profile": "erb-pko-extension-1.0.0",
+    "notes": "Per-run, per-substrate grades. Not part of PKO 2.0.0.",
+    "name": "SubstrateRunScores -> urn:effortless:pko-extension#SubstrateRunScore"
+  },
+  {
+    "semantic_mapping_id": "map-table-conformance",
+    "source_path": "TableConformance",
+    "mapping_kind": "class",
+    "target_iri": "urn:effortless:pko-extension#TableConformance",
+    "mapping_relation": "extension",
+    "ontology_profile": "erb-pko-extension-1.0.0",
+    "notes": "Latest-run grades per substrate and table. Not part of PKO 2.0.0.",
+    "name": "TableConformance -> urn:effortless:pko-extension#TableConformance"
+  },
+  {
     "semantic_mapping_id": "map-to-step",
     "source_path": "StepTransitions.ToStep",
     "mapping_kind": "objectProperty",
@@ -368,5 +448,25 @@
     "ontology_profile": "pko-core-2.0.0",
     "notes": "Step verification.",
     "name": "StepVerifications -> https://w3id.org/pko#StepVerification"
+  },
+  {
+    "semantic_mapping_id": "map-vocabularies",
+    "source_path": "Vocabularies",
+    "mapping_kind": "class",
+    "target_iri": "urn:effortless:pko-extension#Vocabulary",
+    "mapping_relation": "extension",
+    "ontology_profile": "erb-pko-extension-1.0.0",
+    "notes": "A controlled-vocabulary concept scheme \u2014 not part of PKO 2.0.0.",
+    "name": "Vocabularies -> urn:effortless:pko-extension#Vocabulary"
+  },
+  {
+    "semantic_mapping_id": "map-vocabulary-terms",
+    "source_path": "VocabularyTerms",
+    "mapping_kind": "class",
+    "target_iri": "urn:effortless:pko-extension#VocabularyTerm",
+    "mapping_relation": "extension",
+    "ontology_profile": "erb-pko-extension-1.0.0",
+    "notes": "A SKOS-style controlled term \u2014 not part of PKO 2.0.0.",
+    "name": "VocabularyTerms -> urn:effortless:pko-extension#VocabularyTerm"
   }
 ]

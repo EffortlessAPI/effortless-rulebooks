@@ -299,7 +299,7 @@
     "source_view": "vw_procedure_versions",
     "grant_key": "principal-controller|ProcedureVersions",
     "column_count": 7,
-    "table_field_count": 83,
+    "table_field_count": 86,
     "is_full_width": false,
     "is_degenerate_view": false
   },
@@ -315,7 +315,7 @@
     "source_view": "vw_requirements",
     "grant_key": "principal-controller|Requirements",
     "column_count": 6,
-    "table_field_count": 41,
+    "table_field_count": 43,
     "is_full_width": false,
     "is_degenerate_view": false
   },
@@ -459,7 +459,7 @@
     "source_view": "vw_procedure_versions",
     "grant_key": "principal-finance-analyst|ProcedureVersions",
     "column_count": 7,
-    "table_field_count": 83,
+    "table_field_count": 86,
     "is_full_width": false,
     "is_degenerate_view": false
   },
@@ -507,7 +507,7 @@
     "source_view": "vw_requirements",
     "grant_key": "principal-finance-analyst|Requirements",
     "column_count": 6,
-    "table_field_count": 41,
+    "table_field_count": 43,
     "is_full_width": false,
     "is_degenerate_view": false
   },
@@ -682,8 +682,8 @@
     "schema_name": "pko_knowledge_authority",
     "source_view": "vw_agents",
     "grant_key": "principal-knowledge-authority|Agents",
-    "column_count": 19,
-    "table_field_count": 19,
+    "column_count": 23,
+    "table_field_count": 23,
     "is_full_width": true,
     "is_degenerate_view": false
   },
@@ -1008,6 +1008,22 @@
     "is_degenerate_view": false
   },
   {
+    "role_schema_view_id": "rsv-knowledge-authority-knowledge_broker_links",
+    "role_schema": "schema-knowledge-authority",
+    "principal": "principal-knowledge-authority",
+    "target_table": "KnowledgeBrokerLinks",
+    "view_name": "knowledge_broker_links",
+    "semantic_type_iri": "urn:effortless:pko-extension#RoleSchemaView",
+    "name": "pko_knowledge_authority.knowledge_broker_links",
+    "schema_name": "pko_knowledge_authority",
+    "source_view": "vw_knowledge_broker_links",
+    "grant_key": "principal-knowledge-authority|KnowledgeBrokerLinks",
+    "column_count": 16,
+    "table_field_count": 16,
+    "is_full_width": true,
+    "is_degenerate_view": false
+  },
+  {
     "role_schema_view_id": "rsv-knowledge-authority-knowledge_fragments",
     "role_schema": "schema-knowledge-authority",
     "principal": "principal-knowledge-authority",
@@ -1258,8 +1274,8 @@
     "schema_name": "pko_knowledge_authority",
     "source_view": "vw_procedure_versions",
     "grant_key": "principal-knowledge-authority|ProcedureVersions",
-    "column_count": 83,
-    "table_field_count": 83,
+    "column_count": 86,
+    "table_field_count": 86,
     "is_full_width": true,
     "is_degenerate_view": false
   },
@@ -1276,6 +1292,22 @@
     "grant_key": "principal-knowledge-authority|Procedures",
     "column_count": 11,
     "table_field_count": 11,
+    "is_full_width": true,
+    "is_degenerate_view": false
+  },
+  {
+    "role_schema_view_id": "rsv-knowledge-authority-process_mining_runs",
+    "role_schema": "schema-knowledge-authority",
+    "principal": "principal-knowledge-authority",
+    "target_table": "ProcessMiningRuns",
+    "view_name": "process_mining_runs",
+    "semantic_type_iri": "urn:effortless:pko-extension#RoleSchemaView",
+    "name": "pko_knowledge_authority.process_mining_runs",
+    "schema_name": "pko_knowledge_authority",
+    "source_view": "vw_process_mining_runs",
+    "grant_key": "principal-knowledge-authority|ProcessMiningRuns",
+    "column_count": 19,
+    "table_field_count": 19,
     "is_full_width": true,
     "is_degenerate_view": false
   },
@@ -1338,8 +1370,8 @@
     "schema_name": "pko_knowledge_authority",
     "source_view": "vw_requirements",
     "grant_key": "principal-knowledge-authority|Requirements",
-    "column_count": 41,
-    "table_field_count": 41,
+    "column_count": 43,
+    "table_field_count": 43,
     "is_full_width": true,
     "is_degenerate_view": false
   },
@@ -1435,8 +1467,8 @@
     "source_view": "vw_rulebook_fields",
     "grant_key": "principal-knowledge-authority|RulebookFields",
     "column_count": 11,
-    "table_field_count": 11,
-    "is_full_width": true,
+    "table_field_count": 13,
+    "is_full_width": false,
     "is_degenerate_view": false
   },
   {
@@ -1744,6 +1776,38 @@
     "is_degenerate_view": false
   },
   {
+    "role_schema_view_id": "rsv-knowledge-authority-vocabularies",
+    "role_schema": "schema-knowledge-authority",
+    "principal": "principal-knowledge-authority",
+    "target_table": "Vocabularies",
+    "view_name": "vocabularies",
+    "semantic_type_iri": "urn:effortless:pko-extension#RoleSchemaView",
+    "name": "pko_knowledge_authority.vocabularies",
+    "schema_name": "pko_knowledge_authority",
+    "source_view": "vw_vocabularies",
+    "grant_key": "principal-knowledge-authority|Vocabularies",
+    "column_count": 9,
+    "table_field_count": 9,
+    "is_full_width": true,
+    "is_degenerate_view": false
+  },
+  {
+    "role_schema_view_id": "rsv-knowledge-authority-vocabulary_terms",
+    "role_schema": "schema-knowledge-authority",
+    "principal": "principal-knowledge-authority",
+    "target_table": "VocabularyTerms",
+    "view_name": "vocabulary_terms",
+    "semantic_type_iri": "urn:effortless:pko-extension#RoleSchemaView",
+    "name": "pko_knowledge_authority.vocabulary_terms",
+    "schema_name": "pko_knowledge_authority",
+    "source_view": "vw_vocabulary_terms",
+    "grant_key": "principal-knowledge-authority|VocabularyTerms",
+    "column_count": 11,
+    "table_field_count": 11,
+    "is_full_width": true,
+    "is_degenerate_view": false
+  },
+  {
     "role_schema_view_id": "rsv-knowledge-authority-witness_loops",
     "role_schema": "schema-knowledge-authority",
     "principal": "principal-knowledge-authority",
@@ -1946,8 +2010,8 @@
     "schema_name": "pko_process_steward",
     "source_view": "vw_agents",
     "grant_key": "principal-process-steward|Agents",
-    "column_count": 19,
-    "table_field_count": 19,
+    "column_count": 23,
+    "table_field_count": 23,
     "is_full_width": true,
     "is_degenerate_view": false
   },
@@ -2272,6 +2336,22 @@
     "is_degenerate_view": false
   },
   {
+    "role_schema_view_id": "rsv-process-steward-knowledge_broker_links",
+    "role_schema": "schema-process-steward",
+    "principal": "principal-process-steward",
+    "target_table": "KnowledgeBrokerLinks",
+    "view_name": "knowledge_broker_links",
+    "semantic_type_iri": "urn:effortless:pko-extension#RoleSchemaView",
+    "name": "pko_process_steward.knowledge_broker_links",
+    "schema_name": "pko_process_steward",
+    "source_view": "vw_knowledge_broker_links",
+    "grant_key": "principal-process-steward|KnowledgeBrokerLinks",
+    "column_count": 16,
+    "table_field_count": 16,
+    "is_full_width": true,
+    "is_degenerate_view": false
+  },
+  {
     "role_schema_view_id": "rsv-process-steward-knowledge_fragments",
     "role_schema": "schema-process-steward",
     "principal": "principal-process-steward",
@@ -2522,8 +2602,8 @@
     "schema_name": "pko_process_steward",
     "source_view": "vw_procedure_versions",
     "grant_key": "principal-process-steward|ProcedureVersions",
-    "column_count": 83,
-    "table_field_count": 83,
+    "column_count": 86,
+    "table_field_count": 86,
     "is_full_width": true,
     "is_degenerate_view": false
   },
@@ -2540,6 +2620,22 @@
     "grant_key": "principal-process-steward|Procedures",
     "column_count": 11,
     "table_field_count": 11,
+    "is_full_width": true,
+    "is_degenerate_view": false
+  },
+  {
+    "role_schema_view_id": "rsv-process-steward-process_mining_runs",
+    "role_schema": "schema-process-steward",
+    "principal": "principal-process-steward",
+    "target_table": "ProcessMiningRuns",
+    "view_name": "process_mining_runs",
+    "semantic_type_iri": "urn:effortless:pko-extension#RoleSchemaView",
+    "name": "pko_process_steward.process_mining_runs",
+    "schema_name": "pko_process_steward",
+    "source_view": "vw_process_mining_runs",
+    "grant_key": "principal-process-steward|ProcessMiningRuns",
+    "column_count": 19,
+    "table_field_count": 19,
     "is_full_width": true,
     "is_degenerate_view": false
   },
@@ -2602,8 +2698,8 @@
     "schema_name": "pko_process_steward",
     "source_view": "vw_requirements",
     "grant_key": "principal-process-steward|Requirements",
-    "column_count": 41,
-    "table_field_count": 41,
+    "column_count": 43,
+    "table_field_count": 43,
     "is_full_width": true,
     "is_degenerate_view": false
   },
@@ -2699,8 +2795,8 @@
     "source_view": "vw_rulebook_fields",
     "grant_key": "principal-process-steward|RulebookFields",
     "column_count": 11,
-    "table_field_count": 11,
-    "is_full_width": true,
+    "table_field_count": 13,
+    "is_full_width": false,
     "is_degenerate_view": false
   },
   {
@@ -3008,6 +3104,38 @@
     "is_degenerate_view": false
   },
   {
+    "role_schema_view_id": "rsv-process-steward-vocabularies",
+    "role_schema": "schema-process-steward",
+    "principal": "principal-process-steward",
+    "target_table": "Vocabularies",
+    "view_name": "vocabularies",
+    "semantic_type_iri": "urn:effortless:pko-extension#RoleSchemaView",
+    "name": "pko_process_steward.vocabularies",
+    "schema_name": "pko_process_steward",
+    "source_view": "vw_vocabularies",
+    "grant_key": "principal-process-steward|Vocabularies",
+    "column_count": 9,
+    "table_field_count": 9,
+    "is_full_width": true,
+    "is_degenerate_view": false
+  },
+  {
+    "role_schema_view_id": "rsv-process-steward-vocabulary_terms",
+    "role_schema": "schema-process-steward",
+    "principal": "principal-process-steward",
+    "target_table": "VocabularyTerms",
+    "view_name": "vocabulary_terms",
+    "semantic_type_iri": "urn:effortless:pko-extension#RoleSchemaView",
+    "name": "pko_process_steward.vocabulary_terms",
+    "schema_name": "pko_process_steward",
+    "source_view": "vw_vocabulary_terms",
+    "grant_key": "principal-process-steward|VocabularyTerms",
+    "column_count": 11,
+    "table_field_count": 11,
+    "is_full_width": true,
+    "is_degenerate_view": false
+  },
+  {
     "role_schema_view_id": "rsv-process-steward-witness_loops",
     "role_schema": "schema-process-steward",
     "principal": "principal-process-steward",
@@ -3067,7 +3195,7 @@
     "source_view": "vw_requirements",
     "grant_key": "principal-variance-review-agent|Requirements",
     "column_count": 6,
-    "table_field_count": 41,
+    "table_field_count": 43,
     "is_full_width": false,
     "is_degenerate_view": false
   },
