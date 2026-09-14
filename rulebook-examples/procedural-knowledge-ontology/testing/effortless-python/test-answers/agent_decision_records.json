@@ -19,7 +19,7 @@
     "role_assignment_when_scored": null,
     "step_of_decision": "close-02",
     "boundary_match_key": "close-02|AutomatedPipeline|Posting",
-    "matching_boundary_count": 0,
+    "matching_boundary_count": 0.0,
     "violated_authority_boundary": false,
     "reviewer_agent_kind": "Human",
     "has_human_confirmation": true,
@@ -36,8 +36,8 @@
     "error_correction_role_assignment_key": null,
     "boundary_violation_role_assignment_key": null,
     "role_assignment_when_overridden": null,
-    "is_error_correction": null,
-    "is_reserved_judgment_override": null
+    "is_error_correction": false,
+    "is_reserved_judgment_override": false
   },
   {
     "agent_decision_record_id": "adr-close-freeze-q2",
@@ -60,7 +60,7 @@
     "role_assignment_when_overridden": null,
     "step_of_decision": "close-01",
     "boundary_match_key": "close-01|AutomatedPipeline|Posting",
-    "matching_boundary_count": 0,
+    "matching_boundary_count": 0.0,
     "violated_authority_boundary": false,
     "reviewer_agent_kind": "Human",
     "has_human_confirmation": true,
@@ -100,7 +100,7 @@
     "role_assignment_when_overridden": null,
     "step_of_decision": "close-07",
     "boundary_match_key": "close-07|AutomatedPipeline|Posting",
-    "matching_boundary_count": 0,
+    "matching_boundary_count": 0.0,
     "violated_authority_boundary": false,
     "reviewer_agent_kind": "Human",
     "has_human_confirmation": true,

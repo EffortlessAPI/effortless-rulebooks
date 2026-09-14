@@ -20,7 +20,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         [NotMapped]
         public string? Name
         {
-            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.Principal)), F.S(" -> "), F.TextOr(F.Of(this.TargetField))))); set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.Text(F.Of(this.Principal)), F.S(" -> "), F.Text(F.Of(this.TargetField))))); set { }
         }
 
         public bool? CanRead { get; set; }
@@ -65,7 +65,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         [NotMapped]
         public string? GrantKeyWhenReadable
         {
-            get => F.AsString(F.Memo(this, "GrantKeyWhenReadable", () => (F.Truthy(F.IsTrueV(F.Of(this.CanRead))) ? F.Concat(F.TextOr(F.Of(this.Principal)), F.S("|"), F.TextOr(F.Of(this.FieldTable))) : F.S("")))); set { }
+            get => F.AsString(F.Memo(this, "GrantKeyWhenReadable", () => (F.Truthy(F.IsTrueV(F.Of(this.CanRead))) ? F.Concat(F.Text(F.Of(this.Principal)), F.S("|"), F.Text(F.Of(this.FieldTable))) : F.S("")))); set { }
         }
 
         public string? SemanticTypeIri { get; set; }

@@ -71,7 +71,7 @@
     "question_text": "This rulebook compiles into Postgres, Python, Go, TypeScript, C#, a spreadsheet and an OWL reasoner. When I approve a rule, do all of them compute the same answer, and if not, which one is wrong about which field?",
     "why_it_matters": "A procedure is only as authoritative as the systems that execute it. If the spreadsheet a controller opens disagrees with the database the close automation reads, the rule has two meanings, and nobody finds out until an audit does. Agreement has to be witnessed per cell, not assumed from a green build.",
     "answerable_before": false,
-    "witnessed_answer": null,
+    "witnessed_answer": "ConformanceRuns.IsFullyConformant=0/1; ConformanceSubstrates.IsFullyConformant=0/8; ConformanceSubstrates.IsGraded=7/8; FieldDisagreements.IsFullySampled=390/400; RulebookFields.IsSubstrateContested=182/1885; SubstrateRunScores.IsInLatestRun=7/7; SubstrateRunScores.IsPerfect=0/7; TableConformance.IsPerfect=439/581",
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
     "name": null,
     "predicate_count": null,
@@ -416,6 +416,18 @@
     "is_answered": null
   },
   {
+    "role_question_id": "q-controller-gate-bypass",
+    "asking_role": "controller",
+    "witness_loop": "loop-04",
+    "question_text": "Can a procedure reach a publication step from its first step without passing through a human approval gate \u2014 is there any route, including alternative and fallback transitions, around the sign-off?",
+    "why_it_matters": "The CFO's sign-off at close-06 is only a control if every route to publication runs through it. IsHumanApprovalGate and GateHeldByHuman say the gate exists and is held by a person; nothing says the step graph forces work through it. An Alternative transition added for an 'immaterial variance' fast path can route straight to publication, and every per-step and per-edge witness stays green. Whether a gate can be bypassed is reachability from the entry step over only the transitions that avoid a gate, at any depth: a closure over a filtered edge set, not a formula.",
+    "answerable_before": false,
+    "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
+    "name": null,
+    "predicate_count": null,
+    "is_answered": null
+  },
+  {
     "role_question_id": "q-controller-separation-of-duties",
     "asking_role": "controller",
     "witness_loop": "loop-01",
@@ -739,6 +751,19 @@
     "name": null,
     "predicate_count": null,
     "is_answered": null
+  },
+  {
+    "role_question_id": "q-steward-rework-loops",
+    "asking_role": "process-steward",
+    "witness_loop": "loop-04",
+    "question_text": "Which steps can a procedure send work back to after they have already run \u2014 which steps sit on a rework loop, and which of those carry a blocking control that must hold on every pass?",
+    "why_it_matters": "Fallback and Alternative transitions make the step graph cyclic: close-04 falls back to close-03, and close-06's alternative re-enters close-04, so close-05's approval control can run twice in one close. Every witness we have looks at one transition at a time (IsUnwalkedRecoveryPath asks whether that one edge was ever traversed). None of them can say that a step is re-entered, because loop membership is reachability over paths of any length. That is transitive closure, which no formula expresses, so it needs the substrate-native closure over StepTransitions.",
+    "answerable_before": false,
+    "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
+    "name": null,
+    "predicate_count": null,
+    "is_answered": null,
+    "witnessed_answer": "Steps.IsBlockingControlOnReworkLoop=7/17; Steps.IsOnReworkLoop=8/17"
   },
   {
     "role_question_id": "q-steward-stalled-change-requests",

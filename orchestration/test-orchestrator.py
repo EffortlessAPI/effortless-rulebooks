@@ -925,8 +925,15 @@ def _is_nullish(val) -> bool:
         return val is False
     if isinstance(val, (int, float)):
         return val == 0
-    if isinstance(val, str) and val.strip().lower() in _FALSY_STRINGS:
-        return True
+    if isinstance(val, str):
+        if val.strip().lower() in _FALSY_STRINGS:
+            return True
+        # A zero is a zero however a substrate spells it: Postgres NUMERIC comes
+        # back as "0.00" or "0E-20", Excel as "0.0". Numbers compare by value
+        # (docs/ERB-BUILD-PARAMETERS.md, erbWholeNumber), so a numeric string
+        # equal to zero is in the same class as 0 and 0.0.
+        number = _try_number(val)
+        return number is not None and number == 0
     return False
 
 
@@ -950,6 +957,30 @@ def _try_number(val):
         except ValueError:
             return None
     return None
+
+
+def _try_instant(val):
+    """The UTC instant an ISO-8601 date/datetime names, or None when val is not
+    one. A reading with no offset is taken to be in UTC."""
+    import datetime as _dt
+    if isinstance(val, (_dt.datetime, _dt.date)):
+        text = val.isoformat()
+    elif isinstance(val, str):
+        text = val.strip()
+    else:
+        return None
+    if not text:
+        return None
+    text = text.replace("Z", "+00:00").replace("z", "+00:00")
+    if " " in text and "T" not in text:
+        text = text.replace(" ", "T", 1)
+    try:
+        parsed = _dt.datetime.fromisoformat(text)
+    except ValueError:
+        return None
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=_dt.timezone.utc)
+    return parsed.astimezone(_dt.timezone.utc)
 
 
 def _normalize_string(val) -> str:
@@ -1022,6 +1053,14 @@ def compare_values(expected, actual, datatype: str = None) -> bool:
 
     # ---- Dates / datetimes --------------------------------------------------
     if dt in {"date", "datetime", "timestamp"}:
+        # Two datetimes are the same value when they name the same INSTANT: a
+        # substrate that stores the offset (2026-07-19T13:00:00-05:00) and one that
+        # can only hold the zone-converted reading (Excel: 2026-07-19 18:00:00,
+        # erbTimezone=UTC) agree. A reading with no offset is taken to be in UTC,
+        # the contract's default zone (docs/ERB-BUILD-PARAMETERS.md).
+        e_instant, a_instant = _try_instant(expected), _try_instant(actual)
+        if e_instant is not None and a_instant is not None:
+            return e_instant == a_instant
         e_norm = _normalize_string(expected).replace("t", " ").split(".")[0].rstrip("z")
         a_norm = _normalize_string(actual).replace("t", " ").split(".")[0].rstrip("z")
         # Trim trailing zero time so "2026-05-12" == "2026-05-12 00:00:00".

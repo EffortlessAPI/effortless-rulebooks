@@ -55,7 +55,36 @@ def field_names(rb, table: str) -> list[str]:
 BANNED_FUNCS = {"IIF": "use IF(cond, a, b)"}
 
 
-def check_formula(rb, table: str, formula: str, pending: dict[str, set[str]]) -> list[str]:
+def snake(name: str) -> str:
+    """PascalCase -> snake_case, the transpilers' view naming."""
+    s = re.sub(r"([a-z0-9])([A-Z])", r"\1_\2", name)
+    return re.sub(r"([A-Z]+)([A-Z][a-z])", r"\1_\2", s).lower()
+
+
+# Columns every substrate emits for a closure view vw_<edge>_closure.
+CLOSURE_VIEW_COLUMNS = {"FromId", "ToId", "HopDistance", "IsInferred"}
+
+
+def closure_view(edge: str, edge_filter: str | None) -> str:
+    """vw_<edge>_closure, or vw_<edge>_closure_where_<filter> for a closure with an
+    EdgeFilterColumn — the name every substrate materializes."""
+    name = f"vw_{snake(edge)}_closure"
+    return f"{name}_where_{snake(edge_filter)}" if edge_filter else name
+
+
+def closure_views(rb, pending_closures: set[tuple[str, str | None]]) -> set[str]:
+    """Closure view names a formula may address as a table: every closure field
+    already in the rulebook, plus the (edge table, filter) closures this spec adds."""
+    views = {closure_view(e, flt) for e, flt in pending_closures}
+    for tbl in table_names(rb):
+        for f in rb[tbl]["schema"]:
+            if isinstance(f, dict) and f.get("type") == "closure":
+                views.add(closure_view(f.get("EdgeTable") or tbl, f.get("EdgeFilterColumn")))
+    return views
+
+
+def check_formula(rb, table: str, formula: str, pending: dict[str, set[str]],
+                  pending_closures: set[str] = frozenset()) -> list[str]:
     """Return a list of problems with this formula. Empty means it looks sane.
 
     `pending` maps table -> field names being added by this same spec. A spec
@@ -73,10 +102,15 @@ def check_formula(rb, table: str, formula: str, pending: dict[str, set[str]]) ->
 
     own = set(field_names(rb, table)) | pending.get(table, set())
     tables = table_names(rb)
+    views = closure_views(rb, pending_closures)
 
     # Cross-table references look like TableName!{{Field}}
     for tbl, fld in re.findall(r"(\w+)!\{\{(\w+)\}\}", formula):
-        if tbl not in tables:
+        if tbl in views:
+            if fld not in CLOSURE_VIEW_COLUMNS:
+                problems.append(f"references unknown closure column {tbl}.{fld} "
+                                f"(a closure view has {sorted(CLOSURE_VIEW_COLUMNS)})")
+        elif tbl not in tables:
             problems.append(f"references unknown table {tbl!r}")
         elif fld not in set(field_names(rb, tbl)) | pending.get(tbl, set()):
             problems.append(f"references unknown field {tbl}.{fld}")
@@ -196,9 +230,12 @@ def main() -> int:
 
     # 3. Predicates. Validate before mutating so a bad spec changes nothing.
     pending_by_table: dict[str, set[str]] = {}
+    pending_closures: set[str] = set()
     for q in spec["questions"]:
         for p in q.get("predicates", []):
             pending_by_table.setdefault(p["target_table"], set()).add(p["field_name"])
+            if p["field_type"] == "closure":
+                pending_closures.add((p.get("edge_table") or p["target_table"], p.get("edge_filter_column")))
     # Tables created above are already in `rb`, but count their columns as
     # pending too so ordering within the spec never matters.
     for name in new_tables:
@@ -233,8 +270,25 @@ def main() -> int:
                 # applied owns it; later roles simply reuse the existing column.
                 skipped_existing.append(f"{tbl}.{fname}")
                 continue
-            for msg in check_formula(rb, tbl, p.get("formula", ""), pending_by_table):
+            for msg in check_formula(rb, tbl, p.get("formula", ""), pending_by_table, pending_closures):
                 problems.append(f"{tbl}.{fname}: {msg}")
+
+            if p["field_type"] == "closure":
+                # A closure is not a formula: every substrate materializes
+                # vw_<edge>_closure with its own recursive mechanism.
+                edge = p.get("edge_table") or tbl
+                if p.get("formula"):
+                    problems.append(f"{tbl}.{fname}: a closure field carries no formula")
+                if edge not in rb:
+                    problems.append(f"{tbl}.{fname}: unknown closure edge_table {edge!r}")
+                    continue
+                for key in ("from_column", "to_column"):
+                    col = p.get(key)
+                    if not col or col not in field_names(rb, edge):
+                        problems.append(f"{tbl}.{fname}: closure {key} {col!r} is not a field of {edge}")
+                edge_filter = p.get("edge_filter_column")
+                if edge_filter and edge_filter not in set(field_names(rb, edge)) | pending_by_table.get(edge, set()):
+                    problems.append(f"{tbl}.{fname}: closure edge_filter_column {edge_filter!r} is not a field of {edge}")
 
             if p["field_type"] == "relationship" and not p.get("related_to"):
                 problems.append(f"{tbl}.{fname}: relationship field needs related_to "
@@ -254,6 +308,12 @@ def main() -> int:
                 field["formula"] = p["formula"]
             if p.get("related_to"):
                 field["RelatedTo"] = p["related_to"]
+            if p["field_type"] == "closure":
+                field["EdgeTable"] = p.get("edge_table") or tbl
+                field["FromColumn"] = p["from_column"]
+                field["ToColumn"] = p["to_column"]
+                if p.get("edge_filter_column"):
+                    field["EdgeFilterColumn"] = p["edge_filter_column"]
             new_fields.append((tbl, field, q["id"]))
 
     if problems:

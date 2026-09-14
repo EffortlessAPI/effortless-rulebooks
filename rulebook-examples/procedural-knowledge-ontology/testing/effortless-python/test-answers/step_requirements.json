@@ -9,7 +9,7 @@
     "step_when_blocking": "close-01",
     "requirement_lacks_witness": false,
     "unwitnessed_step_key": null,
-    "satisfaction_count_for_binding": 0,
+    "satisfaction_count_for_binding": 0.0,
     "binding_was_ever_exercised": false,
     "is_unexercised_blocking_binding": true,
     "unexercised_binding_requirement_key": "req-close-cutoff"
@@ -24,7 +24,7 @@
     "step_when_blocking": "close-03",
     "requirement_lacks_witness": false,
     "unwitnessed_step_key": null,
-    "satisfaction_count_for_binding": 0,
+    "satisfaction_count_for_binding": 0.0,
     "binding_was_ever_exercised": false,
     "is_unexercised_blocking_binding": true,
     "unexercised_binding_requirement_key": "req-close-balance"
@@ -39,7 +39,7 @@
     "step_when_blocking": "close-03",
     "requirement_lacks_witness": false,
     "unwitnessed_step_key": null,
-    "satisfaction_count_for_binding": 0,
+    "satisfaction_count_for_binding": 0.0,
     "binding_was_ever_exercised": false,
     "is_unexercised_blocking_binding": true,
     "unexercised_binding_requirement_key": "req-close-evidence"
@@ -54,7 +54,7 @@
     "step_when_blocking": "close-05",
     "requirement_lacks_witness": false,
     "unwitnessed_step_key": null,
-    "satisfaction_count_for_binding": 0,
+    "satisfaction_count_for_binding": 0.0,
     "binding_was_ever_exercised": false,
     "is_unexercised_blocking_binding": true,
     "unexercised_binding_requirement_key": "req-close-separation"
@@ -69,7 +69,7 @@
     "step_when_blocking": "close-06",
     "requirement_lacks_witness": true,
     "unwitnessed_step_key": "close-06",
-    "satisfaction_count_for_binding": 0,
+    "satisfaction_count_for_binding": 0.0,
     "binding_was_ever_exercised": false,
     "is_unexercised_blocking_binding": true,
     "unexercised_binding_requirement_key": "req-close-human-approval"
@@ -84,7 +84,7 @@
     "step_when_blocking": "close-08",
     "requirement_lacks_witness": false,
     "unwitnessed_step_key": null,
-    "satisfaction_count_for_binding": 0,
+    "satisfaction_count_for_binding": 0.0,
     "binding_was_ever_exercised": false,
     "is_unexercised_blocking_binding": true,
     "unexercised_binding_requirement_key": "req-close-evidence"
@@ -99,7 +99,7 @@
     "step_when_blocking": "policy-03",
     "requirement_lacks_witness": true,
     "unwitnessed_step_key": "policy-03",
-    "satisfaction_count_for_binding": 0,
+    "satisfaction_count_for_binding": 0.0,
     "binding_was_ever_exercised": false,
     "is_unexercised_blocking_binding": true,
     "unexercised_binding_requirement_key": "req-policy-source"
@@ -114,7 +114,7 @@
     "step_when_blocking": "policy-04",
     "requirement_lacks_witness": true,
     "unwitnessed_step_key": "policy-04",
-    "satisfaction_count_for_binding": 0,
+    "satisfaction_count_for_binding": 0.0,
     "binding_was_ever_exercised": false,
     "is_unexercised_blocking_binding": true,
     "unexercised_binding_requirement_key": "req-policy-legal"
@@ -129,7 +129,7 @@
     "step_when_blocking": "policy-05",
     "requirement_lacks_witness": true,
     "unwitnessed_step_key": "policy-05",
-    "satisfaction_count_for_binding": 0,
+    "satisfaction_count_for_binding": 0.0,
     "binding_was_ever_exercised": false,
     "is_unexercised_blocking_binding": true,
     "unexercised_binding_requirement_key": "req-policy-human-approval"
@@ -144,7 +144,7 @@
     "step_when_blocking": "policy-06",
     "requirement_lacks_witness": true,
     "unwitnessed_step_key": "policy-06",
-    "satisfaction_count_for_binding": 0,
+    "satisfaction_count_for_binding": 0.0,
     "binding_was_ever_exercised": false,
     "is_unexercised_blocking_binding": true,
     "unexercised_binding_requirement_key": "req-policy-accessibility"
@@ -159,7 +159,7 @@
     "step_when_blocking": "policy-07",
     "requirement_lacks_witness": true,
     "unwitnessed_step_key": "policy-07",
-    "satisfaction_count_for_binding": 0,
+    "satisfaction_count_for_binding": 0.0,
     "binding_was_ever_exercised": false,
     "is_unexercised_blocking_binding": true,
     "unexercised_binding_requirement_key": "req-policy-consent"
@@ -174,7 +174,7 @@
     "step_when_blocking": "policy-07",
     "requirement_lacks_witness": true,
     "unwitnessed_step_key": "policy-07",
-    "satisfaction_count_for_binding": 0,
+    "satisfaction_count_for_binding": 0.0,
     "binding_was_ever_exercised": false,
     "is_unexercised_blocking_binding": true,
     "unexercised_binding_requirement_key": "req-policy-quiet-hours"
@@ -189,7 +189,7 @@
     "step_when_blocking": "policy-07",
     "requirement_lacks_witness": true,
     "unwitnessed_step_key": "policy-07",
-    "satisfaction_count_for_binding": 0,
+    "satisfaction_count_for_binding": 0.0,
     "binding_was_ever_exercised": false,
     "is_unexercised_blocking_binding": true,
     "unexercised_binding_requirement_key": "req-policy-optout"
@@ -204,7 +204,7 @@
     "step_when_blocking": "policy-07",
     "requirement_lacks_witness": true,
     "unwitnessed_step_key": "policy-07",
-    "satisfaction_count_for_binding": 0,
+    "satisfaction_count_for_binding": 0.0,
     "binding_was_ever_exercised": false,
     "is_unexercised_blocking_binding": true,
     "unexercised_binding_requirement_key": "req-policy-retention"
@@ -219,7 +219,7 @@
     "step_when_blocking": "policy-08",
     "requirement_lacks_witness": true,
     "unwitnessed_step_key": "policy-08",
-    "satisfaction_count_for_binding": 0,
+    "satisfaction_count_for_binding": 0.0,
     "binding_was_ever_exercised": false,
     "is_unexercised_blocking_binding": true,
     "unexercised_binding_requirement_key": "req-policy-retention"

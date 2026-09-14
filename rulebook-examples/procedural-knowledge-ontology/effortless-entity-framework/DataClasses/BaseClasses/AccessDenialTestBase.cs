@@ -20,7 +20,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         [NotMapped]
         public string? Name
         {
-            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.Principal)), F.S(" must not see "), F.TextOr(F.Of(this.ForbiddenRowId))))); set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.Text(F.Of(this.Principal)), F.S(" must not see "), F.Text(F.Of(this.ForbiddenRowId))))); set { }
         }
 
         public string? ForbiddenRowId { get; set; }

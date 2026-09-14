@@ -1,7 +1,7 @@
 [
   {
     "user_question_id": "q-close-fx",
-    "asked_at": "2026-07-01 13:10:00-05:00",
+    "asked_at": "2026-07-01 18:10:00+00:00",
     "question_text": "Why did the FX variance appear only after the cutover?",
     "status": "Answered",
     "semantic_type_iri": "https://w3id.org/pko#UserQuestionOccurrence",
@@ -13,7 +13,7 @@
   },
   {
     "user_question_id": "q-policy-ai",
-    "asked_at": "2026-07-18 13:20:00-05:00",
+    "asked_at": "2026-07-18 18:20:00+00:00",
     "question_text": "Can the drafting AI add a new legal exception if it seems reasonable?",
     "status": "Answered",
     "semantic_type_iri": "https://w3id.org/pko#UserQuestionOccurrence",

@@ -82,10 +82,11 @@
     "approved_change_request_count": 0,
     "unwatched_unowned_control_count": 9,
     "days_since_last_review": null,
-    "was_modified_since_last_review": null,
+    "was_modified_since_last_review": false,
     "mining_run_count": 1,
     "drifted_mining_run_count": 0,
-    "has_unresolved_mining_drift": false
+    "has_unresolved_mining_drift": false,
+    "entry_step_id": null
   },
   {
     "procedure_version_id": "close-v1.1.0",
@@ -173,7 +174,8 @@
     "unwatched_unowned_control_count": 9,
     "mining_run_count": 2,
     "drifted_mining_run_count": 1,
-    "has_unresolved_mining_drift": true
+    "has_unresolved_mining_drift": true,
+    "entry_step_id": "close-01"
   },
   {
     "procedure_version_id": "policy-v1.0.0",
@@ -261,6 +263,7 @@
     "unwatched_unowned_control_count": 9,
     "mining_run_count": 1,
     "drifted_mining_run_count": 0,
-    "has_unresolved_mining_drift": false
+    "has_unresolved_mining_drift": false,
+    "entry_step_id": "policy-01"
   }
 ]

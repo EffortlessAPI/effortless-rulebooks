@@ -20,7 +20,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         [NotMapped]
         public string? Name
         {
-            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.StepNumber)), F.S(". "), F.TextOr(F.Of(this.Title))))); set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.Text(F.Of(this.StepNumber)), F.S(". "), F.Text(F.Of(this.Title))))); set { }
         }
 
         public string? StepNumber { get; set; }
@@ -232,6 +232,90 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public decimal? UnwitnessedBlockingCount
         {
             get => F.AsDecimal(F.Memo(this, "UnwitnessedBlockingCount", () => (base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<StepRequirement>(base.SoAContext, "StepRequirements", __c => __c.StepRequirements), __r => F.CritField(F.Of(__r.UnwitnessedStepKey), F.Of(this.StepId)))))); set { }
+        }
+
+        // Formula ReachableStepCount (rulebook: =COUNTIFS(vw_step_transitions_closure!{{FromId}}, Steps!{{StepId}}))
+        [NotMapped]
+        public int? ReachableStepCount
+        {
+            get => F.AsInt(F.Memo(this, "ReachableStepCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Closure<StepTransition>(base.SoAContext, "vw_step_transitions_closure", "StepTransitions", __c => __c.StepTransitions, __e => F.Of(__e.FromStep), __e => F.Of(__e.ToStep), __e => true), __r => F.CritField(F.Of(__r.FromId), F.Of(this.StepId))))))); set { }
+        }
+
+        // Formula ReachedFromStepCount (rulebook: =COUNTIFS(vw_step_transitions_closure!{{ToId}}, Steps!{{StepId}}))
+        [NotMapped]
+        public int? ReachedFromStepCount
+        {
+            get => F.AsInt(F.Memo(this, "ReachedFromStepCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Closure<StepTransition>(base.SoAContext, "vw_step_transitions_closure", "StepTransitions", __c => __c.StepTransitions, __e => F.Of(__e.FromStep), __e => F.Of(__e.ToStep), __e => true), __r => F.CritField(F.Of(__r.ToId), F.Of(this.StepId))))))); set { }
+        }
+
+        // Formula SelfReachCount (rulebook: =COUNTIFS(vw_step_transitions_closure!{{FromId}}, Steps!{{StepId}}, vw_step_transitions_closure!{{ToId}}, Steps!{{StepId}}))
+        [NotMapped]
+        public int? SelfReachCount
+        {
+            get => F.AsInt(F.Memo(this, "SelfReachCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Closure<StepTransition>(base.SoAContext, "vw_step_transitions_closure", "StepTransitions", __c => __c.StepTransitions, __e => F.Of(__e.FromStep), __e => F.Of(__e.ToStep), __e => true), __r => F.CritField(F.Of(__r.FromId), F.Of(this.StepId)) && F.CritField(F.Of(__r.ToId), F.Of(this.StepId))))))); set { }
+        }
+
+        // Formula IsOnReworkLoop (rulebook: ={{SelfReachCount}} > 0)
+        [NotMapped]
+        public bool? IsOnReworkLoop
+        {
+            get => F.AsBool(F.Memo(this, "IsOnReworkLoop", () => F.Cmp(F.Of(this.SelfReachCount), ">", F.I(0)))); set { }
+        }
+
+        // Formula IsBlockingControlOnReworkLoop (rulebook: =AND({{IsOnReworkLoop}}, {{BlockingRequirementCount}} > 0))
+        [NotMapped]
+        public bool? IsBlockingControlOnReworkLoop
+        {
+            get => F.AsBool(F.Memo(this, "IsBlockingControlOnReworkLoop", () => F.And(F.Bool3(F.Of(this.IsOnReworkLoop)), F.Bool3(F.Cmp(F.Of(this.BlockingRequirementCount), ">", F.I(0)))))); set { }
+        }
+
+        // Formula IncomingTransitionCount (rulebook: =COUNTIFS(StepTransitions!{{ToStep}}, Steps!{{StepId}}))
+        [NotMapped]
+        public int? IncomingTransitionCount
+        {
+            get => F.AsInt(F.Memo(this, "IncomingTransitionCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<StepTransition>(base.SoAContext, "StepTransitions", __c => __c.StepTransitions), __r => F.CritField(F.Of(__r.ToStep), F.Of(this.StepId))))))); set { }
+        }
+
+        // Formula IsEntryStep (rulebook: ={{IncomingTransitionCount}} = 0)
+        [NotMapped]
+        public bool? IsEntryStep
+        {
+            get => F.AsBool(F.Memo(this, "IsEntryStep", () => F.Eq(F.Of(this.IncomingTransitionCount), F.I(0)))); set { }
+        }
+
+        // Formula EntryStepKey (rulebook: =IF({{IsEntryStep}}, {{StepId}}, ""))
+        [NotMapped]
+        public string? EntryStepKey
+        {
+            get => F.AsString(F.Memo(this, "EntryStepKey", () => (F.Truthy(F.Bool3(F.Of(this.IsEntryStep))) ? F.Of(this.StepId) : F.S("")))); set { }
+        }
+
+        // Formula VersionEntryStepId (rulebook: =INDEX(ProcedureVersions!{{EntryStepId}}, MATCH({{ProcedureVersion}}, ProcedureVersions!{{ProcedureVersionId}}, 0)))
+        [NotMapped]
+        public string? VersionEntryStepId
+        {
+            get => F.AsString(F.Memo(this, "VersionEntryStepId", () => F.Lookup<ProcedureVersion>(this, "ProcedureVersions", "ProcedureVersionId", __c => __c.ProcedureVersions, __r => F.Of(__r.ProcedureVersionId), F.Of(this.ProcedureVersion), __r => F.Of(__r.EntryStepId), () => F.Of(new ProcedureVersion().EntryStepId)))); set { }
+        }
+
+        // Formula GateFreeReachFromEntryCount (rulebook: =COUNTIFS(vw_step_transitions_closure_where_avoids_human_approval_gate!{{FromId}}, {{VersionEntryStepId}}, vw_step_transitions_closure_where_avoids_human_approval_gate!{{ToId}}, Steps!{{StepId}}))
+        [NotMapped]
+        public int? GateFreeReachFromEntryCount
+        {
+            get => F.AsInt(F.Memo(this, "GateFreeReachFromEntryCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Closure<StepTransition>(base.SoAContext, "vw_step_transitions_closure_where_avoids_human_approval_gate", "StepTransitions", __c => __c.StepTransitions, __e => F.Of(__e.FromStep), __e => F.Of(__e.ToStep), __e => F.Truthy(F.Of(__e.AvoidsHumanApprovalGate))), __r => F.CritField(F.Of(__r.FromId), F.Of(this.VersionEntryStepId)) && F.CritField(F.Of(__r.ToId), F.Of(this.StepId))))))); set { }
+        }
+
+        // Formula IsReachableFromEntryWithoutHumanGate (rulebook: ={{GateFreeReachFromEntryCount}} > 0)
+        [NotMapped]
+        public bool? IsReachableFromEntryWithoutHumanGate
+        {
+            get => F.AsBool(F.Memo(this, "IsReachableFromEntryWithoutHumanGate", () => F.Cmp(F.Of(this.GateFreeReachFromEntryCount), ">", F.I(0)))); set { }
+        }
+
+        // Formula IsGateBypassedPublication (rulebook: =AND({{ControlKind}} = "Publication", {{IsReachableFromEntryWithoutHumanGate}}))
+        [NotMapped]
+        public bool? IsGateBypassedPublication
+        {
+            get => F.AsBool(F.Memo(this, "IsGateBypassedPublication", () => F.And(F.Bool3(F.Eq(F.Nullif(F.Of(this.ControlKind)), F.S("Publication"))), F.Bool3(F.Of(this.IsReachableFromEntryWithoutHumanGate))))); set { }
         }
 
         public string? SemanticTypeIri { get; set; }

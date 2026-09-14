@@ -22,6 +22,11 @@
     "target_carries_blocking_control": false,
     "is_unrehearsed_control_entry": false,
     "unrehearsed_control_version_key": "",
+    "leads_to_closure": null,
+    "from_step_is_human_approval_gate": false,
+    "to_step_is_human_approval_gate": false,
+    "avoids_human_approval_gate": true,
+    "leads_without_human_gate_closure": null,
     "semantic_type_iri": "https://w3id.org/pko#Transition"
   },
   {
@@ -47,6 +52,11 @@
     "target_carries_blocking_control": true,
     "is_unrehearsed_control_entry": false,
     "unrehearsed_control_version_key": "",
+    "leads_to_closure": null,
+    "from_step_is_human_approval_gate": false,
+    "to_step_is_human_approval_gate": false,
+    "avoids_human_approval_gate": true,
+    "leads_without_human_gate_closure": null,
     "semantic_type_iri": "https://w3id.org/pko#Transition"
   },
   {
@@ -72,6 +82,11 @@
     "target_carries_blocking_control": false,
     "is_unrehearsed_control_entry": false,
     "unrehearsed_control_version_key": "",
+    "leads_to_closure": null,
+    "from_step_is_human_approval_gate": false,
+    "to_step_is_human_approval_gate": false,
+    "avoids_human_approval_gate": true,
+    "leads_without_human_gate_closure": null,
     "semantic_type_iri": "https://w3id.org/pko#Transition"
   },
   {
@@ -97,6 +112,11 @@
     "target_carries_blocking_control": true,
     "is_unrehearsed_control_entry": true,
     "unrehearsed_control_version_key": "close-v1.1.0",
+    "leads_to_closure": null,
+    "from_step_is_human_approval_gate": false,
+    "to_step_is_human_approval_gate": false,
+    "avoids_human_approval_gate": true,
+    "leads_without_human_gate_closure": null,
     "semantic_type_iri": "https://w3id.org/pko#Transition"
   },
   {
@@ -122,6 +142,41 @@
     "target_carries_blocking_control": true,
     "is_unrehearsed_control_entry": false,
     "unrehearsed_control_version_key": "",
+    "leads_to_closure": null,
+    "from_step_is_human_approval_gate": false,
+    "to_step_is_human_approval_gate": false,
+    "avoids_human_approval_gate": true,
+    "leads_without_human_gate_closure": null,
+    "semantic_type_iri": "https://w3id.org/pko#Transition"
+  },
+  {
+    "step_transition_id": "close-05-expedite-close-07",
+    "name": "close-05 -> close-07",
+    "procedure_version": "close-v1.1.0",
+    "from_step": "close-05",
+    "to_step": "close-07",
+    "transition_kind": "Alternative",
+    "condition": "Aggregate variance below the materiality threshold: publish the close package without CFO sign-off",
+    "priority": 3,
+    "is_recovery_path": true,
+    "count_of_from_step_executions": 1,
+    "count_of_to_step_executions": 1,
+    "has_reachable_origin": true,
+    "has_reachable_target": true,
+    "is_never_exercised": false,
+    "is_untested_recovery_path": false,
+    "count_of_observed_traversals": 0,
+    "has_been_traversed": false,
+    "is_unwalked_recovery_path": true,
+    "target_blocking_requirement_count": 0,
+    "target_carries_blocking_control": false,
+    "is_unrehearsed_control_entry": false,
+    "unrehearsed_control_version_key": "",
+    "leads_to_closure": null,
+    "from_step_is_human_approval_gate": false,
+    "to_step_is_human_approval_gate": false,
+    "avoids_human_approval_gate": true,
+    "leads_without_human_gate_closure": null,
     "semantic_type_iri": "https://w3id.org/pko#Transition"
   },
   {
@@ -147,6 +202,11 @@
     "target_carries_blocking_control": true,
     "is_unrehearsed_control_entry": false,
     "unrehearsed_control_version_key": "",
+    "leads_to_closure": null,
+    "from_step_is_human_approval_gate": false,
+    "to_step_is_human_approval_gate": true,
+    "avoids_human_approval_gate": false,
+    "leads_without_human_gate_closure": null,
     "semantic_type_iri": "https://w3id.org/pko#Transition"
   },
   {
@@ -172,6 +232,11 @@
     "target_carries_blocking_control": false,
     "is_unrehearsed_control_entry": false,
     "unrehearsed_control_version_key": "",
+    "leads_to_closure": null,
+    "from_step_is_human_approval_gate": true,
+    "to_step_is_human_approval_gate": false,
+    "avoids_human_approval_gate": false,
+    "leads_without_human_gate_closure": null,
     "semantic_type_iri": "https://w3id.org/pko#Transition"
   },
   {
@@ -197,6 +262,11 @@
     "target_carries_blocking_control": false,
     "is_unrehearsed_control_entry": false,
     "unrehearsed_control_version_key": "",
+    "leads_to_closure": null,
+    "from_step_is_human_approval_gate": true,
+    "to_step_is_human_approval_gate": false,
+    "avoids_human_approval_gate": false,
+    "leads_without_human_gate_closure": null,
     "semantic_type_iri": "https://w3id.org/pko#Transition"
   },
   {
@@ -222,6 +292,11 @@
     "target_carries_blocking_control": true,
     "is_unrehearsed_control_entry": false,
     "unrehearsed_control_version_key": "",
+    "leads_to_closure": null,
+    "from_step_is_human_approval_gate": false,
+    "to_step_is_human_approval_gate": false,
+    "avoids_human_approval_gate": true,
+    "leads_without_human_gate_closure": null,
     "semantic_type_iri": "https://w3id.org/pko#Transition"
   },
   {
@@ -247,6 +322,11 @@
     "target_carries_blocking_control": false,
     "is_unrehearsed_control_entry": false,
     "unrehearsed_control_version_key": "",
+    "leads_to_closure": null,
+    "from_step_is_human_approval_gate": false,
+    "to_step_is_human_approval_gate": false,
+    "avoids_human_approval_gate": true,
+    "leads_without_human_gate_closure": null,
     "semantic_type_iri": "https://w3id.org/pko#Transition"
   },
   {
@@ -272,6 +352,11 @@
     "target_carries_blocking_control": true,
     "is_unrehearsed_control_entry": false,
     "unrehearsed_control_version_key": "",
+    "leads_to_closure": null,
+    "from_step_is_human_approval_gate": false,
+    "to_step_is_human_approval_gate": false,
+    "avoids_human_approval_gate": true,
+    "leads_without_human_gate_closure": null,
     "semantic_type_iri": "https://w3id.org/pko#Transition"
   },
   {
@@ -297,6 +382,11 @@
     "target_carries_blocking_control": true,
     "is_unrehearsed_control_entry": false,
     "unrehearsed_control_version_key": "",
+    "leads_to_closure": null,
+    "from_step_is_human_approval_gate": false,
+    "to_step_is_human_approval_gate": false,
+    "avoids_human_approval_gate": true,
+    "leads_without_human_gate_closure": null,
     "semantic_type_iri": "https://w3id.org/pko#Transition"
   },
   {
@@ -322,6 +412,11 @@
     "target_carries_blocking_control": true,
     "is_unrehearsed_control_entry": true,
     "unrehearsed_control_version_key": "policy-v1.0.0",
+    "leads_to_closure": null,
+    "from_step_is_human_approval_gate": false,
+    "to_step_is_human_approval_gate": false,
+    "avoids_human_approval_gate": true,
+    "leads_without_human_gate_closure": null,
     "semantic_type_iri": "https://w3id.org/pko#Transition"
   },
   {
@@ -347,6 +442,11 @@
     "target_carries_blocking_control": true,
     "is_unrehearsed_control_entry": false,
     "unrehearsed_control_version_key": "",
+    "leads_to_closure": null,
+    "from_step_is_human_approval_gate": false,
+    "to_step_is_human_approval_gate": true,
+    "avoids_human_approval_gate": false,
+    "leads_without_human_gate_closure": null,
     "semantic_type_iri": "https://w3id.org/pko#Transition"
   },
   {
@@ -372,6 +472,11 @@
     "target_carries_blocking_control": true,
     "is_unrehearsed_control_entry": false,
     "unrehearsed_control_version_key": "",
+    "leads_to_closure": null,
+    "from_step_is_human_approval_gate": true,
+    "to_step_is_human_approval_gate": false,
+    "avoids_human_approval_gate": false,
+    "leads_without_human_gate_closure": null,
     "semantic_type_iri": "https://w3id.org/pko#Transition"
   },
   {
@@ -397,6 +502,11 @@
     "target_carries_blocking_control": true,
     "is_unrehearsed_control_entry": false,
     "unrehearsed_control_version_key": "",
+    "leads_to_closure": null,
+    "from_step_is_human_approval_gate": false,
+    "to_step_is_human_approval_gate": false,
+    "avoids_human_approval_gate": true,
+    "leads_without_human_gate_closure": null,
     "semantic_type_iri": "https://w3id.org/pko#Transition"
   },
   {
@@ -422,6 +532,11 @@
     "target_carries_blocking_control": true,
     "is_unrehearsed_control_entry": true,
     "unrehearsed_control_version_key": "policy-v1.0.0",
+    "leads_to_closure": null,
+    "from_step_is_human_approval_gate": false,
+    "to_step_is_human_approval_gate": false,
+    "avoids_human_approval_gate": true,
+    "leads_without_human_gate_closure": null,
     "semantic_type_iri": "https://w3id.org/pko#Transition"
   },
   {
@@ -447,6 +562,11 @@
     "target_carries_blocking_control": true,
     "is_unrehearsed_control_entry": false,
     "unrehearsed_control_version_key": "",
+    "leads_to_closure": null,
+    "from_step_is_human_approval_gate": false,
+    "to_step_is_human_approval_gate": false,
+    "avoids_human_approval_gate": true,
+    "leads_without_human_gate_closure": null,
     "semantic_type_iri": "https://w3id.org/pko#Transition"
   },
   {
@@ -472,6 +592,11 @@
     "target_carries_blocking_control": false,
     "is_unrehearsed_control_entry": false,
     "unrehearsed_control_version_key": "",
+    "leads_to_closure": null,
+    "from_step_is_human_approval_gate": false,
+    "to_step_is_human_approval_gate": false,
+    "avoids_human_approval_gate": true,
+    "leads_without_human_gate_closure": null,
     "semantic_type_iri": "https://w3id.org/pko#Transition"
   }
 ]

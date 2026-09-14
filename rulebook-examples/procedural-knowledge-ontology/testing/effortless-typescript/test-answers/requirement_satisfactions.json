@@ -42,7 +42,7 @@
     "is_computedly_witnessed": true,
     "computed_witness_execution_key": "exec-close-2026-q2",
     "step_executor_agent": "maria-chen",
-    "was_scored_after_attestation": null,
+    "was_scored_after_attestation": false,
     "attestation_instant_for_run": null,
     "post_attestation_score_execution_key": "",
     "semantic_type_iri": "https://w3id.org/pko#RequirementSatisfaction"
@@ -90,7 +90,7 @@
     "is_computedly_witnessed": true,
     "computed_witness_execution_key": "exec-close-2026-q2",
     "step_executor_agent": "close-pipeline",
-    "was_scored_after_attestation": null,
+    "was_scored_after_attestation": false,
     "attestation_instant_for_run": null,
     "post_attestation_score_execution_key": "",
     "semantic_type_iri": "https://w3id.org/pko#RequirementSatisfaction"
@@ -138,7 +138,7 @@
     "is_computedly_witnessed": true,
     "computed_witness_execution_key": "exec-close-2026-q2",
     "step_executor_agent": "maria-chen",
-    "was_scored_after_attestation": null,
+    "was_scored_after_attestation": false,
     "attestation_instant_for_run": null,
     "post_attestation_score_execution_key": "",
     "semantic_type_iri": "https://w3id.org/pko#Requirement"
@@ -186,7 +186,7 @@
     "is_computedly_witnessed": false,
     "computed_witness_execution_key": "",
     "step_executor_agent": "priya-raman",
-    "was_scored_after_attestation": null,
+    "was_scored_after_attestation": false,
     "attestation_instant_for_run": null,
     "post_attestation_score_execution_key": "",
     "semantic_type_iri": "https://w3id.org/pko#RequirementSatisfaction"
@@ -234,7 +234,7 @@
     "is_computedly_witnessed": true,
     "computed_witness_execution_key": "exec-close-2026-q2",
     "step_executor_agent": "devon-okafor",
-    "was_scored_after_attestation": null,
+    "was_scored_after_attestation": false,
     "attestation_instant_for_run": null,
     "post_attestation_score_execution_key": "",
     "semantic_type_iri": "https://w3id.org/pko#RequirementSatisfaction"
@@ -282,7 +282,7 @@
     "is_computedly_witnessed": true,
     "computed_witness_execution_key": "exec-close-2026-q2",
     "step_executor_agent": "elena-garcia",
-    "was_scored_after_attestation": null,
+    "was_scored_after_attestation": false,
     "attestation_instant_for_run": null,
     "post_attestation_score_execution_key": "",
     "semantic_type_iri": "https://w3id.org/pko#Requirement"
@@ -330,7 +330,7 @@
     "is_computedly_witnessed": false,
     "computed_witness_execution_key": "",
     "step_executor_agent": "noah-williams",
-    "was_scored_after_attestation": null,
+    "was_scored_after_attestation": false,
     "attestation_instant_for_run": null,
     "post_attestation_score_execution_key": "",
     "semantic_type_iri": "https://w3id.org/pko#RequirementSatisfaction"
@@ -378,7 +378,7 @@
     "is_computedly_witnessed": false,
     "computed_witness_execution_key": "",
     "step_executor_agent": "policy-drafting-ai",
-    "was_scored_after_attestation": null,
+    "was_scored_after_attestation": false,
     "attestation_instant_for_run": null,
     "post_attestation_score_execution_key": "",
     "semantic_type_iri": "https://w3id.org/pko#RequirementSatisfaction"

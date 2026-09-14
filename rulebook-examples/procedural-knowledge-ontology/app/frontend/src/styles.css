@@ -59,7 +59,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 .brand-name{font-weight:600;font-size:15px;letter-spacing:-.01em}
 
 /* role switcher */
-.roles{display:flex;gap:0;border:1px solid var(--rule);border-radius:5px;overflow:hidden;background:var(--raise)}
+.roles{display:flex;gap:0;border:1px solid var(--rule);border-radius:5px;overflow-x:auto;max-width:100%;scrollbar-width:none;background:var(--raise)}
 .role-btn{padding:6px 13px;font-size:12.5px;font-weight:500;color:var(--muted);
   border-right:1px solid var(--rule);transition:background .12s,color .12s;white-space:nowrap}
 .role-btn:last-child{border-right:none}
@@ -675,3 +675,48 @@ td.formula{font-family:var(--data);font-size:11.5px;color:var(--muted);
 .ccells td{font-size:12.5px;max-width:28ch;overflow-wrap:anywhere}
 .ccells td.cwrong{background:var(--fail-wash);color:var(--fail)}
 .ccells td.cright{color:var(--pass);text-align:center}
+
+/* ==========================================================================
+   Plan vs Reality — process-mining drift. Colorful and phone-first on purpose:
+   plan = blue, what really happened = amber, drift = red, conformant = green.
+   ========================================================================== */
+.dz-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:0 0 22px}
+.dz-tile{border-radius:16px;padding:16px 14px;color:#fff;box-shadow:var(--shadow)}
+.dz-tile.red{background:linear-gradient(135deg,#e0245e,#b5173f)}
+.dz-tile.green{background:linear-gradient(135deg,#1fa34a,#14803a)}
+.dz-tile.blue{background:linear-gradient(135deg,#1a73e8,#1457b8)}
+.dz-tile.amber{background:linear-gradient(135deg,#e08a1e,#b86a0f)}
+.dz-n{font:700 38px/1 var(--stamp);letter-spacing:-.03em}
+.dz-l{font:600 13px/1.25 var(--stamp);margin-top:6px;opacity:.95}
+.dz-card{background:var(--raise);border-radius:18px;margin:0 0 18px;overflow:hidden;
+  box-shadow:var(--shadow);border:2px solid var(--rule)}
+.dz-card.red{border-color:#e0245e} .dz-card.amber{border-color:#e08a1e} .dz-card.green{border-color:#1fa34a}
+.dz-verdict{padding:12px 18px;font:700 17px/1.2 var(--stamp);color:#fff;letter-spacing:-.01em}
+.dz-card.red .dz-verdict{background:#e0245e} .dz-card.amber .dz-verdict{background:#e08a1e}
+.dz-card.green .dz-verdict{background:#1fa34a}
+.dz-card.grey{border-color:#8a96a3} .dz-card.grey .dz-verdict{background:#8a96a3} .dz-card.grey .dz-ring{--c:#8a96a3}
+.dz-verdict .xcell{color:#fff;font:inherit}
+.dz-body{padding:18px}
+.dz-meter{display:flex;align-items:center;gap:16px;margin-bottom:16px}
+.dz-ring{--c:#1fa34a;flex:none;width:92px;height:92px;border-radius:50%;display:grid;place-items:center;
+  background:conic-gradient(var(--c) calc(var(--p)*1%),var(--rule-soft) 0)}
+.dz-card.red .dz-ring{--c:#e0245e} .dz-card.amber .dz-ring{--c:#e08a1e}
+.dz-ring span{width:70px;height:70px;border-radius:50%;background:var(--raise);display:grid;place-items:center;
+  font:700 22px/1 var(--stamp)}
+.dz-ring .xcell{font:inherit;color:inherit}
+.dz-meter-l{font-size:16px;line-height:1.35}
+.dz-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.dz-side{border-radius:12px;padding:12px 14px}
+.dz-side.plan{background:#e8f0fe;border-left:5px solid #1a73e8}
+.dz-side.real{background:#fff3df;border-left:5px solid #e08a1e}
+.dz-k{font:700 11px/1 var(--stamp);text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px}
+.dz-side.plan .dz-k{color:#1457b8} .dz-side.real .dz-k{color:#b86a00}
+.dz-v{font-weight:600;font-size:15px;color:#16191d}
+.dz-s{font-size:12.5px;color:#4a525c;margin-top:3px}
+.dz-s .xcell{color:inherit;font:inherit;text-decoration:underline dotted}
+.dz-desc{margin:0 0 12px;font-size:15px;line-height:1.5}
+.dz-chips{display:flex;gap:8px;flex-wrap:wrap}
+@media(max-width:560px){
+  .dz-pair{grid-template-columns:1fr}
+  .dz-n{font-size:30px}
+}

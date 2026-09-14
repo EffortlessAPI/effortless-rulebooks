@@ -87,7 +87,12 @@ def main() -> int:
     current = rb[CATALOG].get("data", [])
 
     if args.check:
-        if json.dumps(current, sort_keys=True) != json.dumps(fresh, sort_keys=True):
+        # Compare only the columns this script authors. compile-rulebook bakes the
+        # catalog's derived columns (Name, IsDerived, IsWitness, ...) into every row
+        # on each build, so a whole-row comparison reports drift after every build.
+        authored = list(fresh[0].keys()) if fresh else []
+        current_authored = [{k: r.get(k) for k in authored} for r in current]
+        if json.dumps(current_authored, sort_keys=True) != json.dumps(fresh, sort_keys=True):
             cur_ids = {r.get("RulebookFieldId") for r in current}
             new_ids = {r["RulebookFieldId"] for r in fresh}
             missing = sorted(new_ids - cur_ids)

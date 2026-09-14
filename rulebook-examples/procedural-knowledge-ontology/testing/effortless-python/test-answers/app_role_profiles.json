@@ -11,7 +11,7 @@
     "sort_order": 1,
     "semantic_type_iri": "urn:effortless:pko-extension#AppRoleProfile",
     "name": "Chief Financial Officer (human)",
-    "route_count": 12
+    "route_count": 12.0
   },
   {
     "app_role_profile_id": "profile-close-automation",
@@ -25,7 +25,7 @@
     "sort_order": 9,
     "semantic_type_iri": "urn:effortless:pko-extension#AppRoleProfile",
     "name": "Close Automation Operator (software)",
-    "route_count": 6
+    "route_count": 6.0
   },
   {
     "app_role_profile_id": "profile-communications-manager",
@@ -39,7 +39,7 @@
     "sort_order": 6,
     "semantic_type_iri": "urn:effortless:pko-extension#AppRoleProfile",
     "name": "Employee Communications Manager (human)",
-    "route_count": 11
+    "route_count": 11.0
   },
   {
     "app_role_profile_id": "profile-controller",
@@ -53,7 +53,7 @@
     "sort_order": 2,
     "semantic_type_iri": "urn:effortless:pko-extension#AppRoleProfile",
     "name": "Corporate Controller (human)",
-    "route_count": 10
+    "route_count": 10.0
   },
   {
     "app_role_profile_id": "profile-employment-counsel",
@@ -67,7 +67,7 @@
     "sort_order": 5,
     "semantic_type_iri": "urn:effortless:pko-extension#AppRoleProfile",
     "name": "Employment Counsel (human)",
-    "route_count": 6
+    "route_count": 6.0
   },
   {
     "app_role_profile_id": "profile-finance-analyst",
@@ -81,7 +81,7 @@
     "sort_order": 3,
     "semantic_type_iri": "urn:effortless:pko-extension#AppRoleProfile",
     "name": "Finance Analyst (human)",
-    "route_count": 11
+    "route_count": 11.0
   },
   {
     "app_role_profile_id": "profile-hr-policy-owner",
@@ -95,7 +95,7 @@
     "sort_order": 4,
     "semantic_type_iri": "urn:effortless:pko-extension#AppRoleProfile",
     "name": "People Policy Owner (human)",
-    "route_count": 10
+    "route_count": 10.0
   },
   {
     "app_role_profile_id": "profile-knowledge-authority",
@@ -109,7 +109,7 @@
     "sort_order": 8,
     "semantic_type_iri": "urn:effortless:pko-extension#AppRoleProfile",
     "name": "Procedural Knowledge Authority (human)",
-    "route_count": 11
+    "route_count": 11.0
   },
   {
     "app_role_profile_id": "profile-notification-publisher",
@@ -123,7 +123,7 @@
     "sort_order": 12,
     "semantic_type_iri": "urn:effortless:pko-extension#AppRoleProfile",
     "name": "Notification Publisher (software)",
-    "route_count": 11
+    "route_count": 11.0
   },
   {
     "app_role_profile_id": "profile-policy-drafting-agent",
@@ -137,7 +137,7 @@
     "sort_order": 11,
     "semantic_type_iri": "urn:effortless:pko-extension#AppRoleProfile",
     "name": "Policy Drafting Agent (software)",
-    "route_count": 6
+    "route_count": 6.0
   },
   {
     "app_role_profile_id": "profile-process-steward",
@@ -151,7 +151,7 @@
     "sort_order": 7,
     "semantic_type_iri": "urn:effortless:pko-extension#AppRoleProfile",
     "name": "Procedural Knowledge Steward (human)",
-    "route_count": 11
+    "route_count": 11.0
   },
   {
     "app_role_profile_id": "profile-variance-review-agent",
@@ -165,6 +165,6 @@
     "sort_order": 10,
     "semantic_type_iri": "urn:effortless:pko-extension#AppRoleProfile",
     "name": "Variance Review Agent (software)",
-    "route_count": 11
+    "route_count": 11.0
   }
 ]

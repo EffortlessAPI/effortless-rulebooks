@@ -130,7 +130,7 @@
     "organization_scope": "acme-finance",
     "role_label": "Procedural Knowledge Authority",
     "policy_count": 74,
-    "grant_count": 0,
+    "grant_count": 1603,
     "visible_table_count": 74,
     "has_no_access": false,
     "is_over_privileged": false
@@ -181,7 +181,7 @@
     "organization_scope": "acme-people",
     "role_label": "Procedural Knowledge Steward",
     "policy_count": 74,
-    "grant_count": 565,
+    "grant_count": 1603,
     "visible_table_count": 74,
     "has_no_access": false,
     "is_over_privileged": false

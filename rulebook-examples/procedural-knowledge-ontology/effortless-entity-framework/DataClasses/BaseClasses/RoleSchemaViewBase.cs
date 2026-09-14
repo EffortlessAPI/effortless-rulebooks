@@ -20,7 +20,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         [NotMapped]
         public string? Name
         {
-            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.SchemaName)), F.S("."), F.TextOr(F.Of(this.ViewName))))); set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.Text(F.Of(this.SchemaName)), F.S("."), F.Text(F.Of(this.ViewName))))); set { }
         }
 
         public string? ViewName { get; set; }
@@ -42,7 +42,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         [NotMapped]
         public string? GrantKey
         {
-            get => F.AsString(F.Memo(this, "GrantKey", () => F.Concat(F.TextOr(F.Of(this.Principal)), F.S("|"), F.TextOr(F.Of(this.TargetTable))))); set { }
+            get => F.AsString(F.Memo(this, "GrantKey", () => F.Concat(F.Text(F.Of(this.Principal)), F.S("|"), F.Text(F.Of(this.TargetTable))))); set { }
         }
 
         // Formula ColumnCount (rulebook: =COUNTIFS(FieldGrants!{{GrantKeyWhenReadable}}, {{GrantKey}}))

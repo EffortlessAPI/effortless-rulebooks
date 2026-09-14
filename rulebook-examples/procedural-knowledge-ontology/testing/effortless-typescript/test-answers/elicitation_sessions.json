@@ -1,7 +1,7 @@
 [
   {
     "elicitation_session_id": "elicit-close-shadow",
-    "name": "Shadowing / 2026-04-03 09:00:00-05",
+    "name": "Shadowing / 2026-04-03T14:00:00+00:00",
     "procedure_version": "close-v1.1.0",
     "method": "Shadowing",
     "started_at": "2026-04-03T09:00:00-05:00",
@@ -24,7 +24,7 @@
   },
   {
     "elicitation_session_id": "elicit-policy-interview",
-    "name": "PractitionerInterview / 2026-05-12 13:00:00-05",
+    "name": "PractitionerInterview / 2026-05-12T18:00:00+00:00",
     "procedure_version": "policy-v1.0.0",
     "method": "PractitionerInterview",
     "started_at": "2026-05-12T13:00:00-05:00",
@@ -47,7 +47,7 @@
   },
   {
     "elicitation_session_id": "elicit-policy-workshop",
-    "name": "FacilitatedWorkshop / 2026-05-10 10:00:00-05",
+    "name": "FacilitatedWorkshop / 2026-05-10T15:00:00+00:00",
     "procedure_version": "policy-v1.0.0",
     "method": "FacilitatedWorkshop",
     "started_at": "2026-05-10T10:00:00-05:00",

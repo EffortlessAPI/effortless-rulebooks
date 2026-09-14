@@ -105,7 +105,7 @@ There is no repo-wide "active project" scratchpad. The user's message names the 
 `rulebook-to-postgres` builds stay green while mistranslating these. Never use them:
 
 - `ISBLANK(x)` → emitted as `NULL`. Blank-check with bare `{{X}} <> ""` / `{{X}} = ""` (null-safe). **Do not wrap in `COALESCE({{X}}, "")`** — that makes every blank-check always true.
-- `COUNTIFS` with a second criteria pair → the second pair is dropped (you get the total count). Use a 0/1 flag on the child plus `SUMIFS` by the FK.
+- Multi-criteria `COUNTIFS`/`SUMIFS` are **not** a trap (the old "second pair is dropped" warning is retired). On 2026-09-14 a shape probe (literal, calculated boolean, `">10"` operator, own-row field, three criteria, lookup column, two calculated booleans, `SUMIFS`, and closure-view pairs) scored every substrate at 100%; Postgres emits every criterion. The one real gap was OWL rejecting a literal-first pair order, fixed in `rulebook-to-owl` (Versioned-Stable-SSoTme-Tools dde4f32). Existing 0/1-flag and composite-key-echo fields stay correct; new ones are not needed.
 - Do not use `IF(...)` as a boolean predicate nested inside `AND(...)` / `OR(...)`; it is emitted as text. Rewrite the condition as boolean `AND`/`OR`, and reserve `IF` for producing the final number or string.
 - `INDEX/MATCH` must match on the target's `<Entity>Id`, from a local FK field. No `MATCH(TRUE(), …)`.
 - All references are 1 hop. Flatten a 2-hop need into a field at each hop.
@@ -189,6 +189,28 @@ atomically after every phase transition; the explorer's `/corpus` page launches
 the runner **detached** and polls that file, so a fan-out survives a page reload,
 two people can watch it, and closing the tab does not kill it. The run directory
 and its logs are gitignored — the rulebook rows are the durable record.
+
+# The ERB build parameters are set once per project
+
+Five `ProjectSettings` entries in a project's `effortless.json` decide the
+formula semantics every substrate is built under — `erbDateDiff`,
+`erbTimezone`, `erbDateTimeText`, `erbBlankLogic`, `erbWholeNumber` — and the
+CLI hands them to every transpiler as `cliParams`, so the substrates agree by
+construction. The contract (allowed values, defaults, the exact rule each value
+means) is `docs/ERB-BUILD-PARAMETERS.md` in `Versioned-Stable-SSoTme-Tools`.
+Set them explicitly (see `rulebook-examples/procedural-knowledge-ontology/effortless.json`)
+rather than relying on the defaults, so a reader can see what the key was
+computed under. Never set one on a single transpiler's `CommandLine` — that
+is how two substrates end up built under different rules while both report
+green.
+
+The conformance harness (`orchestration/test-orchestrator.py`) compares by
+the contract's notion of equality, not by text: numbers by value (`0`,
+`0.0`, `0.00`, `0E-20` are one value) and datetimes by instant
+(`2026-07-19T13:00:00-05:00` equals a zone-converted `2026-07-19 18:00:00`;
+a reading with no offset is taken to be UTC). A substrate that spells a value
+differently is not a disagreement; a substrate that computes a different
+value is.
 
 # Never write a rulebook with ASCII escaping
 

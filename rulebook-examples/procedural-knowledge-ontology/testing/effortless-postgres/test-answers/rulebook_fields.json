@@ -250,8 +250,8 @@
     "invented_for_question": null,
     "is_derived": true,
     "is_witness": false,
-    "disagreeing_substrate_count": "0",
-    "is_substrate_contested": false,
+    "disagreeing_substrate_count": "1",
+    "is_substrate_contested": true,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {
@@ -1330,8 +1330,8 @@
     "invented_for_question": "q-policy-ai-downstream-rewrite",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": "0",
-    "is_substrate_contested": false,
+    "disagreeing_substrate_count": "1",
+    "is_substrate_contested": true,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {
@@ -2050,8 +2050,8 @@
     "invented_for_question": null,
     "is_derived": true,
     "is_witness": false,
-    "disagreeing_substrate_count": "0",
-    "is_substrate_contested": false,
+    "disagreeing_substrate_count": "1",
+    "is_substrate_contested": true,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {
@@ -3610,8 +3610,8 @@
     "invented_for_question": null,
     "is_derived": true,
     "is_witness": false,
-    "disagreeing_substrate_count": "0",
-    "is_substrate_contested": false,
+    "disagreeing_substrate_count": "1",
+    "is_substrate_contested": true,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {
@@ -5515,8 +5515,8 @@
     "invented_for_question": null,
     "is_derived": true,
     "is_witness": false,
-    "disagreeing_substrate_count": "0",
-    "is_substrate_contested": false,
+    "disagreeing_substrate_count": "1",
+    "is_substrate_contested": true,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {
@@ -6970,8 +6970,8 @@
     "invented_for_question": null,
     "is_derived": true,
     "is_witness": false,
-    "disagreeing_substrate_count": "0",
-    "is_substrate_contested": false,
+    "disagreeing_substrate_count": "1",
+    "is_substrate_contested": true,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {
@@ -8485,8 +8485,8 @@
     "invented_for_question": "q2-authority-compound-fragility",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": "0",
-    "is_substrate_contested": false,
+    "disagreeing_substrate_count": "1",
+    "is_substrate_contested": true,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {
@@ -8530,8 +8530,8 @@
     "invented_for_question": "q-hr-unapproved-knowledge-in-my-name",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": "0",
-    "is_substrate_contested": false,
+    "disagreeing_substrate_count": "1",
+    "is_substrate_contested": true,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {
@@ -8785,8 +8785,8 @@
     "invented_for_question": "q-hr-unapproved-knowledge-in-my-name",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": "0",
-    "is_substrate_contested": false,
+    "disagreeing_substrate_count": "1",
+    "is_substrate_contested": true,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {
@@ -8935,8 +8935,8 @@
     "invented_for_question": "q-hr-unapproved-knowledge-in-my-name",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": "0",
-    "is_substrate_contested": false,
+    "disagreeing_substrate_count": "1",
+    "is_substrate_contested": true,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {
@@ -9235,8 +9235,8 @@
     "invented_for_question": "q2-hr-my-unapproved-claim-is-load-bearing",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": "0",
-    "is_substrate_contested": false,
+    "disagreeing_substrate_count": "1",
+    "is_substrate_contested": true,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {
@@ -10450,8 +10450,8 @@
     "invented_for_question": "q-comms-optout-present",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": "0",
-    "is_substrate_contested": false,
+    "disagreeing_substrate_count": "1",
+    "is_substrate_contested": true,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {
@@ -10675,8 +10675,8 @@
     "invented_for_question": "q-comms-optout-present",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": "0",
-    "is_substrate_contested": false,
+    "disagreeing_substrate_count": "1",
+    "is_substrate_contested": true,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {
@@ -10690,8 +10690,8 @@
     "invented_for_question": "q-comms-optout-present",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": "0",
-    "is_substrate_contested": false,
+    "disagreeing_substrate_count": "1",
+    "is_substrate_contested": true,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {
@@ -10705,8 +10705,8 @@
     "invented_for_question": "q-comms-optout-present",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": "0",
-    "is_substrate_contested": false,
+    "disagreeing_substrate_count": "1",
+    "is_substrate_contested": true,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {
@@ -10975,8 +10975,8 @@
     "invented_for_question": "q-comms-optout-present",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": "0",
-    "is_substrate_contested": false,
+    "disagreeing_substrate_count": "1",
+    "is_substrate_contested": true,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {
@@ -13510,8 +13510,8 @@
     "invented_for_question": "q2-cfo-what-changed-since-i-signed",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": "0",
-    "is_substrate_contested": false,
+    "disagreeing_substrate_count": "1",
+    "is_substrate_contested": true,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {
@@ -13585,8 +13585,8 @@
     "invented_for_question": "q2-cfo-what-changed-since-i-signed",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": "0",
-    "is_substrate_contested": false,
+    "disagreeing_substrate_count": "1",
+    "is_substrate_contested": true,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {
@@ -14545,8 +14545,8 @@
     "invented_for_question": "q2-steward-unstewarded-version-still-referenced",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": "0",
-    "is_substrate_contested": false,
+    "disagreeing_substrate_count": "1",
+    "is_substrate_contested": true,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {
@@ -14845,8 +14845,8 @@
     "invented_for_question": "q-authority-unwitnessed-change",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": "0",
-    "is_substrate_contested": false,
+    "disagreeing_substrate_count": "2",
+    "is_substrate_contested": true,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {
@@ -14873,6 +14873,21 @@
     "datatype": "number",
     "formula": "=COUNTIFS(ProcessMiningRuns!{{DriftedMiningRunKey}}, {{ProcedureVersionId}})",
     "invented_for_question": "q-steward-mining-drift",
+    "is_derived": true,
+    "is_witness": true,
+    "disagreeing_substrate_count": "0",
+    "is_substrate_contested": false,
+    "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
+  },
+  {
+    "rulebook_field_id": "ProcedureVersions.EntryStepId",
+    "name": "ProcedureVersions.EntryStepId",
+    "target_table": "ProcedureVersions",
+    "field_name": "EntryStepId",
+    "field_type": "aggregation",
+    "datatype": "string",
+    "formula": "=MAXIFS(Steps!{{EntryStepKey}}, Steps!{{ProcedureVersion}}, ProcedureVersions!{{ProcedureVersionId}})",
+    "invented_for_question": "q-controller-gate-bypass",
     "is_derived": true,
     "is_witness": true,
     "disagreeing_substrate_count": "0",
@@ -15070,8 +15085,8 @@
     "invented_for_question": "q2-steward-unstewarded-version-still-referenced",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": "0",
-    "is_substrate_contested": false,
+    "disagreeing_substrate_count": "1",
+    "is_substrate_contested": true,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {
@@ -15100,8 +15115,8 @@
     "invented_for_question": "q2-steward-unstewarded-version-still-referenced",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": "0",
-    "is_substrate_contested": false,
+    "disagreeing_substrate_count": "1",
+    "is_substrate_contested": true,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {
@@ -15235,8 +15250,8 @@
     "invented_for_question": "q2-steward-unstewarded-version-still-referenced",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": "0",
-    "is_substrate_contested": false,
+    "disagreeing_substrate_count": "1",
+    "is_substrate_contested": true,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {
@@ -15280,8 +15295,8 @@
     "invented_for_question": "q2-steward-unstewarded-version-still-referenced",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": "0",
-    "is_substrate_contested": false,
+    "disagreeing_substrate_count": "1",
+    "is_substrate_contested": true,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {
@@ -15835,8 +15850,8 @@
     "invented_for_question": "q-authority-unwitnessed-change",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": "0",
-    "is_substrate_contested": false,
+    "disagreeing_substrate_count": "1",
+    "is_substrate_contested": true,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {
@@ -17155,8 +17170,8 @@
     "invented_for_question": "q2-cfo-what-changed-since-i-signed",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": "0",
-    "is_substrate_contested": false,
+    "disagreeing_substrate_count": "1",
+    "is_substrate_contested": true,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {
@@ -17545,8 +17560,8 @@
     "invented_for_question": "q2-cfo-what-changed-since-i-signed",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": "0",
-    "is_substrate_contested": false,
+    "disagreeing_substrate_count": "1",
+    "is_substrate_contested": true,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {
@@ -17815,8 +17830,8 @@
     "invented_for_question": "q2-cfo-what-changed-since-i-signed",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": "0",
-    "is_substrate_contested": false,
+    "disagreeing_substrate_count": "1",
+    "is_substrate_contested": true,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {
@@ -18790,8 +18805,8 @@
     "invented_for_question": "q-variance-ai-authority-provenance",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": "0",
-    "is_substrate_contested": false,
+    "disagreeing_substrate_count": "1",
+    "is_substrate_contested": true,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {
@@ -18880,8 +18895,8 @@
     "invented_for_question": "q2-variance-handover-was-a-decision-somebody-made",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": "0",
-    "is_substrate_contested": false,
+    "disagreeing_substrate_count": "1",
+    "is_substrate_contested": true,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {
@@ -18985,8 +19000,8 @@
     "invented_for_question": "q-variance-ai-authority-provenance",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": "0",
-    "is_substrate_contested": false,
+    "disagreeing_substrate_count": "1",
+    "is_substrate_contested": true,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {
@@ -20380,8 +20395,8 @@
     "invented_for_question": null,
     "is_derived": true,
     "is_witness": false,
-    "disagreeing_substrate_count": "0",
-    "is_substrate_contested": false,
+    "disagreeing_substrate_count": "1",
+    "is_substrate_contested": true,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {
@@ -24420,6 +24435,21 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {
+    "rulebook_field_id": "Steps.EntryStepKey",
+    "name": "Steps.EntryStepKey",
+    "target_table": "Steps",
+    "field_name": "EntryStepKey",
+    "field_type": "calculated",
+    "datatype": "string",
+    "formula": "=IF({{IsEntryStep}}, {{StepId}}, \"\")",
+    "invented_for_question": "q-controller-gate-bypass",
+    "is_derived": true,
+    "is_witness": true,
+    "disagreeing_substrate_count": "0",
+    "is_substrate_contested": false,
+    "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
+  },
+  {
     "rulebook_field_id": "Steps.ExpectedDurationMinutes",
     "name": "Steps.ExpectedDurationMinutes",
     "target_table": "Steps",
@@ -24445,6 +24475,21 @@
     "invented_for_question": null,
     "is_derived": false,
     "is_witness": false,
+    "disagreeing_substrate_count": "0",
+    "is_substrate_contested": false,
+    "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
+  },
+  {
+    "rulebook_field_id": "Steps.GateFreeReachFromEntryCount",
+    "name": "Steps.GateFreeReachFromEntryCount",
+    "target_table": "Steps",
+    "field_name": "GateFreeReachFromEntryCount",
+    "field_type": "aggregation",
+    "datatype": "integer",
+    "formula": "=COUNTIFS(vw_step_transitions_closure_where_avoids_human_approval_gate!{{FromId}}, {{VersionEntryStepId}}, vw_step_transitions_closure_where_avoids_human_approval_gate!{{ToId}}, Steps!{{StepId}})",
+    "invented_for_question": "q-controller-gate-bypass",
+    "is_derived": true,
+    "is_witness": true,
     "disagreeing_substrate_count": "0",
     "is_substrate_contested": false,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
@@ -24488,6 +24533,21 @@
     "datatype": "boolean",
     "formula": "={{ControlKind}} <> \"\"",
     "invented_for_question": "q2-steward-control-kind-instead-of-hardcoded-ids",
+    "is_derived": true,
+    "is_witness": true,
+    "disagreeing_substrate_count": "0",
+    "is_substrate_contested": false,
+    "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
+  },
+  {
+    "rulebook_field_id": "Steps.IncomingTransitionCount",
+    "name": "Steps.IncomingTransitionCount",
+    "target_table": "Steps",
+    "field_name": "IncomingTransitionCount",
+    "field_type": "aggregation",
+    "datatype": "integer",
+    "formula": "=COUNTIFS(StepTransitions!{{ToStep}}, Steps!{{StepId}})",
+    "invented_for_question": "q-controller-gate-bypass",
     "is_derived": true,
     "is_witness": true,
     "disagreeing_substrate_count": "0",
@@ -24540,6 +24600,21 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {
+    "rulebook_field_id": "Steps.IsBlockingControlOnReworkLoop",
+    "name": "Steps.IsBlockingControlOnReworkLoop",
+    "target_table": "Steps",
+    "field_name": "IsBlockingControlOnReworkLoop",
+    "field_type": "calculated",
+    "datatype": "boolean",
+    "formula": "=AND({{IsOnReworkLoop}}, {{BlockingRequirementCount}} > 0)",
+    "invented_for_question": "q-steward-rework-loops",
+    "is_derived": true,
+    "is_witness": true,
+    "disagreeing_substrate_count": "2",
+    "is_substrate_contested": true,
+    "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
+  },
+  {
     "rulebook_field_id": "Steps.IsDemonstratedHumanGate",
     "name": "Steps.IsDemonstratedHumanGate",
     "target_table": "Steps",
@@ -24548,6 +24623,36 @@
     "datatype": "boolean",
     "formula": "=AND({{IsHumanApprovalGate}}, {{HasBeenApproachedBySoftware}}, {{GateHeldByHuman}})",
     "invented_for_question": "q2-hr-ai-boundary-holds-only-where-tested",
+    "is_derived": true,
+    "is_witness": true,
+    "disagreeing_substrate_count": "0",
+    "is_substrate_contested": false,
+    "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
+  },
+  {
+    "rulebook_field_id": "Steps.IsEntryStep",
+    "name": "Steps.IsEntryStep",
+    "target_table": "Steps",
+    "field_name": "IsEntryStep",
+    "field_type": "calculated",
+    "datatype": "boolean",
+    "formula": "={{IncomingTransitionCount}} = 0",
+    "invented_for_question": "q-controller-gate-bypass",
+    "is_derived": true,
+    "is_witness": true,
+    "disagreeing_substrate_count": "0",
+    "is_substrate_contested": false,
+    "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
+  },
+  {
+    "rulebook_field_id": "Steps.IsGateBypassedPublication",
+    "name": "Steps.IsGateBypassedPublication",
+    "target_table": "Steps",
+    "field_name": "IsGateBypassedPublication",
+    "field_type": "calculated",
+    "datatype": "boolean",
+    "formula": "=AND({{ControlKind}} = \"Publication\", {{IsReachableFromEntryWithoutHumanGate}})",
+    "invented_for_question": "q-controller-gate-bypass",
     "is_derived": true,
     "is_witness": true,
     "disagreeing_substrate_count": "0",
@@ -24585,6 +24690,21 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {
+    "rulebook_field_id": "Steps.IsOnReworkLoop",
+    "name": "Steps.IsOnReworkLoop",
+    "target_table": "Steps",
+    "field_name": "IsOnReworkLoop",
+    "field_type": "calculated",
+    "datatype": "boolean",
+    "formula": "={{SelfReachCount}} > 0",
+    "invented_for_question": "q-steward-rework-loops",
+    "is_derived": true,
+    "is_witness": true,
+    "disagreeing_substrate_count": "2",
+    "is_substrate_contested": true,
+    "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
+  },
+  {
     "rulebook_field_id": "Steps.IsPreparationStep",
     "name": "Steps.IsPreparationStep",
     "target_table": "Steps",
@@ -24593,6 +24713,21 @@
     "datatype": "boolean",
     "formula": "=OR({{AssignedRole}} = \"finance-analyst\", {{AssignedRole}} = \"variance-review-agent\")",
     "invented_for_question": "q-controller-separation-of-duties",
+    "is_derived": true,
+    "is_witness": true,
+    "disagreeing_substrate_count": "0",
+    "is_substrate_contested": false,
+    "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
+  },
+  {
+    "rulebook_field_id": "Steps.IsReachableFromEntryWithoutHumanGate",
+    "name": "Steps.IsReachableFromEntryWithoutHumanGate",
+    "target_table": "Steps",
+    "field_name": "IsReachableFromEntryWithoutHumanGate",
+    "field_type": "calculated",
+    "datatype": "boolean",
+    "formula": "={{GateFreeReachFromEntryCount}} > 0",
+    "invented_for_question": "q-controller-gate-bypass",
     "is_derived": true,
     "is_witness": true,
     "disagreeing_substrate_count": "0",
@@ -24660,6 +24795,36 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {
+    "rulebook_field_id": "Steps.ReachableStepCount",
+    "name": "Steps.ReachableStepCount",
+    "target_table": "Steps",
+    "field_name": "ReachableStepCount",
+    "field_type": "aggregation",
+    "datatype": "integer",
+    "formula": "=COUNTIFS(vw_step_transitions_closure!{{FromId}}, Steps!{{StepId}})",
+    "invented_for_question": "q-steward-rework-loops",
+    "is_derived": true,
+    "is_witness": true,
+    "disagreeing_substrate_count": "2",
+    "is_substrate_contested": true,
+    "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
+  },
+  {
+    "rulebook_field_id": "Steps.ReachedFromStepCount",
+    "name": "Steps.ReachedFromStepCount",
+    "target_table": "Steps",
+    "field_name": "ReachedFromStepCount",
+    "field_type": "aggregation",
+    "datatype": "integer",
+    "formula": "=COUNTIFS(vw_step_transitions_closure!{{ToId}}, Steps!{{StepId}})",
+    "invented_for_question": "q-steward-rework-loops",
+    "is_derived": true,
+    "is_witness": true,
+    "disagreeing_substrate_count": "2",
+    "is_substrate_contested": true,
+    "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
+  },
+  {
     "rulebook_field_id": "Steps.RequiresHumanConfirmation",
     "name": "Steps.RequiresHumanConfirmation",
     "target_table": "Steps",
@@ -24672,6 +24837,21 @@
     "is_witness": false,
     "disagreeing_substrate_count": "0",
     "is_substrate_contested": false,
+    "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
+  },
+  {
+    "rulebook_field_id": "Steps.SelfReachCount",
+    "name": "Steps.SelfReachCount",
+    "target_table": "Steps",
+    "field_name": "SelfReachCount",
+    "field_type": "aggregation",
+    "datatype": "integer",
+    "formula": "=COUNTIFS(vw_step_transitions_closure!{{FromId}}, Steps!{{StepId}}, vw_step_transitions_closure!{{ToId}}, Steps!{{StepId}})",
+    "invented_for_question": "q-steward-rework-loops",
+    "is_derived": true,
+    "is_witness": true,
+    "disagreeing_substrate_count": "2",
+    "is_substrate_contested": true,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {
@@ -24870,6 +25050,21 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {
+    "rulebook_field_id": "Steps.VersionEntryStepId",
+    "name": "Steps.VersionEntryStepId",
+    "target_table": "Steps",
+    "field_name": "VersionEntryStepId",
+    "field_type": "lookup",
+    "datatype": "string",
+    "formula": "=INDEX(ProcedureVersions!{{EntryStepId}}, MATCH({{ProcedureVersion}}, ProcedureVersions!{{ProcedureVersionId}}, 0))",
+    "invented_for_question": "q-controller-gate-bypass",
+    "is_derived": true,
+    "is_witness": true,
+    "disagreeing_substrate_count": "0",
+    "is_substrate_contested": false,
+    "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
+  },
+  {
     "rulebook_field_id": "StepTools.Name",
     "name": "StepTools.Name",
     "target_table": "StepTools",
@@ -24930,6 +25125,21 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {
+    "rulebook_field_id": "StepTransitions.AvoidsHumanApprovalGate",
+    "name": "StepTransitions.AvoidsHumanApprovalGate",
+    "target_table": "StepTransitions",
+    "field_name": "AvoidsHumanApprovalGate",
+    "field_type": "calculated",
+    "datatype": "boolean",
+    "formula": "=AND(NOT({{FromStepIsHumanApprovalGate}}), NOT({{ToStepIsHumanApprovalGate}}))",
+    "invented_for_question": "q-controller-gate-bypass",
+    "is_derived": true,
+    "is_witness": true,
+    "disagreeing_substrate_count": "0",
+    "is_substrate_contested": false,
+    "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
+  },
+  {
     "rulebook_field_id": "StepTransitions.Condition",
     "name": "StepTransitions.Condition",
     "target_table": "StepTransitions",
@@ -24955,8 +25165,8 @@
     "invented_for_question": "q-steward-untested-fallbacks",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": "0",
-    "is_substrate_contested": false,
+    "disagreeing_substrate_count": "1",
+    "is_substrate_contested": true,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {
@@ -24985,8 +25195,8 @@
     "invented_for_question": "q-steward-untested-fallbacks",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": "0",
-    "is_substrate_contested": false,
+    "disagreeing_substrate_count": "1",
+    "is_substrate_contested": true,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {
@@ -25000,6 +25210,21 @@
     "invented_for_question": null,
     "is_derived": false,
     "is_witness": false,
+    "disagreeing_substrate_count": "0",
+    "is_substrate_contested": false,
+    "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
+  },
+  {
+    "rulebook_field_id": "StepTransitions.FromStepIsHumanApprovalGate",
+    "name": "StepTransitions.FromStepIsHumanApprovalGate",
+    "target_table": "StepTransitions",
+    "field_name": "FromStepIsHumanApprovalGate",
+    "field_type": "lookup",
+    "datatype": "boolean",
+    "formula": "=INDEX(Steps!{{IsHumanApprovalGate}}, MATCH({{FromStep}}, Steps!{{StepId}}, 0))",
+    "invented_for_question": "q-controller-gate-bypass",
+    "is_derived": true,
+    "is_witness": true,
     "disagreeing_substrate_count": "0",
     "is_substrate_contested": false,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
@@ -25030,8 +25255,8 @@
     "invented_for_question": "q-steward-untested-fallbacks",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": "0",
-    "is_substrate_contested": false,
+    "disagreeing_substrate_count": "1",
+    "is_substrate_contested": true,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {
@@ -25045,8 +25270,8 @@
     "invented_for_question": "q-steward-untested-fallbacks",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": "0",
-    "is_substrate_contested": false,
+    "disagreeing_substrate_count": "1",
+    "is_substrate_contested": true,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {
@@ -25060,8 +25285,8 @@
     "invented_for_question": "q-steward-untested-fallbacks",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": "0",
-    "is_substrate_contested": false,
+    "disagreeing_substrate_count": "1",
+    "is_substrate_contested": true,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {
@@ -25105,8 +25330,8 @@
     "invented_for_question": "q-steward-untested-fallbacks",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": "0",
-    "is_substrate_contested": false,
+    "disagreeing_substrate_count": "1",
+    "is_substrate_contested": true,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {
@@ -25119,6 +25344,36 @@
     "formula": "=AND({{IsRecoveryPath}}, NOT({{HasBeenTraversed}}))",
     "invented_for_question": "q-steward-untested-fallbacks",
     "is_derived": true,
+    "is_witness": true,
+    "disagreeing_substrate_count": "0",
+    "is_substrate_contested": false,
+    "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
+  },
+  {
+    "rulebook_field_id": "StepTransitions.LeadsToClosure",
+    "name": "StepTransitions.LeadsToClosure",
+    "target_table": "StepTransitions",
+    "field_name": "LeadsToClosure",
+    "field_type": "closure",
+    "datatype": "string",
+    "formula": null,
+    "invented_for_question": "q-steward-rework-loops",
+    "is_derived": false,
+    "is_witness": true,
+    "disagreeing_substrate_count": "0",
+    "is_substrate_contested": false,
+    "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
+  },
+  {
+    "rulebook_field_id": "StepTransitions.LeadsWithoutHumanGateClosure",
+    "name": "StepTransitions.LeadsWithoutHumanGateClosure",
+    "target_table": "StepTransitions",
+    "field_name": "LeadsWithoutHumanGateClosure",
+    "field_type": "closure",
+    "datatype": "string",
+    "formula": null,
+    "invented_for_question": "q-controller-gate-bypass",
+    "is_derived": false,
     "is_witness": true,
     "disagreeing_substrate_count": "0",
     "is_substrate_contested": false,
@@ -25240,6 +25495,21 @@
     "invented_for_question": null,
     "is_derived": false,
     "is_witness": false,
+    "disagreeing_substrate_count": "0",
+    "is_substrate_contested": false,
+    "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
+  },
+  {
+    "rulebook_field_id": "StepTransitions.ToStepIsHumanApprovalGate",
+    "name": "StepTransitions.ToStepIsHumanApprovalGate",
+    "target_table": "StepTransitions",
+    "field_name": "ToStepIsHumanApprovalGate",
+    "field_type": "lookup",
+    "datatype": "boolean",
+    "formula": "=INDEX(Steps!{{IsHumanApprovalGate}}, MATCH({{ToStep}}, Steps!{{StepId}}, 0))",
+    "invented_for_question": "q-controller-gate-bypass",
+    "is_derived": true,
+    "is_witness": true,
     "disagreeing_substrate_count": "0",
     "is_substrate_contested": false,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"

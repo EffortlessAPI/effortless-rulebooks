@@ -20,7 +20,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         [NotMapped]
         public string? Name
         {
-            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.ActivityKind)), F.S(" / "), F.TimestamptzText(F.Of(this.OccurredAt))))); set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.Text(F.Of(this.ActivityKind)), F.S(" / "), F.DatetimeText(F.Of(this.OccurredAt))))); set { }
         }
 
         public string? ActivityKind { get; set; }

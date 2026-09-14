@@ -20,11 +20,7 @@ broken database.
      Documented transpiler defect: emits a warning comment, returns NULL, and
      the build still reports success.
 
-  4. multi-criteria COUNTIFS
-     Documented defect: silently drops the 2nd+ criteria, so the aggregation
-     returns a total count and looks plausible.
-
-  5. INDEX/MATCH on a non-primary-key
+  4. INDEX/MATCH on a non-primary-key
      Only matches the target table's PK; anything else generates nothing.
 
 Exit 1 on any finding.
@@ -77,23 +73,9 @@ def main():
             if fo.count("(") != fo.count(")"):
                 problems.append(f"{where}: unbalanced parentheses in formula.")
 
-            if "COUNTIFS" in fo:
-                seg = fo[fo.index("COUNTIFS") + len("COUNTIFS"):]
-                depth, args = 0, 1
-                for ch in seg:
-                    if ch == "(":
-                        depth += 1
-                    elif ch == ")":
-                        depth -= 1
-                        if depth == 0:
-                            break
-                    elif ch == "," and depth == 1:
-                        args += 1
-                if args > 2:
-                    problems.append(
-                        f"{where}: COUNTIFS has {args} arguments. The "
-                        f"transpiler silently drops the 2nd+ criteria and "
-                        f"returns a total count. Use the composite-key echo.")
+            # No multi-criteria COUNTIFS check: the "drops the 2nd+ criteria"
+            # defect was retired on 2026-09-14, when a shape probe found every
+            # substrate correct on multi-criteria COUNTIFS/SUMIFS.
 
             for m in re.finditer(r"MATCH\(\{\{(\w+)\}\},\s*(\w+)!\{\{(\w+)\}\}",
                                  fo):

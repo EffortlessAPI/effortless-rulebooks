@@ -130,7 +130,7 @@ const ROLES = {
   },
   steward: {
     label: "Steward",
-    tabs: ["health", "knowledge", "ledger", "changes"],
+    tabs: ["drift", "health", "knowledge", "ledger", "changes"],
   },
   publisher: {
     label: "Comms",
@@ -179,6 +179,7 @@ const TABS = {
   evidence: "Evidence Trail",
   mappings: "Ontology Mapping",
   comms: "Communications",
+  drift: "Plan vs Reality",
   ...ADMIN_TABS,
   ...EXPLORE_TABS,
   ...CONFORMANCE_TABS,
@@ -201,6 +202,7 @@ function tabCount(t) {
     case "knowledge": return (T.knowledge_fragments || []).length;
     case "changes": return (T.change_requests || []).length;
     case "queue": return (T.step_executions || []).filter((s) => s.verification_result === "PENDING").length;
+    case "drift": return (T.process_mining_runs || []).filter((r) => r.is_drift_on_live_version).length;
     case "health": return (T.knowledge_gaps || []).filter((g) => g.status === "Open").length;
     case "mappings": return (T.semantic_mappings || []).length;
     case "evidence": return (T.requirement_satisfactions || []).length;
@@ -874,11 +876,71 @@ function viewComms() {
     </div>`;
 }
 
+// ---------- plan vs reality ----------
+// A process-mining run replays the system of record's event log against a
+// procedure version. Every verdict on this screen is a vw_process_mining_runs
+// column: conformance_rate, is_conformant, has_major_drift_from_documentation,
+// procedure_version_is_live, is_drift_on_live_version, is_stale_mining_evidence.
+// This function only arranges them; it decides nothing.
+function viewDrift() {
+  const runs = (T.process_mining_runs || []).slice().sort((a, b) =>
+    Number(b.is_drift_on_live_version) - Number(a.is_drift_on_live_version) ||
+    String(b.mined_at).localeCompare(String(a.mined_at)));
+  const live = runs.filter((r) => r.is_drift_on_live_version);
+  const cell = (r, col, html) =>
+    `<button class="xcell" data-cell="process_mining_runs|${esc(r.process_mining_run_id)}|${col}">${html}</button>`;
+  const day = (s) => s ? new Date(s).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "—";
+  let h = head("Plan vs Reality",
+    "What each procedure says should happen, checked against what the system of record actually did. A drift on a live version is happening right now, to work people are doing today.");
+  h += `<div class="dz-strip">
+    <div class="dz-tile ${live.length ? "red" : "green"}"><div class="dz-n">${live.length}</div><div class="dz-l">drifting on a live version</div></div>
+    <div class="dz-tile blue"><div class="dz-n">${runs.length}</div><div class="dz-l">event logs checked</div></div>
+    <div class="dz-tile amber"><div class="dz-n">${runs.filter((r) => r.is_stale_mining_evidence).length}</div><div class="dz-l">checks gone stale</div></div>
+  </div>`;
+  h += runs.map((r) => {
+    const pct = Math.round(Number(r.conformance_rate) * 100);
+    // Precedence: a live drift outranks everything; a retired version is
+    // quiet whatever it did; stale evidence outranks a conformant rate, since
+    // a check nobody has rerun in months cannot vouch for today.
+    const tone = r.is_drift_on_live_version ? "red"
+      : !r.procedure_version_is_live ? "grey"
+      : r.is_stale_mining_evidence ? "amber"
+      : r.is_conformant ? "green" : "amber";
+    const verdict = r.is_drift_on_live_version ? "Drift on a live version"
+      : !r.procedure_version_is_live ? "Version retired, stays quiet"
+      : r.is_stale_mining_evidence ? "Evidence gone stale"
+      : r.is_conformant ? "Follows the plan" : "Below conformance";
+    return `<article class="dz-card ${tone}">
+      <div class="dz-verdict">${cell(r, "is_drift_on_live_version", esc(verdict))}</div>
+      <div class="dz-body">
+        <div class="dz-meter" style="--p:${pct}">
+          <div class="dz-ring"><span>${cell(r, "conformance_rate", `${pct}%`)}</span></div>
+          <div class="dz-meter-l"><b>${esc(r.conforming_variant_count)} of ${esc(r.discovered_variant_count)}</b> paths through the work followed the plan</div>
+        </div>
+        <div class="dz-pair">
+          <div class="dz-side plan"><div class="dz-k">The plan</div>
+            <div class="dz-v mono">${esc(r.procedure_version)}</div>
+            <div class="dz-s">${r.procedure_version_is_live ? "live version" : "retired version"}</div></div>
+          <div class="dz-side real"><div class="dz-k">What really happened</div>
+            <div class="dz-v">${esc(r.event_log_source)}</div>
+            <div class="dz-s">checked ${day(r.mined_at)} · ${cell(r, "days_since_mined", `${esc(r.days_since_mined)} days ago`)}</div></div>
+        </div>
+        ${r.deviation_description ? `<p class="dz-desc">${esc(r.deviation_description)}</p>` : ""}
+        <div class="dz-chips">
+          <span class="chip ${r.has_major_drift_from_documentation ? "fail" : "pass"}">${r.has_major_drift_from_documentation ? "major drift" : "no major drift"}</span>
+          <span class="chip ${r.is_stale_mining_evidence ? "warn" : "pass"}">${r.is_stale_mining_evidence ? "stale evidence" : "fresh evidence"}</span>
+        </div>
+      </div>
+    </article>`;
+  }).join("");
+  return h;
+}
+
 const VIEWS = {
   ledger: viewLedger, run: viewRun, flow: viewFlow, catalog: viewCatalog,
   knowledge: viewKnowledge, health: viewHealth, queue: viewQueue,
   changes: viewChanges, evidence: viewEvidence, mappings: viewMappings,
-  comms: viewComms,
+  comms: viewComms, drift: viewDrift,
   board: viewBoard, witnesses: viewWitnesses, loops: viewLoops, trace: viewTrace,
   inferences: viewInferences, tables: viewTables, record: viewRecord,
   "c-board": viewConformanceBoard, "c-grid": viewConformanceGrid, "c-fields": viewConformanceFields,

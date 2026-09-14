@@ -20,7 +20,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         [NotMapped]
         public string? Name
         {
-            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.StepExecution)), F.S(" / "), F.TextOr(F.Of(this.StepVerification))))); set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.Text(F.Of(this.StepExecution)), F.S(" / "), F.Text(F.Of(this.StepVerification))))); set { }
         }
 
         public string? ObservedSignalValue { get; set; }

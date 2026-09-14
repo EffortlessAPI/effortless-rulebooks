@@ -20,7 +20,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         [NotMapped]
         public string? Name
         {
-            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.Recipient)), F.S(" / "), F.TextOr(F.Of(this.MessageTemplate)), F.S(" / intent")))); set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.Text(F.Of(this.Recipient)), F.S(" / "), F.Text(F.Of(this.MessageTemplate)), F.S(" / intent")))); set { }
         }
 
         public string? ProposedBody { get; set; }

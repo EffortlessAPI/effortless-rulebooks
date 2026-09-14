@@ -20,7 +20,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         [NotMapped]
         public string? Name
         {
-            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.StepExecution)), F.S(" / "), F.TextOr(F.Of(this.Exception))))); set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.Text(F.Of(this.StepExecution)), F.S(" / "), F.Text(F.Of(this.Exception))))); set { }
         }
 
         public DateTimeOffset? InvokedAt { get; set; }
@@ -78,7 +78,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         [NotMapped]
         public string? InvokerAlsoPreparedKey
         {
-            get => F.AsString(F.Memo(this, "InvokerAlsoPreparedKey", () => F.Concat(F.TextOr(F.Of(this.ParentProcedureExecution)), F.S("|"), F.TextOr(F.Of(this.ApprovedByAgent))))); set { }
+            get => F.AsString(F.Memo(this, "InvokerAlsoPreparedKey", () => F.Concat(F.Text(F.Of(this.ParentProcedureExecution)), F.S("|"), F.Text(F.Of(this.ApprovedByAgent))))); set { }
         }
 
         // Formula ParentProcedureExecution (rulebook: =INDEX(StepExecutions!{{ProcedureExecution}}, MATCH({{StepExecution}}, StepExecutions!{{StepExecutionId}}, 0)))

@@ -20,8 +20,8 @@
     "required_opt_out_phrase": null,
     "requires_opt_out": false,
     "name": "Email policy / policy-v1.0.0",
-    "consent_violation_count": 0,
-    "quiet_hours_violation_count": 0,
+    "consent_violation_count": 0.0,
+    "quiet_hours_violation_count": 0.0,
     "is_active_policy": true
   },
   {
@@ -45,8 +45,8 @@
     "required_opt_out_phrase": "Reply STOP to opt out",
     "requires_opt_out": true,
     "name": "SMS policy / policy-v1.0.0",
-    "consent_violation_count": 0,
-    "quiet_hours_violation_count": 1,
+    "consent_violation_count": 0.0,
+    "quiet_hours_violation_count": 1.0,
     "is_active_policy": true
   }
 ]

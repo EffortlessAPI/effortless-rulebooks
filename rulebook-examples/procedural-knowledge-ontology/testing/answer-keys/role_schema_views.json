@@ -123,7 +123,7 @@
     "source_view": "vw_steps",
     "grant_key": "principal-close-automation|Steps",
     "column_count": 10,
-    "table_field_count": 42,
+    "table_field_count": 54.0,
     "is_full_width": false,
     "is_degenerate_view": false
   },
@@ -299,7 +299,7 @@
     "source_view": "vw_procedure_versions",
     "grant_key": "principal-controller|ProcedureVersions",
     "column_count": 7,
-    "table_field_count": 86,
+    "table_field_count": 87.0,
     "is_full_width": false,
     "is_degenerate_view": false
   },
@@ -347,7 +347,7 @@
     "source_view": "vw_steps",
     "grant_key": "principal-controller|Steps",
     "column_count": 13,
-    "table_field_count": 42,
+    "table_field_count": 54.0,
     "is_full_width": false,
     "is_degenerate_view": false
   },
@@ -427,7 +427,7 @@
     "source_view": "vw_steps",
     "grant_key": "principal-employment-counsel|Steps",
     "column_count": 9,
-    "table_field_count": 42,
+    "table_field_count": 54.0,
     "is_full_width": false,
     "is_degenerate_view": false
   },
@@ -459,7 +459,7 @@
     "source_view": "vw_procedure_versions",
     "grant_key": "principal-finance-analyst|ProcedureVersions",
     "column_count": 7,
-    "table_field_count": 86,
+    "table_field_count": 87.0,
     "is_full_width": false,
     "is_degenerate_view": false
   },
@@ -539,7 +539,7 @@
     "source_view": "vw_steps",
     "grant_key": "principal-finance-analyst|Steps",
     "column_count": 12,
-    "table_field_count": 42,
+    "table_field_count": 54.0,
     "is_full_width": false,
     "is_degenerate_view": false
   },
@@ -635,7 +635,7 @@
     "source_view": "vw_steps",
     "grant_key": "principal-hr-policy-owner|Steps",
     "column_count": 12,
-    "table_field_count": 42,
+    "table_field_count": 54.0,
     "is_full_width": false,
     "is_degenerate_view": false
   },
@@ -1275,8 +1275,8 @@
     "source_view": "vw_procedure_versions",
     "grant_key": "principal-knowledge-authority|ProcedureVersions",
     "column_count": 86,
-    "table_field_count": 86,
-    "is_full_width": true,
+    "table_field_count": 87.0,
+    "is_full_width": false,
     "is_degenerate_view": false
   },
   {
@@ -1611,8 +1611,8 @@
     "source_view": "vw_step_transitions",
     "grant_key": "principal-knowledge-authority|StepTransitions",
     "column_count": 23,
-    "table_field_count": 23,
-    "is_full_width": true,
+    "table_field_count": 28.0,
+    "is_full_width": false,
     "is_degenerate_view": false
   },
   {
@@ -1643,8 +1643,8 @@
     "source_view": "vw_steps",
     "grant_key": "principal-knowledge-authority|Steps",
     "column_count": 42,
-    "table_field_count": 42,
-    "is_full_width": true,
+    "table_field_count": 54.0,
+    "is_full_width": false,
     "is_degenerate_view": false
   },
   {
@@ -1899,7 +1899,7 @@
     "source_view": "vw_steps",
     "grant_key": "principal-notification-publisher|Steps",
     "column_count": 9,
-    "table_field_count": 42,
+    "table_field_count": 54.0,
     "is_full_width": false,
     "is_degenerate_view": false
   },
@@ -1963,7 +1963,7 @@
     "source_view": "vw_steps",
     "grant_key": "principal-policy-drafting-agent|Steps",
     "column_count": 9,
-    "table_field_count": 42,
+    "table_field_count": 54.0,
     "is_full_width": false,
     "is_degenerate_view": false
   },
@@ -2603,8 +2603,8 @@
     "source_view": "vw_procedure_versions",
     "grant_key": "principal-process-steward|ProcedureVersions",
     "column_count": 86,
-    "table_field_count": 86,
-    "is_full_width": true,
+    "table_field_count": 87.0,
+    "is_full_width": false,
     "is_degenerate_view": false
   },
   {
@@ -2939,8 +2939,8 @@
     "source_view": "vw_step_transitions",
     "grant_key": "principal-process-steward|StepTransitions",
     "column_count": 23,
-    "table_field_count": 23,
-    "is_full_width": true,
+    "table_field_count": 28.0,
+    "is_full_width": false,
     "is_degenerate_view": false
   },
   {
@@ -2971,8 +2971,8 @@
     "source_view": "vw_steps",
     "grant_key": "principal-process-steward|Steps",
     "column_count": 42,
-    "table_field_count": 42,
-    "is_full_width": true,
+    "table_field_count": 54.0,
+    "is_full_width": false,
     "is_degenerate_view": false
   },
   {
@@ -3227,7 +3227,7 @@
     "source_view": "vw_steps",
     "grant_key": "principal-variance-review-agent|Steps",
     "column_count": 9,
-    "table_field_count": 42,
+    "table_field_count": 54.0,
     "is_full_width": false,
     "is_degenerate_view": false
   }

@@ -9,7 +9,7 @@
     "issue_solution": "Reran extraction after source timestamp normalized; added explicit timestamp knowledge fragment.",
     "status": "Resolved",
     "semantic_type_iri": "https://w3id.org/pko#IssueOccurrence",
-    "name": "err-feed-stale @ 2026-06-30T17:12:00-05:00",
+    "name": "err-feed-stale @ 2026-06-30T22:12:00+00:00",
     "is_unresolved": false,
     "step_execution_when_unresolved": null
   },
@@ -23,7 +23,7 @@
     "issue_solution": "Queue with exponential backoff and preserve recipient-local quiet-hours constraint.",
     "status": "Monitoring",
     "semantic_type_iri": "https://w3id.org/pko#IssueOccurrence",
-    "name": "err-sms-throttle @ 2026-07-19T09:30:00-05:00",
+    "name": "err-sms-throttle @ 2026-07-19T14:30:00+00:00",
     "is_unresolved": true,
     "step_execution_when_unresolved": "se-policy04"
   }

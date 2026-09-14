@@ -36,8 +36,8 @@
     "error_correction_role_assignment_key": "",
     "boundary_violation_role_assignment_key": "",
     "role_assignment_when_overridden": null,
-    "is_error_correction": null,
-    "is_reserved_judgment_override": null
+    "is_error_correction": false,
+    "is_reserved_judgment_override": false
   },
   {
     "agent_decision_record_id": "adr-close-freeze-q2",

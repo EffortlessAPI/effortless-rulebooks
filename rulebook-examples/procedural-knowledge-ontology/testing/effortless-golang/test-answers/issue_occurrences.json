@@ -1,7 +1,7 @@
 [
   {
     "issue_occurrence_id": "issue-close-feed",
-    "name": "err-feed-stale @ 2026-06-30 17:12:00-05",
+    "name": "err-feed-stale @ 2026-06-30T22:12:00+00:00",
     "step_execution": "se-close02",
     "error": "err-feed-stale",
     "encountered_by_agent": "close-pipeline",
@@ -15,7 +15,7 @@
   },
   {
     "issue_occurrence_id": "issue-policy-sms",
-    "name": "err-sms-throttle @ 2026-07-19 09:30:00-05",
+    "name": "err-sms-throttle @ 2026-07-19T14:30:00+00:00",
     "step_execution": "se-policy04",
     "error": "err-sms-throttle",
     "encountered_by_agent": "notification-pipeline",

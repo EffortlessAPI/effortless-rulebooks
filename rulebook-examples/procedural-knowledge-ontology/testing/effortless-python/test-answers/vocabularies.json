@@ -6,8 +6,8 @@
     "governing_role": "knowledge-authority",
     "semantic_type_iri": "urn:effortless:pko-extension#Vocabulary",
     "name": "Close Control Categories",
-    "term_count": 5,
-    "orphan_term_count": 0,
+    "term_count": 5.0,
+    "orphan_term_count": 0.0,
     "has_orphan_terms": false
   },
   {
@@ -17,8 +17,8 @@
     "governing_role": "knowledge-authority",
     "semantic_type_iri": "urn:effortless:pko-extension#Vocabulary",
     "name": "Policy Compliance Domains",
-    "term_count": 7,
-    "orphan_term_count": 2,
+    "term_count": 7.0,
+    "orphan_term_count": 2.0,
     "has_orphan_terms": true
   }
 ]

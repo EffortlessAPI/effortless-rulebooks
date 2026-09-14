@@ -227,7 +227,8 @@
       "unwatched_unowned_control_count",
       "mining_run_count",
       "drifted_mining_run_count",
-      "has_unresolved_mining_drift"
+      "has_unresolved_mining_drift",
+      "entry_step_id"
     ],
     "record_count": 3
   },
@@ -278,7 +279,19 @@
       "has_declared_control_kind",
       "undeclared_control_version_key",
       "approval_step_is_software_assigned",
-      "unwitnessed_blocking_count"
+      "unwitnessed_blocking_count",
+      "reachable_step_count",
+      "reached_from_step_count",
+      "self_reach_count",
+      "is_on_rework_loop",
+      "is_blocking_control_on_rework_loop",
+      "incoming_transition_count",
+      "is_entry_step",
+      "entry_step_key",
+      "version_entry_step_id",
+      "gate_free_reach_from_entry_count",
+      "is_reachable_from_entry_without_human_gate",
+      "is_gate_bypassed_publication"
     ],
     "record_count": 17
   },
@@ -299,9 +312,12 @@
       "target_blocking_requirement_count",
       "target_carries_blocking_control",
       "is_unrehearsed_control_entry",
-      "unrehearsed_control_version_key"
+      "unrehearsed_control_version_key",
+      "from_step_is_human_approval_gate",
+      "to_step_is_human_approval_gate",
+      "avoids_human_approval_gate"
     ],
-    "record_count": 19
+    "record_count": 20
   },
   "actions": {
     "primary_key": "action_id",
@@ -948,7 +964,7 @@
       "question_count",
       "is_complete"
     ],
-    "record_count": 3
+    "record_count": 4
   },
   "role_questions": {
     "primary_key": "role_question_id",
@@ -957,7 +973,7 @@
       "predicate_count",
       "is_answered"
     ],
-    "record_count": 109
+    "record_count": 111
   },
   "rulebook_fields": {
     "primary_key": "rulebook_field_id",
@@ -968,7 +984,7 @@
       "disagreeing_substrate_count",
       "is_substrate_contested"
     ],
-    "record_count": 1879
+    "record_count": 1897
   },
   "test_suites": {
     "primary_key": "test_suite_id",
@@ -1517,5 +1533,91 @@
       "at_risk_broker_key"
     ],
     "record_count": 5
+  },
+  "conformance_substrates": {
+    "primary_key": "conformance_substrate_id",
+    "computed_columns": [
+      "name",
+      "is_graded",
+      "run_count",
+      "latest_cells_tested",
+      "latest_cells_passed",
+      "latest_harness_errors",
+      "latest_cells_failed",
+      "latest_score",
+      "disagreeing_field_count",
+      "disagreeing_table_count",
+      "is_fully_conformant"
+    ],
+    "record_count": 8
+  },
+  "conformance_runs": {
+    "primary_key": "conformance_run_id",
+    "computed_columns": [
+      "name",
+      "substrate_count",
+      "perfect_substrate_count",
+      "cells_tested",
+      "cells_passed",
+      "cells_failed",
+      "overall_score",
+      "imperfect_substrate_count",
+      "is_fully_conformant"
+    ],
+    "record_count": 3
+  },
+  "substrate_run_scores": {
+    "primary_key": "substrate_run_score_id",
+    "computed_columns": [
+      "name",
+      "cells_failed",
+      "score",
+      "calculated_score",
+      "lookup_score",
+      "aggregation_score",
+      "is_perfect",
+      "perfect_run_key",
+      "is_in_latest_run",
+      "latest_cells_tested",
+      "latest_cells_passed",
+      "latest_error_flag",
+      "substrate_label"
+    ],
+    "record_count": 21
+  },
+  "table_conformance": {
+    "primary_key": "table_conformance_id",
+    "computed_columns": [
+      "name",
+      "cells_failed",
+      "score",
+      "is_perfect",
+      "imperfect_substrate_key",
+      "imperfect_table_key",
+      "disagreeing_field_count",
+      "substrate_label",
+      "subject_area"
+    ],
+    "record_count": 623
+  },
+  "field_disagreements": {
+    "primary_key": "field_disagreement_id",
+    "computed_columns": [
+      "name",
+      "sampled_cell_count",
+      "is_fully_sampled",
+      "formula",
+      "substrate_label"
+    ],
+    "record_count": 49
+  },
+  "cell_disagreements": {
+    "primary_key": "cell_disagreement_id",
+    "computed_columns": [
+      "name",
+      "substrate",
+      "rulebook_field"
+    ],
+    "record_count": 316
   }
 }

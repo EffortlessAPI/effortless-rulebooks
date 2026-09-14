@@ -9,7 +9,7 @@
     "name": "Amina Yusuf",
     "agent_kind": "Human",
     "organization": "acme-people",
-    "assignment_count": 1,
+    "assignment_count": 1.0,
     "has_no_principal": false,
     "holds_multiple_principals": false,
     "is_non_human_sign_in": false
@@ -24,7 +24,7 @@
     "name": "Close Pipeline",
     "agent_kind": "AutomatedPipeline",
     "organization": "acme-finance",
-    "assignment_count": 1,
+    "assignment_count": 1.0,
     "has_no_principal": false,
     "holds_multiple_principals": false,
     "is_non_human_sign_in": true
@@ -39,7 +39,7 @@
     "name": "Devon Okafor",
     "agent_kind": "Human",
     "organization": "acme-finance",
-    "assignment_count": 1,
+    "assignment_count": 1.0,
     "has_no_principal": false,
     "holds_multiple_principals": false,
     "is_non_human_sign_in": false
@@ -54,7 +54,7 @@
     "name": "Elena Garcia",
     "agent_kind": "Human",
     "organization": "acme-people",
-    "assignment_count": 2,
+    "assignment_count": 2.0,
     "has_no_principal": false,
     "holds_multiple_principals": true,
     "is_non_human_sign_in": false
@@ -69,7 +69,7 @@
     "name": "Maria Chen",
     "agent_kind": "Human",
     "organization": "acme-finance",
-    "assignment_count": 1,
+    "assignment_count": 1.0,
     "has_no_principal": false,
     "holds_multiple_principals": false,
     "is_non_human_sign_in": false
@@ -84,7 +84,7 @@
     "name": "Noah Williams",
     "agent_kind": "Human",
     "organization": "acme-legal",
-    "assignment_count": 1,
+    "assignment_count": 1.0,
     "has_no_principal": false,
     "holds_multiple_principals": false,
     "is_non_human_sign_in": false
@@ -99,7 +99,7 @@
     "name": "Notification Pipeline",
     "agent_kind": "AutomatedPipeline",
     "organization": "acme-people",
-    "assignment_count": 1,
+    "assignment_count": 1.0,
     "has_no_principal": false,
     "holds_multiple_principals": false,
     "is_non_human_sign_in": true
@@ -114,7 +114,7 @@
     "name": "Policy Drafting Ai",
     "agent_kind": "AIAgent",
     "organization": "acme-people",
-    "assignment_count": 1,
+    "assignment_count": 1.0,
     "has_no_principal": false,
     "holds_multiple_principals": false,
     "is_non_human_sign_in": true
@@ -129,7 +129,7 @@
     "name": "Priya Raman",
     "agent_kind": "Human",
     "organization": "acme-finance",
-    "assignment_count": 2,
+    "assignment_count": 2.0,
     "has_no_principal": false,
     "holds_multiple_principals": true,
     "is_non_human_sign_in": false
@@ -144,7 +144,7 @@
     "name": "Variance Ai",
     "agent_kind": "AIAgent",
     "organization": "acme-finance",
-    "assignment_count": 1,
+    "assignment_count": 1.0,
     "has_no_principal": false,
     "holds_multiple_principals": false,
     "is_non_human_sign_in": true

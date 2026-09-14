@@ -43,5 +43,20 @@
     "derived_after": 1033,
     "witnessed_after": 900,
     "semantic_type_iri": "urn:effortless:pko-extension#WitnessLoop"
+  },
+  {
+    "witness_loop_id": "loop-04",
+    "name": "Loop 4: Structure the executions cannot show",
+    "loop_number": 4,
+    "title": "Structure the executions cannot show",
+    "premise": "Every witness in loops 1-3 reads either a single row or a single edge: whether this transition was traversed, whether this control was satisfied. The step graph itself is cyclic (Fallback and Alternative transitions send work back to earlier steps), and questions about its shape (which steps can be re-entered, which controls must hold on every pass) are reachability over paths of any length. Transitive closure is provably not expressible in first-order logic with aggregates, so no formula answers them. Loop 4 adds the closure of StepTransitions as a substrate-native closure field and asks the questions only it makes askable.",
+    "started_at": "2026-09-13T18:00:00-05:00",
+    "completed_at": null,
+    "question_count": 2,
+    "is_complete": false,
+    "fields_after": 1885,
+    "derived_after": 1091,
+    "witnessed_after": 953,
+    "semantic_type_iri": "urn:effortless:pko-extension#WitnessLoop"
   }
 ]

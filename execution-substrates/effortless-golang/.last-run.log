@@ -4,6 +4,8 @@ effortless-golang: Starting test...
   Module: /Users/eejai42/development/effortless-rulebooks/rulebook-examples/procedural-knowledge-ontology/effortless-golang
 effortless-golang: Compiling...
 effortless-golang: Running...
+  -> vw_step_transitions_closure: 80 pairs
+  -> vw_step_transitions_closure_where_avoids_human_approval_gate: 0 pairs
 Go substrate: dataset settled after 4 passes
   -> access_denial_tests: 17 records
   -> access_policies: 202 records
@@ -18,9 +20,12 @@ Go substrate: dataset settled after 4 passes
   -> app_routes: 149 records
   -> app_users: 10 records
   -> authority_boundaries: 3 records
+  -> cell_disagreements: 316 records
   -> change_requests: 2 records
   -> communication_policies: 2 records
   -> communities_of_practice: 2 records
+  -> conformance_runs: 3 records
+  -> conformance_substrates: 8 records
   -> delivered_communications: 1 records
   -> elicitation_sessions: 3 records
   -> errors: 2 records
@@ -29,6 +34,7 @@ Go substrate: dataset settled after 4 passes
   -> exceptions: 4 records
   -> explanations: 2 records
   -> fa_qs: 3 records
+  -> field_disagreements: 49 records
   -> field_grants: 3639 records
   -> functions: 8 records
   -> issue_occurrences: 2 records
@@ -60,11 +66,11 @@ Go substrate: dataset settled after 4 passes
   -> resources: 8 records
   -> review_events: 3 records
   -> role_assignments: 13 records
-  -> role_questions: 109 records
+  -> role_questions: 111 records
   -> role_schema_views: 202 records
   -> role_schemas: 12 records
   -> roles: 12 records
-  -> rulebook_fields: 1879 records
+  -> rulebook_fields: 1897 records
   -> rulebook_releases: 1 records
   -> rulebook_tables: 92 records
   -> semantic_mappings: 47 records
@@ -74,10 +80,12 @@ Go substrate: dataset settled after 4 passes
   -> step_functions: 8 records
   -> step_requirements: 15 records
   -> step_tools: 10 records
-  -> step_transitions: 19 records
+  -> step_transitions: 20 records
   -> step_verifications: 11 records
   -> steps: 17 records
   -> stewardship_assignments: 2 records
+  -> substrate_run_scores: 21 records
+  -> table_conformance: 623 records
   -> template_approvals: 2 records
   -> test_cases: 1794 records
   -> test_suites: 6 records
@@ -87,6 +95,6 @@ Go substrate: dataset settled after 4 passes
   -> verification_outcomes: 4 records
   -> vocabularies: 2 records
   -> vocabulary_terms: 12 records
-  -> witness_loops: 3 records
-Go substrate: wrote 9046 records across 83 tables to /Users/eejai42/development/effortless-rulebooks/rulebook-examples/procedural-knowledge-ontology/testing/effortless-golang/test-answers
+  -> witness_loops: 4 records
+Go substrate: wrote 10088 records across 89 tables to /Users/eejai42/development/effortless-rulebooks/rulebook-examples/procedural-knowledge-ontology/testing/effortless-golang/test-answers
 

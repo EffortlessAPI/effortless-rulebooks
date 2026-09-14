@@ -68,7 +68,8 @@ other regardless of git. So:
    on a relationship column.
 3. **Multi-criteria `COUNTIFS` silently drops the 2nd+ criteria.** Use the
    composite-key echo: `IF(cond, {{ParentFk}}, "")` on the child, then a
-   single-criterion COUNTIFS against that column.
+   single-criterion COUNTIFS against that column. *(Retired 2026-09-14: a
+   multi-criteria shape probe found every substrate correct; see CLAUDE.md.)*
 4. `INDEX/MATCH` only matches the target table's primary key.
 
 The lesson generalizes: **a green build is not evidence that a formula ran.**

@@ -40,7 +40,7 @@
     "count_of_review_events": 0,
     "has_governance_record": false,
     "as_of_instant": "2026-07-19T13:00:00-05:00",
-    "days_since_modified": 109,
+    "days_since_modified": 110,
     "modifier_is_authority": "Human",
     "has_unwitnessed_change": false,
     "count_of_stale_fragments": 7,
@@ -85,7 +85,8 @@
     "was_modified_since_last_review": false,
     "mining_run_count": 1,
     "drifted_mining_run_count": 0,
-    "has_unresolved_mining_drift": false
+    "has_unresolved_mining_drift": false,
+    "entry_step_id": null
   },
   {
     "procedure_version_id": "close-v1.1.0",
@@ -128,11 +129,11 @@
     "count_of_review_events": 2,
     "has_governance_record": true,
     "as_of_instant": "2026-07-19T13:00:00-05:00",
-    "days_since_modified": 16,
+    "days_since_modified": 17,
     "days_since_last_review": 17,
-    "was_modified_since_last_review": true,
+    "was_modified_since_last_review": false,
     "modifier_is_authority": "Human",
-    "has_unwitnessed_change": true,
+    "has_unwitnessed_change": false,
     "count_of_stale_fragments": 7,
     "knowledge_is_staler_than_cadence": true,
     "compound_fragile_fragment_count": 1,
@@ -173,7 +174,8 @@
     "unwatched_unowned_control_count": 9,
     "mining_run_count": 2,
     "drifted_mining_run_count": 1,
-    "has_unresolved_mining_drift": true
+    "has_unresolved_mining_drift": true,
+    "entry_step_id": "close-01"
   },
   {
     "procedure_version_id": "policy-v1.0.0",
@@ -216,11 +218,11 @@
     "count_of_review_events": 1,
     "has_governance_record": true,
     "as_of_instant": "2026-07-19T13:00:00-05:00",
-    "days_since_modified": 0,
+    "days_since_modified": 1,
     "days_since_last_review": 1,
-    "was_modified_since_last_review": true,
+    "was_modified_since_last_review": false,
     "modifier_is_authority": "Human",
-    "has_unwitnessed_change": true,
+    "has_unwitnessed_change": false,
     "count_of_stale_fragments": 7,
     "knowledge_is_staler_than_cadence": true,
     "compound_fragile_fragment_count": 0,
@@ -261,6 +263,7 @@
     "unwatched_unowned_control_count": 9,
     "mining_run_count": 1,
     "drifted_mining_run_count": 0,
-    "has_unresolved_mining_drift": false
+    "has_unresolved_mining_drift": false,
+    "entry_step_id": "policy-01"
   }
 ]

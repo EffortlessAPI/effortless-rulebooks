@@ -15,7 +15,7 @@
     "acknowledged_at": "2026-07-18T15:20:00-05:00",
     "semantic_type_iri": "urn:effortless:pko-extension#MessageDelivery",
     "evaluation_context": "eval-current",
-    "name": "rec-001 / tmpl-policy-email / 2026-07-18 14:05:00-05",
+    "name": "rec-001 / tmpl-policy-email / 2026-07-18T19:05:00+00:00",
     "policy_channel": "comm-email-policy",
     "channel_name": "Email",
     "policy_requires_consent": false,
@@ -83,12 +83,12 @@
     "is_exhausted_follow_up": false,
     "needs_human_escalation": false,
     "invoked_exception_condition": null,
-    "has_unreachable_exception_invoked": null,
+    "has_unreachable_exception_invoked": false,
     "policy_required_opt_out_phrase": null,
     "opt_out_phrase_position": null,
-    "has_opt_out_phrase": null,
-    "is_opt_out_in_first_segment": null,
-    "has_sent_reminder": null
+    "has_opt_out_phrase": false,
+    "is_opt_out_in_first_segment": false,
+    "has_sent_reminder": false
   },
   {
     "message_delivery_id": "md-002",
@@ -106,7 +106,7 @@
     "acknowledged_at": null,
     "semantic_type_iri": "urn:effortless:pko-extension#MessageDelivery",
     "evaluation_context": "eval-current",
-    "name": "rec-002 / tmpl-policy-email / 2026-07-18 14:05:00-05",
+    "name": "rec-002 / tmpl-policy-email / 2026-07-18T19:05:00+00:00",
     "policy_channel": "comm-email-policy",
     "channel_name": "Email",
     "policy_requires_consent": false,
@@ -172,14 +172,14 @@
     "outstanding_age_days": 1,
     "is_unchased_acknowledgement": false,
     "invoked_exception_condition": null,
-    "has_unreachable_exception_invoked": null,
+    "has_unreachable_exception_invoked": false,
     "policy_required_opt_out_phrase": null,
     "opt_out_phrase_position": null,
-    "has_opt_out_phrase": null,
-    "is_opt_out_in_first_segment": null,
-    "has_sent_reminder": null,
-    "is_exhausted_follow_up": null,
-    "needs_human_escalation": null
+    "has_opt_out_phrase": false,
+    "is_opt_out_in_first_segment": false,
+    "has_sent_reminder": false,
+    "is_exhausted_follow_up": false,
+    "needs_human_escalation": false
   },
   {
     "message_delivery_id": "md-003",
@@ -197,7 +197,7 @@
     "acknowledged_at": null,
     "semantic_type_iri": "urn:effortless:pko-extension#MessageDelivery",
     "evaluation_context": "eval-current",
-    "name": "rec-003 / tmpl-policy-sms / 2026-07-18 14:06:00-05",
+    "name": "rec-003 / tmpl-policy-sms / 2026-07-18T19:06:00+00:00",
     "policy_channel": "comm-sms-policy",
     "channel_name": "SMS",
     "policy_requires_consent": true,
@@ -268,9 +268,9 @@
     "acknowledgement_is_outstanding": true,
     "outstanding_age_days": 1,
     "is_unchased_acknowledgement": false,
-    "has_sent_reminder": null,
-    "is_exhausted_follow_up": null,
-    "needs_human_escalation": null
+    "has_sent_reminder": false,
+    "is_exhausted_follow_up": false,
+    "needs_human_escalation": false
   },
   {
     "message_delivery_id": "md-004",
@@ -288,7 +288,7 @@
     "acknowledged_at": null,
     "semantic_type_iri": "urn:effortless:pko-extension#MessageDelivery",
     "evaluation_context": "eval-current",
-    "name": "rec-004 / tmpl-policy-sms / 2026-07-18 14:06:00-05",
+    "name": "rec-004 / tmpl-policy-sms / 2026-07-18T19:06:00+00:00",
     "policy_channel": "comm-sms-policy",
     "channel_name": "SMS",
     "policy_requires_consent": true,
@@ -361,7 +361,7 @@
     "is_unchased_acknowledgement": false,
     "is_exhausted_follow_up": false,
     "needs_human_escalation": false,
-    "has_sent_reminder": null
+    "has_sent_reminder": false
   },
   {
     "message_delivery_id": "md-005",
@@ -379,7 +379,7 @@
     "acknowledged_at": null,
     "semantic_type_iri": "urn:effortless:pko-extension#MessageDelivery",
     "evaluation_context": "eval-current",
-    "name": "rec-001 / tmpl-policy-sms / 2026-07-18 21:00:00-05",
+    "name": "rec-001 / tmpl-policy-sms / 2026-07-19T02:00:00+00:00",
     "policy_channel": "comm-sms-policy",
     "channel_name": "SMS",
     "policy_requires_consent": true,
@@ -401,7 +401,7 @@
     "unreachable_failure_key": null,
     "policy_retention_days": 2555,
     "as_of_instant": "2026-07-19T13:00:00-05:00",
-    "age_days": 1,
+    "age_days": 0,
     "is_within_retention_window": true,
     "has_rendered_body": true,
     "is_evidence_required": true,
@@ -446,13 +446,13 @@
     "template_reapproved_since_send": true,
     "is_unprovable_approval_claim": true,
     "acknowledgement_is_outstanding": true,
-    "outstanding_age_days": 1,
+    "outstanding_age_days": 0,
     "is_unchased_acknowledgement": false,
     "invoked_exception_condition": null,
-    "has_unreachable_exception_invoked": null,
-    "has_sent_reminder": null,
-    "is_exhausted_follow_up": null,
-    "needs_human_escalation": null
+    "has_unreachable_exception_invoked": false,
+    "has_sent_reminder": false,
+    "is_exhausted_follow_up": false,
+    "needs_human_escalation": false
   },
   {
     "message_delivery_id": "md-006",
@@ -470,7 +470,7 @@
     "acknowledged_at": null,
     "semantic_type_iri": "urn:effortless:pko-extension#MessageDelivery",
     "evaluation_context": "eval-current",
-    "name": "rec-005 / tmpl-policy-sms / 2026-07-18 14:06:00-05",
+    "name": "rec-005 / tmpl-policy-sms / 2026-07-18T19:06:00+00:00",
     "policy_channel": "comm-sms-policy",
     "channel_name": "SMS",
     "policy_requires_consent": true,
@@ -543,6 +543,6 @@
     "is_unchased_acknowledgement": false,
     "is_exhausted_follow_up": false,
     "needs_human_escalation": false,
-    "has_sent_reminder": null
+    "has_sent_reminder": false
   }
 ]

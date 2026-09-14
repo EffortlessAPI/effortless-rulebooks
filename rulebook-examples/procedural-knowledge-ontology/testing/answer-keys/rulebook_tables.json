@@ -11,7 +11,7 @@
     "field_count": 18,
     "policy_count": 0,
     "is_unsecured": true,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 1
   },
   {
     "rulebook_table_id": "AccessPolicies",
@@ -39,7 +39,7 @@
     "field_count": 15,
     "policy_count": 0,
     "is_unsecured": true,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 0.0
   },
   {
     "rulebook_table_id": "Actions",
@@ -67,7 +67,7 @@
     "field_count": 40,
     "policy_count": 2,
     "is_unsecured": false,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 1.0
   },
   {
     "rulebook_table_id": "Agents",
@@ -109,7 +109,7 @@
     "field_count": 12,
     "policy_count": 2,
     "is_unsecured": false,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 1
   },
   {
     "rulebook_table_id": "AppRouteQuestions",
@@ -179,7 +179,7 @@
     "field_count": 33,
     "policy_count": 4,
     "is_unsecured": false,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 0.0
   },
   {
     "rulebook_table_id": "BindingObservations",
@@ -207,7 +207,7 @@
     "field_count": 10,
     "policy_count": 0,
     "is_unsecured": true,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 1
   },
   {
     "rulebook_table_id": "ChangeRequests",
@@ -221,7 +221,7 @@
     "field_count": 45,
     "policy_count": 6,
     "is_unsecured": false,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 0.0
   },
   {
     "rulebook_table_id": "CommunicationPolicies",
@@ -291,7 +291,7 @@
     "field_count": 18,
     "policy_count": 2,
     "is_unsecured": false,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 1.0
   },
   {
     "rulebook_table_id": "ERBCustomizations",
@@ -333,7 +333,7 @@
     "field_count": 21,
     "policy_count": 2,
     "is_unsecured": false,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 0.0
   },
   {
     "rulebook_table_id": "Errors",
@@ -361,7 +361,7 @@
     "field_count": 7,
     "policy_count": 2,
     "is_unsecured": false,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 0.0
   },
   {
     "rulebook_table_id": "ExceptionInvocations",
@@ -417,7 +417,7 @@
     "field_count": 9,
     "policy_count": 0,
     "is_unsecured": true,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 1
   },
   {
     "rulebook_table_id": "FieldDisagreements",
@@ -431,7 +431,7 @@
     "field_count": 13,
     "policy_count": 0,
     "is_unsecured": true,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 0.0
   },
   {
     "rulebook_table_id": "FieldGrants",
@@ -445,7 +445,7 @@
     "field_count": 14,
     "policy_count": 0,
     "is_unsecured": true,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 0.0
   },
   {
     "rulebook_table_id": "Functions",
@@ -473,7 +473,7 @@
     "field_count": 12,
     "policy_count": 2,
     "is_unsecured": false,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 0.0
   },
   {
     "rulebook_table_id": "JwtClaimMappings",
@@ -501,7 +501,7 @@
     "field_count": 16,
     "policy_count": 2,
     "is_unsecured": false,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 0.0
   },
   {
     "rulebook_table_id": "KnowledgeFragments",
@@ -515,7 +515,7 @@
     "field_count": 80,
     "policy_count": 6,
     "is_unsecured": false,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 1.0
   },
   {
     "rulebook_table_id": "KnowledgeGaps",
@@ -529,7 +529,7 @@
     "field_count": 28,
     "policy_count": 4,
     "is_unsecured": false,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 0.0
   },
   {
     "rulebook_table_id": "LearningActivities",
@@ -543,7 +543,7 @@
     "field_count": 10,
     "policy_count": 2,
     "is_unsecured": false,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 0.0
   },
   {
     "rulebook_table_id": "Mentorships",
@@ -571,7 +571,7 @@
     "field_count": 94,
     "policy_count": 4,
     "is_unsecured": false,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 1.0
   },
   {
     "rulebook_table_id": "MessageTemplates",
@@ -585,7 +585,7 @@
     "field_count": 26,
     "policy_count": 5,
     "is_unsecured": false,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 0.0
   },
   {
     "rulebook_table_id": "ObservedTransitions",
@@ -599,7 +599,7 @@
     "field_count": 8,
     "policy_count": 2,
     "is_unsecured": false,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 0.0
   },
   {
     "rulebook_table_id": "OntologyProfiles",
@@ -627,7 +627,7 @@
     "field_count": 22,
     "policy_count": 2,
     "is_unsecured": false,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 0.0
   },
   {
     "rulebook_table_id": "Organizations",
@@ -655,7 +655,7 @@
     "field_count": 78,
     "policy_count": 5,
     "is_unsecured": false,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 1.0
   },
   {
     "rulebook_table_id": "ProcedureResources",
@@ -711,7 +711,7 @@
     "field_count": 7,
     "policy_count": 2,
     "is_unsecured": false,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 1
   },
   {
     "rulebook_table_id": "ProcedureVersions",
@@ -722,10 +722,10 @@
     "is_extension": false,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable",
     "name": "ProcedureVersions",
-    "field_count": 86,
+    "field_count": 87.0,
     "policy_count": 4,
     "is_unsecured": false,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 2.0
   },
   {
     "rulebook_table_id": "Procedures",
@@ -753,7 +753,7 @@
     "field_count": 19,
     "policy_count": 2,
     "is_unsecured": false,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 0.0
   },
   {
     "rulebook_table_id": "Rationales",
@@ -795,7 +795,7 @@
     "field_count": 46,
     "policy_count": 4,
     "is_unsecured": false,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 1
   },
   {
     "rulebook_table_id": "Requirements",
@@ -809,7 +809,7 @@
     "field_count": 43,
     "policy_count": 5,
     "is_unsecured": false,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 0.0
   },
   {
     "rulebook_table_id": "Resources",
@@ -837,7 +837,7 @@
     "field_count": 20,
     "policy_count": 2,
     "is_unsecured": false,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 0.0
   },
   {
     "rulebook_table_id": "RoleAssignments",
@@ -851,7 +851,7 @@
     "field_count": 65,
     "policy_count": 2,
     "is_unsecured": false,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 1.0
   },
   {
     "rulebook_table_id": "RoleQuestions",
@@ -865,7 +865,7 @@
     "field_count": 11,
     "policy_count": 2,
     "is_unsecured": false,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 0.0
   },
   {
     "rulebook_table_id": "RoleSchemaViews",
@@ -879,7 +879,7 @@
     "field_count": 14,
     "policy_count": 0,
     "is_unsecured": true,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 0.0
   },
   {
     "rulebook_table_id": "RoleSchemas",
@@ -907,7 +907,7 @@
     "field_count": 24,
     "policy_count": 2,
     "is_unsecured": false,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 0.0
   },
   {
     "rulebook_table_id": "RulebookFields",
@@ -935,7 +935,7 @@
     "field_count": 11,
     "policy_count": 2,
     "is_unsecured": false,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 1
   },
   {
     "rulebook_table_id": "RulebookTables",
@@ -949,7 +949,7 @@
     "field_count": 12,
     "policy_count": 0,
     "is_unsecured": true,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 0.0
   },
   {
     "rulebook_table_id": "SemanticMappings",
@@ -977,7 +977,7 @@
     "field_count": 100,
     "policy_count": 4,
     "is_unsecured": false,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 0.0
   },
   {
     "rulebook_table_id": "StepActions",
@@ -1005,7 +1005,7 @@
     "field_count": 109,
     "policy_count": 6,
     "is_unsecured": false,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 0.0
   },
   {
     "rulebook_table_id": "StepFunctions",
@@ -1058,10 +1058,10 @@
     "is_extension": false,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable",
     "name": "StepTransitions",
-    "field_count": 23,
+    "field_count": 28.0,
     "policy_count": 2,
     "is_unsecured": false,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 1
   },
   {
     "rulebook_table_id": "StepVerifications",
@@ -1086,10 +1086,10 @@
     "is_extension": false,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable",
     "name": "Steps",
-    "field_count": 42,
+    "field_count": 54.0,
     "policy_count": 10,
     "is_unsecured": false,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 2.0
   },
   {
     "rulebook_table_id": "StewardshipAssignments",
@@ -1103,7 +1103,7 @@
     "field_count": 14,
     "policy_count": 2,
     "is_unsecured": false,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 0.0
   },
   {
     "rulebook_table_id": "SubstrateRunScores",
@@ -1131,7 +1131,7 @@
     "field_count": 19,
     "policy_count": 0,
     "is_unsecured": true,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 0.0
   },
   {
     "rulebook_table_id": "TemplateApprovals",
@@ -1145,7 +1145,7 @@
     "field_count": 15,
     "policy_count": 2,
     "is_unsecured": false,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 0.0
   },
   {
     "rulebook_table_id": "TestCases",
@@ -1173,7 +1173,7 @@
     "field_count": 8,
     "policy_count": 2,
     "is_unsecured": false,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 0.0
   },
   {
     "rulebook_table_id": "Tools",

@@ -1,7 +1,7 @@
 [
   {
     "template_approval_id": "tap-email-001",
-    "name": "tmpl-policy-email / Approved / 2026-07-17 11:00:00-05",
+    "name": "tmpl-policy-email / Approved / 2026-07-17T16:00:00+00:00",
     "message_template": "tmpl-policy-email",
     "decided_by_agent": "amina-yusuf",
     "decided_in_role": "communications-manager",
@@ -18,7 +18,7 @@
   },
   {
     "template_approval_id": "tap-sms-001",
-    "name": "tmpl-policy-sms / Approved / 2026-07-19 10:00:00-05",
+    "name": "tmpl-policy-sms / Approved / 2026-07-19T15:00:00+00:00",
     "message_template": "tmpl-policy-sms",
     "decided_by_agent": "amina-yusuf",
     "decided_in_role": "communications-manager",

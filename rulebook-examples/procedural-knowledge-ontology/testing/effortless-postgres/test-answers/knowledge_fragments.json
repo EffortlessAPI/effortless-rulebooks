@@ -193,7 +193,7 @@
     "is_unapproved_but_relied_on": false,
     "evidence_age_days": null,
     "has_recorded_elicitation": false,
-    "is_from_single_witness": null,
+    "is_from_single_witness": false,
     "evidence_expiry_days": 365,
     "evidence_has_expired": false,
     "owner_agent": "devon-okafor",

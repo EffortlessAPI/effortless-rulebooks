@@ -822,6 +822,7 @@ const TAB_TABLES = {
   evidence: ["requirement_satisfactions", "requirements"],
   mappings: ["semantic_mappings"],
   comms: ["send_intents", "message_deliveries"],
+  drift: ["process_mining_runs"],
 };
 
 // Who am I, and what can I reach? Answered by querying the database AS the

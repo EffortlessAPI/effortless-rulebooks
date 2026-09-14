@@ -15,9 +15,9 @@
     "is_overdue": true,
     "overdue_version_key": "close-v1.1.0",
     "promised_cadence_days": 90,
-    "days_since_reviewed": 120,
+    "days_since_reviewed": 121,
     "exceeds_promised_cadence": true,
-    "cadence_drift_days": 30.0,
+    "cadence_drift_days": 31,
     "promise_and_behavior_disagree": false,
     "cadence_breach_version_key": "close-v1.1.0"
   },
@@ -37,9 +37,9 @@
     "is_overdue": false,
     "overdue_version_key": null,
     "promised_cadence_days": 90,
-    "days_since_reviewed": 16,
+    "days_since_reviewed": 17,
     "exceeds_promised_cadence": false,
-    "cadence_drift_days": -74.0,
+    "cadence_drift_days": -73,
     "promise_and_behavior_disagree": false,
     "cadence_breach_version_key": null
   },
@@ -59,9 +59,9 @@
     "is_overdue": false,
     "overdue_version_key": null,
     "promised_cadence_days": 60,
-    "days_since_reviewed": 0,
+    "days_since_reviewed": 1,
     "exceeds_promised_cadence": false,
-    "cadence_drift_days": -60.0,
+    "cadence_drift_days": -59,
     "promise_and_behavior_disagree": false,
     "cadence_breach_version_key": null
   }

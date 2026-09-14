@@ -11,9 +11,14 @@ compiled into erb_sdk.py by rulebook-to-python; everything it reads is the
 dataset under $ERB_TESTING_DIR/blank-tests. Cross-table values come from this
 run's own rows, never from another substrate's answers.
 
-SEMANTICS are the Postgres oracle's: NULL propagates through comparisons and
-AND/OR/NOT, a raw text column reads through NULLIF(x, ''), DATETIME_DIFF counts
-calendar days, CONCAT renders a datetime as timestamptz text. erb_runtime.go and
+SEMANTICS are the ERB build parameters' (docs/ERB-BUILD-PARAMETERS.md in
+Versioned-Stable-SSoTme-Tools): erb_sdk.py calls configure() with the set it
+was generated under, and every helper below reads that set — how a blank
+behaves in a predicate (erbBlankLogic), how DATETIME_DIFF counts
+(erbDateDiff), the zone calendar dates live in (erbTimezone), how a datetime
+renders inside text (erbDateTimeText) and whether a whole value is an integer
+(erbWholeNumber). Independent of those: a raw text column reads through
+NULLIF(x, ''), a blank is 0 in arithmetic and '' in CONCAT. erb_runtime.go and
 erb_runtime.ts are line-for-line counterparts; when a rule changes here it
 changes there.
 """
@@ -26,6 +31,70 @@ import re
 import sys
 from decimal import Decimal, ROUND_CEILING, ROUND_HALF_UP
 from pathlib import Path
+
+
+# =============================================================================
+# BUILD PARAMETERS — erb_sdk.py calls configure() before anything else runs
+# =============================================================================
+
+_PARAMETER_VALUES = {
+    'erbDateDiff': ('calendar', 'elapsed'),
+    'erbTimezone': ('UTC',),          # or any IANA zone name
+    'erbDateTimeText': ('iso8601', 'sql'),
+    'erbBlankLogic': ('coerce', 'propagate'),
+    'erbWholeNumber': ('by-field-type', 'integer', 'decimal'),
+}
+
+_PARAMS = None
+_ZONE = None
+
+
+def configure(params):
+    """Install the build parameters the SDK was generated with. Every name must
+    be known and every value allowed; the zone must resolve. Called once, at
+    the top of the generated erb_sdk.py."""
+    global _PARAMS, _ZONE
+    unknown = sorted(set(params) - set(_PARAMETER_VALUES))
+    missing = sorted(set(_PARAMETER_VALUES) - set(params))
+    if unknown or missing:
+        raise ValueError(
+            f"erb_runtime.configure: unknown parameters {unknown}, missing {missing}; "
+            f"the contract defines {sorted(_PARAMETER_VALUES)}")
+    for name, allowed in _PARAMETER_VALUES.items():
+        if name != 'erbTimezone' and params[name] not in allowed:
+            raise ValueError(
+                f"erb_runtime.configure: {name}={params[name]!r} is not one of {list(allowed)}")
+    zone_name = params['erbTimezone']
+    if zone_name == 'UTC':
+        zone = datetime.timezone.utc
+    else:
+        import zoneinfo
+        try:
+            zone = zoneinfo.ZoneInfo(zone_name)
+        except Exception as exc:
+            raise ValueError(
+                f"erb_runtime.configure: erbTimezone={zone_name!r} cannot be resolved "
+                f"on this machine ({exc}); install tzdata or use UTC") from exc
+    _PARAMS = dict(params)
+    _ZONE = zone
+
+
+def _p(name):
+    if _PARAMS is None:
+        raise RuntimeError(
+            "erb_runtime is not configured: erb_sdk.py must call erb_runtime.configure() "
+            "with the ERB build parameters before any formula runs")
+    return _PARAMS[name]
+
+
+def _zone():
+    _p('erbTimezone')
+    return _ZONE
+
+
+def parameters():
+    """The configured set, for anything that records provenance."""
+    return dict(_PARAMS) if _PARAMS is not None else None
 
 
 # =============================================================================
@@ -81,27 +150,35 @@ def erb_bool3(value):
     return False
 
 
+def _coerce_blanks():
+    return _p('erbBlankLogic') == 'coerce'
+
+
 def erb_and(*values):
-    """SQL AND: FALSE if any operand is FALSE, else NULL if any is NULL, else TRUE."""
+    """AND over three-valued operands. erbBlankLogic=coerce: a blank is FALSE.
+    propagate: FALSE if any operand is FALSE, else NULL if any is NULL, else TRUE."""
     if any(v is False for v in values):
         return False
     if any(v is None for v in values):
-        return None
+        return False if _coerce_blanks() else None
     return True
 
 
 def erb_or(*values):
-    """SQL OR: TRUE if any operand is TRUE, else NULL if any is NULL, else FALSE."""
+    """OR over three-valued operands. erbBlankLogic=coerce: a blank is FALSE.
+    propagate: TRUE if any operand is TRUE, else NULL if any is NULL, else FALSE."""
     if any(v is True for v in values):
         return True
     if any(v is None for v in values):
-        return None
+        return False if _coerce_blanks() else None
     return False
 
 
 def erb_not(value):
-    """SQL NOT: NOT NULL is NULL."""
-    return None if value is None else (not value)
+    """NOT. erbBlankLogic=coerce: NOT(blank) is TRUE. propagate: NOT NULL is NULL."""
+    if value is None:
+        return True if _coerce_blanks() else None
+    return not value
 
 
 def erb_nullif(value):
@@ -114,26 +191,55 @@ def erb_blank(value) -> bool:
     return value is None or value == ''
 
 
-def erb_eq(a, b):
-    """SQL `=`: NULL when either side is NULL."""
+def _blank_as_zero_of(other):
+    """erbBlankLogic=coerce: a blank compared against `other` takes the other
+    side's zero — 0 against a number, FALSE against a boolean, '' otherwise."""
+    if isinstance(other, bool):
+        return False
+    if _to_number(other) is not None:
+        return 0
+    return ''
+
+
+def _coerced_pair(a, b):
+    """(a, b) with a blank side replaced by the other side's zero, or None when
+    the blank must propagate. Two blanks coerce to ('', '')."""
+    if a is None and b is None:
+        return ('', '') if _coerce_blanks() else None
     if a is None or b is None:
+        if not _coerce_blanks():
+            return None
+        return (_blank_as_zero_of(b), b) if a is None else (a, _blank_as_zero_of(a))
+    return a, b
+
+
+def erb_eq(a, b):
+    """`=`. coerce: a blank equals '', 0, FALSE and another blank. propagate: NULL
+    when either side is NULL."""
+    pair = _coerced_pair(a, b)
+    if pair is None:
         return None
+    a, b = pair
+    ordered = _compare_operands(a, b)
+    if ordered is not None:
+        return ordered[0] == ordered[1]
     return a == b
 
 
 def erb_ne(a, b):
-    """SQL `<>`: NULL when either side is NULL."""
-    if a is None or b is None:
-        return None
-    return a != b
+    """`<>`: the negation of erb_eq, NULL when that is NULL."""
+    equal = erb_eq(a, b)
+    return None if equal is None else (not equal)
 
 
 def erb_cmp(a, op, b):
     """Ordered comparison: numbers and numeric strings as numbers, two strings as
-    strings; a NULL operand makes it NULL, and operands that cannot be ordered
-    compare FALSE."""
-    if a is None or b is None:
+    strings; operands that cannot be ordered compare FALSE. A blank operand is
+    NULL under propagate and the other side's zero under coerce."""
+    pair = _coerced_pair(a, b)
+    if pair is None:
         return None
+    a, b = pair
     pair = _compare_operands(a, b)
     if pair is None:
         return False
@@ -173,7 +279,7 @@ def erb_roundup(value, digits=0):
 
 
 def erb_integer(value):
-    """The oracle's ::integer cast on a field declared integer: half away from zero."""
+    """A value on a field declared integer: half away from zero, as ::integer casts."""
     if value is None or isinstance(value, bool):
         return value
     number = _to_number(value)
@@ -182,27 +288,105 @@ def erb_integer(value):
     return int(Decimal(str(number)).quantize(Decimal(1), rounding=ROUND_HALF_UP))
 
 
-def erb_timestamptz_text(value):
-    """A datetime inside CONCAT, as the oracle renders a timestamptz:
-    `2026-01-01 00:00:00-06`. NULL renders as ''."""
+def erb_number(value, datatype):
+    """Type a computed numeric value for output per erbWholeNumber. by-field-type:
+    an `integer` field holds an int, a `number`/`decimal` field a float (so a
+    whole value serializes as 2.0). integer: any whole value is an int. decimal:
+    every numeric value is a float. Non-numeric values pass through."""
+    if value is None or isinstance(value, bool):
+        return value
+    number = _to_number(value) if isinstance(value, str) else value
+    if not isinstance(number, (int, float)):
+        return value
+    mode = _p('erbWholeNumber')
+    if mode == 'decimal':
+        return float(number)
+    if mode == 'integer':
+        return int(number) if float(number).is_integer() else float(number)
+    kind = (datatype or '').lower()
+    if kind in ('integer', 'int', 'long', 'bigint'):
+        return erb_integer(number)
+    if kind in ('number', 'decimal', 'numeric', 'float', 'double', 'currency', 'percent', 'percentage'):
+        return float(number)
+    return value
+
+
+def erb_text(value):
+    """A non-datetime CONCAT / `&` operand as text: a blank contributes nothing, a
+    number renders in its shortest exact form with no trailing .0 (2, 2.5), a
+    boolean as true/false."""
     if value is None or value == '':
         return ''
+    if isinstance(value, bool):
+        return 'true' if value else 'false'
+    if isinstance(value, float):
+        if value.is_integer():
+            return str(int(value))
+        return repr(value)
+    if isinstance(value, (datetime.datetime, datetime.date)):
+        return erb_datetime_text(value)
+    return str(value)
+
+
+def _as_datetime(value):
+    """A timezone-aware datetime for a datetime, a date, or ISO-8601 text; a value
+    with no offset is taken to be in erbTimezone."""
     if isinstance(value, datetime.datetime):
         dt = value
+    elif isinstance(value, datetime.date):
+        dt = datetime.datetime.combine(value, datetime.time())
+    elif isinstance(value, str):
+        text = value.strip().replace('Z', '+00:00')
+        try:
+            dt = datetime.datetime.fromisoformat(text)
+        except ValueError:
+            dt = datetime.datetime.strptime(text[:10], '%Y-%m-%d')
     else:
-        dt = datetime.datetime.fromisoformat(str(value).replace('Z', '+00:00'))
+        raise TypeError(f"cannot read {value!r} as a datetime")
     if dt.tzinfo is None:
-        raise ValueError(
-            f"datetime {value!r} carries no UTC offset, so its timestamptz text "
-            f"depends on the database session's time zone and cannot be rendered")
-    text = dt.strftime('%Y-%m-%d %H:%M:%S')
+        dt = dt.replace(tzinfo=_zone())
+    return dt
+
+
+def _in_zone(value):
+    """The instant `value` names, expressed in erbTimezone."""
+    return _as_datetime(value).astimezone(_zone())
+
+
+def _is_date_only(value):
+    return isinstance(value, datetime.date) and not isinstance(value, datetime.datetime) \
+        or (isinstance(value, str) and re.fullmatch(r'\d{4}-\d{2}-\d{2}', value.strip() or 'x') is not None)
+
+
+def erb_datetime_text(value):
+    """A datetime rendered into text per erbDateTimeText, in erbTimezone:
+    iso8601 = 2026-04-03T14:00:00+00:00, sql = 2026-04-03 14:00:00+00. A
+    date-only value renders as YYYY-MM-DD; a blank as ''."""
+    if value is None or value == '':
+        return ''
+    if _is_date_only(value):
+        return str(value).strip()[:10] if isinstance(value, str) else value.isoformat()
+    dt = _in_zone(value)
+    style = _p('erbDateTimeText')
+    text = dt.strftime('%Y-%m-%dT%H:%M:%S' if style == 'iso8601' else '%Y-%m-%d %H:%M:%S')
     if dt.microsecond:
         text += ('.%06d' % dt.microsecond).rstrip('0')
     offset_minutes = int(dt.utcoffset().total_seconds() // 60)
     sign = '-' if offset_minutes < 0 else '+'
     hours, minutes = divmod(abs(offset_minutes), 60)
-    text += f'{sign}{hours:02d}' + (f':{minutes:02d}' if minutes else '')
+    if style == 'iso8601':
+        text += f'{sign}{hours:02d}:{minutes:02d}'
+    else:
+        text += f'{sign}{hours:02d}' + (f':{minutes:02d}' if minutes else '')
     return text
+
+
+def erb_json_value(value):
+    """A computed value as it is written into JSON: a datetime per erbDateTimeText;
+    anything json.dump cannot write is an error, not a str() guess."""
+    if isinstance(value, (datetime.datetime, datetime.date)):
+        return erb_datetime_text(value)
+    raise TypeError(f"a computed value of type {type(value).__name__} cannot be written as JSON: {value!r}")
 
 
 def erb_date_or_none(value):
@@ -304,55 +488,54 @@ def erb_is_error(fn) -> bool:
 
 
 def erb_now():
-    """NOW()/TODAY(). FORMULA_NOW (ISO-8601) pins the clock; without it, realtime."""
+    """NOW()/TODAY(), an aware datetime in erbTimezone. FORMULA_NOW (ISO-8601)
+    pins the clock; without it, realtime."""
     override = os.environ.get('FORMULA_NOW')
     if override:
-        return datetime.datetime.fromisoformat(override)
-    return datetime.datetime.utcnow()
+        return _in_zone(override)
+    return datetime.datetime.now(datetime.timezone.utc).astimezone(_zone())
+
+
+def _trunc(quotient):
+    """Integer division truncated toward zero, as SQL and Go integer division are."""
+    return int(quotient) if quotient >= 0 else -int(-quotient)
 
 
 def erb_datetime_diff(end, start, unit='day'):
-    """Whole elapsed `unit`s between two datetimes, positive when end > start.
-    Days are calendar days; months and years follow Postgres AGE()."""
+    """DATETIME_DIFF(end, start, unit), positive when end is after start, per
+    erbDateDiff. hour/minute/second are exact elapsed (possibly fractional) in
+    both modes; month/year are whole calendar months (Postgres AGE()) in both.
+    calendar: day = calendar dates in erbTimezone subtracted, week = day/7
+    truncated. elapsed: day = seconds/86400 truncated, week = seconds/604800
+    truncated."""
     unit = str(unit or 'day').lower().rstrip('s')
-    if end is None or start is None:
+    if end is None or start is None or end == '' or start == '':
         return None
+    end_dt = _in_zone(end)
+    start_dt = _in_zone(start)
+    seconds = (end_dt - start_dt).total_seconds()
+    calendar = _p('erbDateDiff') == 'calendar'
 
-    def _coerce(d):
-        if isinstance(d, (datetime.datetime, datetime.date)):
-            return d if isinstance(d, datetime.datetime) else \
-                datetime.datetime.combine(d, datetime.time())
-        if isinstance(d, str):
-            try:
-                return datetime.datetime.fromisoformat(d.replace('Z', '+00:00'))
-            except ValueError:
-                return datetime.datetime.strptime(d, '%Y-%m-%d')
-        raise TypeError(f"DATETIME_DIFF: cannot coerce {d!r} to datetime")
-
-    end_dt = _coerce(end)
-    start_dt = _coerce(start)
-    if end_dt.tzinfo is not None:
-        end_dt = end_dt.replace(tzinfo=None)
-    if start_dt.tzinfo is not None:
-        start_dt = start_dt.replace(tzinfo=None)
-
-    delta = end_dt - start_dt
-    if unit == 'day':
-        return (end_dt.date() - start_dt.date()).days
     if unit == 'hour':
-        return delta.total_seconds() / 3600
+        return seconds / 3600
     if unit == 'minute':
-        return delta.total_seconds() / 60
+        return seconds / 60
     if unit == 'second':
-        return delta.total_seconds()
+        return seconds
+    if unit == 'day':
+        if calendar:
+            return (end_dt.date() - start_dt.date()).days
+        return _trunc(seconds / 86400)
     if unit == 'week':
-        return delta.days // 7
+        if calendar:
+            return _trunc((end_dt.date() - start_dt.date()).days / 7)
+        return _trunc(seconds / 604800)
     if unit in ('month', 'year'):
         months = (end_dt.year - start_dt.year) * 12 + (end_dt.month - start_dt.month)
         if (end_dt.day, end_dt.hour, end_dt.minute, end_dt.second) \
                 < (start_dt.day, start_dt.hour, start_dt.minute, start_dt.second):
             months -= 1
-        return months if unit == 'month' else months // 12
+        return months if unit == 'month' else _trunc(months / 12)
     raise ValueError(f"DATETIME_DIFF: unsupported unit {unit!r}")
 
 
@@ -589,12 +772,6 @@ def _row_matches_criteria(row, criteria, record) -> bool:
 # THE RUN
 # =============================================================================
 
-def _datetime_text(value):
-    if isinstance(value, (datetime.datetime, datetime.date)):
-        return str(value)
-    raise TypeError(f"a computed value of type {type(value).__name__} cannot be written as JSON: {value!r}")
-
-
 def _load_rows(path):
     with open(path, 'r', encoding='utf-8') as f:
         rows = json.load(f)
@@ -603,10 +780,23 @@ def _load_rows(path):
     return rows
 
 
-def erb_run(tables, closures, calculated_field_count):
-    """Load every table's blank tests, compute lookups, aggregations and
-    calculations across the whole dataset until nothing changes, and write each
-    table's answers.
+def _type_computed(table, rows):
+    """Apply erbWholeNumber to every computed field of `rows`, by the field's
+    declared datatype (the SDK's 'datatypes' map)."""
+    datatypes = table.get('datatypes') or {}
+    computed = set(table['calculated'])
+    computed.update(spec['field'] for spec in table['lookups'])
+    computed.update(spec['field'] for spec in table['aggregations'])
+    for record in rows:
+        for field in computed:
+            if field in record:
+                record[field] = erb_number(record[field], datatypes.get(field))
+    return rows
+
+
+def erb_settle(tables, closures, calculated_field_count, rows_by_file):
+    """Compute every lookup, aggregation and calculated field over the dataset
+    until nothing changes, and return {file: rows}.
 
     Tables depend on each other in both directions — one table's lookup reads
     another's aggregation, which counts rows of the first — so no table order
@@ -614,51 +804,46 @@ def erb_run(tables, closures, calculated_field_count):
     is the number of computed fields, which a dependency chain cannot exceed
     without a cycle.
     """
-    testing = os.environ.get('ERB_TESTING_DIR')
-    if not testing:
-        sys.exit("FATAL: ERB_TESTING_DIR is not set; point it at the domain's testing/ directory.")
-    substrate = os.environ.get('ERB_SUBSTRATE_NAME')
-    if not substrate:
-        sys.exit("FATAL: ERB_SUBSTRATE_NAME is not set; the harness must name the substrate whose answers these are.")
-    blank_dir = Path(testing) / 'blank-tests'
-    answers_dir = Path(testing) / substrate / 'test-answers'
-    answers_dir.mkdir(parents=True, exist_ok=True)
-
     dataset = Dataset(tables, closures)
-    graded = []
     computed = 0
     for table in tables:
-        path = blank_dir / f"{table['file']}.json"
-        if not path.is_file():
-            # No fixture: a table the rulebook declares empty reads as empty. One
-            # the rulebook holds rows for stays unloaded, so anything that reads
-            # it fails naming the gap.
-            if table['rulebook_rows'] == 0:
-                dataset.rows[table['file']] = []
-            continue
-        dataset.rows[table['file']] = _load_rows(path)
-        graded.append(table['file'])
-        computed += len(table['lookups']) + len(table['aggregations'])
-    if not graded:
-        sys.exit(f"FATAL: no blank tests for any table under {blank_dir}")
+        if table['file'] in rows_by_file:
+            dataset.rows[table['file']] = rows_by_file[table['file']]
+            computed += len(table['lookups']) + len(table['aggregations'])
+        elif table['rulebook_rows'] == 0:
+            # A table the rulebook declares empty reads as empty. One the
+            # rulebook holds rows for stays unloaded, so anything that reads it
+            # fails naming the gap.
+            dataset.rows[table['file']] = []
+
+    def materialize_closure(closure):
+        # A filtered closure closes over only the edges whose filter field is
+        # TRUE. The filter may be a derived field, so it is re-read from the
+        # current rows on every pass and settles with them.
+        source = dataset.rows[closure['source']]
+        edge_filter = closure.get('filter')
+        dataset.closures[closure['view']] = compute_closure_relation(
+            [(row.get(closure['from']), row.get(closure['to'])) for row in source
+             if edge_filter is None or row.get(edge_filter) is True])
 
     for closure in closures:
         if closure['source'] not in dataset.rows:
-            sys.exit(f"FATAL: closure {closure['view']} needs {closure['source']}.json in {blank_dir}")
-        source = dataset.rows[closure['source']]
-        rows = compute_closure_relation(
-            [(row.get(closure['from']), row.get(closure['to'])) for row in source])
-        dataset.closures[closure['view']] = rows
-        print(f"  -> {closure['view']}: {len(rows)} pairs")
+            raise RuntimeError(f"closure {closure['view']} needs the rows of {closure['source']}")
+        materialize_closure(closure)
+        print(f"  -> {closure['view']}: {len(dataset.closures[closure['view']])} pairs")
 
     max_passes = computed + calculated_field_count + 2
     passes = 0
     while True:
         passes += 1
         if passes > max_passes:
-            sys.exit(f"FATAL: the dataset did not settle within {max_passes} passes — the field dependencies are cyclic.")
+            raise RuntimeError(
+                f"the dataset did not settle within {max_passes} passes — the field dependencies are cyclic.")
         dataset.blank = {}
         changed = False
+        for closure in closures:
+            if closure.get('filter') is not None:
+                materialize_closure(closure)
         for table in tables:
             file = table['file']
             if file not in dataset.rows:
@@ -670,21 +855,47 @@ def erb_run(tables, closures, calculated_field_count):
             for aggregation in table['aggregations']:
                 dataset.compute_aggregation(aggregation, rows)
             compute = table['compute']
-            rows = [compute(r) for r in rows]
+            rows = _type_computed(table, [compute(r) for r in rows])
             if rows != previous:
                 changed = True
             dataset.rows[file] = rows
         if not changed:
             break
     print(f"Python substrate: dataset settled after {passes} passes")
+    return {file: dataset.rows[file] for file in rows_by_file}
+
+
+def erb_run(tables, closures, calculated_field_count):
+    """Load every table's blank tests, settle the dataset, and write each table's
+    answers under $ERB_TESTING_DIR/$ERB_SUBSTRATE_NAME/test-answers."""
+    testing = os.environ.get('ERB_TESTING_DIR')
+    if not testing:
+        sys.exit("FATAL: ERB_TESTING_DIR is not set; point it at the domain's testing/ directory.")
+    substrate = os.environ.get('ERB_SUBSTRATE_NAME')
+    if not substrate:
+        sys.exit("FATAL: ERB_SUBSTRATE_NAME is not set; the harness must name the substrate whose answers these are.")
+    blank_dir = Path(testing) / 'blank-tests'
+    answers_dir = Path(testing) / substrate / 'test-answers'
+    answers_dir.mkdir(parents=True, exist_ok=True)
+
+    rows_by_file = {}
+    for table in tables:
+        path = blank_dir / f"{table['file']}.json"
+        if path.is_file():
+            rows_by_file[table['file']] = _load_rows(path)
+    if not rows_by_file:
+        sys.exit(f"FATAL: no blank tests for any table under {blank_dir}")
+
+    try:
+        settled = erb_settle(tables, closures, calculated_field_count, rows_by_file)
+    except RuntimeError as exc:
+        sys.exit(f"FATAL: {exc}")
 
     total = 0
-    for file in sorted(graded):
-        rows = dataset.rows[file]
+    for file in sorted(settled):
+        rows = settled[file]
         with open(answers_dir / f"{file}.json", 'w', encoding='utf-8') as f:
-            # A datetime (date arithmetic's result) renders as str() does:
-            # `2026-01-01 00:00:00`, with its UTC offset when it carries one.
-            json.dump(rows, f, indent=2, default=_datetime_text)
+            json.dump(rows, f, indent=2, default=erb_json_value)
         total += len(rows)
         print(f"  -> {file}: {len(rows)} records")
-    print(f"Python substrate: wrote {total} records across {len(graded)} tables to {answers_dir}")
+    print(f"Python substrate: wrote {total} records across {len(settled)} tables to {answers_dir}")

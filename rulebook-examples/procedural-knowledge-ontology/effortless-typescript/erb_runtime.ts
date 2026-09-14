@@ -150,7 +150,9 @@ export function toJSON(v: Value): unknown {
     case KBool: return v.b;
     case KNum: return v.isInt ? Math.trunc(v.n) : v.n;
     case KStr: return v.s;
-    case KTime: return pyStr(v);
+    // A computed datetime is written per erbDateTimeText, as the reference
+    // implementation's erb_json_value writes it.
+    case KTime: return erbDatetimeText(v).s;
   }
   return null;
 }
@@ -430,6 +432,102 @@ export function erbSum(...args: Value[]): Value {
 
 export const erbPi = Math.PI;
 
+// ───────────────────────────── build parameters ─────────────────────────────
+//
+// The ERB build parameters (docs/ERB-BUILD-PARAMETERS.md) this SDK was
+// generated under. erb_sdk.ts calls erbConfigure() as it loads; every helper
+// below reads erbParam(), and nothing runs unconfigured. erb_runtime.py is the
+// reference; when a rule changes there, it changes here.
+
+const erbParameterValues: Record<string, string[]> = {
+  erbDateDiff: ["calendar", "elapsed"],
+  erbTimezone: ["UTC"], // or any IANA zone name
+  erbDateTimeText: ["iso8601", "sql"],
+  erbBlankLogic: ["coerce", "propagate"],
+  erbWholeNumber: ["by-field-type", "integer", "decimal"],
+};
+
+let erbParams: Record<string, string> | null = null;
+let erbZoneFormatter: Intl.DateTimeFormat | null = null;
+
+export function erbConfigure(params: Record<string, string>): void {
+  for (const name of Object.keys(params)) {
+    if (!(name in erbParameterValues)) fail(`erbConfigure: unknown ERB build parameter ${JSON.stringify(name)}`);
+  }
+  for (const [name, allowed] of Object.entries(erbParameterValues)) {
+    const value = params[name];
+    if (value === undefined) fail(`erbConfigure: missing ERB build parameter ${JSON.stringify(name)}`);
+    if (name !== "erbTimezone" && !allowed.includes(value)) {
+      fail(`erbConfigure: ${name}=${JSON.stringify(value)} is not one of ${JSON.stringify(allowed)}`);
+    }
+  }
+  if (params.erbWholeNumber !== "by-field-type") {
+    // A typed row field is typed by its declared datatype; there is no honest
+    // rendering of the other two values here.
+    fail(`erbConfigure: the TypeScript substrate honours erbWholeNumber=by-field-type only, not ${JSON.stringify(params.erbWholeNumber)}`);
+  }
+  const zone = params.erbTimezone;
+  if (zone === "UTC") {
+    erbZoneFormatter = null;
+  } else {
+    try {
+      erbZoneFormatter = new Intl.DateTimeFormat("en-US", {
+        timeZone: zone, hourCycle: "h23", year: "numeric", month: "2-digit", day: "2-digit",
+        hour: "2-digit", minute: "2-digit", second: "2-digit",
+      });
+    } catch (e) {
+      fail(`erbConfigure: erbTimezone=${JSON.stringify(zone)} cannot be resolved: ${(e as Error).message}`);
+    }
+  }
+  erbParams = { ...params };
+}
+
+function erbParam(name: string): string {
+  if (erbParams === null) fail("erb_runtime is not configured: erb_sdk.ts must call erbConfigure() before any formula runs");
+  return erbParams[name];
+}
+
+function coerceBlanks(): boolean { return erbParam("erbBlankLogic") === "coerce"; }
+
+/** The UTC offset, in seconds, erbTimezone has at the instant `instantSec`. */
+function zoneOffsetAt(instantSec: number): number {
+  erbParam("erbTimezone");
+  if (erbZoneFormatter === null) return 0;
+  const parts = erbZoneFormatter.formatToParts(new Date(instantSec * 1000));
+  const get = (type: string) => Number(parts.find((p) => p.type === type)?.value ?? "0");
+  const wall = Date.UTC(get("year"), get("month") - 1, get("day"), get("hour") % 24, get("minute"), get("second")) / 1000;
+  return Math.round(wall - instantSec);
+}
+
+/** The instant v names, expressed in erbTimezone (an ErbTime whose wall reading
+ *  and offset are the zone's). A value carrying no offset is taken to be in
+ *  erbTimezone. */
+function inZone(v: Value): ErbTime {
+  let t: ErbTime;
+  let zoned: boolean;
+  if (v.k === KTime) {
+    t = v.t as ErbTime;
+    zoned = v.zoned;
+  } else if (v.k === KStr) {
+    const parsed = parseISO(v.s.trim());
+    if (parsed) {
+      t = parsed.t;
+      zoned = parsed.hasZone;
+    } else {
+      const date = parseDateOnly(v.s.trim().slice(0, 10));
+      if (!date) return fail(`cannot read ${pyRepr(v)} as a datetime`);
+      t = date;
+      zoned = false;
+    }
+  } else {
+    return fail(`cannot read ${pyRepr(v)} as a datetime`);
+  }
+  // A naive reading is in erbTimezone: find the instant whose zone reading is t.
+  const instant = zoned ? t.sec - t.offset : t.sec - zoneOffsetAt(t.sec - zoneOffsetAt(t.sec));
+  const offset = zoneOffsetAt(instant);
+  return { sec: instant + offset, nsec: t.nsec, offset };
+}
+
 // ───────────────────────────── logic ─────────────────────────────
 
 export function erbBool3(v: Value): Value {
@@ -439,13 +537,16 @@ export function erbBool3(v: Value): Value {
 export function erbIsTrue(v: Value): Value { return vB(v.k === KBool && v.b); }
 export function erbHasValue(v: Value): Value { return vB(!isBlank(v)); }
 
+/** AND: under erbBlankLogic=coerce a blank operand is FALSE; under propagate
+ *  FALSE if any operand is FALSE, else NULL if any is NULL, else TRUE. */
 export function erbAnd(...values: Value[]): Value {
   let sawNull = false;
   for (const v of values) {
     if (v.k === KBool && !v.b) return FALSE;
     if (v.k === KNull) sawNull = true;
   }
-  return sawNull ? Null : TRUE;
+  if (sawNull) return coerceBlanks() ? FALSE : Null;
+  return TRUE;
 }
 
 export function erbOr(...values: Value[]): Value {
@@ -454,10 +555,15 @@ export function erbOr(...values: Value[]): Value {
     if (v.k === KBool && v.b) return TRUE;
     if (v.k === KNull) sawNull = true;
   }
-  return sawNull ? Null : FALSE;
+  if (sawNull) return coerceBlanks() ? FALSE : Null;
+  return FALSE;
 }
 
-export function erbNot(v: Value): Value { return v.k === KNull ? Null : vB(!truthy(v)); }
+/** NOT: coerce makes NOT(blank) TRUE; propagate keeps it NULL. */
+export function erbNot(v: Value): Value {
+  if (v.k === KNull) return coerceBlanks() ? TRUE : Null;
+  return vB(!truthy(v));
+}
 
 export function erbIf(cond: Value, then: () => Value, otherwise: () => Value): Value {
   return truthy(cond) ? then() : otherwise();
@@ -491,14 +597,35 @@ function pyEqual(a: Value, b: Value): boolean {
   return false;
 }
 
+/** Under coerce a blank compared against `other` takes the other side's zero:
+ *  FALSE against a boolean, 0 against a number, "" otherwise. */
+function blankAsZeroOf(other: Value): Value {
+  if (other.k === KBool) return FALSE;
+  if (toNumber(other) !== null) return vI(0);
+  return EMPTY;
+}
+
+/** Resolves blank operands per erbBlankLogic: the pair to compare, or null when
+ *  the blank must propagate as NULL. */
+function coercedPair(a: Value, b: Value): [Value, Value] | null {
+  if (a.k === KNull && b.k === KNull) return coerceBlanks() ? [EMPTY, EMPTY] : null;
+  if (a.k === KNull || b.k === KNull) {
+    if (!coerceBlanks()) return null;
+    return a.k === KNull ? [blankAsZeroOf(b), b] : [a, blankAsZeroOf(a)];
+  }
+  return [a, b];
+}
+
 export function erbEq(a: Value, b: Value): Value {
-  if (a.k === KNull || b.k === KNull) return Null;
-  return vB(pyEqual(a, b));
+  const pair = coercedPair(a, b);
+  if (pair === null) return Null;
+  return vB(pyEqual(pair[0], pair[1]));
 }
 
 export function erbNe(a: Value, b: Value): Value {
-  if (a.k === KNull || b.k === KNull) return Null;
-  return vB(!pyEqual(a, b));
+  const pair = coercedPair(a, b);
+  if (pair === null) return Null;
+  return vB(!pyEqual(pair[0], pair[1]));
 }
 
 function compareStrings(a: string, b: string): number {
@@ -509,7 +636,9 @@ function compareStrings(a: string, b: string): number {
  *  strings, two booleans as booleans; NULL makes it NULL and anything else cannot
  *  be ordered and is FALSE. */
 export function erbCmp(a: Value, op: string, b: Value): Value {
-  if (a.k === KNull || b.k === KNull) return Null;
+  const pair = coercedPair(a, b);
+  if (pair === null) return Null;
+  [a, b] = pair;
   let c: number;
   const an = toNumber(a);
   const bn = toNumber(b);
@@ -703,32 +832,29 @@ function dateOrNone(v: Value): ErbTime | null {
   return parseDateOnly(s.slice(0, 10));
 }
 
-function coerceDatetime(v: Value): ErbTime {
-  if (v.k === KTime) return wallClock(v.t as ErbTime);
-  if (v.k === KStr) {
-    const parsed = parseISO(v.s);
-    if (parsed) return wallClock(parsed.t);
-    const date = parseDateOnly(v.s);
-    if (date) return date;
-  }
-  return fail(`DATETIME_DIFF: cannot coerce ${pyRepr(v)} to datetime`);
-}
-
+/** Whole calendar days since the epoch of t's wall reading (t is in erbTimezone). */
 function calendarDays(t: ErbTime): number { return Math.floor(t.sec / 86400); }
 
+/** DATETIME_DIFF(end, start, unit) per erbDateDiff: hour, minute and second are
+ *  exact elapsed (possibly fractional) in both modes; month and year are whole
+ *  calendar months (AGE()) in both. calendar: day is calendar dates in
+ *  erbTimezone subtracted, week is day/7 truncated. elapsed: day is
+ *  seconds/86400 truncated, week seconds/604800 truncated. */
 export function erbDatetimeDiff(end: Value, start: Value, unitValue: Value): Value {
   let unit = "day";
   if (truthy(unitValue)) unit = pyStr(unitValue).toLowerCase().replace(/s+$/, "");
-  if (end.k === KNull || start.k === KNull) return Null;
-  const e = coerceDatetime(end);
-  const s = coerceDatetime(start);
+  if (isBlank(end) || isBlank(start)) return Null;
+  const e = inZone(end);
+  const s = inZone(start);
   const seconds = secondsBetween(e, s);
+  const calendar = erbParam("erbDateDiff") === "calendar";
+  const days = () => calendarDays(e) - calendarDays(s);
   switch (unit) {
-    case "day": return vI(calendarDays(e) - calendarDays(s));
     case "hour": return vF(seconds / 3600);
     case "minute": return vF(seconds / 60);
     case "second": return vF(seconds);
-    case "week": return vI(Math.floor(Math.floor(seconds / 3600 / 24) / 7));
+    case "day": return vI(calendar ? days() : Math.trunc(seconds / 86400));
+    case "week": return vI(calendar ? Math.trunc(days() / 7) : Math.trunc(seconds / 604800));
     case "month":
     case "year": {
       const ed = new Date(e.sec * 1000);
@@ -742,51 +868,64 @@ export function erbDatetimeDiff(end: Value, start: Value, unitValue: Value): Val
           break;
         }
       }
-      return vI(unit === "month" ? months : Math.floor(months / 12));
+      return vI(unit === "month" ? months : Math.trunc(months / 12));
     }
   }
   return fail(`DATETIME_DIFF: unsupported unit ${JSON.stringify(unit)}`);
 }
 
+/** NOW()/TODAY(), an instant in erbTimezone. FORMULA_NOW pins it. */
 export function erbNow(): Value {
   const override = process.env.FORMULA_NOW;
   if (override) {
-    const parsed = parseISO(override);
-    if (!parsed) fail(`FORMULA_NOW ${JSON.stringify(override)} is not an ISO-8601 datetime`);
-    return parsed.hasZone ? vTZ(parsed.t) : vT(parsed.t);
+    if (!parseISO(override)) fail(`FORMULA_NOW ${JSON.stringify(override)} is not an ISO-8601 datetime`);
+    return vTZ(inZone(vS(override)));
   }
   const ms = Date.now();
-  return vT({ sec: Math.floor(ms / 1000), nsec: (ms % 1000) * 1e6, offset: 0 });
+  const instant = Math.floor(ms / 1000);
+  const offset = zoneOffsetAt(instant);
+  return vTZ({ sec: instant + offset, nsec: (ms % 1000) * 1e6, offset });
 }
 
-/** Renders a datetime the way the oracle's CONCAT renders a timestamptz:
- *  `2026-01-01 00:00:00-06`. */
-export function erbTimestamptzText(v: Value): Value {
+const DATE_ONLY_TEXT = /^\d{4}-\d{2}-\d{2}$/;
+
+/** A datetime rendered into text per erbDateTimeText, in erbTimezone:
+ *  iso8601 = 2026-04-03T14:00:00+00:00, sql = 2026-04-03 14:00:00+00. A
+ *  date-only value renders as YYYY-MM-DD; a blank as "". */
+export function erbDatetimeText(v: Value): Value {
   if (isBlank(v)) return EMPTY;
-  let t: ErbTime;
-  if (v.k === KTime) {
-    t = v.t as ErbTime;
-    if (!v.zoned) {
-      fail(`datetime ${pyStr(v)} carries no UTC offset, so its timestamptz text depends on the database session's time zone and cannot be rendered`);
-    }
-  } else if (v.k === KStr) {
-    const parsed = parseISO(v.s);
-    if (!parsed) fail(`invalid isoformat string: ${JSON.stringify(v.s)}`);
-    if (!parsed.hasZone) {
-      fail(`datetime ${JSON.stringify(v.s)} carries no UTC offset, so its timestamptz text depends on the database session's time zone and cannot be rendered`);
-    }
-    t = parsed.t;
-  } else {
-    return fail(`cannot render ${pyRepr(v)} as a timestamptz`);
-  }
+  if (v.k === KStr && DATE_ONLY_TEXT.test(v.s.trim())) return vS(v.s.trim());
+  if (v.k !== KTime && v.k !== KStr) return fail(`cannot render ${pyRepr(v)} as a datetime`);
+  const t = inZone(v);
+  const iso = erbParam("erbDateTimeText") === "iso8601";
   let s = wallText(t);
+  if (iso) s = s.replace(" ", "T");
   if (t.nsec !== 0) s += "." + pad(Math.trunc(t.nsec / 1000), 6).replace(/0+$/, "");
   const sign = t.offset < 0 ? "-" : "+";
   const off = Math.abs(t.offset);
-  s += `${sign}${pad(Math.trunc(off / 3600), 2)}`;
   const minutes = Math.trunc((off % 3600) / 60);
-  if (minutes !== 0) s += `:${pad(minutes, 2)}`;
+  if (iso) {
+    s += `${sign}${pad(Math.trunc(off / 3600), 2)}:${pad(minutes, 2)}`;
+  } else {
+    s += `${sign}${pad(Math.trunc(off / 3600), 2)}`;
+    if (minutes !== 0) s += `:${pad(minutes, 2)}`;
+  }
   return vS(s);
+}
+
+/** A non-datetime CONCAT / `&` operand as text: a blank contributes nothing, a
+ *  number renders in its shortest exact form with no trailing .0, a boolean as
+ *  true/false, a datetime per erbDateTimeText. */
+export function erbText(v: Value): Value {
+  switch (v.k) {
+    case KNull: return EMPTY;
+    case KBool: return vS(v.b ? "true" : "false");
+    case KNum:
+      if (v.isInt || (Number.isFinite(v.n) && v.n === Math.trunc(v.n) && Math.abs(v.n) < 1e15)) return vS(String(Math.trunc(v.n)));
+      return vS(pyFloatRepr(v.n));
+    case KTime: return erbDatetimeText(v);
+  }
+  return vS(v.s);
 }
 
 // ───────────────────────────── transitive closure ─────────────────────────────
@@ -903,12 +1042,15 @@ export interface AggregateSpec {
   error?: string;
 }
 
-/** Materializes vw_<entity>_closure. */
+/** Materializes vw_<entity>_closure. `filter`, when set, names the edge table
+ *  field an edge must hold TRUE in to take part (the closure field's
+ *  EdgeFilterColumn); the view is then vw_<entity>_closure_where_<filter>. */
 export interface ClosureSpec {
   view: string;
   source: string;
   from: string;
   to: string;
+  filter: string | null;
 }
 
 export interface TableSpec {
@@ -1212,6 +1354,8 @@ function materializeClosure(d: Dataset, spec: ClosureSpec): TableRows {
   const source = d.tableRows(spec.source);
   const edges: Array<[string, string]> = [];
   for (const r of source.rows) {
+    // Only boolean TRUE admits an edge; NULL, FALSE and non-booleans exclude it.
+    if (spec.filter !== null && source.get(r, spec.filter) !== TRUE) continue;
     const from = source.get(r, spec.from);
     const to = source.get(r, spec.to);
     if (isBlank(from) || isBlank(to)) continue;
@@ -1281,6 +1425,11 @@ export function erbRun(specs: TableSpec[], closures: ClosureSpec[], calculatedFi
     passes++;
     if (passes > maxPasses) fatal(`the dataset did not settle within ${maxPasses} passes — the field dependencies are cyclic.`);
     d.blank = new Map();
+    // A filtered closure's filter may be a derived field, so it is re-read from
+    // the current rows on every pass and settles with them.
+    for (const c of closures) {
+      if (c.filter !== null) d.closures.set(c.view, materializeClosure(d, c));
+    }
     for (const spec of specs) {
       const rows = d.rows.get(spec.file);
       if (!rows) continue;

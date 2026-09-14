@@ -20,7 +20,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         [NotMapped]
         public string? Name
         {
-            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.SourcePath)), F.S(" -> "), F.TextOr(F.Of(this.TargetIri))))); set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.Text(F.Of(this.SourcePath)), F.S(" -> "), F.Text(F.Of(this.TargetIri))))); set { }
         }
 
         public string? SourcePath { get; set; }

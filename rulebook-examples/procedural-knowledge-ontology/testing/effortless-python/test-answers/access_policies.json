@@ -15,7 +15,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": true,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-cfo-change_requests-select",
@@ -33,7 +33,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-cfo-exceptions-select",
@@ -51,7 +51,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": true,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-cfo-procedure_executions-select",
@@ -69,7 +69,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": true,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-cfo-procedures-select",
@@ -87,7 +87,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": true,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-closeautomation-errors-select",
@@ -105,7 +105,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": true,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-closeautomation-step_executions-select",
@@ -123,7 +123,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": true,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-closeautomation-steps-select",
@@ -141,7 +141,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": true,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-communicationsmanager-communication_policies-select",
@@ -159,7 +159,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": true,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-communicationsmanager-knowledge_gaps-select",
@@ -177,7 +177,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-communicationsmanager-message_deliveries-select",
@@ -195,7 +195,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": true,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-communicationsmanager-message_templates-select",
@@ -213,7 +213,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": true,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-communicationsmanager-recipients-select",
@@ -231,7 +231,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-communicationsmanager-send_intents-select",
@@ -249,7 +249,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": true,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-controller-change_requests-select",
@@ -267,7 +267,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 2
+    "denial_test_count": 2.0
   },
   {
     "access_policy_id": "pol-controller-exceptions-select",
@@ -285,7 +285,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": true,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-controller-knowledge_fragments-select",
@@ -303,7 +303,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 1
+    "denial_test_count": 1.0
   },
   {
     "access_policy_id": "pol-controller-procedure_executions-select",
@@ -321,7 +321,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": true,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-controller-procedure_versions-select",
@@ -339,7 +339,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-controller-requirements-select",
@@ -357,7 +357,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": true,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-controller-step_executions-select",
@@ -375,7 +375,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": true,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-controller-steps-select",
@@ -393,7 +393,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": true,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-employmentcounsel-authority_boundaries-select",
@@ -411,7 +411,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": true,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-employmentcounsel-change_requests-select",
@@ -429,7 +429,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-employmentcounsel-communication_policies-select",
@@ -447,7 +447,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": true,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-employmentcounsel-knowledge_fragments-select",
@@ -465,7 +465,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 2
+    "denial_test_count": 2.0
   },
   {
     "access_policy_id": "pol-employmentcounsel-steps-select",
@@ -483,7 +483,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": true,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-financeanalyst-procedure_executions-select",
@@ -501,7 +501,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": true,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-financeanalyst-procedure_versions-select",
@@ -519,7 +519,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 2
+    "denial_test_count": 2.0
   },
   {
     "access_policy_id": "pol-financeanalyst-procedures-select",
@@ -537,7 +537,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": true,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-financeanalyst-requirement_satisfactions-select",
@@ -555,7 +555,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": true,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-financeanalyst-requirements-select",
@@ -573,7 +573,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": true,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-financeanalyst-step_executions-select",
@@ -591,7 +591,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": true,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-financeanalyst-steps-select",
@@ -609,7 +609,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": true,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-hrpolicyowner-change_requests-select",
@@ -627,7 +627,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-hrpolicyowner-exceptions-select",
@@ -645,7 +645,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": true,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-hrpolicyowner-knowledge_fragments-select",
@@ -663,7 +663,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-hrpolicyowner-knowledge_gaps-select",
@@ -681,7 +681,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 2
+    "denial_test_count": 2.0
   },
   {
     "access_policy_id": "pol-hrpolicyowner-message_templates-select",
@@ -699,7 +699,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": true,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-hrpolicyowner-steps-select",
@@ -717,7 +717,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": true,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-actions-select",
@@ -735,7 +735,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-agent_decision_records-select",
@@ -753,7 +753,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-agents-select",
@@ -771,7 +771,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-app_nav_groups-select",
@@ -789,7 +789,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-app_role_profiles-select",
@@ -807,7 +807,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-app_route_questions-select",
@@ -825,7 +825,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-app_route_references-select",
@@ -843,7 +843,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-app_routes-select",
@@ -861,7 +861,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-attestations-select",
@@ -879,7 +879,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-authority_boundaries-select",
@@ -897,7 +897,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-binding_observations-select",
@@ -915,7 +915,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-change_requests-select",
@@ -933,7 +933,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-communication_policies-select",
@@ -951,7 +951,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-communities_of_practice-select",
@@ -969,7 +969,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-delivered_communications-select",
@@ -987,7 +987,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-elicitation_sessions-select",
@@ -1005,7 +1005,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-errors-select",
@@ -1023,7 +1023,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-evaluation_contexts-select",
@@ -1041,7 +1041,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-exception_invocations-select",
@@ -1059,7 +1059,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-exceptions-select",
@@ -1077,7 +1077,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-explanations-select",
@@ -1095,7 +1095,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-functions-select",
@@ -1113,7 +1113,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-issue_occurrences-select",
@@ -1131,7 +1131,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-knowledge_broker_links-select",
@@ -1148,7 +1148,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-knowledge_fragments-select",
@@ -1166,7 +1166,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-knowledge_gaps-select",
@@ -1184,7 +1184,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-learning_activities-select",
@@ -1202,7 +1202,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-mentorships-select",
@@ -1220,7 +1220,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-message_deliveries-select",
@@ -1238,7 +1238,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-message_templates-select",
@@ -1256,7 +1256,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-observed_transitions-select",
@@ -1274,7 +1274,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-ontology_profiles-select",
@@ -1292,7 +1292,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-operational_bindings-select",
@@ -1310,7 +1310,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-organizations-select",
@@ -1328,7 +1328,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-procedure_executions-select",
@@ -1346,7 +1346,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-procedure_resources-select",
@@ -1364,7 +1364,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-procedure_status_changes-select",
@@ -1382,7 +1382,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-procedure_types-select",
@@ -1400,7 +1400,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-procedure_version_links-select",
@@ -1418,7 +1418,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-procedure_versions-select",
@@ -1436,7 +1436,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-procedures-select",
@@ -1454,7 +1454,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-process_mining_runs-select",
@@ -1471,7 +1471,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-rationales-select",
@@ -1489,7 +1489,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-recipients-select",
@@ -1507,7 +1507,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-requirement_satisfactions-select",
@@ -1525,7 +1525,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-requirements-select",
@@ -1543,7 +1543,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-resources-select",
@@ -1561,7 +1561,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-review_events-select",
@@ -1579,7 +1579,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-role_assignments-select",
@@ -1597,7 +1597,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-role_questions-select",
@@ -1615,7 +1615,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-roles-select",
@@ -1633,7 +1633,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-rulebook_fields-select",
@@ -1651,7 +1651,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-rulebook_releases-select",
@@ -1669,7 +1669,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-semantic_mappings-select",
@@ -1687,7 +1687,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-send_intents-select",
@@ -1705,7 +1705,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-step_actions-select",
@@ -1723,7 +1723,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-step_executions-select",
@@ -1741,7 +1741,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-step_functions-select",
@@ -1759,7 +1759,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-step_requirements-select",
@@ -1777,7 +1777,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-step_tools-select",
@@ -1795,7 +1795,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-step_transitions-select",
@@ -1813,7 +1813,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-step_verifications-select",
@@ -1831,7 +1831,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-steps-select",
@@ -1849,7 +1849,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-stewardship_assignments-select",
@@ -1867,7 +1867,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-template_approvals-select",
@@ -1885,7 +1885,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-test_cases-select",
@@ -1903,7 +1903,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-test_suites-select",
@@ -1921,7 +1921,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-tools-select",
@@ -1939,7 +1939,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-user_feedback-select",
@@ -1957,7 +1957,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-user_questions-select",
@@ -1975,7 +1975,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-verification_outcomes-select",
@@ -1993,7 +1993,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-vocabularies-select",
@@ -2010,7 +2010,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-vocabulary_terms-select",
@@ -2027,7 +2027,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-knowledgeauthority-witness_loops-select",
@@ -2045,7 +2045,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-notificationpublisher-communication_policies-select",
@@ -2063,7 +2063,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": true,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-notificationpublisher-message_deliveries-select",
@@ -2081,7 +2081,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": true,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-notificationpublisher-recipients-select",
@@ -2099,7 +2099,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-notificationpublisher-send_intents-select",
@@ -2117,7 +2117,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": true,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-notificationpublisher-steps-select",
@@ -2135,7 +2135,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": true,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-policydraftingagent-communication_policies-select",
@@ -2153,7 +2153,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": true,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-policydraftingagent-knowledge_fragments-select",
@@ -2171,7 +2171,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-policydraftingagent-message_templates-select",
@@ -2189,7 +2189,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": true,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-policydraftingagent-steps-select",
@@ -2207,7 +2207,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": true,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-actions-select",
@@ -2225,7 +2225,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-agent_decision_records-select",
@@ -2243,7 +2243,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-agents-select",
@@ -2261,7 +2261,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-app_nav_groups-select",
@@ -2279,7 +2279,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-app_role_profiles-select",
@@ -2297,7 +2297,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-app_route_questions-select",
@@ -2315,7 +2315,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-app_route_references-select",
@@ -2333,7 +2333,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-app_routes-select",
@@ -2351,7 +2351,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-attestations-select",
@@ -2369,7 +2369,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-authority_boundaries-select",
@@ -2387,7 +2387,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-binding_observations-select",
@@ -2405,7 +2405,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-change_requests-select",
@@ -2423,7 +2423,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-communication_policies-select",
@@ -2441,7 +2441,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-communities_of_practice-select",
@@ -2459,7 +2459,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-delivered_communications-select",
@@ -2477,7 +2477,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-elicitation_sessions-select",
@@ -2495,7 +2495,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-errors-select",
@@ -2513,7 +2513,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-evaluation_contexts-select",
@@ -2531,7 +2531,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-exception_invocations-select",
@@ -2549,7 +2549,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-exceptions-select",
@@ -2567,7 +2567,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-explanations-select",
@@ -2585,7 +2585,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-functions-select",
@@ -2603,7 +2603,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-issue_occurrences-select",
@@ -2621,7 +2621,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-knowledge_broker_links-select",
@@ -2638,7 +2638,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-knowledge_fragments-select",
@@ -2656,7 +2656,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-knowledge_gaps-select",
@@ -2674,7 +2674,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-learning_activities-select",
@@ -2692,7 +2692,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-mentorships-select",
@@ -2710,7 +2710,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-message_deliveries-select",
@@ -2728,7 +2728,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-message_templates-select",
@@ -2746,7 +2746,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-observed_transitions-select",
@@ -2764,7 +2764,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-ontology_profiles-select",
@@ -2782,7 +2782,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-operational_bindings-select",
@@ -2800,7 +2800,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-organizations-select",
@@ -2818,7 +2818,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-procedure_executions-select",
@@ -2836,7 +2836,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-procedure_resources-select",
@@ -2854,7 +2854,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-procedure_status_changes-select",
@@ -2872,7 +2872,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-procedure_types-select",
@@ -2890,7 +2890,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-procedure_version_links-select",
@@ -2908,7 +2908,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-procedure_versions-select",
@@ -2926,7 +2926,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-procedures-select",
@@ -2944,7 +2944,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-process_mining_runs-select",
@@ -2961,7 +2961,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-rationales-select",
@@ -2979,7 +2979,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-recipients-select",
@@ -2997,7 +2997,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-requirement_satisfactions-select",
@@ -3015,7 +3015,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-requirements-select",
@@ -3033,7 +3033,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-resources-select",
@@ -3051,7 +3051,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-review_events-select",
@@ -3069,7 +3069,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-role_assignments-select",
@@ -3087,7 +3087,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-role_questions-select",
@@ -3105,7 +3105,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-roles-select",
@@ -3123,7 +3123,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-rulebook_fields-select",
@@ -3141,7 +3141,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-rulebook_releases-select",
@@ -3159,7 +3159,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-semantic_mappings-select",
@@ -3177,7 +3177,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-send_intents-select",
@@ -3195,7 +3195,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-step_actions-select",
@@ -3213,7 +3213,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-step_executions-select",
@@ -3231,7 +3231,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-step_functions-select",
@@ -3249,7 +3249,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-step_requirements-select",
@@ -3267,7 +3267,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-step_tools-select",
@@ -3285,7 +3285,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-step_transitions-select",
@@ -3303,7 +3303,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-step_verifications-select",
@@ -3321,7 +3321,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-steps-select",
@@ -3339,7 +3339,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-stewardship_assignments-select",
@@ -3357,7 +3357,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-template_approvals-select",
@@ -3375,7 +3375,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-test_cases-select",
@@ -3393,7 +3393,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-test_suites-select",
@@ -3411,7 +3411,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-tools-select",
@@ -3429,7 +3429,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-user_feedback-select",
@@ -3447,7 +3447,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-user_questions-select",
@@ -3465,7 +3465,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-verification_outcomes-select",
@@ -3483,7 +3483,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-vocabularies-select",
@@ -3500,7 +3500,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-vocabulary_terms-select",
@@ -3517,7 +3517,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-processsteward-witness_loops-select",
@@ -3535,7 +3535,7 @@
     "principal_is_admin": true,
     "is_unrestricted_non_admin_grant": false,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-variancereviewagent-errors-select",
@@ -3553,7 +3553,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": true,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-variancereviewagent-requirement_satisfactions-select",
@@ -3571,7 +3571,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": true,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-variancereviewagent-requirements-select",
@@ -3589,7 +3589,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": true,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-variancereviewagent-step_executions-select",
@@ -3607,7 +3607,7 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": true,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   },
   {
     "access_policy_id": "pol-variancereviewagent-steps-select",
@@ -3625,6 +3625,6 @@
     "principal_is_admin": false,
     "is_unrestricted_non_admin_grant": true,
     "is_unwitnessed_write": false,
-    "denial_test_count": 0
+    "denial_test_count": 0.0
   }
 ]

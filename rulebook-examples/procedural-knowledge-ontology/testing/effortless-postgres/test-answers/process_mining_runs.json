@@ -1,7 +1,7 @@
 [
   {
     "process_mining_run_id": "pmr-close-v10-archived",
-    "name": "ERP General Ledger Audit Log / 2026-01-01 08:00:00-06",
+    "name": "ERP General Ledger Audit Log / 2026-01-01T14:00:00+00:00",
     "procedure_version": "close-v1.0.0",
     "event_log_source": "ERP General Ledger Audit Log",
     "mined_at": "2026-01-01 08:00:00-06:00",
@@ -22,7 +22,7 @@
   },
   {
     "process_mining_run_id": "pmr-close-v11-cutoff-bypass",
-    "name": "ERP General Ledger Audit Log / 2026-07-17 09:00:00-05",
+    "name": "ERP General Ledger Audit Log / 2026-07-17T14:00:00+00:00",
     "procedure_version": "close-v1.1.0",
     "event_log_source": "ERP General Ledger Audit Log",
     "mined_at": "2026-07-17 09:00:00-05:00",
@@ -43,7 +43,7 @@
   },
   {
     "process_mining_run_id": "pmr-close-v11-q3",
-    "name": "ERP General Ledger Audit Log / 2026-07-15 09:00:00-05",
+    "name": "ERP General Ledger Audit Log / 2026-07-15T14:00:00+00:00",
     "procedure_version": "close-v1.1.0",
     "event_log_source": "ERP General Ledger Audit Log",
     "mined_at": "2026-07-15 09:00:00-05:00",
@@ -64,7 +64,7 @@
   },
   {
     "process_mining_run_id": "pmr-policy-v1-notify",
-    "name": "Notification Pipeline Delivery Log / 2026-01-10 08:00:00-06",
+    "name": "Notification Pipeline Delivery Log / 2026-01-10T14:00:00+00:00",
     "procedure_version": "policy-v1.0.0",
     "event_log_source": "Notification Pipeline Delivery Log",
     "mined_at": "2026-01-10 08:00:00-06:00",

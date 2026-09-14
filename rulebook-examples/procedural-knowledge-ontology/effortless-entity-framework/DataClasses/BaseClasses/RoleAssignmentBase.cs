@@ -20,7 +20,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         [NotMapped]
         public string? Name
         {
-            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.Role)), F.S(" @ "), F.TimestamptzText(F.Of(this.ValidFrom))))); set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.Text(F.Of(this.Role)), F.S(" @ "), F.DatetimeText(F.Of(this.ValidFrom))))); set { }
         }
 
         public DateTimeOffset? ValidFrom { get; set; }
@@ -59,7 +59,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         [NotMapped]
         public string? AgentRoleKey
         {
-            get => F.AsString(F.Memo(this, "AgentRoleKey", () => (F.Truthy(F.Bool3(F.Of(this.IsCurrentlyValid))) ? F.Concat(F.TextOr(F.Of(this.Agent)), F.S("|"), F.TextOr(F.Of(this.Role))) : F.S("")))); set { }
+            get => F.AsString(F.Memo(this, "AgentRoleKey", () => (F.Truthy(F.Bool3(F.Of(this.IsCurrentlyValid))) ? F.Concat(F.Text(F.Of(this.Agent)), F.S("|"), F.Text(F.Of(this.Role))) : F.S("")))); set { }
         }
 
         // Formula HasDeparted (rulebook: =AND({{ValidTo}} <> "", {{ValidTo}} <= {{AsOfInstant}}))

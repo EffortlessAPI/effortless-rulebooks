@@ -17,6 +17,6 @@
     "is_defensible": false,
     "content_matches_approval": true,
     "authorized_at": null,
-    "was_approved_before_sending": false
+    "was_approved_before_sending": true
   }
 ]

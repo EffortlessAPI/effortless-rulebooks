@@ -9,7 +9,7 @@
     "modified_at": "2026-07-19 10:30:00-05:00",
     "description": "Operational record that initiated and tracks the policy change.",
     "approval_status": null,
-    "is_approved_source": null,
+    "is_approved_source": false,
     "semantic_type_iri": "http://www.w3.org/ns/dcat#Resource"
   },
   {
@@ -22,7 +22,7 @@
     "modified_at": "2026-07-02 15:00:00-05:00",
     "description": "Approved close evidence checklist.",
     "approval_status": null,
-    "is_approved_source": null,
+    "is_approved_source": false,
     "semantic_type_iri": "http://www.w3.org/ns/dcat#Resource"
   },
   {
@@ -35,7 +35,7 @@
     "modified_at": "2026-04-01 09:00:00-05:00",
     "description": "Controlled source document from which the initial procedure was extracted.",
     "approval_status": null,
-    "is_approved_source": null,
+    "is_approved_source": false,
     "semantic_type_iri": "http://www.w3.org/ns/dcat#Resource"
   },
   {
@@ -48,7 +48,7 @@
     "modified_at": "2026-07-19 11:45:00-05:00",
     "description": "Live channel consent and preference data.",
     "approval_status": null,
-    "is_approved_source": null,
+    "is_approved_source": false,
     "semantic_type_iri": "http://www.w3.org/ns/dcat#Resource"
   },
   {
@@ -61,7 +61,7 @@
     "modified_at": "2026-07-18 16:30:00-05:00",
     "description": "Approved full-context email template.",
     "approval_status": null,
-    "is_approved_source": null,
+    "is_approved_source": false,
     "semantic_type_iri": "http://www.w3.org/ns/dcat#Resource"
   },
   {
@@ -74,7 +74,7 @@
     "modified_at": "2026-07-19 08:00:00-05:00",
     "description": "Live operational ledger and timestamp source.",
     "approval_status": null,
-    "is_approved_source": null,
+    "is_approved_source": false,
     "semantic_type_iri": "http://www.w3.org/ns/dcat#Resource"
   },
   {
@@ -87,7 +87,7 @@
     "modified_at": "2026-07-18 16:30:00-05:00",
     "description": "Approved policy text and change rationale.",
     "approval_status": null,
-    "is_approved_source": null,
+    "is_approved_source": false,
     "semantic_type_iri": "http://www.w3.org/ns/dcat#Resource"
   },
   {
@@ -100,7 +100,7 @@
     "modified_at": "2026-07-18 16:30:00-05:00",
     "description": "Approved SMS template with opt-out text.",
     "approval_status": null,
-    "is_approved_source": null,
+    "is_approved_source": false,
     "semantic_type_iri": "http://www.w3.org/ns/dcat#Resource"
   }
 ]

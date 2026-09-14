@@ -20,7 +20,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         [NotMapped]
         public string? Name
         {
-            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.StepExecution)), F.S(" / "), F.TextOr(F.Of(this.BindingObservationId))))); set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.Text(F.Of(this.StepExecution)), F.S(" / "), F.Text(F.Of(this.BindingObservationId))))); set { }
         }
 
         public DateTimeOffset? ObservedSourceTimestamp { get; set; }

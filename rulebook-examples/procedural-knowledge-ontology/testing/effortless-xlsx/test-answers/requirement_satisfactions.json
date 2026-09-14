@@ -42,9 +42,9 @@
     "is_computedly_witnessed": true,
     "computed_witness_execution_key": "exec-close-2026-q2",
     "step_executor_agent": "maria-chen",
-    "post_attestation_score_execution_key": "#NAME?",
+    "post_attestation_score_execution_key": "exec-close-2026-q2",
     "binding_key": null,
-    "was_scored_after_attestation": "#NAME?",
+    "was_scored_after_attestation": true,
     "attestation_instant_for_run": "00:00:00"
   },
   {
@@ -90,9 +90,9 @@
     "is_computedly_witnessed": true,
     "computed_witness_execution_key": "exec-close-2026-q2",
     "step_executor_agent": "close-pipeline",
-    "post_attestation_score_execution_key": "#NAME?",
+    "post_attestation_score_execution_key": "exec-close-2026-q2",
     "binding_key": null,
-    "was_scored_after_attestation": "#NAME?",
+    "was_scored_after_attestation": true,
     "attestation_instant_for_run": "00:00:00"
   },
   {
@@ -138,9 +138,9 @@
     "is_computedly_witnessed": true,
     "computed_witness_execution_key": "exec-close-2026-q2",
     "step_executor_agent": "maria-chen",
-    "post_attestation_score_execution_key": "#NAME?",
+    "post_attestation_score_execution_key": "exec-close-2026-q2",
     "binding_key": null,
-    "was_scored_after_attestation": "#NAME?",
+    "was_scored_after_attestation": true,
     "attestation_instant_for_run": "00:00:00"
   },
   {
@@ -186,9 +186,9 @@
     "is_computedly_witnessed": false,
     "computed_witness_execution_key": null,
     "step_executor_agent": "priya-raman",
-    "post_attestation_score_execution_key": "#NAME?",
+    "post_attestation_score_execution_key": "exec-close-2026-q2",
     "binding_key": null,
-    "was_scored_after_attestation": "#NAME?",
+    "was_scored_after_attestation": true,
     "attestation_instant_for_run": "00:00:00"
   },
   {
@@ -234,9 +234,9 @@
     "is_computedly_witnessed": true,
     "computed_witness_execution_key": "exec-close-2026-q2",
     "step_executor_agent": "devon-okafor",
-    "post_attestation_score_execution_key": "#NAME?",
+    "post_attestation_score_execution_key": "exec-close-2026-q2",
     "binding_key": null,
-    "was_scored_after_attestation": "#NAME?",
+    "was_scored_after_attestation": true,
     "attestation_instant_for_run": "00:00:00"
   },
   {
@@ -282,9 +282,9 @@
     "is_computedly_witnessed": true,
     "computed_witness_execution_key": "exec-close-2026-q2",
     "step_executor_agent": "elena-garcia",
-    "post_attestation_score_execution_key": "#NAME?",
+    "post_attestation_score_execution_key": "exec-close-2026-q2",
     "binding_key": null,
-    "was_scored_after_attestation": "#NAME?",
+    "was_scored_after_attestation": true,
     "attestation_instant_for_run": "00:00:00"
   },
   {
@@ -330,9 +330,9 @@
     "is_computedly_witnessed": false,
     "computed_witness_execution_key": null,
     "step_executor_agent": "noah-williams",
-    "post_attestation_score_execution_key": "#NAME?",
+    "post_attestation_score_execution_key": "exec-policy-hr4821",
     "binding_key": null,
-    "was_scored_after_attestation": "#NAME?",
+    "was_scored_after_attestation": true,
     "attestation_instant_for_run": "00:00:00"
   },
   {
@@ -378,9 +378,9 @@
     "is_computedly_witnessed": false,
     "computed_witness_execution_key": null,
     "step_executor_agent": "policy-drafting-ai",
-    "post_attestation_score_execution_key": "#NAME?",
+    "post_attestation_score_execution_key": "exec-policy-hr4821",
     "binding_key": null,
-    "was_scored_after_attestation": "#NAME?",
+    "was_scored_after_attestation": true,
     "attestation_instant_for_run": "00:00:00"
   }
 ]

@@ -15,8 +15,8 @@
     "name": "Email -\u003E emp-anon-0001 @ ",
     "has_authorization": false,
     "is_defensible": false,
-    "content_matches_approval": null,
+    "content_matches_approval": true,
     "authorized_at": null,
-    "was_approved_before_sending": null
+    "was_approved_before_sending": true
   }
 ]

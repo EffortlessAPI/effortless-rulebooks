@@ -20,7 +20,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         [NotMapped]
         public string? Name
         {
-            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.FieldDisagreement)), F.S(" @ "), F.TextOr(F.Of(this.RecordId))))); set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.Text(F.Of(this.FieldDisagreement)), F.S(" @ "), F.Text(F.Of(this.RecordId))))); set { }
         }
 
         public string? RecordId { get; set; }

@@ -20,7 +20,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         [NotMapped]
         public string? Name
         {
-            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.FromStep)), F.S(" -> "), F.TextOr(F.Of(this.ToStep))))); set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.Text(F.Of(this.FromStep)), F.S(" -> "), F.Text(F.Of(this.ToStep))))); set { }
         }
 
         public string? TransitionKind { get; set; }
@@ -124,6 +124,29 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             get => F.AsString(F.Memo(this, "UnrehearsedControlVersionKey", () => (F.Truthy(F.Bool3(F.Of(this.IsUnrehearsedControlEntry))) ? F.Of(this.ProcedureVersion) : F.S("")))); set { }
         }
 
+        public string? LeadsToClosure { get; set; }
+        // Formula FromStepIsHumanApprovalGate (rulebook: =INDEX(Steps!{{IsHumanApprovalGate}}, MATCH({{FromStep}}, Steps!{{StepId}}, 0)))
+        [NotMapped]
+        public bool? FromStepIsHumanApprovalGate
+        {
+            get => F.AsBool(F.Memo(this, "FromStepIsHumanApprovalGate", () => F.Lookup<Step>(this, "Steps", "StepId", __c => __c.Steps, __r => F.Of(__r.StepId), F.Of(this.FromStep), __r => F.Of(__r.IsHumanApprovalGate), () => F.Of(new Step().IsHumanApprovalGate)))); set { }
+        }
+
+        // Formula ToStepIsHumanApprovalGate (rulebook: =INDEX(Steps!{{IsHumanApprovalGate}}, MATCH({{ToStep}}, Steps!{{StepId}}, 0)))
+        [NotMapped]
+        public bool? ToStepIsHumanApprovalGate
+        {
+            get => F.AsBool(F.Memo(this, "ToStepIsHumanApprovalGate", () => F.Lookup<Step>(this, "Steps", "StepId", __c => __c.Steps, __r => F.Of(__r.StepId), F.Of(this.ToStep), __r => F.Of(__r.IsHumanApprovalGate), () => F.Of(new Step().IsHumanApprovalGate)))); set { }
+        }
+
+        // Formula AvoidsHumanApprovalGate (rulebook: =AND(NOT({{FromStepIsHumanApprovalGate}}), NOT({{ToStepIsHumanApprovalGate}})))
+        [NotMapped]
+        public bool? AvoidsHumanApprovalGate
+        {
+            get => F.AsBool(F.Memo(this, "AvoidsHumanApprovalGate", () => F.And(F.Bool3(F.Not(F.Bool3(F.Of(this.FromStepIsHumanApprovalGate)))), F.Bool3(F.Not(F.Bool3(F.Of(this.ToStepIsHumanApprovalGate))))))); set { }
+        }
+
+        public string? LeadsWithoutHumanGateClosure { get; set; }
         public string? SemanticTypeIri { get; set; }
 
         public string? ProcedureVersion { get; set; }

@@ -220,6 +220,9 @@ public static class Program
                     {
                         try
                         {
+                            // A DateTimeOffset serializes as ISO 8601 with its own offset,
+                            // which is the raw text a lookup copied — the same value the
+                            // reference implementation writes for it.
                             outRec[key] = pi.GetValue(entity);
                         }
                         catch (System.Exception ex)

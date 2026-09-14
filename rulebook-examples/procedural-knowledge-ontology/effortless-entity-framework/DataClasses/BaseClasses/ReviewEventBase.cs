@@ -20,7 +20,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         [NotMapped]
         public string? Name
         {
-            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.ProcedureVersion)), F.S(" / "), F.TextOr(F.Of(this.ReviewKind))))); set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.Text(F.Of(this.ProcedureVersion)), F.S(" / "), F.Text(F.Of(this.ReviewKind))))); set { }
         }
 
         public string? ReviewKind { get; set; }

@@ -1,7 +1,7 @@
 [
   {
     "exception_invocation_id": "exc-inv-close02",
-    "invoked_at": "2026-07-19 09:24:00-05:00",
+    "invoked_at": "2026-07-19 14:24:00+00:00",
     "handling_applied": "Used the digitally signed 09:07 trial-balance snapshot and opened blocking incident issue-close-feed. No spreadsheet substitution.",
     "semantic_type_iri": "urn:effortless:pko-extension#ExceptionInvocation",
     "name": "se-close02 / exc-ledger-outage",

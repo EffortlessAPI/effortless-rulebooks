@@ -74,8 +74,8 @@ class PkoRulebookTests(unittest.TestCase):
         """Composite keys join on "a|b" strings, so an id containing "|" would
         silently produce wrong join results with no error anywhere.
 
-        Several witnesses route around the transpiler's multi-criteria COUNTIFS
-        defect by concatenating two ids with a pipe. That works only while no
+        Several witnesses concatenate two ids with a pipe, written to route around
+        a multi-criteria COUNTIFS defect that has since been retired. That works only while no
         identifier contains a pipe. The failure mode is a wrong answer, not a
         crash, so it has to be asserted rather than hoped for.
         """

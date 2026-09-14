@@ -138,7 +138,7 @@
     "is_blocking": false,
     "is_open_and_blocking": false,
     "as_of_instant": "2026-07-19T13:00:00-05:00",
-    "days_open": 0,
+    "days_open": 1,
     "tolerance_days": 90,
     "is_overdue_gap": false,
     "owner_agent": "amina-yusuf",

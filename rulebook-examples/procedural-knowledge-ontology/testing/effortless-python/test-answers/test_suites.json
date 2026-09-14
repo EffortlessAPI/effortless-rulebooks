@@ -4,9 +4,9 @@
     "label": "Referential integrity",
     "semantic_type_iri": "urn:effortless:pko-extension#TestSuite",
     "name": "Referential integrity",
-    "test_count": 160,
-    "pass_count": 160,
-    "blocking_fail_count": 0,
+    "test_count": 160.0,
+    "pass_count": 160.0,
+    "blocking_fail_count": 0.0,
     "is_green": true
   },
   {
@@ -14,9 +14,9 @@
     "label": "Domain invariants",
     "semantic_type_iri": "urn:effortless:pko-extension#TestSuite",
     "name": "Domain invariants",
-    "test_count": 7,
-    "pass_count": 7,
-    "blocking_fail_count": 0,
+    "test_count": 7.0,
+    "pass_count": 7.0,
+    "blocking_fail_count": 0.0,
     "is_green": true
   },
   {
@@ -24,9 +24,9 @@
     "label": "Question provenance",
     "semantic_type_iri": "urn:effortless:pko-extension#TestSuite",
     "name": "Question provenance",
-    "test_count": 107,
-    "pass_count": 107,
-    "blocking_fail_count": 0,
+    "test_count": 107.0,
+    "pass_count": 107.0,
+    "blocking_fail_count": 0.0,
     "is_green": true
   },
   {
@@ -34,9 +34,9 @@
     "label": "Model structure",
     "semantic_type_iri": "urn:effortless:pko-extension#TestSuite",
     "name": "Model structure",
-    "test_count": 69,
-    "pass_count": 69,
-    "blocking_fail_count": 0,
+    "test_count": 69.0,
+    "pass_count": 69.0,
+    "blocking_fail_count": 0.0,
     "is_green": true
   },
   {
@@ -44,9 +44,9 @@
     "label": "Substrate translation",
     "semantic_type_iri": "urn:effortless:pko-extension#TestSuite",
     "name": "Substrate translation",
-    "test_count": 993,
-    "pass_count": 991,
-    "blocking_fail_count": 0,
+    "test_count": 993.0,
+    "pass_count": 991.0,
+    "blocking_fail_count": 0.0,
     "is_green": true
   },
   {
@@ -54,9 +54,9 @@
     "label": "Witness behaviour",
     "semantic_type_iri": "urn:effortless:pko-extension#TestSuite",
     "name": "Witness behaviour",
-    "test_count": 458,
-    "pass_count": 225,
-    "blocking_fail_count": 0,
+    "test_count": 458.0,
+    "pass_count": 225.0,
+    "blocking_fail_count": 0.0,
     "is_green": true
   }
 ]

@@ -85,7 +85,8 @@
     "was_modified_since_last_review": null,
     "mining_run_count": null,
     "drifted_mining_run_count": null,
-    "has_unresolved_mining_drift": null
+    "has_unresolved_mining_drift": null,
+    "entry_step_id": null
   },
   {
     "procedure_version_id": "close-v1.1.0",
@@ -173,7 +174,8 @@
     "unwatched_unowned_control_count": null,
     "mining_run_count": null,
     "drifted_mining_run_count": null,
-    "has_unresolved_mining_drift": null
+    "has_unresolved_mining_drift": null,
+    "entry_step_id": null
   },
   {
     "procedure_version_id": "policy-v1.0.0",
@@ -261,6 +263,7 @@
     "unwatched_unowned_control_count": null,
     "mining_run_count": null,
     "drifted_mining_run_count": null,
-    "has_unresolved_mining_drift": null
+    "has_unresolved_mining_drift": null,
+    "entry_step_id": null
   }
 ]

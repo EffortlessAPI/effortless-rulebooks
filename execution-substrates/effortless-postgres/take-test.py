@@ -72,7 +72,8 @@ def discover_views(conn) -> list:
     """Query postgres for all vw_* views, excluding closure views.
 
     rulebook-to-postgres emits `vw_<entity>_closure` views for `closure`-typed
-    fields (WITH RECURSIVE edge-lists over asserted + inferred reachability).
+    fields (WITH RECURSIVE edge-lists over asserted + inferred reachability), and
+    `vw_<entity>_closure_where_<filter>` for a closure with an EdgeFilterColumn.
     They are not rulebook entities and have no PK-bearing schema to discover,
     so they are not part of per-entity conformance scoring.
     """
@@ -80,7 +81,9 @@ def discover_views(conn) -> list:
     cur.execute("""
         SELECT table_name
         FROM information_schema.views
-        WHERE table_name LIKE 'vw_%' AND table_name NOT LIKE 'vw_%\\_closure'
+        WHERE table_name LIKE 'vw_%'
+          AND table_name NOT LIKE 'vw_%\\_closure'
+          AND table_name NOT LIKE 'vw_%\\_closure\\_where\\_%'
         ORDER BY table_name
     """)
     views = [row[0] for row in cur.fetchall()]

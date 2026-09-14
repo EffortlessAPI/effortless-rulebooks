@@ -20,7 +20,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         [NotMapped]
         public string? Name
         {
-            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.ProcedureExecution)), F.S(" / "), F.TextOr(F.Of(this.Step))))); set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.Text(F.Of(this.ProcedureExecution)), F.S(" / "), F.Text(F.Of(this.Step))))); set { }
         }
 
         public string? ExecutionStatus { get; set; }
@@ -193,14 +193,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         [NotMapped]
         public string? PreparerAgentKey
         {
-            get => F.AsString(F.Memo(this, "PreparerAgentKey", () => (F.Truthy(F.Bool3(F.Of(this.StepIsPreparation))) ? F.Concat(F.TextOr(F.Of(this.ProcedureExecution)), F.S("|"), F.TextOr(F.Of(this.ExecutedByAgent))) : F.S("")))); set { }
+            get => F.AsString(F.Memo(this, "PreparerAgentKey", () => (F.Truthy(F.Bool3(F.Of(this.StepIsPreparation))) ? F.Concat(F.Text(F.Of(this.ProcedureExecution)), F.S("|"), F.Text(F.Of(this.ExecutedByAgent))) : F.S("")))); set { }
         }
 
         // Formula ApproverAgentKey (rulebook: =IF({{StepIsApproval}}, {{ProcedureExecution}} & "|" & {{ExecutedByAgent}}, ""))
         [NotMapped]
         public string? ApproverAgentKey
         {
-            get => F.AsString(F.Memo(this, "ApproverAgentKey", () => (F.Truthy(F.Bool3(F.Of(this.StepIsApproval))) ? F.Concat(F.TextOr(F.Of(this.ProcedureExecution)), F.S("|"), F.TextOr(F.Of(this.ExecutedByAgent))) : F.S("")))); set { }
+            get => F.AsString(F.Memo(this, "ApproverAgentKey", () => (F.Truthy(F.Bool3(F.Of(this.StepIsApproval))) ? F.Concat(F.Text(F.Of(this.ProcedureExecution)), F.S("|"), F.Text(F.Of(this.ExecutedByAgent))) : F.S("")))); set { }
         }
 
         // Formula PreparedByThisAgentCount (rulebook: =COUNTIFS(StepExecutions!{{PreparerAgentKey}}, {{ApproverAgentKey}}))
@@ -228,7 +228,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         [NotMapped]
         public string? ExecutorRoleKey
         {
-            get => F.AsString(F.Memo(this, "ExecutorRoleKey", () => F.Concat(F.TextOr(F.Of(this.ExecutedByAgent)), F.S("|"), F.TextOr(F.Of(this.RequiredRoleForStep))))); set { }
+            get => F.AsString(F.Memo(this, "ExecutorRoleKey", () => F.Concat(F.Text(F.Of(this.ExecutedByAgent)), F.S("|"), F.Text(F.Of(this.RequiredRoleForStep))))); set { }
         }
 
         // Formula ExecutorAuthorityCount (rulebook: =COUNTIFS(RoleAssignments!{{AgentRoleKey}}, {{ExecutorRoleKey}}))

@@ -20,7 +20,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         [NotMapped]
         public string? Name
         {
-            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.ForbiddenAgentKind)), F.S(" may not "), F.TextOr(F.Of(this.ForbiddenDecisionKind))))); set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.Text(F.Of(this.ForbiddenAgentKind)), F.S(" may not "), F.Text(F.Of(this.ForbiddenDecisionKind))))); set { }
         }
 
         public string? ForbiddenAgentKind { get; set; }
@@ -60,7 +60,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         [NotMapped]
         public string? BoundaryMatchKey
         {
-            get => F.AsString(F.Memo(this, "BoundaryMatchKey", () => F.Concat(F.TextOr(F.Of(this.Step)), F.S("|"), F.TextOr(F.Of(this.ForbiddenAgentKind)), F.S("|"), F.TextOr(F.Of(this.ForbiddenDecisionKind))))); set { }
+            get => F.AsString(F.Memo(this, "BoundaryMatchKey", () => F.Concat(F.Text(F.Of(this.Step)), F.S("|"), F.Text(F.Of(this.ForbiddenAgentKind)), F.S("|"), F.Text(F.Of(this.ForbiddenDecisionKind))))); set { }
         }
 
         // Formula ViolationCount (rulebook: =COUNTIFS(AgentDecisionRecords!{{BoundaryMatchKey}}, {{BoundaryMatchKey}}))

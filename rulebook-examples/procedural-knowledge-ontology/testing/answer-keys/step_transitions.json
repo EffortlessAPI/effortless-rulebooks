@@ -22,7 +22,10 @@
     "target_blocking_requirement_count": 0,
     "target_carries_blocking_control": false,
     "is_unrehearsed_control_entry": false,
-    "unrehearsed_control_version_key": null
+    "unrehearsed_control_version_key": null,
+    "from_step_is_human_approval_gate": false,
+    "to_step_is_human_approval_gate": false,
+    "avoids_human_approval_gate": true
   },
   {
     "step_transition_id": "close-02-to-close-03",
@@ -47,7 +50,10 @@
     "target_blocking_requirement_count": 2,
     "target_carries_blocking_control": true,
     "is_unrehearsed_control_entry": false,
-    "unrehearsed_control_version_key": null
+    "unrehearsed_control_version_key": null,
+    "from_step_is_human_approval_gate": false,
+    "to_step_is_human_approval_gate": false,
+    "avoids_human_approval_gate": true
   },
   {
     "step_transition_id": "close-03-to-close-04",
@@ -72,7 +78,10 @@
     "target_blocking_requirement_count": 0,
     "target_carries_blocking_control": false,
     "is_unrehearsed_control_entry": false,
-    "unrehearsed_control_version_key": null
+    "unrehearsed_control_version_key": null,
+    "from_step_is_human_approval_gate": false,
+    "to_step_is_human_approval_gate": false,
+    "avoids_human_approval_gate": true
   },
   {
     "step_transition_id": "close-04-fallback-close-03",
@@ -97,7 +106,10 @@
     "target_blocking_requirement_count": 2,
     "target_carries_blocking_control": true,
     "is_unrehearsed_control_entry": true,
-    "unrehearsed_control_version_key": "close-v1.1.0"
+    "unrehearsed_control_version_key": "close-v1.1.0",
+    "from_step_is_human_approval_gate": false,
+    "to_step_is_human_approval_gate": false,
+    "avoids_human_approval_gate": true
   },
   {
     "step_transition_id": "close-04-to-close-05",
@@ -122,7 +134,38 @@
     "target_blocking_requirement_count": 1,
     "target_carries_blocking_control": true,
     "is_unrehearsed_control_entry": false,
-    "unrehearsed_control_version_key": null
+    "unrehearsed_control_version_key": null,
+    "from_step_is_human_approval_gate": false,
+    "to_step_is_human_approval_gate": false,
+    "avoids_human_approval_gate": true
+  },
+  {
+    "step_transition_id": "close-05-expedite-close-07",
+    "procedure_version": "close-v1.1.0",
+    "from_step": "close-05",
+    "to_step": "close-07",
+    "transition_kind": "Alternative",
+    "condition": "Aggregate variance below the materiality threshold: publish the close package without CFO sign-off",
+    "priority": 3,
+    "semantic_type_iri": "https://w3id.org/pko#Transition",
+    "name": "close-05 -> close-07",
+    "is_recovery_path": true,
+    "count_of_from_step_executions": 1,
+    "count_of_to_step_executions": 1,
+    "has_reachable_origin": true,
+    "has_reachable_target": true,
+    "is_never_exercised": false,
+    "is_untested_recovery_path": false,
+    "count_of_observed_traversals": 0,
+    "has_been_traversed": false,
+    "is_unwalked_recovery_path": true,
+    "target_blocking_requirement_count": 0.0,
+    "target_carries_blocking_control": false,
+    "is_unrehearsed_control_entry": false,
+    "unrehearsed_control_version_key": null,
+    "from_step_is_human_approval_gate": false,
+    "to_step_is_human_approval_gate": false,
+    "avoids_human_approval_gate": true
   },
   {
     "step_transition_id": "close-05-to-close-06",
@@ -147,7 +190,10 @@
     "target_blocking_requirement_count": 1,
     "target_carries_blocking_control": true,
     "is_unrehearsed_control_entry": false,
-    "unrehearsed_control_version_key": null
+    "unrehearsed_control_version_key": null,
+    "from_step_is_human_approval_gate": false,
+    "to_step_is_human_approval_gate": true,
+    "avoids_human_approval_gate": false
   },
   {
     "step_transition_id": "close-06-return-close-04",
@@ -172,7 +218,10 @@
     "target_blocking_requirement_count": 0,
     "target_carries_blocking_control": false,
     "is_unrehearsed_control_entry": false,
-    "unrehearsed_control_version_key": null
+    "unrehearsed_control_version_key": null,
+    "from_step_is_human_approval_gate": true,
+    "to_step_is_human_approval_gate": false,
+    "avoids_human_approval_gate": false
   },
   {
     "step_transition_id": "close-06-to-close-07",
@@ -197,7 +246,10 @@
     "target_blocking_requirement_count": 0,
     "target_carries_blocking_control": false,
     "is_unrehearsed_control_entry": false,
-    "unrehearsed_control_version_key": null
+    "unrehearsed_control_version_key": null,
+    "from_step_is_human_approval_gate": true,
+    "to_step_is_human_approval_gate": false,
+    "avoids_human_approval_gate": false
   },
   {
     "step_transition_id": "close-07-to-close-08",
@@ -222,7 +274,10 @@
     "target_blocking_requirement_count": 1,
     "target_carries_blocking_control": true,
     "is_unrehearsed_control_entry": false,
-    "unrehearsed_control_version_key": null
+    "unrehearsed_control_version_key": null,
+    "from_step_is_human_approval_gate": false,
+    "to_step_is_human_approval_gate": false,
+    "avoids_human_approval_gate": true
   },
   {
     "step_transition_id": "policy-01-to-policy-02",
@@ -247,7 +302,10 @@
     "target_blocking_requirement_count": 0,
     "target_carries_blocking_control": false,
     "is_unrehearsed_control_entry": false,
-    "unrehearsed_control_version_key": null
+    "unrehearsed_control_version_key": null,
+    "from_step_is_human_approval_gate": false,
+    "to_step_is_human_approval_gate": false,
+    "avoids_human_approval_gate": true
   },
   {
     "step_transition_id": "policy-02-to-policy-03",
@@ -272,7 +330,10 @@
     "target_blocking_requirement_count": 1,
     "target_carries_blocking_control": true,
     "is_unrehearsed_control_entry": false,
-    "unrehearsed_control_version_key": null
+    "unrehearsed_control_version_key": null,
+    "from_step_is_human_approval_gate": false,
+    "to_step_is_human_approval_gate": false,
+    "avoids_human_approval_gate": true
   },
   {
     "step_transition_id": "policy-03-to-policy-04",
@@ -297,7 +358,10 @@
     "target_blocking_requirement_count": 1,
     "target_carries_blocking_control": true,
     "is_unrehearsed_control_entry": false,
-    "unrehearsed_control_version_key": null
+    "unrehearsed_control_version_key": null,
+    "from_step_is_human_approval_gate": false,
+    "to_step_is_human_approval_gate": false,
+    "avoids_human_approval_gate": true
   },
   {
     "step_transition_id": "policy-04-return-policy-03",
@@ -322,7 +386,10 @@
     "target_blocking_requirement_count": 1,
     "target_carries_blocking_control": true,
     "is_unrehearsed_control_entry": true,
-    "unrehearsed_control_version_key": "policy-v1.0.0"
+    "unrehearsed_control_version_key": "policy-v1.0.0",
+    "from_step_is_human_approval_gate": false,
+    "to_step_is_human_approval_gate": false,
+    "avoids_human_approval_gate": true
   },
   {
     "step_transition_id": "policy-04-to-policy-05",
@@ -347,7 +414,10 @@
     "target_blocking_requirement_count": 1,
     "target_carries_blocking_control": true,
     "is_unrehearsed_control_entry": false,
-    "unrehearsed_control_version_key": null
+    "unrehearsed_control_version_key": null,
+    "from_step_is_human_approval_gate": false,
+    "to_step_is_human_approval_gate": true,
+    "avoids_human_approval_gate": false
   },
   {
     "step_transition_id": "policy-05-to-policy-06",
@@ -372,7 +442,10 @@
     "target_blocking_requirement_count": 1,
     "target_carries_blocking_control": true,
     "is_unrehearsed_control_entry": false,
-    "unrehearsed_control_version_key": null
+    "unrehearsed_control_version_key": null,
+    "from_step_is_human_approval_gate": true,
+    "to_step_is_human_approval_gate": false,
+    "avoids_human_approval_gate": false
   },
   {
     "step_transition_id": "policy-06-to-policy-07",
@@ -397,7 +470,10 @@
     "target_blocking_requirement_count": 4,
     "target_carries_blocking_control": true,
     "is_unrehearsed_control_entry": false,
-    "unrehearsed_control_version_key": null
+    "unrehearsed_control_version_key": null,
+    "from_step_is_human_approval_gate": false,
+    "to_step_is_human_approval_gate": false,
+    "avoids_human_approval_gate": true
   },
   {
     "step_transition_id": "policy-07-fallback-policy-06",
@@ -422,7 +498,10 @@
     "target_blocking_requirement_count": 1,
     "target_carries_blocking_control": true,
     "is_unrehearsed_control_entry": true,
-    "unrehearsed_control_version_key": "policy-v1.0.0"
+    "unrehearsed_control_version_key": "policy-v1.0.0",
+    "from_step_is_human_approval_gate": false,
+    "to_step_is_human_approval_gate": false,
+    "avoids_human_approval_gate": true
   },
   {
     "step_transition_id": "policy-07-to-policy-08",
@@ -447,7 +526,10 @@
     "target_blocking_requirement_count": 1,
     "target_carries_blocking_control": true,
     "is_unrehearsed_control_entry": false,
-    "unrehearsed_control_version_key": null
+    "unrehearsed_control_version_key": null,
+    "from_step_is_human_approval_gate": false,
+    "to_step_is_human_approval_gate": false,
+    "avoids_human_approval_gate": true
   },
   {
     "step_transition_id": "policy-08-to-policy-09",
@@ -472,6 +554,9 @@
     "target_blocking_requirement_count": 0,
     "target_carries_blocking_control": false,
     "is_unrehearsed_control_entry": false,
-    "unrehearsed_control_version_key": null
+    "unrehearsed_control_version_key": null,
+    "from_step_is_human_approval_gate": false,
+    "to_step_is_human_approval_gate": false,
+    "avoids_human_approval_gate": true
   }
 ]

@@ -18,7 +18,7 @@
     "invoker_agent_kind": "AutomatedPipeline",
     "invoker_also_prepared_key": "exec-close-2026-q2|devon-okafor",
     "parent_procedure_execution": "exec-close-2026-q2",
-    "approver_prepared_count": 0,
+    "approver_prepared_count": 0.0,
     "delegated_to_preparer": false,
     "is_ungoverned_invocation": false
   }

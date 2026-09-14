@@ -274,6 +274,7 @@ _A canonical Effortless Rulebook profile aligned to the Procedural Knowledge Ont
 | Mining Run Count | The number of process mining runs related to the procedure version. | _How many process-mining conformance runs exist for this procedure version._ |
 | Drifted Mining Run Count | The number of process mining runs related to the procedure version. | _How many mining runs found major, real drift while this version was live._ |
 | Has Unresolved Mining Drift | True when the drifted mining run count is greater than 0. | _TRUE when mined operational evidence contradicts this live version's documented path._ |
+| Entry Step ID | The largest entry step key across the steps related to the procedure version. | _The step this procedure version starts at: the one step no transition leads into._ |
 | Semantic Type Iri | A defined attribute. | _Exact PKO class IRI._ |
 | **Procedure Version Link** | Directed links between versioned procedures. Maps to dcat:previousVersion/dcat:hasVersion and pko:nextVersion. | — |
 | Name | Computed as the previous procedure version, followed by “ -> ”, followed by the next procedure version. | _Human-readable calculated display alias for the ProcedureVersionLinks row._ |
@@ -332,6 +333,18 @@ _A canonical Effortless Rulebook profile aligned to the Procedural Knowledge Ont
 | Undeclared Control Version Key | Determined by priority: an empty string if the declared control kind flag is set; in all other cases, the procedure version. | _Composite-key echo: this step's procedure version when the step has no declared control kind, blank otherwise._ |
 | Approval Step is Software Assigned | True when all of the following hold: the control kind is “Approval” and the software assigned flag is set. | _An approval-kind step whose assigned role is currently held by an AI agent or automated pipeline._ |
 | Unwitnessed Blocking Count | The number of step requirements related to the step. | _How many blocking controls bound to this step have no computed witness._ |
+| Reachable Step Count | The number of vw step transitions closure related to the step. | _Number of steps this step can lead to through one or more transitions, including itself when it lies on a rework loop._ |
+| Reached From Step Count | The number of vw step transitions closure related to the step. | _Number of steps that can lead to this step through one or more transitions, including itself when it lies on a rework loop._ |
+| Self Reach Count | The number of vw step transitions closure related to the step. | _1 when the closure contains the pair (this step, this step), i.e. some path of one or more transitions returns to this step; otherwise 0._ |
+| Is on Rework Loop | True when the self reach count is greater than 0. | _The procedure can send work back to this step after it has run: the step lies on a cycle of the step graph._ |
+| Is Blocking Control on Rework Loop | True when all of the following hold: the on rework loop flag is set and the blocking requirement count is greater than 0. | _A step carrying at least one blocking requirement can be re-entered, so that control must hold on every pass, not only the first._ |
+| Incoming Transition Count | The number of step transitions related to the step. | _Number of transitions, of any kind, that lead into this step._ |
+| Is Entry Step | True when the incoming transition count is 0. | _No transition leads into this step: the procedure version starts here._ |
+| Entry Step Key | Determined by priority: the step ID if the entry step flag is set; in all other cases, an empty string. | _Composite-key echo: this step's id when it is its procedure version's entry step, blank otherwise._ |
+| Version Entry Step ID | Taken from the linked procedure version. | _The entry step of this step's procedure version._ |
+| Gate Free Reach From Entry Count | The number of vw step transitions closure where avoids human approval gate related to the step. | _1 when some route of one or more gate-free transitions leads from the procedure version's entry step to this step; otherwise 0._ |
+| Is Reachable From Entry Without Human Gate | True when the gate free reach from entry count is greater than 0. | _Work can arrive at this step from the start of the procedure without passing any human approval gate._ |
+| Is Gate Bypassed Publication | True when all of the following hold: the control kind is “Publication” and the reachable from entry without human gate flag is set. | _A publication step the procedure can reach without human sign-off: the approval gate is structurally bypassable._ |
 | Semantic Type Iri | A defined attribute. | _Exact P-Plan class IRI._ |
 | **Step Transition** | Directed control-flow edges represented as first-class pko:Transition instances with fromStep/toStep and next/alternative/fallback semantics. | — |
 | Name | Computed as the from step, followed by “ -> ”, followed by the to step. | _Human-readable calculated display alias for the StepTransitions row._ |
@@ -355,6 +368,11 @@ _A canonical Effortless Rulebook profile aligned to the Procedural Knowledge Ont
 | Target Carries Blocking Control | True when the target blocking requirement count is greater than 0. | _Whether the destination step of this transition carries at least one blocking control._ |
 | Is Unrehearsed Control Entry | True when all of the following hold: the unwalked recovery path flag is set and the target carries blocking control flag is set. | _A recovery path that has never been traversed and that leads into a step carrying a blocking control._ |
 | Unrehearsed Control Version Key | Determined by priority: the procedure version if the unrehearsed control entry flag is set; in all other cases, an empty string. | _Composite-key echo: this transition's procedure version when it is an unrehearsed control entry, blank otherwise._ |
+| Leads to Closure | A defined attribute. | _Transitive closure of the step graph (FromStep -> ToStep over every transition kind), materialized by each substrate as vw_step_transitions_closure: every (from, to) pair a procedure can lead to in one or more transitions. A step that lies on a cycle reaches itself._ |
+| From Step is Human Approval Gate | True when the linked from step is a human approval gate. | _This transition leaves a human approval gate._ |
+| To Step is Human Approval Gate | True when the linked to step is a human approval gate. | _This transition enters a human approval gate._ |
+| Avoids Human Approval Gate | True when all of the following hold: the from step is human approval gate flag is not set and the to step is human approval gate flag is not set. | _Neither end of this transition is a human approval gate, so a route made only of such transitions never passes a gate._ |
+| Leads Without Human Gate Closure | A defined attribute. | _Transitive closure of the step graph over only the transitions that avoid every human approval gate, materialized as vw_step_transitions_closure_where_avoids_human_approval_gate: every (from, to) pair a procedure can reach without passing a gate._ |
 | Semantic Type Iri | A defined attribute. | _Exact PKO class IRI._ |
 | **Action** | Human actions required by steps. Maps to pko:Action and pko:requiresAction. | — |
 | Name | The same as its label. | _Human-readable calculated display alias for the Actions row._ |
@@ -2077,6 +2095,29 @@ _A canonical Effortless Rulebook profile aligned to the Procedural Knowledge Ont
 - a **field disagreement** may reference one **rulebook field**
 - a **cell disagreement** may reference one **field disagreement**
 
+## 2b Reachability Rules
+
+_A reachability rule is a transitive closure: relationships that hold not only
+directly but through any chain of the same relationship. The asserted edges are
+the single source of truth; the inferred edges are necessary consequences of them._
+
+- **Leads to Closure** — one step transition is reachable from another by the **leads to** relationship
+  when the second can be reached from the first by following one or more **leads to** edges
+  (from its from step to its to step), whether directly asserted or reached transitively.
+  - An edge is **asserted** when it exists directly in the step transitions; it is **inferred**
+    when no direct edge states it but it follows from a chain of asserted edges.
+  - The **hop distance** of a reachable pair is the length of the shortest such chain
+    (1 for a directly-asserted edge).
+  - _Transitive closure of the step graph (FromStep -> ToStep over every transition kind), materialized by each substrate as vw_step_transitions_closure: every (from, to) pair a procedure can lead to in one or more transitions. A step that lies on a cycle reaches itself._
+- **Leads Without Human Gate Closure** — one step transition is reachable from another by the **leads without human gate** relationship
+  when the second can be reached from the first by following one or more **leads without human gate** edges
+  (from its from step to its to step), whether directly asserted or reached transitively.
+  - An edge is **asserted** when it exists directly in the step transitions; it is **inferred**
+    when no direct edge states it but it follows from a chain of asserted edges.
+  - The **hop distance** of a reachable pair is the length of the shortest such chain
+    (1 for a directly-asserted edge).
+  - _Transitive closure of the step graph over only the transitions that avoid every human approval gate, materialized as vw_step_transitions_closure_where_avoids_human_approval_gate: every (from, to) pair a procedure can reach without passing a gate._
+
 ## 3 Operative Rules
 
 _Operative rules state what the business **obliges**, **prohibits**, or
@@ -2264,931 +2305,947 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-158 Mining Run Count** | A procedure version's mining run count is the number of process mining runs related to the procedure version. |
 | **DR-159 Drifted Mining Run Count** | A procedure version's drifted mining run count is the number of process mining runs related to the procedure version. |
 | **DR-160 Has Unresolved Mining Drift** | A procedure version is considered to have an unresolved mining drift if the drifted mining run count is greater than 0. |
-| **DR-161 Name** | A procedure version link's name is computed as the previous procedure version, followed by “ -> ”, followed by the next procedure version. |
-| **DR-162 Superseded Version Key** | The procedure version link's superseded version key is determined by the following priority:<br>1. the previous procedure version, if the relation iri is “https://w3id.org/pko#nextVersion”;<br>2. in all other cases, an empty string. |
-| **DR-163 Name** | A procedure status change's name is computed as the procedure version, followed by “: ”, followed by the from status, followed by “ -> ”, followed by the to status. |
-| **DR-164 Name** | A step's name is computed as the step number, followed by “. ”, followed by the title. |
-| **DR-165 Assigned Role Label** | A step's assigned role label — taken from the linked assigned role. |
-| **DR-166 Assigned Agent Kind** | A step's assigned agent kind is the current agent kind of the step's assigned role. |
-| **DR-167 Blocking Requirement Count** | A step's blocking requirement count is the number of step requirements related to the step. |
-| **DR-168 Stale Binding Count** | A step's stale binding count is the number of operational bindings related to the step. |
-| **DR-169 Authoritative Stale Count** | A step's authoritative stale count is the number of operational bindings related to the step. |
-| **DR-170 Available Exception Count** | A step's available exception count is the number of exceptions related to the step. |
-| **DR-171 Declared Verification Count** | A step's declared verification count is the number of step verifications related to the step. |
-| **DR-172 Is Preparation Step** | A step is considered a preparation step if at least one of the following holds: the assigned role is “finance-analyst” or the assigned role is “variance-review-agent”. |
-| **DR-173 Is Approval Step** | A step is considered an approval step if at least one of the following holds: the assigned role is “controller” or the assigned role is “cfo”. |
-| **DR-174 Stale Authoritative Binding Count** | A step's stale authoritative binding count is the number of operational bindings related to the step. |
-| **DR-175 Inputs are Fresh** | A step is considered to input are fresh if the stale authoritative binding count is 0. |
-| **DR-176 Is Software Assigned** | A step is considered software-assigned if at least one of the following holds: the assigned agent kind is “AIAgent” or the assigned agent kind is “AutomatedPipeline”. |
-| **DR-177 Is Human Approval Gate** | A step is considered a human approval gate if all of the following hold: the software assigned flag is not set and at least one of the following holds: the step ID is “policy-05” or the step ID is “close-06”. |
-| **DR-178 Gate Held by Human** | A step is flagged gate held by human if all of the following hold: the human approval gate flag is set and the assigned agent kind is “Human”. |
-| **DR-179 Binding Boundary Count** | A step's binding boundary count is the number of authority boundaries related to the step. |
-| **DR-180 Assigned Role is Ungoverned** | A step's assigned role is ungoverned is true when the step's assigned role is an ungoverned non human role. |
-| **DR-181 Unusable Binding Count** | A step's unusable binding count is the number of operational bindings related to the step. |
-| **DR-182 All Sources Usable** | A step is flagged all sources usable if the unusable binding count is 0. |
-| **DR-183 Unwarranted Boundary Count** | A step's unwarranted boundary count is the number of authority boundaries related to the step. |
-| **DR-184 Is Governed by Unwarranted Boundary** | A step is considered governed-by-unwarranted-boundary if the unwarranted boundary count is greater than 0. |
-| **DR-185 Software Execution Count** | A step's software execution count is the number of step executions related to the step. |
-| **DR-186 Has Been Approached by Software** | A step is considered to have a been approached by software if the software execution count is greater than 0. |
-| **DR-187 Is Unexercised Human Gate** | A step is considered an unexercised human gate if all of the following hold: the human approval gate flag is set and the been approached by software flag is not set. |
-| **DR-188 Is Demonstrated Human Gate** | A step is considered a demonstrated human gate if all of the following hold: the human approval gate flag is set; the been approached by software flag is set; and the gate held by human flag is set. |
-| **DR-189 Unexercised Gate Version Key** | The step's unexercised gate version key is determined by the following priority:<br>1. the procedure version, if the unexercised human gate flag is set;<br>2. in all other cases, an empty string. |
-| **DR-190 Has Declared Control Kind** | A step is considered to have a declared control kind if the control kind has a value. |
-| **DR-191 Undeclared Control Version Key** | The step's undeclared control version key is determined by the following priority:<br>1. an empty string, if the declared control kind flag is set;<br>2. in all other cases, the procedure version. |
-| **DR-192 Approval Step is Software Assigned** | A step is flagged approval step is software assigned if all of the following hold: the control kind is “Approval” and the software assigned flag is set. |
-| **DR-193 Unwitnessed Blocking Count** | A step's unwitnessed blocking count is the number of step requirements related to the step. |
-| **DR-194 Name** | A step transition's name is computed as the from step, followed by “ -> ”, followed by the to step. |
-| **DR-195 Is Recovery Path** | A step transition is considered a recovery path if at least one of the following holds: the transition kind is “Fallback” or the transition kind is “Alternative”. |
-| **DR-196 Count of From Step Executions** | A step transition's count of from step executions is the number of step executions related to the step transition. |
-| **DR-197 Count of to Step Executions** | A step transition's count of to step executions is the number of step executions related to the step transition. |
-| **DR-198 Has Reachable Origin** | A step transition is considered to have a reachable origin if the count of from step executions is greater than 0. |
-| **DR-199 Has Reachable Target** | A step transition is considered to have a reachable target if the count of to step executions is greater than 0. |
-| **DR-200 Is Never Exercised** | A step transition is considered never-exercised if it is not the case that all of the following hold: the reachable origin flag is set and the reachable target flag is set. |
-| **DR-201 Is Untested Recovery Path** | A step transition is considered an untested recovery path if all of the following hold: the recovery path flag is set and the never exercised flag is set. |
-| **DR-202 Count of Observed Traversals** | A step transition's count of observed traversals is the number of observed transitions related to the step transition. |
-| **DR-203 Has Been Traversed** | A step transition is considered to have been traversed if the count of observed traversals is greater than 0. |
-| **DR-204 Is Unwalked Recovery Path** | A step transition is considered an unwalked recovery path if all of the following hold: the recovery path flag is set and the been traversed flag is not set. |
-| **DR-205 Target Blocking Requirement Count** | A step transition's target blocking requirement count — taken from the linked to step. |
-| **DR-206 Target Carries Blocking Control** | A step transition is flagged target carries blocking control if the target blocking requirement count is greater than 0. |
-| **DR-207 Is Unrehearsed Control Entry** | A step transition is considered unrehearsed-control-entry if all of the following hold: the unwalked recovery path flag is set and the target carries blocking control flag is set. |
-| **DR-208 Unrehearsed Control Version Key** | The step transition's unrehearsed control version key is determined by the following priority:<br>1. the procedure version, if the unrehearsed control entry flag is set;<br>2. in all other cases, an empty string. |
-| **DR-209 Name** | An action's name is the same as its label. |
-| **DR-210 Name** | A function's name is the same as its label. |
-| **DR-211 Name** | A tool's name is the same as its label. |
-| **DR-212 Name** | A step action's name is computed as the step, followed by “ / ”, followed by the action. |
-| **DR-213 Name** | A step function's name is computed as the step, followed by “ / ”, followed by the function. |
-| **DR-214 Name** | A step tool's name is computed as the step, followed by “ / ”, followed by the tool. |
-| **DR-215 Name** | A requirement's name is the same as its label. |
-| **DR-216 Satisfaction Record Count** | A requirement's satisfaction record count is the number of requirement satisfactions related to the requirement. |
-| **DR-217 Step Binding Count** | A requirement's step binding count is the number of step requirements related to the requirement. |
-| **DR-218 Is Bound to Any Step** | A requirement is considered a bound to any step if the step binding count is greater than 0. |
-| **DR-219 Has Ever Been Evaluated** | A requirement is considered to have ever been evaluated if the satisfaction record count is greater than 0. |
-| **DR-220 Negative Outcome Count** | A requirement's negative outcome count is the number of requirement satisfactions related to the requirement. |
-| **DR-221 Is Inoperative Control** | A requirement is considered an inoperative control if all of the following hold: the blocking flag is set; the bound to any step flag is set; and the ever been evaluated flag is not set. |
-| **DR-222 Is Decorative Control** | A requirement is considered a decorative control if all of the following hold: the blocking flag is set and the bound to any step flag is not set. |
-| **DR-223 Has Ever Produced Negative** | A requirement is considered to have ever produced negative if the negative outcome count is greater than 0. |
-| **DR-224 Is Unfalsified Control** | A requirement is considered an unfalsified control if all of the following hold: the blocking flag is set; the ever been evaluated flag is set; and the ever produced negative flag is not set. |
-| **DR-225 Claims a Witness Field** | A requirement is considered to claim a witness field if the witness field name has a value. |
-| **DR-226 Named Witness Field Exists** | A requirement's named witness field exists is true when the requirement's witness field name is derived. |
-| **DR-227 Derived Has Computed Witness** | A requirement is flagged derived has computed witness if all of the following hold: the claims a witness field flag is set and the named witness field exists flag is set. |
-| **DR-228 Witness Claim is Unverified** | A requirement is considered to witnes claim is unverified if it is not the case that the has computed witness is the derived has computed witness. |
-| **DR-229 Is Unwitnessed Blocking Control** | A requirement is considered an unwitnessed blocking control if all of the following hold: the blocking flag is set and the derived has computed witness flag is not set. |
-| **DR-230 Witness Fire Count** | A requirement's witness fire count is the same as its negative outcome count. |
-| **DR-231 Witness Has Never Fired** | A requirement is considered to witnes has never fired if all of the following hold: the computed witness flag is set and the witness fire count is 0. |
-| **DR-232 Evaluation Sample Size** | A requirement's evaluation sample size is the same as its satisfaction record count. |
-| **DR-233 Has Meaningful Sample** | A requirement is considered to have a meaningful sample if the evaluation sample size is at least the minimum sample for assurance. |
-| **DR-234 Is Untested Witness** | A requirement is considered an untested witness if all of the following hold: the witness has never fired flag is set and the meaningful sample flag is not set. |
-| **DR-235 Is Evidenced Holding Control** | A requirement is considered an evidenced holding control if all of the following hold: the witness has never fired flag is set and the meaningful sample flag is set. |
-| **DR-236 Control Assurance State** | The requirement's control assurance state is determined by the following priority:<br>1. “Decorative”, if the bound to any step flag is not set;<br>2. “Inoperative”, if the ever been evaluated flag is not set;<br>3. “Asserted”, if the computed witness flag is not set;<br>4. “Demonstrated”, if the witness fire count is greater than 0;<br>5. “Holding”, if the meaningful sample flag is set;<br>6. in all other cases, “Untested”. |
-| **DR-237 Unexercised Binding Count** | A requirement's unexercised binding count is the number of step requirements related to the requirement. |
-| **DR-238 Witness is Partially Scoped** | A requirement is considered to witnes is partially scoped if all of the following hold: the computed witness flag is set and the unexercised binding count is greater than 0. |
-| **DR-239 Accountable Agent** | A requirement's accountable agent is the current agent of the requirement's accountable role. |
-| **DR-240 Has Named Owner** | A requirement is considered to have a named owner if the accountable role has a value. |
-| **DR-241 Is Orphaned Blocking Control** | A requirement is considered an orphaned blocking control if all of the following hold: the blocking flag is set and the named owner flag is not set. |
-| **DR-242 Is Unwatched and Unowned** | A requirement is considered unwatched-and-unowned if all of the following hold: the blocking flag is set; the computed witness flag is not set; and the named owner flag is not set. |
-| **DR-243 Attestation Exposure Note** | The requirement's attestation exposure note is determined by the following priority:<br>1. an empty string, if the blocking flag is not set;<br>2. “Unwatched and unowned: exposure defaults to the signatory.”, if the unwatched and unowned flag is set;<br>3. “Witnessed but unowned: no named accountability.”, if the orphaned blocking control flag is set;<br>4. “Owned but unwitnessed: rests on human judgement.”, if the computed witness flag is not set;<br>5. in all other cases, an empty string. |
-| **DR-244 Unwatched Unowned Flag** | The requirement's unwatched unowned flag is determined by the following priority:<br>1. “unwatched-unowned”, if the unwatched and unowned flag is set;<br>2. in all other cases, an empty string. |
-| **DR-245 Uses Controlled Vocabulary** | A requirement is considered to use controlled vocabulary if the controlled term has a value. |
-| **DR-246 Name** | A step requirement's name is computed as the step, followed by “ / ”, followed by the requirement. |
-| **DR-247 Requirement is Blocking** | A step requirement's requirement is blocking when the linked requirement is blocking. |
-| **DR-248 Blocking Step Key** | The step requirement's blocking step key is determined by the following priority:<br>1. the step, if the requirement is blocking flag is set;<br>2. in all other cases, an empty string. |
-| **DR-249 Step When Blocking** | The step requirement's step when blocking is determined by the following priority:<br>1. the step, if the requirement is blocking flag is set;<br>2. in all other cases, an empty string. |
-| **DR-250 Requirement Lacks Witness** | A step requirement's requirement lacks witness is true when the step requirement's requirement is an unwitnessed blocking control. |
-| **DR-251 Unwitnessed Step Key** | The step requirement's unwitnessed step key is determined by the following priority:<br>1. the step, if the requirement lacks witness flag is set;<br>2. in all other cases, an empty string. |
-| **DR-252 Satisfaction Count for Binding** | A step requirement's satisfaction count for binding is the number of requirement satisfactions related to the step requirement. |
-| **DR-253 Binding Was Ever Exercised** | A step requirement is flagged binding was ever exercised if the satisfaction count for binding is greater than 0. |
-| **DR-254 Is Unexercised Blocking Binding** | A step requirement is considered unexercised-blocking-binding if all of the following hold: the requirement is blocking flag is set and the binding was ever exercised flag is not set. |
-| **DR-255 Unexercised Binding Requirement Key** | The step requirement's unexercised binding requirement key is determined by the following priority:<br>1. the requirement, if the unexercised blocking binding flag is set;<br>2. in all other cases, an empty string. |
-| **DR-256 Name** | A step verification's name is computed as the step, followed by “ / ”, followed by the verification kind. |
-| **DR-257 Name** | A rationale's name is the same as its title. |
-| **DR-258 Name** | An exception's name is the same as its condition. |
-| **DR-259 Active Exception Step Key** | The exception's active exception step key is determined by the following priority:<br>1. the trigger step, if the status is “Active”;<br>2. in all other cases, an empty string. |
-| **DR-260 Name** | A resource's name is the same as its title. |
-| **DR-261 Is Approved Source** | A resource is considered an approved source if the approval status is “Approved”. |
-| **DR-262 Name** | A procedure resource's name is computed as the procedure version, followed by “ / ”, followed by the resource. |
-| **DR-263 Relation Iri** | The procedure resource's relation iri is determined by the following priority:<br>1. “https://w3id.org/pko#wasExtractedFrom”, if the relation is “wasExtractedFrom”;<br>2. in all other cases, “http://purl.org/dc/terms/references”. |
-| **DR-264 Name** | An elicitation session's name is computed as the method, followed by “ / ”, followed by the started at. |
-| **DR-265 As of Instant** | An elicitation session's as of instant — taken from the linked evaluation context. |
-| **DR-266 Days Since Elicited** | An elicitation session's days since elicited is computed as the number of days from the ended at to the as of instant. |
-| **DR-267 Is Single Witness Method** | An elicitation session is considered a single witness method if at least one of the following holds: the method is “Shadowing” or the method is “PractitionerInterview”. |
-| **DR-268 Practitioner is Still Engaged** | An elicitation session's practitioner is still engaged when the linked practitioner agent is still engaged. |
-| **DR-269 Valid Fragments Produced** | An elicitation session's valid fragments produced is the number of knowledge fragments related to the elicitation session. |
-| **DR-270 Is High Yield Session** | An elicitation session is considered a high yield session if the valid fragments produced is at least 3. |
-| **DR-271 Is Concentrated Single Witness** | An elicitation session is considered a concentrated single witness if all of the following hold: the single witness method flag is set and the high yield session flag is set. |
-| **DR-272 Is Stale Concentrated Witness** | An elicitation session is considered a stale concentrated witness if all of the following hold: the concentrated single witness flag is set and the days since elicited is greater than 180. |
-| **DR-273 Concentrated Session Version Key** | The elicitation session's concentrated session version key is determined by the following priority:<br>1. the procedure version, if the concentrated single witness flag is set;<br>2. in all other cases, an empty string. |
-| **DR-274 Name** | A knowledge fragment's name is computed as the knowledge form, followed by “: ”, followed by the first 60 character(s) of the statement. |
-| **DR-275 As of Instant** | A knowledge fragment's as of instant — taken from the linked evaluation context. |
-| **DR-276 Is Currently Valid** | A knowledge fragment is considered currently-valid if all of the following hold: the valid from is at most the as of instant; at least one of the following holds: the valid to is blank or the valid to is greater than the as of instant; and the status is “Approved”. |
-| **DR-277 Source Agent is Still Engaged** | A knowledge fragment's source agent is still engaged when the linked source agent is still engaged. |
-| **DR-278 Source Agent Kind** | A knowledge fragment's source agent kind — taken from the linked source agent. |
-| **DR-279 Has Human Source** | A knowledge fragment is considered to have a human source if the source agent kind is “Human”. |
-| **DR-280 Has Orphaned Provenance** | A knowledge fragment is considered to have an orphaned provenance if all of the following hold: the currently valid flag is set and the source agent is still engaged flag is not set. |
-| **DR-281 Is Undefendable Tacit Claim** | A knowledge fragment is considered an undefendable tacit claim if all of the following hold: the orphaned provenance flag is set and at least one of the following holds: the knowledge form is “Tacit” or the knowledge form is “SituatedJudgment”. |
-| **DR-282 Is Approved** | A knowledge fragment is considered approved if the status is “Approved”. |
-| **DR-283 Is Within Validity Window** | A knowledge fragment is considered a within validity window if all of the following hold: the valid from is at most the as of instant and at least one of the following holds: the valid to is blank or the valid to is greater than the as of instant. |
-| **DR-284 Is Relied Upon** | A knowledge fragment is considered a relied upon if all of the following hold: the step has a value and the within validity window flag is set. |
-| **DR-285 Step Procedure Version Status** | A knowledge fragment's step procedure version status — taken from the linked step. |
-| **DR-286 Is Attached to Live Version** | A knowledge fragment's is attached to live version when the linked procedure version is live. |
-| **DR-287 Is Unapproved But Relied on** | A knowledge fragment is considered an unapproved but relied on if all of the following hold: the relied upon flag is set; the attached to live version flag is set; and the approved flag is not set. |
-| **DR-288 Evidence Age Days** | A knowledge fragment's evidence age days is the days since elicited of the knowledge fragment's elicitation session. |
-| **DR-289 Has Recorded Elicitation** | A knowledge fragment is considered to have a recorded elicitation if the elicitation session has a value. |
-| **DR-290 Is From Single Witness** | A knowledge fragment's is from single witness is true when the knowledge fragment's elicitation session is a single witness method. |
-| **DR-291 Evidence Expiry Days** | The knowledge fragment's evidence expiry days is determined by the following priority:<br>1. 180, if the from single witness flag is set;<br>2. in all other cases, 365. |
-| **DR-292 Evidence Has Expired** | A knowledge fragment is flagged evidence has expired if all of the following hold: the recorded elicitation flag is set and the evidence age days is greater than the evidence expiry days. |
-| **DR-293 Owner Agent** | A knowledge fragment's owner agent is the current agent of the knowledge fragment's owner role. |
-| **DR-294 Is Awaiting Approval** | A knowledge fragment is considered an awaiting approval if the status is “Reviewed”. |
-| **DR-295 Owner is Me** | A knowledge fragment is flagged owner is me if the owner role is “hr-policy-owner”. |
-| **DR-296 Is My Unfinished Approval** | A knowledge fragment is considered a my unfinished approval if all of the following hold: the owner is me flag is set and the awaiting approval flag is set. |
-| **DR-297 Is Invoked by an Exception** | A knowledge fragment's is invoked by an exception is the number of exceptions related to the knowledge fragment. |
-| **DR-298 Has Operational Reliance** | A knowledge fragment is considered to have an operational reliance if the is invoked by an exception is greater than 0. |
-| **DR-299 Is Unapproved and Operationally Live** | A knowledge fragment is considered unapproved-and-operationally-live if all of the following hold: the my unfinished approval flag is set and the operational reliance flag is set. |
-| **DR-300 Age Days** | A knowledge fragment's age days is computed as the number of days from the valid from to the as of instant. |
-| **DR-301 Is Low Confidence** | A knowledge fragment is considered a low confidence if at least one of the following holds: the confidence is “Medium” or the confidence is “Low”. |
-| **DR-302 Owning Version Cadence Days** | A knowledge fragment's owning version cadence days is the steward review cadence days of the knowledge fragment's procedure version. |
-| **DR-303 Exceeds Owning Cadence** | A knowledge fragment is considered to exceed an owning cadence if the age days is greater than the owning version cadence days. |
-| **DR-304 Is Aging Low Confidence Claim** | A knowledge fragment is considered an aging low confidence claim if all of the following hold: the exceeds owning cadence flag is set and the low confidence flag is set. |
-| **DR-305 Owner Role Agent Kind** | A knowledge fragment's owner role agent kind is the current agent kind of the knowledge fragment's owner role. |
-| **DR-306 Is Human Owned** | A knowledge fragment is considered human-owned if the owner role agent kind is “Human”. |
-| **DR-307 Is Ai Validated by Ai** | A knowledge fragment is considered an ai validated by ai if all of the following hold: it is not the case that the source agent kind is “Human” and the human owned flag is not set. |
-| **DR-308 Review Cadence Days** | A knowledge fragment's review cadence days is the steward review cadence days of the knowledge fragment's procedure version. |
-| **DR-309 Is Overdue for Review** | A knowledge fragment is considered an overdue for review if all of the following hold: the currently valid flag is set and the age days is greater than the review cadence days. |
-| **DR-310 Predates Current Role Holder** | A knowledge fragment is considered to predate a current role holder if all of the following hold: the owner role agent kind has a value and the valid from is less than the owner role assignment valid from. |
-| **DR-311 Owner Role Assignment Valid From** | A knowledge fragment's owner role assignment valid from is the current assignment valid from of the knowledge fragment's owner role. |
-| **DR-312 Fragility Signal Count** | A knowledge fragment's fragility signal count is computed as the count of the following that hold: the from single witness flag is set; the overdue for review flag is set; the low confidence flag is set; and the operational reliance flag is set. |
-| **DR-313 Is Compound Fragile** | A knowledge fragment is considered a compound fragile if the fragility signal count is at least 3. |
-| **DR-314 Is Single Point of Failure** | A knowledge fragment is considered a single point of failure if all of the following hold: the from single witness flag is set and the operational reliance flag is set. |
-| **DR-315 Is Expiring Single Point of Failure** | A knowledge fragment is considered an expiring single point of failure if all of the following hold: the single point of failure flag is set and the overdue for review flag is set. |
-| **DR-316 Compound Fragile Version Key** | The knowledge fragment's compound fragile version key is determined by the following priority:<br>1. the procedure version, if the compound fragile flag is set;<br>2. in all other cases, an empty string. |
-| **DR-317 Valid Fragment Session Key** | The knowledge fragment's valid fragment session key is determined by the following priority:<br>1. the elicitation session, if the currently valid flag is set;<br>2. in all other cases, an empty string. |
-| **DR-318 Consuming Step is Software Assigned** | A knowledge fragment's consuming step is software assigned when the linked step is software assigned. |
-| **DR-319 Consuming Step Agent Kind** | A knowledge fragment's consuming step agent kind is the assigned agent kind of the knowledge fragment's step. |
-| **DR-320 Is Unapproved and Machine Consumed** | A knowledge fragment is considered unapproved-and-machine-consumed if all of the following hold: the unapproved but relied on flag is set and the consuming step is software assigned flag is set. |
-| **DR-321 Is Unapproved and Human Consumed** | A knowledge fragment is considered unapproved-and-human-consumed if all of the following hold: the unapproved but relied on flag is set and the consuming step is software assigned flag is not set. |
-| **DR-322 Machine Consumed Unapproved Version Key** | The knowledge fragment's machine consumed unapproved version key is determined by the following priority:<br>1. the procedure version, if the unapproved and machine consumed flag is set;<br>2. in all other cases, an empty string. |
-| **DR-323 Has Review Record** | A knowledge fragment is considered to have a review record if the last reviewed at has a value. |
-| **DR-324 Days Since Actual Review** | The knowledge fragment's days since actual review is determined by the following priority:<br>1. the number of days from the last reviewed at to the as of instant, if the review record flag is set;<br>2. in all other cases, 0. |
-| **DR-325 Is Unreviewed Since Authoring** | A knowledge fragment is considered unreviewed-since-authoring if all of the following hold: the currently valid flag is set and the review record flag is not set. |
-| **DR-326 Is Genuinely Overdue** | A knowledge fragment is considered a genuinely overdue if all of the following hold: the currently valid flag is set; the review record flag is set; and the days since actual review is greater than the review cadence days. |
-| **DR-327 Review Recency is Inferred** | A knowledge fragment is flagged review recency is inferred if all of the following hold: the overdue for review flag is set and the review record flag is not set. |
-| **DR-328 Inference Disagrees With Record** | A knowledge fragment is flagged inference disagrees with record if all of the following hold: the review record flag is set; the overdue for review flag is set; and the genuinely overdue flag is not set. |
-| **DR-329 Genuinely Overdue Version Key** | The knowledge fragment's genuinely overdue version key is determined by the following priority:<br>1. the procedure version, if the genuinely overdue flag is set;<br>2. in all other cases, an empty string. |
-| **DR-330 Ratified Boundary Count** | A knowledge fragment's ratified boundary count is the number of authority boundaries related to the knowledge fragment. |
-| **DR-331 Reliance Surface Count** | A knowledge fragment's reliance surface count is computed as the is invoked by an exception plus the ratified boundary count. |
-| **DR-332 Days Awaiting My Approval** | The knowledge fragment's days awaiting my approval is determined by the following priority:<br>1. the number of days from the valid from to the as of instant, if the my unfinished approval flag is set;<br>2. in all other cases, 0. |
-| **DR-333 Is High Blast Radius Unapproved** | A knowledge fragment is considered high-blast-radius-unapproved if all of the following hold: the unapproved and operationally live flag is set and the reliance surface count is greater than 1. |
-| **DR-334 Is Long Unapproved** | A knowledge fragment is considered long-unapproved if all of the following hold: the my unfinished approval flag is set and the days awaiting my approval is greater than 30. |
-| **DR-335 Unapproved Load Bearing Version Key** | The knowledge fragment's unapproved load bearing version key is determined by the following priority:<br>1. the procedure version, if the high blast radius unapproved flag is set;<br>2. in all other cases, an empty string. |
-| **DR-336 Owner Role is Vacated** | A knowledge fragment's owner role is vacated when the linked owner role is a vacated role. |
-| **DR-337 Is Orphaned by Role** | A knowledge fragment is considered an orphaned by role if all of the following hold: the currently valid flag is set and the owner role is vacated flag is set. |
-| **DR-338 Valid Fragment Version Key** | The knowledge fragment's valid fragment version key is determined by the following priority:<br>1. the procedure version, if the currently valid flag is set;<br>2. in all other cases, an empty string. |
-| **DR-339 Name** | A knowledge gap's name is computed as the severity, followed by “: ”, followed by the first 60 character(s) of the statement. |
-| **DR-340 Is Open** | A knowledge gap is considered open if at least one of the following holds: the status is “Open” or the status is “Investigating”. |
-| **DR-341 Open Gap Version Key** | The knowledge gap's open gap version key is determined by the following priority:<br>1. the procedure version, if all of the following hold: the open flag is set and the severity is “High”;<br>2. in all other cases, an empty string. |
-| **DR-342 Is Blocking** | A knowledge gap is considered blocking if the blocking kind is “Blocking”. |
-| **DR-343 Is Open and Blocking** | A knowledge gap is considered open-and-blocking if all of the following hold: the open flag is set and the blocking flag is set. |
-| **DR-344 As of Instant** | A knowledge gap's as of instant — taken from the linked evaluation context. |
-| **DR-345 Days Open** | The knowledge gap's days open is determined by the following priority:<br>1. the number of days from the identified at to the as of instant, if the open flag is set;<br>2. in all other cases, 0. |
-| **DR-346 Tolerance Days** | The knowledge gap's tolerance days is determined by the following priority:<br>1. 30, if the severity is “High”;<br>2. 90, if the severity is “Medium”;<br>3. in all other cases, 180. |
-| **DR-347 Is Overdue Gap** | A knowledge gap is considered an overdue gap if the days open is greater than the tolerance days. |
-| **DR-348 Owner Agent** | A knowledge gap's owner agent is the current agent of the knowledge gap's owner role. |
-| **DR-349 Owner is Still Engaged** | A knowledge gap's owner is still engaged when the linked owner agent is still engaged. |
-| **DR-350 Has Resolution Plan** | A knowledge gap is considered to have a resolution plan if the resolution plan has a value. |
-| **DR-351 Is Abandoned Unknown** | A knowledge gap is considered an abandoned unknown if all of the following hold: the overdue gap flag is set and at least one of the following holds: the resolution plan flag is not set or the owner is still engaged flag is not set. |
-| **DR-352 Open Blocking Gap Version Key** | The knowledge gap's open blocking gap version key is determined by the following priority:<br>1. the procedure version, if the open and blocking flag is set;<br>2. in all other cases, an empty string. |
-| **DR-353 Owner Role is Vacated** | A knowledge gap's owner role is vacated when the linked owner role is a vacated role. |
-| **DR-354 Is Ownerless Open Gap** | A knowledge gap is considered an ownerless open gap if all of the following hold: the open flag is set and the owner role is vacated flag is set. |
-| **DR-355 Name** | An FA q's name is the same as its question. |
-| **DR-356 Name** | An explanation's name is the same as its title. |
-| **DR-357 Name** | A procedure execution's name is computed as the procedure version, followed by “ / ”, followed by the context. |
-| **DR-358 Expected Step Count** | A procedure execution's expected step count is the specified step count of the procedure execution's procedure version. |
-| **DR-359 Completed Step Count** | A procedure execution's completed step count is the number of step executions related to the procedure execution. |
-| **DR-360 Control Breach Count** | A procedure execution's control breach count is the number of step executions related to the procedure execution. |
-| **DR-361 Late Step Count** | A procedure execution's late step count is the number of step executions related to the procedure execution. |
-| **DR-362 Is Structurally Complete** | A procedure execution is considered a structurally complete if the completed step count is at least the expected step count. |
-| **DR-363 Diverged From Specification** | A procedure execution is flagged diverged from specification if at least one of the following holds: the structurally complete flag is not set or the control breach count is greater than 0. |
-| **DR-364 All Blocking Controls Evaluated** | A procedure execution is flagged all blocking controls evaluated if the unevaluated blocking total is 0. |
-| **DR-365 Unevaluated Blocking Total** | A procedure execution's unevaluated blocking total is the number of step executions related to the procedure execution. |
-| **DR-366 Separation of Duties Held** | A procedure execution is flagged separation of duties held if the separation violation count is 0. |
-| **DR-367 Separation Violation Count** | A procedure execution's separation violation count is the number of step executions related to the procedure execution. |
-| **DR-368 Is Attestation Ready** | A procedure execution is considered attestation-ready if all of the following hold: the structurally complete flag is set; the diverged from specification flag is not set; the all blocking controls evaluated flag is set; and the separation of duties held flag is set. |
-| **DR-369 Attestation Blocker Summary** | The procedure execution's attestation blocker summary is determined by the following priority:<br>1. an empty string, if the attestation ready flag is set;<br>2. “Incomplete: specified steps did not all complete.”, if the structurally complete flag is not set;<br>3. “Segregation of duties violated.”, if the separation violation count is greater than 0;<br>4. “Blocking controls were never evaluated.”, if the unevaluated blocking total is greater than 0;<br>5. in all other cases, “Control breach recorded on one or more steps.”. |
-| **DR-370 Executed Version is Fit** | A procedure execution's executed version is fit is true when the procedure execution's procedure version is a fit to execute. |
-| **DR-371 Signed Against Unfit Version** | A procedure execution is flagged signed against unfit version if all of the following hold: the execution status is “Completed” and the executed version is fit flag is not set. |
-| **DR-372 Asserted Only Control Count** | A procedure execution's asserted only control count is the number of requirement satisfactions related to the procedure execution. |
-| **DR-373 Assurance is Mostly Asserted** | A procedure execution is flagged assurance is mostly asserted if the asserted only control count is greater than 0. |
-| **DR-374 Unreachable Handling Failure Count** | A procedure execution's unreachable handling failure count is the number of message deliveries related to the procedure execution. |
-| **DR-375 Retention Breach Count** | A procedure execution's retention breach count is the number of message deliveries related to the procedure execution. |
-| **DR-376 Cleared Legal Review Count** | A procedure execution's cleared legal review count is the number of step executions related to the procedure execution. |
-| **DR-377 Has Cleared Legal Review** | A procedure execution is considered to have a cleared legal review if the cleared legal review count is greater than 0. |
-| **DR-378 Abandoned Failure Count** | A procedure execution's abandoned failure count is the number of message deliveries related to the procedure execution. |
-| **DR-379 Delivered Count** | A procedure execution's delivered count is the number of message deliveries related to the procedure execution. |
-| **DR-380 Total Delivery Attempt Count** | A procedure execution's total delivery attempt count is the number of message deliveries related to the procedure execution. |
-| **DR-381 Has Abandoned Failures** | A procedure execution is considered to have an abandoned failures if the abandoned failure count is greater than 0. |
-| **DR-382 Mishandled Refusal Count** | A procedure execution's mishandled refusal count is the number of send intents related to the procedure execution. |
-| **DR-383 Unclean Step Count** | A procedure execution's unclean step count is the number of step executions related to the procedure execution. |
-| **DR-384 Ran Clean** | A procedure execution is flagged ran clean if the unclean step count is 0. |
-| **DR-385 Count of Approval Executions** | A procedure execution's count of approval executions is the number of step executions related to the procedure execution. |
-| **DR-386 Has Human Approval** | A procedure execution is considered to have a human approval if the count of approval executions is greater than 0. |
-| **DR-387 Count of Delivery Executions** | A procedure execution's count of delivery executions is the number of step executions related to the procedure execution. |
-| **DR-388 Has Delivered** | A procedure execution is considered to have delivered if the count of delivery executions is greater than 0. |
-| **DR-389 Delivered Without Approval** | A procedure execution is flagged delivered without approval if all of the following hold: the delivered flag is set and the human approval flag is not set. |
-| **DR-390 Invalid Approval Count** | A procedure execution's invalid approval count is the number of requirement satisfactions related to the procedure execution. |
-| **DR-391 Approval Chain is Complete** | A procedure execution is flagged approval chain is complete if the invalid approval count is 0. |
-| **DR-392 Vacuously Clean Step Count** | A procedure execution's vacuously clean step count is the number of step executions related to the procedure execution. |
-| **DR-393 Preparation Step Count** | A procedure execution's preparation step count is the number of step executions related to the procedure execution. |
-| **DR-394 Approval Step Count** | A procedure execution's approval step count is the number of step executions related to the procedure execution. |
-| **DR-395 Separation Was Testable** | A procedure execution is flagged separation was testable if all of the following hold: the preparation step count is greater than 0 and the approval step count is greater than 0. |
-| **DR-396 Separation Held Under Test** | A procedure execution is flagged separation held under test if all of the following hold: the separation was testable flag is set and the separation of duties held flag is set. |
-| **DR-397 Separation is Vacuously Green** | A procedure execution is flagged separation is vacuously green if all of the following hold: the separation of duties held flag is set and the separation was testable flag is not set. |
-| **DR-398 Separation Assurance Note** | The procedure execution's separation assurance note is determined by the following priority:<br>1. “Violated: same agent prepared and approved.”, if the separation violation count is greater than 0;<br>2. “Not tested: this run had no preparation/approval pair.”, if the separation is vacuously green flag is set;<br>3. in all other cases, “Held under test.”. |
-| **DR-399 Ungoverned Divergence Count** | A procedure execution's ungoverned divergence count is the number of step executions related to the procedure execution. |
-| **DR-400 Divergence Was Fully Governed** | A procedure execution is flagged divergence was fully governed if all of the following hold: the diverged from specification flag is set and the ungoverned divergence count is 0. |
-| **DR-401 Computedly Witnessed Control Count** | A procedure execution's computedly witnessed control count is the number of requirement satisfactions related to the procedure execution. |
-| **DR-402 Evaluated Control Count** | A procedure execution's evaluated control count is computed as the computedly witnessed control count plus the asserted only control count. |
-| **DR-403 Computed Assurance Ratio** | The procedure execution's computed assurance ratio is determined by the following priority:<br>1. 0, if the evaluated control count is 0;<br>2. in all other cases, the computedly witnessed control count divided by the evaluated control count. |
-| **DR-404 Interested Party Assertion Count** | A procedure execution's interested party assertion count is the number of requirement satisfactions related to the procedure execution. |
-| **DR-405 Assurance Grade** | The procedure execution's assurance grade is determined by the following priority:<br>1. “None: no blocking control was evaluated.”, if the evaluated control count is 0;<br>2. “Weak: at least one control rests on an interested-party assertion.”, if the interested party assertion count is greater than 0;<br>3. “Thin: most controls rest on human assertion.”, if the computed assurance ratio is less than 0.5;<br>4. “Mixed: computed and asserted controls.”, if the computed assurance ratio is less than 1;<br>5. in all other cases, “Computed: every evaluated control has a witness.”. |
-| **DR-406 Attestation Would Be Weakly Based** | A procedure execution is flagged attestation would be weakly based if all of the following hold: the attestation ready flag is set and at least one of the following holds: the interested party assertion count is greater than 0 or the computed assurance ratio is less than 0.5. |
-| **DR-407 Independent Human Observation Count** | A procedure execution's independent human observation count is the number of verification outcomes related to the procedure execution. |
-| **DR-408 Has Any Independent Observation** | A procedure execution is considered to have any independent observation if the independent human observation count is greater than 0. |
-| **DR-409 Self Attested Approval Count** | A procedure execution's self attested approval count is the number of step executions related to the procedure execution. |
-| **DR-410 Assurance Chain is Circular** | A procedure execution is flagged assurance chain is circular if all of the following hold: the self attested approval count is greater than 0 and the any independent observation flag is not set. |
-| **DR-411 Latest Attestation Instant** | A procedure execution's latest attestation instant is the largest signed at across the attestations related to the procedure execution. |
-| **DR-412 Has Been Attested** | A procedure execution is considered to have been attested if the attestation count is greater than 0. |
-| **DR-413 Attestation Count** | A procedure execution's attestation count is the number of attestations related to the procedure execution. |
-| **DR-414 Post Attestation Score Count** | A procedure execution's post attestation score count is the number of requirement satisfactions related to the procedure execution. |
-| **DR-415 Basis Changed After Signature** | A procedure execution is considered to basi a changed after signature if all of the following hold: the been attested flag is set and the post attestation score count is greater than 0. |
-| **DR-416 Requires Re Attestation** | A procedure execution is considered to require a re attestation if all of the following hold: the basis changed after signature flag is set and the attestation ready flag is not set. |
-| **DR-417 Intended Recipient Count** | A procedure execution's intended recipient count is the number of send intents related to the procedure execution. |
-| **DR-418 Reached Recipient Count** | A procedure execution's reached recipient count is the number of send intents related to the procedure execution. |
-| **DR-419 Silently Dropped Count** | A procedure execution's silently dropped count is the number of send intents related to the procedure execution. |
-| **DR-420 Delivery Yield Percent** | The procedure execution's delivery yield percent is determined by the following priority:<br>1. the reached recipient count times 100 divided by the intended recipient count, if the intended recipient count is greater than 0;<br>2. in all other cases, 0. |
-| **DR-421 Campaign Silently Lost Audience** | A procedure execution is flagged campaign silently lost audience if the silently dropped count is greater than 0. |
-| **DR-422 Unrecorded Refusal Count** | A procedure execution's unrecorded refusal count is the number of send intents related to the procedure execution. |
-| **DR-423 Has Unrecorded Refusals** | A procedure execution is considered to have an unrecorded refusals if the unrecorded refusal count is greater than 0. |
-| **DR-424 Independently Confirmed Intent Count** | A procedure execution's independently confirmed intent count is the number of send intents related to the procedure execution. |
-| **DR-425 Send Decisions are Entirely Self Witnessed** | A procedure execution is flagged send decisions are entirely self witnessed if all of the following hold: the intended recipient count is greater than 0 and the independently confirmed intent count is 0. |
-| **DR-426 Name** | A step execution's name is computed as the procedure execution, followed by “ / ”, followed by the step. |
-| **DR-427 Actual Duration Minutes** | The step execution's actual duration minutes is determined by the following priority:<br>1. 0, if the ended at is blank;<br>2. in all other cases, the number of minutes from the started at to the ended at. |
-| **DR-428 Expected Duration Minutes** | A step execution's expected duration minutes — taken from the linked step. |
-| **DR-429 Is Late** | A step execution is considered a late if the actual duration minutes is greater than the expected duration minutes. |
-| **DR-430 Blocking Unmet Count** | A step execution's blocking unmet count is the number of the step execution's requirement satisfactions that are blocking and unmets. |
-| **DR-431 Blocking Unmet Count Safe** | A step execution's blocking unmet count safe is the number of requirement satisfactions related to the step execution. |
-| **DR-432 Proceeded Past Blocking Control** | A step execution is flagged proceeded past blocking control if all of the following hold: the execution status is “Completed” and the blocking unmet count safe is greater than 0. |
-| **DR-433 Expected Blocking Count** | A step execution's expected blocking count is the blocking requirement count of the step execution's step. |
-| **DR-434 Evaluated Blocking Count** | A step execution's evaluated blocking count is the number of requirement satisfactions related to the step execution. |
-| **DR-435 Unevaluated Blocking Count** | A step execution's unevaluated blocking count is computed as the expected blocking count minus the evaluated blocking count. |
-| **DR-436 Has Unevaluated Blocking Control** | A step execution is considered to have an unevaluated blocking control if the unevaluated blocking count is greater than 0. |
-| **DR-437 Stale Authoritative Source Count** | A step execution's stale authoritative source count — taken from the linked step. |
-| **DR-438 Ran on Stale Authoritative Source** | A step execution is flagged ran on stale authoritative source if the stale authoritative source count is greater than 0. |
-| **DR-439 Has Deviation Note** | A step execution is considered to have a deviation note if the deviation has a value. |
-| **DR-440 Is Late and Unexplained** | A step execution is considered late-and-unexplained if all of the following hold: the late flag is set and the deviation note flag is not set. |
-| **DR-441 Available Exception Count for Step** | A step execution's available exception count for step — taken from the linked step. |
-| **DR-442 Had Uninvoked Exception Available** | A step execution is flagged had uninvoked exception available if all of the following hold: the late and unexplained flag is set and the available exception count for step is greater than 0. |
-| **DR-443 Expected Verification Count** | A step execution's expected verification count is the declared verification count of the step execution's step. |
-| **DR-444 Performed Verification Count** | A step execution's performed verification count is the number of verification outcomes related to the step execution. |
-| **DR-445 Skipped Verification Count** | A step execution's skipped verification count is computed as the expected verification count minus the performed verification count. |
-| **DR-446 Has Skipped Verification** | A step execution is considered to have a skipped verification if the skipped verification count is greater than 0. |
-| **DR-447 Claims Pass Without Evidence** | A step execution is considered to claim a pass without evidence if all of the following hold: the verification result is “PASS” and the skipped verification flag is set. |
-| **DR-448 Step is Preparation** | A step execution's step is preparation when the linked step is a preparation step. |
-| **DR-449 Step is Approval** | A step execution's step is approval is true when the step execution's step is an approval step. |
-| **DR-450 Preparer Agent Key** | The step execution's preparer agent key is determined by the following priority:<br>1. the procedure execution, followed by “|”, followed by the executed by agent, if the step is preparation flag is set;<br>2. in all other cases, an empty string. |
-| **DR-451 Approver Agent Key** | The step execution's approver agent key is determined by the following priority:<br>1. the procedure execution, followed by “|”, followed by the executed by agent, if the step is approval flag is set;<br>2. in all other cases, an empty string. |
-| **DR-452 Prepared by This Agent Count** | A step execution's prepared by this agent count is the number of step executions related to the step execution. |
-| **DR-453 Violates Separation of Duties** | A step execution is considered to violate a separation of duties if all of the following hold: the step is approval flag is set and the prepared by this agent count is greater than 0. |
-| **DR-454 Required Role for Step** | A step execution's required role for step is the assigned role of the step execution's step. |
-| **DR-455 Executor Role Key** | A step execution's executor role key is computed as the executed by agent, followed by “|”, followed by the required role for step. |
-| **DR-456 Executor Authority Count** | A step execution's executor authority count is the number of role assignments related to the step execution. |
-| **DR-457 Executor Held Required Role** | A step execution is flagged executor held required role if the executor authority count is greater than 0. |
-| **DR-458 Is Unauthorized Approval** | A step execution is considered an unauthorized approval if all of the following hold: the step is approval flag is set and the executor held required role flag is not set. |
-| **DR-459 Completed Execution Key** | The step execution's completed execution key is determined by the following priority:<br>1. the procedure execution, if the execution status is “Completed”;<br>2. in all other cases, an empty string. |
-| **DR-460 Control Breach Execution Key** | The step execution's control breach execution key is determined by the following priority:<br>1. the procedure execution, if at least one of the following holds: the proceeded past blocking control flag is set; the violates separation of duties flag is set; the unauthorized approval flag is set; or the claims pass without evidence flag is set;<br>2. in all other cases, an empty string. |
-| **DR-461 Late Execution Key** | The step execution's late execution key is determined by the following priority:<br>1. the procedure execution, if the late flag is set;<br>2. in all other cases, an empty string. |
-| **DR-462 Executor Agent Kind** | A step execution's executor agent kind — taken from the linked executed by agent. |
-| **DR-463 Executor is Human** | A step execution is flagged executor is human if the executor agent kind is “Human”. |
-| **DR-464 Step Requires Human Confirmation** | A step execution's step requires human confirmation when the linked step requires human confirmation. |
-| **DR-465 Non Human Ran Human Step** | A step execution is flagged non human ran human step if all of the following hold: the step requires human confirmation flag is set and the executor is human flag is not set. |
-| **DR-466 Non Human Approval** | A step execution is flagged non human approval if all of the following hold: the step is approval flag is set and the executor is human flag is not set. |
-| **DR-467 Unevaluated Blocking Execution Key** | The step execution's unevaluated blocking execution key is determined by the following priority:<br>1. the procedure execution, if the unevaluated blocking control flag is set;<br>2. in all other cases, an empty string. |
-| **DR-468 Separation Violation Execution Key** | The step execution's separation violation execution key is determined by the following priority:<br>1. the procedure execution, if the violates separation of duties flag is set;<br>2. in all other cases, an empty string. |
-| **DR-469 Self Witnessed Verification Count** | A step execution's self witnessed verification count is the number of verification outcomes related to the step execution. |
-| **DR-470 Unbacked Verification Count** | A step execution's unbacked verification count is the number of verification outcomes related to the step execution. |
-| **DR-471 Approval Rests on Self Attestation** | A step execution is flagged approval rests on self attestation if all of the following hold: the step is approval flag is set and at least one of the following holds: the self witnessed verification count is greater than 0 or the skipped verification flag is set. |
-| **DR-472 Exception Invocation Count** | A step execution's exception invocation count is the number of exception invocations related to the step execution. |
-| **DR-473 Ran Under Exception** | A step execution is flagged ran under exception if the exception invocation count is greater than 0. |
-| **DR-474 Is Completed** | A step execution is considered completed if the execution status is “Completed”. |
-| **DR-475 Is Verification Passed** | A step execution is considered verification-passed if the verification result is “PASS”. |
-| **DR-476 Is Legal Review Step** | A step execution is considered a legal review step if the step is “policy-04”. |
-| **DR-477 Cleared Legal Review Key** | The step execution's cleared legal review key is determined by the following priority:<br>1. the procedure execution, if all of the following hold: the legal review step flag is set and the verification passed flag is set;<br>2. in all other cases, an empty string. |
-| **DR-478 Assigned Role** | A step execution's assigned role — taken from the linked step. |
-| **DR-479 Role Current Agent** | A step execution's role current agent — taken from the linked assigned role. |
-| **DR-480 Executor is Designated Agent** | A step execution is flagged executor is designated agent if the executed by agent is the role current agent. |
-| **DR-481 Inputs Were Fresh At Run** | A step execution's inputs were fresh at run is true when the step execution's step is a fresh. |
-| **DR-482 Ran on Stale Inputs** | A step execution is flagged ran on stale inputs if all of the following hold: the execution status is “Completed” and the inputs were fresh at run flag is not set. |
-| **DR-483 Unresolved Issue Count** | A step execution's unresolved issue count is the number of issue occurrences related to the step execution. |
-| **DR-484 Has Deviation** | A step execution is considered to have a deviation if the deviation has a value. |
-| **DR-485 Is Clean** | A step execution is considered a clean if all of the following hold: the verification result is “PASS”; the deviation flag is not set; the unresolved issue count is 0; and the late flag is not set. |
-| **DR-486 Procedure Execution When Unclean** | The step execution's procedure execution when unclean is determined by the following priority:<br>1. an empty string, if the clean flag is set;<br>2. in all other cases, the procedure execution. |
-| **DR-487 Evaluated Requirement Count** | A step execution's evaluated requirement count is the number of requirement satisfactions related to the step execution. |
-| **DR-488 Required Blocking Count** | A step execution's required blocking count is the blocking requirement count of the step execution's step. |
-| **DR-489 Has Unevaluated Blocking Requirement** | A step execution is considered to have unevaluated blocking requirement if the evaluated requirement count is less than the required blocking count. |
-| **DR-490 Executing Agent Kind** | A step execution's executing agent kind — taken from the linked executed by agent. |
-| **DR-491 Was Executed by Software** | A step execution is considered to have been executed by software if at least one of the following holds: the executing agent kind is “AIAgent” or the executing agent kind is “AutomatedPipeline”. |
-| **DR-492 Step is Software Assigned** | A step execution's step is software assigned when the linked step is software assigned. |
-| **DR-493 Software Did Human Work** | A step execution is flagged software did human work if all of the following hold: the was executed by software flag is set and the step is software assigned flag is not set. |
-| **DR-494 Is Approval Execution** | A step execution's is approval execution is true when the step execution's step is a human approval gate. |
-| **DR-495 Is Verified** | A step execution is considered verified if all of the following hold: the verification result has a value; the verification result is not “PENDING”; and the verification result is not “FAIL”. |
-| **DR-496 Unconfirmed Non Human Decision Count** | A step execution's unconfirmed non human decision count is the number of agent decision records related to the step execution. |
-| **DR-497 Requires Human Confirmation** | A step execution's requires human confirmation when the linked step requires human confirmation. |
-| **DR-498 Human Confirmation Missing** | A step execution is flagged human confirmation missing if all of the following hold: the requires human confirmation flag is set and the unconfirmed non human decision count is greater than 0. |
-| **DR-499 Drafted From Unusable Source** | A step execution is flagged drafted from unusable source if all of the following hold: the execution status is “Completed” and the inputs were usable flag is not set. |
-| **DR-500 Inputs Were Usable** | A step execution's inputs were usable is true when the step execution's step is all sources usable. |
-| **DR-501 Software Execution Step Key** | The step execution's software execution step key is determined by the following priority:<br>1. the step, if the was executed by software flag is set;<br>2. in all other cases, an empty string. |
-| **DR-502 Step Control Kind** | A step execution's step control kind — taken from the linked step. |
-| **DR-503 Unfalsified Clearance Count** | A step execution's unfalsified clearance count is the number of requirement satisfactions related to the step execution. |
-| **DR-504 All Clearances are Unfalsified** | A step execution is flagged all clearances are unfalsified if all of the following hold: the evaluated blocking count is greater than 0 and the unfalsified clearance count is at least the evaluated blocking count. |
-| **DR-505 Stale At Run Count** | A step execution's stale at run count is the number of binding observations related to the step execution. |
-| **DR-506 Was Stale When I Ran It** | A step execution is considered to have been stale when i ran it if the stale at run count is greater than 0. |
-| **DR-507 Staleness Answer is Tense Dependent** | A step execution is considered to stalenes answer is tense dependent if it is not the case that the was stale when i ran it is the ran on stale authoritative source. |
-| **DR-508 Has Any Declared Check** | A step execution is considered to have any declared check if at least one of the following holds: the expected verification count is greater than 0 or the expected blocking count is greater than 0. |
-| **DR-509 Performed Check Count** | A step execution's performed check count is computed as the performed verification count plus the evaluated blocking count. |
-| **DR-510 Declared Check Count** | A step execution's declared check count is computed as the expected verification count plus the expected blocking count. |
-| **DR-511 Is Unchecked by Design** | A step execution is considered an unchecked by design if the declared check count is 0. |
-| **DR-512 Is Vacuously Clean** | A step execution is considered a vacuously clean if all of the following hold: the clean flag is set and the unchecked by design flag is set. |
-| **DR-513 Is Substantively Clean** | A step execution is considered a substantively clean if all of the following hold: the clean flag is set; the performed check count is at least the declared check count; and the declared check count is greater than 0. |
-| **DR-514 Vacuously Clean Execution Key** | The step execution's vacuously clean execution key is determined by the following priority:<br>1. the procedure execution, if the vacuously clean flag is set;<br>2. in all other cases, an empty string. |
-| **DR-515 Uncorroborated Pass Count** | A step execution's uncorroborated pass count is the number of verification outcomes related to the step execution. |
-| **DR-516 Evidence Position is Weak** | A step execution is flagged evidence position is weak if all of the following hold: the performed verification count is greater than 0 and the uncorroborated pass count is at least the performed verification count. |
-| **DR-517 Preparation Execution Key** | The step execution's preparation execution key is determined by the following priority:<br>1. the procedure execution, if the step is preparation flag is set;<br>2. in all other cases, an empty string. |
-| **DR-518 Approval Execution Key** | The step execution's approval execution key is determined by the following priority:<br>1. the procedure execution, if the step is approval flag is set;<br>2. in all other cases, an empty string. |
-| **DR-519 Has Governing Instrument** | A step execution is considered to have a governing instrument if at least one of the following holds: the ran under exception flag is set or the approved change coverage flag is set. |
-| **DR-520 Has Approved Change Coverage** | A step execution's has approved change coverage is true when the step execution's version of step has an approved change request. |
-| **DR-521 Version of Step** | A step execution's version of step is the procedure version of the step execution's step. |
-| **DR-522 Is Ungoverned Divergence** | A step execution is considered an ungoverned divergence if all of the following hold: at least one of the following holds: the deviation flag is set; the late flag is set; or the proceeded past blocking control flag is set and the governing instrument flag is not set. |
-| **DR-523 Ungoverned Divergence Execution Key** | The step execution's ungoverned divergence execution key is determined by the following priority:<br>1. the procedure execution, if the ungoverned divergence flag is set;<br>2. in all other cases, an empty string. |
-| **DR-524 Self Attested Approval Execution Key** | The step execution's self attested approval execution key is determined by the following priority:<br>1. the procedure execution, if the approval rests on self attestation flag is set;<br>2. in all other cases, an empty string. |
-| **DR-525 Name** | A requirement satisfaction's name is computed as the requirement, followed by “ / ”, followed by the satisfaction level. |
-| **DR-526 Requirement is Blocking** | A requirement satisfaction's requirement is blocking when the linked requirement is blocking. |
-| **DR-527 Is Fully Satisfied** | A requirement satisfaction is considered fully-satisfied if the satisfaction level is “Satisfied”. |
-| **DR-528 Is Blocking and Unmet** | A requirement satisfaction is considered a blocking and unmet if all of the following hold: the requirement is blocking flag is set and the fully satisfied flag is not set. |
-| **DR-529 Blocking Unmet Step Key** | The requirement satisfaction's blocking unmet step key is determined by the following priority:<br>1. the step execution, if the blocking and unmet flag is set;<br>2. in all other cases, an empty string. |
-| **DR-530 Blocking Satisfaction Step Key** | The requirement satisfaction's blocking satisfaction step key is determined by the following priority:<br>1. the step execution, if the requirement is blocking flag is set;<br>2. in all other cases, an empty string. |
-| **DR-531 Negative Outcome Requirement Key** | The requirement satisfaction's negative outcome requirement key is determined by the following priority:<br>1. the requirement, if the fully satisfied flag is not set;<br>2. in all other cases, an empty string. |
-| **DR-532 Evaluator Agent Kind** | A requirement satisfaction's evaluator agent kind — taken from the linked evaluated by agent. |
-| **DR-533 Non Human Evaluated Human Control** | A requirement satisfaction is flagged non human evaluated human control if all of the following hold: the requirement is blocking flag is set and the evaluator agent kind is not “Human”. |
-| **DR-534 Requirement Has Computed Witness** | A requirement satisfaction's requirement has computed witness when the linked requirement has a computed witness. |
-| **DR-535 Is Asserted Only** | A requirement satisfaction is considered an asserted only if all of the following hold: the requirement is blocking flag is set; the fully satisfied flag is set; and the requirement has computed witness flag is not set. |
-| **DR-536 Asserted Only Execution Key** | The requirement satisfaction's asserted only execution key is determined by the following priority:<br>1. the parent procedure execution, if the asserted only flag is set;<br>2. in all other cases, an empty string. |
-| **DR-537 Parent Procedure Execution** | A requirement satisfaction's parent procedure execution — taken from the linked step execution. |
-| **DR-538 Step Execution When Scored** | The requirement satisfaction's step execution when scored is determined by the following priority:<br>1. the step execution, if the satisfaction level has a value;<br>2. in all other cases, an empty string. |
-| **DR-539 Is Human Evaluated** | A requirement satisfaction is considered human-evaluated if the evaluator agent kind is “Human”. |
-| **DR-540 Requirement is Approval Type** | A requirement satisfaction's requirement is approval type — taken from the linked requirement. |
-| **DR-541 Is Invalid Approval** | A requirement satisfaction is considered an invalid approval if all of the following hold: the requirement is approval type is “Approval” and at least one of the following holds: the fully satisfied flag is not set or the human evaluated flag is not set. |
-| **DR-542 Procedure Execution of Satisfaction** | A requirement satisfaction's procedure execution of satisfaction — taken from the linked step execution. |
-| **DR-543 Run When Invalid Approval** | The requirement satisfaction's run when invalid approval is determined by the following priority:<br>1. the procedure execution of satisfaction, if the invalid approval flag is set;<br>2. in all other cases, an empty string. |
-| **DR-544 Requirement is Unfalsified** | A requirement satisfaction's requirement is unfalsified is true when the requirement satisfaction's requirement is an unfalsified control. |
-| **DR-545 Is Clearance by Unfalsified Control** | A requirement satisfaction is considered a clearance by unfalsified control if all of the following hold: the fully satisfied flag is set; the requirement is blocking flag is set; and the requirement is unfalsified flag is set. |
-| **DR-546 Unfalsified Clearance Step Key** | The requirement satisfaction's unfalsified clearance step key is determined by the following priority:<br>1. the step execution, if the clearance by unfalsified control flag is set;<br>2. in all other cases, an empty string. |
-| **DR-547 Spec Step of Execution** | A requirement satisfaction's spec step of execution — taken from the linked step execution. |
-| **DR-548 Binding Key** | A requirement satisfaction's binding key is the step requirement ID of the requirement satisfaction's requirement satisfaction ID. |
-| **DR-549 Scored Step Executor Agent** | A requirement satisfaction's scored step executor agent is the executed by agent of the requirement satisfaction's step execution. |
-| **DR-550 Evaluator is Step Executor** | A requirement satisfaction is flagged evaluator is step executor if the evaluated by agent is the scored step executor agent. |
-| **DR-551 Run Owner Agent** | A requirement satisfaction's run owner agent is the executed by agent of the requirement satisfaction's parent procedure execution. |
-| **DR-552 Evaluator Owns the Run** | A requirement satisfaction is flagged evaluator owns the run if the evaluated by agent is the run owner agent. |
-| **DR-553 Is Interested Party Assertion** | A requirement satisfaction is considered an interested party assertion if all of the following hold: the asserted only flag is set and at least one of the following holds: the evaluator is step executor flag is set or the evaluator owns the run flag is set. |
-| **DR-554 Has Written Evidence** | A requirement satisfaction is considered to have a written evidence if the evidence has a value. |
-| **DR-555 Is Bare Assertion** | A requirement satisfaction is considered a bare assertion if all of the following hold: the asserted only flag is set and the written evidence flag is not set. |
-| **DR-556 Interested Assertion Execution Key** | The requirement satisfaction's interested assertion execution key is determined by the following priority:<br>1. the parent procedure execution, if the interested party assertion flag is set;<br>2. in all other cases, an empty string. |
-| **DR-557 Is Computedly Witnessed** | A requirement satisfaction is considered computedly-witnessed if all of the following hold: the requirement is blocking flag is set and the requirement has computed witness flag is set. |
-| **DR-558 Computed Witness Execution Key** | The requirement satisfaction's computed witness execution key is determined by the following priority:<br>1. the parent procedure execution, if the computedly witnessed flag is set;<br>2. in all other cases, an empty string. |
-| **DR-559 Step Executor Agent** | A requirement satisfaction's step executor agent is the executed by agent of the requirement satisfaction's step execution. |
-| **DR-560 Was Scored After Attestation** | A requirement satisfaction is considered to have been scored after attestation if the number of minutes from the attestation instant for run to the evaluated at is greater than 0. |
-| **DR-561 Attestation Instant for Run** | A requirement satisfaction's attestation instant for run is the latest attestation instant of the requirement satisfaction's parent procedure execution. |
-| **DR-562 Post Attestation Score Execution Key** | The requirement satisfaction's post attestation score execution key is determined by the following priority:<br>1. the parent procedure execution, if the was scored after attestation flag is set;<br>2. in all other cases, an empty string. |
-| **DR-563 Name** | An error's name is computed as the error code, followed by “ - ”, followed by the label. |
-| **DR-564 Name** | An issue occurrence's name is computed as the error, followed by “ @ ”, followed by the occurred at. |
-| **DR-565 Is Unresolved** | An issue occurrence is considered unresolved if at least one of the following holds: the status is “Open”; the status is “Investigating”; or the status is “Monitoring”. |
-| **DR-566 Step Execution When Unresolved** | The issue occurrence's step execution when unresolved is determined by the following priority:<br>1. the step execution, if the unresolved flag is set;<br>2. in all other cases, an empty string. |
-| **DR-567 Name** | A user question's name is computed as the first 70 character(s) of the question text. |
-| **DR-568 Name** | A user feedback's name is computed as the disposition, followed by “: ”, followed by the first 60 character(s) of the feedback text. |
-| **DR-569 Name** | A stewardship assignment's name is computed as the procedure version, followed by “ / steward=”, followed by the steward role. |
-| **DR-570 Count of Review Events** | A stewardship assignment's count of review events is the number of review events related to the stewardship assignment. |
-| **DR-571 Has Ever Been Reviewed** | A stewardship assignment is considered to have ever been reviewed if the count of review events is greater than 0. |
-| **DR-572 As of Instant** | A stewardship assignment's as of instant — taken from the linked evaluation context. |
-| **DR-573 Is Current Assignment** | A stewardship assignment is considered current-assignment if all of the following hold: the valid from is at most the as of instant and at least one of the following holds: the valid to is blank or the valid to is greater than the as of instant. |
-| **DR-574 Name** | A change request's name is the same as its title. |
-| **DR-575 Is Open** | A change request is considered open if all of the following hold: at least one of the following holds: the status is “Draft”; the status is “UnderReview”; or the status is “Approved” and the implemented at is blank. |
-| **DR-576 Open Change Version Key** | The change request's open change version key is determined by the following priority:<br>1. the procedure version, if the open flag is set;<br>2. in all other cases, an empty string. |
-| **DR-577 Is Decided** | A change request is considered decided if the decided at has a value. |
-| **DR-578 As of Instant** | A change request's as of instant — taken from the linked evaluation context. |
-| **DR-579 Days Pending** | The change request's days pending is determined by the following priority:<br>1. the number of days from the requested at to the decided at, if the decided flag is set;<br>2. in all other cases, the number of days from the requested at to the as of instant. |
-| **DR-580 Is Still Pending** | A change request is considered still-pending if all of the following hold: the open flag is set and the decided flag is not set. |
-| **DR-581 Is Stalled** | A change request is considered stalled if all of the following hold: the still pending flag is set and the days pending is greater than 14. |
-| **DR-582 Authority Agent** | A change request's authority agent is the current agent of the change request's authority role. |
-| **DR-583 Requester is Authority** | A change request is flagged requester is authority if the requested by agent is the authority agent. |
-| **DR-584 Awaits Authority Decision** | A change request is considered to await an authority decision if all of the following hold: the status is “UnderReview” and the decided flag is not set. |
-| **DR-585 Authority Role Label** | A change request's authority role label — taken from the linked authority role. |
-| **DR-586 Touches Live Version** | A change request's touches live version when the linked procedure version is live. |
-| **DR-587 Is Live Decision Backlog** | A change request is considered a live decision backlog if all of the following hold: the awaits authority decision flag is set and the touches live version flag is set. |
-| **DR-588 Blocks an Open Gap** | A change request is considered to block an open gap if all of the following hold: the live decision backlog flag is set and the change kind is “Enhancement”. |
-| **DR-589 Backlog Version Key** | The change request's backlog version key is determined by the following priority:<br>1. the procedure version, if the live decision backlog flag is set;<br>2. in all other cases, an empty string. |
-| **DR-590 Is My Pending Decision** | A change request is considered a my pending decision if all of the following hold: the authority role is “hr-policy-owner” and the awaits authority decision flag is set. |
-| **DR-591 Is My Blocking Backlog** | A change request is considered a my blocking backlog if all of the following hold: the my pending decision flag is set and the blocks an open gap flag is set. |
-| **DR-592 Is My Overdue Backlog** | A change request is considered a my overdue backlog if all of the following hold: the my blocking backlog flag is set and the days pending is greater than 14. |
-| **DR-593 Is Implemented** | A change request is considered implemented if the implemented at has a value. |
-| **DR-594 Is My Decided Request** | A change request is considered a my decided request if all of the following hold: the authority role is “hr-policy-owner” and the decided flag is set. |
-| **DR-595 Is My Decided But Unlanded** | A change request is considered my-decided-but-unlanded if all of the following hold: the my decided request flag is set and the implemented flag is not set. |
-| **DR-596 Decision Latency Days** | The change request's decision latency days is determined by the following priority:<br>1. the number of days from the requested at to the decided at, if the decided flag is set;<br>2. in all other cases, 0. |
-| **DR-597 Implementation Latency Days** | The change request's implementation latency days is determined by the following priority:<br>1. the number of days from the decided at to the implemented at, if the implemented flag is set;<br>2. in all other cases, 0. |
-| **DR-598 Delay is Downstream of Me** | A change request is flagged delay is downstream of me if all of the following hold: the my decided but unlanded flag is set and the decision latency days is at most 14. |
-| **DR-599 Unlanded Version Key** | The change request's unlanded version key is determined by the following priority:<br>1. the procedure version, if the my decided but unlanded flag is set;<br>2. in all other cases, an empty string. |
-| **DR-600 Is Approved Not Implemented** | A change request is considered approved-not-implemented if all of the following hold: the status is “Approved” and the implemented flag is not set. |
-| **DR-601 Days Since Approval** | The change request's days since approval is determined by the following priority:<br>1. the number of days from the decided at to the as of instant, if the decided flag is set;<br>2. in all other cases, 0. |
-| **DR-602 Is Stalled Implementation** | A change request is considered a stalled implementation if all of the following hold: the approved not implemented flag is set and the days since approval is greater than 14. |
-| **DR-603 Stalled Implementation Version Key** | The change request's stalled implementation version key is determined by the following priority:<br>1. the procedure version, if the stalled implementation flag is set;<br>2. in all other cases, an empty string. |
-| **DR-604 Approved Version Key** | The change request's approved version key is determined by the following priority:<br>1. the procedure version, if the approved decision flag is set;<br>2. in all other cases, an empty string. |
-| **DR-605 Is Approved Decision** | A change request is considered an approved decision if the status is “Approved”. |
-| **DR-606 Name** | A review event's name is computed as the procedure version, followed by “ / ”, followed by the review kind. |
-| **DR-607 As of Instant** | A review event's as of instant — taken from the linked evaluation context. |
-| **DR-608 Is Overdue** | A review event is considered an overdue if the next review due is less than the as of instant. |
-| **DR-609 Overdue Version Key** | The review event's overdue version key is determined by the following priority:<br>1. the procedure version, if the overdue flag is set;<br>2. in all other cases, an empty string. |
-| **DR-610 Promised Cadence Days** | A review event's promised cadence days is the steward review cadence days of the review event's procedure version. |
-| **DR-611 Days Since Reviewed** | A review event's days since reviewed is computed as the number of days from the reviewed at to the as of instant. |
-| **DR-612 Exceeds Promised Cadence** | A review event is considered to exceed a promised cadence if the days since reviewed is greater than the promised cadence days. |
-| **DR-613 Cadence Drift Days** | A review event's cadence drift days is computed as the days since reviewed minus the promised cadence days. |
-| **DR-614 Promise and Behavior Disagree** | A review event is flagged promise and behavior disagree if all of the following hold: the exceeds promised cadence flag is set and the overdue flag is not set. |
-| **DR-615 Cadence Breach Version Key** | The review event's cadence breach version key is determined by the following priority:<br>1. the procedure version, if the exceeds promised cadence flag is set;<br>2. in all other cases, an empty string. |
-| **DR-616 Name** | A learning activity's name is computed as the activity kind, followed by “ / ”, followed by the occurred at. |
-| **DR-617 Name** | An operational binding's name is computed as the step, followed by “ / ”, followed by the record or schema key. |
-| **DR-618 As of Instant** | An operational binding's as of instant — taken from the linked evaluation context. |
-| **DR-619 Age Minutes** | An operational binding's age minutes is computed as the number of minutes from the last observed at to the as of instant. |
-| **DR-620 Is Fresh** | An operational binding is considered a fresh if the age minutes is at most the freshness sla minutes. |
-| **DR-621 Stale Binding Step Key** | The operational binding's stale binding step key is determined by the following priority:<br>1. the step, if the fresh flag is not set;<br>2. in all other cases, an empty string. |
-| **DR-622 Authoritative Stale Step Key** | The operational binding's authoritative stale step key is determined by the following priority:<br>1. the step, if all of the following hold: the fresh flag is not set and the authoritative flag is set;<br>2. in all other cases, an empty string. |
-| **DR-623 Is Stale and Authoritative** | An operational binding is considered stale-and-authoritative if all of the following hold: the authoritative flag is set and the fresh flag is not set. |
-| **DR-624 Step When Stale** | The operational binding's step when stale is determined by the following priority:<br>1. the step, if the stale and authoritative flag is set;<br>2. in all other cases, an empty string. |
-| **DR-625 Resource is Approved** | An operational binding's resource is approved is true when the operational binding's resource is an approved source. |
-| **DR-626 Is Usable for Drafting** | An operational binding is considered usable-for-drafting if all of the following hold: the resource is approved flag is set and the fresh flag is set. |
-| **DR-627 Step When Unusable** | The operational binding's step when unusable is determined by the following priority:<br>1. an empty string, if the usable for drafting flag is set;<br>2. in all other cases, the step. |
-| **DR-628 Name** | A communication policy's name is computed as the channel, followed by “ policy / ”, followed by the procedure version. |
-| **DR-629 Consent Violation Count** | A communication policy's consent violation count is the number of the communication policy's message deliveries that are consent violations. |
-| **DR-630 Quiet Hours Violation Count** | A communication policy's quiet hours violation count is the number of message deliveries related to the communication policy. |
-| **DR-631 Is Active Policy** | A communication policy is considered an active policy if the status is “Active”. |
-| **DR-632 Name** | A message template's name is computed as the communication policy, followed by “ / ”, followed by the locale. |
-| **DR-633 Policy Max Message Length** | A message template's policy max message length — taken from the linked communication policy. |
-| **DR-634 Policy Max Segments** | A message template's policy max segments — taken from the linked communication policy. |
-| **DR-635 Body Template Length** | A message template's body template length is computed as the length of the body template. |
-| **DR-636 Is Template Over Length** | A message template is considered a template over length if the body template length is greater than the policy max message length. |
-| **DR-637 Valid Approval Count** | A message template's valid approval count is the number of template approvals related to the message template. |
-| **DR-638 Has Valid Approval** | A message template is considered to have a valid approval if the valid approval count is greater than 0. |
-| **DR-639 Is Claiming Unbacked Approval** | A message template is considered a claiming unbacked approval if all of the following hold: the status is “Approved” and the valid approval flag is not set. |
-| **DR-640 Last Approved Body Hash** | A message template's last approved body hash — taken from the linked last valid approval. |
-| **DR-641 Has Body Drifted** | A message template is considered to have body drifted if all of the following hold: the last approved body hash has a value and the current body hash is not the last approved body hash. |
-| **DR-642 Is Sendable Under Approval** | A message template is considered a sendable under approval if all of the following hold: the status is “Approved” and all of the following hold: the valid approval flag is set and the body drifted flag is not set. |
-| **DR-643 Drifted Send Count** | A message template's drifted send count is the number of message deliveries related to the message template. |
-| **DR-644 Unanswered Delivery Count** | A message template's unanswered delivery count is the number of message deliveries related to the message template. |
-| **DR-645 Transmitted Delivery Count** | A message template's transmitted delivery count is the number of message deliveries related to the message template. |
-| **DR-646 Template Draws No Response** | A message template is flagged template draws no response if all of the following hold: the transmitted delivery count is greater than 0 and the unanswered delivery count is the transmitted delivery count. |
-| **DR-647 Last Approval At** | A message template's last approval at is the decided at of the message template's last valid approval. |
-| **DR-648 Name** | A semantic mapping's name is computed as the source path, followed by “ -> ”, followed by the target iri. |
-| **DR-649 Name** | A witness loop's name is computed as “Loop ”, followed by the loop number, followed by “: ”, followed by the title. |
-| **DR-650 Question Count** | A witness loop's question count is the number of role questions related to the witness loop. |
-| **DR-651 Is Complete** | A witness loop is considered a complete if the completed at has a value. |
-| **DR-652 Name** | A role question's name is computed as the asking role, followed by “: ”, followed by the first 60 character(s) of the question text. |
-| **DR-653 Predicate Count** | A role question's predicate count is the number of rulebook fields related to the role question. |
-| **DR-654 Is Answered** | A role question is considered answered if the predicate count is greater than 0. |
-| **DR-655 Name** | A rulebook field's name is computed as the target table, followed by a period, followed by the field name. |
-| **DR-656 Is Derived** | A rulebook field is considered derived if at least one of the following holds: the field type is “calculated”; the field type is “lookup”; or the field type is “aggregation”. |
-| **DR-657 Is Witness** | A rulebook field is considered a witness if the invented for question has a value. |
-| **DR-658 Disagreeing Substrate Count** | A rulebook field's disagreeing substrate count is the number of field disagreements related to the rulebook field. |
-| **DR-659 Is Substrate Contested** | A rulebook field is considered substrate-contested if the disagreeing substrate count is greater than 0. |
-| **DR-660 Name** | A test suite's name is the same as its label. |
-| **DR-661 Test Count** | A test suite's test count is the number of test cases related to the test suite. |
-| **DR-662 Pass Count** | A test suite's pass count is the number of test cases related to the test suite. |
-| **DR-663 Blocking Fail Count** | A test suite's blocking fail count is the number of test cases related to the test suite. |
-| **DR-664 Is Green** | A test suite is considered a green if the blocking fail count is 0. |
-| **DR-665 Name** | A test cas's name is computed as the test kind, followed by “: ”, followed by the subject. |
-| **DR-666 Is Blocking** | A test cas is considered blocking if the severity is “blocking”. |
-| **DR-667 Is Passing** | A test cas is considered passing if the last outcome is “PASS”. |
-| **DR-668 Is Failing** | A test cas is considered failing if the last outcome is “FAIL”. |
-| **DR-669 Needs Attention** | A test cas is considered to need an attention if all of the following hold: the failing flag is set and the blocking flag is set. |
-| **DR-670 Passing Suite Key** | The test cas's passing suite key is determined by the following priority:<br>1. the suite, if the passing flag is set;<br>2. in all other cases, an empty string. |
-| **DR-671 Needs Attention Suite Key** | The test cas's needs attention suite key is determined by the following priority:<br>1. the suite, if the needs attention flag is set;<br>2. in all other cases, an empty string. |
-| **DR-672 Name** | An exception invocation's name is computed as the step execution, followed by “ / ”, followed by the exception. |
-| **DR-673 Expected Handling** | An exception invocation's expected handling — taken from the linked exception. |
-| **DR-674 Required Approval Role** | An exception invocation's required approval role — taken from the linked exception. |
-| **DR-675 Required Approval Role Holder** | An exception invocation's required approval role holder is the current agent of the exception invocation's required approval role. |
-| **DR-676 Approval Role Matches** | An exception invocation is flagged approval role matches if the approved by agent is the required approval role holder. |
-| **DR-677 Is Approved** | An exception invocation is considered approved if the approved by agent has a value. |
-| **DR-678 Is Improperly Approved** | An exception invocation is considered improperly-approved if at least one of the following holds: the approved flag is not set or the approval role matches flag is not set. |
-| **DR-679 Invoker Agent Kind** | An exception invocation's invoker agent kind — taken from the linked invoked by agent. |
-| **DR-680 Invoker Also Prepared Key** | An exception invocation's invoker also prepared key is computed as the parent procedure execution, followed by “|”, followed by the approved by agent. |
-| **DR-681 Parent Procedure Execution** | An exception invocation's parent procedure execution — taken from the linked step execution. |
-| **DR-682 Approver Prepared Count** | An exception invocation's approver prepared count is the number of step executions related to the exception invocation. |
-| **DR-683 Delegated to Preparer** | An exception invocation is flagged delegated to preparer if the approver prepared count is greater than 0. |
-| **DR-684 Is Ungoverned Invocation** | An exception invocation is considered an ungoverned invocation if at least one of the following holds: the improperly approved flag is set or the delegated to preparer flag is set. |
-| **DR-685 Name** | A verification outcome's name is computed as the step execution, followed by “ / ”, followed by the step verification. |
-| **DR-686 Expected Signal Value** | A verification outcome's expected signal value — taken from the linked step verification. |
-| **DR-687 Signal Identifier** | A verification outcome's signal identifier — taken from the linked step verification. |
-| **DR-688 Signal Matches Expected** | A verification outcome is flagged signal matches expected if the observed signal value is the expected signal value. |
-| **DR-689 Has Evidence** | A verification outcome is considered to have an evidence if the evidence uri has a value. |
-| **DR-690 Is Unbacked Observation** | A verification outcome is considered an unbacked observation if all of the following hold: the signal matches expected flag is set and the evidence flag is not set. |
-| **DR-691 Is Self Witnessed** | A verification outcome is considered self-witnessed if the observed by agent is the step executor agent. |
-| **DR-692 Step Executor Agent** | A verification outcome's step executor agent is the executed by agent of the verification outcome's step execution. |
-| **DR-693 Self Witnessed Step Key** | The verification outcome's self witnessed step key is determined by the following priority:<br>1. the step execution, if the self witnessed flag is set;<br>2. in all other cases, an empty string. |
-| **DR-694 Unbacked Step Key** | The verification outcome's unbacked step key is determined by the following priority:<br>1. the step execution, if the unbacked observation flag is set;<br>2. in all other cases, an empty string. |
-| **DR-695 Is Self Witnessed and Unbacked** | A verification outcome is considered self-witnessed-and-unbacked if all of the following hold: the self witnessed flag is set and the evidence flag is not set. |
-| **DR-696 Is Uncorroborated Pass** | A verification outcome is considered an uncorroborated pass if all of the following hold: the signal matches expected flag is set and the self witnessed and unbacked flag is set. |
-| **DR-697 Uncorroborated Pass Step Key** | The verification outcome's uncorroborated pass step key is determined by the following priority:<br>1. the step execution, if the uncorroborated pass flag is set;<br>2. in all other cases, an empty string. |
-| **DR-698 Observer is Non Human** | A verification outcome's observer is non human when the linked observed by agent is a non human. |
-| **DR-699 Observer is Independent of Executor** | A verification outcome is flagged observer is independent of executor if the self witnessed flag is not set. |
-| **DR-700 Is Independent Human Observation** | A verification outcome is considered an independent human observation if all of the following hold: the observer is non human flag is not set; the self witnessed flag is not set; and the evidence flag is set. |
-| **DR-701 Independent Observation Execution Key** | The verification outcome's independent observation execution key is determined by the following priority:<br>1. the parent procedure execution of outcome, if the independent human observation flag is set;<br>2. in all other cases, an empty string. |
-| **DR-702 Parent Procedure Execution of Outcome** | A verification outcome's parent procedure execution of outcome — taken from the linked step execution. |
-| **DR-703 Name** | An observed transition's name is computed as the step transition, followed by “ @ ”, followed by the observed at. |
-| **DR-704 Name** | A recipient's name is the same as its display name. |
-| **DR-705 Has Sms Consent** | A recipient is considered to have sms consent if the sms consent status is “Granted”. |
-| **DR-706 Is Email Reachable** | A recipient is considered email-reachable if the email address has a value. |
-| **DR-707 Is Sms Reachable** | A recipient is considered sms-reachable if the mobile number has a value. |
-| **DR-708 Is Unreachable** | A recipient is considered unreachable if all of the following hold: the email reachable flag is not set and the sms reachable flag is not set. |
-| **DR-709 Is Communicationally Stranded** | A recipient is considered communicationally-stranded if all of the following hold: the sms reachable flag is not set and the email reachable flag is not set. |
-| **DR-710 Name** | A message delivery's name is computed as the recipient, followed by “ / ”, followed by the message template, followed by “ / ”, followed by the sent at. |
-| **DR-711 Policy Channel** | A message delivery's policy channel is the communication policy of the message delivery's message template. |
-| **DR-712 Channel Name** | A message delivery's channel name — taken from the linked policy channel. |
-| **DR-713 Policy Requires Consent** | A message delivery's policy requires consent is true when the message delivery's policy channel is consent required. |
-| **DR-714 Recipient Has Sms Consent** | A message delivery's recipient has sms consent when the linked recipient has sms consent. |
-| **DR-715 Was Actually Transmitted** | A message delivery is considered to have been actually transmitted if at least one of the following holds: the delivery status is “Sent” or at least one of the following holds: the delivery status is “Delivered” or the delivery status is “Bounced”. |
-| **DR-716 Is Consent Violation** | A message delivery is considered a consent violation if all of the following hold: the was actually transmitted flag is set and all of the following hold: the policy requires consent flag is set and the recipient has sms consent flag is not set. |
-| **DR-717 Consent Violation Policy Key** | The message delivery's consent violation policy key is determined by the following priority:<br>1. the policy channel, if the consent violation flag is set;<br>2. in all other cases, an empty string. |
-| **DR-718 Policy Quiet Hours Start Hour** | A message delivery's policy quiet hours start hour — taken from the linked policy channel. |
-| **DR-719 Policy Quiet Hours End Hour** | A message delivery's policy quiet hours end hour — taken from the linked policy channel. |
-| **DR-720 Policy Has Quiet Hours** | A message delivery is flagged policy has quiet hours if the policy quiet hours start hour is not the policy quiet hours end hour. |
-| **DR-721 Quiet Window Wraps Midnight** | A message delivery is flagged quiet window wraps midnight if the policy quiet hours start hour is greater than the policy quiet hours end hour. |
-| **DR-722 Is Inside Quiet Window** | A message delivery is considered an inside quiet window if the OR of the sent at local hour is at least the policy quiet hours start hour and the sent at local hour is less than the policy quiet hours end hour if the quiet window wraps midnight flag is set, in all other cases the AND of the sent at local hour is at least the policy quiet hours start hour and the sent at local hour is less than the policy quiet hours end hour. |
-| **DR-723 Is Quiet Hours Violation** | A message delivery is considered a quiet hours violation if all of the following hold: the was actually transmitted flag is set and all of the following hold: the policy has quiet hours flag is set and the inside quiet window flag is set. |
-| **DR-724 Quiet Hours Violation Policy Key** | The message delivery's quiet hours violation policy key is determined by the following priority:<br>1. the policy channel, if the quiet hours violation flag is set;<br>2. in all other cases, an empty string. |
-| **DR-725 Recipient is Unreachable** | A message delivery's recipient is unreachable when the linked recipient is unreachable. |
-| **DR-726 Is Acknowledged** | A message delivery is considered acknowledged if the acknowledged at has a value. |
-| **DR-727 Invoked Exception Condition** | A message delivery's invoked exception condition — taken from the linked invoked exception. |
-| **DR-728 Has Unreachable Exception Invoked** | A message delivery is considered to have unreachable exception invoked if the invoked exception is “exc-unreachable”. |
-| **DR-729 Is Fabricated Acknowledgement** | A message delivery is considered fabricated-acknowledgement if all of the following hold: the recipient is unreachable flag is set and the acknowledged flag is set. |
-| **DR-730 Is Unhandled Unreachable** | A message delivery is considered unhandled-unreachable if all of the following hold: the recipient is unreachable flag is set and the unreachable exception invoked flag is not set. |
-| **DR-731 Unreachable Failure Key** | The message delivery's unreachable failure key is determined by the following priority:<br>1. the procedure execution, if at least one of the following holds: the fabricated acknowledgement flag is set or the unhandled unreachable flag is set;<br>2. in all other cases, an empty string. |
-| **DR-732 Policy Retention Days** | A message delivery's policy retention days — taken from the linked policy channel. |
-| **DR-733 As of Instant** | A message delivery's as of instant — taken from the linked evaluation context. |
-| **DR-734 Age Days** | A message delivery's age days is computed as the number of days from the sent at to the as of instant. |
-| **DR-735 Is Within Retention Window** | A message delivery is considered a within retention window if the age days is at most the policy retention days. |
-| **DR-736 Has Rendered Body** | A message delivery is considered to have rendered body if the rendered body has a value. |
-| **DR-737 Is Evidence Required** | A message delivery is considered evidence-required if all of the following hold: the was actually transmitted flag is set and the within retention window flag is set. |
-| **DR-738 Is Retention Breach** | A message delivery is considered a retention breach if all of the following hold: the evidence required flag is set and the rendered body flag is not set. |
-| **DR-739 Retention Breach Execution Key** | The message delivery's retention breach execution key is determined by the following priority:<br>1. the procedure execution, if the retention breach flag is set;<br>2. in all other cases, an empty string. |
-| **DR-740 Sending Step Execution Step** | A message delivery's sending step execution step — taken from the linked step execution. |
-| **DR-741 Execution Has Cleared Legal Review** | A message delivery's execution has cleared legal review when the linked procedure execution has a cleared legal review. |
-| **DR-742 Is Unreviewed Send** | A message delivery is considered an unreviewed send if all of the following hold: the was actually transmitted flag is set and the execution has cleared legal review flag is not set. |
-| **DR-743 Rendered Body Length** | A message delivery's rendered body length is computed as the length of the rendered body. |
-| **DR-744 Policy Max Message Length At Send** | A message delivery's policy max message length at send — taken from the linked policy channel. |
-| **DR-745 Segment Count** | The message delivery's segment count is determined by the following priority:<br>1. 0, if the rendered body length is 0;<br>2. 1, if the rendered body length is at most the policy max message length at send;<br>3. in all other cases, the rendered body length divided by the policy max message length at send rounded up to 0 decimal place(s). |
-| **DR-746 Policy Max Segments At Send** | A message delivery's policy max segments at send — taken from the linked policy channel. |
-| **DR-747 Is Over Segment Limit** | A message delivery is considered an over segment limit if all of the following hold: the was actually transmitted flag is set and the segment count is greater than the policy max segments at send. |
-| **DR-748 Template Has Valid Approval** | A message delivery's template has valid approval when the linked message template has a valid approval. |
-| **DR-749 Is Unapproved Send** | A message delivery is considered an unapproved send if all of the following hold: the was actually transmitted flag is set and the template has valid approval flag is not set. |
-| **DR-750 Policy Required Opt Out Phrase** | A message delivery's policy required opt out phrase — taken from the linked policy channel. |
-| **DR-751 Policy Requires Opt Out** | A message delivery is flagged policy requires opt out if the policy required opt out phrase has a value. |
-| **DR-752 Opt Out Phrase Position** | A message delivery's opt out phrase position is computed as the position of the policy required opt out phrase within the rendered body. |
-| **DR-753 Has Opt Out Phrase** | A message delivery is considered to have an opt out phrase if the opt out phrase position is greater than 0. |
-| **DR-754 Is Opt Out in First Segment** | A message delivery is considered an opt out in first segment if all of the following hold: the opt out phrase flag is set and the opt out phrase position is at most the policy max message length at send. |
-| **DR-755 Is Missing Required Opt Out** | A message delivery is considered a missing required opt out if all of the following hold: the was actually transmitted flag is set and all of the following hold: the policy requires opt out flag is set and the opt out phrase flag is not set. |
-| **DR-756 Is Opt Out At Risk of Truncation** | A message delivery is considered an opt out at risk of truncation if all of the following hold: the was actually transmitted flag is set and all of the following hold: the policy requires opt out flag is set and all of the following hold: the opt out phrase flag is set and the opt out in first segment flag is not set. |
-| **DR-757 Is Failed Delivery** | A message delivery is considered failed-delivery if at least one of the following holds: the delivery status is “Failed” or the delivery status is “Bounced”. |
-| **DR-758 Is Suppressed** | A message delivery is considered suppressed if the delivery status is “Suppressed”. |
-| **DR-759 Is Triaged** | A message delivery is considered triaged if the invoked exception has a value. |
-| **DR-760 Is Abandoned Failure** | A message delivery is considered an abandoned failure if all of the following hold: the failed delivery flag is set and the triaged flag is not set. |
-| **DR-761 Abandoned Failure Execution Key** | The message delivery's abandoned failure execution key is determined by the following priority:<br>1. the procedure execution, if the abandoned failure flag is set;<br>2. in all other cases, an empty string. |
-| **DR-762 Reached Execution Key** | The message delivery's reached execution key is determined by the following priority:<br>1. the procedure execution, if the delivery status is “Delivered”;<br>2. in all other cases, an empty string. |
-| **DR-763 Template Was Sendable** | A message delivery's template was sendable is true when the message delivery's message template is a sendable under approval. |
-| **DR-764 Is Drifted Send** | A message delivery is considered a drifted send if all of the following hold: the was actually transmitted flag is set and the template was sendable flag is not set. |
-| **DR-765 Drifted Send Template Key** | The message delivery's drifted send template key is determined by the following priority:<br>1. the message template, if the drifted send flag is set;<br>2. in all other cases, an empty string. |
-| **DR-766 Was Sent Outside Business Hours** | A message delivery is considered to have been sent outside business hours if at least one of the following holds: the sent at local hour is less than 8 or the sent at local hour is greater than 18. |
-| **DR-767 Was Delivered and Unanswered** | A message delivery is considered to have been delivered and unanswered if all of the following hold: the was actually transmitted flag is set and the acknowledged flag is not set. |
-| **DR-768 Is Poorly Timed Unanswered** | A message delivery is considered poorly-timed-unanswered if all of the following hold: the was delivered and unanswered flag is set and the was sent outside business hours flag is set. |
-| **DR-769 Is Well Timed Unanswered** | A message delivery is considered well-timed-unanswered if all of the following hold: the was delivered and unanswered flag is set and the was sent outside business hours flag is not set. |
-| **DR-770 Unanswered Template Key** | The message delivery's unanswered template key is determined by the following priority:<br>1. the message template, if the was delivered and unanswered flag is set;<br>2. in all other cases, an empty string. |
-| **DR-771 Transmitted Template Key** | The message delivery's transmitted template key is determined by the following priority:<br>1. the message template, if the was actually transmitted flag is set;<br>2. in all other cases, an empty string. |
-| **DR-772 Approval Preceded Send** | A message delivery is flagged approval preceded send if all of the following hold: the approval decided at send has a value and the sent at is greater than the approval decided at send. |
-| **DR-773 Has Frozen Approval Evidence** | A message delivery is considered to have a frozen approval evidence if all of the following hold: the approving agent at send has a value and the approval decided at send has a value. |
-| **DR-774 Provenance is Live Derived** | A message delivery is flagged provenance is live derived if the frozen approval evidence flag is not set. |
-| **DR-775 Current Last Approval At** | A message delivery's current last approval at — taken from the linked message template. |
-| **DR-776 Template Reapproved Since Send** | A message delivery is flagged template reapproved since send if all of the following hold: the current last approval at has a value and the current last approval at is greater than the sent at. |
-| **DR-777 Is Unprovable Approval Claim** | A message delivery is considered an unprovable approval claim if all of the following hold: the provenance is live derived flag is set and all of the following hold: the template reapproved since send flag is set and the template has valid approval flag is set. |
-| **DR-778 Has Sent Reminder** | A message delivery is considered to have a sent reminder if the reminder count is greater than 0. |
-| **DR-779 Acknowledgement is Outstanding** | A message delivery is flagged acknowledgement is outstanding if all of the following hold: the was actually transmitted flag is set and all of the following hold: the evidence required flag is set and the acknowledged flag is not set. |
-| **DR-780 Outstanding Age Days** | The message delivery's outstanding age days is determined by the following priority:<br>1. the number of days from the sent at to the as of instant, if the acknowledgement is outstanding flag is set;<br>2. in all other cases, 0. |
-| **DR-781 Is Unchased Acknowledgement** | A message delivery is considered unchased-acknowledgement if all of the following hold: the acknowledgement is outstanding flag is set and all of the following hold: the outstanding age days is greater than 7 and the sent reminder flag is not set. |
-| **DR-782 Is Exhausted Follow Up** | A message delivery is considered an exhausted follow up if all of the following hold: the acknowledgement is outstanding flag is set and the reminder count is at least 3. |
-| **DR-783 Needs Human Escalation** | A message delivery is considered to need a human escalation if all of the following hold: the exhausted follow up flag is set and the unreachable exception invoked flag is not set. |
-| **DR-784 Name** | A template approval's name is computed as the message template, followed by “ / ”, followed by the decision, followed by “ / ”, followed by the decided at. |
-| **DR-785 Is Approval Decision** | A template approval is considered an approval decision if the decision is “Approved”. |
-| **DR-786 Template Policy** | A template approval's template policy is the communication policy of the template approval's message template. |
-| **DR-787 Required Approval Role** | A template approval's required approval role — taken from the linked template policy. |
-| **DR-788 Is Decided by Required Role** | A template approval is considered a decided by required role if the decided in role is the required approval role. |
-| **DR-789 Valid Approval Template Key** | The template approval's valid approval template key is determined by the following priority:<br>1. the message template, if all of the following hold: the approval decision flag is set and the decided by required role flag is set;<br>2. in all other cases, an empty string. |
-| **DR-790 Name** | A send intent's name is computed as the recipient, followed by “ / ”, followed by the message template, followed by “ / intent”. |
-| **DR-791 Intent Policy** | A send intent's intent policy is the communication policy of the send intent's message template. |
-| **DR-792 Intent Channel** | A send intent's intent channel — taken from the linked intent policy. |
-| **DR-793 Policy is Active** | A send intent's policy is active is true when the send intent's intent policy is an active policy. |
-| **DR-794 Intent Requires Consent** | A send intent's intent requires consent is true when the send intent's intent policy is consent required. |
-| **DR-795 Recipient Has Channel Consent** | A send intent's recipient has channel consent is true when the send intent's recipient has sms consent. |
-| **DR-796 Consent Gate Passed** | A send intent is flagged consent gate passed if at least one of the following holds: the intent requires consent flag is not set or the recipient has channel consent flag is set. |
-| **DR-797 Recipient is Sms Reachable** | A send intent's recipient is sms reachable when the linked recipient is sms reachable. |
-| **DR-798 Recipient is Email Reachable** | A send intent's recipient is email reachable when the linked recipient is email reachable. |
-| **DR-799 Reachability Gate Passed** | A send intent is flagged reachability gate passed if the recipient is sms reachable if the intent channel is “SMS”, in all other cases the recipient is email reachable. |
-| **DR-800 Permission Gate Passed** | A send intent is flagged permission gate passed if all of the following hold: the policy is active flag is set and all of the following hold: the consent gate passed flag is set and the reachability gate passed flag is set. |
-| **DR-801 Intent Quiet Start Hour** | A send intent's intent quiet start hour is the quiet hours start hour of the send intent's intent policy. |
-| **DR-802 Intent Quiet End Hour** | A send intent's intent quiet end hour is the quiet hours end hour of the send intent's intent policy. |
-| **DR-803 Intent Policy Has Quiet Hours** | A send intent is flagged intent policy has quiet hours if the intent quiet start hour is not the intent quiet end hour. |
-| **DR-804 Intent Quiet Window Wraps** | A send intent is flagged intent quiet window wraps if the intent quiet start hour is greater than the intent quiet end hour. |
-| **DR-805 Intent is Inside Quiet Window** | A send intent is flagged intent is inside quiet window if the OR of the proposed send at local hour is at least the intent quiet start hour and the proposed send at local hour is less than the intent quiet end hour if the intent quiet window wraps flag is set, in all other cases the AND of the proposed send at local hour is at least the intent quiet start hour and the proposed send at local hour is less than the intent quiet end hour. |
-| **DR-806 Timing Gate Passed** | A send intent is flagged timing gate passed if at least one of the following holds: the intent policy has quiet hours flag is not set or the intent is inside quiet window flag is not set. |
-| **DR-807 Hours Until Window Opens** | The send intent's hours until window opens is determined by the following priority:<br>1. 0, if the timing gate passed flag is set;<br>2. the intent quiet end hour minus the proposed send at local hour, if the proposed send at local hour is less than the intent quiet end hour;<br>3. in all other cases, 24 minus the proposed send at local hour plus the intent quiet end hour. |
-| **DR-808 Intent Max Message Length** | A send intent's intent max message length — taken from the linked intent policy. |
-| **DR-809 Intent Max Segments** | A send intent's intent max segments — taken from the linked intent policy. |
-| **DR-810 Length Gate Passed** | A send intent is flagged length gate passed if all of the following hold: the proposed body length is greater than 0 and the proposed segment count is at most the intent max segments. |
-| **DR-811 Intent Required Opt Out Phrase** | A send intent's intent required opt out phrase — taken from the linked intent policy. |
-| **DR-812 Opt Out Gate Passed** | A send intent is flagged opt out gate passed if at least one of the following holds: the intent required opt out phrase is blank or all of the following hold: the proposed opt out position is greater than 0 and the proposed opt out position is at most the intent max message length. |
-| **DR-813 Content Gate Passed** | A send intent is flagged content gate passed if all of the following hold: the length gate passed flag is set and the opt out gate passed flag is set. |
-| **DR-814 Template is Sendable** | A send intent's template is sendable is true when the send intent's message template is a sendable under approval. |
-| **DR-815 Execution Has Legal Clearance** | A send intent's execution has legal clearance is true when the send intent's procedure execution has a cleared legal review. |
-| **DR-816 Intent Approval Role** | A send intent's intent approval role — taken from the linked intent policy. |
-| **DR-817 Approval Role Agent Kind** | A send intent's approval role agent kind is the current agent kind of the send intent's intent approval role. |
-| **DR-818 Approval is Human** | A send intent is flagged approval is human if the approval role agent kind is “Human”. |
-| **DR-819 Authorization Gate Passed** | A send intent is flagged authorization gate passed if all of the following hold: the template is sendable flag is set and all of the following hold: the execution has legal clearance flag is set and the approval is human flag is set. |
-| **DR-820 Is Cleared to Send** | A send intent is considered a cleared to send if all of the following hold: the permission gate passed flag is set and all of the following hold: the timing gate passed flag is set and all of the following hold: the content gate passed flag is set and the authorization gate passed flag is set. |
-| **DR-821 Blocking Gate Name** | The send intent's blocking gate name is determined by the following priority:<br>1. an empty string, if the cleared to send flag is set;<br>2. “Permission”, if the permission gate passed flag is not set;<br>3. “Timing”, if the timing gate passed flag is not set;<br>4. “Content”, if the content gate passed flag is not set;<br>5. in all other cases, “Authorization”. |
-| **DR-822 Has Resulting Delivery** | A send intent is considered to have resulting delivery if the resulting delivery has a value. |
-| **DR-823 Resulting Delivery Was Transmitted** | A send intent's resulting delivery was transmitted is true when the send intent's resulting delivery was actually transmitted. |
-| **DR-824 Is Overridden Refusal** | A send intent is considered overridden-refusal if all of the following hold: the cleared to send flag is not set and all of the following hold: the resulting delivery flag is set and the resulting delivery was transmitted flag is set. |
-| **DR-825 Is Silently Dropped** | A send intent is considered silently-dropped if all of the following hold: the cleared to send flag is not set and the resulting delivery flag is not set. |
-| **DR-826 Resulting Delivery Exception** | A send intent's resulting delivery exception is the invoked exception of the send intent's resulting delivery. |
-| **DR-827 Refusal Cited an Exception** | A send intent is flagged refusal cited an exception if the resulting delivery exception has a value. |
-| **DR-828 Is Properly Handled Refusal** | A send intent is considered properly-handled-refusal if all of the following hold: the cleared to send flag is not set and all of the following hold: the resulting delivery flag is set and all of the following hold: the resulting delivery was transmitted flag is not set and the refusal cited an exception flag is set. |
-| **DR-829 Refusal Failure Execution Key** | The send intent's refusal failure execution key is determined by the following priority:<br>1. the procedure execution, if at least one of the following holds: the overridden refusal flag is set or the silently dropped flag is set;<br>2. in all other cases, an empty string. |
-| **DR-830 Intent Execution Key** | A send intent's intent execution key is the same as its procedure execution. |
-| **DR-831 Delivered Intent Execution Key** | The send intent's delivered intent execution key is determined by the following priority:<br>1. the procedure execution, if all of the following hold: the resulting delivery flag is set and the resulting delivery was transmitted flag is set;<br>2. in all other cases, an empty string. |
-| **DR-832 Dropped Intent Execution Key** | The send intent's dropped intent execution key is determined by the following priority:<br>1. the procedure execution, if the silently dropped flag is set;<br>2. in all other cases, an empty string. |
-| **DR-833 My Approval Was in Force** | A send intent is flagged my approval was in force only if the send intent is flagged template is sendable. |
-| **DR-834 Refused on Approved Content** | A send intent is flagged refused on approved content if all of the following hold: the my approval was in force flag is set and the content gate passed flag is not set. |
-| **DR-835 Refused on Opt Out Only** | A send intent is flagged refused on opt out only if all of the following hold: the opt out gate passed flag is not set and the length gate passed flag is set. |
-| **DR-836 Refusal Was on My Rules** | A send intent is flagged refusal was on my rules if all of the following hold: the cleared to send flag is not set and at least one of the following holds: the content gate passed flag is not set or the timing gate passed flag is not set. |
-| **DR-837 Refusal Was Outside My Control** | A send intent is flagged refusal was outside my control if all of the following hold: the cleared to send flag is not set and at least one of the following holds: the permission gate passed flag is not set or the authorization gate passed flag is not set. |
-| **DR-838 Is Unreported Refusal on My Rules** | A send intent is considered an unreported refusal on my rules if all of the following hold: the refusal was on my rules flag is set and the approver was notified flag is not set. |
-| **DR-839 Is Approval Overridden Silently** | A send intent is considered an approval overridden silently if all of the following hold: the refused on approved content flag is set and the approver was notified flag is not set. |
-| **DR-840 Has Alternate Channel Attempt** | A send intent is considered to have an alternate channel attempt if the alternate channel intent has a value. |
-| **DR-841 Alternate Attempt Was Cleared** | A send intent's alternate attempt was cleared is true when the send intent's alternate channel intent is a cleared to send. |
-| **DR-842 Is Refused With No Alternative** | A send intent is considered refused-with-no-alternative if all of the following hold: the cleared to send flag is not set and the alternate channel attempt flag is not set. |
-| **DR-843 Exception Prescribed an Alternative** | A send intent is flagged exception prescribed an alternative if all of the following hold: the refusal cited an exception flag is set and the resulting delivery exception has a value. |
-| **DR-844 Prescribed Handling Was Performed** | A send intent is flagged prescribed handling was performed if all of the following hold: the exception prescribed an alternative flag is set and all of the following hold: the alternate channel attempt flag is set and the alternate attempt was cleared flag is set. |
-| **DR-845 Is Suppression Without Remedy** | A send intent is considered suppression-without-remedy if all of the following hold: the exception prescribed an alternative flag is set and the prescribed handling was performed flag is not set. |
-| **DR-846 Has Durable Refusal Record** | A send intent is considered to have a durable refusal record if the refusal recorded at has a value. |
-| **DR-847 Refusal Was Escalated** | A send intent is flagged refusal was escalated if the refusal notified role has a value. |
-| **DR-848 Is Unrecorded Refusal** | A send intent is considered unrecorded-refusal if all of the following hold: the silently dropped flag is set and all of the following hold: the durable refusal record flag is not set and the refusal cited an exception flag is not set. |
-| **DR-849 Is Unescalated Refusal** | A send intent is considered unescalated-refusal if all of the following hold: the cleared to send flag is not set and the refusal was escalated flag is not set. |
-| **DR-850 Unescalated Refusal Role Key** | The send intent's unescalated refusal role key is determined by the following priority:<br>1. the refusal notified role, if the unrecorded refusal flag is set;<br>2. in all other cases, an empty string. |
-| **DR-851 Unrecorded Refusal Execution Key** | The send intent's unrecorded refusal execution key is determined by the following priority:<br>1. the procedure execution, if the unrecorded refusal flag is set;<br>2. in all other cases, an empty string. |
-| **DR-852 Was Deferred on Timing** | A send intent is considered to have been deferred on timing if all of the following hold: the timing gate passed flag is not set and all of the following hold: the permission gate passed flag is set and the content gate passed flag is set. |
-| **DR-853 As of Instant** | A send intent's as of instant — taken from the linked evaluation context. |
-| **DR-854 Window Has Since Reopened** | A send intent is flagged window has since reopened if all of the following hold: the hours until window opens is greater than 0 and the number of hours from the evaluated at to the as of instant is greater than the hours until window opens. |
-| **DR-855 Has Retry Attempt** | A send intent is considered to have a retry attempt if the retry intent has a value. |
-| **DR-856 Retry Was Cleared** | A send intent's retry was cleared is true when the send intent's retry intent is a cleared to send. |
-| **DR-857 Is Abandoned Deferral** | A send intent is considered abandoned-deferral if all of the following hold: the was deferred on timing flag is set and all of the following hold: the window has since reopened flag is set and the retry attempt flag is not set. |
-| **DR-858 Deferral Age Hours** | A send intent's deferral age hours is computed as the number of hours from the evaluated at to the as of instant. |
-| **DR-859 Is Stale Deferral** | A send intent is considered stale-deferral if all of the following hold: the was deferred on timing flag is set and the deferral age hours is greater than 24. |
-| **DR-860 Enforced by Unauthorized Agent** | A send intent's enforced by unauthorized agent is true when the send intent's evaluating role assignment is an unauthorized enforcement agent. |
-| **DR-861 Consent Input Was Resolvable** | A send intent is flagged consent input was resolvable if the recipient consent status raw has a value. |
-| **DR-862 Recipient Consent Status Raw** | A send intent's recipient consent status raw is the sms consent status of the send intent's recipient. |
-| **DR-863 Policy Input Was Resolvable** | A send intent is flagged policy input was resolvable if the intent policy has a value. |
-| **DR-864 All Gate Inputs Resolved** | A send intent is flagged all gate inputs resolved if all of the following hold: the consent input was resolvable flag is set and the policy input was resolvable flag is set. |
-| **DR-865 Is Unevaluable Refusal** | A send intent is considered unevaluable-refusal if all of the following hold: the cleared to send flag is not set and the all gate inputs resolved flag is not set. |
-| **DR-866 Is Self Witnessed Decision** | A send intent is considered a self witnessed decision if the gate result was independently confirmed flag is not set. |
-| **DR-867 Is Independently Confirmed** | A send intent is considered independently-confirmed if all of the following hold: the resulting delivery flag is set and the resulting delivery was transmitted flag is set. |
-| **DR-868 Independently Confirmed Execution Key** | The send intent's independently confirmed execution key is determined by the following priority:<br>1. the procedure execution, if the independently confirmed flag is set;<br>2. in all other cases, an empty string. |
-| **DR-869 Name** | An agent decision record's name is computed as the deciding agent, followed by “: ”, followed by the first 60 character(s) of the decision summary. |
-| **DR-870 Was Overridden** | An agent decision record is considered to have been overridden if at least one of the following holds: the human disposition is “Corrected” or the human disposition is “Reversed”. |
-| **DR-871 Was Reviewed** | An agent decision record is considered to have been reviewed if all of the following hold: the human disposition has a value and the human disposition is not “NotReviewed”. |
-| **DR-872 Deciding Agent Kind** | An agent decision record's deciding agent kind — taken from the linked deciding agent. |
-| **DR-873 Deciding Agent When Overridden** | The agent decision record's deciding agent when overridden is determined by the following priority:<br>1. the deciding agent, if the was overridden flag is set;<br>2. in all other cases, an empty string. |
-| **DR-874 Role Assignment When Scored** | The agent decision record's role assignment when scored is determined by the following priority:<br>1. the under role assignment, if the under role assignment has a value;<br>2. in all other cases, an empty string. |
-| **DR-875 Role Assignment When Overridden** | The agent decision record's role assignment when overridden is determined by the following priority:<br>1. the under role assignment, if the was overridden flag is set;<br>2. in all other cases, an empty string. |
-| **DR-876 Step of Decision** | An agent decision record's step of decision — taken from the linked step execution. |
-| **DR-877 Boundary Match Key** | An agent decision record's boundary match key is computed as the step of decision, followed by “|”, followed by the deciding agent kind, followed by “|”, followed by the decision kind. |
-| **DR-878 Matching Boundary Count** | An agent decision record's matching boundary count is the number of authority boundaries related to the agent decision record. |
-| **DR-879 Violated Authority Boundary** | An agent decision record is flagged violated authority boundary if the matching boundary count is greater than 0. |
-| **DR-880 Reviewer Agent Kind** | An agent decision record's reviewer agent kind — taken from the linked reviewed by agent. |
-| **DR-881 Has Human Confirmation** | An agent decision record is considered to have a human confirmation if all of the following hold: the reviewer agent kind is “Human”; the human disposition has a value; and the human disposition is not “NotReviewed”. |
-| **DR-882 Needs Human Confirmation** | An agent decision record is considered to need a human confirmation if all of the following hold: it is not the case that the deciding agent kind is “Human” and at least one of the following holds: the materiality band is “Material” or the materiality band is “Escalated”. |
-| **DR-883 Is Unconfirmed Non Human Decision** | An agent decision record is considered an unconfirmed non human decision if all of the following hold: the needs human confirmation flag is set and the human confirmation flag is not set. |
-| **DR-884 Step Execution When Unconfirmed** | The agent decision record's step execution when unconfirmed is determined by the following priority:<br>1. the step execution, if the unconfirmed non human decision flag is set;<br>2. in all other cases, an empty string. |
-| **DR-885 Agent When Boundary Violated** | The agent decision record's agent when boundary violated is determined by the following priority:<br>1. the deciding agent, if the violated authority boundary flag is set;<br>2. in all other cases, an empty string. |
-| **DR-886 Review Latency Minutes** | The agent decision record's review latency minutes is determined by the following priority:<br>1. 0, if the reviewed at is blank;<br>2. in all other cases, the number of minutes from the decided at to the reviewed at. |
-| **DR-887 Is Draft Kind** | An agent decision record is considered a draft kind if at least one of the following holds: the decision kind is “Draft” or the decision kind is “Commitment”. |
-| **DR-888 Agent When Draft Overridden** | The agent decision record's agent when draft overridden is determined by the following priority:<br>1. the deciding agent, if all of the following hold: the draft kind flag is set and the was overridden flag is set;<br>2. in all other cases, an empty string. |
-| **DR-889 Agent When Draft** | The agent decision record's agent when draft is determined by the following priority:<br>1. the deciding agent, if the draft kind flag is set;<br>2. in all other cases, an empty string. |
-| **DR-890 Is Error Correction** | An agent decision record is considered an error correction if all of the following hold: the was overridden flag is set and the override reason kind is “ErrorCorrection”. |
-| **DR-891 Is Reserved Judgment Override** | An agent decision record is considered a reserved judgment override if all of the following hold: the was overridden flag is set and the override reason kind is “JudgmentReserved”. |
-| **DR-892 Override Reason is Recorded** | An agent decision record is flagged override reason is recorded if all of the following hold: the was overridden flag is set and the override reason kind has a value. |
-| **DR-893 Is Unexplained Override** | An agent decision record is considered an unexplained override if all of the following hold: the was overridden flag is set and the override reason is recorded flag is not set. |
-| **DR-894 Error Correction Role Assignment Key** | The agent decision record's error correction role assignment key is determined by the following priority:<br>1. the under role assignment, if the error correction flag is set;<br>2. in all other cases, an empty string. |
-| **DR-895 Boundary Violation Role Assignment Key** | The agent decision record's boundary violation role assignment key is determined by the following priority:<br>1. the under role assignment, if the violated authority boundary flag is set;<br>2. in all other cases, an empty string. |
-| **DR-896 Name** | A delivered communication's name is computed as the channel, followed by “ -> ”, followed by the recipient key, followed by “ @ ”, followed by the sent at. |
-| **DR-897 Has Authorization** | A delivered communication is considered to have an authorization if the authorizing step execution has a value. |
-| **DR-898 Content Matches Approval** | A delivered communication is flagged content matches approval if the rendered content hash is the approved content hash. |
-| **DR-899 Authorized At** | A delivered communication's authorized at is the ended at of the delivered communication's authorizing step execution. |
-| **DR-900 Was Approved Before Sending** | A delivered communication is considered to have been approved before sending if the authorized at is at most the sent at. |
-| **DR-901 Is Defensible** | A delivered communication is considered defensible if all of the following hold: the authorization flag is set; the content matches approval flag is set; and the was approved before sending flag is set. |
-| **DR-902 Name** | An authority boundary's name is computed as the forbidden agent kind, followed by “ may not ”, followed by the forbidden decision kind. |
-| **DR-903 As of Instant** | An authority boundary's as of instant — taken from the linked evaluation context. |
-| **DR-904 Is Currently Binding** | An authority boundary is considered currently-binding if all of the following hold: the status is “Approved”; the valid from is at most the as of instant; and at least one of the following holds: the valid to is blank or the valid to is greater than the as of instant. |
-| **DR-905 Ratifying Fragment is Valid** | An authority boundary's ratifying fragment is valid is true when the authority boundary's ratified by knowledge fragment is currently valid. |
-| **DR-906 Step When Binding** | The authority boundary's step when binding is determined by the following priority:<br>1. the step, if the currently binding flag is set;<br>2. in all other cases, an empty string. |
-| **DR-907 Boundary Match Key** | An authority boundary's boundary match key is computed as the step, followed by “|”, followed by the forbidden agent kind, followed by “|”, followed by the forbidden decision kind. |
-| **DR-908 Violation Count** | An authority boundary's violation count is the number of agent decision records related to the authority boundary. |
-| **DR-909 Is Untested** | An authority boundary is considered untested if all of the following hold: the currently binding flag is set and the violation count is 0. |
-| **DR-910 Has Ratifying Fragment** | An authority boundary is considered to have ratifying fragment if the ratified by knowledge fragment has a value. |
-| **DR-911 Is Unwarranted** | An authority boundary is considered unwarranted if all of the following hold: the currently binding flag is set and at least one of the following holds: the ratifying fragment flag is not set or the ratifying fragment is valid flag is not set. |
-| **DR-912 Ratifying Fragment is Overdue** | An authority boundary's ratifying fragment is overdue is true when the authority boundary's ratified by knowledge fragment is an overdue for review. |
-| **DR-913 Ratifying Fragment is Single Witness** | An authority boundary's ratifying fragment is single witness is true when the authority boundary's ratified by knowledge fragment is a from single witness. |
-| **DR-914 Warrant is Thin** | An authority boundary is flagged warrant is thin if all of the following hold: the currently binding flag is set and at least one of the following holds: the ratifying fragment is overdue flag is set or the ratifying fragment is single witness flag is set. |
-| **DR-915 Is Unwarranted and Untested** | An authority boundary is considered unwarranted-and-untested if all of the following hold: the unwarranted flag is set and the untested flag is set. |
-| **DR-916 Unwarranted Boundary Step Key** | The authority boundary's unwarranted boundary step key is determined by the following priority:<br>1. the step, if the unwarranted flag is set;<br>2. in all other cases, an empty string. |
-| **DR-917 Ratifying Fragment Key** | The authority boundary's ratifying fragment key is determined by the following priority:<br>1. the ratified by knowledge fragment, if the currently binding flag is set;<br>2. in all other cases, an empty string. |
-| **DR-918 Ratifying Fragment Status** | An authority boundary's ratifying fragment status — taken from the linked ratified by knowledge fragment. |
-| **DR-919 Ratification Lapsed** | An authority boundary is flagged ratification lapsed if all of the following hold: the ratifying fragment flag is set and the ratifying fragment is valid flag is not set. |
-| **DR-920 Binds Despite Lapsed Ratification** | An authority boundary is considered to bind a despite lapsed ratification if all of the following hold: the currently binding flag is set and the ratification lapsed flag is set. |
-| **DR-921 Is Ungrounded and Untested** | An authority boundary is considered ungrounded-and-untested if all of the following hold: the binds despite lapsed ratification flag is set and the untested flag is set. |
-| **DR-922 Constrained Role Assignment Key** | The authority boundary's constrained role assignment key is determined by the following priority:<br>1. the authority role, if the binds despite lapsed ratification flag is set;<br>2. in all other cases, an empty string. |
-| **DR-923 Name** | A binding observation's name is computed as the step execution, followed by “ / ”, followed by the binding observation ID. |
-| **DR-924 Sla Minutes At Run** | A binding observation's sla minutes at run is the freshness sla minutes of the binding observation's operational binding. |
-| **DR-925 Age At Run Minutes** | A binding observation's age at run minutes is computed as the number of minutes from the observed source timestamp to the read at. |
-| **DR-926 Was Stale At Run** | A binding observation is considered to have been stale at run if all of the following hold: the authoritative binding flag is set and the age at run minutes is greater than the sla minutes at run. |
-| **DR-927 Is Authoritative Binding** | A binding observation's is authoritative binding when the linked operational binding is authoritative. |
-| **DR-928 Stale At Run Step Key** | The binding observation's stale at run step key is determined by the following priority:<br>1. the step execution, if the was stale at run flag is set;<br>2. in all other cases, an empty string. |
-| **DR-929 Name** | An attestation's name is computed as the procedure execution, followed by “ / ”, followed by the attestation ID. |
-| **DR-930 Version is Fit Now** | An attestation's version is fit now is true when the attestation's procedure execution is a fit. |
-| **DR-931 Fitness Verdict Has Drifted** | An attestation is considered to fitnes verdict has drifted if it is not the case that the version was fit at signing is the version is fit now. |
-| **DR-932 Assurance Grade Now** | An attestation's assurance grade now — taken from the linked procedure execution. |
-| **DR-933 Assurance Grade Has Drifted** | An attestation is flagged assurance grade has drifted if it is not the case that the assurance grade at signing is the assurance grade now. |
-| **DR-934 Would Not Survive Restatement** | An attestation is flagged would not survive restatement if at least one of the following holds: the fitness verdict has drifted flag is set or the assurance grade has drifted flag is set. |
-| **DR-935 Name** | An app role profile's name is computed as the display label, followed by “ (”, followed by the role kind, followed by “)”. |
-| **DR-936 Route Count** | An app role profile's route count is the number of app routes related to the app role profile. |
-| **DR-937 Name** | An app nav group's name is the same as its group label. |
-| **DR-938 Route Count** | An app nav group's route count is the number of app routes related to the app nav group. |
-| **DR-939 Name** | An app route's name is computed as the route name, followed by “ — ”, followed by the route path. |
-| **DR-940 Is in Nav** | An app route is considered in-nav if the nav group has a value. |
-| **DR-941 Is Shared** | An app route is considered shared if all of the following hold: the owning role is blank and the surface is “domain”. |
-| **DR-942 Is Maintainer** | An app route is considered a maintainer if the surface is “maintainer”. |
-| **DR-943 Question Count** | An app route's question count is the number of app route questions related to the app route. |
-| **DR-944 Reference Count** | An app route's reference count is the number of app route references related to the app route. |
-| **DR-945 Answers No Question** | An app route is considered to answer no question if all of the following hold: the question count is 0; the is shared is false; the is maintainer is false; and the route kind is not “index”. |
-| **DR-946 Name** | An app route question's name is computed as the route, followed by “ answers ”, followed by the question. |
-| **DR-947 Name** | An app route reference's name is computed as the from route, followed by “ -> ”, followed by the to route. |
-| **DR-948 Name** | A rulebook table's name is the same as its table name. |
-| **DR-949 Field Count** | A rulebook table's field count is the number of rulebook fields related to the rulebook table. |
-| **DR-950 Policy Count** | A rulebook table's policy count is the number of access policies related to the rulebook table. |
-| **DR-951 Is Unsecured** | A rulebook table is considered unsecured if the policy count is 0. |
-| **DR-952 Disagreeing Substrate Count** | A rulebook table's disagreeing substrate count is the number of table conformance related to the rulebook table. |
-| **DR-953 Name** | An access principal's name is the same as its label. |
-| **DR-954 Organization Scope** | An access principal's organization scope — taken from the linked domain role. |
-| **DR-955 Role Label** | An access principal's role label — taken from the linked domain role. |
-| **DR-956 Policy Count** | An access principal's policy count is the number of access policies related to the access principal. |
-| **DR-957 Grant Count** | An access principal's grant count is the number of field grants related to the access principal. |
-| **DR-958 Visible Table Count** | An access principal's visible table count is the number of role schema views related to the access principal. |
-| **DR-959 Has No Access** | An access principal is considered to have no access if the policy count is 0. |
-| **DR-960 Is Over Privileged** | An access principal is considered over-privileged if all of the following hold: the administrator flag is not set and the visible table count is at least 74. |
-| **DR-961 Name** | An access policy's name is computed as the principal, followed by a space, followed by the command, followed by a space, followed by the target table. |
-| **DR-962 Is Write Command** | An access policy is considered a write command if at least one of the following holds: the command is “INSERT”; the command is “UPDATE”; the command is “DELETE”; or the command is “ALL”. |
-| **DR-963 Is Unrestricted** | An access policy is considered unrestricted if the row predicate is blank. |
-| **DR-964 Principal is Admin** | An access policy's principal is admin is true when the access policy's principal is an administrator. |
-| **DR-965 Is Unrestricted Non Admin Grant** | An access policy is considered unrestricted-non-admin-grant if all of the following hold: the unrestricted flag is set and the principal is admin flag is not set. |
-| **DR-966 Is Unwitnessed Write** | An access policy is considered an unwitnessed write if all of the following hold: the write command flag is set and the denial test count is 0. |
-| **DR-967 Denial Test Count** | An access policy's denial test count is the number of access denial tests related to the access policy. |
-| **DR-968 Name** | A field grant's name is computed as the principal, followed by “ -> ”, followed by the target field. |
-| **DR-969 Field Table** | A field grant's field table is the target table of the field grant's target field. |
-| **DR-970 Field Name** | A field grant's field name — taken from the linked target field. |
-| **DR-971 Field is Derived** | A field grant's field is derived when the linked target field is derived. |
-| **DR-972 Is Writable Derived Field** | A field grant is considered a writable derived field if all of the following hold: the can write flag is set and the field is derived flag is set. |
-| **DR-973 Is Masked** | A field grant is considered masked if all of the following hold: the mask strategy is not “plain” and the mask strategy has a value. |
-| **DR-974 Grant Key When Readable** | The field grant's grant key when readable is determined by the following priority:<br>1. the principal, followed by “|”, followed by the field table, if the can read flag is set;<br>2. in all other cases, an empty string. |
-| **DR-975 Name** | A role schema's name is the same as its schema name. |
-| **DR-976 Search Path** | A role schema's search path is the same as its schema name. |
-| **DR-977 View Count** | A role schema's view count is the number of role schema views related to the role schema. |
-| **DR-978 Is Empty Schema** | A role schema is considered an empty schema if the view count is 0. |
-| **DR-979 Name** | A role schema view's name is computed as the schema name, followed by a period, followed by the view name. |
-| **DR-980 Schema Name** | A role schema view's schema name — taken from the linked role schema. |
-| **DR-981 Source View** | A role schema view's source view is the physical view of the role schema view's target table. |
-| **DR-982 Grant Key** | A role schema view's grant key is computed as the principal, followed by “|”, followed by the target table. |
-| **DR-983 Column Count** | A role schema view's column count is the number of field grants related to the role schema view. |
-| **DR-984 Table Field Count** | A role schema view's table field count — taken from the linked target table. |
-| **DR-985 Is Full Width** | A role schema view is considered a full width if all of the following hold: the column count is greater than 0 and the column count is at least the table field count. |
-| **DR-986 Is Degenerate View** | A role schema view is considered a degenerate view if the column count is 0. |
-| **DR-987 Name** | A jwt claim mapping's name is computed as the claim name, followed by “ -> ”, followed by the SQL accessor. |
-| **DR-988 Usage Count** | A jwt claim mapping's usage count is the number of access policies related to the jwt claim mapping. |
-| **DR-989 Name** | An access denial test's name is computed as the principal, followed by “ must not see ”, followed by the forbidden row ID. |
-| **DR-990 Has Run** | An access denial test is considered to have a run if the last run at has a value. |
-| **DR-991 Is Passing** | An access denial test is considered passing if the observed visible is the expected visible. |
-| **DR-992 Is Leak** | An access denial test is considered a leak if all of the following hold: the expected visible flag is not set and the observed visible flag is set. |
-| **DR-993 Is Unproven** | An access denial test is considered an unproven if the run flag is not set. |
-| **DR-994 Is Positive Control** | An access denial test is considered a positive control only if the access denial test is flagged expected visible. |
-| **DR-995 Name** | An app user's name is the same as its display name. |
-| **DR-996 Agent Kind** | An app user's agent kind — taken from the linked linked agent. |
-| **DR-997 Organization** | An app user's organization — taken from the linked linked agent. |
-| **DR-998 Assignment Count** | An app user's assignment count is the number of principal assignments related to the app user. |
-| **DR-999 Has No Principal** | An app user is considered to have no principal if the assignment count is 0. |
-| **DR-1000 Holds Multiple Principals** | An app user is considered to hold a multiple principals if the assignment count is greater than 1. |
-| **DR-1001 Is Non Human Sign in** | An app user is considered a non human sign in if at least one of the following holds: the agent kind is “AIAgent” or the agent kind is “AutomatedPipeline”. |
-| **DR-1002 Name** | A principal assignment's name is computed as the app user, followed by “ as ”, followed by the principal. |
-| **DR-1003 Principal is Admin** | A principal assignment's principal is admin is true when the principal assignment's principal is an administrator. |
-| **DR-1004 User Organization** | A principal assignment's user organization — taken from the linked app user. |
-| **DR-1005 Principal Organization** | A principal assignment's principal organization is the organization scope of the principal assignment's principal. |
-| **DR-1006 Is Cross Organization Grant** | A principal assignment is considered cross-organization-grant if all of the following hold: the user organization has a value; the principal organization has a value; and the user organization is not the principal organization. |
-| **DR-1007 Name** | An issued token's name is computed as the app user, followed by “ as ”, followed by the principal, followed by “ @ ”, followed by the issued at. |
-| **DR-1008 Is Dev Minted** | An issued token is considered dev-minted if the issuer is “dev-mint”. |
-| **DR-1009 Name** | A process mining run's name is computed as the event log source, followed by “ / ”, followed by the mined at. |
-| **DR-1010 As of Instant** | A process mining run's as of instant — taken from the linked evaluation context. |
-| **DR-1011 Conformance Rate** | The process mining run's conformance rate is determined by the following priority:<br>1. 0, if the discovered variant count is 0;<br>2. in all other cases, the conforming variant count divided by the discovered variant count. |
-| **DR-1012 Is Conformant** | A process mining run is considered conformant if the conformance rate is at least 0.8. |
-| **DR-1013 Has Major Drift From Documentation** | A process mining run is considered to have a major drift from documentation if the conformance rate is less than 0.5. |
-| **DR-1014 Days Since Mined** | A process mining run's days since mined is computed as the number of days from the mined at to the as of instant. |
-| **DR-1015 Is Stale Mining Evidence** | A process mining run is considered a stale mining evidence if the days since mined is greater than 180. |
-| **DR-1016 Procedure Version is Live** | A process mining run's procedure version is live when the linked procedure version is live. |
-| **DR-1017 Is Drift on Live Version** | A process mining run is considered a drift on live version if all of the following hold: the major drift from documentation flag is set and the procedure version is live flag is set. |
-| **DR-1018 Drifted Mining Run Key** | The process mining run's drifted mining run key is determined by the following priority:<br>1. the procedure version, if the drift on live version flag is set;<br>2. in all other cases, an empty string. |
-| **DR-1019 Name** | A vocabulary's name is the same as its title. |
-| **DR-1020 Term Count** | A vocabulary's term count is the number of vocabulary terms related to the vocabulary. |
-| **DR-1021 Orphan Term Count** | A vocabulary's orphan term count is the number of vocabulary terms related to the vocabulary. |
-| **DR-1022 Has Orphan Terms** | A vocabulary is considered to have an orphan terms if the orphan term count is greater than 0. |
-| **DR-1023 Name** | A vocabulary term's name is the same as its pref label. |
-| **DR-1024 Usage Count** | A vocabulary term's usage count is the number of requirements related to the vocabulary term. |
-| **DR-1025 Is Orphan Term** | A vocabulary term is considered an orphan term if the usage count is 0. |
-| **DR-1026 Is Widely Adopted Term** | A vocabulary term is considered a widely adopted term if the usage count is at least 2. |
-| **DR-1027 Orphan Term Vocabulary Key** | The vocabulary term's orphan term vocabulary key is determined by the following priority:<br>1. the vocabulary, if the orphan term flag is set;<br>2. in all other cases, an empty string. |
-| **DR-1028 Name** | A knowledge broker link's name is computed as the seeker, followed by “ -> ”, followed by the broker. |
-| **DR-1029 As of Instant** | A knowledge broker link's as of instant — taken from the linked evaluation context. |
-| **DR-1030 Days Since Consulted** | A knowledge broker link's days since consulted is computed as the number of days from the last consulted at to the as of instant. |
-| **DR-1031 Is Active Reliance** | A knowledge broker link is considered an active reliance if all of the following hold: it is not the case that the frequency is “Rarely” and the days since consulted is at most 180. |
-| **DR-1032 Broker is Still Engaged** | A knowledge broker link's broker is still engaged when the linked broker is still engaged. |
-| **DR-1033 Is At Risk Reliance** | A knowledge broker link is considered at-risk-reliance if all of the following hold: the active reliance flag is set and the broker is still engaged flag is not set. |
-| **DR-1034 Active Reliance Broker Key** | The knowledge broker link's active reliance broker key is determined by the following priority:<br>1. the broker, if the active reliance flag is set;<br>2. in all other cases, an empty string. |
-| **DR-1035 At Risk Broker Key** | The knowledge broker link's at risk broker key is determined by the following priority:<br>1. the broker, if the at risk reliance flag is set;<br>2. in all other cases, an empty string. |
-| **DR-1036 Name** | A conformance substrate's name is the same as its label. |
-| **DR-1037 Is Graded** | A conformance substrate is considered graded if the role is “graded”. |
-| **DR-1038 Run Count** | A conformance substrate's run count is the number of substrate run scores related to the conformance substrate. |
-| **DR-1039 Latest Cells Tested** | A conformance substrate's latest cells tested is the total latest cells tested across the substrate run scores related to the conformance substrate. |
-| **DR-1040 Latest Cells Passed** | A conformance substrate's latest cells passed is the total latest cells passed across the substrate run scores related to the conformance substrate. |
-| **DR-1041 Latest Harness Errors** | A conformance substrate's latest harness errors is the total latest error flag across the substrate run scores related to the conformance substrate. |
-| **DR-1042 Latest Cells Failed** | A conformance substrate's latest cells failed is computed as the latest cells tested minus the latest cells passed. |
-| **DR-1043 Latest Score** | The conformance substrate's latest score is determined by the following priority:<br>1. 0, if the latest cells tested is 0;<br>2. in all other cases, 100 times the latest cells passed divided by the latest cells tested rounded to 2 decimal place(s). |
-| **DR-1044 Disagreeing Field Count** | A conformance substrate's disagreeing field count is the number of field disagreements related to the conformance substrate. |
-| **DR-1045 Disagreeing Table Count** | A conformance substrate's disagreeing table count is the number of table conformance related to the conformance substrate. |
-| **DR-1046 Is Fully Conformant** | A conformance substrate is considered fully-conformant if all of the following hold: the latest cells tested is greater than 0; the latest cells failed is 0; and the latest harness errors is 0. |
-| **DR-1047 Name** | A conformance run's name is the same as its conformance run ID. |
-| **DR-1048 Substrate Count** | A conformance run's substrate count is the number of substrate run scores related to the conformance run. |
-| **DR-1049 Perfect Substrate Count** | A conformance run's perfect substrate count is the number of substrate run scores related to the conformance run. |
-| **DR-1050 Cells Tested** | A conformance run's cells tested is the total cells tested across the substrate run scores related to the conformance run. |
-| **DR-1051 Cells Passed** | A conformance run's cells passed is the total cells passed across the substrate run scores related to the conformance run. |
-| **DR-1052 Cells Failed** | A conformance run's cells failed is computed as the cells tested minus the cells passed. |
-| **DR-1053 Overall Score** | The conformance run's overall score is determined by the following priority:<br>1. 0, if the cells tested is 0;<br>2. in all other cases, 100 times the cells passed divided by the cells tested rounded to 2 decimal place(s). |
-| **DR-1054 Imperfect Substrate Count** | A conformance run's imperfect substrate count is computed as the substrate count minus the perfect substrate count. |
-| **DR-1055 Is Fully Conformant** | A conformance run is considered fully-conformant if all of the following hold: the substrate count is greater than 0 and the imperfect substrate count is 0. |
-| **DR-1056 Name** | A substrate run score's name is computed as the run, followed by “ / ”, followed by the substrate. |
-| **DR-1057 Cells Failed** | A substrate run score's cells failed is computed as the cells tested minus the cells passed. |
-| **DR-1058 Score** | The substrate run score's score is determined by the following priority:<br>1. 0, if the cells tested is 0;<br>2. in all other cases, 100 times the cells passed divided by the cells tested rounded to 2 decimal place(s). |
-| **DR-1059 Calculated Score** | The substrate run score's calculated score is determined by the following priority:<br>1. 0, if the calculated tested is 0;<br>2. in all other cases, 100 times the calculated passed divided by the calculated tested rounded to 2 decimal place(s). |
-| **DR-1060 Lookup Score** | The substrate run score's lookup score is determined by the following priority:<br>1. 0, if the lookup tested is 0;<br>2. in all other cases, 100 times the lookup passed divided by the lookup tested rounded to 2 decimal place(s). |
-| **DR-1061 Aggregation Score** | The substrate run score's aggregation score is determined by the following priority:<br>1. 0, if the aggregation tested is 0;<br>2. in all other cases, 100 times the aggregation passed divided by the aggregation tested rounded to 2 decimal place(s). |
-| **DR-1062 Is Perfect** | A substrate run score is considered a perfect if all of the following hold: the harness error is blank; the cells tested is greater than 0; and the cells failed is 0. |
-| **DR-1063 Perfect Run Key** | The substrate run score's perfect run key is determined by the following priority:<br>1. the run, if the perfect flag is set;<br>2. in all other cases, an empty string. |
-| **DR-1064 Is in Latest Run** | A substrate run score's is in latest run when the linked run is a latest. |
-| **DR-1065 Latest Cells Tested** | The substrate run score's latest cells tested is determined by the following priority:<br>1. the cells tested, if the in latest run flag is set;<br>2. in all other cases, 0. |
-| **DR-1066 Latest Cells Passed** | The substrate run score's latest cells passed is determined by the following priority:<br>1. the cells passed, if the in latest run flag is set;<br>2. in all other cases, 0. |
-| **DR-1067 Latest Error Flag** | The substrate run score's latest error flag is determined by the following priority:<br>1. 1, if all of the following hold: the in latest run flag is set and the harness error has a value;<br>2. in all other cases, 0. |
-| **DR-1068 Substrate Label** | A substrate run score's substrate label — taken from the linked substrate. |
-| **DR-1069 Name** | A table conformance's name is computed as the substrate, followed by “ / ”, followed by the rulebook table. |
-| **DR-1070 Cells Failed** | A table conformance's cells failed is computed as the cells tested minus the cells passed. |
-| **DR-1071 Score** | The table conformance's score is determined by the following priority:<br>1. 0, if the cells tested is 0;<br>2. in all other cases, 100 times the cells passed divided by the cells tested rounded to 2 decimal place(s). |
-| **DR-1072 Is Perfect** | A table conformance is considered a perfect if the cells failed is 0. |
-| **DR-1073 Imperfect Substrate Key** | The table conformance's imperfect substrate key is determined by the following priority:<br>1. an empty string, if the perfect flag is set;<br>2. in all other cases, the substrate. |
-| **DR-1074 Imperfect Table Key** | The table conformance's imperfect table key is determined by the following priority:<br>1. an empty string, if the perfect flag is set;<br>2. in all other cases, the rulebook table. |
-| **DR-1075 Disagreeing Field Count** | A table conformance's disagreeing field count is the number of field disagreements related to the table conformance. |
-| **DR-1076 Substrate Label** | A table conformance's substrate label — taken from the linked substrate. |
-| **DR-1077 Subject Area** | A table conformance's subject area — taken from the linked rulebook table. |
-| **DR-1078 Name** | A field disagreement's name is computed as the substrate, followed by “ / ”, followed by the rulebook field. |
-| **DR-1079 Sampled Cell Count** | A field disagreement's sampled cell count is the number of cell disagreements related to the field disagreement. |
-| **DR-1080 Is Fully Sampled** | A field disagreement is considered fully-sampled if the sampled cell count is the cells failed. |
-| **DR-1081 Formula** | A field disagreement's formula — taken from the linked rulebook field. |
-| **DR-1082 Substrate Label** | A field disagreement's substrate label — taken from the linked substrate. |
-| **DR-1083 Name** | A cell disagreement's name is computed as the field disagreement, followed by “ @ ”, followed by the record ID. |
-| **DR-1084 Substrate** | A cell disagreement's substrate — taken from the linked field disagreement. |
-| **DR-1085 Rulebook Field** | A cell disagreement's rulebook field — taken from the linked field disagreement. |
+| **DR-161 Entry Step ID** | A procedure version's entry step ID is the largest entry step key across the steps related to the procedure version. |
+| **DR-162 Name** | A procedure version link's name is computed as the previous procedure version, followed by “ -> ”, followed by the next procedure version. |
+| **DR-163 Superseded Version Key** | The procedure version link's superseded version key is determined by the following priority:<br>1. the previous procedure version, if the relation iri is “https://w3id.org/pko#nextVersion”;<br>2. in all other cases, an empty string. |
+| **DR-164 Name** | A procedure status change's name is computed as the procedure version, followed by “: ”, followed by the from status, followed by “ -> ”, followed by the to status. |
+| **DR-165 Name** | A step's name is computed as the step number, followed by “. ”, followed by the title. |
+| **DR-166 Assigned Role Label** | A step's assigned role label — taken from the linked assigned role. |
+| **DR-167 Assigned Agent Kind** | A step's assigned agent kind is the current agent kind of the step's assigned role. |
+| **DR-168 Blocking Requirement Count** | A step's blocking requirement count is the number of step requirements related to the step. |
+| **DR-169 Stale Binding Count** | A step's stale binding count is the number of operational bindings related to the step. |
+| **DR-170 Authoritative Stale Count** | A step's authoritative stale count is the number of operational bindings related to the step. |
+| **DR-171 Available Exception Count** | A step's available exception count is the number of exceptions related to the step. |
+| **DR-172 Declared Verification Count** | A step's declared verification count is the number of step verifications related to the step. |
+| **DR-173 Is Preparation Step** | A step is considered a preparation step if at least one of the following holds: the assigned role is “finance-analyst” or the assigned role is “variance-review-agent”. |
+| **DR-174 Is Approval Step** | A step is considered an approval step if at least one of the following holds: the assigned role is “controller” or the assigned role is “cfo”. |
+| **DR-175 Stale Authoritative Binding Count** | A step's stale authoritative binding count is the number of operational bindings related to the step. |
+| **DR-176 Inputs are Fresh** | A step is considered to input are fresh if the stale authoritative binding count is 0. |
+| **DR-177 Is Software Assigned** | A step is considered software-assigned if at least one of the following holds: the assigned agent kind is “AIAgent” or the assigned agent kind is “AutomatedPipeline”. |
+| **DR-178 Is Human Approval Gate** | A step is considered a human approval gate if all of the following hold: the software assigned flag is not set and at least one of the following holds: the step ID is “policy-05” or the step ID is “close-06”. |
+| **DR-179 Gate Held by Human** | A step is flagged gate held by human if all of the following hold: the human approval gate flag is set and the assigned agent kind is “Human”. |
+| **DR-180 Binding Boundary Count** | A step's binding boundary count is the number of authority boundaries related to the step. |
+| **DR-181 Assigned Role is Ungoverned** | A step's assigned role is ungoverned is true when the step's assigned role is an ungoverned non human role. |
+| **DR-182 Unusable Binding Count** | A step's unusable binding count is the number of operational bindings related to the step. |
+| **DR-183 All Sources Usable** | A step is flagged all sources usable if the unusable binding count is 0. |
+| **DR-184 Unwarranted Boundary Count** | A step's unwarranted boundary count is the number of authority boundaries related to the step. |
+| **DR-185 Is Governed by Unwarranted Boundary** | A step is considered governed-by-unwarranted-boundary if the unwarranted boundary count is greater than 0. |
+| **DR-186 Software Execution Count** | A step's software execution count is the number of step executions related to the step. |
+| **DR-187 Has Been Approached by Software** | A step is considered to have a been approached by software if the software execution count is greater than 0. |
+| **DR-188 Is Unexercised Human Gate** | A step is considered an unexercised human gate if all of the following hold: the human approval gate flag is set and the been approached by software flag is not set. |
+| **DR-189 Is Demonstrated Human Gate** | A step is considered a demonstrated human gate if all of the following hold: the human approval gate flag is set; the been approached by software flag is set; and the gate held by human flag is set. |
+| **DR-190 Unexercised Gate Version Key** | The step's unexercised gate version key is determined by the following priority:<br>1. the procedure version, if the unexercised human gate flag is set;<br>2. in all other cases, an empty string. |
+| **DR-191 Has Declared Control Kind** | A step is considered to have a declared control kind if the control kind has a value. |
+| **DR-192 Undeclared Control Version Key** | The step's undeclared control version key is determined by the following priority:<br>1. an empty string, if the declared control kind flag is set;<br>2. in all other cases, the procedure version. |
+| **DR-193 Approval Step is Software Assigned** | A step is flagged approval step is software assigned if all of the following hold: the control kind is “Approval” and the software assigned flag is set. |
+| **DR-194 Unwitnessed Blocking Count** | A step's unwitnessed blocking count is the number of step requirements related to the step. |
+| **DR-195 Reachable Step Count** | A step's reachable step count is the number of vw step transitions closure related to the step. |
+| **DR-196 Reached From Step Count** | A step's reached from step count is the number of vw step transitions closure related to the step. |
+| **DR-197 Self Reach Count** | A step's self reach count is the number of vw step transitions closure related to the step. |
+| **DR-198 Is on Rework Loop** | A step is considered on-rework-loop if the self reach count is greater than 0. |
+| **DR-199 Is Blocking Control on Rework Loop** | A step is considered a blocking control on rework loop if all of the following hold: the on rework loop flag is set and the blocking requirement count is greater than 0. |
+| **DR-200 Incoming Transition Count** | A step's incoming transition count is the number of step transitions related to the step. |
+| **DR-201 Is Entry Step** | A step is considered an entry step if the incoming transition count is 0. |
+| **DR-202 Entry Step Key** | The step's entry step key is determined by the following priority:<br>1. the step ID, if the entry step flag is set;<br>2. in all other cases, an empty string. |
+| **DR-203 Version Entry Step ID** | A step's version entry step ID — taken from the linked procedure version. |
+| **DR-204 Gate Free Reach From Entry Count** | A step's gate free reach from entry count is the number of vw step transitions closure where avoids human approval gate related to the step. |
+| **DR-205 Is Reachable From Entry Without Human Gate** | A step is considered a reachable from entry without human gate if the gate free reach from entry count is greater than 0. |
+| **DR-206 Is Gate Bypassed Publication** | A step is considered a gate bypassed publication if all of the following hold: the control kind is “Publication” and the reachable from entry without human gate flag is set. |
+| **DR-207 Name** | A step transition's name is computed as the from step, followed by “ -> ”, followed by the to step. |
+| **DR-208 Is Recovery Path** | A step transition is considered a recovery path if at least one of the following holds: the transition kind is “Fallback” or the transition kind is “Alternative”. |
+| **DR-209 Count of From Step Executions** | A step transition's count of from step executions is the number of step executions related to the step transition. |
+| **DR-210 Count of to Step Executions** | A step transition's count of to step executions is the number of step executions related to the step transition. |
+| **DR-211 Has Reachable Origin** | A step transition is considered to have a reachable origin if the count of from step executions is greater than 0. |
+| **DR-212 Has Reachable Target** | A step transition is considered to have a reachable target if the count of to step executions is greater than 0. |
+| **DR-213 Is Never Exercised** | A step transition is considered never-exercised if it is not the case that all of the following hold: the reachable origin flag is set and the reachable target flag is set. |
+| **DR-214 Is Untested Recovery Path** | A step transition is considered an untested recovery path if all of the following hold: the recovery path flag is set and the never exercised flag is set. |
+| **DR-215 Count of Observed Traversals** | A step transition's count of observed traversals is the number of observed transitions related to the step transition. |
+| **DR-216 Has Been Traversed** | A step transition is considered to have been traversed if the count of observed traversals is greater than 0. |
+| **DR-217 Is Unwalked Recovery Path** | A step transition is considered an unwalked recovery path if all of the following hold: the recovery path flag is set and the been traversed flag is not set. |
+| **DR-218 Target Blocking Requirement Count** | A step transition's target blocking requirement count — taken from the linked to step. |
+| **DR-219 Target Carries Blocking Control** | A step transition is flagged target carries blocking control if the target blocking requirement count is greater than 0. |
+| **DR-220 Is Unrehearsed Control Entry** | A step transition is considered unrehearsed-control-entry if all of the following hold: the unwalked recovery path flag is set and the target carries blocking control flag is set. |
+| **DR-221 Unrehearsed Control Version Key** | The step transition's unrehearsed control version key is determined by the following priority:<br>1. the procedure version, if the unrehearsed control entry flag is set;<br>2. in all other cases, an empty string. |
+| **DR-222 From Step is Human Approval Gate** | A step transition's from step is human approval gate when the linked from step is a human approval gate. |
+| **DR-223 To Step is Human Approval Gate** | A step transition's to step is human approval gate when the linked to step is a human approval gate. |
+| **DR-224 Avoids Human Approval Gate** | A step transition is considered to avoid a human approval gate if all of the following hold: the from step is human approval gate flag is not set and the to step is human approval gate flag is not set. |
+| **DR-225 Name** | An action's name is the same as its label. |
+| **DR-226 Name** | A function's name is the same as its label. |
+| **DR-227 Name** | A tool's name is the same as its label. |
+| **DR-228 Name** | A step action's name is computed as the step, followed by “ / ”, followed by the action. |
+| **DR-229 Name** | A step function's name is computed as the step, followed by “ / ”, followed by the function. |
+| **DR-230 Name** | A step tool's name is computed as the step, followed by “ / ”, followed by the tool. |
+| **DR-231 Name** | A requirement's name is the same as its label. |
+| **DR-232 Satisfaction Record Count** | A requirement's satisfaction record count is the number of requirement satisfactions related to the requirement. |
+| **DR-233 Step Binding Count** | A requirement's step binding count is the number of step requirements related to the requirement. |
+| **DR-234 Is Bound to Any Step** | A requirement is considered a bound to any step if the step binding count is greater than 0. |
+| **DR-235 Has Ever Been Evaluated** | A requirement is considered to have ever been evaluated if the satisfaction record count is greater than 0. |
+| **DR-236 Negative Outcome Count** | A requirement's negative outcome count is the number of requirement satisfactions related to the requirement. |
+| **DR-237 Is Inoperative Control** | A requirement is considered an inoperative control if all of the following hold: the blocking flag is set; the bound to any step flag is set; and the ever been evaluated flag is not set. |
+| **DR-238 Is Decorative Control** | A requirement is considered a decorative control if all of the following hold: the blocking flag is set and the bound to any step flag is not set. |
+| **DR-239 Has Ever Produced Negative** | A requirement is considered to have ever produced negative if the negative outcome count is greater than 0. |
+| **DR-240 Is Unfalsified Control** | A requirement is considered an unfalsified control if all of the following hold: the blocking flag is set; the ever been evaluated flag is set; and the ever produced negative flag is not set. |
+| **DR-241 Claims a Witness Field** | A requirement is considered to claim a witness field if the witness field name has a value. |
+| **DR-242 Named Witness Field Exists** | A requirement's named witness field exists is true when the requirement's witness field name is derived. |
+| **DR-243 Derived Has Computed Witness** | A requirement is flagged derived has computed witness if all of the following hold: the claims a witness field flag is set and the named witness field exists flag is set. |
+| **DR-244 Witness Claim is Unverified** | A requirement is considered to witnes claim is unverified if it is not the case that the has computed witness is the derived has computed witness. |
+| **DR-245 Is Unwitnessed Blocking Control** | A requirement is considered an unwitnessed blocking control if all of the following hold: the blocking flag is set and the derived has computed witness flag is not set. |
+| **DR-246 Witness Fire Count** | A requirement's witness fire count is the same as its negative outcome count. |
+| **DR-247 Witness Has Never Fired** | A requirement is considered to witnes has never fired if all of the following hold: the computed witness flag is set and the witness fire count is 0. |
+| **DR-248 Evaluation Sample Size** | A requirement's evaluation sample size is the same as its satisfaction record count. |
+| **DR-249 Has Meaningful Sample** | A requirement is considered to have a meaningful sample if the evaluation sample size is at least the minimum sample for assurance. |
+| **DR-250 Is Untested Witness** | A requirement is considered an untested witness if all of the following hold: the witness has never fired flag is set and the meaningful sample flag is not set. |
+| **DR-251 Is Evidenced Holding Control** | A requirement is considered an evidenced holding control if all of the following hold: the witness has never fired flag is set and the meaningful sample flag is set. |
+| **DR-252 Control Assurance State** | The requirement's control assurance state is determined by the following priority:<br>1. “Decorative”, if the bound to any step flag is not set;<br>2. “Inoperative”, if the ever been evaluated flag is not set;<br>3. “Asserted”, if the computed witness flag is not set;<br>4. “Demonstrated”, if the witness fire count is greater than 0;<br>5. “Holding”, if the meaningful sample flag is set;<br>6. in all other cases, “Untested”. |
+| **DR-253 Unexercised Binding Count** | A requirement's unexercised binding count is the number of step requirements related to the requirement. |
+| **DR-254 Witness is Partially Scoped** | A requirement is considered to witnes is partially scoped if all of the following hold: the computed witness flag is set and the unexercised binding count is greater than 0. |
+| **DR-255 Accountable Agent** | A requirement's accountable agent is the current agent of the requirement's accountable role. |
+| **DR-256 Has Named Owner** | A requirement is considered to have a named owner if the accountable role has a value. |
+| **DR-257 Is Orphaned Blocking Control** | A requirement is considered an orphaned blocking control if all of the following hold: the blocking flag is set and the named owner flag is not set. |
+| **DR-258 Is Unwatched and Unowned** | A requirement is considered unwatched-and-unowned if all of the following hold: the blocking flag is set; the computed witness flag is not set; and the named owner flag is not set. |
+| **DR-259 Attestation Exposure Note** | The requirement's attestation exposure note is determined by the following priority:<br>1. an empty string, if the blocking flag is not set;<br>2. “Unwatched and unowned: exposure defaults to the signatory.”, if the unwatched and unowned flag is set;<br>3. “Witnessed but unowned: no named accountability.”, if the orphaned blocking control flag is set;<br>4. “Owned but unwitnessed: rests on human judgement.”, if the computed witness flag is not set;<br>5. in all other cases, an empty string. |
+| **DR-260 Unwatched Unowned Flag** | The requirement's unwatched unowned flag is determined by the following priority:<br>1. “unwatched-unowned”, if the unwatched and unowned flag is set;<br>2. in all other cases, an empty string. |
+| **DR-261 Uses Controlled Vocabulary** | A requirement is considered to use controlled vocabulary if the controlled term has a value. |
+| **DR-262 Name** | A step requirement's name is computed as the step, followed by “ / ”, followed by the requirement. |
+| **DR-263 Requirement is Blocking** | A step requirement's requirement is blocking when the linked requirement is blocking. |
+| **DR-264 Blocking Step Key** | The step requirement's blocking step key is determined by the following priority:<br>1. the step, if the requirement is blocking flag is set;<br>2. in all other cases, an empty string. |
+| **DR-265 Step When Blocking** | The step requirement's step when blocking is determined by the following priority:<br>1. the step, if the requirement is blocking flag is set;<br>2. in all other cases, an empty string. |
+| **DR-266 Requirement Lacks Witness** | A step requirement's requirement lacks witness is true when the step requirement's requirement is an unwitnessed blocking control. |
+| **DR-267 Unwitnessed Step Key** | The step requirement's unwitnessed step key is determined by the following priority:<br>1. the step, if the requirement lacks witness flag is set;<br>2. in all other cases, an empty string. |
+| **DR-268 Satisfaction Count for Binding** | A step requirement's satisfaction count for binding is the number of requirement satisfactions related to the step requirement. |
+| **DR-269 Binding Was Ever Exercised** | A step requirement is flagged binding was ever exercised if the satisfaction count for binding is greater than 0. |
+| **DR-270 Is Unexercised Blocking Binding** | A step requirement is considered unexercised-blocking-binding if all of the following hold: the requirement is blocking flag is set and the binding was ever exercised flag is not set. |
+| **DR-271 Unexercised Binding Requirement Key** | The step requirement's unexercised binding requirement key is determined by the following priority:<br>1. the requirement, if the unexercised blocking binding flag is set;<br>2. in all other cases, an empty string. |
+| **DR-272 Name** | A step verification's name is computed as the step, followed by “ / ”, followed by the verification kind. |
+| **DR-273 Name** | A rationale's name is the same as its title. |
+| **DR-274 Name** | An exception's name is the same as its condition. |
+| **DR-275 Active Exception Step Key** | The exception's active exception step key is determined by the following priority:<br>1. the trigger step, if the status is “Active”;<br>2. in all other cases, an empty string. |
+| **DR-276 Name** | A resource's name is the same as its title. |
+| **DR-277 Is Approved Source** | A resource is considered an approved source if the approval status is “Approved”. |
+| **DR-278 Name** | A procedure resource's name is computed as the procedure version, followed by “ / ”, followed by the resource. |
+| **DR-279 Relation Iri** | The procedure resource's relation iri is determined by the following priority:<br>1. “https://w3id.org/pko#wasExtractedFrom”, if the relation is “wasExtractedFrom”;<br>2. in all other cases, “http://purl.org/dc/terms/references”. |
+| **DR-280 Name** | An elicitation session's name is computed as the method, followed by “ / ”, followed by the started at. |
+| **DR-281 As of Instant** | An elicitation session's as of instant — taken from the linked evaluation context. |
+| **DR-282 Days Since Elicited** | An elicitation session's days since elicited is computed as the number of days from the ended at to the as of instant. |
+| **DR-283 Is Single Witness Method** | An elicitation session is considered a single witness method if at least one of the following holds: the method is “Shadowing” or the method is “PractitionerInterview”. |
+| **DR-284 Practitioner is Still Engaged** | An elicitation session's practitioner is still engaged when the linked practitioner agent is still engaged. |
+| **DR-285 Valid Fragments Produced** | An elicitation session's valid fragments produced is the number of knowledge fragments related to the elicitation session. |
+| **DR-286 Is High Yield Session** | An elicitation session is considered a high yield session if the valid fragments produced is at least 3. |
+| **DR-287 Is Concentrated Single Witness** | An elicitation session is considered a concentrated single witness if all of the following hold: the single witness method flag is set and the high yield session flag is set. |
+| **DR-288 Is Stale Concentrated Witness** | An elicitation session is considered a stale concentrated witness if all of the following hold: the concentrated single witness flag is set and the days since elicited is greater than 180. |
+| **DR-289 Concentrated Session Version Key** | The elicitation session's concentrated session version key is determined by the following priority:<br>1. the procedure version, if the concentrated single witness flag is set;<br>2. in all other cases, an empty string. |
+| **DR-290 Name** | A knowledge fragment's name is computed as the knowledge form, followed by “: ”, followed by the first 60 character(s) of the statement. |
+| **DR-291 As of Instant** | A knowledge fragment's as of instant — taken from the linked evaluation context. |
+| **DR-292 Is Currently Valid** | A knowledge fragment is considered currently-valid if all of the following hold: the valid from is at most the as of instant; at least one of the following holds: the valid to is blank or the valid to is greater than the as of instant; and the status is “Approved”. |
+| **DR-293 Source Agent is Still Engaged** | A knowledge fragment's source agent is still engaged when the linked source agent is still engaged. |
+| **DR-294 Source Agent Kind** | A knowledge fragment's source agent kind — taken from the linked source agent. |
+| **DR-295 Has Human Source** | A knowledge fragment is considered to have a human source if the source agent kind is “Human”. |
+| **DR-296 Has Orphaned Provenance** | A knowledge fragment is considered to have an orphaned provenance if all of the following hold: the currently valid flag is set and the source agent is still engaged flag is not set. |
+| **DR-297 Is Undefendable Tacit Claim** | A knowledge fragment is considered an undefendable tacit claim if all of the following hold: the orphaned provenance flag is set and at least one of the following holds: the knowledge form is “Tacit” or the knowledge form is “SituatedJudgment”. |
+| **DR-298 Is Approved** | A knowledge fragment is considered approved if the status is “Approved”. |
+| **DR-299 Is Within Validity Window** | A knowledge fragment is considered a within validity window if all of the following hold: the valid from is at most the as of instant and at least one of the following holds: the valid to is blank or the valid to is greater than the as of instant. |
+| **DR-300 Is Relied Upon** | A knowledge fragment is considered a relied upon if all of the following hold: the step has a value and the within validity window flag is set. |
+| **DR-301 Step Procedure Version Status** | A knowledge fragment's step procedure version status — taken from the linked step. |
+| **DR-302 Is Attached to Live Version** | A knowledge fragment's is attached to live version when the linked procedure version is live. |
+| **DR-303 Is Unapproved But Relied on** | A knowledge fragment is considered an unapproved but relied on if all of the following hold: the relied upon flag is set; the attached to live version flag is set; and the approved flag is not set. |
+| **DR-304 Evidence Age Days** | A knowledge fragment's evidence age days is the days since elicited of the knowledge fragment's elicitation session. |
+| **DR-305 Has Recorded Elicitation** | A knowledge fragment is considered to have a recorded elicitation if the elicitation session has a value. |
+| **DR-306 Is From Single Witness** | A knowledge fragment's is from single witness is true when the knowledge fragment's elicitation session is a single witness method. |
+| **DR-307 Evidence Expiry Days** | The knowledge fragment's evidence expiry days is determined by the following priority:<br>1. 180, if the from single witness flag is set;<br>2. in all other cases, 365. |
+| **DR-308 Evidence Has Expired** | A knowledge fragment is flagged evidence has expired if all of the following hold: the recorded elicitation flag is set and the evidence age days is greater than the evidence expiry days. |
+| **DR-309 Owner Agent** | A knowledge fragment's owner agent is the current agent of the knowledge fragment's owner role. |
+| **DR-310 Is Awaiting Approval** | A knowledge fragment is considered an awaiting approval if the status is “Reviewed”. |
+| **DR-311 Owner is Me** | A knowledge fragment is flagged owner is me if the owner role is “hr-policy-owner”. |
+| **DR-312 Is My Unfinished Approval** | A knowledge fragment is considered a my unfinished approval if all of the following hold: the owner is me flag is set and the awaiting approval flag is set. |
+| **DR-313 Is Invoked by an Exception** | A knowledge fragment's is invoked by an exception is the number of exceptions related to the knowledge fragment. |
+| **DR-314 Has Operational Reliance** | A knowledge fragment is considered to have an operational reliance if the is invoked by an exception is greater than 0. |
+| **DR-315 Is Unapproved and Operationally Live** | A knowledge fragment is considered unapproved-and-operationally-live if all of the following hold: the my unfinished approval flag is set and the operational reliance flag is set. |
+| **DR-316 Age Days** | A knowledge fragment's age days is computed as the number of days from the valid from to the as of instant. |
+| **DR-317 Is Low Confidence** | A knowledge fragment is considered a low confidence if at least one of the following holds: the confidence is “Medium” or the confidence is “Low”. |
+| **DR-318 Owning Version Cadence Days** | A knowledge fragment's owning version cadence days is the steward review cadence days of the knowledge fragment's procedure version. |
+| **DR-319 Exceeds Owning Cadence** | A knowledge fragment is considered to exceed an owning cadence if the age days is greater than the owning version cadence days. |
+| **DR-320 Is Aging Low Confidence Claim** | A knowledge fragment is considered an aging low confidence claim if all of the following hold: the exceeds owning cadence flag is set and the low confidence flag is set. |
+| **DR-321 Owner Role Agent Kind** | A knowledge fragment's owner role agent kind is the current agent kind of the knowledge fragment's owner role. |
+| **DR-322 Is Human Owned** | A knowledge fragment is considered human-owned if the owner role agent kind is “Human”. |
+| **DR-323 Is Ai Validated by Ai** | A knowledge fragment is considered an ai validated by ai if all of the following hold: it is not the case that the source agent kind is “Human” and the human owned flag is not set. |
+| **DR-324 Review Cadence Days** | A knowledge fragment's review cadence days is the steward review cadence days of the knowledge fragment's procedure version. |
+| **DR-325 Is Overdue for Review** | A knowledge fragment is considered an overdue for review if all of the following hold: the currently valid flag is set and the age days is greater than the review cadence days. |
+| **DR-326 Predates Current Role Holder** | A knowledge fragment is considered to predate a current role holder if all of the following hold: the owner role agent kind has a value and the valid from is less than the owner role assignment valid from. |
+| **DR-327 Owner Role Assignment Valid From** | A knowledge fragment's owner role assignment valid from is the current assignment valid from of the knowledge fragment's owner role. |
+| **DR-328 Fragility Signal Count** | A knowledge fragment's fragility signal count is computed as the count of the following that hold: the from single witness flag is set; the overdue for review flag is set; the low confidence flag is set; and the operational reliance flag is set. |
+| **DR-329 Is Compound Fragile** | A knowledge fragment is considered a compound fragile if the fragility signal count is at least 3. |
+| **DR-330 Is Single Point of Failure** | A knowledge fragment is considered a single point of failure if all of the following hold: the from single witness flag is set and the operational reliance flag is set. |
+| **DR-331 Is Expiring Single Point of Failure** | A knowledge fragment is considered an expiring single point of failure if all of the following hold: the single point of failure flag is set and the overdue for review flag is set. |
+| **DR-332 Compound Fragile Version Key** | The knowledge fragment's compound fragile version key is determined by the following priority:<br>1. the procedure version, if the compound fragile flag is set;<br>2. in all other cases, an empty string. |
+| **DR-333 Valid Fragment Session Key** | The knowledge fragment's valid fragment session key is determined by the following priority:<br>1. the elicitation session, if the currently valid flag is set;<br>2. in all other cases, an empty string. |
+| **DR-334 Consuming Step is Software Assigned** | A knowledge fragment's consuming step is software assigned when the linked step is software assigned. |
+| **DR-335 Consuming Step Agent Kind** | A knowledge fragment's consuming step agent kind is the assigned agent kind of the knowledge fragment's step. |
+| **DR-336 Is Unapproved and Machine Consumed** | A knowledge fragment is considered unapproved-and-machine-consumed if all of the following hold: the unapproved but relied on flag is set and the consuming step is software assigned flag is set. |
+| **DR-337 Is Unapproved and Human Consumed** | A knowledge fragment is considered unapproved-and-human-consumed if all of the following hold: the unapproved but relied on flag is set and the consuming step is software assigned flag is not set. |
+| **DR-338 Machine Consumed Unapproved Version Key** | The knowledge fragment's machine consumed unapproved version key is determined by the following priority:<br>1. the procedure version, if the unapproved and machine consumed flag is set;<br>2. in all other cases, an empty string. |
+| **DR-339 Has Review Record** | A knowledge fragment is considered to have a review record if the last reviewed at has a value. |
+| **DR-340 Days Since Actual Review** | The knowledge fragment's days since actual review is determined by the following priority:<br>1. the number of days from the last reviewed at to the as of instant, if the review record flag is set;<br>2. in all other cases, 0. |
+| **DR-341 Is Unreviewed Since Authoring** | A knowledge fragment is considered unreviewed-since-authoring if all of the following hold: the currently valid flag is set and the review record flag is not set. |
+| **DR-342 Is Genuinely Overdue** | A knowledge fragment is considered a genuinely overdue if all of the following hold: the currently valid flag is set; the review record flag is set; and the days since actual review is greater than the review cadence days. |
+| **DR-343 Review Recency is Inferred** | A knowledge fragment is flagged review recency is inferred if all of the following hold: the overdue for review flag is set and the review record flag is not set. |
+| **DR-344 Inference Disagrees With Record** | A knowledge fragment is flagged inference disagrees with record if all of the following hold: the review record flag is set; the overdue for review flag is set; and the genuinely overdue flag is not set. |
+| **DR-345 Genuinely Overdue Version Key** | The knowledge fragment's genuinely overdue version key is determined by the following priority:<br>1. the procedure version, if the genuinely overdue flag is set;<br>2. in all other cases, an empty string. |
+| **DR-346 Ratified Boundary Count** | A knowledge fragment's ratified boundary count is the number of authority boundaries related to the knowledge fragment. |
+| **DR-347 Reliance Surface Count** | A knowledge fragment's reliance surface count is computed as the is invoked by an exception plus the ratified boundary count. |
+| **DR-348 Days Awaiting My Approval** | The knowledge fragment's days awaiting my approval is determined by the following priority:<br>1. the number of days from the valid from to the as of instant, if the my unfinished approval flag is set;<br>2. in all other cases, 0. |
+| **DR-349 Is High Blast Radius Unapproved** | A knowledge fragment is considered high-blast-radius-unapproved if all of the following hold: the unapproved and operationally live flag is set and the reliance surface count is greater than 1. |
+| **DR-350 Is Long Unapproved** | A knowledge fragment is considered long-unapproved if all of the following hold: the my unfinished approval flag is set and the days awaiting my approval is greater than 30. |
+| **DR-351 Unapproved Load Bearing Version Key** | The knowledge fragment's unapproved load bearing version key is determined by the following priority:<br>1. the procedure version, if the high blast radius unapproved flag is set;<br>2. in all other cases, an empty string. |
+| **DR-352 Owner Role is Vacated** | A knowledge fragment's owner role is vacated when the linked owner role is a vacated role. |
+| **DR-353 Is Orphaned by Role** | A knowledge fragment is considered an orphaned by role if all of the following hold: the currently valid flag is set and the owner role is vacated flag is set. |
+| **DR-354 Valid Fragment Version Key** | The knowledge fragment's valid fragment version key is determined by the following priority:<br>1. the procedure version, if the currently valid flag is set;<br>2. in all other cases, an empty string. |
+| **DR-355 Name** | A knowledge gap's name is computed as the severity, followed by “: ”, followed by the first 60 character(s) of the statement. |
+| **DR-356 Is Open** | A knowledge gap is considered open if at least one of the following holds: the status is “Open” or the status is “Investigating”. |
+| **DR-357 Open Gap Version Key** | The knowledge gap's open gap version key is determined by the following priority:<br>1. the procedure version, if all of the following hold: the open flag is set and the severity is “High”;<br>2. in all other cases, an empty string. |
+| **DR-358 Is Blocking** | A knowledge gap is considered blocking if the blocking kind is “Blocking”. |
+| **DR-359 Is Open and Blocking** | A knowledge gap is considered open-and-blocking if all of the following hold: the open flag is set and the blocking flag is set. |
+| **DR-360 As of Instant** | A knowledge gap's as of instant — taken from the linked evaluation context. |
+| **DR-361 Days Open** | The knowledge gap's days open is determined by the following priority:<br>1. the number of days from the identified at to the as of instant, if the open flag is set;<br>2. in all other cases, 0. |
+| **DR-362 Tolerance Days** | The knowledge gap's tolerance days is determined by the following priority:<br>1. 30, if the severity is “High”;<br>2. 90, if the severity is “Medium”;<br>3. in all other cases, 180. |
+| **DR-363 Is Overdue Gap** | A knowledge gap is considered an overdue gap if the days open is greater than the tolerance days. |
+| **DR-364 Owner Agent** | A knowledge gap's owner agent is the current agent of the knowledge gap's owner role. |
+| **DR-365 Owner is Still Engaged** | A knowledge gap's owner is still engaged when the linked owner agent is still engaged. |
+| **DR-366 Has Resolution Plan** | A knowledge gap is considered to have a resolution plan if the resolution plan has a value. |
+| **DR-367 Is Abandoned Unknown** | A knowledge gap is considered an abandoned unknown if all of the following hold: the overdue gap flag is set and at least one of the following holds: the resolution plan flag is not set or the owner is still engaged flag is not set. |
+| **DR-368 Open Blocking Gap Version Key** | The knowledge gap's open blocking gap version key is determined by the following priority:<br>1. the procedure version, if the open and blocking flag is set;<br>2. in all other cases, an empty string. |
+| **DR-369 Owner Role is Vacated** | A knowledge gap's owner role is vacated when the linked owner role is a vacated role. |
+| **DR-370 Is Ownerless Open Gap** | A knowledge gap is considered an ownerless open gap if all of the following hold: the open flag is set and the owner role is vacated flag is set. |
+| **DR-371 Name** | An FA q's name is the same as its question. |
+| **DR-372 Name** | An explanation's name is the same as its title. |
+| **DR-373 Name** | A procedure execution's name is computed as the procedure version, followed by “ / ”, followed by the context. |
+| **DR-374 Expected Step Count** | A procedure execution's expected step count is the specified step count of the procedure execution's procedure version. |
+| **DR-375 Completed Step Count** | A procedure execution's completed step count is the number of step executions related to the procedure execution. |
+| **DR-376 Control Breach Count** | A procedure execution's control breach count is the number of step executions related to the procedure execution. |
+| **DR-377 Late Step Count** | A procedure execution's late step count is the number of step executions related to the procedure execution. |
+| **DR-378 Is Structurally Complete** | A procedure execution is considered a structurally complete if the completed step count is at least the expected step count. |
+| **DR-379 Diverged From Specification** | A procedure execution is flagged diverged from specification if at least one of the following holds: the structurally complete flag is not set or the control breach count is greater than 0. |
+| **DR-380 All Blocking Controls Evaluated** | A procedure execution is flagged all blocking controls evaluated if the unevaluated blocking total is 0. |
+| **DR-381 Unevaluated Blocking Total** | A procedure execution's unevaluated blocking total is the number of step executions related to the procedure execution. |
+| **DR-382 Separation of Duties Held** | A procedure execution is flagged separation of duties held if the separation violation count is 0. |
+| **DR-383 Separation Violation Count** | A procedure execution's separation violation count is the number of step executions related to the procedure execution. |
+| **DR-384 Is Attestation Ready** | A procedure execution is considered attestation-ready if all of the following hold: the structurally complete flag is set; the diverged from specification flag is not set; the all blocking controls evaluated flag is set; and the separation of duties held flag is set. |
+| **DR-385 Attestation Blocker Summary** | The procedure execution's attestation blocker summary is determined by the following priority:<br>1. an empty string, if the attestation ready flag is set;<br>2. “Incomplete: specified steps did not all complete.”, if the structurally complete flag is not set;<br>3. “Segregation of duties violated.”, if the separation violation count is greater than 0;<br>4. “Blocking controls were never evaluated.”, if the unevaluated blocking total is greater than 0;<br>5. in all other cases, “Control breach recorded on one or more steps.”. |
+| **DR-386 Executed Version is Fit** | A procedure execution's executed version is fit is true when the procedure execution's procedure version is a fit to execute. |
+| **DR-387 Signed Against Unfit Version** | A procedure execution is flagged signed against unfit version if all of the following hold: the execution status is “Completed” and the executed version is fit flag is not set. |
+| **DR-388 Asserted Only Control Count** | A procedure execution's asserted only control count is the number of requirement satisfactions related to the procedure execution. |
+| **DR-389 Assurance is Mostly Asserted** | A procedure execution is flagged assurance is mostly asserted if the asserted only control count is greater than 0. |
+| **DR-390 Unreachable Handling Failure Count** | A procedure execution's unreachable handling failure count is the number of message deliveries related to the procedure execution. |
+| **DR-391 Retention Breach Count** | A procedure execution's retention breach count is the number of message deliveries related to the procedure execution. |
+| **DR-392 Cleared Legal Review Count** | A procedure execution's cleared legal review count is the number of step executions related to the procedure execution. |
+| **DR-393 Has Cleared Legal Review** | A procedure execution is considered to have a cleared legal review if the cleared legal review count is greater than 0. |
+| **DR-394 Abandoned Failure Count** | A procedure execution's abandoned failure count is the number of message deliveries related to the procedure execution. |
+| **DR-395 Delivered Count** | A procedure execution's delivered count is the number of message deliveries related to the procedure execution. |
+| **DR-396 Total Delivery Attempt Count** | A procedure execution's total delivery attempt count is the number of message deliveries related to the procedure execution. |
+| **DR-397 Has Abandoned Failures** | A procedure execution is considered to have an abandoned failures if the abandoned failure count is greater than 0. |
+| **DR-398 Mishandled Refusal Count** | A procedure execution's mishandled refusal count is the number of send intents related to the procedure execution. |
+| **DR-399 Unclean Step Count** | A procedure execution's unclean step count is the number of step executions related to the procedure execution. |
+| **DR-400 Ran Clean** | A procedure execution is flagged ran clean if the unclean step count is 0. |
+| **DR-401 Count of Approval Executions** | A procedure execution's count of approval executions is the number of step executions related to the procedure execution. |
+| **DR-402 Has Human Approval** | A procedure execution is considered to have a human approval if the count of approval executions is greater than 0. |
+| **DR-403 Count of Delivery Executions** | A procedure execution's count of delivery executions is the number of step executions related to the procedure execution. |
+| **DR-404 Has Delivered** | A procedure execution is considered to have delivered if the count of delivery executions is greater than 0. |
+| **DR-405 Delivered Without Approval** | A procedure execution is flagged delivered without approval if all of the following hold: the delivered flag is set and the human approval flag is not set. |
+| **DR-406 Invalid Approval Count** | A procedure execution's invalid approval count is the number of requirement satisfactions related to the procedure execution. |
+| **DR-407 Approval Chain is Complete** | A procedure execution is flagged approval chain is complete if the invalid approval count is 0. |
+| **DR-408 Vacuously Clean Step Count** | A procedure execution's vacuously clean step count is the number of step executions related to the procedure execution. |
+| **DR-409 Preparation Step Count** | A procedure execution's preparation step count is the number of step executions related to the procedure execution. |
+| **DR-410 Approval Step Count** | A procedure execution's approval step count is the number of step executions related to the procedure execution. |
+| **DR-411 Separation Was Testable** | A procedure execution is flagged separation was testable if all of the following hold: the preparation step count is greater than 0 and the approval step count is greater than 0. |
+| **DR-412 Separation Held Under Test** | A procedure execution is flagged separation held under test if all of the following hold: the separation was testable flag is set and the separation of duties held flag is set. |
+| **DR-413 Separation is Vacuously Green** | A procedure execution is flagged separation is vacuously green if all of the following hold: the separation of duties held flag is set and the separation was testable flag is not set. |
+| **DR-414 Separation Assurance Note** | The procedure execution's separation assurance note is determined by the following priority:<br>1. “Violated: same agent prepared and approved.”, if the separation violation count is greater than 0;<br>2. “Not tested: this run had no preparation/approval pair.”, if the separation is vacuously green flag is set;<br>3. in all other cases, “Held under test.”. |
+| **DR-415 Ungoverned Divergence Count** | A procedure execution's ungoverned divergence count is the number of step executions related to the procedure execution. |
+| **DR-416 Divergence Was Fully Governed** | A procedure execution is flagged divergence was fully governed if all of the following hold: the diverged from specification flag is set and the ungoverned divergence count is 0. |
+| **DR-417 Computedly Witnessed Control Count** | A procedure execution's computedly witnessed control count is the number of requirement satisfactions related to the procedure execution. |
+| **DR-418 Evaluated Control Count** | A procedure execution's evaluated control count is computed as the computedly witnessed control count plus the asserted only control count. |
+| **DR-419 Computed Assurance Ratio** | The procedure execution's computed assurance ratio is determined by the following priority:<br>1. 0, if the evaluated control count is 0;<br>2. in all other cases, the computedly witnessed control count divided by the evaluated control count. |
+| **DR-420 Interested Party Assertion Count** | A procedure execution's interested party assertion count is the number of requirement satisfactions related to the procedure execution. |
+| **DR-421 Assurance Grade** | The procedure execution's assurance grade is determined by the following priority:<br>1. “None: no blocking control was evaluated.”, if the evaluated control count is 0;<br>2. “Weak: at least one control rests on an interested-party assertion.”, if the interested party assertion count is greater than 0;<br>3. “Thin: most controls rest on human assertion.”, if the computed assurance ratio is less than 0.5;<br>4. “Mixed: computed and asserted controls.”, if the computed assurance ratio is less than 1;<br>5. in all other cases, “Computed: every evaluated control has a witness.”. |
+| **DR-422 Attestation Would Be Weakly Based** | A procedure execution is flagged attestation would be weakly based if all of the following hold: the attestation ready flag is set and at least one of the following holds: the interested party assertion count is greater than 0 or the computed assurance ratio is less than 0.5. |
+| **DR-423 Independent Human Observation Count** | A procedure execution's independent human observation count is the number of verification outcomes related to the procedure execution. |
+| **DR-424 Has Any Independent Observation** | A procedure execution is considered to have any independent observation if the independent human observation count is greater than 0. |
+| **DR-425 Self Attested Approval Count** | A procedure execution's self attested approval count is the number of step executions related to the procedure execution. |
+| **DR-426 Assurance Chain is Circular** | A procedure execution is flagged assurance chain is circular if all of the following hold: the self attested approval count is greater than 0 and the any independent observation flag is not set. |
+| **DR-427 Latest Attestation Instant** | A procedure execution's latest attestation instant is the largest signed at across the attestations related to the procedure execution. |
+| **DR-428 Has Been Attested** | A procedure execution is considered to have been attested if the attestation count is greater than 0. |
+| **DR-429 Attestation Count** | A procedure execution's attestation count is the number of attestations related to the procedure execution. |
+| **DR-430 Post Attestation Score Count** | A procedure execution's post attestation score count is the number of requirement satisfactions related to the procedure execution. |
+| **DR-431 Basis Changed After Signature** | A procedure execution is considered to basi a changed after signature if all of the following hold: the been attested flag is set and the post attestation score count is greater than 0. |
+| **DR-432 Requires Re Attestation** | A procedure execution is considered to require a re attestation if all of the following hold: the basis changed after signature flag is set and the attestation ready flag is not set. |
+| **DR-433 Intended Recipient Count** | A procedure execution's intended recipient count is the number of send intents related to the procedure execution. |
+| **DR-434 Reached Recipient Count** | A procedure execution's reached recipient count is the number of send intents related to the procedure execution. |
+| **DR-435 Silently Dropped Count** | A procedure execution's silently dropped count is the number of send intents related to the procedure execution. |
+| **DR-436 Delivery Yield Percent** | The procedure execution's delivery yield percent is determined by the following priority:<br>1. the reached recipient count times 100 divided by the intended recipient count, if the intended recipient count is greater than 0;<br>2. in all other cases, 0. |
+| **DR-437 Campaign Silently Lost Audience** | A procedure execution is flagged campaign silently lost audience if the silently dropped count is greater than 0. |
+| **DR-438 Unrecorded Refusal Count** | A procedure execution's unrecorded refusal count is the number of send intents related to the procedure execution. |
+| **DR-439 Has Unrecorded Refusals** | A procedure execution is considered to have an unrecorded refusals if the unrecorded refusal count is greater than 0. |
+| **DR-440 Independently Confirmed Intent Count** | A procedure execution's independently confirmed intent count is the number of send intents related to the procedure execution. |
+| **DR-441 Send Decisions are Entirely Self Witnessed** | A procedure execution is flagged send decisions are entirely self witnessed if all of the following hold: the intended recipient count is greater than 0 and the independently confirmed intent count is 0. |
+| **DR-442 Name** | A step execution's name is computed as the procedure execution, followed by “ / ”, followed by the step. |
+| **DR-443 Actual Duration Minutes** | The step execution's actual duration minutes is determined by the following priority:<br>1. 0, if the ended at is blank;<br>2. in all other cases, the number of minutes from the started at to the ended at. |
+| **DR-444 Expected Duration Minutes** | A step execution's expected duration minutes — taken from the linked step. |
+| **DR-445 Is Late** | A step execution is considered a late if the actual duration minutes is greater than the expected duration minutes. |
+| **DR-446 Blocking Unmet Count** | A step execution's blocking unmet count is the number of the step execution's requirement satisfactions that are blocking and unmets. |
+| **DR-447 Blocking Unmet Count Safe** | A step execution's blocking unmet count safe is the number of requirement satisfactions related to the step execution. |
+| **DR-448 Proceeded Past Blocking Control** | A step execution is flagged proceeded past blocking control if all of the following hold: the execution status is “Completed” and the blocking unmet count safe is greater than 0. |
+| **DR-449 Expected Blocking Count** | A step execution's expected blocking count is the blocking requirement count of the step execution's step. |
+| **DR-450 Evaluated Blocking Count** | A step execution's evaluated blocking count is the number of requirement satisfactions related to the step execution. |
+| **DR-451 Unevaluated Blocking Count** | A step execution's unevaluated blocking count is computed as the expected blocking count minus the evaluated blocking count. |
+| **DR-452 Has Unevaluated Blocking Control** | A step execution is considered to have an unevaluated blocking control if the unevaluated blocking count is greater than 0. |
+| **DR-453 Stale Authoritative Source Count** | A step execution's stale authoritative source count — taken from the linked step. |
+| **DR-454 Ran on Stale Authoritative Source** | A step execution is flagged ran on stale authoritative source if the stale authoritative source count is greater than 0. |
+| **DR-455 Has Deviation Note** | A step execution is considered to have a deviation note if the deviation has a value. |
+| **DR-456 Is Late and Unexplained** | A step execution is considered late-and-unexplained if all of the following hold: the late flag is set and the deviation note flag is not set. |
+| **DR-457 Available Exception Count for Step** | A step execution's available exception count for step — taken from the linked step. |
+| **DR-458 Had Uninvoked Exception Available** | A step execution is flagged had uninvoked exception available if all of the following hold: the late and unexplained flag is set and the available exception count for step is greater than 0. |
+| **DR-459 Expected Verification Count** | A step execution's expected verification count is the declared verification count of the step execution's step. |
+| **DR-460 Performed Verification Count** | A step execution's performed verification count is the number of verification outcomes related to the step execution. |
+| **DR-461 Skipped Verification Count** | A step execution's skipped verification count is computed as the expected verification count minus the performed verification count. |
+| **DR-462 Has Skipped Verification** | A step execution is considered to have a skipped verification if the skipped verification count is greater than 0. |
+| **DR-463 Claims Pass Without Evidence** | A step execution is considered to claim a pass without evidence if all of the following hold: the verification result is “PASS” and the skipped verification flag is set. |
+| **DR-464 Step is Preparation** | A step execution's step is preparation when the linked step is a preparation step. |
+| **DR-465 Step is Approval** | A step execution's step is approval is true when the step execution's step is an approval step. |
+| **DR-466 Preparer Agent Key** | The step execution's preparer agent key is determined by the following priority:<br>1. the procedure execution, followed by “|”, followed by the executed by agent, if the step is preparation flag is set;<br>2. in all other cases, an empty string. |
+| **DR-467 Approver Agent Key** | The step execution's approver agent key is determined by the following priority:<br>1. the procedure execution, followed by “|”, followed by the executed by agent, if the step is approval flag is set;<br>2. in all other cases, an empty string. |
+| **DR-468 Prepared by This Agent Count** | A step execution's prepared by this agent count is the number of step executions related to the step execution. |
+| **DR-469 Violates Separation of Duties** | A step execution is considered to violate a separation of duties if all of the following hold: the step is approval flag is set and the prepared by this agent count is greater than 0. |
+| **DR-470 Required Role for Step** | A step execution's required role for step is the assigned role of the step execution's step. |
+| **DR-471 Executor Role Key** | A step execution's executor role key is computed as the executed by agent, followed by “|”, followed by the required role for step. |
+| **DR-472 Executor Authority Count** | A step execution's executor authority count is the number of role assignments related to the step execution. |
+| **DR-473 Executor Held Required Role** | A step execution is flagged executor held required role if the executor authority count is greater than 0. |
+| **DR-474 Is Unauthorized Approval** | A step execution is considered an unauthorized approval if all of the following hold: the step is approval flag is set and the executor held required role flag is not set. |
+| **DR-475 Completed Execution Key** | The step execution's completed execution key is determined by the following priority:<br>1. the procedure execution, if the execution status is “Completed”;<br>2. in all other cases, an empty string. |
+| **DR-476 Control Breach Execution Key** | The step execution's control breach execution key is determined by the following priority:<br>1. the procedure execution, if at least one of the following holds: the proceeded past blocking control flag is set; the violates separation of duties flag is set; the unauthorized approval flag is set; or the claims pass without evidence flag is set;<br>2. in all other cases, an empty string. |
+| **DR-477 Late Execution Key** | The step execution's late execution key is determined by the following priority:<br>1. the procedure execution, if the late flag is set;<br>2. in all other cases, an empty string. |
+| **DR-478 Executor Agent Kind** | A step execution's executor agent kind — taken from the linked executed by agent. |
+| **DR-479 Executor is Human** | A step execution is flagged executor is human if the executor agent kind is “Human”. |
+| **DR-480 Step Requires Human Confirmation** | A step execution's step requires human confirmation when the linked step requires human confirmation. |
+| **DR-481 Non Human Ran Human Step** | A step execution is flagged non human ran human step if all of the following hold: the step requires human confirmation flag is set and the executor is human flag is not set. |
+| **DR-482 Non Human Approval** | A step execution is flagged non human approval if all of the following hold: the step is approval flag is set and the executor is human flag is not set. |
+| **DR-483 Unevaluated Blocking Execution Key** | The step execution's unevaluated blocking execution key is determined by the following priority:<br>1. the procedure execution, if the unevaluated blocking control flag is set;<br>2. in all other cases, an empty string. |
+| **DR-484 Separation Violation Execution Key** | The step execution's separation violation execution key is determined by the following priority:<br>1. the procedure execution, if the violates separation of duties flag is set;<br>2. in all other cases, an empty string. |
+| **DR-485 Self Witnessed Verification Count** | A step execution's self witnessed verification count is the number of verification outcomes related to the step execution. |
+| **DR-486 Unbacked Verification Count** | A step execution's unbacked verification count is the number of verification outcomes related to the step execution. |
+| **DR-487 Approval Rests on Self Attestation** | A step execution is flagged approval rests on self attestation if all of the following hold: the step is approval flag is set and at least one of the following holds: the self witnessed verification count is greater than 0 or the skipped verification flag is set. |
+| **DR-488 Exception Invocation Count** | A step execution's exception invocation count is the number of exception invocations related to the step execution. |
+| **DR-489 Ran Under Exception** | A step execution is flagged ran under exception if the exception invocation count is greater than 0. |
+| **DR-490 Is Completed** | A step execution is considered completed if the execution status is “Completed”. |
+| **DR-491 Is Verification Passed** | A step execution is considered verification-passed if the verification result is “PASS”. |
+| **DR-492 Is Legal Review Step** | A step execution is considered a legal review step if the step is “policy-04”. |
+| **DR-493 Cleared Legal Review Key** | The step execution's cleared legal review key is determined by the following priority:<br>1. the procedure execution, if all of the following hold: the legal review step flag is set and the verification passed flag is set;<br>2. in all other cases, an empty string. |
+| **DR-494 Assigned Role** | A step execution's assigned role — taken from the linked step. |
+| **DR-495 Role Current Agent** | A step execution's role current agent — taken from the linked assigned role. |
+| **DR-496 Executor is Designated Agent** | A step execution is flagged executor is designated agent if the executed by agent is the role current agent. |
+| **DR-497 Inputs Were Fresh At Run** | A step execution's inputs were fresh at run is true when the step execution's step is a fresh. |
+| **DR-498 Ran on Stale Inputs** | A step execution is flagged ran on stale inputs if all of the following hold: the execution status is “Completed” and the inputs were fresh at run flag is not set. |
+| **DR-499 Unresolved Issue Count** | A step execution's unresolved issue count is the number of issue occurrences related to the step execution. |
+| **DR-500 Has Deviation** | A step execution is considered to have a deviation if the deviation has a value. |
+| **DR-501 Is Clean** | A step execution is considered a clean if all of the following hold: the verification result is “PASS”; the deviation flag is not set; the unresolved issue count is 0; and the late flag is not set. |
+| **DR-502 Procedure Execution When Unclean** | The step execution's procedure execution when unclean is determined by the following priority:<br>1. an empty string, if the clean flag is set;<br>2. in all other cases, the procedure execution. |
+| **DR-503 Evaluated Requirement Count** | A step execution's evaluated requirement count is the number of requirement satisfactions related to the step execution. |
+| **DR-504 Required Blocking Count** | A step execution's required blocking count is the blocking requirement count of the step execution's step. |
+| **DR-505 Has Unevaluated Blocking Requirement** | A step execution is considered to have unevaluated blocking requirement if the evaluated requirement count is less than the required blocking count. |
+| **DR-506 Executing Agent Kind** | A step execution's executing agent kind — taken from the linked executed by agent. |
+| **DR-507 Was Executed by Software** | A step execution is considered to have been executed by software if at least one of the following holds: the executing agent kind is “AIAgent” or the executing agent kind is “AutomatedPipeline”. |
+| **DR-508 Step is Software Assigned** | A step execution's step is software assigned when the linked step is software assigned. |
+| **DR-509 Software Did Human Work** | A step execution is flagged software did human work if all of the following hold: the was executed by software flag is set and the step is software assigned flag is not set. |
+| **DR-510 Is Approval Execution** | A step execution's is approval execution is true when the step execution's step is a human approval gate. |
+| **DR-511 Is Verified** | A step execution is considered verified if all of the following hold: the verification result has a value; the verification result is not “PENDING”; and the verification result is not “FAIL”. |
+| **DR-512 Unconfirmed Non Human Decision Count** | A step execution's unconfirmed non human decision count is the number of agent decision records related to the step execution. |
+| **DR-513 Requires Human Confirmation** | A step execution's requires human confirmation when the linked step requires human confirmation. |
+| **DR-514 Human Confirmation Missing** | A step execution is flagged human confirmation missing if all of the following hold: the requires human confirmation flag is set and the unconfirmed non human decision count is greater than 0. |
+| **DR-515 Drafted From Unusable Source** | A step execution is flagged drafted from unusable source if all of the following hold: the execution status is “Completed” and the inputs were usable flag is not set. |
+| **DR-516 Inputs Were Usable** | A step execution's inputs were usable is true when the step execution's step is all sources usable. |
+| **DR-517 Software Execution Step Key** | The step execution's software execution step key is determined by the following priority:<br>1. the step, if the was executed by software flag is set;<br>2. in all other cases, an empty string. |
+| **DR-518 Step Control Kind** | A step execution's step control kind — taken from the linked step. |
+| **DR-519 Unfalsified Clearance Count** | A step execution's unfalsified clearance count is the number of requirement satisfactions related to the step execution. |
+| **DR-520 All Clearances are Unfalsified** | A step execution is flagged all clearances are unfalsified if all of the following hold: the evaluated blocking count is greater than 0 and the unfalsified clearance count is at least the evaluated blocking count. |
+| **DR-521 Stale At Run Count** | A step execution's stale at run count is the number of binding observations related to the step execution. |
+| **DR-522 Was Stale When I Ran It** | A step execution is considered to have been stale when i ran it if the stale at run count is greater than 0. |
+| **DR-523 Staleness Answer is Tense Dependent** | A step execution is considered to stalenes answer is tense dependent if it is not the case that the was stale when i ran it is the ran on stale authoritative source. |
+| **DR-524 Has Any Declared Check** | A step execution is considered to have any declared check if at least one of the following holds: the expected verification count is greater than 0 or the expected blocking count is greater than 0. |
+| **DR-525 Performed Check Count** | A step execution's performed check count is computed as the performed verification count plus the evaluated blocking count. |
+| **DR-526 Declared Check Count** | A step execution's declared check count is computed as the expected verification count plus the expected blocking count. |
+| **DR-527 Is Unchecked by Design** | A step execution is considered an unchecked by design if the declared check count is 0. |
+| **DR-528 Is Vacuously Clean** | A step execution is considered a vacuously clean if all of the following hold: the clean flag is set and the unchecked by design flag is set. |
+| **DR-529 Is Substantively Clean** | A step execution is considered a substantively clean if all of the following hold: the clean flag is set; the performed check count is at least the declared check count; and the declared check count is greater than 0. |
+| **DR-530 Vacuously Clean Execution Key** | The step execution's vacuously clean execution key is determined by the following priority:<br>1. the procedure execution, if the vacuously clean flag is set;<br>2. in all other cases, an empty string. |
+| **DR-531 Uncorroborated Pass Count** | A step execution's uncorroborated pass count is the number of verification outcomes related to the step execution. |
+| **DR-532 Evidence Position is Weak** | A step execution is flagged evidence position is weak if all of the following hold: the performed verification count is greater than 0 and the uncorroborated pass count is at least the performed verification count. |
+| **DR-533 Preparation Execution Key** | The step execution's preparation execution key is determined by the following priority:<br>1. the procedure execution, if the step is preparation flag is set;<br>2. in all other cases, an empty string. |
+| **DR-534 Approval Execution Key** | The step execution's approval execution key is determined by the following priority:<br>1. the procedure execution, if the step is approval flag is set;<br>2. in all other cases, an empty string. |
+| **DR-535 Has Governing Instrument** | A step execution is considered to have a governing instrument if at least one of the following holds: the ran under exception flag is set or the approved change coverage flag is set. |
+| **DR-536 Has Approved Change Coverage** | A step execution's has approved change coverage is true when the step execution's version of step has an approved change request. |
+| **DR-537 Version of Step** | A step execution's version of step is the procedure version of the step execution's step. |
+| **DR-538 Is Ungoverned Divergence** | A step execution is considered an ungoverned divergence if all of the following hold: at least one of the following holds: the deviation flag is set; the late flag is set; or the proceeded past blocking control flag is set and the governing instrument flag is not set. |
+| **DR-539 Ungoverned Divergence Execution Key** | The step execution's ungoverned divergence execution key is determined by the following priority:<br>1. the procedure execution, if the ungoverned divergence flag is set;<br>2. in all other cases, an empty string. |
+| **DR-540 Self Attested Approval Execution Key** | The step execution's self attested approval execution key is determined by the following priority:<br>1. the procedure execution, if the approval rests on self attestation flag is set;<br>2. in all other cases, an empty string. |
+| **DR-541 Name** | A requirement satisfaction's name is computed as the requirement, followed by “ / ”, followed by the satisfaction level. |
+| **DR-542 Requirement is Blocking** | A requirement satisfaction's requirement is blocking when the linked requirement is blocking. |
+| **DR-543 Is Fully Satisfied** | A requirement satisfaction is considered fully-satisfied if the satisfaction level is “Satisfied”. |
+| **DR-544 Is Blocking and Unmet** | A requirement satisfaction is considered a blocking and unmet if all of the following hold: the requirement is blocking flag is set and the fully satisfied flag is not set. |
+| **DR-545 Blocking Unmet Step Key** | The requirement satisfaction's blocking unmet step key is determined by the following priority:<br>1. the step execution, if the blocking and unmet flag is set;<br>2. in all other cases, an empty string. |
+| **DR-546 Blocking Satisfaction Step Key** | The requirement satisfaction's blocking satisfaction step key is determined by the following priority:<br>1. the step execution, if the requirement is blocking flag is set;<br>2. in all other cases, an empty string. |
+| **DR-547 Negative Outcome Requirement Key** | The requirement satisfaction's negative outcome requirement key is determined by the following priority:<br>1. the requirement, if the fully satisfied flag is not set;<br>2. in all other cases, an empty string. |
+| **DR-548 Evaluator Agent Kind** | A requirement satisfaction's evaluator agent kind — taken from the linked evaluated by agent. |
+| **DR-549 Non Human Evaluated Human Control** | A requirement satisfaction is flagged non human evaluated human control if all of the following hold: the requirement is blocking flag is set and the evaluator agent kind is not “Human”. |
+| **DR-550 Requirement Has Computed Witness** | A requirement satisfaction's requirement has computed witness when the linked requirement has a computed witness. |
+| **DR-551 Is Asserted Only** | A requirement satisfaction is considered an asserted only if all of the following hold: the requirement is blocking flag is set; the fully satisfied flag is set; and the requirement has computed witness flag is not set. |
+| **DR-552 Asserted Only Execution Key** | The requirement satisfaction's asserted only execution key is determined by the following priority:<br>1. the parent procedure execution, if the asserted only flag is set;<br>2. in all other cases, an empty string. |
+| **DR-553 Parent Procedure Execution** | A requirement satisfaction's parent procedure execution — taken from the linked step execution. |
+| **DR-554 Step Execution When Scored** | The requirement satisfaction's step execution when scored is determined by the following priority:<br>1. the step execution, if the satisfaction level has a value;<br>2. in all other cases, an empty string. |
+| **DR-555 Is Human Evaluated** | A requirement satisfaction is considered human-evaluated if the evaluator agent kind is “Human”. |
+| **DR-556 Requirement is Approval Type** | A requirement satisfaction's requirement is approval type — taken from the linked requirement. |
+| **DR-557 Is Invalid Approval** | A requirement satisfaction is considered an invalid approval if all of the following hold: the requirement is approval type is “Approval” and at least one of the following holds: the fully satisfied flag is not set or the human evaluated flag is not set. |
+| **DR-558 Procedure Execution of Satisfaction** | A requirement satisfaction's procedure execution of satisfaction — taken from the linked step execution. |
+| **DR-559 Run When Invalid Approval** | The requirement satisfaction's run when invalid approval is determined by the following priority:<br>1. the procedure execution of satisfaction, if the invalid approval flag is set;<br>2. in all other cases, an empty string. |
+| **DR-560 Requirement is Unfalsified** | A requirement satisfaction's requirement is unfalsified is true when the requirement satisfaction's requirement is an unfalsified control. |
+| **DR-561 Is Clearance by Unfalsified Control** | A requirement satisfaction is considered a clearance by unfalsified control if all of the following hold: the fully satisfied flag is set; the requirement is blocking flag is set; and the requirement is unfalsified flag is set. |
+| **DR-562 Unfalsified Clearance Step Key** | The requirement satisfaction's unfalsified clearance step key is determined by the following priority:<br>1. the step execution, if the clearance by unfalsified control flag is set;<br>2. in all other cases, an empty string. |
+| **DR-563 Spec Step of Execution** | A requirement satisfaction's spec step of execution — taken from the linked step execution. |
+| **DR-564 Binding Key** | A requirement satisfaction's binding key is the step requirement ID of the requirement satisfaction's requirement satisfaction ID. |
+| **DR-565 Scored Step Executor Agent** | A requirement satisfaction's scored step executor agent is the executed by agent of the requirement satisfaction's step execution. |
+| **DR-566 Evaluator is Step Executor** | A requirement satisfaction is flagged evaluator is step executor if the evaluated by agent is the scored step executor agent. |
+| **DR-567 Run Owner Agent** | A requirement satisfaction's run owner agent is the executed by agent of the requirement satisfaction's parent procedure execution. |
+| **DR-568 Evaluator Owns the Run** | A requirement satisfaction is flagged evaluator owns the run if the evaluated by agent is the run owner agent. |
+| **DR-569 Is Interested Party Assertion** | A requirement satisfaction is considered an interested party assertion if all of the following hold: the asserted only flag is set and at least one of the following holds: the evaluator is step executor flag is set or the evaluator owns the run flag is set. |
+| **DR-570 Has Written Evidence** | A requirement satisfaction is considered to have a written evidence if the evidence has a value. |
+| **DR-571 Is Bare Assertion** | A requirement satisfaction is considered a bare assertion if all of the following hold: the asserted only flag is set and the written evidence flag is not set. |
+| **DR-572 Interested Assertion Execution Key** | The requirement satisfaction's interested assertion execution key is determined by the following priority:<br>1. the parent procedure execution, if the interested party assertion flag is set;<br>2. in all other cases, an empty string. |
+| **DR-573 Is Computedly Witnessed** | A requirement satisfaction is considered computedly-witnessed if all of the following hold: the requirement is blocking flag is set and the requirement has computed witness flag is set. |
+| **DR-574 Computed Witness Execution Key** | The requirement satisfaction's computed witness execution key is determined by the following priority:<br>1. the parent procedure execution, if the computedly witnessed flag is set;<br>2. in all other cases, an empty string. |
+| **DR-575 Step Executor Agent** | A requirement satisfaction's step executor agent is the executed by agent of the requirement satisfaction's step execution. |
+| **DR-576 Was Scored After Attestation** | A requirement satisfaction is considered to have been scored after attestation if the number of minutes from the attestation instant for run to the evaluated at is greater than 0. |
+| **DR-577 Attestation Instant for Run** | A requirement satisfaction's attestation instant for run is the latest attestation instant of the requirement satisfaction's parent procedure execution. |
+| **DR-578 Post Attestation Score Execution Key** | The requirement satisfaction's post attestation score execution key is determined by the following priority:<br>1. the parent procedure execution, if the was scored after attestation flag is set;<br>2. in all other cases, an empty string. |
+| **DR-579 Name** | An error's name is computed as the error code, followed by “ - ”, followed by the label. |
+| **DR-580 Name** | An issue occurrence's name is computed as the error, followed by “ @ ”, followed by the occurred at. |
+| **DR-581 Is Unresolved** | An issue occurrence is considered unresolved if at least one of the following holds: the status is “Open”; the status is “Investigating”; or the status is “Monitoring”. |
+| **DR-582 Step Execution When Unresolved** | The issue occurrence's step execution when unresolved is determined by the following priority:<br>1. the step execution, if the unresolved flag is set;<br>2. in all other cases, an empty string. |
+| **DR-583 Name** | A user question's name is computed as the first 70 character(s) of the question text. |
+| **DR-584 Name** | A user feedback's name is computed as the disposition, followed by “: ”, followed by the first 60 character(s) of the feedback text. |
+| **DR-585 Name** | A stewardship assignment's name is computed as the procedure version, followed by “ / steward=”, followed by the steward role. |
+| **DR-586 Count of Review Events** | A stewardship assignment's count of review events is the number of review events related to the stewardship assignment. |
+| **DR-587 Has Ever Been Reviewed** | A stewardship assignment is considered to have ever been reviewed if the count of review events is greater than 0. |
+| **DR-588 As of Instant** | A stewardship assignment's as of instant — taken from the linked evaluation context. |
+| **DR-589 Is Current Assignment** | A stewardship assignment is considered current-assignment if all of the following hold: the valid from is at most the as of instant and at least one of the following holds: the valid to is blank or the valid to is greater than the as of instant. |
+| **DR-590 Name** | A change request's name is the same as its title. |
+| **DR-591 Is Open** | A change request is considered open if all of the following hold: at least one of the following holds: the status is “Draft”; the status is “UnderReview”; or the status is “Approved” and the implemented at is blank. |
+| **DR-592 Open Change Version Key** | The change request's open change version key is determined by the following priority:<br>1. the procedure version, if the open flag is set;<br>2. in all other cases, an empty string. |
+| **DR-593 Is Decided** | A change request is considered decided if the decided at has a value. |
+| **DR-594 As of Instant** | A change request's as of instant — taken from the linked evaluation context. |
+| **DR-595 Days Pending** | The change request's days pending is determined by the following priority:<br>1. the number of days from the requested at to the decided at, if the decided flag is set;<br>2. in all other cases, the number of days from the requested at to the as of instant. |
+| **DR-596 Is Still Pending** | A change request is considered still-pending if all of the following hold: the open flag is set and the decided flag is not set. |
+| **DR-597 Is Stalled** | A change request is considered stalled if all of the following hold: the still pending flag is set and the days pending is greater than 14. |
+| **DR-598 Authority Agent** | A change request's authority agent is the current agent of the change request's authority role. |
+| **DR-599 Requester is Authority** | A change request is flagged requester is authority if the requested by agent is the authority agent. |
+| **DR-600 Awaits Authority Decision** | A change request is considered to await an authority decision if all of the following hold: the status is “UnderReview” and the decided flag is not set. |
+| **DR-601 Authority Role Label** | A change request's authority role label — taken from the linked authority role. |
+| **DR-602 Touches Live Version** | A change request's touches live version when the linked procedure version is live. |
+| **DR-603 Is Live Decision Backlog** | A change request is considered a live decision backlog if all of the following hold: the awaits authority decision flag is set and the touches live version flag is set. |
+| **DR-604 Blocks an Open Gap** | A change request is considered to block an open gap if all of the following hold: the live decision backlog flag is set and the change kind is “Enhancement”. |
+| **DR-605 Backlog Version Key** | The change request's backlog version key is determined by the following priority:<br>1. the procedure version, if the live decision backlog flag is set;<br>2. in all other cases, an empty string. |
+| **DR-606 Is My Pending Decision** | A change request is considered a my pending decision if all of the following hold: the authority role is “hr-policy-owner” and the awaits authority decision flag is set. |
+| **DR-607 Is My Blocking Backlog** | A change request is considered a my blocking backlog if all of the following hold: the my pending decision flag is set and the blocks an open gap flag is set. |
+| **DR-608 Is My Overdue Backlog** | A change request is considered a my overdue backlog if all of the following hold: the my blocking backlog flag is set and the days pending is greater than 14. |
+| **DR-609 Is Implemented** | A change request is considered implemented if the implemented at has a value. |
+| **DR-610 Is My Decided Request** | A change request is considered a my decided request if all of the following hold: the authority role is “hr-policy-owner” and the decided flag is set. |
+| **DR-611 Is My Decided But Unlanded** | A change request is considered my-decided-but-unlanded if all of the following hold: the my decided request flag is set and the implemented flag is not set. |
+| **DR-612 Decision Latency Days** | The change request's decision latency days is determined by the following priority:<br>1. the number of days from the requested at to the decided at, if the decided flag is set;<br>2. in all other cases, 0. |
+| **DR-613 Implementation Latency Days** | The change request's implementation latency days is determined by the following priority:<br>1. the number of days from the decided at to the implemented at, if the implemented flag is set;<br>2. in all other cases, 0. |
+| **DR-614 Delay is Downstream of Me** | A change request is flagged delay is downstream of me if all of the following hold: the my decided but unlanded flag is set and the decision latency days is at most 14. |
+| **DR-615 Unlanded Version Key** | The change request's unlanded version key is determined by the following priority:<br>1. the procedure version, if the my decided but unlanded flag is set;<br>2. in all other cases, an empty string. |
+| **DR-616 Is Approved Not Implemented** | A change request is considered approved-not-implemented if all of the following hold: the status is “Approved” and the implemented flag is not set. |
+| **DR-617 Days Since Approval** | The change request's days since approval is determined by the following priority:<br>1. the number of days from the decided at to the as of instant, if the decided flag is set;<br>2. in all other cases, 0. |
+| **DR-618 Is Stalled Implementation** | A change request is considered a stalled implementation if all of the following hold: the approved not implemented flag is set and the days since approval is greater than 14. |
+| **DR-619 Stalled Implementation Version Key** | The change request's stalled implementation version key is determined by the following priority:<br>1. the procedure version, if the stalled implementation flag is set;<br>2. in all other cases, an empty string. |
+| **DR-620 Approved Version Key** | The change request's approved version key is determined by the following priority:<br>1. the procedure version, if the approved decision flag is set;<br>2. in all other cases, an empty string. |
+| **DR-621 Is Approved Decision** | A change request is considered an approved decision if the status is “Approved”. |
+| **DR-622 Name** | A review event's name is computed as the procedure version, followed by “ / ”, followed by the review kind. |
+| **DR-623 As of Instant** | A review event's as of instant — taken from the linked evaluation context. |
+| **DR-624 Is Overdue** | A review event is considered an overdue if the next review due is less than the as of instant. |
+| **DR-625 Overdue Version Key** | The review event's overdue version key is determined by the following priority:<br>1. the procedure version, if the overdue flag is set;<br>2. in all other cases, an empty string. |
+| **DR-626 Promised Cadence Days** | A review event's promised cadence days is the steward review cadence days of the review event's procedure version. |
+| **DR-627 Days Since Reviewed** | A review event's days since reviewed is computed as the number of days from the reviewed at to the as of instant. |
+| **DR-628 Exceeds Promised Cadence** | A review event is considered to exceed a promised cadence if the days since reviewed is greater than the promised cadence days. |
+| **DR-629 Cadence Drift Days** | A review event's cadence drift days is computed as the days since reviewed minus the promised cadence days. |
+| **DR-630 Promise and Behavior Disagree** | A review event is flagged promise and behavior disagree if all of the following hold: the exceeds promised cadence flag is set and the overdue flag is not set. |
+| **DR-631 Cadence Breach Version Key** | The review event's cadence breach version key is determined by the following priority:<br>1. the procedure version, if the exceeds promised cadence flag is set;<br>2. in all other cases, an empty string. |
+| **DR-632 Name** | A learning activity's name is computed as the activity kind, followed by “ / ”, followed by the occurred at. |
+| **DR-633 Name** | An operational binding's name is computed as the step, followed by “ / ”, followed by the record or schema key. |
+| **DR-634 As of Instant** | An operational binding's as of instant — taken from the linked evaluation context. |
+| **DR-635 Age Minutes** | An operational binding's age minutes is computed as the number of minutes from the last observed at to the as of instant. |
+| **DR-636 Is Fresh** | An operational binding is considered a fresh if the age minutes is at most the freshness sla minutes. |
+| **DR-637 Stale Binding Step Key** | The operational binding's stale binding step key is determined by the following priority:<br>1. the step, if the fresh flag is not set;<br>2. in all other cases, an empty string. |
+| **DR-638 Authoritative Stale Step Key** | The operational binding's authoritative stale step key is determined by the following priority:<br>1. the step, if all of the following hold: the fresh flag is not set and the authoritative flag is set;<br>2. in all other cases, an empty string. |
+| **DR-639 Is Stale and Authoritative** | An operational binding is considered stale-and-authoritative if all of the following hold: the authoritative flag is set and the fresh flag is not set. |
+| **DR-640 Step When Stale** | The operational binding's step when stale is determined by the following priority:<br>1. the step, if the stale and authoritative flag is set;<br>2. in all other cases, an empty string. |
+| **DR-641 Resource is Approved** | An operational binding's resource is approved is true when the operational binding's resource is an approved source. |
+| **DR-642 Is Usable for Drafting** | An operational binding is considered usable-for-drafting if all of the following hold: the resource is approved flag is set and the fresh flag is set. |
+| **DR-643 Step When Unusable** | The operational binding's step when unusable is determined by the following priority:<br>1. an empty string, if the usable for drafting flag is set;<br>2. in all other cases, the step. |
+| **DR-644 Name** | A communication policy's name is computed as the channel, followed by “ policy / ”, followed by the procedure version. |
+| **DR-645 Consent Violation Count** | A communication policy's consent violation count is the number of the communication policy's message deliveries that are consent violations. |
+| **DR-646 Quiet Hours Violation Count** | A communication policy's quiet hours violation count is the number of message deliveries related to the communication policy. |
+| **DR-647 Is Active Policy** | A communication policy is considered an active policy if the status is “Active”. |
+| **DR-648 Name** | A message template's name is computed as the communication policy, followed by “ / ”, followed by the locale. |
+| **DR-649 Policy Max Message Length** | A message template's policy max message length — taken from the linked communication policy. |
+| **DR-650 Policy Max Segments** | A message template's policy max segments — taken from the linked communication policy. |
+| **DR-651 Body Template Length** | A message template's body template length is computed as the length of the body template. |
+| **DR-652 Is Template Over Length** | A message template is considered a template over length if the body template length is greater than the policy max message length. |
+| **DR-653 Valid Approval Count** | A message template's valid approval count is the number of template approvals related to the message template. |
+| **DR-654 Has Valid Approval** | A message template is considered to have a valid approval if the valid approval count is greater than 0. |
+| **DR-655 Is Claiming Unbacked Approval** | A message template is considered a claiming unbacked approval if all of the following hold: the status is “Approved” and the valid approval flag is not set. |
+| **DR-656 Last Approved Body Hash** | A message template's last approved body hash — taken from the linked last valid approval. |
+| **DR-657 Has Body Drifted** | A message template is considered to have body drifted if all of the following hold: the last approved body hash has a value and the current body hash is not the last approved body hash. |
+| **DR-658 Is Sendable Under Approval** | A message template is considered a sendable under approval if all of the following hold: the status is “Approved” and all of the following hold: the valid approval flag is set and the body drifted flag is not set. |
+| **DR-659 Drifted Send Count** | A message template's drifted send count is the number of message deliveries related to the message template. |
+| **DR-660 Unanswered Delivery Count** | A message template's unanswered delivery count is the number of message deliveries related to the message template. |
+| **DR-661 Transmitted Delivery Count** | A message template's transmitted delivery count is the number of message deliveries related to the message template. |
+| **DR-662 Template Draws No Response** | A message template is flagged template draws no response if all of the following hold: the transmitted delivery count is greater than 0 and the unanswered delivery count is the transmitted delivery count. |
+| **DR-663 Last Approval At** | A message template's last approval at is the decided at of the message template's last valid approval. |
+| **DR-664 Name** | A semantic mapping's name is computed as the source path, followed by “ -> ”, followed by the target iri. |
+| **DR-665 Name** | A witness loop's name is computed as “Loop ”, followed by the loop number, followed by “: ”, followed by the title. |
+| **DR-666 Question Count** | A witness loop's question count is the number of role questions related to the witness loop. |
+| **DR-667 Is Complete** | A witness loop is considered a complete if the completed at has a value. |
+| **DR-668 Name** | A role question's name is computed as the asking role, followed by “: ”, followed by the first 60 character(s) of the question text. |
+| **DR-669 Predicate Count** | A role question's predicate count is the number of rulebook fields related to the role question. |
+| **DR-670 Is Answered** | A role question is considered answered if the predicate count is greater than 0. |
+| **DR-671 Name** | A rulebook field's name is computed as the target table, followed by a period, followed by the field name. |
+| **DR-672 Is Derived** | A rulebook field is considered derived if at least one of the following holds: the field type is “calculated”; the field type is “lookup”; or the field type is “aggregation”. |
+| **DR-673 Is Witness** | A rulebook field is considered a witness if the invented for question has a value. |
+| **DR-674 Disagreeing Substrate Count** | A rulebook field's disagreeing substrate count is the number of field disagreements related to the rulebook field. |
+| **DR-675 Is Substrate Contested** | A rulebook field is considered substrate-contested if the disagreeing substrate count is greater than 0. |
+| **DR-676 Name** | A test suite's name is the same as its label. |
+| **DR-677 Test Count** | A test suite's test count is the number of test cases related to the test suite. |
+| **DR-678 Pass Count** | A test suite's pass count is the number of test cases related to the test suite. |
+| **DR-679 Blocking Fail Count** | A test suite's blocking fail count is the number of test cases related to the test suite. |
+| **DR-680 Is Green** | A test suite is considered a green if the blocking fail count is 0. |
+| **DR-681 Name** | A test cas's name is computed as the test kind, followed by “: ”, followed by the subject. |
+| **DR-682 Is Blocking** | A test cas is considered blocking if the severity is “blocking”. |
+| **DR-683 Is Passing** | A test cas is considered passing if the last outcome is “PASS”. |
+| **DR-684 Is Failing** | A test cas is considered failing if the last outcome is “FAIL”. |
+| **DR-685 Needs Attention** | A test cas is considered to need an attention if all of the following hold: the failing flag is set and the blocking flag is set. |
+| **DR-686 Passing Suite Key** | The test cas's passing suite key is determined by the following priority:<br>1. the suite, if the passing flag is set;<br>2. in all other cases, an empty string. |
+| **DR-687 Needs Attention Suite Key** | The test cas's needs attention suite key is determined by the following priority:<br>1. the suite, if the needs attention flag is set;<br>2. in all other cases, an empty string. |
+| **DR-688 Name** | An exception invocation's name is computed as the step execution, followed by “ / ”, followed by the exception. |
+| **DR-689 Expected Handling** | An exception invocation's expected handling — taken from the linked exception. |
+| **DR-690 Required Approval Role** | An exception invocation's required approval role — taken from the linked exception. |
+| **DR-691 Required Approval Role Holder** | An exception invocation's required approval role holder is the current agent of the exception invocation's required approval role. |
+| **DR-692 Approval Role Matches** | An exception invocation is flagged approval role matches if the approved by agent is the required approval role holder. |
+| **DR-693 Is Approved** | An exception invocation is considered approved if the approved by agent has a value. |
+| **DR-694 Is Improperly Approved** | An exception invocation is considered improperly-approved if at least one of the following holds: the approved flag is not set or the approval role matches flag is not set. |
+| **DR-695 Invoker Agent Kind** | An exception invocation's invoker agent kind — taken from the linked invoked by agent. |
+| **DR-696 Invoker Also Prepared Key** | An exception invocation's invoker also prepared key is computed as the parent procedure execution, followed by “|”, followed by the approved by agent. |
+| **DR-697 Parent Procedure Execution** | An exception invocation's parent procedure execution — taken from the linked step execution. |
+| **DR-698 Approver Prepared Count** | An exception invocation's approver prepared count is the number of step executions related to the exception invocation. |
+| **DR-699 Delegated to Preparer** | An exception invocation is flagged delegated to preparer if the approver prepared count is greater than 0. |
+| **DR-700 Is Ungoverned Invocation** | An exception invocation is considered an ungoverned invocation if at least one of the following holds: the improperly approved flag is set or the delegated to preparer flag is set. |
+| **DR-701 Name** | A verification outcome's name is computed as the step execution, followed by “ / ”, followed by the step verification. |
+| **DR-702 Expected Signal Value** | A verification outcome's expected signal value — taken from the linked step verification. |
+| **DR-703 Signal Identifier** | A verification outcome's signal identifier — taken from the linked step verification. |
+| **DR-704 Signal Matches Expected** | A verification outcome is flagged signal matches expected if the observed signal value is the expected signal value. |
+| **DR-705 Has Evidence** | A verification outcome is considered to have an evidence if the evidence uri has a value. |
+| **DR-706 Is Unbacked Observation** | A verification outcome is considered an unbacked observation if all of the following hold: the signal matches expected flag is set and the evidence flag is not set. |
+| **DR-707 Is Self Witnessed** | A verification outcome is considered self-witnessed if the observed by agent is the step executor agent. |
+| **DR-708 Step Executor Agent** | A verification outcome's step executor agent is the executed by agent of the verification outcome's step execution. |
+| **DR-709 Self Witnessed Step Key** | The verification outcome's self witnessed step key is determined by the following priority:<br>1. the step execution, if the self witnessed flag is set;<br>2. in all other cases, an empty string. |
+| **DR-710 Unbacked Step Key** | The verification outcome's unbacked step key is determined by the following priority:<br>1. the step execution, if the unbacked observation flag is set;<br>2. in all other cases, an empty string. |
+| **DR-711 Is Self Witnessed and Unbacked** | A verification outcome is considered self-witnessed-and-unbacked if all of the following hold: the self witnessed flag is set and the evidence flag is not set. |
+| **DR-712 Is Uncorroborated Pass** | A verification outcome is considered an uncorroborated pass if all of the following hold: the signal matches expected flag is set and the self witnessed and unbacked flag is set. |
+| **DR-713 Uncorroborated Pass Step Key** | The verification outcome's uncorroborated pass step key is determined by the following priority:<br>1. the step execution, if the uncorroborated pass flag is set;<br>2. in all other cases, an empty string. |
+| **DR-714 Observer is Non Human** | A verification outcome's observer is non human when the linked observed by agent is a non human. |
+| **DR-715 Observer is Independent of Executor** | A verification outcome is flagged observer is independent of executor if the self witnessed flag is not set. |
+| **DR-716 Is Independent Human Observation** | A verification outcome is considered an independent human observation if all of the following hold: the observer is non human flag is not set; the self witnessed flag is not set; and the evidence flag is set. |
+| **DR-717 Independent Observation Execution Key** | The verification outcome's independent observation execution key is determined by the following priority:<br>1. the parent procedure execution of outcome, if the independent human observation flag is set;<br>2. in all other cases, an empty string. |
+| **DR-718 Parent Procedure Execution of Outcome** | A verification outcome's parent procedure execution of outcome — taken from the linked step execution. |
+| **DR-719 Name** | An observed transition's name is computed as the step transition, followed by “ @ ”, followed by the observed at. |
+| **DR-720 Name** | A recipient's name is the same as its display name. |
+| **DR-721 Has Sms Consent** | A recipient is considered to have sms consent if the sms consent status is “Granted”. |
+| **DR-722 Is Email Reachable** | A recipient is considered email-reachable if the email address has a value. |
+| **DR-723 Is Sms Reachable** | A recipient is considered sms-reachable if the mobile number has a value. |
+| **DR-724 Is Unreachable** | A recipient is considered unreachable if all of the following hold: the email reachable flag is not set and the sms reachable flag is not set. |
+| **DR-725 Is Communicationally Stranded** | A recipient is considered communicationally-stranded if all of the following hold: the sms reachable flag is not set and the email reachable flag is not set. |
+| **DR-726 Name** | A message delivery's name is computed as the recipient, followed by “ / ”, followed by the message template, followed by “ / ”, followed by the sent at. |
+| **DR-727 Policy Channel** | A message delivery's policy channel is the communication policy of the message delivery's message template. |
+| **DR-728 Channel Name** | A message delivery's channel name — taken from the linked policy channel. |
+| **DR-729 Policy Requires Consent** | A message delivery's policy requires consent is true when the message delivery's policy channel is consent required. |
+| **DR-730 Recipient Has Sms Consent** | A message delivery's recipient has sms consent when the linked recipient has sms consent. |
+| **DR-731 Was Actually Transmitted** | A message delivery is considered to have been actually transmitted if at least one of the following holds: the delivery status is “Sent” or at least one of the following holds: the delivery status is “Delivered” or the delivery status is “Bounced”. |
+| **DR-732 Is Consent Violation** | A message delivery is considered a consent violation if all of the following hold: the was actually transmitted flag is set and all of the following hold: the policy requires consent flag is set and the recipient has sms consent flag is not set. |
+| **DR-733 Consent Violation Policy Key** | The message delivery's consent violation policy key is determined by the following priority:<br>1. the policy channel, if the consent violation flag is set;<br>2. in all other cases, an empty string. |
+| **DR-734 Policy Quiet Hours Start Hour** | A message delivery's policy quiet hours start hour — taken from the linked policy channel. |
+| **DR-735 Policy Quiet Hours End Hour** | A message delivery's policy quiet hours end hour — taken from the linked policy channel. |
+| **DR-736 Policy Has Quiet Hours** | A message delivery is flagged policy has quiet hours if the policy quiet hours start hour is not the policy quiet hours end hour. |
+| **DR-737 Quiet Window Wraps Midnight** | A message delivery is flagged quiet window wraps midnight if the policy quiet hours start hour is greater than the policy quiet hours end hour. |
+| **DR-738 Is Inside Quiet Window** | A message delivery is considered an inside quiet window if the OR of the sent at local hour is at least the policy quiet hours start hour and the sent at local hour is less than the policy quiet hours end hour if the quiet window wraps midnight flag is set, in all other cases the AND of the sent at local hour is at least the policy quiet hours start hour and the sent at local hour is less than the policy quiet hours end hour. |
+| **DR-739 Is Quiet Hours Violation** | A message delivery is considered a quiet hours violation if all of the following hold: the was actually transmitted flag is set and all of the following hold: the policy has quiet hours flag is set and the inside quiet window flag is set. |
+| **DR-740 Quiet Hours Violation Policy Key** | The message delivery's quiet hours violation policy key is determined by the following priority:<br>1. the policy channel, if the quiet hours violation flag is set;<br>2. in all other cases, an empty string. |
+| **DR-741 Recipient is Unreachable** | A message delivery's recipient is unreachable when the linked recipient is unreachable. |
+| **DR-742 Is Acknowledged** | A message delivery is considered acknowledged if the acknowledged at has a value. |
+| **DR-743 Invoked Exception Condition** | A message delivery's invoked exception condition — taken from the linked invoked exception. |
+| **DR-744 Has Unreachable Exception Invoked** | A message delivery is considered to have unreachable exception invoked if the invoked exception is “exc-unreachable”. |
+| **DR-745 Is Fabricated Acknowledgement** | A message delivery is considered fabricated-acknowledgement if all of the following hold: the recipient is unreachable flag is set and the acknowledged flag is set. |
+| **DR-746 Is Unhandled Unreachable** | A message delivery is considered unhandled-unreachable if all of the following hold: the recipient is unreachable flag is set and the unreachable exception invoked flag is not set. |
+| **DR-747 Unreachable Failure Key** | The message delivery's unreachable failure key is determined by the following priority:<br>1. the procedure execution, if at least one of the following holds: the fabricated acknowledgement flag is set or the unhandled unreachable flag is set;<br>2. in all other cases, an empty string. |
+| **DR-748 Policy Retention Days** | A message delivery's policy retention days — taken from the linked policy channel. |
+| **DR-749 As of Instant** | A message delivery's as of instant — taken from the linked evaluation context. |
+| **DR-750 Age Days** | A message delivery's age days is computed as the number of days from the sent at to the as of instant. |
+| **DR-751 Is Within Retention Window** | A message delivery is considered a within retention window if the age days is at most the policy retention days. |
+| **DR-752 Has Rendered Body** | A message delivery is considered to have rendered body if the rendered body has a value. |
+| **DR-753 Is Evidence Required** | A message delivery is considered evidence-required if all of the following hold: the was actually transmitted flag is set and the within retention window flag is set. |
+| **DR-754 Is Retention Breach** | A message delivery is considered a retention breach if all of the following hold: the evidence required flag is set and the rendered body flag is not set. |
+| **DR-755 Retention Breach Execution Key** | The message delivery's retention breach execution key is determined by the following priority:<br>1. the procedure execution, if the retention breach flag is set;<br>2. in all other cases, an empty string. |
+| **DR-756 Sending Step Execution Step** | A message delivery's sending step execution step — taken from the linked step execution. |
+| **DR-757 Execution Has Cleared Legal Review** | A message delivery's execution has cleared legal review when the linked procedure execution has a cleared legal review. |
+| **DR-758 Is Unreviewed Send** | A message delivery is considered an unreviewed send if all of the following hold: the was actually transmitted flag is set and the execution has cleared legal review flag is not set. |
+| **DR-759 Rendered Body Length** | A message delivery's rendered body length is computed as the length of the rendered body. |
+| **DR-760 Policy Max Message Length At Send** | A message delivery's policy max message length at send — taken from the linked policy channel. |
+| **DR-761 Segment Count** | The message delivery's segment count is determined by the following priority:<br>1. 0, if the rendered body length is 0;<br>2. 1, if the rendered body length is at most the policy max message length at send;<br>3. in all other cases, the rendered body length divided by the policy max message length at send rounded up to 0 decimal place(s). |
+| **DR-762 Policy Max Segments At Send** | A message delivery's policy max segments at send — taken from the linked policy channel. |
+| **DR-763 Is Over Segment Limit** | A message delivery is considered an over segment limit if all of the following hold: the was actually transmitted flag is set and the segment count is greater than the policy max segments at send. |
+| **DR-764 Template Has Valid Approval** | A message delivery's template has valid approval when the linked message template has a valid approval. |
+| **DR-765 Is Unapproved Send** | A message delivery is considered an unapproved send if all of the following hold: the was actually transmitted flag is set and the template has valid approval flag is not set. |
+| **DR-766 Policy Required Opt Out Phrase** | A message delivery's policy required opt out phrase — taken from the linked policy channel. |
+| **DR-767 Policy Requires Opt Out** | A message delivery is flagged policy requires opt out if the policy required opt out phrase has a value. |
+| **DR-768 Opt Out Phrase Position** | A message delivery's opt out phrase position is computed as the position of the policy required opt out phrase within the rendered body. |
+| **DR-769 Has Opt Out Phrase** | A message delivery is considered to have an opt out phrase if the opt out phrase position is greater than 0. |
+| **DR-770 Is Opt Out in First Segment** | A message delivery is considered an opt out in first segment if all of the following hold: the opt out phrase flag is set and the opt out phrase position is at most the policy max message length at send. |
+| **DR-771 Is Missing Required Opt Out** | A message delivery is considered a missing required opt out if all of the following hold: the was actually transmitted flag is set and all of the following hold: the policy requires opt out flag is set and the opt out phrase flag is not set. |
+| **DR-772 Is Opt Out At Risk of Truncation** | A message delivery is considered an opt out at risk of truncation if all of the following hold: the was actually transmitted flag is set and all of the following hold: the policy requires opt out flag is set and all of the following hold: the opt out phrase flag is set and the opt out in first segment flag is not set. |
+| **DR-773 Is Failed Delivery** | A message delivery is considered failed-delivery if at least one of the following holds: the delivery status is “Failed” or the delivery status is “Bounced”. |
+| **DR-774 Is Suppressed** | A message delivery is considered suppressed if the delivery status is “Suppressed”. |
+| **DR-775 Is Triaged** | A message delivery is considered triaged if the invoked exception has a value. |
+| **DR-776 Is Abandoned Failure** | A message delivery is considered an abandoned failure if all of the following hold: the failed delivery flag is set and the triaged flag is not set. |
+| **DR-777 Abandoned Failure Execution Key** | The message delivery's abandoned failure execution key is determined by the following priority:<br>1. the procedure execution, if the abandoned failure flag is set;<br>2. in all other cases, an empty string. |
+| **DR-778 Reached Execution Key** | The message delivery's reached execution key is determined by the following priority:<br>1. the procedure execution, if the delivery status is “Delivered”;<br>2. in all other cases, an empty string. |
+| **DR-779 Template Was Sendable** | A message delivery's template was sendable is true when the message delivery's message template is a sendable under approval. |
+| **DR-780 Is Drifted Send** | A message delivery is considered a drifted send if all of the following hold: the was actually transmitted flag is set and the template was sendable flag is not set. |
+| **DR-781 Drifted Send Template Key** | The message delivery's drifted send template key is determined by the following priority:<br>1. the message template, if the drifted send flag is set;<br>2. in all other cases, an empty string. |
+| **DR-782 Was Sent Outside Business Hours** | A message delivery is considered to have been sent outside business hours if at least one of the following holds: the sent at local hour is less than 8 or the sent at local hour is greater than 18. |
+| **DR-783 Was Delivered and Unanswered** | A message delivery is considered to have been delivered and unanswered if all of the following hold: the was actually transmitted flag is set and the acknowledged flag is not set. |
+| **DR-784 Is Poorly Timed Unanswered** | A message delivery is considered poorly-timed-unanswered if all of the following hold: the was delivered and unanswered flag is set and the was sent outside business hours flag is set. |
+| **DR-785 Is Well Timed Unanswered** | A message delivery is considered well-timed-unanswered if all of the following hold: the was delivered and unanswered flag is set and the was sent outside business hours flag is not set. |
+| **DR-786 Unanswered Template Key** | The message delivery's unanswered template key is determined by the following priority:<br>1. the message template, if the was delivered and unanswered flag is set;<br>2. in all other cases, an empty string. |
+| **DR-787 Transmitted Template Key** | The message delivery's transmitted template key is determined by the following priority:<br>1. the message template, if the was actually transmitted flag is set;<br>2. in all other cases, an empty string. |
+| **DR-788 Approval Preceded Send** | A message delivery is flagged approval preceded send if all of the following hold: the approval decided at send has a value and the sent at is greater than the approval decided at send. |
+| **DR-789 Has Frozen Approval Evidence** | A message delivery is considered to have a frozen approval evidence if all of the following hold: the approving agent at send has a value and the approval decided at send has a value. |
+| **DR-790 Provenance is Live Derived** | A message delivery is flagged provenance is live derived if the frozen approval evidence flag is not set. |
+| **DR-791 Current Last Approval At** | A message delivery's current last approval at — taken from the linked message template. |
+| **DR-792 Template Reapproved Since Send** | A message delivery is flagged template reapproved since send if all of the following hold: the current last approval at has a value and the current last approval at is greater than the sent at. |
+| **DR-793 Is Unprovable Approval Claim** | A message delivery is considered an unprovable approval claim if all of the following hold: the provenance is live derived flag is set and all of the following hold: the template reapproved since send flag is set and the template has valid approval flag is set. |
+| **DR-794 Has Sent Reminder** | A message delivery is considered to have a sent reminder if the reminder count is greater than 0. |
+| **DR-795 Acknowledgement is Outstanding** | A message delivery is flagged acknowledgement is outstanding if all of the following hold: the was actually transmitted flag is set and all of the following hold: the evidence required flag is set and the acknowledged flag is not set. |
+| **DR-796 Outstanding Age Days** | The message delivery's outstanding age days is determined by the following priority:<br>1. the number of days from the sent at to the as of instant, if the acknowledgement is outstanding flag is set;<br>2. in all other cases, 0. |
+| **DR-797 Is Unchased Acknowledgement** | A message delivery is considered unchased-acknowledgement if all of the following hold: the acknowledgement is outstanding flag is set and all of the following hold: the outstanding age days is greater than 7 and the sent reminder flag is not set. |
+| **DR-798 Is Exhausted Follow Up** | A message delivery is considered an exhausted follow up if all of the following hold: the acknowledgement is outstanding flag is set and the reminder count is at least 3. |
+| **DR-799 Needs Human Escalation** | A message delivery is considered to need a human escalation if all of the following hold: the exhausted follow up flag is set and the unreachable exception invoked flag is not set. |
+| **DR-800 Name** | A template approval's name is computed as the message template, followed by “ / ”, followed by the decision, followed by “ / ”, followed by the decided at. |
+| **DR-801 Is Approval Decision** | A template approval is considered an approval decision if the decision is “Approved”. |
+| **DR-802 Template Policy** | A template approval's template policy is the communication policy of the template approval's message template. |
+| **DR-803 Required Approval Role** | A template approval's required approval role — taken from the linked template policy. |
+| **DR-804 Is Decided by Required Role** | A template approval is considered a decided by required role if the decided in role is the required approval role. |
+| **DR-805 Valid Approval Template Key** | The template approval's valid approval template key is determined by the following priority:<br>1. the message template, if all of the following hold: the approval decision flag is set and the decided by required role flag is set;<br>2. in all other cases, an empty string. |
+| **DR-806 Name** | A send intent's name is computed as the recipient, followed by “ / ”, followed by the message template, followed by “ / intent”. |
+| **DR-807 Intent Policy** | A send intent's intent policy is the communication policy of the send intent's message template. |
+| **DR-808 Intent Channel** | A send intent's intent channel — taken from the linked intent policy. |
+| **DR-809 Policy is Active** | A send intent's policy is active is true when the send intent's intent policy is an active policy. |
+| **DR-810 Intent Requires Consent** | A send intent's intent requires consent is true when the send intent's intent policy is consent required. |
+| **DR-811 Recipient Has Channel Consent** | A send intent's recipient has channel consent is true when the send intent's recipient has sms consent. |
+| **DR-812 Consent Gate Passed** | A send intent is flagged consent gate passed if at least one of the following holds: the intent requires consent flag is not set or the recipient has channel consent flag is set. |
+| **DR-813 Recipient is Sms Reachable** | A send intent's recipient is sms reachable when the linked recipient is sms reachable. |
+| **DR-814 Recipient is Email Reachable** | A send intent's recipient is email reachable when the linked recipient is email reachable. |
+| **DR-815 Reachability Gate Passed** | A send intent is flagged reachability gate passed if the recipient is sms reachable if the intent channel is “SMS”, in all other cases the recipient is email reachable. |
+| **DR-816 Permission Gate Passed** | A send intent is flagged permission gate passed if all of the following hold: the policy is active flag is set and all of the following hold: the consent gate passed flag is set and the reachability gate passed flag is set. |
+| **DR-817 Intent Quiet Start Hour** | A send intent's intent quiet start hour is the quiet hours start hour of the send intent's intent policy. |
+| **DR-818 Intent Quiet End Hour** | A send intent's intent quiet end hour is the quiet hours end hour of the send intent's intent policy. |
+| **DR-819 Intent Policy Has Quiet Hours** | A send intent is flagged intent policy has quiet hours if the intent quiet start hour is not the intent quiet end hour. |
+| **DR-820 Intent Quiet Window Wraps** | A send intent is flagged intent quiet window wraps if the intent quiet start hour is greater than the intent quiet end hour. |
+| **DR-821 Intent is Inside Quiet Window** | A send intent is flagged intent is inside quiet window if the OR of the proposed send at local hour is at least the intent quiet start hour and the proposed send at local hour is less than the intent quiet end hour if the intent quiet window wraps flag is set, in all other cases the AND of the proposed send at local hour is at least the intent quiet start hour and the proposed send at local hour is less than the intent quiet end hour. |
+| **DR-822 Timing Gate Passed** | A send intent is flagged timing gate passed if at least one of the following holds: the intent policy has quiet hours flag is not set or the intent is inside quiet window flag is not set. |
+| **DR-823 Hours Until Window Opens** | The send intent's hours until window opens is determined by the following priority:<br>1. 0, if the timing gate passed flag is set;<br>2. the intent quiet end hour minus the proposed send at local hour, if the proposed send at local hour is less than the intent quiet end hour;<br>3. in all other cases, 24 minus the proposed send at local hour plus the intent quiet end hour. |
+| **DR-824 Intent Max Message Length** | A send intent's intent max message length — taken from the linked intent policy. |
+| **DR-825 Intent Max Segments** | A send intent's intent max segments — taken from the linked intent policy. |
+| **DR-826 Length Gate Passed** | A send intent is flagged length gate passed if all of the following hold: the proposed body length is greater than 0 and the proposed segment count is at most the intent max segments. |
+| **DR-827 Intent Required Opt Out Phrase** | A send intent's intent required opt out phrase — taken from the linked intent policy. |
+| **DR-828 Opt Out Gate Passed** | A send intent is flagged opt out gate passed if at least one of the following holds: the intent required opt out phrase is blank or all of the following hold: the proposed opt out position is greater than 0 and the proposed opt out position is at most the intent max message length. |
+| **DR-829 Content Gate Passed** | A send intent is flagged content gate passed if all of the following hold: the length gate passed flag is set and the opt out gate passed flag is set. |
+| **DR-830 Template is Sendable** | A send intent's template is sendable is true when the send intent's message template is a sendable under approval. |
+| **DR-831 Execution Has Legal Clearance** | A send intent's execution has legal clearance is true when the send intent's procedure execution has a cleared legal review. |
+| **DR-832 Intent Approval Role** | A send intent's intent approval role — taken from the linked intent policy. |
+| **DR-833 Approval Role Agent Kind** | A send intent's approval role agent kind is the current agent kind of the send intent's intent approval role. |
+| **DR-834 Approval is Human** | A send intent is flagged approval is human if the approval role agent kind is “Human”. |
+| **DR-835 Authorization Gate Passed** | A send intent is flagged authorization gate passed if all of the following hold: the template is sendable flag is set and all of the following hold: the execution has legal clearance flag is set and the approval is human flag is set. |
+| **DR-836 Is Cleared to Send** | A send intent is considered a cleared to send if all of the following hold: the permission gate passed flag is set and all of the following hold: the timing gate passed flag is set and all of the following hold: the content gate passed flag is set and the authorization gate passed flag is set. |
+| **DR-837 Blocking Gate Name** | The send intent's blocking gate name is determined by the following priority:<br>1. an empty string, if the cleared to send flag is set;<br>2. “Permission”, if the permission gate passed flag is not set;<br>3. “Timing”, if the timing gate passed flag is not set;<br>4. “Content”, if the content gate passed flag is not set;<br>5. in all other cases, “Authorization”. |
+| **DR-838 Has Resulting Delivery** | A send intent is considered to have resulting delivery if the resulting delivery has a value. |
+| **DR-839 Resulting Delivery Was Transmitted** | A send intent's resulting delivery was transmitted is true when the send intent's resulting delivery was actually transmitted. |
+| **DR-840 Is Overridden Refusal** | A send intent is considered overridden-refusal if all of the following hold: the cleared to send flag is not set and all of the following hold: the resulting delivery flag is set and the resulting delivery was transmitted flag is set. |
+| **DR-841 Is Silently Dropped** | A send intent is considered silently-dropped if all of the following hold: the cleared to send flag is not set and the resulting delivery flag is not set. |
+| **DR-842 Resulting Delivery Exception** | A send intent's resulting delivery exception is the invoked exception of the send intent's resulting delivery. |
+| **DR-843 Refusal Cited an Exception** | A send intent is flagged refusal cited an exception if the resulting delivery exception has a value. |
+| **DR-844 Is Properly Handled Refusal** | A send intent is considered properly-handled-refusal if all of the following hold: the cleared to send flag is not set and all of the following hold: the resulting delivery flag is set and all of the following hold: the resulting delivery was transmitted flag is not set and the refusal cited an exception flag is set. |
+| **DR-845 Refusal Failure Execution Key** | The send intent's refusal failure execution key is determined by the following priority:<br>1. the procedure execution, if at least one of the following holds: the overridden refusal flag is set or the silently dropped flag is set;<br>2. in all other cases, an empty string. |
+| **DR-846 Intent Execution Key** | A send intent's intent execution key is the same as its procedure execution. |
+| **DR-847 Delivered Intent Execution Key** | The send intent's delivered intent execution key is determined by the following priority:<br>1. the procedure execution, if all of the following hold: the resulting delivery flag is set and the resulting delivery was transmitted flag is set;<br>2. in all other cases, an empty string. |
+| **DR-848 Dropped Intent Execution Key** | The send intent's dropped intent execution key is determined by the following priority:<br>1. the procedure execution, if the silently dropped flag is set;<br>2. in all other cases, an empty string. |
+| **DR-849 My Approval Was in Force** | A send intent is flagged my approval was in force only if the send intent is flagged template is sendable. |
+| **DR-850 Refused on Approved Content** | A send intent is flagged refused on approved content if all of the following hold: the my approval was in force flag is set and the content gate passed flag is not set. |
+| **DR-851 Refused on Opt Out Only** | A send intent is flagged refused on opt out only if all of the following hold: the opt out gate passed flag is not set and the length gate passed flag is set. |
+| **DR-852 Refusal Was on My Rules** | A send intent is flagged refusal was on my rules if all of the following hold: the cleared to send flag is not set and at least one of the following holds: the content gate passed flag is not set or the timing gate passed flag is not set. |
+| **DR-853 Refusal Was Outside My Control** | A send intent is flagged refusal was outside my control if all of the following hold: the cleared to send flag is not set and at least one of the following holds: the permission gate passed flag is not set or the authorization gate passed flag is not set. |
+| **DR-854 Is Unreported Refusal on My Rules** | A send intent is considered an unreported refusal on my rules if all of the following hold: the refusal was on my rules flag is set and the approver was notified flag is not set. |
+| **DR-855 Is Approval Overridden Silently** | A send intent is considered an approval overridden silently if all of the following hold: the refused on approved content flag is set and the approver was notified flag is not set. |
+| **DR-856 Has Alternate Channel Attempt** | A send intent is considered to have an alternate channel attempt if the alternate channel intent has a value. |
+| **DR-857 Alternate Attempt Was Cleared** | A send intent's alternate attempt was cleared is true when the send intent's alternate channel intent is a cleared to send. |
+| **DR-858 Is Refused With No Alternative** | A send intent is considered refused-with-no-alternative if all of the following hold: the cleared to send flag is not set and the alternate channel attempt flag is not set. |
+| **DR-859 Exception Prescribed an Alternative** | A send intent is flagged exception prescribed an alternative if all of the following hold: the refusal cited an exception flag is set and the resulting delivery exception has a value. |
+| **DR-860 Prescribed Handling Was Performed** | A send intent is flagged prescribed handling was performed if all of the following hold: the exception prescribed an alternative flag is set and all of the following hold: the alternate channel attempt flag is set and the alternate attempt was cleared flag is set. |
+| **DR-861 Is Suppression Without Remedy** | A send intent is considered suppression-without-remedy if all of the following hold: the exception prescribed an alternative flag is set and the prescribed handling was performed flag is not set. |
+| **DR-862 Has Durable Refusal Record** | A send intent is considered to have a durable refusal record if the refusal recorded at has a value. |
+| **DR-863 Refusal Was Escalated** | A send intent is flagged refusal was escalated if the refusal notified role has a value. |
+| **DR-864 Is Unrecorded Refusal** | A send intent is considered unrecorded-refusal if all of the following hold: the silently dropped flag is set and all of the following hold: the durable refusal record flag is not set and the refusal cited an exception flag is not set. |
+| **DR-865 Is Unescalated Refusal** | A send intent is considered unescalated-refusal if all of the following hold: the cleared to send flag is not set and the refusal was escalated flag is not set. |
+| **DR-866 Unescalated Refusal Role Key** | The send intent's unescalated refusal role key is determined by the following priority:<br>1. the refusal notified role, if the unrecorded refusal flag is set;<br>2. in all other cases, an empty string. |
+| **DR-867 Unrecorded Refusal Execution Key** | The send intent's unrecorded refusal execution key is determined by the following priority:<br>1. the procedure execution, if the unrecorded refusal flag is set;<br>2. in all other cases, an empty string. |
+| **DR-868 Was Deferred on Timing** | A send intent is considered to have been deferred on timing if all of the following hold: the timing gate passed flag is not set and all of the following hold: the permission gate passed flag is set and the content gate passed flag is set. |
+| **DR-869 As of Instant** | A send intent's as of instant — taken from the linked evaluation context. |
+| **DR-870 Window Has Since Reopened** | A send intent is flagged window has since reopened if all of the following hold: the hours until window opens is greater than 0 and the number of hours from the evaluated at to the as of instant is greater than the hours until window opens. |
+| **DR-871 Has Retry Attempt** | A send intent is considered to have a retry attempt if the retry intent has a value. |
+| **DR-872 Retry Was Cleared** | A send intent's retry was cleared is true when the send intent's retry intent is a cleared to send. |
+| **DR-873 Is Abandoned Deferral** | A send intent is considered abandoned-deferral if all of the following hold: the was deferred on timing flag is set and all of the following hold: the window has since reopened flag is set and the retry attempt flag is not set. |
+| **DR-874 Deferral Age Hours** | A send intent's deferral age hours is computed as the number of hours from the evaluated at to the as of instant. |
+| **DR-875 Is Stale Deferral** | A send intent is considered stale-deferral if all of the following hold: the was deferred on timing flag is set and the deferral age hours is greater than 24. |
+| **DR-876 Enforced by Unauthorized Agent** | A send intent's enforced by unauthorized agent is true when the send intent's evaluating role assignment is an unauthorized enforcement agent. |
+| **DR-877 Consent Input Was Resolvable** | A send intent is flagged consent input was resolvable if the recipient consent status raw has a value. |
+| **DR-878 Recipient Consent Status Raw** | A send intent's recipient consent status raw is the sms consent status of the send intent's recipient. |
+| **DR-879 Policy Input Was Resolvable** | A send intent is flagged policy input was resolvable if the intent policy has a value. |
+| **DR-880 All Gate Inputs Resolved** | A send intent is flagged all gate inputs resolved if all of the following hold: the consent input was resolvable flag is set and the policy input was resolvable flag is set. |
+| **DR-881 Is Unevaluable Refusal** | A send intent is considered unevaluable-refusal if all of the following hold: the cleared to send flag is not set and the all gate inputs resolved flag is not set. |
+| **DR-882 Is Self Witnessed Decision** | A send intent is considered a self witnessed decision if the gate result was independently confirmed flag is not set. |
+| **DR-883 Is Independently Confirmed** | A send intent is considered independently-confirmed if all of the following hold: the resulting delivery flag is set and the resulting delivery was transmitted flag is set. |
+| **DR-884 Independently Confirmed Execution Key** | The send intent's independently confirmed execution key is determined by the following priority:<br>1. the procedure execution, if the independently confirmed flag is set;<br>2. in all other cases, an empty string. |
+| **DR-885 Name** | An agent decision record's name is computed as the deciding agent, followed by “: ”, followed by the first 60 character(s) of the decision summary. |
+| **DR-886 Was Overridden** | An agent decision record is considered to have been overridden if at least one of the following holds: the human disposition is “Corrected” or the human disposition is “Reversed”. |
+| **DR-887 Was Reviewed** | An agent decision record is considered to have been reviewed if all of the following hold: the human disposition has a value and the human disposition is not “NotReviewed”. |
+| **DR-888 Deciding Agent Kind** | An agent decision record's deciding agent kind — taken from the linked deciding agent. |
+| **DR-889 Deciding Agent When Overridden** | The agent decision record's deciding agent when overridden is determined by the following priority:<br>1. the deciding agent, if the was overridden flag is set;<br>2. in all other cases, an empty string. |
+| **DR-890 Role Assignment When Scored** | The agent decision record's role assignment when scored is determined by the following priority:<br>1. the under role assignment, if the under role assignment has a value;<br>2. in all other cases, an empty string. |
+| **DR-891 Role Assignment When Overridden** | The agent decision record's role assignment when overridden is determined by the following priority:<br>1. the under role assignment, if the was overridden flag is set;<br>2. in all other cases, an empty string. |
+| **DR-892 Step of Decision** | An agent decision record's step of decision — taken from the linked step execution. |
+| **DR-893 Boundary Match Key** | An agent decision record's boundary match key is computed as the step of decision, followed by “|”, followed by the deciding agent kind, followed by “|”, followed by the decision kind. |
+| **DR-894 Matching Boundary Count** | An agent decision record's matching boundary count is the number of authority boundaries related to the agent decision record. |
+| **DR-895 Violated Authority Boundary** | An agent decision record is flagged violated authority boundary if the matching boundary count is greater than 0. |
+| **DR-896 Reviewer Agent Kind** | An agent decision record's reviewer agent kind — taken from the linked reviewed by agent. |
+| **DR-897 Has Human Confirmation** | An agent decision record is considered to have a human confirmation if all of the following hold: the reviewer agent kind is “Human”; the human disposition has a value; and the human disposition is not “NotReviewed”. |
+| **DR-898 Needs Human Confirmation** | An agent decision record is considered to need a human confirmation if all of the following hold: it is not the case that the deciding agent kind is “Human” and at least one of the following holds: the materiality band is “Material” or the materiality band is “Escalated”. |
+| **DR-899 Is Unconfirmed Non Human Decision** | An agent decision record is considered an unconfirmed non human decision if all of the following hold: the needs human confirmation flag is set and the human confirmation flag is not set. |
+| **DR-900 Step Execution When Unconfirmed** | The agent decision record's step execution when unconfirmed is determined by the following priority:<br>1. the step execution, if the unconfirmed non human decision flag is set;<br>2. in all other cases, an empty string. |
+| **DR-901 Agent When Boundary Violated** | The agent decision record's agent when boundary violated is determined by the following priority:<br>1. the deciding agent, if the violated authority boundary flag is set;<br>2. in all other cases, an empty string. |
+| **DR-902 Review Latency Minutes** | The agent decision record's review latency minutes is determined by the following priority:<br>1. 0, if the reviewed at is blank;<br>2. in all other cases, the number of minutes from the decided at to the reviewed at. |
+| **DR-903 Is Draft Kind** | An agent decision record is considered a draft kind if at least one of the following holds: the decision kind is “Draft” or the decision kind is “Commitment”. |
+| **DR-904 Agent When Draft Overridden** | The agent decision record's agent when draft overridden is determined by the following priority:<br>1. the deciding agent, if all of the following hold: the draft kind flag is set and the was overridden flag is set;<br>2. in all other cases, an empty string. |
+| **DR-905 Agent When Draft** | The agent decision record's agent when draft is determined by the following priority:<br>1. the deciding agent, if the draft kind flag is set;<br>2. in all other cases, an empty string. |
+| **DR-906 Is Error Correction** | An agent decision record is considered an error correction if all of the following hold: the was overridden flag is set and the override reason kind is “ErrorCorrection”. |
+| **DR-907 Is Reserved Judgment Override** | An agent decision record is considered a reserved judgment override if all of the following hold: the was overridden flag is set and the override reason kind is “JudgmentReserved”. |
+| **DR-908 Override Reason is Recorded** | An agent decision record is flagged override reason is recorded if all of the following hold: the was overridden flag is set and the override reason kind has a value. |
+| **DR-909 Is Unexplained Override** | An agent decision record is considered an unexplained override if all of the following hold: the was overridden flag is set and the override reason is recorded flag is not set. |
+| **DR-910 Error Correction Role Assignment Key** | The agent decision record's error correction role assignment key is determined by the following priority:<br>1. the under role assignment, if the error correction flag is set;<br>2. in all other cases, an empty string. |
+| **DR-911 Boundary Violation Role Assignment Key** | The agent decision record's boundary violation role assignment key is determined by the following priority:<br>1. the under role assignment, if the violated authority boundary flag is set;<br>2. in all other cases, an empty string. |
+| **DR-912 Name** | A delivered communication's name is computed as the channel, followed by “ -> ”, followed by the recipient key, followed by “ @ ”, followed by the sent at. |
+| **DR-913 Has Authorization** | A delivered communication is considered to have an authorization if the authorizing step execution has a value. |
+| **DR-914 Content Matches Approval** | A delivered communication is flagged content matches approval if the rendered content hash is the approved content hash. |
+| **DR-915 Authorized At** | A delivered communication's authorized at is the ended at of the delivered communication's authorizing step execution. |
+| **DR-916 Was Approved Before Sending** | A delivered communication is considered to have been approved before sending if the authorized at is at most the sent at. |
+| **DR-917 Is Defensible** | A delivered communication is considered defensible if all of the following hold: the authorization flag is set; the content matches approval flag is set; and the was approved before sending flag is set. |
+| **DR-918 Name** | An authority boundary's name is computed as the forbidden agent kind, followed by “ may not ”, followed by the forbidden decision kind. |
+| **DR-919 As of Instant** | An authority boundary's as of instant — taken from the linked evaluation context. |
+| **DR-920 Is Currently Binding** | An authority boundary is considered currently-binding if all of the following hold: the status is “Approved”; the valid from is at most the as of instant; and at least one of the following holds: the valid to is blank or the valid to is greater than the as of instant. |
+| **DR-921 Ratifying Fragment is Valid** | An authority boundary's ratifying fragment is valid is true when the authority boundary's ratified by knowledge fragment is currently valid. |
+| **DR-922 Step When Binding** | The authority boundary's step when binding is determined by the following priority:<br>1. the step, if the currently binding flag is set;<br>2. in all other cases, an empty string. |
+| **DR-923 Boundary Match Key** | An authority boundary's boundary match key is computed as the step, followed by “|”, followed by the forbidden agent kind, followed by “|”, followed by the forbidden decision kind. |
+| **DR-924 Violation Count** | An authority boundary's violation count is the number of agent decision records related to the authority boundary. |
+| **DR-925 Is Untested** | An authority boundary is considered untested if all of the following hold: the currently binding flag is set and the violation count is 0. |
+| **DR-926 Has Ratifying Fragment** | An authority boundary is considered to have ratifying fragment if the ratified by knowledge fragment has a value. |
+| **DR-927 Is Unwarranted** | An authority boundary is considered unwarranted if all of the following hold: the currently binding flag is set and at least one of the following holds: the ratifying fragment flag is not set or the ratifying fragment is valid flag is not set. |
+| **DR-928 Ratifying Fragment is Overdue** | An authority boundary's ratifying fragment is overdue is true when the authority boundary's ratified by knowledge fragment is an overdue for review. |
+| **DR-929 Ratifying Fragment is Single Witness** | An authority boundary's ratifying fragment is single witness is true when the authority boundary's ratified by knowledge fragment is a from single witness. |
+| **DR-930 Warrant is Thin** | An authority boundary is flagged warrant is thin if all of the following hold: the currently binding flag is set and at least one of the following holds: the ratifying fragment is overdue flag is set or the ratifying fragment is single witness flag is set. |
+| **DR-931 Is Unwarranted and Untested** | An authority boundary is considered unwarranted-and-untested if all of the following hold: the unwarranted flag is set and the untested flag is set. |
+| **DR-932 Unwarranted Boundary Step Key** | The authority boundary's unwarranted boundary step key is determined by the following priority:<br>1. the step, if the unwarranted flag is set;<br>2. in all other cases, an empty string. |
+| **DR-933 Ratifying Fragment Key** | The authority boundary's ratifying fragment key is determined by the following priority:<br>1. the ratified by knowledge fragment, if the currently binding flag is set;<br>2. in all other cases, an empty string. |
+| **DR-934 Ratifying Fragment Status** | An authority boundary's ratifying fragment status — taken from the linked ratified by knowledge fragment. |
+| **DR-935 Ratification Lapsed** | An authority boundary is flagged ratification lapsed if all of the following hold: the ratifying fragment flag is set and the ratifying fragment is valid flag is not set. |
+| **DR-936 Binds Despite Lapsed Ratification** | An authority boundary is considered to bind a despite lapsed ratification if all of the following hold: the currently binding flag is set and the ratification lapsed flag is set. |
+| **DR-937 Is Ungrounded and Untested** | An authority boundary is considered ungrounded-and-untested if all of the following hold: the binds despite lapsed ratification flag is set and the untested flag is set. |
+| **DR-938 Constrained Role Assignment Key** | The authority boundary's constrained role assignment key is determined by the following priority:<br>1. the authority role, if the binds despite lapsed ratification flag is set;<br>2. in all other cases, an empty string. |
+| **DR-939 Name** | A binding observation's name is computed as the step execution, followed by “ / ”, followed by the binding observation ID. |
+| **DR-940 Sla Minutes At Run** | A binding observation's sla minutes at run is the freshness sla minutes of the binding observation's operational binding. |
+| **DR-941 Age At Run Minutes** | A binding observation's age at run minutes is computed as the number of minutes from the observed source timestamp to the read at. |
+| **DR-942 Was Stale At Run** | A binding observation is considered to have been stale at run if all of the following hold: the authoritative binding flag is set and the age at run minutes is greater than the sla minutes at run. |
+| **DR-943 Is Authoritative Binding** | A binding observation's is authoritative binding when the linked operational binding is authoritative. |
+| **DR-944 Stale At Run Step Key** | The binding observation's stale at run step key is determined by the following priority:<br>1. the step execution, if the was stale at run flag is set;<br>2. in all other cases, an empty string. |
+| **DR-945 Name** | An attestation's name is computed as the procedure execution, followed by “ / ”, followed by the attestation ID. |
+| **DR-946 Version is Fit Now** | An attestation's version is fit now is true when the attestation's procedure execution is a fit. |
+| **DR-947 Fitness Verdict Has Drifted** | An attestation is considered to fitnes verdict has drifted if it is not the case that the version was fit at signing is the version is fit now. |
+| **DR-948 Assurance Grade Now** | An attestation's assurance grade now — taken from the linked procedure execution. |
+| **DR-949 Assurance Grade Has Drifted** | An attestation is flagged assurance grade has drifted if it is not the case that the assurance grade at signing is the assurance grade now. |
+| **DR-950 Would Not Survive Restatement** | An attestation is flagged would not survive restatement if at least one of the following holds: the fitness verdict has drifted flag is set or the assurance grade has drifted flag is set. |
+| **DR-951 Name** | An app role profile's name is computed as the display label, followed by “ (”, followed by the role kind, followed by “)”. |
+| **DR-952 Route Count** | An app role profile's route count is the number of app routes related to the app role profile. |
+| **DR-953 Name** | An app nav group's name is the same as its group label. |
+| **DR-954 Route Count** | An app nav group's route count is the number of app routes related to the app nav group. |
+| **DR-955 Name** | An app route's name is computed as the route name, followed by “ — ”, followed by the route path. |
+| **DR-956 Is in Nav** | An app route is considered in-nav if the nav group has a value. |
+| **DR-957 Is Shared** | An app route is considered shared if all of the following hold: the owning role is blank and the surface is “domain”. |
+| **DR-958 Is Maintainer** | An app route is considered a maintainer if the surface is “maintainer”. |
+| **DR-959 Question Count** | An app route's question count is the number of app route questions related to the app route. |
+| **DR-960 Reference Count** | An app route's reference count is the number of app route references related to the app route. |
+| **DR-961 Answers No Question** | An app route is considered to answer no question if all of the following hold: the question count is 0; the is shared is false; the is maintainer is false; and the route kind is not “index”. |
+| **DR-962 Name** | An app route question's name is computed as the route, followed by “ answers ”, followed by the question. |
+| **DR-963 Name** | An app route reference's name is computed as the from route, followed by “ -> ”, followed by the to route. |
+| **DR-964 Name** | A rulebook table's name is the same as its table name. |
+| **DR-965 Field Count** | A rulebook table's field count is the number of rulebook fields related to the rulebook table. |
+| **DR-966 Policy Count** | A rulebook table's policy count is the number of access policies related to the rulebook table. |
+| **DR-967 Is Unsecured** | A rulebook table is considered unsecured if the policy count is 0. |
+| **DR-968 Disagreeing Substrate Count** | A rulebook table's disagreeing substrate count is the number of table conformance related to the rulebook table. |
+| **DR-969 Name** | An access principal's name is the same as its label. |
+| **DR-970 Organization Scope** | An access principal's organization scope — taken from the linked domain role. |
+| **DR-971 Role Label** | An access principal's role label — taken from the linked domain role. |
+| **DR-972 Policy Count** | An access principal's policy count is the number of access policies related to the access principal. |
+| **DR-973 Grant Count** | An access principal's grant count is the number of field grants related to the access principal. |
+| **DR-974 Visible Table Count** | An access principal's visible table count is the number of role schema views related to the access principal. |
+| **DR-975 Has No Access** | An access principal is considered to have no access if the policy count is 0. |
+| **DR-976 Is Over Privileged** | An access principal is considered over-privileged if all of the following hold: the administrator flag is not set and the visible table count is at least 74. |
+| **DR-977 Name** | An access policy's name is computed as the principal, followed by a space, followed by the command, followed by a space, followed by the target table. |
+| **DR-978 Is Write Command** | An access policy is considered a write command if at least one of the following holds: the command is “INSERT”; the command is “UPDATE”; the command is “DELETE”; or the command is “ALL”. |
+| **DR-979 Is Unrestricted** | An access policy is considered unrestricted if the row predicate is blank. |
+| **DR-980 Principal is Admin** | An access policy's principal is admin is true when the access policy's principal is an administrator. |
+| **DR-981 Is Unrestricted Non Admin Grant** | An access policy is considered unrestricted-non-admin-grant if all of the following hold: the unrestricted flag is set and the principal is admin flag is not set. |
+| **DR-982 Is Unwitnessed Write** | An access policy is considered an unwitnessed write if all of the following hold: the write command flag is set and the denial test count is 0. |
+| **DR-983 Denial Test Count** | An access policy's denial test count is the number of access denial tests related to the access policy. |
+| **DR-984 Name** | A field grant's name is computed as the principal, followed by “ -> ”, followed by the target field. |
+| **DR-985 Field Table** | A field grant's field table is the target table of the field grant's target field. |
+| **DR-986 Field Name** | A field grant's field name — taken from the linked target field. |
+| **DR-987 Field is Derived** | A field grant's field is derived when the linked target field is derived. |
+| **DR-988 Is Writable Derived Field** | A field grant is considered a writable derived field if all of the following hold: the can write flag is set and the field is derived flag is set. |
+| **DR-989 Is Masked** | A field grant is considered masked if all of the following hold: the mask strategy is not “plain” and the mask strategy has a value. |
+| **DR-990 Grant Key When Readable** | The field grant's grant key when readable is determined by the following priority:<br>1. the principal, followed by “|”, followed by the field table, if the can read flag is set;<br>2. in all other cases, an empty string. |
+| **DR-991 Name** | A role schema's name is the same as its schema name. |
+| **DR-992 Search Path** | A role schema's search path is the same as its schema name. |
+| **DR-993 View Count** | A role schema's view count is the number of role schema views related to the role schema. |
+| **DR-994 Is Empty Schema** | A role schema is considered an empty schema if the view count is 0. |
+| **DR-995 Name** | A role schema view's name is computed as the schema name, followed by a period, followed by the view name. |
+| **DR-996 Schema Name** | A role schema view's schema name — taken from the linked role schema. |
+| **DR-997 Source View** | A role schema view's source view is the physical view of the role schema view's target table. |
+| **DR-998 Grant Key** | A role schema view's grant key is computed as the principal, followed by “|”, followed by the target table. |
+| **DR-999 Column Count** | A role schema view's column count is the number of field grants related to the role schema view. |
+| **DR-1000 Table Field Count** | A role schema view's table field count — taken from the linked target table. |
+| **DR-1001 Is Full Width** | A role schema view is considered a full width if all of the following hold: the column count is greater than 0 and the column count is at least the table field count. |
+| **DR-1002 Is Degenerate View** | A role schema view is considered a degenerate view if the column count is 0. |
+| **DR-1003 Name** | A jwt claim mapping's name is computed as the claim name, followed by “ -> ”, followed by the SQL accessor. |
+| **DR-1004 Usage Count** | A jwt claim mapping's usage count is the number of access policies related to the jwt claim mapping. |
+| **DR-1005 Name** | An access denial test's name is computed as the principal, followed by “ must not see ”, followed by the forbidden row ID. |
+| **DR-1006 Has Run** | An access denial test is considered to have a run if the last run at has a value. |
+| **DR-1007 Is Passing** | An access denial test is considered passing if the observed visible is the expected visible. |
+| **DR-1008 Is Leak** | An access denial test is considered a leak if all of the following hold: the expected visible flag is not set and the observed visible flag is set. |
+| **DR-1009 Is Unproven** | An access denial test is considered an unproven if the run flag is not set. |
+| **DR-1010 Is Positive Control** | An access denial test is considered a positive control only if the access denial test is flagged expected visible. |
+| **DR-1011 Name** | An app user's name is the same as its display name. |
+| **DR-1012 Agent Kind** | An app user's agent kind — taken from the linked linked agent. |
+| **DR-1013 Organization** | An app user's organization — taken from the linked linked agent. |
+| **DR-1014 Assignment Count** | An app user's assignment count is the number of principal assignments related to the app user. |
+| **DR-1015 Has No Principal** | An app user is considered to have no principal if the assignment count is 0. |
+| **DR-1016 Holds Multiple Principals** | An app user is considered to hold a multiple principals if the assignment count is greater than 1. |
+| **DR-1017 Is Non Human Sign in** | An app user is considered a non human sign in if at least one of the following holds: the agent kind is “AIAgent” or the agent kind is “AutomatedPipeline”. |
+| **DR-1018 Name** | A principal assignment's name is computed as the app user, followed by “ as ”, followed by the principal. |
+| **DR-1019 Principal is Admin** | A principal assignment's principal is admin is true when the principal assignment's principal is an administrator. |
+| **DR-1020 User Organization** | A principal assignment's user organization — taken from the linked app user. |
+| **DR-1021 Principal Organization** | A principal assignment's principal organization is the organization scope of the principal assignment's principal. |
+| **DR-1022 Is Cross Organization Grant** | A principal assignment is considered cross-organization-grant if all of the following hold: the user organization has a value; the principal organization has a value; and the user organization is not the principal organization. |
+| **DR-1023 Name** | An issued token's name is computed as the app user, followed by “ as ”, followed by the principal, followed by “ @ ”, followed by the issued at. |
+| **DR-1024 Is Dev Minted** | An issued token is considered dev-minted if the issuer is “dev-mint”. |
+| **DR-1025 Name** | A process mining run's name is computed as the event log source, followed by “ / ”, followed by the mined at. |
+| **DR-1026 As of Instant** | A process mining run's as of instant — taken from the linked evaluation context. |
+| **DR-1027 Conformance Rate** | The process mining run's conformance rate is determined by the following priority:<br>1. 0, if the discovered variant count is 0;<br>2. in all other cases, the conforming variant count divided by the discovered variant count. |
+| **DR-1028 Is Conformant** | A process mining run is considered conformant if the conformance rate is at least 0.8. |
+| **DR-1029 Has Major Drift From Documentation** | A process mining run is considered to have a major drift from documentation if the conformance rate is less than 0.5. |
+| **DR-1030 Days Since Mined** | A process mining run's days since mined is computed as the number of days from the mined at to the as of instant. |
+| **DR-1031 Is Stale Mining Evidence** | A process mining run is considered a stale mining evidence if the days since mined is greater than 180. |
+| **DR-1032 Procedure Version is Live** | A process mining run's procedure version is live when the linked procedure version is live. |
+| **DR-1033 Is Drift on Live Version** | A process mining run is considered a drift on live version if all of the following hold: the major drift from documentation flag is set and the procedure version is live flag is set. |
+| **DR-1034 Drifted Mining Run Key** | The process mining run's drifted mining run key is determined by the following priority:<br>1. the procedure version, if the drift on live version flag is set;<br>2. in all other cases, an empty string. |
+| **DR-1035 Name** | A vocabulary's name is the same as its title. |
+| **DR-1036 Term Count** | A vocabulary's term count is the number of vocabulary terms related to the vocabulary. |
+| **DR-1037 Orphan Term Count** | A vocabulary's orphan term count is the number of vocabulary terms related to the vocabulary. |
+| **DR-1038 Has Orphan Terms** | A vocabulary is considered to have an orphan terms if the orphan term count is greater than 0. |
+| **DR-1039 Name** | A vocabulary term's name is the same as its pref label. |
+| **DR-1040 Usage Count** | A vocabulary term's usage count is the number of requirements related to the vocabulary term. |
+| **DR-1041 Is Orphan Term** | A vocabulary term is considered an orphan term if the usage count is 0. |
+| **DR-1042 Is Widely Adopted Term** | A vocabulary term is considered a widely adopted term if the usage count is at least 2. |
+| **DR-1043 Orphan Term Vocabulary Key** | The vocabulary term's orphan term vocabulary key is determined by the following priority:<br>1. the vocabulary, if the orphan term flag is set;<br>2. in all other cases, an empty string. |
+| **DR-1044 Name** | A knowledge broker link's name is computed as the seeker, followed by “ -> ”, followed by the broker. |
+| **DR-1045 As of Instant** | A knowledge broker link's as of instant — taken from the linked evaluation context. |
+| **DR-1046 Days Since Consulted** | A knowledge broker link's days since consulted is computed as the number of days from the last consulted at to the as of instant. |
+| **DR-1047 Is Active Reliance** | A knowledge broker link is considered an active reliance if all of the following hold: it is not the case that the frequency is “Rarely” and the days since consulted is at most 180. |
+| **DR-1048 Broker is Still Engaged** | A knowledge broker link's broker is still engaged when the linked broker is still engaged. |
+| **DR-1049 Is At Risk Reliance** | A knowledge broker link is considered at-risk-reliance if all of the following hold: the active reliance flag is set and the broker is still engaged flag is not set. |
+| **DR-1050 Active Reliance Broker Key** | The knowledge broker link's active reliance broker key is determined by the following priority:<br>1. the broker, if the active reliance flag is set;<br>2. in all other cases, an empty string. |
+| **DR-1051 At Risk Broker Key** | The knowledge broker link's at risk broker key is determined by the following priority:<br>1. the broker, if the at risk reliance flag is set;<br>2. in all other cases, an empty string. |
+| **DR-1052 Name** | A conformance substrate's name is the same as its label. |
+| **DR-1053 Is Graded** | A conformance substrate is considered graded if the role is “graded”. |
+| **DR-1054 Run Count** | A conformance substrate's run count is the number of substrate run scores related to the conformance substrate. |
+| **DR-1055 Latest Cells Tested** | A conformance substrate's latest cells tested is the total latest cells tested across the substrate run scores related to the conformance substrate. |
+| **DR-1056 Latest Cells Passed** | A conformance substrate's latest cells passed is the total latest cells passed across the substrate run scores related to the conformance substrate. |
+| **DR-1057 Latest Harness Errors** | A conformance substrate's latest harness errors is the total latest error flag across the substrate run scores related to the conformance substrate. |
+| **DR-1058 Latest Cells Failed** | A conformance substrate's latest cells failed is computed as the latest cells tested minus the latest cells passed. |
+| **DR-1059 Latest Score** | The conformance substrate's latest score is determined by the following priority:<br>1. 0, if the latest cells tested is 0;<br>2. in all other cases, 100 times the latest cells passed divided by the latest cells tested rounded to 2 decimal place(s). |
+| **DR-1060 Disagreeing Field Count** | A conformance substrate's disagreeing field count is the number of field disagreements related to the conformance substrate. |
+| **DR-1061 Disagreeing Table Count** | A conformance substrate's disagreeing table count is the number of table conformance related to the conformance substrate. |
+| **DR-1062 Is Fully Conformant** | A conformance substrate is considered fully-conformant if all of the following hold: the latest cells tested is greater than 0; the latest cells failed is 0; and the latest harness errors is 0. |
+| **DR-1063 Name** | A conformance run's name is the same as its conformance run ID. |
+| **DR-1064 Substrate Count** | A conformance run's substrate count is the number of substrate run scores related to the conformance run. |
+| **DR-1065 Perfect Substrate Count** | A conformance run's perfect substrate count is the number of substrate run scores related to the conformance run. |
+| **DR-1066 Cells Tested** | A conformance run's cells tested is the total cells tested across the substrate run scores related to the conformance run. |
+| **DR-1067 Cells Passed** | A conformance run's cells passed is the total cells passed across the substrate run scores related to the conformance run. |
+| **DR-1068 Cells Failed** | A conformance run's cells failed is computed as the cells tested minus the cells passed. |
+| **DR-1069 Overall Score** | The conformance run's overall score is determined by the following priority:<br>1. 0, if the cells tested is 0;<br>2. in all other cases, 100 times the cells passed divided by the cells tested rounded to 2 decimal place(s). |
+| **DR-1070 Imperfect Substrate Count** | A conformance run's imperfect substrate count is computed as the substrate count minus the perfect substrate count. |
+| **DR-1071 Is Fully Conformant** | A conformance run is considered fully-conformant if all of the following hold: the substrate count is greater than 0 and the imperfect substrate count is 0. |
+| **DR-1072 Name** | A substrate run score's name is computed as the run, followed by “ / ”, followed by the substrate. |
+| **DR-1073 Cells Failed** | A substrate run score's cells failed is computed as the cells tested minus the cells passed. |
+| **DR-1074 Score** | The substrate run score's score is determined by the following priority:<br>1. 0, if the cells tested is 0;<br>2. in all other cases, 100 times the cells passed divided by the cells tested rounded to 2 decimal place(s). |
+| **DR-1075 Calculated Score** | The substrate run score's calculated score is determined by the following priority:<br>1. 0, if the calculated tested is 0;<br>2. in all other cases, 100 times the calculated passed divided by the calculated tested rounded to 2 decimal place(s). |
+| **DR-1076 Lookup Score** | The substrate run score's lookup score is determined by the following priority:<br>1. 0, if the lookup tested is 0;<br>2. in all other cases, 100 times the lookup passed divided by the lookup tested rounded to 2 decimal place(s). |
+| **DR-1077 Aggregation Score** | The substrate run score's aggregation score is determined by the following priority:<br>1. 0, if the aggregation tested is 0;<br>2. in all other cases, 100 times the aggregation passed divided by the aggregation tested rounded to 2 decimal place(s). |
+| **DR-1078 Is Perfect** | A substrate run score is considered a perfect if all of the following hold: the harness error is blank; the cells tested is greater than 0; and the cells failed is 0. |
+| **DR-1079 Perfect Run Key** | The substrate run score's perfect run key is determined by the following priority:<br>1. the run, if the perfect flag is set;<br>2. in all other cases, an empty string. |
+| **DR-1080 Is in Latest Run** | A substrate run score's is in latest run when the linked run is a latest. |
+| **DR-1081 Latest Cells Tested** | The substrate run score's latest cells tested is determined by the following priority:<br>1. the cells tested, if the in latest run flag is set;<br>2. in all other cases, 0. |
+| **DR-1082 Latest Cells Passed** | The substrate run score's latest cells passed is determined by the following priority:<br>1. the cells passed, if the in latest run flag is set;<br>2. in all other cases, 0. |
+| **DR-1083 Latest Error Flag** | The substrate run score's latest error flag is determined by the following priority:<br>1. 1, if all of the following hold: the in latest run flag is set and the harness error has a value;<br>2. in all other cases, 0. |
+| **DR-1084 Substrate Label** | A substrate run score's substrate label — taken from the linked substrate. |
+| **DR-1085 Name** | A table conformance's name is computed as the substrate, followed by “ / ”, followed by the rulebook table. |
+| **DR-1086 Cells Failed** | A table conformance's cells failed is computed as the cells tested minus the cells passed. |
+| **DR-1087 Score** | The table conformance's score is determined by the following priority:<br>1. 0, if the cells tested is 0;<br>2. in all other cases, 100 times the cells passed divided by the cells tested rounded to 2 decimal place(s). |
+| **DR-1088 Is Perfect** | A table conformance is considered a perfect if the cells failed is 0. |
+| **DR-1089 Imperfect Substrate Key** | The table conformance's imperfect substrate key is determined by the following priority:<br>1. an empty string, if the perfect flag is set;<br>2. in all other cases, the substrate. |
+| **DR-1090 Imperfect Table Key** | The table conformance's imperfect table key is determined by the following priority:<br>1. an empty string, if the perfect flag is set;<br>2. in all other cases, the rulebook table. |
+| **DR-1091 Disagreeing Field Count** | A table conformance's disagreeing field count is the number of field disagreements related to the table conformance. |
+| **DR-1092 Substrate Label** | A table conformance's substrate label — taken from the linked substrate. |
+| **DR-1093 Subject Area** | A table conformance's subject area — taken from the linked rulebook table. |
+| **DR-1094 Name** | A field disagreement's name is computed as the substrate, followed by “ / ”, followed by the rulebook field. |
+| **DR-1095 Sampled Cell Count** | A field disagreement's sampled cell count is the number of cell disagreements related to the field disagreement. |
+| **DR-1096 Is Fully Sampled** | A field disagreement is considered fully-sampled if the sampled cell count is the cells failed. |
+| **DR-1097 Formula** | A field disagreement's formula — taken from the linked rulebook field. |
+| **DR-1098 Substrate Label** | A field disagreement's substrate label — taken from the linked substrate. |
+| **DR-1099 Name** | A cell disagreement's name is computed as the field disagreement, followed by “ @ ”, followed by the record ID. |
+| **DR-1100 Substrate** | A cell disagreement's substrate — taken from the linked field disagreement. |
+| **DR-1101 Rulebook Field** | A cell disagreement's rulebook field — taken from the linked field disagreement. |
 
 ## 5 Traceability to Schema
 
@@ -3357,6 +3414,7 @@ the same logic the rulebook stores, written for a business reader._
 | **ProcedureVersions.MiningRunCount** | rollup | `Count(ProcessMiningRuns via ProcedureVersion)` |
 | **ProcedureVersions.DriftedMiningRunCount** | rollup | `Count(ProcessMiningRuns via DriftedMiningRunKey)` |
 | **ProcedureVersions.HasUnresolvedMiningDrift** | formula | `DriftedMiningRunCount > 0` |
+| **ProcedureVersions.EntryStepId** | rollup | `Max(Steps.EntryStepKey via ProcedureVersion)` |
 | **ProcedureVersionLinks.Name** | formula | `PreviousProcedureVersion & " -> " & NextProcedureVersion` |
 | **ProcedureVersionLinks.SupersededVersionKey** | formula | `If(RelationIri = "https://w3id.org/pko#nextVersion", PreviousProcedureVersion, "")` |
 | **ProcedureStatusChanges.Name** | formula | `ProcedureVersion & ": " & FromStatus & " -> " & ToStatus` |
@@ -3390,6 +3448,18 @@ the same logic the rulebook stores, written for a business reader._
 | **Steps.UndeclaredControlVersionKey** | formula | `If(HasDeclaredControlKind, "", ProcedureVersion)` |
 | **Steps.ApprovalStepIsSoftwareAssigned** | formula | `And(ControlKind = "Approval", IsSoftwareAssigned)` |
 | **Steps.UnwitnessedBlockingCount** | rollup | `Count(StepRequirements via UnwitnessedStepKey)` |
+| **Steps.ReachableStepCount** | rollup | `Count(vw_step_transitions_closure via FromId)` |
+| **Steps.ReachedFromStepCount** | rollup | `Count(vw_step_transitions_closure via ToId)` |
+| **Steps.SelfReachCount** | rollup | `Count(vw_step_transitions_closure via FromId)` |
+| **Steps.IsOnReworkLoop** | formula | `SelfReachCount > 0` |
+| **Steps.IsBlockingControlOnReworkLoop** | formula | `And(IsOnReworkLoop, BlockingRequirementCount > 0)` |
+| **Steps.IncomingTransitionCount** | rollup | `Count(StepTransitions via ToStep)` |
+| **Steps.IsEntryStep** | formula | `IncomingTransitionCount = 0` |
+| **Steps.EntryStepKey** | formula | `If(IsEntryStep, StepId, "")` |
+| **Steps.VersionEntryStepId** | lookup | `Lookup(ProcedureVersions.EntryStepId via ProcedureVersion)` |
+| **Steps.GateFreeReachFromEntryCount** | rollup | `Count(vw_step_transitions_closure_where_avoids_human_approval_gate via FromId)` |
+| **Steps.IsReachableFromEntryWithoutHumanGate** | formula | `GateFreeReachFromEntryCount > 0` |
+| **Steps.IsGateBypassedPublication** | formula | `And(ControlKind = "Publication", IsReachableFromEntryWithoutHumanGate)` |
 | **StepTransitions.Name** | formula | `FromStep & " -> " & ToStep` |
 | **StepTransitions.IsRecoveryPath** | formula | `Or(TransitionKind = "Fallback", TransitionKind = "Alternative")` |
 | **StepTransitions.CountOfFromStepExecutions** | rollup | `Count(StepExecutions via Step)` |
@@ -3405,6 +3475,9 @@ the same logic the rulebook stores, written for a business reader._
 | **StepTransitions.TargetCarriesBlockingControl** | formula | `TargetBlockingRequirementCount > 0` |
 | **StepTransitions.IsUnrehearsedControlEntry** | formula | `And(IsUnwalkedRecoveryPath, TargetCarriesBlockingControl)` |
 | **StepTransitions.UnrehearsedControlVersionKey** | formula | `If(IsUnrehearsedControlEntry, ProcedureVersion, "")` |
+| **StepTransitions.FromStepIsHumanApprovalGate** | lookup | `Lookup(Steps.IsHumanApprovalGate via FromStep)` |
+| **StepTransitions.ToStepIsHumanApprovalGate** | lookup | `Lookup(Steps.IsHumanApprovalGate via ToStep)` |
+| **StepTransitions.AvoidsHumanApprovalGate** | formula | `And(Not(FromStepIsHumanApprovalGate), Not(ToStepIsHumanApprovalGate))` |
 | **Actions.Name** | formula | `Label` |
 | **Functions.Name** | formula | `Label` |
 | **Tools.Name** | formula | `Label` |
@@ -4370,11 +4443,11 @@ generates, so if a formula changes these values change with it._
 
 ### Procedure Version
 
-| Name ƒ | Version Number | Title | Status | Issued At | Modified At | New Version Motivation | Changelog Description | Is Current | Count of Steps ƒ | Count of Open Knowledge Gaps ƒ | Is Ready for Execution ƒ | Specified Step Count ƒ | Overdue Review Count ƒ | Open Change Request Count ƒ | Open High Severity Gap Count ƒ | Is Fit to Execute ƒ | Steward Review Cadence Days ƒ | Count of Stewardship Assignments ƒ | Has Any Steward ƒ | Is Live ƒ | Is Unstewarded ƒ | Is Live and Unstewarded ƒ | Count of Open Blocking Gaps ƒ | Has Open Blocking Gap ƒ | Is Live With Blocking Gap ƒ | Should Not Be Executable ƒ | Count of Unapproved Reliance Fragments ƒ | Runs on Unapproved Knowledge ƒ | Count of Overdue Gaps ƒ | Count of Change Requests ƒ | Count of Review Events ƒ | Has Governance Record ƒ | As of Instant ƒ | Days Since Modified ƒ | Days Since Last Review ƒ | Was Modified Since Last Review ƒ | Modifier is Authority ƒ | Has Unwitnessed Change ƒ | Count of Stale Fragments ƒ | Knowledge is Staler Than Cadence ƒ | Compound Fragile Fragment Count ƒ | Rests on Compound Fragile Knowledge ƒ | Concentrated Witness Session Count ƒ | Knowledge Base is Concentrated ƒ | Machine Consumed Unapproved Count ƒ | Feeds Unapproved Knowledge to Machines ƒ | Genuinely Overdue Fragment Count ƒ | Awaited Decision Count ƒ | Scoped Open Blocking Gap Count ƒ | Is Blocked on Pending Decision ƒ | Unexercised Human Gate Count ƒ | Ai Boundary is Unevidenced ƒ | Load Bearing Unapproved Count ƒ | Unlanded Decision Count ƒ | Unrehearsed Control Entry Count ƒ | Has Unrehearsed Control Entry ƒ | Is Live With Unrehearsed Control ƒ | Cadence Breach Count ƒ | Is in Cadence Breach ƒ | Has Decision in Flight ƒ | Is Unremediated Cadence Breach ƒ | Is Managed Cadence Breach ƒ | Governance is Silent ƒ | Valid Fragment Count ƒ | Still Owns Valid Knowledge ƒ | Incoming Supersession Count ƒ | Is Still Referenced ƒ | Is Load Bearing Orphan ƒ | Is Cleanly Retired ƒ | Stalled Implementation Count ƒ | Is Held Unfit by Landed Decisions ƒ | Undeclared Control Kind Count ƒ | Control Taxonomy is Incomplete ƒ | Has Approved Change Request ƒ | Approved Change Request Count ƒ | Unwatched Unowned Control Count ƒ | Mining Run Count ƒ | Drifted Mining Run Count ƒ | Has Unresolved Mining Drift ƒ | Semantic Type Iri |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| Quarter-End Financial Close v1.0.0 | 1.0.0 | Quarter-End Financial Close v1.0.0 | Archived | 2025-10-01T09:00:00-05:00 | 2026-03-31T17:00:00-05:00 | Initial governed close procedure. | Baseline eight-step close. | false | 0 | 0 | false | 0 | 0 | 0 | 0 | false | 0 | 0 | false | false | true | false | 0 | false | false | false | 1 | true | 0 | 0 | 0 | false | 2026-07-19T13:00:00-05:00 | 110 | — | — | Human | false | 7 | true | 0 | false | 0 | false | 0 | false | 0 | 0 | 0 | false | 0 | false | 0 | 0 | 0 | false | false | 0 | false | false | false | false | false | 0 | false | 1 | true | true | false | 0 | false | 0 | false | false | 0 | 9 | 1 | 0 | false | https://w3id.org/pko#Procedure |
-| Quarter-End Financial Close v1.1.0 | 1.1.0 | Quarter-End Financial Close v1.1.0 | Approved | 2026-04-15T09:00:00-05:00 | 2026-07-02T15:00:00-05:00 | Capture FX timestamp failure mode and AI-assisted variance triage. | Adds explicit feed-timestamp check, knowledge fragment, and variance-triage verification. | true | 8 | 0 | true | 8 | 1 | 0 | 0 | false | 90.0 | 1 | true | true | false | false | 0 | false | false | false | 1 | true | 0 | 1 | 2 | true | 2026-07-19T13:00:00-05:00 | 17 | 17 | false | Human | false | 7 | true | 1 | true | 1 | true | 0 | false | 0 | 0 | 0 | false | 1 | true | 0 | 0 | 1 | true | true | 1 | true | false | true | false | false | 4 | true | 0 | false | false | false | 0 | false | 0 | false | true | 1 | 9 | 2 | 1 | true | https://w3id.org/pko#Procedure |
-| Workforce Policy Change and Employee Notification v1.0.0 | 1.0.0 | Workforce Policy Change and Employee Notification v1.0.0 | Approved | 2026-06-01T09:00:00-05:00 | 2026-07-18T16:30:00-05:00 | Initial governed policy-notification procedure. | Adds legal review, human approval, email/SMS channel controls, acknowledgements, and feedback review. | true | 9 | 1 | false | 9 | 0 | 1 | 0 | false | 60.0 | 1 | true | true | false | false | 0 | false | false | false | 1 | true | 0 | 1 | 1 | true | 2026-07-19T13:00:00-05:00 | 1 | 1 | false | Human | false | 7 | true | 0 | false | 0 | false | 1 | true | 0 | 1 | 0 | false | 1 | true | 0 | 0 | 2 | true | true | 0 | false | true | false | false | false | 2 | true | 0 | false | false | false | 0 | false | 0 | false | false | 0 | 9 | 1 | 0 | false | https://w3id.org/pko#Procedure |
+| Name ƒ | Version Number | Title | Status | Issued At | Modified At | New Version Motivation | Changelog Description | Is Current | Count of Steps ƒ | Count of Open Knowledge Gaps ƒ | Is Ready for Execution ƒ | Specified Step Count ƒ | Overdue Review Count ƒ | Open Change Request Count ƒ | Open High Severity Gap Count ƒ | Is Fit to Execute ƒ | Steward Review Cadence Days ƒ | Count of Stewardship Assignments ƒ | Has Any Steward ƒ | Is Live ƒ | Is Unstewarded ƒ | Is Live and Unstewarded ƒ | Count of Open Blocking Gaps ƒ | Has Open Blocking Gap ƒ | Is Live With Blocking Gap ƒ | Should Not Be Executable ƒ | Count of Unapproved Reliance Fragments ƒ | Runs on Unapproved Knowledge ƒ | Count of Overdue Gaps ƒ | Count of Change Requests ƒ | Count of Review Events ƒ | Has Governance Record ƒ | As of Instant ƒ | Days Since Modified ƒ | Days Since Last Review ƒ | Was Modified Since Last Review ƒ | Modifier is Authority ƒ | Has Unwitnessed Change ƒ | Count of Stale Fragments ƒ | Knowledge is Staler Than Cadence ƒ | Compound Fragile Fragment Count ƒ | Rests on Compound Fragile Knowledge ƒ | Concentrated Witness Session Count ƒ | Knowledge Base is Concentrated ƒ | Machine Consumed Unapproved Count ƒ | Feeds Unapproved Knowledge to Machines ƒ | Genuinely Overdue Fragment Count ƒ | Awaited Decision Count ƒ | Scoped Open Blocking Gap Count ƒ | Is Blocked on Pending Decision ƒ | Unexercised Human Gate Count ƒ | Ai Boundary is Unevidenced ƒ | Load Bearing Unapproved Count ƒ | Unlanded Decision Count ƒ | Unrehearsed Control Entry Count ƒ | Has Unrehearsed Control Entry ƒ | Is Live With Unrehearsed Control ƒ | Cadence Breach Count ƒ | Is in Cadence Breach ƒ | Has Decision in Flight ƒ | Is Unremediated Cadence Breach ƒ | Is Managed Cadence Breach ƒ | Governance is Silent ƒ | Valid Fragment Count ƒ | Still Owns Valid Knowledge ƒ | Incoming Supersession Count ƒ | Is Still Referenced ƒ | Is Load Bearing Orphan ƒ | Is Cleanly Retired ƒ | Stalled Implementation Count ƒ | Is Held Unfit by Landed Decisions ƒ | Undeclared Control Kind Count ƒ | Control Taxonomy is Incomplete ƒ | Has Approved Change Request ƒ | Approved Change Request Count ƒ | Unwatched Unowned Control Count ƒ | Mining Run Count ƒ | Drifted Mining Run Count ƒ | Has Unresolved Mining Drift ƒ | Entry Step ID ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Quarter-End Financial Close v1.0.0 | 1.0.0 | Quarter-End Financial Close v1.0.0 | Archived | 2025-10-01T09:00:00-05:00 | 2026-03-31T17:00:00-05:00 | Initial governed close procedure. | Baseline eight-step close. | false | 0 | 0 | false | 0 | 0 | 0 | 0 | false | 0 | 0 | false | false | true | false | 0 | false | false | false | 1 | true | 0 | 0 | 0 | false | 2026-07-19T13:00:00-05:00 | 110 | — | — | Human | false | 7 | true | 0 | false | 0 | false | 0 | false | 0 | 0 | 0 | false | 0 | false | 0 | 0 | 0 | false | false | 0 | false | false | false | false | false | 0 | false | 1 | true | true | false | 0 | false | 0 | false | false | 0 | 9 | 1 | 0 | false | — | https://w3id.org/pko#Procedure |
+| Quarter-End Financial Close v1.1.0 | 1.1.0 | Quarter-End Financial Close v1.1.0 | Approved | 2026-04-15T09:00:00-05:00 | 2026-07-02T15:00:00-05:00 | Capture FX timestamp failure mode and AI-assisted variance triage. | Adds explicit feed-timestamp check, knowledge fragment, and variance-triage verification. | true | 8 | 0 | true | 8 | 1 | 0 | 0 | false | 90.0 | 1 | true | true | false | false | 0 | false | false | false | 1 | true | 0 | 1 | 2 | true | 2026-07-19T13:00:00-05:00 | 17 | 17 | false | Human | false | 7 | true | 1 | true | 1 | true | 0 | false | 0 | 0 | 0 | false | 1 | true | 0 | 0 | 1 | true | true | 1 | true | false | true | false | false | 4 | true | 0 | false | false | false | 0 | false | 0 | false | true | 1 | 9 | 2 | 1 | true | close-01 | https://w3id.org/pko#Procedure |
+| Workforce Policy Change and Employee Notification v1.0.0 | 1.0.0 | Workforce Policy Change and Employee Notification v1.0.0 | Approved | 2026-06-01T09:00:00-05:00 | 2026-07-18T16:30:00-05:00 | Initial governed policy-notification procedure. | Adds legal review, human approval, email/SMS channel controls, acknowledgements, and feedback review. | true | 9 | 1 | false | 9 | 0 | 1 | 0 | false | 60.0 | 1 | true | true | false | false | 0 | false | false | false | 1 | true | 0 | 1 | 1 | true | 2026-07-19T13:00:00-05:00 | 1 | 1 | false | Human | false | 7 | true | 0 | false | 0 | false | 1 | true | 0 | 1 | 0 | false | 1 | true | 0 | 0 | 2 | true | true | 0 | false | true | false | false | false | 2 | true | 0 | false | false | false | 0 | false | 0 | false | false | 0 | 9 | 1 | 0 | false | policy-01 | https://w3id.org/pko#Procedure |
 
 ### Procedure Version Link
 
@@ -4392,19 +4465,19 @@ generates, so if a formula changes these values change with it._
 
 ### Step
 
-| Name ƒ | Step Number | Title | Step Kind | Assigned Role Label ƒ | Assigned Agent Kind ƒ | Instruction | Expected Duration Minutes | Expertise Level | Requires Human Confirmation | Blocking Requirement Count ƒ | Stale Binding Count ƒ | Authoritative Stale Count ƒ | Available Exception Count ƒ | Declared Verification Count ƒ | Is Preparation Step ƒ | Is Approval Step ƒ | Stale Authoritative Binding Count ƒ | Inputs are Fresh ƒ | Is Software Assigned ƒ | Is Human Approval Gate ƒ | Gate Held by Human ƒ | Binding Boundary Count ƒ | Assigned Role is Ungoverned ƒ | Unusable Binding Count ƒ | All Sources Usable ƒ | Control Kind | Unwarranted Boundary Count ƒ | Is Governed by Unwarranted Boundary ƒ | Software Execution Count ƒ | Has Been Approached by Software ƒ | Is Unexercised Human Gate ƒ | Is Demonstrated Human Gate ƒ | Unexercised Gate Version Key ƒ | Has Declared Control Kind ƒ | Undeclared Control Version Key ƒ | Approval Step is Software Assigned ƒ | Unwitnessed Blocking Count ƒ | Semantic Type Iri |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 01. Freeze transaction entry | 01 | Freeze transaction entry | Atomic | Close Automation Operator | AutomatedPipeline | Lock subledgers and prevent late postings. | 5 | Senior | false | 1 | 0 | 0 | 0 | 1 | false | false | 0 | true | true | false | false | 0 | false | 0 | true | Extraction | 0 | false | 1 | true | false | false | — | true | — | false | 0 | http://purl.org/net/p-plan#Step |
-| 02. Extract trial balance and feed timestamps | 02 | Extract trial balance and feed timestamps | Atomic | Close Automation Operator | AutomatedPipeline | Extract the trial balance and source-system timestamps. | 10 | Senior | false | 0 | 1 | 1 | 1 | 1 | false | false | 1 | false | true | false | false | 0 | false | 1 | false | Extraction | 0 | false | 1 | true | false | false | — | true | — | false | 0 | http://purl.org/net/p-plan#Step |
-| 03. Reconcile material accounts | 03 | Reconcile material accounts | MultiStep | Finance Analyst | Human | Reconcile material accounts and attach evidence. | 120 | Senior | false | 2 | 0 | 0 | 0 | 1 | true | false | 0 | true | false | false | false | 0 | false | 0 | true | Preparation | 0 | false | 0 | false | false | false | — | true | — | false | 0 | http://purl.org/net/p-plan#MultiStep |
+| Name ƒ | Step Number | Title | Step Kind | Assigned Role Label ƒ | Assigned Agent Kind ƒ | Instruction | Expected Duration Minutes | Expertise Level | Requires Human Confirmation | Blocking Requirement Count ƒ | Stale Binding Count ƒ | Authoritative Stale Count ƒ | Available Exception Count ƒ | Declared Verification Count ƒ | Is Preparation Step ƒ | Is Approval Step ƒ | Stale Authoritative Binding Count ƒ | Inputs are Fresh ƒ | Is Software Assigned ƒ | Is Human Approval Gate ƒ | Gate Held by Human ƒ | Binding Boundary Count ƒ | Assigned Role is Ungoverned ƒ | Unusable Binding Count ƒ | All Sources Usable ƒ | Control Kind | Unwarranted Boundary Count ƒ | Is Governed by Unwarranted Boundary ƒ | Software Execution Count ƒ | Has Been Approached by Software ƒ | Is Unexercised Human Gate ƒ | Is Demonstrated Human Gate ƒ | Unexercised Gate Version Key ƒ | Has Declared Control Kind ƒ | Undeclared Control Version Key ƒ | Approval Step is Software Assigned ƒ | Unwitnessed Blocking Count ƒ | Reachable Step Count ƒ | Reached From Step Count ƒ | Self Reach Count ƒ | Is on Rework Loop ƒ | Is Blocking Control on Rework Loop ƒ | Incoming Transition Count ƒ | Is Entry Step ƒ | Entry Step Key ƒ | Version Entry Step ID ƒ | Gate Free Reach From Entry Count ƒ | Is Reachable From Entry Without Human Gate ƒ | Is Gate Bypassed Publication ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 01. Freeze transaction entry | 01 | Freeze transaction entry | Atomic | Close Automation Operator | AutomatedPipeline | Lock subledgers and prevent late postings. | 5 | Senior | false | 1 | 0 | 0 | 0 | 1 | false | false | 0 | true | true | false | false | 0 | false | 0 | true | Extraction | 0 | false | 1 | true | false | false | — | true | — | false | 0 | 7 | 0 | 0 | false | false | 0 | true | close-01 | close-01 | 0 | — | false | http://purl.org/net/p-plan#Step |
+| 02. Extract trial balance and feed timestamps | 02 | Extract trial balance and feed timestamps | Atomic | Close Automation Operator | AutomatedPipeline | Extract the trial balance and source-system timestamps. | 10 | Senior | false | 0 | 1 | 1 | 1 | 1 | false | false | 1 | false | true | false | false | 0 | false | 1 | false | Extraction | 0 | false | 1 | true | false | false | — | true | — | false | 0 | 6 | 1 | 0 | false | false | 1 | false | — | close-01 | 1 | — | false | http://purl.org/net/p-plan#Step |
+| 03. Reconcile material accounts | 03 | Reconcile material accounts | MultiStep | Finance Analyst | Human | Reconcile material accounts and attach evidence. | 120 | Senior | false | 2 | 0 | 0 | 0 | 1 | true | false | 0 | true | false | false | false | 0 | false | 0 | true | Preparation | 0 | false | 0 | false | false | false | — | true | — | false | 0 | 6 | 6 | 1 | true | true | 2 | false | — | close-01 | 1 | — | false | http://purl.org/net/p-plan#MultiStep |
 
 ### Step Transition
 
-| Name ƒ | Transition Kind | Condition | Priority | Is Recovery Path ƒ | Count of From Step Executions ƒ | Count of to Step Executions ƒ | Has Reachable Origin ƒ | Has Reachable Target ƒ | Is Never Exercised ƒ | Is Untested Recovery Path ƒ | Count of Observed Traversals ƒ | Has Been Traversed ƒ | Is Unwalked Recovery Path ƒ | Target Blocking Requirement Count ƒ | Target Carries Blocking Control ƒ | Is Unrehearsed Control Entry ƒ | Unrehearsed Control Version Key ƒ | Semantic Type Iri |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| close-01 -> close-02 | Next | Default sequence | 1 | false | 1 | 1 | true | true | false | false | 1 | true | false | 0 | false | false | — | https://w3id.org/pko#Transition |
-| close-02 -> close-03 | Next | Default sequence | 1 | false | 1 | 1 | true | true | false | false | 1 | true | false | 2 | true | false | — | https://w3id.org/pko#Transition |
-| close-03 -> close-04 | Next | Default sequence | 1 | false | 1 | 1 | true | true | false | false | 1 | true | false | 0 | false | false | — | https://w3id.org/pko#Transition |
+| Name ƒ | Transition Kind | Condition | Priority | Is Recovery Path ƒ | Count of From Step Executions ƒ | Count of to Step Executions ƒ | Has Reachable Origin ƒ | Has Reachable Target ƒ | Is Never Exercised ƒ | Is Untested Recovery Path ƒ | Count of Observed Traversals ƒ | Has Been Traversed ƒ | Is Unwalked Recovery Path ƒ | Target Blocking Requirement Count ƒ | Target Carries Blocking Control ƒ | Is Unrehearsed Control Entry ƒ | Unrehearsed Control Version Key ƒ | From Step is Human Approval Gate ƒ | To Step is Human Approval Gate ƒ | Avoids Human Approval Gate ƒ | Semantic Type Iri |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| close-01 -> close-02 | Next | Default sequence | 1 | false | 1 | 1 | true | true | false | false | 1 | true | false | 0 | false | false | — | false | false | true | https://w3id.org/pko#Transition |
+| close-02 -> close-03 | Next | Default sequence | 1 | false | 1 | 1 | true | true | false | false | 1 | true | false | 2 | true | false | — | false | false | true | https://w3id.org/pko#Transition |
+| close-03 -> close-04 | Next | Default sequence | 1 | false | 1 | 1 | true | true | false | false | 1 | true | false | 0 | false | false | — | false | false | true | https://w3id.org/pko#Transition |
 
 ### Action
 
@@ -4826,7 +4899,7 @@ generates, so if a formula changes these values change with it._
 |---|---|---|---|---|---|---|---|---|---|---|
 | AccessDenialTests | AccessDenialTests | — | — | access-control | true | 18 | 0 | true | 1 | urn:effortless:pko-extension#RulebookTable |
 | AccessPolicies | AccessPolicies | — | — | access-control | true | 16 | 0 | true | 0 | urn:effortless:pko-extension#RulebookTable |
-| AccessPrincipals | AccessPrincipals | — | — | access-control | true | 15 | 0 | true | 1 | urn:effortless:pko-extension#RulebookTable |
+| AccessPrincipals | AccessPrincipals | — | — | access-control | true | 15 | 0 | true | 0 | urn:effortless:pko-extension#RulebookTable |
 
 ### Access Principal
 
@@ -4864,7 +4937,7 @@ generates, so if a formula changes these values change with it._
 
 | Name ƒ | View Name | Schema Name ƒ | Source View ƒ | Grant Key ƒ | Column Count ƒ | Table Field Count ƒ | Is Full Width ƒ | Is Degenerate View ƒ | Semantic Type Iri |
 |---|---|---|---|---|---|---|---|---|---|
-| pko_finance_analyst.steps | steps | pko_finance_analyst | vw_steps | principal-finance-analyst\|Steps | 12 | 42 | false | false | urn:effortless:pko-extension#RoleSchemaView |
+| pko_finance_analyst.steps | steps | pko_finance_analyst | vw_steps | principal-finance-analyst\|Steps | 12 | 54 | false | false | urn:effortless:pko-extension#RoleSchemaView |
 | pko_finance_analyst.step_executions | step_executions | pko_finance_analyst | vw_step_executions | principal-finance-analyst\|StepExecutions | 10 | 109 | false | false | urn:effortless:pko-extension#RoleSchemaView |
 | pko_finance_analyst.procedure_executions | procedure_executions | pko_finance_analyst | vw_procedure_executions | principal-finance-analyst\|ProcedureExecutions | 6 | 78 | false | false | urn:effortless:pko-extension#RoleSchemaView |
 
@@ -4936,22 +5009,24 @@ generates, so if a formula changes these values change with it._
 | Name ƒ | Label | Transpiler | Output Folder | Engine | How It Computes | Role | Sort Order | Is Graded ƒ | Run Count ƒ | Latest Cells Tested ƒ | Latest Cells Passed ƒ | Latest Harness Errors ƒ | Latest Cells Failed ƒ | Latest Score ƒ | Disagreeing Field Count ƒ | Disagreeing Table Count ƒ | Is Fully Conformant ƒ | Semantic Type Iri |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | compile-rulebook | compile-rulebook | compile-rulebook | /effortless-rulebook | Python formula engine (shared with rulebook-to-python) | Runs first in the build and rewrites the rulebook in place: every calculated, lookup and aggregation value is computed across all tables to a fixed point and upserted into the rows. Those stored values become the answer keys. It is not graded against itself; when another substrate disagrees, either side can be the one that is wrong. | answer-key | 0 | false | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | false | urn:effortless:pko-extension#ConformanceSubstrate |
-| PostgreSQL | PostgreSQL | rulebook-to-postgres | /postgres-bootstrap | PostgreSQL views and calc_* SQL functions | rulebook-to-postgres emits a table, a set of calc_* functions and a vw_<entity> view per table. The database is reset from the rulebook, and the harness reads SELECT * from every view. | graded | 1 | true | 1 | 59878.0 | 59763.0 | 0.0 | 115.0 | 99.81 | 32 | 18 | false | urn:effortless:pko-extension#ConformanceSubstrate |
-| Python | Python | rulebook-to-python | /effortless-python | CPython | rulebook-to-python emits an SDK with one computed property per derived field. The harness loads the blank test rows (raw fields only) and asks the SDK for every derived value. | graded | 2 | true | 1 | 59878.0 | 59764.0 | 0.0 | 114.0 | 99.81 | 31 | 17 | false | urn:effortless:pko-extension#ConformanceSubstrate |
+| PostgreSQL | PostgreSQL | rulebook-to-postgres | /postgres-bootstrap | PostgreSQL views and calc_* SQL functions | rulebook-to-postgres emits a table, a set of calc_* functions and a vw_<entity> view per table. The database is reset from the rulebook, and the harness reads SELECT * from every view. | graded | 1 | true | 4 | 67447.0 | 67447.0 | 0.0 | 0.0 | 100.0 | 0 | 0 | true | urn:effortless:pko-extension#ConformanceSubstrate |
+| Python | Python | rulebook-to-python | /effortless-python | CPython | rulebook-to-python emits an SDK with one computed property per derived field. The harness loads the blank test rows (raw fields only) and asks the SDK for every derived value. | graded | 2 | true | 4 | 67447.0 | 67447.0 | 0.0 | 0.0 | 100.0 | 0 | 0 | true | urn:effortless:pko-extension#ConformanceSubstrate |
 
 ### Conformance Run
 
 | Name ƒ | Ran on | Rulebook Commit | Is Latest | Notes | Substrate Count ƒ | Perfect Substrate Count ƒ | Cells Tested ƒ | Cells Passed ƒ | Cells Failed ƒ | Overall Score ƒ | Imperfect Substrate Count ƒ | Is Fully Conformant ƒ | Semantic Type Iri |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| run-20260913-165336 | 2026-09-13T16:53:36-05:00 | 4960f638 | true | First recorded run: all a1 tools installed; EF runner rebuilt for EF Core output; OWL rules dependency-ordered. | 7 | 0 | 419146.0 | 412274.0 | 6872.0 | 98.36 | 7 | false | urn:effortless:pko-extension#ConformanceRun |
+| run-20260913-165336 | 2026-09-13T16:53:36-05:00 | 4960f638 | false | First recorded run: all a1 tools installed; EF runner rebuilt for EF Core output; OWL rules dependency-ordered. | 7 | 0 | 419146.0 | 412274.0 | 6872.0 | 98.36 | 7 | false | urn:effortless:pko-extension#ConformanceRun |
+| run-20260913-203118 | 2026-09-13T20:31:18-05:00 | 4717a575 | false | Loop 4: closure over StepTransitions (cyclic step graph); rulebook-to-postgres closure view now emits (x, x) for steps on a cycle; rulebook-to-owl accepts the self-reach COUNTIFS pair. Postgres/Python/Go/TypeScript/OWL agree on all new cells; EF and xlsx have no closure engine. | 7 | 0 | 508137.0 | 498748.0 | 9389.0 | 98.15 | 7 | false | urn:effortless:pko-extension#ConformanceRun |
+| run-20260914-083430 | 2026-09-14T08:34:30-05:00 | 6b0287f8 | false | ERB build parameters: every substrate built under erbDateDiff=calendar, erbTimezone=UTC, erbDateTimeText=iso8601, erbBlankLogic=coerce, erbWholeNumber=by-field-type; Postgres/Python/Go/TypeScript at 100%, EF 99.93 (closure views), xlsx 99.82, OWL 97.15 | 7 | 4 | 518238.0 | 515942.0 | 2296.0 | 99.56 | 3 | false | urn:effortless:pko-extension#ConformanceRun |
 
 ### Substrate Run Score
 
 | Name ƒ | Harness Error | Duration Seconds | Cells Tested | Cells Passed | Calculated Tested | Calculated Passed | Lookup Tested | Lookup Passed | Aggregation Tested | Aggregation Passed | Cells Failed ƒ | Score ƒ | Calculated Score ƒ | Lookup Score ƒ | Aggregation Score ƒ | Is Perfect ƒ | Perfect Run Key ƒ | Is in Latest Run ƒ | Latest Cells Tested ƒ | Latest Cells Passed ƒ | Latest Error Flag ƒ | Substrate Label ƒ | Semantic Type Iri |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| run-20260913-165336 / effortless-postgres | — | 24.1 | 59878 | 59763 | 42928 | 42816 | 12929 | 12926 | 4021 | 4021 | 115 | 99.81 | 99.74 | 99.98 | 100.0 | false | — | true | 59878 | 59763 | 0 | PostgreSQL | urn:effortless:pko-extension#SubstrateRunScore |
-| run-20260913-165336 / effortless-xlsx | — | 1.3 | 59878 | 53868 | 42928 | 40792 | 12929 | 9334 | 4021 | 3742 | 6010 | 89.96 | 95.02 | 72.19 | 93.06 | false | — | true | 59878 | 53868 | 0 | Excel | urn:effortless:pko-extension#SubstrateRunScore |
-| run-20260913-165336 / effortless-entity-framework | — | 5.8 | 59878 | 59764 | 42928 | 42817 | 12929 | 12926 | 4021 | 4021 | 114 | 99.81 | 99.74 | 99.98 | 100.0 | false | — | true | 59878 | 59764 | 0 | C# / Entity Framework | urn:effortless:pko-extension#SubstrateRunScore |
+| run-20260913-165336 / effortless-postgres | — | 24.1 | 59878 | 59763 | 42928 | 42816 | 12929 | 12926 | 4021 | 4021 | 115 | 99.81 | 99.74 | 99.98 | 100.0 | false | — | false | 0 | 0 | 0 | PostgreSQL | urn:effortless:pko-extension#SubstrateRunScore |
+| run-20260913-165336 / effortless-xlsx | — | 1.3 | 59878 | 53868 | 42928 | 40792 | 12929 | 9334 | 4021 | 3742 | 6010 | 89.96 | 95.02 | 72.19 | 93.06 | false | — | false | 0 | 0 | 0 | Excel | urn:effortless:pko-extension#SubstrateRunScore |
+| run-20260913-165336 / effortless-entity-framework | — | 5.8 | 59878 | 59764 | 42928 | 42817 | 12929 | 12926 | 4021 | 4021 | 114 | 99.81 | 99.74 | 99.98 | 100.0 | false | — | false | 0 | 0 | 0 | C# / Entity Framework | urn:effortless:pko-extension#SubstrateRunScore |
 
 ### Table Conformance
 
@@ -4959,23 +5034,23 @@ generates, so if a formula changes these values change with it._
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | effortless-postgres / RulebookReleases | 1 | 1 | 1 | 1 | false | 0 | 100.0 | true | — | — | 0 | PostgreSQL | meta | urn:effortless:pko-extension#TableConformance |
 | effortless-postgres / OntologyProfiles | 11 | 1 | 11 | 11 | false | 0 | 100.0 | true | — | — | 0 | PostgreSQL | domain | urn:effortless:pko-extension#TableConformance |
-| effortless-postgres / EvaluationContexts | 1 | 1 | 1 | 0 | false | 1 | 0.0 | false | effortless-postgres | EvaluationContexts | 1 | PostgreSQL | meta | urn:effortless:pko-extension#TableConformance |
+| effortless-postgres / EvaluationContexts | 1 | 1 | 1 | 1 | false | 0 | 100.0 | true | — | — | 0 | PostgreSQL | meta | urn:effortless:pko-extension#TableConformance |
 
 ### Field Disagreement
 
 | Name ƒ | Field Class | Cells Failed | Dominant Reason | Sampled Cell Count ƒ | Is Fully Sampled ƒ | Formula ƒ | Substrate Label ƒ | Semantic Type Iri |
 |---|---|---|---|---|---|---|---|---|
-| effortless-postgres / EvaluationContexts.Name | calculated | 1 | wrong/null value | 1 | true | ={{Label}} & " @ " & {{AsOfInstant}} | PostgreSQL | urn:effortless:pko-extension#FieldDisagreement |
-| effortless-postgres / RoleAssignments.Name | calculated | 13 | wrong/null value | 13 | true | ={{Role}} & " @ " & {{ValidFrom}} | PostgreSQL | urn:effortless:pko-extension#FieldDisagreement |
-| effortless-postgres / RoleAssignments.QualityVerdictIsUnsupported | calculated | 13 | wrong/null value | 13 | true | =AND(NOT({{ComparisonIsEvidentiallySound}}), NOT({{QualityRegressedVsPredecessor}})) | PostgreSQL | urn:effortless:pko-extension#FieldDisagreement |
+| effortless-xlsx / RoleAssignments.PredecessorAgentKind | lookup | 1 | wrong/null value | 1 | true | =INDEX(RoleAssignments!{{AgentKind}}, MATCH({{SupersedesAssignment}}, RoleAssignments!{{RoleAssignmentId}}, 0)) | Excel | urn:effortless:pko-extension#FieldDisagreement |
+| effortless-xlsx / RoleAssignments.IsHumanToNonHumanHandover | calculated | 1 | wrong/null value | 1 | true | =AND({{PredecessorAgentKind}} = "Human", {{IsNonHumanAssignment}}) | Excel | urn:effortless:pko-extension#FieldDisagreement |
+| effortless-xlsx / RoleAssignments.IsUnconditionedAutomationHandover | calculated | 1 | wrong/null value | 1 | true | =AND({{IsHumanToNonHumanHandover}}, {{AuthorizationReviewCadenceDays}} = 0) | Excel | urn:effortless:pko-extension#FieldDisagreement |
 
 ### Cell Disagreement
 
 | Name ƒ | Record ID | Expected Value | Actual Value | Reason | Substrate ƒ | Rulebook Field ƒ | Semantic Type Iri |
 |---|---|---|---|---|---|---|---|
-| effortless-postgres\|EvaluationContexts.Name @ eval-current | eval-current | "Post-close evaluation @ 2026-07-19T13:00:00-05:00" | "Post-close evaluation @ 2026-07-19 13:00:00-05" | wrong/null value | effortless-postgres | EvaluationContexts.Name | urn:effortless:pko-extension#CellDisagreement |
-| effortless-postgres\|RoleAssignments.Name @ ra-authority-2026 | ra-authority-2026 | "knowledge-authority @ 2026-01-01T00:00:00-06:00" | "knowledge-authority @ 2026-01-01 00:00:00-06" | wrong/null value | effortless-postgres | RoleAssignments.Name | urn:effortless:pko-extension#CellDisagreement |
-| effortless-postgres\|RoleAssignments.Name @ ra-cfo-2026 | ra-cfo-2026 | "cfo @ 2026-01-01T00:00:00-06:00" | "cfo @ 2026-01-01 00:00:00-06" | wrong/null value | effortless-postgres | RoleAssignments.Name | urn:effortless:pko-extension#CellDisagreement |
+| effortless-xlsx\|RoleAssignments.PredecessorAgentKind @ ra-new-variance | ra-new-variance | "Human" | null | wrong/null value | effortless-xlsx | RoleAssignments.PredecessorAgentKind | urn:effortless:pko-extension#CellDisagreement |
+| effortless-xlsx\|RoleAssignments.IsHumanToNonHumanHandover @ ra-new-variance | ra-new-variance | true | false | wrong/null value | effortless-xlsx | RoleAssignments.IsHumanToNonHumanHandover | urn:effortless:pko-extension#CellDisagreement |
+| effortless-xlsx\|RoleAssignments.IsUnconditionedAutomationHandover @ ra-new-variance | ra-new-variance | true | false | wrong/null value | effortless-xlsx | RoleAssignments.IsUnconditionedAutomationHandover | urn:effortless:pko-extension#CellDisagreement |
 
 _ƒ marks a computed column._
 

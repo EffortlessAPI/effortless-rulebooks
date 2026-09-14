@@ -91,8 +91,8 @@
     "is_independently_confirmed": true,
     "independently_confirmed_execution_key": "exec-policy-hr4821",
     "resulting_delivery_exception": null,
-    "alternate_attempt_was_cleared": null,
-    "retry_was_cleared": null
+    "alternate_attempt_was_cleared": false,
+    "retry_was_cleared": false
   },
   {
     "send_intent_id": "si-002",
@@ -184,10 +184,10 @@
     "is_self_witnessed_decision": true,
     "is_independently_confirmed": false,
     "independently_confirmed_execution_key": null,
-    "resulting_delivery_was_transmitted": null,
+    "resulting_delivery_was_transmitted": false,
     "resulting_delivery_exception": null,
-    "alternate_attempt_was_cleared": null,
-    "retry_was_cleared": null
+    "alternate_attempt_was_cleared": false,
+    "retry_was_cleared": false
   },
   {
     "send_intent_id": "si-003",
@@ -278,11 +278,11 @@
     "is_self_witnessed_decision": true,
     "is_independently_confirmed": false,
     "independently_confirmed_execution_key": null,
-    "resulting_delivery_was_transmitted": null,
+    "resulting_delivery_was_transmitted": false,
     "resulting_delivery_exception": null,
-    "alternate_attempt_was_cleared": null,
+    "alternate_attempt_was_cleared": false,
     "unescalated_refusal_role_key": null,
-    "retry_was_cleared": null
+    "retry_was_cleared": false
   },
   {
     "send_intent_id": "si-004",
@@ -373,11 +373,11 @@
     "is_self_witnessed_decision": true,
     "is_independently_confirmed": false,
     "independently_confirmed_execution_key": null,
-    "resulting_delivery_was_transmitted": null,
+    "resulting_delivery_was_transmitted": false,
     "resulting_delivery_exception": null,
-    "alternate_attempt_was_cleared": null,
+    "alternate_attempt_was_cleared": false,
     "unescalated_refusal_role_key": null,
-    "retry_was_cleared": null
+    "retry_was_cleared": false
   },
   {
     "send_intent_id": "si-005",
@@ -468,11 +468,11 @@
     "is_self_witnessed_decision": true,
     "is_independently_confirmed": false,
     "independently_confirmed_execution_key": null,
-    "resulting_delivery_was_transmitted": null,
+    "resulting_delivery_was_transmitted": false,
     "resulting_delivery_exception": null,
-    "alternate_attempt_was_cleared": null,
+    "alternate_attempt_was_cleared": false,
     "unescalated_refusal_role_key": null,
-    "retry_was_cleared": null
+    "retry_was_cleared": false
   },
   {
     "send_intent_id": "si-006",
@@ -563,11 +563,11 @@
     "is_self_witnessed_decision": true,
     "is_independently_confirmed": false,
     "independently_confirmed_execution_key": null,
-    "resulting_delivery_was_transmitted": null,
+    "resulting_delivery_was_transmitted": false,
     "resulting_delivery_exception": null,
-    "alternate_attempt_was_cleared": null,
+    "alternate_attempt_was_cleared": false,
     "unescalated_refusal_role_key": null,
-    "retry_was_cleared": null
+    "retry_was_cleared": false
   },
   {
     "send_intent_id": "si-007",
@@ -661,7 +661,7 @@
     "independently_confirmed_execution_key": "exec-policy-hr4821",
     "intent_required_opt_out_phrase": null,
     "resulting_delivery_exception": null,
-    "alternate_attempt_was_cleared": null,
-    "retry_was_cleared": null
+    "alternate_attempt_was_cleared": false,
+    "retry_was_cleared": false
   }
 ]

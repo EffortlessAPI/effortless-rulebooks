@@ -22,6 +22,11 @@ The rulebook JSON is a contended file — other agents write it mid-session, and
 - Re-read immediately before every write. Insert only your own top-level keys; never rewrite the whole document from a stale read.
 - Verify row counts **after** committing, via `git show HEAD:<path>`. Verifying before the commit is worthless here — a concurrent rebuild already emptied eight seeded tables between verification and commit once.
 - Keep seed scripts idempotent so a lost write is simply re-appliable.
+- **Stage by explicit path; never `git add -A`.** Another session's half-finished
+  edits are in this tree at all times. On 2026-09-14 a `git add -A .` to commit
+  regenerated artifacts swept a concurrent session's CLAUDE.md, WITNESS-LOOPS.md,
+  test and integrity-checker edits into an unrelated commit. `git status` first,
+  then `git add` only the files your own turn produced.
 
 ## Rulebook
 
@@ -59,10 +64,38 @@ A **green build is not evidence that a formula ran.**
 
 1. **`IIF` is not supported.** It emits a warning comment, returns NULL, and the build still reports success. Seven committed predicates were silently dead this way, and four witnesses read "vacuously false" when the formula had never run. Use `IF(cond, a, b)`. `verify_witnesses.sh` now hard-fails on any "Formula translation failed" in the generated SQL, and `apply_witness_spec.py` rejects `IIF` at authoring time.
 2. **A lookup whose `MATCH` key is a string literal generates no function** while the view that calls it is still emitted — green build, dead database. Match on a relationship column.
-3. **Multi-criteria `COUNTIFS` silently drops the 2nd+ criteria.** Use the composite-key echo: `IF(cond, {{ParentFk}}, "")` on the child, then a single-criterion `COUNTIFS` against that column.
+3. ~~Multi-criteria `COUNTIFS` silently drops the 2nd+ criteria.~~ **Retired 2026-09-14:** a shape probe found every substrate correct on multi-criteria `COUNTIFS`/`SUMIFS` (the one OWL gap, a literal-first pair order, is fixed). The composite-key echoes already in this rulebook remain correct; new witnesses may use multi-criteria counts directly, and `check_rulebook_integrity.py` no longer flags them.
 4. `INDEX/MATCH` only matches the target table's **primary key**.
 5. `VALUE(LEFT("20:00", 2))` does not translate — the transpiler casts the string to a timestamp and the view errors on load. Store the integer.
 6. **A table with no `<Entity>Id` gets a slugged PK, and its FKs are rewritten to the slug.** `RulebookTables` had only `TableName`, so Postgres stored `witnessloops` for `WitnessLoops` and every policy/column count read 0. It now leads with `RulebookTableId` (cr-25). Every new table leads with its `<Entity>Id`.
+
+### Reachability is a closure field, never a formula
+
+The step graph is cyclic (Fallback and Alternative transitions), and "can A lead to B
+through any number of transitions" is transitive closure, which no formula expresses.
+Loop 4 models it as `closure` fields on `StepTransitions`; every substrate materializes
+the view with its own recursive mechanism:
+
+- `LeadsToClosure` → `vw_step_transitions_closure` (from_id, to_id, hop_distance,
+  is_inferred). A step on a cycle reaches itself, so
+  `COUNTIFS(view!{{FromId}}, Steps!{{StepId}}, view!{{ToId}}, Steps!{{StepId}})` is 1
+  exactly for steps on a rework loop.
+- `LeadsWithoutHumanGateClosure` carries `EdgeFilterColumn: AvoidsHumanApprovalGate`, so
+  it closes over only the transitions where that field is TRUE and is named
+  `vw_step_transitions_closure_where_avoids_human_approval_gate`. The filter may be
+  derived; engines read its settled value.
+- A pair count may key an endpoint by a field of the current row
+  (`{{VersionEntryStepId}}`), not only by its own primary key.
+
+Anything that enumerates `vw_*` views must skip both `_closure` and
+`_closure_where_*` names: they are not entities. The Postgres substrate's `take-test.py`
+once matched only the first, mistook the filtered view for an entity, and aborted the
+whole answer export. Two closure fields that would materialize the same view name are
+refused by the generators.
+
+`close-05-expedite-close-07` is a deliberately seeded violation, still open:
+`Steps.IsGateBypassedPublication` reads true on close-07 because that Alternative
+publishes without the CFO gate at close-06.
 
 ### Time-dependent witnesses use a modeled instant, not the wall clock
 
@@ -190,6 +223,17 @@ this way. `check_rulebook_integrity.py` now catches it.
 ## Conformance — every installed tool, graded cell by cell
 
 This project registers the same tool set as `toy-rulebooks/a1-effortless-init-sample`: `compile-rulebook`, `rulebook-to-postgres`, `-python`, `-go`, `-typescript`, `-entity-framework`, `-xlsx`, commercial `rulebook-to-owl`, `rulebook-to-rulespeak`, and the editor. Seven of them produce something that computes, and the repo's conformance harness grades each one against the same answer keys.
+
+**Every substrate is built under the five ERB build parameters** declared in
+`effortless.json` → `ProjectSettings` (`erbDateDiff=calendar`, `erbTimezone=UTC`,
+`erbDateTimeText=iso8601`, `erbBlankLogic=coerce`, `erbWholeNumber=by-field-type`;
+contract in `Versioned-Stable-SSoTme-Tools/docs/ERB-BUILD-PARAMETERS.md`). They are
+why the key writes names as `2026-04-03T14:00:00+00:00`, counts calendar days in
+UTC, and gives a blank predicate a verdict instead of null. Under `coerce`, a
+comparison of two blanks is TRUE — `HasSufficientSample` (`={{DecisionCount}} >=
+{{MinimumDecisionsForComparison}}`) reads TRUE on rows where both are blank. That is
+the spreadsheet rule, applied consistently; a witness that must not fire on blank
+inputs says so in its formula (`AND({{DecisionCount}} <> "", ...)`).
 
 **The answer keys are compile-rulebook's output.** It runs first in the build and rewrites the rulebook in place, baking every derived value into the rows. The harness reads those stored values as the key. So a disagreement means "this substrate and compile-rulebook differ", not "this substrate is wrong". When Postgres, Python, Go and TypeScript all disagree with the key identically, the key is the suspect.
 

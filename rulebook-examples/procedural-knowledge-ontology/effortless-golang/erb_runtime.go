@@ -27,7 +27,79 @@ import (
 	"strings"
 	"time"
 	"unicode/utf8"
+
+	// The zone database, embedded, so erbTimezone resolves without OS tzdata.
+	_ "time/tzdata"
 )
+
+// ───────────────────────────── build parameters ─────────────────────────────
+//
+// The ERB build parameters (docs/ERB-BUILD-PARAMETERS.md) this SDK was
+// generated under. erb_sdk.go calls erbConfigure from an init(); every helper
+// below reads erbParam, and nothing runs unconfigured. erb_runtime.py is the
+// reference; when a rule changes there, it changes here.
+
+var erbParams map[string]string
+var erbZone *time.Location
+
+var erbParameterValues = map[string][]string{
+	"erbDateDiff":     {"calendar", "elapsed"},
+	"erbTimezone":     {"UTC"}, // or any IANA zone name
+	"erbDateTimeText": {"iso8601", "sql"},
+	"erbBlankLogic":   {"coerce", "propagate"},
+	"erbWholeNumber":  {"by-field-type", "integer", "decimal"},
+}
+
+func erbConfigure(params map[string]string) {
+	for name := range params {
+		if _, ok := erbParameterValues[name]; !ok {
+			panic(fmt.Sprintf("erbConfigure: unknown ERB build parameter %q", name))
+		}
+	}
+	for name, allowed := range erbParameterValues {
+		value, ok := params[name]
+		if !ok {
+			panic(fmt.Sprintf("erbConfigure: missing ERB build parameter %q", name))
+		}
+		if name == "erbTimezone" {
+			continue
+		}
+		found := false
+		for _, a := range allowed {
+			if a == value {
+				found = true
+			}
+		}
+		if !found {
+			panic(fmt.Sprintf("erbConfigure: %s=%q is not one of %v", name, value, allowed))
+		}
+	}
+	if params["erbWholeNumber"] != "by-field-type" {
+		// A struct field is typed by its declared datatype; there is no honest
+		// rendering of the other two values here.
+		panic(fmt.Sprintf("erbConfigure: the Go substrate honours erbWholeNumber=by-field-type only, not %q", params["erbWholeNumber"]))
+	}
+	loc, err := time.LoadLocation(params["erbTimezone"])
+	if err != nil {
+		panic(fmt.Sprintf("erbConfigure: erbTimezone=%q cannot be resolved: %v", params["erbTimezone"], err))
+	}
+	erbParams = params
+	erbZone = loc
+}
+
+func erbParam(name string) string {
+	if erbParams == nil {
+		panic("erb_runtime is not configured: erb_sdk.go must call erbConfigure() before any formula runs")
+	}
+	return erbParams[name]
+}
+
+func erbZoneLoc() *time.Location {
+	erbParam("erbTimezone")
+	return erbZone
+}
+
+func coerceBlanks() bool { return erbParam("erbBlankLogic") == "coerce" }
 
 // ─────────────────────────────── values ───────────────────────────────
 
@@ -253,7 +325,9 @@ func toJSON(v Value) any {
 	case KStr:
 		return v.S
 	case KTime:
-		return pyStr(v)
+		// A computed datetime is written per erbDateTimeText, as the reference
+		// implementation's erb_json_value writes it.
+		return erbDatetimeText(v).S
 	}
 	return nil
 }
@@ -641,6 +715,8 @@ func erbBool3(v Value) Value {
 func erbIsTrue(v Value) Value   { return vB(v.K == KBool && v.B) }
 func erbHasValue(v Value) Value { return vB(!isBlank(v)) }
 
+// erbAnd: under erbBlankLogic=coerce a blank operand is FALSE; under propagate
+// FALSE if any operand is FALSE, else NULL if any is NULL, else TRUE.
 func erbAnd(values ...Value) Value {
 	sawNull := false
 	for _, v := range values {
@@ -652,6 +728,9 @@ func erbAnd(values ...Value) Value {
 		}
 	}
 	if sawNull {
+		if coerceBlanks() {
+			return vB(false)
+		}
 		return Null
 	}
 	return vB(true)
@@ -668,13 +747,20 @@ func erbOr(values ...Value) Value {
 		}
 	}
 	if sawNull {
+		if coerceBlanks() {
+			return vB(false)
+		}
 		return Null
 	}
 	return vB(false)
 }
 
+// erbNot: coerce makes NOT(blank) TRUE; propagate keeps it NULL.
 func erbNot(v Value) Value {
 	if v.K == KNull {
+		if coerceBlanks() {
+			return vB(true)
+		}
 		return Null
 	}
 	return vB(!truthy(v))
@@ -734,15 +820,50 @@ func numericLike(v Value) (float64, bool) {
 	return 0, false
 }
 
-func erbEq(a, b Value) Value {
+// blankAsZeroOf: under coerce a blank compared against `other` takes the other
+// side's zero — FALSE against a boolean, 0 against a number, "" otherwise.
+func blankAsZeroOf(other Value) Value {
+	if other.K == KBool {
+		return vB(false)
+	}
+	if _, ok := toNumber(other); ok {
+		return vI(0)
+	}
+	return vS("")
+}
+
+// coercedPair resolves blank operands per erbBlankLogic: (a, b, true) to
+// compare, or (_, _, false) when the blank must propagate as NULL.
+func coercedPair(a, b Value) (Value, Value, bool) {
+	if a.K == KNull && b.K == KNull {
+		if coerceBlanks() {
+			return vS(""), vS(""), true
+		}
+		return a, b, false
+	}
 	if a.K == KNull || b.K == KNull {
+		if !coerceBlanks() {
+			return a, b, false
+		}
+		if a.K == KNull {
+			return blankAsZeroOf(b), b, true
+		}
+		return a, blankAsZeroOf(a), true
+	}
+	return a, b, true
+}
+
+func erbEq(a, b Value) Value {
+	a, b, ok := coercedPair(a, b)
+	if !ok {
 		return Null
 	}
 	return vB(pyEqual(a, b))
 }
 
 func erbNe(a, b Value) Value {
-	if a.K == KNull || b.K == KNull {
+	a, b, ok := coercedPair(a, b)
+	if !ok {
 		return Null
 	}
 	return vB(!pyEqual(a, b))
@@ -752,7 +873,8 @@ func erbNe(a, b Value) Value {
 // two strings as strings, two booleans as booleans; NULL makes it NULL and
 // anything else cannot be ordered and is FALSE.
 func erbCmp(a Value, op string, b Value) Value {
-	if a.K == KNull || b.K == KNull {
+	a, b, ok := coercedPair(a, b)
+	if !ok {
 		return Null
 	}
 	var c int
@@ -1005,45 +1127,79 @@ func dateOrNone(v Value) (time.Time, bool) {
 	return time.Time{}, false
 }
 
-func coerceDatetime(v Value) time.Time {
-	switch v.K {
-	case KTime:
-		return wallClock(v.T)
-	case KStr:
-		if t, _, ok := parseISO(v.S); ok {
-			return wallClock(t)
-		}
-		if t, err := time.Parse("2006-01-02", v.S); err == nil {
-			return t
-		}
-	}
-	panic(fmt.Sprintf("DATETIME_DIFF: cannot coerce %s to datetime", pyRepr(v)))
+// wallIn reinterprets t's wall-clock reading in loc.
+func wallIn(t time.Time, loc *time.Location) time.Time {
+	return time.Date(t.Year(), t.Month(), t.Day(), t.Hour(), t.Minute(), t.Second(), t.Nanosecond(), loc)
 }
 
+// inZone is the instant v names, expressed in erbTimezone. A value carrying no
+// offset is taken to be in erbTimezone.
+func inZone(v Value) time.Time {
+	loc := erbZoneLoc()
+	switch v.K {
+	case KTime:
+		if v.Zoned {
+			return v.T.In(loc)
+		}
+		return wallIn(v.T, loc)
+	case KStr:
+		s := strings.TrimSpace(v.S)
+		if t, hasZone, ok := parseISO(s); ok {
+			if hasZone {
+				return t.In(loc)
+			}
+			return wallIn(t, loc)
+		}
+		if len(s) >= 10 {
+			if t, err := time.ParseInLocation("2006-01-02", s[:10], loc); err == nil {
+				return t
+			}
+		}
+	}
+	panic(fmt.Sprintf("cannot read %s as a datetime", pyRepr(v)))
+}
+
+func truncToInt(q float64) int { return int(math.Trunc(q)) }
+
+// erbDatetimeDiff is DATETIME_DIFF(end, start, unit) per erbDateDiff: hour,
+// minute and second are exact elapsed (possibly fractional) in both modes;
+// month and year are whole calendar months (AGE()) in both. calendar: day is
+// calendar dates in erbTimezone subtracted, week is day/7 truncated. elapsed:
+// day is seconds/86400 truncated, week seconds/604800 truncated.
 func erbDatetimeDiff(end, start, unitValue Value) Value {
 	unit := "day"
 	if truthy(unitValue) {
 		unit = strings.TrimRight(strings.ToLower(pyStr(unitValue)), "s")
 	}
-	if end.K == KNull || start.K == KNull {
+	if isBlank(end) || isBlank(start) {
 		return Null
 	}
-	e := coerceDatetime(end)
-	s := coerceDatetime(start)
-	delta := e.Sub(s)
-	switch unit {
-	case "day":
+	e := inZone(end)
+	s := inZone(start)
+	seconds := e.Sub(s).Seconds()
+	calendar := erbParam("erbDateDiff") == "calendar"
+	calendarDays := func() int {
 		ed := time.Date(e.Year(), e.Month(), e.Day(), 0, 0, 0, 0, time.UTC)
 		sd := time.Date(s.Year(), s.Month(), s.Day(), 0, 0, 0, 0, time.UTC)
-		return vI(int(math.Round(ed.Sub(sd).Hours() / 24)))
+		return int(math.Round(ed.Sub(sd).Hours() / 24))
+	}
+	switch unit {
 	case "hour":
-		return vF(delta.Seconds() / 3600)
+		return vF(seconds / 3600)
 	case "minute":
-		return vF(delta.Seconds() / 60)
+		return vF(seconds / 60)
 	case "second":
-		return vF(delta.Seconds())
+		return vF(seconds)
+	case "day":
+		if calendar {
+			return vI(calendarDays())
+		}
+		return vI(truncToInt(seconds / 86400))
 	case "week":
-		return vI(int(math.Floor(math.Floor(delta.Hours()/24) / 7)))
+		if calendar {
+			return vI(truncToInt(float64(calendarDays()) / 7))
+		}
+		return vI(truncToInt(seconds / 604800))
 	case "month", "year":
 		months := (e.Year()-s.Year())*12 + int(e.Month()) - int(s.Month())
 		eClock := [4]int{e.Day(), e.Hour(), e.Minute(), e.Second()}
@@ -1059,51 +1215,44 @@ func erbDatetimeDiff(end, start, unitValue Value) Value {
 		if unit == "month" {
 			return vI(months)
 		}
-		return vI(int(math.Floor(float64(months) / 12)))
+		return vI(truncToInt(float64(months) / 12))
 	}
 	panic(fmt.Sprintf("DATETIME_DIFF: unsupported unit %q", unit))
 }
 
+// erbNow is NOW()/TODAY(), an instant in erbTimezone. FORMULA_NOW pins it.
 func erbNow() Value {
 	if override := os.Getenv("FORMULA_NOW"); override != "" {
-		t, hasZone, ok := parseISO(override)
-		if !ok {
+		if _, _, ok := parseISO(override); !ok {
 			panic(fmt.Sprintf("FORMULA_NOW %q is not an ISO-8601 datetime", override))
 		}
-		if hasZone {
-			return vTZ(t)
-		}
-		return vT(t)
+		return vTZ(inZone(vS(override)))
 	}
-	return vT(wallClock(time.Now().UTC()))
+	return vTZ(time.Now().In(erbZoneLoc()))
 }
 
-// erbTimestamptzText renders a datetime the way the oracle's CONCAT renders a
-// timestamptz: `2026-01-01 00:00:00-06`.
-func erbTimestamptzText(v Value) Value {
+var dateOnlyText = regexp.MustCompile(`^\d{4}-\d{2}-\d{2}$`)
+
+// erbDatetimeText renders a datetime into text per erbDateTimeText, in
+// erbTimezone: iso8601 = 2026-04-03T14:00:00+00:00, sql = 2026-04-03 14:00:00+00.
+// A date-only value renders as YYYY-MM-DD; a blank as "".
+func erbDatetimeText(v Value) Value {
 	if isBlank(v) {
 		return vS("")
 	}
-	var t time.Time
-	switch v.K {
-	case KTime:
-		t = v.T
-		if !v.Zoned {
-			panic(fmt.Sprintf("datetime %s carries no UTC offset, so its timestamptz text depends on the database session's time zone and cannot be rendered", pyStr(v)))
-		}
-	case KStr:
-		parsed, hasZone, ok := parseISO(v.S)
-		if !ok {
-			panic(fmt.Sprintf("invalid isoformat string: %q", v.S))
-		}
-		if !hasZone {
-			panic(fmt.Sprintf("datetime %q carries no UTC offset, so its timestamptz text depends on the database session's time zone and cannot be rendered", v.S))
-		}
-		t = parsed
-	default:
-		panic(fmt.Sprintf("cannot render %s as a timestamptz", pyRepr(v)))
+	if v.K == KStr && dateOnlyText.MatchString(strings.TrimSpace(v.S)) {
+		return vS(strings.TrimSpace(v.S))
 	}
-	s := t.Format("2006-01-02 15:04:05")
+	if v.K != KTime && v.K != KStr {
+		panic(fmt.Sprintf("cannot render %s as a datetime", pyRepr(v)))
+	}
+	t := inZone(v)
+	iso := erbParam("erbDateTimeText") == "iso8601"
+	layout := "2006-01-02 15:04:05"
+	if iso {
+		layout = "2006-01-02T15:04:05"
+	}
+	s := t.Format(layout)
 	if t.Nanosecond() != 0 {
 		s += strings.TrimRight(fmt.Sprintf(".%06d", t.Nanosecond()/1000), "0")
 	}
@@ -1113,11 +1262,38 @@ func erbTimestamptzText(v Value) Value {
 		sign = "-"
 		offset = -offset
 	}
-	s += fmt.Sprintf("%s%02d", sign, offset/3600)
-	if m := (offset % 3600) / 60; m != 0 {
-		s += fmt.Sprintf(":%02d", m)
+	if iso {
+		s += fmt.Sprintf("%s%02d:%02d", sign, offset/3600, (offset%3600)/60)
+	} else {
+		s += fmt.Sprintf("%s%02d", sign, offset/3600)
+		if m := (offset % 3600) / 60; m != 0 {
+			s += fmt.Sprintf(":%02d", m)
+		}
 	}
 	return vS(s)
+}
+
+// erbText is a non-datetime CONCAT / `&` operand as text: a blank contributes
+// nothing, a number renders in its shortest exact form with no trailing .0, a
+// boolean as true/false, a datetime per erbDateTimeText.
+func erbText(v Value) Value {
+	switch v.K {
+	case KNull:
+		return vS("")
+	case KBool:
+		if v.B {
+			return vS("true")
+		}
+		return vS("false")
+	case KNum:
+		if v.IsInt || (v.N == math.Trunc(v.N) && math.Abs(v.N) < 1e15) {
+			return vS(strconv.FormatInt(int64(v.N), 10))
+		}
+		return vS(pyFloatRepr(v.N))
+	case KTime:
+		return erbDatetimeText(v)
+	}
+	return vS(v.S)
 }
 
 // ───────────────────────────── records & tables ─────────────────────────────
@@ -1169,12 +1345,15 @@ type AggregateSpec struct {
 	Error      string
 }
 
-// ClosureSpec materializes vw_<entity>_closure.
+// ClosureSpec materializes vw_<entity>_closure. Filter, when set, names the
+// edge table field an edge must hold TRUE in to take part (the closure field's
+// EdgeFilterColumn); the view is then vw_<entity>_closure_where_<filter>.
 type ClosureSpec struct {
 	View   string
 	Source string
 	From   string
 	To     string
+	Filter string
 }
 
 type TableSpec struct {
@@ -1226,10 +1405,17 @@ func (c *closureRecord) erbResetErrors()                 {}
 func (c *closureRecord) erbAggregate(string) Value       { return Null }
 func (c *closureRecord) erbSetAggregate(string, Value)   {}
 
+// isTrueValue: an edge takes part in a filtered closure only when its filter
+// field holds boolean TRUE; NULL, FALSE and anything non-boolean exclude it.
+func isTrueValue(v Value) bool { return v.K == KBool && v.B }
+
 func materializeClosure(d *dataset, spec ClosureSpec) []Record {
 	source := d.tableRows(spec.Source)
 	edges := make([]ClosureEdge, 0, len(source))
 	for _, r := range source {
+		if spec.Filter != "" && !isTrueValue(r.erbGet(spec.Filter)) {
+			continue
+		}
 		from, to := r.erbGet(spec.From), r.erbGet(spec.To)
 		if isBlank(from) || isBlank(to) {
 			continue
@@ -1652,6 +1838,13 @@ func erbRun(specs []TableSpec, closures []ClosureSpec) {
 			os.Exit(1)
 		}
 		d.blank = map[string]Value{}
+		// A filtered closure's filter may be a derived field, so it is
+		// re-read from the current rows on every pass and settles with them.
+		for _, c := range closures {
+			if c.Filter != "" {
+				d.closures[c.View] = materializeClosure(d, c)
+			}
+		}
 		for _, spec := range specs {
 			rows, ok := d.rows[spec.File]
 			if !ok {

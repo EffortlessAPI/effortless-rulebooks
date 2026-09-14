@@ -528,6 +528,13 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             get => F.AsBool(F.Memo(this, "HasUnresolvedMiningDrift", () => F.Cmp(F.Of(this.DriftedMiningRunCount), ">", F.I(0)))); set { }
         }
 
+        // Formula EntryStepId (rulebook: =MAXIFS(Steps!{{EntryStepKey}}, Steps!{{ProcedureVersion}}, ProcedureVersions!{{ProcedureVersionId}}))
+        [NotMapped]
+        public string? EntryStepId
+        {
+            get => F.AsString(F.Memo(this, "EntryStepId", () => (base.SoAContext == null ? F.Null : F.ExtremeIfs(true, F.Rows<Step>(base.SoAContext, "Steps", __c => __c.Steps), __r => F.CritField(F.Of(__r.ProcedureVersion), F.Of(this.ProcedureVersionId)), __r => F.Of(__r.EntryStepKey))))); set { }
+        }
+
         public string? SemanticTypeIri { get; set; }
 
         public string? Procedure { get; set; }

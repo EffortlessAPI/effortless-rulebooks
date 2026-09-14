@@ -20,7 +20,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         [NotMapped]
         public string? Name
         {
-            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.Substrate)), F.S(" / "), F.TextOr(F.Of(this.RulebookField))))); set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.Text(F.Of(this.Substrate)), F.S(" / "), F.Text(F.Of(this.RulebookField))))); set { }
         }
 
         public string? FieldClass { get; set; }

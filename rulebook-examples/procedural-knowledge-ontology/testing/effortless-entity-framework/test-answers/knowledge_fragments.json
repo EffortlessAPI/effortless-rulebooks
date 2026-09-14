@@ -242,7 +242,7 @@
     "is_orphaned_by_role": false,
     "valid_fragment_version_key": "close-v1.1.0",
     "evidence_age_days": null,
-    "is_from_single_witness": null,
+    "is_from_single_witness": false,
     "valid_fragment_session_key": null
   },
   {

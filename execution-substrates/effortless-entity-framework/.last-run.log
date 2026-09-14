@@ -6,7 +6,7 @@ Build succeeded.
     0 Warning(s)
     0 Error(s)
 
-Time Elapsed 00:00:01.22
+Time Elapsed 00:00:00.98
 
 Running runner...
 Effortless-EntityFramework Substrate Test Runner
@@ -26,9 +26,12 @@ EF model: 95 entity types
   seeded app_routes.json: 149 rows
   seeded app_users.json: 10 rows
   seeded authority_boundaries.json: 3 rows
+  seeded cell_disagreements.json: 316 rows
   seeded change_requests.json: 2 rows
   seeded communication_policies.json: 2 rows
   seeded communities_of_practice.json: 2 rows
+  seeded conformance_runs.json: 3 rows
+  seeded conformance_substrates.json: 8 rows
   seeded delivered_communications.json: 1 rows
   seeded elicitation_sessions.json: 3 rows
   seeded errors.json: 2 rows
@@ -37,6 +40,7 @@ EF model: 95 entity types
   seeded exceptions.json: 4 rows
   seeded explanations.json: 2 rows
   seeded fa_qs.json: 3 rows
+  seeded field_disagreements.json: 49 rows
   seeded field_grants.json: 3639 rows
   seeded functions.json: 8 rows
   seeded issue_occurrences.json: 2 rows
@@ -72,11 +76,11 @@ EF model: 95 entity types
   seeded review_events.json: 3 rows
   note role_assignments.json: columns in no blank-test row, seeded NULL: authorization_decided_at, authorization_review_cadence_days, authorization_reviewed_at, is_enforcement_role, max_tolerable_error_rate_percent, minimum_decisions_for_comparison
   seeded role_assignments.json: 13 rows
-  seeded role_questions.json: 109 rows
+  seeded role_questions.json: 111 rows
   seeded role_schema_views.json: 202 rows
   seeded role_schemas.json: 12 rows
   seeded roles.json: 12 rows
-  seeded rulebook_fields.json: 1879 rows
+  seeded rulebook_fields.json: 1897 rows
   seeded rulebook_releases.json: 1 rows
   seeded rulebook_tables.json: 92 rows
   seeded semantic_mappings.json: 47 rows
@@ -87,10 +91,13 @@ EF model: 95 entity types
   seeded step_functions.json: 8 rows
   seeded step_requirements.json: 15 rows
   seeded step_tools.json: 10 rows
-  seeded step_transitions.json: 19 rows
+  note step_transitions.json: columns in no blank-test row, seeded NULL: leads_to_closure, leads_without_human_gate_closure
+  seeded step_transitions.json: 20 rows
   seeded step_verifications.json: 11 rows
   seeded steps.json: 17 rows
   seeded stewardship_assignments.json: 2 rows
+  seeded substrate_run_scores.json: 21 rows
+  seeded table_conformance.json: 623 rows
   seeded template_approvals.json: 2 rows
   seeded test_cases.json: 1794 rows
   seeded test_suites.json: 6 rows
@@ -100,7 +107,7 @@ EF model: 95 entity types
   seeded verification_outcomes.json: 4 rows
   seeded vocabularies.json: 2 rows
   seeded vocabulary_terms.json: 12 rows
-  seeded witness_loops.json: 3 rows
+  seeded witness_loops.json: 4 rows
   -> access_denial_tests.json (AccessDenialTest): 17 records
   -> access_policies.json (AccessPolicy): 202 records
   -> access_principals.json (AccessPrincipal): 12 records
@@ -114,10 +121,13 @@ EF model: 95 entity types
   -> app_routes.json (AppRoute): 149 records
   -> app_users.json (AppUser): 10 records
   -> authority_boundaries.json (AuthorityBoundary): 3 records
+  -> cell_disagreements.json (CellDisagreement): 316 records
   -> change_requests.json (ChangeRequest): 2 records
   WARNING communication_policies.json: keys with no CommunicationPolicy property, echoed from the blank test: requires_opt_out
   -> communication_policies.json (CommunicationPolicy): 2 records
   -> communities_of_practice.json (CommunitiesOfPractice): 2 records
+  -> conformance_runs.json (ConformanceRun): 3 records
+  -> conformance_substrates.json (ConformanceSubstrate): 8 records
   -> delivered_communications.json (DeliveredCommunication): 1 records
   -> elicitation_sessions.json (ElicitationSession): 3 records
   -> errors.json (Error): 2 records
@@ -126,6 +136,7 @@ EF model: 95 entity types
   -> exceptions.json (Exception): 4 records
   -> explanations.json (Explanation): 2 records
   -> fa_qs.json (FAQ): 3 records
+  -> field_disagreements.json (FieldDisagreement): 49 records
   -> field_grants.json (FieldGrant): 3639 records
   -> functions.json (Function): 8 records
   -> issue_occurrences.json (IssueOccurrence): 2 records
@@ -157,11 +168,11 @@ EF model: 95 entity types
   -> resources.json (Resource): 8 records
   -> review_events.json (ReviewEvent): 3 records
   -> role_assignments.json (RoleAssignment): 13 records
-  -> role_questions.json (RoleQuestion): 109 records
+  -> role_questions.json (RoleQuestion): 111 records
   -> role_schema_views.json (RoleSchemaView): 202 records
   -> role_schemas.json (RoleSchema): 12 records
   -> roles.json (Role): 12 records
-  -> rulebook_fields.json (RulebookField): 1879 records
+  -> rulebook_fields.json (RulebookField): 1897 records
   -> rulebook_releases.json (RulebookRelease): 1 records
   -> rulebook_tables.json (RulebookTable): 92 records
   -> semantic_mappings.json (SemanticMapping): 47 records
@@ -171,10 +182,12 @@ EF model: 95 entity types
   -> step_functions.json (StepFunction): 8 records
   -> step_requirements.json (StepRequirement): 15 records
   -> step_tools.json (StepTool): 10 records
-  -> step_transitions.json (StepTransition): 19 records
+  -> step_transitions.json (StepTransition): 20 records
   -> step_verifications.json (StepVerification): 11 records
   -> steps.json (Step): 17 records
   -> stewardship_assignments.json (StewardshipAssignment): 2 records
+  -> substrate_run_scores.json (SubstrateRunScore): 21 records
+  -> table_conformance.json (TableConformance): 623 records
   -> template_approvals.json (TemplateApproval): 2 records
   -> test_cases.json (TestCase): 1794 records
   -> test_suites.json (TestSuite): 6 records
@@ -184,7 +197,7 @@ EF model: 95 entity types
   -> verification_outcomes.json (VerificationOutcome): 4 records
   -> vocabularies.json (Vocabulary): 2 records
   -> vocabulary_terms.json (VocabularyTerm): 12 records
-  -> witness_loops.json (WitnessLoop): 3 records
+  -> witness_loops.json (WitnessLoop): 4 records
 
-effortless-entity-framework: Processed 83 entities, 9046 total records
+effortless-entity-framework: Processed 89 entities, 10088 total records
 

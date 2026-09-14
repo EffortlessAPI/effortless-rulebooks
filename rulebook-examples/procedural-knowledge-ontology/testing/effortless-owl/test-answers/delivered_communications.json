@@ -10,6 +10,8 @@
     "semantic_type_iri": "urn:effortless:pko-extension#DeliveredCommunication",
     "procedure_execution": "exec-policy-hr4821",
     "has_authorization": false,
+    "content_matches_approval": true,
+    "was_approved_before_sending": true,
     "is_defensible": false
   }
 ]

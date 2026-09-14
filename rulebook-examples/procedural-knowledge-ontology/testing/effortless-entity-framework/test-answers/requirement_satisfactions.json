@@ -44,7 +44,7 @@
     "step_executor_agent": "maria-chen",
     "post_attestation_score_execution_key": "",
     "binding_key": null,
-    "was_scored_after_attestation": null,
+    "was_scored_after_attestation": false,
     "attestation_instant_for_run": null
   },
   {
@@ -92,7 +92,7 @@
     "step_executor_agent": "close-pipeline",
     "post_attestation_score_execution_key": "",
     "binding_key": null,
-    "was_scored_after_attestation": null,
+    "was_scored_after_attestation": false,
     "attestation_instant_for_run": null
   },
   {
@@ -140,7 +140,7 @@
     "step_executor_agent": "maria-chen",
     "post_attestation_score_execution_key": "",
     "binding_key": null,
-    "was_scored_after_attestation": null,
+    "was_scored_after_attestation": false,
     "attestation_instant_for_run": null
   },
   {
@@ -188,7 +188,7 @@
     "step_executor_agent": "priya-raman",
     "post_attestation_score_execution_key": "",
     "binding_key": null,
-    "was_scored_after_attestation": null,
+    "was_scored_after_attestation": false,
     "attestation_instant_for_run": null
   },
   {
@@ -236,7 +236,7 @@
     "step_executor_agent": "devon-okafor",
     "post_attestation_score_execution_key": "",
     "binding_key": null,
-    "was_scored_after_attestation": null,
+    "was_scored_after_attestation": false,
     "attestation_instant_for_run": null
   },
   {
@@ -284,7 +284,7 @@
     "step_executor_agent": "elena-garcia",
     "post_attestation_score_execution_key": "",
     "binding_key": null,
-    "was_scored_after_attestation": null,
+    "was_scored_after_attestation": false,
     "attestation_instant_for_run": null
   },
   {
@@ -332,7 +332,7 @@
     "step_executor_agent": "noah-williams",
     "post_attestation_score_execution_key": "",
     "binding_key": null,
-    "was_scored_after_attestation": null,
+    "was_scored_after_attestation": false,
     "attestation_instant_for_run": null
   },
   {
@@ -380,7 +380,7 @@
     "step_executor_agent": "policy-drafting-ai",
     "post_attestation_score_execution_key": "",
     "binding_key": null,
-    "was_scored_after_attestation": null,
+    "was_scored_after_attestation": false,
     "attestation_instant_for_run": null
   }
 ]

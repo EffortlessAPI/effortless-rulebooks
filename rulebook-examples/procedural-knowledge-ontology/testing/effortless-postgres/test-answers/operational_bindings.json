@@ -18,7 +18,7 @@
     "authoritative_stale_step_key": "close-02",
     "is_stale_and_authoritative": true,
     "step_when_stale": "close-02",
-    "resource_is_approved": null,
+    "resource_is_approved": false,
     "is_usable_for_drafting": false,
     "step_when_unusable": "close-02",
     "semantic_type_iri": "urn:effortless:pko-extension#OperationalBinding"
@@ -42,7 +42,7 @@
     "authoritative_stale_step_key": "policy-07",
     "is_stale_and_authoritative": true,
     "step_when_stale": "policy-07",
-    "resource_is_approved": null,
+    "resource_is_approved": false,
     "is_usable_for_drafting": false,
     "step_when_unusable": "policy-07",
     "semantic_type_iri": "urn:effortless:pko-extension#OperationalBinding"
@@ -66,8 +66,8 @@
     "authoritative_stale_step_key": "",
     "is_stale_and_authoritative": false,
     "step_when_stale": "",
-    "resource_is_approved": null,
-    "is_usable_for_drafting": null,
+    "resource_is_approved": false,
+    "is_usable_for_drafting": false,
     "step_when_unusable": "policy-07",
     "semantic_type_iri": "urn:effortless:pko-extension#OperationalBinding"
   },
@@ -90,8 +90,8 @@
     "authoritative_stale_step_key": "",
     "is_stale_and_authoritative": false,
     "step_when_stale": "",
-    "resource_is_approved": null,
-    "is_usable_for_drafting": null,
+    "resource_is_approved": false,
+    "is_usable_for_drafting": false,
     "step_when_unusable": "policy-07",
     "semantic_type_iri": "urn:effortless:pko-extension#OperationalBinding"
   },
@@ -114,7 +114,7 @@
     "authoritative_stale_step_key": "policy-01",
     "is_stale_and_authoritative": true,
     "step_when_stale": "policy-01",
-    "resource_is_approved": null,
+    "resource_is_approved": false,
     "is_usable_for_drafting": false,
     "step_when_unusable": "policy-01",
     "semantic_type_iri": "urn:effortless:pko-extension#OperationalBinding"

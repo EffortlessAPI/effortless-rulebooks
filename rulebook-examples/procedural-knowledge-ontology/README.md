@@ -82,6 +82,7 @@ Some of what the witnesses found, all from data that was already in the model:
 | `RoleAssignments.IsHumanToNonHumanHandover` | an AI agent took over a control function from a named human, on a date, with the approving authority recorded |
 | `ProcessMiningRuns.IsDriftOnLiveVersion` | a mined event log shows the live close procedure bypassing its own documented cutoff control — the model never had a way for "what we mined" to contradict "what we modeled" until loop 3 |
 | `VocabularyTerms.IsWidelyAdoptedTerm` | two independent requirements (`req-close-evidence`, `req-policy-retention`) restate the identical 7-year retention obligation in free text, with nothing to check one against the other, until both point at the same controlled term |
+| `Steps.IsOnReworkLoop` | 8 of 17 steps can be re-entered after they run (close-04 falls back to close-03; close-06's alternative re-enters close-04), and 7 of those carry a blocking control that must hold on every pass. Loop membership is reachability over paths of any length, so it comes from the closure of `StepTransitions` (`vw_step_transitions_closure`), not a formula; Postgres, Python, Go, TypeScript and OWL agree on it cell for cell (loop 4) |
 | `Agents.HasAtRiskKnowledgeReliance` | someone is actively relied on for segregation-of-duties questions by a coworker even though they hold no current role at all — invisible to `RoleAssignments`, visible to `KnowledgeBrokerLinks` |
 
 Loop 3 exists because comparing this rulebook against Jessica Talisman's

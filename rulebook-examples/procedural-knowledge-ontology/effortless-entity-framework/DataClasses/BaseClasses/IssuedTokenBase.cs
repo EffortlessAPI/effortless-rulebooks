@@ -20,7 +20,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         [NotMapped]
         public string? Name
         {
-            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.AppUser)), F.S(" as "), F.TextOr(F.Of(this.Principal)), F.S(" @ "), F.TimestamptzText(F.Of(this.IssuedAt))))); set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.Text(F.Of(this.AppUser)), F.S(" as "), F.Text(F.Of(this.Principal)), F.S(" @ "), F.DatetimeText(F.Of(this.IssuedAt))))); set { }
         }
 
         public DateTimeOffset? IssuedAt { get; set; }

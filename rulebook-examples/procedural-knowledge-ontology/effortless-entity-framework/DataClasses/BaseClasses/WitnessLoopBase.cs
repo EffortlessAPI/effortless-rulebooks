@@ -20,7 +20,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         [NotMapped]
         public string? Name
         {
-            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.S("Loop "), F.TextOr(F.Of(this.LoopNumber)), F.S(": "), F.TextOr(F.Of(this.Title))))); set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.S("Loop "), F.Text(F.Of(this.LoopNumber)), F.S(": "), F.Text(F.Of(this.Title))))); set { }
         }
 
         public decimal LoopNumber { get; set; }

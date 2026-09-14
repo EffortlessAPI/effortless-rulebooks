@@ -20,7 +20,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         [NotMapped]
         public string? Name
         {
-            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.DecidingAgent)), F.S(": "), F.TextNotNull(F.Left(F.Of(this.DecisionSummary), F.I(60)))))); set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.Text(F.Of(this.DecidingAgent)), F.S(": "), F.Text(F.Left(F.Of(this.DecisionSummary), F.I(60)))))); set { }
         }
 
         public string? DecisionKind { get; set; }
@@ -82,7 +82,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         [NotMapped]
         public string? BoundaryMatchKey
         {
-            get => F.AsString(F.Memo(this, "BoundaryMatchKey", () => F.Concat(F.TextOr(F.Of(this.StepOfDecision)), F.S("|"), F.TextOr(F.Of(this.DecidingAgentKind)), F.S("|"), F.TextOr(F.Of(this.DecisionKind))))); set { }
+            get => F.AsString(F.Memo(this, "BoundaryMatchKey", () => F.Concat(F.Text(F.Of(this.StepOfDecision)), F.S("|"), F.Text(F.Of(this.DecidingAgentKind)), F.S("|"), F.Text(F.Of(this.DecisionKind))))); set { }
         }
 
         // Formula MatchingBoundaryCount (rulebook: =COUNTIFS(AuthorityBoundaries!{{BoundaryMatchKey}}, {{BoundaryMatchKey}}))

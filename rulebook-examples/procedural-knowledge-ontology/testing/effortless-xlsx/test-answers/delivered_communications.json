@@ -12,7 +12,7 @@
     "approved_content_hash": null,
     "delivery_status": "NotYetSent",
     "semantic_type_iri": "urn:effortless:pko-extension#DeliveredCommunication",
-    "name": "Email -> emp-anon-0001 @ 1899-12-30 00:00:00+00",
+    "name": "Email -> emp-anon-0001 @ ",
     "has_authorization": false,
     "is_defensible": false,
     "content_matches_approval": true,

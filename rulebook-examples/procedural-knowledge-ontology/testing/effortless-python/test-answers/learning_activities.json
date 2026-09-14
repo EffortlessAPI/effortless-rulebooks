@@ -9,7 +9,7 @@
     "outcome": "Captured feed timestamp failure mode and updated the rulebook.",
     "evidence_resource": "res-close-checklist",
     "semantic_type_iri": "http://www.w3.org/ns/prov#Activity",
-    "name": "Retrospective / 2026-07-02 15:30:00-05"
+    "name": "Retrospective / 2026-07-02T20:30:00+00:00"
   },
   {
     "learning_activity_id": "learn-policy-tabletop",
@@ -21,6 +21,6 @@
     "outcome": "Tested consent, quiet-hours, and unreachable-recipient exceptions.",
     "evidence_resource": "res-sms-template",
     "semantic_type_iri": "http://www.w3.org/ns/prov#Activity",
-    "name": "TabletopExercise / 2026-07-15 13:00:00-05"
+    "name": "TabletopExercise / 2026-07-15T18:00:00+00:00"
   }
 ]

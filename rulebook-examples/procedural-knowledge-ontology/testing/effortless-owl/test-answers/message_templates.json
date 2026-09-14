@@ -25,7 +25,7 @@
     "unanswered_delivery_count": 1,
     "transmitted_delivery_count": 2,
     "template_draws_no_response": false,
-    "last_approval_at": "2026-07-17 11:00:00-05:00"
+    "last_approval_at": "2026-07-17 16:00:00+00:00"
   },
   {
     "message_template_id": "tmpl-policy-sms",
@@ -53,6 +53,6 @@
     "unanswered_delivery_count": 2,
     "transmitted_delivery_count": 2,
     "template_draws_no_response": true,
-    "last_approval_at": "2026-07-19 10:00:00-05:00"
+    "last_approval_at": "2026-07-19 15:00:00+00:00"
   }
 ]

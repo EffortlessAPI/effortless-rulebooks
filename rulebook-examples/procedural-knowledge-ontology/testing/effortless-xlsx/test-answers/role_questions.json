@@ -71,11 +71,11 @@
     "question_text": "This rulebook compiles into Postgres, Python, Go, TypeScript, C#, a spreadsheet and an OWL reasoner. When I approve a rule, do all of them compute the same answer, and if not, which one is wrong about which field?",
     "why_it_matters": "A procedure is only as authoritative as the systems that execute it. If the spreadsheet a controller opens disagrees with the database the close automation reads, the rule has two meanings, and nobody finds out until an audit does. Agreement has to be witnessed per cell, not assumed from a green build.",
     "answerable_before": "No. The harness printed scores to a markdown file per substrate; the rulebook had no record of which substrates exist, how they scored, or which fields they disagree on.",
-    "witnessed_answer": null,
+    "witnessed_answer": "ConformanceRuns.IsFullyConformant=0/1; ConformanceSubstrates.IsFullyConformant=0/8; ConformanceSubstrates.IsGraded=7/8; FieldDisagreements.IsFullySampled=390/400; RulebookFields.IsSubstrateContested=182/1885; SubstrateRunScores.IsInLatestRun=7/7; SubstrateRunScores.IsPerfect=0/7; TableConformance.IsPerfect=439/581",
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
     "name": "knowledge-authority: This rulebook compiles into Postgres, Python, Go, TypeScript",
-    "predicate_count": 0,
-    "is_answered": false
+    "predicate_count": 47,
+    "is_answered": true
   },
   {
     "role_question_id": "q-authority-controlled-vocabulary",
@@ -87,7 +87,7 @@
     "witnessed_answer": "Requirements.UsesControlledVocabulary=11/13; Vocabularies.HasOrphanTerms=1/2; VocabularyTerms.IsOrphanTerm=2/12; VocabularyTerms.IsWidelyAdoptedTerm=1/12",
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
     "name": "knowledge-authority: req-close-evidence and req-policy-retention both restate the",
-    "predicate_count": 2,
+    "predicate_count": 22,
     "is_answered": true
   },
   {
@@ -100,7 +100,7 @@
     "witnessed_answer": "Agents.HasAtRiskKnowledgeReliance=1/11; Agents.IsRecognizedBroker=1/11; KnowledgeBrokerLinks.BrokerIsStillEngaged=4/5; KnowledgeBrokerLinks.IsActiveReliance=4/5; KnowledgeBrokerLinks.IsAtRiskReliance=1/5",
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
     "name": "knowledge-authority: RoleAssignments says who is FORMALLY responsible for reconci",
-    "predicate_count": 4,
+    "predicate_count": 20,
     "is_answered": true
   },
   {
@@ -191,7 +191,7 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
     "witnessed_answer": "StepExecutions.ApprovalRestsOnSelfAttestation=2/12; VerificationOutcomes.IsSelfWitnessed=3/4",
     "name": "cfo: My own approval on se-close06 \u2014 is there anything behind it ",
-    "predicate_count": 3,
+    "predicate_count": 7,
     "is_answered": true
   },
   {
@@ -230,7 +230,7 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
     "witnessed_answer": "ExceptionInvocations.DelegatedToPreparer=0/1; ExceptionInvocations.IsUngovernedInvocation=0/1; StepExecutions.RanUnderException=1/12",
     "name": "cfo: For every approval in this close, tell me the human who was ",
-    "predicate_count": 2,
+    "predicate_count": 8,
     "is_answered": true
   },
   {
@@ -269,7 +269,7 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
     "witnessed_answer": "AgentDecisionRecords.WasOverridden=1/3; AgentDecisionRecords.WasReviewed=3/3; Agents.IsNonHuman=4/11",
     "name": "close-automation: Am I drifting? Are humans overriding or correcting my output",
-    "predicate_count": 4,
+    "predicate_count": 8,
     "is_answered": true
   },
   {
@@ -308,8 +308,8 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
     "witnessed_answer": "MessageDeliveries.IsUnapprovedSend=0/6; MessageDeliveries.TemplateHasValidApproval=6/6; MessageTemplates.HasValidApproval=2/2; MessageTemplates.IsClaimingUnbackedApproval=0/2; TemplateApprovals.IsApprovalDecision=2/2; TemplateApprovals.IsDecidedByRequiredRole=2/2",
     "name": "communications-manager: Was every template we actually sent approved by me -- the Ap",
-    "predicate_count": 0,
-    "is_answered": false
+    "predicate_count": 10,
+    "is_answered": true
   },
   {
     "role_question_id": "q-comms-deliverability",
@@ -321,7 +321,7 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
     "witnessed_answer": "MessageDeliveries.IsAbandonedFailure=0/6; MessageDeliveries.IsFailedDelivery=1/6; MessageDeliveries.IsSuppressed=1/6; MessageDeliveries.IsTriaged=3/6; ProcedureExecutions.HasAbandonedFailures=0/2",
     "name": "communications-manager: For this policy run, what fraction of the affected populatio",
-    "predicate_count": 4,
+    "predicate_count": 10,
     "is_answered": true
   },
   {
@@ -334,8 +334,8 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
     "witnessed_answer": "MessageDeliveries.HasOptOutPhrase=3/6; MessageDeliveries.IsMissingRequiredOptOut=1/6; MessageDeliveries.IsOptOutAtRiskOfTruncation=0/6; MessageDeliveries.IsOptOutInFirstSegment=3/6; MessageDeliveries.PolicyRequiresOptOut=4/6",
     "name": "communications-manager: Did every SMS we actually transmitted carry the approved opt",
-    "predicate_count": 0,
-    "is_answered": false
+    "predicate_count": 8,
+    "is_answered": true
   },
   {
     "role_question_id": "q-comms-oversized-sms",
@@ -347,8 +347,8 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
     "witnessed_answer": "MessageDeliveries.IsOverSegmentLimit=0/6; MessageTemplates.IsTemplateOverLength=0/2",
     "name": "communications-manager: Did any SMS we sent exceed 160 characters or split into more",
-    "predicate_count": 0,
-    "is_answered": false
+    "predicate_count": 9,
+    "is_answered": true
   },
   {
     "role_question_id": "q-comms-template-drift",
@@ -360,8 +360,8 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
     "witnessed_answer": "MessageDeliveries.IsDriftedSend=0/6; MessageDeliveries.TemplateWasSendable=6/6; MessageTemplates.HasBodyDrifted=0/2; MessageTemplates.IsSendableUnderApproval=2/2",
     "name": "communications-manager: Has any template been edited since I approved it, and did we",
-    "predicate_count": 0,
-    "is_answered": false
+    "predicate_count": 9,
+    "is_answered": true
   },
   {
     "role_question_id": "q-controller-ai-agent-approved-meaning",
@@ -416,6 +416,19 @@
     "is_answered": true
   },
   {
+    "role_question_id": "q-controller-gate-bypass",
+    "asking_role": "controller",
+    "witness_loop": "loop-04",
+    "question_text": "Can a procedure reach a publication step from its first step without passing through a human approval gate \u2014 is there any route, including alternative and fallback transitions, around the sign-off?",
+    "why_it_matters": "The CFO's sign-off at close-06 is only a control if every route to publication runs through it. IsHumanApprovalGate and GateHeldByHuman say the gate exists and is held by a person; nothing says the step graph forces work through it. An Alternative transition added for an 'immaterial variance' fast path can route straight to publication, and every per-step and per-edge witness stays green. Whether a gate can be bypassed is reachability from the entry step over only the transitions that avoid a gate, at any depth: a closure over a filtered edge set, not a formula.",
+    "answerable_before": false,
+    "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
+    "name": "controller: Can a procedure reach a publication step from its first step",
+    "predicate_count": 12,
+    "is_answered": true,
+    "witnessed_answer": null
+  },
+  {
     "role_question_id": "q-controller-separation-of-duties",
     "asking_role": "controller",
     "witness_loop": "loop-01",
@@ -438,7 +451,7 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
     "witnessed_answer": "MessageDeliveries.ExecutionHasClearedLegalReview=6/6; MessageDeliveries.IsUnreviewedSend=0/6; ProcedureExecutions.HasClearedLegalReview=1/2; StepExecutions.IsLegalReviewStep=1/12; StepExecutions.IsVerificationPassed=11/12",
     "name": "employment-counsel: Did any message go out before my legal review of the underly",
-    "predicate_count": 5,
+    "predicate_count": 8,
     "is_answered": true
   },
   {
@@ -451,8 +464,8 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
     "witnessed_answer": "MessageDeliveries.IsInsideQuietWindow=1/6; MessageDeliveries.IsQuietHoursViolation=1/6; MessageDeliveries.PolicyHasQuietHours=4/6; MessageDeliveries.QuietWindowWrapsMidnight=4/6",
     "name": "employment-counsel: Did any SMS go out between 20:00 and 08:00 in the recipient'",
-    "predicate_count": 0,
-    "is_answered": false
+    "predicate_count": 10,
+    "is_answered": true
   },
   {
     "role_question_id": "q-counsel-retention-evidence",
@@ -464,7 +477,7 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
     "witnessed_answer": "MessageDeliveries.HasRenderedBody=6/6; MessageDeliveries.IsEvidenceRequired=4/6; MessageDeliveries.IsRetentionBreach=0/6; MessageDeliveries.IsWithinRetentionWindow=6/6",
     "name": "employment-counsel: Do we still hold the exact text of every message we sent, fo",
-    "predicate_count": 1,
+    "predicate_count": 8,
     "is_answered": true
   },
   {
@@ -477,8 +490,8 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
     "witnessed_answer": "MessageDeliveries.IsConsentViolation=0/6; MessageDeliveries.PolicyRequiresConsent=4/6; MessageDeliveries.RecipientHasSmsConsent=4/6; MessageDeliveries.WasActuallyTransmitted=4/6",
     "name": "employment-counsel: Did we send an SMS to any recipient who had not given SMS co",
-    "predicate_count": 0,
-    "is_answered": false
+    "predicate_count": 8,
+    "is_answered": true
   },
   {
     "role_question_id": "q-counsel-unreachable-not-acknowledged",
@@ -490,7 +503,7 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
     "witnessed_answer": "MessageDeliveries.HasUnreachableExceptionInvoked=1/6; MessageDeliveries.IsAcknowledged=1/6; MessageDeliveries.IsFabricatedAcknowledgement=0/6; MessageDeliveries.IsUnhandledUnreachable=0/6; MessageDeliveries.RecipientIsUnreachable=0/6",
     "name": "employment-counsel: For every recipient we could not reach, did we correctly ref",
-    "predicate_count": 1,
+    "predicate_count": 8,
     "is_answered": true
   },
   {
@@ -581,7 +594,7 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
     "witnessed_answer": "Agents.IsOperatingOutsideBoundary=0/11; AuthorityBoundaries.IsUntested=3/3",
     "name": "policy-drafting-agent: Did I draft language that creates a new legal commitment \u2014 t",
-    "predicate_count": 2,
+    "predicate_count": 5,
     "is_answered": true
   },
   {
@@ -594,7 +607,7 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
     "witnessed_answer": "AgentDecisionRecords.IsDraftKind=0/3",
     "name": "policy-drafting-agent: Is my draft surviving human review, or is `noah-williams` re",
-    "predicate_count": 3,
+    "predicate_count": 7,
     "is_answered": true
   },
   {
@@ -620,7 +633,7 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
     "witnessed_answer": "OperationalBindings.IsUsableForDrafting=0/5; OperationalBindings.ResourceIsApproved=0/5; Resources.IsApprovedSource=0/8; StepExecutions.DraftedFromUnusableSource=2/12; StepExecutions.InputsWereUsable=10/12; Steps.AllSourcesUsable=14/17",
     "name": "policy-drafting-agent: Before I draft: is every resource I am about to read an appr",
-    "predicate_count": 8,
+    "predicate_count": 9,
     "is_answered": true
   },
   {
@@ -633,8 +646,8 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
     "witnessed_answer": "SendIntents.ApprovalIsHuman=7/7; SendIntents.AuthorizationGatePassed=7/7; SendIntents.ExecutionHasLegalClearance=7/7; SendIntents.IsClearedToSend=3/7; SendIntents.TemplateIsSendable=7/7",
     "name": "notification-publisher: Before I transmit, has every human authorization my instruct",
-    "predicate_count": 0,
-    "is_answered": false
+    "predicate_count": 8,
+    "is_answered": true
   },
   {
     "role_question_id": "q-publisher-is-this-content-permitted",
@@ -646,8 +659,8 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
     "witnessed_answer": "SendIntents.ContentGatePassed=5/7; SendIntents.LengthGatePassed=7/7; SendIntents.OptOutGatePassed=5/7",
     "name": "notification-publisher: Before I transmit, is the exact text I am holding within thi",
-    "predicate_count": 0,
-    "is_answered": false
+    "predicate_count": 9,
+    "is_answered": true
   },
   {
     "role_question_id": "q-publisher-may-i-transmit",
@@ -659,8 +672,8 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
     "witnessed_answer": "CommunicationPolicies.IsActivePolicy=2/2; SendIntents.ConsentGatePassed=6/7; SendIntents.IntentRequiresConsent=6/7; SendIntents.PermissionGatePassed=6/7; SendIntents.PolicyIsActive=7/7; SendIntents.ReachabilityGatePassed=6/7; SendIntents.RecipientHasChannelConsent=6/7; SendIntents.RecipientIsEmailReachable=7/7; SendIntents.RecipientIsSmsReachable=6/7",
     "name": "notification-publisher: Before I transmit, am I permitted to use this channel for th",
-    "predicate_count": 0,
-    "is_answered": false
+    "predicate_count": 11,
+    "is_answered": true
   },
   {
     "role_question_id": "q-publisher-may-i-transmit-now",
@@ -672,8 +685,8 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
     "witnessed_answer": "SendIntents.IntentIsInsideQuietWindow=1/7; SendIntents.IntentPolicyHasQuietHours=6/7; SendIntents.IntentQuietWindowWraps=6/7; SendIntents.TimingGatePassed=6/7",
     "name": "notification-publisher: Before I transmit, is the current moment inside a window thi",
-    "predicate_count": 0,
-    "is_answered": false
+    "predicate_count": 7,
+    "is_answered": true
   },
   {
     "role_question_id": "q-publisher-refusal-was-honored",
@@ -685,7 +698,7 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
     "witnessed_answer": "SendIntents.HasResultingDelivery=2/7; SendIntents.IsOverriddenRefusal=0/7; SendIntents.IsProperlyHandledRefusal=0/7; SendIntents.IsSilentlyDropped=4/7; SendIntents.RefusalCitedAnException=0/7; SendIntents.ResultingDeliveryWasTransmitted=2/7",
     "name": "notification-publisher: When a gate refused, did the transmission actually stop -- a",
-    "predicate_count": 1,
+    "predicate_count": 9,
     "is_answered": true
   },
   {
@@ -711,7 +724,7 @@
     "witnessed_answer": "ProcedureVersions.HasUnresolvedMiningDrift=1/3; ProcessMiningRuns.HasMajorDriftFromDocumentation=2/4; ProcessMiningRuns.IsConformant=2/4; ProcessMiningRuns.IsDriftOnLiveVersion=1/4; ProcessMiningRuns.IsStaleMiningEvidence=2/4; ProcessMiningRuns.ProcedureVersionIsLive=3/4",
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
     "name": "process-steward: The event log from the ERP shows close-v1.1.0 running with 8",
-    "predicate_count": 3,
+    "predicate_count": 22,
     "is_answered": true
   },
   {
@@ -739,6 +752,19 @@
     "name": "process-steward: Is any procedure version live with an Open BLOCKING knowledg",
     "predicate_count": 6,
     "is_answered": true
+  },
+  {
+    "role_question_id": "q-steward-rework-loops",
+    "asking_role": "process-steward",
+    "witness_loop": "loop-04",
+    "question_text": "Which steps can a procedure send work back to after they have already run \u2014 which steps sit on a rework loop, and which of those carry a blocking control that must hold on every pass?",
+    "why_it_matters": "Fallback and Alternative transitions make the step graph cyclic: close-04 falls back to close-03, and close-06's alternative re-enters close-04, so close-05's approval control can run twice in one close. Every witness we have looks at one transition at a time (IsUnwalkedRecoveryPath asks whether that one edge was ever traversed). None of them can say that a step is re-entered, because loop membership is reachability over paths of any length. That is transitive closure, which no formula expresses, so it needs the substrate-native closure over StepTransitions.",
+    "answerable_before": false,
+    "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
+    "name": "process-steward: Which steps can a procedure send work back to after they hav",
+    "predicate_count": 6,
+    "is_answered": true,
+    "witnessed_answer": "Steps.IsBlockingControlOnReworkLoop=7/17; Steps.IsOnReworkLoop=8/17"
   },
   {
     "role_question_id": "q-steward-stalled-change-requests",
@@ -789,7 +815,7 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
     "witnessed_answer": "AgentDecisionRecords.ViolatedAuthorityBoundary=0/3; AuthorityBoundaries.IsCurrentlyBinding=3/3; AuthorityBoundaries.RatifyingFragmentIsValid=2/3",
     "name": "variance-review-agent: Am I operating inside my approved boundary \u2014 or have I made ",
-    "predicate_count": 1,
+    "predicate_count": 9,
     "is_answered": true
   },
   {
@@ -802,7 +828,7 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
     "witnessed_answer": "AgentDecisionRecords.HasHumanConfirmation=3/3; AgentDecisionRecords.IsUnconfirmedNonHumanDecision=0/3; AgentDecisionRecords.NeedsHumanConfirmation=3/3; StepExecutions.HumanConfirmationMissing=0/12; StepExecutions.RequiresHumanConfirmation=3/12",
     "name": "variance-review-agent: close-04's instruction says 'Use AI triage, then apply human",
-    "predicate_count": 3,
+    "predicate_count": 8,
     "is_answered": true
   },
   {
@@ -828,7 +854,7 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
     "witnessed_answer": "RoleAssignments.QualityRegressedVsPredecessor=0/13",
     "name": "variance-review-agent: Since I took over on 2026-04-01, is my triage quality better",
-    "predicate_count": 5,
+    "predicate_count": 7,
     "is_answered": true
   },
   {
@@ -841,7 +867,7 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
     "witnessed_answer": "AuthorityBoundaries.IsUnwarranted=1/3; AuthorityBoundaries.IsUnwarrantedAndUntested=1/3; AuthorityBoundaries.RatifyingFragmentIsOverdue=2/3; AuthorityBoundaries.RatifyingFragmentIsSingleWitness=2/3; AuthorityBoundaries.WarrantIsThin=2/3; Steps.IsGovernedByUnwarrantedBoundary=1/17",
     "name": "knowledge-authority: AuthorityBoundaries.RatifyingFragmentIsValid reads 2 of 3. O",
-    "predicate_count": 2,
+    "predicate_count": 8,
     "is_answered": true
   },
   {
@@ -945,7 +971,7 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
     "witnessed_answer": "ProcedureExecutions.AssuranceChainIsCircular=0/2; ProcedureExecutions.HasAnyIndependentObservation=1/2; VerificationOutcomes.IsIndependentHumanObservation=1/4",
     "name": "cfo: Three of four verification outcomes are self-witnessed and t",
-    "predicate_count": 5,
+    "predicate_count": 8,
     "is_answered": true
   },
   {
@@ -958,8 +984,8 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
     "witnessed_answer": "Attestations.AssuranceGradeHasDrifted=0/0; Attestations.FitnessVerdictHasDrifted=0/0; Attestations.VersionIsFitNow=0/0; Attestations.VersionWasFitAtSigning=0/0; Attestations.WouldNotSurviveRestatement=0/0",
     "name": "cfo: If I re-run every attestation column against this same data ",
-    "predicate_count": 0,
-    "is_answered": false
+    "predicate_count": 11,
+    "is_answered": true
   },
   {
     "role_question_id": "q2-comms-approval-to-delivery-yield",
@@ -971,7 +997,7 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
     "witnessed_answer": "ProcedureExecutions.CampaignSilentlyLostAudience=1/2",
     "name": "communications-manager: I approved a template and authorized a campaign. Of everybod",
-    "predicate_count": 5,
+    "predicate_count": 8,
     "is_answered": true
   },
   {
@@ -984,8 +1010,8 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
     "witnessed_answer": "MessageDeliveries.ApprovalPrecededSend=0/6; MessageDeliveries.HasFrozenApprovalEvidence=0/6; MessageDeliveries.IsUnprovableApprovalClaim=4/6; MessageDeliveries.ProvenanceIsLiveDerived=6/6; MessageDeliveries.TemplateReapprovedSinceSend=4/6",
     "name": "communications-manager: For a message we sent last month, can I still show what I ap",
-    "predicate_count": 0,
-    "is_answered": false
+    "predicate_count": 10,
+    "is_answered": true
   },
   {
     "role_question_id": "q2-comms-message-nobody-answered",
@@ -997,8 +1023,8 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
     "witnessed_answer": "MessageDeliveries.IsPoorlyTimedUnanswered=1/6; MessageDeliveries.IsWellTimedUnanswered=2/6; MessageDeliveries.WasDeliveredAndUnanswered=3/6; MessageDeliveries.WasSentOutsideBusinessHours=1/6; MessageTemplates.TemplateDrawsNoResponse=1/2",
     "name": "communications-manager: One acknowledgement out of six deliveries. Is that because e",
-    "predicate_count": 0,
-    "is_answered": false
+    "predicate_count": 9,
+    "is_answered": true
   },
   {
     "role_question_id": "q2-comms-my-approval-was-consumed-correctly",
@@ -1010,8 +1036,8 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
     "witnessed_answer": "SendIntents.ApproverWasNotified=0/7; SendIntents.IsApprovalOverriddenSilently=2/7; SendIntents.IsUnreportedRefusalOnMyRules=3/7; SendIntents.MyApprovalWasInForce=7/7; SendIntents.RefusalWasOnMyRules=3/7; SendIntents.RefusalWasOutsideMyControl=1/7; SendIntents.RefusedOnApprovedContent=2/7; SendIntents.RefusedOnOptOutOnly=2/7",
     "name": "communications-manager: When the pipeline refused to send, was it refusing on a rule",
-    "predicate_count": 0,
-    "is_answered": false
+    "predicate_count": 8,
+    "is_answered": true
   },
   {
     "role_question_id": "q2-comms-suppression-is-a-communication",
@@ -1023,8 +1049,8 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
     "witnessed_answer": "Recipients.IsCommunicationallyStranded=0/5; SendIntents.AlternateAttemptWasCleared=0/7; SendIntents.ExceptionPrescribedAnAlternative=0/7; SendIntents.HasAlternateChannelAttempt=0/7; SendIntents.IsRefusedWithNoAlternative=4/7; SendIntents.IsSuppressionWithoutRemedy=0/7; SendIntents.PrescribedHandlingWasPerformed=0/7",
     "name": "communications-manager: When we correctly refused to reach somebody, did anyone ever",
-    "predicate_count": 0,
-    "is_answered": false
+    "predicate_count": 8,
+    "is_answered": true
   },
   {
     "role_question_id": "q2-ctl-asserted-controls-by-who",
@@ -1127,7 +1153,7 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
     "witnessed_answer": "StepExecutions.EvidencePositionIsWeak=1/12; VerificationOutcomes.IsSelfWitnessedAndUnbacked=1/4; VerificationOutcomes.IsUncorroboratedPass=1/4; VerificationOutcomes.ObserverIsIndependentOfExecutor=1/4; VerificationOutcomes.ObserverIsNonHuman=1/4",
     "name": "finance-analyst: Three of four verification outcomes in this model are self-w",
-    "predicate_count": 2,
+    "predicate_count": 7,
     "is_answered": true
   },
   {
@@ -1140,7 +1166,7 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
     "witnessed_answer": "BindingObservations.IsAuthoritativeBinding=0/0; BindingObservations.WasStaleAtRun=0/0; StepExecutions.StalenessAnswerIsTenseDependent=2/12; StepExecutions.WasStaleWhenIRanIt=0/12",
     "name": "finance-analyst: Loop 1 told me two of my steps ran on a stale authoritative ",
-    "predicate_count": 3,
+    "predicate_count": 13,
     "is_answered": true
   },
   {
@@ -1218,7 +1244,7 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
     "witnessed_answer": "KnowledgeFragments.IsHighBlastRadiusUnapproved=0/7; KnowledgeFragments.IsLongUnapproved=1/7",
     "name": "hr-policy-owner: Loop 1 found exactly one claim that is mine, unapproved, and",
-    "predicate_count": 7,
+    "predicate_count": 8,
     "is_answered": true
   },
   {
@@ -1231,7 +1257,7 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
     "witnessed_answer": "ProcedureExecutions.SendDecisionsAreEntirelySelfWitnessed=0/2; SendIntents.AllGateInputsResolved=7/7; SendIntents.ConsentInputWasResolvable=7/7; SendIntents.GateResultWasIndependentlyConfirmed=0/7; SendIntents.IsIndependentlyConfirmed=2/7; SendIntents.IsSelfWitnessedDecision=7/7; SendIntents.IsUnevaluableRefusal=0/7; SendIntents.PolicyInputWasResolvable=7/7",
     "name": "notification-publisher: Every gate I evaluate, I evaluate alone, and every result I ",
-    "predicate_count": 2,
+    "predicate_count": 11,
     "is_answered": true
   },
   {
@@ -1244,8 +1270,8 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
     "witnessed_answer": "SendIntents.HasRetryAttempt=0/7; SendIntents.IsAbandonedDeferral=1/7; SendIntents.IsStaleDeferral=0/7; SendIntents.RetryWasCleared=0/7; SendIntents.WasDeferredOnTiming=1/7; SendIntents.WindowHasSinceReopened=1/7",
     "name": "notification-publisher: The timing gate is the only gate whose refusal is temporary ",
-    "predicate_count": 0,
-    "is_answered": false
+    "predicate_count": 8,
+    "is_answered": true
   },
   {
     "role_question_id": "q2-publisher-every-refusal-leaves-a-record",
@@ -1257,7 +1283,7 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
     "witnessed_answer": "ProcedureExecutions.HasUnrecordedRefusals=1/2; SendIntents.HasDurableRefusalRecord=0/7; SendIntents.IsUnescalatedRefusal=4/7; SendIntents.IsUnrecordedRefusal=4/7; SendIntents.RefusalWasEscalated=0/7",
     "name": "notification-publisher: For every intent I refused, did I emit an artifact -- a supp",
-    "predicate_count": 3,
+    "predicate_count": 11,
     "is_answered": true
   },
   {
@@ -1270,7 +1296,7 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
     "witnessed_answer": "RoleAssignments.HasApprovingAuthority=1/13; RoleAssignments.HasAuthorizingChangeRequest=0/13; RoleAssignments.IsEnforcementRole=0/13; RoleAssignments.IsUnauthorizedEnforcementAgent=0/13; Roles.IsUngovernedEnforcementRole=3/12; SendIntents.EnforcedByUnauthorizedAgent=0/7",
     "name": "notification-publisher: I enforce authorization rules on every message I touch. By w",
-    "predicate_count": 8,
+    "predicate_count": 10,
     "is_answered": true
   },
   {
@@ -1283,8 +1309,8 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
     "witnessed_answer": "MessageDeliveries.AcknowledgementIsOutstanding=3/6; MessageDeliveries.HasSentReminder=0/6; MessageDeliveries.IsExhaustedFollowUp=0/6; MessageDeliveries.IsUnchasedAcknowledgement=0/6; MessageDeliveries.NeedsHumanEscalation=0/6",
     "name": "notification-publisher: policy-08 makes me responsible for collecting acknowledgemen",
-    "predicate_count": 0,
-    "is_answered": false
+    "predicate_count": 8,
+    "is_answered": true
   },
   {
     "role_question_id": "q2-steward-approved-cr-never-lands",
@@ -1361,7 +1387,7 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
     "witnessed_answer": "AuthorityBoundaries.BindsDespiteLapsedRatification=0/3; AuthorityBoundaries.IsUngroundedAndUntested=0/3; AuthorityBoundaries.RatificationLapsed=0/3; Roles.IsGovernedByLapsedAuthority=0/12",
     "name": "variance-review-agent: The boundary that constrains what I am allowed to decide is ",
-    "predicate_count": 2,
+    "predicate_count": 7,
     "is_answered": true
   },
   {
@@ -1400,7 +1426,7 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
     "witnessed_answer": "AgentDecisionRecords.IsErrorCorrection=0/3; AgentDecisionRecords.IsReservedJudgmentOverride=0/3; AgentDecisionRecords.IsUnexplainedOverride=1/3; AgentDecisionRecords.OverrideReasonIsRecorded=0/3",
     "name": "variance-review-agent: One of my three decisions was overridden. Was that a correct",
-    "predicate_count": 2,
+    "predicate_count": 8,
     "is_answered": true
   },
   {
@@ -1413,7 +1439,7 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleQuestion",
     "witnessed_answer": "RoleAssignments.ExceedsTolerableErrorRate=0/13; RoleAssignments.HasAnyBoundaryViolation=0/13; RoleAssignments.HasDeclaredSuspensionCondition=0/13; RoleAssignments.HasUngroundedGoverningBoundary=0/13; RoleAssignments.IsOperatingUnderMetSuspensionCondition=0/13; RoleAssignments.SuspensionConditionMet=0/13",
     "name": "variance-review-agent: Every witness in this model detects something after it has h",
-    "predicate_count": 8,
+    "predicate_count": 9,
     "is_answered": true
   }
 ]

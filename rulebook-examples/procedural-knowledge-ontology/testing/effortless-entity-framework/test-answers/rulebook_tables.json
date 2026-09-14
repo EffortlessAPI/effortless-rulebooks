@@ -11,7 +11,7 @@
     "field_count": 18,
     "policy_count": 0,
     "is_unsecured": true,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 1
   },
   {
     "rulebook_table_id": "AccessPolicies",
@@ -67,7 +67,7 @@
     "field_count": 40,
     "policy_count": 2,
     "is_unsecured": false,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 1
   },
   {
     "rulebook_table_id": "Agents",
@@ -109,7 +109,7 @@
     "field_count": 12,
     "policy_count": 2,
     "is_unsecured": false,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 1
   },
   {
     "rulebook_table_id": "AppRouteQuestions",
@@ -207,7 +207,7 @@
     "field_count": 10,
     "policy_count": 0,
     "is_unsecured": true,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 1
   },
   {
     "rulebook_table_id": "ChangeRequests",
@@ -291,7 +291,7 @@
     "field_count": 18,
     "policy_count": 2,
     "is_unsecured": false,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 1
   },
   {
     "rulebook_table_id": "ERBCustomizations",
@@ -417,7 +417,7 @@
     "field_count": 9,
     "policy_count": 0,
     "is_unsecured": true,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 1
   },
   {
     "rulebook_table_id": "FieldDisagreements",
@@ -515,7 +515,7 @@
     "field_count": 80,
     "policy_count": 6,
     "is_unsecured": false,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 1
   },
   {
     "rulebook_table_id": "KnowledgeGaps",
@@ -571,7 +571,7 @@
     "field_count": 94,
     "policy_count": 4,
     "is_unsecured": false,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 1
   },
   {
     "rulebook_table_id": "MessageTemplates",
@@ -655,7 +655,7 @@
     "field_count": 78,
     "policy_count": 5,
     "is_unsecured": false,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 1
   },
   {
     "rulebook_table_id": "ProcedureResources",
@@ -711,7 +711,7 @@
     "field_count": 7,
     "policy_count": 2,
     "is_unsecured": false,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 1
   },
   {
     "rulebook_table_id": "ProcedureVersions",
@@ -722,10 +722,10 @@
     "is_extension": false,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable",
     "name": "ProcedureVersions",
-    "field_count": 86,
+    "field_count": 87,
     "policy_count": 4,
     "is_unsecured": false,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 2
   },
   {
     "rulebook_table_id": "Procedures",
@@ -795,7 +795,7 @@
     "field_count": 46,
     "policy_count": 4,
     "is_unsecured": false,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 1
   },
   {
     "rulebook_table_id": "Requirements",
@@ -851,7 +851,7 @@
     "field_count": 65,
     "policy_count": 2,
     "is_unsecured": false,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 1
   },
   {
     "rulebook_table_id": "RoleQuestions",
@@ -935,7 +935,7 @@
     "field_count": 11,
     "policy_count": 2,
     "is_unsecured": false,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 1
   },
   {
     "rulebook_table_id": "RulebookTables",
@@ -1058,10 +1058,10 @@
     "is_extension": false,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable",
     "name": "StepTransitions",
-    "field_count": 23,
+    "field_count": 28,
     "policy_count": 2,
     "is_unsecured": false,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 1
   },
   {
     "rulebook_table_id": "StepVerifications",
@@ -1086,10 +1086,10 @@
     "is_extension": false,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookTable",
     "name": "Steps",
-    "field_count": 42,
+    "field_count": 54,
     "policy_count": 10,
     "is_unsecured": false,
-    "disagreeing_substrate_count": 0
+    "disagreeing_substrate_count": 2
   },
   {
     "rulebook_table_id": "StewardshipAssignments",

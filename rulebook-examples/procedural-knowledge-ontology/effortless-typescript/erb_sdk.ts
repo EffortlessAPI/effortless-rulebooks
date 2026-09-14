@@ -34,8 +34,10 @@ import {
   anyPlain,
   erbTextOr,
   erbTextNotNull,
-  erbTimestamptzText,
+  erbDatetimeText,
+  erbText,
   erbConcat,
+  erbConfigure,
   erbNeg,
   erbAdd,
   erbSub,
@@ -85,6 +87,11 @@ import {
   loadRows,
 } from "./erb_runtime.js";
 import type { ClosureSpec, FieldType, TableSpec } from "./erb_runtime.js";
+
+/** The ERB build parameters this SDK was generated under
+ *  (docs/ERB-BUILD-PARAMETERS.md). The runtime refuses to run unconfigured. */
+export const erbBuildParameters: Record<string, string> = { "erbDateDiff": "calendar", "erbTimezone": "UTC", "erbDateTimeText": "iso8601", "erbBlankLogic": "coerce", "erbWholeNumber": "by-field-type" };
+erbConfigure(erbBuildParameters);
 
 // =============================================================================
 // RULEBOOKRELEASES TABLE
@@ -136,7 +143,7 @@ const rulebookReleasesFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias for the RulebookReleases row.
  *  Formula: ={{RulebookVersion}} & " / PKO " & {{PkoCoreVersionIri}} */
 export function calcRulebookReleasesName(tc: RulebookReleasesRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.rulebook_version)), vS(" / PKO "), erbTextOr(vStr(tc.pko_core_version_iri))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.rulebook_version)), vS(" / PKO "), erbText(vStr(tc.pko_core_version_iri))));
 }
 
 /** Computes every calculated field of the row in dependency order. */
@@ -192,7 +199,7 @@ const ontologyProfilesFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias for the OntologyProfiles row.
  *  Formula: ={{Label}} & " " & {{Version}} */
 export function calcOntologyProfilesName(tc: OntologyProfilesRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.label)), vS(" "), erbTextOr(vStr(tc.version))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.label)), vS(" "), erbText(vStr(tc.version))));
 }
 
 /** Computes every calculated field of the row in dependency order. */
@@ -245,7 +252,7 @@ const evaluationContextsFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias for the EvaluationContexts row.
  *  Formula: ={{Label}} & " @ " & {{AsOfInstant}} */
 export function calcEvaluationContextsName(tc: EvaluationContextsRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.label)), vS(" @ "), erbTimestamptzText(vStrPlain(tc.as_of_instant))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.label)), vS(" @ "), erbDatetimeText(vStrPlain(tc.as_of_instant))));
 }
 
 /** Computes every calculated field of the row in dependency order. */
@@ -840,7 +847,7 @@ const roleAssignmentsFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias for the RoleAssignments row.
  *  Formula: ={{Role}} & " @ " & {{ValidFrom}} */
 export function calcRoleAssignmentsName(tc: RoleAssignmentsRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.role)), vS(" @ "), erbTimestamptzText(vStr(tc.valid_from))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.role)), vS(" @ "), erbDatetimeText(vStr(tc.valid_from))));
 }
 
 /** Computes the IsCurrent calculated field.
@@ -868,7 +875,7 @@ export function calcRoleAssignmentsIsCurrentlyValid(tc: RoleAssignmentsRow): boo
  *  Composite agent+role key, emitted only for currently-valid assignments.
  *  Formula: =IF({{IsCurrentlyValid}}, {{Agent}} & "|" & {{Role}}, "") */
 export function calcRoleAssignmentsAgentRoleKey(tc: RoleAssignmentsRow): string | null {
-  return toStringPtr(erbIf(erbBool3(vBool(tc.is_currently_valid)), () => erbConcat(erbTextOr(vStr(tc.agent)), vS("|"), erbTextOr(vStr(tc.role))), () => vS("")));
+  return toStringPtr(erbIf(erbBool3(vBool(tc.is_currently_valid)), () => erbConcat(erbText(vStr(tc.agent)), vS("|"), erbText(vStr(tc.role))), () => vS("")));
 }
 
 /** Computes the HasDeparted calculated field.
@@ -1249,7 +1256,7 @@ const mentorshipsFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias for the Mentorships row.
  *  Formula: ={{MentorAgent}} & " -> " & {{LearnerAgent}} */
 export function calcMentorshipsName(tc: MentorshipsRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.mentor_agent)), vS(" -> "), erbTextOr(vStr(tc.learner_agent))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.mentor_agent)), vS(" -> "), erbText(vStr(tc.learner_agent))));
 }
 
 /** Computes every calculated field of the row in dependency order. */
@@ -1553,6 +1560,8 @@ export interface ProcedureVersionsRow {
   drifted_mining_run_count: number | null;
   /** TRUE when mined operational evidence contradicts this live version's documented path. */
   has_unresolved_mining_drift: boolean | null;
+  /** The step this procedure version starts at: the one step no transition leads into. */
+  entry_step_id: string | null;
   /** Exact PKO class IRI. */
   semantic_type_iri: string | null;
   _erb_errors?: Record<string, string>;
@@ -1644,6 +1653,7 @@ const procedureVersionsFieldTypes: Record<string, FieldType> = {
   mining_run_count: "*float64",
   drifted_mining_run_count: "*float64",
   has_unresolved_mining_drift: "*bool",
+  entry_step_id: "*string",
   semantic_type_iri: "*string",
 };
 
@@ -1986,7 +1996,7 @@ const procedureVersionLinksFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias for the ProcedureVersionLinks row.
  *  Formula: ={{PreviousProcedureVersion}} & " -> " & {{NextProcedureVersion}} */
 export function calcProcedureVersionLinksName(tc: ProcedureVersionLinksRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.previous_procedure_version)), vS(" -> "), erbTextOr(vStr(tc.next_procedure_version))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.previous_procedure_version)), vS(" -> "), erbText(vStr(tc.next_procedure_version))));
 }
 
 /** Computes the SupersededVersionKey calculated field.
@@ -2053,7 +2063,7 @@ const procedureStatusChangesFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias for the ProcedureStatusChanges row.
  *  Formula: ={{ProcedureVersion}} & ": " & {{FromStatus}} & " -> " & {{ToStatus}} */
 export function calcProcedureStatusChangesName(tc: ProcedureStatusChangesRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.procedure_version)), vS(": "), erbTextOr(vStr(tc.from_status)), vS(" -> "), erbTextOr(vStr(tc.to_status))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.procedure_version)), vS(": "), erbText(vStr(tc.from_status)), vS(" -> "), erbText(vStr(tc.to_status))));
 }
 
 /** Computes every calculated field of the row in dependency order. */
@@ -2157,6 +2167,30 @@ export interface StepsRow {
   approval_step_is_software_assigned: boolean | null;
   /** How many blocking controls bound to this step have no computed witness. */
   unwitnessed_blocking_count: number | null;
+  /** Number of steps this step can lead to through one or more transitions, including itself when it lies on a rework loop. */
+  reachable_step_count: number | null;
+  /** Number of steps that can lead to this step through one or more transitions, including itself when it lies on a rework loop. */
+  reached_from_step_count: number | null;
+  /** 1 when the closure contains the pair (this step, this step), i.e. some path of one or more transitions returns to this step; otherwise 0. */
+  self_reach_count: number | null;
+  /** The procedure can send work back to this step after it has run: the step lies on a cycle of the step graph. */
+  is_on_rework_loop: boolean | null;
+  /** A step carrying at least one blocking requirement can be re-entered, so that control must hold on every pass, not only the first. */
+  is_blocking_control_on_rework_loop: boolean | null;
+  /** Number of transitions, of any kind, that lead into this step. */
+  incoming_transition_count: number | null;
+  /** No transition leads into this step: the procedure version starts here. */
+  is_entry_step: boolean | null;
+  /** Composite-key echo: this step's id when it is its procedure version's entry step, blank otherwise. */
+  entry_step_key: string | null;
+  /** The entry step of this step's procedure version. */
+  version_entry_step_id: string | null;
+  /** 1 when some route of one or more gate-free transitions leads from the procedure version's entry step to this step; otherwise 0. */
+  gate_free_reach_from_entry_count: number | null;
+  /** Work can arrive at this step from the start of the procedure without passing any human approval gate. */
+  is_reachable_from_entry_without_human_gate: boolean | null;
+  /** A publication step the procedure can reach without human sign-off: the approval gate is structurally bypassable. */
+  is_gate_bypassed_publication: boolean | null;
   /** Exact P-Plan class IRI. */
   semantic_type_iri: string | null;
   _erb_errors?: Record<string, string>;
@@ -2204,6 +2238,18 @@ const stepsFieldTypes: Record<string, FieldType> = {
   undeclared_control_version_key: "*string",
   approval_step_is_software_assigned: "*bool",
   unwitnessed_blocking_count: "*float64",
+  reachable_step_count: "*int",
+  reached_from_step_count: "*int",
+  self_reach_count: "*int",
+  is_on_rework_loop: "*bool",
+  is_blocking_control_on_rework_loop: "*bool",
+  incoming_transition_count: "*int",
+  is_entry_step: "*bool",
+  entry_step_key: "*string",
+  version_entry_step_id: "*string",
+  gate_free_reach_from_entry_count: "*int",
+  is_reachable_from_entry_without_human_gate: "*bool",
+  is_gate_bypassed_publication: "*bool",
   semantic_type_iri: "*string",
 };
 
@@ -2211,7 +2257,7 @@ const stepsFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias for the Steps row.
  *  Formula: ={{StepNumber}} & ". " & {{Title}} */
 export function calcStepsName(tc: StepsRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.step_number)), vS(". "), erbTextOr(vStr(tc.title))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.step_number)), vS(". "), erbText(vStr(tc.title))));
 }
 
 /** Computes the IsPreparationStep calculated field.
@@ -2319,6 +2365,48 @@ export function calcStepsApprovalStepIsSoftwareAssigned(tc: StepsRow): boolean |
   return toBoolPtr(erbAnd(erbBool3(erbEq(erbNullif(vStr(tc.control_kind)), vS("Approval"))), erbBool3(vBool(tc.is_software_assigned))));
 }
 
+/** Computes the IsOnReworkLoop calculated field.
+ *  The procedure can send work back to this step after it has run: the step lies on a cycle of the step graph.
+ *  Formula: ={{SelfReachCount}} > 0 */
+export function calcStepsIsOnReworkLoop(tc: StepsRow): boolean | null {
+  return toBoolPtr(erbCmp(vInt(tc.self_reach_count), ">", vI(0)));
+}
+
+/** Computes the IsBlockingControlOnReworkLoop calculated field.
+ *  A step carrying at least one blocking requirement can be re-entered, so that control must hold on every pass, not only the first.
+ *  Formula: =AND({{IsOnReworkLoop}}, {{BlockingRequirementCount}} > 0) */
+export function calcStepsIsBlockingControlOnReworkLoop(tc: StepsRow): boolean | null {
+  return toBoolPtr(erbAnd(erbBool3(vBool(tc.is_on_rework_loop)), erbBool3(erbCmp(vNum(tc.blocking_requirement_count), ">", vI(0)))));
+}
+
+/** Computes the IsEntryStep calculated field.
+ *  No transition leads into this step: the procedure version starts here.
+ *  Formula: ={{IncomingTransitionCount}} = 0 */
+export function calcStepsIsEntryStep(tc: StepsRow): boolean | null {
+  return toBoolPtr(erbEq(vInt(tc.incoming_transition_count), vI(0)));
+}
+
+/** Computes the EntryStepKey calculated field.
+ *  Composite-key echo: this step's id when it is its procedure version's entry step, blank otherwise.
+ *  Formula: =IF({{IsEntryStep}}, {{StepId}}, "") */
+export function calcStepsEntryStepKey(tc: StepsRow): string | null {
+  return toStringPtr(erbIf(erbBool3(vBool(tc.is_entry_step)), () => vStrPlain(tc.step_id), () => vS("")));
+}
+
+/** Computes the IsReachableFromEntryWithoutHumanGate calculated field.
+ *  Work can arrive at this step from the start of the procedure without passing any human approval gate.
+ *  Formula: ={{GateFreeReachFromEntryCount}} > 0 */
+export function calcStepsIsReachableFromEntryWithoutHumanGate(tc: StepsRow): boolean | null {
+  return toBoolPtr(erbCmp(vInt(tc.gate_free_reach_from_entry_count), ">", vI(0)));
+}
+
+/** Computes the IsGateBypassedPublication calculated field.
+ *  A publication step the procedure can reach without human sign-off: the approval gate is structurally bypassable.
+ *  Formula: =AND({{ControlKind}} = "Publication", {{IsReachableFromEntryWithoutHumanGate}}) */
+export function calcStepsIsGateBypassedPublication(tc: StepsRow): boolean | null {
+  return toBoolPtr(erbAnd(erbBool3(erbEq(erbNullif(vStr(tc.control_kind)), vS("Publication"))), erbBool3(vBool(tc.is_reachable_from_entry_without_human_gate))));
+}
+
 /** Computes every calculated field of the row in dependency order. */
 export function computeSteps(tc: StepsRow): StepsRow {
   // Level 1
@@ -2331,10 +2419,16 @@ export function computeSteps(tc: StepsRow): StepsRow {
   calcGuard(tc, stepsFieldTypes, "is_governed_by_unwarranted_boundary", () => { tc.is_governed_by_unwarranted_boundary = calcStepsIsGovernedByUnwarrantedBoundary(tc); });
   calcGuard(tc, stepsFieldTypes, "has_been_approached_by_software", () => { tc.has_been_approached_by_software = calcStepsHasBeenApproachedBySoftware(tc); });
   calcGuard(tc, stepsFieldTypes, "has_declared_control_kind", () => { tc.has_declared_control_kind = calcStepsHasDeclaredControlKind(tc); });
+  calcGuard(tc, stepsFieldTypes, "is_on_rework_loop", () => { tc.is_on_rework_loop = calcStepsIsOnReworkLoop(tc); });
+  calcGuard(tc, stepsFieldTypes, "is_entry_step", () => { tc.is_entry_step = calcStepsIsEntryStep(tc); });
+  calcGuard(tc, stepsFieldTypes, "is_reachable_from_entry_without_human_gate", () => { tc.is_reachable_from_entry_without_human_gate = calcStepsIsReachableFromEntryWithoutHumanGate(tc); });
   // Level 2
   calcGuard(tc, stepsFieldTypes, "is_human_approval_gate", () => { tc.is_human_approval_gate = calcStepsIsHumanApprovalGate(tc); });
   calcGuard(tc, stepsFieldTypes, "undeclared_control_version_key", () => { tc.undeclared_control_version_key = calcStepsUndeclaredControlVersionKey(tc); });
   calcGuard(tc, stepsFieldTypes, "approval_step_is_software_assigned", () => { tc.approval_step_is_software_assigned = calcStepsApprovalStepIsSoftwareAssigned(tc); });
+  calcGuard(tc, stepsFieldTypes, "is_blocking_control_on_rework_loop", () => { tc.is_blocking_control_on_rework_loop = calcStepsIsBlockingControlOnReworkLoop(tc); });
+  calcGuard(tc, stepsFieldTypes, "entry_step_key", () => { tc.entry_step_key = calcStepsEntryStepKey(tc); });
+  calcGuard(tc, stepsFieldTypes, "is_gate_bypassed_publication", () => { tc.is_gate_bypassed_publication = calcStepsIsGateBypassedPublication(tc); });
   // Level 3
   calcGuard(tc, stepsFieldTypes, "gate_held_by_human", () => { tc.gate_held_by_human = calcStepsGateHeldByHuman(tc); });
   calcGuard(tc, stepsFieldTypes, "is_unexercised_human_gate", () => { tc.is_unexercised_human_gate = calcStepsIsUnexercisedHumanGate(tc); });
@@ -2400,6 +2494,16 @@ export interface StepTransitionsRow {
   is_unrehearsed_control_entry: boolean | null;
   /** Composite-key echo: this transition's procedure version when it is an unrehearsed control entry, blank otherwise. */
   unrehearsed_control_version_key: string | null;
+  /** Transitive closure of the step graph (FromStep -> ToStep over every transition kind), materialized by each substrate as vw_step_transitions_closure: every (from, to) pair a procedure can lead to in one or more transitions. A step that lies on a cycle reaches itself. */
+  leads_to_closure: unknown;
+  /** This transition leaves a human approval gate. */
+  from_step_is_human_approval_gate: boolean | null;
+  /** This transition enters a human approval gate. */
+  to_step_is_human_approval_gate: boolean | null;
+  /** Neither end of this transition is a human approval gate, so a route made only of such transitions never passes a gate. */
+  avoids_human_approval_gate: boolean | null;
+  /** Transitive closure of the step graph over only the transitions that avoid every human approval gate, materialized as vw_step_transitions_closure_where_avoids_human_approval_gate: every (from, to) pair a procedure can reach without passing a gate. */
+  leads_without_human_gate_closure: unknown;
   /** Exact PKO class IRI. */
   semantic_type_iri: string | null;
   _erb_errors?: Record<string, string>;
@@ -2428,6 +2532,11 @@ const stepTransitionsFieldTypes: Record<string, FieldType> = {
   target_carries_blocking_control: "*bool",
   is_unrehearsed_control_entry: "*bool",
   unrehearsed_control_version_key: "*string",
+  leads_to_closure: "any",
+  from_step_is_human_approval_gate: "*bool",
+  to_step_is_human_approval_gate: "*bool",
+  avoids_human_approval_gate: "*bool",
+  leads_without_human_gate_closure: "any",
   semantic_type_iri: "*string",
 };
 
@@ -2435,7 +2544,7 @@ const stepTransitionsFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias for the StepTransitions row.
  *  Formula: ={{FromStep}} & " -> " & {{ToStep}} */
 export function calcStepTransitionsName(tc: StepTransitionsRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.from_step)), vS(" -> "), erbTextOr(vStr(tc.to_step))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.from_step)), vS(" -> "), erbText(vStr(tc.to_step))));
 }
 
 /** Computes the IsRecoveryPath calculated field.
@@ -2508,6 +2617,13 @@ export function calcStepTransitionsUnrehearsedControlVersionKey(tc: StepTransiti
   return toStringPtr(erbIf(erbBool3(vBool(tc.is_unrehearsed_control_entry)), () => vStr(tc.procedure_version), () => vS("")));
 }
 
+/** Computes the AvoidsHumanApprovalGate calculated field.
+ *  Neither end of this transition is a human approval gate, so a route made only of such transitions never passes a gate.
+ *  Formula: =AND(NOT({{FromStepIsHumanApprovalGate}}), NOT({{ToStepIsHumanApprovalGate}})) */
+export function calcStepTransitionsAvoidsHumanApprovalGate(tc: StepTransitionsRow): boolean | null {
+  return toBoolPtr(erbAnd(erbBool3(erbNot(erbBool3(vBool(tc.from_step_is_human_approval_gate)))), erbBool3(erbNot(erbBool3(vBool(tc.to_step_is_human_approval_gate))))));
+}
+
 /** Computes every calculated field of the row in dependency order. */
 export function computeStepTransitions(tc: StepTransitionsRow): StepTransitionsRow {
   // Level 1
@@ -2517,6 +2633,7 @@ export function computeStepTransitions(tc: StepTransitionsRow): StepTransitionsR
   calcGuard(tc, stepTransitionsFieldTypes, "has_reachable_target", () => { tc.has_reachable_target = calcStepTransitionsHasReachableTarget(tc); });
   calcGuard(tc, stepTransitionsFieldTypes, "has_been_traversed", () => { tc.has_been_traversed = calcStepTransitionsHasBeenTraversed(tc); });
   calcGuard(tc, stepTransitionsFieldTypes, "target_carries_blocking_control", () => { tc.target_carries_blocking_control = calcStepTransitionsTargetCarriesBlockingControl(tc); });
+  calcGuard(tc, stepTransitionsFieldTypes, "avoids_human_approval_gate", () => { tc.avoids_human_approval_gate = calcStepTransitionsAvoidsHumanApprovalGate(tc); });
   // Level 2
   calcGuard(tc, stepTransitionsFieldTypes, "is_never_exercised", () => { tc.is_never_exercised = calcStepTransitionsIsNeverExercised(tc); });
   calcGuard(tc, stepTransitionsFieldTypes, "is_unwalked_recovery_path", () => { tc.is_unwalked_recovery_path = calcStepTransitionsIsUnwalkedRecoveryPath(tc); });
@@ -2706,7 +2823,7 @@ const stepActionsFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias for the StepActions row.
  *  Formula: ={{Step}} & " / " & {{Action}} */
 export function calcStepActionsName(tc: StepActionsRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.step)), vS(" / "), erbTextOr(vStr(tc.action))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.step)), vS(" / "), erbText(vStr(tc.action))));
 }
 
 /** Computes every calculated field of the row in dependency order. */
@@ -2750,7 +2867,7 @@ const stepFunctionsFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias for the StepFunctions row.
  *  Formula: ={{Step}} & " / " & {{Function}} */
 export function calcStepFunctionsName(tc: StepFunctionsRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.step)), vS(" / "), erbTextOr(vStr(tc.function))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.step)), vS(" / "), erbText(vStr(tc.function))));
 }
 
 /** Computes every calculated field of the row in dependency order. */
@@ -2794,7 +2911,7 @@ const stepToolsFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias for the StepTools row.
  *  Formula: ={{Step}} & " / " & {{Tool}} */
 export function calcStepToolsName(tc: StepToolsRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.step)), vS(" / "), erbTextOr(vStr(tc.tool))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.step)), vS(" / "), erbText(vStr(tc.tool))));
 }
 
 /** Computes every calculated field of the row in dependency order. */
@@ -3220,7 +3337,7 @@ const stepRequirementsFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias for the StepRequirements row.
  *  Formula: ={{Step}} & " / " & {{Requirement}} */
 export function calcStepRequirementsName(tc: StepRequirementsRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.step)), vS(" / "), erbTextOr(vStr(tc.requirement))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.step)), vS(" / "), erbText(vStr(tc.requirement))));
 }
 
 /** Computes the BlockingStepKey calculated field.
@@ -3326,7 +3443,7 @@ const stepVerificationsFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias for the StepVerifications row.
  *  Formula: ={{Step}} & " / " & {{VerificationKind}} */
 export function calcStepVerificationsName(tc: StepVerificationsRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.step)), vS(" / "), erbTextOr(vStr(tc.verification_kind))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.step)), vS(" / "), erbText(vStr(tc.verification_kind))));
 }
 
 /** Computes every calculated field of the row in dependency order. */
@@ -3581,7 +3698,7 @@ const procedureResourcesFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias for the ProcedureResources row.
  *  Formula: ={{ProcedureVersion}} & " / " & {{Resource}} */
 export function calcProcedureResourcesName(tc: ProcedureResourcesRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.procedure_version)), vS(" / "), erbTextOr(vStr(tc.resource))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.procedure_version)), vS(" / "), erbText(vStr(tc.resource))));
 }
 
 /** Computes the RelationIri calculated field.
@@ -3684,7 +3801,7 @@ const elicitationSessionsFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias for the ElicitationSessions row.
  *  Formula: ={{Method}} & " / " & {{StartedAt}} */
 export function calcElicitationSessionsName(tc: ElicitationSessionsRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.method)), vS(" / "), erbTimestamptzText(vStr(tc.started_at))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.method)), vS(" / "), erbDatetimeText(vStr(tc.started_at))));
 }
 
 /** Computes the DaysSinceElicited calculated field.
@@ -4006,7 +4123,7 @@ const knowledgeFragmentsFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias for the KnowledgeFragments row.
  *  Formula: ={{KnowledgeForm}} & ": " & LEFT({{Statement}}, 60) */
 export function calcKnowledgeFragmentsName(tc: KnowledgeFragmentsRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.knowledge_form)), vS(": "), erbTextNotNull(erbLeft(vStr(tc.statement), vI(60)))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.knowledge_form)), vS(": "), erbText(erbLeft(vStr(tc.statement), vI(60)))));
 }
 
 /** Computes the IsCurrentlyValid calculated field.
@@ -4502,7 +4619,7 @@ const knowledgeGapsFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias for the KnowledgeGaps row.
  *  Formula: ={{Severity}} & ": " & LEFT({{Statement}}, 60) */
 export function calcKnowledgeGapsName(tc: KnowledgeGapsRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.severity)), vS(": "), erbTextNotNull(erbLeft(vStr(tc.statement), vI(60)))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.severity)), vS(": "), erbText(erbLeft(vStr(tc.statement), vI(60)))));
 }
 
 /** Computes the IsOpen calculated field.
@@ -4971,7 +5088,7 @@ const procedureExecutionsFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias for the ProcedureExecutions row.
  *  Formula: ={{ProcedureVersion}} & " / " & {{Context}} */
 export function calcProcedureExecutionsName(tc: ProcedureExecutionsRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.procedure_version)), vS(" / "), erbTextOr(vStr(tc.context))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.procedure_version)), vS(" / "), erbText(vStr(tc.context))));
 }
 
 /** Computes the IsStructurallyComplete calculated field.
@@ -5597,7 +5714,7 @@ const stepExecutionsFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias for the StepExecutions row.
  *  Formula: ={{ProcedureExecution}} & " / " & {{Step}} */
 export function calcStepExecutionsName(tc: StepExecutionsRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.procedure_execution)), vS(" / "), erbTextOr(vStr(tc.step))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.procedure_execution)), vS(" / "), erbText(vStr(tc.step))));
 }
 
 /** Computes the ActualDurationMinutes calculated field.
@@ -5688,14 +5805,14 @@ export function calcStepExecutionsClaimsPassWithoutEvidence(tc: StepExecutionsRo
  *  Composite execution+agent key, emitted only for preparation steps.
  *  Formula: =IF({{StepIsPreparation}}, {{ProcedureExecution}} & "|" & {{ExecutedByAgent}}, "") */
 export function calcStepExecutionsPreparerAgentKey(tc: StepExecutionsRow): string | null {
-  return toStringPtr(erbIf(erbBool3(vBool(tc.step_is_preparation)), () => erbConcat(erbTextOr(vStr(tc.procedure_execution)), vS("|"), erbTextOr(vStr(tc.executed_by_agent))), () => vS("")));
+  return toStringPtr(erbIf(erbBool3(vBool(tc.step_is_preparation)), () => erbConcat(erbText(vStr(tc.procedure_execution)), vS("|"), erbText(vStr(tc.executed_by_agent))), () => vS("")));
 }
 
 /** Computes the ApproverAgentKey calculated field.
  *  Composite execution+agent key, emitted only for approval steps.
  *  Formula: =IF({{StepIsApproval}}, {{ProcedureExecution}} & "|" & {{ExecutedByAgent}}, "") */
 export function calcStepExecutionsApproverAgentKey(tc: StepExecutionsRow): string | null {
-  return toStringPtr(erbIf(erbBool3(vBool(tc.step_is_approval)), () => erbConcat(erbTextOr(vStr(tc.procedure_execution)), vS("|"), erbTextOr(vStr(tc.executed_by_agent))), () => vS("")));
+  return toStringPtr(erbIf(erbBool3(vBool(tc.step_is_approval)), () => erbConcat(erbText(vStr(tc.procedure_execution)), vS("|"), erbText(vStr(tc.executed_by_agent))), () => vS("")));
 }
 
 /** Computes the ViolatesSeparationOfDuties calculated field.
@@ -5709,7 +5826,7 @@ export function calcStepExecutionsViolatesSeparationOfDuties(tc: StepExecutionsR
  *  The agent+role pair that would need to exist as a valid assignment for this execution to be properly authorized.
  *  Formula: ={{ExecutedByAgent}} & "|" & {{RequiredRoleForStep}} */
 export function calcStepExecutionsExecutorRoleKey(tc: StepExecutionsRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.executed_by_agent)), vS("|"), erbTextOr(vStr(tc.required_role_for_step))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.executed_by_agent)), vS("|"), erbText(vStr(tc.required_role_for_step))));
 }
 
 /** Computes the ExecutorHeldRequiredRole calculated field.
@@ -6259,7 +6376,7 @@ const requirementSatisfactionsFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias for the RequirementSatisfactions row.
  *  Formula: ={{Requirement}} & " / " & {{SatisfactionLevel}} */
 export function calcRequirementSatisfactionsName(tc: RequirementSatisfactionsRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.requirement)), vS(" / "), erbTextOr(vStr(tc.satisfaction_level))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.requirement)), vS(" / "), erbText(vStr(tc.satisfaction_level))));
 }
 
 /** Computes the IsFullySatisfied calculated field.
@@ -6504,7 +6621,7 @@ const errorsFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias for the Errors row.
  *  Formula: ={{ErrorCode}} & " - " & {{Label}} */
 export function calcErrorsName(tc: ErrorsRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.error_code)), vS(" - "), erbTextOr(vStr(tc.label))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.error_code)), vS(" - "), erbText(vStr(tc.label))));
 }
 
 /** Computes every calculated field of the row in dependency order. */
@@ -6572,7 +6689,7 @@ const issueOccurrencesFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias for the IssueOccurrences row.
  *  Formula: ={{Error}} & " @ " & {{OccurredAt}} */
 export function calcIssueOccurrencesName(tc: IssueOccurrencesRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.error)), vS(" @ "), erbTimestamptzText(vStr(tc.occurred_at))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.error)), vS(" @ "), erbDatetimeText(vStr(tc.occurred_at))));
 }
 
 /** Computes the IsUnresolved calculated field.
@@ -6710,7 +6827,7 @@ const userFeedbackFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias for the UserFeedback row.
  *  Formula: ={{Disposition}} & ": " & LEFT({{FeedbackText}}, 60) */
 export function calcUserFeedbackName(tc: UserFeedbackRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.disposition)), vS(": "), erbTextNotNull(erbLeft(vStr(tc.feedback_text), vI(60)))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.disposition)), vS(": "), erbText(erbLeft(vStr(tc.feedback_text), vI(60)))));
 }
 
 /** Computes every calculated field of the row in dependency order. */
@@ -6784,7 +6901,7 @@ const stewardshipAssignmentsFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias for the StewardshipAssignments row.
  *  Formula: ={{ProcedureVersion}} & " / steward=" & {{StewardRole}} */
 export function calcStewardshipAssignmentsName(tc: StewardshipAssignmentsRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.procedure_version)), vS(" / steward="), erbTextOr(vStr(tc.steward_role))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.procedure_version)), vS(" / steward="), erbText(vStr(tc.steward_role))));
 }
 
 /** Computes the HasEverBeenReviewed calculated field.
@@ -7280,7 +7397,7 @@ const reviewEventsFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias for the ReviewEvents row.
  *  Formula: ={{ProcedureVersion}} & " / " & {{ReviewKind}} */
 export function calcReviewEventsName(tc: ReviewEventsRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.procedure_version)), vS(" / "), erbTextOr(vStr(tc.review_kind))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.procedure_version)), vS(" / "), erbText(vStr(tc.review_kind))));
 }
 
 /** Computes the IsOverdue calculated field.
@@ -7400,7 +7517,7 @@ const learningActivitiesFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias for the LearningActivities row.
  *  Formula: ={{ActivityKind}} & " / " & {{OccurredAt}} */
 export function calcLearningActivitiesName(tc: LearningActivitiesRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.activity_kind)), vS(" / "), erbTimestamptzText(vStr(tc.occurred_at))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.activity_kind)), vS(" / "), erbDatetimeText(vStr(tc.occurred_at))));
 }
 
 /** Computes every calculated field of the row in dependency order. */
@@ -7498,7 +7615,7 @@ const operationalBindingsFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias for the OperationalBindings row.
  *  Formula: ={{Step}} & " / " & {{RecordOrSchemaKey}} */
 export function calcOperationalBindingsName(tc: OperationalBindingsRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.step)), vS(" / "), erbTextOr(vStr(tc.record_or_schema_key))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.step)), vS(" / "), erbText(vStr(tc.record_or_schema_key))));
 }
 
 /** Computes the AgeMinutes calculated field.
@@ -7663,7 +7780,7 @@ const communicationPoliciesFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias for the CommunicationPolicies row.
  *  Formula: ={{Channel}} & " policy / " & {{ProcedureVersion}} */
 export function calcCommunicationPoliciesName(tc: CommunicationPoliciesRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.channel)), vS(" policy / "), erbTextOr(vStr(tc.procedure_version))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.channel)), vS(" policy / "), erbText(vStr(tc.procedure_version))));
 }
 
 /** Computes the IsActivePolicy calculated field.
@@ -7781,7 +7898,7 @@ const messageTemplatesFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias for the MessageTemplates row.
  *  Formula: ={{CommunicationPolicy}} & " / " & {{Locale}} */
 export function calcMessageTemplatesName(tc: MessageTemplatesRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.communication_policy)), vS(" / "), erbTextOr(vStr(tc.locale))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.communication_policy)), vS(" / "), erbText(vStr(tc.locale))));
 }
 
 /** Computes the BodyTemplateLength calculated field.
@@ -7894,7 +8011,7 @@ const semanticMappingsFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias for the SemanticMappings row.
  *  Formula: ={{SourcePath}} & " -> " & {{TargetIri}} */
 export function calcSemanticMappingsName(tc: SemanticMappingsRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.source_path)), vS(" -> "), erbTextOr(vStr(tc.target_iri))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.source_path)), vS(" -> "), erbText(vStr(tc.target_iri))));
 }
 
 /** Computes every calculated field of the row in dependency order. */
@@ -7965,7 +8082,7 @@ const witnessLoopsFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias for the WitnessLoops row.
  *  Formula: ="Loop " & {{LoopNumber}} & ": " & {{Title}} */
 export function calcWitnessLoopsName(tc: WitnessLoopsRow): string | null {
-  return toStringPtr(erbConcat(vS("Loop "), erbTextOr(vNumPlain(tc.loop_number)), vS(": "), erbTextOr(vStr(tc.title))));
+  return toStringPtr(erbConcat(vS("Loop "), erbText(vNumPlain(tc.loop_number)), vS(": "), erbText(vStr(tc.title))));
 }
 
 /** Computes the IsComplete calculated field.
@@ -8038,7 +8155,7 @@ const roleQuestionsFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias for the RoleQuestions row.
  *  Formula: ={{AskingRole}} & ": " & LEFT({{QuestionText}}, 60) */
 export function calcRoleQuestionsName(tc: RoleQuestionsRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.asking_role)), vS(": "), erbTextNotNull(erbLeft(vStr(tc.question_text), vI(60)))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.asking_role)), vS(": "), erbText(erbLeft(vStr(tc.question_text), vI(60)))));
 }
 
 /** Computes the IsAnswered calculated field.
@@ -8117,7 +8234,7 @@ const rulebookFieldsFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias for the RulebookFields row.
  *  Formula: ={{TargetTable}} & "." & {{FieldName}} */
 export function calcRulebookFieldsName(tc: RulebookFieldsRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.target_table)), vS("."), erbTextOr(vStr(tc.field_name))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.target_table)), vS("."), erbText(vStr(tc.field_name))));
 }
 
 /** Computes the IsDerived calculated field.
@@ -8297,7 +8414,7 @@ const testCasesFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias for the TestCases row.
  *  Formula: ={{TestKind}} & ": " & {{Subject}} */
 export function calcTestCasesName(tc: TestCasesRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.test_kind)), vS(": "), erbTextOr(vStr(tc.subject))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.test_kind)), vS(": "), erbText(vStr(tc.subject))));
 }
 
 /** Computes the IsBlocking calculated field.
@@ -8574,7 +8691,7 @@ const exceptionInvocationsFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias.
  *  Formula: ={{StepExecution}} & " / " & {{Exception}} */
 export function calcExceptionInvocationsName(tc: ExceptionInvocationsRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.step_execution)), vS(" / "), erbTextOr(vStr(tc.exception))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.step_execution)), vS(" / "), erbText(vStr(tc.exception))));
 }
 
 /** Computes the ApprovalRoleMatches calculated field.
@@ -8602,7 +8719,7 @@ export function calcExceptionInvocationsIsImproperlyApproved(tc: ExceptionInvoca
  *  Composite execution+approver key, in the same key space as StepExecutions.PreparerAgentKey.
  *  Formula: ={{ParentProcedureExecution}} & "|" & {{ApprovedByAgent}} */
 export function calcExceptionInvocationsInvokerAlsoPreparedKey(tc: ExceptionInvocationsRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.parent_procedure_execution)), vS("|"), erbTextOr(vStr(tc.approved_by_agent))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.parent_procedure_execution)), vS("|"), erbText(vStr(tc.approved_by_agent))));
 }
 
 /** Computes the DelegatedToPreparer calculated field.
@@ -8734,7 +8851,7 @@ const verificationOutcomesFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias.
  *  Formula: ={{StepExecution}} & " / " & {{StepVerification}} */
 export function calcVerificationOutcomesName(tc: VerificationOutcomesRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.step_execution)), vS(" / "), erbTextOr(vStr(tc.step_verification))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.step_execution)), vS(" / "), erbText(vStr(tc.step_verification))));
 }
 
 /** Computes the SignalMatchesExpected calculated field.
@@ -8889,7 +9006,7 @@ const observedTransitionsFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias.
  *  Formula: ={{StepTransition}} & " @ " & {{ObservedAt}} */
 export function calcObservedTransitionsName(tc: ObservedTransitionsRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStrPlain(tc.step_transition)), vS(" @ "), erbTimestamptzText(vStr(tc.observed_at))));
+  return toStringPtr(erbConcat(erbText(vStrPlain(tc.step_transition)), vS(" @ "), erbDatetimeText(vStr(tc.observed_at))));
 }
 
 /** Computes every calculated field of the row in dependency order. */
@@ -9321,7 +9438,7 @@ const messageDeliveriesFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias for the MessageDeliveries row.
  *  Formula: ={{Recipient}} & " / " & {{MessageTemplate}} & " / " & {{SentAt}} */
 export function calcMessageDeliveriesName(tc: MessageDeliveriesRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.recipient)), vS(" / "), erbTextOr(vStr(tc.message_template)), vS(" / "), erbTimestamptzText(vStr(tc.sent_at))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.recipient)), vS(" / "), erbText(vStr(tc.message_template)), vS(" / "), erbDatetimeText(vStr(tc.sent_at))));
 }
 
 /** Computes the WasActuallyTransmitted calculated field.
@@ -9843,7 +9960,7 @@ const templateApprovalsFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias for the TemplateApprovals row.
  *  Formula: ={{MessageTemplate}} & " / " & {{Decision}} & " / " & {{DecidedAt}} */
 export function calcTemplateApprovalsName(tc: TemplateApprovalsRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.message_template)), vS(" / "), erbTextOr(vStr(tc.decision)), vS(" / "), erbTimestamptzText(vStr(tc.decided_at))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.message_template)), vS(" / "), erbText(vStr(tc.decision)), vS(" / "), erbDatetimeText(vStr(tc.decided_at))));
 }
 
 /** Computes the IsApprovalDecision calculated field.
@@ -10200,7 +10317,7 @@ const sendIntentsFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias for the SendIntents row.
  *  Formula: ={{Recipient}} & " / " & {{MessageTemplate}} & " / intent" */
 export function calcSendIntentsName(tc: SendIntentsRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.recipient)), vS(" / "), erbTextOr(vStr(tc.message_template)), vS(" / intent")));
+  return toStringPtr(erbConcat(erbText(vStr(tc.recipient)), vS(" / "), erbText(vStr(tc.message_template)), vS(" / intent")));
 }
 
 /** Computes the ConsentGatePassed calculated field.
@@ -10798,7 +10915,7 @@ const agentDecisionRecordsFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias for the AgentDecisionRecords row.
  *  Formula: ={{DecidingAgent}} & ": " & LEFT({{DecisionSummary}}, 60) */
 export function calcAgentDecisionRecordsName(tc: AgentDecisionRecordsRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.deciding_agent)), vS(": "), erbTextNotNull(erbLeft(vStr(tc.decision_summary), vI(60)))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.deciding_agent)), vS(": "), erbText(erbLeft(vStr(tc.decision_summary), vI(60)))));
 }
 
 /** Computes the WasOverridden calculated field.
@@ -10840,7 +10957,7 @@ export function calcAgentDecisionRecordsRoleAssignmentWhenOverridden(tc: AgentDe
  *  Composite key of step, deciding agent kind, and decision kind for this decision.
  *  Formula: ={{StepOfDecision}} & "|" & {{DecidingAgentKind}} & "|" & {{DecisionKind}} */
 export function calcAgentDecisionRecordsBoundaryMatchKey(tc: AgentDecisionRecordsRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.step_of_decision)), vS("|"), erbTextOr(vStr(tc.deciding_agent_kind)), vS("|"), erbTextOr(vStr(tc.decision_kind))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.step_of_decision)), vS("|"), erbText(vStr(tc.deciding_agent_kind)), vS("|"), erbText(vStr(tc.decision_kind))));
 }
 
 /** Computes the ViolatedAuthorityBoundary calculated field.
@@ -11062,7 +11179,7 @@ const deliveredCommunicationsFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias.
  *  Formula: ={{Channel}} & " -> " & {{RecipientKey}} & " @ " & {{SentAt}} */
 export function calcDeliveredCommunicationsName(tc: DeliveredCommunicationsRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.channel)), vS(" -> "), erbTextOr(vStr(tc.recipient_key)), vS(" @ "), erbTimestamptzText(vStr(tc.sent_at))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.channel)), vS(" -> "), erbText(vStr(tc.recipient_key)), vS(" @ "), erbDatetimeText(vStr(tc.sent_at))));
 }
 
 /** Computes the HasAuthorization calculated field.
@@ -11226,7 +11343,7 @@ const authorityBoundariesFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias for the AuthorityBoundaries row.
  *  Formula: ={{ForbiddenAgentKind}} & " may not " & {{ForbiddenDecisionKind}} */
 export function calcAuthorityBoundariesName(tc: AuthorityBoundariesRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.forbidden_agent_kind)), vS(" may not "), erbTextOr(vStr(tc.forbidden_decision_kind))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.forbidden_agent_kind)), vS(" may not "), erbText(vStr(tc.forbidden_decision_kind))));
 }
 
 /** Computes the IsCurrentlyBinding calculated field.
@@ -11247,7 +11364,7 @@ export function calcAuthorityBoundariesStepWhenBinding(tc: AuthorityBoundariesRo
  *  Composite key of step, forbidden agent kind, and forbidden decision kind.
  *  Formula: ={{Step}} & "|" & {{ForbiddenAgentKind}} & "|" & {{ForbiddenDecisionKind}} */
 export function calcAuthorityBoundariesBoundaryMatchKey(tc: AuthorityBoundariesRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.step)), vS("|"), erbTextOr(vStr(tc.forbidden_agent_kind)), vS("|"), erbTextOr(vStr(tc.forbidden_decision_kind))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.step)), vS("|"), erbText(vStr(tc.forbidden_agent_kind)), vS("|"), erbText(vStr(tc.forbidden_decision_kind))));
 }
 
 /** Computes the IsUntested calculated field.
@@ -11406,7 +11523,7 @@ const bindingObservationsFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias for the BindingObservations row.
  *  Formula: ={{StepExecution}} & " / " & {{BindingObservationId}} */
 export function calcBindingObservationsName(tc: BindingObservationsRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.step_execution)), vS(" / "), erbTextOr(vStrPlain(tc.binding_observation_id))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.step_execution)), vS(" / "), erbText(vStrPlain(tc.binding_observation_id))));
 }
 
 /** Computes the AgeAtRunMinutes calculated field.
@@ -11500,7 +11617,7 @@ const attestationsFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias for the Attestations row.
  *  Formula: ={{ProcedureExecution}} & " / " & {{AttestationId}} */
 export function calcAttestationsName(tc: AttestationsRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.procedure_execution)), vS(" / "), erbTextOr(vStrPlain(tc.attestation_id))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.procedure_execution)), vS(" / "), erbText(vStrPlain(tc.attestation_id))));
 }
 
 /** Computes the FitnessVerdictHasDrifted calculated field.
@@ -11593,7 +11710,7 @@ const appRoleProfilesFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias for the AppRoleProfiles row.
  *  Formula: ={{DisplayLabel}} & " (" & {{RoleKind}} & ")" */
 export function calcAppRoleProfilesName(tc: AppRoleProfilesRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.display_label)), vS(" ("), erbTextOr(vStr(tc.role_kind)), vS(")")));
+  return toStringPtr(erbConcat(erbText(vStr(tc.display_label)), vS(" ("), erbText(vStr(tc.role_kind)), vS(")")));
 }
 
 /** Computes every calculated field of the row in dependency order. */
@@ -11726,7 +11843,7 @@ const appRoutesFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias for the AppRoutes row.
  *  Formula: ={{RouteName}} & " — " & {{RoutePath}} */
 export function calcAppRoutesName(tc: AppRoutesRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.route_name)), vS(" — "), erbTextOr(vStrPlain(tc.route_path))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.route_name)), vS(" — "), erbText(vStrPlain(tc.route_path))));
 }
 
 /** Computes the IsInNav calculated field.
@@ -11806,7 +11923,7 @@ const appRouteQuestionsFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias for the AppRouteQuestions row.
  *  Formula: ={{Route}} & " answers " & {{Question}} */
 export function calcAppRouteQuestionsName(tc: AppRouteQuestionsRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.route)), vS(" answers "), erbTextOr(vStr(tc.question))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.route)), vS(" answers "), erbText(vStr(tc.question))));
 }
 
 /** Computes every calculated field of the row in dependency order. */
@@ -11853,7 +11970,7 @@ const appRouteReferencesFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias for the AppRouteReferences row.
  *  Formula: ={{FromRoute}} & " -> " & {{ToRoute}} */
 export function calcAppRouteReferencesName(tc: AppRouteReferencesRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.from_route)), vS(" -> "), erbTextOr(vStr(tc.to_route))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.from_route)), vS(" -> "), erbText(vStr(tc.to_route))));
 }
 
 /** Computes every calculated field of the row in dependency order. */
@@ -12102,7 +12219,7 @@ const accessPoliciesFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias.
  *  Formula: ={{Principal}} & " " & {{Command}} & " " & {{TargetTable}} */
 export function calcAccessPoliciesName(tc: AccessPoliciesRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.principal)), vS(" "), erbTextOr(vStr(tc.command)), vS(" "), erbTextOr(vStr(tc.target_table))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.principal)), vS(" "), erbText(vStr(tc.command)), vS(" "), erbText(vStr(tc.target_table))));
 }
 
 /** Computes the IsWriteCommand calculated field.
@@ -12209,7 +12326,7 @@ const fieldGrantsFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias.
  *  Formula: ={{Principal}} & " -> " & {{TargetField}} */
 export function calcFieldGrantsName(tc: FieldGrantsRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.principal)), vS(" -> "), erbTextOr(vStr(tc.target_field))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.principal)), vS(" -> "), erbText(vStr(tc.target_field))));
 }
 
 /** Computes the IsWritableDerivedField calculated field.
@@ -12230,7 +12347,7 @@ export function calcFieldGrantsIsMasked(tc: FieldGrantsRow): boolean | null {
  *  Composite echo of principal and table, blank unless readable. Enables single-criterion COUNTIFS rollups of readable columns per principal per table, per the documented multi-criteria COUNTIFS defect.
  *  Formula: =IF({{CanRead}}, {{Principal}} & "|" & {{FieldTable}}, "") */
 export function calcFieldGrantsGrantKeyWhenReadable(tc: FieldGrantsRow): string | null {
-  return toStringPtr(erbIf(erbIsTrue(vBool(tc.can_read)), () => erbConcat(erbTextOr(vStr(tc.principal)), vS("|"), erbTextOr(vStr(tc.field_table))), () => vS("")));
+  return toStringPtr(erbIf(erbIsTrue(vBool(tc.can_read)), () => erbConcat(erbText(vStr(tc.principal)), vS("|"), erbText(vStr(tc.field_table))), () => vS("")));
 }
 
 /** Computes every calculated field of the row in dependency order. */
@@ -12382,14 +12499,14 @@ const roleSchemaViewsFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias.
  *  Formula: ={{SchemaName}} & "." & {{ViewName}} */
 export function calcRoleSchemaViewsName(tc: RoleSchemaViewsRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.schema_name)), vS("."), erbTextOr(vStr(tc.view_name))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.schema_name)), vS("."), erbText(vStr(tc.view_name))));
 }
 
 /** Computes the GrantKey calculated field.
  *  Composite key matching FieldGrants.GrantKeyWhenReadable, used to roll up this view's readable column count.
  *  Formula: ={{Principal}} & "|" & {{TargetTable}} */
 export function calcRoleSchemaViewsGrantKey(tc: RoleSchemaViewsRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.principal)), vS("|"), erbTextOr(vStr(tc.target_table))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.principal)), vS("|"), erbText(vStr(tc.target_table))));
 }
 
 /** Computes the IsFullWidth calculated field.
@@ -12465,7 +12582,7 @@ const jwtClaimMappingsFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias.
  *  Formula: ={{ClaimName}} & " -> " & {{SqlAccessor}} */
 export function calcJwtClaimMappingsName(tc: JwtClaimMappingsRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.claim_name)), vS(" -> "), erbTextOr(vStr(tc.sql_accessor))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.claim_name)), vS(" -> "), erbText(vStr(tc.sql_accessor))));
 }
 
 /** Computes every calculated field of the row in dependency order. */
@@ -12551,7 +12668,7 @@ const accessDenialTestsFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias.
  *  Formula: ={{Principal}} & " must not see " & {{ForbiddenRowId}} */
 export function calcAccessDenialTestsName(tc: AccessDenialTestsRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.principal)), vS(" must not see "), erbTextOr(vStr(tc.forbidden_row_id))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.principal)), vS(" must not see "), erbText(vStr(tc.forbidden_row_id))));
 }
 
 /** Computes the HasRun calculated field.
@@ -12752,7 +12869,7 @@ const principalAssignmentsFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias.
  *  Formula: ={{AppUser}} & " as " & {{Principal}} */
 export function calcPrincipalAssignmentsName(tc: PrincipalAssignmentsRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.app_user)), vS(" as "), erbTextOr(vStr(tc.principal))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.app_user)), vS(" as "), erbText(vStr(tc.principal))));
 }
 
 /** Computes the IsCrossOrganizationGrant calculated field.
@@ -12825,7 +12942,7 @@ const issuedTokensFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias.
  *  Formula: ={{AppUser}} & " as " & {{Principal}} & " @ " & {{IssuedAt}} */
 export function calcIssuedTokensName(tc: IssuedTokensRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.app_user)), vS(" as "), erbTextOr(vStr(tc.principal)), vS(" @ "), erbTimestamptzText(vStr(tc.issued_at))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.app_user)), vS(" as "), erbText(vStr(tc.principal)), vS(" @ "), erbDatetimeText(vStr(tc.issued_at))));
 }
 
 /** Computes the IsDevMinted calculated field.
@@ -12922,7 +13039,7 @@ const processMiningRunsFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias for the ProcessMiningRuns row.
  *  Formula: ={{EventLogSource}} & " / " & {{MinedAt}} */
 export function calcProcessMiningRunsName(tc: ProcessMiningRunsRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.event_log_source)), vS(" / "), erbTimestamptzText(vStr(tc.mined_at))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.event_log_source)), vS(" / "), erbDatetimeText(vStr(tc.mined_at))));
 }
 
 /** Computes the ConformanceRate calculated field.
@@ -13218,7 +13335,7 @@ const knowledgeBrokerLinksFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias for the KnowledgeBrokerLinks row.
  *  Formula: ={{Seeker}} & " -> " & {{Broker}} */
 export function calcKnowledgeBrokerLinksName(tc: KnowledgeBrokerLinksRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.seeker)), vS(" -> "), erbTextOr(vStr(tc.broker))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.seeker)), vS(" -> "), erbText(vStr(tc.broker))));
 }
 
 /** Computes the DaysSinceConsulted calculated field.
@@ -13612,7 +13729,7 @@ const substrateRunScoresFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias.
  *  Formula: =CONCAT({{Run}}, " / ", {{Substrate}}) */
 export function calcSubstrateRunScoresName(tc: SubstrateRunScoresRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.run)), vS(" / "), erbTextOr(vStr(tc.substrate))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.run)), vS(" / "), erbText(vStr(tc.substrate))));
 }
 
 /** Computes the CellsFailed calculated field.
@@ -13783,7 +13900,7 @@ const tableConformanceFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias.
  *  Formula: =CONCAT({{Substrate}}, " / ", {{RulebookTable}}) */
 export function calcTableConformanceName(tc: TableConformanceRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.substrate)), vS(" / "), erbTextOr(vStr(tc.rulebook_table))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.substrate)), vS(" / "), erbText(vStr(tc.rulebook_table))));
 }
 
 /** Computes the CellsFailed calculated field.
@@ -13896,7 +14013,7 @@ const fieldDisagreementsFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias.
  *  Formula: =CONCAT({{Substrate}}, " / ", {{RulebookField}}) */
 export function calcFieldDisagreementsName(tc: FieldDisagreementsRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.substrate)), vS(" / "), erbTextOr(vStr(tc.rulebook_field))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.substrate)), vS(" / "), erbText(vStr(tc.rulebook_field))));
 }
 
 /** Computes the IsFullySampled calculated field.
@@ -13966,7 +14083,7 @@ const cellDisagreementsFieldTypes: Record<string, FieldType> = {
  *  Human-readable calculated display alias.
  *  Formula: =CONCAT({{FieldDisagreement}}, " @ ", {{RecordId}}) */
 export function calcCellDisagreementsName(tc: CellDisagreementsRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.field_disagreement)), vS(" @ "), erbTextOr(vStr(tc.record_id))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.field_disagreement)), vS(" @ "), erbText(vStr(tc.record_id))));
 }
 
 /** Computes every calculated field of the row in dependency order. */
@@ -13982,7 +14099,7 @@ export function loadCellDisagreementsRows(file: string): CellDisagreementsRow[] 
 }
 
 /** Bounds the runner's passes over the dataset. */
-export const calculatedFieldCount = 736;
+export const calculatedFieldCount = 743;
 
 /** Every table, in rulebook order. */
 export const erbTables: TableSpec[] = [
@@ -14096,7 +14213,8 @@ export const erbTables: TableSpec[] = [
       { field: "approved_change_request_count", op: "COUNTIFS", table: "change_requests", criteria: [{ range: "approved_version_key", kind: "field", field: "procedure_version_id" }] },
       { field: "unwatched_unowned_control_count", op: "COUNTIFS", table: "requirements", criteria: [{ range: "unwatched_unowned_flag", kind: "literal", literal: vS("unwatched-unowned") }] },
       { field: "mining_run_count", op: "COUNTIFS", table: "process_mining_runs", criteria: [{ range: "procedure_version", kind: "field", field: "procedure_version_id" }] },
-      { field: "drifted_mining_run_count", op: "COUNTIFS", table: "process_mining_runs", criteria: [{ range: "drifted_mining_run_key", kind: "field", field: "procedure_version_id" }] },] },
+      { field: "drifted_mining_run_count", op: "COUNTIFS", table: "process_mining_runs", criteria: [{ range: "drifted_mining_run_key", kind: "field", field: "procedure_version_id" }] },
+      { field: "entry_step_id", op: "MAX", table: "steps", target: "entry_step_key", criteria: [{ range: "procedure_version", kind: "field", field: "procedure_version_id" }] },] },
   { name: "ProcedureVersionLinks", file: "procedure_version_links", rulebookRows: 1, fields: procedureVersionLinksFieldTypes,
     compute: (row: any) => computeProcedureVersionLinks(row as ProcedureVersionLinksRow),
     lookups: [],
@@ -14110,7 +14228,8 @@ export const erbTables: TableSpec[] = [
     lookups: [
       { field: "assigned_role_label", target: "roles", ret: "label", key: "assigned_role", match: "role_id" },
       { field: "assigned_agent_kind", target: "roles", ret: "current_agent_kind", key: "assigned_role", match: "role_id" },
-      { field: "assigned_role_is_ungoverned", target: "roles", ret: "is_ungoverned_non_human_role", key: "assigned_role", match: "role_id" },],
+      { field: "assigned_role_is_ungoverned", target: "roles", ret: "is_ungoverned_non_human_role", key: "assigned_role", match: "role_id" },
+      { field: "version_entry_step_id", target: "procedure_versions", ret: "entry_step_id", key: "procedure_version", match: "procedure_version_id" },],
     aggregations: [
       { field: "blocking_requirement_count", op: "COUNTIFS", table: "step_requirements", criteria: [{ range: "blocking_step_key", kind: "field", field: "step_id" }] },
       { field: "stale_binding_count", op: "COUNTIFS", table: "operational_bindings", criteria: [{ range: "stale_binding_step_key", kind: "field", field: "step_id" }] },
@@ -14122,11 +14241,18 @@ export const erbTables: TableSpec[] = [
       { field: "unusable_binding_count", op: "COUNTIFS", table: "operational_bindings", criteria: [{ range: "step_when_unusable", kind: "field", field: "step_id" }] },
       { field: "unwarranted_boundary_count", op: "COUNTIFS", table: "authority_boundaries", criteria: [{ range: "unwarranted_boundary_step_key", kind: "field", field: "step_id" }] },
       { field: "software_execution_count", op: "COUNTIFS", table: "step_executions", criteria: [{ range: "software_execution_step_key", kind: "field", field: "step_id" }] },
-      { field: "unwitnessed_blocking_count", op: "COUNTIFS", table: "step_requirements", criteria: [{ range: "unwitnessed_step_key", kind: "field", field: "step_id" }] },] },
-  { name: "StepTransitions", file: "step_transitions", rulebookRows: 19, fields: stepTransitionsFieldTypes,
+      { field: "unwitnessed_blocking_count", op: "COUNTIFS", table: "step_requirements", criteria: [{ range: "unwitnessed_step_key", kind: "field", field: "step_id" }] },
+      { field: "reachable_step_count", op: "COUNTIFS", table: "vw_step_transitions_closure", criteria: [{ range: "from_id", kind: "field", field: "step_id" }] },
+      { field: "reached_from_step_count", op: "COUNTIFS", table: "vw_step_transitions_closure", criteria: [{ range: "to_id", kind: "field", field: "step_id" }] },
+      { field: "self_reach_count", op: "COUNTIFS", table: "vw_step_transitions_closure", criteria: [{ range: "from_id", kind: "field", field: "step_id" }, { range: "to_id", kind: "field", field: "step_id" }] },
+      { field: "incoming_transition_count", op: "COUNTIFS", table: "step_transitions", criteria: [{ range: "to_step", kind: "field", field: "step_id" }] },
+      { field: "gate_free_reach_from_entry_count", op: "COUNTIFS", table: "vw_step_transitions_closure_where_avoids_human_approval_gate", criteria: [{ range: "from_id", kind: "field", field: "version_entry_step_id" }, { range: "to_id", kind: "field", field: "step_id" }] },] },
+  { name: "StepTransitions", file: "step_transitions", rulebookRows: 20, fields: stepTransitionsFieldTypes,
     compute: (row: any) => computeStepTransitions(row as StepTransitionsRow),
     lookups: [
-      { field: "target_blocking_requirement_count", target: "steps", ret: "blocking_requirement_count", key: "to_step", match: "step_id" },],
+      { field: "target_blocking_requirement_count", target: "steps", ret: "blocking_requirement_count", key: "to_step", match: "step_id" },
+      { field: "from_step_is_human_approval_gate", target: "steps", ret: "is_human_approval_gate", key: "from_step", match: "step_id" },
+      { field: "to_step_is_human_approval_gate", target: "steps", ret: "is_human_approval_gate", key: "to_step", match: "step_id" },],
     aggregations: [
       { field: "count_of_from_step_executions", op: "COUNTIFS", table: "step_executions", criteria: [{ range: "step", kind: "field", field: "from_step" }] },
       { field: "count_of_to_step_executions", op: "COUNTIFS", table: "step_executions", criteria: [{ range: "step", kind: "field", field: "to_step" }] },
@@ -14401,17 +14527,17 @@ export const erbTables: TableSpec[] = [
     compute: (row: any) => computeSemanticMappings(row as SemanticMappingsRow),
     lookups: [],
     aggregations: [] },
-  { name: "WitnessLoops", file: "witness_loops", rulebookRows: 3, fields: witnessLoopsFieldTypes,
+  { name: "WitnessLoops", file: "witness_loops", rulebookRows: 4, fields: witnessLoopsFieldTypes,
     compute: (row: any) => computeWitnessLoops(row as WitnessLoopsRow),
     lookups: [],
     aggregations: [
       { field: "question_count", op: "COUNTIFS", table: "role_questions", criteria: [{ range: "witness_loop", kind: "field", field: "witness_loop_id" }] },] },
-  { name: "RoleQuestions", file: "role_questions", rulebookRows: 109, fields: roleQuestionsFieldTypes,
+  { name: "RoleQuestions", file: "role_questions", rulebookRows: 111, fields: roleQuestionsFieldTypes,
     compute: (row: any) => computeRoleQuestions(row as RoleQuestionsRow),
     lookups: [],
     aggregations: [
       { field: "predicate_count", op: "COUNTIFS", table: "rulebook_fields", criteria: [{ range: "invented_for_question", kind: "field", field: "role_question_id" }] },] },
-  { name: "RulebookFields", file: "rulebook_fields", rulebookRows: 1879, fields: rulebookFieldsFieldTypes,
+  { name: "RulebookFields", file: "rulebook_fields", rulebookRows: 1897, fields: rulebookFieldsFieldTypes,
     compute: (row: any) => computeRulebookFields(row as RulebookFieldsRow),
     lookups: [],
     aggregations: [
@@ -14682,7 +14808,7 @@ export const erbTables: TableSpec[] = [
       { field: "latest_harness_errors", op: "SUM", table: "substrate_run_scores", target: "latest_error_flag", criteria: [{ range: "substrate", kind: "field", field: "conformance_substrate_id" }] },
       { field: "disagreeing_field_count", op: "COUNTIFS", table: "field_disagreements", criteria: [{ range: "substrate", kind: "field", field: "conformance_substrate_id" }] },
       { field: "disagreeing_table_count", op: "COUNTIFS", table: "table_conformance", criteria: [{ range: "imperfect_substrate_key", kind: "field", field: "conformance_substrate_id" }] },] },
-  { name: "ConformanceRuns", file: "conformance_runs", rulebookRows: 1, fields: conformanceRunsFieldTypes,
+  { name: "ConformanceRuns", file: "conformance_runs", rulebookRows: 4, fields: conformanceRunsFieldTypes,
     compute: (row: any) => computeConformanceRuns(row as ConformanceRunsRow),
     lookups: [],
     aggregations: [
@@ -14690,27 +14816,27 @@ export const erbTables: TableSpec[] = [
       { field: "perfect_substrate_count", op: "COUNTIFS", table: "substrate_run_scores", criteria: [{ range: "perfect_run_key", kind: "field", field: "conformance_run_id" }] },
       { field: "cells_tested", op: "SUM", table: "substrate_run_scores", target: "cells_tested", criteria: [{ range: "run", kind: "field", field: "conformance_run_id" }] },
       { field: "cells_passed", op: "SUM", table: "substrate_run_scores", target: "cells_passed", criteria: [{ range: "run", kind: "field", field: "conformance_run_id" }] },] },
-  { name: "SubstrateRunScores", file: "substrate_run_scores", rulebookRows: 7, fields: substrateRunScoresFieldTypes,
+  { name: "SubstrateRunScores", file: "substrate_run_scores", rulebookRows: 28, fields: substrateRunScoresFieldTypes,
     compute: (row: any) => computeSubstrateRunScores(row as SubstrateRunScoresRow),
     lookups: [
       { field: "is_in_latest_run", target: "conformance_runs", ret: "is_latest", key: "run", match: "conformance_run_id" },
       { field: "substrate_label", target: "conformance_substrates", ret: "label", key: "substrate", match: "conformance_substrate_id" },],
     aggregations: [] },
-  { name: "TableConformance", file: "table_conformance", rulebookRows: 581, fields: tableConformanceFieldTypes,
+  { name: "TableConformance", file: "table_conformance", rulebookRows: 623, fields: tableConformanceFieldTypes,
     compute: (row: any) => computeTableConformance(row as TableConformanceRow),
     lookups: [
       { field: "substrate_label", target: "conformance_substrates", ret: "label", key: "substrate", match: "conformance_substrate_id" },
       { field: "subject_area", target: "rulebook_tables", ret: "subject_area", key: "rulebook_table", match: "rulebook_table_id" },],
     aggregations: [
       { field: "disagreeing_field_count", op: "COUNTIFS", table: "field_disagreements", criteria: [{ range: "table_conformance", kind: "field", field: "table_conformance_id" }] },] },
-  { name: "FieldDisagreements", file: "field_disagreements", rulebookRows: 400, fields: fieldDisagreementsFieldTypes,
+  { name: "FieldDisagreements", file: "field_disagreements", rulebookRows: 49, fields: fieldDisagreementsFieldTypes,
     compute: (row: any) => computeFieldDisagreements(row as FieldDisagreementsRow),
     lookups: [
       { field: "formula", target: "rulebook_fields", ret: "formula", key: "rulebook_field", match: "rulebook_field_id" },
       { field: "substrate_label", target: "conformance_substrates", ret: "label", key: "substrate", match: "conformance_substrate_id" },],
     aggregations: [
       { field: "sampled_cell_count", op: "COUNTIFS", table: "cell_disagreements", criteria: [{ range: "field_disagreement", kind: "field", field: "field_disagreement_id" }] },] },
-  { name: "CellDisagreements", file: "cell_disagreements", rulebookRows: 1725, fields: cellDisagreementsFieldTypes,
+  { name: "CellDisagreements", file: "cell_disagreements", rulebookRows: 339, fields: cellDisagreementsFieldTypes,
     compute: (row: any) => computeCellDisagreements(row as CellDisagreementsRow),
     lookups: [
       { field: "substrate", target: "field_disagreements", ret: "substrate", key: "field_disagreement", match: "field_disagreement_id" },
@@ -14720,4 +14846,6 @@ export const erbTables: TableSpec[] = [
 
 /** Materializes each vw_<entity>_closure view aggregations read. */
 export const erbClosures: ClosureSpec[] = [
+  { view: "vw_step_transitions_closure", source: "step_transitions", from: "from_step", to: "to_step", filter: null },
+  { view: "vw_step_transitions_closure_where_avoids_human_approval_gate", source: "step_transitions", from: "from_step", to: "to_step", filter: "avoids_human_approval_gate" },
 ];

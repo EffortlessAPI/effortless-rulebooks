@@ -7,7 +7,7 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema",
     "name": "pko_cfo",
     "search_path": "pko_cfo",
-    "view_count": 5,
+    "view_count": 5.0,
     "is_empty_schema": false
   },
   {
@@ -18,7 +18,7 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema",
     "name": "pko_close_automation",
     "search_path": "pko_close_automation",
-    "view_count": 3,
+    "view_count": 3.0,
     "is_empty_schema": false
   },
   {
@@ -29,7 +29,7 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema",
     "name": "pko_communications_manager",
     "search_path": "pko_communications_manager",
-    "view_count": 6,
+    "view_count": 6.0,
     "is_empty_schema": false
   },
   {
@@ -40,7 +40,7 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema",
     "name": "pko_controller",
     "search_path": "pko_controller",
-    "view_count": 8,
+    "view_count": 8.0,
     "is_empty_schema": false
   },
   {
@@ -51,7 +51,7 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema",
     "name": "pko_employment_counsel",
     "search_path": "pko_employment_counsel",
-    "view_count": 5,
+    "view_count": 5.0,
     "is_empty_schema": false
   },
   {
@@ -62,7 +62,7 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema",
     "name": "pko_finance_analyst",
     "search_path": "pko_finance_analyst",
-    "view_count": 7,
+    "view_count": 7.0,
     "is_empty_schema": false
   },
   {
@@ -73,7 +73,7 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema",
     "name": "pko_hr_policy_owner",
     "search_path": "pko_hr_policy_owner",
-    "view_count": 6,
+    "view_count": 6.0,
     "is_empty_schema": false
   },
   {
@@ -84,7 +84,7 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema",
     "name": "pko_knowledge_authority",
     "search_path": "pko_knowledge_authority",
-    "view_count": 74,
+    "view_count": 74.0,
     "is_empty_schema": false
   },
   {
@@ -95,7 +95,7 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema",
     "name": "pko_notification_publisher",
     "search_path": "pko_notification_publisher",
-    "view_count": 5,
+    "view_count": 5.0,
     "is_empty_schema": false
   },
   {
@@ -106,7 +106,7 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema",
     "name": "pko_policy_drafting_agent",
     "search_path": "pko_policy_drafting_agent",
-    "view_count": 4,
+    "view_count": 4.0,
     "is_empty_schema": false
   },
   {
@@ -117,7 +117,7 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema",
     "name": "pko_process_steward",
     "search_path": "pko_process_steward",
-    "view_count": 74,
+    "view_count": 74.0,
     "is_empty_schema": false
   },
   {
@@ -128,7 +128,7 @@
     "semantic_type_iri": "urn:effortless:pko-extension#RoleSchema",
     "name": "pko_variance_review_agent",
     "search_path": "pko_variance_review_agent",
-    "view_count": 5,
+    "view_count": 5.0,
     "is_empty_schema": false
   }
 ]

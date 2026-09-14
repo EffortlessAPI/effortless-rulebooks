@@ -5,7 +5,7 @@ Effortless-XLSX Substrate Test Runner
 
 Workbook: rulebook-examples/procedural-knowledge-ontology/effortless-xlsx/pko-native-procedural-knowledge-rulebook.xlsx
   (LibreOffice not installed — relying on cached formula values)
-Sheets: ['RulebookReleases', 'OntologyProfiles', 'EvaluationContexts', 'Organizations', 'Agents', 'Roles', 'RoleAssignments', 'CommunitiesOfPractice', 'Mentorships', 'ProcedureTypes', 'Procedures', 'ProcedureVersions', 'ProcedureVersionLinks', 'ProcedureStatusChanges', 'Steps', 'StepTransitions', 'Actions', 'Functions', 'Tools', 'StepActions', 'StepFunctions', 'StepTools', 'Requirements', 'StepRequirements', 'StepVerifications', 'Rationales', 'Exceptions', 'Resources', 'ProcedureResources', 'ElicitationSessions', 'KnowledgeFragments', 'KnowledgeGaps', 'FAQs', 'Explanations', 'ProcedureExecutions', 'StepExecutions', 'RequirementSatisfactions', 'Errors', 'IssueOccurrences', 'UserQuestions', 'UserFeedback', 'StewardshipAssignments', 'ChangeRequests', 'ReviewEvents', 'LearningActivities', 'OperationalBindings', 'CommunicationPolicies', 'MessageTemplates', 'SemanticMappings', 'WitnessLoops', 'RoleQuestions', 'RulebookFields', 'TestSuites', 'TestCases', 'ERBVersions', 'ERBCustomizations', 'ExceptionInvocations', 'VerificationOutcomes', 'ObservedTransitions', 'Recipients', 'MessageDeliveries', 'TemplateApprovals', 'SendIntents', 'AgentDecisionRecords', 'DeliveredCommunications', 'AuthorityBoundaries', 'BindingObservations', 'Attestations', 'AppRoleProfiles', 'AppNavGroups', 'AppRoutes', 'AppRouteQuestions', 'AppRouteReferences', 'RulebookTables', 'AccessPrincipals', 'AccessPolicies', 'FieldGrants', 'RoleSchemas', 'RoleSchemaViews', 'JwtClaimMappings', 'AccessDenialTests', 'AppUsers', 'PrincipalAssignments', 'IssuedTokens', 'ProcessMiningRuns', 'Vocabularies', 'VocabularyTerms', 'KnowledgeBrokerLinks', 'ConformanceSubstrates', 'ConformanceRuns', 'SubstrateRunScores', 'TableConformance', 'FieldDisagreements', 'CellDisagreements', '_original_json']
+Sheets: ['RulebookReleases', 'OntologyProfiles', 'EvaluationContexts', 'Organizations', 'Agents', 'Roles', 'RoleAssignments', 'CommunitiesOfPractice', 'Mentorships', 'ProcedureTypes', 'Procedures', 'ProcedureVersions', 'ProcedureVersionLinks', 'ProcedureStatusChanges', 'Steps', 'StepTransitions', 'Actions', 'Functions', 'Tools', 'StepActions', 'StepFunctions', 'StepTools', 'Requirements', 'StepRequirements', 'StepVerifications', 'Rationales', 'Exceptions', 'Resources', 'ProcedureResources', 'ElicitationSessions', 'KnowledgeFragments', 'KnowledgeGaps', 'FAQs', 'Explanations', 'ProcedureExecutions', 'StepExecutions', 'RequirementSatisfactions', 'Errors', 'IssueOccurrences', 'UserQuestions', 'UserFeedback', 'StewardshipAssignments', 'ChangeRequests', 'ReviewEvents', 'LearningActivities', 'OperationalBindings', 'CommunicationPolicies', 'MessageTemplates', 'SemanticMappings', 'WitnessLoops', 'RoleQuestions', 'RulebookFields', 'TestSuites', 'TestCases', 'ERBVersions', 'ERBCustomizations', 'ExceptionInvocations', 'VerificationOutcomes', 'ObservedTransitions', 'Recipients', 'MessageDeliveries', 'TemplateApprovals', 'SendIntents', 'AgentDecisionRecords', 'DeliveredCommunications', 'AuthorityBoundaries', 'BindingObservations', 'Attestations', 'AppRoleProfiles', 'AppNavGroups', 'AppRoutes', 'AppRouteQuestions', 'AppRouteReferences', 'RulebookTables', 'AccessPrincipals', 'AccessPolicies', 'FieldGrants', 'RoleSchemas', 'RoleSchemaViews', 'JwtClaimMappings', 'AccessDenialTests', 'AppUsers', 'PrincipalAssignments', 'IssuedTokens', 'ProcessMiningRuns', 'Vocabularies', 'VocabularyTerms', 'KnowledgeBrokerLinks', 'ConformanceSubstrates', 'ConformanceRuns', 'SubstrateRunScores', 'TableConformance', 'FieldDisagreements', 'CellDisagreements', '__parameters__', '_original_json']
 
   -> access_denial_tests: 17 records
   -> access_policies: 202 records
@@ -20,9 +20,12 @@ Sheets: ['RulebookReleases', 'OntologyProfiles', 'EvaluationContexts', 'Organiza
   -> app_routes: 149 records
   -> app_users: 10 records
   -> authority_boundaries: 3 records
+  -> cell_disagreements: 316 records
   -> change_requests: 2 records
   -> communication_policies: 2 records
   -> communities_of_practice: 2 records
+  -> conformance_runs: 3 records
+  -> conformance_substrates: 8 records
   -> delivered_communications: 1 records
   -> elicitation_sessions: 3 records
   -> errors: 2 records
@@ -31,6 +34,7 @@ Sheets: ['RulebookReleases', 'OntologyProfiles', 'EvaluationContexts', 'Organiza
   -> exceptions: 4 records
   -> explanations: 2 records
   Skipping fa_qs (no matching sheet in workbook)
+  -> field_disagreements: 49 records
   -> field_grants: 3639 records
   -> functions: 8 records
   -> issue_occurrences: 2 records
@@ -62,11 +66,11 @@ Sheets: ['RulebookReleases', 'OntologyProfiles', 'EvaluationContexts', 'Organiza
   -> resources: 8 records
   -> review_events: 3 records
   -> role_assignments: 13 records
-  -> role_questions: 109 records
+  -> role_questions: 111 records
   -> role_schema_views: 202 records
   -> role_schemas: 12 records
   -> roles: 12 records
-  -> rulebook_fields: 1879 records
+  -> rulebook_fields: 1897 records
   -> rulebook_releases: 1 records
   -> rulebook_tables: 92 records
   -> semantic_mappings: 47 records
@@ -76,10 +80,12 @@ Sheets: ['RulebookReleases', 'OntologyProfiles', 'EvaluationContexts', 'Organiza
   -> step_functions: 8 records
   -> step_requirements: 15 records
   -> step_tools: 10 records
-  -> step_transitions: 19 records
+  -> step_transitions: 20 records
   -> step_verifications: 11 records
   -> steps: 17 records
   -> stewardship_assignments: 2 records
+  -> substrate_run_scores: 21 records
+  -> table_conformance: 623 records
   -> template_approvals: 2 records
   -> test_cases: 1794 records
   -> test_suites: 6 records
@@ -89,7 +95,7 @@ Sheets: ['RulebookReleases', 'OntologyProfiles', 'EvaluationContexts', 'Organiza
   -> verification_outcomes: 4 records
   -> vocabularies: 2 records
   -> vocabulary_terms: 12 records
-  -> witness_loops: 3 records
+  -> witness_loops: 4 records
 
-effortless-xlsx: Processed 82 entities, 9043 total records
+effortless-xlsx: Processed 88 entities, 10085 total records
 
