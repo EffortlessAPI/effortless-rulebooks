@@ -14808,7 +14808,7 @@ export const erbTables: TableSpec[] = [
       { field: "latest_harness_errors", op: "SUM", table: "substrate_run_scores", target: "latest_error_flag", criteria: [{ range: "substrate", kind: "field", field: "conformance_substrate_id" }] },
       { field: "disagreeing_field_count", op: "COUNTIFS", table: "field_disagreements", criteria: [{ range: "substrate", kind: "field", field: "conformance_substrate_id" }] },
       { field: "disagreeing_table_count", op: "COUNTIFS", table: "table_conformance", criteria: [{ range: "imperfect_substrate_key", kind: "field", field: "conformance_substrate_id" }] },] },
-  { name: "ConformanceRuns", file: "conformance_runs", rulebookRows: 4, fields: conformanceRunsFieldTypes,
+  { name: "ConformanceRuns", file: "conformance_runs", rulebookRows: 5, fields: conformanceRunsFieldTypes,
     compute: (row: any) => computeConformanceRuns(row as ConformanceRunsRow),
     lookups: [],
     aggregations: [
@@ -14816,7 +14816,7 @@ export const erbTables: TableSpec[] = [
       { field: "perfect_substrate_count", op: "COUNTIFS", table: "substrate_run_scores", criteria: [{ range: "perfect_run_key", kind: "field", field: "conformance_run_id" }] },
       { field: "cells_tested", op: "SUM", table: "substrate_run_scores", target: "cells_tested", criteria: [{ range: "run", kind: "field", field: "conformance_run_id" }] },
       { field: "cells_passed", op: "SUM", table: "substrate_run_scores", target: "cells_passed", criteria: [{ range: "run", kind: "field", field: "conformance_run_id" }] },] },
-  { name: "SubstrateRunScores", file: "substrate_run_scores", rulebookRows: 28, fields: substrateRunScoresFieldTypes,
+  { name: "SubstrateRunScores", file: "substrate_run_scores", rulebookRows: 35, fields: substrateRunScoresFieldTypes,
     compute: (row: any) => computeSubstrateRunScores(row as SubstrateRunScoresRow),
     lookups: [
       { field: "is_in_latest_run", target: "conformance_runs", ret: "is_latest", key: "run", match: "conformance_run_id" },
@@ -14829,14 +14829,14 @@ export const erbTables: TableSpec[] = [
       { field: "subject_area", target: "rulebook_tables", ret: "subject_area", key: "rulebook_table", match: "rulebook_table_id" },],
     aggregations: [
       { field: "disagreeing_field_count", op: "COUNTIFS", table: "field_disagreements", criteria: [{ range: "table_conformance", kind: "field", field: "table_conformance_id" }] },] },
-  { name: "FieldDisagreements", file: "field_disagreements", rulebookRows: 49, fields: fieldDisagreementsFieldTypes,
+  { name: "FieldDisagreements", file: "field_disagreements", rulebookRows: 27, fields: fieldDisagreementsFieldTypes,
     compute: (row: any) => computeFieldDisagreements(row as FieldDisagreementsRow),
     lookups: [
       { field: "formula", target: "rulebook_fields", ret: "formula", key: "rulebook_field", match: "rulebook_field_id" },
       { field: "substrate_label", target: "conformance_substrates", ret: "label", key: "substrate", match: "conformance_substrate_id" },],
     aggregations: [
       { field: "sampled_cell_count", op: "COUNTIFS", table: "cell_disagreements", criteria: [{ range: "field_disagreement", kind: "field", field: "field_disagreement_id" }] },] },
-  { name: "CellDisagreements", file: "cell_disagreements", rulebookRows: 339, fields: cellDisagreementsFieldTypes,
+  { name: "CellDisagreements", file: "cell_disagreements", rulebookRows: 205, fields: cellDisagreementsFieldTypes,
     compute: (row: any) => computeCellDisagreements(row as CellDisagreementsRow),
     lookups: [
       { field: "substrate", target: "field_disagreements", ret: "substrate", key: "field_disagreement", match: "field_disagreement_id" },

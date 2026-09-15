@@ -1,6 +1,6 @@
 [
   {
-    "rulebook_release_id": "erb-pko-1.0.0",
+    "rulebook_release_id": "pko-release-1.0.0",
     "rulebook_version": "1.0.0",
     "profile_version": "1.0.0",
     "profile_schema_path": "schemas/pko-erb-profile-1.0.0.schema.json",

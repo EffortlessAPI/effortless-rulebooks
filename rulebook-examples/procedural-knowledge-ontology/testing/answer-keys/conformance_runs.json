@@ -40,7 +40,7 @@
     "ran_on": "2026-09-14T08:34:30-05:00",
     "rulebook_commit": "6b0287f8",
     "answer_key_author": "compile-rulebook",
-    "is_latest": true,
+    "is_latest": false,
     "notes": "ERB build parameters: every substrate built under erbDateDiff=calendar, erbTimezone=UTC, erbDateTimeText=iso8601, erbBlankLogic=coerce, erbWholeNumber=by-field-type; Postgres/Python/Go/TypeScript at 100%, EF 99.93 (closure views), xlsx 99.82, OWL 97.15",
     "semantic_type_iri": "urn:effortless:pko-extension#ConformanceRun",
     "name": "run-20260914-083430",
@@ -51,6 +51,24 @@
     "cells_failed": 2296.0,
     "overall_score": 99.56,
     "imperfect_substrate_count": 3.0,
+    "is_fully_conformant": false
+  },
+  {
+    "conformance_run_id": "run-20260914-223223",
+    "ran_on": "2026-09-14T22:32:23-05:00",
+    "rulebook_commit": "c377d831",
+    "answer_key_author": "compile-rulebook",
+    "is_latest": true,
+    "notes": "Plain build against the published tools (all eight at v2026.09.14.*), no local overrides; first run after the ERB build parameters and the EdgeFilterColumn closure shipped",
+    "semantic_type_iri": "urn:effortless:pko-extension#ConformanceRun",
+    "name": "run-20260914-223223",
+    "substrate_count": 7.0,
+    "perfect_substrate_count": 5.0,
+    "cells_tested": 472129.0,
+    "cells_passed": 471494.0,
+    "cells_failed": 635.0,
+    "overall_score": 99.87,
+    "imperfect_substrate_count": 2.0,
     "is_fully_conformant": false
   }
 ]

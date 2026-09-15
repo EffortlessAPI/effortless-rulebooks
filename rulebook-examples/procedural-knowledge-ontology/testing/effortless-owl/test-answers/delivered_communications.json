@@ -8,6 +8,7 @@
     "approved_content_hash": null,
     "delivery_status": "NotYetSent",
     "semantic_type_iri": "urn:effortless:pko-extension#DeliveredCommunication",
+    "name": "Email -> emp-anon-0001 @ ",
     "procedure_execution": "exec-policy-hr4821",
     "has_authorization": false,
     "content_matches_approval": true,

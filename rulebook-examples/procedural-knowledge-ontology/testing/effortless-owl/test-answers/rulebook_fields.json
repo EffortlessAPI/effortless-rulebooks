@@ -3841,8 +3841,8 @@
     "invented_for_question": "q-controller-gate-bypass",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": 0,
-    "is_substrate_contested": false
+    "disagreeing_substrate_count": 1,
+    "is_substrate_contested": true
   },
   {
     "rulebook_field_id": "ProcedureVersions.SemanticTypeIri",
@@ -4696,7 +4696,7 @@
     "invented_for_question": "q-steward-rework-loops",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": 2,
+    "disagreeing_substrate_count": 1,
     "is_substrate_contested": true
   },
   {
@@ -4711,7 +4711,7 @@
     "invented_for_question": "q-steward-rework-loops",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": 2,
+    "disagreeing_substrate_count": 1,
     "is_substrate_contested": true
   },
   {
@@ -4726,7 +4726,7 @@
     "invented_for_question": "q-steward-rework-loops",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": 2,
+    "disagreeing_substrate_count": 1,
     "is_substrate_contested": true
   },
   {
@@ -4741,7 +4741,7 @@
     "invented_for_question": "q-steward-rework-loops",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": 2,
+    "disagreeing_substrate_count": 1,
     "is_substrate_contested": true
   },
   {
@@ -4756,7 +4756,7 @@
     "invented_for_question": "q-steward-rework-loops",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": 2,
+    "disagreeing_substrate_count": 1,
     "is_substrate_contested": true
   },
   {
@@ -4816,8 +4816,8 @@
     "invented_for_question": "q-controller-gate-bypass",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": 0,
-    "is_substrate_contested": false
+    "disagreeing_substrate_count": 1,
+    "is_substrate_contested": true
   },
   {
     "rulebook_field_id": "Steps.GateFreeReachFromEntryCount",
@@ -4831,8 +4831,8 @@
     "invented_for_question": "q-controller-gate-bypass",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": 0,
-    "is_substrate_contested": false
+    "disagreeing_substrate_count": 1,
+    "is_substrate_contested": true
   },
   {
     "rulebook_field_id": "Steps.IsReachableFromEntryWithoutHumanGate",
@@ -4846,8 +4846,8 @@
     "invented_for_question": "q-controller-gate-bypass",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": 0,
-    "is_substrate_contested": false
+    "disagreeing_substrate_count": 1,
+    "is_substrate_contested": true
   },
   {
     "rulebook_field_id": "Steps.IsGateBypassedPublication",
@@ -4861,8 +4861,8 @@
     "invented_for_question": "q-controller-gate-bypass",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": 0,
-    "is_substrate_contested": false
+    "disagreeing_substrate_count": 1,
+    "is_substrate_contested": true
   },
   {
     "rulebook_field_id": "Steps.SemanticTypeIri",

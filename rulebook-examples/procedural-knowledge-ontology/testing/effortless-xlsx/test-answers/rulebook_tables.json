@@ -1089,7 +1089,7 @@
     "field_count": 54,
     "policy_count": 10,
     "is_unsecured": false,
-    "disagreeing_substrate_count": 2
+    "disagreeing_substrate_count": 1
   },
   {
     "rulebook_table_id": "StewardshipAssignments",

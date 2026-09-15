@@ -6,6 +6,6 @@
     "name": "close-v1.0.0 -> close-v1.1.0",
     "previous_procedure_version": "close-v1.0.0",
     "next_procedure_version": "close-v1.1.0",
-    "superseded_version_key": null
+    "superseded_version_key": "close-v1.0.0"
   }
 ]

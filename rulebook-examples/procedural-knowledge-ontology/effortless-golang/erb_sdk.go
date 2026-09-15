@@ -23277,14 +23277,14 @@ var erbTables = []TableSpec{
 			{Field: "latest_harness_errors", Op: "SUM", Table: "substrate_run_scores", Target: "latest_error_flag", Criteria: []Criterion{{Range: "substrate", Kind: "field", Field: "conformance_substrate_id"}}},
 			{Field: "disagreeing_field_count", Op: "COUNTIFS", Table: "field_disagreements", Criteria: []Criterion{{Range: "substrate", Kind: "field", Field: "conformance_substrate_id"}}},
 			{Field: "disagreeing_table_count", Op: "COUNTIFS", Table: "table_conformance", Criteria: []Criterion{{Range: "imperfect_substrate_key", Kind: "field", Field: "conformance_substrate_id"}}},}},
-	{Name: "ConformanceRuns", File: "conformance_runs", RulebookRows: 4, New: func() Record { return &ConformanceRun{} },
+	{Name: "ConformanceRuns", File: "conformance_runs", RulebookRows: 5, New: func() Record { return &ConformanceRun{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
 			{Field: "substrate_count", Op: "COUNTIFS", Table: "substrate_run_scores", Criteria: []Criterion{{Range: "run", Kind: "field", Field: "conformance_run_id"}}},
 			{Field: "perfect_substrate_count", Op: "COUNTIFS", Table: "substrate_run_scores", Criteria: []Criterion{{Range: "perfect_run_key", Kind: "field", Field: "conformance_run_id"}}},
 			{Field: "cells_tested", Op: "SUM", Table: "substrate_run_scores", Target: "cells_tested", Criteria: []Criterion{{Range: "run", Kind: "field", Field: "conformance_run_id"}}},
 			{Field: "cells_passed", Op: "SUM", Table: "substrate_run_scores", Target: "cells_passed", Criteria: []Criterion{{Range: "run", Kind: "field", Field: "conformance_run_id"}}},}},
-	{Name: "SubstrateRunScores", File: "substrate_run_scores", RulebookRows: 28, New: func() Record { return &SubstrateRunScore{} },
+	{Name: "SubstrateRunScores", File: "substrate_run_scores", RulebookRows: 35, New: func() Record { return &SubstrateRunScore{} },
 		Lookups: []LookupSpec{
 			{Field: "is_in_latest_run", Target: "conformance_runs", Return: "is_latest", Key: "run", Match: "conformance_run_id"},
 			{Field: "substrate_label", Target: "conformance_substrates", Return: "label", Key: "substrate", Match: "conformance_substrate_id"},},
@@ -23295,13 +23295,13 @@ var erbTables = []TableSpec{
 			{Field: "subject_area", Target: "rulebook_tables", Return: "subject_area", Key: "rulebook_table", Match: "rulebook_table_id"},},
 		Aggregations: []AggregateSpec{
 			{Field: "disagreeing_field_count", Op: "COUNTIFS", Table: "field_disagreements", Criteria: []Criterion{{Range: "table_conformance", Kind: "field", Field: "table_conformance_id"}}},}},
-	{Name: "FieldDisagreements", File: "field_disagreements", RulebookRows: 49, New: func() Record { return &FieldDisagreement{} },
+	{Name: "FieldDisagreements", File: "field_disagreements", RulebookRows: 27, New: func() Record { return &FieldDisagreement{} },
 		Lookups: []LookupSpec{
 			{Field: "formula", Target: "rulebook_fields", Return: "formula", Key: "rulebook_field", Match: "rulebook_field_id"},
 			{Field: "substrate_label", Target: "conformance_substrates", Return: "label", Key: "substrate", Match: "conformance_substrate_id"},},
 		Aggregations: []AggregateSpec{
 			{Field: "sampled_cell_count", Op: "COUNTIFS", Table: "cell_disagreements", Criteria: []Criterion{{Range: "field_disagreement", Kind: "field", Field: "field_disagreement_id"}}},}},
-	{Name: "CellDisagreements", File: "cell_disagreements", RulebookRows: 339, New: func() Record { return &CellDisagreement{} },
+	{Name: "CellDisagreements", File: "cell_disagreements", RulebookRows: 205, New: func() Record { return &CellDisagreement{} },
 		Lookups: []LookupSpec{
 			{Field: "substrate", Target: "field_disagreements", Return: "substrate", Key: "field_disagreement", Match: "field_disagreement_id"},
 			{Field: "rulebook_field", Target: "field_disagreements", Return: "rulebook_field", Key: "field_disagreement", Match: "field_disagreement_id"},},

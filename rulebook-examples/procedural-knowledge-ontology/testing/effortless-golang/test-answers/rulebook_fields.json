@@ -14650,8 +14650,8 @@
     "invented_for_question": "q-controller-gate-bypass",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": 0,
-    "is_substrate_contested": false,
+    "disagreeing_substrate_count": 1,
+    "is_substrate_contested": true,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {
@@ -25015,8 +25015,8 @@
     "invented_for_question": "q-controller-gate-bypass",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": 0,
-    "is_substrate_contested": false,
+    "disagreeing_substrate_count": 1,
+    "is_substrate_contested": true,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {
@@ -25135,7 +25135,7 @@
     "invented_for_question": "q-steward-rework-loops",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": 2,
+    "disagreeing_substrate_count": 1,
     "is_substrate_contested": true,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
@@ -25180,8 +25180,8 @@
     "invented_for_question": "q-controller-gate-bypass",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": 0,
-    "is_substrate_contested": false,
+    "disagreeing_substrate_count": 1,
+    "is_substrate_contested": true,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {
@@ -25225,7 +25225,7 @@
     "invented_for_question": "q-steward-rework-loops",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": 2,
+    "disagreeing_substrate_count": 1,
     "is_substrate_contested": true,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
@@ -25255,8 +25255,8 @@
     "invented_for_question": "q-controller-gate-bypass",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": 0,
-    "is_substrate_contested": false,
+    "disagreeing_substrate_count": 1,
+    "is_substrate_contested": true,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {
@@ -25330,7 +25330,7 @@
     "invented_for_question": "q-steward-rework-loops",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": 2,
+    "disagreeing_substrate_count": 1,
     "is_substrate_contested": true,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
@@ -25345,7 +25345,7 @@
     "invented_for_question": "q-steward-rework-loops",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": 2,
+    "disagreeing_substrate_count": 1,
     "is_substrate_contested": true,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
@@ -25375,7 +25375,7 @@
     "invented_for_question": "q-steward-rework-loops",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": 2,
+    "disagreeing_substrate_count": 1,
     "is_substrate_contested": true,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
@@ -25585,8 +25585,8 @@
     "invented_for_question": "q-controller-gate-bypass",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": 0,
-    "is_substrate_contested": false,
+    "disagreeing_substrate_count": 1,
+    "is_substrate_contested": true,
     "semantic_type_iri": "urn:effortless:pko-extension#RulebookField"
   },
   {

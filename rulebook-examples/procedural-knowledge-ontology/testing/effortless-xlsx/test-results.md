@@ -4,19 +4,19 @@
 
 | Metric | Value |
 |--------|-------|
-| Total Fields Tested | 67447 |
-| Passed | 67242 |
+| Total Fields Tested | 67616 |
+| Passed | 67411 |
 | Failed | 205 |
 | Score | 99.7% |
-| Duration | 2s |
+| Duration | 1s |
 
 ## Score by Field Class
 
 | Class | Passed | Tested | Score |
 |-------|--------|--------|-------|
-| Scalar (calculated) | 47473 | 47577 | 99.8% |
-| Lookup (INDEX/MATCH) | 14979 | 15005 | 99.8% |
-| Aggregation (COUNTIFS/SUMIFS) | 4790 | 4865 | 98.5% |
+| Scalar (calculated) | 47578 | 47682 | 99.8% |
+| Lookup (INDEX/MATCH) | 15039 | 15065 | 99.8% |
+| Aggregation (COUNTIFS/SUMIFS) | 4794 | 4869 | 98.5% |
 
 ## Results by Entity
 
@@ -536,12 +536,12 @@
 
 ### conformance_runs
 
-- Fields: 27/27 (100.0%)
+- Fields: 36/36 (100.0%)
 - Computed columns: name, substrate_count, perfect_substrate_count, cells_tested, cells_passed, cells_failed, overall_score, imperfect_substrate_count, is_fully_conformant
 
 ### substrate_run_scores
 
-- Fields: 273/273 (100.0%)
+- Fields: 364/364 (100.0%)
 - Computed columns: name, cells_failed, score, calculated_score, lookup_score, aggregation_score, is_perfect, perfect_run_key, is_in_latest_run, latest_cells_tested, latest_cells_passed, latest_error_flag, substrate_label
 
 ### table_conformance
@@ -556,5 +556,5 @@
 
 ### cell_disagreements
 
-- Fields: 948/948 (100.0%)
+- Fields: 1017/1017 (100.0%)
 - Computed columns: name, substrate, rulebook_field

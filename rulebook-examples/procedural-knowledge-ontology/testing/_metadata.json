@@ -1564,7 +1564,7 @@
       "imperfect_substrate_count",
       "is_fully_conformant"
     ],
-    "record_count": 3
+    "record_count": 4
   },
   "substrate_run_scores": {
     "primary_key": "substrate_run_score_id",
@@ -1583,7 +1583,7 @@
       "latest_error_flag",
       "substrate_label"
     ],
-    "record_count": 21
+    "record_count": 28
   },
   "table_conformance": {
     "primary_key": "table_conformance_id",
@@ -1618,6 +1618,6 @@
       "substrate",
       "rulebook_field"
     ],
-    "record_count": 316
+    "record_count": 339
   }
 }

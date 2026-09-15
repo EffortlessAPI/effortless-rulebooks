@@ -4753,7 +4753,7 @@ generates, so if a formula changes these values change with it._
 | Name ƒ | Target Table | Field Name | Field Type | Datatype | Formula | Is Derived ƒ | Is Witness ƒ | Disagreeing Substrate Count ƒ | Is Substrate Contested ƒ | Semantic Type Iri |
 |---|---|---|---|---|---|---|---|---|---|---|
 | RulebookReleases.RulebookReleaseId | RulebookReleases | RulebookReleaseId | raw | string | — | false | false | 0 | false | urn:effortless:pko-extension#RulebookField |
-| RulebookReleases.Name | RulebookReleases | Name | calculated | string | ={{RulebookVersion}} & " / PKO " & {{PkoCoreVersionIri}} | true | false | 1 | true | urn:effortless:pko-extension#RulebookField |
+| RulebookReleases.Name | RulebookReleases | Name | calculated | string | ={{RulebookVersion}} & " / PKO " & {{PkoCoreVersionIri}} | true | false | 0 | false | urn:effortless:pko-extension#RulebookField |
 | RulebookReleases.RulebookVersion | RulebookReleases | RulebookVersion | raw | string | — | false | false | 0 | false | urn:effortless:pko-extension#RulebookField |
 
 ### Test Suite
@@ -4897,7 +4897,7 @@ generates, so if a formula changes these values change with it._
 
 | Table Name | Name ƒ | Physical Table | Physical View | Subject Area | Is Extension | Field Count ƒ | Policy Count ƒ | Is Unsecured ƒ | Disagreeing Substrate Count ƒ | Semantic Type Iri |
 |---|---|---|---|---|---|---|---|---|---|---|
-| AccessDenialTests | AccessDenialTests | — | — | access-control | true | 18 | 0 | true | 1 | urn:effortless:pko-extension#RulebookTable |
+| AccessDenialTests | AccessDenialTests | — | — | access-control | true | 18 | 0 | true | 0 | urn:effortless:pko-extension#RulebookTable |
 | AccessPolicies | AccessPolicies | — | — | access-control | true | 16 | 0 | true | 0 | urn:effortless:pko-extension#RulebookTable |
 | AccessPrincipals | AccessPrincipals | — | — | access-control | true | 15 | 0 | true | 0 | urn:effortless:pko-extension#RulebookTable |
 
@@ -5009,8 +5009,8 @@ generates, so if a formula changes these values change with it._
 | Name ƒ | Label | Transpiler | Output Folder | Engine | How It Computes | Role | Sort Order | Is Graded ƒ | Run Count ƒ | Latest Cells Tested ƒ | Latest Cells Passed ƒ | Latest Harness Errors ƒ | Latest Cells Failed ƒ | Latest Score ƒ | Disagreeing Field Count ƒ | Disagreeing Table Count ƒ | Is Fully Conformant ƒ | Semantic Type Iri |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | compile-rulebook | compile-rulebook | compile-rulebook | /effortless-rulebook | Python formula engine (shared with rulebook-to-python) | Runs first in the build and rewrites the rulebook in place: every calculated, lookup and aggregation value is computed across all tables to a fixed point and upserted into the rows. Those stored values become the answer keys. It is not graded against itself; when another substrate disagrees, either side can be the one that is wrong. | answer-key | 0 | false | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | false | urn:effortless:pko-extension#ConformanceSubstrate |
-| PostgreSQL | PostgreSQL | rulebook-to-postgres | /postgres-bootstrap | PostgreSQL views and calc_* SQL functions | rulebook-to-postgres emits a table, a set of calc_* functions and a vw_<entity> view per table. The database is reset from the rulebook, and the harness reads SELECT * from every view. | graded | 1 | true | 4 | 67447.0 | 67447.0 | 0.0 | 0.0 | 100.0 | 0 | 0 | true | urn:effortless:pko-extension#ConformanceSubstrate |
-| Python | Python | rulebook-to-python | /effortless-python | CPython | rulebook-to-python emits an SDK with one computed property per derived field. The harness loads the blank test rows (raw fields only) and asks the SDK for every derived value. | graded | 2 | true | 4 | 67447.0 | 67447.0 | 0.0 | 0.0 | 100.0 | 0 | 0 | true | urn:effortless:pko-extension#ConformanceSubstrate |
+| PostgreSQL | PostgreSQL | rulebook-to-postgres | /postgres-bootstrap | PostgreSQL views and calc_* SQL functions | rulebook-to-postgres emits a table, a set of calc_* functions and a vw_<entity> view per table. The database is reset from the rulebook, and the harness reads SELECT * from every view. | graded | 1 | true | 5 | 67616.0 | 67616.0 | 0.0 | 0.0 | 100.0 | 0 | 0 | true | urn:effortless:pko-extension#ConformanceSubstrate |
+| Python | Python | rulebook-to-python | /effortless-python | CPython | rulebook-to-python emits an SDK with one computed property per derived field. The harness loads the blank test rows (raw fields only) and asks the SDK for every derived value. | graded | 2 | true | 5 | 67616.0 | 67616.0 | 0.0 | 0.0 | 100.0 | 0 | 0 | true | urn:effortless:pko-extension#ConformanceSubstrate |
 
 ### Conformance Run
 

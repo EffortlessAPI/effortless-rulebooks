@@ -14651,8 +14651,8 @@
     "name": "ProcedureVersions.EntryStepId",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": 0.0,
-    "is_substrate_contested": false
+    "disagreeing_substrate_count": 1.0,
+    "is_substrate_contested": true
   },
   {
     "rulebook_field_id": "ProcedureVersions.EvaluationContext",
@@ -25016,8 +25016,8 @@
     "name": "Steps.GateFreeReachFromEntryCount",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": 0.0,
-    "is_substrate_contested": false
+    "disagreeing_substrate_count": 1.0,
+    "is_substrate_contested": true
   },
   {
     "rulebook_field_id": "Steps.GateHeldByHuman",
@@ -25136,7 +25136,7 @@
     "name": "Steps.IsBlockingControlOnReworkLoop",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": 2.0,
+    "disagreeing_substrate_count": 1.0,
     "is_substrate_contested": true
   },
   {
@@ -25181,8 +25181,8 @@
     "name": "Steps.IsGateBypassedPublication",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": 0.0,
-    "is_substrate_contested": false
+    "disagreeing_substrate_count": 1.0,
+    "is_substrate_contested": true
   },
   {
     "rulebook_field_id": "Steps.IsGovernedByUnwarrantedBoundary",
@@ -25226,7 +25226,7 @@
     "name": "Steps.IsOnReworkLoop",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": 2.0,
+    "disagreeing_substrate_count": 1.0,
     "is_substrate_contested": true
   },
   {
@@ -25256,8 +25256,8 @@
     "name": "Steps.IsReachableFromEntryWithoutHumanGate",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": 0.0,
-    "is_substrate_contested": false
+    "disagreeing_substrate_count": 1.0,
+    "is_substrate_contested": true
   },
   {
     "rulebook_field_id": "Steps.IsSoftwareAssigned",
@@ -25331,7 +25331,7 @@
     "name": "Steps.ReachableStepCount",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": 2.0,
+    "disagreeing_substrate_count": 1.0,
     "is_substrate_contested": true
   },
   {
@@ -25346,7 +25346,7 @@
     "name": "Steps.ReachedFromStepCount",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": 2.0,
+    "disagreeing_substrate_count": 1.0,
     "is_substrate_contested": true
   },
   {
@@ -25376,7 +25376,7 @@
     "name": "Steps.SelfReachCount",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": 2.0,
+    "disagreeing_substrate_count": 1.0,
     "is_substrate_contested": true
   },
   {
@@ -25586,8 +25586,8 @@
     "name": "Steps.VersionEntryStepId",
     "is_derived": true,
     "is_witness": true,
-    "disagreeing_substrate_count": 0.0,
-    "is_substrate_contested": false
+    "disagreeing_substrate_count": 1.0,
+    "is_substrate_contested": true
   },
   {
     "rulebook_field_id": "StewardshipAssignments.AsOfInstant",

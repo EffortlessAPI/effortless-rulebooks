@@ -4,30 +4,26 @@
 
 | Metric | Value |
 |--------|-------|
-| Total Fields Tested | 67447 |
-| Passed | 67017 |
-| Failed | 430 |
-| Score | 99.4% |
-| Duration | 1m 24s |
+| Total Fields Tested | 67616 |
+| Passed | 67616 |
+| Failed | 0 |
+| Score | 100.0% |
+| Duration | 1m 21s |
 
 ## Score by Field Class
 
 | Class | Passed | Tested | Score |
 |-------|--------|--------|-------|
-| Scalar (calculated) | 47193 | 47577 | 99.2% |
-| Lookup (INDEX/MATCH) | 15005 | 15005 | 100.0% |
-| Aggregation (COUNTIFS/SUMIFS) | 4819 | 4865 | 99.1% |
+| Scalar (calculated) | 47682 | 47682 | 100.0% |
+| Lookup (INDEX/MATCH) | 15065 | 15065 | 100.0% |
+| Aggregation (COUNTIFS/SUMIFS) | 4869 | 4869 | 100.0% |
 
 ## Results by Entity
 
 ### rulebook_releases
 
-- Fields: 0/1 (0.0%)
+- Fields: 1/1 (100.0%)
 - Computed columns: name
-
-| PK | Field | Expected | Actual |
-|-----|-------|----------|--------|
-| erb-pko-1.0.0 | name | 1.0.0 / PKO https://w3id.org/p | None |
 
 ### ontology_profiles
 
@@ -81,26 +77,13 @@
 
 ### procedure_versions
 
-- Fields: 213/219 (97.3%)
+- Fields: 219/219 (100.0%)
 - Computed columns: name, count_of_steps, count_of_open_knowledge_gaps, is_ready_for_execution, specified_step_count, overdue_review_count, open_change_request_count, open_high_severity_gap_count, is_fit_to_execute, steward_review_cadence_days, count_of_stewardship_assignments, has_any_steward, is_live, is_unstewarded, is_live_and_unstewarded, count_of_open_blocking_gaps, has_open_blocking_gap, is_live_with_blocking_gap, should_not_be_executable, count_of_unapproved_reliance_fragments, runs_on_unapproved_knowledge, count_of_overdue_gaps, count_of_change_requests, count_of_review_events, has_governance_record, as_of_instant, days_since_modified, days_since_last_review, was_modified_since_last_review, modifier_is_authority, has_unwitnessed_change, count_of_stale_fragments, knowledge_is_staler_than_cadence, compound_fragile_fragment_count, rests_on_compound_fragile_knowledge, concentrated_witness_session_count, knowledge_base_is_concentrated, machine_consumed_unapproved_count, feeds_unapproved_knowledge_to_machines, genuinely_overdue_fragment_count, awaited_decision_count, scoped_open_blocking_gap_count, is_blocked_on_pending_decision, unexercised_human_gate_count, ai_boundary_is_unevidenced, load_bearing_unapproved_count, unlanded_decision_count, unrehearsed_control_entry_count, has_unrehearsed_control_entry, is_live_with_unrehearsed_control, cadence_breach_count, is_in_cadence_breach, has_decision_in_flight, is_unremediated_cadence_breach, is_managed_cadence_breach, governance_is_silent, valid_fragment_count, still_owns_valid_knowledge, incoming_supersession_count, is_still_referenced, is_load_bearing_orphan, is_cleanly_retired, stalled_implementation_count, is_held_unfit_by_landed_decisions, undeclared_control_kind_count, control_taxonomy_is_incomplete, has_approved_change_request, approved_change_request_count, unwatched_unowned_control_count, mining_run_count, drifted_mining_run_count, has_unresolved_mining_drift, entry_step_id
-
-| PK | Field | Expected | Actual |
-|-----|-------|----------|--------|
-| close-v1.0.0 | incoming_supersession_count | 1 | 0 |
-| close-v1.0.0 | is_still_referenced | True | False |
-| close-v1.0.0 | is_load_bearing_orphan | True | False |
-| close-v1.0.0 | is_cleanly_retired | False | True |
-| close-v1.1.0 | days_since_last_review | 17 | None |
-| policy-v1.0.0 | days_since_last_review | 1 | None |
 
 ### procedure_version_links
 
-- Fields: 1/2 (50.0%)
+- Fields: 2/2 (100.0%)
 - Computed columns: name, superseded_version_key
-
-| PK | Field | Expected | Actual |
-|-----|-------|----------|--------|
-| close-v1.0.0-to-v1.1.0 | superseded_version_key | close-v1.0.0 | None |
 
 ### procedure_status_changes
 
@@ -114,32 +97,8 @@
 
 ### step_transitions
 
-- Fields: 284/360 (78.9%)
+- Fields: 360/360 (100.0%)
 - Computed columns: name, is_recovery_path, count_of_from_step_executions, count_of_to_step_executions, has_reachable_origin, has_reachable_target, is_never_exercised, is_untested_recovery_path, count_of_observed_traversals, has_been_traversed, is_unwalked_recovery_path, target_blocking_requirement_count, target_carries_blocking_control, is_unrehearsed_control_entry, unrehearsed_control_version_key, from_step_is_human_approval_gate, to_step_is_human_approval_gate, avoids_human_approval_gate
-
-| PK | Field | Expected | Actual |
-|-----|-------|----------|--------|
-| close-01-to-close-02 | count_of_from_step_executions | 1 | 0 |
-| close-01-to-close-02 | count_of_to_step_executions | 1 | 0 |
-| close-01-to-close-02 | has_reachable_origin | True | False |
-| close-01-to-close-02 | has_reachable_target | True | False |
-| close-01-to-close-02 | is_never_exercised | False | True |
-| close-02-to-close-03 | count_of_from_step_executions | 1 | 0 |
-| close-02-to-close-03 | count_of_to_step_executions | 1 | 0 |
-| close-02-to-close-03 | has_reachable_origin | True | False |
-| close-02-to-close-03 | has_reachable_target | True | False |
-| close-02-to-close-03 | is_never_exercised | False | True |
-| close-03-to-close-04 | count_of_from_step_executions | 1 | 0 |
-| close-03-to-close-04 | count_of_to_step_executions | 1 | 0 |
-| close-03-to-close-04 | has_reachable_origin | True | False |
-| close-03-to-close-04 | has_reachable_target | True | False |
-| close-03-to-close-04 | is_never_exercised | False | True |
-| close-04-fallback-close-03 | count_of_from_step_executions | 1 | 0 |
-| close-04-fallback-close-03 | count_of_to_step_executions | 1 | 0 |
-| close-04-fallback-close-03 | has_reachable_origin | True | False |
-| close-04-fallback-close-03 | has_reachable_target | True | False |
-| close-04-fallback-close-03 | is_never_exercised | False | True |
-| ... | ... | (56 more) | ... |
 
 ### actions
 
@@ -213,20 +172,8 @@
 
 ### knowledge_fragments
 
-- Fields: 446/455 (98.0%)
+- Fields: 455/455 (100.0%)
 - Computed columns: name, as_of_instant, is_currently_valid, source_agent_is_still_engaged, source_agent_kind, has_human_source, has_orphaned_provenance, is_undefendable_tacit_claim, is_approved, is_within_validity_window, is_relied_upon, step_procedure_version_status, is_attached_to_live_version, is_unapproved_but_relied_on, evidence_age_days, has_recorded_elicitation, is_from_single_witness, evidence_expiry_days, evidence_has_expired, owner_agent, is_awaiting_approval, owner_is_me, is_my_unfinished_approval, is_invoked_by_an_exception, has_operational_reliance, is_unapproved_and_operationally_live, age_days, is_low_confidence, owning_version_cadence_days, exceeds_owning_cadence, is_aging_low_confidence_claim, owner_role_agent_kind, is_human_owned, is_ai_validated_by_ai, review_cadence_days, is_overdue_for_review, predates_current_role_holder, owner_role_assignment_valid_from, fragility_signal_count, is_compound_fragile, is_single_point_of_failure, is_expiring_single_point_of_failure, compound_fragile_version_key, valid_fragment_session_key, consuming_step_is_software_assigned, consuming_step_agent_kind, is_unapproved_and_machine_consumed, is_unapproved_and_human_consumed, machine_consumed_unapproved_version_key, has_review_record, days_since_actual_review, is_unreviewed_since_authoring, is_genuinely_overdue, review_recency_is_inferred, inference_disagrees_with_record, genuinely_overdue_version_key, ratified_boundary_count, reliance_surface_count, days_awaiting_my_approval, is_high_blast_radius_unapproved, is_long_unapproved, unapproved_load_bearing_version_key, owner_role_is_vacated, is_orphaned_by_role, valid_fragment_version_key
-
-| PK | Field | Expected | Actual |
-|-----|-------|----------|--------|
-| kf-policy-channel | is_invoked_by_an_exception | 1 | 0 |
-| kf-policy-channel | has_operational_reliance | True | False |
-| kf-policy-channel | fragility_signal_count | 2 | 1 |
-| kf-policy-channel | reliance_surface_count | 1 | 0 |
-| kf-policy-manager-route | is_invoked_by_an_exception | 1 | 0 |
-| kf-policy-manager-route | has_operational_reliance | True | False |
-| kf-policy-manager-route | is_unapproved_and_operationally_live | True | False |
-| kf-policy-manager-route | fragility_signal_count | 2 | 1 |
-| kf-policy-manager-route | reliance_surface_count | 1 | 0 |
 
 ### knowledge_gaps
 
@@ -385,12 +332,8 @@
 
 ### delivered_communications
 
-- Fields: 5/6 (83.3%)
+- Fields: 6/6 (100.0%)
 - Computed columns: name, has_authorization, content_matches_approval, authorized_at, was_approved_before_sending, is_defensible
-
-| PK | Field | Expected | Actual |
-|-----|-------|----------|--------|
-| dc-hr4821-email-001 | name | Email -> emp-anon-0001 @  | None |
 
 ### authority_boundaries
 
@@ -399,23 +342,8 @@
 
 ### app_role_profiles
 
-- Fields: 12/24 (50.0%)
+- Fields: 24/24 (100.0%)
 - Computed columns: name, route_count
-
-| PK | Field | Expected | Actual |
-|-----|-------|----------|--------|
-| profile-cfo | route_count | 12 | 0 |
-| profile-close-automation | route_count | 6 | 0 |
-| profile-communications-manager | route_count | 11 | 0 |
-| profile-controller | route_count | 10 | 0 |
-| profile-employment-counsel | route_count | 6 | 0 |
-| profile-finance-analyst | route_count | 11 | 0 |
-| profile-hr-policy-owner | route_count | 10 | 0 |
-| profile-knowledge-authority | route_count | 11 | 0 |
-| profile-notification-publisher | route_count | 11 | 0 |
-| profile-policy-drafting-agent | route_count | 6 | 0 |
-| profile-process-steward | route_count | 11 | 0 |
-| profile-variance-review-agent | route_count | 11 | 0 |
 
 ### app_nav_groups
 
@@ -474,19 +402,8 @@
 
 ### access_denial_tests
 
-- Fields: 94/102 (92.2%)
+- Fields: 102/102 (100.0%)
 - Computed columns: name, has_run, is_passing, is_leak, is_unproven, is_positive_control
-
-| PK | Field | Expected | Actual |
-|-----|-------|----------|--------|
-| deny-cfo-send-intents | name | principal-cfo must not see  | None |
-| deny-cfo-step-executions | name | principal-cfo must not see  | None |
-| deny-close-automation-change-requests | name | principal-close-automation mus | None |
-| deny-close-automation-recipients | name | principal-close-automation mus | None |
-| deny-employment-counsel-step-executions | name | principal-employment-counsel m | None |
-| deny-notification-publisher-knowledge-fragments | name | principal-notification-publish | None |
-| deny-policy-drafting-agent-recipients | name | principal-policy-drafting-agen | None |
-| deny-variance-review-agent-recipients | name | principal-variance-review-agen | None |
 
 ### app_users
 
@@ -525,12 +442,12 @@
 
 ### conformance_runs
 
-- Fields: 27/27 (100.0%)
+- Fields: 36/36 (100.0%)
 - Computed columns: name, substrate_count, perfect_substrate_count, cells_tested, cells_passed, cells_failed, overall_score, imperfect_substrate_count, is_fully_conformant
 
 ### substrate_run_scores
 
-- Fields: 273/273 (100.0%)
+- Fields: 364/364 (100.0%)
 - Computed columns: name, cells_failed, score, calculated_score, lookup_score, aggregation_score, is_perfect, perfect_run_key, is_in_latest_run, latest_cells_tested, latest_cells_passed, latest_error_flag, substrate_label
 
 ### table_conformance
@@ -545,29 +462,5 @@
 
 ### cell_disagreements
 
-- Fields: 632/948 (66.7%)
+- Fields: 1017/1017 (100.0%)
 - Computed columns: name, substrate, rulebook_field
-
-| PK | Field | Expected | Actual |
-|-----|-------|----------|--------|
-| effortless-entity-framework|Steps.IsBlockingControlOnReworkLoop|close-03 | name | effortless-entity-framework|St | effortless-entity-framework-St |
-| effortless-entity-framework|Steps.IsBlockingControlOnReworkLoop|close-05 | name | effortless-entity-framework|St | effortless-entity-framework-St |
-| effortless-entity-framework|Steps.IsBlockingControlOnReworkLoop|close-06 | name | effortless-entity-framework|St | effortless-entity-framework-St |
-| effortless-entity-framework|Steps.IsBlockingControlOnReworkLoop|policy-03 | name | effortless-entity-framework|St | effortless-entity-framework-St |
-| effortless-entity-framework|Steps.IsBlockingControlOnReworkLoop|policy-04 | name | effortless-entity-framework|St | effortless-entity-framework-St |
-| effortless-entity-framework|Steps.IsBlockingControlOnReworkLoop|policy-06 | name | effortless-entity-framework|St | effortless-entity-framework-St |
-| effortless-entity-framework|Steps.IsBlockingControlOnReworkLoop|policy-07 | name | effortless-entity-framework|St | effortless-entity-framework-St |
-| effortless-entity-framework|Steps.IsOnReworkLoop|close-03 | name | effortless-entity-framework|St | effortless-entity-framework-St |
-| effortless-entity-framework|Steps.IsOnReworkLoop|close-04 | name | effortless-entity-framework|St | effortless-entity-framework-St |
-| effortless-entity-framework|Steps.IsOnReworkLoop|close-05 | name | effortless-entity-framework|St | effortless-entity-framework-St |
-| effortless-entity-framework|Steps.IsOnReworkLoop|close-06 | name | effortless-entity-framework|St | effortless-entity-framework-St |
-| effortless-entity-framework|Steps.IsOnReworkLoop|policy-03 | name | effortless-entity-framework|St | effortless-entity-framework-St |
-| effortless-entity-framework|Steps.IsOnReworkLoop|policy-04 | name | effortless-entity-framework|St | effortless-entity-framework-St |
-| effortless-entity-framework|Steps.IsOnReworkLoop|policy-06 | name | effortless-entity-framework|St | effortless-entity-framework-St |
-| effortless-entity-framework|Steps.IsOnReworkLoop|policy-07 | name | effortless-entity-framework|St | effortless-entity-framework-St |
-| effortless-entity-framework|Steps.ReachableStepCount|close-01 | name | effortless-entity-framework|St | effortless-entity-framework-St |
-| effortless-entity-framework|Steps.ReachableStepCount|close-02 | name | effortless-entity-framework|St | effortless-entity-framework-St |
-| effortless-entity-framework|Steps.ReachableStepCount|close-03 | name | effortless-entity-framework|St | effortless-entity-framework-St |
-| effortless-entity-framework|Steps.ReachableStepCount|close-04 | name | effortless-entity-framework|St | effortless-entity-framework-St |
-| effortless-entity-framework|Steps.ReachableStepCount|close-05 | name | effortless-entity-framework|St | effortless-entity-framework-St |
-| ... | ... | (296 more) | ... |

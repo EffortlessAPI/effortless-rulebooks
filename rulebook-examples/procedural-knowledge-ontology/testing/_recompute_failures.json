@@ -29968,6 +29968,22 @@
     "severity": "drift"
   },
   {
+    "entity": "SubstrateRunScores",
+    "field": "PerfectRunKey",
+    "formula": "=IF({{IsPerfect}}, {{Run}}, \"\")",
+    "record_id": "run-20260914-223223|effortless-xlsx",
+    "error": "drift: stored=None python-recompute=''",
+    "severity": "drift"
+  },
+  {
+    "entity": "SubstrateRunScores",
+    "field": "PerfectRunKey",
+    "formula": "=IF({{IsPerfect}}, {{Run}}, \"\")",
+    "record_id": "run-20260914-223223|effortless-owl",
+    "error": "drift: stored=None python-recompute=''",
+    "severity": "drift"
+  },
+  {
     "entity": "TableConformance",
     "field": "ImperfectSubstrateKey",
     "formula": "=IF({{IsPerfect}}, \"\", {{Substrate}})",
@@ -32908,6 +32924,22 @@
     "field": "ImperfectTableKey",
     "formula": "=IF({{IsPerfect}}, \"\", {{RulebookTable}})",
     "record_id": "effortless-entity-framework|ProcedureStatusChanges",
+    "error": "drift: stored=None python-recompute=''",
+    "severity": "drift"
+  },
+  {
+    "entity": "TableConformance",
+    "field": "ImperfectSubstrateKey",
+    "formula": "=IF({{IsPerfect}}, \"\", {{Substrate}})",
+    "record_id": "effortless-entity-framework|Steps",
+    "error": "drift: stored=None python-recompute=''",
+    "severity": "drift"
+  },
+  {
+    "entity": "TableConformance",
+    "field": "ImperfectTableKey",
+    "formula": "=IF({{IsPerfect}}, \"\", {{RulebookTable}})",
+    "record_id": "effortless-entity-framework|Steps",
     "error": "drift: stored=None python-recompute=''",
     "severity": "drift"
   },
