@@ -20,11 +20,11 @@ PostgreSQL Substrate: Found 92 views
   -> attestations: 0 records
   -> authority_boundaries: 3 records
   -> binding_observations: 0 records
-  -> cell_disagreements: 316 records
+  -> cell_disagreements: 339 records
   -> change_requests: 2 records
   -> communication_policies: 2 records
   -> communities_of_practice: 2 records
-  -> conformance_runs: 3 records
+  -> conformance_runs: 4 records
   -> conformance_substrates: 8 records
   -> delivered_communications: 1 records
   -> elicitation_sessions: 3 records
@@ -85,7 +85,7 @@ PostgreSQL Substrate: Found 92 views
   -> step_verifications: 11 records
   -> steps: 17 records
   -> stewardship_assignments: 2 records
-  -> substrate_run_scores: 21 records
+  -> substrate_run_scores: 28 records
   -> table_conformance: 623 records
   -> template_approvals: 2 records
   -> test_cases: 1794 records
@@ -97,5 +97,5 @@ PostgreSQL Substrate: Found 92 views
   -> vocabularies: 2 records
   -> vocabulary_terms: 12 records
   -> witness_loops: 4 records
-PostgreSQL Substrate: Processed 92 views, 10088 total records
+PostgreSQL Substrate: Processed 92 views, 10119 total records
 

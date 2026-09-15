@@ -10,24 +10,24 @@
 
 | Substrate | Passed | Failed | Total | Score | Duration | Status |
 |-----------|--------|--------|-------|-------|----------|--------|
-| effortless-python | 67447 | 0 | 67447 | 100.0% | 2s | PASS |
-| effortless-typescript | 67447 | 0 | 67447 | 100.0% | 2s | PASS |
-| effortless-golang | 67447 | 0 | 67447 | 100.0% | 3s | PASS |
-| effortless-entity-framework | 67447 | 0 | 67447 | 100.0% | 6s | PASS |
-| effortless-xlsx | 67242 | 205 | 67447 | 99.7% | 2s | FAIL |
-| effortless-owl | 67017 | 430 | 67447 | 99.4% | 1m 24s | FAIL |
-| effortless-postgres | 57439 | 10008 | 67447 | 85.2% | 24s | ERROR: Script failed:  |
+| effortless-golang | 67616 | 0 | 67616 | 100.0% | 1s | PASS |
+| effortless-python | 67616 | 0 | 67616 | 100.0% | 1s | PASS |
+| effortless-typescript | 67616 | 0 | 67616 | 100.0% | 2s | PASS |
+| effortless-entity-framework | 67616 | 0 | 67616 | 100.0% | 7s | PASS |
+| effortless-postgres | 67616 | 0 | 67616 | 100.0% | 25s | PASS |
+| effortless-owl | 67616 | 0 | 67616 | 100.0% | 1m 21s | PASS |
+| effortless-xlsx | 67411 | 205 | 67616 | 99.7% | 1s | FAIL |
 
 ## Overall Statistics
 
 | Metric | Value |
 |--------|-------|
 | Total Substrates | 7 |
-| Total Fields Tested | 472129 |
-| Total Passed | 461486 |
-| Total Failed | 10643 |
-| Overall Score | 97.7% |
-| Total Duration | 2m 3s |
+| Total Fields Tested | 473312 |
+| Total Passed | 473107 |
+| Total Failed | 205 |
+| Overall Score | 100.0% |
+| Total Duration | 1m 58s |
 
 ---
 

@@ -20,11 +20,11 @@ Sheets: ['RulebookReleases', 'OntologyProfiles', 'EvaluationContexts', 'Organiza
   -> app_routes: 149 records
   -> app_users: 10 records
   -> authority_boundaries: 3 records
-  -> cell_disagreements: 316 records
+  -> cell_disagreements: 339 records
   -> change_requests: 2 records
   -> communication_policies: 2 records
   -> communities_of_practice: 2 records
-  -> conformance_runs: 3 records
+  -> conformance_runs: 4 records
   -> conformance_substrates: 8 records
   -> delivered_communications: 1 records
   -> elicitation_sessions: 3 records
@@ -84,7 +84,7 @@ Sheets: ['RulebookReleases', 'OntologyProfiles', 'EvaluationContexts', 'Organiza
   -> step_verifications: 11 records
   -> steps: 17 records
   -> stewardship_assignments: 2 records
-  -> substrate_run_scores: 21 records
+  -> substrate_run_scores: 28 records
   -> table_conformance: 623 records
   -> template_approvals: 2 records
   -> test_cases: 1794 records
@@ -97,5 +97,5 @@ Sheets: ['RulebookReleases', 'OntologyProfiles', 'EvaluationContexts', 'Organiza
   -> vocabulary_terms: 12 records
   -> witness_loops: 4 records
 
-effortless-xlsx: Processed 88 entities, 10085 total records
+effortless-xlsx: Processed 88 entities, 10116 total records
 

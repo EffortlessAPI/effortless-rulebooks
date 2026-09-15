@@ -8153,6 +8153,18 @@
         "Domain": "domain-procedural-knowledge-ontology",
         "RanOn": "2026-09-14T22:32:39",
         "RawResultsJson": "{\"effortless-python\": {\"last_run\": {\"status\": \"success\", \"duration_seconds\": 1.0, \"exit_code\": 0, \"score\": 100.0}, \"last_successful_run\": {\"duration_seconds\": 1.0, \"status\": \"success\", \"test_results\": {\"total_fields_tested\": 67447, \"fields_passed\": 67447, \"fields_failed\": 0, \"score\": 100.0}}}, \"effortless-golang\": {\"last_run\": {\"status\": \"success\", \"duration_seconds\": 3.0, \"exit_code\": 0, \"score\": 100.0}, \"last_successful_run\": {\"duration_seconds\": 3.0, \"status\": \"success\", \"test_results\": {\"total_fields_tested\": 67447, \"fields_passed\": 67447, \"fields_failed\": 0, \"score\": 100.0}}}, \"effortless-typescript\": {\"last_run\": {\"status\": \"success\", \"duration_seconds\": 2.0, \"exit_code\": 0, \"score\": 100.0}, \"last_successful_run\": {\"duration_seconds\": 2.0, \"status\": \"success\", \"test_results\": {\"total_fields_tested\": 67447, \"fields_passed\": 67447, \"fields_failed\": 0, \"score\": 100.0}}}, \"effortless-postgres\": {\"last_run\": {\"status\": \"success\", \"duration_seconds\": 24.0, \"exit_code\": 0, \"score\": 100.0}, \"last_successful_run\": {\"duration_seconds\": 24.0, \"status\": \"success\", \"test_results\": {\"total_fields_tested\": 67447, \"fields_passed\": 67447, \"fields_failed\": 0, \"score\": 100.0}}}, \"effortless-xlsx\": {\"last_run\": {\"status\": \"success\", \"duration_seconds\": 1.0, \"exit_code\": 0, \"score\": 99.6960576452622}, \"last_successful_run\": null}, \"effortless-owl\": {\"last_run\": {\"status\": \"success\", \"duration_seconds\": 140.0, \"exit_code\": 0, \"score\": 99.36246237786706}, \"last_successful_run\": null}, \"effortless-entity-framework\": {\"last_run\": {\"status\": \"success\", \"duration_seconds\": 6.0, \"exit_code\": 0, \"score\": 100.0}, \"last_successful_run\": {\"duration_seconds\": 6.0, \"status\": \"success\", \"test_results\": {\"total_fields_tested\": 67447, \"fields_passed\": 67447, \"fields_failed\": 0, \"score\": 100.0}}}}"
+      },
+      {
+        "ConformanceRunId": "run-procedural-knowledge-ontology-20260914-230827",
+        "Domain": "domain-procedural-knowledge-ontology",
+        "RanOn": "2026-09-14T23:08:27",
+        "RawResultsJson": "{\"effortless-python\": {\"last_run\": {\"status\": \"success\", \"duration_seconds\": 1.0, \"exit_code\": 0, \"score\": 100.0}, \"last_successful_run\": {\"duration_seconds\": 1.0, \"status\": \"success\", \"test_results\": {\"total_fields_tested\": 67616, \"fields_passed\": 67616, \"fields_failed\": 0, \"score\": 100.0}}}, \"effortless-golang\": {\"last_run\": {\"status\": \"success\", \"duration_seconds\": 3.0, \"exit_code\": 0, \"score\": 100.0}, \"last_successful_run\": {\"duration_seconds\": 3.0, \"status\": \"success\", \"test_results\": {\"total_fields_tested\": 67616, \"fields_passed\": 67616, \"fields_failed\": 0, \"score\": 100.0}}}, \"effortless-typescript\": {\"last_run\": {\"status\": \"success\", \"duration_seconds\": 1.0, \"exit_code\": 0, \"score\": 100.0}, \"last_successful_run\": {\"duration_seconds\": 1.0, \"status\": \"success\", \"test_results\": {\"total_fields_tested\": 67616, \"fields_passed\": 67616, \"fields_failed\": 0, \"score\": 100.0}}}, \"effortless-postgres\": {\"last_run\": {\"status\": \"success\", \"duration_seconds\": 24.0, \"exit_code\": 0, \"score\": 100.0}, \"last_successful_run\": {\"duration_seconds\": 24.0, \"status\": \"success\", \"test_results\": {\"total_fields_tested\": 67616, \"fields_passed\": 67616, \"fields_failed\": 0, \"score\": 100.0}}}, \"effortless-xlsx\": {\"last_run\": {\"status\": \"success\", \"duration_seconds\": 1.0, \"exit_code\": 0, \"score\": 99.69681732134406}, \"last_successful_run\": null}, \"effortless-owl\": {\"last_run\": {\"status\": \"success\", \"duration_seconds\": 80.0, \"exit_code\": 0, \"score\": 100.0}, \"last_successful_run\": {\"duration_seconds\": 80.0, \"status\": \"success\", \"test_results\": {\"total_fields_tested\": 67616, \"fields_passed\": 67616, \"fields_failed\": 0, \"score\": 100.0}}}, \"effortless-entity-framework\": {\"last_run\": {\"status\": \"success\", \"duration_seconds\": 6.0, \"exit_code\": 0, \"score\": 100.0}, \"last_successful_run\": {\"duration_seconds\": 6.0, \"status\": \"success\", \"test_results\": {\"total_fields_tested\": 67616, \"fields_passed\": 67616, \"fields_failed\": 0, \"score\": 100.0}}}}"
+      },
+      {
+        "ConformanceRunId": "run-procedural-knowledge-ontology-20260914-231649",
+        "Domain": "domain-procedural-knowledge-ontology",
+        "RanOn": "2026-09-14T23:16:49",
+        "RawResultsJson": "{\"effortless-python\": {\"last_run\": {\"status\": \"success\", \"duration_seconds\": 2.0, \"exit_code\": 0, \"score\": 100.0}, \"last_successful_run\": {\"duration_seconds\": 2.0, \"status\": \"success\", \"test_results\": {\"total_fields_tested\": 67616, \"fields_passed\": 67616, \"fields_failed\": 0, \"score\": 100.0}}}, \"effortless-golang\": {\"last_run\": {\"status\": \"success\", \"duration_seconds\": 1.0, \"exit_code\": 0, \"score\": 100.0}, \"last_successful_run\": {\"duration_seconds\": 1.0, \"status\": \"success\", \"test_results\": {\"total_fields_tested\": 67616, \"fields_passed\": 67616, \"fields_failed\": 0, \"score\": 100.0}}}, \"effortless-typescript\": {\"last_run\": {\"status\": \"success\", \"duration_seconds\": 2.0, \"exit_code\": 0, \"score\": 100.0}, \"last_successful_run\": {\"duration_seconds\": 2.0, \"status\": \"success\", \"test_results\": {\"total_fields_tested\": 67616, \"fields_passed\": 67616, \"fields_failed\": 0, \"score\": 100.0}}}, \"effortless-postgres\": {\"last_run\": {\"status\": \"success\", \"duration_seconds\": 25.0, \"exit_code\": 0, \"score\": 100.0}, \"last_successful_run\": {\"duration_seconds\": 25.0, \"status\": \"success\", \"test_results\": {\"total_fields_tested\": 67616, \"fields_passed\": 67616, \"fields_failed\": 0, \"score\": 100.0}}}, \"effortless-xlsx\": {\"last_run\": {\"status\": \"success\", \"duration_seconds\": 1.0, \"exit_code\": 0, \"score\": 99.69681732134406}, \"last_successful_run\": null}, \"effortless-owl\": {\"last_run\": {\"status\": \"success\", \"duration_seconds\": 80.0, \"exit_code\": 0, \"score\": 100.0}, \"last_successful_run\": {\"duration_seconds\": 80.0, \"status\": \"success\", \"test_results\": {\"total_fields_tested\": 67616, \"fields_passed\": 67616, \"fields_failed\": 0, \"score\": 100.0}}}, \"effortless-entity-framework\": {\"last_run\": {\"status\": \"success\", \"duration_seconds\": 6.0, \"exit_code\": 0, \"score\": 100.0}, \"last_successful_run\": {\"duration_seconds\": 6.0, \"status\": \"success\", \"test_results\": {\"total_fields_tested\": 67616, \"fields_passed\": 67616, \"fields_failed\": 0, \"score\": 100.0}}}}"
       }
     ]
   },
@@ -11368,6 +11380,160 @@
         "SubstrateName": "effortless-xlsx",
         "Status": "success",
         "Score": 99.6960576452622,
+        "FieldsTested": null,
+        "FieldsPassed": null,
+        "FieldsFailed": null,
+        "DurationSeconds": 1.0
+      },
+      {
+        "ConformanceResultId": "run-procedural-knowledge-ontology-20260914-230827:effortless-entity-framework",
+        "Run": "run-procedural-knowledge-ontology-20260914-230827",
+        "SubstrateName": "effortless-entity-framework",
+        "Status": "success",
+        "Score": 100.0,
+        "FieldsTested": 67616,
+        "FieldsPassed": 67616,
+        "FieldsFailed": 0,
+        "DurationSeconds": 6.0
+      },
+      {
+        "ConformanceResultId": "run-procedural-knowledge-ontology-20260914-230827:effortless-golang",
+        "Run": "run-procedural-knowledge-ontology-20260914-230827",
+        "SubstrateName": "effortless-golang",
+        "Status": "success",
+        "Score": 100.0,
+        "FieldsTested": 67616,
+        "FieldsPassed": 67616,
+        "FieldsFailed": 0,
+        "DurationSeconds": 3.0
+      },
+      {
+        "ConformanceResultId": "run-procedural-knowledge-ontology-20260914-230827:effortless-owl",
+        "Run": "run-procedural-knowledge-ontology-20260914-230827",
+        "SubstrateName": "effortless-owl",
+        "Status": "success",
+        "Score": 100.0,
+        "FieldsTested": 67616,
+        "FieldsPassed": 67616,
+        "FieldsFailed": 0,
+        "DurationSeconds": 80.0
+      },
+      {
+        "ConformanceResultId": "run-procedural-knowledge-ontology-20260914-230827:effortless-postgres",
+        "Run": "run-procedural-knowledge-ontology-20260914-230827",
+        "SubstrateName": "effortless-postgres",
+        "Status": "success",
+        "Score": 100.0,
+        "FieldsTested": 67616,
+        "FieldsPassed": 67616,
+        "FieldsFailed": 0,
+        "DurationSeconds": 24.0
+      },
+      {
+        "ConformanceResultId": "run-procedural-knowledge-ontology-20260914-230827:effortless-python",
+        "Run": "run-procedural-knowledge-ontology-20260914-230827",
+        "SubstrateName": "effortless-python",
+        "Status": "success",
+        "Score": 100.0,
+        "FieldsTested": 67616,
+        "FieldsPassed": 67616,
+        "FieldsFailed": 0,
+        "DurationSeconds": 1.0
+      },
+      {
+        "ConformanceResultId": "run-procedural-knowledge-ontology-20260914-230827:effortless-typescript",
+        "Run": "run-procedural-knowledge-ontology-20260914-230827",
+        "SubstrateName": "effortless-typescript",
+        "Status": "success",
+        "Score": 100.0,
+        "FieldsTested": 67616,
+        "FieldsPassed": 67616,
+        "FieldsFailed": 0,
+        "DurationSeconds": 1.0
+      },
+      {
+        "ConformanceResultId": "run-procedural-knowledge-ontology-20260914-230827:effortless-xlsx",
+        "Run": "run-procedural-knowledge-ontology-20260914-230827",
+        "SubstrateName": "effortless-xlsx",
+        "Status": "success",
+        "Score": 99.69681732134406,
+        "FieldsTested": null,
+        "FieldsPassed": null,
+        "FieldsFailed": null,
+        "DurationSeconds": 1.0
+      },
+      {
+        "ConformanceResultId": "run-procedural-knowledge-ontology-20260914-231649:effortless-entity-framework",
+        "Run": "run-procedural-knowledge-ontology-20260914-231649",
+        "SubstrateName": "effortless-entity-framework",
+        "Status": "success",
+        "Score": 100.0,
+        "FieldsTested": 67616,
+        "FieldsPassed": 67616,
+        "FieldsFailed": 0,
+        "DurationSeconds": 6.0
+      },
+      {
+        "ConformanceResultId": "run-procedural-knowledge-ontology-20260914-231649:effortless-golang",
+        "Run": "run-procedural-knowledge-ontology-20260914-231649",
+        "SubstrateName": "effortless-golang",
+        "Status": "success",
+        "Score": 100.0,
+        "FieldsTested": 67616,
+        "FieldsPassed": 67616,
+        "FieldsFailed": 0,
+        "DurationSeconds": 1.0
+      },
+      {
+        "ConformanceResultId": "run-procedural-knowledge-ontology-20260914-231649:effortless-owl",
+        "Run": "run-procedural-knowledge-ontology-20260914-231649",
+        "SubstrateName": "effortless-owl",
+        "Status": "success",
+        "Score": 100.0,
+        "FieldsTested": 67616,
+        "FieldsPassed": 67616,
+        "FieldsFailed": 0,
+        "DurationSeconds": 80.0
+      },
+      {
+        "ConformanceResultId": "run-procedural-knowledge-ontology-20260914-231649:effortless-postgres",
+        "Run": "run-procedural-knowledge-ontology-20260914-231649",
+        "SubstrateName": "effortless-postgres",
+        "Status": "success",
+        "Score": 100.0,
+        "FieldsTested": 67616,
+        "FieldsPassed": 67616,
+        "FieldsFailed": 0,
+        "DurationSeconds": 25.0
+      },
+      {
+        "ConformanceResultId": "run-procedural-knowledge-ontology-20260914-231649:effortless-python",
+        "Run": "run-procedural-knowledge-ontology-20260914-231649",
+        "SubstrateName": "effortless-python",
+        "Status": "success",
+        "Score": 100.0,
+        "FieldsTested": 67616,
+        "FieldsPassed": 67616,
+        "FieldsFailed": 0,
+        "DurationSeconds": 2.0
+      },
+      {
+        "ConformanceResultId": "run-procedural-knowledge-ontology-20260914-231649:effortless-typescript",
+        "Run": "run-procedural-knowledge-ontology-20260914-231649",
+        "SubstrateName": "effortless-typescript",
+        "Status": "success",
+        "Score": 100.0,
+        "FieldsTested": 67616,
+        "FieldsPassed": 67616,
+        "FieldsFailed": 0,
+        "DurationSeconds": 2.0
+      },
+      {
+        "ConformanceResultId": "run-procedural-knowledge-ontology-20260914-231649:effortless-xlsx",
+        "Run": "run-procedural-knowledge-ontology-20260914-231649",
+        "SubstrateName": "effortless-xlsx",
+        "Status": "success",
+        "Score": 99.69681732134406,
         "FieldsTested": null,
         "FieldsPassed": null,
         "FieldsFailed": null,
